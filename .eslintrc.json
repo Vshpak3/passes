@@ -1,0 +1,62 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "react", "prettier", "react-hooks"],
+  "rules": {
+    "import/no-unresolved": 0,
+    "react-hooks/exhaustive-deps": 0,
+    "react/react-in-jsx-scope": 0, // Disabled because in version 17.xx JSX there is new JSX transform which is not requring to import React
+    "import/prefer-default-export": "off",
+    // Allow for non-used variables with prefix "_"
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".ts", ".tsx"]
+      }
+    ],
+    "no-unused-expressions": [2, { "allowShortCircuit": true }],
+    "no-console": [1, { "allow": ["warn", "error"] }],
+    "prettier/prettier": ["warn"],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "react/prop-types": 0,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "global-require": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "react/jsx-props-no-spreading": ["warn", { "custom": "ignore" }],
+    "@typescript-eslint/explicit-module-boundary-types": [0], // Disabled, we don't need to expose return types of functions
+    "react/state-in-constructor": [0], // Disabled because we want to allow to write components with and without constructor
+    "camelcase": "off"
+  }
+}

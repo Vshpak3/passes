@@ -1,0 +1,9 @@
+.bg-button-default {
+  background: linear-gradient(72.57deg, #b31d88 -0.41%, #ff085a 97.9%);
+}
+.auth-page {
+  background-image: url('/images/background-dots.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
