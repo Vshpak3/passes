@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  database:
+    # Should match AWS Aurora Postgres version:
+    # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraPostgreSQLReleaseNotes/AuroraPostgreSQL.Updates.html#AuroraPostgreSQL.Updates.20180305.136X
+    image: postgres:13.6-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=moment
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:

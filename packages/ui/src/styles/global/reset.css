@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+#__next {
+  isolation: isolate;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  font-kerning: normal;
+  font-variant-ligatures: contextual common-ligatures;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}

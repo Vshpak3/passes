@@ -1,0 +1,6 @@
+:root {
+  --wrapper-padding-top: max(2rem, env(safe-area-inset-top));
+  --wrapper-padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  --wrapper-padding-right: max(2rem, env(safe-area-inset-right));
+  --wrapper-padding-left: max(2rem, env(safe-area-inset-left));
+}
