@@ -1,9 +1,6 @@
 # Ignore Mac DS_Store files
 .DS_Store
 
-# Ignore TS->JS code-gen
-dist/*
-
 # Ignore non Zero-install yarn files
 .yarn/*
 !.yarn/cache
@@ -15,3 +12,4 @@ dist/*
 
 # Ignore Jest test coverage
 coverage
+packages/api-client/dist

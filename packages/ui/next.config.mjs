@@ -1,20 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 import { withSentryConfig } from '@sentry/nextjs'
-import nextTranspileModules from 'next-transpile-modules'
-
-const withTM = nextTranspileModules([
-  '@moment/auth-utils',
-  '@moment/utils',
-  '@moment/api-utils',
-])
 
 export default withSentryConfig({
   sentry: {
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
   },
-  ...withTM({
+  ...{
     reactStrictMode: true,
     i18n: {
       locales: ['en-US'],
@@ -50,5 +43,5 @@ export default withSentryConfig({
 
       return config
     },
-  }),
+  },
 })
