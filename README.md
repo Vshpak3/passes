@@ -1,18 +1,18 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Setup
 
-### System Requirements
+System Requirements
 - Docker Desktop
 - Node (`brew install node`)
 - Yarn (`npm install -g yarn@berry`)
 
-## Setup
-
 We use Zero-Installs so there is no setup necessary.
 
 
-## Running the app
+## Local Dev
+
+### Running
 
 ```bash
 # development
@@ -25,7 +25,7 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
-## Test
+### Test
 
 ```bash
 # unit tests
@@ -46,16 +46,16 @@ $ yarn mikro-orm migration:create # generates the migration
 $ yarn mikro-orm migration:up     # run the migration
 ```
 
+
+## Other
+
 ### OpenAPI (Swagger)
 
 UI: http://localhost:3000/api
 JSON: http://localhost:3000/api-json
 
-## Support
+### Upgrading
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-
-## License
-
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+$ ./bin/upgrade.sh
+```
