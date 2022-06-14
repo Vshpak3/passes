@@ -12,6 +12,8 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "composite": true,
+    "strictNullChecks": true,
     "skipLibCheck": true
   }
 }
