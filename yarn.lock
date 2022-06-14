@@ -2636,6 +2636,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@moment/api-client@workspace:packages/api-client":
+  version: 0.0.0-use.local
+  resolution: "@moment/api-client@workspace:packages/api-client"
+  dependencies:
+    axios: 0.26.1
+    typescript: 4.6.3
+  peerDependencies:
+    axios: 0.26.1
+  languageName: unknown
+  linkType: soft
+
 "@moment/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@moment/api@workspace:packages/api"

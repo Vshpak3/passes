@@ -4,6 +4,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "generate-client": "./generate-api-client.sh"
+  },
   "devDependencies": {
     "typescript": "4.6.3"
   },

@@ -25,6 +25,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/api"\
       },\
       {\
+        "name": "@moment/api-client",\
+        "reference": "workspace:packages/api-client"\
+      },\
+      {\
         "name": "@moment/ui",\
         "reference": "workspace:packages/ui"\
       }\
@@ -33,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
       ["@moment/api", ["workspace:packages/api"]],\
+      ["@moment/api-client", ["workspace:packages/api-client"]],\
       ["@moment/base", ["workspace:."]],\
       ["@moment/ui", ["workspace:packages/ui"]]\
     ],\
@@ -4289,6 +4294,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:cc6bd03934fde402d86f01cf5016a1a2253624528c3d29ef9985ca01eed5fc590fef70ab68d81a9969a3f762fe4294607e2e7b193627ac2987b1626ee9fb9262#npm:10.3.0"],\
             ["tsconfig-paths", "npm:3.11.0"],\
             ["typescript", "patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=7ad353"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@moment/api-client", [\
+        ["workspace:packages/api-client", {\
+          "packageLocation": "./packages/api-client/",\
+          "packageDependencies": [\
+            ["@moment/api-client", "workspace:packages/api-client"],\
+            ["axios", "npm:0.26.1"],\
+            ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
         }]\

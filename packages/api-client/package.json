@@ -1,0 +1,16 @@
+{
+  "name": "@moment/api-client",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "axios": "0.26.1",
+    "typescript": "4.6.3"
+  },
+  "peerDependencies": {
+    "axios": "0.26.1"
+  }
+}
