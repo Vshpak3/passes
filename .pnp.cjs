@@ -4270,6 +4270,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nestjs/schematics", "virtual:cc6bd03934fde402d86f01cf5016a1a2253624528c3d29ef9985ca01eed5fc590fef70ab68d81a9969a3f762fe4294607e2e7b193627ac2987b1626ee9fb9262#npm:8.0.11"],\
             ["@nestjs/swagger", "virtual:cc6bd03934fde402d86f01cf5016a1a2253624528c3d29ef9985ca01eed5fc590fef70ab68d81a9969a3f762fe4294607e2e7b193627ac2987b1626ee9fb9262#npm:5.2.1"],\
             ["@nestjs/testing", "virtual:cc6bd03934fde402d86f01cf5016a1a2253624528c3d29ef9985ca01eed5fc590fef70ab68d81a9969a3f762fe4294607e2e7b193627ac2987b1626ee9fb9262#npm:8.4.5"],\
+            ["@sentry/cli", "npm:1.74.4"],\
             ["@types/express", "npm:4.17.13"],\
             ["@types/jest", "npm:27.0.2"],\
             ["@types/node", "npm:16.11.1"],\

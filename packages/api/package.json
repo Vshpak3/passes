@@ -35,6 +35,7 @@
     "@nestjs/core": "8.4.5",
     "@nestjs/platform-express": "8.4.5",
     "@nestjs/swagger": "5.2.1",
+    "@sentry/cli": "npm:1.74.4",
     "express": "4.18.1",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
