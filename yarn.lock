@@ -2636,7 +2636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@moment/api-client@workspace:packages/api-client":
+"@moment/api-client@workspace:*, @moment/api-client@workspace:packages/api-client":
   version: 0.0.0-use.local
   resolution: "@moment/api-client@workspace:packages/api-client"
   dependencies:
@@ -2708,6 +2708,7 @@ __metadata:
   resolution: "@moment/ui@workspace:packages/ui"
   dependencies:
     "@ethersproject/abi": 5.6.1
+    "@moment/api-client": "workspace:*"
     "@radix-ui/colors": 0.1.8
     "@radix-ui/react-avatar": 0.1.4
     "@radix-ui/react-popover": 0.1.6

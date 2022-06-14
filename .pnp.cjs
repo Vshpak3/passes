@@ -37,7 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
       ["@moment/api", ["workspace:packages/api"]],\
-      ["@moment/api-client", ["workspace:packages/api-client"]],\
+      ["@moment/api-client", ["virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#workspace:packages/api-client", "workspace:packages/api-client"]],\
       ["@moment/base", ["workspace:."]],\
       ["@moment/ui", ["workspace:packages/ui"]]\
     ],\
@@ -4299,6 +4299,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@moment/api-client", [\
+        ["virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#workspace:packages/api-client", {\
+          "packageLocation": "./.yarn/__virtual__/@moment-api-client-virtual-036fe56bf9/1/packages/api-client/",\
+          "packageDependencies": [\
+            ["@moment/api-client", "virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#workspace:packages/api-client"],\
+            ["@types/axios", "npm:0.14.0"],\
+            ["axios", "npm:0.26.1"],\
+            ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=7ad353"]\
+          ],\
+          "packagePeers": [\
+            "@types/axios",\
+            "axios"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["workspace:packages/api-client", {\
           "packageLocation": "./packages/api-client/",\
           "packageDependencies": [\
@@ -4329,6 +4343,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@moment/ui", "workspace:packages/ui"],\
             ["@ethersproject/abi", "npm:5.6.1"],\
+            ["@moment/api-client", "virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#workspace:packages/api-client"],\
             ["@radix-ui/colors", "npm:0.1.8"],\
             ["@radix-ui/react-avatar", "virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#npm:0.1.4"],\
             ["@radix-ui/react-popover", "virtual:99df7b7b93268ab15837828fd1f74f68f56e784857ed41e8f7b53abc293da0453d8995d0c2dd740ee37272893eb21daf857b138cb6161787a1b80a716eb53645#npm:0.1.6"],\
