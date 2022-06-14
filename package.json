@@ -12,6 +12,9 @@
   },
   "packageManager": "yarn@3.2.0",
   "dependencies": {
+    "@mikro-orm/core": "5.2.0",
+    "@mikro-orm/nestjs": "5.0.2",
+    "@mikro-orm/postgresql": "5.2.0",
     "@nestjs/core": "^8.4.6"
   }
 }
