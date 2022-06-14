@@ -13,3 +13,4 @@
 # Ignore Jest test coverage
 coverage
 packages/api-client/dist
+packages/api/dist
