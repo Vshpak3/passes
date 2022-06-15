@@ -17,18 +17,23 @@ We use Zero-Installs so there is no setup necessary.
 # run the UI
 yarn workspace @moment/ui dev
 
-# development
-$ yarn start
+# run the API
+yarn workspace @moment/api start:dev
+```
 
-# watch mode
-$ yarn start:dev
+### Adding Dependencies
 
-# production mode
-$ yarn start:prod
+```bash
+# adding to the UI
+yarn workspace @moment/ui add <packageName>
+
+# adding to the API
+yarn workspace @moment/api add <packageName>
 ```
 
 ### Test
-
+How do we run tests?
+TODO: The commands below need to be updated
 ```bash
 # unit tests
 $ yarn test
@@ -42,19 +47,20 @@ $ yarn test:cov
 
 ### Migrations
 
+TODO: We need to test these commands with a database running
 ```bash
-$ yarn mikro-orm                  # lists available commands
-$ yarn mikro-orm migration:create # generates the migration
-$ yarn mikro-orm migration:up     # run the migration
+$ yarn workspace @moment/api mikro-orm                  # lists available commands
+$ yarn workspace @moment/api mikro-orm migration:create # generates the migration
+$ yarn workspace @moment/api mikro-orm migration:up     # run the migration
 ```
 
 
 ## Other
 
 ### OpenAPI (Swagger)
-
-UI: http://localhost:3000/api
-JSON: http://localhost:3000/api-json
+You must be running the API to access these:
+UI: http://localhost:3333/api
+JSON: http://localhost:3333/api-json
 
 ### Upgrading
 
