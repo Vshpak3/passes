@@ -3,7 +3,6 @@
 ## Setup
 
 System Requirements
-- Docker Desktop
 - Node (`brew install node`)
 - Yarn (`npm install -g yarn@berry`)
 
@@ -15,6 +14,9 @@ We use Zero-Installs so there is no setup necessary.
 ### Running
 
 ```bash
+# run the UI
+yarn workspace @moment/ui dev
+
 # development
 $ yarn start
 
