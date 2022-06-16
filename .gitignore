@@ -14,3 +14,5 @@
 coverage
 packages/api-client/dist
 packages/api/dist
+
+.idea/
