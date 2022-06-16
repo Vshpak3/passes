@@ -17,13 +17,13 @@
 }
 
 /* Global Reset */
-@import './reset.css';
+@import "./reset.css";
 
 /* Global Design Tokens */
-@import './tokens.css';
+@import "./tokens.css";
 
 /* Global Animations */
-@import './animations.css';
+@import "./animations.css";
 
 /* Global Styles */
 body {
@@ -35,7 +35,7 @@ i {
   @apply font-em text-[calc(1em_+_2px)] font-normal italic leading-none tracking-normal;
 }
 
-@supports (font-variation-settings: 'wght' 450) {
+@supports (font-variation-settings: "wght" 450) {
   body,
   em,
   i {
@@ -43,6 +43,29 @@ i {
   }
 }
 
+#nprogress {
+  @apply pointer-events-none;
+}
+#nprogress::after {
+  content: "";
+  @apply fixed top-0 left-0 h-1 w-full bg-transparent;
+}
+
+#nprogress .bar {
+  @apply fixed top-0 left-0 z-[2000] h-1 w-full bg-purple-purple9 dark:bg-purpleDark-purple9;
+}
+
+.text-gradient-util {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .marquee {
   @apply !min-w-[unset];
+}
+
+@media all and (max-width: 1023px) {
+  [data-radix-popper-content-wrapper] {
+    @apply !fixed !top-auto !bottom-0 !w-full !min-w-full !transform-none transition;
+  }
 }

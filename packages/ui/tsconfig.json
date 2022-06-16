@@ -1,34 +1,21 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "baseUrl": ".",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "composite": true,
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "rootDir": ".",
-    "strictNullChecks": true,
-    "incremental": true,
-    "baseUrl": ".",
-    "noEmit": true
+    "incremental": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".eslintrc.js",
-    "next-env.d.ts",
-    "next.config.mjs",
-    "postcss.config.js",
-    "tailwind.config.js",
-    "sentry.client.config.ts",
-    "lint-staged.config.js"
-  ],
-  "exclude": []
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx"],
+  "exclude": ["node_modules"]
 }

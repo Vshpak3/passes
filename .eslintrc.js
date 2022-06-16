@@ -40,15 +40,6 @@ module.exports = {
     'no-loss-of-precision': 'error',
     'no-new-wrappers': 'error',
     'no-param-reassign': 'error',
-    'no-restricted-syntax': [
-      'error',
-      {
-        selector:
-          "ImportDeclaration[importKind!='type'][source.value='@sentry/browser']",
-        message:
-          'Use the CDN hosted Sentry SDK instead of the NPM package. See https://docs.sentry.io/platforms/javascript/install/cdn/.',
-      },
-    ],
     'no-return-assign': 'error',
     'no-shadow': 'error',
     'no-throw-literal': 'error',
