@@ -1,2 +1,2 @@
 # Mark yarn releases as binary to prevent them from showing up in PRs
-/.yarn/releases/* binary
+/.yarn/release/* binary
