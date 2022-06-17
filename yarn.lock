@@ -1104,6 +1104,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@moment/base@workspace:."
   dependencies:
+    "@mikro-orm/core": 5.2.0
+    "@nestjs/core": 8.4.7
     "@typescript-eslint/eslint-plugin": 5.28.0
     "@typescript-eslint/parser": 5.28.0
     eslint: 8.17.0

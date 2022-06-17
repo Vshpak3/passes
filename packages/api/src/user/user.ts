@@ -1,15 +1,40 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property } from '@mikro-orm/core';
 
-import { BaseEntity } from '../base/base-entity'
+import { BaseEntity } from '../base/base-entity';
 
 @Entity()
 export class User extends BaseEntity {
+  
   @Property()
-  email!: string
+  email!: string;
 
   @Property()
-  isKYCVerified: boolean
+  isKYCVerified: boolean = false;
 
   @Property()
-  userId: string
+  walletAddress: string;
+
+  @Property()
+  firstName: string;
+
+  @Property()
+  lastName: string;
+
+  @Property({ nullable: true })
+  userName: string;
+
+  @Property()
+  passwordHash: string;
+
+  @Property()
+  profileId: number;
+
+  @Property()
+  lastLogin: Date = new Date();
+
+  @Property()
+  phoneNumber: string;
+
+  @Property()
+  paymentId: number;
 }

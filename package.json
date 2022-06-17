@@ -33,5 +33,9 @@
   "engines": {
     "node": "16.15.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "@mikro-orm/core": "5.2.0",
+    "@nestjs/core": "8.4.7"
+  }
 }

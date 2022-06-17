@@ -48,6 +48,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@mikro-orm/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.2.0"],\
+            ["@nestjs/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:8.4.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.28.0"],\
             ["@typescript-eslint/parser", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.28.0"],\
             ["eslint", "npm:8.17.0"],\
@@ -1482,6 +1484,57 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/mikro-orm__sqlite"\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.2.0", {\
+          "packageLocation": "./.yarn/__virtual__/@mikro-orm-core-virtual-c4e2c1a8a9/0/cache/@mikro-orm-core-npm-5.2.0-8feed9f6a2-036bcd9e52.zip/node_modules/@mikro-orm/core/",\
+          "packageDependencies": [\
+            ["@mikro-orm/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.2.0"],\
+            ["@mikro-orm/better-sqlite", null],\
+            ["@mikro-orm/entity-generator", null],\
+            ["@mikro-orm/mariadb", null],\
+            ["@mikro-orm/migrations", null],\
+            ["@mikro-orm/mongodb", null],\
+            ["@mikro-orm/mysql", null],\
+            ["@mikro-orm/postgresql", null],\
+            ["@mikro-orm/seeder", null],\
+            ["@mikro-orm/sqlite", null],\
+            ["@types/mikro-orm__better-sqlite", null],\
+            ["@types/mikro-orm__entity-generator", null],\
+            ["@types/mikro-orm__mariadb", null],\
+            ["@types/mikro-orm__migrations", null],\
+            ["@types/mikro-orm__mongodb", null],\
+            ["@types/mikro-orm__mysql", null],\
+            ["@types/mikro-orm__postgresql", null],\
+            ["@types/mikro-orm__seeder", null],\
+            ["@types/mikro-orm__sqlite", null],\
+            ["dotenv", "npm:16.0.1"],\
+            ["escaya", "npm:0.0.61"],\
+            ["fs-extra", "npm:10.1.0"],\
+            ["globby", "npm:11.0.4"],\
+            ["mikro-orm", "npm:5.2.0"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "packagePeers": [\
+            "@mikro-orm/better-sqlite",\
+            "@mikro-orm/entity-generator",\
+            "@mikro-orm/mariadb",\
+            "@mikro-orm/migrations",\
+            "@mikro-orm/mongodb",\
+            "@mikro-orm/mysql",\
+            "@mikro-orm/postgresql",\
+            "@mikro-orm/seeder",\
+            "@mikro-orm/sqlite",\
+            "@types/mikro-orm__better-sqlite",\
+            "@types/mikro-orm__entity-generator",\
+            "@types/mikro-orm__mariadb",\
+            "@types/mikro-orm__migrations",\
+            "@types/mikro-orm__mongodb",\
+            "@types/mikro-orm__mysql",\
+            "@types/mikro-orm__postgresql",\
+            "@types/mikro-orm__seeder",\
+            "@types/mikro-orm__sqlite"\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@mikro-orm/knex", [\
@@ -1756,6 +1809,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@moment/base", "workspace:."],\
+            ["@mikro-orm/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.2.0"],\
+            ["@nestjs/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:8.4.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.28.0"],\
             ["@typescript-eslint/parser", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:5.28.0"],\
             ["eslint", "npm:8.17.0"],\
@@ -2021,6 +2076,46 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["path-to-regexp", "npm:3.2.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["rxjs", "npm:7.5.5"],\
+            ["tslib", "npm:2.4.0"],\
+            ["uuid", "npm:8.3.2"]\
+          ],\
+          "packagePeers": [\
+            "@nestjs/common",\
+            "@nestjs/microservices",\
+            "@nestjs/platform-express",\
+            "@nestjs/websockets",\
+            "@types/nestjs__common",\
+            "@types/nestjs__microservices",\
+            "@types/nestjs__platform-express",\
+            "@types/nestjs__websockets",\
+            "@types/reflect-metadata",\
+            "@types/rxjs",\
+            "reflect-metadata",\
+            "rxjs"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:8.4.7", {\
+          "packageLocation": "./.yarn/unplugged/@nestjs-core-virtual-32125f6fff/node_modules/@nestjs/core/",\
+          "packageDependencies": [\
+            ["@nestjs/core", "virtual:eb3dfa815f99400aa73d7cbad309856b4e10befc10d9eccf412d614175a195f35d8d2ef629d3849bb570de511eb0b41bf132502fdcef8521b8cd348a3231a2d1#npm:8.4.7"],\
+            ["@nestjs/common", null],\
+            ["@nestjs/microservices", null],\
+            ["@nestjs/platform-express", null],\
+            ["@nestjs/websockets", null],\
+            ["@nuxtjs/opencollective", "npm:0.3.2"],\
+            ["@types/nestjs__common", null],\
+            ["@types/nestjs__microservices", null],\
+            ["@types/nestjs__platform-express", null],\
+            ["@types/nestjs__websockets", null],\
+            ["@types/reflect-metadata", null],\
+            ["@types/rxjs", null],\
+            ["fast-safe-stringify", "npm:2.1.1"],\
+            ["iterare", "npm:1.2.1"],\
+            ["object-hash", "npm:3.0.0"],\
+            ["path-to-regexp", "npm:3.2.0"],\
+            ["reflect-metadata", null],\
+            ["rxjs", null],\
             ["tslib", "npm:2.4.0"],\
             ["uuid", "npm:8.3.2"]\
           ],\
