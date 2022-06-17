@@ -1,6 +1,2 @@
-# Mark .pnp.* as binary to prevent git from trying to merge it and mark as
-# linguist-vendored to hide it from GitHub's language detection
-/.pnp.* binary linguist-generated=true
-
-# Hide .yarn from GitHub's language detection
-/.yarn/** linguist-vendored=true
+# Mark yarn releases as binary to prevent them from showing up in PRs
+/.yarn/releases/* binary
