@@ -8,17 +8,22 @@ const IndexEndpoint = (req: NextApiRequest, res: NextApiResponse) => {
         "public, s-maxage=31536000, stale-while-revalidate"
       )
 
-      return res.status(200).json({
-        index_url: `https://${req.headers.host}/api`
-      })
+      {
+        res.status(200).json({
+          index_url: `https://${req.headers.host}/api`
+        })
+        return
+      }
 
     default:
       res.setHeader("Allow", "GET")
 
-      return res.status(405).json({
-        statusCode: 405,
-        message: `Method ${req.method} Not Allowed.`
-      })
+      {
+        res.status(405).json({
+          statusCode: 405,
+          message: `Method ${req.method} Not Allowed.`
+        })
+      }
   }
 }
 

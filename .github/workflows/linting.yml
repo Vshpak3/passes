@@ -3,15 +3,15 @@ name: Linting
 on:
   push:
     branches:
-      - '**' # matches every branch
-      - '!master' # excludes master
+      - '**'    # matches every branch
+      - '!main' # excludes main
   workflow_dispatch:
 
 jobs:
+
   check-ui:
     name: Check @moment/ui package
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,7 +28,6 @@ jobs:
   check-api:
     name: Check @moment/api package
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

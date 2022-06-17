@@ -1,14 +1,15 @@
-import { Entity, Property } from '@mikro-orm/core';
-import { BaseEntity } from '../base/base-entity';
+import { Entity, Property } from '@mikro-orm/core'
+
+import { BaseEntity } from '../base/base-entity'
 
 @Entity()
 export class User extends BaseEntity {
   @Property()
-  email!: string;
+  email!: string
 
   @Property()
-  isKYCVerified: boolean;
+  isKYCVerified: boolean
 
   @Property()
-  userId: string;
+  userId: string
 }

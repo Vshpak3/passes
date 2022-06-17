@@ -1,11 +1,11 @@
+import "src/styles/global/main.css"
+
 import debounce from "lodash.debounce"
-import nprogress from "nprogress"
 import Router from "next/router"
+import nprogress from "nprogress"
 import DefaultHead from "src/components/head"
 import useMessageToDevelopers from "src/hooks/use-message-to-developers"
 import Providers from "src/providers"
-
-import "src/styles/global/main.css"
 
 // Only show nprogress after 500ms (slow loading)
 const start = debounce(nprogress.start, 500)

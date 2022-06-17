@@ -1,0 +1,24 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - '**'    # matches every branch
+      - '!main' # excludes main
+  workflow_dispatch:
+
+jobs:
+
+  check-api:
+    name: Check @moment/api package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: yarn
+      - run: yarn tsc -v
+      - run: yarn workspace @moment/api test

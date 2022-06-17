@@ -1,11 +1,11 @@
-import { Options } from '@mikro-orm/core';
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import type { PostgreSqlDriver } from '@mikro-orm/postgresql';
-import path from 'path';
+import type { Options } from '@mikro-orm/core'
+import type { PostgreSqlDriver } from '@mikro-orm/postgresql'
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
+import path from 'path'
 
 function ormPath(name: string): string {
-  return path.join(__dirname, name);
+  return path.join(__dirname, name)
 }
 
 const options: Options<PostgreSqlDriver> = {
@@ -28,6 +28,6 @@ const options: Options<PostgreSqlDriver> = {
       cacheDir: ormPath('.orm-cache'),
     },
   },
-};
+}
 
-export default options;
+export default options

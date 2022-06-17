@@ -1,13 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
-(async () => {
-  const app = await NestFactory.create(AppModule);
+import { AppModule } from './app.module'
+;(async () => {
+  const app = await NestFactory.create(AppModule)
 
-  const config = new DocumentBuilder().build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  const config = new DocumentBuilder().build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
 
-  await app.listen(3333);
-})();
+  await app.listen(3333)
+})()

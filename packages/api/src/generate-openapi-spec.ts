@@ -1,13 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { OpenApiNestFactory } from 'nest-openapi-tools';
+import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { OpenApiNestFactory } from 'nest-openapi-tools'
 
-(async () => {
-  const app = await NestFactory.create(AppModule);
-  await OpenApiNestFactory.configure(app, 
-    new DocumentBuilder()
-      .setTitle('Moment API'),
+import { AppModule } from './app.module'
+;(async () => {
+  const app = await NestFactory.create(AppModule)
+  await OpenApiNestFactory.configure(
+    app,
+    new DocumentBuilder().setTitle('Moment API'),
     {
       fileGeneratorOptions: {
         enabled: true,
@@ -22,7 +22,9 @@ import { OpenApiNestFactory } from 'nest-openapi-tools';
         openApiFilePath: './openapi.json',
         skipValidation: true,
       },
-    }, {
-    operationIdFactory: (c: string, method: string) => method,
-  });
-})();
+    },
+    {
+      operationIdFactory: (c: string, method: string) => method,
+    },
+  )
+})()

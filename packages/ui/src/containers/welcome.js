@@ -1,6 +1,6 @@
+import NextLink from "next/link"
 import Avatar from "src/components/avatar"
 import Text from "src/components/text"
-import NextLink from "next/link"
 
 const Welcome = () => {
   return (

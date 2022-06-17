@@ -1,10 +1,10 @@
-import { useSession } from "next-auth/react"
-import Menu, { MenuPortal } from "src/containers/menu"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+import { useEffect } from "react"
 import CreatorProfile from "src/containers/creator-profile"
+import Menu, { MenuPortal } from "src/containers/menu"
 import Welcome from "src/containers/welcome"
 import useMounted from "src/hooks/use-mounted"
-import { useEffect } from "react"
 
 const Username = () => {
   const { data: session } = useSession()
@@ -13,7 +13,9 @@ const Username = () => {
   const { username } = router.query
 
   useEffect(() => {
-    if (session === null) router.push("/")
+    if (session === null) {
+      router.push("/")
+    }
   }, [session])
 
   return (

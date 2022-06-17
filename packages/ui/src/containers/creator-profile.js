@@ -15,7 +15,6 @@ import Envelope from "src/icons/envelope"
 import List from "src/icons/list"
 import Lock from "src/icons/lock"
 import Money from "src/icons/money"
-
 import Social from "src/icons/social"
 import Star from "src/icons/star"
 import ViewGrid from "src/icons/view-grid"

@@ -1,6 +1,6 @@
-import { getProviders, signIn, useSession } from "next-auth/react"
 import NextHead from "next/head"
 import { useRouter } from "next/router"
+import { getProviders, signIn, useSession } from "next-auth/react"
 import { useEffect } from "react"
 import Button from "src/components/button"
 import Separator from "src/components/separator"

@@ -37,21 +37,6 @@ yarn build && yarn start
 📂 public // Static assets
 ```
 
-## Dependencies
-
-- [React](https://reactjs.org/)
-  - [react-dom](https://github.com/facebook/react/tree/master/packages/react-dom), [prop-types](https://github.com/facebook/prop-types)
-- [Next.js](https://nextjs.org/)
-  - [sharp](https://www.npmjs.com/package/sharp) (for Next.js images)
-- [Tailwind CSS](https://tailwindcss.com/)
-  - [autoprefixer](https://github.com/postcss/autoprefixer), [postcss](https://github.com/postcss/postcss), [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
-- [Radix UI](https://www.radix-ui.com/)
-- [Radix Colors](https://www.radix-ui.com/docs/colors/getting-started/installation)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-- [react-fast-marquee](https://github.com/justin-chu/react-fast-marquee)
-- [react-parallax-tilt](https://github.com/mkosir/react-parallax-tilt)
-- [framer-motion](https://github.com/framer/motion)
-
 ### Dev dependencies
 
 - [prettier](https://github.com/prettier/prettier)

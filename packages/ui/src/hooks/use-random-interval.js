@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 // Utility helper for random number generation
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min

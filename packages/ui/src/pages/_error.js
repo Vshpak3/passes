@@ -17,7 +17,9 @@ const ErrorPage = ({ statusCode }) => (
       </Text>
       <Button
         onClick={() => {
-          if (typeof window !== "undefined") window.location.reload()
+          if (typeof window !== "undefined") {
+            window.location.reload()
+          }
         }}
         variant="link-blue"
         fontSize={16}

@@ -15,6 +15,8 @@ module.exports = {
     ecmaVersion: 2020,
   },
 
+  ignorePatterns: ['.eslintrc.js'],
+
   extends: [
     'eslint:recommended',
     'plugin:promise/recommended',
