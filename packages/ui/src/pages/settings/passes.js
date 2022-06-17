@@ -37,7 +37,7 @@ const Passes = () => {
       </div>
       <div className="flex">
         <input type="checkbox" />{" "}
-        <span>All paywall content labeled "passCollectionName"</span>
+        <span>All paywall content labeled &quot;passCollectionName&quot;</span>
       </div>
       <div className="flex">
         <input type="checkbox" /> <span>Unlimited free DMs per month</span>

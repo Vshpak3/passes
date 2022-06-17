@@ -16,7 +16,7 @@ const Username = () => {
     if (session === null) {
       router.push("/")
     }
-  }, [session])
+  }, [router, session])
 
   return (
     <div className="relative h-full w-full">
