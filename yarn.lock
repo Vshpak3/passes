@@ -1125,6 +1125,7 @@ __metadata:
   dependencies:
     "@mikro-orm/core": 5.2.0
     "@nestjs/core": 8.4.7
+    "@types/lodash": 4.14.182
     "@typescript-eslint/eslint-plugin": 5.28.0
     "@typescript-eslint/parser": 5.28.0
     eslint: 8.17.0
@@ -1141,6 +1142,7 @@ __metadata:
     eslint-plugin-regexp: 1.7.0
     eslint-plugin-simple-import-sort: 7.0.0
     eslint-plugin-sonarjs: 0.13.0
+    lodash: 4.17.21
     prettier: 2.7.1
     typescript: 4.7.3
   languageName: unknown
@@ -1165,6 +1167,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 5.28.0
     "@typescript-eslint/parser": 5.28.0
     autoprefixer: 10.4.7
+    daisyui: 2.15.4
     eslint: 8.17.0
     eslint-config-next: 12.1.6
     eslint-config-prettier: 8.5.0
@@ -2337,6 +2340,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:4.14.182":
+  version: 4.14.182
+  resolution: "@types/lodash@npm:4.14.182"
+  checksum: 7dd137aa9dbabd632408bd37009d984655164fa1ecc3f2b6eb94afe35bf0a5852cbab6183148d883e9c73a958b7fec9a9bcf7c8e45d41195add6a18c34958209
   languageName: node
   linkType: hard
 
@@ -3750,7 +3760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color@npm:^4.2.3":
+"color@npm:^4.2, color@npm:^4.2.3":
   version: 4.2.3
   resolution: "color@npm:4.2.3"
   dependencies:
@@ -4000,6 +4010,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-selector-tokenizer@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "css-selector-tokenizer@npm:0.8.0"
+  dependencies:
+    cssesc: ^3.0.0
+    fastparse: ^1.1.2
+  checksum: 1eb7ca7d2c21ede700a0fab7df4547198431c30ba62663d81a566a8abe6ab7524f627ce6c0bde63f34917e199b73be4081e449bd8faf107d155766204082aa0a
+  languageName: node
+  linkType: hard
+
 "cssesc@npm:^3.0.0":
   version: 3.0.0
   resolution: "cssesc@npm:3.0.0"
@@ -4013,6 +4033,21 @@ __metadata:
   version: 3.1.0
   resolution: "csstype@npm:3.1.0"
   checksum: 644e986cefab86525f0b674a06889cfdbb1f117e5b7d1ce0fc55b0423ecc58807a1ea42ecc75c4f18999d14fc42d1d255f84662a45003a52bb5840e977eb2ffd
+  languageName: node
+  linkType: hard
+
+"daisyui@npm:2.15.4":
+  version: 2.15.4
+  resolution: "daisyui@npm:2.15.4"
+  dependencies:
+    color: ^4.2
+    css-selector-tokenizer: ^0.8.0
+    postcss-js: ^4.0.0
+    tailwindcss: ^3.0
+  peerDependencies:
+    autoprefixer: ^10.0.2
+    postcss: ^8.1.6
+  checksum: 8f417315512420757bf53b714ace37a2ad1aeb4577767d0b3ec56c9f528bb98ac61daf4f8f058ccf551346738cc0aa1532fe7df6f6bb7021bb7aa4e8110d94aa
   languageName: node
   linkType: hard
 
@@ -5092,6 +5127,13 @@ __metadata:
   version: 2.1.1
   resolution: "fast-safe-stringify@npm:2.1.1"
   checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
+  languageName: node
+  linkType: hard
+
+"fastparse@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "fastparse@npm:1.1.2"
+  checksum: c4d199809dc4e8acafeb786be49481cc9144de296e2d54df4540ccfd868d0df73afc649aba70a748925eb32bbc4208b723d6288adf92382275031a8c7e10c0aa
   languageName: node
   linkType: hard
 
@@ -9639,7 +9681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.1.3":
+"tailwindcss@npm:3.1.3, tailwindcss@npm:^3.0":
   version: 3.1.3
   resolution: "tailwindcss@npm:3.1.3"
   dependencies:

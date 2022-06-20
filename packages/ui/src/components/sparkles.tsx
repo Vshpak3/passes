@@ -2,23 +2,9 @@ import { CSSProperties, useState, ReactElement } from "react"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
 import useRandomInterval from "src/hooks/use-random-interval"
 import styles from "src/styles/modules/sparkles.module.css"
+import { range, random } from "lodash"
 
 const DEFAULT_COLOR = "#FFC700"
-
-const random = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min)) + min
-
-const range = (start: number, end: number | undefined, step = 1) => {
-  let output = []
-  if (typeof end === "undefined") {
-    end = start
-    start = 0
-  }
-  for (let i = start; i < end; i += step) {
-    output.push(i)
-  }
-  return output
-}
 
 const generateSparkle = (color: string) => {
   const sparkle = {
