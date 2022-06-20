@@ -6,10 +6,13 @@ System Requirements
 - Node (`brew install node`)
 - Yarn (`npm install -g yarn@berry`)
 
-We use Zero-Installs so there is no setup necessary.
-
-
 ## Local Dev
+
+### Setup
+
+```bash
+yarn
+```
 
 ### Running
 
