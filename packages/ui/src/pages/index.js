@@ -7,9 +7,9 @@ import Marquee from "react-fast-marquee"
 import Button from "src/components/button"
 import Link from "src/components/link"
 import Separator from "src/components/separator"
-import Sparkles from "src/components/sparkles"
 import Text from "src/components/text"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
+import Sparkles from "src/components/sparkles";
 
 const backersList = [
   {

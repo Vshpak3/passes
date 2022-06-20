@@ -4,26 +4,21 @@ const IndexEndpoint = (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       res.setHeader(
-        "Cache-Control",
-        "public, s-maxage=31536000, stale-while-revalidate"
+          "Cache-Control",
+          "public, s-maxage=31536000, stale-while-revalidate"
       )
 
-      {
-        res.status(200).json({
-          index_url: `https://${req.headers.host}/api`
-        })
-        return
-      }
+      return res.status(200).json({
+        index_url: `https://${req.headers.host}/api`
+      })
 
     default:
       res.setHeader("Allow", "GET")
 
-      {
-        res.status(405).json({
-          statusCode: 405,
-          message: `Method ${req.method} Not Allowed.`
-        })
-      }
+      return res.status(405).json({
+        statusCode: 405,
+        message: `Method ${req.method} Not Allowed.`
+      })
   }
 }
 
