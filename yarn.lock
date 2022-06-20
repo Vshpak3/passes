@@ -993,6 +993,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/nestjs@npm:5.0.2":
+  version: 5.0.2
+  resolution: "@mikro-orm/nestjs@npm:5.0.2"
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+    "@mikro-orm/knex": ^5.0.0
+    "@mikro-orm/mongodb": ^5.0.0
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/knex":
+      optional: true
+    "@mikro-orm/mongodb":
+      optional: true
+  checksum: 0d5b601fef96a813ade4275b1a812bf54f838908f555567052579b44a9ec2e0bc94dd93dff71c72aecc74e3b86d752fc853bea9fcfe9b28e4563115297d01543
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/postgresql@npm:5.2.0":
   version: 5.2.0
   resolution: "@mikro-orm/postgresql@npm:5.2.0"
@@ -1054,6 +1072,7 @@ __metadata:
     "@mikro-orm/cli": 5.2.0
     "@mikro-orm/core": 5.2.0
     "@mikro-orm/migrations": 5.2.0
+    "@mikro-orm/nestjs": 5.0.2
     "@mikro-orm/postgresql": 5.2.0
     "@mikro-orm/reflection": 5.2.0
     "@mikro-orm/sql-highlighter": 1.0.1

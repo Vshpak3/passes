@@ -1,0 +1,127 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "userId": {
+        "name": "userId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      "subscribedAt": {
+        "name": "subscribedAt",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Date"
+      },
+      "numPostsLiked": {
+        "name": "numPostsLiked",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "numComments": {
+        "name": "numComments",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "amountSpent": {
+        "name": "amountSpent",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float64Array"
+      },
+      "numTotalLikes": {
+        "name": "numTotalLikes",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "numShared": {
+        "name": "numShared",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      }
+    },
+    "props": [
+      {
+        "name": "userId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      {
+        "name": "subscribedAt",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Date"
+      },
+      {
+        "name": "numPostsLiked",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "numComments",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "amountSpent",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float64Array"
+      },
+      {
+        "name": "numTotalLikes",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "numShared",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "Subscription",
+    "path": "./src/modules/subscription/entities/subscription.entity.ts",
+    "name": "Subscription",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [],
+    "collection": "subscription"
+  },
+  "origin": "./src/modules/subscription/entities/subscription.entity.ts",
+  "hash": "826d051932cdc685e2d761fb85500821",
+  "version": "5.2.0"
+}

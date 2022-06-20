@@ -1,0 +1,183 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "profileId": {
+        "name": "profileId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "walletAddress": {
+        "name": "walletAddress",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "CharacterData"
+      },
+      "description": {
+        "name": "description",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "CharacterData"
+      },
+      "blockchain": {
+        "name": "blockchain",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      "contractAddress": {
+        "name": "contractAddress",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      "tokenId": {
+        "name": "tokenId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "numViews": {
+        "name": "numViews",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "numFavorites": {
+        "name": "numFavorites",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "rarityRank": {
+        "name": "rarityRank",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      "price": {
+        "name": "price",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float64Array"
+      },
+      "paid": {
+        "name": "paid",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float32Array"
+      }
+    },
+    "props": [
+      {
+        "name": "profileId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "walletAddress",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "CharacterData"
+      },
+      {
+        "name": "description",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "CharacterData"
+      },
+      {
+        "name": "blockchain",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      {
+        "name": "contractAddress",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      {
+        "name": "tokenId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "numViews",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "numFavorites",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "rarityRank",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      },
+      {
+        "name": "price",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float64Array"
+      },
+      {
+        "name": "paid",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "Float32Array"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "Pass",
+    "path": "./src/modules/pass/entities/pass.entity.ts",
+    "name": "Pass",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [],
+    "collection": "pass"
+  },
+  "origin": "./src/modules/pass/entities/pass.entity.ts",
+  "hash": "7b8b015f7b272ec87bb3b0ee1462a8ec",
+  "version": "5.2.0"
+}

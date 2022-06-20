@@ -13,9 +13,12 @@ readonly spec_filename="openapi.json"
 
 out_path="${root}/${api_client_path}"
 
+# Generate openapi.json file
+yarn workspace @moment/api generate-openapi-spec
+
 # Clean previously generated API client
-[ -d "${out_path}/src/" ] && rm -r "${out_path}/src/"
-[ -d "${out_path}/dist/" ] && rm -r "${out_path}/dist/"
+[[ -d "${out_path}/src/" ]] && rm -r "${out_path}/src/"
+[[ -d "${out_path}/dist/" ]] && rm -r "${out_path}/dist/"
 
 mkdir "${out_path}/src/"
 
