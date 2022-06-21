@@ -5,13 +5,9 @@ module.exports = {
     },
   },
 
-  plugins: ['jsx-a11y', 'react', 'react-hooks'],
+  plugins: ['react', 'react-hooks'],
 
-  extends: [
-    'plugin:jsx-a11y/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:react/recommended',
-  ],
+  extends: ['plugin:react-hooks/recommended', 'plugin:react/recommended'],
 
   rules: {
     'react-hooks/exhaustive-deps': 'error',
@@ -29,4 +25,4 @@ module.exports = {
       },
     },
   ],
-};
+}

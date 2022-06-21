@@ -3,4 +3,6 @@
 /src/generated
 /src/templates/*.hbs
 /src/orm/migrations/.snapshot-momentdev.json
+src/database/migrations/*
 /src/**/tracer.js
+/**/*.json

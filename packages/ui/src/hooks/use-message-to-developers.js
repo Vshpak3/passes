@@ -7,7 +7,7 @@ const useMessageToDevelopers = (messages) => {
       console.log(message)
     })
     console.groupEnd()
-  }, [])
+  }, [messages])
 }
 
 export default useMessageToDevelopers

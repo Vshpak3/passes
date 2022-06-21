@@ -47,7 +47,7 @@ const Passes = () => {
               </div>
               <div className="flex">
                 <input type="checkbox" />{" "}
-                <span>Only content tagged 'thisCollectionTier'</span>
+                <span>Only content tagged thisCollectionTier</span>
               </div>
               <h4>Direct Messages</h4>
               <div className="flex">
@@ -69,8 +69,8 @@ const Passes = () => {
               <div className="flex">
                 <input type="checkbox" />{" "}
                 <span>
-                  Want to include merchandise, events or other in real life.
-                  We'll reach out :)
+                  Want to include merchandise, events or other in real life. We
+                  will reach out :)
                 </span>
               </div>
             </div>
