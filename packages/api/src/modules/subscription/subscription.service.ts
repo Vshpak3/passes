@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { EntityRepository } from '@mikro-orm/core'
+
+import { Subscription } from './entities/subscription.entity'
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto'
 
 @Injectable()
 export class SubscriptionService {
-  create(createSubscriptionDto: CreateSubscriptionDto) {
-    return 'This action adds a new subscription'
+  constructor(
+    @InjectRepository(Subscription)
+    private readonly subscriptionRepository: EntityRepository<Subscription>,
+  ) {}
+
+  async create(createSubscriptionDto: CreateSubscriptionDto): Promise<string> {
+    return 'TODO: This action adds a new subscription'
   }
 
-  findAll() {
-    return `This action returns all subscription`
+  async findOne(id: string): Promise<string> {
+    return `TODO: This action returns a #${id} subscription`
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subscription`
+  async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto) {
+    ;`TODO: This action updates a #${id} subscription`
   }
 
-  update(id: number, updateSubscriptionDto: UpdateSubscriptionDto) {
-    return `This action updates a #${id} subscription`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} subscription`
+  async remove(id: string) {
+    ;`TODO: This action removes a #${id} subscription`
   }
 }

@@ -6,44 +6,64 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { CommentService } from './comment.service'
 import { CreateCommentDto } from './dto/create-comment.dto'
 import { UpdateCommentDto } from './dto/update-comment.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('comment')
-@Controller('api/comment')
+@Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a comment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateCommentDto,
+    description: 'A comment was created',
+  })
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
+  async create(
+    @Body() createCommentDto: CreateCommentDto,
+  ): Promise<CreateCommentDto> {
     return this.commentService.create(createCommentDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.commentService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a comment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateCommentDto,
+    description: 'A comment was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreateCommentDto> {
+    return this.commentService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a comment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A comment was updated',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto)
+  async update(
+    @Param('id') id: string,
+    @Body() updateCommentDto: UpdateCommentDto,
+  ) {
+    return this.commentService.update(id, updateCommentDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a comment' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A comment was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.commentService.remove(id)
   }
 }

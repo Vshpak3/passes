@@ -6,44 +6,59 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('user')
-@Controller('api/user')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateUserDto,
+    description: 'A user was created',
+  })
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto): Promise<CreateUserDto> {
     return this.userService.create(createUserDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.userService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateUserDto,
+    description: 'A user was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreateUserDto> {
+    return this.userService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A user was updated',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto)
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(id, updateUserDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A user was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.userService.remove(id)
   }
 }

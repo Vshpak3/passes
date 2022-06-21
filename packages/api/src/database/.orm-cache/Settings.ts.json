@@ -1,0 +1,43 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "userId": {
+        "name": "userId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      }
+    },
+    "props": [
+      {
+        "name": "userId",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "number"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "Settings",
+    "path": "./src/modules/settings/entities/settings.entity.ts",
+    "name": "Settings",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [],
+    "collection": "settings"
+  },
+  "origin": "./src/modules/settings/entities/settings.entity.ts",
+  "hash": "f073f51269c2622a5f844c6e3fbb8fdc",
+  "version": "5.2.0"
+}

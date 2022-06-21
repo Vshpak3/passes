@@ -49,9 +49,7 @@
         "type": "Date"
       }
     ],
-    "primaryKeys": [
-      "id"
-    ],
+    "primaryKeys": ["id"],
     "filters": {},
     "hooks": {},
     "indexes": [],

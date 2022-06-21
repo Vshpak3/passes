@@ -14,14 +14,14 @@
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "CharacterData"
+        "type": "string"
       },
       "description": {
         "name": "description",
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "CharacterData"
+        "type": "string"
       },
       "blockchain": {
         "name": "blockchain",
@@ -93,14 +93,14 @@
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "CharacterData"
+        "type": "string"
       },
       {
         "name": "description",
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "CharacterData"
+        "type": "string"
       },
       {
         "name": "blockchain",
@@ -178,6 +178,6 @@
     "collection": "pass"
   },
   "origin": "./src/modules/pass/entities/pass.entity.ts",
-  "hash": "7b8b015f7b272ec87bb3b0ee1462a8ec",
+  "hash": "7a4495144496250e5918a615a409ebc2",
   "version": "5.2.0"
 }

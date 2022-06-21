@@ -8,10 +8,10 @@ export class Pass extends BaseEntity {
   profileId: number
 
   @Property()
-  walletAddress: CharacterData
+  walletAddress: string
 
   @Property()
-  description: CharacterData
+  description: string
 
   @Property()
   blockchain: string

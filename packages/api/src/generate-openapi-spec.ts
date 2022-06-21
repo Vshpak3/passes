@@ -2,12 +2,14 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { OpenApiNestFactory } from 'nest-openapi-tools'
 
-import { AppModule } from './app.module'
+import { App } from './app.Main'
 ;(async () => {
-  const app = await NestFactory.create(AppModule)
+  const app = new App()
+  await app.init()
+
   await OpenApiNestFactory.configure(
-    app,
-    new DocumentBuilder().setTitle('Moment API'),
+    app.app,
+    app.swaggerConfig,
     {
       fileGeneratorOptions: {
         enabled: true,

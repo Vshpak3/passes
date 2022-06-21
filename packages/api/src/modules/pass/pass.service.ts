@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { EntityRepository } from '@mikro-orm/core'
+
+import { Pass } from './entities/pass.entity'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
 
 @Injectable()
 export class PassService {
-  create(createPassDto: CreatePassDto) {
-    return 'This action adds a new pass'
+  constructor(
+    @InjectRepository(Pass)
+    private readonly passRepository: EntityRepository<Pass>,
+  ) {}
+
+  async create(createPassDto: CreatePassDto): Promise<string> {
+    return 'TODO: This action adds a new pass'
   }
 
-  findAll() {
-    return `This action returns all pass`
+  async findOne(id: string): Promise<string> {
+    return `TODO: This action returns a #${id} pass`
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pass`
+  async update(id: string, updatePassDto: UpdatePassDto) {
+    ;`TODO: This action updates a #${id} pass`
   }
 
-  update(id: number, updatePassDto: UpdatePassDto) {
-    return `This action updates a #${id} pass`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pass`
+  async remove(id: string) {
+    ;`TODO: This action removes a #${id} pass`
   }
 }

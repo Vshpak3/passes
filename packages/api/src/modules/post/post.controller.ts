@@ -6,44 +6,59 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { PostService } from './post.service'
 import { CreatePostDto } from './dto/create-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('post')
-@Controller('api/post')
+@Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreatePostDto,
+    description: 'A post was created',
+  })
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
+  async create(@Body() createPostDto: CreatePostDto): Promise<CreatePostDto> {
     return this.postService.create(createPostDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.postService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreatePostDto,
+    description: 'A post was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreatePostDto> {
+    return this.postService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A post was updated',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto)
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return this.postService.update(id, updatePostDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A post was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.postService.remove(id)
   }
 }

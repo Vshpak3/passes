@@ -6,44 +6,59 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { PassService } from './pass.service'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('pass')
-@Controller('api/pass')
+@Controller('pass')
 export class PassController {
   constructor(private readonly passService: PassService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreatePassDto,
+    description: 'A pass was created',
+  })
   @Post()
-  create(@Body() createPassDto: CreatePassDto) {
+  async create(@Body() createPassDto: CreatePassDto): Promise<CreatePassDto> {
     return this.passService.create(createPassDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.passService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreatePassDto,
+    description: 'A pass was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.passService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreatePassDto> {
+    return this.passService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A pass was updated',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePassDto: UpdatePassDto) {
-    return this.passService.update(+id, updatePassDto)
+  async update(@Param('id') id: string, @Body() updatePassDto: UpdatePassDto) {
+    return this.passService.update(id, updatePassDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A pass was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.passService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.passService.remove(id)
   }
 }

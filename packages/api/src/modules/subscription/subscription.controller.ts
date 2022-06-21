@@ -6,47 +6,64 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { SubscriptionService } from './subscription.service'
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('subscription')
-@Controller('api/subscription')
+@Controller('subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a subscription' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateSubscriptionDto,
+    description: 'A subscription was created',
+  })
   @Post()
-  create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
+  async create(
+    @Body() createSubscriptionDto: CreateSubscriptionDto,
+  ): Promise<CreateSubscriptionDto> {
     return this.subscriptionService.create(createSubscriptionDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.subscriptionService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a subscription' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateSubscriptionDto,
+    description: 'A subscription was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subscriptionService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreateSubscriptionDto> {
+    return this.subscriptionService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a subscription' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A subscription was updated',
+  })
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateSubscriptionDto: UpdateSubscriptionDto,
   ) {
-    return this.subscriptionService.update(+id, updateSubscriptionDto)
+    return this.subscriptionService.update(id, updateSubscriptionDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a subscription' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A subscription was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subscriptionService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.subscriptionService.remove(id)
   }
 }

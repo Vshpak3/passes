@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { EntityRepository } from '@mikro-orm/core'
+
+import { Profile } from './entities/profile.entity'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 
 @Injectable()
 export class ProfileService {
-  create(createProfileDto: CreateProfileDto) {
-    return 'This action adds a new profile'
+  constructor(
+    @InjectRepository(Profile)
+    private readonly profileRepository: EntityRepository<Profile>,
+  ) {}
+
+  async create(createProfileDto: CreateProfileDto): Promise<string> {
+    return 'TODO: This action adds a new profile'
   }
 
-  findAll() {
-    return `This action returns all profile`
+  async findOne(id: string): Promise<string> {
+    return `TODO: This action returns a #${id} profile`
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`
+  async update(id: string, updateProfileDto: UpdateProfileDto) {
+    ;`TODO: This action updates a #${id} profile`
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} profile`
+  async remove(id: string) {
+    ;`TODO: This action removes a #${id} profile`
   }
 }

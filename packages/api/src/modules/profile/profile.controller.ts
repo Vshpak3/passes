@@ -6,44 +6,64 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common'
 import { ProfileService } from './profile.service'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
 
 @ApiTags('profile')
-@Controller('api/profile')
+@Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Creates a profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateProfileDto,
+    description: 'A profile was created',
+  })
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
+  async create(
+    @Body() createProfileDto: CreateProfileDto,
+  ): Promise<CreateProfileDto> {
     return this.profileService.create(createProfileDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
-  @Get()
-  findAll() {
-    return this.profileService.findAll()
-  }
-
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Gets a profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CreateProfileDto,
+    description: 'A profile was retrieved',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id)
+  async findOne(@Param('id') id: string): Promise<CreateProfileDto> {
+    return this.profileService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Updates a profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A profile was updated',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.update(+id, updateProfileDto)
+  async update(
+    @Param('id') id: string,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    return this.profileService.update(id, updateProfileDto)
   }
 
-  @ApiOperation({ summary: 'TODO' })
+  @ApiOperation({ summary: 'Deletes a profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A profile was deleted',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.profileService.remove(+id)
+  async remove(@Param('id') id: string) {
+    return this.profileService.remove(id)
   }
 }
