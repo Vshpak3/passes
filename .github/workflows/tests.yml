@@ -22,3 +22,17 @@ jobs:
       - run: yarn
       - run: yarn tsc -v
       - run: yarn workspace @moment/api test
+
+  check-ui:
+    name: Check @moment/ui package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: yarn
+      - run: yarn tsc -v
+      - run: yarn workspace @moment/ui build
