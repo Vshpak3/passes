@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
 
-import { Subscription } from './entities/subscription.entity'
+import { SubscriptionEntity } from './entities/subscription.entity'
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto'
 
 @Injectable()
 export class SubscriptionService {
   constructor(
-    @InjectRepository(Subscription)
-    private readonly subscriptionRepository: EntityRepository<Subscription>,
+    @InjectRepository(SubscriptionEntity)
+    private readonly subscriptionRepository: EntityRepository<SubscriptionEntity>,
   ) {}
 
   async create(createSubscriptionDto: CreateSubscriptionDto): Promise<string> {

@@ -1,0 +1,137 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "email": {
+        "name": "email",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      "userName": {
+        "name": "userName",
+        "reference": "scalar",
+        "length": 30,
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      "fullName": {
+        "name": "fullName",
+        "reference": "scalar",
+        "length": 50,
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "phoneNumber": {
+        "name": "phoneNumber",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "birthday": {
+        "name": "birthday",
+        "reference": "scalar",
+        "type": "date",
+        "getter": false,
+        "setter": false,
+        "nullable": true
+      },
+      "isKYCVerified": {
+        "name": "isKYCVerified",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      },
+      "isCreator": {
+        "name": "isCreator",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      }
+    },
+    "props": [
+      {
+        "name": "email",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      {
+        "name": "userName",
+        "reference": "scalar",
+        "length": 30,
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      },
+      {
+        "name": "fullName",
+        "reference": "scalar",
+        "length": 50,
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "phoneNumber",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "birthday",
+        "reference": "scalar",
+        "type": "date",
+        "getter": false,
+        "setter": false,
+        "nullable": true
+      },
+      {
+        "name": "isKYCVerified",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      },
+      {
+        "name": "isCreator",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "UserEntity",
+    "path": "./src/modules/user/entities/user.entity.ts",
+    "collection": "user",
+    "name": "UserEntity",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": []
+  },
+  "origin": "./src/modules/user/entities/user.entity.ts",
+  "hash": "c7287cf6a0f255ddad2d52472afa3f86",
+  "version": "5.2.0"
+}

@@ -1,42 +1,34 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property, OneToOne } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity()
-export class Profile extends BaseEntity {
-  @Property()
-  userId: number
-
-  @Property()
-  description: string
+@Entity({ tableName: 'profile' })
+export class ProfileEntity extends BaseEntity {
+  @OneToOne()
+  user: UserEntity
 
   @Property()
-  unsubscribedAt: Date = new Date()
+  description?: string
 
   @Property()
-  isCreator: boolean
-
-  @Property({ nullable: true })
   instagramUrl?: string
 
-  @Property({ nullable: true })
+  @Property()
   tiktokUrl?: string
 
-  @Property({ nullable: true })
+  @Property()
   youtubeUrl?: string
 
-  @Property({ nullable: true })
+  @Property()
   discordUrl?: string
 
-  @Property({ nullable: true })
+  @Property()
   twitchUrl?: string
 
-  @Property({ nullable: true })
-  subscribersId?: number
+  // @Property()
+  // totalPosts: number
 
-  @Property()
-  totalPosts: number
-
-  @Property()
-  totalLikes: number
+  // @Property()
+  // totalLikes: number
 }

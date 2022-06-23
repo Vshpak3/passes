@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
-
-import { User } from './entities/user.entity'
+import { getRepositoryToken } from '@mikro-orm/nestjs'
+import { UserEntity } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<string> {
-    return 'TODO: This action adds a new user'
+  async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
+    return new CreateUserDto()
   }
 
-  async findOne(id: string): Promise<string> {
-    return `TODO: This action returns a #${id} user`
+  async findOne(id: string): Promise<CreateUserDto> {
+    return new CreateUserDto()
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

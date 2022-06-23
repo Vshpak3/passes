@@ -28,8 +28,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@jest/globals": "28.1.1",
     "@mikro-orm/cli": "5.2.0",
-    "@mikro-orm/core": "5.2.0",
+    "@mikro-orm/core": "5.2.1",
     "@mikro-orm/migrations": "5.2.0",
     "@mikro-orm/nestjs": "5.0.2",
     "@mikro-orm/postgresql": "5.2.0",
@@ -58,9 +59,9 @@
     "@types/node": "18.0.0",
     "@types/passport-jwt": "3.0.6",
     "@types/supertest": "2.0.12",
-    "@typescript-eslint/eslint-plugin": "5.28.0",
-    "@typescript-eslint/parser": "5.28.0",
-    "eslint": "8.17.0",
+    "@typescript-eslint/eslint-plugin": "5.29.0",
+    "@typescript-eslint/parser": "5.29.0",
+    "eslint": "8.18.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-node": "0.3.6",
     "eslint-plugin-eslint-comments": "3.2.0",
@@ -81,7 +82,7 @@
     "ts-loader": "9.3.0",
     "ts-node": "10.8.1",
     "tsconfig-paths": "4.0.0",
-    "typescript": "4.7.3"
+    "typescript": "4.7.4"
   },
   "mikro-orm": {
     "useTsNode": true,

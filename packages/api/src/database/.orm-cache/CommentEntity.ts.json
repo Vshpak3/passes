@@ -1,0 +1,100 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "post": {
+        "name": "post",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "PostEntity",
+        "nullable": false
+      },
+      "commenter": {
+        "name": "commenter",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      "content": {
+        "name": "content",
+        "reference": "scalar",
+        "length": 150,
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      }
+    },
+    "props": [
+      {
+        "name": "post",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "PostEntity",
+        "nullable": false
+      },
+      {
+        "name": "commenter",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      {
+        "name": "content",
+        "reference": "scalar",
+        "length": 150,
+        "getter": false,
+        "setter": false,
+        "type": "string"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "CommentEntity",
+    "path": "./src/modules/comment/entities/comment.entity.ts",
+    "collection": "comment",
+    "name": "CommentEntity",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [
+      {
+        "name": "post",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "PostEntity",
+        "nullable": false
+      },
+      {
+        "name": "commenter",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      }
+    ]
+  },
+  "origin": "./src/modules/comment/entities/comment.entity.ts",
+  "hash": "d76010a513dc96ac83339ca20c0a02b3",
+  "version": "5.2.0"
+}

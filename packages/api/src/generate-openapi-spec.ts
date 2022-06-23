@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { OpenApiNestFactory } from 'nest-openapi-tools'
 
-import { App } from './app.Main'
+import { App } from './app.main'
 ;(async () => {
   const app = new App()
   await app.init()

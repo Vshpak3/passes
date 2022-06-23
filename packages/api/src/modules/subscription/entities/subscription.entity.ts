@@ -1,27 +1,16 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property, ManyToOne } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity()
-export class Subscription extends BaseEntity {
-  @Property()
-  userId: string
+@Entity({ tableName: 'subscription' })
+export class SubscriptionEntity extends BaseEntity {
+  @ManyToOne()
+  subscriber: UserEntity
 
-  @Property()
-  subscribedAt: Date = new Date()
-
-  @Property()
-  numPostsLiked: number
+  @ManyToOne()
+  creator: UserEntity
 
   @Property()
-  numComments: number
-
-  @Property()
-  amountSpent: Float64Array
-
-  @Property()
-  numTotalLikes: number
-
-  @Property()
-  numShared: number
+  isActive: boolean = true
 }

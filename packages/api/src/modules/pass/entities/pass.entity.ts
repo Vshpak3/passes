@@ -1,39 +1,40 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property, ManyToOne } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity()
-export class Pass extends BaseEntity {
-  @Property()
-  profileId: number
+@Entity({ tableName: 'pass' })
+export class PassEntity extends BaseEntity {
+  @ManyToOne()
+  user: UserEntity
 
-  @Property()
-  walletAddress: string
+  // @Property()
+  // description: string
 
-  @Property()
-  description: string
+  // @Property()
+  // walletAddress: string
 
-  @Property()
-  blockchain: string
+  // @Property()
+  // blockchain: string
 
-  @Property()
-  contractAddress: string
+  // @Property()
+  // contractAddress: string
 
-  @Property()
-  tokenId: number
+  // @Property()
+  // tokenId: number
 
-  @Property()
-  numViews: number
+  // @Property()
+  // numViews: number
 
-  @Property()
-  numFavorites: number
+  // @Property()
+  // numFavorites: number
 
-  @Property()
-  rarityRank: number
+  // @Property()
+  // rarityRank: number
 
-  @Property()
-  price: Float64Array
+  // @Property()
+  // price: Float64Array
 
-  @Property()
-  paid: Float32Array
+  // @Property()
+  // paid: Float32Array
 }

@@ -1,0 +1,63 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "user": {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      }
+    },
+    "props": [
+      {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "SettingsEntity",
+    "path": "./src/modules/settings/entities/settings.entity.ts",
+    "collection": "settings",
+    "name": "SettingsEntity",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [
+      {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      }
+    ]
+  },
+  "origin": "./src/modules/settings/entities/settings.entity.ts",
+  "hash": "9fe4fb36bc20f4fb01051341654efcc5",
+  "version": "5.2.0"
+}

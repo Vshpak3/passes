@@ -1,0 +1,98 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "subscriber": {
+        "name": "subscriber",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      "creator": {
+        "name": "creator",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      "isActive": {
+        "name": "isActive",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      }
+    },
+    "props": [
+      {
+        "name": "subscriber",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      {
+        "name": "creator",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      {
+        "name": "isActive",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "boolean"
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "SubscriptionEntity",
+    "path": "./src/modules/subscription/entities/subscription.entity.ts",
+    "collection": "subscription",
+    "name": "SubscriptionEntity",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [
+      {
+        "name": "subscriber",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      },
+      {
+        "name": "creator",
+        "reference": "m:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "nullable": false
+      }
+    ]
+  },
+  "origin": "./src/modules/subscription/entities/subscription.entity.ts",
+  "hash": "41155a0dd5df9b32b08b99989b195f81",
+  "version": "5.2.0"
+}

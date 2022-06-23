@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
 
-import { Profile } from './entities/profile.entity'
+import { ProfileEntity } from './entities/profile.entity'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 
 @Injectable()
 export class ProfileService {
   constructor(
-    @InjectRepository(Profile)
-    private readonly profileRepository: EntityRepository<Profile>,
+    @InjectRepository(ProfileEntity)
+    private readonly profileRepository: EntityRepository<ProfileEntity>,
   ) {}
 
   async create(createProfileDto: CreateProfileDto): Promise<string> {

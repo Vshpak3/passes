@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
 
-import { Settings } from './entities/settings.entity'
+import { SettingsEntity } from './entities/settings.entity'
 import { UpdateSettingsDto } from './dto/update-settings.dto'
 
 @Injectable()
 export class SettingsService {
   constructor(
-    @InjectRepository(Settings)
-    private readonly settingsRepository: EntityRepository<Settings>,
+    @InjectRepository(SettingsEntity)
+    private readonly settingsRepository: EntityRepository<SettingsEntity>,
   ) {}
 
   async findOne(id: string): Promise<string> {

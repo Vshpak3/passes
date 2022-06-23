@@ -2,38 +2,26 @@ import { Entity, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 
-@Entity()
-export class User extends BaseEntity {
+@Entity({ tableName: 'user' })
+export class UserEntity extends BaseEntity {
   @Property()
-  email!: string
+  email: string
+
+  @Property({ length: 30 })
+  userName: string
+
+  @Property({ length: 50 })
+  fullName?: string
+
+  @Property()
+  phoneNumber?: string
+
+  @Property({ type: 'date' })
+  birthday?: string
 
   @Property()
   isKYCVerified: boolean = false
 
   @Property()
-  walletAddress: string
-
-  @Property()
-  firstName: string
-
-  @Property()
-  lastName: string
-
-  @Property({ nullable: true })
-  userName: string
-
-  @Property()
-  passwordHash: string
-
-  @Property()
-  profileId: number
-
-  @Property()
-  lastLogin: Date = new Date()
-
-  @Property()
-  phoneNumber: string
-
-  @Property()
-  paymentId: number
+  isCreator: boolean = false
 }

@@ -1,21 +1,16 @@
-import { Entity, Property } from '@mikro-orm/core'
-
+import { Entity, Property, ManyToOne } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
+import { UserEntity } from '../../user/entities/user.entity'
+import { PostEntity } from '../../post/entities/post.entity'
 
-@Entity()
-export class Comment extends BaseEntity {
-  @Property()
-  comment: string
+@Entity({ tableName: 'comment' })
+export class CommentEntity extends BaseEntity {
+  @ManyToOne()
+  post: PostEntity
 
-  @Property()
-  postId: number
+  @ManyToOne()
+  commenter: UserEntity
 
-  @Property()
-  senderId: number
-
-  @Property()
-  receiverId: number
-
-  @Property()
-  dateCommented: Date = new Date()
+  @Property({ length: 150 })
+  content: string
 }

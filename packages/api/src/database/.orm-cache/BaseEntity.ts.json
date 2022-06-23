@@ -7,7 +7,7 @@
         "reference": "scalar",
         "primary": true,
         "customType": "customType",
-        "defaultRaw": "uuid_generate_v4()",
+        "defaultRaw": "gen_random_uuid()",
         "type": "UuidType"
       },
       "createdAt": {
@@ -31,7 +31,7 @@
         "reference": "scalar",
         "primary": true,
         "customType": "customType",
-        "defaultRaw": "uuid_generate_v4()",
+        "defaultRaw": "gen_random_uuid()",
         "type": "UuidType"
       },
       {
@@ -49,7 +49,9 @@
         "type": "Date"
       }
     ],
-    "primaryKeys": ["id"],
+    "primaryKeys": [
+      "id"
+    ],
     "filters": {},
     "hooks": {},
     "indexes": [],
@@ -66,6 +68,6 @@
     "relations": []
   },
   "origin": "./src/database/base-entity.ts",
-  "hash": "8c9870519a6237d940f912b765146d6b",
+  "hash": "80a70c926b211174c8b314d49e7c072f",
   "version": "5.2.0"
 }

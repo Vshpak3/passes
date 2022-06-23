@@ -1,0 +1,159 @@
+{
+  "data": {
+    "propertyOrder": {},
+    "properties": {
+      "user": {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      },
+      "description": {
+        "name": "description",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "instagramUrl": {
+        "name": "instagramUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "tiktokUrl": {
+        "name": "tiktokUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "youtubeUrl": {
+        "name": "youtubeUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "discordUrl": {
+        "name": "discordUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      "twitchUrl": {
+        "name": "twitchUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      }
+    },
+    "props": [
+      {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      },
+      {
+        "name": "description",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "instagramUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "tiktokUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "youtubeUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "discordUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      },
+      {
+        "name": "twitchUrl",
+        "reference": "scalar",
+        "getter": false,
+        "setter": false,
+        "type": "string",
+        "nullable": true
+      }
+    ],
+    "primaryKeys": [],
+    "filters": {},
+    "hooks": {},
+    "indexes": [],
+    "uniques": [],
+    "checks": [],
+    "concurrencyCheckKeys": {},
+    "className": "ProfileEntity",
+    "path": "./src/modules/profile/entities/profile.entity.ts",
+    "collection": "profile",
+    "name": "ProfileEntity",
+    "abstract": false,
+    "constructorParams": [],
+    "toJsonParams": [],
+    "extends": "BaseEntity",
+    "useCache": true,
+    "relations": [
+      {
+        "name": "user",
+        "reference": "1:1",
+        "cascade": [
+          "persist"
+        ],
+        "type": "UserEntity",
+        "owner": true,
+        "nullable": false,
+        "unique": true
+      }
+    ]
+  },
+  "origin": "./src/modules/profile/entities/profile.entity.ts",
+  "hash": "fb25e2b10c8422110691f932d27e1a84",
+  "version": "5.2.0"
+}

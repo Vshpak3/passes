@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { PassService } from './pass.service'
 import { PassController } from './pass.controller'
-import { Pass } from './entities/pass.entity'
+import { PassEntity } from './entities/pass.entity'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Pass])],
+  imports: [MikroOrmModule.forFeature([PassEntity])],
   controllers: [PassController],
   providers: [PassService],
 })

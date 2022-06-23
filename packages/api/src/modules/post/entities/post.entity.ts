@@ -1,30 +1,16 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property, ManyToOne } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity()
-export class Post extends BaseEntity {
+@Entity({ tableName: 'post' })
+export class PostEntity extends BaseEntity {
+  @ManyToOne()
+  user: UserEntity
+
   @Property()
   numLikes: number
 
   @Property()
   numComments: number
-
-  @Property()
-  isLocked: boolean
-
-  @Property()
-  numEarned: Float64Array
-
-  @Property()
-  numShared: number
-
-  @Property()
-  isFeatured: boolean
-
-  @Property()
-  content: string
-
-  @Property()
-  userId: number
 }

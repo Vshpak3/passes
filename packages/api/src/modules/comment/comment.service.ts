@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
 
-import { Comment } from './entities/comment.entity'
+import { CommentEntity } from './entities/comment.entity'
 import { CreateCommentDto } from './dto/create-comment.dto'
 import { UpdateCommentDto } from './dto/update-comment.dto'
 
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectRepository(Comment)
-    private readonly commentRepository: EntityRepository<Comment>,
+    @InjectRepository(CommentEntity)
+    private readonly commentRepository: EntityRepository<CommentEntity>,
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<CreateCommentDto> {
