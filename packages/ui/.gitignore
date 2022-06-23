@@ -1,2 +1,5 @@
 # Ignore Next.js files
 .next/
+
+# Ignore local env files
+.env.local
