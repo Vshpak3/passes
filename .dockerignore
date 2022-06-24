@@ -1,0 +1,13 @@
+# Ignore Git files
+.git
+
+# Ignore Yarn and Node dependency directories
+.yarn
+!.yarn/releases
+node_modules
+
+# Ignore Typescript files
+packages/**/dist
+
+# Ignore Next.js files
+packages/ui/.next
