@@ -1,8 +1,4 @@
-/.orm-cache
 /dist
-/src/generated
-/src/templates/*.hbs
-/src/orm/migrations/.snapshot-momentdev.json
-src/database/migrations/*
-/src/**/tracer.js
+/src/database/migrations/*
+/src/database/.orm-cache/
 /**/*.json

@@ -17,6 +17,6 @@ export class SettingsService {
   }
 
   async update(id: string, updateSettingsDto: UpdateSettingsDto) {
-    ;`TODO: This action updates a #${id} accountSetting`
+    ;`TODO: This action updates a #${id} accountSetting ${updateSettingsDto}`
   }
 }

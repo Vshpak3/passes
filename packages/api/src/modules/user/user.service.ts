@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { UserEntity } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -31,6 +30,6 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     // TODO: implement this
-    ;`TODO: This action updates a #${id} user`
+    ;`TODO: This action updates a #${id} user ${updateUserDto}`
   }
 }

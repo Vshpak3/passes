@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const defaultTheme = require("tailwindcss/defaultTheme")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require("@radix-ui/colors")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const forms = require("@tailwindcss/forms")
 
 module.exports = {

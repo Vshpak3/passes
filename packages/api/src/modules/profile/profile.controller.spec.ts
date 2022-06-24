@@ -3,7 +3,6 @@ import { ProfileController } from './profile.controller'
 import { ProfileService } from './profile.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { ProfileEntity } from './entities/profile.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('ProfileController', () => {

@@ -14,7 +14,7 @@ export class ProfileService {
   ) {}
 
   async create(createProfileDto: CreateProfileDto): Promise<string> {
-    return 'TODO: This action adds a new profile'
+    return `TODO: This action adds a new profile ${createProfileDto}`
   }
 
   async findOne(id: string): Promise<string> {
@@ -22,7 +22,7 @@ export class ProfileService {
   }
 
   async update(id: string, updateProfileDto: UpdateProfileDto) {
-    ;`TODO: This action updates a #${id} profile`
+    ;`TODO: This action updates a #${id} profile ${updateProfileDto}`
   }
 
   async remove(id: string) {

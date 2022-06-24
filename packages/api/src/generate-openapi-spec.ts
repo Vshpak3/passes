@@ -1,5 +1,3 @@
-import { NestFactory } from '@nestjs/core'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { OpenApiNestFactory } from 'nest-openapi-tools'
 
 import { App } from './app.main'
@@ -17,7 +15,7 @@ import { App } from './app.main'
       },
       clientGeneratorOptions: {
         enabled: false,
-        type: 'typescript-axios',
+        type: 'typescript-fetch',
         outputFolderPath: '../../api-client/src',
         additionalProperties:
           'apiPackage=@moment/api-client,modelPackage=models,withoutPrefixEnums=true,withSeparateModelsAndApi=true',

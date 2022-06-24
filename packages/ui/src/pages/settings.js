@@ -1,15 +1,11 @@
-import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
-import Avatar from "src/components/avatar"
 import Button from "src/components/button"
 import RadioGroup from "src/components/radio-group"
 import Separator from "src/components/separator"
 import Text from "src/components/text"
-import Wordmark from "src/components/wordmark"
 import Menu, { MenuPortal } from "src/containers/menu"
-import Gear from "src/icons/gear"
 
 const SettingsPage = () => {
   const router = useRouter()

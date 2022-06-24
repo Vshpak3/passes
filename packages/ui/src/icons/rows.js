@@ -2,6 +2,7 @@
 
 import PropTypes from "prop-types"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Rows = ({ width = 15, height = 15, variant, ...restOfProps }) => (
   <svg
     width={width}

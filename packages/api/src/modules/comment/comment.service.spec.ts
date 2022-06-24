@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { CommentService } from './comment.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { CommentEntity } from './entities/comment.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('CommentService', () => {

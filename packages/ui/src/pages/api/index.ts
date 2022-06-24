@@ -4,8 +4,8 @@ const IndexEndpoint = (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       res.setHeader(
-          "Cache-Control",
-          "public, s-maxage=31536000, stale-while-revalidate"
+        "Cache-Control",
+        "public, s-maxage=31536000, stale-while-revalidate"
       )
 
       return res.status(200).json({

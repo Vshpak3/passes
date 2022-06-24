@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  HttpStatus,
-} from '@nestjs/common'
+import { Controller, Get, Body, Patch, Param, HttpStatus } from '@nestjs/common'
 import { SettingsService } from './settings.service'
 import { CreateSettingsDto } from './dto/create-settings.dto'
 import { UpdateSettingsDto } from './dto/update-settings.dto'

@@ -14,7 +14,7 @@ export class CommentService {
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<CreateCommentDto> {
-    return 'TODO: This action adds a new comment'
+    return `TODO: This action adds a new comment ${createCommentDto}`
   }
 
   async findOne(id: string): Promise<CreateCommentDto> {
@@ -22,7 +22,7 @@ export class CommentService {
   }
 
   async update(id: string, updateCommentDto: UpdateCommentDto) {
-    ;`TODO: This action updates a #${id} comment`
+    ;`TODO: This action updates a #${id} comment ${updateCommentDto}`
   }
 
   async remove(id: string) {

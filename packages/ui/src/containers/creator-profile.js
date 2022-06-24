@@ -56,8 +56,6 @@ const CreatorProfile = () => {
   const [tab, setTab] = useState("Pass")
   const [view, setView] = useState("Grid")
 
-  const isOdd = (num) => num % 2
-
   return (
     <>
       <NextHead>

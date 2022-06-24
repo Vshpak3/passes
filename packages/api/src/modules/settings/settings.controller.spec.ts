@@ -3,7 +3,6 @@ import { SettingsController } from './settings.controller'
 import { SettingsService } from './settings.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { SettingsEntity } from './entities/settings.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('SettingsController', () => {

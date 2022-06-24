@@ -2,6 +2,7 @@
 
 import PropTypes from "prop-types"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ChatBubble = ({ height = 15, width = 15, variant, ...restOfProps }) => (
   <svg
     className="pushable click-target-helper"

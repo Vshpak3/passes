@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { UserService } from './user.service'
 import { UserEntity } from './entities/user.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('UserService', () => {

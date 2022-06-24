@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { SubscriptionService } from './subscription.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { SubscriptionEntity } from './entities/subscription.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('SubscriptionService', () => {

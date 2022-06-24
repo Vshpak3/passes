@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   HttpStatus,
 } from '@nestjs/common'
 import { UserService } from './user.service'

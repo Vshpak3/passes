@@ -1,16 +1,24 @@
-// Workaround for https://github.com/eslint/eslint/issues/3458
-// require('@rushstack/eslint-patch/modern-module-resolution ')
-
 module.exports = {
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint/eslint-plugin',
+    'simple-import-sort'
+  ],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
   root: true,
   env: {
     es6: true,
+    jest: true,
     node: true,
   },
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'simple-import-sort'],
-  parserOptions: {
-    ecmaVersion: 2020,
-  },
   ignorePatterns: ['.eslintrc.js'],
-}
+  rules: {
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+  },
+};

@@ -16,7 +16,7 @@
     "migration:up": "yarn mikro-orm migration:up",
     "migration:down": "yarn mikro-orm migration:down",
     "generate-openapi-spec": "yarn ts-node --project tsconfig.json ./src/generate-openapi-spec.ts",
-    "lint:check": "eslint .",
+    "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check . || { echo; echo 'run prettier:fix to fix this issue'; exit 1; }",
     "prettier:fix": "prettier --write .",

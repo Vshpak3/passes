@@ -14,7 +14,7 @@ export class PostService {
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<string> {
-    return 'TODO: This action adds a new post'
+    return `TODO: This action adds a new post ${createPostDto}`
   }
 
   async findAll(): Promise<string> {
@@ -26,7 +26,7 @@ export class PostService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    ;`TODO: This action updates a #${id} post`
+    ;`TODO: This action updates a #${id} post ${updatePostDto}`
   }
 
   async remove(id: string) {

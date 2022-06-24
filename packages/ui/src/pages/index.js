@@ -9,7 +9,7 @@ import Link from "src/components/link"
 import Separator from "src/components/separator"
 import Text from "src/components/text"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
-import Sparkles from "src/components/sparkles";
+import Sparkles from "src/components/sparkles"
 
 const backersList = [
   {

@@ -1,10 +1,5 @@
 module.exports = {
-  extends: [
-    '../../.eslintrc.js',
-    '../../eslint-config/node',
-    '../../eslint-config/jest',
-    '../../eslint-config/strict',
-  ],
+  extends: '../../.eslintrc.js',
   parserOptions: {
     project: './tsconfig.json',
   },

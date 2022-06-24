@@ -3,7 +3,6 @@ import { PostController } from './post.controller'
 import { PostService } from './post.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { PostEntity } from './entities/post.entity'
-import { EntityRepository } from '@mikro-orm/core'
 import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('PostController', () => {

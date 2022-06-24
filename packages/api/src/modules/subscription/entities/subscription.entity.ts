@@ -12,5 +12,5 @@ export class SubscriptionEntity extends BaseEntity {
   creator: UserEntity
 
   @Property()
-  isActive: boolean = true
+  isActive = true
 }

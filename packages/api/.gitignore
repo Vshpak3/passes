@@ -1,0 +1,2 @@
+# Ignore ORM cache files
+src/database/.orm-cache

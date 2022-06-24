@@ -14,7 +14,7 @@ export class SubscriptionService {
   ) {}
 
   async create(createSubscriptionDto: CreateSubscriptionDto): Promise<string> {
-    return 'TODO: This action adds a new subscription'
+    return `TODO: This action adds a new subscription ${createSubscriptionDto}`
   }
 
   async findOne(id: string): Promise<string> {
@@ -22,7 +22,7 @@ export class SubscriptionService {
   }
 
   async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto) {
-    ;`TODO: This action updates a #${id} subscription`
+    ;`TODO: This action updates a #${id} subscription ${updateSubscriptionDto}`
   }
 
   async remove(id: string) {

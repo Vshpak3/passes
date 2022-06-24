@@ -14,7 +14,7 @@ export class PassService {
   ) {}
 
   async create(createPassDto: CreatePassDto): Promise<string> {
-    return 'TODO: This action adds a new pass'
+    return `TODO: This action adds a new pass ${createPassDto}`
   }
 
   async findOne(id: string): Promise<string> {
@@ -22,7 +22,7 @@ export class PassService {
   }
 
   async update(id: string, updatePassDto: UpdatePassDto) {
-    ;`TODO: This action updates a #${id} pass`
+    ;`TODO: This action updates a #${id} pass $ ${updatePassDto}`
   }
 
   async remove(id: string) {
