@@ -6,6 +6,15 @@ const nextConfig = {
     locales: ["en-US"],
     defaultLocale: "en-US"
   },
+  webpack(config) {
+    // needed to use inline svg in JSX/TSX
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    })
+
+    return config
+  },
   async rewrites() {
     return [
       {

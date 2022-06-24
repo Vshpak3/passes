@@ -18,6 +18,7 @@
     "@radix-ui/react-portal": "0.1.4",
     "@radix-ui/react-radio-group": "0.1.5",
     "@radix-ui/react-separator": "0.1.4",
+    "@svgr/webpack": "6.2.1",
     "daisyui": "2.15.4",
     "framer-motion": "6.3.11",
     "lodash.debounce": "4.0.8",
