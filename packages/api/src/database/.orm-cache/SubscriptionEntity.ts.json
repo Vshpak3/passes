@@ -93,6 +93,6 @@
     ]
   },
   "origin": "./src/modules/subscription/entities/subscription.entity.ts",
-  "hash": "41155a0dd5df9b32b08b99989b195f81",
-  "version": "5.2.0"
+  "hash": "55ea41c4d845d4ae05f81d4f2ae4688c",
+  "version": "5.2.1"
 }

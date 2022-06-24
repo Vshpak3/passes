@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core'
+import { ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { AppModule } from './app.module'
@@ -15,6 +16,7 @@ export class App {
   private async initApp() {
     this.app = await NestFactory.create(AppModule)
     this.app.setGlobalPrefix('api', { exclude: [''] })
+    this.app.useGlobalPipes(new ValidationPipe())
   }
 
   private async initSwagger() {

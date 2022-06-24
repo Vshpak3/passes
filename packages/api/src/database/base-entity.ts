@@ -1,6 +1,8 @@
-import { PrimaryKey, Property, UuidType } from '@mikro-orm/core'
+import { PrimaryKey, Property, UuidType, OptionalProps } from '@mikro-orm/core'
 
 export abstract class BaseEntity {
+  [OptionalProps]?: 'createdAt' | 'updatedAt'
+
   @PrimaryKey({ customType: new UuidType(), defaultRaw: 'gen_random_uuid()' })
   id!: string
 

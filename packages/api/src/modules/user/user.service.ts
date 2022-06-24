@@ -14,18 +14,23 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
-    return new CreateUserDto()
+    const user = this.userRepository.create({
+      email: createUserDto.email,
+      userName: createUserDto.userName,
+    })
+    await this.userRepository.persist(user).flush()
+    return createUserDto
   }
 
   async findOne(id: string): Promise<CreateUserDto> {
-    return new CreateUserDto()
+    // TODO: this should not return an entity but instead a dto
+    // TODO: this should not 500 if the user is not found
+    // TODO: validate ids as uuids in the controller
+    return this.userRepository.findOneOrFail(id)
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    // TODO: implement this
     ;`TODO: This action updates a #${id} user`
-  }
-
-  async remove(id: string) {
-    ;`TODO: This action removes a #${id} user`
   }
 }

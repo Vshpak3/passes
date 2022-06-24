@@ -50,15 +50,4 @@ export class UserController {
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto)
   }
-
-  @ApiOperation({ summary: 'Deletes a user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A user was deleted',
-  })
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.userService.remove(id)
-  }
 }

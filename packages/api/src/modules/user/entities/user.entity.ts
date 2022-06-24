@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 
-@Entity({ tableName: 'user' })
+@Entity({ tableName: 'users' }) // not a good idea to have a table named "user" in postgres
 export class UserEntity extends BaseEntity {
   @Property()
   email: string
@@ -20,8 +20,8 @@ export class UserEntity extends BaseEntity {
   birthday?: string
 
   @Property()
-  isKYCVerified: boolean = false
+  isKYCVerified?: boolean = false
 
   @Property()
-  isCreator: boolean = false
+  isCreator?: boolean = false
 }

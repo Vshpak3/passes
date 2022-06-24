@@ -68,6 +68,6 @@
     "relations": []
   },
   "origin": "./src/database/base-entity.ts",
-  "hash": "80a70c926b211174c8b314d49e7c072f",
-  "version": "5.2.0"
+  "hash": "c27e5f0deca22a01aade4c7c761e731b",
+  "version": "5.2.1"
 }

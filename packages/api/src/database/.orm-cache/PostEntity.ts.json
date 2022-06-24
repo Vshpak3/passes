@@ -80,6 +80,6 @@
     ]
   },
   "origin": "./src/modules/post/entities/post.entity.ts",
-  "hash": "7d5fbbbe45c2a201019464c3bb1a51ca",
-  "version": "5.2.0"
+  "hash": "5f04f3e351b9b2237bac252965c3b1e8",
+  "version": "5.2.1"
 }

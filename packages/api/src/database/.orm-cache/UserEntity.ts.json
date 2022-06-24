@@ -47,14 +47,16 @@
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "boolean"
+        "type": "boolean",
+        "nullable": true
       },
       "isCreator": {
         "name": "isCreator",
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "boolean"
+        "type": "boolean",
+        "nullable": true
       }
     },
     "props": [
@@ -103,14 +105,16 @@
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "boolean"
+        "type": "boolean",
+        "nullable": true
       },
       {
         "name": "isCreator",
         "reference": "scalar",
         "getter": false,
         "setter": false,
-        "type": "boolean"
+        "type": "boolean",
+        "nullable": true
       }
     ],
     "primaryKeys": [],
@@ -122,7 +126,7 @@
     "concurrencyCheckKeys": {},
     "className": "UserEntity",
     "path": "./src/modules/user/entities/user.entity.ts",
-    "collection": "user",
+    "collection": "users",
     "name": "UserEntity",
     "abstract": false,
     "constructorParams": [],
@@ -132,6 +136,6 @@
     "relations": []
   },
   "origin": "./src/modules/user/entities/user.entity.ts",
-  "hash": "c7287cf6a0f255ddad2d52472afa3f86",
-  "version": "5.2.0"
+  "hash": "c5dfa62da029494b5512fa3804f9d321",
+  "version": "5.2.1"
 }

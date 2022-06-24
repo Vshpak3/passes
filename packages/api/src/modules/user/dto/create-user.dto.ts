@@ -1,4 +1,9 @@
+import { IsEmail, Length } from 'class-validator'
+
 export class CreateUserDto {
-  readonly email: string
-  readonly userName: string
+  @IsEmail()
+  email: string
+
+  @Length(1, 30)
+  userName: string
 }

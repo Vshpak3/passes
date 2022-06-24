@@ -154,6 +154,6 @@
     ]
   },
   "origin": "./src/modules/profile/entities/profile.entity.ts",
-  "hash": "fb25e2b10c8422110691f932d27e1a84",
-  "version": "5.2.0"
+  "hash": "21be07c4f36377af1ff6b11c299c79b9",
+  "version": "5.2.1"
 }

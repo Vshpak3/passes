@@ -58,6 +58,6 @@
     ]
   },
   "origin": "./src/modules/settings/entities/settings.entity.ts",
-  "hash": "9fe4fb36bc20f4fb01051341654efcc5",
-  "version": "5.2.0"
+  "hash": "0ba4c8347e983b4e997f5c81bb90a8a2",
+  "version": "5.2.1"
 }

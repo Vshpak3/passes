@@ -52,6 +52,6 @@
     ]
   },
   "origin": "./src/modules/pass/entities/pass.entity.ts",
-  "hash": "0bebb2e5118f0d7a5dabf807dad1fa35",
-  "version": "5.2.0"
+  "hash": "75cf52388e54c0aba40f11937c7071b6",
+  "version": "5.2.1"
 }

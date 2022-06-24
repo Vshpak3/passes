@@ -90,7 +90,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "boolean"
         },
         "is_creator": {
@@ -99,15 +99,15 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "boolean"
         }
       },
-      "name": "user",
+      "name": "users",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "user_pkey",
+          "keyName": "users_pkey",
           "columnNames": [
             "id"
           ],
@@ -203,7 +203,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         },
         "subscription_creator_id_foreign": {
@@ -215,7 +215,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         }
       }
@@ -295,7 +295,96 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "num_likes": {
+          "name": "num_likes",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "num_comments": {
+          "name": "num_comments",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "post",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "post_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "post_user_id_foreign": {
+          "constraintName": "post_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.post",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         }
       }
@@ -429,7 +518,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         }
       }
@@ -466,246 +555,13 @@
           "length": 6,
           "mappedType": "datetime"
         },
-<<<<<<< Updated upstream
         "user_id": {
           "name": "user_id",
           "type": "uuid",
-=======
-        "profile_id": {
-          "name": "profile_id",
-          "type": "int",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
-        },
-        "wallet_address": {
-          "name": "wallet_address",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "blockchain": {
-          "name": "blockchain",
-          "type": "varchar(255)",
->>>>>>> Stashed changes
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-<<<<<<< Updated upstream
-        "num_likes": {
-          "name": "num_likes",
-=======
-        "contract_address": {
-          "name": "contract_address",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "token_id": {
-          "name": "token_id",
->>>>>>> Stashed changes
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-<<<<<<< Updated upstream
-        "num_comments": {
-          "name": "num_comments",
-=======
-        "num_views": {
-          "name": "num_views",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "num_favorites": {
-          "name": "num_favorites",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "rarity_rank": {
-          "name": "rarity_rank",
->>>>>>> Stashed changes
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "price": {
-          "name": "price",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "paid": {
-          "name": "paid",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        }
-      },
-      "name": "pass",
-      "schema": "public",
-      "indexes": [
-        {
-<<<<<<< Updated upstream
-          "keyName": "post_pkey",
-=======
-          "keyName": "pass_pkey",
->>>>>>> Stashed changes
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "post_user_id_foreign": {
-          "constraintName": "post_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.post",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "gen_random_uuid()",
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-<<<<<<< Updated upstream
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-=======
-        "num_likes": {
-          "name": "num_likes",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "num_comments": {
-          "name": "num_comments",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "is_locked": {
-          "name": "is_locked",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "boolean"
-        },
-        "num_earned": {
-          "name": "num_earned",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "num_shared": {
-          "name": "num_shared",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "is_featured": {
-          "name": "is_featured",
-          "type": "boolean",
->>>>>>> Stashed changes
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-<<<<<<< Updated upstream
           "mappedType": "uuid"
         }
       },
@@ -714,34 +570,6 @@
       "indexes": [
         {
           "keyName": "pass_pkey",
-=======
-          "mappedType": "boolean"
-        },
-        "content": {
-          "name": "content",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        }
-      },
-      "name": "post",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "post_pkey",
->>>>>>> Stashed changes
           "columnNames": [
             "id"
           ],
@@ -761,7 +589,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         }
       }
@@ -798,49 +626,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
-<<<<<<< Updated upstream
         "post_id": {
           "name": "post_id",
           "type": "uuid",
-=======
-        "comment": {
-          "name": "comment",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "post_id": {
-          "name": "post_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "sender_id": {
-          "name": "sender_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "receiver_id": {
-          "name": "receiver_id",
-          "type": "int",
->>>>>>> Stashed changes
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "mappedType": "uuid"
         },
-<<<<<<< Updated upstream
         "commenter_id": {
           "name": "commenter_id",
           "type": "uuid",
@@ -853,22 +647,12 @@
         "content": {
           "name": "content",
           "type": "varchar(150)",
-=======
-        "date_commented": {
-          "name": "date_commented",
-          "type": "timestamptz(0)",
->>>>>>> Stashed changes
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-<<<<<<< Updated upstream
           "length": 150,
           "mappedType": "string"
-=======
-          "length": 6,
-          "mappedType": "datetime"
->>>>>>> Stashed changes
         }
       },
       "name": "comment",
@@ -907,7 +691,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.user",
+          "referencedTableName": "public.users",
           "updateRule": "cascade"
         }
       }
