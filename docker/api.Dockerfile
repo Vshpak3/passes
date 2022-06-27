@@ -29,4 +29,4 @@ COPY --chown=node:node --from=build /usr/src/app .
 ENV NODE_ENV "production"
 
 # Set the entrypoint to run node
-ENTRYPOINT ["/sbin/tini", "--", "node", "."]
+ENTRYPOINT ["node", "."]
