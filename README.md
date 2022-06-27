@@ -13,9 +13,10 @@ System Requirements
 
 ```bash
 # downloads all dependencies
-yarn
+# this must be run whenever a new dependency is added
+yarn install
 
-# spins up docker containers
+# spins up docker containers for testing
 yarn workspace @moment/api docker
 ```
 
@@ -32,11 +33,13 @@ yarn workspace @moment/api start:dev
 ### Test
 
 ```bash
-# run tests on the backend
+# run tests for the backend
  yarn workspace @moment/api test
 ```
 
 ### Migrations
+
+This should be run whenever you update an entity:
 
 ```bash
 # generates the migrations
@@ -46,13 +49,22 @@ yarn workspace @moment/api migration:create
 yarn workspace @moment/api migration:up
 ```
 
+### OpenAPI
+
+This should be run whenever you update a controller:
+
+```bash
+# regenerates open api client
+./bin/generate-api-client.sh
+```
+
 ### Adding Dependencies
 
 ```bash
 # adding to the frontend
 yarn workspace @moment/ui add <packageName>
 
-# adding to the API
+# adding to the backend
 yarn workspace @moment/api add <packageName>
 ```
 
@@ -60,12 +72,13 @@ yarn workspace @moment/api add <packageName>
 ## Other
 
 ### OpenAPI (Swagger)
-You must be running the API to access these:
-UI: http://localhost:3001/api
-JSON: http://localhost:3001/api-json
 
-### Upgrading
+To view all endpoints, visit:
+- UI: http://localhost:3001/api
+- JSON: http://localhost:3001/api-json
+
+### Upgrading Dependencies
 
 ```bash
-$ ./bin/upgrade.sh
+./bin/upgrade.sh
 ```

@@ -4,28 +4,24 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 
-function ormPath(name: string): string {
-  return path.join(__dirname, name)
-}
-
 const options: Options<PostgreSqlDriver> = {
   metadataProvider: TsMorphMetadataProvider,
   highlighter: new SqlHighlighter(),
   type: 'postgresql',
-  entities: ['./dist/**/entities/*.js'],
-  entitiesTs: ['./src/**/entities/*.ts'],
+  entities: [path.join(__dirname, '..', '/**/entities/*.js')],
+  entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
   dbName: 'moment',
-  // host: "root",
+  // host: 'root',
   port: 5432,
   user: 'root',
   password: 'root',
   migrations: {
-    path: ormPath('migrations'),
+    path: path.join(__dirname, 'migrations'),
   },
   cache: {
     pretty: true,
     options: {
-      cacheDir: ormPath('.orm-cache'),
+      cacheDir: path.join(__dirname, '.orm-cache'),
     },
   },
 }

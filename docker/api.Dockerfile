@@ -28,5 +28,5 @@ COPY --chown=node:node --from=build /usr/src/app .
 # Set the env to production
 ENV NODE_ENV "production"
 
-# Set the entrypoint to run node
-ENTRYPOINT ["node", "."]
+# Set the command to run node
+CMD ["node", "packages/api/dist/src/main.js"]

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Pushes API docker image.
+# Builds API docker image. Used in build pipeline.
 #
 # Usage
 #
-#   ./bin/docker_push.sh <registry uri> <image tag> <tag as latest>
+#   ./docker/build.sh <registry uri> <image tag> <tag as latest>
 #
 # If not arguments are provided defaults are used.
 #
@@ -24,13 +24,22 @@ readonly docker_registry=${1:-${default_docker_registry}}
 readonly image_tag=${2:-${default_image_tag}}
 readonly tag_as_latest=${3:-${default_tag_as_latest}}
 
-# Push the image
-full_image_name=${docker_registry}:${image_tag}
-echo "Pushing image '${full_image_name}'"
-docker push ${full_image_name}
+# Ensure we use root
+readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
+cd ${root}
 
-# Push latest tag if specified
-if [[ ${tag_as_latest} == "true" ]] ; then
-  echo "Pushing image '${docker_registry}:latest'"
-  docker push ${docker_registry}:latest
+# Build the image
+full_image_name=${docker_registry}:${image_tag}
+echo "Building image '${full_image_name}'"
+export DOCKER_BUILDKIT=0
+docker build \
+  --platform linux/arm64 \
+  --target release \
+  --tag ${full_image_name} \
+  -f 'docker/api.Dockerfile' .
+
+# Tag as latest if specified
+if [[ ${tag_as_latest} == 'true' ]] ; then
+  echo 'Tagging image as latest'
+  docker tag ${full_image_name} ${docker_registry}:latest
 fi
