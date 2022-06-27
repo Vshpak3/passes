@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+#navigationMenu{
+  z-index: 3;
+  width: 238px;
+  height: 1689px;
+  left: 0;
+  top: 0;
+  border-right: 1px solid rgba(52, 52, 58, 0.8);
+
+  background: rgba(34, 21, 39, 0.9);
+}
+
+@supports (backdrop-filter: blur(24px)) {
+
+  #navigationMenu{
+    backdrop-filter: blur(24px);
+    background: none !important;
+  }
+}
+
+
 @layer components {
   .container {
     @apply mx-auto max-w-4xl pr-[var(--wrapper-padding-right)] pl-[var(--wrapper-padding-left)];
@@ -69,3 +89,5 @@ i {
     @apply !fixed !top-auto !bottom-0 !w-full !min-w-full !transform-none transition;
   }
 }
+
+@import "src/styles/pages/profile/profile.css";
