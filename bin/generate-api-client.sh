@@ -30,7 +30,7 @@ docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) \
   openapitools/openapi-generator-cli:v5.1.1 generate \
   -i "/local/packages/api/${spec_filename}" \
   --skip-validate-spec \
-  -g typescript-axios \
+  -g typescript-fetch \
   -o "/local/${api_client_path}/src" \
   --additional-properties useSingleRequestParameter=true
 echo

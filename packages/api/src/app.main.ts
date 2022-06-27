@@ -32,6 +32,6 @@ export class App {
   }
 
   async listen() {
-    await this.app.listen(3333)
+    await this.app.listen(3001)
   }
 }

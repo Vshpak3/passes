@@ -61,8 +61,8 @@ yarn workspace @moment/api add <packageName>
 
 ### OpenAPI (Swagger)
 You must be running the API to access these:
-UI: http://localhost:3333/api
-JSON: http://localhost:3333/api-json
+UI: http://localhost:3001/api
+JSON: http://localhost:3001/api-json
 
 ### Upgrading
 
