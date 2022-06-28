@@ -11,7 +11,7 @@ const NavigationMenu = () => {
   return (
     <ul
       id="navigationMenu"
-      className="md:w-18 menu fixed flex h-20 w-full flex-row items-center text-white sm:h-full sm:w-12 sm:w-32 sm:flex-col lg:w-1/5 2xl:w-1/4"
+      className="md:w-18 menu fixed flex h-20 w-full flex-row items-center text-white sm:h-full sm:w-12 sm:w-24 sm:flex-col lg:w-1/5 2xl:w-1/4"
     >
       <li className="ml-6 flex w-full items-start justify-center sm:m-0 sm:mb-7 sm:items-center sm:py-7">
         <Link href="/Users/mateo/Desktop/lazer/monorepo/packages/ui/src/pages">
@@ -26,7 +26,7 @@ const NavigationMenu = () => {
         </Link>
       </li>
       <div className="hidden sm:block">
-        <li className="py5 mb-7 px-6">
+        <li className="py5 mb-7 px-4">
           <Link href="/">
             <div>
               <HomeIcon />
@@ -34,7 +34,7 @@ const NavigationMenu = () => {
             </div>
           </Link>
         </li>
-        <li className="py5 mb-7 px-6">
+        <li className="py5 mb-7 px-4">
           <Link href="/">
             <div>
               <MessagesIcon />
@@ -42,7 +42,7 @@ const NavigationMenu = () => {
             </div>
           </Link>
         </li>
-        <li className="py5 mb-7 px-6">
+        <li className="py5 mb-7 px-4">
           <Link href="/">
             <div>
               <PassesIcon />
@@ -50,7 +50,7 @@ const NavigationMenu = () => {
             </div>
           </Link>
         </li>
-        <li className="py5 mb-7 px-6">
+        <li className="py5 mb-7 px-4">
           <Link href="/">
             <div>
               <SubscriptionsIcon />
@@ -58,7 +58,7 @@ const NavigationMenu = () => {
             </div>
           </Link>
         </li>
-        <li className="py5 mb-7 px-6">
+        <li className="py5 mb-7 px-4">
           <Link href="/">
             <div>
               <SettingsIcon />

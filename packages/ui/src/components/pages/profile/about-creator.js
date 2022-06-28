@@ -2,7 +2,7 @@ const AboutCreator = () => {
   return (
     <>
       <div
-        className=" p-10 px-20"
+        className="ml-12 p-5 px-5 sm:ml-28 md:p-10 md:px-20"
         style={{
           borderRight: "1px solid #3b3b3b"
         }}
@@ -59,7 +59,7 @@ const AboutCreator = () => {
           deserunt mollit anim id est laborum.
         </p>
       </div>
-      <div className="py-15 p-20" style={{ borderTop: "none" }}>
+      <div className="py-15 hidden p-20 xl:block" style={{ borderTop: "none" }}>
         <div
           className="mb-20 h-60 max-h-60 w-60 bg-gray-500"
           style={{ transform: "rotate(-18deg)" }}

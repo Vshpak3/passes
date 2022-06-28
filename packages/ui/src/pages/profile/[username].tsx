@@ -70,35 +70,40 @@ const Username = () => {
       <NavigationMenu />
       <div className="w-full">
         <div
-          className="flex h-96 justify-center py-20"
+          className="flex justify-center sm:py-20 md:h-96"
           style={{ background: "rgba(43, 14, 68, 1)" }}
         >
-          <RedTopVector
+          <div
+            className="hidden md:block"
             style={{
               top: "-150px",
               position: "absolute",
               zIndex: 1
             }}
-          />
-          <RedTopVector
-            style={{ top: "-100px", position: "absolute", zIndex: 1 }}
-          />
-          <BlueLeftVector
+          >
+            <RedTopVector />
+            <RedTopVector
+              style={{ top: "-30px", position: "absolute", zIndex: 1 }}
+            />
+          </div>
+          <div
+            className="top-96 left-0 sm:top-12 md:left-12 md:top-20"
             style={{
-              left: "7%",
-              top: "108px",
               position: "absolute",
               zIndex: 0
             }}
-          />
-          <BlueLeftVector
-            style={{
-              left: "10%",
-              top: "108px",
-              position: "absolute",
-              zIndex: 0
-            }}
-          />
+          >
+            <BlueLeftVector />
+            <div className="hidden sm:block">
+              <BlueLeftVector
+                style={{
+                  top: "20%",
+                  position: "absolute",
+                  zIndex: 0
+                }}
+              />
+            </div>
+          </div>
           <PurpleRightVector
             style={{ right: "0", top: "56px", position: "absolute", zIndex: 0 }}
           />
@@ -122,31 +127,25 @@ const Username = () => {
             }}
           />
           <div
-            className="ml-60 flex w-full max-w-7xl place-items-center justify-center px-20"
+            className="my-24 flex w-full max-w-7xl flex-col flex-col-reverse place-items-center justify-center sm:my-0 sm:ml-32 sm:flex-row sm:px-20 md:ml-32 lg:ml-72"
             style={{ zIndex: 2 }}
           >
             <div className=" flex-1 ">
-              <Text
-                className="flex items-center justify-center font-semibold uppercase text-white lg:justify-start"
-                tag="h1"
-                fontSize={64}
-              >
+              <h1 className="text-4xl font-semibold uppercase text-white lg:text-6xl">
                 <span>{mockCreator.name}</span>
-              </Text>
-              <Text
+              </h1>
+              <h2
                 style={{ lineHeight: 1 }}
-                className="mt-3 flex items-center justify-center gap-2 text-slate-300 lg:justify-start"
-                tag="h1"
-                fontSize={26}
+                className="mt-6 justify-start justify-center gap-2 text-lg text-slate-300 xl:text-2xl"
               >
                 Save America. Win big prices
-              </Text>
+              </h2>
               <div>
                 <button className="mt-7 mr-4 h-20 w-72 rounded-2xl bg-white text-xl font-bold">
                   Join Whitelist
                 </button>
                 <button
-                  className="text-md ml-5 h-11 text-xl text-white"
+                  className="text-md ml-5 hidden h-11 text-xl text-white xl:inline"
                   style={{
                     padding: "0 0 10px 0",
                     borderBottom: "1px solid white",
@@ -158,19 +157,17 @@ const Username = () => {
               </div>
             </div>
             <div
-              className="lg:mb-none relative mb-4 mt-7 w-fit scale-75 px-4 lg:mb-8 lg:scale-100	"
+              className="lg:mb-none relative mb-4 mt-7 w-fit scale-75 items-start  px-4 lg:mb-8 lg:scale-100	"
               style={{ transform: "rotate(353deg)" }}
             >
               <div
                 style={{
-                  borderRadius: "3.5rem",
                   boxShadow:
-                    "inset 0px 10.5007px 14.0009px #FFFFFF, inset -2.33348px 3.50022px 4.66696px #FFFFFF, inset -5.8337px -5.8337px 5.8337px #561750, inset 0px -18.42px 29.472px #2B0E44",
-                  WebkitBoxShadow: "none",
+                    " inset 0px 10.5007px 14.0009px #FFFFFF, inset -2.33348px 3.50022px 4.66696px #FFFFFF, inset -5.8337px -5.8337px 5.8337px rgba(86, 23, 80, 0.5), inset 0px -18.42px 29.472px rgba(43, 14, 68, 0.5)",
                   backgroundImage: "url('/andrea-botez/avatar.jpeg')",
                   backgroundSize: "cover"
                 }}
-                className="w mb-2 h-60 w-60"
+                className="w mb-2 h-40 w-40 rounded-full xl:h-60 xl:w-60"
               />
               <div
                 style={{
@@ -234,7 +231,7 @@ const Username = () => {
         </div>
         <div className="tabs flex w-full justify-center" id="profileTabs">
           <div
-            className="ml-60 flex max-w-7xl flex-1 cursor-pointer"
+            className=" flex max-w-7xl flex-1 cursor-pointer sm:ml-20 md:ml-32 lg:ml-60"
             style={{ zIndex: 1 }}
           >
             <a
@@ -269,7 +266,7 @@ const Username = () => {
             background: "#1F1422"
           }}
         >
-          <div className="ml-60 max-w-7xl">
+          <div className="max-w-7xl md:ml-32 lg:ml-60">
             <div
               className="flex"
               style={{
