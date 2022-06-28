@@ -6,8 +6,10 @@ import PurpleRightVector from "/public/pages/profile/profile-bg-purple-right.svg
 import BlueLeftVector from "/public/pages/profile/profile-bg-blue-left.svg"
 import GrainyVector from "/public/pages/profile/grainy.svg"
 import NavigationMenu from "src/components/navigation-menu/navigation-menu"
+import AboutCreator from "src/components/pages/profile/about-creator"
+import CreatorPosts from "src/components/pages/profile/posts/creator-posts"
 
-const mockData = {
+const mockCreator = {
   avatarUrl: "/andrea-botez/avatar.jpeg",
   name: "Andrea Botez",
   username: "andreabotez",
@@ -129,7 +131,7 @@ const Username = () => {
                 tag="h1"
                 fontSize={64}
               >
-                <span>{mockData.name}</span>
+                <span>{mockCreator.name}</span>
               </Text>
               <Text
                 style={{ lineHeight: 1 }}
@@ -274,84 +276,8 @@ const Username = () => {
                 borderTop: "none"
               }}
             >
-              <div
-                className=" p-10 px-20"
-                style={{
-                  borderRight: "1px solid #3b3b3b"
-                }}
-              >
-                <h2
-                  className="mb-4 text-white"
-                  style={{
-                    fontWeight: "bolder"
-                  }}
-                >
-                  Who is Andrea Botez
-                </h2>
-                <Text className="text-gray-400  dark:text-mauveDark-mauve12">
-                  {mockData.bio}
-                </Text>
-                <h2
-                  className="mt-10 mb-4"
-                  style={{
-                    fontWeight: "bolder"
-                  }}
-                >
-                  Overview of Passes
-                </h2>
-                <Text className="text-gray-400 ">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.
-                </Text>
-              </div>
-              <div className="py-15 p-20" style={{ borderTop: "none" }}>
-                <div
-                  className="mb-20 h-60 max-h-60 w-60 bg-gray-500"
-                  style={{ transform: "rotate(-18deg)" }}
-                >
-                  NFT
-                </div>
-                <div
-                  className="mb-20 h-60 max-h-60 w-60 bg-gray-500"
-                  style={{ transform: "rotate(18deg)" }}
-                >
-                  NFT
-                </div>
-                <div
-                  className="mb-10 h-60 max-h-60 w-60 bg-gray-500"
-                  style={{ transform: "rotate(-18deg)" }}
-                >
-                  NFT
-                </div>
-              </div>
+              {activeTab === "about" && <AboutCreator />}
+              {activeTab === "posts" && <CreatorPosts creator={mockCreator} />}
             </div>
           </div>
         </div>

@@ -32,8 +32,8 @@ cd ${root}
 full_image_name=${docker_registry}:${image_tag}
 echo "Building image '${full_image_name}'"
 export DOCKER_BUILDKIT=0
-docker build \
-  --platform linux/arm64 \
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
   --target release \
   --tag ${full_image_name} \
   -f 'docker/api.Dockerfile' .
