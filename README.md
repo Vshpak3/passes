@@ -1,10 +1,10 @@
-## Description
+# Moment Monorepo
 
 ## Setup
 
 System Requirements
-- Node (`brew install node`)
-- Yarn (`npm install -g yarn@berry`)
+- Node: `brew install node`
+- Yarn: `npm install -g yarn@berry`
 
 
 ## Local Dev
@@ -16,28 +16,28 @@ System Requirements
 # this must be run whenever a new dependency is added
 yarn install
 
-# spins up docker containers for testing
+# backend: spins up docker containers for testing
 yarn workspace @moment/api docker
 ```
 
 ### Local Testing
 
 ```bash
-# run the frontend
+# frontend
 yarn workspace @moment/ui dev
 
-# run the background
+# backend
 yarn workspace @moment/api start:dev
 ```
 
 ### Test
 
 ```bash
-# run tests for the backend
- yarn workspace @moment/api test
+# backend: runs tests
+yarn workspace @moment/api test
 ```
 
-### Migrations
+### Migrations (backend)
 
 This should be run whenever you update an entity:
 
@@ -45,11 +45,11 @@ This should be run whenever you update an entity:
 # generates the migrations
 yarn workspace @moment/api migration:create
 
-# run the migration
+# runs the migration
 yarn workspace @moment/api migration:up
 ```
 
-### OpenAPI
+### OpenAPI (backend)
 
 This should be run whenever you update a controller:
 
@@ -58,26 +58,21 @@ This should be run whenever you update a controller:
 ./bin/generate-api-client.sh
 ```
 
-### Adding Dependencies
-
-```bash
-# adding to the frontend
-yarn workspace @moment/ui add <packageName>
-
-# adding to the backend
-yarn workspace @moment/api add <packageName>
-```
-
-
-## Other
-
-### OpenAPI (Swagger)
-
-To view all endpoints, visit:
+To view OpenAPI endpoints, visit:
 - UI: http://localhost:3001/api
 - JSON: http://localhost:3001/api-json
 
-### Upgrading Dependencies
+### Adding Dependencies
+
+```bash
+# frontend
+yarn workspace @moment/ui add <packageName>
+
+# backend
+yarn workspace @moment/api add <packageName>
+```
+
+The following script upgrades all dependencies:
 
 ```bash
 ./bin/upgrade.sh

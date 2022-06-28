@@ -37,10 +37,11 @@ function upgrade_package() {
     echo 'Done!'
 }
 
-# Get the latest stable node version and update packages.json
+# Get the latest stable node version and update packages.json and the Dockerfile
 node_version=$(n --stable)
 echo "Updating Node to '${node_version}'"
 cat <<< $(jq ".engines.node = \"${node_version}\"" < package.json) > package.json
+sed -i '' "s/FROM node:[0-9]*/FROM node:${node_version%%.*}/g" docker/api.Dockerfile
 
 # Upgrade root and each specified package
 upgrade_package
