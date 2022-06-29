@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -15,11 +15,11 @@
 
 import * as runtime from '../runtime';
 
-export interface FindOneRequest {
+export interface SettingsFindOneRequest {
     id: string;
 }
 
-export interface UpdateRequest {
+export interface SettingsUpdateRequest {
     id: string;
     body: object;
 }
@@ -32,9 +32,9 @@ export class SettingsApi extends runtime.BaseAPI {
     /**
      * Gets settings
      */
-    async findOneRaw(requestParameters: FindOneRequest): Promise<runtime.ApiResponse<object>> {
+    async settingsFindOneRaw(requestParameters: SettingsFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling findOne.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling settingsFindOne.');
         }
 
         const queryParameters: any = {};
@@ -46,7 +46,7 @@ export class SettingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -54,21 +54,21 @@ export class SettingsApi extends runtime.BaseAPI {
     /**
      * Gets settings
      */
-    async findOne(requestParameters: FindOneRequest): Promise<object> {
-        const response = await this.findOneRaw(requestParameters);
+    async settingsFindOne(requestParameters: SettingsFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.settingsFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Updates settings
      */
-    async updateRaw(requestParameters: UpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async settingsUpdateRaw(requestParameters: SettingsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling update.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling settingsUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling update.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling settingsUpdate.');
         }
 
         const queryParameters: any = {};
@@ -83,7 +83,7 @@ export class SettingsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -91,8 +91,8 @@ export class SettingsApi extends runtime.BaseAPI {
     /**
      * Updates settings
      */
-    async update(requestParameters: UpdateRequest): Promise<void> {
-        await this.updateRaw(requestParameters);
+    async settingsUpdate(requestParameters: SettingsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.settingsUpdateRaw(requestParameters, initOverrides);
     }
 
 }

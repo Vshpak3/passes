@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -15,19 +15,19 @@
 
 import * as runtime from '../runtime';
 
-export interface CreateRequest {
+export interface SubscriptionCreateRequest {
     body: object;
 }
 
-export interface FindOneRequest {
+export interface SubscriptionFindOneRequest {
     id: string;
 }
 
-export interface RemoveRequest {
+export interface SubscriptionRemoveRequest {
     id: string;
 }
 
-export interface UpdateRequest {
+export interface SubscriptionUpdateRequest {
     id: string;
     body: object;
 }
@@ -40,9 +40,9 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Creates a subscription
      */
-    async createRaw(requestParameters: CreateRequest): Promise<runtime.ApiResponse<object>> {
+    async subscriptionCreateRaw(requestParameters: SubscriptionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling create.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling subscriptionCreate.');
         }
 
         const queryParameters: any = {};
@@ -57,7 +57,7 @@ export class SubscriptionApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -65,17 +65,17 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Creates a subscription
      */
-    async create(requestParameters: CreateRequest): Promise<object> {
-        const response = await this.createRaw(requestParameters);
+    async subscriptionCreate(requestParameters: SubscriptionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.subscriptionCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets a subscription
      */
-    async findOneRaw(requestParameters: FindOneRequest): Promise<runtime.ApiResponse<object>> {
+    async subscriptionFindOneRaw(requestParameters: SubscriptionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling findOne.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling subscriptionFindOne.');
         }
 
         const queryParameters: any = {};
@@ -87,7 +87,7 @@ export class SubscriptionApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -95,17 +95,17 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Gets a subscription
      */
-    async findOne(requestParameters: FindOneRequest): Promise<object> {
-        const response = await this.findOneRaw(requestParameters);
+    async subscriptionFindOne(requestParameters: SubscriptionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.subscriptionFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Deletes a subscription
      */
-    async removeRaw(requestParameters: RemoveRequest): Promise<runtime.ApiResponse<void>> {
+    async subscriptionRemoveRaw(requestParameters: SubscriptionRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling remove.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling subscriptionRemove.');
         }
 
         const queryParameters: any = {};
@@ -117,7 +117,7 @@ export class SubscriptionApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -125,20 +125,20 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Deletes a subscription
      */
-    async remove(requestParameters: RemoveRequest): Promise<void> {
-        await this.removeRaw(requestParameters);
+    async subscriptionRemove(requestParameters: SubscriptionRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.subscriptionRemoveRaw(requestParameters, initOverrides);
     }
 
     /**
      * Updates a subscription
      */
-    async updateRaw(requestParameters: UpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async subscriptionUpdateRaw(requestParameters: SubscriptionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling update.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling subscriptionUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling update.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling subscriptionUpdate.');
         }
 
         const queryParameters: any = {};
@@ -153,7 +153,7 @@ export class SubscriptionApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -161,8 +161,8 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Updates a subscription
      */
-    async update(requestParameters: UpdateRequest): Promise<void> {
-        await this.updateRaw(requestParameters);
+    async subscriptionUpdate(requestParameters: SubscriptionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.subscriptionUpdateRaw(requestParameters, initOverrides);
     }
 
 }

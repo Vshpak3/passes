@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -23,7 +23,7 @@ export class HealthApi extends runtime.BaseAPI {
     /**
      * Health check endpoint
      */
-    async healthRaw(): Promise<runtime.ApiResponse<void>> {
+    async healthHealthRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -33,7 +33,7 @@ export class HealthApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -41,8 +41,8 @@ export class HealthApi extends runtime.BaseAPI {
     /**
      * Health check endpoint
      */
-    async health(): Promise<void> {
-        await this.healthRaw();
+    async healthHealth(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.healthHealthRaw(initOverrides);
     }
 
 }

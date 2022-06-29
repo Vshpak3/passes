@@ -1,30 +1,20 @@
-import { OpenApiNestFactory } from 'nest-openapi-tools'
-
+import { writeFileSync } from 'fs'
 import { App } from './app.main'
+
+// Generates OpenAPI JSON file from application
 ;(async () => {
   const app = new App()
   await app.init()
 
-  await OpenApiNestFactory.configure(
-    app.app,
-    app.swaggerConfig,
-    {
-      fileGeneratorOptions: {
-        enabled: true,
-        outputFilePath: './openapi.json',
-      },
-      clientGeneratorOptions: {
-        enabled: false,
-        type: 'typescript-fetch',
-        outputFolderPath: '../../api-client/src',
-        additionalProperties:
-          'apiPackage=@moment/api-client,modelPackage=models,withoutPrefixEnums=true,withSeparateModelsAndApi=true',
-        openApiFilePath: './openapi.json',
-        skipValidation: true,
-      },
-    },
-    {
-      operationIdFactory: (c: string, method: string) => method,
-    },
+  // Creates the JSON string from the OpenAPI document and then removes the
+  // word "Controller" from operationIds
+  let content = JSON.stringify(app.document, null, 2)
+  content = content.replace(
+    /"operationId": "(.*)Controller_/g,
+    '"operationId": "$1_',
   )
+
+  writeFileSync('openapi.json', content, { encoding: 'utf8' })
+
+  await app.app.close()
 })()

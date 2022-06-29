@@ -6,7 +6,7 @@ import { AppModule } from './app.module'
 
 export class App {
   app
-  swaggerConfig
+  document
 
   async init() {
     await this.initApp()
@@ -20,15 +20,13 @@ export class App {
   }
 
   private async initSwagger() {
-    this.swaggerConfig = new DocumentBuilder()
-      .setTitle('Moment Backend Server')
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('Moment Backend')
       .setDescription('Be in the moment')
       .setVersion('1.0')
-    const document = SwaggerModule.createDocument(
-      this.app,
-      this.swaggerConfig.build(),
-    )
-    SwaggerModule.setup('api', this.app, document)
+      .build()
+    this.document = SwaggerModule.createDocument(this.app, swaggerConfig)
+    SwaggerModule.setup('api', this.app, this.document)
   }
 
   async listen() {

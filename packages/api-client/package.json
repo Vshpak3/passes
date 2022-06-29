@@ -9,7 +9,6 @@
     "lint:fix": "eslint --fix ."
   },
   "devDependencies": {
-    "axios": "0.26.1",
     "eslint": "8.18.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-node": "0.3.6",
@@ -19,8 +18,5 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-sonarjs": "0.13.0",
     "typescript": "4.7.4"
-  },
-  "peerDependencies": {
-    "axios": "0.26.1"
   }
 }

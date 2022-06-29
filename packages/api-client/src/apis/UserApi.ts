@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -15,15 +15,15 @@
 
 import * as runtime from '../runtime';
 
-export interface CreateRequest {
+export interface UserCreateRequest {
     body: object;
 }
 
-export interface FindOneRequest {
+export interface UserFindOneRequest {
     id: string;
 }
 
-export interface UpdateRequest {
+export interface UserUpdateRequest {
     id: string;
     body: object;
 }
@@ -36,9 +36,9 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Creates a user
      */
-    async createRaw(requestParameters: CreateRequest): Promise<runtime.ApiResponse<object>> {
+    async userCreateRaw(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling create.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userCreate.');
         }
 
         const queryParameters: any = {};
@@ -53,7 +53,7 @@ export class UserApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -61,17 +61,17 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Creates a user
      */
-    async create(requestParameters: CreateRequest): Promise<object> {
-        const response = await this.createRaw(requestParameters);
+    async userCreate(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.userCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets a user
      */
-    async findOneRaw(requestParameters: FindOneRequest): Promise<runtime.ApiResponse<object>> {
+    async userFindOneRaw(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling findOne.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userFindOne.');
         }
 
         const queryParameters: any = {};
@@ -83,7 +83,7 @@ export class UserApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -91,21 +91,21 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Gets a user
      */
-    async findOne(requestParameters: FindOneRequest): Promise<object> {
-        const response = await this.findOneRaw(requestParameters);
+    async userFindOne(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.userFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Updates a user
      */
-    async updateRaw(requestParameters: UpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async userUpdateRaw(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling update.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling update.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userUpdate.');
         }
 
         const queryParameters: any = {};
@@ -120,7 +120,7 @@ export class UserApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -128,8 +128,8 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Updates a user
      */
-    async update(requestParameters: UpdateRequest): Promise<void> {
-        await this.updateRaw(requestParameters);
+    async userUpdate(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.userUpdateRaw(requestParameters, initOverrides);
     }
 
 }

@@ -1,4 +1,4 @@
-{
+export const schema = {
   "openapi": "3.0.0",
   "paths": {
     "/api/comment": {
@@ -828,4 +828,4 @@
       }
     }
   }
-}
+} as const;

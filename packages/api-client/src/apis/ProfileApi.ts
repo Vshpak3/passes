@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -15,19 +15,19 @@
 
 import * as runtime from '../runtime';
 
-export interface CreateRequest {
+export interface ProfileCreateRequest {
     body: object;
 }
 
-export interface FindOneRequest {
+export interface ProfileFindOneRequest {
     id: string;
 }
 
-export interface RemoveRequest {
+export interface ProfileRemoveRequest {
     id: string;
 }
 
-export interface UpdateRequest {
+export interface ProfileUpdateRequest {
     id: string;
     body: object;
 }
@@ -40,9 +40,9 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async createRaw(requestParameters: CreateRequest): Promise<runtime.ApiResponse<object>> {
+    async profileCreateRaw(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling create.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling profileCreate.');
         }
 
         const queryParameters: any = {};
@@ -57,7 +57,7 @@ export class ProfileApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -65,17 +65,17 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async create(requestParameters: CreateRequest): Promise<object> {
-        const response = await this.createRaw(requestParameters);
+    async profileCreate(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.profileCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets a profile
      */
-    async findOneRaw(requestParameters: FindOneRequest): Promise<runtime.ApiResponse<object>> {
+    async profileFindOneRaw(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling findOne.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileFindOne.');
         }
 
         const queryParameters: any = {};
@@ -87,7 +87,7 @@ export class ProfileApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -95,17 +95,17 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets a profile
      */
-    async findOne(requestParameters: FindOneRequest): Promise<object> {
-        const response = await this.findOneRaw(requestParameters);
+    async profileFindOne(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.profileFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Deletes a profile
      */
-    async removeRaw(requestParameters: RemoveRequest): Promise<runtime.ApiResponse<void>> {
+    async profileRemoveRaw(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling remove.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileRemove.');
         }
 
         const queryParameters: any = {};
@@ -117,7 +117,7 @@ export class ProfileApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -125,20 +125,20 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deletes a profile
      */
-    async remove(requestParameters: RemoveRequest): Promise<void> {
-        await this.removeRaw(requestParameters);
+    async profileRemove(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.profileRemoveRaw(requestParameters, initOverrides);
     }
 
     /**
      * Updates a profile
      */
-    async updateRaw(requestParameters: UpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async profileUpdateRaw(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling update.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling update.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling profileUpdate.');
         }
 
         const queryParameters: any = {};
@@ -153,7 +153,7 @@ export class ProfileApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -161,8 +161,8 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Updates a profile
      */
-    async update(requestParameters: UpdateRequest): Promise<void> {
-        await this.updateRaw(requestParameters);
+    async profileUpdate(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.profileUpdateRaw(requestParameters, initOverrides);
     }
 
 }

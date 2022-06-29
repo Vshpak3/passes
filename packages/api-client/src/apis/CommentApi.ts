@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend Server
+ * Moment Backend
  * Be in the moment
  *
  * The version of the OpenAPI document: 1.0
@@ -15,19 +15,19 @@
 
 import * as runtime from '../runtime';
 
-export interface CreateRequest {
+export interface CommentCreateRequest {
     body: object;
 }
 
-export interface FindOneRequest {
+export interface CommentFindOneRequest {
     id: string;
 }
 
-export interface RemoveRequest {
+export interface CommentRemoveRequest {
     id: string;
 }
 
-export interface UpdateRequest {
+export interface CommentUpdateRequest {
     id: string;
     body: object;
 }
@@ -40,9 +40,9 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Creates a comment
      */
-    async createRaw(requestParameters: CreateRequest): Promise<runtime.ApiResponse<object>> {
+    async commentCreateRaw(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling create.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling commentCreate.');
         }
 
         const queryParameters: any = {};
@@ -57,7 +57,7 @@ export class CommentApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -65,17 +65,17 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Creates a comment
      */
-    async create(requestParameters: CreateRequest): Promise<object> {
-        const response = await this.createRaw(requestParameters);
+    async commentCreate(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.commentCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets a comment
      */
-    async findOneRaw(requestParameters: FindOneRequest): Promise<runtime.ApiResponse<object>> {
+    async commentFindOneRaw(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling findOne.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentFindOne.');
         }
 
         const queryParameters: any = {};
@@ -87,7 +87,7 @@ export class CommentApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -95,17 +95,17 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Gets a comment
      */
-    async findOne(requestParameters: FindOneRequest): Promise<object> {
-        const response = await this.findOneRaw(requestParameters);
+    async commentFindOne(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.commentFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Deletes a comment
      */
-    async removeRaw(requestParameters: RemoveRequest): Promise<runtime.ApiResponse<void>> {
+    async commentRemoveRaw(requestParameters: CommentRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling remove.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentRemove.');
         }
 
         const queryParameters: any = {};
@@ -117,7 +117,7 @@ export class CommentApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -125,20 +125,20 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Deletes a comment
      */
-    async remove(requestParameters: RemoveRequest): Promise<void> {
-        await this.removeRaw(requestParameters);
+    async commentRemove(requestParameters: CommentRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.commentRemoveRaw(requestParameters, initOverrides);
     }
 
     /**
      * Updates a comment
      */
-    async updateRaw(requestParameters: UpdateRequest): Promise<runtime.ApiResponse<void>> {
+    async commentUpdateRaw(requestParameters: CommentUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling update.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentUpdate.');
         }
 
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling update.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling commentUpdate.');
         }
 
         const queryParameters: any = {};
@@ -153,7 +153,7 @@ export class CommentApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: requestParameters.body as any,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -161,8 +161,8 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Updates a comment
      */
-    async update(requestParameters: UpdateRequest): Promise<void> {
-        await this.updateRaw(requestParameters);
+    async commentUpdate(requestParameters: CommentUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.commentUpdateRaw(requestParameters, initOverrides);
     }
 
 }
