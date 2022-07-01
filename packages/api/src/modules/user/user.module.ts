@@ -8,5 +8,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
   imports: [MikroOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

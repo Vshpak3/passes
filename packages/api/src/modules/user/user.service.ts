@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { EntityRepository } from '@mikro-orm/core'
+import { EntityRepository, wrap } from '@mikro-orm/core'
 import { UserEntity } from './entities/user.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -12,24 +12,67 @@ export class UserService {
     private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = this.userRepository.create({
       email: createUserDto.email,
       userName: createUserDto.userName,
     })
     await this.userRepository.persist(user).flush()
-    return createUserDto
+    return user
   }
 
-  async findOne(id: string): Promise<CreateUserDto> {
-    // TODO: this should not return an entity but instead a dto
-    // TODO: this should not 500 if the user is not found
-    // TODO: validate ids as uuids in the controller
-    return this.userRepository.findOneOrFail(id)
+  async createOAuthUser(
+    email: string,
+    provider: string,
+    providerId: string,
+  ): Promise<UserEntity> {
+    const user = this.userRepository.create({
+      email: email,
+      userName: email.substring(0, 30),
+      oauthId: providerId,
+      oauthProvider: provider,
+    })
+    await this.userRepository.persist(user).flush()
+    return user
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    // TODO: implement this
-    ;`TODO: This action updates a #${id} user ${updateUserDto}`
+  async findOne(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne(id)
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
+
+    return user
+  }
+
+  async findOneByOAuth(
+    oauthId: string,
+    oauthProvider: string,
+  ): Promise<UserEntity | null> {
+    const user = await this.userRepository.findOne({ oauthId, oauthProvider })
+    return user
+  }
+
+  async update(userId: string, updateUserDto: UpdateUserDto) {
+    const currentUser = await this.findOne(userId)
+
+    // TODO: Only certain user fields should be allowed to be updated
+    const newUser = wrap(currentUser).assign({
+      ...updateUserDto,
+    })
+
+    await this.userRepository.persist(newUser).flush()
+    return newUser
+  }
+
+  async remove(userId: string) {
+    const currentUser = await this.findOne(userId)
+
+    const newUser = wrap(currentUser).assign({
+      isDisabled: true,
+    })
+
+    await this.userRepository.persist(newUser).flush()
+    return newUser
   }
 }

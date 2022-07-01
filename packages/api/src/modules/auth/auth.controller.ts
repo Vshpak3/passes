@@ -1,27 +1,12 @@
-// import {
-//   Body,
-//   Controller,
-//   HttpCode,
-//   HttpStatus,
-//   Post,
-//   Req,
-// } from '@nestjs/common'
-// import { Request } from 'express'
+import { Controller, Get, Req, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from './jwt/jwt-auth.guard'
+import { RequestWithUser } from '../../types'
 
-// import { AuthService } from './auth.service'
-
-// @Controller('auth')
-// export class AuthController {
-//   constructor(private readonly authService: AuthService) {}
-
-//   @Post('signup')
-//   signup(@Req() req: Request) {
-//     console.log(req.body)
-//     return this.authService.signup()
-//   }
-
-//   @Post('signin')
-//   signin() {
-//     return this.authService.signin()
-//   }
-// }
+@Controller('auth')
+export class AuthController {
+  @Get('user')
+  @UseGuards(JwtAuthGuard)
+  async testGetUser(@Req() req: RequestWithUser) {
+    return { id: req.user.id }
+  }
+}

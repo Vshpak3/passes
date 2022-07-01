@@ -19,6 +19,10 @@ export interface UserCreateRequest {
     body: object;
 }
 
+export interface UserDeleteRequest {
+    id: string;
+}
+
 export interface UserFindOneRequest {
     id: string;
 }
@@ -64,6 +68,35 @@ export class UserApi extends runtime.BaseAPI {
     async userCreate(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
         const response = await this.userCreateRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Disables a user account
+     */
+    async userDeleteRaw(requestParameters: UserDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Disables a user account
+     */
+    async userDelete(requestParameters: UserDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.userDeleteRaw(requestParameters, initOverrides);
     }
 
     /**

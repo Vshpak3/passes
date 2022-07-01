@@ -7,6 +7,12 @@ export class UserEntity extends BaseEntity {
   @Property()
   email: string
 
+  @Property()
+  oauthId?: string
+
+  @Property()
+  oauthProvider?: string
+
   @Property({ length: 30 })
   userName: string
 
@@ -24,4 +30,7 @@ export class UserEntity extends BaseEntity {
 
   @Property()
   isCreator?: boolean = false
+
+  @Property()
+  isDisabled?: boolean = false
 }

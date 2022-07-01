@@ -1,16 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
+  Delete,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Req,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
+import { RequestWithUser } from '../../types'
 
 @ApiTags('user')
 @Controller('user')
@@ -19,7 +22,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Creates a user' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: CreateUserDto,
     description: 'A user was created',
   })
@@ -45,8 +48,22 @@ export class UserController {
     type: undefined,
     description: 'A user was updated',
   })
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto)
+  @Patch('')
+  async update(
+    @Req() req: RequestWithUser,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(req.user.id, updateUserDto)
+  }
+
+  @ApiOperation({ summary: 'Disables a user account' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A user account was disabled',
+  })
+  @Delete('')
+  async delete(@Req() req: RequestWithUser) {
+    return this.userService.remove(req.user.id)
   }
 }

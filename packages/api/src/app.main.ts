@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-
+import cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 
 export class App {
@@ -17,6 +17,7 @@ export class App {
     this.app = await NestFactory.create(AppModule)
     this.app.setGlobalPrefix('api', { exclude: [''] })
     this.app.useGlobalPipes(new ValidationPipe())
+    this.app.use(cookieParser())
   }
 
   private async initSwagger() {

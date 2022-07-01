@@ -14,6 +14,9 @@ export const configValidationSchema = Joi.object({
   OAUTH_GOOGLE_ID: Joi.string().required(),
   OAUTH_GOOGLE_SECRET: Joi.string().required(),
   OAUTH_GOOGLE_REDIRECT_URL: Joi.string().uri().required(),
+
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRES_IN: Joi.string().required(),
 })
 
 export const configConfiguration = function () {
@@ -35,6 +38,10 @@ export const configConfiguration = function () {
         secret: getConfigValue('OAUTH_GOOGLE_SECRET'),
         redirect_url: getConfigValue('OAUTH_GOOGLE_REDIRECT_URL'),
       },
+    },
+    jwt: {
+      secret: getConfigValue('JWT_SECRET'),
+      expiresIn: getConfigValue('JWT_EXPIRES_IN'),
     },
   }
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
-// import { AuthModule } from './modules/auth/auth.module'
+import { AuthModule } from './modules/auth/auth.module'
 import { databaseOptions } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { CommentModule } from './modules/comment/comment.module'
@@ -20,6 +20,7 @@ import { UserModule } from './modules/user/user.module'
     MikroOrmModule.forRootAsync(databaseOptions),
     RedisModule.forRootAsync(redisOptions),
     ConfigModule.forRoot(configOptions),
+    AuthModule,
     CommentModule,
     HealthModule,
     PassModule,

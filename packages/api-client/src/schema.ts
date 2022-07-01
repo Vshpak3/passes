@@ -680,7 +680,7 @@ export const schema = {
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "A user was created",
             "content": {
               "application/json": {
@@ -752,6 +752,28 @@ export const schema = {
         "responses": {
           "200": {
             "description": "A user was updated"
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "delete": {
+        "operationId": "User_delete",
+        "summary": "Disables a user account",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A user account was disabled"
           }
         },
         "tags": [
