@@ -9,8 +9,11 @@ export class App {
   document
 
   async init() {
+    console.log('Starting application')
+    console.log(`Node version ${process.version}`)
     await this.initApp()
     await this.initSwagger()
+    console.log('Successfully initialized application')
   }
 
   private async initApp() {

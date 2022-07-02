@@ -3,6 +3,7 @@ import { App } from './app.main'
 
 // Generates OpenAPI JSON file from application
 ;(async () => {
+  console.log('Generating OpenAPI JSON file')
   const app = new App()
   await app.init()
 
@@ -17,4 +18,6 @@ import { App } from './app.main'
   writeFileSync('openapi.json', content, { encoding: 'utf8' })
 
   await app.app.close()
+
+  process.exit()
 })()

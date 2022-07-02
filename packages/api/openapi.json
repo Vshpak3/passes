@@ -1,6 +1,138 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/auth/user": {
+      "get": {
+        "operationId": "Auth_testGetUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "post": {
+        "operationId": "User_create",
+        "summary": "Creates a user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A user was created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "patch": {
+        "operationId": "User_update",
+        "summary": "Updates a user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A user was updated"
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "delete": {
+        "operationId": "User_delete",
+        "summary": "Disables a user account",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A user account was disabled"
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/user/{id}": {
+      "get": {
+        "operationId": "User_findOne",
+        "summary": "Gets a user",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A user was retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/auth/google": {
+      "get": {
+        "operationId": "GoogleOauth_googleAuth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/auth/google/redirect": {
+      "get": {
+        "operationId": "GoogleOauth_googleAuthRedirect",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/comment": {
       "post": {
         "operationId": "Comment_create",
@@ -663,123 +795,6 @@
           "subscription"
         ]
       }
-    },
-    "/api/user": {
-      "post": {
-        "operationId": "User_create",
-        "summary": "Creates a user",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "A user was created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "user"
-        ]
-      }
-    },
-    "/api/user/{id}": {
-      "get": {
-        "operationId": "User_findOne",
-        "summary": "Gets a user",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A user was retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "user"
-        ]
-      },
-      "patch": {
-        "operationId": "User_update",
-        "summary": "Updates a user",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A user was updated"
-          }
-        },
-        "tags": [
-          "user"
-        ]
-      },
-      "delete": {
-        "operationId": "User_delete",
-        "summary": "Disables a user account",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A user account was disabled"
-          }
-        },
-        "tags": [
-          "user"
-        ]
-      }
     }
   },
   "info": {
@@ -792,6 +807,14 @@
   "servers": [],
   "components": {
     "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
       "CreateCommentDto": {
         "type": "object",
         "properties": {}
@@ -837,14 +860,6 @@
         "properties": {}
       },
       "UpdateSubscriptionDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "CreateUserDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateUserDto": {
         "type": "object",
         "properties": {}
       }

@@ -19,16 +19,11 @@ export interface UserCreateRequest {
     body: object;
 }
 
-export interface UserDeleteRequest {
-    id: string;
-}
-
 export interface UserFindOneRequest {
     id: string;
 }
 
 export interface UserUpdateRequest {
-    id: string;
     body: object;
 }
 
@@ -73,17 +68,13 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async userDeleteRaw(requestParameters: UserDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userDelete.');
-        }
-
+    async userDeleteRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/user/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/user`,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -95,8 +86,8 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async userDelete(requestParameters: UserDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.userDeleteRaw(requestParameters, initOverrides);
+    async userDelete(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.userDeleteRaw(initOverrides);
     }
 
     /**
@@ -133,10 +124,6 @@ export class UserApi extends runtime.BaseAPI {
      * Updates a user
      */
     async userUpdateRaw(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userUpdate.');
-        }
-
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userUpdate.');
         }
@@ -148,7 +135,7 @@ export class UserApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/user/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/user`,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

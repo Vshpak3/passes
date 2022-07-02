@@ -1,5 +1,6 @@
 .openapi-generator-ignore
 apis/CommentApi.ts
+apis/DefaultApi.ts
 apis/HealthApi.ts
 apis/PassApi.ts
 apis/PostApi.ts
