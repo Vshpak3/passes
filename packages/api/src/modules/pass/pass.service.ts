@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable } from '@nestjs/common'
 
-import { PassEntity } from './entities/pass.entity'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
+import { PassEntity } from './entities/pass.entity'
 
 @Injectable()
 export class PassService {

@@ -1,5 +1,5 @@
-import { EntityRepository } from '@mikro-orm/core'
 import { jest } from '@jest/globals'
+import { EntityRepository } from '@mikro-orm/core'
 
 export type MockType<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types

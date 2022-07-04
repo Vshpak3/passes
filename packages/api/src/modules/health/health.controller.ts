@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common'
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 @ApiTags('health')
 @Controller('health')

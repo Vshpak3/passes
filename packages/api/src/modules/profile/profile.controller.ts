@@ -1,17 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common'
-import { ProfileService } from './profile.service'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
+import { ProfileService } from './profile.service'
 
 @ApiTags('profile')
 @Controller('profile')

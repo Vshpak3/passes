@@ -1,3 +1,4 @@
+import Image from "next/image"
 import PropTypes from "prop-types"
 import Tilt from "react-parallax-tilt"
 import Avatar from "src/components/avatar"
@@ -28,10 +29,7 @@ const NFTPass = ({ avatarUrl, passUrl, number }) => {
           />
         </div>
         <div className="rounded-full border border-mauve-mauve6 p-8 dark:border-mauveDark-mauve6">
-          <img // eslint-disable-line
-            className="h-48 w-48"
-            src={passUrl}
-          />
+          <Image className="h-48 w-48" src={passUrl} alt="" />
         </div>
         <Text className="absolute bottom-6 right-8 font-semibold" fontSize={48}>
           #{number}

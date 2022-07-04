@@ -1,9 +1,10 @@
+import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
+
+import { repositoryMockFactory } from '../../database/test-helpers'
 import { CommentController } from './comment.controller'
 import { CommentService } from './comment.service'
 import { CommentEntity } from './entities/comment.entity'
-import { repositoryMockFactory } from '../../database/test-helpers'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 
 describe('CommentController', () => {
   let controller: CommentController

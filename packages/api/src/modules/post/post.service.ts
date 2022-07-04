@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable } from '@nestjs/common'
 
-import { PostEntity } from './entities/post.entity'
 import { CreatePostDto } from './dto/create-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
+import { PostEntity } from './entities/post.entity'
 
 @Injectable()
 export class PostService {

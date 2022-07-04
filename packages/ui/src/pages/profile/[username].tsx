@@ -1,13 +1,13 @@
-import Text from "src/components/text"
-import Social from "src/icons/social"
 import { useState } from "react"
-import RedTopVector from "/public/pages/profile/profile-bg-red-top.svg"
-import PurpleRightVector from "/public/pages/profile/profile-bg-purple-right.svg"
-import BlueLeftVector from "/public/pages/profile/profile-bg-blue-left.svg"
-import GrainyVector from "/public/pages/profile/grainy.svg"
 import NavigationMenu from "src/components/navigation-menu/navigation-menu"
 import AboutCreator from "src/components/pages/profile/about-creator"
 import CreatorPosts from "src/components/pages/profile/posts/creator-posts"
+import Social from "src/icons/social"
+
+import GrainyVector from "/public/pages/profile/grainy.svg"
+import BlueLeftVector from "/public/pages/profile/profile-bg-blue-left.svg"
+import PurpleRightVector from "/public/pages/profile/profile-bg-purple-right.svg"
+import RedTopVector from "/public/pages/profile/profile-bg-red-top.svg"
 
 const mockCreator = {
   avatarUrl: "/andrea-botez/avatar.jpeg",
@@ -235,7 +235,7 @@ const Username = () => {
             style={{ zIndex: 1 }}
           >
             <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white 
+              className={`tab flex h-16 flex-1 flex-col text-lg text-white
             ${isCurrentlyActive("about", activeTab)}`}
               onClick={() => setActiveTab("about")}
             >
@@ -243,7 +243,7 @@ const Username = () => {
               <UnderlineTab currentTab="about" activeTab={activeTab} />
             </a>
             <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white 
+              className={`tab flex h-16 flex-1 flex-col text-lg text-white
             ${isCurrentlyActive("posts", activeTab)}`}
               onClick={() => setActiveTab("posts")}
             >
@@ -251,7 +251,7 @@ const Username = () => {
               <UnderlineTab currentTab="posts" activeTab={activeTab} />
             </a>
             <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white 
+              className={`tab flex h-16 flex-1 flex-col text-lg text-white
             ${isCurrentlyActive("passes", activeTab)}`}
               onClick={() => setActiveTab("passes")}
             >

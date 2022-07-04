@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { CommentService } from './comment.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { CommentEntity } from './entities/comment.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { CommentService } from './comment.service'
+import { CommentEntity } from './entities/comment.entity'
 
 describe('CommentService', () => {
   let service: CommentService

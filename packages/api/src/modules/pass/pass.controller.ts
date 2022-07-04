@@ -1,17 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common'
-import { PassService } from './pass.service'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+
 import { CreatePassDto } from './dto/create-pass.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
+import { PassService } from './pass.service'
 
 @ApiTags('pass')
 @Controller('pass')

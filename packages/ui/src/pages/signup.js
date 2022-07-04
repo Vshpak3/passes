@@ -23,7 +23,7 @@ const SignupPage = ({ providers }) => {
     <>
       <NextHead // hotfix for web font optimization issue: https://github.com/vercel/next.js/issues/35835#issuecomment-1125599724
       >
-        <link // eslint-disable-line
+        <link // eslint-disable-line @next/next/no-page-custom-font
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Playfair+Display:ital,wght@1,400..800&display=swap"
           rel="stylesheet"
         />

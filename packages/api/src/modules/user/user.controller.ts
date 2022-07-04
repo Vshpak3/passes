@@ -9,11 +9,12 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { UserService } from './user.service'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+
+import { RequestWithUser } from '../../types'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger'
-import { RequestWithUser } from '../../types'
+import { UserService } from './user.service'
 
 @ApiTags('user')
 @Controller('user')

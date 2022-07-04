@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { UserService } from './user.service'
-import { UserEntity } from './entities/user.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { UserEntity } from './entities/user.entity'
+import { UserService } from './user.service'
 
 describe('UserService', () => {
   let service: UserService

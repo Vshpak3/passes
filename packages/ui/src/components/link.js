@@ -1,7 +1,6 @@
 import NextLink from "next/link"
 import PropTypes from "prop-types"
-import { forwardRef } from "react"
-import { useEffect, useState } from "react"
+import { forwardRef, useEffect, useState } from "react"
 
 const A = forwardRef(
   (

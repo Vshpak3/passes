@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable } from '@nestjs/common'
 
-import { ProfileEntity } from './entities/profile.entity'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
+import { ProfileEntity } from './entities/profile.entity'
 
 @Injectable()
 export class ProfileService {

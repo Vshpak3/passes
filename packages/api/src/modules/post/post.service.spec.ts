@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { PostService } from './post.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { PostEntity } from './entities/post.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { PostEntity } from './entities/post.entity'
+import { PostService } from './post.service'
 
 describe('PostService', () => {
   let service: PostService

@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { SubscriptionService } from './subscription.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { SubscriptionEntity } from './entities/subscription.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { SubscriptionEntity } from './entities/subscription.entity'
+import { SubscriptionService } from './subscription.service'
 
 describe('SubscriptionService', () => {
   let service: SubscriptionService

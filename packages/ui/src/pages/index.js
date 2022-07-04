@@ -7,9 +7,9 @@ import Marquee from "react-fast-marquee"
 import Button from "src/components/button"
 import Link from "src/components/link"
 import Separator from "src/components/separator"
+import Sparkles from "src/components/sparkles"
 import Text from "src/components/text"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
-import Sparkles from "src/components/sparkles"
 
 const backersList = [
   {
@@ -59,7 +59,7 @@ const HomePage = () => {
           <header className="relative">
             <div className="absolute inset-0 h-full w-full rounded-full bg-gradient-to-r from-[#620A3F] to-[#5A44CA] opacity-30 blur-3xl" />
             <div className="relative z-10 flex flex-col items-center justify-between gap-8 rounded-xl py-8 shadow-[0px_0px_120px_0px_rgba(0,_0,_0,_0.25)_inset] backdrop-blur sm:flex-row sm:shadow-none sm:backdrop-blur-none">
-              <img // eslint-disable-line
+              <Image
                 className="opacity-90 backdrop-blur"
                 src="/moment.svg"
                 aria-label="moment"
@@ -264,14 +264,19 @@ const HomePage = () => {
                 gradientWidth={32}
                 play={prefersReducedMotion ? false : true}
               >
-                {creatorsList.map((creator, index) => (
-                  <div
-                    className="mx-2 min-w-fit rounded-full border border-purpleDark-purple6 px-12 py-3 text-purpleDark-purple11"
-                    key={index}
-                  >
-                    {creator.type}
-                  </div>
-                ))}
+                {creatorsList.map(
+                  (
+                    creator,
+                    index // eslint-disable-line sonarjs/no-identical-functions
+                  ) => (
+                    <div
+                      className="mx-2 min-w-fit rounded-full border border-purpleDark-purple6 px-12 py-3 text-purpleDark-purple11"
+                      key={index}
+                    >
+                      {creator.type}
+                    </div>
+                  )
+                )}
               </Marquee>
             </div>
             <Separator className="mt-16" />

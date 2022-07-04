@@ -1,4 +1,4 @@
-import { Entity, Property, OneToOne } from '@mikro-orm/core'
+import { Entity, OneToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'

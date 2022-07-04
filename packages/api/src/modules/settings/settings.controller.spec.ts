@@ -1,9 +1,10 @@
+import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
+
+import { repositoryMockFactory } from '../../database/test-helpers'
+import { SettingsEntity } from './entities/settings.entity'
 import { SettingsController } from './settings.controller'
 import { SettingsService } from './settings.service'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { SettingsEntity } from './entities/settings.entity'
-import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('SettingsController', () => {
   let controller: SettingsController

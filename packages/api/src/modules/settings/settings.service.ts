@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable } from '@nestjs/common'
 
-import { SettingsEntity } from './entities/settings.entity'
 import { UpdateSettingsDto } from './dto/update-settings.dto'
+import { SettingsEntity } from './entities/settings.entity'
 
 @Injectable()
 export class SettingsService {

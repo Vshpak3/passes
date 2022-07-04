@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs'
+
 import { App } from './app.main'
 
 // Generates OpenAPI JSON file from application

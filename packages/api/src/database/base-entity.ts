@@ -1,4 +1,4 @@
-import { PrimaryKey, Property, UuidType, OptionalProps } from '@mikro-orm/core'
+import { OptionalProps, PrimaryKey, Property, UuidType } from '@mikro-orm/core'
 
 export abstract class BaseEntity {
   [OptionalProps]?: 'createdAt' | 'updatedAt'

@@ -27,11 +27,9 @@ const useRandomInterval = (callback, minDelay, maxDelay) => {
     return () => window.clearTimeout(timeoutId.current)
   }, [minDelay, maxDelay])
 
-  const cancel = useCallback(function () {
+  return useCallback(function () {
     window.clearTimeout(timeoutId.current)
   }, [])
-
-  return cancel
 }
 
 export default useRandomInterval

@@ -1,4 +1,4 @@
-import { configValidationSchema, configConfiguration } from './config.schema'
+import { configConfiguration, configValidationSchema } from './config.schema'
 
 export const configOptions = {
   isGlobal: true,

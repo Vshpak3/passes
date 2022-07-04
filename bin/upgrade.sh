@@ -50,3 +50,7 @@ for package in ${packages_to_upgrade[@]} ; do
     upgrade_package
     cd -
 done
+
+# Consider also...
+# rm yarn.lock
+# yarn up

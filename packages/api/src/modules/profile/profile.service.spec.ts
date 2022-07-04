@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { ProfileService } from './profile.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { ProfileEntity } from './entities/profile.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { ProfileEntity } from './entities/profile.entity'
+import { ProfileService } from './profile.service'
 
 describe('ProfileService', () => {
   let service: ProfileService

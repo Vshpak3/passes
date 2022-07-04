@@ -1,9 +1,10 @@
+import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
+
+import { repositoryMockFactory } from '../../database/test-helpers'
+import { PassEntity } from './entities/pass.entity'
 import { PassController } from './pass.controller'
 import { PassService } from './pass.service'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { PassEntity } from './entities/pass.entity'
-import { repositoryMockFactory } from '../../database/test-helpers'
 
 describe('PassController', () => {
   let controller: PassController

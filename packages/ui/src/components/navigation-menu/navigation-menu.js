@@ -1,11 +1,11 @@
 import Link from "next/link"
-import MomentLogo from "public/moment-logo.svg"
-import SmallMomentLogo from "public/small-moment-logo.svg"
 import HomeIcon from "public/icons/home.svg"
 import MessagesIcon from "public/icons/messages.svg"
 import PassesIcon from "public/icons/passes.svg"
-import SubscriptionsIcon from "public/icons/subscriptions.svg"
 import SettingsIcon from "public/icons/settings.svg"
+import SubscriptionsIcon from "public/icons/subscriptions.svg"
+import MomentLogo from "public/moment-logo.svg"
+import SmallMomentLogo from "public/small-moment-logo.svg"
 
 const NavigationMenu = () => {
   return (

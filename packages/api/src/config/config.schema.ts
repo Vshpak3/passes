@@ -1,5 +1,6 @@
-import { getConfigValue } from './config.value'
 import * as Joi from 'joi'
+
+import { getConfigValue } from './config.value'
 
 export const configValidationSchema = Joi.object({
   DATABASE_HOST: Joi.string().required(),

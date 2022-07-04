@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-#navigationMenu{
+#navigationMenu {
   z-index: 3;
   left: 0;
   border-right: 1px solid rgba(52, 52, 58, 0.8);
@@ -11,20 +11,17 @@
 }
 
 @supports (backdrop-filter: blur(24px)) {
-
-  #navigationMenu{
+  #navigationMenu {
     backdrop-filter: blur(24px);
     background: none !important;
   }
 }
 
 @media all and (max-width: 639px) {
-  #navigationMenu{
+  #navigationMenu {
     border-bottom: 1px solid rgba(52, 52, 58, 0.8);
   }
 }
-
-
 
 @layer components {
   .container {

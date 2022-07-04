@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository, wrap } from '@mikro-orm/core'
-import { UserEntity } from './entities/user.entity'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable, NotFoundException } from '@nestjs/common'
+
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { UserEntity } from './entities/user.entity'
 
 @Injectable()
 export class UserService {
@@ -49,8 +50,7 @@ export class UserService {
     oauthId: string,
     oauthProvider: string,
   ): Promise<UserEntity | null> {
-    const user = await this.userRepository.findOne({ oauthId, oauthProvider })
-    return user
+    return await this.userRepository.findOne({ oauthId, oauthProvider })
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {

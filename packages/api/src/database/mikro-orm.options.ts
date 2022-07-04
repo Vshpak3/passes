@@ -2,13 +2,13 @@ import type { Options } from '@mikro-orm/core'
 import type { PostgreSqlDriver } from '@mikro-orm/postgresql'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
-import path from 'path'
 import { ConfigService } from '@nestjs/config'
+import path from 'path'
 
-export const databaseOptions = {
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<Options<PostgreSqlDriver>> => ({
+export function getDatabaseOptions(
+  configService: ConfigService,
+): Options<PostgreSqlDriver> {
+  return {
     metadataProvider: TsMorphMetadataProvider,
     highlighter: new SqlHighlighter(),
     type: 'postgresql',
@@ -28,6 +28,12 @@ export const databaseOptions = {
         cacheDir: path.join(__dirname, '.orm-cache'),
       },
     },
-  }),
+  }
+}
+
+export const databaseOptions = {
+  useFactory: async (
+    configService: ConfigService,
+  ): Promise<Options<PostgreSqlDriver>> => getDatabaseOptions(configService),
   inject: [ConfigService],
 }

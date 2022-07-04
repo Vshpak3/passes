@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable } from '@nestjs/common'
 
-import { CommentEntity } from './entities/comment.entity'
 import { CreateCommentDto } from './dto/create-comment.dto'
 import { UpdateCommentDto } from './dto/update-comment.dto'
+import { CommentEntity } from './entities/comment.entity'
 
 @Injectable()
 export class CommentService {

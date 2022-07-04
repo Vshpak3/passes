@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { SettingsService } from './settings.service'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { SettingsEntity } from './entities/settings.entity'
+import { Test, TestingModule } from '@nestjs/testing'
+
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { SettingsEntity } from './entities/settings.entity'
+import { SettingsService } from './settings.service'
 
 describe('SettingsService', () => {
   let service: SettingsService
