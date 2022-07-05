@@ -1,13 +1,15 @@
-import { ValidationPipe } from '@nestjs/common'
+import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 
 import { AppModule } from './app.module'
 
+const APPLICATION_PORT = 3001
+
 export class App {
-  app
-  document
+  app: INestApplication
+  document: OpenAPIObject
 
   async init() {
     console.log('Starting application')
@@ -35,6 +37,6 @@ export class App {
   }
 
   async listen() {
-    await this.app.listen(3001)
+    await this.app.listen(APPLICATION_PORT)
   }
 }

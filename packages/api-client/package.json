@@ -1,5 +1,7 @@
 {
   "name": "@moment/api-client",
+  "version": "1.0.0",
+  "description": "Moment API client package",
   "private": true,
   "main": "dist/index.js",
   "types": "src/index.ts",

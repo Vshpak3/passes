@@ -1,7 +1,7 @@
 {
   "name": "@moment/api",
   "version": "1.0.0",
-  "description": "Moment API package",
+  "description": "Moment backend API package",
   "private": true,
   "scripts": {
     "build": "nest build",
@@ -23,6 +23,8 @@
     "test:cov": "NODE_ENV=dev jest --coverage"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "3.121.0",
+    "@aws-sdk/types": "3.110.0",
     "@jest/globals": "28.1.2",
     "@mikro-orm/cli": "5.2.2",
     "@mikro-orm/core": "5.2.2",

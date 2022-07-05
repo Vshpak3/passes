@@ -20,8 +20,10 @@ export const configValidationSchema = Joi.object({
   JWT_EXPIRES_IN: Joi.string().required(),
 })
 
-export const configConfiguration = function () {
-  return {
+export const configConfiguration = async function (): Promise<
+  Record<string, Record<string, any>>
+> {
+  return await waitForValues({
     database: {
       host: getConfigValue('DATABASE_HOST'),
       port: getConfigValue('DATABASE_PORT', true),
@@ -44,5 +46,17 @@ export const configConfiguration = function () {
       secret: getConfigValue('JWT_SECRET'),
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
     },
+  })
+}
+
+async function waitForValues(dictionary) {
+  for (const key in dictionary) {
+    const value = dictionary[key]
+    if (value.constructor == Object) {
+      waitForValues(value)
+    } else {
+      dictionary[key] = await value
+    }
   }
+  return dictionary
 }
