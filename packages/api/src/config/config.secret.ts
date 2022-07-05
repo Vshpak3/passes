@@ -3,36 +3,35 @@ import {
   SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager'
 
+import { infra_config_aws_region } from './config.options'
+
 // Global instantiation of AWS client. Please avoid this pattern. Configs are
 // special and this cannot be easily dependency injected.
 const client = new SecretsManagerClient({
-  // region: process.env.AWS_DEFAULT_REGION,
+  region: infra_config_aws_region,
 })
 
 export async function getSecretValue(secretId: string): Promise<string> {
-  let secret: string | undefined
-
-  await client
+  return new Promise(resolve => {
+    client
     .send(new GetSecretValueCommand({ SecretId: secretId }))
     .then((response) => {
+      if (response === undefined) {
+        throw Error(`Unable to get config secret '${secretId}'`)
+      }
+
       if ('SecretString' in response) {
-        secret = response.SecretString
+        resolve(response.SecretString!)
       } else {
         const buff = new Buffer(
           new TextDecoder().decode(response.SecretBinary),
           'base64',
         )
-        secret = buff.toString('ascii')
+        resolve(buff.toString('ascii'))
       }
-      return secret
     })
     .catch((response) => {
       console.error(response)
     })
-
-  if (secret === undefined) {
-    throw Error(`Unable to get config secret '${secretId}'`)
-  }
-
-  return secret
+  })
 }

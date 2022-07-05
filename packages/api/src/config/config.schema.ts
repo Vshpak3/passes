@@ -1,5 +1,9 @@
 import * as Joi from 'joi'
 
+import {
+  infra_config_aws_region,
+  infra_config_node_env,
+} from './config.options'
 import { getConfigValue } from './config.value'
 
 export const configValidationSchema = Joi.object({
@@ -24,6 +28,10 @@ export const configConfiguration = async function (): Promise<
   Record<string, Record<string, any>>
 > {
   return await waitForValues({
+    infra: {
+      env: infra_config_node_env,
+      region: infra_config_aws_region || 'none',
+    },
     database: {
       host: getConfigValue('DATABASE_HOST'),
       port: getConfigValue('DATABASE_PORT', true),

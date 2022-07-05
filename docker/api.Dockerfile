@@ -25,8 +25,5 @@ USER node
 WORKDIR /home/node
 COPY --chown=node:node --from=build /usr/src/app .
 
-# Set the env to production
-ENV NODE_ENV "production"
-
 # Set the command to run node
 CMD ["node", "packages/api/dist/src/main.js"]
