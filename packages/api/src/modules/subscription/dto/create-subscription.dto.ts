@@ -1,1 +1,4 @@
-export class CreateSubscriptionDto {}
+export class CreateSubscriptionDto {
+  creatorUserId: string
+  isActive: boolean
+}

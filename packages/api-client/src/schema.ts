@@ -695,7 +695,7 @@ export const schema = {
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "A subscription was created",
             "content": {
               "application/json": {
@@ -735,38 +735,6 @@ export const schema = {
                 }
               }
             }
-          }
-        },
-        "tags": [
-          "subscription"
-        ]
-      },
-      "patch": {
-        "operationId": "Subscription_update",
-        "summary": "Updates a subscription",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateSubscriptionDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A subscription was updated"
           }
         },
         "tags": [
@@ -856,10 +824,6 @@ export const schema = {
         "properties": {}
       },
       "CreateSubscriptionDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateSubscriptionDto": {
         "type": "object",
         "properties": {}
       }

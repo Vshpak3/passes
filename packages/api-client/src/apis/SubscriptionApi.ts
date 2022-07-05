@@ -27,11 +27,6 @@ export interface SubscriptionRemoveRequest {
     id: string;
 }
 
-export interface SubscriptionUpdateRequest {
-    id: string;
-    body: object;
-}
-
 /**
  * 
  */
@@ -127,42 +122,6 @@ export class SubscriptionApi extends runtime.BaseAPI {
      */
     async subscriptionRemove(requestParameters: SubscriptionRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.subscriptionRemoveRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Updates a subscription
-     */
-    async subscriptionUpdateRaw(requestParameters: SubscriptionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling subscriptionUpdate.');
-        }
-
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling subscriptionUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/subscription/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.body as any,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Updates a subscription
-     */
-    async subscriptionUpdate(requestParameters: SubscriptionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.subscriptionUpdateRaw(requestParameters, initOverrides);
     }
 
 }

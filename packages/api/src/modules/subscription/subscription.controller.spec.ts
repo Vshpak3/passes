@@ -2,6 +2,7 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { UserEntity } from '../user/entities/user.entity'
 import { SubscriptionEntity } from './entities/subscription.entity'
 import { SubscriptionController } from './subscription.controller'
 import { SubscriptionService } from './subscription.service'
@@ -16,6 +17,10 @@ describe('SubscriptionController', () => {
         SubscriptionService,
         {
           provide: getRepositoryToken(SubscriptionEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(UserEntity),
           useFactory: repositoryMockFactory,
         },
       ],
