@@ -26,6 +26,9 @@ export class ProfileEntity extends BaseEntity {
   @Property()
   twitchUrl?: string
 
+  @Property()
+  isActive: boolean
+
   // @Property()
   // totalPosts: number
 

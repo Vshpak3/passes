@@ -2,6 +2,7 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { UserEntity } from '../user/entities/user.entity'
 import { ProfileEntity } from './entities/profile.entity'
 import { ProfileController } from './profile.controller'
 import { ProfileService } from './profile.service'
@@ -16,6 +17,10 @@ describe('ProfileController', () => {
         ProfileService,
         {
           provide: getRepositoryToken(ProfileEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(UserEntity),
           useFactory: repositoryMockFactory,
         },
       ],

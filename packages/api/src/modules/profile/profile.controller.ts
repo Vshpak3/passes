@@ -7,10 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
+import { RequestWithUser } from '../../types'
 import { CreateProfileDto } from './dto/create-profile.dto'
+import { GetProfileDto } from './dto/get-profile.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 import { ProfileService } from './profile.service'
 
@@ -21,15 +24,16 @@ export class ProfileController {
 
   @ApiOperation({ summary: 'Creates a profile' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: CreateProfileDto,
     description: 'A profile was created',
   })
   @Post()
   async create(
+    @Req() req: RequestWithUser,
     @Body() createProfileDto: CreateProfileDto,
-  ): Promise<CreateProfileDto> {
-    return this.profileService.create(createProfileDto)
+  ): Promise<GetProfileDto> {
+    return this.profileService.create(req.user.id, createProfileDto)
   }
 
   @ApiOperation({ summary: 'Gets a profile' })
@@ -39,7 +43,7 @@ export class ProfileController {
     description: 'A profile was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreateProfileDto> {
+  async findOne(@Param('id') id: string): Promise<GetProfileDto> {
     return this.profileService.findOne(id)
   }
 
@@ -51,10 +55,11 @@ export class ProfileController {
   })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id') profileId: string,
+    @Req() req: RequestWithUser,
     @Body() updateProfileDto: UpdateProfileDto,
-  ) {
-    return this.profileService.update(id, updateProfileDto)
+  ): Promise<GetProfileDto> {
+    return this.profileService.update(req.user.id, profileId, updateProfileDto)
   }
 
   @ApiOperation({ summary: 'Deletes a profile' })
@@ -64,7 +69,10 @@ export class ProfileController {
     description: 'A profile was deleted',
   })
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.profileService.remove(id)
+  async remove(
+    @Param('id') profileId: string,
+    @Req() req: RequestWithUser,
+  ): Promise<GetProfileDto> {
+    return this.profileService.remove(req.user.id, profileId)
   }
 }
