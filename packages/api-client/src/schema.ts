@@ -529,6 +529,37 @@ export const schema = {
         "tags": [
           "profile"
         ]
+      }
+    },
+    "/api/profile/{id}": {
+      "get": {
+        "operationId": "Profile_findOne",
+        "summary": "Gets a profile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A profile was retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProfileDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "profile"
+        ]
       },
       "patch": {
         "operationId": "Profile_update",
@@ -556,37 +587,6 @@ export const schema = {
         "responses": {
           "200": {
             "description": "A profile was updated"
-          }
-        },
-        "tags": [
-          "profile"
-        ]
-      }
-    },
-    "/api/profile/{id}": {
-      "get": {
-        "operationId": "Profile_findOne",
-        "summary": "Gets a profile",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A profile was retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateProfileDto"
-                }
-              }
-            }
           }
         },
         "tags": [

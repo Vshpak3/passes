@@ -148,7 +148,7 @@ export class ProfileApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/profile`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/profile/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
