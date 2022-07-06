@@ -13,6 +13,7 @@
  */
 
 
+import { momentConfig } from './config'
 export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
 
 export interface ConfigurationParameters {
@@ -84,7 +85,7 @@ export class Configuration {
     }
 }
 
-export const DefaultConfig = new Configuration();
+export const DefaultConfig = new Configuration(momentConfig);
 
 /**
  * This is the base class for all generated API classes.

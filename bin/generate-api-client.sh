@@ -37,6 +37,25 @@ echo
 # Clean up unwanted cruft created by the generator
 rm -rf "${out_path}/src/.openapi-generator*"
 
+# Create custom config for APIs
+sed -i '' "/export const BASE_PATH/i\\
+import { momentConfig } from './config'
+" packages/api-client/src/runtime.ts
+sed -i '' \
+  's/DefaultConfig = new Configuration();/DefaultConfig = new Configuration(momentConfig);/' \
+  "${out_path}/src/runtime.ts"
+cat <<EOT > "${out_path}/src/config.ts"
+import { ConfigurationParameters } from './runtime'
+
+if (process.env.NEXT_PUBLIC_API_BASE_URL === undefined) {
+    throw Error("NEXT_PUBLIC_API_BASE_URL is not set")
+}
+
+export const momentConfig: ConfigurationParameters = {
+    basePath: process.env.NEXT_PUBLIC_API_BASE_URL
+}
+EOT
+
 # Takes the openapi json spec and adds it as a constant
 echo "export const schema = $(cat "${root}/packages/api/${spec_filename}" ) as const;" > "${out_path}/src/schema.ts"
 echo "export * from './schema';" >> "${out_path}/src/index.ts"
