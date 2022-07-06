@@ -61,7 +61,7 @@ async function waitForValues(dictionary) {
   for (const key in dictionary) {
     const value = dictionary[key]
     if (value.constructor == Object) {
-      waitForValues(value)
+      dictionary[key] = await waitForValues(value)
     } else {
       dictionary[key] = await value
     }
