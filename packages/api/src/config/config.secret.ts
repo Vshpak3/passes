@@ -11,27 +11,34 @@ const client = new SecretsManagerClient({
   region: infra_config_aws_region,
 })
 
-export async function getSecretValue(secretId: string): Promise<string> {
-  return new Promise(resolve => {
-    client
-    .send(new GetSecretValueCommand({ SecretId: secretId }))
-    .then((response) => {
-      if (response === undefined) {
-        throw Error(`Unable to get config secret '${secretId}'`)
-      }
+function throwExpression(errorMessage: string): never {
+  throw new Error(errorMessage)
+}
 
-      if ('SecretString' in response) {
-        resolve(response.SecretString!)
-      } else {
-        const buff = new Buffer(
-          new TextDecoder().decode(response.SecretBinary),
-          'base64',
-        )
-        resolve(buff.toString('ascii'))
-      }
-    })
-    .catch((response) => {
-      console.error(response)
-    })
+export async function getSecretValue(secretId: string): Promise<string> {
+  return new Promise((resolve) => {
+    client
+      .send(new GetSecretValueCommand({ SecretId: secretId }))
+      .then((response) => {
+        response ?? throwExpression(`Unable to get config secret '${secretId}'`)
+
+        // eslint-disable-next-line promise/always-return
+        if ('SecretString' in response) {
+          resolve(
+            response.SecretString ?? throwExpression(`SecretString not set`),
+          )
+        } else {
+          const buff = new Buffer(
+            new TextDecoder().decode(
+              response.SecretBinary ?? throwExpression(`SecretBinary not set`),
+            ),
+            'base64',
+          )
+          resolve(buff.toString('ascii'))
+        }
+      })
+      .catch((response) => {
+        console.error(response)
+      })
   })
 }
