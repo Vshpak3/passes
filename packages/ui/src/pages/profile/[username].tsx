@@ -1,3 +1,5 @@
+import { ProfileApi } from "@moment/api-client"
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next"
 import { useState } from "react"
 import NavigationMenu from "src/components/navigation-menu/navigation-menu"
 import AboutCreator from "src/components/pages/profile/about-creator"
@@ -13,7 +15,8 @@ const mockCreator = {
   avatarUrl: "/andrea-botez/avatar.jpeg",
   name: "Andrea Botez",
   username: "andreabotez",
-  bio: "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
+  description:
+    "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
   links: {
     youtube: "Botezlive",
     twitch: "botezlive",
@@ -62,7 +65,7 @@ const UnderlineTab = (props: { currentTab: Tabs; activeTab: Tabs }) => {
   )
 }
 
-const Username = () => {
+const Username = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [activeTab, setActiveTab] = useState<Tabs>("about")
 
   return (
@@ -132,13 +135,13 @@ const Username = () => {
           >
             <div className=" flex-1 ">
               <h1 className="text-4xl font-semibold uppercase text-white lg:text-6xl">
-                <span>{mockCreator.name}</span>
+                <span>{props.fullName}</span>
               </h1>
               <h2
                 style={{ lineHeight: 1 }}
                 className="mt-6 justify-start justify-center gap-2 text-lg text-slate-300 xl:text-2xl"
               >
-                Save America. Win big prices
+                {props.description}
               </h2>
               <div>
                 <button className="mt-7 mr-4 h-20 w-72 rounded-2xl bg-white text-xl font-bold">
@@ -164,7 +167,10 @@ const Username = () => {
                 style={{
                   boxShadow:
                     " inset 0px 10.5007px 14.0009px #FFFFFF, inset -2.33348px 3.50022px 4.66696px #FFFFFF, inset -5.8337px -5.8337px 5.8337px rgba(86, 23, 80, 0.5), inset 0px -18.42px 29.472px rgba(43, 14, 68, 0.5)",
-                  backgroundImage: "url('/andrea-botez/avatar.jpeg')",
+                  backgroundImage: `url(${
+                    props.profileImageUrl ?? "/andrea-botez/avatar.jpeg"
+                  })`,
+
                   backgroundSize: "cover"
                 }}
                 className="w mb-2 h-40 w-40 rounded-full xl:h-60 xl:w-60"
@@ -177,54 +183,62 @@ const Username = () => {
                   height: "3rem"
                 }}
               >
-                <div
-                  className="rounded-full p-2"
-                  style={{
-                    background: "#00000039"
-                  }}
-                >
-                  <Social
-                    variant="Instagram"
-                    width={iconsDimensions}
-                    height={iconsDimensions}
-                  />
-                </div>
-                <div
-                  className="rounded-full p-2"
-                  style={{
-                    background: "#00000039"
-                  }}
-                >
-                  <Social
-                    variant="YouTube"
-                    width={iconsDimensions}
-                    height={iconsDimensions}
-                  />
-                </div>
-                <div
-                  className="rounded-full p-2"
-                  style={{
-                    background: "#00000039"
-                  }}
-                >
-                  <Social
-                    variant="Discord"
-                    width={iconsDimensions}
-                    height={iconsDimensions}
-                  />
-                </div>
-                <div
-                  className="rounded-full p-2"
-                  style={{
-                    background: "#00000039"
-                  }}
-                >
-                  <Social
-                    variant="Tiktok"
-                    width={iconsDimensions}
-                    height={iconsDimensions}
-                  />
-                </div>
+                <a href={props.instagramUrl}>
+                  <div
+                    className="rounded-full p-2"
+                    style={{
+                      background: "#00000039"
+                    }}
+                  >
+                    <Social
+                      variant="Instagram"
+                      width={iconsDimensions}
+                      height={iconsDimensions}
+                    />
+                  </div>
+                </a>
+                <a href={props.youtubeUrl}>
+                  <div
+                    className="rounded-full p-2"
+                    style={{
+                      background: "#00000039"
+                    }}
+                  >
+                    <Social
+                      variant="YouTube"
+                      width={iconsDimensions}
+                      height={iconsDimensions}
+                    />
+                  </div>
+                </a>
+                <a href={props.discordUrl}>
+                  <div
+                    className="rounded-full p-2"
+                    style={{
+                      background: "#00000039"
+                    }}
+                  >
+                    <Social
+                      variant="Discord"
+                      width={iconsDimensions}
+                      height={iconsDimensions}
+                    />
+                  </div>
+                </a>
+                <a href={props.tiktokUrl}>
+                  <div
+                    className="rounded-full p-2"
+                    style={{
+                      background: "#00000039"
+                    }}
+                  >
+                    <Social
+                      variant="Tiktok"
+                      width={iconsDimensions}
+                      height={iconsDimensions}
+                    />
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -281,6 +295,33 @@ const Username = () => {
       </div>
     </div>
   )
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const api = new ProfileApi()
+  const res = (await api.profileGetAllUsernames()) as { usernames: string[] }
+
+  return {
+    paths: res?.usernames?.map((username) => ({ params: { username } })),
+    fallback: true
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params || !params.username) return { props: {} }
+
+  const username = Array.isArray(params.username)
+    ? params.username[0]
+    : params.username
+
+  try {
+    const api = new ProfileApi()
+    const props = await api.profileFindOneByUsername({ username })
+
+    return { props }
+  } catch (err) {
+    return { props: {} }
+  }
 }
 
 export default Username

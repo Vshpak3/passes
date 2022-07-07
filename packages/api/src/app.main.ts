@@ -23,6 +23,7 @@ export class App {
     this.app = await NestFactory.create(AppModule)
     this.app.setGlobalPrefix('api', { exclude: [''] })
     this.app.useGlobalPipes(new ValidationPipe())
+    this.app.enableCors()
     this.app.use(cookieParser())
   }
 

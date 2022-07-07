@@ -14,7 +14,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@moment/api-client/*": ["../api-client/src/*"],
+      "@moment/api-client": ["../api-client/src/index"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx"],
   "exclude": ["node_modules"]

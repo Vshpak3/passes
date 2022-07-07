@@ -1,7 +1,6 @@
 import Image from "next/image"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import Marquee from "react-fast-marquee"
 import Button from "src/components/button"
@@ -10,6 +9,7 @@ import Separator from "src/components/separator"
 import Sparkles from "src/components/sparkles"
 import Text from "src/components/text"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
+import useUser from "src/hooks/useUser"
 
 const backersList = [
   {
@@ -45,7 +45,7 @@ const creatorsList = [
 const HomePage = () => {
   const router = useRouter()
   const prefersReducedMotion = usePrefersReducedMotion()
-  const { data: session } = useSession()
+  const { user } = useUser()
 
   useEffect(() => {
     router.prefetch("/login")
@@ -68,8 +68,8 @@ const HomePage = () => {
                 alt=""
               />
               <div className="flex flex-wrap items-center justify-center gap-8">
-                {session ? (
-                  <NextLink href="/subscriptions">
+                {user ? (
+                  <NextLink href="/profile/toshi">
                     <Button
                       className="font-medium"
                       variant="white"
@@ -79,7 +79,7 @@ const HomePage = () => {
                       Go to Profile
                     </Button>
                   </NextLink>
-                ) : session === null ? (
+                ) : (
                   <>
                     <Link href="/login">Login</Link>
                     <NextLink href="/signup">
@@ -93,15 +93,6 @@ const HomePage = () => {
                       </Button>
                     </NextLink>
                   </>
-                ) : (
-                  <Button
-                    className="font-medium opacity-10"
-                    variant="white"
-                    bigger
-                    fontSize={15}
-                  >
-                    <span className="invisible">Go to Profile</span>
-                  </Button>
                 )}
               </div>
             </div>

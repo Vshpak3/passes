@@ -22,6 +22,7 @@ import {
 } from './constants/errors'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { GetProfileDto } from './dto/get-profile.dto'
+import { GetUsernamesDto } from './dto/get-usernames.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
 
@@ -78,6 +79,32 @@ export class ProfileService {
     return new GetProfileDto(profile)
   }
 
+  async findOneByUsername(username: string): Promise<GetProfileDto> {
+    const profile = await this.profileRepository.findOne(
+      {
+        user: { userName: username },
+      },
+      {
+        populate: [
+          'user',
+          'description',
+          'profileImageUrl',
+          'instagramUrl',
+          'tiktokUrl',
+          'youtubeUrl',
+          'discordUrl',
+          'twitchUrl',
+          'isActive',
+        ],
+      },
+    )
+    if (!profile) {
+      throw new NotFoundException(PROFILE_NOT_EXIST)
+    }
+
+    return new GetProfileDto(profile)
+  }
+
   async update(
     userId: string,
     profileId: string,
@@ -117,5 +144,21 @@ export class ProfileService {
 
     await this.profileRepository.persist(newProfile).flush()
     return new GetProfileDto(newProfile)
+  }
+
+  async getAllUsernames(): Promise<GetUsernamesDto> {
+    const profiles = await this.profileRepository.findAll({
+      populate: ['user'],
+      fields: ['user'],
+    })
+
+    // TODO: isCreator filter should be to MikroORM
+    const usernames = profiles
+      .filter((p) => p.user.isCreator)
+      .map((p) => p.user.userName)
+
+    return {
+      usernames,
+    }
   }
 }

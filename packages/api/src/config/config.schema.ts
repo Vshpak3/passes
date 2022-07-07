@@ -22,6 +22,8 @@ export const configValidationSchema = Joi.object({
 
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
+
+  CLIENT_URL: Joi.string().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -54,6 +56,7 @@ export const configConfiguration = async function (): Promise<
       secret: getConfigValue('JWT_SECRET'),
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
     },
+    clientUrl: getConfigValue('CLIENT_URL'),
   })
 }
 

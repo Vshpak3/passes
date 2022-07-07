@@ -1,23 +1,29 @@
 import NextHead from "next/head"
 import { useRouter } from "next/router"
-import { getProviders, signIn, useSession } from "next-auth/react"
 import { useEffect } from "react"
 import Button from "src/components/button"
 import Separator from "src/components/separator"
 import Text from "src/components/text"
 import Wordmark from "src/components/wordmark"
+import useUser from "src/hooks/useUser"
 import Arrow from "src/icons/arrow"
 import Social from "src/icons/social"
 
-const LoginPage = ({ providers }) => {
+const LoginPage = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { user } = useUser()
 
   useEffect(() => {
-    if (session) {
-      router.push("/subscriptions")
+    if (!router.isReady || !user?.id) {
+      return
     }
-  }, [router, session])
+
+    router.push("/profile/toshi")
+  }, [router, user])
+
+  const handleLoginWithGoogle = async () => {
+    router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/google")
+  }
 
   return (
     <>
@@ -73,42 +79,21 @@ const LoginPage = ({ providers }) => {
               </Text>
             </div>
           </div>
-          {Object.values(providers).map((provider) => (
-            <Button
-              onClick={() => signIn(provider.id)}
-              className={
-                (provider.name === "Discord"
-                  ? "bg-[#5865F2] shadow-[#5865F2]/30 hover:bg-[#5865F2]/90"
-                  : provider.name === "Google"
-                  ? "bg-[#DB4437] shadow-[#DB4437]/30 hover:bg-[#DB4437]/90"
-                  : provider.name === "Instagram"
-                  ? "bg-[#C13584] shadow-[#C13584]/30 hover:bg-[#C13584]/90"
-                  : provider.name === "Twitch"
-                  ? "bg-[#9146FF] shadow-[#9146FF]/30 hover:bg-[#9146FF]/90"
-                  : "") +
-                " w-full max-w-sm !px-6 !py-5 text-white shadow-md transition-all hover:shadow-sm"
-              }
-              innerClassName="w-full justify-between font-medium"
-              fontSize={16}
-              key={provider.name}
-            >
-              <Social variant={provider.name} width={16} height={16} />{" "}
-              <span>Login with {provider.name}</span>
-              <span />
-            </Button>
-          ))}
+
+          <Button
+            onClick={handleLoginWithGoogle}
+            className="w-full max-w-sm bg-[#DB4437] !px-6 !py-5 text-white shadow-md shadow-[#DB4437]/30 transition-all hover:bg-[#DB4437]/90 hover:shadow-sm"
+            innerClassName="w-full justify-between font-medium"
+            fontSize={16}
+          >
+            <Social variant="Google" width={16} height={16} />{" "}
+            <span>Login with Google</span>
+            <span />
+          </Button>
         </div>
       </div>
     </>
   )
-}
-
-export async function getServerSideProps() {
-  const providers = await getProviders()
-
-  return {
-    props: { providers }
-  }
 }
 
 export default LoginPage

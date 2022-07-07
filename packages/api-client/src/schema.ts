@@ -3,13 +3,24 @@ export const schema = {
   "paths": {
     "/api/auth/user": {
       "get": {
-        "operationId": "Auth_testGetUser",
+        "operationId": "Auth_getCurrentUser",
+        "summary": "Gets the current authenticated user",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Gets the current authenticated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUserDto"
+                }
+              }
+            }
           }
-        }
+        },
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/user": {
@@ -114,23 +125,31 @@ export const schema = {
     "/api/auth/google": {
       "get": {
         "operationId": "GoogleOauth_googleAuth",
+        "summary": "Start the google oauth flow",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Start the google oauth flow"
           }
-        }
+        },
+        "tags": [
+          "auth/google"
+        ]
       }
     },
     "/api/auth/google/redirect": {
       "get": {
         "operationId": "GoogleOauth_googleAuthRedirect",
+        "summary": "Redirect from google oauth flow",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Redirect from google oauth flow"
           }
-        }
+        },
+        "tags": [
+          "auth/google"
+        ]
       }
     },
     "/api/comment": {
@@ -520,7 +539,60 @@ export const schema = {
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/GetProfileDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "profile"
+        ]
+      }
+    },
+    "/api/profile/usernames": {
+      "get": {
+        "operationId": "Profile_getAllUsernames",
+        "summary": "Gets all usernames",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Gets all usernames",
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/CreateProfileDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "profile"
+        ]
+      }
+    },
+    "/api/profile/usernames/{username}": {
+      "get": {
+        "operationId": "Profile_findOneByUsername",
+        "summary": "Gets a profile by username",
+        "parameters": [
+          {
+            "name": "username",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A profile was retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProfileDto"
                 }
               }
             }
@@ -551,7 +623,7 @@ export const schema = {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateProfileDto"
+                  "$ref": "#/components/schemas/GetProfileDto"
                 }
               }
             }
@@ -586,7 +658,14 @@ export const schema = {
         },
         "responses": {
           "200": {
-            "description": "A profile was updated"
+            "description": "A profile was updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProfileDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -608,7 +687,14 @@ export const schema = {
         ],
         "responses": {
           "200": {
-            "description": "A profile was deleted"
+            "description": "A profile was deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProfileDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -775,6 +861,10 @@ export const schema = {
   "servers": [],
   "components": {
     "schemas": {
+      "GetCurrentUserDto": {
+        "type": "object",
+        "properties": {}
+      },
       "CreateUserDto": {
         "type": "object",
         "properties": {}
@@ -808,6 +898,10 @@ export const schema = {
         "properties": {}
       },
       "CreateProfileDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "GetProfileDto": {
         "type": "object",
         "properties": {}
       },

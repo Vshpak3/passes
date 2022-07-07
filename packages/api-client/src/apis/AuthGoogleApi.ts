@@ -18,32 +18,10 @@ import * as runtime from '../runtime';
 /**
  * 
  */
-export class DefaultApi extends runtime.BaseAPI {
+export class AuthGoogleApi extends runtime.BaseAPI {
 
     /**
-     */
-    async authTestGetUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/auth/user`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async authTestGetUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.authTestGetUserRaw(initOverrides);
-    }
-
-    /**
+     * Start the google oauth flow
      */
     async googleOauthGoogleAuthRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
@@ -61,12 +39,14 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Start the google oauth flow
      */
     async googleOauthGoogleAuth(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.googleOauthGoogleAuthRaw(initOverrides);
     }
 
     /**
+     * Redirect from google oauth flow
      */
     async googleOauthGoogleAuthRedirectRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
@@ -84,6 +64,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Redirect from google oauth flow
      */
     async googleOauthGoogleAuthRedirect(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.googleOauthGoogleAuthRedirectRaw(initOverrides);

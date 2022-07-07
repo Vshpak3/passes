@@ -6,6 +6,9 @@ const nextConfig = {
     locales: ["en-US"],
     defaultLocale: "en-US"
   },
+  experimental: {
+    externalDir: true
+  },
   webpack(config) {
     // needed to use inline svg in JSX/TSX
     config.module.rules.push({

@@ -12,6 +12,9 @@ export class ProfileEntity extends BaseEntity {
   description?: string
 
   @Property()
+  profileImageUrl?: string
+
+  @Property()
   instagramUrl?: string
 
   @Property()

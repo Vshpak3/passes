@@ -3,7 +3,10 @@ import { ProfileEntity } from '../entities/profile.entity'
 export class GetProfileDto {
   id: string
   userId: string
+  fullName?: string
+  isKYCVerified?: boolean
   description?: string
+  profileImageUrl?: string
   instagramUrl?: string
   tiktokUrl?: string
   youtubeUrl?: string
@@ -15,6 +18,9 @@ export class GetProfileDto {
     this.id = profileEntity.id
     this.userId = profileEntity.user.id
     this.description = profileEntity.description
+    this.fullName = profileEntity.user.fullName
+    this.isKYCVerified = profileEntity.user.isKYCVerified
+    this.profileImageUrl = profileEntity.profileImageUrl
     this.instagramUrl = profileEntity.instagramUrl
     this.tiktokUrl = profileEntity.tiktokUrl
     this.youtubeUrl = profileEntity.youtubeUrl

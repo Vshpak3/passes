@@ -377,6 +377,15 @@
           "nullable": true,
           "mappedType": "string"
         },
+        "profile_image_url": {
+          "name": "profile_image_url",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "instagram_url": {
           "name": "instagram_url",
           "type": "varchar(255)",
@@ -510,31 +519,13 @@
           "primary": false,
           "nullable": false,
           "mappedType": "uuid"
-        },
-        "num_likes": {
-          "name": "num_likes",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "num_comments": {
-          "name": "num_comments",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
         }
       },
-      "name": "post",
+      "name": "pass",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "post_pkey",
+          "keyName": "pass_pkey",
           "columnNames": [
             "id"
           ],
@@ -545,12 +536,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "post_user_id_foreign": {
-          "constraintName": "post_user_id_foreign",
+        "pass_user_id_foreign": {
+          "constraintName": "pass_user_id_foreign",
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "public.post",
+          "localTableName": "public.pass",
           "referencedColumnNames": [
             "id"
           ],
@@ -599,13 +590,31 @@
           "primary": false,
           "nullable": false,
           "mappedType": "uuid"
+        },
+        "num_likes": {
+          "name": "num_likes",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "num_comments": {
+          "name": "num_comments",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
-      "name": "pass",
+      "name": "post",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "pass_pkey",
+          "keyName": "post_pkey",
           "columnNames": [
             "id"
           ],
@@ -616,12 +625,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "pass_user_id_foreign": {
-          "constraintName": "pass_user_id_foreign",
+        "post_user_id_foreign": {
+          "constraintName": "post_user_id_foreign",
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "public.pass",
+          "localTableName": "public.post",
           "referencedColumnNames": [
             "id"
           ],
