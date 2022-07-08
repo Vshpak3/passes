@@ -40,9 +40,27 @@ yarn workspace @moment/api prettier:fix
 yarn workspace @moment/api lint:fix
 ```
 
-### Migrations
+### Databases and Migrations
 
-This should be run whenever you update an entity:
+The docker command in the setup step will create the local testing database. You
+can then access the database via:
+
+```bash
+PGPASSWORD=root psql -U root -p 5432 -h 127.0.0.1 -d moment
+```
+
+The following script will wipe any local migration files and regenerate all
+migrations based on the state of your local database and entities:
+
+```bash
+# just migrations
+./bin/reset-local-database.sh
+
+# also will reset the local database and delete all of its data
+./bin/reset-local-database.sh full
+```
+
+You can also run the migrations manually:
 
 ```bash
 # generates the migrations
@@ -51,6 +69,7 @@ yarn workspace @moment/api migration:create
 # runs the migration
 yarn workspace @moment/api migration:up
 ```
+
 
 ### Config
 

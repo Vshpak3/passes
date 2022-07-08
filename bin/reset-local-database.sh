@@ -12,11 +12,15 @@ function log() {
   echo -e "\n$1\n"
 }
 
-log 'Spinning down docker containers and associated volumes'
-docker compose down --volumes
+readonly input=${1:-}
 
-log 'Spinning back up docker containers'
-docker compose up --detach
+if [[ ${input} == 'full' ]] ; then
+  log 'Spinning down docker containers and associated volumes'
+  docker compose down --volumes
+
+  log 'Spinning back up docker containers'
+  docker compose up --detach
+fi
 
 log 'Removing all ORM metadata'
 git clean -xfd packages/api/src/database/
