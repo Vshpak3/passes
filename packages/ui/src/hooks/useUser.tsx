@@ -6,7 +6,7 @@ import useLocalStorage from "./useLocalStorage"
 const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage("access-token", "")
 
-  const { data: user } = useSWR("/user", async () => {
+  const { data: user, isValidating: loading } = useSWR("/user", async () => {
     const api = new AuthApi()
     const response = await api.authGetCurrentUser({
       headers: { Authorization: "Bearer " + accessToken }
@@ -14,7 +14,7 @@ const useUser = () => {
     return (response as any).user
   })
 
-  return { user, setAccessToken }
+  return { user, loading, accessToken, setAccessToken }
 }
 
 export default useUser

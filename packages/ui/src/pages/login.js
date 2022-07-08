@@ -46,12 +46,6 @@ const LoginPage = () => {
           <Separator className="my-8" />
           <div className="flex flex-col items-center gap-8">
             <Button
-              className="w-full max-w-sm cursor-not-allowed border border-mauve-mauve12 !px-6 !py-5 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white dark:border-mauveDark-mauve11 dark:text-mauveDark-mauve12 dark:hover:bg-mauveDark-mauve12 dark:hover:text-black"
-              fontSize={16}
-            >
-              Connect Wallet
-            </Button>
-            <Button
               className="cursor-not-allowed"
               variant="link-blue"
               fontSize={16}

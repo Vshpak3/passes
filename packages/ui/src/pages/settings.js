@@ -1,20 +1,28 @@
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "src/components/button"
+import WalletSettings from "src/components/connected-wallets"
 import RadioGroup from "src/components/radio-group"
 import Separator from "src/components/separator"
 import Text from "src/components/text"
 import Menu, { MenuPortal } from "src/containers/menu"
+import useUser from "src/hooks/useUser"
 
 const SettingsPage = () => {
-  const router = useRouter()
-  const { data: session } = useSession()
   const [tab, setTab] = useState("Passes")
 
-  if (session === null) {
-    router.push("/", "/", { shallow: true })
-  }
+  const { user, loading } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      return
+    }
+
+    if (!user) {
+      router.push("/")
+    }
+  }, [router, user, loading])
 
   return (
     <div className="relative h-full w-full bg-mauve-mauve2 dark:bg-black">
@@ -25,7 +33,7 @@ const SettingsPage = () => {
           <form className="fade-in medium-container relative bg-mauve-mauve2 py-10 dark:bg-black">
             <div className="flex w-full justify-center divide-mauve-mauve6 rounded-lg border border-gray-gray6 bg-white dark:divide-mauveDark-mauve6 dark:border-grayDark-gray6 dark:bg-mauveDark-mauve1 lg:divide-x">
               <div className="hidden w-60 flex-col lg:flex">
-                {["Passes", "Notifications", "Account Profile"].map(
+                {["Passes", "Notifications", "Wallets", "Account Profile"].map(
                   (item, index) => (
                     <button
                       onClick={(event) => {
@@ -75,6 +83,8 @@ const SettingsPage = () => {
                   </div>
                 ) : tab === "Notifications" ? (
                   <div></div>
+                ) : tab === "Wallets" ? (
+                  <WalletSettings />
                 ) : tab === "Account Profile" ? (
                   <>
                     <div className="flex flex-col gap-2 px-8 sm:flex-row sm:items-center sm:gap-8 sm:px-16">
