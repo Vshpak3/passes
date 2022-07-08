@@ -3,15 +3,6 @@ import useSWR from "swr"
 
 import useLocalStorage from "./useLocalStorage"
 
-interface UserConnectedWallet {
-  id: string
-  createdAt: string
-  updatedAt: string
-  user: string
-  address: string
-  chain: "eth" | "sol"
-}
-
 const useUserConnectedWallets = () => {
   const [accessToken] = useLocalStorage("access-token", "")
 
@@ -24,7 +15,7 @@ const useUserConnectedWallets = () => {
     const response = await api.walletFindAll({
       headers: { Authorization: "Bearer " + accessToken }
     })
-    return response as UserConnectedWallet[]
+    return response.wallets
   })
 
   return { wallets, loading, mutate }

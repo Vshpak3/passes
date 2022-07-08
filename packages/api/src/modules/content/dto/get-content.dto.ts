@@ -1,9 +1,18 @@
+import { ApiProperty } from '@nestjs/swagger'
+
 import { ContentEntity } from '../entities/content.entity'
 
 export class GetContentDto {
+  @ApiProperty()
   id: string
+
+  @ApiProperty()
   postId: string
+
+  @ApiProperty()
   url: string
+
+  @ApiProperty()
   contentType: string
 
   constructor(contentEntity: ContentEntity) {

@@ -14,13 +14,24 @@
 
 
 import * as runtime from '../runtime';
+import {
+    AuthWalletRequestDto,
+    AuthWalletRequestDtoFromJSON,
+    AuthWalletRequestDtoToJSON,
+    CreateWalletDto,
+    CreateWalletDtoFromJSON,
+    CreateWalletDtoToJSON,
+    GetUserWalletsDto,
+    GetUserWalletsDtoFromJSON,
+    GetUserWalletsDtoToJSON,
+} from '../models';
 
 export interface WalletAuthRequest {
-    body: object;
+    authWalletRequestDto: AuthWalletRequestDto;
 }
 
 export interface WalletCreateRequest {
-    body: object;
+    createWalletDto: CreateWalletDto;
 }
 
 /**
@@ -31,9 +42,9 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Creates wallet auth message to sign
      */
-    async walletAuthRaw(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling walletAuth.');
+    async walletAuthRaw(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthWalletRequestDto>> {
+        if (requestParameters.authWalletRequestDto === null || requestParameters.authWalletRequestDto === undefined) {
+            throw new runtime.RequiredError('authWalletRequestDto','Required parameter requestParameters.authWalletRequestDto was null or undefined when calling walletAuth.');
         }
 
         const queryParameters: any = {};
@@ -47,16 +58,16 @@ export class WalletApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: AuthWalletRequestDtoToJSON(requestParameters.authWalletRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthWalletRequestDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates wallet auth message to sign
      */
-    async walletAuth(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async walletAuth(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthWalletRequestDto> {
         const response = await this.walletAuthRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -64,9 +75,9 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Creates authenticated wallet for a user
      */
-    async walletCreateRaw(requestParameters: WalletCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling walletCreate.');
+    async walletCreateRaw(requestParameters: WalletCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateWalletDto>> {
+        if (requestParameters.createWalletDto === null || requestParameters.createWalletDto === undefined) {
+            throw new runtime.RequiredError('createWalletDto','Required parameter requestParameters.createWalletDto was null or undefined when calling walletCreate.');
         }
 
         const queryParameters: any = {};
@@ -80,16 +91,16 @@ export class WalletApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: CreateWalletDtoToJSON(requestParameters.createWalletDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateWalletDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates authenticated wallet for a user
      */
-    async walletCreate(requestParameters: WalletCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async walletCreate(requestParameters: WalletCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateWalletDto> {
         const response = await this.walletCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -97,7 +108,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Get wallets for user
      */
-    async walletFindAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async walletFindAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserWalletsDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -109,13 +120,13 @@ export class WalletApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserWalletsDtoFromJSON(jsonValue));
     }
 
     /**
      * Get wallets for user
      */
-    async walletFindAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async walletFindAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserWalletsDto> {
         const response = await this.walletFindAllRaw(initOverrides);
         return await response.value();
     }

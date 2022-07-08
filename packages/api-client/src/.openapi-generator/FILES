@@ -12,4 +12,15 @@ apis/UserApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AuthWalletRequestDto.ts
+models/CreateProfileDto.ts
+models/CreateUserDto.ts
+models/CreateWalletDto.ts
+models/GetCurrentUserDto.ts
+models/GetProfileDto.ts
+models/GetUserWalletsDto.ts
+models/JwtPayload.ts
+models/UpdateProfileDto.ts
+models/UpdateUserDto.ts
+models/index.ts
 runtime.ts

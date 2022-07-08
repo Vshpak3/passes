@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import { CreateWalletDto } from './dto/create-wallet.dto'
+import { GetUserWalletsDto } from './dto/get-user-wallets.dto'
 import { WalletEntity } from './entities/wallet.entity'
 import { WalletService } from './wallet.service'
 
@@ -69,12 +70,13 @@ export class WalletController {
   @ApiOperation({ summary: 'Get wallets for user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateWalletDto,
+    type: GetUserWalletsDto,
     description: 'Wallets were retrieved',
   })
   @Get()
   @UseGuards(JwtAuthGuard)
-  async findAll(@Req() req: RequestWithUser): Promise<WalletEntity[]> {
-    return this.walletService.getWalletsForUser(req.user.id)
+  async findAll(@Req() req: RequestWithUser): Promise<GetUserWalletsDto> {
+    const wallets = await this.walletService.getWalletsForUser(req.user.id)
+    return new GetUserWalletsDto(wallets)
   }
 }

@@ -14,9 +14,20 @@
 
 
 import * as runtime from '../runtime';
+import {
+    CreateProfileDto,
+    CreateProfileDtoFromJSON,
+    CreateProfileDtoToJSON,
+    GetProfileDto,
+    GetProfileDtoFromJSON,
+    GetProfileDtoToJSON,
+    UpdateProfileDto,
+    UpdateProfileDtoFromJSON,
+    UpdateProfileDtoToJSON,
+} from '../models';
 
 export interface ProfileCreateRequest {
-    body: object;
+    createProfileDto: CreateProfileDto;
 }
 
 export interface ProfileFindOneRequest {
@@ -33,7 +44,7 @@ export interface ProfileRemoveRequest {
 
 export interface ProfileUpdateRequest {
     id: string;
-    body: object;
+    updateProfileDto: UpdateProfileDto;
 }
 
 /**
@@ -44,9 +55,9 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async profileCreateRaw(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling profileCreate.');
+    async profileCreateRaw(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileDto>> {
+        if (requestParameters.createProfileDto === null || requestParameters.createProfileDto === undefined) {
+            throw new runtime.RequiredError('createProfileDto','Required parameter requestParameters.createProfileDto was null or undefined when calling profileCreate.');
         }
 
         const queryParameters: any = {};
@@ -60,16 +71,16 @@ export class ProfileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: CreateProfileDtoToJSON(requestParameters.createProfileDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a profile
      */
-    async profileCreate(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileCreate(requestParameters: ProfileCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileDto> {
         const response = await this.profileCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -77,7 +88,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets a profile
      */
-    async profileFindOneRaw(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async profileFindOneRaw(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileFindOne.');
         }
@@ -93,13 +104,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a profile
      */
-    async profileFindOne(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileFindOne(requestParameters: ProfileFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileDto> {
         const response = await this.profileFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -107,7 +118,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets a profile by username
      */
-    async profileFindOneByUsernameRaw(requestParameters: ProfileFindOneByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async profileFindOneByUsernameRaw(requestParameters: ProfileFindOneByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileDto>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
             throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling profileFindOneByUsername.');
         }
@@ -123,13 +134,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a profile by username
      */
-    async profileFindOneByUsername(requestParameters: ProfileFindOneByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileFindOneByUsername(requestParameters: ProfileFindOneByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileDto> {
         const response = await this.profileFindOneByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -137,7 +148,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets all usernames
      */
-    async profileGetAllUsernamesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async profileGetAllUsernamesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateProfileDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -149,13 +160,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets all usernames
      */
-    async profileGetAllUsernames(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileGetAllUsernames(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateProfileDto> {
         const response = await this.profileGetAllUsernamesRaw(initOverrides);
         return await response.value();
     }
@@ -163,7 +174,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deletes a profile
      */
-    async profileRemoveRaw(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async profileRemoveRaw(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileRemove.');
         }
@@ -179,13 +190,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Deletes a profile
      */
-    async profileRemove(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileRemove(requestParameters: ProfileRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileDto> {
         const response = await this.profileRemoveRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -193,13 +204,13 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Updates a profile
      */
-    async profileUpdateRaw(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async profileUpdateRaw(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling profileUpdate.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling profileUpdate.');
+        if (requestParameters.updateProfileDto === null || requestParameters.updateProfileDto === undefined) {
+            throw new runtime.RequiredError('updateProfileDto','Required parameter requestParameters.updateProfileDto was null or undefined when calling profileUpdate.');
         }
 
         const queryParameters: any = {};
@@ -213,16 +224,16 @@ export class ProfileApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: UpdateProfileDtoToJSON(requestParameters.updateProfileDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileDtoFromJSON(jsonValue));
     }
 
     /**
      * Updates a profile
      */
-    async profileUpdate(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async profileUpdate(requestParameters: ProfileUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileDto> {
         const response = await this.profileUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }

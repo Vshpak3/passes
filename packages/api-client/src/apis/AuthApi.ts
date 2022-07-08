@@ -14,6 +14,11 @@
 
 
 import * as runtime from '../runtime';
+import {
+    GetCurrentUserDto,
+    GetCurrentUserDtoFromJSON,
+    GetCurrentUserDtoToJSON,
+} from '../models';
 
 /**
  * 
@@ -23,7 +28,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Gets the current authenticated user
      */
-    async authGetCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async authGetCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCurrentUserDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -35,13 +40,13 @@ export class AuthApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCurrentUserDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets the current authenticated user
      */
-    async authGetCurrentUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async authGetCurrentUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCurrentUserDto> {
         const response = await this.authGetCurrentUserRaw(initOverrides);
         return await response.value();
     }

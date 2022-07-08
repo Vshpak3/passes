@@ -1,17 +1,42 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+
 import { ProfileEntity } from '../entities/profile.entity'
 
 export class GetProfileDto {
+  @ApiProperty()
   id: string
+
+  @ApiProperty()
   userId: string
+
+  @ApiPropertyOptional()
   fullName?: string
+
+  @ApiPropertyOptional()
   isKYCVerified?: boolean
+
+  @ApiPropertyOptional()
   description?: string
+
+  @ApiPropertyOptional()
   profileImageUrl?: string
+
+  @ApiPropertyOptional()
   instagramUrl?: string
+
+  @ApiPropertyOptional()
   tiktokUrl?: string
+
+  @ApiPropertyOptional()
   youtubeUrl?: string
+
+  @ApiPropertyOptional()
   discordUrl?: string
+
+  @ApiPropertyOptional()
   twitchUrl?: string
+
+  @ApiProperty()
   isActive: boolean
 
   constructor(profileEntity: ProfileEntity) {

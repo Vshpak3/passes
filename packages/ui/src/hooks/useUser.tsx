@@ -11,7 +11,7 @@ const useUser = () => {
     const response = await api.authGetCurrentUser({
       headers: { Authorization: "Bearer " + accessToken }
     })
-    return (response as any).user
+    return response.user
   })
 
   return { user, loading, accessToken, setAccessToken }

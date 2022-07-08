@@ -14,9 +14,17 @@
 
 
 import * as runtime from '../runtime';
+import {
+    CreateUserDto,
+    CreateUserDtoFromJSON,
+    CreateUserDtoToJSON,
+    UpdateUserDto,
+    UpdateUserDtoFromJSON,
+    UpdateUserDtoToJSON,
+} from '../models';
 
 export interface UserCreateRequest {
-    body: object;
+    createUserDto: CreateUserDto;
 }
 
 export interface UserFindOneRequest {
@@ -24,7 +32,7 @@ export interface UserFindOneRequest {
 }
 
 export interface UserUpdateRequest {
-    body: object;
+    updateUserDto: UpdateUserDto;
 }
 
 /**
@@ -35,9 +43,9 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Creates a user
      */
-    async userCreateRaw(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userCreate.');
+    async userCreateRaw(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateUserDto>> {
+        if (requestParameters.createUserDto === null || requestParameters.createUserDto === undefined) {
+            throw new runtime.RequiredError('createUserDto','Required parameter requestParameters.createUserDto was null or undefined when calling userCreate.');
         }
 
         const queryParameters: any = {};
@@ -51,16 +59,16 @@ export class UserApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: CreateUserDtoToJSON(requestParameters.createUserDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateUserDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a user
      */
-    async userCreate(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async userCreate(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateUserDto> {
         const response = await this.userCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -93,7 +101,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Gets a user
      */
-    async userFindOneRaw(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async userFindOneRaw(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateUserDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userFindOne.');
         }
@@ -109,13 +117,13 @@ export class UserApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateUserDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a user
      */
-    async userFindOne(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async userFindOne(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateUserDto> {
         const response = await this.userFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -124,8 +132,8 @@ export class UserApi extends runtime.BaseAPI {
      * Updates a user
      */
     async userUpdateRaw(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userUpdate.');
+        if (requestParameters.updateUserDto === null || requestParameters.updateUserDto === undefined) {
+            throw new runtime.RequiredError('updateUserDto','Required parameter requestParameters.updateUserDto was null or undefined when calling userUpdate.');
         }
 
         const queryParameters: any = {};
@@ -139,7 +147,7 @@ export class UserApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: UpdateUserDtoToJSON(requestParameters.updateUserDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
