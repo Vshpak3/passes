@@ -25,18 +25,14 @@ export class WalletService {
   }
 
   async getWalletsForUser(userId: string): Promise<WalletEntity[]> {
-    const user = await this.userRepository.findOneOrFail({
-      id: userId,
-    })
+    const user = await this.userRepository.getReference(userId)
     return await this.walletRepository.find({
       user: user,
     })
   }
 
   async create(userId: string, createWalletDto: CreateWalletDto): Promise<any> {
-    const user: UserEntity = await this.userRepository.findOneOrFail({
-      id: userId,
-    })
+    const user = await this.userRepository.getReference(userId)
     const wallet = new WalletEntity()
     wallet.user = user
     if (createWalletDto.chain == Chain.ETH) {

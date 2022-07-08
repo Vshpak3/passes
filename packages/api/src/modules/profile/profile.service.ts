@@ -5,7 +5,6 @@ import {
 } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
-  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -18,7 +17,6 @@ import {
   PROFILE_NOT_EXIST,
   PROFILE_NOT_OWNED_BY_USER,
   USER_HAS_PROFILE,
-  USER_NOT_EXIST,
 } from './constants/errors'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { GetProfileDto } from './dto/get-profile.dto'
@@ -42,10 +40,6 @@ export class ProfileService {
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
     const user = await this.userRepository.getReference(userId)
-
-    if (!user) {
-      throw new BadRequestException(USER_NOT_EXIST)
-    }
 
     try {
       const profile = this.profileRepository.create({
