@@ -1,3 +1,3 @@
-# Ignore ORM cache and snapshot files
-src/database/.orm-cache
-src/database/migration/.snapshot-moment.json
+# Ignore ORM cache and migraiton files
+src/database/.orm-cache/
+src/database/migrations/
