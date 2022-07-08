@@ -1,4 +1,7 @@
-const AboutCreator = () => {
+import PropTypes from "prop-types"
+import ProfileNFtPass from "src/components/common/ProfileNftPass"
+
+const AboutCreator = ({ mockCreator }) => {
   return (
     <>
       <div
@@ -59,28 +62,18 @@ const AboutCreator = () => {
           deserunt mollit anim id est laborum.
         </p>
       </div>
-      <div className="py-15 hidden p-20 xl:block" style={{ borderTop: "none" }}>
-        <div
-          className="mb-20 h-60 max-h-60 w-60 bg-gray-500"
-          style={{ transform: "rotate(-18deg)" }}
-        >
-          NFT
-        </div>
-        <div
-          className="mb-20 h-60 max-h-60 w-60 bg-gray-500"
-          style={{ transform: "rotate(18deg)" }}
-        >
-          NFT
-        </div>
-        <div
-          className="mb-10 h-60 max-h-60 w-60 bg-gray-500"
-          style={{ transform: "rotate(-18deg)" }}
-        >
-          NFT
-        </div>
+      <div className="hidden border-t-0 pt-10 pl-16 pr-20 xl:block">
+        {mockCreator.nftPasses &&
+          mockCreator.nftPasses.map((nftPass, index) => (
+            <ProfileNFtPass key={index} nftPass={nftPass} />
+          ))}
       </div>
     </>
   )
+}
+
+AboutCreator.propTypes = {
+  mockCreator: PropTypes.object
 }
 
 export default AboutCreator

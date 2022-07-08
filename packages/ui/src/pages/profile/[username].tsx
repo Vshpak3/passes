@@ -1,20 +1,24 @@
 import { ProfileApi } from "@moment/api-client"
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
 import { useState } from "react"
 import NavigationMenu from "src/components/navigation-menu/navigation-menu"
 import AboutCreator from "src/components/pages/profile/about-creator"
 import CreatorPosts from "src/components/pages/profile/posts/creator-posts"
-import Social from "src/icons/social"
 
 import GrainyVector from "/public/pages/profile/grainy.svg"
-import BlueLeftVector from "/public/pages/profile/profile-bg-blue-left.svg"
-import PurpleRightVector from "/public/pages/profile/profile-bg-purple-right.svg"
-import RedTopVector from "/public/pages/profile/profile-bg-red-top.svg"
+import CenteredGradient from "/public/pages/profile/profile-bg-gradient-center.svg"
+import CenteredLeftGradient from "/public/pages/profile/profile-bg-gradient-left.svg"
 
+import ProfileAvatar from "../../components/common/ProfileAvatar"
+import ProfileAvatarAdditionalInformation from "../../components/common/ProfileAvatar/ProfileAvatarAdditionalInformation"
 const mockCreator = {
   avatarUrl: "/andrea-botez/avatar.jpeg",
-  name: "Andrea Botez",
+  name: "Andrea Delvey",
+  moto: "Reinventing me",
   username: "andreabotez",
+  bio: "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
+  posts: 256,
+  likes: 1200,
   description:
     "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
   links: {
@@ -36,10 +40,22 @@ const mockCreator = {
     "/andrea-botez/10.png",
     "/andrea-botez/11.png",
     "/andrea-botez/12.png"
+  ],
+  nftPasses: [
+    {
+      name: "ANNA DELVEY #8",
+      logoUrl: "/pages/profile/passExamples/passExample.png"
+    },
+    {
+      name: "ANNA DELVEY #9",
+      logoUrl: "/pages/profile/passExamples/passExample.png"
+    },
+    {
+      name: "ANNA DELVEY #11",
+      logoUrl: "/pages/profile/passExamples/passExample.png"
+    }
   ]
 }
-
-const iconsDimensions = 17
 
 type Tabs = "about" | "posts" | "passes"
 
@@ -48,6 +64,7 @@ function isCurrentlyActive(tabName: Tabs, activeTab: Tabs) {
     return "tab-active font-extrabold"
   }
 }
+// TODO: Tabs could be replaced with simple join classNames on active or inactive instead of Underlinetab and isCurrentlyActive functions
 
 const UnderlineTab = (props: { currentTab: Tabs; activeTab: Tabs }) => {
   const { currentTab, activeTab } = props
@@ -65,182 +82,39 @@ const UnderlineTab = (props: { currentTab: Tabs; activeTab: Tabs }) => {
   )
 }
 
-const Username = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Username = () => {
   const [activeTab, setActiveTab] = useState<Tabs>("about")
+  const [follow, setFollow] = useState(false)
 
   return (
     <div className="flex h-full w-full flex-row">
       <NavigationMenu />
       <div className="w-full">
-        <div
-          className="flex justify-center sm:py-20 md:h-96"
-          style={{ background: "rgba(43, 14, 68, 1)" }}
-        >
-          <div
-            className="hidden md:block"
-            style={{
-              top: "-150px",
-              position: "absolute",
-              zIndex: 1
-            }}
-          >
-            <RedTopVector />
-            <RedTopVector
-              style={{ top: "-30px", position: "absolute", zIndex: 1 }}
+        <div className="flex w-full justify-center bg-[url(/pages/profile/profile-background-full.png)] bg-cover sm:py-20 md:h-[531px]">
+          <div className="absolute top-6 right-8">
+            <span className="text-xl">
+              <span className="font-semibold">{mockCreator.posts}</span> Posts
+            </span>
+            <span className="text-xl"> | </span>
+            <span className="text-xl">
+              <span className="font-semibold">
+                {nFormatter(mockCreator.likes)}
+              </span>{" "}
+              Likes
+            </span>
+          </div>
+          <div className="z-10 hidden md:absolute md:block">
+            <CenteredGradient className="absolute right-[178px] top-[159px] hidden md:block" />
+            <CenteredLeftGradient className=" absolute right-[577px] top-[110px] hidden md:block" />
+          </div>
+          <GrainyVector className="absolute top-0 right-0 hidden h-[531px] w-full opacity-75 md:block" />
+          <div className="z-20 my-24 flex w-full max-w-7xl flex-col place-items-center justify-center sm:my-0 sm:ml-32 sm:flex-row sm:px-20 md:ml-32 lg:ml-72">
+            <ProfileAvatar />
+            <ProfileAvatarAdditionalInformation
+              mockCreator={mockCreator}
+              follow={follow}
+              setFollow={setFollow}
             />
-          </div>
-          <div
-            className="top-96 left-0 sm:top-12 md:left-12 md:top-20"
-            style={{
-              position: "absolute",
-              zIndex: 0
-            }}
-          >
-            <BlueLeftVector />
-            <div className="hidden sm:block">
-              <BlueLeftVector
-                style={{
-                  top: "20%",
-                  position: "absolute",
-                  zIndex: 0
-                }}
-              />
-            </div>
-          </div>
-          <PurpleRightVector
-            style={{ right: "0", top: "56px", position: "absolute", zIndex: 0 }}
-          />
-          <PurpleRightVector
-            style={{
-              right: "-50px",
-              top: "56px",
-              position: "absolute",
-              zIndex: 0
-            }}
-          />
-          <GrainyVector
-            style={{
-              top: 0,
-              left: 0,
-              right: 0,
-              width: "100%",
-              position: "absolute",
-              height: "384px",
-              opacity: 0.7
-            }}
-          />
-          <div
-            className="my-24 flex w-full max-w-7xl flex-col flex-col-reverse place-items-center justify-center sm:my-0 sm:ml-32 sm:flex-row sm:px-20 md:ml-32 lg:ml-72"
-            style={{ zIndex: 2 }}
-          >
-            <div className=" flex-1 ">
-              <h1 className="text-4xl font-semibold uppercase text-white lg:text-6xl">
-                <span>{props.fullName}</span>
-              </h1>
-              <h2
-                style={{ lineHeight: 1 }}
-                className="mt-6 justify-start justify-center gap-2 text-lg text-slate-300 xl:text-2xl"
-              >
-                {props.description}
-              </h2>
-              <div>
-                <button className="mt-7 mr-4 h-20 w-72 rounded-2xl bg-white text-xl font-bold">
-                  Join Whitelist
-                </button>
-                <button
-                  className="text-md ml-5 hidden h-11 text-xl text-white xl:inline"
-                  style={{
-                    padding: "0 0 10px 0",
-                    borderBottom: "1px solid white",
-                    lineHeight: "60px"
-                  }}
-                >
-                  Learn more
-                </button>
-              </div>
-            </div>
-            <div
-              className="lg:mb-none relative mb-4 mt-7 w-fit scale-75 items-start  px-4 lg:mb-8 lg:scale-100	"
-              style={{ transform: "rotate(353deg)" }}
-            >
-              <div
-                style={{
-                  boxShadow:
-                    " inset 0px 10.5007px 14.0009px #FFFFFF, inset -2.33348px 3.50022px 4.66696px #FFFFFF, inset -5.8337px -5.8337px 5.8337px rgba(86, 23, 80, 0.5), inset 0px -18.42px 29.472px rgba(43, 14, 68, 0.5)",
-                  backgroundImage: `url(${
-                    props.profileImageUrl ?? "/andrea-botez/avatar.jpeg"
-                  })`,
-
-                  backgroundSize: "cover"
-                }}
-                className="w mb-2 h-40 w-40 rounded-full xl:h-60 xl:w-60"
-              />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  height: "3rem"
-                }}
-              >
-                <a href={props.instagramUrl}>
-                  <div
-                    className="rounded-full p-2"
-                    style={{
-                      background: "#00000039"
-                    }}
-                  >
-                    <Social
-                      variant="Instagram"
-                      width={iconsDimensions}
-                      height={iconsDimensions}
-                    />
-                  </div>
-                </a>
-                <a href={props.youtubeUrl}>
-                  <div
-                    className="rounded-full p-2"
-                    style={{
-                      background: "#00000039"
-                    }}
-                  >
-                    <Social
-                      variant="YouTube"
-                      width={iconsDimensions}
-                      height={iconsDimensions}
-                    />
-                  </div>
-                </a>
-                <a href={props.discordUrl}>
-                  <div
-                    className="rounded-full p-2"
-                    style={{
-                      background: "#00000039"
-                    }}
-                  >
-                    <Social
-                      variant="Discord"
-                      width={iconsDimensions}
-                      height={iconsDimensions}
-                    />
-                  </div>
-                </a>
-                <a href={props.tiktokUrl}>
-                  <div
-                    className="rounded-full p-2"
-                    style={{
-                      background: "#00000039"
-                    }}
-                  >
-                    <Social
-                      variant="Tiktok"
-                      width={iconsDimensions}
-                      height={iconsDimensions}
-                    />
-                  </div>
-                </a>
-              </div>
-            </div>
           </div>
         </div>
         <div className="tabs flex w-full justify-center" id="profileTabs">
@@ -287,7 +161,9 @@ const Username = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
                 borderTop: "none"
               }}
             >
-              {activeTab === "about" && <AboutCreator />}
+              {activeTab === "about" && (
+                <AboutCreator mockCreator={mockCreator} />
+              )}
               {activeTab === "posts" && <CreatorPosts creator={mockCreator} />}
             </div>
           </div>
@@ -298,12 +174,19 @@ const Username = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const api = new ProfileApi()
-  const res = (await api.profileGetAllUsernames()) as { usernames: string[] }
+  try {
+    const api = new ProfileApi()
+    const res = (await api.profileGetAllUsernames()) as { usernames: string[] }
 
-  return {
-    paths: res?.usernames?.map((username) => ({ params: { username } })),
-    fallback: true
+    return {
+      paths: res?.usernames?.map((username) => ({ params: { username } })),
+      fallback: true
+    }
+  } catch (error) {
+    return {
+      paths: [],
+      fallback: true
+    }
   }
 }
 
@@ -325,3 +208,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 export default Username
+
+function nFormatter(num: number) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "m"
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k"
+  }
+  return num
+}

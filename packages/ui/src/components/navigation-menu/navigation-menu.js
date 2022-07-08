@@ -62,7 +62,7 @@ const NavigationMenu = () => {
           <Link href="/">
             <div>
               <SettingsIcon />
-              <span className="hidden lg:inline-block">Suscriptions</span>
+              <span className="hidden lg:inline-block">Settings</span>
             </div>
           </Link>
         </li>
