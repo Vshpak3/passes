@@ -19,6 +19,7 @@ export function getDatabaseOptions(
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),
+    // safe: false, // prevents dropping tables and columns <-- turn on soon
     migrations: {
       path: path.join(__dirname, 'migrations'),
     },
