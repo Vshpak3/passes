@@ -10,3 +10,4 @@ export * from './ProfileApi';
 export * from './SettingsApi';
 export * from './SubscriptionApi';
 export * from './UserApi';
+export * from './WalletApi';

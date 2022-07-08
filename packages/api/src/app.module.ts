@@ -16,6 +16,7 @@ import { ProfileModule } from './modules/profile/profile.module'
 import { SettingsModule } from './modules/settings/settings.module'
 import { SubscriptionModule } from './modules/subscription/subscription.module'
 import { UserModule } from './modules/user/user.module'
+import { WalletModule } from './modules/wallet/wallet.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserModule } from './modules/user/user.module'
     SettingsModule,
     SubscriptionModule,
     UserModule,
+    WalletModule,
   ],
 })
 export class AppModule implements NestModule {

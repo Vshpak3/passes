@@ -1,4 +1,4 @@
-# Ignore ORM cache and migraiton files
+# Ignore ORM cache and migration files
 src/database/.orm-cache/
 src/database/migrations/
 
