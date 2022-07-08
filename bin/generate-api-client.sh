@@ -56,9 +56,10 @@ export const momentConfig: ConfigurationParameters = {
 }
 EOT
 
+# Removed for now to prevent merge conflicts:
 # Takes the openapi json spec and adds it as a constant
-echo "export const schema = $(cat "${root}/packages/api/${spec_filename}" ) as const;" > "${out_path}/src/schema.ts"
-echo "export * from './schema';" >> "${out_path}/src/index.ts"
+# echo "export const schema = $(cat "${root}/packages/api/${spec_filename}" ) as const;" > "${out_path}/src/schema.ts"
+# echo "export * from './schema';" >> "${out_path}/src/index.ts"
 
 # Transpile generated .ts sources to js
 yarn workspace @moment/api-client build

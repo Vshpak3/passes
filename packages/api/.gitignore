@@ -1,3 +1,6 @@
 # Ignore ORM cache and migraiton files
 src/database/.orm-cache/
 src/database/migrations/
+
+# Ignore OpenAPI JSON file
+openapi.json
