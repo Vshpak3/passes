@@ -29,7 +29,7 @@ export const configValidationSchema = Joi.object({
 export const configConfiguration = async function (): Promise<
   Record<string, Record<string, any>>
 > {
-  return await waitForValues({
+  const config = await waitForValues({
     infra: {
       env: infra_config_node_env,
       region: infra_config_aws_region || 'none',
@@ -58,6 +58,8 @@ export const configConfiguration = async function (): Promise<
     },
     clientUrl: getConfigValue('CLIENT_URL'),
   })
+  console.log(config)
+  return config
 }
 
 async function waitForValues(dictionary) {
