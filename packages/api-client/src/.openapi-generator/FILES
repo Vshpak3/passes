@@ -13,6 +13,7 @@ apis/WalletApi.ts
 apis/index.ts
 index.ts
 models/AuthWalletRequestDto.ts
+models/AuthWalletResponseDto.ts
 models/CreateProfileDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts

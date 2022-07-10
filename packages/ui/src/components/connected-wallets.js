@@ -30,7 +30,7 @@ const WalletSettings = () => {
 
       const signature = await signer.signMessage(rawMessage)
 
-      const body = {
+      const createWalletDto = {
         walletAddress,
         signedMessage: signature,
         rawMessage: rawMessage,
@@ -39,7 +39,7 @@ const WalletSettings = () => {
 
       const api = new WalletApi()
       await api.walletCreate(
-        { body },
+        { createWalletDto },
         {
           headers: {
             Authorization: "Bearer " + accessToken,
@@ -80,7 +80,7 @@ const WalletSettings = () => {
 
       const signature = Buffer.from(signedMessage.signature).toString("utf8")
 
-      const body = {
+      const createWalletDto = {
         walletAddress,
         signedMessage: signature,
         rawMessage,
@@ -89,7 +89,7 @@ const WalletSettings = () => {
 
       const api = new WalletApi()
       await api.walletCreate(
-        { body },
+        { createWalletDto },
         {
           headers: {
             Authorization: "Bearer " + accessToken,
@@ -107,7 +107,7 @@ const WalletSettings = () => {
     try {
       const api = new WalletApi()
       const res = await api.walletAuth(
-        { body: { walletAddress, chain } },
+        { authWalletRequestDto: { walletAddress, chain } },
         {
           headers: {
             Authorization: "Bearer " + accessToken,

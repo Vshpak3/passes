@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AuthWalletRequestDto';
+export * from './AuthWalletResponseDto';
 export * from './CreateProfileDto';
 export * from './CreateUserDto';
 export * from './CreateWalletDto';

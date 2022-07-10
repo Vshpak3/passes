@@ -18,6 +18,9 @@ import {
     AuthWalletRequestDto,
     AuthWalletRequestDtoFromJSON,
     AuthWalletRequestDtoToJSON,
+    AuthWalletResponseDto,
+    AuthWalletResponseDtoFromJSON,
+    AuthWalletResponseDtoToJSON,
     CreateWalletDto,
     CreateWalletDtoFromJSON,
     CreateWalletDtoToJSON,
@@ -42,7 +45,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Creates wallet auth message to sign
      */
-    async walletAuthRaw(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthWalletRequestDto>> {
+    async walletAuthRaw(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthWalletResponseDto>> {
         if (requestParameters.authWalletRequestDto === null || requestParameters.authWalletRequestDto === undefined) {
             throw new runtime.RequiredError('authWalletRequestDto','Required parameter requestParameters.authWalletRequestDto was null or undefined when calling walletAuth.');
         }
@@ -61,13 +64,13 @@ export class WalletApi extends runtime.BaseAPI {
             body: AuthWalletRequestDtoToJSON(requestParameters.authWalletRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthWalletRequestDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthWalletResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates wallet auth message to sign
      */
-    async walletAuth(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthWalletRequestDto> {
+    async walletAuth(requestParameters: WalletAuthRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthWalletResponseDto> {
         const response = await this.walletAuthRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -43,7 +43,7 @@ export class WalletController {
   @ApiOperation({ summary: 'Creates wallet auth message to sign' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: AuthWalletRequestDto,
+    type: AuthWalletResponseDto,
     description: 'Wallet Auth Message created',
   })
   @UseGuards(JwtAuthGuard)
