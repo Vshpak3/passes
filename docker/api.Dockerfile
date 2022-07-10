@@ -10,6 +10,14 @@ COPY packages packages
 COPY tsconfig.json .
 COPY yarn.lock .
 
+# Transitive dependencies of web3 (bufferutil and utf-8-validate) require these
+# packages to be built and subsequently installed
+RUN apk add --update --no-cache \
+    python3 \
+    make \
+    gcc \
+    g++
+
 # Install all dependencies
 RUN yarn install
 RUN yarn config set enableNetwork false
