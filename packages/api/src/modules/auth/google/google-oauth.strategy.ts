@@ -28,13 +28,20 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         return null
       }
 
+      const email = emails[0].value
+
+      // TODO: eventually remove this temporary login restriction
+      if (
+        !/^.*@moment.vip$/.test(email) &&
+        !['mailto.jtang@gmail.com'].includes(email)
+      ) {
+        console.error('blocking non-moment email login')
+        return null
+      }
+
       let user = await this.usersService.findOneByOAuth(id, 'google')
       if (!user) {
-        user = await this.usersService.createOAuthUser(
-          emails[0].value,
-          'google',
-          id,
-        )
+        user = await this.usersService.createOAuthUser(email, 'google', id)
       }
 
       return user
