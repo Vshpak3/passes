@@ -9,7 +9,7 @@ export const FollowButton = ({ onClick, value, name }) => (
     value={value}
     onClick={onClick}
     className={classNames(
-      !value
+      value
         ? "border border-white bg-transparent"
         : "border border-transparent bg-black shadow-lg",
       "w-[144px] rounded-2xl py-3 text-sm font-semibold  text-white sm:w-52 sm:text-lg md:py-[22px]"

@@ -3,7 +3,7 @@ import React from "react"
 
 import Star from "/public/pages/profile/profile-bg-star.svg"
 
-import { FollowButton, WhiteButton } from "../Buttons"
+import { FollowButton } from "../Buttons"
 import { WhiteListedCommunities } from "../WhitelistedCommunity"
 
 const ProfileAvatarAdditionalInformation = ({
@@ -22,10 +22,10 @@ const ProfileAvatarAdditionalInformation = ({
       <FollowButton
         onClick={() => setFollow(!follow)}
         value={follow}
-        name={follow ? "Follow" : "Unfollow"}
+        name={follow ? "Unfollow" : "Follow"}
       />
-
-      {!follow && <WhiteButton name="Join Whitelist" />}
+      {/* Temporary disabled by request */}
+      {/* {follow && <WhiteButton name="Join Whitelist" />} */}
       <Star className="-ml-[52px] -mt-5" />
     </div>
     <WhiteListedCommunities />
