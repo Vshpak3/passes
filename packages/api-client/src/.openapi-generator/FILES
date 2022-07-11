@@ -20,6 +20,7 @@ models/CreateWalletDto.ts
 models/GetCurrentUserDto.ts
 models/GetProfileDto.ts
 models/GetUserWalletsDto.ts
+models/GetUsernamesDto.ts
 models/JwtPayload.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts

@@ -8,6 +8,7 @@ export * from './CreateWalletDto';
 export * from './GetCurrentUserDto';
 export * from './GetProfileDto';
 export * from './GetUserWalletsDto';
+export * from './GetUsernamesDto';
 export * from './JwtPayload';
 export * from './UpdateProfileDto';
 export * from './UpdateUserDto';

@@ -40,7 +40,7 @@ export class ProfileController {
   @ApiOperation({ summary: 'Gets all usernames' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateProfileDto,
+    type: GetUsernamesDto,
     description: 'Gets all usernames',
   })
   @Get('/usernames')

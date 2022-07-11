@@ -177,7 +177,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const api = new ProfileApi()
     const res = (await api.profileGetAllUsernames()) as { usernames: string[] }
-
     return {
       paths: res?.usernames?.map((username) => ({ params: { username } })),
       fallback: true
@@ -199,7 +198,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     const api = new ProfileApi()
-    const props = await api.profileFindOneByUsername({ username })
+    const profile = await api.profileFindOneByUsername({ username })
+
+    // TODO: Hack to remove undefined from generated API typings
+    const props = JSON.parse(JSON.stringify(profile))
 
     return { props }
   } catch (err) {

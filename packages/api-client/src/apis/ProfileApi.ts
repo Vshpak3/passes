@@ -21,6 +21,9 @@ import {
     GetProfileDto,
     GetProfileDtoFromJSON,
     GetProfileDtoToJSON,
+    GetUsernamesDto,
+    GetUsernamesDtoFromJSON,
+    GetUsernamesDtoToJSON,
     UpdateProfileDto,
     UpdateProfileDtoFromJSON,
     UpdateProfileDtoToJSON,
@@ -148,7 +151,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets all usernames
      */
-    async profileGetAllUsernamesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateProfileDto>> {
+    async profileGetAllUsernamesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUsernamesDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -160,13 +163,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateProfileDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUsernamesDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets all usernames
      */
-    async profileGetAllUsernames(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateProfileDto> {
+    async profileGetAllUsernames(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUsernamesDto> {
         const response = await this.profileGetAllUsernamesRaw(initOverrides);
         return await response.value();
     }
