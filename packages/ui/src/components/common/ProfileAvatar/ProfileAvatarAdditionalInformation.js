@@ -12,13 +12,13 @@ const ProfileAvatarAdditionalInformation = ({
   setFollow
 }) => (
   <div className="flex-1 ">
-    <h1 className="text-4xl font-semibold uppercase text-white lg:text-6xl">
+    <h1 className="whitespace-nowrap text-4xl font-semibold uppercase text-white sm:text-3xl md:text-5xl 2xl:text-6xl ">
       <span>{mockCreator.name}</span>
     </h1>
-    <h2 className="mt-6 justify-center gap-2 text-lg leading-none text-slate-300 md:justify-start xl:text-2xl">
+    <h2 className="mt-2 justify-center gap-2 text-lg leading-none text-slate-300 md:justify-start lg:mt-6 xl:text-2xl">
       {mockCreator.moto}
     </h2>
-    <div className="flex justify-center gap-6 pt-5 md:justify-start md:pt-10">
+    <div className="flex justify-center gap-6 pt-5 sm:justify-start sm:pt-10 xs:pt-5">
       <FollowButton
         onClick={() => setFollow(!follow)}
         value={follow}

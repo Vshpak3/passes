@@ -5,7 +5,7 @@ export const WhiteListedCommunities = () => (
     <span className="pt-4 uppercase text-[#FFFFFF]/80">
       Whitelisted Communities
     </span>
-    <div className="grid grid-cols-2 justify-items-center gap-8 p-4 md:flex">
+    <div className="grid grid-cols-2 justify-items-center gap-2 p-4 lg:flex lg:gap-3 xl:gap-8">
       <img // eslint-disable-line @next/next/no-img-element
         src="/pages/profile/whitelistedLogos/logoBayc.png"
         alt=""

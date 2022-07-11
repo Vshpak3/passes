@@ -12,7 +12,7 @@ export const FollowButton = ({ onClick, value, name }) => (
       value
         ? "border border-white bg-transparent"
         : "border border-transparent bg-black shadow-lg",
-      "w-[144px] rounded-2xl py-3 text-sm font-semibold  text-white sm:w-52 sm:text-lg md:py-[22px]"
+      "sm:py:-[0px] flex w-[144px] items-center justify-center rounded-2xl py-3 text-sm font-semibold text-white sm:w-[101px] sm:text-xs md:w-[127px] md:py-[11px] md:text-base lg:w-[183px] lg:py-[19px] lg:text-lg 2xl:w-[223px] 2xl:py-[25px] 2xl:text-2xl"
     )}
   >
     {name}

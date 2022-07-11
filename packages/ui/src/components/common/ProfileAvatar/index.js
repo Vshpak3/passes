@@ -4,7 +4,7 @@ import Social from "src/icons/social"
 const iconsDimensions = 17
 
 const ProfileAvatar = () => (
-  <div className="lg:mb-none relative mb-4 mt-7 w-fit scale-75 items-start px-4  md:mt-0 md:pr-[70px] lg:mb-8 lg:scale-100">
+  <div className="lg:mb-none relative mb-4 mt-7 w-fit scale-75 items-start px-4  md:mt-0 md:scale-100 md:pr-[70px] lg:mb-8">
     <div
       style={{
         boxShadow:
@@ -12,7 +12,7 @@ const ProfileAvatar = () => (
         backgroundImage: "url('/andrea-botez/avatar.jpeg')",
         backgroundSize: "cover"
       }}
-      className="w mb-2 h-40 w-40 rounded-full xl:h-60 xl:w-60"
+      className="w mb-2 h-40 w-40  rounded-full md:h-60 md:w-60"
     />
     <div
       style={{
