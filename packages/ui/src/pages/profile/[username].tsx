@@ -12,46 +12,46 @@ import CenteredLeftGradient from "/public/pages/profile/profile-bg-gradient-left
 import ProfileAvatar from "../../components/common/ProfileAvatar"
 import ProfileAvatarAdditionalInformation from "../../components/common/ProfileAvatar/ProfileAvatarAdditionalInformation"
 const mockCreator = {
-  avatarUrl: "/andrea-botez/avatar.jpeg",
-  name: "Andrea Delvey",
-  moto: "Reinventing me",
-  username: "andreabotez",
+  avatarUrl: "/example/avatar.jpeg",
+  name: "Example Name",
+  moto: "Example",
+  username: "example",
   bio: "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
   posts: 256,
   likes: 1200,
   description:
     "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
   links: {
-    youtube: "Botezlive",
-    twitch: "botezlive",
-    instagram: "itsandreabotez",
-    tiktok: "andreabotez"
+    youtube: "blank",
+    twitch: "blank",
+    instagram: "blank",
+    tiktok: "blank"
   },
   popularPictures: [
-    "/andrea-botez/1.png",
-    "/andrea-botez/2.png",
-    "/andrea-botez/3.png",
-    "/andrea-botez/4.png",
-    "/andrea-botez/5.png",
-    "/andrea-botez/6.png",
-    "/andrea-botez/7.png",
-    "/andrea-botez/8.png",
-    "/andrea-botez/9.png",
-    "/andrea-botez/10.png",
-    "/andrea-botez/11.png",
-    "/andrea-botez/12.png"
+    "/name/1.png",
+    "/name/2.png",
+    "/name/3.png",
+    "/name/4.png",
+    "/name/5.png",
+    "/name/6.png",
+    "/name/7.png",
+    "/name/8.png",
+    "/name/9.png",
+    "/name/10.png",
+    "/name/11.png",
+    "/name/12.png"
   ],
   nftPasses: [
     {
-      name: "ANNA DELVEY #8",
+      name: "Example #8",
       logoUrl: "/pages/profile/passExamples/passExample.png"
     },
     {
-      name: "ANNA DELVEY #9",
+      name: "Example #9",
       logoUrl: "/pages/profile/passExamples/passExample.png"
     },
     {
-      name: "ANNA DELVEY #11",
+      name: "Example #11",
       logoUrl: "/pages/profile/passExamples/passExample.png"
     }
   ]
