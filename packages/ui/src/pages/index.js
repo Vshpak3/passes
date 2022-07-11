@@ -1,15 +1,14 @@
+import axios from "axios"
 import Image from "next/image"
-import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Marquee from "react-fast-marquee"
 import Button from "src/components/button"
-import Link from "src/components/link"
 import Separator from "src/components/separator"
 import Sparkles from "src/components/sparkles"
 import Text from "src/components/text"
 import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
-import useUser from "src/hooks/useUser"
+// import useUser from "src/hooks/useUser"
 
 const backersList = [
   {
@@ -45,7 +44,33 @@ const creatorsList = [
 const HomePage = () => {
   const router = useRouter()
   const prefersReducedMotion = usePrefersReducedMotion()
-  const { user } = useUser()
+  // const { user } = useUser()
+
+  const [emailAddress, setEmailAddress] = useState("")
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState("")
+  const [emailFeedback, setEmailFeedback] = useState("")
+
+  const handleSubmitEmail = async () => {
+    if (isSubmittingEmail) {
+      return
+    }
+
+    if (!emailAddress) {
+      setEmailFeedback("Please provide an email address!")
+      return
+    }
+
+    setIsSubmittingEmail(true)
+
+    try {
+      await axios.post("/api/email", { emailAddress })
+      setEmailFeedback("Thank you for subscribing!")
+    } catch (err) {
+      setEmailFeedback("An error occurred...")
+    } finally {
+      setIsSubmittingEmail(false)
+    }
+  }
 
   useEffect(() => {
     router.prefetch("/login")
@@ -67,7 +92,7 @@ const HomePage = () => {
                 width={42}
                 alt=""
               />
-              <div className="flex flex-wrap items-center justify-center gap-8">
+              {/* <div className="flex flex-wrap items-center justify-center gap-8">
                 {user ? (
                   <NextLink href="/profile/toshi">
                     <Button
@@ -94,7 +119,7 @@ const HomePage = () => {
                     </NextLink>
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
           </header>
         </div>
@@ -154,11 +179,68 @@ const HomePage = () => {
             <br />
             to scale their content <span>{"&"}</span> own their audiences.
           </Text>
-          <div className="flex justify-center">
+
+          <div className="mx-auto max-w-2xl p-8 text-white">
+            <h3 className="mb-6 text-center text-2xl font-semibold">
+              Sign Up for Updates
+            </h3>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end">
+              <div className="grow">
+                <label
+                  htmlFor="email"
+                  className="block pl-5 text-sm font-medium text-zinc-400"
+                >
+                  Email Address
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="yourname@example.com"
+                    className="block h-16 w-full rounded-full bg-zinc-800 px-5 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    onChange={(v) => setEmailAddress(v.target.value)}
+                    value={emailAddress}
+                  />
+                </div>
+              </div>
+              <button
+                className="block h-16 w-full rounded-full bg-white px-5 text-black sm:px-16 md:w-fit"
+                type="submit"
+                onClick={handleSubmitEmail}
+              >
+                {isSubmittingEmail ? (
+                  <svg
+                    role="status"
+                    className="mr-2 h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentFill"
+                    />
+                  </svg>
+                ) : (
+                  "Sign Up"
+                )}
+              </button>
+            </div>
+            {emailFeedback && (
+              <p className="pt-6 text-center font-semibold">{emailFeedback}</p>
+            )}
+          </div>
+          {/* <div className="flex justify-center">
             <Button variant="purple" bigger href="https://jobs.lever.co/Moment">
               See Open Positions
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="relative">
           <svg
