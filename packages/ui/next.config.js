@@ -18,14 +18,6 @@ const nextConfig = {
 
     return config
   },
-  async rewrites() {
-    return [
-      {
-        source: "/:username",
-        destination: "/creator/:username"
-      }
-    ]
-  },
   async redirects() {
     return [
       {

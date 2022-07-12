@@ -1,4 +1,4 @@
-import { ProfileApi } from "@moment/api-client"
+import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useState } from "react"
 import NavigationMenu from "src/components/navigation-menu/navigation-menu"
@@ -9,8 +9,9 @@ import GrainyVector from "/public/pages/profile/grainy.svg"
 import CenteredGradient from "/public/pages/profile/profile-bg-gradient-center.svg"
 import CenteredLeftGradient from "/public/pages/profile/profile-bg-gradient-left.svg"
 
-import ProfileAvatar from "../../components/common/ProfileAvatar"
-import ProfileAvatarAdditionalInformation from "../../components/common/ProfileAvatar/ProfileAvatarAdditionalInformation"
+import ProfileAvatar from "../components/common/ProfileAvatar"
+import ProfileAvatarAdditionalInformation from "../components/common/ProfileAvatar/ProfileAvatarAdditionalInformation"
+
 const mockCreator = {
   avatarUrl: "/example/avatar.jpeg",
   name: "Example Name",
@@ -82,7 +83,8 @@ const UnderlineTab = (props: { currentTab: Tabs; activeTab: Tabs }) => {
   )
 }
 
-const Username = () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Username = (props: GetProfileDto) => {
   const [activeTab, setActiveTab] = useState<Tabs>("about")
   const [follow, setFollow] = useState(false)
 
