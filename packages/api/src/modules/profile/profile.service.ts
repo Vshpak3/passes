@@ -1,17 +1,12 @@
-import {
-  EntityRepository,
-  UniqueConstraintViolationException,
-  wrap,
-} from '@mikro-orm/core'
+import { EntityRepository, wrap } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
-  ConflictException,
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   PROFILE_NOT_EXIST,
@@ -41,27 +36,23 @@ export class ProfileService {
   ): Promise<GetProfileDto> {
     const user = await this.userRepository.getReference(userId)
 
-    try {
-      const profile = this.profileRepository.create({
-        user,
-        description: createProfileDto.description,
-        instagramUrl: createProfileDto.instagramUrl,
-        tiktokUrl: createProfileDto.tiktokUrl,
-        youtubeUrl: createProfileDto.youtubeUrl,
-        discordUrl: createProfileDto.discordUrl,
-        twitchUrl: createProfileDto.twitchUrl,
-        isActive: true,
-      })
+    const profile = this.profileRepository.create({
+      user,
+      description: createProfileDto.description,
+      instagramUrl: createProfileDto.instagramUrl,
+      tiktokUrl: createProfileDto.tiktokUrl,
+      youtubeUrl: createProfileDto.youtubeUrl,
+      discordUrl: createProfileDto.discordUrl,
+      twitchUrl: createProfileDto.twitchUrl,
+      isActive: true,
+    })
 
-      await this.profileRepository.persistAndFlush(profile)
-      return new GetProfileDto(profile)
-    } catch (error) {
-      if (error instanceof UniqueConstraintViolationException) {
-        throw new ConflictException(USER_HAS_PROFILE)
-      }
-
-      throw new InternalServerErrorException(error)
-    }
+    await createOrThrowOnDuplicate(
+      this.profileRepository,
+      profile,
+      USER_HAS_PROFILE,
+    )
+    return new GetProfileDto(profile)
   }
 
   async findOne(id: string): Promise<GetProfileDto> {

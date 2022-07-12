@@ -1,17 +1,13 @@
-import {
-  EntityRepository,
-  UniqueConstraintViolationException,
-  wrap,
-} from '@mikro-orm/core'
+import { EntityRepository, wrap } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
@@ -57,23 +53,18 @@ export class SubscriptionService {
       throw new BadRequestException(IS_NOT_CREATOR)
     }
 
-    try {
-      const subscription = this.subscriptionRepository.create({
-        subscriber,
-        creator,
-        isActive: true,
-      })
+    const subscription = this.subscriptionRepository.create({
+      subscriber,
+      creator,
+      isActive: true,
+    })
 
-      await this.subscriptionRepository.persistAndFlush(subscription)
-
-      return new GetSubscriptionDto(subscription)
-    } catch (error) {
-      if (error instanceof UniqueConstraintViolationException) {
-        throw new InternalServerErrorException(SUBSCRIPTION_ALREADY_EXIST)
-      }
-
-      throw new InternalServerErrorException(error)
-    }
+    createOrThrowOnDuplicate(
+      this.subscriptionRepository,
+      subscription,
+      SUBSCRIPTION_ALREADY_EXIST,
+    )
+    return new GetSubscriptionDto(subscription)
   }
 
   async findOne(id: string): Promise<GetSubscriptionDto> {
