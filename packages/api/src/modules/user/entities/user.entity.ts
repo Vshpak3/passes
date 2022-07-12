@@ -3,12 +3,12 @@ import { Entity, Index, Property } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 
 @Entity({ tableName: 'users' }) // not a good idea to have a table named "user" in postgres
+@Index({ properties: ['oauthId', 'oauthProvider'] })
 export class UserEntity extends BaseEntity {
   @Property()
   email: string
 
   @Property()
-  @Index()
   oauthId?: string
 
   @Property()
