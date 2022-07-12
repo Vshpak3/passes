@@ -18,7 +18,7 @@ export class UserService {
       email: createUserDto.email,
       userName: createUserDto.userName,
     })
-    await this.userRepository.persist(user).flush()
+    await this.userRepository.persistAndFlush(user)
     return user
   }
 
@@ -33,7 +33,7 @@ export class UserService {
       oauthId: providerId,
       oauthProvider: provider,
     })
-    await this.userRepository.persist(user).flush()
+    await this.userRepository.persistAndFlush(user)
     return user
   }
 
@@ -61,7 +61,7 @@ export class UserService {
       ...updateUserDto,
     })
 
-    await this.userRepository.persist(newUser).flush()
+    await this.userRepository.persistAndFlush(newUser)
     return newUser
   }
 
@@ -72,7 +72,7 @@ export class UserService {
       isDisabled: true,
     })
 
-    await this.userRepository.persist(newUser).flush()
+    await this.userRepository.persistAndFlush(newUser)
     return newUser
   }
 }

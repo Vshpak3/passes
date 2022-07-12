@@ -64,7 +64,7 @@ export class SubscriptionService {
         isActive: true,
       })
 
-      await this.subscriptionRepository.persist(subscription).flush()
+      await this.subscriptionRepository.persistAndFlush(subscription)
 
       return new GetSubscriptionDto(subscription)
     } catch (error) {
@@ -106,7 +106,7 @@ export class SubscriptionService {
   //     isActive: updateSubscriptionDto.isActive,
   //   })
 
-  //   await this.subscriptionRepository.persist(newSubscription).flush()
+  //   await this.subscriptionRepository.persistAndFlush(newSubscription)
   //   return new GetSubscriptionDto(newSubscription)
   // }
 
@@ -129,7 +129,7 @@ export class SubscriptionService {
       isActive: false,
     })
 
-    await this.subscriptionRepository.persist(newSubscription).flush()
+    await this.subscriptionRepository.persistAndFlush(newSubscription)
     return new GetSubscriptionDto(newSubscription)
   }
 }

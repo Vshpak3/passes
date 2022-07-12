@@ -64,7 +64,7 @@ export class WalletService {
       throw new BadRequestException('invalid chain specified')
     }
     wallet.chain = createWalletDto.chain
-    await this.walletRepository.persist(wallet).flush()
+    await this.walletRepository.persistAndFlush(wallet)
     return wallet
   }
 }

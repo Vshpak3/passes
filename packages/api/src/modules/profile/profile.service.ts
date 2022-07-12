@@ -53,7 +53,7 @@ export class ProfileService {
         isActive: true,
       })
 
-      await this.profileRepository.persist(profile).flush()
+      await this.profileRepository.persistAndFlush(profile)
       return new GetProfileDto(profile)
     } catch (error) {
       if (error instanceof UniqueConstraintViolationException) {
@@ -118,7 +118,7 @@ export class ProfileService {
       ...updateProfileDto,
     })
 
-    await this.profileRepository.persist(newProfile).flush()
+    await this.profileRepository.persistAndFlush(newProfile)
     return new GetProfileDto(newProfile)
   }
 
@@ -136,7 +136,7 @@ export class ProfileService {
       isActive: false,
     })
 
-    await this.profileRepository.persist(newProfile).flush()
+    await this.profileRepository.persistAndFlush(newProfile)
     return new GetProfileDto(newProfile)
   }
 

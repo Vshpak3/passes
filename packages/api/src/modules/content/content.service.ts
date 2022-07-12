@@ -40,7 +40,7 @@ export class ContentService {
         contentType: createContentDto.contentType,
       })
 
-      await this.contentRepository.persist(content).flush()
+      await this.contentRepository.persistAndFlush(content)
       return new GetContentDto(content)
     } catch (error) {
       throw new InternalServerErrorException(error)
@@ -70,7 +70,7 @@ export class ContentService {
       ...updateContentDto,
     })
 
-    await this.contentRepository.persist(newContent).flush()
+    await this.contentRepository.persistAndFlush(newContent)
     return new GetContentDto(newContent)
   }
 }
