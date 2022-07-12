@@ -29,6 +29,7 @@ export function getDatabaseOptions(
         cacheDir: path.join(__dirname, '.orm-cache'),
       },
     },
+    debug: process.env.NODE_ENV === 'dev',
   }
 }
 
