@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+      - run: ./bin/config-check.sh
       - run: yarn
       - run: yarn workspace @moment/api prettier:check
       - run: yarn workspace @moment/api lint:check

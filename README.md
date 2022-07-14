@@ -38,6 +38,9 @@ yarn workspace @moment/api prettier:fix
 
 # runs eslint lint fixes
 yarn workspace @moment/api lint:fix
+
+# ensures all config keys are defined in all environments
+./bin/config-check.sh
 ```
 
 ### Databases and Migrations
@@ -70,7 +73,6 @@ yarn workspace @moment/api migration:create
 yarn workspace @moment/api migration:up
 ```
 
-
 ### Config
 
 Configs are stored in `packages/api/src/config/.env.ENV` where `ENV` is one of:
@@ -92,7 +94,7 @@ merging/deploying; otherwise the deploy will fail.
 This should be run whenever you update a controller:
 
 ```bash
-# regenerates open api client
+# regenerates openapi client
 ./bin/generate-api-client.sh
 ```
 
@@ -139,5 +141,3 @@ yarn workspace @moment/ui dev
 ```bash
 yarn workspace @moment/ui add <packageName>
 ```
-
-

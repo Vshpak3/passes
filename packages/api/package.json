@@ -18,7 +18,7 @@
     "prettier:check": "prettier --check . || { echo; echo 'run prettier:fix to fix this issue'; exit 1; }",
     "prettier:fix": "prettier --write .",
     "ts:check": "tsc --noEmit --project tsconfig.json",
-    "test": "NODE_ENV=dev jest --forceExit",
+    "test": "NODE_ENV=dev jest",
     "test:watch": "NODE_ENV=dev jest --watch",
     "test:cov": "NODE_ENV=dev jest --coverage"
   },

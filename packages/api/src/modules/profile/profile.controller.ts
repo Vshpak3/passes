@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { RequestWithUser } from '../../types'
+import { RequestWithUser } from '../../types/request'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { GetProfileDto } from './dto/get-profile.dto'
 import { GetUsernamesDto } from './dto/get-usernames.dto'

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { RequestWithUser } from '../../types'
+import { RequestWithUser } from '../../types/request'
 import { CreateSubscriptionDto } from './dto/create-subscription.dto'
 import { GetSubscriptionDto } from './dto/get-subscription.dto'
 import { SubscriptionService } from './subscription.service'

@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Req, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { RequestWithUser } from '../../types'
+import { RequestWithUser } from '../../types/request'
 import { GetCurrentUserDto } from './dto/get-current-user'
 import { JwtAuthGuard } from './jwt/jwt-auth.guard'
 
