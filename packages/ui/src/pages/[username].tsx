@@ -1,177 +1,60 @@
 import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
-import { useState } from "react"
-import NavigationMenu from "src/components/navigation-menu/navigation-menu"
-import AboutCreator from "src/components/pages/profile/about-creator"
-import CreatorPosts from "src/components/pages/profile/posts/creator-posts"
+import HomeIcon from "public/icons/home.svg"
+import MessagesIcon from "public/icons/messages.svg"
+import PassesIcon from "public/icons/passes.svg"
+import SettingsIcon from "public/icons/settings.svg"
+import SubscriptionsIcon from "public/icons/subscriptions.svg"
 
-import GrainyVector from "/public/pages/profile/grainy.svg"
-import CenteredGradient from "/public/pages/profile/profile-bg-gradient-center.svg"
-import CenteredLeftGradient from "/public/pages/profile/profile-bg-gradient-left.svg"
+import BackgroundShapes from "/public/pages/profile/header-shapes-bg.svg"
 
-import ProfileAvatar from "../components/common/ProfileAvatar"
-import ProfileAvatarAdditionalInformation from "../components/common/ProfileAvatar/ProfileAvatarAdditionalInformation"
+import SideBar from "../components/common/Sidebar"
+
+const navigation = [
+  { name: "Home", href: "#", icon: HomeIcon, current: true },
+  { name: "Messages", href: "#", icon: MessagesIcon, current: false },
+  { name: "Passes", href: "#", icon: PassesIcon, current: false },
+  { name: "Payments", href: "#", icon: SubscriptionsIcon, current: false },
+  { name: "Subscriptions", href: "#", icon: SubscriptionsIcon, current: false },
+  { name: "Settings", href: "#", icon: SettingsIcon, current: false }
+]
 
 const mockCreator = {
-  avatarUrl: "/example/avatar.jpeg",
-  name: "Example Name",
-  moto: "Example",
-  username: "example",
-  bio: "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
-  posts: 256,
-  likes: 1200,
+  id: "test",
+  userId: "test",
+  fullName: "Test User",
+  isKYCVerified: false,
   description:
     "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
-  links: {
-    youtube: "blank",
-    twitch: "blank",
-    instagram: "blank",
-    tiktok: "blank"
-  },
-  popularPictures: [
-    "/name/1.png",
-    "/name/2.png",
-    "/name/3.png",
-    "/name/4.png",
-    "/name/5.png",
-    "/name/6.png",
-    "/name/7.png",
-    "/name/8.png",
-    "/name/9.png",
-    "/name/10.png",
-    "/name/11.png",
-    "/name/12.png"
-  ],
-  nftPasses: [
-    {
-      name: "Example #8",
-      logoUrl: "/pages/profile/passExamples/passExample.png"
-    },
-    {
-      name: "Example #9",
-      logoUrl: "/pages/profile/passExamples/passExample.png"
-    },
-    {
-      name: "Example #11",
-      logoUrl: "/pages/profile/passExamples/passExample.png"
-    }
-  ]
+  profileImageUrl: "/example/avatar.jpeg",
+  isActive: true
 }
-
-type Tabs = "about" | "posts" | "passes"
-
-function isCurrentlyActive(tabName: Tabs, activeTab: Tabs) {
-  if (tabName === activeTab) {
-    return "tab-active font-extrabold"
-  }
-}
-// TODO: Tabs could be replaced with simple join classNames on active or inactive instead of Underlinetab and isCurrentlyActive functions
-
-const UnderlineTab = (props: { currentTab: Tabs; activeTab: Tabs }) => {
-  const { currentTab, activeTab } = props
-  if (currentTab !== activeTab) return null
-
-  return (
-    <div
-      style={{
-        width: "50px",
-        height: "6px",
-        background: "rgba(142, 78, 198, 0.5)",
-        borderRadius: "9999px"
-      }}
-    ></div>
-  )
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Username = (props: GetProfileDto) => {
-  const [activeTab, setActiveTab] = useState<Tabs>("about")
-  const [follow, setFollow] = useState(false)
-
   return (
-    <div className="flex h-full w-full flex-row">
-      <NavigationMenu />
-      <div className="w-full">
-        <div className="flex w-full justify-center bg-[url(/pages/profile/profile-background-full.png)] bg-cover sm:py-20 md:h-[531px]">
-          <div className="absolute top-6 right-8">
-            <span className="text-xl">
-              <span className="font-semibold">{mockCreator.posts}</span> Posts
-            </span>
-            <span className="text-xl"> | </span>
-            <span className="text-xl">
-              <span className="font-semibold">
-                {nFormatter(mockCreator.likes)}
-              </span>{" "}
-              Likes
-            </span>
-          </div>
-          <div className="z-10 hidden md:absolute md:block">
-            <CenteredGradient className="absolute right-[178px] top-[159px] hidden md:block" />
-            <CenteredLeftGradient className=" absolute right-[577px] top-[110px] hidden md:block" />
-          </div>
-          <GrainyVector className="absolute top-0 right-0 hidden h-[531px] w-full opacity-75 md:block" />
-          <div className="z-20 my-24 flex w-full max-w-7xl flex-col place-items-center justify-center sm:my-0 sm:ml-32 sm:flex-row sm:px-20 md:ml-32 lg:ml-72">
-            <ProfileAvatar />
-            <ProfileAvatarAdditionalInformation
-              mockCreator={mockCreator}
-              follow={follow}
-              setFollow={setFollow}
-            />
-          </div>
+    <>
+      <div className="bg-[#1b141d]/80 md:flex ">
+        <div className="absolute top-0 left-0 hidden h-[320px] overflow-hidden md:block">
+          <div className="absolute h-full w-screen bg-[#1b141d]/50 backdrop-blur-[200px]"></div>
+          <BackgroundShapes className="" />
+          <div className="z-10 hidden md:block"></div>
         </div>
-        <div className="tabs flex w-full justify-center" id="profileTabs">
-          <div
-            className=" flex max-w-7xl flex-1 cursor-pointer sm:ml-20 md:ml-32 lg:ml-60"
-            style={{ zIndex: 1 }}
-          >
-            <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white
-            ${isCurrentlyActive("about", activeTab)}`}
-              onClick={() => setActiveTab("about")}
-            >
-              <div>About</div>
-              <UnderlineTab currentTab="about" activeTab={activeTab} />
-            </a>
-            <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white
-            ${isCurrentlyActive("posts", activeTab)}`}
-              onClick={() => setActiveTab("posts")}
-            >
-              <div>Posts</div>
-              <UnderlineTab currentTab="posts" activeTab={activeTab} />
-            </a>
-            <a
-              className={`tab flex h-16 flex-1 flex-col text-lg text-white
-            ${isCurrentlyActive("passes", activeTab)}`}
-              onClick={() => setActiveTab("passes")}
-            >
-              <div>Passes</div>
-              <UnderlineTab currentTab="passes" activeTab={activeTab} />
-            </a>
-          </div>
-        </div>
-        <div
-          className="flex justify-center pt-10 text-white"
-          style={{
-            background: "#1F1422"
-          }}
-        >
-          <div className="max-w-7xl md:ml-32 lg:ml-60">
-            <div
-              className="flex"
-              style={{
-                borderTop: "none"
-              }}
-            >
-              {activeTab === "about" && (
-                <AboutCreator mockCreator={mockCreator} />
-              )}
-              {activeTab === "posts" && <CreatorPosts creator={mockCreator} />}
+        <SideBar navigation={navigation} />
+        <div className="relative flex flex-1 flex-col overflow-y-auto">
+          <main className="flex-1 p-8 lg:mt-[269px]">
+            <div className="grid grid-cols-12 gap-4  ">
+              <div className="order-1 col-span-12  lg:col-span-3">Profile</div>
+              <div className="order-3 col-span-12  lg:order-2 lg:col-span-6">
+                Profile Content
+              </div>
+              <div className="order-2 col-span-12  lg:order-3 lg:col-span-3">
+                Passes
+              </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -197,7 +80,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const username = Array.isArray(params.username)
     ? params.username[0]
     : params.username
-
+  if (username === "test") return { props: mockCreator }
   try {
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })
@@ -212,13 +95,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 export default Username
-
-function nFormatter(num: number) {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "m"
-  }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k"
-  }
-  return num
-}

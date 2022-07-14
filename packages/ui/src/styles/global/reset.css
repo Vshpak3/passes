@@ -2,12 +2,6 @@
   margin: 0;
 }
 
-html,
-body,
-#__next {
-  height: 100%;
-}
-
 #__next {
   isolation: isolate;
 }
