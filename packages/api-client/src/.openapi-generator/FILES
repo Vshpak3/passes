@@ -39,7 +39,7 @@ models/SourceDto.ts
 models/StatusDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts
-models/Wallet.ts
+models/WalletDto.ts
 models/WalletResponseDto.ts
 models/index.ts
 runtime.ts

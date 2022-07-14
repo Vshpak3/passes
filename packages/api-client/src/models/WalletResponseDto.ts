@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    Wallet,
-    WalletFromJSON,
-    WalletFromJSONTyped,
-    WalletToJSON,
-} from './Wallet';
+    WalletDto,
+    WalletDtoFromJSON,
+    WalletDtoFromJSONTyped,
+    WalletDtoToJSON,
+} from './WalletDto';
 
 /**
  * 
@@ -28,10 +28,10 @@ import {
 export interface WalletResponseDto {
     /**
      * 
-     * @type {Wallet}
+     * @type {WalletDto}
      * @memberof WalletResponseDto
      */
-    wallet: Wallet;
+    wallet: WalletDto;
     /**
      * 
      * @type {Array<string>}
@@ -50,7 +50,7 @@ export function WalletResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'wallet': WalletFromJSON(json['wallet']),
+        'wallet': WalletDtoFromJSON(json['wallet']),
         'ethNfts': json['ethNfts'],
     };
 }
@@ -64,7 +64,7 @@ export function WalletResponseDtoToJSON(value?: WalletResponseDto | null): any {
     }
     return {
         
-        'wallet': WalletToJSON(value.wallet),
+        'wallet': WalletDtoToJSON(value.wallet),
         'ethNfts': value.ethNfts,
     };
 }

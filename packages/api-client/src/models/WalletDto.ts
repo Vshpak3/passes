@@ -16,34 +16,34 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Wallet
+ * @interface WalletDto
  */
-export interface Wallet {
+export interface WalletDto {
     /**
      * 
      * @type {string}
-     * @memberof Wallet
+     * @memberof WalletDto
      */
     userId: string;
     /**
      * 
      * @type {string}
-     * @memberof Wallet
+     * @memberof WalletDto
      */
     address: string;
     /**
      * 
      * @type {string}
-     * @memberof Wallet
+     * @memberof WalletDto
      */
     chain: string;
 }
 
-export function WalletFromJSON(json: any): Wallet {
-    return WalletFromJSONTyped(json, false);
+export function WalletDtoFromJSON(json: any): WalletDto {
+    return WalletDtoFromJSONTyped(json, false);
 }
 
-export function WalletFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wallet {
+export function WalletDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): WalletDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -55,7 +55,7 @@ export function WalletFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wa
     };
 }
 
-export function WalletToJSON(value?: Wallet | null): any {
+export function WalletDtoToJSON(value?: WalletDto | null): any {
     if (value === undefined) {
         return undefined;
     }

@@ -25,5 +25,5 @@ export * from './SourceDto';
 export * from './StatusDto';
 export * from './UpdateProfileDto';
 export * from './UpdateUserDto';
-export * from './Wallet';
+export * from './WalletDto';
 export * from './WalletResponseDto';
