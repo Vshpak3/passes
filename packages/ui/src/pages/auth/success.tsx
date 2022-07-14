@@ -20,7 +20,7 @@ const AuthSuccess = () => {
     const token = Array.isArray(accessToken) ? accessToken[0] : accessToken
     setAccessToken(token)
 
-    router.push("/profile/toshi")
+    router.push("/test")
   }, [router, setAccessToken])
 
   if (typeof window === "undefined") {

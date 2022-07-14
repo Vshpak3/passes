@@ -18,7 +18,7 @@ const LoginPage = () => {
       return
     }
 
-    router.push("/profile/toshi")
+    router.push("/test")
   }, [router, user])
 
   const handleLoginWithGoogle = async () => {
