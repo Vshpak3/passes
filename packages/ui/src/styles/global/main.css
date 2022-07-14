@@ -23,6 +23,13 @@
   }
 }
 
+.cover-image {
+  background-image: url("/bg-cover.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 @layer components {
   .container {
     @apply mx-auto max-w-4xl pr-[var(--wrapper-padding-right)] pl-[var(--wrapper-padding-left)];

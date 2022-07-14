@@ -1,24 +1,7 @@
 import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
-import HomeIcon from "public/icons/home.svg"
-import MessagesIcon from "public/icons/messages.svg"
-import PassesIcon from "public/icons/passes.svg"
-import SettingsIcon from "public/icons/settings.svg"
-import SubscriptionsIcon from "public/icons/subscriptions.svg"
-
-import BackgroundShapes from "/public/pages/profile/header-shapes-bg.svg"
 
 import SideBar from "../components/common/Sidebar"
-
-const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "Messages", href: "#", icon: MessagesIcon, current: false },
-  { name: "Passes", href: "#", icon: PassesIcon, current: false },
-  { name: "Payments", href: "#", icon: SubscriptionsIcon, current: false },
-  { name: "Subscriptions", href: "#", icon: SubscriptionsIcon, current: false },
-  { name: "Settings", href: "#", icon: SettingsIcon, current: false }
-]
-
 const mockCreator = {
   id: "test",
   userId: "test",
@@ -33,31 +16,42 @@ const mockCreator = {
 const Username = (props: GetProfileDto) => {
   return (
     <>
-      <div className="bg-[#1b141d]/80 md:flex ">
-        <div className="absolute top-0 left-0 hidden h-[320px] overflow-hidden md:block">
-          <div className="absolute h-full w-screen bg-[#1b141d]/50 backdrop-blur-[200px]"></div>
-          <BackgroundShapes className="" />
-          <div className="z-10 hidden md:block"></div>
+      <div className="relative flex min-h-screen flex-1 bg-[#1b141d]/80">
+        <div className="hidden md:block">
+          <SideBar />
         </div>
-        <SideBar navigation={navigation} />
-        <div className="relative flex flex-1 flex-col overflow-y-auto">
-          <main className="flex-1 p-8 lg:mt-[269px]">
-            <div className="grid grid-cols-12 gap-4  ">
-              <div className="order-1 col-span-12  lg:col-span-3">Profile</div>
-              <div className="order-3 col-span-12  lg:order-2 lg:col-span-6">
-                Profile Content
+        <div className="min-h-16 absolute top-0 left-0 flex w-full flex-1 items-center justify-between bg-[#252525]/50 px-2 backdrop-blur-lg md:hidden">
+          <div>icon 1</div>
+          <div>icon 2</div>
+        </div>
+        <div className="bg-[#1B141D]/85 w-full">
+          <div className="cover-image h-[300px]" />
+          <div className="-mt-10 w-full p-4">
+            <div className="grid grid-cols-12 gap-4 md:grid-cols-10">
+              <div className="hidden md:order-1 md:col-span-1 md:block"></div>
+              <div className="order-1 col-span-12 md:order-2 md:col-span-2">
+                <div className="min-h-12 flex flex-col items-center rounded border">
+                  Profile
+                </div>
               </div>
-              <div className="order-2 col-span-12  lg:order-3 lg:col-span-3">
-                Passes
+              <div className="order-3 col-span-12 md:order-2 md:col-span-4">
+                <div className="min-h-12 flex flex-col items-center rounded border">
+                  Main Content
+                </div>
               </div>
+              <div className="order-2 col-span-12 md:order-3 md:col-span-2">
+                <div className="min-h-12 flex flex-col items-center rounded border">
+                  Passes
+                </div>
+              </div>
+              <div className="hidden md:order-4 md:col-span-1 md:block"></div>
             </div>
-          </main>
+          </div>
         </div>
       </div>
     </>
   )
 }
-
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const api = new ProfileApi()
@@ -73,10 +67,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
   }
 }
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params || !params.username) return { props: {} }
-
   const username = Array.isArray(params.username)
     ? params.username[0]
     : params.username
@@ -84,14 +76,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })
-
     // TODO: Hack to remove undefined from generated API typings
     const props = JSON.parse(JSON.stringify(profile))
-
     return { props }
   } catch (err) {
     return { props: {} }
   }
 }
-
 export default Username

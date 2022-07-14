@@ -18,6 +18,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      dropShadow: {
+        "sidebar-shadow": "0px 0px 2px rgba(255, 255, 255, 0.8)"
+      },
       colors: radixColors,
       fontFamily: {
         "sans-system": defaultTheme.fontFamily.sans,

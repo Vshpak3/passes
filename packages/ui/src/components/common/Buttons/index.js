@@ -24,3 +24,9 @@ export const WhiteButton = ({ name }) => (
     {name}
   </button>
 )
+
+export const CreateButton = ({ name }) => (
+  <button className="flex items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-3 px-12 text-sm font-semibold text-white shadow-sm">
+    {name}
+  </button>
+)
