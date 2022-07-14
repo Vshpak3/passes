@@ -29,7 +29,8 @@ export class UserService {
   ): Promise<UserEntity> {
     const user = this.userRepository.create({
       email: email,
-      userName: email.substring(0, 30),
+      // TODO: Do users supply a username, or randomly generate one?
+      userName: null,
       oauthId: providerId,
       oauthProvider: provider,
     })
@@ -74,5 +75,10 @@ export class UserService {
 
     await this.userRepository.persistAndFlush(newUser)
     return newUser
+  }
+
+  async validateUsername(username: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ userName: username })
+    return !user
   }
 }

@@ -1,4 +1,4 @@
-import { Entity, Index, Property } from '@mikro-orm/core'
+import { Entity, Index, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 
@@ -15,6 +15,8 @@ export class UserEntity extends BaseEntity {
   oauthProvider?: string
 
   @Property({ length: 30 })
+  @Index()
+  @Unique()
   userName: string
 
   @Property({ length: 50 })

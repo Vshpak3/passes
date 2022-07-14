@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, Length } from 'class-validator'
+import { IsEmail, Length, Matches, Validate } from 'class-validator'
+
+import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
 
 export class CreateUserDto {
   @IsEmail()
@@ -8,5 +10,7 @@ export class CreateUserDto {
 
   @Length(1, 30)
   @ApiProperty()
+  @Matches('[a-z0-9_]+')
+  @Validate(IsNotBlocklistedUsername)
   userName: string
 }

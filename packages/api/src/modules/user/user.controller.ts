@@ -67,4 +67,15 @@ export class UserController {
   async delete(@Req() req: RequestWithUser) {
     return this.userService.remove(req.user.id)
   }
+
+  @ApiOperation({ summary: 'Validates whether a username is available' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: 'boolean',
+    description: 'Validates whether a username is available',
+  })
+  @Get('/usernames/validate/:username')
+  async validateUsername(@Param('username') username: string) {
+    return this.userService.validateUsername(username)
+  }
 }
