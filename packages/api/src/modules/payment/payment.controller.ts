@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { RequestWithUser } from '../../types'
+import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import {
   CircleNotificationDto,
