@@ -24,6 +24,10 @@ export const configValidationSchema = Joi.object({
   JWT_EXPIRES_IN: Joi.string().required(),
 
   CLIENT_URL: Joi.string().required(),
+
+  CIRCLE_API_ENDPOINT: Joi.string().required(),
+  CIRCLE_API_KEY: Joi.string().required(),
+  CIRCLE_MASTER_WALLET_ID: Joi.number().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -57,6 +61,11 @@ export const configConfiguration = async function (): Promise<
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
     },
     clientUrl: getConfigValue('CLIENT_URL'),
+    circle: {
+      api_endpoint: getConfigValue('CIRCLE_API_ENDPOINT'),
+      api_key: getConfigValue('CIRCLE_API_KEY'),
+      master_wallet_id: getConfigValue('CIRCLE_MASTER_WALLET_ID'),
+    },
   })
 }
 

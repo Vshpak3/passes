@@ -4,6 +4,7 @@ apis/AuthGoogleApi.ts
 apis/CommentApi.ts
 apis/HealthApi.ts
 apis/PassApi.ts
+apis/PaymentApi.ts
 apis/PostApi.ts
 apis/ProfileApi.ts
 apis/SettingsApi.ts
@@ -12,8 +13,17 @@ apis/UserApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AmountDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
+models/BankAddressDto.ts
+models/BillingDetailsDto.ts
+models/CircleNotificationDto.ts
+models/CreateAddressDto.ts
+models/CreateBankDto.ts
+models/CreateCardAndExtraDto.ts
+models/CreateCardDto.ts
+models/CreateCardPaymentDto.ts
 models/CreateProfileDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
@@ -22,6 +32,9 @@ models/GetProfileDto.ts
 models/GetUserWalletsDto.ts
 models/GetUsernamesDto.ts
 models/JwtPayload.ts
+models/MetaData.ts
+models/SourceDto.ts
+models/StatusDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts
 models/index.ts

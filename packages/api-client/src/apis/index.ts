@@ -5,6 +5,7 @@ export * from './AuthGoogleApi';
 export * from './CommentApi';
 export * from './HealthApi';
 export * from './PassApi';
+export * from './PaymentApi';
 export * from './PostApi';
 export * from './ProfileApi';
 export * from './SettingsApi';

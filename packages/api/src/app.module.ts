@@ -8,11 +8,14 @@ import { databaseOptions } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { AuthModule } from './modules/auth/auth.module'
 import { CommentModule } from './modules/comment/comment.module'
+import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
 import { RequestLogger } from './modules/logging/request'
 import { PassModule } from './modules/pass/pass.module'
+import { PaymentModule } from './modules/payment/payment.module'
 import { PostModule } from './modules/post/post.module'
 import { ProfileModule } from './modules/profile/profile.module'
+import { RedisLockModule } from './modules/redisLock/redisLock.module'
 import { SettingsModule } from './modules/settings/settings.module'
 import { SubscriptionModule } from './modules/subscription/subscription.module'
 import { UserModule } from './modules/user/user.module'
@@ -23,16 +26,19 @@ import { WalletModule } from './modules/wallet/wallet.module'
     MikroOrmModule.forRootAsync(databaseOptions),
     RedisModule.forRootAsync(redisOptions),
     ConfigModule.forRoot(configOptions),
+    RedisLockModule,
     AuthModule,
     CommentModule,
     HealthModule,
     PassModule,
+    PaymentModule,
     PostModule,
     ProfileModule,
     SettingsModule,
     SubscriptionModule,
     UserModule,
     WalletModule,
+    GemModule,
   ],
 })
 export class AppModule implements NestModule {
