@@ -10,9 +10,10 @@ import PaymentsIcon from "public/icons/sidebar-payments-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import SubscriptionsIcon from "public/icons/sidebar-subscriptions-icon.svg"
 import MomentLogo from "public/moment-logo.svg"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 
 import { CreateButton } from "../Buttons"
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
@@ -35,6 +36,11 @@ const SideBar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSideBarCollapsed] = useState(false)
   const [logout, setLogout] = useState()
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth <= 1024)
+      setSideBarCollapsed(true)
+  }, [])
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -107,7 +113,7 @@ const SideBar = () => {
       {/* Static sidebar for desktop */}
       <div
         className={`hidden h-screen md:sticky md:inset-y-0 md:flex md:flex-col ${
-          sidebarCollapsed ? "w-44 lg:w-44" : "lg:w-80"
+          sidebarCollapsed ? "w-44" : "md:w-80"
         }`}
       >
         {/* Sidebar component, swap this element with another sidebar if you like */}

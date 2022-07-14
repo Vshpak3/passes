@@ -2,14 +2,24 @@ import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 import SideBar from "../components/common/Sidebar"
+import ProfileDetails from "../components/pages/profile/profile-details"
 const mockCreator = {
-  id: "test",
-  userId: "test",
-  fullName: "Test User",
+  id: "@drachnik",
+  userId: "@drachnik",
+  fullName: "Alex Drachnik",
   isKYCVerified: false,
-  description:
-    "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
-  profileImageUrl: "/example/avatar.jpeg",
+  description: "Viral Tiktok Marketer. 2M+ followers",
+  profileImageUrl: "/pages/profile/profile-photo.png",
+  instagramUrl: "drachnik",
+  tiktokUrl: "@drachnik",
+  youtubeUrl: "AlexDrachnikFit",
+  discordUrl: "AlexDrachnik",
+  twitchUrl: "drachnik",
+  facebookUrl: "AlexDrachnikCreator",
+  twitterUrl: "drachnik",
+  posts: 12,
+  likes: 22900,
+  isVerified: true,
   isActive: true
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,25 +36,23 @@ const Username = (props: GetProfileDto) => {
         </div>
         <div className="bg-[#1B141D]/85 w-full">
           <div className="cover-image h-[300px]" />
-          <div className="-mt-10 w-full p-4">
-            <div className="grid grid-cols-12 gap-4 md:grid-cols-10">
-              <div className="hidden md:order-1 md:col-span-1 md:block"></div>
-              <div className="order-1 col-span-12 md:order-2 md:col-span-2">
-                <div className="min-h-12 flex flex-col items-center rounded border">
-                  Profile
-                </div>
-              </div>
-              <div className="order-3 col-span-12 md:order-2 md:col-span-4">
-                <div className="min-h-12 flex flex-col items-center rounded border">
-                  Main Content
-                </div>
-              </div>
-              <div className="order-2 col-span-12 md:order-3 md:col-span-2">
+          <div className="-mt-[205px] w-full p-4">
+            <div className="grid grid-cols-8 gap-4 ">
+              <div className="col-span-8 grid grid-rows-2 gap-6 lg:col-span-2">
+                {props?.id && <ProfileDetails profile={props} />}
                 <div className="min-h-12 flex flex-col items-center rounded border">
                   Passes
                 </div>
               </div>
-              <div className="hidden md:order-4 md:col-span-1 md:block"></div>
+              <div className=" col-span-8 lg:col-span-6 xl:col-span-5">
+                <div className="min-h-12 flex flex-col items-center rounded border">
+                  Main Content
+                  <p className="p-20"> Main Content</p>
+                  <p className="p-20"> Main Content</p>
+                  <p className="p-20"> Main Content</p>
+                </div>
+              </div>
+              <div className="hidden xl:col-span-1 xl:block"></div>
             </div>
           </div>
         </div>
