@@ -3,6 +3,7 @@
 export * from './AuthApi';
 export * from './AuthGoogleApi';
 export * from './CommentApi';
+export * from './EthApi';
 export * from './HealthApi';
 export * from './PassApi';
 export * from './PaymentApi';

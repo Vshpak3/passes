@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -13,17 +14,22 @@ import * as uuid from 'uuid'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
+import { EthService } from '../eth/eth.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import { CreateWalletDto } from './dto/create-wallet.dto'
 import { GetUserWalletsDto } from './dto/get-user-wallets.dto'
-import { WalletEntity } from './entities/wallet.entity'
+import { WalletResponseDto } from './dto/wallet-response.dto'
+import { Chain } from './enum/chain.enum'
 import { WalletService } from './wallet.service'
 
 @ApiTags('wallet')
 @Controller('wallet')
 export class WalletController {
-  constructor(private readonly walletService: WalletService) {}
+  constructor(
+    private readonly walletService: WalletService,
+    private readonly ethService: EthService,
+  ) {}
 
   @ApiOperation({ summary: 'Creates authenticated wallet for a user' })
   @ApiResponse({
@@ -36,8 +42,12 @@ export class WalletController {
   async create(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletDto,
-  ): Promise<WalletEntity> {
-    return this.walletService.create(req.user.id, createWalletDto)
+  ): Promise<WalletResponseDto> {
+    const wallet = await this.walletService.create(req.user.id, createWalletDto)
+    if (wallet.chain == Chain.ETH) {
+      return this.ethService.refreshNftsForWallet(req.user.id, wallet.id)
+    }
+    return new WalletResponseDto(wallet)
   }
 
   @ApiOperation({ summary: 'Creates wallet auth message to sign' })
@@ -78,5 +88,20 @@ export class WalletController {
   async findAll(@Req() req: RequestWithUser): Promise<GetUserWalletsDto> {
     const wallets = await this.walletService.getWalletsForUser(req.user.id)
     return new GetUserWalletsDto(wallets)
+  }
+
+  @ApiOperation({ summary: 'Refresh tokens owned by a wallet' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: WalletResponseDto,
+    description: 'Wallet tokens were updated',
+  })
+  @Post('/refresh/:id')
+  @UseGuards(JwtAuthGuard)
+  async refresh(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ): Promise<WalletResponseDto> {
+    return this.ethService.refreshNftsForWallet(req.user.id, id)
   }
 }

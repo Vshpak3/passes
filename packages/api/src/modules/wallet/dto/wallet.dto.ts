@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { WalletEntity } from '../entities/wallet.entity'
 import { Chain } from '../enum/chain.enum'
 
-export class Wallet {
+export class WalletDto {
   @ApiProperty()
   userId: string
 

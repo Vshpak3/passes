@@ -8,6 +8,7 @@ import { databaseOptions } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { AuthModule } from './modules/auth/auth.module'
 import { CommentModule } from './modules/comment/comment.module'
+import { EthModule } from './modules/eth/eth.module'
 import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
 import { RequestLogger } from './modules/logging/request'
@@ -39,6 +40,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     UserModule,
     WalletModule,
     GemModule,
+    EthModule,
   ],
 })
 export class AppModule implements NestModule {

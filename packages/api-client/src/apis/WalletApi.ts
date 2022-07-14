@@ -27,6 +27,9 @@ import {
     GetUserWalletsDto,
     GetUserWalletsDtoFromJSON,
     GetUserWalletsDtoToJSON,
+    WalletResponseDto,
+    WalletResponseDtoFromJSON,
+    WalletResponseDtoToJSON,
 } from '../models';
 
 export interface WalletAuthRequest {
@@ -35,6 +38,10 @@ export interface WalletAuthRequest {
 
 export interface WalletCreateRequest {
     createWalletDto: CreateWalletDto;
+}
+
+export interface WalletRefreshRequest {
+    id: string;
 }
 
 /**
@@ -131,6 +138,36 @@ export class WalletApi extends runtime.BaseAPI {
      */
     async walletFindAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserWalletsDto> {
         const response = await this.walletFindAllRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Refresh tokens owned by a wallet
+     */
+    async walletRefreshRaw(requestParameters: WalletRefreshRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WalletResponseDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling walletRefresh.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/wallet/refresh/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WalletResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Refresh tokens owned by a wallet
+     */
+    async walletRefresh(requestParameters: WalletRefreshRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WalletResponseDto> {
+        const response = await this.walletRefreshRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 import { WalletEntity } from '../entities/wallet.entity'
-import { Wallet } from './wallet.dto'
+import { WalletDto } from './wallet.dto'
 
 export class GetUserWalletsDto {
   @ApiProperty()
-  wallets: Wallet[]
+  wallets: WalletDto[]
 
   constructor(wallets: WalletEntity[]) {
-    this.wallets = wallets.map((w) => new Wallet(w))
+    this.wallets = wallets.map((w) => new WalletDto(w))
   }
 }

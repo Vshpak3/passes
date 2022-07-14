@@ -28,6 +28,9 @@ export const configValidationSchema = Joi.object({
   CIRCLE_API_ENDPOINT: Joi.string().required(),
   CIRCLE_API_KEY: Joi.string().required(),
   CIRCLE_MASTER_WALLET_ID: Joi.number().required(),
+
+  MORALIS_API_KEY: Joi.string().required(),
+  MORALIS_API_HOST: Joi.string().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -59,6 +62,10 @@ export const configConfiguration = async function (): Promise<
     jwt: {
       secret: getConfigValue('JWT_SECRET'),
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
+    },
+    moralis: {
+      api_key: getConfigValue('MORALIS_API_KEY'),
+      api_host: getConfigValue('MORALIS_API_HOST'),
     },
     clientUrl: getConfigValue('CLIENT_URL'),
     circle: {

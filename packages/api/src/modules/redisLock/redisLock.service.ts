@@ -15,7 +15,6 @@ export class RedisLockService {
   private getClient(): Redis {
     return this.redisService
   }
-
   /**
    * Try to lock once
    * @param {string} name lock name
@@ -37,6 +36,7 @@ export class RedisLockService {
   /**
    * Get a lock, automatically retrying if failed
    * @param {string} name lock name
+   * @param {number} [expire] milliseconds, TTL for the redis key
    * @param {number} [retryInterval] milliseconds, the interval to retry if failed
    * @param {number} [maxRetryTimes] max times to retry
    */
@@ -83,6 +83,16 @@ export class RedisLockService {
   public async setTTL(name, milliseconds) {
     const client = this.getClient()
     await client.pexpire(this.prefix(name), milliseconds)
+  }
+
+  /**
+   * Get TTL for a lock
+   * @param {string} name lock name
+   * @returns {number} true: success, false: failed
+   */
+  public async getTTL(name) {
+    const client = this.getClient()
+    return await client.ttl(this.prefix(name))
   }
 
   /**
