@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 
-import { JwtAuthService } from './jwt-auth.service'
-import { JwtAuthStrategy } from './jwt-auth.strategy'
+import { JwtRefreshService } from './jwt-refresh.service'
 import { JwtRefreshStrategy } from './jwt-refresh.strategy'
 
 @Module({
@@ -11,16 +10,16 @@ import { JwtRefreshStrategy } from './jwt-refresh.strategy'
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {
-          secret: configService.get('jwt.secret'),
+          secret: configService.get('jwt.refreshSecret'),
           signOptions: {
-            expiresIn: configService.get('jwt.expiresIn'),
+            expiresIn: configService.get('jwt.refreshExpiresIn'),
           },
         }
       },
       inject: [ConfigService],
     }),
   ],
-  providers: [JwtAuthStrategy, JwtRefreshStrategy, JwtAuthService],
-  exports: [JwtModule, JwtAuthService],
+  providers: [JwtRefreshStrategy, JwtRefreshService],
+  exports: [JwtModule, JwtRefreshService],
 })
-export class JwtAuthModule {}
+export class JwtRefreshModule {}

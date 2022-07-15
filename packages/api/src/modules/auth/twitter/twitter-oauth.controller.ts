@@ -12,6 +12,7 @@ import { Request, Response } from 'express'
 
 import { UserEntity } from '../../user/entities/user.entity'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
+import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { TwitterOauthGuard } from './twitter-oauth.guard'
 
 @Controller('auth/twitter')
@@ -19,6 +20,7 @@ import { TwitterOauthGuard } from './twitter-oauth.guard'
 export class TwitterOauthController {
   constructor(
     private readonly jwtAuthService: JwtAuthService,
+    private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -41,11 +43,16 @@ export class TwitterOauthController {
   })
   @UseGuards(TwitterOauthGuard)
   async twitterAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const { accessToken } = this.jwtAuthService.login(req.user as UserEntity)
+    const userId = (req.user as UserEntity)?.id
+    const accessToken = this.jwtAuthService.createAccessToken(userId)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(userId)
+
     return res.redirect(
       this.configService.get('clientUrl') +
         '/auth/success?accessToken=' +
-        accessToken,
+        accessToken +
+        '&refreshToken=' +
+        refreshToken,
     )
   }
 }

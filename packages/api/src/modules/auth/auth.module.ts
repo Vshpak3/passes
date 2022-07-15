@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller'
 import { FacebookOauthModule } from './facebook/facebook-oauth-module'
 import { GoogleOauthModule } from './google/google-oauth-module'
 import { JwtAuthModule } from './jwt/jwt-auth.module'
+import { JwtRefreshModule } from './jwt/jwt-refresh.module'
 import { TwitterOauthModule } from './twitter/twitter-oauth-module'
 
 @Module({
@@ -16,6 +17,7 @@ import { TwitterOauthModule } from './twitter/twitter-oauth-module'
     FacebookOauthModule,
     TwitterOauthModule,
     JwtAuthModule,
+    JwtRefreshModule,
   ],
   controllers: [AuthController],
 })

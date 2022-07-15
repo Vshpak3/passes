@@ -11,6 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { JwtAuthService } from '../jwt/jwt-auth.service'
+import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { UserEntity } from './../../user/entities/user.entity'
 import { GoogleOauthGuard } from './google-oauth.guard'
 
@@ -19,6 +20,7 @@ import { GoogleOauthGuard } from './google-oauth.guard'
 export class GoogleOauthController {
   constructor(
     private readonly jwtAuthService: JwtAuthService,
+    private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -41,11 +43,16 @@ export class GoogleOauthController {
   })
   @UseGuards(GoogleOauthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const { accessToken } = this.jwtAuthService.login(req.user as UserEntity)
+    const userId = (req.user as UserEntity)?.id
+    const accessToken = this.jwtAuthService.createAccessToken(userId)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(userId)
+
     return res.redirect(
       this.configService.get('clientUrl') +
         '/auth/success?accessToken=' +
-        accessToken,
+        accessToken +
+        '&refreshToken=' +
+        refreshToken,
     )
   }
 }

@@ -33,6 +33,9 @@ export const configValidationSchema = Joi.object({
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
 
+  JWT_REFRESH_SECRET: Joi.string().required(),
+  JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
+
   CLIENT_URL: Joi.string().required(),
 
   CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
@@ -87,6 +90,8 @@ export const configConfiguration = async function (): Promise<
     jwt: {
       secret: getConfigValue('JWT_SECRET'),
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
+      refreshSecret: getConfigValue('JWT_REFRESH_SECRET'),
+      refreshExpiresIn: getConfigValue('JWT_REFRESH_EXPIRES_IN'),
     },
     cloudfront: {
       baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),
