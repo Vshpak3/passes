@@ -30,7 +30,7 @@ export class UserService {
     const user = this.userRepository.create({
       email: email,
       // TODO: Do users supply a username, or randomly generate one?
-      userName: null,
+      userName: `${provider}-${providerId}`,
       oauthId: providerId,
       oauthProvider: provider,
     })

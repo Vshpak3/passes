@@ -2,6 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import passport from 'passport'
 
 import { AppModule } from './app.module'
 
@@ -25,6 +27,10 @@ export class App {
     this.app.useGlobalPipes(new ValidationPipe())
     this.app.enableCors()
     this.app.use(cookieParser())
+    this.app.use(
+      session({ secret: process.env.COOKIE_SESSION_SECRET as string }),
+    )
+    this.app.use(passport.session())
   }
 
   private async initSwagger() {

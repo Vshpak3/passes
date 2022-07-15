@@ -25,6 +25,14 @@ const LoginPage = () => {
     router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/google")
   }
 
+  const handleLoginWithTwitter = async () => {
+    router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/twitter")
+  }
+
+  const handleLoginWithFacebook = async () => {
+    router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/facebook")
+  }
+
   return (
     <>
       <NextHead // hotfix for web font optimization issue: https://github.com/vercel/next.js/issues/35835#issuecomment-1125599724
@@ -82,6 +90,28 @@ const LoginPage = () => {
           >
             <Social variant="Google" width={16} height={16} />{" "}
             <span>Login with Google</span>
+            <span />
+          </Button>
+
+          <Button
+            onClick={handleLoginWithTwitter}
+            className="w-full max-w-sm bg-[#DB4437] !px-6 !py-5 text-white shadow-md shadow-[#DB4437]/30 transition-all hover:bg-[#DB4437]/90 hover:shadow-sm"
+            innerClassName="w-full justify-between font-medium"
+            fontSize={16}
+          >
+            <Social variant="Twitter" width={16} height={16} />{" "}
+            <span>Login with Twitter</span>
+            <span />
+          </Button>
+
+          <Button
+            onClick={handleLoginWithFacebook}
+            className="w-full max-w-sm bg-[#DB4437] !px-6 !py-5 text-white shadow-md shadow-[#DB4437]/30 transition-all hover:bg-[#DB4437]/90 hover:shadow-sm"
+            innerClassName="w-full justify-between font-medium"
+            fontSize={16}
+          >
+            <Social variant="Facebook" width={16} height={16} />{" "}
+            <span>Login with Facebook</span>
             <span />
           </Button>
         </div>

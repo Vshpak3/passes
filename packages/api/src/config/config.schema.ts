@@ -20,6 +20,16 @@ export const configValidationSchema = Joi.object({
   OAUTH_GOOGLE_SECRET: Joi.string().required(),
   OAUTH_GOOGLE_REDIRECT_URL: Joi.string().uri().required(),
 
+  OAUTH_FACEBOOK_CLIENT_ID: Joi.string().required(),
+  OAUTH_FACEBOOK_CLIENT_SECRET: Joi.string().required(),
+  OAUTH_FACEBOOK_REDIRECT_URL: Joi.string().uri().required(),
+
+  OAUTH_TWITTER_CONSUMER_KEY: Joi.string().required(),
+  OAUTH_TWITTER_CONSUMER_SECRET: Joi.string().required(),
+  OAUTH_TWITTER_REDIRECT_URL: Joi.string().uri().required(),
+
+  COOKIE_SESSION_SECRET: Joi.string().required(),
+
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
 
@@ -57,6 +67,16 @@ export const configConfiguration = async function (): Promise<
         id: getConfigValue('OAUTH_GOOGLE_ID'),
         secret: getConfigValue('OAUTH_GOOGLE_SECRET'),
         redirect_url: getConfigValue('OAUTH_GOOGLE_REDIRECT_URL'),
+      },
+      facebook: {
+        id: getConfigValue('OAUTH_FACEBOOK_CLIENT_ID'),
+        secret: getConfigValue('OAUTH_FACEBOOK_CLIENT_SECRET'),
+        redirect_url: getConfigValue('OAUTH_FACEBOOK_REDIRECT_URL'),
+      },
+      twitter: {
+        consumerKey: getConfigValue('OAUTH_TWITTER_CONSUMER_KEY'),
+        consumerSecret: getConfigValue('OAUTH_TWITTER_CONSUMER_SECRET'),
+        redirect_url: getConfigValue('OAUTH_TWITTER_REDIRECT_URL'),
       },
     },
     jwt: {
