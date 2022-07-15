@@ -89,7 +89,10 @@ export class WalletService {
     })
   }
 
-  async create(userId: string, createWalletDto: CreateWalletDto): Promise<any> {
+  async create(
+    userId: string,
+    createWalletDto: CreateWalletDto,
+  ): Promise<WalletEntity> {
     const user = await this.userRepository.getReference(userId)
     const numWallets = (
       await this.walletRepository.find({

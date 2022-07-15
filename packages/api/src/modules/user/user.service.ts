@@ -54,7 +54,10 @@ export class UserService {
     return await this.userRepository.findOne({ oauthId, oauthProvider })
   }
 
-  async update(userId: string, updateUserDto: UpdateUserDto) {
+  async update(
+    userId: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
     const currentUser = await this.findOne(userId)
 
     // TODO: Only certain user fields should be allowed to be updated
@@ -66,7 +69,7 @@ export class UserService {
     return newUser
   }
 
-  async remove(userId: string) {
+  async remove(userId: string): Promise<UserEntity> {
     const currentUser = await this.findOne(userId)
 
     const newUser = wrap(currentUser).assign({
