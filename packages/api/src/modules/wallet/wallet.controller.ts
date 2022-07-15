@@ -9,8 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import dedent from 'dedent'
-import * as uuid from 'uuid'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
@@ -59,22 +57,10 @@ export class WalletController {
   @UseGuards(JwtAuthGuard)
   @Post('auth')
   async auth(
+    @Req() req: RequestWithUser,
     @Body() authWalletRequestDto: AuthWalletRequestDto,
   ): Promise<AuthWalletResponseDto> {
-    const message = dedent`Click to verify your wallet with Moment
-
-    This request will not trigger a blockchain transaction or cost any gas fees.
-
-    Wallet address:
-    ${authWalletRequestDto.walletAddress}
-
-    Nonce:
-    ${uuid.v4()}`
-    return {
-      rawMessage: message,
-      chain: authWalletRequestDto.chain,
-      walletAddress: authWalletRequestDto.walletAddress,
-    }
+    return this.walletService.auth(req.user.id, authWalletRequestDto)
   }
 
   @ApiOperation({ summary: 'Get wallets for user' })
