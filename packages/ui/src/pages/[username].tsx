@@ -27,35 +27,29 @@ const Username = (props: GetProfileDto) => {
   return (
     <>
       <div className="relative flex min-h-screen flex-1 bg-[#1b141d]/80">
-        <div className="hidden md:block">
-          <SideBar />
-        </div>
-        <div className="min-h-16 absolute top-0 left-0 flex w-full flex-1 items-center justify-between bg-[#252525]/50 px-2 backdrop-blur-lg md:hidden">
-          <div>icon 1</div>
-          <div>icon 2</div>
-        </div>
-        <div className="bg-[#1B141D]/85 w-full">
+        <SideBar />
+        <main className="bg-[#1B141D]/85 flex-shrink flex-grow">
           <div className="cover-image h-[300px]" />
-          <div className="-mt-[205px] w-full p-4">
-            <div className="grid grid-cols-8 gap-4 ">
-              <div className="col-span-8 grid grid-rows-2 gap-6 lg:col-span-2">
+          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 md:w-[612px] lg:w-[900px] lg:px-0">
+            <div className="col-span-12 w-full lg:col-span-4 lg:max-w-[280px]">
+              <div className="">
                 {props?.id && <ProfileDetails profile={props} />}
                 <div className="min-h-12 flex flex-col items-center rounded border">
                   Passes
                 </div>
               </div>
-              <div className=" col-span-8 lg:col-span-6 xl:col-span-5">
-                <div className="min-h-12 flex flex-col items-center rounded border">
-                  Main Content
-                  <p className="p-20"> Main Content</p>
-                  <p className="p-20"> Main Content</p>
-                  <p className="p-20"> Main Content</p>
-                </div>
-              </div>
-              <div className="hidden xl:col-span-1 xl:block"></div>
             </div>
+            <div className="col-span-12 w-full lg:col-span-8 lg:max-w-[620px] ">
+              <div className="min-h-12 flex flex-col items-center rounded border ">
+                Main Content
+                <p className="p-20"> Main Content</p>
+                <p className="p-20"> Main Content</p>
+                <p className="p-20"> Main Content</p>
+              </div>
+            </div>
+            <div className="hidden xl:col-span-1 xl:block"></div>
           </div>
-        </div>
+        </main>
       </div>
     </>
   )

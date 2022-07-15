@@ -30,7 +30,8 @@ module.exports = {
       },
       screens: {
         xxs: "360px",
-        xs: "475px"
+        xs: "475px",
+        "sidebar-collapse": "1130px"
       }
     }
   },

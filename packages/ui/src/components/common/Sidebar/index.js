@@ -1,7 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react"
-import CollapseLeft from "public/icons/sidebar-collapse-left-icon.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
-import Logo from "public/icons/sidebar-logo.svg"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
@@ -10,9 +8,8 @@ import PaymentsIcon from "public/icons/sidebar-payments-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import SubscriptionsIcon from "public/icons/sidebar-subscriptions-icon.svg"
 import MomentLogo from "public/moment-logo.svg"
-import { Fragment, useEffect, useState } from "react"
-
-import { CreateButton } from "../Buttons"
+import UpdatedMomentLogo from "public/moment-logo-updated.svg"
+import { Fragment, useState } from "react"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -34,13 +31,8 @@ const SideBar = () => {
     { id: 6, name: "Settings", href: "#", icon: SettingsIcon, current: false }
   ]
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [sidebarCollapsed, setSideBarCollapsed] = useState(false)
   const [logout, setLogout] = useState()
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth <= 1024)
-      setSideBarCollapsed(true)
-  }, [])
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -111,33 +103,22 @@ const SideBar = () => {
         </Dialog>
       </Transition.Root>
       {/* Static sidebar for desktop */}
-      <div
-        className={`hidden h-screen md:sticky md:inset-y-0 md:flex md:flex-col ${
-          sidebarCollapsed ? "w-44" : "md:w-80"
-        }`}
+      <header
+        className={`hidden h-screen w-full min-w-0 max-w-[88px] items-end md:sticky md:inset-y-0 md:flex md:flex-shrink-0 md:flex-col sidebar-collapse:max-w-[230px]`}
       >
         {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex min-h-0 flex-1 flex-col bg-[#120C14] drop-shadow-sidebar-shadow">
-          <div className="flex flex-shrink-0 cursor-pointer self-end stroke-[#A09FA6] pr-4 pt-4 hover:stroke-white ">
-            <CollapseLeft
-              className={sidebarCollapsed ? `rotate-180` : ""}
-              onClick={() => setSideBarCollapsed(!sidebarCollapsed)}
-            />
-          </div>
-          <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-            <div className="flex flex-shrink-0 items-center justify-center">
-              <div className="">
-                {sidebarCollapsed ? (
-                  <LogoSmall className="flex-no-shrink h-[70px] w-[70px] fill-current" />
-                ) : (
-                  <Logo className="flex-no-shrink h-14 w-52 fill-current" />
-                )}
+        <div className="flex min-h-0 w-full flex-1 flex-col bg-[#120C14] drop-shadow-sidebar-shadow sidebar-collapse:pl-8 ">
+          <div className="flex flex-1 flex-col justify-between overflow-y-auto pt-6 pb-4">
+            <div className="">
+              <div className="flex flex-shrink-0 items-center justify-center sidebar-collapse:justify-start ">
+                <div className="">
+                  <LogoSmall className="flex-no-shrink h-[40px] w-[40px] fill-current sidebar-collapse:hidden" />
+                  <UpdatedMomentLogo className="hidden h-[26px] w-[136px] fill-current sidebar-collapse:block " />
+                </div>
               </div>
-            </div>
-            <nav className="flex-1 space-y-11 self-center pt-32">
-              {navigation.map((item, index) => (
-                <>
-                  {sidebarCollapsed ? (
+              <nav className="flex flex-col items-center space-y-3 pt-5 sidebar-collapse:items-start ">
+                {navigation.map((item, index) => (
+                  <>
                     <span
                       key={index}
                       onClick={() => setActive(item.id)}
@@ -145,7 +126,7 @@ const SideBar = () => {
                         item.id === active
                           ? "border border-solid border-[#BF7AF0] bg-[#bf7af0]/10"
                           : "hover:bg-[#bf7af0]/10 hover:text-white",
-                        "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full"
+                        "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
                       )}
                     >
                       <a
@@ -169,7 +150,6 @@ const SideBar = () => {
                         />
                       </a>
                     </span>
-                  ) : (
                     <a
                       key={index}
                       href={item.href}
@@ -178,7 +158,7 @@ const SideBar = () => {
                         item.id === active
                           ? "text-gray-50"
                           : "hover:text-white",
-                        `group flex cursor-pointer items-center text-lg font-semibold tracking-[0.003em] text-[#A09FA6]`
+                        `group hidden cursor-pointer items-center text-lg font-semibold tracking-[0.003em] text-[#A09FA6] sidebar-collapse:flex`
                       )}
                     >
                       <item.icon
@@ -192,54 +172,38 @@ const SideBar = () => {
                       />
                       {item.name}
                     </a>
-                  )}
-                </>
-              ))}
-            </nav>
-            <div className="flex-1 space-y-11 self-center pt-64">
-              <span>
-                {sidebarCollapsed ? null : <CreateButton name="Create" />}
-              </span>
+                  </>
+                ))}
+              </nav>
+            </div>
+            <div className="">
               <span
                 onClick={() => setLogout(!logout)}
-                className={classNames(
-                  sidebarCollapsed
-                    ? "h-[52px] w-[52px] justify-center rounded-full"
-                    : "justify-start",
-                  "group flex cursor-pointer items-center "
-                )}
+                className="group flex cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
               >
                 <a
                   href={"/"}
                   className={classNames(
                     logout ? "text-white" : "text-gray-600 hover:text-white",
-                    "group flex cursor-pointer items-center text-lg font-semibold tracking-[0.003em] text-[#A09FA6]"
+                    "group flex cursor-pointer items-center"
                   )}
                 >
                   <LogoutIcon
                     aria-hidden="true"
                     className={classNames(
                       logout ? "fill-white" : "hover:fill-white",
-                      `${
-                        sidebarCollapsed ? "mr-0" : ""
-                      }mr-4 flex-shrink-0 cursor-pointer fill-[#A09FA6] group-hover:fill-white`
+                      "flex-shrink-0 cursor-pointer fill-[#A09FA6] group-hover:fill-white"
                     )}
                   />
-                  {sidebarCollapsed ? "" : "Logout"}
                 </a>
               </span>
             </div>
           </div>
         </div>
-      </div>
-      <div className="sticky top-0 z-20 flex h-[81px] bg-[#252525]/50 backdrop-blur-lg md:hidden">
-        <button
-          onClick={() => setSidebarOpen(true)}
-          type="button"
-          className="py-6 pl-9"
-        >
-          <LogoSmall className="flex-no-shrink h-[35px] w-[35px] fill-current" />
-        </button>
+      </header>
+      <div className="min-h-16 fixed top-0 left-0 z-30 flex w-full flex-1 items-center justify-between bg-[#252525]/50 px-2 backdrop-blur-lg md:hidden">
+        <div>icon 1</div>
+        <div>icon 2</div>
       </div>
     </>
   )
