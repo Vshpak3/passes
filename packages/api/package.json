@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "3.121.0",
+    "@aws-sdk/cloudfront-signer": "3.127.0",
     "@aws-sdk/types": "3.110.0",
     "@jest/globals": "28.1.2",
     "@mikro-orm/cli": "5.2.3",

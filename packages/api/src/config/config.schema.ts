@@ -35,6 +35,11 @@ export const configValidationSchema = Joi.object({
 
   CLIENT_URL: Joi.string().required(),
 
+  CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
+  CLOUDFRONT_BASE_URL: Joi.string().required(),
+  CLOUDFRONT_KEY_PAIR_ID: Joi.string().required(),
+  CLOUDFRONT_PRIVATE_KEY: Joi.string().required(),
+
   CIRCLE_API_ENDPOINT: Joi.string().required(),
   CIRCLE_API_KEY: Joi.string().required(),
   CIRCLE_MASTER_WALLET_ID: Joi.number().required(),
@@ -82,6 +87,17 @@ export const configConfiguration = async function (): Promise<
     jwt: {
       secret: getConfigValue('JWT_SECRET'),
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
+    },
+    cloudfront: {
+      baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),
+      keyPairId: getConfigValue('CLOUDFRONT_KEY_PAIR_ID'),
+      privateKey: getConfigValue('CLOUDFRONT_PRIVATE_KEY'),
+      cookieOptions: {
+        domain: getConfigValue('CLOUDFRONT_COOKIE_DOMAIN'),
+        path: '/',
+        sameSite: 'none',
+        httpOnly: true,
+      },
     },
     moralis: {
       api_key: getConfigValue('MORALIS_API_KEY'),
