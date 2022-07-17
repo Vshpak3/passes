@@ -1,3 +1,4 @@
+import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import React from "react"
 
 function classNames(...classes) {
@@ -25,8 +26,9 @@ export const WhiteButton = ({ name }) => (
   </button>
 )
 
-export const CreateButton = ({ name }) => (
-  <button className="flex items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-3 px-12 text-sm font-semibold text-white shadow-sm">
+export const PassesPurpleButton = ({ name, icon }) => (
+  <button className="flex w-full items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
+    {icon && <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />}
     {name}
   </button>
 )

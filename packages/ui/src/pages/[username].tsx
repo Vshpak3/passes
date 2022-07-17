@@ -2,6 +2,7 @@ import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 import SideBar from "../components/common/Sidebar"
+import Passes from "../components/pages/profile/passes"
 import ProfileDetails from "../components/pages/profile/profile-details"
 const mockCreator = {
   id: "@drachnik",
@@ -20,7 +21,32 @@ const mockCreator = {
   posts: 12,
   likes: 22900,
   isVerified: true,
-  isActive: true
+  isActive: true,
+  passes: [
+    {
+      title: "Basic Supporter",
+      description:
+        "See exclusive content at my most basic tier. I give broad advice to help your brand.",
+      imgUrl: "/pages/profile/pass-example-1.png",
+      type: "Free",
+      price: 0
+    },
+    {
+      title: "Monthly Ambassador",
+      description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
+      imgUrl: "/pages/profile/pass-example-2.png",
+      type: "Monthly",
+      price: 20
+    },
+    {
+      title: "Lifetime Pass",
+      description:
+        "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
+      imgUrl: "/pages/profile/pass-example-3.png",
+      type: "Lifetime",
+      price: 2000
+    }
+  ]
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Username = (props: GetProfileDto) => {
@@ -30,14 +56,10 @@ const Username = (props: GetProfileDto) => {
         <SideBar />
         <main className="bg-[#1B141D]/85 flex-shrink flex-grow">
           <div className="cover-image h-[300px]" />
-          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 md:w-[612px] lg:w-[900px] lg:px-0">
-            <div className="col-span-12 w-full lg:col-span-4 lg:max-w-[280px]">
-              <div className="">
-                {props?.id && <ProfileDetails profile={props} />}
-                <div className="min-h-12 flex flex-col items-center rounded border">
-                  Passes
-                </div>
-              </div>
+          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 sm:w-[650px] md:w-[650px] lg:w-[900px] lg:px-0">
+            <div className="col-span-12 w-full space-y-6 lg:col-span-4 lg:max-w-[280px]">
+              {props?.id && <ProfileDetails profile={props} />}
+              {props?.id && <Passes profile={props} />}
             </div>
             <div className="col-span-12 w-full lg:col-span-8 lg:max-w-[620px] ">
               <div className="min-h-12 flex flex-col items-center rounded border ">
