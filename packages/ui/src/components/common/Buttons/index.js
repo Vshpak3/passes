@@ -44,3 +44,14 @@ export const CoverButton = ({ name }) => (
     {name}
   </button>
 )
+
+export const PostUnlockButton = ({ name, icon, onClick, value }) => (
+  <button
+    className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
+    value={value}
+    onClick={onClick}
+  >
+    {icon && <UnlockLockIcon className="flex h-6 w-6" />}
+    {name}
+  </button>
+)

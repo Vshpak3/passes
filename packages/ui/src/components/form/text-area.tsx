@@ -17,6 +17,7 @@ type TextAreaProps = {
   register: FormRegister
   errors?: FormErrors
   rows?: number
+  cols?: number
   className?: string
   placeholder?: string
 }
@@ -29,6 +30,7 @@ export const TextArea = ({
   options = {},
   className,
   rows = 5,
+  cols,
   placeholder,
   ...rest
 }: TextAreaProps) => {
@@ -41,11 +43,12 @@ export const TextArea = ({
         placeholder={placeholder}
         name={name}
         rows={rows}
+        cols={cols}
         {...register(name, options)}
         {...rest}
         className={classNames(
           errors[name] !== undefined ? "border-red-500" : "",
-          "block w-full appearance-none px-3 py-2 placeholder-gray-300",
+          "block w-full appearance-none placeholder-[#FFFFFF]/50",
           className || ""
         )}
       />

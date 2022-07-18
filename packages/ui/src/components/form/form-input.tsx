@@ -33,6 +33,7 @@ type FormInputProps = {
   accept?: FileAccept
   className?: string
   rows?: number
+  cols?: number
 }
 export const FormInput = ({
   label,
@@ -109,6 +110,7 @@ export const FormInput = ({
       <File
         name={name}
         label={label}
+        accept={accept}
         placeholder={placeholder}
         register={register}
         options={options}
