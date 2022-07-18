@@ -35,6 +35,7 @@ export class GemService {
   /**
    * execute several gem transactions atomically
    * ensure that no balances go below 0
+   *
    * @param users
    * @param amounts
    * @param sources
@@ -46,14 +47,18 @@ export class GemService {
     sources: (string | undefined)[],
   ): Promise<Array<GemTransactionEntity>> {
     const transactions: GemTransactionEntity[] = []
+    const balances: GemBalanceEntity[] = []
+    for (const user of users) {
+      balances.push(await this.getBalance(user))
+    }
     await this.em.transactional(async (em) => {
       for (const i in users) {
         const user = users[i]
         const amount = amounts[i]
         const source = sources[i]
+        const balance = balances[i]
         try {
           this.lockService.lock(user.id)
-          const balance = await this.getBalance(user)
           if (balance.amount + amount < 0) {
             throw Error('not enough gems')
           }
@@ -94,7 +99,7 @@ export class GemService {
    */
   async getBalance(user: UserEntity): Promise<GemBalanceEntity> {
     try {
-      return this.gemBalanceRepository.findOneOrFail({ user: user })
+      return await this.gemBalanceRepository.findOneOrFail({ user: user })
     } catch {
       const newBalance = new GemBalanceEntity()
       newBalance.user = user
