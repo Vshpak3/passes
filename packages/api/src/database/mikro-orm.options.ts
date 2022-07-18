@@ -1,5 +1,5 @@
 import type { Options } from '@mikro-orm/core'
-import type { PostgreSqlDriver } from '@mikro-orm/postgresql'
+import type { MySqlDriver } from '@mikro-orm/mysql'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { ConfigService } from '@nestjs/config'
@@ -7,11 +7,11 @@ import path from 'path'
 
 export function getDatabaseOptions(
   configService: ConfigService,
-): Options<PostgreSqlDriver> {
+): Options<MySqlDriver> {
   return {
     metadataProvider: TsMorphMetadataProvider,
     highlighter: new SqlHighlighter(),
-    type: 'postgresql',
+    type: 'mysql',
     entities: [path.join(__dirname, '..', '/**/entities/*.js')],
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
     dbName: configService.get('database.dbname'),
@@ -19,7 +19,7 @@ export function getDatabaseOptions(
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),
-    // safe: false, // prevents dropping tables and columns <-- turn on soon
+    // safe: false, // prevents dropping tables and columns <-- TODO: turn on soon
     migrations: {
       path: path.join(__dirname, 'migrations'),
     },
@@ -36,6 +36,6 @@ export function getDatabaseOptions(
 export const databaseOptions = {
   useFactory: async (
     configService: ConfigService,
-  ): Promise<Options<PostgreSqlDriver>> => getDatabaseOptions(configService),
+  ): Promise<Options<MySqlDriver>> => getDatabaseOptions(configService),
   inject: [ConfigService],
 }

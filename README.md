@@ -49,7 +49,11 @@ The docker command in the setup step will create the local testing database. You
 can then access the database via:
 
 ```bash
-PGPASSWORD=root psql -U root -p 5432 -h 127.0.0.1 -d moment
+# one time installation
+brew install mysql-client
+
+# starts mysql shell
+mysql -u root -P 3306 -h 127.0.0.1 -p'root' moment
 ```
 
 The following script will wipe any local migration files and regenerate all

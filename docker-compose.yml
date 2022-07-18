@@ -3,32 +3,32 @@ version: "3.8"
 # Start services: docker compose up -d
 # Stop services: docker compose down
 # Note: data is persisted after stopping containers. Run the following to delete:
-#   docker volume rm monorepo_postgres
+#   docker volume rm monorepo_mysql
 #   docker volume rm monorepo_redis
 
 services:
-  database:
-    # Should match AWS Aurora Postgres version:
-    # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraPostgreSQLReleaseNotes/AuroraPostgreSQL.Updates.html#AuroraPostgreSQL.Updates.20180305.136X
-    image: postgres:13.6-alpine
+  mysql:
+    # Should match AWS Aurora MySQL version:
+    # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraMySQLReleaseNotes/AuroraMySQL.Updates.3020.html
+    image: mysql:8.0.23
+    platform: linux/x86_64  # needed for M1 macs
     ports:
-      - 5432:${POSTGRES_PORT:-5432}
+      - 3306:3306
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-root}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-root}
-      - POSTGRES_DB=${POSTGRES_DB:-moment}
+      - MYSQL_DATABASE=${MYSQL_DB:-moment}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD:-root}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - mysql:/var/lib/mysql
   # Should match the AWS Redis version:
   # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/supported-engine-versions.html
   redis:
     image: redis:6.2.7-alpine
     command: redis-server
     ports:
-      - 6379:${REDIS_PORT:-6379}
+      - 6379:6379
     volumes:
       - redis:/data
 
 volumes:
-  postgres:
+  mysql:
   redis:

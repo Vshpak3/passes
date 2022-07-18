@@ -8,7 +8,7 @@ import { getDatabaseOptions } from './mikro-orm.options'
 export default getDatabaseOptions(
   new ConfigService({
     'database.host': 'localhost',
-    'database.port': '5432',
+    'database.port': '3306',
     'database.user': 'root',
     'database.password': 'root',
     'database.dbname': 'moment',
