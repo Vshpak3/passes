@@ -76,20 +76,12 @@ const Username = (props: GetProfileDto) => {
   )
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  try {
-    const api = new ProfileApi()
-    const res = (await api.profileGetAllUsernames()) as { usernames: string[] }
-    return {
-      paths: res?.usernames?.map((username) => ({ params: { username } })),
-      fallback: true
-    }
-  } catch (error) {
-    return {
-      paths: [],
-      fallback: true
-    }
+  return {
+    paths: [],
+    fallback: "blocking"
   }
 }
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params || !params.username) return { props: {} }
   const username = Array.isArray(params.username)
@@ -101,7 +93,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const profile = await api.profileFindOneByUsername({ username })
     // TODO: Hack to remove undefined from generated API typings
     const props = JSON.parse(JSON.stringify(profile))
-    return { props }
+    return {
+      props,
+      // Next.js will attempt to re-generate the page:
+      // - When a request comes in
+      // - At most once every 5 minutes
+      revalidate: 5 * 60 // In seconds
+    }
   } catch (err) {
     return { props: {} }
   }
