@@ -1,4 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react"
+import PlusSign from "public/icons/plus-sign.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
@@ -11,24 +12,50 @@ import MomentLogo from "public/moment-logo.svg"
 import UpdatedMomentLogo from "public/moment-logo-updated.svg"
 import { Fragment, useState } from "react"
 
+import { NewPostDialog } from "../../pages/profile/posts/new-post"
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 const SideBar = () => {
   const [active, setActive] = useState(0)
   const navigation = [
-    { id: 1, name: "Home", href: "#", icon: HomeIcon, current: true },
-    { id: 2, name: "Messages", href: "#", icon: MessagesIcon, current: false },
-    { id: 3, name: "Passes", href: "#", icon: PassesIcon, current: false },
-    { id: 4, name: "Payments", href: "#", icon: PaymentsIcon, current: false },
+    { id: "home", name: "Home", href: "#", icon: HomeIcon, current: true },
     {
-      id: 5,
+      id: "messages",
+      name: "Messages",
+      href: "#",
+      icon: MessagesIcon,
+      current: false
+    },
+    {
+      id: "passes",
+      name: "Passes",
+      href: "#",
+      icon: PassesIcon,
+      current: false
+    },
+    {
+      id: "payments",
+      name: "Payments",
+      href: "#",
+      icon: PaymentsIcon,
+      current: false
+    },
+    {
+      id: "subscriptions",
       name: "Subscriptions",
       href: "#",
       icon: SubscriptionsIcon,
       current: false
     },
-    { id: 6, name: "Settings", href: "#", icon: SettingsIcon, current: false }
+    {
+      id: "settings",
+      name: "Settings",
+      href: "#",
+      icon: SettingsIcon,
+      current: false
+    }
   ]
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [logout, setLogout] = useState()
@@ -68,9 +95,9 @@ const SideBar = () => {
                     <MomentLogo />
                   </div>
                   <nav className="mt-5 space-y-1 px-2">
-                    {navigation.map((item, index) => (
+                    {navigation.map((item) => (
                       <a
-                        key={index}
+                        key={`sidebar-mobile-${item.id}`}
                         href={item.href}
                         onClick={() => setActive(item.id)}
                         className={classNames(
@@ -115,8 +142,8 @@ const SideBar = () => {
                 </div>
               </div>
               <nav className="flex flex-col items-center space-y-3 pt-5 sidebar-collapse:items-start ">
-                {navigation.map((item, index) => (
-                  <div key={index}>
+                {navigation.map((item) => (
+                  <Fragment key={`sidebar-${item.id}`}>
                     <span
                       onClick={() => setActive(item.id)}
                       className={classNames(
@@ -127,7 +154,6 @@ const SideBar = () => {
                       )}
                     >
                       <a
-                        key={item.name}
                         href={item.href}
                         className={classNames(
                           item.id === active
@@ -148,7 +174,6 @@ const SideBar = () => {
                       </a>
                     </span>
                     <a
-                      key={index}
                       href={item.href}
                       onClick={() => setActive(item.id)}
                       className={classNames(
@@ -169,8 +194,15 @@ const SideBar = () => {
                       />
                       {item.name}
                     </a>
-                  </div>
+                  </Fragment>
                 ))}
+                <NewPostDialog
+                  trigger={
+                    <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-[50%] bg-[#BF7AF0] sidebar-collapse:hidden">
+                      <PlusSign className="h-4 w-4" />
+                    </span>
+                  }
+                />
               </nav>
             </div>
             <div className="">

@@ -98,4 +98,5 @@ i {
   }
 }
 
+@import "src/styles/global/toggle.css";
 @import "src/styles/pages/profile/profile.css";

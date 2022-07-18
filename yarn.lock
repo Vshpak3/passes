@@ -3506,6 +3506,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-fast-marquee: 1.3.2
+    react-hook-form: 7.33.1
     react-parallax-tilt: 1.7.43
     sharp: 0.30.7
     swr: 1.3.0
@@ -13235,6 +13236,15 @@ __metadata:
     react: ">= 16.8.0 || 18.0.0"
     react-dom: ">= 16.8.0 || 18.0.0"
   checksum: 297dccc8dc239516c1beb13ee81fca4f9c3d195452ea6b6c76c3cfe8dfc72ae4010c7abd6765d3b8ca138d545fe6bbdcf7064e5b9bbb14982cfee885172e63d5
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:7.33.1":
+  version: 7.33.1
+  resolution: "react-hook-form@npm:7.33.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: ec8f938b5af32148956edc9a87b6a0a99cc305617925608961cf4352ad1a786daea9fdc4d15106aea2821937d27367a69ab525882f07c0bb7ea45fba5dbf8ff2
   languageName: node
   linkType: hard
 
