@@ -51,4 +51,27 @@ export class AuthApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     */
+    async authRefreshAccessTokenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/auth/refresh`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async authRefreshAccessToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.authRefreshAccessTokenRaw(initOverrides);
+    }
+
 }

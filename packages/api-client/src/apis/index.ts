@@ -1,7 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AuthApi';
+export * from './AuthFacebookApi';
 export * from './AuthGoogleApi';
+export * from './AuthTwitterApi';
 export * from './CommentApi';
 export * from './EthApi';
 export * from './HealthApi';

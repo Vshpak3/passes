@@ -1,6 +1,8 @@
 .openapi-generator-ignore
 apis/AuthApi.ts
+apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
+apis/AuthTwitterApi.ts
 apis/CommentApi.ts
 apis/EthApi.ts
 apis/HealthApi.ts
@@ -39,6 +41,7 @@ models/SourceDto.ts
 models/StatusDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts
+models/UserDto.ts
 models/WalletDto.ts
 models/WalletResponseDto.ts
 models/index.ts
