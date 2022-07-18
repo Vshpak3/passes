@@ -72,7 +72,7 @@ export class UserController {
   @ApiOperation({ summary: 'Validates whether a username is available' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: 'boolean',
+    type: Boolean,
     description: 'Validates whether a username is available',
   })
   @Get('/usernames/validate/:username')
