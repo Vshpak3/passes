@@ -2,15 +2,21 @@ import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 import SideBar from "../components/common/Sidebar"
+import MainContent from "../components/pages/profile/main-content"
 import Passes from "../components/pages/profile/passes"
 import ProfileDetails from "../components/pages/profile/profile-details"
+
 const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
   fullName: "Alex Drachnik",
+  coverTitle: "DRACHNIK (SASHA)",
+  coverDescription:
+    " I help brands & DJs go viral on TikTok 📲 | Creative Director @ BAM 💥 | TikTok; 2M+",
   isKYCVerified: false,
   description: "Viral Tiktok Marketer. 2M+ followers",
   profileImageUrl: "/pages/profile/profile-photo.png",
+  profileCoverImageUrl: "/pages/profile/profile-cover-photo.png",
   instagramUrl: "drachnik",
   tiktokUrl: "@drachnik",
   youtubeUrl: "AlexDrachnikFit",
@@ -56,19 +62,12 @@ const Username = (props: GetProfileDto) => {
         <SideBar />
         <main className="bg-[#1B141D]/85 flex-shrink flex-grow">
           <div className="cover-image h-[300px]" />
-          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 sm:w-[650px] md:w-[650px] lg:w-[900px] lg:px-0">
+          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0">
             <div className="col-span-12 w-full space-y-6 lg:col-span-4 lg:max-w-[280px]">
               {props?.id && <ProfileDetails profile={props} />}
               {props?.id && <Passes profile={props} />}
             </div>
-            <div className="col-span-12 w-full lg:col-span-8 lg:max-w-[620px] ">
-              <div className="min-h-12 flex flex-col items-center rounded border ">
-                Main Content
-                <p className="p-20"> Main Content</p>
-                <p className="p-20"> Main Content</p>
-                <p className="p-20"> Main Content</p>
-              </div>
-            </div>
+            {props?.id && <MainContent profile={props} />}
             <div className="hidden xl:col-span-1 xl:block"></div>
           </div>
         </main>

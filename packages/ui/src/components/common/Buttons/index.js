@@ -1,3 +1,5 @@
+import ChatIcon from "public/icons/profile-chat-icon.svg"
+import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import React from "react"
 
@@ -29,6 +31,16 @@ export const WhiteButton = ({ name }) => (
 export const PassesPurpleButton = ({ name, icon }) => (
   <button className="flex w-full items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
     {icon && <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />}
+    {name}
+  </button>
+)
+
+export const CoverButton = ({ name }) => (
+  <button className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm ">
+    {{
+      Chat: <ChatIcon className="mr-[6px]" />,
+      Tip: <DollarIcon className="mr-[6px]" />
+    }[name] || null}
     {name}
   </button>
 )
