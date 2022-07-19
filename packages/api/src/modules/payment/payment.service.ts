@@ -3,7 +3,6 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import axios from 'axios'
-import { assert } from 'console'
 import { get } from 'lodash'
 
 import { GemService } from '../gem/gem.service'
@@ -101,13 +100,14 @@ export class PaymentService {
     createCardDto.metadata.email = user.email
     const response = await createCard(this.instance, createCardDto)
 
-    assert((await response.status) == 201)
+    if ((await response.status) !== 201) {
+      throw Error('bad circle response: create card')
+    }
     const cardId = response['id']
-    const checkCard = await this.cardRepository.findOne({
+    await this.cardRepository.findOneOrFail({
       circleCardId: cardId,
       user: user,
     })
-    assert(checkCard == null)
     const card = new CardEntity()
     card.circleCardId = cardId
     card.status = response['status']
@@ -139,7 +139,9 @@ export class PaymentService {
     })
     if (card.status == AccountStatusEnum.PENDING) {
       const response = await getCardById(this.instance, cardId)
-      assert((await response.status) == 200)
+      if ((await response.status) !== 200) {
+        throw Error('bad circle response: get card status')
+      }
       card.status = response['status']
       this.bankRepository.persistAndFlush(card)
     }
@@ -257,15 +259,17 @@ export class PaymentService {
     })
 
     createCardPaymentDto.metadata.email = user.email
-    assert(createCardPaymentDto.source.type == 'card')
-    const checkPayment = await this.paymentRepository.findOne({
+    if (createCardPaymentDto.source.type !== 'card') {
+      throw Error('incorrect paymnet type')
+    }
+    await this.paymentRepository.findOneOrFail({
       idempotencyKey: createCardPaymentDto.idempotencyKey,
     })
-    assert(checkPayment == null)
-    const card = await this.cardRepository.findOne({
+    const card = await this.cardRepository.findOneOrFail({
       circleCardId: createCardPaymentDto.source.id,
+      active: true,
+      user: user,
     })
-    assert(card !== null && card.active && card.user.id === user.id)
 
     const payment = new PaymentEntity()
     payment.idempotencyKey = createCardPaymentDto.idempotencyKey
@@ -279,7 +283,9 @@ export class PaymentService {
     this.cardRepository.persistAndFlush(payment)
     const response = await createPayment(this.instance, createCardPaymentDto)
 
-    assert((await response.status) == 201)
+    if ((await response.status) !== 201) {
+      throw Error('bad circle response: make card payment')
+    }
     payment.status = PaymentStatusEnum[response['status']]
     payment.circlePaymentId = response['id']
 
@@ -300,7 +306,9 @@ export class PaymentService {
       !(payment.status in [PaymentStatusEnum.PAID, PaymentStatusEnum.FAILED])
     ) {
       const response = await getPaymentById(this.instance, paymentId)
-      assert((await response.status) == 200)
+      if ((await response.status) !== 200) {
+        throw Error('bad circle response: get payment status')
+      }
       payment.status = response['status']
       this.paymentRepository.persistAndFlush(payment)
     }
@@ -334,7 +342,9 @@ export class PaymentService {
       this.configService.get('circle.master_wallet_id') as string,
       createAddressDto,
     )
-    assert((await response.status) == 201)
+    if ((await response.status) !== 201) {
+      throw Error('bad circle response: get address')
+    }
     const address = response['address']
     const newAddress = new CircleAddressEntity()
     const minutesTillExpire = 30
@@ -360,14 +370,16 @@ export class PaymentService {
       id: userid,
     })
     const response = await createBank(this.instance, createBankDto)
-    assert((await response.status) == 201)
+    if ((await response.status) !== 201) {
+      throw Error('bad circle response: create wire bank')
+    }
 
     const bankId = response['id']
-    const checkBank = await this.bankRepository.findOne({
+    await this.bankRepository.findOneOrFail({
       circleBankId: bankId,
       user: user,
     })
-    assert(checkBank == null)
+
     const bank = new BankEntity()
 
     bank.user = user
@@ -400,7 +412,9 @@ export class PaymentService {
     })
     if (bank.status == AccountStatusEnum.PENDING) {
       const response = await getBankById(this.instance, bankId)
-      assert((await response.status) == 200)
+      if ((await response.status) !== 200) {
+        throw Error('bad circle response: get wire bank status')
+      }
       bank.status = response['status']
       this.bankRepository.persistAndFlush(bank)
     }

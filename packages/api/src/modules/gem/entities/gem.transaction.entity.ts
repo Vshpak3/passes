@@ -13,7 +13,4 @@ export class GemTransactionEntity extends BaseEntity {
 
   @Property()
   source?: string
-
-  @Property()
-  reverted = false
 }

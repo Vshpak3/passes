@@ -1,12 +1,13 @@
-import { EntityManager, EntityRepository } from '@mikro-orm/core'
+import { EntityRepository } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
+import { v4 } from 'uuid'
 
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GemBalanceEntity } from './entities/gem.balance.entity'
 import { GemTransactionEntity } from './entities/gem.transaction.entity'
-
 @Injectable()
 export class GemService {
   constructor(
@@ -19,62 +20,62 @@ export class GemService {
   ) {}
 
   /**
-   * revert a single transaction
-   * @param transfer
-   */
-  async revertTransaction(transfer: GemTransactionEntity): Promise<void> {
-    if (!transfer.reverted) {
-      transfer.reverted = true
-      const balance = await this.getBalance(transfer.user)
-      balance.amount -= transfer.amount
-      this.gemTransactionRepository.persistAndFlush(transfer)
-      this.gemBalanceRepository.persistAndFlush(balance)
-    }
-  }
-
-  /**
    * execute several gem transactions atomically
    * ensure that no balances go below 0
    *
    * @param users
    * @param amounts
-   * @param sources
+   * @param sources humans-readible source of transaction (i.e. circle payment with id, chat payment)
    * @returns
    */
   async executeGemTransactions(
     users: UserEntity[],
     amounts: number[],
     sources: (string | undefined)[],
-  ): Promise<Array<GemTransactionEntity>> {
-    const transactions: GemTransactionEntity[] = []
-    const balances: GemBalanceEntity[] = []
-    for (const user of users) {
-      balances.push(await this.getBalance(user))
+  ): Promise<void> {
+    if (users.length !== amounts.length || users.length !== sources.length) {
+      throw Error('improper input')
     }
-    await this.em.transactional(async (em) => {
+    const userids: string[] = []
+    for (const user of users) {
+      // create balances for users if they do not exist (default 0)
+      await this.getBalance(user)
+      if (!(user.id in userids)) userids.push(user.id)
+    }
+
+    const knex = this.em.getKnex()
+    await knex.transaction(async (trx) => {
+      const balancesList = await knex('gem_balance')
+        .transacting(trx)
+        .forUpdate()
+        .whereIn('user_id', userids)
+        .select('id', 'user_id', 'amount') //lock rows to update
+      const balances = {}
+      balancesList.forEach((balance) => {
+        balances[balance['user_id']] = balance
+      })
+
       for (const i in users) {
-        const user = users[i]
-        const amount = amounts[i]
-        const source = sources[i]
-        const balance = balances[i]
-        try {
-          this.lockService.lock(user.id)
-          if (balance.amount + amount < 0) {
-            throw Error('not enough gems')
-          }
-          const transaction = new GemTransactionEntity()
-          transaction.amount = amount
-          transaction.user = user
-          transaction.source = source
-          balance.amount += amount
-          em.persist(transaction)
-          transactions.push(transaction)
-        } finally {
-          this.lockService.unlock(user.id)
+        await knex('gem_transaction').transacting(trx).insert({
+          id: v4(),
+          amount: amounts[i],
+          user_id: userids[i],
+          source: sources[i],
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
+        balances[userids[i]].amount += amounts[i]
+      }
+      for (const userid in balances) {
+        if (balances[userid]['amount'] < 0) {
+          throw Error('not enough gems')
         }
+        await knex('gem_balance')
+          .transacting(trx)
+          .where('user_id', userid)
+          .update('amount', balances[userid]['amount'])
       }
     })
-    return transactions
   }
 
   /**
