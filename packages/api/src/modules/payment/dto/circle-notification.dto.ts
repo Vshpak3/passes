@@ -9,9 +9,7 @@ export class CircleNotificationDto {
   notificationType: string
   @ApiProperty()
   version: number
-}
 
-export class CirclePaymentNotificationDto extends CircleNotificationDto {
   @ApiProperty()
-  payment: PaymentDto
+  payment?: PaymentDto
 }

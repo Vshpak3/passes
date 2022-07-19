@@ -1,19 +1,21 @@
-import { EntityManager } from '@mikro-orm/mysql'
+import { EntityManager } from '@mikro-orm/core'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { GemBalanceEntity } from '../gem/entities/gem.balance.entity'
+import { GemTransactionEntity } from '../gem/entities/gem.transaction.entity'
+import { GemService } from '../gem/gem.service'
 import { RedisLockService } from '../redisLock/redisLock.service'
-import { GemBalanceEntity } from './entities/gem.balance.entity'
 import { GemPackageEntity } from './entities/gem.package.entity'
-import { GemTransactionEntity } from './entities/gem.transaction.entity'
-import { GemService } from './gem.service'
+import { GemController } from './gem.controller'
 
-describe('GemService', () => {
-  let service: GemService
+describe('GemController', () => {
+  let controller: GemController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [GemController],
       providers: [
         GemService,
         {
@@ -39,10 +41,10 @@ describe('GemService', () => {
       ],
     }).compile()
 
-    service = module.get<GemService>(GemService)
+    controller = module.get<GemController>(GemController)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(controller).toBeDefined()
   })
 })

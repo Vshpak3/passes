@@ -6,6 +6,7 @@ export * from './AuthGoogleApi';
 export * from './AuthTwitterApi';
 export * from './CommentApi';
 export * from './EthApi';
+export * from './GemApi';
 export * from './HealthApi';
 export * from './PassApi';
 export * from './PaymentApi';

@@ -13,14 +13,12 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
-import {
-  CircleNotificationDto,
-  CirclePaymentNotificationDto,
-} from './dto/circle-notification.dto'
+import { CircleNotificationDto } from './dto/circle-notification.dto'
 import { CreateAddressDto } from './dto/create-address.dto'
 import { CreateBankDto } from './dto/create-bank.dto'
 import { CreateCardAndExtraDto } from './dto/create-card.dto'
 import { CreateCardPaymentDto } from './dto/create-card-payment.dto'
+import { PaymentDto } from './dto/payment.dto'
 import { StatusDto } from './dto/status.dto'
 import { CardEntity } from './entities/card.entity'
 import { PaymentService } from './payment.service'
@@ -215,7 +213,7 @@ export class PaymentController {
     return this.paymentService.checkWireBankStatus(id)
   }
 
-  // endpoint only called by circle can call to give us notifications
+  // endpoint only called by circle to give us notifications
   // (must register endpoint through circle API if it changes)
   // TODO: authenticate circle url
   // TODO: handle payout notifications (and card/bank if available)
@@ -228,13 +226,12 @@ export class PaymentController {
   @Post('circle/notification')
   @Head('circle/notification')
   async recieveNotifications(
-    @Body() circleNotificationDto: CircleNotificationDto,
+    @Body()
+    circleNotificationDto: CircleNotificationDto,
   ) {
     if (circleNotificationDto.notificationType == 'payments') {
-      const circlePaymentNotificationDto =
-        circleNotificationDto as CirclePaymentNotificationDto
       return this.paymentService.procesPaymentUpdate(
-        circlePaymentNotificationDto.payment,
+        circleNotificationDto.payment as PaymentDto,
       )
     }
   }

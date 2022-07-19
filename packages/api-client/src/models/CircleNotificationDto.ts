@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    PaymentDto,
+    PaymentDtoFromJSON,
+    PaymentDtoFromJSONTyped,
+    PaymentDtoToJSON,
+} from './PaymentDto';
+
 /**
  * 
  * @export
@@ -37,6 +44,12 @@ export interface CircleNotificationDto {
      * @memberof CircleNotificationDto
      */
     version: number;
+    /**
+     * 
+     * @type {PaymentDto}
+     * @memberof CircleNotificationDto
+     */
+    payment: PaymentDto;
 }
 
 export function CircleNotificationDtoFromJSON(json: any): CircleNotificationDto {
@@ -52,6 +65,7 @@ export function CircleNotificationDtoFromJSONTyped(json: any, ignoreDiscriminato
         'clientId': json['clientId'],
         'notificationType': json['notificationType'],
         'version': json['version'],
+        'payment': PaymentDtoFromJSON(json['payment']),
     };
 }
 
@@ -67,6 +81,7 @@ export function CircleNotificationDtoToJSON(value?: CircleNotificationDto | null
         'clientId': value.clientId,
         'notificationType': value.notificationType,
         'version': value.version,
+        'payment': PaymentDtoToJSON(value.payment),
     };
 }
 

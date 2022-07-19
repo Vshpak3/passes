@@ -7,6 +7,7 @@ import { v4 } from 'uuid'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GemBalanceEntity } from './entities/gem.balance.entity'
+import { GemPackageEntity } from './entities/gem.package.entity'
 import { GemTransactionEntity } from './entities/gem.transaction.entity'
 @Injectable()
 export class GemService {
@@ -17,6 +18,8 @@ export class GemService {
     private readonly gemTransactionRepository: EntityRepository<GemTransactionEntity>,
     @InjectRepository(GemBalanceEntity)
     private readonly gemBalanceRepository: EntityRepository<GemBalanceEntity>,
+    @InjectRepository(GemPackageEntity)
+    private readonly gemPackageRepository: EntityRepository<GemPackageEntity>,
   ) {}
 
   /**
@@ -108,5 +111,9 @@ export class GemService {
       this.gemBalanceRepository.persistAndFlush(newBalance)
       return newBalance
     }
+  }
+
+  async getPublicPackages(): Promise<Array<GemPackageEntity>> {
+    return await this.gemPackageRepository.find({ isPublic: true })
   }
 }
