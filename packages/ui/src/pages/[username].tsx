@@ -58,17 +58,18 @@ const mockCreator = {
 const Username = (props: GetProfileDto) => {
   return (
     <>
-      <div className="relative flex min-h-screen flex-1 bg-[#1b141d]/80">
+      <div className="relative flex min-h-screen flex-1 bg-black">
         <SideBar />
         <main className="bg-[#1B141D]/85 flex-shrink flex-grow">
           <div className="cover-image h-[300px]" />
-          <div className="mx-auto -mt-[205px] grid w-full grid-cols-12 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0">
-            <div className="col-span-12 w-full space-y-6 lg:col-span-4 lg:max-w-[280px]">
+          <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
+            <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
               {props?.id && <ProfileDetails profile={props} />}
               {props?.id && <Passes profile={props} />}
             </div>
-            {props?.id && <MainContent profile={props} />}
-            <div className="hidden xl:col-span-1 xl:block"></div>
+            <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+              {props?.id && <MainContent profile={props} />}
+            </div>
           </div>
         </main>
       </div>

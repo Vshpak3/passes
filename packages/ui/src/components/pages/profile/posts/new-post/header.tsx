@@ -1,6 +1,6 @@
 import Microphone from "public/icons/media-microphone.svg"
-import Photos from "public/icons/media-photos.svg"
 import Recorder from "public/icons/media-recorder.svg"
+import Photos from "public/icons/profile-photos1-icon.svg"
 
 import { FormInput } from "../../../../form/form-input"
 import { FormErrors, FormOptions, FormRegister } from "../../../../form/types"

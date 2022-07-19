@@ -9,7 +9,7 @@ import {
 } from "./ProfileComponents"
 
 const ProfileDetails = ({ profile }) => (
-  <div className="min-h-12 flex flex-col items-center rounded-[20px] border border-[#ffffff]/10 px-4 pt-3 pb-10 backdrop-blur-[100px]">
+  <div className="min-h-12 flex flex-col items-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-4 pt-3 pb-10 backdrop-blur-[100px]">
     <Verified isVerified={profile.isVerified} />
     <ProfilePhoto url={profile.profileImageUrl} />
     <ProfileInformation

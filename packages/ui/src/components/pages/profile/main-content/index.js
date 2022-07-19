@@ -6,8 +6,8 @@ import { NewPost } from "./NewPost"
 import { Post } from "./Post"
 
 const MainContent = ({ profile }) => (
-  <div className="col-span-12 w-full space-y-6 lg:col-span-8 lg:max-w-[680px]">
-    <div className="flex flex-col justify-center rounded-[20px] border border-[#ffffff]/10 backdrop-blur-[100px] ">
+  <>
+    <div className="flex flex-col justify-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 backdrop-blur-[100px] ">
       <div
         className={`flex min-h-[134px] items-center justify-center rounded-t-[20px] bg-[url('/pages/profile/profile-cover-photo.png')] bg-cover bg-center bg-no-repeat`}
       >
@@ -16,8 +16,8 @@ const MainContent = ({ profile }) => (
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col px-8 py-6">
-        <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col pl-[26px] pr-3 pt-5">
           <span className="text-sm font-normal text-[#ffffff]/30">
             About me
           </span>
@@ -25,7 +25,7 @@ const MainContent = ({ profile }) => (
             {profile.coverDescription}
           </span>
         </div>
-        <div className="flex items-start gap-3 p-0 pt-10">
+        <div className="flex items-start gap-3 p-0 pt-10 pl-5 pb-4">
           <span className="flex h-[45px] w-[45px] items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10 ">
             <BellIcon />
           </span>
@@ -41,7 +41,7 @@ const MainContent = ({ profile }) => (
         </div>
       </div>
     </div>
-    <div className="min-h-12 flex items-center justify-between rounded-[20px] border border-[#ffffff]/10 px-8 py-6 backdrop-blur-[100px]">
+    <div className="min-h-12 hidden items-center justify-between rounded-[20px] px-3 py-6 backdrop-blur-[100px] sm:flex  ">
       <div className="flex flex-1 cursor-pointer space-x-12">
         <span>About</span>
         <span>Posts</span>
@@ -53,7 +53,7 @@ const MainContent = ({ profile }) => (
     <NewPost />
 
     <Post />
-  </div>
+  </>
 )
 
 export default MainContent

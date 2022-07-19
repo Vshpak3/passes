@@ -6,7 +6,7 @@ import { classNames } from "src/helpers/classNames"
 export const Post = () => {
   const [postUnlocked, setPostUnlocked] = useState(false)
   return (
-    <div className="flex flex-col items-center gap-4 rounded-[20px] border border-[#ffffff]/10 px-5 pt-8 pb-5 backdrop-blur-[100px] ">
+    <div className="flex flex-col items-center gap-4 rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-5 pt-8 pb-5 backdrop-blur-[100px]  ">
       <div className="flex w-full justify-between">
         <div className="flex items-center space-x-4 pl-3">
           <img // eslint-disable-line @next/next/no-img-element
@@ -42,7 +42,7 @@ export const Post = () => {
           process for making engaged Tiktoks.
         </p>
       </div>
-      <div className="relative bg-transparent ">
+      <div className="relative w-full bg-transparent ">
         <div
           className={classNames(
             postUnlocked ? "" : "bg-[#1B141D]/50 backdrop-blur-[40px]",
@@ -64,7 +64,7 @@ export const Post = () => {
         <img // eslint-disable-line @next/next/no-img-element
           src="/pages/profile/profile-post-photo.png"
           alt=""
-          className="rounded-[20px] object-cover shadow-xl"
+          className="w-full rounded-[20px] object-cover shadow-xl"
         />
       </div>
       <div className="flex items-center justify-center">

@@ -31,7 +31,7 @@ module.exports = {
       screens: {
         xxs: "360px",
         xs: "475px",
-        "sidebar-collapse": "1140px"
+        "sidebar-collapse": "1240px"
       }
     }
   },

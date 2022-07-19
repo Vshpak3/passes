@@ -17,7 +17,7 @@ export const NewPost = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 px-7 py-5 backdrop-blur-[100px]">
+      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-7 py-5 backdrop-blur-[100px]">
         <FormInput
           register={register}
           type="text-area"
