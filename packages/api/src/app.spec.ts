@@ -8,12 +8,6 @@ import request from 'supertest'
 
 import { AppModule } from './../src/app.module'
 
-// This test unfortunately results in the following warning message:
-// A worker process has failed to exit gracefully and has been force exited.
-// This is likely caused by tests leaking due to improper teardown. Try running
-// with --detectOpenHandles to find leaks. Active timers can also cause this,
-// ensure that .unref() was called on them.
-
 describe('App e2e', () => {
   let app: INestApplication
   let moduleFixture: TestingModule
