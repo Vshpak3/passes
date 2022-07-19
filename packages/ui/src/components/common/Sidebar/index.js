@@ -223,17 +223,17 @@ const SideBar = () => {
                           href={item.href}
                           className={classNames(
                             item.id === active
-                              ? "text-[#ffffff]/90"
-                              : "group-hover:text-white",
-                            `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 sidebar-collapse:flex`
+                              ? "text-white"
+                              : "text-[#eeedef]/50 group-hover:text-white",
+                            `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
                           )}
                         >
                           <item.icon
                             className={classNames(
                               item.id === active
                                 ? "fill-transparent stroke-white stroke-2"
-                                : "group-hover:fill-transparent group-hover:stroke-[#ffffff]/80",
-                              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-gray-500 stroke-2 "
+                                : "stroke-[#ffffff]/30 group-hover:stroke-[#ffffff]/80",
+                              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
                             )}
                             aria-hidden="true"
                           />
@@ -258,17 +258,17 @@ const SideBar = () => {
                                 href={item.href}
                                 className={classNames(
                                   item.id === active
-                                    ? "text-[#ffffff]/90"
-                                    : "hover:text-white",
-                                  `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 sidebar-collapse:flex`
+                                    ? "text-white"
+                                    : "text-[#eeedef]/50 group-hover:text-white",
+                                  `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
                                 )}
                               >
                                 <item.icon
                                   className={classNames(
                                     item.id === active
-                                      ? "fill-transparent stroke-[#ffffff]/90"
-                                      : "group-hover:fill-transparent group-hover:stroke-[#ffffff]/80",
-                                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/50 stroke-2 "
+                                      ? "fill-transparent stroke-white stroke-2"
+                                      : "stroke-[#ffffff]/30 group-hover:stroke-[#ffffff]/80",
+                                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
                                   )}
                                   aria-hidden="true"
                                 />
@@ -296,10 +296,10 @@ const SideBar = () => {
                                 >
                                   <span
                                     className={classNames(
-                                      subItem.id === active
-                                        ? "text-[#ffffff]/90"
-                                        : "hover:text-white",
-                                      `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 sidebar-collapse:flex`
+                                      item.id === active
+                                        ? "text-white"
+                                        : "text-[#eeedef]/50 group-hover:text-white",
+                                      `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
                                     )}
                                   >
                                     {subItem.name}
