@@ -62,6 +62,7 @@
     "passport-twitter": "1.0.4",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
+    "stream-chat": "6.7.3",
     "swagger-ui-express": "4.4.0",
     "tweetnacl": "1.0.3",
     "web3": "1.7.4"

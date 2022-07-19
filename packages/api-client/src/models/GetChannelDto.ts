@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface JwtPayload
+ * @interface GetChannelDto
  */
-export interface JwtPayload {
+export interface GetChannelDto {
     /**
      * 
      * @type {string}
-     * @memberof JwtPayload
+     * @memberof GetChannelDto
      */
-    sub: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof JwtPayload
-     */
-    email?: string;
+    id: string;
 }
 
-export function JwtPayloadFromJSON(json: any): JwtPayload {
-    return JwtPayloadFromJSONTyped(json, false);
+export function GetChannelDtoFromJSON(json: any): GetChannelDto {
+    return GetChannelDtoFromJSONTyped(json, false);
 }
 
-export function JwtPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): JwtPayload {
+export function GetChannelDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetChannelDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'sub': json['sub'],
-        'email': !exists(json, 'email') ? undefined : json['email'],
+        'id': json['id'],
     };
 }
 
-export function JwtPayloadToJSON(value?: JwtPayload | null): any {
+export function GetChannelDtoToJSON(value?: GetChannelDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function JwtPayloadToJSON(value?: JwtPayload | null): any {
     }
     return {
         
-        'sub': value.sub,
-        'email': value.email,
+        'id': value.id,
     };
 }
 

@@ -9,10 +9,9 @@ const useUser = () => {
 
   const { data: user, isValidating: loading } = useSWR("/user", async () => {
     const api = new AuthApi()
-    const response = await api.authGetCurrentUser({
+    return await api.authGetCurrentUser({
       headers: { Authorization: "Bearer " + accessToken }
     })
-    return response.user
   })
 
   return {

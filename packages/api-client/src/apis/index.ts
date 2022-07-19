@@ -8,6 +8,7 @@ export * from './CommentApi';
 export * from './EthApi';
 export * from './GemApi';
 export * from './HealthApi';
+export * from './MessagesApi';
 export * from './PassApi';
 export * from './PaymentApi';
 export * from './PostApi';

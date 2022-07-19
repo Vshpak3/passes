@@ -33,7 +33,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       // TODO: eventually remove this temporary login restriction
       if (
         !/^.*@moment.vip$/.test(email) &&
-        !['mailto.jtang@gmail.com'].includes(email)
+        !['mailto.jtang@gmail.com', 'jmaathur@gmail.com'].includes(email)
       ) {
         console.error('blocking non-moment email login')
         return null

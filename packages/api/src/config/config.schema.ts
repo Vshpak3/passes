@@ -49,6 +49,9 @@ export const configValidationSchema = Joi.object({
 
   MORALIS_API_KEY: Joi.string().required(),
   MORALIS_API_HOST: Joi.string().required(),
+
+  STREAM_API_KEY: Joi.string().required(),
+  STREAM_API_SECRET: Joi.string().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -113,6 +116,10 @@ export const configConfiguration = async function (): Promise<
       api_endpoint: getConfigValue('CIRCLE_API_ENDPOINT'),
       api_key: getConfigValue('CIRCLE_API_KEY'),
       master_wallet_id: getConfigValue('CIRCLE_MASTER_WALLET_ID'),
+    },
+    stream: {
+      api_key: getConfigValue('STREAM_API_KEY'),
+      api_secret: getConfigValue('STREAM_API_SECRET'),
     },
   })
 }

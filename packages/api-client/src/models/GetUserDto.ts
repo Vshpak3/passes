@@ -16,82 +16,58 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UserDto
+ * @interface GetUserDto
  */
-export interface UserDto {
+export interface GetUserDto {
     /**
      * 
      * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     email: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDto
-     */
-    oauthId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserDto
-     */
-    oauthProvider: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     userName: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     fullName: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     phoneNumber: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     birthday: string;
     /**
      * 
      * @type {boolean}
-     * @memberof UserDto
-     */
-    isKYCVerified: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserDto
+     * @memberof GetUserDto
      */
     isCreator: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserDto
-     */
-    isDisabled: boolean;
 }
 
-export function UserDtoFromJSON(json: any): UserDto {
-    return UserDtoFromJSONTyped(json, false);
+export function GetUserDtoFromJSON(json: any): GetUserDto {
+    return GetUserDtoFromJSONTyped(json, false);
 }
 
-export function UserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserDto {
+export function GetUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetUserDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -99,19 +75,15 @@ export function UserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): U
         
         'id': json['id'],
         'email': json['email'],
-        'oauthId': json['oauthId'],
-        'oauthProvider': json['oauthProvider'],
         'userName': json['userName'],
         'fullName': json['fullName'],
         'phoneNumber': json['phoneNumber'],
         'birthday': json['birthday'],
-        'isKYCVerified': json['isKYCVerified'],
         'isCreator': json['isCreator'],
-        'isDisabled': json['isDisabled'],
     };
 }
 
-export function UserDtoToJSON(value?: UserDto | null): any {
+export function GetUserDtoToJSON(value?: GetUserDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -122,15 +94,11 @@ export function UserDtoToJSON(value?: UserDto | null): any {
         
         'id': value.id,
         'email': value.email,
-        'oauthId': value.oauthId,
-        'oauthProvider': value.oauthProvider,
         'userName': value.userName,
         'fullName': value.fullName,
         'phoneNumber': value.phoneNumber,
         'birthday': value.birthday,
-        'isKYCVerified': value.isKYCVerified,
         'isCreator': value.isCreator,
-        'isDisabled': value.isDisabled,
     };
 }
 

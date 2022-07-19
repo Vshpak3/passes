@@ -13,8 +13,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { CreateUserDto } from './dto/create-user.dto'
+import { GetUserDto } from './dto/get-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { UserDto } from './dto/user.dto'
 import { UserService } from './user.service'
 
 @ApiTags('user')
@@ -29,32 +29,32 @@ export class UserController {
     description: 'A user was created',
   })
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<GetUserDto> {
     return this.userService.create(createUserDto)
   }
 
   @ApiOperation({ summary: 'Gets a user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateUserDto,
+    type: GetUserDto,
     description: 'A user was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<UserDto> {
+  async findOne(@Param('id') id: string): Promise<GetUserDto> {
     return this.userService.findOne(id)
   }
 
   @ApiOperation({ summary: 'Updates a user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: UserDto,
+    type: GetUserDto,
     description: 'A user was updated',
   })
   @Patch('')
   async update(
     @Req() req: RequestWithUser,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserDto> {
+  ): Promise<GetUserDto> {
     return this.userService.update(req.user.id, updateUserDto)
   }
 
@@ -65,7 +65,7 @@ export class UserController {
     description: 'A user account was disabled',
   })
   @Delete('')
-  async delete(@Req() req: RequestWithUser): Promise<UserDto> {
+  async delete(@Req() req: RequestWithUser): Promise<GetUserDto> {
     return this.userService.remove(req.user.id)
   }
 

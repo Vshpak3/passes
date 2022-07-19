@@ -13,6 +13,7 @@ import { EthModule } from './modules/eth/eth.module'
 import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
 import { RequestLogger } from './modules/logging/request'
+import { MessagesModule } from './modules/messages/messages.module'
 import { PassModule } from './modules/pass/pass.module'
 import { PaymentModule } from './modules/payment/payment.module'
 import { PostModule } from './modules/post/post.module'
@@ -43,6 +44,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     WalletModule,
     GemModule,
     EthModule,
+    MessagesModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -9,7 +9,8 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { GetCurrentUserDto } from './dto/get-current-user'
+import { GetUserDto } from '../user/dto/get-user.dto'
+import { UserService } from '../user/user.service'
 import { JwtAuthGuard } from './jwt/jwt-auth.guard'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
@@ -21,18 +22,19 @@ export class AuthController {
   constructor(
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
+    private readonly userService: UserService,
   ) {}
 
   @ApiOperation({ summary: 'Gets the current authenticated user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetCurrentUserDto,
+    type: GetUserDto,
     description: 'Gets the current authenticated user',
   })
   @Get('user')
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Req() req: RequestWithUser) {
-    return { user: req.user }
+    return new GetUserDto(await this.userService.findOne(req.user.id))
   }
 
   @Post('refresh')
