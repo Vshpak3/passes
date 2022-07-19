@@ -201,9 +201,9 @@ const SideBar = () => {
                           <item.icon
                             className={classNames(
                               item.id === active
-                                ? "fill-white"
-                                : "hover:fill-white ",
-                              "flex-shrink-0 cursor-pointer fill-[#A09FA6] group-hover:fill-white "
+                                ? "fill-transparent stroke-white stroke-2"
+                                : "stroke-[#ffffff]/30 group-hover:stroke-[#ffffff]/80 ",
+                              "flex-shrink-0 cursor-pointer stroke-white stroke-2  "
                             )}
                             aria-hidden="true"
                           />
