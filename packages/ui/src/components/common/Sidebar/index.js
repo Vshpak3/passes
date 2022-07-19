@@ -215,7 +215,7 @@ const SideBar = () => {
                         className={classNames(
                           item.id === active
                             ? "rounded-[56px] bg-[#FFFEFF]/10"
-                            : "",
+                            : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
                           `group hidden cursor-pointer items-center py-[10px] px-[26px] sidebar-collapse:flex`
                         )}
                       >
@@ -223,7 +223,7 @@ const SideBar = () => {
                           href={item.href}
                           className={classNames(
                             item.id === active
-                              ? "text-gray-50"
+                              ? "text-[#ffffff]/90"
                               : "group-hover:text-white",
                             `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 sidebar-collapse:flex`
                           )}
@@ -231,9 +231,9 @@ const SideBar = () => {
                           <item.icon
                             className={classNames(
                               item.id === active
-                                ? "fill-transparent stroke-gray-50 stroke-2"
+                                ? "fill-transparent stroke-white stroke-2"
                                 : "group-hover:fill-transparent group-hover:stroke-[#ffffff]/80",
-                              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/50 stroke-2 "
+                              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-gray-500 stroke-2 "
                             )}
                             aria-hidden="true"
                           />
@@ -266,7 +266,7 @@ const SideBar = () => {
                                 <item.icon
                                   className={classNames(
                                     item.id === active
-                                      ? "fill-transparent stroke-[#ffffff]"
+                                      ? "fill-transparent stroke-[#ffffff]/90"
                                       : "group-hover:fill-transparent group-hover:stroke-[#ffffff]/80",
                                     "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/50 stroke-2 "
                                   )}
