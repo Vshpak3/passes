@@ -223,7 +223,7 @@ const SideBar = () => {
                           href={item.href}
                           className={classNames(
                             item.id === active
-                              ? "text-[#ffffff]"
+                              ? "text-[#ffffff]/100"
                               : "group-hover:text-white",
                             `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 sidebar-collapse:flex`
                           )}
@@ -231,7 +231,7 @@ const SideBar = () => {
                           <item.icon
                             className={classNames(
                               item.id === active
-                                ? "fill-transparent stroke-[#ffffff]"
+                                ? "fill-transparent stroke-[#ffffff]/100 stroke-2"
                                 : "group-hover:fill-transparent group-hover:stroke-[#ffffff]/80",
                               "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/50 stroke-2 "
                             )}
