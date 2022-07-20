@@ -3,10 +3,10 @@
 ## Setup
 
 System Requirements
+
 - macOS or Linux
 - Node: `brew install node`
 - Yarn: `npm install -g yarn@berry`
-
 
 ## Backend
 
@@ -80,6 +80,7 @@ yarn workspace @moment/api migration:up
 ### Config
 
 Configs are stored in `packages/api/src/config/.env.ENV` where `ENV` is one of:
+
 - `dev`: for local testing; feel free to commit sandbox/test secrets to this file
 - `stage`: for code running in staging; do not commit secrets to this file
 - `prod`: for code running in production; do not commit secrets to this file
@@ -103,6 +104,7 @@ This should be run whenever you update a controller:
 ```
 
 To view OpenAPI endpoints, visit:
+
 - UI: http://localhost:3001/api
 - JSON: http://localhost:3001/api-json
 
@@ -117,7 +119,6 @@ The following script upgrades all dependencies:
 ```bash
 ./bin/upgrade.sh
 ```
-
 
 ## Frontend
 

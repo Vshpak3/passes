@@ -4,6 +4,7 @@ apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
 apis/AuthTwitterApi.ts
 apis/CommentApi.ts
+apis/CreatorSettingsApi.ts
 apis/EthApi.ts
 apis/GemApi.ts
 apis/HealthApi.ts
@@ -30,6 +31,7 @@ models/CreateCardAndExtraDto.ts
 models/CreateCardDto.ts
 models/CreateCardPaymentDto.ts
 models/CreateChannelDto.ts
+models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
 models/CreateProfileDto.ts
 models/CreateUserDto.ts

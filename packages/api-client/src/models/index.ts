@@ -12,6 +12,7 @@ export * from './CreateCardAndExtraDto';
 export * from './CreateCardDto';
 export * from './CreateCardPaymentDto';
 export * from './CreateChannelDto';
+export * from './CreateCreatorSettingsDto';
 export * from './CreateEthNftCollectionDto';
 export * from './CreateProfileDto';
 export * from './CreateUserDto';

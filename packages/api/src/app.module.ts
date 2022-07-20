@@ -9,6 +9,7 @@ import { redisOptions } from './database/redis.options'
 import { AuthModule } from './modules/auth/auth.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
+import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
 import { EthModule } from './modules/eth/eth.module'
 import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
@@ -45,6 +46,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     GemModule,
     EthModule,
     MessagesModule,
+    CreatorSettingsModule,
   ],
 })
 export class AppModule implements NestModule {
