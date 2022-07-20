@@ -290,13 +290,13 @@ const SideBar = () => {
                                   className={classNames(
                                     subItem.id === active
                                       ? "rounded-[56px] bg-[#FFFEFF]/10"
-                                      : "hover:text-white",
-                                    `group ml-10 hidden cursor-pointer items-center  py-[10px] px-[26px] sidebar-collapse:inline-block`
+                                      : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
+                                    `group ml-10 hidden cursor-pointer items-center py-[10px] px-[26px] sidebar-collapse:inline-block`
                                   )}
                                 >
                                   <span
                                     className={classNames(
-                                      item.id === active
+                                      subItem.id === active
                                         ? "text-white"
                                         : "text-[#eeedef]/50 group-hover:text-white",
                                       `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`

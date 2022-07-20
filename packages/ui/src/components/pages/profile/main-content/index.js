@@ -2,6 +2,7 @@ import BellIcon from "public/icons/profile-bell-icon.svg"
 import React from "react"
 import { CoverButton } from "src/components/common/Buttons"
 
+import NewsFeedNavigation from "./Navigation"
 import { NewPost } from "./NewPost"
 import { Post } from "./Post"
 
@@ -41,14 +42,8 @@ const MainContent = ({ profile }) => (
         </div>
       </div>
     </div>
-    <div className="min-h-12 hidden items-center justify-between rounded-[20px] px-3 py-6 backdrop-blur-[100px] sm:flex  ">
-      <div className="flex flex-1 cursor-pointer space-x-12">
-        <span>About</span>
-        <span>Posts</span>
-        <span>Fan Wall</span>
-        <span>Events</span>
-      </div>
-      <div className="pl-20">New Pass</div>
+    <div className="min-h-12 hidden sm:flex  ">
+      <NewsFeedNavigation />
     </div>
     <NewPost />
 
