@@ -1,5 +1,5 @@
 import { EntityRepository } from '@mikro-orm/core'
-import { EntityManager } from '@mikro-orm/mysql'
+import { EntityManager, Knex } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { v4 } from 'uuid'
@@ -9,6 +9,21 @@ import { UserEntity } from '../user/entities/user.entity'
 import { GemBalanceEntity } from './entities/gem.balance.entity'
 import { GemPackageEntity } from './entities/gem.package.entity'
 import { GemTransactionEntity } from './entities/gem.transaction.entity'
+
+export class GemTransaction {
+  user: UserEntity
+
+  amount: number
+
+  // human-readable source of transaction (i.e. circle payment with id, chat payment)
+  source?: string
+
+  constructor(user: UserEntity, amount: number, source?: string) {
+    this.user = user
+    this.amount = amount
+    this.source = source
+  }
+}
 @Injectable()
 export class GemService {
   constructor(
@@ -26,24 +41,22 @@ export class GemService {
    * execute several gem transactions atomically
    * ensure that no balances go below 0
    *
-   * @param users
-   * @param amounts
-   * @param sources humans-readible source of transaction (i.e. circle payment with id, chat payment)
+   * @param gemTransactions array of GemTransactions to be committed to db
+   * @param callbackFn callback returns true if successful. if callbackFn returns false, the Knex.Transaction including gemTransactions gets reverted
    * @returns
    */
   async executeGemTransactions(
-    users: UserEntity[],
-    amounts: number[],
-    sources: (string | undefined)[],
+    gemTransactions: GemTransaction[],
+    callbackFn?: (
+      trx: Knex.Transaction,
+      gemTransactions: GemTransaction[],
+    ) => boolean,
   ): Promise<void> {
-    if (users.length !== amounts.length || users.length !== sources.length) {
-      throw Error('improper input')
-    }
     const userids: string[] = []
-    for (const user of users) {
+    for (const gemTx of gemTransactions) {
       // create balances for users if they do not exist (default 0)
-      await this.getBalance(user)
-      if (!(user.id in userids)) userids.push(user.id)
+      await this.getBalance(gemTx.user)
+      if (!(gemTx.user.id in userids)) userids.push(gemTx.user.id)
     }
 
     const knex = this.em.getKnex()
@@ -58,17 +71,18 @@ export class GemService {
         balances[balance['user_id']] = balance
       })
 
-      for (const i in users) {
+      for (const i in gemTransactions) {
         await knex('gem_transaction').transacting(trx).insert({
           id: v4(),
-          amount: amounts[i],
-          user_id: userids[i],
-          source: sources[i],
+          amount: gemTransactions[i].amount,
+          user_id: gemTransactions[i].user.id,
+          source: gemTransactions[i].amount,
           created_at: new Date(),
           updated_at: new Date(),
         })
-        balances[userids[i]].amount += amounts[i]
+        balances[gemTransactions[i].user.id].amount += gemTransactions[i].amount
       }
+
       for (const userid in balances) {
         if (balances[userid]['amount'] < 0) {
           throw Error('not enough gems')
@@ -78,11 +92,15 @@ export class GemService {
           .where('user_id', userid)
           .update('amount', balances[userid]['amount'])
       }
+
+      if (callbackFn != undefined && !callbackFn(trx, gemTransactions)) {
+        throw new Error('gem transactions reverted due to callbackFn failure')
+      }
     })
   }
 
   /**
-   * atomically transfer gems to uesr (or away) while updating balance
+   * atomically transfer gems to user (or away) while updating balance
    * @param user
    * @param amount
    * @param source
@@ -92,8 +110,10 @@ export class GemService {
     user: UserEntity,
     amount: number,
     source?: string,
-  ): Promise<GemTransactionEntity> {
-    return this.executeGemTransactions([user], [amount], [source])[0]
+  ): Promise<void> {
+    return this.executeGemTransactions([
+      new GemTransaction(user, amount, source),
+    ])
   }
 
   /**
