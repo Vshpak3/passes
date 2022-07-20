@@ -1,3 +1,4 @@
+import HeaderChatIcon from "public/icons/header-chat-icon.svg"
 import ChatIcon from "public/icons/profile-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
@@ -36,7 +37,7 @@ export const PassesPurpleButton = ({ name, icon }) => (
 )
 
 export const CoverButton = ({ name }) => (
-  <button className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm ">
+  <button className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10 ">
     {{
       Chat: <ChatIcon className="mr-[6px]" />,
       Tip: <DollarIcon className="mr-[6px]" />
@@ -52,6 +53,13 @@ export const PostUnlockButton = ({ name, icon, onClick, value }) => (
     onClick={onClick}
   >
     {icon && <UnlockLockIcon className="flex h-6 w-6" />}
+    {name}
+  </button>
+)
+
+export const HeaderChatButton = ({ name }) => (
+  <button className="flex h-[49px] w-full min-w-[105px] items-center justify-center gap-[10px] rounded-md border border-transparent bg-[#1b141d]/50 text-base font-semibold text-white ">
+    <HeaderChatIcon className="" />
     {name}
   </button>
 )
