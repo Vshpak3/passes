@@ -15,7 +15,7 @@ set -o pipefail
 echo "Build started on $(date)"
 
 # Defaults
-readonly default_docker_registry=626392801904.dkr.ecr.us-east-2.amazonaws.com/moment-api-dev
+readonly default_docker_registry=626392801904.dkr.ecr.us-east-1.amazonaws.com/moment-monolith
 readonly default_image_tag=$(git rev-parse --short HEAD)
 readonly default_tag_as_latest=false
 
