@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  check-api:
-    name: Check @moment/api package
+  test-api:
+    name: Test @moment/api package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,8 +22,8 @@ jobs:
       - run: yarn
       - run: yarn workspace @moment/api test
 
-  check-ui:
-    name: Check @moment/ui package
+  test-ui:
+    name: Test @moment/ui package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

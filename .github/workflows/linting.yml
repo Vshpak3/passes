@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  check-api:
-    name: Check @moment/api package
+  lint-api:
+    name: Lint @moment/api package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,14 +19,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-      - run: ./bin/config-check.sh
       - run: yarn
       - run: yarn workspace @moment/api prettier:check
       - run: yarn workspace @moment/api lint:check
       - run: yarn workspace @moment/api ts:check
 
-  check-ui:
-    name: Check @moment/ui package
+  lint-ui:
+    name: Lint @moment/ui package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,3 +38,20 @@ jobs:
       - run: yarn workspace @moment/ui prettier:check
       - run: yarn workspace @moment/ui lint:check
       - run: yarn workspace @moment/ui ts:check
+
+  check-api-configs:
+    name: Check @moment/api configs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout monorepo code
+        uses: actions/checkout@v2
+        with:
+          path: monorepo
+      - name: Checkout infra code
+        uses: actions/checkout@v2
+        with:
+          repository: buildmoment/infra
+          ref: main
+          token: ${{ secrets.INFRA_REPO_ACCESS }}
+          path: infra
+      - run: ./monorepo/bin/config-check.sh
