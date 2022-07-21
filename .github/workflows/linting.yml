@@ -1,11 +1,11 @@
 name: Linting
 
 on:
+  pull_request:
+  workflow_dispatch:
   push:
     branches:
-      - '**'    # matches every branch
-      - '!main' # excludes main
-  workflow_dispatch:
+      - 'main'
 
 jobs:
 
