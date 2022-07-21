@@ -25,7 +25,7 @@ const GemSelection = () => {
             }}
             key={index}
           >
-            {value.title} <br></br>${value.cost} <br></br>
+            {value.title} <br></br>${value.cost / 100} <br></br>
             {value.baseGems}(+{value.bonusGems}) gems<br></br>
             {value.description}
             <br></br>

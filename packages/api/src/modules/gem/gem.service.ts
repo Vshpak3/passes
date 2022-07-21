@@ -2,13 +2,16 @@ import { EntityRepository } from '@mikro-orm/core'
 import { EntityManager, Knex } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
+import { floor } from 'lodash'
 import { v4 } from 'uuid'
 
+import { PaymentEntity } from '../payment/entities/payment.entity'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GemBalanceEntity } from './entities/gem.balance.entity'
 import { GemPackageEntity } from './entities/gem.package.entity'
 import { GemTransactionEntity } from './entities/gem.transaction.entity'
+import { RepeatTransferError } from './error/gem.error'
 
 export class GemTransaction {
   user: UserEntity
@@ -146,5 +149,65 @@ export class GemService {
    */
   async getPackage(packageid: string): Promise<GemPackageEntity> {
     return await this.gemPackageRepository.findOneOrFail({ id: packageid })
+  }
+
+  /**
+   * get the correct gem package for a given cost
+   * order by BONUS gems
+   *
+   * TODO: update to take in user for exclusive packages
+   * @param cost
+   */
+  async getPackageFromCost(cost: number): Promise<GemPackageEntity> {
+    return await this.gemPackageRepository.findOneOrFail(
+      { cost: cost, isActive: true },
+      { orderBy: { bonusGems: 'desc' } },
+    )
+  }
+
+  /**
+   * SOURCE GENERATION FUNCTIONS
+   * the "source" of a gem transaction can be set to anything
+   * for the sake of consistency and simplicity, design a format for a type of source
+   * e.g. payment, chat message, NFT purchase
+   *
+   * make sure they are unique, as they are identifiers for how to group transactions
+   * give these some thought, changing them later makes legacy data corrupt
+   */
+  paymentSource(payment: PaymentEntity): string {
+    return `circle-${payment.circlePaymentId}-payment-${payment.id}`
+  }
+
+  /**
+   * ADDITIONAL GET AND SET FUNCTIONS FOR TYPES OF SOURCES
+   * provide extra functionality to your use case of gems
+   */
+  async getPaymentTransaction(
+    payment: PaymentEntity,
+  ): Promise<Array<GemTransactionEntity>> {
+    return this.gemTransactionRepository.find({
+      source: this.paymentSource(payment),
+    })
+  }
+
+  async makePaymentTransaction(
+    payment: PaymentEntity,
+  ): Promise<Array<GemTransactionEntity>> {
+    if ((await this.getPaymentTransaction(payment)).length > 0) {
+      throw new RepeatTransferError('payment ' + payment.id)
+    }
+    //convert human readible decimal amount into number of cents
+    const amount = floor(parseFloat(payment.amount) * 100)
+    const gemPackage = await this.getPackageFromCost(amount)
+    const gemAmount = gemPackage.baseGems + gemPackage.bonusGems
+
+    this.executeGemTransactions([
+      new GemTransaction(
+        await payment.getUser(),
+        gemAmount,
+        this.paymentSource(payment),
+      ),
+    ])
+    return this.getPaymentTransaction(payment)
   }
 }
