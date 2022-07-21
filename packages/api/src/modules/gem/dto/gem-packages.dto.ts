@@ -1,15 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger'
 
+import { GemPackageEntity } from '../entities/gem.package.entity'
+
 // mirrors entity object
 export class GemPackageEntityDto {
+  @ApiProperty()
+  id: string
+
   @ApiProperty()
   cost: number
 
   @ApiProperty()
-  base_gems: number
+  baseGems: number
 
   @ApiProperty()
-  bonus_gems: number
+  bonusGems: number
 
   @ApiProperty()
   isPublic: boolean
@@ -19,9 +24,18 @@ export class GemPackageEntityDto {
 
   @ApiProperty()
   description: string
-}
 
-export class GemPackagesDto {
-  @ApiProperty({ type: [GemPackageEntityDto] })
-  packages: Array<GemPackageEntityDto>
+  constructor(gemPackageEntity?: GemPackageEntity) {
+    if (gemPackageEntity !== undefined) {
+      this.id = gemPackageEntity.id
+      this.cost = gemPackageEntity.cost
+      this.baseGems = gemPackageEntity.baseGems
+      this.bonusGems = gemPackageEntity.bonusGems
+      this.isPublic = gemPackageEntity.isPublic
+      this.title = gemPackageEntity.title
+      this.description = gemPackageEntity.description
+    } else {
+      this.id = ''
+    }
+  }
 }

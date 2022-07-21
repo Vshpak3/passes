@@ -1,9 +1,5 @@
-import { createMessage, encrypt as pgpEncrypt, readKey } from 'openpgp'
-
-interface PublicKey {
-  keyId: string
-  publicKey: string
-}
+import { EncryptionKeyDto } from "@moment/api-client"
+import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
 
 /**
  * Encrypt dataToEncrypt
@@ -13,24 +9,23 @@ interface PublicKey {
  *
  * @return {Object} Object containing encryptedMessage and keyId
  */
-async function encrypt(dataToEncrypt: object, { keyId, publicKey }: PublicKey) {
+export default async function encrypt(
+  dataToEncrypt: object,
+  { keyId, publicKey }: EncryptionKeyDto
+) {
   if (!publicKey || !keyId) {
-    throw new Error('Unable to encrypt data')
+    throw new Error("Unable to encrypt data")
   }
 
   const decodedPublicKey = await readKey({ armoredKey: atob(publicKey) })
   const message = await createMessage({ text: JSON.stringify(dataToEncrypt) })
   return pgpEncrypt({
     message,
-    encryptionKeys: decodedPublicKey,
+    encryptionKeys: decodedPublicKey
   }).then((ciphertext) => {
     return {
-      encryptedMessage: ciphertext.data,
-      keyId,
+      encryptedMessage: btoa(ciphertext),
+      keyId
     }
   })
-}
-
-export default {
-  encrypt,
 }

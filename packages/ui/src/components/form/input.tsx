@@ -43,7 +43,7 @@ export const Input = ({
           autoComplete="off"
           type={type}
           placeholder={placeholder || label}
-          {...register(name)}
+          {...register(name, options)}
           {...rest}
           className={classNames(
             errors[name] !== undefined ? "border-red-500" : "border-gray-300",

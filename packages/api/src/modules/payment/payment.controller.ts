@@ -10,15 +10,17 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { RealIP } from 'nestjs-real-ip'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
+import { CardEntityDto } from './dto/card.entity.dto'
 import { CircleNotificationDto } from './dto/circle-notification.dto'
 import { CreateAddressDto } from './dto/create-address.dto'
 import { CreateBankDto } from './dto/create-bank.dto'
 import { CreateCardAndExtraDto } from './dto/create-card.dto'
 import { CreateCardPaymentDto } from './dto/create-card-payment.dto'
-import { PaymentDto } from './dto/payment.dto'
+import { EncryptionKeyDto } from './dto/encryption-key.dto'
 import { StatusDto } from './dto/status.dto'
 import { CardEntity } from './entities/card.entity'
 import { PaymentService } from './payment.service'
@@ -31,11 +33,11 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get encryption key' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: String,
+    type: EncryptionKeyDto,
     description: 'encryption key was returned',
   })
   @Get('key')
-  async getEncryptionKey(): Promise<string> {
+  async getEncryptionKey(): Promise<EncryptionKeyDto> {
     return this.paymentService.getEncryptionKey()
   }
 
@@ -48,10 +50,12 @@ export class PaymentController {
   @Post('card/create')
   @UseGuards(JwtAuthGuard)
   async createCard(
+    @RealIP() ip: string,
     @Req() req: RequestWithUser,
     @Body() createCardAndExtraDto: CreateCardAndExtraDto,
   ): Promise<StatusDto> {
     return this.paymentService.createCard(
+      ip,
       req.user.id,
       createCardAndExtraDto.createCardDto,
       createCardAndExtraDto.fourDigits,
@@ -90,13 +94,15 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get default card' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CardEntity,
+    type: CardEntityDto,
     description: 'A default card was returned',
   })
   @UseGuards(JwtAuthGuard)
   @Get('default')
-  async getDefault(@Req() req: RequestWithUser): Promise<CardEntity | null> {
-    return this.paymentService.getDefault(req.user.id)
+  async getDefaultCard(@Req() req: RequestWithUser): Promise<CardEntityDto> {
+    const entity = await this.paymentService.getDefaultCard(req.user.id)
+    if (entity == null) return new CardEntityDto()
+    return new CardEntityDto(entity as CardEntity)
   }
 
   @ApiOperation({ summary: 'Set default card' })
@@ -107,11 +113,11 @@ export class PaymentController {
   })
   @Post('card/default/:circleCardId')
   @UseGuards(JwtAuthGuard)
-  async setDefault(
+  async setDefaultCard(
     @Req() req: RequestWithUser,
     @Param('circleCardId') circleCardId: string,
   ): Promise<boolean> {
-    return this.paymentService.setDefault(req.user.id, circleCardId)
+    return this.paymentService.setDefaultCard(req.user.id, circleCardId)
   }
 
   @ApiOperation({ summary: 'Deletes a card' })
@@ -132,13 +138,15 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get cards' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [CardEntity],
+    type: [CardEntityDto],
     description: 'Cards were returned',
   })
   @Get('cards')
   @UseGuards(JwtAuthGuard)
-  async getCards(@Req() req: RequestWithUser): Promise<Array<CardEntity>> {
-    return this.paymentService.getCards(req.user.id)
+  async getCards(@Req() req: RequestWithUser): Promise<Array<CardEntityDto>> {
+    return (await this.paymentService.getCards(req.user.id)).map(
+      (entity) => new CardEntityDto(entity),
+    )
   }
 
   @ApiOperation({ summary: 'Make card payment' })
@@ -150,10 +158,12 @@ export class PaymentController {
   @Post('pay')
   @UseGuards(JwtAuthGuard)
   async update(
+    @RealIP() ip: string,
     @Req() req: RequestWithUser,
     @Body() createCardPaymentDto: CreateCardPaymentDto,
   ): Promise<StatusDto> {
     return this.paymentService.makeCardPayment(
+      ip,
       req.user.id,
       createCardPaymentDto,
     )
@@ -224,15 +234,28 @@ export class PaymentController {
     description: 'recieve updates from circle',
   })
   @Post('circle/notification')
-  @Head('circle/notification')
   async recieveNotifications(
     @Body()
     circleNotificationDto: CircleNotificationDto,
   ) {
-    if (circleNotificationDto.notificationType == 'payments') {
-      return this.paymentService.procesPaymentUpdate(
-        circleNotificationDto.payment as PaymentDto,
-      )
+    if (circleNotificationDto.clientId === undefined) {
+      return true
     }
+    return this.paymentService.processUpdate(circleNotificationDto)
+  }
+
+  // endpoint only called by circle to give us notifications
+  // (must register endpoint through circle API if it changes)
+  // TODO: authenticate circle url
+  // TODO: handle payout notifications (and card/bank if available)
+  @ApiOperation({ summary: 'Circle notifications register' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'register updates from circle',
+  })
+  @Head('circle/notification')
+  async registerNotifications(): Promise<boolean> {
+    return true
   }
 }

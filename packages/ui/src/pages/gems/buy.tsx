@@ -1,26 +1,27 @@
-import { GemApi, GemPackagesDto } from "@moment/api-client"
+import { GemApi, GemPackageEntityDto } from "@moment/api-client"
 import { useEffect, useState } from "react"
 
 const GemSelection = () => {
-  const [packages, setPackages] = useState({ packages: [] } as GemPackagesDto)
+  const [packages, setPackages] = useState([] as GemPackageEntityDto[])
   useEffect(() => {
     const fetchData = async () => {
       const api = new GemApi()
-      const p = await api.gemGetPublicPackages()
-      p.packages.sort((a, b) => {
+      const packages = await api.gemGetPublicPackages()
+      console.log(packages)
+      packages.sort((a, b) => {
         return a.cost - b.cost
       })
-      setPackages(p)
+      setPackages(packages)
     }
     fetchData()
-  })
+  }, [setPackages])
   return (
     <div>
-      {packages.packages.map((value, index) => {
+      {packages.map((value, index) => {
         return (
           <button
             onClick={() => {
-              window.location.href = "/gems/card?package=" + value.title
+              window.location.href = "/gems/pay?package=" + value.title
             }}
             key={index}
           >

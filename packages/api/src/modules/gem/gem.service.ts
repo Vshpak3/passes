@@ -133,7 +133,18 @@ export class GemService {
     }
   }
 
+  /**
+   * get gem package deals available to public users
+   * @returns
+   */
   async getPublicPackages(): Promise<Array<GemPackageEntity>> {
     return await this.gemPackageRepository.find({ isPublic: true })
+  }
+
+  /**
+   * get specific package inforamtion
+   */
+  async getPackage(packageid: string): Promise<GemPackageEntity> {
+    return await this.gemPackageRepository.findOneOrFail({ id: packageid })
   }
 }

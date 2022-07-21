@@ -4,10 +4,11 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
 import { GemService } from '../gem/gem.service'
-import { UserEntity } from '../user/entities/user.entity'
+import { UserService } from '../user/user.service'
 import { BankEntity } from './entities/bank.entity'
 import { CardEntity } from './entities/card.entity'
-import { CircleAddressEntity } from './entities/circle.address.entity'
+import { CircleAddressEntity } from './entities/circle-address.entity'
+import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { PaymentService } from './payment.service'
 
@@ -24,11 +25,11 @@ describe('PaymentService', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(CardEntity),
-          useFactory: repositoryMockFactory,
+          provide: UserService,
+          useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(CardEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -41,6 +42,10 @@ describe('PaymentService', () => {
         },
         {
           provide: getRepositoryToken(BankEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(CircleNotificationEntity),
           useFactory: repositoryMockFactory,
         },
       ],

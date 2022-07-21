@@ -24,6 +24,7 @@ models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BankAddressDto.ts
 models/BillingDetailsDto.ts
+models/CardEntityDto.ts
 models/CircleNotificationDto.ts
 models/CreateAddressDto.ts
 models/CreateBankDto.ts
@@ -36,8 +37,8 @@ models/CreateEthNftCollectionDto.ts
 models/CreateProfileDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
+models/EncryptionKeyDto.ts
 models/GemPackageEntityDto.ts
-models/GemPackagesDto.ts
 models/GetChannelDto.ts
 models/GetProfileDto.ts
 models/GetUserDto.ts

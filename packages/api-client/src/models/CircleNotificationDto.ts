@@ -49,7 +49,61 @@ export interface CircleNotificationDto {
      * @type {PaymentDto}
      * @memberof CircleNotificationDto
      */
-    payment: PaymentDto;
+    payment?: PaymentDto;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    reversal?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    chargeback?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    payout?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    _return?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    settlement?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    card?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    ach?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    wire?: object;
+    /**
+     * 
+     * @type {object}
+     * @memberof CircleNotificationDto
+     */
+    transfer?: object;
 }
 
 export function CircleNotificationDtoFromJSON(json: any): CircleNotificationDto {
@@ -65,7 +119,16 @@ export function CircleNotificationDtoFromJSONTyped(json: any, ignoreDiscriminato
         'clientId': json['clientId'],
         'notificationType': json['notificationType'],
         'version': json['version'],
-        'payment': PaymentDtoFromJSON(json['payment']),
+        'payment': !exists(json, 'payment') ? undefined : PaymentDtoFromJSON(json['payment']),
+        'reversal': !exists(json, 'reversal') ? undefined : json['reversal'],
+        'chargeback': !exists(json, 'chargeback') ? undefined : json['chargeback'],
+        'payout': !exists(json, 'payout') ? undefined : json['payout'],
+        '_return': !exists(json, 'return') ? undefined : json['return'],
+        'settlement': !exists(json, 'settlement') ? undefined : json['settlement'],
+        'card': !exists(json, 'card') ? undefined : json['card'],
+        'ach': !exists(json, 'ach') ? undefined : json['ach'],
+        'wire': !exists(json, 'wire') ? undefined : json['wire'],
+        'transfer': !exists(json, 'transfer') ? undefined : json['transfer'],
     };
 }
 
@@ -82,6 +145,15 @@ export function CircleNotificationDtoToJSON(value?: CircleNotificationDto | null
         'notificationType': value.notificationType,
         'version': value.version,
         'payment': PaymentDtoToJSON(value.payment),
+        'reversal': value.reversal,
+        'chargeback': value.chargeback,
+        'payout': value.payout,
+        'return': value._return,
+        'settlement': value.settlement,
+        'card': value.card,
+        'ach': value.ach,
+        'wire': value.wire,
+        'transfer': value.transfer,
     };
 }
 

@@ -3394,6 +3394,7 @@ __metadata:
     "@mikro-orm/reflection": 5.2.3
     "@mikro-orm/sql-highlighter": 1.0.1
     "@nestjs-modules/ioredis": 1.0.1
+    "@nestjs/axios": 0.1.0
     "@nestjs/cli": 8.2.8
     "@nestjs/common": 8.4.7
     "@nestjs/config": 2.1.0
@@ -3435,6 +3436,7 @@ __metadata:
     jest: 28.1.2
     joi: 17.6.0
     lodash: 4.17.21
+    nestjs-real-ip: 2.2.0
     openpgp: 4
     passport: 0.6.0
     passport-facebook: 3.0.0
@@ -3481,16 +3483,20 @@ __metadata:
     "@radix-ui/react-separator": 0.1.4
     "@svgr/webpack": 6.2.1
     "@tailwindcss/forms": 0.5.2
+    "@types/crypto-js": 4.1.1
     "@types/lodash": 4.14.182
     "@types/mailchimp__mailchimp_marketing": 3.0.5
     "@types/node": 18.0.1
+    "@types/openpgp": 4.4.18
     "@types/prop-types": 15.7.5
     "@types/react": 18.0.14
     "@types/react-dom": 18.0.5
+    "@types/uuid": 8.3.4
     "@typescript-eslint/eslint-plugin": 5.30.4
     "@typescript-eslint/parser": 5.30.4
     autoprefixer: 10.4.7
     axios: 0.27.2
+    crypto-js: 4.1.1
     daisyui: 2.18.0
     eslint: 8.19.0
     eslint-config-next: 12.2.0
@@ -3506,6 +3512,7 @@ __metadata:
     eslint-plugin-simple-import-sort: 7.0.0
     eslint-plugin-sonarjs: 0.13.0
     ethers: 5.6.9
+    fast-sha256: 1.3.0
     framer-motion: 6.3.16
     lodash: 4.17.21
     lodash.debounce: 4.0.8
@@ -3514,6 +3521,7 @@ __metadata:
     next-auth: 4.8.0
     next-themes: 0.2.0
     nprogress: 0.2.0
+    openpgp: 5.0.1
     postcss: 8.4.14
     prettier: 2.7.1
     prettier-plugin-tailwindcss: 0.1.11
@@ -3529,6 +3537,7 @@ __metadata:
     swr: 1.3.0
     tailwindcss: 3.1.4
     typescript: 4.7.4
+    uuid: 8.3.2
     web3: 1.7.4
   languageName: unknown
   linkType: soft
@@ -3541,6 +3550,19 @@ __metadata:
     "@nestjs/core": ^6.7.0 || ^7.0.0 || ^8.0.0
     ioredis: ^4.0.0
   checksum: 438a005b4b39696f122d15b42d9dba7bbb2a7280226c6e14dd9ff923beedb98ccdeb60cd4e2d73a9fb5d16414e7bbef67f9fa497539beb53334f8175ef9b4e51
+  languageName: node
+  linkType: hard
+
+"@nestjs/axios@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@nestjs/axios@npm:0.1.0"
+  dependencies:
+    axios: 0.27.2
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    reflect-metadata: ^0.1.12
+    rxjs: ^6.0.0 || ^7.0.0
+  checksum: 72929b25caacb85517bae962b13d865a31aa3984aa9e55305e0a2306e54338fe51a7eb38ca38cab0fe8b4116fb35219bd02c8b0c4cac70e7b5aeb84d03a1db3f
   languageName: node
   linkType: hard
 
@@ -4470,6 +4492,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supercharge/request-ip@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@supercharge/request-ip@npm:1.2.0"
+  checksum: 5a963a7adc13f25a7f446646236e3ad84b24f0e34358569a776f95e51b7d07ac27d86fd14722da35c694321073a06c2a0f8547e20e57cc9386f8b14bce714fd8
+  languageName: node
+  linkType: hard
+
 "@svgr/babel-plugin-add-jsx-attribute@npm:^6.0.0":
   version: 6.0.0
   resolution: "@svgr/babel-plugin-add-jsx-attribute@npm:6.0.0"
@@ -4755,7 +4784,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bn.js@npm:^5.1.0":
+"@types/bn.js@npm:*, @types/bn.js@npm:^5.1.0":
   version: 5.1.0
   resolution: "@types/bn.js@npm:5.1.0"
   dependencies:
@@ -4787,6 +4816,13 @@ __metadata:
   version: 2.1.2
   resolution: "@types/cookiejar@npm:2.1.2"
   checksum: f6e1903454007f86edd6c3520cbb4d553e1d4e17eaf1f77f6f75e3270f48cc828d74397a113a36942f5fe52f9fa71067bcfa738f53ad468fcca0bc52cb1cbd28
+  languageName: node
+  linkType: hard
+
+"@types/crypto-js@npm:4.1.1":
+  version: 4.1.1
+  resolution: "@types/crypto-js@npm:4.1.1"
+  checksum: ea3d6a67b69f88baeb6af96004395903d2367a41bd5cd86306da23a44dd96589749495da50974a9b01bb5163c500764c8a33706831eade036bddae016417e3ea
   languageName: node
   linkType: hard
 
@@ -5001,6 +5037,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/openpgp@npm:4.4.18":
+  version: 4.4.18
+  resolution: "@types/openpgp@npm:4.4.18"
+  dependencies:
+    "@types/bn.js": "*"
+  checksum: 3e0cec9aaad008f09a6d771eef3d1fc5fdb24b323cd0a4e2abb24a89571b00236a76509b5d2f1712c29f00213662b01e9aa676a8817331d89a5f06a59efa7b87
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -5182,6 +5227,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:8.3.4":
+  version: 8.3.4
+  resolution: "@types/uuid@npm:8.3.4"
+  checksum: 6f11f3ff70f30210edaa8071422d405e9c1d4e53abbe50fdce365150d3c698fe7bbff65c1e71ae080cbfb8fded860dbb5e174da96fdbbdfcaa3fb3daa474d20f
   languageName: node
   linkType: hard
 
@@ -7358,6 +7410,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto-js@npm:4.1.1":
+  version: 4.1.1
+  resolution: "crypto-js@npm:4.1.1"
+  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
+  languageName: node
+  linkType: hard
+
 "css-select@npm:^4.1.3":
   version: 4.3.0
   resolution: "css-select@npm:4.3.0"
@@ -8909,6 +8968,13 @@ __metadata:
   version: 2.1.1
   resolution: "fast-safe-stringify@npm:2.1.1"
   checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
+  languageName: node
+  linkType: hard
+
+"fast-sha256@npm:1.3.0":
+  version: 1.3.0
+  resolution: "fast-sha256@npm:1.3.0"
+  checksum: 2b0bea7d3a9955e67abd2d3fbef4ce57f7dbb75708fc206d14973bd1d97aaf35b5c0a59c1d65be6f755df43d73b7657b9eac4fb3c2d58e6849966db1ef1fa186
   languageName: node
   linkType: hard
 
@@ -12257,6 +12323,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nestjs-real-ip@npm:2.2.0":
+  version: 2.2.0
+  resolution: "nestjs-real-ip@npm:2.2.0"
+  dependencies:
+    "@supercharge/request-ip": ^1.2.0
+  peerDependencies:
+    "@nestjs/common": 8 - 9
+  checksum: a9744c32cdd507bf273b4cc66f14e312987c4abfa80f7bf8b28f23aee2c9d785cfad7e3f9c98b792cc687d33462f093590d0738888f7bcaa8f9ea3fb6994efeb
+  languageName: node
+  linkType: hard
+
 "next-auth@npm:4.8.0":
   version: 4.8.0
   resolution: "next-auth@npm:4.8.0"
@@ -12725,6 +12802,15 @@ __metadata:
     node-fetch: ^2.1.2
     node-localstorage: ~1.3.0
   checksum: 9d38c879fa9af437125da9f1a33be3a667509668ff18583bb2c48f882237425bcd6c372d7e740f62cbe4daf97ef780e007f427aa42dc0f50722bdde4e61c3433
+  languageName: node
+  linkType: hard
+
+"openpgp@npm:5.0.1":
+  version: 5.0.1
+  resolution: "openpgp@npm:5.0.1"
+  dependencies:
+    asn1.js: ^5.0.0
+  checksum: d42c195ae04cef997658d42c6db713dad1471eb487bda2a88050b7b9b120ec5922e245481ab6897eb5905e94ea2476d8f952b99be4b590b53820a741ef1593ed
   languageName: node
   linkType: hard
 

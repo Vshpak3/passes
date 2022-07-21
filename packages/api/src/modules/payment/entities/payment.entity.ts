@@ -5,7 +5,7 @@ import { CardVerificationEnum } from '../enum/card.verification.enum'
 import { PaymentSourceEnum } from '../enum/payment.source.enum'
 import { PaymentStatusEnum } from '../enum/payment.status.enum'
 import { CardEntity } from './card.entity'
-import { CircleAddressEntity } from './circle.address.entity'
+import { CircleAddressEntity } from './circle-address.entity'
 
 @Entity({ tableName: 'payment' })
 export class PaymentEntity extends BaseEntity {

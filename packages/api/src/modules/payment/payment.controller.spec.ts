@@ -3,13 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
-import { GemBalanceEntity } from '../gem/entities/gem.balance.entity'
-import { GemTransactionEntity } from '../gem/entities/gem.transaction.entity'
 import { GemService } from '../gem/gem.service'
-import { UserEntity } from '../user/entities/user.entity'
+import { UserService } from '../user/user.service'
 import { BankEntity } from './entities/bank.entity'
 import { CardEntity } from './entities/card.entity'
-import { CircleAddressEntity } from './entities/circle.address.entity'
+import { CircleAddressEntity } from './entities/circle-address.entity'
+import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
@@ -28,19 +27,11 @@ describe('PaymentController', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(GemTransactionEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(GemBalanceEntity),
-          useFactory: repositoryMockFactory,
+          provide: UserService,
+          useFactory: jest.fn(() => ({})),
         },
         {
           provide: getRepositoryToken(CardEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(UserEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -53,6 +44,10 @@ describe('PaymentController', () => {
         },
         {
           provide: getRepositoryToken(BankEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(CircleNotificationEntity),
           useFactory: repositoryMockFactory,
         },
       ],

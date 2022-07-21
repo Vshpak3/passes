@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CardEntityDto,
+    CardEntityDtoFromJSON,
+    CardEntityDtoToJSON,
     CircleNotificationDto,
     CircleNotificationDtoFromJSON,
     CircleNotificationDtoToJSON,
@@ -30,6 +33,9 @@ import {
     CreateCardPaymentDto,
     CreateCardPaymentDtoFromJSON,
     CreateCardPaymentDtoToJSON,
+    EncryptionKeyDto,
+    EncryptionKeyDtoFromJSON,
+    EncryptionKeyDtoToJSON,
     StatusDto,
     StatusDtoFromJSON,
     StatusDtoToJSON,
@@ -67,7 +73,7 @@ export interface PaymentRemoveRequest {
     id: string;
 }
 
-export interface PaymentSetDefaultRequest {
+export interface PaymentSetDefaultCardRequest {
     circleCardId: string;
 }
 
@@ -272,7 +278,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get cards
      */
-    async paymentGetCardsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<object>>> {
+    async paymentGetCardsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<CardEntityDto>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -284,13 +290,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CardEntityDtoFromJSON));
     }
 
     /**
      * Get cards
      */
-    async paymentGetCards(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<object>> {
+    async paymentGetCards(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<CardEntityDto>> {
         const response = await this.paymentGetCardsRaw(initOverrides);
         return await response.value();
     }
@@ -298,7 +304,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get default card
      */
-    async paymentGetDefaultRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async paymentGetDefaultCardRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CardEntityDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -310,21 +316,21 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CardEntityDtoFromJSON(jsonValue));
     }
 
     /**
      * Get default card
      */
-    async paymentGetDefault(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
-        const response = await this.paymentGetDefaultRaw(initOverrides);
+    async paymentGetDefaultCard(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CardEntityDto> {
+        const response = await this.paymentGetDefaultCardRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get encryption key
      */
-    async paymentGetEncryptionKeyRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<string>> {
+    async paymentGetEncryptionKeyRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<EncryptionKeyDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -336,13 +342,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => EncryptionKeyDtoFromJSON(jsonValue));
     }
 
     /**
      * Get encryption key
      */
-    async paymentGetEncryptionKey(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<string> {
+    async paymentGetEncryptionKey(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<EncryptionKeyDto> {
         const response = await this.paymentGetEncryptionKeyRaw(initOverrides);
         return await response.value();
     }
@@ -412,9 +418,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set default card
      */
-    async paymentSetDefaultRaw(requestParameters: PaymentSetDefaultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async paymentSetDefaultCardRaw(requestParameters: PaymentSetDefaultCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.circleCardId === null || requestParameters.circleCardId === undefined) {
-            throw new runtime.RequiredError('circleCardId','Required parameter requestParameters.circleCardId was null or undefined when calling paymentSetDefault.');
+            throw new runtime.RequiredError('circleCardId','Required parameter requestParameters.circleCardId was null or undefined when calling paymentSetDefaultCard.');
         }
 
         const queryParameters: any = {};
@@ -434,8 +440,8 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set default card
      */
-    async paymentSetDefault(requestParameters: PaymentSetDefaultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.paymentSetDefaultRaw(requestParameters, initOverrides);
+    async paymentSetDefaultCard(requestParameters: PaymentSetDefaultCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.paymentSetDefaultCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

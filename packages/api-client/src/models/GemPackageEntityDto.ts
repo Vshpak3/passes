@@ -21,6 +21,12 @@ import { exists, mapValues } from '../runtime';
 export interface GemPackageEntityDto {
     /**
      * 
+     * @type {string}
+     * @memberof GemPackageEntityDto
+     */
+    id: string;
+    /**
+     * 
      * @type {number}
      * @memberof GemPackageEntityDto
      */
@@ -67,9 +73,10 @@ export function GemPackageEntityDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'id': json['id'],
         'cost': json['cost'],
-        'baseGems': json['base_gems'],
-        'bonusGems': json['bonus_gems'],
+        'baseGems': json['baseGems'],
+        'bonusGems': json['bonusGems'],
         'isPublic': json['isPublic'],
         'title': json['title'],
         'description': json['description'],
@@ -85,9 +92,10 @@ export function GemPackageEntityDtoToJSON(value?: GemPackageEntityDto | null): a
     }
     return {
         
+        'id': value.id,
         'cost': value.cost,
-        'base_gems': value.baseGems,
-        'bonus_gems': value.bonusGems,
+        'baseGems': value.baseGems,
+        'bonusGems': value.bonusGems,
         'isPublic': value.isPublic,
         'title': value.title,
         'description': value.description,

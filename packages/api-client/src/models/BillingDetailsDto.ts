@@ -36,6 +36,12 @@ export interface BillingDetailsDto {
      * @type {string}
      * @memberof BillingDetailsDto
      */
+    country: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BillingDetailsDto
+     */
     line1: string;
     /**
      * 
@@ -69,6 +75,7 @@ export function BillingDetailsDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'],
         'city': json['city'],
+        'country': json['country'],
         'line1': json['line1'],
         'line2': !exists(json, 'line2') ? undefined : json['line2'],
         'district': !exists(json, 'district') ? undefined : json['district'],
@@ -87,6 +94,7 @@ export function BillingDetailsDtoToJSON(value?: BillingDetailsDto | null): any {
         
         'name': value.name,
         'city': value.city,
+        'country': value.country,
         'line1': value.line1,
         'line2': value.line2,
         'district': value.district,

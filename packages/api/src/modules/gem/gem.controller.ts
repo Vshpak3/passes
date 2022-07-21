@@ -1,7 +1,7 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { GemPackagesDto } from './dto/gem-packages.dto'
+import { GemPackageEntityDto } from './dto/gem-packages.dto'
 import { GemService } from './gem.service'
 
 @ApiTags('gem')
@@ -12,13 +12,26 @@ export class GemController {
   @ApiOperation({ summary: 'Get public gem packages' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GemPackagesDto,
+    type: [GemPackageEntityDto],
     description: 'public gem packages returned',
   })
-  @Get('key')
-  async getPublicPackages(): Promise<GemPackagesDto> {
-    const dto = new GemPackagesDto()
-    dto.packages = await this.gemService.getPublicPackages()
-    return dto
+  @Get('packages')
+  async getPublicPackages(): Promise<Array<GemPackageEntityDto>> {
+    return await (
+      await this.gemService.getPublicPackages()
+    ).map((entity) => {
+      return new GemPackageEntityDto(entity)
+    })
+  }
+
+  @ApiOperation({ summary: 'Get public gem packages' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GemPackageEntityDto,
+    description: 'gem package info returned',
+  })
+  @Get('package/:id')
+  async getPackage(@Param('id') id: string): Promise<GemPackageEntityDto> {
+    return new GemPackageEntityDto(await this.gemService.getPackage(id))
   }
 }

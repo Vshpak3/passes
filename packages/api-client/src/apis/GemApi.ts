@@ -15,10 +15,14 @@
 
 import * as runtime from '../runtime';
 import {
-    GemPackagesDto,
-    GemPackagesDtoFromJSON,
-    GemPackagesDtoToJSON,
+    GemPackageEntityDto,
+    GemPackageEntityDtoFromJSON,
+    GemPackageEntityDtoToJSON,
 } from '../models';
+
+export interface GemGetPackageRequest {
+    id: string;
+}
 
 /**
  * 
@@ -28,25 +32,55 @@ export class GemApi extends runtime.BaseAPI {
     /**
      * Get public gem packages
      */
-    async gemGetPublicPackagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GemPackagesDto>> {
+    async gemGetPackageRaw(requestParameters: GemGetPackageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GemPackageEntityDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling gemGetPackage.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/gem/key`,
+            path: `/api/gem/package/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GemPackagesDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GemPackageEntityDtoFromJSON(jsonValue));
     }
 
     /**
      * Get public gem packages
      */
-    async gemGetPublicPackages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GemPackagesDto> {
+    async gemGetPackage(requestParameters: GemGetPackageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GemPackageEntityDto> {
+        const response = await this.gemGetPackageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get public gem packages
+     */
+    async gemGetPublicPackagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GemPackageEntityDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/gem/packages`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GemPackageEntityDtoFromJSON));
+    }
+
+    /**
+     * Get public gem packages
+     */
+    async gemGetPublicPackages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GemPackageEntityDto>> {
         const response = await this.gemGetPublicPackagesRaw(initOverrides);
         return await response.value();
     }

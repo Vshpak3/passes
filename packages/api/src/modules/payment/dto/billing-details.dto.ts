@@ -6,6 +6,8 @@ export class BillingDetailsDto {
   @ApiProperty()
   city: string
   @ApiProperty()
+  country: string
+  @ApiProperty()
   line1: string
   @ApiPropertyOptional()
   line2?: string
