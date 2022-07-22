@@ -26,7 +26,7 @@ const NewsFeedNavigation = () => {
     }
   ]
   return (
-    <nav className="flex w-full items-start gap-12 border-b border-[#2C282D] p-0">
+    <nav className="flex w-full items-center justify-between gap-12 border-b border-[#2C282D] p-0">
       {navigation.map((item, index) => (
         <span
           key={index}
@@ -42,9 +42,9 @@ const NewsFeedNavigation = () => {
             // href={item.href}
             className={classNames(
               item.id === active
-                ? "border-b-2 border-indigo-500 text-base font-bold text-[#ffffff]/90 opacity-100"
+                ? "border-b-2 text-base font-bold text-[#ffffff]/90 opacity-100"
                 : "opacity-50 group-hover:opacity-80",
-              "inline-flex items-center  border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold "
+              "inline-flex items-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold "
             )}
           >
             {item.name}

@@ -1,6 +1,5 @@
 import { Menu, Transition } from "@headlessui/react"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
-import HomeIcon from "public/icons/header-home-icon.svg"
 import SearchIcon from "public/icons/header-search-icon.svg"
 import React, { Fragment } from "react"
 import { HeaderChatButton } from "src/components/common/Buttons"
@@ -13,11 +12,7 @@ const ProfileHeader = () => {
     { name: "Sign out", href: "#" }
   ]
   return (
-    <div className="hidden items-center justify-between gap-2 pl-4 pt-4 md:flex">
-      <div className="flex items-center">
-        <HomeIcon />
-        <span className="pl-3 text-center text-[16px] leading-5">Home</span>
-      </div>
+    <div className="hidden items-center justify-end gap-2 pl-4 pt-4 md:flex">
       <div className="flex items-center gap-3">
         <div className="relative">
           <SearchIcon className="pointer-events-none  absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
