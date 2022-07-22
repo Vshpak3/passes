@@ -196,7 +196,7 @@ const HomePage = () => {
           ></hr>
 
           <div className="mx-auto max-w-2xl p-8 text-white">
-            <h3 className="mb-6 text-center text-2xl font-semibold">
+            <h3 className="mb-6 text-center text-xl font-semibold">
               Sign Up for Updates
             </h3>
             <div className="flex flex-col gap-4 md:flex-row md:items-end">
@@ -214,14 +214,14 @@ const HomePage = () => {
                     type="email"
                     autoComplete="email"
                     placeholder="yourname@example.com"
-                    className="block h-16 w-full rounded-full bg-zinc-800 px-5 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="block h-12 w-full rounded-full bg-zinc-800 px-5 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     onChange={(v) => setEmailAddress(v.target.value)}
                     value={emailAddress}
                   />
                 </div>
               </div>
               <button
-                className="block h-16 w-full rounded-full bg-white px-5 text-black sm:px-16 md:w-fit"
+                className="block h-12 w-full rounded-full bg-white px-5 text-black sm:px-16 md:w-fit"
                 type="submit"
                 onClick={handleSubmitEmail}
               >
