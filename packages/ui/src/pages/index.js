@@ -236,11 +236,11 @@ const HomePage = () => {
               <p className="pt-6 text-center font-semibold">{emailFeedback}</p>
             )}
           </div>
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Button variant="purple" bigger href="https://jobs.lever.co/Moment">
               See Open Positions
             </Button>
-          </div> */}
+          </div>
         </div>
         <div className="relative">
           <svg
