@@ -12,6 +12,7 @@ jobs:
   lint-api:
     name: Lint @moment/api package
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,6 +28,7 @@ jobs:
   lint-ui:
     name: Lint @moment/ui package
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -42,6 +44,7 @@ jobs:
   check-api-configs:
     name: Check @moment/api configs
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - name: Checkout monorepo code
         uses: actions/checkout@v2
