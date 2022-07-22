@@ -180,6 +180,21 @@ const HomePage = () => {
             to scale their content <span>{"&"}</span> own their audiences.
           </Text>
 
+          <div className="flex justify-center">
+            <Button variant="purple" bigger href="https://jobs.lever.co/Moment">
+              See Open Positions
+            </Button>
+          </div>
+
+          <hr
+            className="dotted"
+            style={{
+              "margin-top": "30px",
+              "border-top": "3px dotted #bbbbbb2b",
+              transparency: "50%"
+            }}
+          ></hr>
+
           <div className="mx-auto max-w-2xl p-8 text-white">
             <h3 className="mb-6 text-center text-2xl font-semibold">
               Sign Up for Updates
@@ -235,11 +250,6 @@ const HomePage = () => {
             {emailFeedback && (
               <p className="pt-6 text-center font-semibold">{emailFeedback}</p>
             )}
-          </div>
-          <div className="flex justify-center">
-            <Button variant="purple" bigger href="https://jobs.lever.co/Moment">
-              See Open Positions
-            </Button>
           </div>
         </div>
         <div className="relative">
