@@ -15,7 +15,7 @@ const Passes = ({ profile }) => (
         ))}
       </div>
       <div className="-ml-[12px] -mr-[12px] lg:hidden">
-        <Carousel passes={profile.passes} />
+        {profile.passes && <Carousel passes={profile.passes} />}
       </div>
     </div>
   </div>

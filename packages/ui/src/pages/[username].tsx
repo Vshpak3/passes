@@ -6,6 +6,7 @@ import ProfileHeader from "../components/pages/profile/header"
 import MainContent from "../components/pages/profile/main-content"
 import Passes from "../components/pages/profile/passes"
 import ProfileDetails from "../components/pages/profile/profile-details"
+import { getConnection } from "../helpers/demo"
 
 const mockCreator = {
   id: "@drachnik",
@@ -91,6 +92,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const username = Array.isArray(params.username)
     ? params.username[0]
     : params.username
+
+  const connection = await getConnection()
+  const collection = connection.db("test").collection("creators")
+  const { _id, ...props } =
+    (await collection.findOne({ userId: username })) || {}
+  if (_id)
+    return { props: { ...props, id: _id.toString(), userId: "@" + username } }
+
   if (username === "test") return { props: mockCreator }
   try {
     const api = new ProfileApi()

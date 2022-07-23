@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  images: {
+    domains: [process.env.NEXT_PUBLIC_DEMO_BUCKET]
+  },
   reactStrictMode: true,
   i18n: {
     locales: ["en-US"],
