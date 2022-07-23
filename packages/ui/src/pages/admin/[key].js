@@ -1,12 +1,21 @@
 import { Dialog, Transition } from "@headlessui/react"
 import Image from "next/image"
-import { useRouter } from "next/router"
 import { Fragment, useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
-import useUser from "src/hooks/useUser"
 import Cross from "src/icons/cross"
 
 import { FormInput } from "../../components/form/form-input"
+
+export async function getServerSideProps({ params }) {
+  const { key } = params
+  if (key !== process.env.DEMO_KEY)
+    return {
+      notFound: true
+    }
+  return {
+    props: {}
+  }
+}
 
 const defaultValues = {
   id: "",
@@ -41,24 +50,12 @@ const passesDefaultValue = {
 }
 
 const Admin = () => {
-  const router = useRouter()
-  const { user, loading: loadingUser } = useUser()
   const [creators, setCreators] = useState([])
   const [open, isOpen] = useState(false)
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
   const [selectedCreator, setSelectedCreator] = useState()
   const [idToDelete, setIdToDelete] = useState()
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (!router.isReady || loadingUser) {
-      return
-    }
-
-    if (!user) {
-      router.push("/login")
-    }
-  }, [router, user, loadingUser])
 
   const { handleSubmit, register, getValues, reset, watch, control } = useForm({
     defaultValues
