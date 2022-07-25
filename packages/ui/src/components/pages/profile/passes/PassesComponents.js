@@ -21,7 +21,7 @@ export const PassInformation = ({ pass }) => (
   <>
     <img // eslint-disable-line @next/next/no-img-element
       src={pass.imgUrl}
-      className=""
+      className="rounded-[20px]"
       alt={pass.title}
     />
     <span className="text-center text-[16px] font-medium leading-[19px] text-[#ffff]">

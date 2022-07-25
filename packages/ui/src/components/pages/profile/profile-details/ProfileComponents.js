@@ -22,7 +22,7 @@ export const ProfilePhoto = ({ url }) => (
   <div className="flex cursor-pointer items-center justify-center">
     <img // eslint-disable-line @next/next/no-img-element
       src={url}
-      className="-mt-[10px] rounded-full border border-black drop-shadow-profile-photo"
+      className="-mt-[10px] max-h-[98px] min-h-[98px] min-w-[98px] max-w-[98px] rounded-full border border-black drop-shadow-profile-photo"
       width="98"
       height="98"
       alt=""
