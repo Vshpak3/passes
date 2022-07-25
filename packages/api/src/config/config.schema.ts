@@ -45,7 +45,7 @@ export const configValidationSchema = Joi.object({
 
   CIRCLE_API_ENDPOINT: Joi.string().required(),
   CIRCLE_API_KEY: Joi.string().required(),
-  CIRCLE_MASTER_WALLET_ID: Joi.number().required(),
+  CIRCLE_MASTER_WALLET_ID: Joi.string().required(),
 
   MORALIS_API_KEY: Joi.string().required(),
   MORALIS_API_HOST: Joi.string().required(),
