@@ -34,7 +34,7 @@ const defaultValues = {
   twitchUrl: "",
   facebookUrl: "",
   twitterUrl: "",
-  posts: 12,
+  postsCount: 12,
   likes: 22900,
   isVerified: true,
   isActive: true,
@@ -48,6 +48,18 @@ const passesDefaultValue = {
   type: "",
   price: 0,
   id: ""
+}
+
+const postsDefaultValue = {
+  id: "",
+  likesCount: 0,
+  commentsCount: 0,
+  sharesCount: 0,
+  locked: false,
+  price: 0,
+  date: new Date().toISOString(),
+  caption: "",
+  photo: ""
 }
 
 const Admin = () => {
@@ -68,11 +80,22 @@ const Admin = () => {
     defaultValues: passesDefaultValue
   })
 
+  const {
+    fields: postFields,
+    append: postAppend,
+    remove: postRemove
+  } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "posts", // unique name for your Field Array
+    defaultValues: postsDefaultValue
+  })
+
   const profileImage = watch("profileImage")
   const profileImageUrl = watch("profileImageUrl")
   const profileCoverImage = watch("profileCoverImage")
   const profileCoverImageUrl = watch("profileCoverImageUrl")
   const passes = watch("passes")
+  const posts = watch("posts")
 
   const onClose = () => {
     reset(defaultValues)
@@ -111,6 +134,7 @@ const Admin = () => {
       profileImage: profileImageValue,
       profileCoverImage: profileCoverImageValue,
       passes: passesValue,
+      posts: postsValue,
       ...rest
     } = getValues()
 
@@ -118,59 +142,89 @@ const Admin = () => {
     try {
       let url = "/api/demo"
       if (selectedCreator) url += "/" + selectedCreator._id
-      const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
-        [profileImageValue, profileCoverImageValue].map(async (files) => {
-          if (!files?.length) return Promise.resolve(null)
-          const timestamp = Date.now()
-          const file = files[0]
-          const url =
-            "https://" +
-            process.env.NEXT_PUBLIC_DEMO_BUCKET +
-            "/demo/" +
-            timestamp +
-            "_" +
-            file.name
-          return fetch(url, {
-            method: "PUT",
-            headers: {
-              "x-amz-acl": "public-read"
-            },
-            body: file
-          }).then(() => url)
-        })
-      )
 
-      const passes = await Promise.all(
-        passesValue.map(async (pass, index) => {
-          const { image, ...rest } = pass
-          if (!image?.length)
-            return Promise.resolve({
-              ...rest,
-              id: `pass_${index}`
+      const [[profileImageUrl, profileCoverImageUrl], passes, posts] =
+        await Promise.all([
+          Promise.all(
+            [profileImageValue, profileCoverImageValue].map(async (files) => {
+              if (!files?.length) return Promise.resolve(null)
+              const timestamp = Date.now()
+              const file = files[0]
+              const url =
+                "https://" +
+                process.env.NEXT_PUBLIC_DEMO_BUCKET +
+                "/demo/" +
+                timestamp +
+                "_" +
+                file.name
+              return fetch(url, {
+                method: "PUT",
+                headers: {
+                  "x-amz-acl": "public-read"
+                },
+                body: file
+              }).then(() => url)
             })
-          const timestamp = Date.now()
-          const file = image[0]
-          const url =
-            "https://" +
-            process.env.NEXT_PUBLIC_DEMO_BUCKET +
-            "/demo/" +
-            timestamp +
-            "_" +
-            file.name
-          return fetch(url, {
-            method: "PUT",
-            headers: {
-              "x-amz-acl": "public-read"
-            },
-            body: file
-          }).then(() => ({ ...rest, imgUrl: url, id: `pass_${index}` }))
-        })
-      )
+          ),
+          Promise.all(
+            passesValue.map(async (pass, index) => {
+              const { image, ...rest } = pass
+              if (!image?.length)
+                return Promise.resolve({
+                  ...rest,
+                  id: `pass_${index}`
+                })
+              const timestamp = Date.now()
+              const file = image[0]
+              const url =
+                "https://" +
+                process.env.NEXT_PUBLIC_DEMO_BUCKET +
+                "/demo/" +
+                timestamp +
+                "_" +
+                file.name
+              return fetch(url, {
+                method: "PUT",
+                headers: {
+                  "x-amz-acl": "public-read"
+                },
+                body: file
+              }).then(() => ({ ...rest, imgUrl: url, id: `pass_${index}` }))
+            })
+          ),
+          Promise.all(
+            postsValue.map(async (post, index) => {
+              const { image, ...rest } = post
+              if (!image?.length)
+                return Promise.resolve({
+                  ...rest,
+                  id: `post_${index}`
+                })
+              const timestamp = Date.now()
+              const file = image[0]
+              const url =
+                "https://" +
+                process.env.NEXT_PUBLIC_DEMO_BUCKET +
+                "/demo/" +
+                timestamp +
+                "_" +
+                file.name
+              return fetch(url, {
+                method: "PUT",
+                headers: {
+                  "x-amz-acl": "public-read"
+                },
+                body: file
+              }).then(() => ({ ...rest, imgUrl: url, id: `post_${index}` }))
+            })
+          )
+        ])
 
       let data = { ...rest }
       if (profileImageUrl) data.profileImageUrl = profileImageUrl
       if (profileCoverImageUrl) data.profileCoverImageUrl = profileCoverImageUrl
       if (passes.length) data.passes = passes
+      if (posts.length) data.posts = posts
 
       await fetch(url, {
         method: selectedCreator ? "PUT" : "POST",
@@ -535,6 +589,109 @@ const Admin = () => {
                         onClick={() => append(passesDefaultValue)}
                       >
                         New Pass
+                      </button>
+
+                      <div className="col-span-2">
+                        <span>Posts:</span>
+                      </div>
+                      {postFields.map((post, index) => (
+                        <div
+                          className="col-span-2 border border-gray-300 p-4 md:col-span-1"
+                          key={post.id}
+                        >
+                          <div className="flex justify-between py-2">
+                            <span>#{index + 1}</span>
+                            <button
+                              onClick={() => postRemove(index)}
+                              type="button"
+                              className="rounded-[50%] border bg-indigo-600 p-1"
+                            >
+                              <Cross />
+                            </button>
+                          </div>
+
+                          <FormInput
+                            type="file"
+                            register={register}
+                            name={`posts.${index}.image`}
+                            accept={["image"]}
+                            trigger={
+                              <div className="relative col-span-2 mb-2 flex h-[300px] cursor-pointer border border-gray-300 md:col-span-1">
+                                {posts[index].image?.length > 0 ||
+                                posts[index].imgUrl ? (
+                                  <Image
+                                    alt=""
+                                    layout="fill"
+                                    src={
+                                      posts[index].image?.length
+                                        ? URL.createObjectURL(
+                                            posts[index].image[0]
+                                          )
+                                        : posts[index].imgUrl
+                                    }
+                                    objectFit="contain"
+                                  />
+                                ) : (
+                                  <button
+                                    type="button"
+                                    className="inline-flex w-full items-center justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
+                                  >
+                                    Upload Post Image
+                                  </button>
+                                )}
+                              </div>
+                            }
+                          />
+                          <FormInput
+                            type="toggle"
+                            register={register}
+                            name={`posts.${index}.locked`}
+                            label="Locked"
+                            className="mb-2 bg-transparent"
+                          />
+                          <FormInput
+                            type="text"
+                            register={register}
+                            name={`posts.${index}.caption`}
+                            label="Caption"
+                            className="mb-2 bg-transparent"
+                          />
+                          <FormInput
+                            type="number"
+                            register={register}
+                            name={`posts.${index}.price`}
+                            label="Price"
+                            className="mb-2 bg-transparent"
+                          />
+                          <FormInput
+                            type="number"
+                            register={register}
+                            name={`posts.${index}.likesCount`}
+                            label="Likes"
+                            className="mb-2 bg-transparent"
+                          />
+                          <FormInput
+                            type="number"
+                            register={register}
+                            name={`posts.${index}.commentsCount`}
+                            label="Comments"
+                            className="mb-2 bg-transparent"
+                          />
+                          <FormInput
+                            type="number"
+                            register={register}
+                            name={`posts.${index}.sharesCount`}
+                            label="Shares"
+                            className="mb-2 bg-transparent"
+                          />
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        className="col-span-2 mt-3 inline-flex h-[40px] w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm md:col-span-1"
+                        onClick={() => postAppend(postsDefaultValue)}
+                      >
+                        New Post
                       </button>
                     </div>
                     <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">

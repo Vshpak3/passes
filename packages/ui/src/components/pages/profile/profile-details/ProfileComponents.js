@@ -8,6 +8,7 @@ import VerticalSplitter from "public/icons/profile-vertical-splitter.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import React from "react"
+import { compactNumberFormatter } from "src/helpers/formatters"
 
 export const Verified = ({ isVerified }) => (
   <div className="flex items-center self-start">
@@ -22,7 +23,7 @@ export const ProfilePhoto = ({ url }) => (
   <div className="flex cursor-pointer items-center justify-center">
     <img // eslint-disable-line @next/next/no-img-element
       src={url}
-      className="-mt-[10px] max-h-[98px] min-h-[98px] min-w-[98px] max-w-[98px] rounded-full border border-black drop-shadow-profile-photo"
+      className="-mt-[10px] max-h-[98px] min-h-[98px] min-w-[98px] max-w-[98px] rounded-full border border-black object-cover drop-shadow-profile-photo"
       width="98"
       height="98"
       alt=""
@@ -130,21 +131,10 @@ export const ProfileAdditionalInformation = ({ posts, likes }) => (
     </div>
     <VerticalSplitter />
     <div className="flex flex-col items-center justify-center">
-      <span className="text-base font-medium">{nFormatter(likes)}</span>
+      <span className="text-base font-medium">
+        {compactNumberFormatter(likes)}
+      </span>
       <span className="text-sm font-normal text-[#ffffff]/30">LIKES</span>
     </div>
   </div>
 )
-
-function nFormatter(num) {
-  if (num >= 1000000000) {
-    return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G"
-  }
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M"
-  }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K"
-  }
-  return num
-}

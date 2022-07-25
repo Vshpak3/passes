@@ -9,23 +9,26 @@ import VerifiedSmall from "public/icons/profile-verified-small-icon.svg"
 import React, { useState } from "react"
 import { PostUnlockButton } from "src/components/common/Buttons"
 import { classNames } from "src/helpers/classNames"
+import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 
-export const Post = ({ profile }) => {
-  const [postUnlocked, setPostUnlocked] = useState(false)
+export const Post = ({ profile, post }) => {
+  const [postUnlocked, setPostUnlocked] = useState(!post.locked)
   const [postPinned, setPostPinned] = useState(false)
   return (
     <div className="flex flex-col items-start gap-4 rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-5 pt-8 pb-5 backdrop-blur-[100px]  ">
       <PostProfileAvatar
+        post={post}
         profile={profile}
         postPinned={postPinned}
         setPostPinned={setPostPinned}
       />
-      <PostTextContent />
+      <PostTextContent post={post} />
       <LockedMedia
+        post={post}
         postUnlocked={postUnlocked}
         setPostUnlocked={setPostUnlocked}
       />
-      <PostEngagement />
+      <PostEngagement post={post} />
     </div>
   )
 }
@@ -34,7 +37,7 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-center space-x-4 pl-3">
       <img // eslint-disable-line @next/next/no-img-element
-        className="h-12 w-12 rounded-full"
+        className="h-12 w-12 rounded-full object-cover"
         src={profile.profileImageUrl}
         alt={profile.fullName}
       />
@@ -80,17 +83,15 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
   </div>
 )
 
-export const PostTextContent = () => (
+export const PostTextContent = ({ post }) => (
   <div className="flex items-center">
     <p className="pl-[78px] pr-[30px] text-start text-base font-medium">
-      I’m so excited to share EXACTLY how I made these TikToks for Insomniac go
-      viral. I show how I experimented, the videos, and explain the process for
-      making engaged Tiktoks.
+      {post.caption}
     </p>
   </div>
 )
 
-export const LockedMedia = ({ postUnlocked, setPostUnlocked }) => (
+export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
   <div className="relative w-full bg-transparent ">
     <div
       className={classNames(
@@ -104,7 +105,7 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked }) => (
             onClick={() => setPostUnlocked(!postUnlocked)}
             value={postUnlocked}
             icon
-            name="Unlock Post For $32"
+            name={`Unlock Post For ${formatCurrency(post.price)}`}
           />
           <div className="flex items-center justify-center pt-4">
             <span>UNLOCK 4 videos, 20 photos</span>
@@ -113,32 +114,40 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked }) => (
       )}
     </div>
     <img // eslint-disable-line @next/next/no-img-element
-      src="/pages/profile/profile-post-photo.png"
+      src={post.imgUrl}
       alt=""
       className="w-full rounded-[20px] object-cover shadow-xl"
     />
   </div>
 )
 
-export const PostEngagement = () => (
+export const PostEngagement = ({ post }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-start gap-[45px] p-0">
       <div className="flex cursor-pointer items-center gap-[5px] p-0">
         <HeartIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">1.4k</span>
+        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+          {compactNumberFormatter(post.likesCount)}
+        </span>
       </div>
       <div className="flex cursor-pointer items-center gap-[5px] p-0">
         <MessagesIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">338</span>
+        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+          {compactNumberFormatter(post.commentsCount)}
+        </span>
       </div>
       <div className="flex cursor-pointer items-center gap-[5px] p-0">
         <ShareIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">220</span>
+        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+          {compactNumberFormatter(post.sharesCount)}
+        </span>
       </div>
     </div>
-    <div className="flex items-center gap-2 pr-2">
-      <CostIcon />
-      <span className="text-[16px] leading-[25px]">32</span>
-    </div>
+    {post.price > 0 && (
+      <div className="flex items-center gap-2 pr-2">
+        <CostIcon />
+        <span className="text-[16px] leading-[25px]">{post.price}</span>
+      </div>
+    )}
   </div>
 )

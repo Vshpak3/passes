@@ -15,7 +15,7 @@ const MainContent = ({ profile }) => {
           <img // eslint-disable-line @next/next/no-img-element
             src={profile.profileCoverImageUrl}
             alt={profile.fullName}
-            className="h-[134px] w-full rounded-t-[20px] opacity-60"
+            className="h-[134px] w-full rounded-t-[20px] object-cover opacity-60"
           />
           <div className="absolute text-center text-[36px] font-black leading-[22px] opacity-50">
             {profile.coverTitle}
@@ -54,7 +54,9 @@ const MainContent = ({ profile }) => {
         <NewsFeedNavigation />
       </div>
       <NewPost passes={profile?.passes} />
-      <Post profile={profile} />
+      {profile?.posts?.map((post, index) => (
+        <Post key={`post_${index}`} profile={profile} post={post} />
+      ))}
     </>
   )
 }

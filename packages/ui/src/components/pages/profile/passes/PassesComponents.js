@@ -2,6 +2,7 @@ import ChevronLeft from "public/icons/chevron-left-icon.svg"
 import ChevronRight from "public/icons/chevron-right-icon.svg"
 import React from "react"
 import { PassesPurpleButton } from "src/components/common/Buttons"
+import { formatCurrency } from "src/helpers/formatters"
 
 export const Pass = ({ pass }) => (
   <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
@@ -21,7 +22,7 @@ export const PassInformation = ({ pass }) => (
   <>
     <img // eslint-disable-line @next/next/no-img-element
       src={pass.imgUrl}
-      className="rounded-[20px]"
+      className="rounded-[20px] object-cover"
       alt={pass.title}
     />
     <span className="text-center text-[16px] font-medium leading-[19px] text-[#ffff]">
@@ -64,18 +65,6 @@ export const PassInformation = ({ pass }) => (
     }[pass.type] || null}
   </>
 )
-
-function formatCurrency(value, options = {}) {
-  const defaultOptions = {
-    currency: "USD",
-    locale: "en-US"
-  }
-  const formatter = new Intl.NumberFormat(
-    options.locale || defaultOptions.locale,
-    { style: "currency", currency: options.currency || defaultOptions.currency }
-  )
-  return formatter.format(value)
-}
 
 export const CarouselButton = ({ onClick, isDisabled, right }) => (
   <button

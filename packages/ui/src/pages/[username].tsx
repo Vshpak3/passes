@@ -26,7 +26,7 @@ const mockCreator = {
   twitchUrl: "drachnik",
   facebookUrl: "AlexDrachnikCreator",
   twitterUrl: "drachnik",
-  posts: 12,
+  postsCount: 12,
   likes: 22900,
   isVerified: true,
   isActive: true,
@@ -56,6 +56,19 @@ const mockCreator = {
       type: "Lifetime",
       price: 2000,
       id: "pass_2"
+    }
+  ],
+  posts: [
+    {
+      likesCount: 1400,
+      commentsCount: 338,
+      sharesCount: 220,
+      locked: true,
+      price: 32,
+      date: "2022-07-23T19:00:00.000Z",
+      caption:
+        "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
+      imgUrl: "/pages/profile/profile-post-photo.png"
     }
   ]
 }

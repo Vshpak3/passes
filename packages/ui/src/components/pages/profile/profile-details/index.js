@@ -26,7 +26,10 @@ const ProfileDetails = ({ profile }) => (
       facebookUrl={profile.facebookUrl}
       twitterUrl={profile.twitterUrl}
     />
-    <ProfileAdditionalInformation posts={profile.posts} likes={profile.likes} />
+    <ProfileAdditionalInformation
+      posts={profile.postsCount}
+      likes={profile.likes}
+    />
   </div>
 )
 
