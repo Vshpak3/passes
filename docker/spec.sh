@@ -9,18 +9,16 @@
 #
 # Usage
 #
-#   ./docker/spec.sh <registry uri> <image tag>
+#   ./docker/spec.sh <registry uri> <image tag> <task definition name>
 #
 set -o errexit
 set -o nounset
 set -o pipefail
 
-# Configuration
-readonly task_definition_name=moment-api-dev
-
 # Input
 readonly docker_registry=${1}
 readonly image_tag=${2}
+readonly task_definition_name=${3}
 
 echo 'Writing definition specs...'
 
