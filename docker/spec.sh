@@ -9,16 +9,20 @@
 #
 # Usage
 #
-#   ./docker/spec.sh <registry uri> <image tag> <task definition name>
+#   ./docker/spec.sh <registry uri> <image tag> <container name> <task definition name>
 #
 set -o errexit
 set -o nounset
 set -o pipefail
 
+# Constants
+readonly application_port=3001
+
 # Input
 readonly docker_registry=${1}
 readonly image_tag=${2}
-readonly task_definition_name=${3}
+readonly container_name=${3}
+readonly task_definition_name=${4}
 
 echo 'Writing definition specs...'
 
@@ -32,8 +36,8 @@ cat <<EOT | tr -d '[:space:]' > appspec.json
         "Properties": {
            "TaskDefinition": "<TASK_DEFINITION>",
            "LoadBalancerInfo": {
-              "ContainerName": "moment-api-dev",
-              "ContainerPort": 3001
+              "ContainerName": "${container_name}",
+              "ContainerPort": ${application_port}
            }
         }
       }
