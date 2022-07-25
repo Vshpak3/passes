@@ -1,23 +1,27 @@
+import PostOptionsIcon from "public/icons/post-dots-horizontal.svg"
+import PinnedActive from "public/icons/post-pinned-active.svg"
+import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import VerifiedSmall from "public/icons/profile-verified-small-icon.svg"
 import React, { useState } from "react"
 import { PostUnlockButton } from "src/components/common/Buttons"
 import { classNames } from "src/helpers/classNames"
 
-export const Post = () => {
+export const Post = ({ profile }) => {
   const [postUnlocked, setPostUnlocked] = useState(false)
+  const [postPinned, setPostPinned] = useState(false)
   return (
     <div className="flex flex-col items-center gap-4 rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-5 pt-8 pb-5 backdrop-blur-[100px]  ">
-      <div className="flex w-full justify-between">
+      <div className="flex w-full items-center justify-between">
         <div className="flex items-center space-x-4 pl-3">
           <img // eslint-disable-line @next/next/no-img-element
             className="h-12 w-12 rounded-full"
-            src="/pages/profile/profile-photo-small.png"
-            alt=""
+            src={profile.profileImageUrl}
+            alt={profile.fullName}
           />
           <div className="space-y-1 font-medium dark:text-white">
             <div className="flex items-center gap-[6px]">
               <span className="text-[16px] font-medium leading-[22px]">
-                Alex Drachnik
+                {profile.fullName}
               </span>
               <span className="flex items-center">
                 <VerifiedSmall />
@@ -27,12 +31,33 @@ export const Post = () => {
               </span>
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              @drachnik
+              {profile.userId}
             </div>
           </div>
         </div>
-        <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
-          2 DAYS AGO
+        <div className="-mt-[21px] flex items-center gap-2">
+          <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
+            2 DAYS AGO
+          </div>
+          <div
+            onClick={() => setPostPinned(!postPinned)}
+            className={classNames(
+              postPinned
+                ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]"
+                : "",
+              "flex cursor-pointer items-center py-[5px] "
+            )}
+          >
+            {postPinned && (
+              <span className="text-[12px] font-medium leading-[22px]">
+                Pinned post
+              </span>
+            )}
+            {postPinned ? <PinnedActive /> : <PinnedInactive />}
+          </div>
+          <div>
+            <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
+          </div>
         </div>
       </div>
       <div className="flex items-center">
@@ -50,13 +75,16 @@ export const Post = () => {
           )}
         >
           {!postUnlocked && (
-            <div className="flex-center h-45 flex w-[245px] ">
+            <div className="flex-center h-45 flex w-[245px] flex-col ">
               <PostUnlockButton
                 onClick={() => setPostUnlocked(!postUnlocked)}
                 value={postUnlocked}
                 icon
                 name="Unlock Post For $32"
               />
+              <div className="flex items-center justify-center pt-4">
+                <span>UNLOCK 4 videos, 20 photos</span>
+              </div>
             </div>
           )}
         </div>
@@ -66,9 +94,6 @@ export const Post = () => {
           alt=""
           className="w-full rounded-[20px] object-cover shadow-xl"
         />
-      </div>
-      <div className="flex items-center justify-center">
-        <span>UNLOCK 4 VIDEOS</span>
       </div>
     </div>
   )

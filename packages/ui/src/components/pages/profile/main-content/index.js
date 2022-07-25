@@ -51,7 +51,7 @@ const MainContent = ({ profile }) => {
         <NewsFeedNavigation />
       </div>
       <NewPost passes={profile?.passes} />
-      <Post />
+      <Post profile={profile} />
     </>
   )
 }
