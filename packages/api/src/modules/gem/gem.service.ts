@@ -53,7 +53,7 @@ export class GemService {
     callbackFn?: (
       trx: Knex.Transaction,
       gemTransactions: GemTransaction[],
-    ) => boolean,
+    ) => Promise<boolean>,
   ): Promise<void> {
     const userids: string[] = []
     for (const gemTx of gemTransactions) {
@@ -96,7 +96,10 @@ export class GemService {
           .update('amount', balances[userid]['amount'])
       }
 
-      if (callbackFn != undefined && !callbackFn(trx, gemTransactions)) {
+      if (
+        callbackFn != undefined &&
+        !(await callbackFn(trx, gemTransactions))
+      ) {
         throw new Error('gem transactions reverted due to callbackFn failure')
       }
     })

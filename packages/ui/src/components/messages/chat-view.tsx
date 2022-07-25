@@ -1,19 +1,24 @@
 import "stream-chat-react/dist/css/index.css"
 
+import { MessagesApi } from "@moment/api-client"
 import React, { useEffect, useRef, useState } from "react"
 import { Channel as ChannelType, StreamChat } from "stream-chat"
 import {
   Channel,
   ChannelHeader,
+  ChannelList,
   Chat,
   MessageInput,
   MessageList,
+  MessageToSend,
   Thread,
   Window
 } from "stream-chat-react"
 
 import useChat from "../../hooks/useChat"
 import useUser from "../../hooks/useUser"
+import { MomentMessage } from "./MomentMessage"
+import { MomentMessageInput } from "./MomentMessageInput"
 
 type ChatViewProps = {
   username: string
@@ -23,9 +28,48 @@ const ChatView = ({ username }: ChatViewProps) => {
   const chatClient = StreamChat.getInstance("hx7kxuk3kyuf")
   const channel = useRef<ChannelType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [tipAmount, setTipAmount] = useState(20)
 
   const { channelId, streamToken } = useChat(username)
-  const { user } = useUser()
+  const { user, accessToken } = useUser()
+
+  const sendMessage = async (
+    messageToSend: MessageToSend,
+    channelId: string
+  ) => {
+    try {
+      const api = new MessagesApi()
+      await api.messagesSend(
+        {
+          sendMessageDto: {
+            text: messageToSend.text || "",
+            attachments: [],
+            channelId: channelId.split(":")[1],
+            tipAmount: tipAmount
+          }
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const overrideSubmitHandler = async (
+    message: MessageToSend,
+    _cid: string
+  ) => {
+    try {
+      await sendMessage(message, _cid)
+    } catch (reason) {
+      console.error(reason)
+    }
+  }
 
   useEffect(() => {
     if (!user?.id || !channelId || !streamToken) {
@@ -49,18 +93,30 @@ const ChatView = ({ username }: ChatViewProps) => {
     connect()
   }, [user, channelId, streamToken, chatClient])
 
-  if (isLoading) {
+  if (isLoading || !user?.id || !channelId || !streamToken) {
     return null
   }
 
+  const filters = { members: { $in: [user.id] } }
   return (
     <Chat client={chatClient} theme="messaging dark">
+      <ChannelList filters={filters} />
       {channel.current && (
-        <Channel channel={channel.current}>
+        <Channel channel={channel.current} Message={MomentMessage}>
           <Window>
             <ChannelHeader />
             <MessageList />
-            <MessageInput />
+            <MessageInput
+              overrideSubmitHandler={overrideSubmitHandler}
+              Input={MomentMessageInput}
+            />
+            <input
+              type="number"
+              step="1"
+              style={{ color: "black" }}
+              value={tipAmount}
+              onChange={(v) => setTipAmount(Number(v.target.value))}
+            />
           </Window>
           <Thread />
         </Channel>

@@ -9,4 +9,7 @@ export class SendMessageDto {
 
   @ApiProperty()
   channelId: string
+
+  @ApiProperty()
+  tipAmount: number
 }

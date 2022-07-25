@@ -37,6 +37,12 @@ export interface SendMessageDto {
      * @memberof SendMessageDto
      */
     channelId: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SendMessageDto
+     */
+    tipAmount: number;
 }
 
 export function SendMessageDtoFromJSON(json: any): SendMessageDto {
@@ -52,6 +58,7 @@ export function SendMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
+        'tipAmount': json['tipAmount'],
     };
 }
 
@@ -67,6 +74,7 @@ export function SendMessageDtoToJSON(value?: SendMessageDto | null): any {
         'text': value.text,
         'attachments': value.attachments,
         'channelId': value.channelId,
+        'tipAmount': value.tipAmount,
     };
 }
 
