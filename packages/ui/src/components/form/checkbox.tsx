@@ -18,6 +18,7 @@ type CheckBoxProps = {
   options?: FormOptions
   register: FormRegister
   errors?: FormErrors
+  className?: string
 }
 
 const Checkbox = ({
@@ -27,6 +28,7 @@ const Checkbox = ({
   register,
   errors = {},
   options = {},
+  className = "",
   ...rest
 }: CheckBoxProps) => {
   return (
@@ -47,7 +49,8 @@ const Checkbox = ({
             className={classNames(
               errors[name] !== undefined ? "border-red-500" : "border-gray-300",
               type === "toggle" ? "w-9" : "",
-              "rounded border text-[#C943A8] placeholder-gray-400 shadow-sm focus:border-[#C943A8] focus:outline-none focus:ring-[#C943A8] sm:text-sm"
+              "rounded border text-[#C943A8] placeholder-gray-400 shadow-sm focus:border-[#C943A8] focus:outline-none focus:ring-[#C943A8] sm:text-sm",
+              className
             )}
           />
           {type === "toggle" && (

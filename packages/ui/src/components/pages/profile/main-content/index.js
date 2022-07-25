@@ -45,8 +45,7 @@ const MainContent = ({ profile }) => (
     <div className="min-h-12 hidden sm:flex  ">
       <NewsFeedNavigation />
     </div>
-    <NewPost />
-
+    <NewPost passes={profile?.passes} />
     <Post />
   </>
 )

@@ -37,14 +37,16 @@ const mockCreator = {
         "See exclusive content at my most basic tier. I give broad advice to help your brand.",
       imgUrl: "/pages/profile/pass-example-1.png",
       type: "Free",
-      price: 0
+      price: 0,
+      id: "pass_0"
     },
     {
       title: "Monthly Ambassador",
       description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
       imgUrl: "/pages/profile/pass-example-2.png",
       type: "Monthly",
-      price: 20
+      price: 20,
+      id: "pass_1"
     },
     {
       title: "Lifetime Pass",
@@ -52,7 +54,8 @@ const mockCreator = {
         "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
       imgUrl: "/pages/profile/pass-example-3.png",
       type: "Lifetime",
-      price: 2000
+      price: 2000,
+      id: "pass_2"
     }
   ]
 }

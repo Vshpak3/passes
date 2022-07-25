@@ -46,7 +46,8 @@ const passesDefaultValue = {
   description: "",
   imgUrl: "",
   type: "",
-  price: 0
+  price: 0,
+  id: ""
 }
 
 const Admin = () => {
@@ -140,9 +141,13 @@ const Admin = () => {
       )
 
       const passes = await Promise.all(
-        passesValue.map(async (pass) => {
+        passesValue.map(async (pass, index) => {
           const { image, ...rest } = pass
-          if (!image?.length) return Promise.resolve(rest)
+          if (!image?.length)
+            return Promise.resolve({
+              ...rest,
+              id: `pass_${index}`
+            })
           const timestamp = Date.now()
           const file = image[0]
           const url =
@@ -158,7 +163,7 @@ const Admin = () => {
               "x-amz-acl": "public-read"
             },
             body: file
-          }).then(() => ({ ...rest, imgUrl: url }))
+          }).then(() => ({ ...rest, imgUrl: url, id: `pass_${index}` }))
         })
       )
 
@@ -349,6 +354,15 @@ const Admin = () => {
                           register={register}
                           name="fullName"
                           label="Full Name"
+                          className="mb-2 bg-transparent"
+                        />
+                      </div>
+                      <div className="col-span-2 md:col-span-1">
+                        <FormInput
+                          type="text"
+                          register={register}
+                          name="description"
+                          label="Description"
                           className="mb-2 bg-transparent"
                         />
                       </div>

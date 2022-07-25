@@ -26,7 +26,7 @@ const NewsFeedNavigation = () => {
     }
   ]
   return (
-    <nav className="flex w-full items-center justify-between gap-12 border-b border-[#2C282D] p-0">
+    <nav className="flex w-full items-start justify-between border-b border-[#2C282D] p-0">
       {navigation.map((item, index) => (
         <span
           key={index}

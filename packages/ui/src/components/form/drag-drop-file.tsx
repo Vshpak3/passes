@@ -74,7 +74,7 @@ export const DragDropFile = ({
           onDrop={handleDrop}
         />
       )}
-      <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-dashed border-[#BF7AF0] p-1">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-solid border-[#BF7AF0] p-1">
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
           <p className="flex gap-1">
@@ -87,12 +87,18 @@ export const DragDropFile = ({
               multiple={multiple}
               accept={accept}
               trigger={
-                <span className="text-[#BF7AF0]">Click here to upload</span>
+                <span className="text-sm font-medium text-[#BF7AF0]">
+                  Click to upload
+                </span>
               }
             />
-            <span>or drag and drop</span>
+            <span className="text-sm font-normal text-[#888689]">
+              or drag and drop
+            </span>
           </p>
-          <p>You may upload video or up to 9 photos per post</p>
+          <p className="self-stretch text-center text-sm font-normal text-[#888689]">
+            You may upload video or up to 9 photos per post
+          </p>
         </div>
       </div>
     </div>
