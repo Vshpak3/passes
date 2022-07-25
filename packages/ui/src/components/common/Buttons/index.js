@@ -36,8 +36,11 @@ export const PassesPurpleButton = ({ name, icon }) => (
   </button>
 )
 
-export const CoverButton = ({ name }) => (
-  <button className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10 ">
+export const CoverButton = ({ name, onClick = {} }) => (
+  <button
+    className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10 "
+    onClick={onClick}
+  >
     {{
       Chat: <ChatIcon className="mr-[6px]" />,
       Tip: <DollarIcon className="mr-[6px]" />

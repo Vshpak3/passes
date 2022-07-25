@@ -5,6 +5,7 @@ import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/form/form-input"
+import { classNames } from "src/helpers/classNames"
 
 import MediaHeader from "../posts/new-post/header"
 import UploadPostMedia from "../posts/new-post/media"
@@ -155,7 +156,15 @@ export const NewPost = ({ passes = [] }) => {
               </div>
             </>
           )}
-          <div className="w-full border-b border-[#2C282D]">
+          <div
+            className={classNames(
+              !extended
+                ? "border-none border-b-transparent"
+                : "border-b border-[#2C282D]",
+              "w-full"
+            )}
+            // className="w-full border-b border-[#2C282D]"
+          >
             <FormInput
               register={register}
               type="text-area"
@@ -208,7 +217,7 @@ export const NewPost = ({ passes = [] }) => {
                   {selectedPasses.map((pass, index) => (
                     <div
                       key={index}
-                      className="animate-fade-in-down flex flex-shrink-0 items-start gap-[10px] rounded-[56px] border border-[#2C282D] bg-[#100C11] py-[10px] px-[18px]"
+                      className="flex flex-shrink-0 animate-fade-in-down items-start gap-[10px] rounded-[56px] border border-[#2C282D] bg-[#100C11] py-[10px] px-[18px]"
                     >
                       <span>
                         <AudienceChevronIcon />

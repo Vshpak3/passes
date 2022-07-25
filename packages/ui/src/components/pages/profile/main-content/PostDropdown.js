@@ -11,7 +11,7 @@ export const NewPostDropdown = ({
   setDropdownVisible
 }) => {
   return (
-    <div className=" relative flex cursor-pointer flex-col gap-4">
+    <div className="relative flex cursor-pointer flex-col gap-4">
       <div
         className="box-border flex items-start justify-between gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11] p-[10px]"
         onClick={() => setDropdownVisible(!dropdownVisible)}
