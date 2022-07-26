@@ -1,8 +1,7 @@
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
 import { RedisModuleOptions } from '@nestjs-modules/ioredis'
 
 export const redisOptions = {
-  imports: [ConfigModule],
   useFactory: async (
     configService: ConfigService,
   ): Promise<RedisModuleOptions> => ({
