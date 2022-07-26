@@ -167,7 +167,7 @@ const SideBar = () => {
       {/* Static sidebar for desktop */}
       <header className="hidden h-screen w-full min-w-0 max-w-[88px] items-end md:sticky md:inset-y-0 md:flex md:flex-shrink-0 md:flex-col sidebar-collapse:max-w-[230px]">
         {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex min-h-0 w-full flex-1 flex-col bg-[#120C14] drop-shadow-sidebar-shadow sidebar-collapse:pl-[9px] ">
+        <div className="flex min-h-0 w-full flex-1 flex-col bg-[#120C14]  sidebar-collapse:pl-[9px] ">
           <div className="flex flex-1 flex-col justify-between overflow-y-auto pt-6 pb-4">
             <div className="">
               <div className="flex flex-shrink-0 items-center justify-center sidebar-collapse:justify-start ">
