@@ -1,4 +1,5 @@
 import { Dialog, Disclosure, Transition } from "@headlessui/react"
+import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
@@ -19,20 +20,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 const SideBar = () => {
-  const [active, setActive] = useState("home")
+  const router = useRouter()
+  const [active, setActive] = useState(router.asPath.split("/")[1])
   const navigation = [
-    { id: "home", name: "Home", href: "#", icon: HomeIcon, current: true },
+    { id: "home", name: "Home", href: "/home", icon: HomeIcon, current: true },
     {
       id: "messages",
       name: "Messages",
-      href: "#",
+      href: "/messages",
       icon: MessagesIcon,
       current: false
     },
     {
       id: "gallery",
       name: "Gallery",
-      href: "#",
+      href: "/gallery",
       icon: GalleryIcon,
       current: false
     },
@@ -40,39 +42,38 @@ const SideBar = () => {
     {
       id: "creatorTools",
       name: "Creator Tools",
-      href: "#",
       icon: CreatorToolsIcon,
       current: false,
       children: [
         {
           id: "myPasses",
           name: "My Passes",
-          href: "#"
+          href: "/tools/passes"
         },
         {
           id: "list",
           name: "List",
-          href: "#"
+          href: "/tools/list"
         },
         {
           id: "dataAnalytics",
           name: "Data analytics",
-          href: "#"
+          href: "/tools/analytics"
         },
         {
           id: "payouts",
           name: "Payouts",
-          href: "#"
+          href: "/tools/payouts"
         },
         {
           id: "scheduler",
           name: "Scheduler",
-          href: "#"
+          href: "/tools/scheduler"
         },
         {
           id: "vault",
           name: "Vault",
-          href: "#"
+          href: "/tools/vault"
         }
       ]
     },
@@ -80,14 +81,14 @@ const SideBar = () => {
     {
       id: "notification",
       name: "Notification",
-      href: "#",
+      href: "/notification",
       icon: NotificationIcon,
       current: false
     },
     {
       id: "settings",
       name: "Settings",
-      href: "#",
+      href: "/settings",
       icon: SettingsIcon,
       current: false
     }
@@ -191,6 +192,7 @@ const SideBar = () => {
                       >
                         <a
                           href={item.href}
+                          as={item.href}
                           className={classNames(
                             item.id === active
                               ? "text-white"
@@ -221,6 +223,7 @@ const SideBar = () => {
                       >
                         <a
                           href={item.href}
+                          as={item.href}
                           className={classNames(
                             item.id === active
                               ? "text-white"
@@ -256,6 +259,7 @@ const SideBar = () => {
                             >
                               <a
                                 href={item.href}
+                                as={item.href}
                                 className={classNames(
                                   item.id === active
                                     ? "text-white"
@@ -286,6 +290,7 @@ const SideBar = () => {
                                 <a
                                   key={subItem.name}
                                   href={subItem.href}
+                                  as={subItem.href}
                                   onClick={() => setActive(subItem.id)}
                                   className={classNames(
                                     subItem.id === active

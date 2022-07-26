@@ -1,11 +1,10 @@
 import { GetProfileDto, ProfileApi } from "@moment/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
-import SideBar from "../components/common/Sidebar"
-import ProfileHeader from "../components/pages/profile/header"
 import MainContent from "../components/pages/profile/main-content"
 import Passes from "../components/pages/profile/passes"
 import ProfileDetails from "../components/pages/profile/profile-details"
+import { withPageLayout } from "../components/pages/WithPageLayout"
 import { getConnection } from "../helpers/demo"
 
 const mockCreator = {
@@ -76,22 +75,14 @@ const mockCreator = {
 const Username = (props: GetProfileDto) => {
   return (
     <>
-      <div className="relative flex min-h-screen flex-1 bg-black">
-        <SideBar />
-        <main className="bg-[#1B141D]/85 flex-shrink flex-grow">
-          <div className="cover-image h-[300px]">
-            <ProfileHeader />
-          </div>
-          <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
-            <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
-              {props?.id && <ProfileDetails profile={props} />}
-              {props?.id && <Passes profile={props} />}
-            </div>
-            <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-              {props?.id && <MainContent profile={props} />}
-            </div>
-          </div>
-        </main>
+      <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
+        <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
+          {props?.id && <ProfileDetails profile={props} />}
+          {props?.id && <Passes profile={props} />}
+        </div>
+        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+          {props?.id && <MainContent profile={props} />}
+        </div>
       </div>
     </>
   )
@@ -133,4 +124,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { props: {} }
   }
 }
-export default Username
+export default withPageLayout(Username)
