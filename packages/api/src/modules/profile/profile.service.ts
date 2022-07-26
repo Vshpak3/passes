@@ -1,4 +1,5 @@
 import { EntityRepository, wrap } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   ForbiddenException,
@@ -24,6 +25,7 @@ import { ProfileEntity } from './entities/profile.entity'
 @Injectable()
 export class ProfileService {
   constructor(
+    private readonly em: EntityManager,
     @InjectRepository(ProfileEntity)
     private readonly profileRepository: EntityRepository<ProfileEntity>,
     @InjectRepository(UserEntity)
@@ -132,15 +134,13 @@ export class ProfileService {
   }
 
   async getAllUsernames(): Promise<GetUsernamesDto> {
-    const profiles = await this.profileRepository.findAll({
-      populate: ['user'],
-      fields: ['user'],
-    })
+    const knex = this.em.getKnex()
+    const rawUsernames = await knex('profile')
+      .innerJoin('users', 'profile.user_id', 'users.id')
+      .where('users.is_creator', true)
+      .select('users.user_name')
 
-    // TODO: isCreator filter should be to MikroORM
-    const usernames = profiles
-      .filter((p) => p.user.isCreator)
-      .map((p) => p.user.userName)
+    const usernames = rawUsernames.map((u) => u.user_name)
 
     return {
       usernames,
