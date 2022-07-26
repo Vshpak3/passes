@@ -7,11 +7,11 @@ export class HealthController {
   @ApiOperation({ summary: 'Health check endpoint' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: String,
     description: 'App is running',
   })
   @Get()
   health() {
-    return
+    return 'healthy'
   }
 }

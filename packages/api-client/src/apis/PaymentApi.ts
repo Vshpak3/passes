@@ -386,6 +386,32 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
+     * Circle notifications register
+     */
+    async paymentRegisterNotificationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/payment/circle/notification`,
+            method: 'HEAD',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Circle notifications register
+     */
+    async paymentRegisterNotifications(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.paymentRegisterNotificationsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Check payment status
      */
     async paymentRemoveRaw(requestParameters: PaymentRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
