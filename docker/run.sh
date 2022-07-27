@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Runs API docker image. NOT used in build pipeline.
+# Runs API docker image. NOT used in build/deploy pipeline.
 #
 # Usage
 #
@@ -24,8 +24,8 @@ readonly node_env=${3:-${default_node_env}}
 
 # Run the image
 docker run \
-    --rm \
-    --init \
-    --env NODE_ENV=${node_env} \
-    -p '127.0.0.1:3001:3001/tcp' \
-    ${docker_registry}:${image_tag}
+  --rm \
+  --init \
+  --env NODE_ENV=${node_env} \
+  -p '127.0.0.1:3001:3001/tcp' \
+  ${docker_registry}:${image_tag}

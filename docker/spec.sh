@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# Creates various deploy files. Used in build pipeline.
-#
+# Creates various deploy files. Used in build/deploy pipeline.
+# Requires AWS auth.
+
 # Files are:
 #   appspec.json: https://docs.aws.amazon.com/codedeploy/latest/userguide/tutorial-ecs-create-appspec-file.html
 #   imageDetail.json: https://docs.aws.amazon.com/codepipeline/latest/userguide/file-reference.html#file-reference-ecs-bluegreen
@@ -26,7 +27,7 @@ readonly task_definition_name=${4}
 
 echo 'Writing definition specs...'
 
-cat <<EOT | tr -d '[:space:]' > appspec.json
+cat << EOT > appspec.json
 {
   "version": 0,
   "Resources": [
