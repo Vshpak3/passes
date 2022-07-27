@@ -26,7 +26,8 @@ const backersList = [
     name: "Wen-Wen Lam",
     org: "Gradient Ventures"
   },
-  { image: "/images/backers/jake.png", name: "Jake Paul", org: "Antifund" }
+  { image: "/images/backers/jake.png", name: "Jake Paul", org: "Antifund" },
+  { image: "/images/backers/ryan.jpeg", name: "Ryan Wilson", org: "ThankYouX" }
 ]
 
 const creatorsList = [
@@ -289,7 +290,7 @@ const HomePage = () => {
             >
               Backed by World-Class Builders
             </Text>
-            <div className="flex w-full flex-wrap justify-center gap-2">
+            <div className="flex w-full flex-wrap justify-center gap-2 md:flex-nowrap">
               {backersList.map((backer, index) => (
                 <div
                   className="group w-full max-w-[150px] bg-mauveDark-mauve1 transition sm:max-w-[200px]"
