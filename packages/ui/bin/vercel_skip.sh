@@ -41,7 +41,7 @@ else
 fi
 
 # Optional checks to restrict to certain branches
-# if [[ "${VERCEL_GIT_COMMIT_REF}" == "preview" || "${VERCEL_GIT_COMMIT_REF}" == "main"  ]] ; then
+# if [[ "${VERCEL_GIT_COMMIT_REF}" == "preview" ]] ; then
 #     proceed
 # else
 #     cancel
