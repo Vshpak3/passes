@@ -68,6 +68,24 @@ const mockCreator = {
       caption:
         "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
       imgUrl: "/pages/profile/profile-post-photo.png"
+    },
+    {
+      likesCount: 40,
+      commentsCount: 10,
+      sharesCount: 5,
+      goal: 100000,
+      collectedAmount: 75000,
+      donationTypes: [10, 25, 50],
+      numberOfDonations: 456,
+      date: "2022-07-23T19:00:00.000Z",
+      caption:
+        "Tip $10 to get a video of me sharing my best tricks. Tip $25 to get a video and be able to ask a question that I’ll answer. Or tip $50 and I will make a custom video answering your question!",
+      fundraiser: true,
+      imgUrl: "/pages/profile/profile-post-photo.png",
+      images: [
+        "/pages/profile/fundraiser1.png",
+        "/pages/profile/fundraiser2.png"
+      ]
     }
   ]
 }

@@ -1,3 +1,4 @@
+import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
@@ -23,12 +24,17 @@ export const Post = ({ profile, post }) => {
         setPostPinned={setPostPinned}
       />
       <PostTextContent post={post} />
-      <LockedMedia
-        post={post}
-        postUnlocked={postUnlocked}
-        setPostUnlocked={setPostUnlocked}
-      />
+      {post.fundraiser ? (
+        <FundraiserMedia images={post.images} />
+      ) : (
+        <LockedMedia
+          post={post}
+          postUnlocked={postUnlocked}
+          setPostUnlocked={setPostUnlocked}
+        />
+      )}
       <PostEngagement post={post} />
+      {post.fundraiser && <FundraiserTab post={post} />}
     </div>
   )
 }
@@ -151,3 +157,112 @@ export const PostEngagement = ({ post }) => (
     )}
   </div>
 )
+
+export const FundraiserMedia = ({ images }) => {
+  const mediaGridLayout = (length, index) => {
+    switch (length) {
+      case 1:
+        return "col-span-12"
+      case 2:
+      case 4:
+        return "col-span-6"
+      case 3:
+        return index === 0 ? "col-span-6 row-span-2" : "col-span-6"
+      case 5:
+        return index === 0 || index === 1 ? "col-span-6" : "col-span-4"
+      default:
+        return "col-span-4"
+    }
+  }
+  return (
+    <div className="relative w-full bg-transparent ">
+      <div className="grid h-full grid-cols-12 gap-4">
+        {images.length > 0 &&
+          images.map((image, index) => (
+            <div
+              key={`media_${index}`}
+              className={mediaGridLayout(images.length, index)}
+            >
+              <img // eslint-disable-line @next/next/no-img-element
+                src={image}
+                alt={`media_${index}`}
+                className="rounded-[23px] object-cover"
+              />
+            </div>
+          ))}
+      </div>
+    </div>
+  )
+}
+
+export const FundraiserTab = ({ post }) => {
+  const [goal] = useState(post?.goal || 100)
+  const [amountCollected, setAmountColleted] = useState(
+    post?.collectedAmount || 0
+  )
+  const [numberOfDonations, setNumberOfDonations] = useState(
+    post?.numberOfDonations || 0
+  )
+
+  const onDonate = (amount) => {
+    setNumberOfDonations(numberOfDonations + 1)
+    setAmountColleted(amountCollected + amount)
+  }
+
+  let progressPercentage = Math.min(
+    100,
+    Math.floor((amountCollected / goal) * 100)
+  )
+  return (
+    <div className="flex w-full flex-col items-start rounded-md bg-[#1b141d]/80 px-4 py-4 backdrop-blur-[10px]">
+      <div className="flex w-full flex-wrap items-center justify-between">
+        <div className="flex items-center">
+          <span className="pr-2">
+            <FundraiserDollarIcon />
+          </span>
+          <span className="pr-1 text-[15px] font-medium leading-[16px] tracking-[0.003em]">
+            {formatCurrency(amountCollected)}
+          </span>
+          <span className="self-end text-xs tracking-[0.003em]">
+            USD raised of $100,000 goal
+          </span>
+        </div>
+        <div className="self-end text-xs tracking-[0.003em]">
+          <span>{numberOfDonations}</span>
+          <span> donations</span>
+        </div>
+      </div>
+      <div className="flex w-full pt-3">
+        <ProgressBar progressPercentage={progressPercentage} />
+      </div>
+      <span className="pt-[5px] text-[10px] leading-[16px] tracking-[0.003em] text-[#ffffff]/50">
+        Last donation 1 hr ago
+      </span>
+      <div className="flex items-center gap-[5px] p-0 pt-[10px]">
+        <span className="text-base font-medium text-[#ffff]/90">
+          Donate now
+        </span>
+        {post.donationTypes.map((amount, index) => (
+          <button
+            key={index}
+            onClick={() => onDonate(amount)}
+            className="flex items-start gap-[10px] rounded-[56px] bg-[#0E0A0F] py-[10px] px-[18px] text-base font-bold leading-[25px] text-[#ffff]/90 hover:bg-[#bf7af0]/10"
+          >
+            ${amount}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export const ProgressBar = ({ progressPercentage }) => {
+  return (
+    <div className="h-[3px] w-full overflow-hidden rounded-[6px] bg-[#FFFFFF]">
+      <div
+        style={{ width: `${progressPercentage}%` }}
+        className="h-full bg-[#EE53C3] "
+      ></div>
+    </div>
+  )
+}
