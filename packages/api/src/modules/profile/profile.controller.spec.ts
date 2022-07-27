@@ -1,3 +1,4 @@
+import { EntityManager } from '@mikro-orm/mysql'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
@@ -15,6 +16,10 @@ describe('ProfileController', () => {
       controllers: [ProfileController],
       providers: [
         ProfileService,
+        {
+          provide: EntityManager,
+          useFactory: jest.fn(() => ({})),
+        },
         {
           provide: getRepositoryToken(ProfileEntity),
           useFactory: repositoryMockFactory,
