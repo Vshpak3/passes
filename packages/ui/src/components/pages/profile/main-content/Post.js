@@ -1,5 +1,6 @@
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
+import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
@@ -90,10 +91,22 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
 )
 
 export const PostTextContent = ({ post }) => (
-  <div className="flex items-center">
+  <div className="flex flex-col items-start">
     <p className="pl-[78px] pr-[30px] text-start text-base font-medium">
       {post.caption}
     </p>
+    {post.fundraiser && (
+      <div className="flex pl-[78px] pt-3">
+        <div className="flex cursor-pointer items-center gap-[10px] rounded-md bg-[#ffff]/10 py-[7px] px-[10px] ">
+          <span className="text-[12px] font-medium leading-[22px] text-[#ffff]">
+            Fundraiser
+          </span>
+          <span>
+            <FundraiserCoinIcon />
+          </span>
+        </div>
+      </div>
+    )}
   </div>
 )
 
