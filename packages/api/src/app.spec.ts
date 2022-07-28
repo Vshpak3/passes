@@ -1,21 +1,29 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.**.expect"] }] */
 
-import { MikroORM } from '@mikro-orm/core'
 import type { INestApplication } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { getRedisConnectionToken, Redis } from '@nestjs-modules/ioredis'
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import request from 'supertest'
 
 import { AppModule } from './../src/app.module'
 
-describe('App e2e', () => {
+// TODO: enable once we move to knex
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('App e2e', () => {
   let app: INestApplication
   let moduleFixture: TestingModule
 
   beforeAll(async () => {
     moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile()
+    })
+      // Mock database
+      // .overrideProvider(['MikroORM'])
+      // .useValue({})
+      // Mock redis
+      .overrideProvider(getRedisConnectionToken())
+      .useValue({})
+      .compile()
 
     app = moduleFixture.createNestApplication()
     app.setGlobalPrefix('api', { exclude: [''] })
@@ -24,10 +32,6 @@ describe('App e2e', () => {
   })
 
   afterAll(async () => {
-    // must close database connection
-    moduleFixture.get<MikroORM>(MikroORM).close()
-    // must close redis connection
-    moduleFixture.get<Redis>(getRedisConnectionToken()).disconnect()
     await app.close()
   })
 

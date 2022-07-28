@@ -10,10 +10,10 @@ on:
 
 jobs:
 
-  test-api:
-    name: Test @moment/api package
+  check-api:
+    name: Check @moment/api package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,12 +22,15 @@ jobs:
         with:
           node-version: '16.x'
       - run: yarn
+      - run: yarn workspace @moment/api prettier:check
+      - run: yarn workspace @moment/api lint:check
+      - run: yarn workspace @moment/api ts:check
       - run: yarn workspace @moment/api test
 
-  test-ui:
-    name: Test @moment/ui package
+  check-ui:
+    name: Check @moment/ui package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,4 +39,25 @@ jobs:
         with:
           node-version: '16.x'
       - run: yarn
+      - run: yarn workspace @moment/ui prettier:check
+      - run: yarn workspace @moment/ui lint:check
+      - run: yarn workspace @moment/ui ts:check
       - run: yarn workspace @moment/ui build
+
+  check-api-configs:
+    name: Check @moment/api configs
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout monorepo code
+        uses: actions/checkout@v2
+        with:
+          path: monorepo
+      - name: Checkout infra code
+        uses: actions/checkout@v2
+        with:
+          repository: buildmoment/infra
+          ref: main
+          token: ${{ secrets.INFRA_REPO_ACCESS }}
+          path: infra
+      - run: ./monorepo/bin/config-check.sh
