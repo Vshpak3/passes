@@ -13,34 +13,41 @@ const mediaTypes = [
   {
     name: "Photos",
     Icon: Photos,
-    type: "image",
-    multiple: true
+    accept: [".png", ".jpg", ".jpeg"],
+    multiple: true,
+    type: "file"
   },
   {
     name: "Video",
     Icon: Recorder,
-    type: "video"
+    accept: [".mp4", ".mov", ".qt"],
+    type: "file"
   },
   {
     name: "Audio",
     Icon: Microphone,
-    type: "audio"
+    accept: ["audio"],
+    type: "file"
   },
   {
     name: "Polls",
-    Icon: BarChart
+    Icon: BarChart,
+    type: "button"
   },
   {
     name: "Fundraiser",
-    Icon: Fundraising
+    Icon: Fundraising,
+    type: "button"
   },
   {
     name: "Quiz",
-    Icon: Quiz
+    Icon: Quiz,
+    type: "button"
   },
   {
     name: "Schedule",
-    Icon: Calendar
+    Icon: Calendar,
+    type: "button"
   }
 ]
 type UploadPostMediaProps = {
@@ -60,25 +67,38 @@ const MediaHeader = ({
     <div className="flex items-center">
       <span className="mr-2">Type</span>
       <div className="flex w-full justify-between ">
-        {mediaTypes.map(({ name, Icon, type, multiple }) => (
-          <FormInput
-            trigger={
+        {mediaTypes.map(({ name, Icon, accept, type, multiple }) =>
+          type === "button" ? (
+            <button
+              type={type}
+              className="group flex flex-shrink-0 rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0] hover:bg-[rgba(191,122,240,0.1)] "
+              onClick={() => onChange(name)}
+            >
               <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
                 <Icon className="flex flex-shrink-0" />
                 <span className="hidden group-hover:block">{name}</span>
               </span>
-            }
-            type="file"
-            register={register}
-            errors={errors}
-            options={{ ...options, onChange }}
-            key={`media-header-${name}`}
-            name={`media-header-${name}`}
-            accept={[type as any]}
-            multiple={multiple}
-            className="group flex flex-shrink-0 rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0] hover:bg-[rgba(191,122,240,0.1)] "
-          />
-        ))}
+            </button>
+          ) : (
+            <FormInput
+              trigger={
+                <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
+                  <Icon className="flex flex-shrink-0" />
+                  <span className="hidden group-hover:block">{name}</span>
+                </span>
+              }
+              type={type as any}
+              register={register}
+              errors={errors}
+              options={{ ...options, onChange }}
+              key={`media-header-${name}`}
+              name={`media-header-${name}`}
+              accept={accept as any}
+              multiple={multiple}
+              className="group flex flex-shrink-0 rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0] hover:bg-[rgba(191,122,240,0.1)] "
+            />
+          )
+        )}
       </div>
     </div>
     <FormInput

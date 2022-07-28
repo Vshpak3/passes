@@ -9,18 +9,25 @@ import { classNames } from "src/helpers/classNames"
 
 import MediaHeader from "../posts/new-post/header"
 import UploadPostMedia from "../posts/new-post/media"
+import { NewFundraiserTab } from "./NewFundraiserTab"
 import { NewPostDropdown } from "./PostDropdown"
 
 export const NewPost = ({ passes = [] }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [fundraiserVisible, setFundraiserVisible] = useState(false)
+  // const [quizVisible, setQuizVisible] = useState(false)
+  // const [pollsVisible, setPollsVisible] = useState(false)
+  // const [schedule, setSchedule] = useState(false)
+
   const [files, setFiles] = useState([])
   const {
     handleSubmit,
     register,
     formState: { errors },
     getValues,
-    setValue
+    setValue,
+    control
   } = useForm({
     defaultValues: {}
   })
@@ -66,7 +73,6 @@ export const NewPost = ({ passes = [] }) => {
 
   const onSubmit = () => {
     const values = getValues()
-
     console.log(values)
   }
 
@@ -76,6 +82,28 @@ export const NewPost = ({ passes = [] }) => {
     onMediaChange(files)
 
     event.target.value = ""
+  }
+
+  const onMediaHeaderChange = (event) => {
+    if (typeof event !== "string") return onFileInputChange(event)
+
+    switch (event) {
+      case "Fundraiser":
+        if (!fundraiserVisible) setFundraiserVisible(true)
+        break
+      case "Quiz":
+        if (!fundraiserVisible) setFundraiserVisible(true)
+        break
+      case "Polls":
+        if (!fundraiserVisible) setFundraiserVisible(true)
+        break
+      case "Schedule":
+        if (!fundraiserVisible) setFundraiserVisible(true)
+        break
+
+      default:
+        break
+    }
   }
 
   const onDragDropChange = (event) => {
@@ -120,9 +148,11 @@ export const NewPost = ({ passes = [] }) => {
               <MediaHeader
                 register={register}
                 errors={errors}
-                onChange={onFileInputChange}
+                onChange={onMediaHeaderChange}
               />
-
+              {fundraiserVisible && (
+                <NewFundraiserTab control={control} register={register} />
+              )}
               <div className="h-full w-full items-center overflow-y-auto pb-5">
                 {files.length === 0 ? (
                   <FormInput
