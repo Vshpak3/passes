@@ -43,7 +43,7 @@ export class LambdaService {
   async blockchainSignCreateAddress(keyId: string): Promise<string> {
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-create-address',
-      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}'}`),
+      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}}`),
     }
 
     const command = new InvokeCommand(input)
@@ -63,7 +63,7 @@ export class LambdaService {
   async blockchainSignGetPublicAddress(keyId: string): Promise<string> {
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-get-public-address',
-      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}'}`),
+      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}}`),
     }
 
     const command = new InvokeCommand(input)
@@ -87,7 +87,7 @@ export class LambdaService {
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-sign-message',
       Payload: new TextEncoder().encode(
-        `{"body":{"keyId":"${keyId}","message":"${message.toString()}"}'}`,
+        `{"body":{"keyId":"${keyId}","message":"${message.toString()}"}}`,
       ),
     }
 
