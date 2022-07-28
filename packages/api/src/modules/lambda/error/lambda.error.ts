@@ -1,6 +1,6 @@
 export class LambdaResponseError extends Error {
   constructor(msg: string) {
-    super('bad circle response: ' + msg)
+    super('bad AWS lambda response: ' + msg)
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, LambdaResponseError.prototype)

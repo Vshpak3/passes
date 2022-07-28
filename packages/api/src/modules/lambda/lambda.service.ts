@@ -15,7 +15,9 @@ export class LambdaService {
   client: LambdaClient
   prefix: string
   constructor(private readonly configService: ConfigService) {
-    this.client = new LambdaClient({ region: 'us-east-1' })
+    this.client = new LambdaClient({
+      region: 'us-east-1',
+    })
     this.prefix =
       configService.get('aws.app') + '-' + configService.get('aws.env')
   }
@@ -48,7 +50,7 @@ export class LambdaService {
 
     const command = new InvokeCommand(input)
 
-    const res = await this.invoke(command)
+    const res = JSON.parse(await this.invoke(command))
 
     return res['body']
   }
@@ -68,7 +70,7 @@ export class LambdaService {
 
     const command = new InvokeCommand(input)
 
-    const res = await this.invoke(command)
+    const res = JSON.parse(await this.invoke(command))
 
     return res['body']
   }
@@ -93,7 +95,7 @@ export class LambdaService {
 
     const command = new InvokeCommand(input)
 
-    const res = await this.invoke(command)
+    const res = JSON.parse(await this.invoke(command))
 
     return Uint8Array.from(JSON.parse('[' + res['body'] + ']'))
   }

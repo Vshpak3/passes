@@ -19,7 +19,7 @@ export class LambdaController {
     return await this.lambdaService.blockchainSignCreateAddress(keyId)
   }
 
-  @ApiOperation({ summary: 'get public Address' })
+  @ApiOperation({ summary: 'Get public Address' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: String,
@@ -30,11 +30,11 @@ export class LambdaController {
     return await this.lambdaService.blockchainSignGetPublicAddress(keyId)
   }
 
-  @ApiOperation({ summary: 'sign message' })
+  @ApiOperation({ summary: 'Sign message' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: String,
-    description: 'address returned',
+    description: 'signed message returned',
   })
   @Post('sign/message/:keyId')
   async signMessage(
