@@ -15,7 +15,7 @@ export class LambdaController {
     description: 'address created',
   })
   @Post('create/address/:keyId')
-  async getEncryptionKey(@Param() keyId): Promise<string> {
+  async getEncryptionKey(@Param('keyId') keyId: string): Promise<string> {
     return await this.lambdaService.blockchainSignCreateAddress(keyId)
   }
 
@@ -26,7 +26,7 @@ export class LambdaController {
     description: 'address returned',
   })
   @Get('public/address/:keyId')
-  async getPublicAddress(@Param() keyId): Promise<string> {
+  async getPublicAddress(@Param('keyId') keyId: string): Promise<string> {
     return await this.lambdaService.blockchainSignGetPublicAddress(keyId)
   }
 
@@ -38,7 +38,7 @@ export class LambdaController {
   })
   @Post('sign/message/:keyId')
   async signMessage(
-    @Param() keyId,
+    @Param('keyId') keyId: string,
     @Body() message: Uint8Array,
   ): Promise<string> {
     return await (

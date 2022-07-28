@@ -9,6 +9,7 @@ export * from './CreatorSettingsApi';
 export * from './EthApi';
 export * from './GemApi';
 export * from './HealthApi';
+export * from './LambdaApi';
 export * from './MessagesApi';
 export * from './PassApi';
 export * from './PaymentApi';
