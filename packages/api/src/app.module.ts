@@ -13,6 +13,7 @@ import { CreatorSettingsModule } from './modules/creator-settings/creator-settin
 import { EthModule } from './modules/eth/eth.module'
 import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
+import { LambdaModule } from './modules/lambda/lambda.module'
 import { RequestLogger } from './modules/logging/request'
 import { MessagesModule } from './modules/messages/messages.module'
 import { PassModule } from './modules/pass/pass.module'
@@ -47,6 +48,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     EthModule,
     MessagesModule,
     CreatorSettingsModule,
+    LambdaModule,
   ],
 })
 export class AppModule implements NestModule {

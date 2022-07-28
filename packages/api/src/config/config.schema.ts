@@ -52,6 +52,9 @@ export const configValidationSchema = Joi.object({
 
   STREAM_API_KEY: Joi.string().required(),
   STREAM_API_SECRET: Joi.string().required(),
+
+  AWS_APP: Joi.string().required(),
+  AWS_ENV: Joi.string().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -120,6 +123,10 @@ export const configConfiguration = async function (): Promise<
     stream: {
       api_key: getConfigValue('STREAM_API_KEY'),
       api_secret: getConfigValue('STREAM_API_SECRET'),
+    },
+    aws: {
+      app: getConfigValue('AWS_APP'),
+      env: getConfigValue('AWS_ENV'),
     },
   })
 }
