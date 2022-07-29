@@ -13,8 +13,9 @@ import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import MomentLogo from "public/moment-logo.svg"
 import UpdatedMomentLogo from "public/moment-logo-updated.svg"
 import { Fragment, useState } from "react"
+import { NewPost } from "src/components/pages/profile/main-content/new-post"
 
-import { NewPostDialog } from "../../pages/profile/posts/new-post"
+import { Dialog as NewPostDialog } from "../dialog"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -319,12 +320,15 @@ const SideBar = () => {
                   )
                 )}
                 <NewPostDialog
+                  className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
                   trigger={
                     <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-[50%] bg-[#BF7AF0] sidebar-collapse:hidden">
                       <PlusSign className="h-4 w-4" />
                     </span>
                   }
-                />
+                >
+                  <NewPost />
+                </NewPostDialog>
               </nav>
             </div>
             <div className="">

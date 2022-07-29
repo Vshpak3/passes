@@ -43,7 +43,7 @@ export const Select = ({
         {...register(name, options)}
         className={classNames(
           errors[name] !== undefined ? "border-red-500" : "border-gray-300",
-          "mt-1 block w-full rounded-md p-2 text-base invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:px-4 sm:py-3 sm:text-sm",
+          "block w-full rounded-md p-2 text-base invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:px-4 sm:text-sm",
           className
         )}
         {...rest}

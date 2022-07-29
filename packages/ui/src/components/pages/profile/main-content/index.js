@@ -2,9 +2,9 @@ import BellIcon from "public/icons/profile-bell-icon.svg"
 import React, { useState } from "react"
 import { CoverButton } from "src/components/common/Buttons"
 
-import NewsFeedNavigation from "./Navigation"
-import { NewPost } from "./NewPost"
-import { Post } from "./Post"
+import { NewPost } from "./new-post"
+import NewsFeedNavigation from "./new-post/navigation"
+import { Post } from "./news-feed/post"
 
 const MainContent = ({ profile }) => {
   const [followed, setFollowed] = useState(false)
