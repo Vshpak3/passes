@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     domains: [process.env.NEXT_PUBLIC_DEMO_BUCKET]
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   i18n: {
     locales: ["en-US"],
     defaultLocale: "en-US"

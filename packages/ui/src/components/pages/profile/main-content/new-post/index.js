@@ -11,6 +11,7 @@ import { Footer } from "./footer"
 import { NewFundraiserTab } from "./fundraiser-tab"
 import MediaHeader from "./header"
 import UploadPostMedia from "./media"
+import { PollsTab } from "./polls-tab"
 import { NewsQuizTab } from "./quiz-tab"
 
 export const NewPost = ({ passes = [] }) => {
@@ -146,6 +147,13 @@ export const NewPost = ({ passes = [] }) => {
               )}
               {activeMediaHeader === "Quiz" && (
                 <NewsQuizTab
+                  control={control}
+                  register={register}
+                  onCloseTab={onCloseTab}
+                />
+              )}
+              {activeMediaHeader === "Polls" && (
+                <PollsTab
                   control={control}
                   register={register}
                   onCloseTab={onCloseTab}
