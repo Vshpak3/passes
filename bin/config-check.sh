@@ -58,7 +58,7 @@ echo "All secrets listed in configs:" > ${out}
 echo "${monorepo_secrets}" | sed 's/^/  /' > ${out}
 
 terraform_secrets=$(sed -n '/^application_secrets/,/^]$/p' ${root}/${tf_secret_filepath} \
-                    | sed -n -e 's/.*"\([a-z-]*\)".*/\1/p')
+                    | sed -n -e 's/.*"\([a-z-]*\)".*/\1/p' | sort -u)
 echo "All secrets listed in secret list:" > ${out}
 echo "${terraform_secrets}" | sed 's/^/  /' > ${out}
 

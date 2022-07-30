@@ -15,6 +15,7 @@ apis/PaymentApi.ts
 apis/PostApi.ts
 apis/ProfileApi.ts
 apis/SettingsApi.ts
+apis/SolApi.ts
 apis/SubscriptionApi.ts
 apis/UserApi.ts
 apis/WalletApi.ts
@@ -36,12 +37,16 @@ models/CreateChannelDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
 models/CreateProfileDto.ts
+models/CreateSolNftCollectionDto.ts
+models/CreateSolNftDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
 models/EncryptionKeyDto.ts
 models/GemPackageEntityDto.ts
 models/GetChannelDto.ts
 models/GetProfileDto.ts
+models/GetSolNftCollectionDto.ts
+models/GetSolNftDto.ts
 models/GetUserDto.ts
 models/GetUserWalletsDto.ts
 models/GetUsernamesDto.ts

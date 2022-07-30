@@ -22,6 +22,7 @@ import { PostModule } from './modules/post/post.module'
 import { ProfileModule } from './modules/profile/profile.module'
 import { RedisLockModule } from './modules/redisLock/redisLock.module'
 import { SettingsModule } from './modules/settings/settings.module'
+import { SolModule } from './modules/sol/sol.module'
 import { SubscriptionModule } from './modules/subscription/subscription.module'
 import { UserModule } from './modules/user/user.module'
 import { WalletModule } from './modules/wallet/wallet.module'
@@ -49,6 +50,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     MessagesModule,
     CreatorSettingsModule,
     LambdaModule,
+    SolModule,
   ],
 })
 export class AppModule implements NestModule {

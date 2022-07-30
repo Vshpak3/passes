@@ -55,6 +55,9 @@ export const configValidationSchema = Joi.object({
 
   AWS_APP: Joi.string().required(),
   AWS_ENV: Joi.string().required(),
+
+  ALCHEMY_SOL_HTTPS_ENDPOINT: Joi.string().required(),
+  ALCHEMY_SOL_WSS_ENDPOINT: Joi.string().required(),
 })
 
 export const configConfiguration = async function (): Promise<
@@ -127,6 +130,10 @@ export const configConfiguration = async function (): Promise<
     aws: {
       app: getConfigValue('AWS_APP'),
       env: getConfigValue('AWS_ENV'),
+    },
+    alchemy: {
+      sol_https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
+      sol_wss_endpoint: getConfigValue('ALCHEMY_SOL_WSS_ENDPOINT'),
     },
   })
 }
