@@ -54,7 +54,7 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
               selectOptions={options}
             />
           </span>
-          <DeleteIcon className="" onClick={() => onCloseTab()} />
+          <DeleteIcon className="" onClick={() => onCloseTab("Quiz")} />
         </div>
       </div>
       <div className="flex w-full flex-col justify-start gap-1">

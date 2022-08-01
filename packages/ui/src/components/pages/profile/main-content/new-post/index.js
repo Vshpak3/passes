@@ -29,11 +29,23 @@ export const NewPost = ({ passes = [] }) => {
     defaultValues: {}
   })
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [activeMediaHeader, setActiveMediaHeader] = useState("Photos")
+  const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const fundraiserTarget = watch("fundraiserTarget")
+  const [hasSchedule, setHasSchedule] = useState(false)
+  const [hasFundraiser, setHasFundraiser] = useState(false)
 
-  const onCloseTab = () => {
-    setActiveMediaHeader("Photos")
+  const onCloseTab = (tab) => {
+    switch (tab) {
+      case "Fundraiser":
+        setHasFundraiser(false)
+        break
+      case "Schedule":
+        setHasSchedule(false)
+        break
+      default:
+        setActiveMediaHeader("Media")
+        break
+    }
   }
 
   useEffect(() => {
@@ -89,7 +101,18 @@ export const NewPost = ({ passes = [] }) => {
 
   const onMediaHeaderChange = (event) => {
     if (typeof event !== "string") return onFileInputChange(event)
-    setActiveMediaHeader(event)
+
+    switch (event) {
+      case "Fundraiser":
+        setHasFundraiser(true)
+        break
+      case "Schedule":
+        setHasSchedule(true)
+        break
+      default:
+        setActiveMediaHeader(event)
+        break
+    }
   }
 
   const onDragDropChange = (event) => {
@@ -136,8 +159,11 @@ export const NewPost = ({ passes = [] }) => {
                 errors={errors}
                 onChange={onMediaHeaderChange}
                 activeMediaHeader={activeMediaHeader}
+                hasSchedule={hasSchedule}
+                hasFundraiser={hasFundraiser}
               />
-              {activeMediaHeader === "Fundraiser" && (
+              {hasSchedule === "Schedule" && <div>Schedule</div>}
+              {hasFundraiser && (
                 <NewFundraiserTab
                   control={control}
                   register={register}

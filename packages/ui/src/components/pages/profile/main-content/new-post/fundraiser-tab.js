@@ -48,7 +48,7 @@ export const NewFundraiserTab = ({
               Target {formatCurrency(fundraiserTarget)}
             </span>
           )}
-          <DeleteIcon className="" onClick={() => onCloseTab()} />
+          <DeleteIcon className="" onClick={() => onCloseTab("Fundraiser")} />
         </div>
       </div>
       {targetAcquired ? (

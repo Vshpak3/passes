@@ -12,9 +12,9 @@ import { FormErrors, FormOptions, FormRegister } from "../../../../form/types"
 
 const mediaTypes = [
   {
-    name: "Photos",
+    name: "Media",
     Icon: Photos,
-    accept: [".png", ".jpg", ".jpeg"],
+    accept: [".png", ".jpg", ".jpeg", ".mp4", ".mov", ".qt", ".mp3"],
     multiple: true,
     type: "button"
   },
