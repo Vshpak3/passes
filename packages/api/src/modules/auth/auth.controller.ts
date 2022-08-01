@@ -10,6 +10,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { GetUserDto } from '../user/dto/get-user.dto'
+import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { JwtAuthGuard } from './jwt/jwt-auth.guard'
 import { JwtAuthService } from './jwt/jwt-auth.service'
@@ -40,6 +41,10 @@ export class AuthController {
   @Post('refresh')
   @UseGuards(JwtRefreshGuard)
   async refreshAccessToken(@Req() req: RequestWithUser) {
-    return { accessToken: this.jwtAuthService.createAccessToken(req.user.id) }
+    return {
+      accessToken: this.jwtAuthService.createAccessToken(
+        req.user as UserEntity,
+      ),
+    }
   }
 }

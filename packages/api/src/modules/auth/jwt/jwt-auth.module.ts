@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { JwtAuthService } from './jwt-auth.service'
 import { JwtAuthStrategy } from './jwt-auth.strategy'
 import { JwtRefreshStrategy } from './jwt-refresh.strategy'
+import { JwtVerifiedStrategy } from './jwt-verified.strategy'
 
 @Module({
   imports: [
@@ -20,7 +21,12 @@ import { JwtRefreshStrategy } from './jwt-refresh.strategy'
       inject: [ConfigService],
     }),
   ],
-  providers: [JwtAuthStrategy, JwtRefreshStrategy, JwtAuthService],
+  providers: [
+    JwtAuthStrategy,
+    JwtRefreshStrategy,
+    JwtVerifiedStrategy,
+    JwtAuthService,
+  ],
   exports: [JwtModule, JwtAuthService],
 })
 export class JwtAuthModule {}

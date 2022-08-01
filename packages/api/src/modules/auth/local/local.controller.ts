@@ -57,9 +57,8 @@ export class LocalAuthController {
       throw new UnauthorizedException('Invalid credentials')
     }
 
-    const userId = user.id
-    const accessToken = this.jwtAuthService.createAccessToken(userId)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(userId)
+    const accessToken = this.jwtAuthService.createAccessToken(user)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
 
     return res.redirect(
       this.configService.get('clientUrl') +

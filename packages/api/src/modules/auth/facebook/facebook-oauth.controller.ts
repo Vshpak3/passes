@@ -43,9 +43,9 @@ export class FacebookOauthController {
   })
   @UseGuards(FacebookOauthGuard)
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const userId = (req.user as UserEntity)?.id
-    const accessToken = this.jwtAuthService.createAccessToken(userId)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(userId)
+    const user = req.user as UserEntity
+    const accessToken = this.jwtAuthService.createAccessToken(user)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
 
     return res.redirect(
       this.configService.get('clientUrl') +

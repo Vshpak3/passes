@@ -10,6 +10,9 @@ export class JwtPayload {
 
   @ApiPropertyOptional()
   email?: string
+
+  @ApiProperty()
+  isVerified: boolean
 }
 
 @Injectable()

@@ -3,7 +3,7 @@ import { ConflictException, Injectable } from '@nestjs/common'
 import bcrypt from 'bcrypt'
 import * as uuid from 'uuid'
 
-import { GetUserDto } from '../../user/dto/get-user.dto'
+import { UserEntity } from '../../user/entities/user.entity'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
@@ -44,7 +44,7 @@ export class LocalAuthService {
 
   async validateLocalUser(email: string, password: string) {
     const knex = this.em.getKnex()
-    const user: GetUserDto & { password_hash: string } = await knex('users')
+    const user: UserEntity & { password_hash: string } = await knex('users')
       .where('email', email)
       .first()
 
