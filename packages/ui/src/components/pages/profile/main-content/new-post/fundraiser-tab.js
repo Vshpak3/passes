@@ -1,6 +1,6 @@
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
-import QuizWhiteIcon from "public/icons/post-quiz-white-icon.svg"
+import FundraiserWhiteIcon from "public/icons/post-fundraiser-white-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
 import { FormInput } from "src/components/form/form-input"
@@ -33,7 +33,7 @@ export const NewFundraiserTab = ({
       <div className="flex w-full flex-wrap items-center justify-between pb-1">
         <div className="flex cursor-pointer items-center">
           <span className="pr-2">
-            <QuizWhiteIcon className="h-6 w-6" />
+            <FundraiserWhiteIcon className="h-6 w-6" />
           </span>
           <span className="text-base font-medium  text-[#ffff]">
             Fundraiser
