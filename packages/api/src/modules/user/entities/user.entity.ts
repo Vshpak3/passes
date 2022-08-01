@@ -4,7 +4,9 @@ import { BaseEntity } from '../../../database/base-entity'
 
 @Entity({ tableName: 'users' }) // not a good idea to have a table named "user" in postgres
 @Index({ properties: ['oauthId', 'oauthProvider'] })
-export class UserEntity extends BaseEntity {
+export class UserEntity extends BaseEntity<
+  'isKYCVerified' | 'isCreator' | 'isDisabled'
+> {
   @Property()
   email: string
 
@@ -32,11 +34,11 @@ export class UserEntity extends BaseEntity {
   birthday?: string
 
   @Property()
-  isKYCVerified?: boolean = false
+  isKYCVerified = false
 
   @Property()
-  isCreator?: boolean = false
+  isCreator = false
 
   @Property()
-  isDisabled?: boolean = false
+  isDisabled = false
 }

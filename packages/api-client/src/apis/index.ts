@@ -3,6 +3,7 @@
 export * from './AuthApi';
 export * from './AuthFacebookApi';
 export * from './AuthGoogleApi';
+export * from './AuthLocalApi';
 export * from './AuthTwitterApi';
 export * from './CommentApi';
 export * from './CreatorSettingsApi';

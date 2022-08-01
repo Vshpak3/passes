@@ -2,6 +2,7 @@
 apis/AuthApi.ts
 apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
+apis/AuthLocalApi.ts
 apis/AuthTwitterApi.ts
 apis/CommentApi.ts
 apis/CreatorSettingsApi.ts
