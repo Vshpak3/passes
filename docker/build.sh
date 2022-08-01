@@ -28,6 +28,9 @@ readonly image_tag=${2:-${default_image_tag}}
 readonly dedup_build=${3:-${default_dedup_build}}
 readonly tag_as_this=${4:-}
 
+readonly full_image_name=${registry_uri}:${image_tag}
+readonly tagged_image_name=${registry_uri}:${tag_as_this}
+
 # Check if we should skip the docker build if the image already exists
 skip_build=false
 if [[ ${dedup_build} == 'true' ]] ; then
@@ -47,7 +50,6 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"/..
 
 # Build and push the image
 if ! ${skip_build} ; then
-  full_image_name=${registry_uri}:${image_tag}
   echo "Building image '${full_image_name}'"
   export DOCKER_BUILDKIT=0
   docker build \
@@ -63,7 +65,6 @@ fi
 
 # Tag and push tag if specified
 if [[ -n ${tag_as_this} ]] ; then
-  tagged_image_name=${registry_uri}:${tag_as_this}
   echo "Tagging and pushing image '${tagged_image_name}'"
   docker tag ${full_image_name} ${tagged_image_name}
   docker push ${tagged_image_name}
