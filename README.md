@@ -1,5 +1,6 @@
 # Passes Monorepo
 
+
 ## Setup
 
 System Requirements
@@ -7,6 +8,7 @@ System Requirements
 - macOS or Linux
 - Node: `brew install node`
 - Yarn: `npm install -g yarn@berry`
+
 
 ## Backend
 
@@ -119,6 +121,7 @@ The following script upgrades all dependencies:
 ```bash
 ./bin/upgrade.sh
 ```
+
 
 ## Frontend
 
