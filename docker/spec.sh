@@ -49,7 +49,7 @@ EOT
 
 printf '{"ImageURI":"%s"}' ${docker_registry}:${image_tag} > imageDetail.json
 
-aws ecs describe-task-definition --task-definition passes-prod-monolith \
+aws ecs describe-task-definition --task-definition ${task_definition_name} \
   | jq '.taskDefinition | .containerDefinitions[].image = "<IMAGE1_NAME>"' \
   > taskdef.json
 
