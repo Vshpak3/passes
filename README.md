@@ -1,4 +1,4 @@
-# Moment Monorepo
+# Passes Monorepo
 
 ## Setup
 
@@ -17,27 +17,27 @@ System Requirements
 yarn install
 
 # spins up docker containers for testing
-yarn workspace @moment/api docker
+yarn workspace @passes/api docker
 ```
 
 ### Local Testing
 
 ```bash
 # starts server
-yarn workspace @moment/api start:dev
+yarn workspace @passes/api start:dev
 ```
 
 ### Unit Tests and Linting
 
 ```bash
 # runs tests
-yarn workspace @moment/api test
+yarn workspace @passes/api test
 
 # runs prettier lint fixes
-yarn workspace @moment/api prettier:fix
+yarn workspace @passes/api prettier:fix
 
 # runs eslint lint fixes
-yarn workspace @moment/api lint:fix
+yarn workspace @passes/api lint:fix
 
 # ensures all config keys are defined in all environments
 ./bin/config-check.sh
@@ -53,7 +53,7 @@ can then access the database via:
 brew install mysql-client
 
 # starts mysql shell
-mysql -u root -P 3306 -h 127.0.0.1 -p'root' moment
+mysql -u root -P 3306 -h 127.0.0.1 -p'root' passes
 ```
 
 The following script will wipe any local migration files and regenerate all
@@ -71,10 +71,10 @@ You can also run the migrations manually:
 
 ```bash
 # generates the migrations
-yarn workspace @moment/api migration:create
+yarn workspace @passes/api migration:create
 
 # runs the migration
-yarn workspace @moment/api migration:up
+yarn workspace @passes/api migration:up
 ```
 
 ### Config
@@ -111,7 +111,7 @@ To view OpenAPI endpoints, visit:
 ### Adding Dependencies
 
 ```bash
-yarn workspace @moment/api add <packageName>
+yarn workspace @passes/api add <packageName>
 ```
 
 The following script upgrades all dependencies:
@@ -132,7 +132,7 @@ yarn install
 ### Local Testing
 
 ```bash
-yarn workspace @moment/ui dev
+yarn workspace @passes/ui dev
 ```
 
 ### Test
@@ -144,5 +144,5 @@ yarn workspace @moment/ui dev
 ### Adding Dependencies
 
 ```bash
-yarn workspace @moment/ui add <packageName>
+yarn workspace @passes/ui add <packageName>
 ```

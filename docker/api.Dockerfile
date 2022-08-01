@@ -23,7 +23,7 @@ RUN yarn install
 RUN yarn config set enableNetwork false
 
 # Build the project
-RUN yarn workspace @moment/api build
+RUN yarn workspace @passes/api build
 
 
 FROM node:16-alpine as release

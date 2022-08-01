@@ -13,7 +13,7 @@ set -o nounset
 set -o pipefail
 
 # Defaults
-readonly default_docker_registry=626392801904.dkr.ecr.us-east-1.amazonaws.com/moment-monolith
+readonly default_docker_registry=626392801904.dkr.ecr.us-east-1.amazonaws.com/passes-monolith
 readonly default_image_tag=$(git rev-parse --short HEAD)
 readonly default_node_env=dev
 

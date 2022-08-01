@@ -1,4 +1,4 @@
-import { EncryptionKeyDto } from "@moment/api-client"
+import { EncryptionKeyDto } from "@passes/api-client"
 import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
 
 /**

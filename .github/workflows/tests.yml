@@ -11,7 +11,7 @@ on:
 jobs:
 
   check-api:
-    name: Check @moment/api package
+    name: Check @passes/api package
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
@@ -22,13 +22,13 @@ jobs:
         with:
           node-version: '16.x'
       - run: yarn
-      - run: yarn workspace @moment/api prettier:check
-      - run: yarn workspace @moment/api lint:check
-      - run: yarn workspace @moment/api ts:check
-      - run: yarn workspace @moment/api test
+      - run: yarn workspace @passes/api prettier:check
+      - run: yarn workspace @passes/api lint:check
+      - run: yarn workspace @passes/api ts:check
+      - run: yarn workspace @passes/api test
 
   check-ui:
-    name: Check @moment/ui package
+    name: Check @passes/ui package
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
@@ -39,13 +39,13 @@ jobs:
         with:
           node-version: '16.x'
       - run: yarn
-      - run: yarn workspace @moment/ui prettier:check
-      - run: yarn workspace @moment/ui lint:check
-      - run: yarn workspace @moment/ui ts:check
-      - run: yarn workspace @moment/ui build
+      - run: yarn workspace @passes/ui prettier:check
+      - run: yarn workspace @passes/ui lint:check
+      - run: yarn workspace @passes/ui ts:check
+      - run: yarn workspace @passes/ui build
 
   check-api-configs:
-    name: Check @moment/api configs
+    name: Check @passes/api configs
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:

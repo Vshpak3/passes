@@ -43,8 +43,7 @@ echo "Updating Node to '${node_version}'"
 cat <<< $(jq ".engines.node = \"${node_version}\"" < package.json) > package.json
 sed -i '' "s/FROM node:[0-9]*/FROM node:${node_version%%.*}/g" docker/api.Dockerfile
 
-# Upgrade root and each specified package
-upgrade_package
+# Upgrade each specified package
 for package in ${packages_to_upgrade[@]} ; do
     cd packages/${package}
     upgrade_package

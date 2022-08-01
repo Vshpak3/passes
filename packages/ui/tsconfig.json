@@ -16,8 +16,8 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@moment/api-client/*": ["../api-client/src/*"],
-      "@moment/api-client": ["../api-client/src/index"]
+      "@passes/api-client/*": ["../api-client/src/*"],
+      "@passes/api-client": ["../api-client/src/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx"],

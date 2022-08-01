@@ -35,8 +35,8 @@ export class App {
 
   private async initSwagger() {
     const swaggerConfig = new DocumentBuilder()
-      .setTitle('Moment Backend')
-      .setDescription('Be in the moment')
+      .setTitle('Passes Backend')
+      .setDescription('Get your pass')
       .setVersion('1.0')
       .build()
     this.document = SwaggerModule.createDocument(this.app, swaggerConfig)

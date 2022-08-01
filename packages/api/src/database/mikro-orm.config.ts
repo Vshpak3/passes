@@ -11,6 +11,6 @@ export default getDatabaseOptions(
     'database.port': '3306',
     'database.user': 'root',
     'database.password': 'root',
-    'database.dbname': 'moment',
+    'database.dbname': 'passes',
   }),
 )

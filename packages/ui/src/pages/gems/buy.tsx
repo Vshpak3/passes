@@ -1,4 +1,4 @@
-import { GemApi, GemPackageEntityDto } from "@moment/api-client"
+import { GemApi, GemPackageEntityDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
 
 const GemSelection = () => {

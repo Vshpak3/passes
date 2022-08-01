@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend
- * Be in the moment
+ * Passes Backend
+ * Get your pass
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -13,7 +13,7 @@
  */
 
 
-import { momentConfig } from './config'
+import { passesConfig } from './config'
 export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
 
 export interface ConfigurationParameters {
@@ -85,7 +85,7 @@ export class Configuration {
     }
 }
 
-export const DefaultConfig = new Configuration(momentConfig);
+export const DefaultConfig = new Configuration(passesConfig);
 
 /**
  * This is the base class for all generated API classes.

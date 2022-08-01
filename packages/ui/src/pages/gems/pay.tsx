@@ -1,4 +1,4 @@
-import { CardEntityDto, PaymentApi } from "@moment/api-client"
+import { CardEntityDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"

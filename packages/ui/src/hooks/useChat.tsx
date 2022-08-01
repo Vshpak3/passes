@@ -1,4 +1,4 @@
-import { MessagesApi } from "@moment/api-client"
+import { MessagesApi } from "@passes/api-client"
 import useSWR from "swr"
 
 import useLocalStorage from "./useLocalStorage"

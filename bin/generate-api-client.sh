@@ -15,7 +15,7 @@ readonly openapi_gen_version='6.0.0'
 out_path="${root}/${api_client_path}"
 
 # Generate openapi.json file
-yarn workspace @moment/api generate-openapi-spec
+yarn workspace @passes/api generate-openapi-spec
 
 # Clean previously generated API client
 [[ -d "${out_path}/src/" ]] && rm -r "${out_path}/src/"
@@ -39,10 +39,10 @@ rm -rf "${out_path}/src/.openapi-generator*"
 
 # Create custom config for APIs
 sed -i '' "/export const BASE_PATH/i\\
-import { momentConfig } from './config'
+import { passesConfig } from './config'
 " packages/api-client/src/runtime.ts
 sed -i '' \
-  's/DefaultConfig = new Configuration();/DefaultConfig = new Configuration(momentConfig);/' \
+  's/DefaultConfig = new Configuration();/DefaultConfig = new Configuration(passesConfig);/' \
   "${out_path}/src/runtime.ts"
 cat <<EOT > "${out_path}/src/config.ts"
 import { ConfigurationParameters } from './runtime'
@@ -51,7 +51,7 @@ if (process.env.NEXT_PUBLIC_API_BASE_URL === undefined) {
     throw Error("NEXT_PUBLIC_API_BASE_URL is not set")
 }
 
-export const momentConfig: ConfigurationParameters = {
+export const passesConfig: ConfigurationParameters = {
     basePath: process.env.NEXT_PUBLIC_API_BASE_URL
 }
 EOT
@@ -62,6 +62,6 @@ EOT
 # echo "export * from './schema';" >> "${out_path}/src/index.ts"
 
 # Transpile generated .ts sources to js
-yarn workspace @moment/api-client build
+yarn workspace @passes/api-client build
 
 echo "Done!"

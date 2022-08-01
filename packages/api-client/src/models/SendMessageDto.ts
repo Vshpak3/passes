@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend
- * Be in the moment
+ * Passes Backend
+ * Get your pass
  *
  * The version of the OpenAPI document: 1.0
  * 

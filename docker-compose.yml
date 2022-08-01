@@ -15,7 +15,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=${MYSQL_DB:-moment}
+      - MYSQL_DATABASE=${MYSQL_DB:-passes}
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD:-root}
     volumes:
       - mysql:/var/lib/mysql

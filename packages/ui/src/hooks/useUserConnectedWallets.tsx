@@ -1,4 +1,4 @@
-import { WalletApi } from "@moment/api-client"
+import { WalletApi } from "@passes/api-client"
 import useSWR from "swr"
 
 import useLocalStorage from "./useLocalStorage"

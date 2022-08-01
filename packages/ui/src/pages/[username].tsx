@@ -1,4 +1,4 @@
-import { GetProfileDto, ProfileApi } from "@moment/api-client"
+import { GetProfileDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 import MainContent from "../components/pages/profile/main-content"

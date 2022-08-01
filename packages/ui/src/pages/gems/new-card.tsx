@@ -1,4 +1,4 @@
-import { EncryptionKeyDto, PaymentApi } from "@moment/api-client"
+import { EncryptionKeyDto, PaymentApi } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"

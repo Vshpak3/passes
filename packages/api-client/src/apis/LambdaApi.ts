@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Moment Backend
- * Be in the moment
+ * Passes Backend
+ * Get your pass
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -64,7 +64,7 @@ export class LambdaApi extends runtime.BaseAPI {
     }
 
     /**
-     * get public Address
+     * Get public Address
      */
     async lambdaGetPublicAddressRaw(requestParameters: LambdaGetPublicAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<string>> {
         if (requestParameters.keyId === null || requestParameters.keyId === undefined) {
@@ -86,7 +86,7 @@ export class LambdaApi extends runtime.BaseAPI {
     }
 
     /**
-     * get public Address
+     * Get public Address
      */
     async lambdaGetPublicAddress(requestParameters: LambdaGetPublicAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<string> {
         const response = await this.lambdaGetPublicAddressRaw(requestParameters, initOverrides);
@@ -94,7 +94,7 @@ export class LambdaApi extends runtime.BaseAPI {
     }
 
     /**
-     * sign message
+     * Sign message
      */
     async lambdaSignMessageRaw(requestParameters: LambdaSignMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<string>> {
         if (requestParameters.keyId === null || requestParameters.keyId === undefined) {
@@ -123,7 +123,7 @@ export class LambdaApi extends runtime.BaseAPI {
     }
 
     /**
-     * sign message
+     * Sign message
      */
     async lambdaSignMessage(requestParameters: LambdaSignMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<string> {
         const response = await this.lambdaSignMessageRaw(requestParameters, initOverrides);

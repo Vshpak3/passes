@@ -20,15 +20,18 @@ if [[ ${input} == 'full' ]] ; then
 
   log 'Spinning back up docker containers'
   docker compose up --detach
+
+  echo 'Waiting for MySQL docker container to be ready'
+  sleep 5
 fi
 
 log 'Removing all ORM metadata'
 git clean -xfd packages/api/src/database/
 
 log 'Generating schema migrations'
-yarn workspace @moment/api migration:create
+yarn workspace @passes/api migration:create
 
 log 'Applying schema migrations'
-yarn workspace @moment/api migration:up
+yarn workspace @passes/api migration:up
 
 log 'Done!'

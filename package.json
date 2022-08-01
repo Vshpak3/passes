@@ -1,19 +1,19 @@
 {
-  "name": "@moment/base",
+  "name": "@passes/base",
   "version": "1.0.0",
-  "description": "Moment root",
+  "description": "Passes root",
   "repository": {
     "type": "git",
-    "url": "https://github.com/buildmoment/monorepo"
+    "url": "https://github.com/getpasses/monorepo"
   },
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "engines": {
-    "node": "16.15.1"
+    "node": "16.16.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.2.2",
   "resolutions": {
     "@types/react": "18.0.14"
   }

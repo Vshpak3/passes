@@ -1,6 +1,6 @@
 import "stream-chat-react/dist/css/index.css"
 
-import { MessagesApi } from "@moment/api-client"
+import { MessagesApi } from "@passes/api-client"
 import React, { useEffect, useRef, useState } from "react"
 import { Channel as ChannelType, StreamChat } from "stream-chat"
 import {

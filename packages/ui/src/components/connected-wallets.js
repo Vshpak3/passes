@@ -1,4 +1,4 @@
-import { WalletApi } from "@moment/api-client"
+import { WalletApi } from "@passes/api-client"
 import { ethers } from "ethers"
 import useUser from "src/hooks/useUser"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
