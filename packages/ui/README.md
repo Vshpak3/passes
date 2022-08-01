@@ -1,4 +1,4 @@
-[![Deployed on Vercel](https://img.shields.io/badge/deployed-success.svg?style=flat-square&logo=Vercel&labelColor=000000&logoWidth=20)](https://vercel.com/moment/ui)
+[![Deployed on Vercel](https://img.shields.io/badge/deployed-success.svg?style=flat-square&logo=Vercel&labelColor=000000&logoWidth=20)](https://vercel.com/passes/ui)
 
 ## Spirit of UI Codebase
 
