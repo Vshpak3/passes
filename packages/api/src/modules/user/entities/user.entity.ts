@@ -9,6 +9,9 @@ export class UserEntity extends BaseEntity {
   email: string
 
   @Property()
+  passwordHash?: string
+
+  @Property()
   oauthId?: string
 
   @Property()
