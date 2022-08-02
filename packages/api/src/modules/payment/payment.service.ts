@@ -2,23 +2,11 @@ import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import axios from 'axios'
-import { get } from 'lodash'
 import { v4 } from 'uuid'
 
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
-import {
-  createAddress,
-  createBank,
-  createCard,
-  createPayment,
-  getBankById,
-  getCardById,
-  getPaymentById,
-  getPCIPublicKey,
-  updateCard,
-} from './circle'
+import { CircleConnector } from './circle'
 import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
 import { CreateAddressDto } from './dto/circle/create-address.dto'
 import { CreateBankDto } from './dto/circle/create-bank.dto'
@@ -27,12 +15,13 @@ import { CreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
 import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { PaymentDto } from './dto/circle/payment.dto'
 import { StatusDto } from './dto/circle/status.dto'
-import { UpdateCardDto } from './dto/circle/update-card.dto'
+import { DefaultProviderDto } from './dto/default-provider.dto'
 import { CircleAddressEntity } from './entities/circle-address.entity'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
+import { DefaultPayinEntity } from './entities/default-payin.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
@@ -40,15 +29,12 @@ import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enu
 import { CirclePaymentSourceEnum } from './enum/circle-payment.source.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
 import { PaymentStatusEnum } from './enum/payment.status.enum'
-import { ProviderEnum } from './enum/provider.enum'
-import {
-  CircleResponseError,
-  CircleResponseStatusError,
-} from './error/circle.error'
+import { ProviderAccountTypeEnum, ProviderEnum } from './enum/provider.enum'
+import { CircleResponseError } from './error/circle.error'
 
 @Injectable()
 export class PaymentService {
-  instance
+  circleConnector: CircleConnector
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
@@ -64,35 +50,24 @@ export class PaymentService {
     private readonly circleNotificationRepository: EntityRepository<CircleNotificationEntity>,
     @InjectRepository(PaymentEntity)
     private readonly paymentRepository: EntityRepository<PaymentEntity>,
+    @InjectRepository(DefaultPayinEntity)
+    private readonly defaultPayinRepository: EntityRepository<DefaultPayinEntity>,
   ) {
-    this.instance = axios.create({
-      baseURL: configService.get('circle.api_endpoint'),
-      headers: {
-        Authorization: `Bearer ${configService.get('circle.api_key')}`,
-      },
-    })
-    this.instance.interceptors.response.use(
-      function (response) {
-        if (get(response, 'data.data')) {
-          return response.data.data
-        }
-        return response
-      },
-      function (error) {
-        console.log(error)
-        const status = error['response']['status']
-        const message = error['response']['data']['message']
-        return Promise.reject(new CircleResponseStatusError(message, status))
-      },
-    )
+    this.circleConnector = new CircleConnector(this.configService)
   }
+
+  /*
+  -------------------------------------------------------------------------------
+  SECTION: CIRCLE
+  -------------------------------------------------------------------------------
+  */
 
   /**
    * get circle's public encryption key
    * @returns
    */
-  async getEncryptionKey(): Promise<EncryptionKeyDto> {
-    const response = await getPCIPublicKey(this.instance)
+  async getCircleEncryptionKey(): Promise<EncryptionKeyDto> {
+    const response = await this.circleConnector.getPCIPublicKey()
     return new EncryptionKeyDto(response['keyId'], response['publicKey'])
   }
 
@@ -105,7 +80,7 @@ export class PaymentService {
    * @param fourDigits last 4 digits of credit card to save
    * @returns
    */
-  async createCard(
+  async createCircleCard(
     ip: string,
     userid: string,
     createCardDto: CreateCardDto,
@@ -118,7 +93,7 @@ export class PaymentService {
     createCardDto.metadata.email = user.email
     createCardDto.metadata.ipAddress = ip
 
-    const response = await createCard(this.instance, createCardDto)
+    const response = await this.circleConnector.createCard(createCardDto)
 
     const cardId = response['id']
     const cardEntity = await this.circleCardRepository.findOne({
@@ -139,20 +114,7 @@ export class PaymentService {
       card.expYear = createCardDto.expYear
       card.fourDigits = fourDigits
       card.name = createCardDto.billingDetails.name
-      card.isDefault = true
       await this.circleCardRepository.persistAndFlush(card)
-      const cards = await this.circleCardRepository.find({ user: user }) //replace user id with auth user id
-
-      // removing all other defaults
-      for (const otherCard of cards) {
-        if (
-          otherCard.isDefault &&
-          otherCard.circleCardId != card.circleCardId
-        ) {
-          otherCard.isDefault = false
-          this.circleCardRepository.persistAndFlush(otherCard)
-        }
-      }
       return new StatusDto(cardId, card.status)
     }
     return new StatusDto(cardId, cardEntity.status)
@@ -163,59 +125,16 @@ export class PaymentService {
    * @param cardId
    * @returns
    */
-  async checkCardStatus(cardId: string): Promise<StatusDto> {
+  async checkCircleCardStatus(cardId: string): Promise<StatusDto> {
     const card = await this.circleCardRepository.findOneOrFail({
       circleCardId: cardId,
     })
     if (card.status == CircleAccountStatusEnum.PENDING) {
-      const response = await getCardById(this.instance, cardId)
+      const response = await this.circleConnector.getCardById(cardId)
       card.status = response['status']
       this.circleBankRepository.persistAndFlush(card)
     }
     return new StatusDto(cardId, card.status)
-  }
-
-  /**
-   * get default card
-   * @param userid
-   * @returns
-   */
-  async getDefaultCard(userid: string): Promise<CircleCardEntity | null> {
-    const user: UserEntity = await this.userService.findOne(userid)
-
-    return await this.circleCardRepository.findOne({
-      user: user,
-      isDefault: true,
-      active: true,
-    })
-  }
-
-  /**
-   * set default card
-   * @param userid
-   * @param circleCardId
-   * @returns
-   */
-  async setDefaultCard(userid: string, circleCardId: string): Promise<boolean> {
-    const user: UserEntity = await this.userService.findOne(userid)
-
-    const card = await this.circleCardRepository.findOne({
-      circleCardId: circleCardId,
-      user: user,
-    })
-    if (card == null) {
-      return false
-    }
-
-    //remove all other default cards
-    const cards = await this.circleCardRepository.find({ user: user })
-    for (const otherCard of cards) {
-      if (otherCard.isDefault && otherCard.circleCardId != card.circleCardId) {
-        otherCard.isDefault = false
-        this.circleCardRepository.persistAndFlush(otherCard)
-      }
-    }
-    return true
   }
 
   /**
@@ -226,7 +145,10 @@ export class PaymentService {
    * @param id
    * @returns
    */
-  async deleteCard(userid: string, circleCardId: string): Promise<boolean> {
+  async deleteCircleCard(
+    userid: string,
+    circleCardId: string,
+  ): Promise<boolean> {
     const user: UserEntity = await this.userService.findOne(userid)
     const cardToRemove = await this.circleCardRepository.findOneOrFail({
       circleCardId: circleCardId,
@@ -234,23 +156,6 @@ export class PaymentService {
     })
     cardToRemove.active = false
     await this.circleCardRepository.persistAndFlush(cardToRemove)
-
-    // set new default if not existing
-    const defaultCard = await this.circleCardRepository.findOne({
-      user: user,
-      active: true,
-      isDefault: true,
-    })
-    if (!defaultCard) {
-      const newDefaultCard = await this.circleCardRepository.findOne({
-        user: user,
-        active: true,
-      })
-      if (newDefaultCard) {
-        newDefaultCard.isDefault = true
-        this.circleCardRepository.persistAndFlush(newDefaultCard)
-      }
-    }
 
     return true
   }
@@ -260,7 +165,7 @@ export class PaymentService {
    * @param userid
    * @returns
    */
-  async getCards(userid: string): Promise<CircleCardEntity[]> {
+  async getCircleCards(userid: string): Promise<CircleCardEntity[]> {
     const user: UserEntity = await this.userService.findOne(userid)
 
     return await this.circleCardRepository.find({
@@ -270,24 +175,12 @@ export class PaymentService {
   }
 
   /**
-   * DEPRECATED
-   * update registered card information
-   * @param id
-   * @param updateCardDto
-   */
-  async updateCard(id: string, updateCardDto: UpdateCardDto): Promise<number> {
-    return await (
-      await updateCard(this.instance, id, updateCardDto)
-    ).status
-  }
-
-  /**
    * make fiat payment with card
    * @param userid
    * @param createCardPaymentDto
    * @returns
    */
-  async makeCardPayment(
+  async makeCircleCardPayment(
     ip: string,
     userid: string,
     createCardPaymentDto: CreateCardPaymentDto,
@@ -322,7 +215,9 @@ export class PaymentService {
     payment.source = CirclePaymentSourceEnum.CARD
 
     this.circleCardRepository.persistAndFlush(payment)
-    const response = await createPayment(this.instance, createCardPaymentDto)
+    const response = await this.circleConnector.createPayment(
+      createCardPaymentDto,
+    )
 
     payment.status = CirclePaymentStatusEnum[response['status']]
     payment.circlePaymentId = response['id']
@@ -336,7 +231,7 @@ export class PaymentService {
    * @param paymentId
    * @returns
    */
-  async checkPaymentStatus(paymentId: string): Promise<StatusDto> {
+  async checkCirclePaymentStatus(paymentId: string): Promise<StatusDto> {
     const payment = await this.circlePaymentRepository.findOneOrFail({
       circlePaymentId: paymentId,
     })
@@ -348,7 +243,7 @@ export class PaymentService {
         [CirclePaymentStatusEnum.PAID, CirclePaymentStatusEnum.FAILED]
       )
     ) {
-      const response = await getPaymentById(this.instance, paymentId)
+      const response = await this.circleConnector.getPaymentById(paymentId)
       payment.status = response['status']
       this.circlePaymentRepository.persistAndFlush(payment)
     }
@@ -365,7 +260,7 @@ export class PaymentService {
    * @param createAddressDto
    * @returns solana address
    */
-  async getAddress(
+  async getCircleAddress(
     userid: string,
     createAddressDto: CreateAddressDto,
   ): Promise<string> {
@@ -383,8 +278,7 @@ export class PaymentService {
     }
 
     // get new depositable address if one does not exist
-    const response = await createAddress(
-      this.instance,
+    const response = await this.circleConnector.createAddress(
       this.configService.get('circle.master_wallet_id') as string,
       createAddressDto,
     )
@@ -405,13 +299,13 @@ export class PaymentService {
    * @param createBankDto
    * @returns
    */
-  async createWireBankAccount(
+  async createCircleWireBankAccount(
     userid: string,
     createBankDto: CreateBankDto,
   ): Promise<StatusDto> {
     const user: UserEntity = await this.userService.findOne(userid)
 
-    const response = await createBank(this.instance, createBankDto)
+    const response = await this.circleConnector.createBank(createBankDto)
 
     const bankId = response['id']
     await this.circleBankRepository.findOneOrFail({
@@ -429,15 +323,6 @@ export class PaymentService {
     bank.fingerprint = response['fingerprint']
     this.circleBankRepository.persistAndFlush(bank)
 
-    // set bank as default bank for user
-    const banks = await this.circleBankRepository.find({ user: user })
-    for (const otherBank of banks) {
-      if (otherBank.isDefault && otherBank.circleBankId != bank.circleBankId) {
-        otherBank.isDefault = false
-        this.circleCardRepository.persistAndFlush(otherBank)
-      }
-    }
-
     return new StatusDto(bank.circleBankId, bank.status)
   }
 
@@ -446,14 +331,14 @@ export class PaymentService {
    * @param bankId
    * @returns
    */
-  async checkWireBankStatus(bankId: string): Promise<StatusDto> {
+  async checkCircleWireBankStatus(bankId: string): Promise<StatusDto> {
     const bank = await this.circleBankRepository.findOneOrFail({
       circleBankId: bankId,
     })
 
     // if last known status is pending, check for updates
     if (bank.status == CircleAccountStatusEnum.PENDING) {
-      const response = await getBankById(this.instance, bankId)
+      const response = await this.circleConnector.getBankById(bankId)
       bank.status = response['status']
       this.circleBankRepository.persistAndFlush(bank)
     }
@@ -606,7 +491,80 @@ export class PaymentService {
       }
       this.circlePaymentRepository.persistAndFlush(paymentEntity)
     }
-    //DEAL WITH GEMS HERE
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  SECTION: GENERIC
+  -------------------------------------------------------------------------------
+  */
+
+  /**
+   * set default payment method
+   * @param userId
+   * @param provider
+   * @param providerAccountType
+   * @param providerAccountId
+   */
+  async setDefaultPayin(
+    userId: string,
+    provider: ProviderEnum,
+    providerAccountType: ProviderAccountTypeEnum,
+    providerAccountId?: string,
+  ): Promise<boolean> {
+    let defaultPayin = await this.defaultPayinRepository.findOne({
+      user: userId,
+    })
+    if (defaultPayin == null) {
+      defaultPayin = new DefaultPayinEntity()
+      defaultPayin.user = await this.userService.findOne(userId)
+    }
+    if (providerAccountType == ProviderAccountTypeEnum.SOLANA) {
+      providerAccountId = undefined
+    }
+    defaultPayin.provider = provider
+    defaultPayin.providerAccountType = providerAccountType
+    defaultPayin.providerAccountId = providerAccountId
+    return true
+  }
+
+  /**
+   * return default payin option of user if exists and valid
+   * @param userId
+   * @returns
+   */
+  async getDefaultPayin(userId: string): Promise<DefaultProviderDto> {
+    const defaultPayin = await this.defaultPayinRepository.findOne({
+      user: userId,
+    })
+
+    if (defaultPayin == null) {
+      return Promise.reject('no default exists')
+    }
+
+    // all in browser wallets are valid
+    let isValid = false
+    if (defaultPayin.providerAccountType == ProviderAccountTypeEnum.SOLANA) {
+      isValid = true
+    } else if (
+      defaultPayin.providerAccountType == ProviderAccountTypeEnum.CARD &&
+      defaultPayin.provider == ProviderEnum.CIRCLE
+    ) {
+      const card = await this.circleCardRepository.findOne({
+        user: userId,
+        active: true,
+        id: defaultPayin.providerAccountId,
+      })
+      isValid = card !== null
+    }
+
+    if (isValid) {
+      return defaultPayin.dto()
+    }
+
+    // delete invalid entry
+    this.defaultPayinRepository.removeAndFlush(defaultPayin)
+    return Promise.reject('default value is invalid - deleting')
   }
 
   /**

@@ -74,7 +74,7 @@ const NewCard = () => {
       //TODO: handle error on frontend (display some generic message)
       console.log(payload)
       console.log(JSON.stringify(payload))
-      await paymentApi.paymentCreateCard(
+      await paymentApi.paymentCreateCircleCard(
         { createCardAndExtraDto: payload },
         {
           headers: {
@@ -102,7 +102,7 @@ const NewCard = () => {
     }
     const fetchData = async () => {
       const paymentApi = new PaymentApi()
-      setPublicKey(await paymentApi.paymentGetEncryptionKey())
+      setPublicKey(await paymentApi.paymentGetCircleEncryptionKey())
     }
     fetchData()
   }, [router, user, loading])

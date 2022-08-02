@@ -41,6 +41,7 @@ models/CreateSolNftCollectionDto.ts
 models/CreateSolNftDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
+models/DefaultProviderDto.ts
 models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
 models/GetProfileDto.ts

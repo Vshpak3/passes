@@ -20,6 +20,7 @@ export * from './CreateSolNftCollectionDto';
 export * from './CreateSolNftDto';
 export * from './CreateUserDto';
 export * from './CreateWalletDto';
+export * from './DefaultProviderDto';
 export * from './EncryptionKeyDto';
 export * from './GetChannelDto';
 export * from './GetProfileDto';

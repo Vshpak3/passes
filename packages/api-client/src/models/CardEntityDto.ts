@@ -33,12 +33,6 @@ export interface CardEntityDto {
     status: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof CardEntityDto
-     */
-    isDefault: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof CardEntityDto
      */
@@ -81,7 +75,6 @@ export function CardEntityDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'circleCardId': json['circleCardId'],
         'status': json['status'],
-        'isDefault': json['isDefault'],
         'fourDigits': json['fourDigits'],
         'expMonth': json['expMonth'],
         'expYear': json['expYear'],
@@ -101,7 +94,6 @@ export function CardEntityDtoToJSON(value?: CardEntityDto | null): any {
         
         'circleCardId': value.circleCardId,
         'status': value.status,
-        'isDefault': value.isDefault,
         'fourDigits': value.fourDigits,
         'expMonth': value.expMonth,
         'expYear': value.expYear,

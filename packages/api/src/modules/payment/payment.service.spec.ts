@@ -9,6 +9,7 @@ import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
+import { DefaultPayinEntity } from './entities/default-payin.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { PaymentService } from './payment.service'
 
@@ -46,6 +47,10 @@ describe('PaymentService', () => {
         },
         {
           provide: getRepositoryToken(PaymentEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(DefaultPayinEntity),
           useFactory: repositoryMockFactory,
         },
       ],

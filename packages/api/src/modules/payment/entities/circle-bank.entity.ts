@@ -24,7 +24,4 @@ export class CircleBankEntity extends BaseEntity {
 
   @Property()
   fingerprint: string
-
-  @Property()
-  isDefault: boolean
 }
