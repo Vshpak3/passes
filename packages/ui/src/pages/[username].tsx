@@ -117,7 +117,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const username = Array.isArray(params.username)
     ? params.username[0]
     : params.username
-
+  if (username === "test") return { props: mockCreator }
   const connection = await getConnection()
   const collection = connection.db("test").collection("creators")
   const { _id, ...props } =
@@ -125,7 +125,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (_id)
     return { props: { ...props, id: _id.toString(), userId: "@" + username } }
 
-  if (username === "test") return { props: mockCreator }
   try {
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })

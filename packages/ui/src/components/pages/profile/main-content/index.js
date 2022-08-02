@@ -21,7 +21,6 @@ const MainContent = ({ profile }) => {
             {profile.coverTitle}
           </div>
         </div>
-
         <div className="flex flex-1 flex-col">
           <div className="flex flex-1 flex-col pl-[26px] pr-3 pt-5">
             <span className="text-sm font-normal text-[#ffffff]/30">

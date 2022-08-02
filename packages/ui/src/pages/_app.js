@@ -4,6 +4,8 @@ import "src/styles/global/main.css"
 import debounce from "lodash.debounce"
 import Router from "next/router"
 import nprogress from "nprogress"
+import { DndProvider } from "react-dnd"
+import { HTML5Backend } from "react-dnd-html5-backend"
 import DefaultHead from "src/components/head"
 import useMessageToDevelopers from "src/hooks/use-message-to-developers"
 import Providers from "src/providers"
@@ -30,7 +32,9 @@ const App = ({ Component, pageProps }) => {
   return (
     <Providers Component={Component} pageProps={pageProps}>
       <DefaultHead />
-      <Component {...pageProps} />
+      <DndProvider backend={HTML5Backend}>
+        <Component {...pageProps} />
+      </DndProvider>
     </Providers>
   )
 }

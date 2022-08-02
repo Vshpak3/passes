@@ -1,13 +1,14 @@
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PollIcon from "public/icons/post-poll-icon.svg"
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
+import { Card } from "src/components/common/drag-drop/Card"
 import { FormInput } from "src/components/form/form-input"
 
 const defaultValues = { value: "Answer" }
 
 export const PollsTab = ({ control, register, onCloseTab }) => {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "pollOptions", // unique name for your Field Array
     defaultValues
@@ -23,6 +24,30 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
       ])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields])
+
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    move(dragIndex, hoverIndex)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const renderCard = (field, index) => {
+    return (
+      <Card key={field.id} index={index} id={field.id} moveCard={moveCard}>
+        <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            <DeleteIcon className="" onClick={() => remove(index)} />
+          </div>
+          <FormInput
+            autoComplete="off"
+            register={register}
+            type="text"
+            name={`pollOptions.${index}.value`}
+            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px] pl-6 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+            placeholder="Type Option here.."
+          />
+        </div>
+      </Card>
+    )
+  }
 
   return (
     <div className="mb-5 flex w-full flex-col items-start rounded-md bg-[#1b141d]/80 px-4 py-4 backdrop-blur-[10px]">
@@ -40,7 +65,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
               register={register}
               name="pollsExpire"
               placeholder="1 Day"
-              className="box-border flex items-start justify-between gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]"
+              className="box-border flex items-start justify-between rounded-md border border-[#2C282D] bg-[#100C11]  focus:border-[#2C282D] focus:ring-0"
               selectOptions={options}
             />
           </span>
@@ -48,25 +73,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
         </div>
       </div>
       <div className="flex w-full flex-col justify-start gap-1">
-        {fields.map((index) => {
-          return (
-            <div key={index}>
-              <div className="relative mt-1 rounded-md shadow-sm">
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                  <DeleteIcon className="" onClick={() => remove(index)} />
-                </div>
-                <FormInput
-                  autoComplete="off"
-                  register={register}
-                  type="text"
-                  name={`pollOptions.${index}.value`}
-                  className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px] pl-4 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
-                  placeholder="Type Option here.."
-                />
-              </div>
-            </div>
-          )
-        })}
+        {fields.map((field, index) => renderCard(field, index))}
         <button
           type="button"
           onClick={() => append(defaultValues)}
