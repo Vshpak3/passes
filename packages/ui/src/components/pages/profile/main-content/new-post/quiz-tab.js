@@ -59,7 +59,7 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
             )}
           </div>
 
-          <div className="absolute inset-y-0 right-0 flex  flex-shrink-0 items-center  pr-2">
+          <div className="absolute inset-y-0 right-0 flex  flex-shrink-0 items-center  pr-3">
             <DeleteIconSmall className="" onClick={() => remove(index)} />
           </div>
           <FormInput

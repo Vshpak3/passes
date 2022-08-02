@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { Dialog } from "src/components/common/dialog"
 import { FormInput } from "src/components/form/form-input"
 import { classNames } from "src/helpers/classNames"
 
@@ -14,6 +16,13 @@ import UploadPostMedia from "./media"
 import { PollsTab } from "./polls-tab"
 import { NewsQuizTab } from "./quiz-tab"
 
+const RecordView = dynamic(
+  () =>
+    import("src/components/common/media-record").then((mod) => mod.RecordView),
+  {
+    ssr: false
+  }
+)
 export const NewPost = ({ passes = [] }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState([])
@@ -33,6 +42,8 @@ export const NewPost = ({ passes = [] }) => {
   const fundraiserTarget = watch("fundraiserTarget")
   const [hasSchedule, setHasSchedule] = useState(false)
   const [hasFundraiser, setHasFundraiser] = useState(false)
+  const [hasVideo, setHasVideo] = useState(false)
+  const [hasAudio, setHasAudio] = useState(false)
 
   const onCloseTab = (tab) => {
     switch (tab) {
@@ -51,6 +62,7 @@ export const NewPost = ({ passes = [] }) => {
   useEffect(() => {
     setHasMounted(true)
   }, [])
+
   const [extended, setExtended] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState([])
   const MB = 1048576
@@ -109,6 +121,12 @@ export const NewPost = ({ passes = [] }) => {
       case "Schedule":
         setHasSchedule(true)
         break
+      case "Video":
+        setHasVideo(true)
+        break
+      case "Audio":
+        setHasAudio(true)
+        break
       default:
         setActiveMediaHeader(event)
         break
@@ -143,6 +161,17 @@ export const NewPost = ({ passes = [] }) => {
     setFiles(files.filter((_, i) => i !== index))
   }
 
+  const onVideoStop = (mediaBlobUrl, blobObject, isVideo) => {
+    const file = new File([blobObject], isVideo ? "test.mp4" : "test.wav", {
+      type: isVideo ? "video/mp4" : "audio/wav",
+      lastModified: new Date().getTime(),
+      url: mediaBlobUrl
+    })
+    setFiles([...files, file])
+    if (hasVideo) setHasVideo(false)
+    else setHasAudio(false)
+  }
+
   if (!hasMounted) {
     return null
   } else
@@ -163,6 +192,14 @@ export const NewPost = ({ passes = [] }) => {
                 hasFundraiser={hasFundraiser}
               />
               {hasSchedule === "Schedule" && <div>Schedule</div>}
+              {hasVideo && (
+                <Dialog open={true}>
+                  <RecordView onStop={onVideoStop} />
+                </Dialog>
+              )}
+              {hasAudio && (
+                <RecordView onStop={onVideoStop} options={{ video: false }} />
+              )}
               {hasFundraiser && (
                 <NewFundraiserTab
                   control={control}

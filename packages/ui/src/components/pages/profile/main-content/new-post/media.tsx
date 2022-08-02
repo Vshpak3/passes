@@ -16,14 +16,22 @@ const UploadPostMedia = ({ file, onRemove }: UploadPostMediaProps) => (
         height="0px"
         controls
       />
-    ) : (
+    ) : file.type.startsWith("image/") ? (
       <Image
         alt=""
         layout="fill"
         src={URL.createObjectURL(file)}
         objectFit="cover"
       />
+    ) : (
+      <audio
+        src={URL.createObjectURL(file)}
+        className="absolute inset-0 m-auto min-w-full max-w-full object-cover"
+        preload="auto"
+        controls
+      />
     )}
+
     <div
       onClick={onRemove}
       className="absolute top-1 left-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"

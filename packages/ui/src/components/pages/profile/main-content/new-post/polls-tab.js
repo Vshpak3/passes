@@ -1,5 +1,6 @@
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PollIcon from "public/icons/post-poll-icon.svg"
+import DeleteIconSmall from "public/icons/post-x-icon-small.svg"
 import React, { useCallback, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
 import { Card } from "src/components/common/drag-drop/Card"
@@ -34,7 +35,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
       <Card key={field.id} index={index} id={field.id} moveCard={moveCard}>
         <div className="relative mt-1 rounded-md shadow-sm">
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <DeleteIcon className="" onClick={() => remove(index)} />
+            <DeleteIconSmall className="" onClick={() => remove(index)} />
           </div>
           <FormInput
             autoComplete="off"
