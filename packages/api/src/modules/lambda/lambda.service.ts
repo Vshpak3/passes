@@ -16,10 +16,9 @@ export class LambdaService {
   prefix: string
   constructor(private readonly configService: ConfigService) {
     this.client = new LambdaClient({
-      region: 'us-east-1',
+      region: configService.get('infra.region'),
     })
-    this.prefix =
-      configService.get('aws.app') + '-' + configService.get('aws.env')
+    this.prefix = 'passes-' + configService.get('infra.env')
   }
 
   async invoke(command: InvokeCommand): Promise<string> {

@@ -101,7 +101,7 @@ export class SolService {
       configService.get('alchemy.sol_https_endpoint') as string,
     )
     this.s3Client = new S3Client({
-      region: 'us-east-1',
+      region: configService.get('infra.region'),
     })
   }
 

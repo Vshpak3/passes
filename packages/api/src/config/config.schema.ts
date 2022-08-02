@@ -7,6 +7,12 @@ import {
 import { getConfigValue } from './config.value'
 
 export const configValidationSchema = Joi.object({
+  // -----------------------------------------------------------
+
+  CLIENT_URL: Joi.string().required(),
+
+  // -----------------------------------------------------------
+
   DATABASE_HOST: Joi.string().required(),
   DATABASE_PORT: Joi.number().required(),
   DATABASE_USER: Joi.string().required(),
@@ -15,6 +21,8 @@ export const configValidationSchema = Joi.object({
 
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().required(),
+
+  // -----------------------------------------------------------
 
   OAUTH_GOOGLE_ID: Joi.string().required(),
   OAUTH_GOOGLE_SECRET: Joi.string().required(),
@@ -28,20 +36,20 @@ export const configValidationSchema = Joi.object({
   OAUTH_TWITTER_CONSUMER_SECRET: Joi.string().required(),
   OAUTH_TWITTER_REDIRECT_URL: Joi.string().uri().required(),
 
-  COOKIE_SESSION_SECRET: Joi.string().required(),
-
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
 
   JWT_REFRESH_SECRET: Joi.string().required(),
   JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
 
-  CLIENT_URL: Joi.string().required(),
+  // -----------------------------------------------------------
 
   CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
   CLOUDFRONT_BASE_URL: Joi.string().required(),
   CLOUDFRONT_KEY_PAIR_ID: Joi.string().required(),
   CLOUDFRONT_PRIVATE_KEY: Joi.string().required(),
+
+  // -----------------------------------------------------------
 
   CIRCLE_API_ENDPOINT: Joi.string().required(),
   CIRCLE_API_KEY: Joi.string().required(),
@@ -53,11 +61,10 @@ export const configValidationSchema = Joi.object({
   STREAM_API_KEY: Joi.string().required(),
   STREAM_API_SECRET: Joi.string().required(),
 
-  AWS_APP: Joi.string().required(),
-  AWS_ENV: Joi.string().required(),
-
   ALCHEMY_SOL_HTTPS_ENDPOINT: Joi.string().required(),
   ALCHEMY_SOL_WSS_ENDPOINT: Joi.string().required(),
+
+  // -----------------------------------------------------------
 })
 
 export const configConfiguration = async function (): Promise<
@@ -68,6 +75,7 @@ export const configConfiguration = async function (): Promise<
       env: infra_config_node_env,
       region: infra_config_aws_region || 'none',
     },
+    clientUrl: getConfigValue('CLIENT_URL'),
     database: {
       host: getConfigValue('DATABASE_HOST'),
       port: getConfigValue('DATABASE_PORT', true),
@@ -117,7 +125,6 @@ export const configConfiguration = async function (): Promise<
       api_key: getConfigValue('MORALIS_API_KEY'),
       api_host: getConfigValue('MORALIS_API_HOST'),
     },
-    clientUrl: getConfigValue('CLIENT_URL'),
     circle: {
       api_endpoint: getConfigValue('CIRCLE_API_ENDPOINT'),
       api_key: getConfigValue('CIRCLE_API_KEY'),
@@ -126,10 +133,6 @@ export const configConfiguration = async function (): Promise<
     stream: {
       api_key: getConfigValue('STREAM_API_KEY'),
       api_secret: getConfigValue('STREAM_API_SECRET'),
-    },
-    aws: {
-      app: getConfigValue('AWS_APP'),
-      env: getConfigValue('AWS_ENV'),
     },
     alchemy: {
       sol_https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
