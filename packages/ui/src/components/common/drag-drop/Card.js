@@ -55,16 +55,13 @@ export const Card = ({ id, children, index, moveCard }) => {
       item.index = hoverIndex
     }
   })
-  const [preview] = useDrag({
+  const { 1: drag, 2: preview } = useDrag({
     type: ItemTypes.CARD,
     item: () => {
       return { id, index }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
+    }
   })
-
+  drag(ref)
   drop(preview(previewRef))
   return (
     <div className="relative" ref={previewRef}>
