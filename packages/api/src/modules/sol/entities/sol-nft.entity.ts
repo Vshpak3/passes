@@ -5,7 +5,7 @@ import { SolNftCollectionEntity } from './sol-nft-collection.entity'
 
 @Entity({ tableName: 'sol_nft' })
 export class SolNftEntity extends BaseEntity {
-  @ManyToOne({ entity: () => SolNftCollectionEntity })
+  @ManyToOne()
   solNftCollection: SolNftCollectionEntity
 
   @Property()

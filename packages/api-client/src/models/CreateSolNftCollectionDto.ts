@@ -31,12 +31,6 @@ export interface CreateSolNftCollectionDto {
      * @memberof CreateSolNftCollectionDto
      */
     symbol: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateSolNftCollectionDto
-     */
-    uriMetadata: string;
 }
 
 export function CreateSolNftCollectionDtoFromJSON(json: any): CreateSolNftCollectionDto {
@@ -51,7 +45,6 @@ export function CreateSolNftCollectionDtoFromJSONTyped(json: any, ignoreDiscrimi
         
         'name': json['name'],
         'symbol': json['symbol'],
-        'uriMetadata': json['uriMetadata'],
     };
 }
 
@@ -66,7 +59,6 @@ export function CreateSolNftCollectionDtoToJSON(value?: CreateSolNftCollectionDt
         
         'name': value.name,
         'symbol': value.symbol,
-        'uriMetadata': value.uriMetadata,
     };
 }
 

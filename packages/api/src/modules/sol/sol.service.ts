@@ -1,8 +1,8 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import {
   createCreateMasterEditionV3Instruction,
   createCreateMetadataAccountV2Instruction,
   createVerifyCollectionInstruction,
-  PROGRAM_ID as METADATA_PROGRAM_ID,
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
@@ -34,9 +34,14 @@ import * as uuid from 'uuid'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
+import * as SolHelper from './sol-helper'
 
+// remove this when integrating with custody api
 const REMOVE_ME_SOL_NFT_MASTER_WALLET_PRIVATE_KEY =
   '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
+// remove this when integrating with Passes API (use the cloudfront uri provided in the create request)
+const PLACEHOLDER_IMAGE_URI =
+  'https://explorer.solana.com/static/media/dark-solana-logo.fa522d66.svg'
 
 export interface JsonMetadata<Uri = string> {
   name?: string
@@ -83,6 +88,7 @@ export type Creator = Readonly<{
 
 export class SolService {
   connection
+  s3Client: S3Client
   constructor(
     private readonly configService: ConfigService,
 
@@ -94,6 +100,9 @@ export class SolService {
     this.connection = new Connection(
       configService.get('alchemy.sol_https_endpoint') as string,
     )
+    this.s3Client = new S3Client({
+      region: 'us-east-1',
+    })
   }
 
   /**
@@ -102,7 +111,6 @@ export class SolService {
    */
   async createNftPass(
     userId: string,
-    UriMetadata: URL,
     owner: PublicKey,
     collectionId: string,
   ): Promise<GetSolNftDto> {
@@ -115,14 +123,34 @@ export class SolService {
       bs58.decode(REMOVE_ME_SOL_NFT_MASTER_WALLET_PRIVATE_KEY),
     )
     const uses = 0
-    const JsonMetadata = {
-      name: 'Moment PASS',
-      symbol: 'MoP',
-      description:
-        'Deep in the heart of Dingus Forest echoes the sleepless cries of a troop of 10,000 apes. These aren’t just regular apes, however. These are degenerate apes.',
+    const usesFormatted: Uses = {
+      useMethod: UseMethod.Burn,
+      remaining: uses,
+      total: uses,
+    }
+    const knex = this.em.getKnex()
+    const collection = (
+      await knex('sol_nft_collection').select('*').where('id', collectionId)
+    )[0]
+
+    if (collection == undefined) {
+      throw 'bad request, invalid collectionId'
+    }
+    const collectionPubKey = new PublicKey(collection.public_key)
+    const solNftId = uuid.v4()
+    const jsonMetadata = {
+      name: collection.name,
+      symbol: collection.symbol,
+      description: `${collectionId}: Deep in the heart of Dingus Forest echoes the sleepless cries of a troop of 10,000 apes. These aren't just regular apes, however. These are degenerate apes.`,
       seller_fee_basis_points: 0,
-      external_url: '',
+      image: PLACEHOLDER_IMAGE_URI,
       properties: {
+        files: [
+          {
+            type: 'image/png',
+            uri: PLACEHOLDER_IMAGE_URI,
+          },
+        ],
         category: 'image',
         creators: [
           {
@@ -131,35 +159,24 @@ export class SolService {
           },
         ],
       },
-      image: 'https://arweave.net/-ZD0iaPP8mrSA3__INLy0-M8qizmMKr1RndhHTWpPoQ',
     }
-    const usesFormatted: Uses = {
-      useMethod: UseMethod.Burn,
-      remaining: uses,
-      total: uses,
-    }
-    const knex = this.em.getKnex()
-    const collectionPubKeyStr = (
-      await knex('sol_nft_collection')
-        .select('sol_nft_collection.public_key as public_key')
-        .where('id', collectionId)
-    )[0]?.public_key
-
-    const collectionPubKey = new PublicKey(collectionPubKeyStr)
-
-    if (collectionPubKey == undefined) {
-      throw 'bad request, invalid collectionId'
-    }
-
-    if (!JsonMetadata.properties)
+    if (!jsonMetadata.properties)
       throw 'The metadata has to contain the properties object'
     if (
-      !JsonMetadata.properties.creators ||
-      JsonMetadata.properties.creators.length === 0
+      !jsonMetadata.properties.creators ||
+      jsonMetadata.properties.creators.length === 0
     )
       throw 'The metadata has to contain the creators array.'
 
-    const creators: Creator[] = JsonMetadata.properties.creators.map((c) => ({
+    const s3Input = {
+      ACL: 'public-read',
+      Bucket: 'passes-staging.com',
+      Body: JSON.stringify(jsonMetadata),
+      Key: `nft-${solNftId}`,
+    }
+    await this.s3Client.send(new PutObjectCommand(s3Input))
+
+    const creators: Creator[] = jsonMetadata.properties.creators.map((c) => ({
       address: new PublicKey(c.address as PublicKeyInitData),
       share: c.share as number,
       verified: c.address === wallet.publicKey.toBase58(),
@@ -215,15 +232,15 @@ export class SolService {
     ]
 
     // 2 - Calling metaplex instruction to initiate a new NFT
-    const metadataPda = (await this.findMetadataPda(mint.publicKey))[0]
+    const metadataPda = (await SolHelper.findMetadataPda(mint.publicKey))[0]
     const masterEditionPda = (
-      await this.findMasterEditionV2Pda(mint.publicKey)
+      await SolHelper.findMasterEditionV2Pda(mint.publicKey)
     )[0]
     const collectionMetadataPda = (
-      await this.findMetadataPda(collectionPubKey)
+      await SolHelper.findMetadataPda(collectionPubKey)
     )[0]
     const collectionMasterEditionPda = (
-      await this.findMasterEditionV2Pda(mint.publicKey)
+      await SolHelper.findMasterEditionV2Pda(mint.publicKey)
     )[0]
 
     const metaplexInstructions: TransactionInstruction[] = [
@@ -238,10 +255,10 @@ export class SolService {
         {
           createMetadataAccountArgsV2: {
             data: {
-              name: JsonMetadata.name ?? '',
-              symbol: JsonMetadata.symbol ?? '',
-              uri: UriMetadata.href,
-              sellerFeeBasisPoints: JsonMetadata.seller_fee_basis_points ?? 0,
+              name: jsonMetadata.name ?? '',
+              symbol: jsonMetadata.symbol ?? '',
+              uri: `https://moment-stage-public.s3.amazonaws.com/nft-${solNftId}`,
+              sellerFeeBasisPoints: jsonMetadata.seller_fee_basis_points ?? 0,
               creators,
               collection: collectionData,
               uses: usesFormatted,
@@ -286,7 +303,6 @@ export class SolService {
       { skipPreflight: true },
     )
 
-    const solNftId = uuid.v4()
     await knex('sol_nft').insert({
       id: solNftId,
       sol_nft_collection_id: collectionId,
@@ -294,7 +310,7 @@ export class SolService {
       metadata_public_key: metadataPda.toString(),
       name: 'Moment PASS',
       symbol: 'MoP',
-      uri_metadata: UriMetadata.href,
+      uri_metadata: `https://s3.amazonaws.com/passes-staging.com/nft-${solNftId}`,
       tx_signature: signature,
       created_at: new Date(),
       updated_at: new Date(),
@@ -312,7 +328,6 @@ export class SolService {
     userId: string,
     name: string,
     symbol: string,
-    uriMetadata: URL,
   ): Promise<GetSolNftCollectionDto> {
     // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
     const user = await this.userRepository.findOneOrFail(userId)
@@ -323,6 +338,37 @@ export class SolService {
     const wallet = Keypair.fromSecretKey(
       bs58.decode(REMOVE_ME_SOL_NFT_MASTER_WALLET_PRIVATE_KEY),
     )
+    const collectionId = uuid.v4()
+    const metadataJson = {
+      name: name,
+      symbol: symbol,
+      description: `${collectionId}: Deep in the heart of Dingus Forest echoes the sleepless cries of a troop of 10,000 apes. These aren't just regular apes, however. These are degenerate apes.`,
+      seller_fee_basis_points: 0,
+      image: PLACEHOLDER_IMAGE_URI,
+      properties: {
+        files: [
+          {
+            type: 'image/png',
+            uri: PLACEHOLDER_IMAGE_URI,
+          },
+        ],
+        category: 'image',
+        creators: [
+          {
+            address: wallet.publicKey.toString(),
+            share: 100,
+          },
+        ],
+      },
+    }
+    const s3Input = {
+      ACL: 'public-read',
+      Bucket: 'passes-staging.com',
+      Body: JSON.stringify(metadataJson),
+      Key: `collection-${collectionId}`,
+    }
+    await this.s3Client.send(new PutObjectCommand(s3Input))
+    // TODO: Integrate with custody for collection keypairs https://buildmoment.atlassian.net/browse/MNT-221
     const collection = Keypair.generate()
     // Minting logic
     const payer = wallet
@@ -369,12 +415,12 @@ export class SolService {
 
     // 2 - Calling metaplex instruction to initiate a new NFT
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [metadataPda, _metadataPdaBump] = await this.findMetadataPda(
+    const [metadataPda, _metadataPdaBump] = await SolHelper.findMetadataPda(
       collection.publicKey,
     )
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [masterEditionPda, masterEditionPdaBump] =
-      await this.findMasterEditionV2Pda(collection.publicKey)
+      await SolHelper.findMasterEditionV2Pda(collection.publicKey)
 
     const metaplexInstructions: TransactionInstruction[] = [
       createCreateMetadataAccountV2Instruction(
@@ -390,7 +436,7 @@ export class SolService {
             data: {
               name: name ?? '',
               symbol: symbol ?? '',
-              uri: uriMetadata.href,
+              uri: `https://s3.amazonaws.com/passes-staging.com/collection-${collectionId}`,
               sellerFeeBasisPoints: 0,
               creators: [
                 { address: wallet.publicKey, share: 100, verified: true },
@@ -417,12 +463,6 @@ export class SolService {
           },
         },
       ),
-
-      // TODO: determine if we want to distribute royalties on-chain via the creators array
-      // createSignMetadataInstruction({
-      //   creator: collection.publicKey,
-      //   metadata: metadataPda
-      // })
     ]
 
     const transaction = new Transaction().add(
@@ -439,12 +479,11 @@ export class SolService {
       { skipPreflight: true },
     )
 
-    const collectionId = uuid.v4()
     await knex('sol_nft_collection').insert({
       id: collectionId,
       name: name,
       symbol: symbol,
-      uri_metadata: uriMetadata.href,
+      uri_metadata: `https://s3.amazonaws.com/passes-staging.com/collection-${collectionId}`,
       public_key: collection.publicKey.toString(),
       tx_signature: txSignature,
       created_at: new Date(),
@@ -456,73 +495,6 @@ export class SolService {
       collection.publicKey,
       bs58.encode(collection.secretKey),
       txSignature,
-    )
-  }
-
-  // PDA function
-  async findMetadataPda(
-    mint: PublicKey,
-    programId: PublicKey = METADATA_PROGRAM_ID,
-  ): Promise<[PublicKey, number]> {
-    return PublicKey.findProgramAddress(
-      [Buffer.from('metadata', 'utf8'), programId.toBuffer(), mint.toBuffer()],
-      programId,
-    )
-  }
-
-  async findMasterEditionV2Pda(
-    mint: PublicKey,
-    programId: PublicKey = METADATA_PROGRAM_ID,
-  ): Promise<[PublicKey, number]> {
-    return this.findEditionPda(mint, programId)
-  }
-
-  async findEditionPda(
-    mint: PublicKey,
-    programId: PublicKey = METADATA_PROGRAM_ID,
-  ): Promise<[PublicKey, number]> {
-    return PublicKey.findProgramAddress(
-      [
-        Buffer.from('metadata', 'utf8'),
-        programId.toBuffer(),
-        mint.toBuffer(),
-        Buffer.from('edition', 'utf8'),
-      ],
-      programId,
-    )
-  }
-
-  async findCollectionAuthorityRecordPda(
-    mint: PublicKey,
-    collectionAuthority: PublicKey,
-    programId: PublicKey = METADATA_PROGRAM_ID,
-  ): Promise<[PublicKey, number]> {
-    return PublicKey.findProgramAddress(
-      [
-        Buffer.from('metadata', 'utf8'),
-        programId.toBuffer(),
-        mint.toBuffer(),
-        Buffer.from('collection_authority', 'utf8'),
-        collectionAuthority.toBuffer(),
-      ],
-      programId,
-    )
-  }
-
-  async findUseAuthorityRecordPda(
-    mint: PublicKey,
-    useAuthority: PublicKey,
-    programId: PublicKey = METADATA_PROGRAM_ID,
-  ): Promise<[PublicKey, number]> {
-    return PublicKey.findProgramAddress(
-      [
-        Buffer.from('metadata', 'utf8'),
-        programId.toBuffer(),
-        mint.toBuffer(),
-        Buffer.from('user', 'utf8'),
-        useAuthority.toBuffer(),
-      ],
-      programId,
     )
   }
 }

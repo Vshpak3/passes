@@ -38,7 +38,6 @@ export class SolController {
       req.user.id,
       createSolNftCollectionDto.name,
       createSolNftCollectionDto.symbol,
-      new URL(createSolNftCollectionDto.uriMetadata),
     )
   }
 
@@ -56,7 +55,6 @@ export class SolController {
   ): Promise<GetSolNftDto> {
     return await this.solService.createNftPass(
       req.user.id,
-      new URL(createSolNftDto.uriMetadata),
       new PublicKey(createSolNftDto.owner),
       createSolNftDto.collectionId,
     )
