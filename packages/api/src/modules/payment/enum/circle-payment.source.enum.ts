@@ -1,4 +1,4 @@
-export enum PaymentSourceEnum {
+export enum CirclePaymentSourceEnum {
   CARD = 'card',
   ACH = 'ach',
   WIRE = 'wire',

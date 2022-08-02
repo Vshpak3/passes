@@ -14,15 +14,15 @@ import { RealIP } from 'nestjs-real-ip'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
-import { CardEntityDto } from './dto/card.entity.dto'
-import { CircleNotificationDto } from './dto/circle-notification.dto'
-import { CreateAddressDto } from './dto/create-address.dto'
-import { CreateBankDto } from './dto/create-bank.dto'
-import { CreateCardAndExtraDto } from './dto/create-card.dto'
-import { CreateCardPaymentDto } from './dto/create-card-payment.dto'
-import { EncryptionKeyDto } from './dto/encryption-key.dto'
-import { StatusDto } from './dto/status.dto'
-import { CardEntity } from './entities/card.entity'
+import { CardEntityDto } from './dto/circle/card.entity.dto'
+import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
+import { CreateAddressDto } from './dto/circle/create-address.dto'
+import { CreateBankDto } from './dto/circle/create-bank.dto'
+import { CreateCardAndExtraDto } from './dto/circle/create-card.dto'
+import { CreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
+import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
+import { StatusDto } from './dto/circle/status.dto'
+import { CircleCardEntity } from './entities/circle-card.entity'
 import { PaymentService } from './payment.service'
 
 @ApiTags('payment')
@@ -30,11 +30,11 @@ import { PaymentService } from './payment.service'
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @ApiOperation({ summary: 'Get encryption key' })
+  @ApiOperation({ summary: 'Get circle encryption key' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: EncryptionKeyDto,
-    description: 'encryption key was returned',
+    description: 'Encryption key was returned',
   })
   @Get('key')
   async getEncryptionKey(): Promise<EncryptionKeyDto> {
@@ -66,7 +66,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'return status of card',
+    description: 'Return status of card',
   })
   @Get('card/status/:id')
   @UseGuards(JwtAuthGuard)
@@ -102,7 +102,7 @@ export class PaymentController {
   async getDefaultCard(@Req() req: RequestWithUser): Promise<CardEntityDto> {
     const entity = await this.paymentService.getDefaultCard(req.user.id)
     if (entity == null) return new CardEntityDto()
-    return new CardEntityDto(entity as CardEntity)
+    return new CardEntityDto(entity as CircleCardEntity)
   }
 
   @ApiOperation({ summary: 'Set default card' })
@@ -173,7 +173,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'return status of payment',
+    description: 'Return status of payment',
   })
   @Get('status/:id')
   @UseGuards(JwtAuthGuard)
@@ -185,7 +185,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: String,
-    description: 'return depositable address for crypto payment',
+    description: 'Return depositable address for crypto payment',
   })
   @Get('address')
   @UseGuards(JwtAuthGuard)
@@ -215,7 +215,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'return status of bank',
+    description: 'Return status of bank',
   })
   @Get('bank/wire/status/:id')
   @UseGuards(JwtAuthGuard)
@@ -231,7 +231,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: undefined,
-    description: 'recieve updates from circle',
+    description: 'Recieve updates from circle',
   })
   @Post('circle/notification')
   async recieveNotifications(
@@ -241,7 +241,7 @@ export class PaymentController {
     if (circleNotificationDto.clientId === undefined) {
       return true
     }
-    return this.paymentService.processUpdate(circleNotificationDto)
+    return this.paymentService.processCircleUpdate(circleNotificationDto)
   }
 
   // endpoint only called by circle to give us notifications
@@ -252,7 +252,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: Boolean,
-    description: 'register updates from circle',
+    description: 'Register updates from circle',
   })
   @Head('circle/notification')
   async registerNotifications(): Promise<boolean> {

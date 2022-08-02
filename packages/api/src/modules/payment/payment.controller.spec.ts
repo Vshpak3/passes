@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
-import { GemService } from '../gem/gem.service'
 import { UserService } from '../user/user.service'
-import { BankEntity } from './entities/bank.entity'
-import { CardEntity } from './entities/card.entity'
 import { CircleAddressEntity } from './entities/circle-address.entity'
+import { CircleBankEntity } from './entities/circle-bank.entity'
+import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
+import { CirclePaymentEntity } from './entities/circle-payment.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
@@ -23,19 +23,15 @@ describe('PaymentController', () => {
         PaymentService,
         ConfigService,
         {
-          provide: GemService,
-          useFactory: jest.fn(() => ({})),
-        },
-        {
           provide: UserService,
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(CardEntity),
+          provide: getRepositoryToken(CircleCardEntity),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(PaymentEntity),
+          provide: getRepositoryToken(CirclePaymentEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -43,11 +39,15 @@ describe('PaymentController', () => {
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(BankEntity),
+          provide: getRepositoryToken(CircleBankEntity),
           useFactory: repositoryMockFactory,
         },
         {
           provide: getRepositoryToken(CircleNotificationEntity),
+          useFactory: repositoryMockFactory,
+        },
+        {
+          provide: getRepositoryToken(PaymentEntity),
           useFactory: repositoryMockFactory,
         },
       ],

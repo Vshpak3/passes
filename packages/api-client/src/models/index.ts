@@ -21,7 +21,6 @@ export * from './CreateSolNftDto';
 export * from './CreateUserDto';
 export * from './CreateWalletDto';
 export * from './EncryptionKeyDto';
-export * from './GemPackageEntityDto';
 export * from './GetChannelDto';
 export * from './GetProfileDto';
 export * from './GetSolNftCollectionDto';

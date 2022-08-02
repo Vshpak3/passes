@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { CardEntity } from '../entities/card.entity'
+import { CircleCardEntity } from '../../entities/circle-card.entity'
 
 export class CardEntityDto {
   @ApiProperty()
@@ -27,7 +27,7 @@ export class CardEntityDto {
   @ApiProperty()
   active: boolean
 
-  constructor(cardEntity?: CardEntity) {
+  constructor(cardEntity?: CircleCardEntity) {
     if (cardEntity !== undefined) {
       this.circleCardId = cardEntity.circleCardId
       this.status = cardEntity.status

@@ -328,7 +328,7 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get encryption key
+     * Get circle encryption key
      */
     async paymentGetEncryptionKeyRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<EncryptionKeyDto>> {
         const queryParameters: any = {};
@@ -346,7 +346,7 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get encryption key
+     * Get circle encryption key
      */
     async paymentGetEncryptionKey(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<EncryptionKeyDto> {
         const response = await this.paymentGetEncryptionKeyRaw(initOverrides);

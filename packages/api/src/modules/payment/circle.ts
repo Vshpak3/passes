@@ -1,8 +1,8 @@
-import { CreateAddressDto } from './dto/create-address.dto'
-import { CreateBankDto } from './dto/create-bank.dto'
-import { CreateCardDto } from './dto/create-card.dto'
-import { BasePaymentDto } from './dto/create-card-payment.dto'
-import { UpdateCardDto } from './dto/update-card.dto'
+import { CreateAddressDto } from './dto/circle/create-address.dto'
+import { CreateBankDto } from './dto/circle/create-bank.dto'
+import { CreateCardDto } from './dto/circle/create-card.dto'
+import { BasePaymentDto } from './dto/circle/create-card-payment.dto'
+import { UpdateCardDto } from './dto/circle/update-card.dto'
 
 /**
  * Global error handler:

@@ -1,12 +1,11 @@
 import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { BadRequestException, Inject } from '@nestjs/common'
+import { BadRequestException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { StreamChat } from 'stream-chat'
 import * as uuid from 'uuid'
 
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
-import { GemService, GemTransaction } from '../gem/gem.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
@@ -23,8 +22,6 @@ export class MessagesService {
     private readonly userRepository: EntityRepository<UserEntity>,
     @InjectRepository(CreatorSettingsEntity)
     private readonly creatorSettingsRepository: EntityRepository<CreatorSettingsEntity>,
-    @Inject(GemService)
-    protected readonly gemService: GemService,
   ) {
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
@@ -118,41 +115,41 @@ export class MessagesService {
       )
     }
 
-    const user = await this.userRepository.findOne(userId)
-    let messageResp: any = undefined
+    // const user = await this.userRepository.findOne(userId)
+    // const messageResp: any = undefined
 
     const messageId = uuid.v4()
     if (
       sendMessageDto.tipAmount != undefined &&
       sendMessageDto.tipAmount != 0
     ) {
-      const handleGems = async (): Promise<boolean> => {
-        const messageSendResponse = await channel.sendMessage({
-          id: messageId,
-          text: sendMessageDto.text,
-          user_id: userId,
-          tipAmount: sendMessageDto.tipAmount,
-        })
-        messageResp = messageSendResponse
-        return messageSendResponse.message != undefined
-      }
-
-      await this.gemService.executeGemTransactions(
-        [
-          new GemTransaction(
-            user as UserEntity,
-            sendMessageDto.tipAmount * -1,
-            `senttip.message.${messageId}`,
-          ),
-          new GemTransaction(
-            otherUser as UserEntity,
-            sendMessageDto.tipAmount,
-            `receivedtip.message.${messageId}`,
-          ),
-        ],
-        handleGems,
-      )
-      return messageResp
+      // TODO: move over to callback.type.ts
+      // const handleGems = async (): Promise<boolean> => {
+      //   const messageSendResponse = await channel.sendMessage({
+      //     id: messageId,
+      //     text: sendMessageDto.text,
+      //     user_id: userId,
+      //     tipAmount: sendMessageDto.tipAmount,
+      //   })
+      //   messageResp = messageSendResponse
+      //   return messageSendResponse.message != undefined
+      // }
+      // await this.gemService.executeGemTransactions(
+      //   [
+      //     new GemTransaction(
+      //       user as UserEntity,
+      //       sendMessageDto.tipAmount * -1,
+      //       `senttip.message.${messageId}`,
+      //     ),
+      //     new GemTransaction(
+      //       otherUser as UserEntity,
+      //       sendMessageDto.tipAmount,
+      //       `receivedtip.message.${messageId}`,
+      //     ),
+      //   ],
+      //   handleGems,
+      // )
+      // return messageResp
     } else {
       return await channel.sendMessage({
         id: messageId,

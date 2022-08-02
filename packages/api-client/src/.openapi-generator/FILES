@@ -7,7 +7,6 @@ apis/AuthTwitterApi.ts
 apis/CommentApi.ts
 apis/CreatorSettingsApi.ts
 apis/EthApi.ts
-apis/GemApi.ts
 apis/HealthApi.ts
 apis/LambdaApi.ts
 apis/MessagesApi.ts
@@ -43,7 +42,6 @@ models/CreateSolNftDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
 models/EncryptionKeyDto.ts
-models/GemPackageEntityDto.ts
 models/GetChannelDto.ts
 models/GetProfileDto.ts
 models/GetSolNftCollectionDto.ts

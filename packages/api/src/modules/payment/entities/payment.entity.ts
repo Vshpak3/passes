@@ -1,60 +1,34 @@
-import {
-  Entity,
-  Enum,
-  ManyToOne,
-  Property,
-  Unique,
-  wrap,
-} from '@mikro-orm/core'
-import { InternalServerErrorException } from '@nestjs/common'
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { CardVerificationEnum } from '../enum/card.verification.enum'
-import { PaymentSourceEnum } from '../enum/payment.source.enum'
+import { PaymentCallbackEnum } from '../enum/payment.callback.enum'
 import { PaymentStatusEnum } from '../enum/payment.status.enum'
-import { CardEntity } from './card.entity'
-import { CircleAddressEntity } from './circle-address.entity'
+import { ProviderEnum } from '../enum/provider.enum'
 
 @Entity({ tableName: 'payment' })
 export class PaymentEntity extends BaseEntity {
-  @ManyToOne({ entity: () => CardEntity })
-  card?: CardEntity
-
-  @ManyToOne({ entity: () => CircleAddressEntity })
-  address?: CircleAddressEntity
+  @ManyToOne({ entity: () => UserEntity })
+  userId: UserEntity
 
   @Property()
-  @Unique()
-  idempotencyKey?: string
+  providerPaymentId: string
 
-  @Property()
-  @Unique()
-  circlePaymentId: string
+  @Enum(() => ProviderEnum)
+  provider: ProviderEnum
 
   @Property()
   amount: string
 
-  @Enum(() => CardVerificationEnum)
-  verification?: CardVerificationEnum
-
   @Enum(() => PaymentStatusEnum)
-  status!: PaymentStatusEnum
+  paymentStatus: PaymentStatusEnum
 
-  @Enum(() => PaymentSourceEnum)
-  source!: PaymentSourceEnum
+  @Enum(() => PaymentCallbackEnum)
+  callback: PaymentCallbackEnum
 
-  async getUser(): Promise<UserEntity> {
-    if (this.card) {
-      const card = await wrap(this.card).init()
-      return await wrap(card.user).init()
-    } else if (this.address) {
-      const address = await wrap(this.address).init()
-      return await wrap(address.user).init()
-    } else {
-      throw new InternalServerErrorException(
-        'impossible data, payment entity has no source',
-      )
-    }
-  }
+  @Property()
+  callbackInputJSON: string
+
+  @Property()
+  callbackSuccess?: boolean
 }

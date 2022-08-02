@@ -2,10 +2,10 @@ import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { AccountStatusEnum } from '../enum/account.status.enum'
+import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 
-@Entity({ tableName: 'card' })
-export class CardEntity extends BaseEntity {
+@Entity({ tableName: 'circle_card' })
+export class CircleCardEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
 
@@ -13,8 +13,8 @@ export class CardEntity extends BaseEntity {
   @Unique()
   circleCardId: string
 
-  @Enum(() => AccountStatusEnum)
-  status: AccountStatusEnum
+  @Enum(() => CircleAccountStatusEnum)
+  status: CircleAccountStatusEnum
 
   @Property()
   isDefault: boolean

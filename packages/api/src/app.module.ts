@@ -11,7 +11,6 @@ import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
 import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
 import { EthModule } from './modules/eth/eth.module'
-import { GemModule } from './modules/gem/gem.module'
 import { HealthModule } from './modules/health/health.module'
 import { LambdaModule } from './modules/lambda/lambda.module'
 import { RequestLogger } from './modules/logging/request'
@@ -45,7 +44,6 @@ import { WalletModule } from './modules/wallet/wallet.module'
     SubscriptionModule,
     UserModule,
     WalletModule,
-    GemModule,
     EthModule,
     MessagesModule,
     CreatorSettingsModule,
