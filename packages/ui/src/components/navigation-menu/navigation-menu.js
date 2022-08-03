@@ -54,7 +54,7 @@ const NavigationMenu = () => {
           <Link href="/subscriptions">
             <div>
               <SubscriptionsIcon />
-              <span className="hidden lg:inline-block">Subscriptions</span>
+              <span className="hidden lg:inline-block">Following</span>
             </div>
           </Link>
         </li>

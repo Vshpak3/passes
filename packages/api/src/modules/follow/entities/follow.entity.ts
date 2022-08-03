@@ -3,8 +3,9 @@ import { Entity, ManyToOne, Property } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity({ tableName: 'subscription' })
-export class SubscriptionEntity extends BaseEntity {
+// Represents a user following a creator
+@Entity({ tableName: 'follow' })
+export class FollowEntity extends BaseEntity {
   @ManyToOne()
   subscriber: UserEntity
 

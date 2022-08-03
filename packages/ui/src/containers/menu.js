@@ -73,7 +73,7 @@ export const MenuPortal = () => {
                   "Messages",
                   "Passes",
                   "Payments",
-                  "Subscriptions",
+                  "Following",
                   "Settings"
                 ].map((item, index) => (
                   <button
@@ -96,7 +96,7 @@ export const MenuPortal = () => {
                             <Money width={20} height={20} />
                           ) : item === "Settings" ? (
                             <Gear width={20} height={20} />
-                          ) : item === "Subscriptions" ? (
+                          ) : item === "Following" ? (
                             <IdCard width={20} height={20} />
                           ) : null}
                         </div>
@@ -145,7 +145,7 @@ const Menu = () => {
               "Messages",
               "Passes",
               "Payments",
-              "Subscriptions",
+              "Following",
               "Settings"
             ].map((item, index) => (
               <button
@@ -166,7 +166,7 @@ const Menu = () => {
                     <Money />
                   ) : item === "Settings" ? (
                     <Gear />
-                  ) : item === "Subscriptions" ? (
+                  ) : item === "Following" ? (
                     <IdCard />
                   ) : null}
                   <Text className={"font-medium"}>{item}</Text>

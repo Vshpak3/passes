@@ -13,6 +13,7 @@ import { ContentModule } from './modules/content/content.module'
 import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
 import { EthModule } from './modules/eth/eth.module'
 import { FeedModule } from './modules/feed/feed.module'
+import { FollowModule } from './modules/follow/follow.module'
 import { HealthModule } from './modules/health/health.module'
 import { LambdaModule } from './modules/lambda/lambda.module'
 import { RequestLogger } from './modules/logging/request'
@@ -24,7 +25,6 @@ import { ProfileModule } from './modules/profile/profile.module'
 import { RedisLockModule } from './modules/redisLock/redisLock.module'
 import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
-import { SubscriptionModule } from './modules/subscription/subscription.module'
 import { UserModule } from './modules/user/user.module'
 import { WalletModule } from './modules/wallet/wallet.module'
 
@@ -45,7 +45,7 @@ import { WalletModule } from './modules/wallet/wallet.module'
     FeedModule,
     ProfileModule,
     SettingsModule,
-    SubscriptionModule,
+    FollowModule,
     UserModule,
     WalletModule,
     EthModule,

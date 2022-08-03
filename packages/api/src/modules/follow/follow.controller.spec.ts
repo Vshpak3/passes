@@ -3,20 +3,20 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
 import { UserEntity } from '../user/entities/user.entity'
-import { SubscriptionEntity } from './entities/subscription.entity'
-import { SubscriptionController } from './subscription.controller'
-import { SubscriptionService } from './subscription.service'
+import { FollowEntity } from './entities/follow.entity'
+import { FollowController } from './follow.controller'
+import { FollowService } from './follow.service'
 
-describe('SubscriptionController', () => {
-  let controller: SubscriptionController
+describe('FollowController', () => {
+  let controller: FollowController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [SubscriptionController],
+      controllers: [FollowController],
       providers: [
-        SubscriptionService,
+        FollowService,
         {
-          provide: getRepositoryToken(SubscriptionEntity),
+          provide: getRepositoryToken(FollowEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -26,7 +26,7 @@ describe('SubscriptionController', () => {
       ],
     }).compile()
 
-    controller = module.get<SubscriptionController>(SubscriptionController)
+    controller = module.get<FollowController>(FollowController)
   })
 
   it('should be defined', () => {
