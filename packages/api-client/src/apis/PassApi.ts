@@ -23,10 +23,6 @@ export interface PassFindOneRequest {
     id: string;
 }
 
-export interface PassRemoveRequest {
-    id: string;
-}
-
 export interface PassUpdateRequest {
     id: string;
     body: object;
@@ -101,38 +97,9 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a pass
-     */
-    async passRemoveRaw(requestParameters: PassRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling passRemove.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/pass/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Deletes a pass
-     */
-    async passRemove(requestParameters: PassRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.passRemoveRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Updates a pass
      */
-    async passUpdateRaw(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async passUpdateRaw(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling passUpdate.');
         }
@@ -155,14 +122,15 @@ export class PassApi extends runtime.BaseAPI {
             body: requestParameters.body as any,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Updates a pass
      */
-    async passUpdate(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.passUpdateRaw(requestParameters, initOverrides);
+    async passUpdate(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.passUpdateRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

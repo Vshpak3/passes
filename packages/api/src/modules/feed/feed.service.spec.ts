@@ -3,33 +3,28 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
-import { PostEntity } from './entities/post.entity'
-import { PostRequiredPassEntity } from './entities/postrequiredpass.entity'
-import { PostService } from './post.service'
+import { UserEntity } from '../user/entities/user.entity'
+import { FeedService } from './feed.service'
 
-describe('PostService', () => {
-  let service: PostService
+describe('FeedService', () => {
+  let service: FeedService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        PostService,
+        FeedService,
         {
           provide: EntityManager,
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(PostEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(PostRequiredPassEntity),
+          provide: getRepositoryToken(UserEntity),
           useFactory: repositoryMockFactory,
         },
       ],
     }).compile()
 
-    service = module.get<PostService>(PostService)
+    service = module.get<FeedService>(FeedService)
   })
 
   it('should be defined', () => {

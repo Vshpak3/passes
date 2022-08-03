@@ -7,10 +7,12 @@ import { configOptions } from './config/config.options'
 import { databaseOptions } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { AuthModule } from './modules/auth/auth.module'
+import { CollectionModule } from './modules/collection/collection.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
 import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
 import { EthModule } from './modules/eth/eth.module'
+import { FeedModule } from './modules/feed/feed.module'
 import { HealthModule } from './modules/health/health.module'
 import { LambdaModule } from './modules/lambda/lambda.module'
 import { RequestLogger } from './modules/logging/request'
@@ -37,8 +39,10 @@ import { WalletModule } from './modules/wallet/wallet.module'
     CommentModule,
     HealthModule,
     PassModule,
+    CollectionModule,
     PaymentModule,
     PostModule,
+    FeedModule,
     ProfileModule,
     SettingsModule,
     SubscriptionModule,

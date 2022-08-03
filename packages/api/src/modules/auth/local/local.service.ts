@@ -35,6 +35,9 @@ export class LocalAuthService {
         password_hash: passwordHash,
         // TODO: Generate default usernames
         user_name: createLocalUserDto.email,
+        is_kycverified: false,
+        is_creator: false,
+        is_disabled: false,
         created_at: now,
         updated_at: now,
       },

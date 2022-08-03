@@ -3,33 +3,25 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
-import { CollectionEntity } from '../collection/entities/collection.entity'
+import { PostEntity } from '../post/entities/post.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import { PassEntity } from './entities/pass.entity'
-import { PassOwnershipEntity } from './entities/pass-ownership.entity'
-import { PassService } from './pass.service'
+import { FeedController } from './feed.controller'
+import { FeedService } from './feed.service'
 
-describe('PassService', () => {
-  let service: PassService
+describe('FeedController', () => {
+  let controller: FeedController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [FeedController],
       providers: [
-        PassService,
+        FeedService,
         {
           provide: EntityManager,
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(CollectionEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(PassEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(PassOwnershipEntity),
+          provide: getRepositoryToken(PostEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -39,10 +31,10 @@ describe('PassService', () => {
       ],
     }).compile()
 
-    service = module.get<PassService>(PassService)
+    controller = module.get<FeedController>(FeedController)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(controller).toBeDefined()
   })
 })

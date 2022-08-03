@@ -7,10 +7,15 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
+import { RequestWithUser } from '../../types/request'
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreatePostDto } from './dto/create-post.dto'
+import { GetPostDto } from './dto/get-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
 import { PostService } from './post.service'
 
@@ -26,18 +31,23 @@ export class PostController {
     description: 'A post was created',
   })
   @Post()
-  async create(@Body() createPostDto: CreatePostDto): Promise<CreatePostDto> {
-    return this.postService.create(createPostDto)
+  @UseGuards(JwtAuthGuard)
+  async create(
+    @Req() req: RequestWithUser,
+    @Body() createPostDto: CreatePostDto,
+  ): Promise<CreatePostDto> {
+    return this.postService.create(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreatePostDto,
+    type: GetPostDto,
     description: 'A post was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreatePostDto> {
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Param('id') id: string): Promise<GetPostDto> {
     return this.postService.findOne(id)
   }
 
@@ -48,18 +58,24 @@ export class PostController {
     description: 'A post was updated',
   })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(id, updatePostDto)
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
+    return this.postService.update(req.user.id, id, updatePostDto)
   }
 
   @ApiOperation({ summary: 'Deletes a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: GetPostDto,
     description: 'A post was deleted',
   })
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.postService.remove(id)
+  @UseGuards(JwtAuthGuard)
+  async remove(@Req() req: RequestWithUser, @Param('id') postId: string) {
+    return this.postService.remove(req.user.id, postId)
   }
 }

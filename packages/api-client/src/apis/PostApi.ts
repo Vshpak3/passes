@@ -14,9 +14,17 @@
 
 
 import * as runtime from '../runtime';
+import {
+    CreatePostDto,
+    CreatePostDtoFromJSON,
+    CreatePostDtoToJSON,
+    UpdatePostDto,
+    UpdatePostDtoFromJSON,
+    UpdatePostDtoToJSON,
+} from '../models';
 
 export interface PostCreateRequest {
-    body: object;
+    createPostDto: CreatePostDto;
 }
 
 export interface PostFindOneRequest {
@@ -29,7 +37,7 @@ export interface PostRemoveRequest {
 
 export interface PostUpdateRequest {
     id: string;
-    body: object;
+    updatePostDto: UpdatePostDto;
 }
 
 /**
@@ -40,9 +48,9 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Creates a post
      */
-    async postCreateRaw(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling postCreate.');
+    async postCreateRaw(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatePostDto>> {
+        if (requestParameters.createPostDto === null || requestParameters.createPostDto === undefined) {
+            throw new runtime.RequiredError('createPostDto','Required parameter requestParameters.createPostDto was null or undefined when calling postCreate.');
         }
 
         const queryParameters: any = {};
@@ -56,16 +64,16 @@ export class PostApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: CreatePostDtoToJSON(requestParameters.createPostDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePostDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a post
      */
-    async postCreate(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async postCreate(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatePostDto> {
         const response = await this.postCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -103,7 +111,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Deletes a post
      */
-    async postRemoveRaw(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async postRemoveRaw(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postRemove.');
         }
@@ -119,14 +127,15 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Deletes a post
      */
-    async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.postRemoveRaw(requestParameters, initOverrides);
+    async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.postRemoveRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -137,8 +146,8 @@ export class PostApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postUpdate.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling postUpdate.');
+        if (requestParameters.updatePostDto === null || requestParameters.updatePostDto === undefined) {
+            throw new runtime.RequiredError('updatePostDto','Required parameter requestParameters.updatePostDto was null or undefined when calling postUpdate.');
         }
 
         const queryParameters: any = {};
@@ -152,7 +161,7 @@ export class PostApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: UpdatePostDtoToJSON(requestParameters.updatePostDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

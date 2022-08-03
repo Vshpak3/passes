@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateSolNftDto
+ * @interface UpdatePostDto
  */
-export interface CreateSolNftDto {
+export interface UpdatePostDto {
     /**
      * 
      * @type {string}
-     * @memberof CreateSolNftDto
+     * @memberof UpdatePostDto
      */
-    collectionId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateSolNftDto
-     */
-    owner: string;
+    text: string;
 }
 
-export function CreateSolNftDtoFromJSON(json: any): CreateSolNftDto {
-    return CreateSolNftDtoFromJSONTyped(json, false);
+export function UpdatePostDtoFromJSON(json: any): UpdatePostDto {
+    return UpdatePostDtoFromJSONTyped(json, false);
 }
 
-export function CreateSolNftDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateSolNftDto {
+export function UpdatePostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePostDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'collectionId': json['collectionId'],
-        'owner': json['owner'],
+        'text': json['text'],
     };
 }
 
-export function CreateSolNftDtoToJSON(value?: CreateSolNftDto | null): any {
+export function UpdatePostDtoToJSON(value?: UpdatePostDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function CreateSolNftDtoToJSON(value?: CreateSolNftDto | null): any {
     }
     return {
         
-        'collectionId': value.collectionId,
-        'owner': value.owner,
+        'text': value.text,
     };
 }
 

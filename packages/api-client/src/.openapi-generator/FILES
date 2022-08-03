@@ -4,9 +4,11 @@ apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
 apis/AuthLocalApi.ts
 apis/AuthTwitterApi.ts
+apis/CollectionApi.ts
 apis/CommentApi.ts
 apis/CreatorSettingsApi.ts
 apis/EthApi.ts
+apis/FeedApi.ts
 apis/HealthApi.ts
 apis/LambdaApi.ts
 apis/MessagesApi.ts
@@ -36,6 +38,7 @@ models/CreateCardPaymentDto.ts
 models/CreateChannelDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
+models/CreatePostDto.ts
 models/CreateProfileDto.ts
 models/CreateSolNftCollectionDto.ts
 models/CreateSolNftDto.ts
@@ -56,6 +59,7 @@ models/SendMessageDto.ts
 models/SourceDto.ts
 models/StatusDto.ts
 models/TokenDto.ts
+models/UpdatePostDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts
 models/WalletDto.ts
