@@ -44,6 +44,7 @@ export const FormInput = ({
   register,
   errors,
   selectOptions,
+  className,
   multiple,
   accept,
   ...rest
@@ -57,6 +58,7 @@ export const FormInput = ({
         label={label}
         register={register}
         options={options}
+        className={className}
         errors={errors}
         {...rest}
       />
@@ -68,6 +70,7 @@ export const FormInput = ({
         options={options}
         errors={errors}
         register={register}
+        className={className}
         placeholder={placeholder}
         {...rest}
       />
@@ -78,6 +81,7 @@ export const FormInput = ({
         type={type}
         label={label}
         options={options}
+        className={className}
         errors={errors}
         register={register}
         {...rest}
@@ -90,6 +94,7 @@ export const FormInput = ({
         label={label}
         options={options}
         errors={errors}
+        className={className}
         register={register}
         {...rest}
       />
@@ -103,6 +108,7 @@ export const FormInput = ({
         options={options}
         selectOptions={selectOptions as FormSelectOptions}
         errors={errors}
+        className={className}
         {...rest}
       />
     ),
@@ -126,6 +132,7 @@ export const FormInput = ({
         errors={errors}
         multiple={multiple}
         accept={accept}
+        className={className}
         {...rest}
       />
     )
@@ -139,6 +146,7 @@ export const FormInput = ({
           type={type}
           label={label}
           options={options}
+          className={className}
           errors={errors}
           {...rest}
         />

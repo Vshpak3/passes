@@ -16,7 +16,7 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
     name: "quizOptions", // unique name for your Field Array
     defaultValues
   })
-  const options = ["No Limit", "1 Day", "3 days", "7 Days", "10 Days"]
+  const options = ["1 Day", "3 days", "7 Days", "10 Days", "No Limit"]
 
   useEffect(() => {
     if (fields.length === 0)
@@ -44,21 +44,6 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
     return (
       <Card key={field.id} index={index} id={field.id} moveCard={moveCard}>
         <div className="relative rounded-md shadow-sm">
-          <div
-            className="absolute inset-y-0 left-3 flex cursor-pointer items-center pl-3"
-            onClick={() => onChangeCorrectAnswer(index)}
-          >
-            {field.isTrue ? (
-              <span className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-[#bf7af0]">
-                <CheckIcon className="h-3 w-3" />
-              </span>
-            ) : (
-              <span className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-[#bf7af0]">
-                <WrongIcon className="h-3 w-3" />
-              </span>
-            )}
-          </div>
-
           <div className="absolute inset-y-0 right-0 flex  flex-shrink-0 items-center  pr-3">
             <DeleteIconSmall className="" onClick={() => remove(index)} />
           </div>
@@ -67,8 +52,22 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
             register={register}
             type="text"
             name={`quizOptions.${index}.value`}
-            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px] pl-12 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px]  text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
             placeholder="Type an Answer here.."
+            icon={
+              <div
+                className="items-center pl-2 pt-[1px]"
+                onClick={() => onChangeCorrectAnswer(index)}
+              >
+                <span className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-[#bf7af0]">
+                  {field.isTrue ? (
+                    <CheckIcon className="h-3 w-3" />
+                  ) : (
+                    <WrongIcon className="h-3 w-3" />
+                  )}
+                </span>
+              </div>
+            }
           />
         </div>
       </Card>
@@ -89,7 +88,6 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
               type="select"
               register={register}
               name="quizExpire"
-              placeholder="1 Day"
               className="box-border flex items-start justify-between rounded-md border border-[#2C282D] bg-[#100C11]  focus:border-[#2C282D] focus:ring-0"
               selectOptions={options}
             />

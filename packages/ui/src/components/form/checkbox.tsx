@@ -54,7 +54,12 @@ const Checkbox = ({
             )}
           />
           {type === "toggle" && (
-            <div className="slider absolute inset-0 h-5 w-9 cursor-pointer rounded-2xl bg-[#ccc] before:absolute before:left-1 before:bottom-[2px] before:h-4 before:w-4 before:rounded-[50%]" />
+            <div
+              className={classNames(
+                className,
+                "slider absolute inset-0 h-5 w-9 cursor-pointer rounded-2xl bg-[#ccc] before:absolute before:left-1 before:bottom-[2px] before:h-4 before:w-4 before:rounded-[50%]"
+              )}
+            />
           )}
         </label>
         <div className="ml-3 text-sm">

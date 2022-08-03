@@ -6,6 +6,7 @@ import {
 import { connect } from "extendable-media-recorder-wav-encoder"
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react"
 let registered = false
+let skipOnStop = false
 export type ReactMediaRecorderRenderProps = {
   error: string
   muteAudio: () => void
@@ -131,6 +132,7 @@ export function useReactMediaRecorder({
   }
 
   const onRecordingStop = () => {
+    if (skipOnStop) return
     const [chunk] = mediaChunks.current
     const blobProperty: BlobPropertyBag = Object.assign(
       { type: chunk.type },
@@ -185,6 +187,13 @@ export function useReactMediaRecorder({
       }
     }
     setup()
+    skipOnStop = false
+    return () => {
+      skipOnStop = true
+      mediaStream?.current
+        ?.getTracks() // get all tracks from the MediaStream
+        .forEach((track) => track.stop()) // stop each of them
+    }
   }, [])
 
   const getMediaStream = useCallback(async () => {

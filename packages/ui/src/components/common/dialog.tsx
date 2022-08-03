@@ -44,7 +44,7 @@ export const Dialog = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="bg-opacity-15 fixed inset-0 bg-black" />
           </Transition.Child>
 
           <div className="fixed inset-0">
@@ -59,7 +59,7 @@ export const Dialog = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <HeadlessDialog.Panel className={className}>
-                  <div className="flex h-full flex-col justify-between">
+                  <div className="relative flex h-full flex-col justify-between">
                     {title && (
                       <HeadlessDialog.Title>{title}</HeadlessDialog.Title>
                     )}

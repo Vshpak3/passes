@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
+import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -69,6 +70,7 @@ export const NewPost = ({ passes = [] }) => {
   const MAX_FILE_SIZE = 10 * MB
   const MAX_FILES = 9
   const isPaid = watch("isPaid")
+
   const mediaGridLayout = (length, index) => {
     switch (length) {
       case 1:
@@ -193,13 +195,58 @@ export const NewPost = ({ passes = [] }) => {
               />
               {hasSchedule === "Schedule" && <div>Schedule</div>}
               {hasVideo && (
-                <Dialog open={true}>
-                  <RecordView onStop={onVideoStop} />
+                <Dialog
+                  open={true}
+                  title={
+                    <div className="absolute top-3 left-1 z-30 flex  items-center">
+                      <span
+                        className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
+                        onClick={() => setHasVideo(false)}
+                      >
+                        <CameraBackIcon />
+                      </span>
+                      <span className="pl-1 text-xl font-bold text-[#FFFF]">
+                        RECORD A VIDEO MESSAGE
+                      </span>
+                    </div>
+                  }
+                >
+                  <div className="h-screen w-screen">
+                    <RecordView
+                      onStop={onVideoStop}
+                      className="h-full w-full"
+                    />
+                  </div>
                 </Dialog>
               )}
               {hasAudio && (
-                <RecordView onStop={onVideoStop} options={{ video: false }} />
+                <Dialog
+                  open={true}
+                  className="bg-transparent"
+                  title={
+                    <div className="absolute top-3 left-1 z-30 flex  items-center">
+                      <span
+                        className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
+                        onClick={() => setHasAudio(false)}
+                      >
+                        <CameraBackIcon />
+                      </span>
+                      <span className="pl-1 text-xl font-bold text-[#FFFF]">
+                        RECORD AN AUDIO MESSAGE
+                      </span>
+                    </div>
+                  }
+                >
+                  <div className="h-screen w-screen">
+                    <RecordView
+                      onStop={onVideoStop}
+                      className="h-full w-full"
+                      options={{ video: false }}
+                    />
+                  </div>
+                </Dialog>
               )}
+
               {hasFundraiser && (
                 <NewFundraiserTab
                   control={control}
@@ -231,7 +278,6 @@ export const NewPost = ({ passes = [] }) => {
                 : "border-b border-[#2C282D]",
               "w-full"
             )}
-            // className="w-full border-b border-[#2C282D]"
           >
             <FormInput
               register={register}

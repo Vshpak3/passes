@@ -14,7 +14,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
     name: "pollOptions", // unique name for your Field Array
     defaultValues
   })
-  const options = ["No Limit", "1 Day", "3 days", "7 Days", "10 Days"]
+  const options = ["1 Day", "3 days", "7 Days", "10 Days", "No Limit"]
 
   useEffect(() => {
     if (fields.length === 0)
@@ -42,7 +42,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
             register={register}
             type="text"
             name={`pollOptions.${index}.value`}
-            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px] pl-6 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px] text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0 sm:pl-6"
             placeholder="Type Option here.."
           />
         </div>
@@ -65,7 +65,6 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
               type="select"
               register={register}
               name="pollsExpire"
-              placeholder="1 Day"
               className="box-border flex items-start justify-between rounded-md border border-[#2C282D] bg-[#100C11]  focus:border-[#2C282D] focus:ring-0"
               selectOptions={options}
             />

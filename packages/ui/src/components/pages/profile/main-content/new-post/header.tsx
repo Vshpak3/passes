@@ -139,7 +139,7 @@ const MediaHeader = ({
       errors={errors}
       options={options}
       name="isPaid"
-      className="group rounded-[56px] p-2 text-sm hover:bg-[rgba(191,122,240,0.1)]"
+      className="group rounded-[56px] bg-[#BF7AF0] p-2 text-sm text-[#BF7AF0] ring-[#BF7AF0] hover:bg-[rgba(191,122,240,0.1)] focus:ring-[#BF7AF0]"
     />
   </div>
 )
