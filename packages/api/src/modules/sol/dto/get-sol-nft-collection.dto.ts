@@ -8,15 +8,11 @@ export class GetSolNftCollectionDto {
   collectionPublicKey: string
 
   @ApiProperty()
-  collectionSecretKey: string
-
-  @ApiProperty()
   signature: string
 
-  constructor(id, pubKey, secretKey, signature) {
+  constructor(id, pubKey, signature) {
     this.id = id
     this.collectionPublicKey = pubKey
-    this.collectionSecretKey = secretKey
     this.signature = signature
   }
 }

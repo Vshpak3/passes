@@ -36,12 +36,6 @@ export interface GetSolNftCollectionDto {
      * @type {string}
      * @memberof GetSolNftCollectionDto
      */
-    collectionSecretKey: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSolNftCollectionDto
-     */
     signature: string;
 }
 
@@ -57,7 +51,6 @@ export function GetSolNftCollectionDtoFromJSONTyped(json: any, ignoreDiscriminat
         
         'id': json['id'],
         'collectionPublicKey': json['collectionPublicKey'],
-        'collectionSecretKey': json['collectionSecretKey'],
         'signature': json['signature'],
     };
 }
@@ -73,7 +66,6 @@ export function GetSolNftCollectionDtoToJSON(value?: GetSolNftCollectionDto | nu
         
         'id': value.id,
         'collectionPublicKey': value.collectionPublicKey,
-        'collectionSecretKey': value.collectionSecretKey,
         'signature': value.signature,
     };
 }

@@ -36,19 +36,7 @@ export interface GetSolNftDto {
      * @type {string}
      * @memberof GetSolNftDto
      */
-    mintSecretKey: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSolNftDto
-     */
     metadataPublicKey: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSolNftDto
-     */
-    metadataSecretKey: string;
     /**
      * 
      * @type {string}
@@ -69,9 +57,7 @@ export function GetSolNftDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'id': json['id'],
         'mintPublicKey': json['mintPublicKey'],
-        'mintSecretKey': json['mintSecretKey'],
         'metadataPublicKey': json['metadataPublicKey'],
-        'metadataSecretKey': json['metadataSecretKey'],
         'signature': json['signature'],
     };
 }
@@ -87,9 +73,7 @@ export function GetSolNftDtoToJSON(value?: GetSolNftDto | null): any {
         
         'id': value.id,
         'mintPublicKey': value.mintPublicKey,
-        'mintSecretKey': value.mintSecretKey,
         'metadataPublicKey': value.metadataPublicKey,
-        'metadataSecretKey': value.metadataSecretKey,
         'signature': value.signature,
     };
 }
