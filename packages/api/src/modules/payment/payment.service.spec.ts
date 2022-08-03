@@ -4,12 +4,12 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
 import { UserService } from '../user/user.service'
-import { CircleAddressEntity } from './entities/circle-address.entity'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
-import { DefaultPayinEntity } from './entities/default-payin.entity'
+import { DefaultPayinMethodEntity } from './entities/default-payin-method.entity'
+import { DepositAddressEntity } from './entities/deposit-address.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { PaymentService } from './payment.service'
 
@@ -34,7 +34,7 @@ describe('PaymentService', () => {
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(CircleAddressEntity),
+          provide: getRepositoryToken(DepositAddressEntity),
           useFactory: repositoryMockFactory,
         },
         {
@@ -50,7 +50,7 @@ describe('PaymentService', () => {
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(DefaultPayinEntity),
+          provide: getRepositoryToken(DefaultPayinMethodEntity),
           useFactory: repositoryMockFactory,
         },
       ],

@@ -21,9 +21,6 @@ import {
     CircleNotificationDto,
     CircleNotificationDtoFromJSON,
     CircleNotificationDtoToJSON,
-    CreateAddressDto,
-    CreateAddressDtoFromJSON,
-    CreateAddressDtoToJSON,
     CreateBankDto,
     CreateBankDtoFromJSON,
     CreateBankDtoToJSON,
@@ -33,12 +30,15 @@ import {
     CreateCardPaymentDto,
     CreateCardPaymentDtoFromJSON,
     CreateCardPaymentDtoToJSON,
-    DefaultProviderDto,
-    DefaultProviderDtoFromJSON,
-    DefaultProviderDtoToJSON,
     EncryptionKeyDto,
     EncryptionKeyDtoFromJSON,
     EncryptionKeyDtoToJSON,
+    PayinMethodDto,
+    PayinMethodDtoFromJSON,
+    PayinMethodDtoToJSON,
+    SolanaUSDCTransactionRequest,
+    SolanaUSDCTransactionRequestFromJSON,
+    SolanaUSDCTransactionRequestToJSON,
     StatusDto,
     StatusDtoFromJSON,
     StatusDtoToJSON,
@@ -68,16 +68,16 @@ export interface PaymentDeleteCircleCardRequest {
     circleCardId: string;
 }
 
-export interface PaymentGetCircleAddressRequest {
-    createAddressDto: CreateAddressDto;
+export interface PaymentGenerateSolanaUSDCTransactionMessageRequest {
+    solanaUSDCTransactionRequest: SolanaUSDCTransactionRequest;
 }
 
 export interface PaymentRecieveNotificationsRequest {
     circleNotificationDto: CircleNotificationDto;
 }
 
-export interface PaymentSetDefaultPayinRequest {
-    defaultProviderDto: DefaultProviderDto;
+export interface PaymentSetDefaultPayinMethodRequest {
+    payinMethodDto: PayinMethodDto;
 }
 
 export interface PaymentUpdateRequest {
@@ -276,11 +276,11 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get crypto address
+     * Get solana USDC transaction to sign
      */
-    async paymentGetCircleAddressRaw(requestParameters: PaymentGetCircleAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters.createAddressDto === null || requestParameters.createAddressDto === undefined) {
-            throw new runtime.RequiredError('createAddressDto','Required parameter requestParameters.createAddressDto was null or undefined when calling paymentGetCircleAddress.');
+    async paymentGenerateSolanaUSDCTransactionMessageRaw(requestParameters: PaymentGenerateSolanaUSDCTransactionMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+        if (requestParameters.solanaUSDCTransactionRequest === null || requestParameters.solanaUSDCTransactionRequest === undefined) {
+            throw new runtime.RequiredError('solanaUSDCTransactionRequest','Required parameter requestParameters.solanaUSDCTransactionRequest was null or undefined when calling paymentGenerateSolanaUSDCTransactionMessage.');
         }
 
         const queryParameters: any = {};
@@ -290,21 +290,21 @@ export class PaymentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/payment/address`,
-            method: 'GET',
+            path: `/api/payment/sol/transaction`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateAddressDtoToJSON(requestParameters.createAddressDto),
+            body: SolanaUSDCTransactionRequestToJSON(requestParameters.solanaUSDCTransactionRequest),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
-     * Get crypto address
+     * Get solana USDC transaction to sign
      */
-    async paymentGetCircleAddress(requestParameters: PaymentGetCircleAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<string> {
-        const response = await this.paymentGetCircleAddressRaw(requestParameters, initOverrides);
+    async paymentGenerateSolanaUSDCTransactionMessage(requestParameters: PaymentGenerateSolanaUSDCTransactionMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+        const response = await this.paymentGenerateSolanaUSDCTransactionMessageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -363,7 +363,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get default payin
      */
-    async paymentGetDefaultPayinRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<DefaultProviderDto>> {
+    async paymentGetDefaultPayinRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinMethodDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -375,13 +375,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DefaultProviderDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinMethodDtoFromJSON(jsonValue));
     }
 
     /**
      * Get default payin
      */
-    async paymentGetDefaultPayin(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<DefaultProviderDto> {
+    async paymentGetDefaultPayin(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinMethodDto> {
         const response = await this.paymentGetDefaultPayinRaw(initOverrides);
         return await response.value();
     }
@@ -447,9 +447,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set default payin
      */
-    async paymentSetDefaultPayinRaw(requestParameters: PaymentSetDefaultPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.defaultProviderDto === null || requestParameters.defaultProviderDto === undefined) {
-            throw new runtime.RequiredError('defaultProviderDto','Required parameter requestParameters.defaultProviderDto was null or undefined when calling paymentSetDefaultPayin.');
+    async paymentSetDefaultPayinMethodRaw(requestParameters: PaymentSetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.payinMethodDto === null || requestParameters.payinMethodDto === undefined) {
+            throw new runtime.RequiredError('payinMethodDto','Required parameter requestParameters.payinMethodDto was null or undefined when calling paymentSetDefaultPayinMethod.');
         }
 
         const queryParameters: any = {};
@@ -463,18 +463,17 @@ export class PaymentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DefaultProviderDtoToJSON(requestParameters.defaultProviderDto),
+            body: PayinMethodDtoToJSON(requestParameters.payinMethodDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Set default payin
      */
-    async paymentSetDefaultPayin(requestParameters: PaymentSetDefaultPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.paymentSetDefaultPayinRaw(requestParameters, initOverrides);
-        return await response.value();
+    async paymentSetDefaultPayinMethod(requestParameters: PaymentSetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.paymentSetDefaultPayinMethodRaw(requestParameters, initOverrides);
     }
 
     /**

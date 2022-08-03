@@ -4,7 +4,7 @@ export class CreateAddressDto {
   @ApiProperty()
   idempotencyKey: string
   @ApiProperty()
-  currency = 'USD'
+  currency: string
   @ApiProperty()
-  chain = 'SOL'
+  chain: string
 }

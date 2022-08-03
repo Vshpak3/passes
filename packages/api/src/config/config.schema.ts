@@ -65,6 +65,10 @@ export const configValidationSchema = Joi.object({
   ALCHEMY_SOL_WSS_ENDPOINT: Joi.string().required(),
 
   // -----------------------------------------------------------
+
+  SOL_NETWORK: Joi.string().required(),
+
+  // -----------------------------------------------------------
 })
 
 export const configConfiguration = async function (): Promise<
@@ -137,6 +141,9 @@ export const configConfiguration = async function (): Promise<
     alchemy: {
       sol_https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
       sol_wss_endpoint: getConfigValue('ALCHEMY_SOL_WSS_ENDPOINT'),
+    },
+    sol: {
+      network: getConfigValue('SOL_NETWORK'),
     },
   })
 }

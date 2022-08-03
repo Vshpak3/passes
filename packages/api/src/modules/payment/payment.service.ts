@@ -2,35 +2,45 @@ import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import {
+  createAssociatedTokenAccountInstruction,
+  createTransferInstruction,
+  getAccount,
+  getAssociatedTokenAddress,
+  TOKEN_PROGRAM_ID,
+} from '@solana/spl-token'
+import { Connection, PublicKey, Transaction } from '@solana/web3.js'
 import { v4 } from 'uuid'
 
+import { sol_accounts } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { CircleConnector } from './circle'
 import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
-import { CreateAddressDto } from './dto/circle/create-address.dto'
 import { CreateBankDto } from './dto/circle/create-bank.dto'
 import { CreateCardDto } from './dto/circle/create-card.dto'
 import { CreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
 import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { PaymentDto } from './dto/circle/payment.dto'
 import { StatusDto } from './dto/circle/status.dto'
-import { DefaultProviderDto } from './dto/default-provider.dto'
-import { CircleAddressEntity } from './entities/circle-address.entity'
+import { PayinMethodDto } from './dto/payin-method.dto'
+import { RegisterPaymentResponse } from './dto/register-payment-response.dto'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
-import { DefaultPayinEntity } from './entities/default-payin.entity'
+import { DefaultPayinMethodEntity } from './entities/default-payin-method.entity'
+import { DepositAddressEntity } from './entities/deposit-address.entity'
 import { PaymentEntity } from './entities/payment.entity'
 import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
 import { CirclePaymentSourceEnum } from './enum/circle-payment.source.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
+import { PayinMethodEnum } from './enum/payin.enum'
 import { PaymentStatusEnum } from './enum/payment.status.enum'
-import { ProviderAccountTypeEnum, ProviderEnum } from './enum/provider.enum'
 import { CircleResponseError } from './error/circle.error'
+import { NoPayinMethodError } from './error/payin.error'
 
 @Injectable()
 export class PaymentService {
@@ -42,23 +52,23 @@ export class PaymentService {
     private readonly circleCardRepository: EntityRepository<CircleCardEntity>,
     @InjectRepository(CirclePaymentEntity)
     private readonly circlePaymentRepository: EntityRepository<CirclePaymentEntity>,
-    @InjectRepository(CircleAddressEntity)
-    private readonly circleAddressRepository: EntityRepository<CircleAddressEntity>,
+    @InjectRepository(DepositAddressEntity)
+    private readonly depositAddressRepository: EntityRepository<DepositAddressEntity>,
     @InjectRepository(CircleBankEntity)
     private readonly circleBankRepository: EntityRepository<CircleBankEntity>,
     @InjectRepository(CircleNotificationEntity)
     private readonly circleNotificationRepository: EntityRepository<CircleNotificationEntity>,
     @InjectRepository(PaymentEntity)
     private readonly paymentRepository: EntityRepository<PaymentEntity>,
-    @InjectRepository(DefaultPayinEntity)
-    private readonly defaultPayinRepository: EntityRepository<DefaultPayinEntity>,
+    @InjectRepository(DefaultPayinMethodEntity)
+    private readonly defaultPayinMethodRepository: EntityRepository<DefaultPayinMethodEntity>,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
   }
 
   /*
   -------------------------------------------------------------------------------
-  SECTION: CIRCLE
+  CIRCLE
   -------------------------------------------------------------------------------
   */
 
@@ -146,10 +156,10 @@ export class PaymentService {
    * @returns
    */
   async deleteCircleCard(
-    userid: string,
+    userId: string,
     circleCardId: string,
   ): Promise<boolean> {
-    const user: UserEntity = await this.userService.findOne(userid)
+    const user: UserEntity = await this.userService.findOne(userId)
     const cardToRemove = await this.circleCardRepository.findOneOrFail({
       circleCardId: circleCardId,
       user: user,
@@ -165,8 +175,8 @@ export class PaymentService {
    * @param userid
    * @returns
    */
-  async getCircleCards(userid: string): Promise<CircleCardEntity[]> {
-    const user: UserEntity = await this.userService.findOne(userid)
+  async getCircleCards(userId: string): Promise<CircleCardEntity[]> {
+    const user: UserEntity = await this.userService.findOne(userId)
 
     return await this.circleCardRepository.find({
       user: user,
@@ -182,10 +192,10 @@ export class PaymentService {
    */
   async makeCircleCardPayment(
     ip: string,
-    userid: string,
+    userId: string,
     createCardPaymentDto: CreateCardPaymentDto,
   ): Promise<StatusDto> {
-    const user: UserEntity = await this.userService.findOne(userid)
+    const user: UserEntity = await this.userService.findOne(userId)
 
     //automatically fill in metadata
     createCardPaymentDto.metadata.email = user.email
@@ -251,46 +261,18 @@ export class PaymentService {
   }
 
   /**
-   * get depositable solana address
+   * get depositable solana address from Circle
    *
-   * new address per person per time frame (currently 30 minutes - minutesTillExpire)
-   * ensures that new addresses are not generated too frequently without overusing them
-   *
-   * @param userid
+   * @param userId
    * @param createAddressDto
    * @returns solana address
    */
-  async getCircleAddress(
-    userid: string,
-    createAddressDto: CreateAddressDto,
-  ): Promise<string> {
-    const user: UserEntity = await this.userService.findOne(userid)
-
-    const checkAddress = await this.circleAddressRepository.findOne(
-      {
-        user: user,
-      },
-      // check if solana address has expired yet
-      { filters: { expiration: { date: new Date() } } },
-    )
-    if (checkAddress !== null) {
-      return checkAddress.address
-    }
-
-    // get new depositable address if one does not exist
+  async getCircleAddress(): Promise<string> {
     const response = await this.circleConnector.createAddress(
       this.configService.get('circle.master_wallet_id') as string,
-      createAddressDto,
+      { idempotencyKey: v4(), currency: 'USD', chain: 'SOL' },
     )
-    const address = response['address']
-    const newAddress = new CircleAddressEntity()
-    const minutesTillExpire = 30
-    newAddress.user = user
-    newAddress.address = address
-    newAddress.expiration = new Date(
-      new Date().getTime() + minutesTillExpire * 60000,
-    )
-    return address
+    return response['address']
   }
 
   /**
@@ -300,10 +282,10 @@ export class PaymentService {
    * @returns
    */
   async createCircleWireBankAccount(
-    userid: string,
+    userId: string,
     createBankDto: CreateBankDto,
   ): Promise<StatusDto> {
-    const user: UserEntity = await this.userService.findOne(userid)
+    const user: UserEntity = await this.userService.findOne(userId)
 
     const response = await this.circleConnector.createBank(createBankDto)
 
@@ -485,47 +467,53 @@ export class PaymentService {
           circleCardId: payment.source.id,
         })
         paymentEntity.card = checkCard
-      } else if (paymentEntity.source == CirclePaymentSourceEnum.BLOCKCHAIN) {
-        paymentEntity.address =
-          CirclePaymentSourceEnum[payment.source.address as string]
       }
       this.circlePaymentRepository.persistAndFlush(paymentEntity)
     }
   }
+  /*
+  -------------------------------------------------------------------------------
+  CRYPTO
+  -------------------------------------------------------------------------------
+  */
+
+  async linkAddressToPayment(
+    address: string,
+    payment: PaymentEntity,
+  ): Promise<void> {
+    const depositAddress = new DepositAddressEntity()
+    depositAddress.payment = payment
+    depositAddress.address = address
+    await this.depositAddressRepository.persistAndFlush(depositAddress)
+  }
 
   /*
   -------------------------------------------------------------------------------
-  SECTION: GENERIC
+  GENERIC
   -------------------------------------------------------------------------------
   */
 
   /**
    * set default payment method
    * @param userId
-   * @param provider
-   * @param providerAccountType
-   * @param providerAccountId
+   * @param method
+   * @param methodId
    */
-  async setDefaultPayin(
+  async setDefaultPayinMethod(
     userId: string,
-    provider: ProviderEnum,
-    providerAccountType: ProviderAccountTypeEnum,
-    providerAccountId?: string,
-  ): Promise<boolean> {
-    let defaultPayin = await this.defaultPayinRepository.findOne({
+    method: PayinMethodEnum,
+    methodId?: string,
+  ): Promise<void> {
+    let defaultPayinMethod = await this.defaultPayinMethodRepository.findOne({
       user: userId,
     })
-    if (defaultPayin == null) {
-      defaultPayin = new DefaultPayinEntity()
-      defaultPayin.user = await this.userService.findOne(userId)
+    if (defaultPayinMethod == null) {
+      defaultPayinMethod = new DefaultPayinMethodEntity()
+      defaultPayinMethod.user = await this.userService.findOne(userId)
     }
-    if (providerAccountType == ProviderAccountTypeEnum.SOLANA) {
-      providerAccountId = undefined
-    }
-    defaultPayin.provider = provider
-    defaultPayin.providerAccountType = providerAccountType
-    defaultPayin.providerAccountId = providerAccountId
-    return true
+    defaultPayinMethod.method = method
+    defaultPayinMethod.methodId = methodId
+    await this.defaultPayinMethodRepository.persistAndFlush(defaultPayinMethod)
   }
 
   /**
@@ -533,64 +521,131 @@ export class PaymentService {
    * @param userId
    * @returns
    */
-  async getDefaultPayin(userId: string): Promise<DefaultProviderDto> {
-    const defaultPayin = await this.defaultPayinRepository.findOne({
+  async getDefaultPayinMethod(userId: string): Promise<PayinMethodDto> {
+    const defaultPayinMethod = await this.defaultPayinMethodRepository.findOne({
       user: userId,
     })
 
-    if (defaultPayin == null) {
-      return Promise.reject('no default exists')
+    if (defaultPayinMethod == null) {
+      throw new NoPayinMethodError('no default exists')
     }
 
-    // all in browser wallets are valid
     let isValid = false
-    if (defaultPayin.providerAccountType == ProviderAccountTypeEnum.SOLANA) {
-      isValid = true
-    } else if (
-      defaultPayin.providerAccountType == ProviderAccountTypeEnum.CARD &&
-      defaultPayin.provider == ProviderEnum.CIRCLE
-    ) {
+    // all in browser wallets are valid
+    if (defaultPayinMethod.method == PayinMethodEnum.CIRCLE_CARD) {
       const card = await this.circleCardRepository.findOne({
         user: userId,
         active: true,
-        id: defaultPayin.providerAccountId,
+        id: defaultPayinMethod.methodId,
       })
       isValid = card !== null
     }
 
-    if (isValid) {
-      return defaultPayin.dto()
+    if (!isValid) {
+      throw new NoPayinMethodError('default value is invalid')
     }
 
-    // delete invalid entry
-    this.defaultPayinRepository.removeAndFlush(defaultPayin)
-    return Promise.reject('default value is invalid - deleting')
+    return defaultPayinMethod.dto()
   }
 
   /**
-   * called by other services when making a payment
+   * called when pay button is pressed
    *
-   * @param payment fill in userId, amount, provider, callback, and callbackInputJSON
-   * @param provider
+   * @param payment
+   * fill in userId, amount, callback, and callbackInputJSON
+   * @returns RegisterPaymentResponse
+   * contains provider account type to respond appropriately to
+   * Phantom and Metamask should ask for a transaction to sign
    */
-  async makePayment(payment: PaymentEntity) {
+  async registerPayment(
+    payment: PaymentEntity,
+  ): Promise<RegisterPaymentResponse> {
     // save payment first with status CREATED
-    payment.providerPaymentId = v4()
     payment.paymentStatus = PaymentStatusEnum.CREATED
     payment.callbackSuccess = undefined
     this.paymentRepository.persistAndFlush(payment)
 
-    // make payment to provider
-    switch (payment.provider) {
-      case ProviderEnum.CIRCLE:
+    // use default payin method
+    // throw an error if no payin method exists
+    const payinMethod = await this.getDefaultPayinMethod(payment.user.id)
+    payment.payinMethod = payinMethod.method
+    payment.payinMethodId = payinMethod.methodId
+
+    switch (payment.payinMethod) {
+      case PayinMethodEnum.CIRCLE_CARD:
+        //TODO: create circle payment
         break
-      case ProviderEnum.CHECKOUT:
+      case PayinMethodEnum.METAMASK_SOL_CIRCLE_USDC:
+        this.linkAddressToPayment(await this.getCircleAddress(), payment)
         break
-      case ProviderEnum.STRIPE:
+      // eslint-disable-next-line sonarjs/no-duplicated-branches
+      case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
+        this.linkAddressToPayment(await this.getCircleAddress(), payment)
         break
     }
+
     // save provider's id to internal payment object REQUESTED
     payment.paymentStatus = PaymentStatusEnum.REQUESTED
-    this.paymentRepository.persistAndFlush(payment)
+    await this.paymentRepository.persistAndFlush(payment)
+    return {
+      paymentId: payment.id,
+      method: payment.payinMethod,
+    }
+  }
+
+  /**
+   * generate SOL transaction to send USDC to a source destination
+   *
+   * @param amount
+   * @param destinationAddress
+   */
+  async generateSolanaUSDCTransactionMessage(
+    paymentId: string,
+    ownerAccount: string,
+  ): Promise<Uint8Array> {
+    const SOLANA_MAINNET_USDC_PUBKEY: string =
+      sol_accounts[this.configService.get('sol.network')].USDC
+    const connection = new Connection(
+      this.configService.get('alchemy.sol_https_endpoint') as string,
+    )
+    const payment = await this.paymentRepository.findOneOrFail({
+      id: paymentId,
+    })
+    const depositAddress = await this.depositAddressRepository.findOneOrFail({
+      payment: payment.id,
+    })
+
+    const from = new PublicKey(ownerAccount)
+    const transaction = new Transaction()
+    const mint = new PublicKey(SOLANA_MAINNET_USDC_PUBKEY)
+    const to = new PublicKey(depositAddress)
+
+    const fromTokenAddress = await getAssociatedTokenAddress(mint, from)
+    const toTokenAccountAddress = await getAssociatedTokenAddress(mint, to)
+    try {
+      await getAccount(connection, toTokenAccountAddress)
+    } catch (e) {
+      transaction.add(
+        createAssociatedTokenAccountInstruction(
+          toTokenAccountAddress,
+          from,
+          to,
+          mint,
+        ),
+      )
+    }
+
+    transaction.add(
+      createTransferInstruction(
+        fromTokenAddress,
+        toTokenAccountAddress,
+        from,
+        payment.amount * 10 ** 6,
+        [],
+        TOKEN_PROGRAM_ID,
+      ),
+    )
+
+    return transaction.serializeMessage()
   }
 }

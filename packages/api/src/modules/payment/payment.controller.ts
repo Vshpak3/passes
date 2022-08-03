@@ -16,13 +16,13 @@ import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CardEntityDto } from './dto/circle/card.entity.dto'
 import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
-import { CreateAddressDto } from './dto/circle/create-address.dto'
 import { CreateBankDto } from './dto/circle/create-bank.dto'
 import { CreateCardAndExtraDto } from './dto/circle/create-card.dto'
 import { CreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
 import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { StatusDto } from './dto/circle/status.dto'
-import { DefaultProviderDto } from './dto/default-provider.dto'
+import { SolanaUSDCTransactionRequest } from './dto/crypto/sol-usdc-tranasction-request.dto'
+import { PayinMethodDto } from './dto/payin-method.dto'
 import { PaymentService } from './payment.service'
 
 @ApiTags('payment')
@@ -32,7 +32,7 @@ export class PaymentController {
 
   /*
   -------------------------------------------------------------------------------
-  SECTION: CIRCLE
+  CIRCLE
   -------------------------------------------------------------------------------
   */
 
@@ -72,7 +72,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'Return status of card',
+    description: 'Status of card was returned',
   })
   @Get('card/status/:id')
   @UseGuards(JwtAuthGuard)
@@ -135,27 +135,12 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'Return status of payment',
+    description: 'Status of payment was returned',
   })
   @Get('status/:id')
   @UseGuards(JwtAuthGuard)
   async checkCirclePaymentStatus(@Param('id') id: string): Promise<StatusDto> {
     return this.paymentService.checkCirclePaymentStatus(id)
-  }
-
-  @ApiOperation({ summary: 'Get crypto address' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: String,
-    description: 'Return depositable address for crypto payment',
-  })
-  @Get('address')
-  @UseGuards(JwtAuthGuard)
-  async getCircleAddress(
-    @Req() req: RequestWithUser,
-    @Body() createAddressDto: CreateAddressDto,
-  ): Promise<string> {
-    return this.paymentService.getCircleAddress(req.user.id, createAddressDto)
   }
 
   @ApiOperation({ summary: 'Create wire bank account' })
@@ -180,7 +165,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: StatusDto,
-    description: 'Return status of bank',
+    description: 'Status of bank was returned',
   })
   @Get('bank/wire/status/:id')
   @UseGuards(JwtAuthGuard)
@@ -196,7 +181,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: undefined,
-    description: 'Recieve updates from circle',
+    description: 'Update from circle was received',
   })
   @Post('circle/notification')
   async recieveNotifications(
@@ -217,50 +202,67 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: Boolean,
-    description: 'Register updates from circle',
+    description: 'Updates from circle was registered',
   })
   @Head('circle/notification')
   async registerNotifications(): Promise<boolean> {
     return true
   }
-
   /*
   -------------------------------------------------------------------------------
-  SECTION: GENERIC
+  CRYPTO
+  -------------------------------------------------------------------------------
+  */
+  @ApiOperation({ summary: 'Get solana USDC transaction to sign' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Uint8Array,
+    description: 'A payin method was set as default',
+  })
+  @Post('sol/transaction')
+  @UseGuards(JwtAuthGuard)
+  async generateSolanaUSDCTransactionMessage(
+    @Body() transactionRequest: SolanaUSDCTransactionRequest,
+  ): Promise<Uint8Array> {
+    return this.paymentService.generateSolanaUSDCTransactionMessage(
+      transactionRequest.paymentId,
+      transactionRequest.ownerAccount,
+    )
+  }
+  /*
+  -------------------------------------------------------------------------------
+  GENERIC
   -------------------------------------------------------------------------------
   */
 
   @ApiOperation({ summary: 'Set default payin' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: Boolean,
+    type: undefined,
     description: 'A payin method was set as default',
   })
   @Post('payin/default')
   @UseGuards(JwtAuthGuard)
-  async setDefaultPayin(
+  async setDefaultPayinMethod(
     @Req() req: RequestWithUser,
-    @Body() defaultProviderDto: DefaultProviderDto,
-  ): Promise<boolean> {
-    return await this.paymentService.setDefaultPayin(
+    @Body() payinMethodDto: PayinMethodDto,
+  ): Promise<void> {
+    return await this.paymentService.setDefaultPayinMethod(
       req.user.id,
-      defaultProviderDto.provider,
-      defaultProviderDto.providerAccountType,
-      defaultProviderDto.providerAccountId,
+      payinMethodDto.method,
+      payinMethodDto.methodId,
     )
   }
 
   @ApiOperation({ summary: 'Get default payin' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: DefaultProviderDto,
-    description: 'Return default payin method',
+    type: PayinMethodDto,
+    description: 'Default payin method was returned',
   })
   @Get('payin/default')
   @UseGuards(JwtAuthGuard)
-  async getDefaultPayin(
-    @Req() req: RequestWithUser,
-  ): Promise<DefaultProviderDto> {
-    return await this.paymentService.getDefaultPayin(req.user.id)
+  async getDefaultPayin(@Req() req: RequestWithUser): Promise<PayinMethodDto> {
+    return await this.paymentService.getDefaultPayinMethod(req.user.id)
   }
 }

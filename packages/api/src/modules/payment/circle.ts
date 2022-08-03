@@ -26,7 +26,6 @@ export class CircleConnector {
         return response
       },
       function (error) {
-        console.log(error)
         const status = error['response']['status']
         const message = error['response']['data']['message']
         return Promise.reject(new CircleResponseStatusError(message, status))

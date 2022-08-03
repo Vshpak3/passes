@@ -30,7 +30,6 @@ models/BankAddressDto.ts
 models/BillingDetailsDto.ts
 models/CardEntityDto.ts
 models/CircleNotificationDto.ts
-models/CreateAddressDto.ts
 models/CreateBankDto.ts
 models/CreateCardAndExtraDto.ts
 models/CreateCardDto.ts
@@ -44,7 +43,6 @@ models/CreateSolNftCollectionDto.ts
 models/CreateSolNftDto.ts
 models/CreateUserDto.ts
 models/CreateWalletDto.ts
-models/DefaultProviderDto.ts
 models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
 models/GetProfileDto.ts
@@ -54,8 +52,10 @@ models/GetUserDto.ts
 models/GetUserWalletsDto.ts
 models/GetUsernamesDto.ts
 models/MetaData.ts
+models/PayinMethodDto.ts
 models/PaymentDto.ts
 models/SendMessageDto.ts
+models/SolanaUSDCTransactionRequest.ts
 models/SourceDto.ts
 models/StatusDto.ts
 models/TokenDto.ts
