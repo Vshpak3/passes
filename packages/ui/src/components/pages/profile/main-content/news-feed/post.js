@@ -10,6 +10,7 @@ import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/profile-verified-small-icon.svg"
 import React, { useState } from "react"
 import { PostUnlockButton } from "src/components/common/Buttons"
+import { FormContainer } from "src/containers/form-container"
 import { classNames } from "src/helpers/classNames"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 
@@ -17,7 +18,8 @@ export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.locked)
   const [postPinned, setPostPinned] = useState(false)
   return (
-    <div className="flex flex-col items-start gap-4 rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-5 pt-8 pb-5 backdrop-blur-[100px]  ">
+    //this is the rounded container
+    <FormContainer>
       <PostProfileAvatar
         post={post}
         profile={profile}
@@ -36,7 +38,7 @@ export const Post = ({ profile, post }) => {
       )}
       <PostEngagement post={post} />
       {post.fundraiser && <FundraiserTab post={post} />}
-    </div>
+    </FormContainer>
   )
 }
 

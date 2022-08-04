@@ -6,6 +6,7 @@ import { DragDropFile } from "./drag-drop-file"
 import { File } from "./file"
 import { Input } from "./input"
 import { Select } from "./select"
+import { TagsInput } from "./tags-input"
 import { TextArea } from "./text-area"
 import {
   FileAccept,
@@ -34,8 +35,12 @@ type FormInputProps = {
   className?: string
   rows?: number
   cols?: number
+  icon?: React.ReactNode
+  textPosition?: string
+  tagsFromServer?: string[]
 }
 export const FormInput = ({
+  textPosition,
   label,
   name,
   type,
@@ -47,6 +52,8 @@ export const FormInput = ({
   className,
   multiple,
   accept,
+  icon,
+  tagsFromServer,
   ...rest
 }: FormInputProps) => {
   const input: Partial<{ [key in FormType]: JSX.Element }> = {
@@ -60,6 +67,21 @@ export const FormInput = ({
         options={options}
         className={className}
         errors={errors}
+        icon={icon}
+        {...rest}
+      />
+    ),
+    tags: (
+      <TagsInput
+        name={name}
+        // type={type}
+        placeholder={placeholder}
+        label={label}
+        register={register}
+        options={options}
+        tagsFromServer={tagsFromServer}
+        // errors={errors}
+        // icon={icon}
         {...rest}
       />
     ),
@@ -89,6 +111,7 @@ export const FormInput = ({
     ),
     toggle: (
       <Checkbox
+        textPosition={textPosition}
         name={name}
         type={type}
         label={label}

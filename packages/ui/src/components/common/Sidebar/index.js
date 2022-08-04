@@ -52,6 +52,16 @@ const SideBar = () => {
           href: "/tools/passes"
         },
         {
+          id: "passCollection",
+          name: "Pass Collection",
+          href: "/tools/passes/collection"
+        },
+        {
+          id: "purchasePass",
+          name: "Purchase Pass",
+          href: "/tools/purchase"
+        },
+        {
           id: "list",
           name: "List",
           href: "/tools/list"

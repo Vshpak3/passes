@@ -36,6 +36,20 @@ export const PassesPurpleButton = ({ name, icon }) => (
   </button>
 )
 
+export const PassesPinkButton = ({ name, onClick = {} }) => (
+  <button
+    className="flex w-full items-center justify-center rounded-full border border-solid border-[#C943A8] bg-[#C943A8] py-[10px] text-base font-semibold text-white"
+    onClick={onClick}
+  >
+    {name}
+  </button>
+)
+export const GradientButton = ({ name }) => (
+  <button className="flex w-full items-center justify-center rounded  bg-gradient-to-r from-[#598BF4] to-[#B53BEC] py-[10px] text-base font-semibold text-white">
+    {name}
+  </button>
+)
+
 export const CoverButton = ({ name, onClick = {} }) => (
   <button
     className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10 "

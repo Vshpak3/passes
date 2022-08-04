@@ -12,6 +12,7 @@ import {
 } from "./types"
 
 type CheckBoxProps = {
+  textPosition?: string
   label?: FormLabel
   name: FormName
   type: FormType
@@ -29,11 +30,24 @@ const Checkbox = ({
   errors = {},
   options = {},
   className = "",
+  textPosition,
   ...rest
 }: CheckBoxProps) => {
   return (
     <div>
       <div className="relative flex items-start">
+        {!!textPosition && (
+          <div className="mr-3 text-sm">
+            {label && (
+              <Label
+                name={`${name}-${type}`}
+                label={label}
+                errors={errors}
+                options={options}
+              />
+            )}
+          </div>
+        )}
         <label
           className={classNames(
             type === "toggle" ? "switch" : "",
@@ -62,16 +76,18 @@ const Checkbox = ({
             />
           )}
         </label>
-        <div className="ml-3 text-sm">
-          {label && (
-            <Label
-              name={`${name}-${type}`}
-              label={label}
-              errors={errors}
-              options={options}
-            />
-          )}
-        </div>
+        {!textPosition && (
+          <div className="ml-3 text-sm">
+            {label && (
+              <Label
+                name={`${name}-${type}`}
+                label={label}
+                errors={errors}
+                options={options}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

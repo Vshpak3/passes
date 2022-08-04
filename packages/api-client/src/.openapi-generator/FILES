@@ -38,6 +38,7 @@ models/CreateCardDto.ts
 models/CreateChannelDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
+models/CreatePassDto.ts
 models/CreatePostDto.ts
 models/CreateProfileDto.ts
 models/CreateSolNftCollectionDto.ts
@@ -63,6 +64,7 @@ models/PhantomCircleUSDCEntryInputDto.ts
 models/PhantomCircleUSDCEntryOutputDto.ts
 models/SendMessageDto.ts
 models/TokenDto.ts
+models/UpdatePassDto.ts
 models/UpdatePostDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts

@@ -49,6 +49,13 @@ export const Input = ({
         </div>
       )}
       <div className="mt-1">
+        {!!icon && (
+          <div className="relative text-gray-600">
+            <span className="absolute inset-y-0 left-0 flex pl-2 pt-3 sm:px-4 sm:py-3">
+              {icon}
+            </span>
+          </div>
+        )}
         <input
           readOnly={options.readOnly}
           autoComplete="off"
