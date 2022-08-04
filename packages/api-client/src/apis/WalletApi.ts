@@ -27,6 +27,9 @@ import {
     GetUserWalletsDto,
     GetUserWalletsDtoFromJSON,
     GetUserWalletsDtoToJSON,
+    WalletDto,
+    WalletDtoFromJSON,
+    WalletDtoToJSON,
     WalletResponseDto,
     WalletResponseDtoFromJSON,
     WalletResponseDtoToJSON,
@@ -138,6 +141,32 @@ export class WalletApi extends runtime.BaseAPI {
      */
     async walletFindAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserWalletsDto> {
         const response = await this.walletFindAllRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user custodial wallet
+     */
+    async walletGetUserCustodialWalletRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WalletDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/wallet/custodial`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WalletDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get user custodial wallet
+     */
+    async walletGetUserCustodialWallet(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WalletDto> {
+        const response = await this.walletGetUserCustodialWalletRaw(initOverrides);
         return await response.value();
     }
 

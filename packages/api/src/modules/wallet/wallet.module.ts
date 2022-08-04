@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common'
 import { EthNftEntity } from '../eth/entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../eth/entities/eth-nft-collection.entity'
 import { EthService } from '../eth/eth.service'
+import { LambdaService } from '../lambda/lambda.service'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from './entities/wallet.entity'
@@ -20,6 +21,6 @@ import { WalletService } from './wallet.service'
     ]),
   ],
   controllers: [WalletController],
-  providers: [WalletService, EthService, RedisLockService],
+  providers: [WalletService, EthService, RedisLockService, LambdaService],
 })
 export class WalletModule {}

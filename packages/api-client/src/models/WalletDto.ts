@@ -37,6 +37,12 @@ export interface WalletDto {
      * @memberof WalletDto
      */
     chain: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WalletDto
+     */
+    custodial: boolean;
 }
 
 export function WalletDtoFromJSON(json: any): WalletDto {
@@ -52,6 +58,7 @@ export function WalletDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'userId': json['userId'],
         'address': json['address'],
         'chain': json['chain'],
+        'custodial': json['custodial'],
     };
 }
 
@@ -67,6 +74,7 @@ export function WalletDtoToJSON(value?: WalletDto | null): any {
         'userId': value.userId,
         'address': value.address,
         'chain': value.chain,
+        'custodial': value.custodial,
     };
 }
 

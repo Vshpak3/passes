@@ -17,6 +17,7 @@ import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import { CreateWalletDto } from './dto/create-wallet.dto'
 import { GetUserWalletsDto } from './dto/get-user-wallets.dto'
+import { WalletDto } from './dto/wallet.dto'
 import { WalletResponseDto } from './dto/wallet-response.dto'
 import { Chain } from './enum/chain.enum'
 import { WalletService } from './wallet.service'
@@ -28,6 +29,22 @@ export class WalletController {
     private readonly walletService: WalletService,
     private readonly ethService: EthService,
   ) {}
+
+  @ApiOperation({ summary: 'Get user custodial wallet' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: WalletDto,
+    description: 'User custodial wallet returned',
+  })
+  @Get('/custodial')
+  @UseGuards(JwtAuthGuard)
+  async getUserCustodialWallet(
+    @Req() req: RequestWithUser,
+  ): Promise<WalletDto> {
+    return new WalletDto(
+      await this.walletService.getUserCustodialWallet(req.user.id),
+    )
+  }
 
   @ApiOperation({ summary: 'Creates authenticated wallet for a user' })
   @ApiResponse({

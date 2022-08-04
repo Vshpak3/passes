@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
 import { repositoryMockFactory } from '../../database/test-helpers'
+import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { WalletService } from './wallet.service'
@@ -24,6 +25,10 @@ describe('WalletService', () => {
         },
         {
           provide: getRedisConnectionToken(),
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
       ],

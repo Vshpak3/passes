@@ -8,6 +8,7 @@ import nacl from 'tweetnacl'
 import * as uuid from 'uuid'
 import Web3 from 'web3'
 
+import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
@@ -22,6 +23,7 @@ export const MAX_WALLETS_PER_USER = 10
 export class WalletService {
   web3: Web3
   constructor(
+    private readonly lambdaService: LambdaService,
     @InjectRepository(WalletEntity)
     private readonly walletRepository: EntityRepository<WalletEntity>,
     @InjectRepository(UserEntity)
@@ -43,6 +45,31 @@ export class WalletService {
 
     Nonce:
     ${nonce}`
+  }
+
+  /**
+   * get (unique) internally managed wallet for user
+   * @param userId
+   */
+  async getUserCustodialWallet(userId: string): Promise<WalletEntity> {
+    const wallet = await this.walletRepository.findOne({
+      user: userId,
+      custodial: true,
+    })
+    if (wallet !== null) {
+      return wallet
+    }
+
+    // create wallet if it does not exist
+    const newWallet = new WalletEntity()
+    newWallet.user = this.userRepository.getReference(userId)
+    newWallet.address = await this.lambdaService.blockchainSignCreateAddress(
+      'user-' + newWallet.id,
+    )
+    newWallet.chain = Chain.SOL
+    newWallet.custodial = true
+    this.walletRepository.persistAndFlush(newWallet)
+    return newWallet
   }
 
   async auth(

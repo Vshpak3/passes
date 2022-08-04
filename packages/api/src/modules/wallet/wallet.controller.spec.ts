@@ -7,6 +7,7 @@ import { repositoryMockFactory } from '../../database/test-helpers'
 import { EthNftEntity } from '../eth/entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../eth/entities/eth-nft-collection.entity'
 import { EthService } from '../eth/eth.service'
+import { LambdaService } from '../lambda/lambda.service'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from './entities/wallet.entity'
@@ -45,6 +46,10 @@ describe('WalletController', () => {
         },
         {
           provide: getRedisConnectionToken(),
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
       ],

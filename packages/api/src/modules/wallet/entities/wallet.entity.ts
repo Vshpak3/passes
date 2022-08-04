@@ -15,4 +15,7 @@ export class WalletEntity extends BaseEntity {
 
   @Property()
   chain: Chain
+
+  @Property()
+  custodial = false
 }

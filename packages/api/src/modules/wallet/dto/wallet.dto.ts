@@ -13,9 +13,13 @@ export class WalletDto {
   @ApiProperty()
   chain: Chain
 
+  @ApiProperty()
+  custodial: boolean
+
   constructor(walletEntity: WalletEntity) {
     this.userId = walletEntity.user.id
     this.address = walletEntity.address
     this.chain = walletEntity.chain
+    this.custodial = walletEntity.custodial
   }
 }
