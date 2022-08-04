@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AmountDto
+ * @interface MetamaskCircleUSDCEntryInputDto
  */
-export interface AmountDto {
+export interface MetamaskCircleUSDCEntryInputDto {
     /**
      * 
      * @type {string}
-     * @memberof AmountDto
+     * @memberof MetamaskCircleUSDCEntryInputDto
      */
-    amount: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AmountDto
-     */
-    currency: string;
+    paymentId: string;
 }
 
-export function AmountDtoFromJSON(json: any): AmountDto {
-    return AmountDtoFromJSONTyped(json, false);
+export function MetamaskCircleUSDCEntryInputDtoFromJSON(json: any): MetamaskCircleUSDCEntryInputDto {
+    return MetamaskCircleUSDCEntryInputDtoFromJSONTyped(json, false);
 }
 
-export function AmountDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AmountDto {
+export function MetamaskCircleUSDCEntryInputDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetamaskCircleUSDCEntryInputDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'amount': json['amount'],
-        'currency': json['currency'],
+        'paymentId': json['paymentId'],
     };
 }
 
-export function AmountDtoToJSON(value?: AmountDto | null): any {
+export function MetamaskCircleUSDCEntryInputDtoToJSON(value?: MetamaskCircleUSDCEntryInputDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function AmountDtoToJSON(value?: AmountDto | null): any {
     }
     return {
         
-        'amount': value.amount,
-        'currency': value.currency,
+        'paymentId': value.paymentId,
     };
 }
 

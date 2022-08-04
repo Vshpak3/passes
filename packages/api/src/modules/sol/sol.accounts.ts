@@ -1,5 +1,5 @@
-export const sol_accounts = {
-  devnet: {
+export const SOL_ACCOUNT = {
+  testnet: {
     USDC: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
   },
   mainnet: {

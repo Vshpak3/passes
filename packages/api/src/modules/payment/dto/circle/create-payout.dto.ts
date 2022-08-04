@@ -5,8 +5,10 @@ import { AmountDto } from './circle-utils.dto'
 export class CreatePayoutDto {
   @ApiProperty()
   idempotencyKey: string
+
   @ApiProperty()
   destination: DestinationDto
+
   @ApiProperty()
   amount: AmountDto
 }
@@ -14,6 +16,7 @@ export class CreatePayoutDto {
 export class DestinationDto {
   @ApiProperty()
   type: string
+
   @ApiProperty()
   id: string
 }

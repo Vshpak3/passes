@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class SolanaUSDCTransactionRequest {
+export class PayinEntryInputDto {
   @ApiProperty()
   paymentId: string
+}
 
+export class PayinEntryOutputDto {
   @ApiProperty()
-  ownerAccount: string
+  paymentId: string
 }

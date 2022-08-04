@@ -68,7 +68,7 @@ export const configValidationSchema = Joi.object({
 
   // -----------------------------------------------------------
 
-  SOL_NETWORK: Joi.string().required(),
+  BLOCKCHAIN_NETWORKS: Joi.string().required(),
 
   // -----------------------------------------------------------
 })
@@ -147,8 +147,8 @@ export const configConfiguration = async function (): Promise<
       sol_https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
       sol_wss_endpoint: getConfigValue('ALCHEMY_SOL_WSS_ENDPOINT'),
     },
-    sol: {
-      network: getConfigValue('SOL_NETWORK'),
+    blockchain: {
+      networks: getConfigValue('BLOCKCHAIN_NETWORKS'),
     },
   })
 }

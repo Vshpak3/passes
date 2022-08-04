@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 export class EncryptionKeyDto {
   @ApiProperty()
   keyId: string
+
   @ApiProperty()
   publicKey: string
 

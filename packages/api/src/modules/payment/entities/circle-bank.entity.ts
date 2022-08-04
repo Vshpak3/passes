@@ -11,6 +11,10 @@ export class CircleBankEntity extends BaseEntity {
 
   @Property()
   @Unique()
+  idempotencyKey?: string
+
+  @Property()
+  @Unique()
   circleBankId: string
 
   @Enum(() => CircleAccountStatusEnum)

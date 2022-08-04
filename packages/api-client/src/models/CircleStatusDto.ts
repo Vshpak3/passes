@@ -16,28 +16,28 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface StatusDto
+ * @interface CircleStatusDto
  */
-export interface StatusDto {
+export interface CircleStatusDto {
     /**
      * 
      * @type {string}
-     * @memberof StatusDto
+     * @memberof CircleStatusDto
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof StatusDto
+     * @memberof CircleStatusDto
      */
     status: string;
 }
 
-export function StatusDtoFromJSON(json: any): StatusDto {
-    return StatusDtoFromJSONTyped(json, false);
+export function CircleStatusDtoFromJSON(json: any): CircleStatusDto {
+    return CircleStatusDtoFromJSONTyped(json, false);
 }
 
-export function StatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StatusDto {
+export function CircleStatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CircleStatusDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function StatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function StatusDtoToJSON(value?: StatusDto | null): any {
+export function CircleStatusDtoToJSON(value?: CircleStatusDto | null): any {
     if (value === undefined) {
         return undefined;
     }

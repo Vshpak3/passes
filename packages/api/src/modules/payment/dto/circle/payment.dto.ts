@@ -1,32 +1,29 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
+import { AmountDto, SourceDto } from './circle-utils.dto'
+
 export class PaymentDto {
   @ApiProperty()
   id: string
+
   @ApiProperty()
   type: string
-  @ApiProperty()
-  amount: {
-    amount: string
-    currency: string
-  }
-  @ApiProperty()
-  source: {
-    type: string
 
-    //for crypto payments
-    address?: string
-    chain?: string
+  @ApiProperty()
+  amount: AmountDto
 
-    //for all other payments
-    id?: string
-  }
+  @ApiProperty()
+  source: SourceDto
+
   @ApiProperty()
   status: string
+
   @ApiProperty()
   merchantId: string
+
   @ApiProperty()
   merchantWalletId: string
+
   @ApiPropertyOptional()
   description?: string
 }

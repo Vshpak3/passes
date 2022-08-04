@@ -40,7 +40,8 @@ export interface PayinMethodDto {
 export const PayinMethodDtoMethodEnum = {
     CircleCard: 'CIRCLE_CARD',
     PhantomCircleUsdc: 'PHANTOM_CIRCLE_USDC',
-    MetamaskSolCircleUsdc: 'METAMASK_SOL_CIRCLE_USDC'
+    MetamaskCircleUsdc: 'METAMASK_CIRCLE_USDC',
+    MetamaskCircleEth: 'METAMASK_CIRCLE_ETH'
 } as const;
 export type PayinMethodDtoMethodEnum = typeof PayinMethodDtoMethodEnum[keyof typeof PayinMethodDtoMethodEnum];
 

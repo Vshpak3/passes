@@ -7,8 +7,10 @@ import { BaseEntity } from '../../../database/base-entity'
 export class CircleNotificationEntity extends BaseEntity {
   @Property()
   clientId: string
+
   @Property()
   notificationType: string
+
   @Property()
   fullContent: string
 }

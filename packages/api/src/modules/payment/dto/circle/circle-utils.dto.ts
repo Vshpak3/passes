@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 export class AmountDto {
   @ApiProperty()
   amount: string
+
   @ApiProperty()
   currency: string
 }
@@ -14,6 +15,7 @@ export class SourceDto {
   //for crypto payments
   @ApiPropertyOptional()
   address?: string
+
   @ApiPropertyOptional()
   chain?: string
 

@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface SolanaUSDCTransactionRequest
+ * @interface MetamaskCircleETHEntryInputDto
  */
-export interface SolanaUSDCTransactionRequest {
+export interface MetamaskCircleETHEntryInputDto {
     /**
      * 
      * @type {string}
-     * @memberof SolanaUSDCTransactionRequest
+     * @memberof MetamaskCircleETHEntryInputDto
      */
     paymentId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SolanaUSDCTransactionRequest
-     */
-    ownerAccount: string;
 }
 
-export function SolanaUSDCTransactionRequestFromJSON(json: any): SolanaUSDCTransactionRequest {
-    return SolanaUSDCTransactionRequestFromJSONTyped(json, false);
+export function MetamaskCircleETHEntryInputDtoFromJSON(json: any): MetamaskCircleETHEntryInputDto {
+    return MetamaskCircleETHEntryInputDtoFromJSONTyped(json, false);
 }
 
-export function SolanaUSDCTransactionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SolanaUSDCTransactionRequest {
+export function MetamaskCircleETHEntryInputDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetamaskCircleETHEntryInputDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'paymentId': json['paymentId'],
-        'ownerAccount': json['ownerAccount'],
     };
 }
 
-export function SolanaUSDCTransactionRequestToJSON(value?: SolanaUSDCTransactionRequest | null): any {
+export function MetamaskCircleETHEntryInputDtoToJSON(value?: MetamaskCircleETHEntryInputDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +51,6 @@ export function SolanaUSDCTransactionRequestToJSON(value?: SolanaUSDCTransaction
     return {
         
         'paymentId': value.paymentId,
-        'ownerAccount': value.ownerAccount,
     };
 }
 

@@ -21,27 +21,39 @@ import {
     CircleNotificationDto,
     CircleNotificationDtoFromJSON,
     CircleNotificationDtoToJSON,
+    CircleStatusDto,
+    CircleStatusDtoFromJSON,
+    CircleStatusDtoToJSON,
     CreateBankDto,
     CreateBankDtoFromJSON,
     CreateBankDtoToJSON,
     CreateCardAndExtraDto,
     CreateCardAndExtraDtoFromJSON,
     CreateCardAndExtraDtoToJSON,
-    CreateCardPaymentDto,
-    CreateCardPaymentDtoFromJSON,
-    CreateCardPaymentDtoToJSON,
     EncryptionKeyDto,
     EncryptionKeyDtoFromJSON,
     EncryptionKeyDtoToJSON,
+    MetamaskCircleETHEntryInputDto,
+    MetamaskCircleETHEntryInputDtoFromJSON,
+    MetamaskCircleETHEntryInputDtoToJSON,
+    MetamaskCircleETHEntryOutputDto,
+    MetamaskCircleETHEntryOutputDtoFromJSON,
+    MetamaskCircleETHEntryOutputDtoToJSON,
+    MetamaskCircleUSDCEntryInputDto,
+    MetamaskCircleUSDCEntryInputDtoFromJSON,
+    MetamaskCircleUSDCEntryInputDtoToJSON,
+    MetamaskCircleUSDCEntryOutputDto,
+    MetamaskCircleUSDCEntryOutputDtoFromJSON,
+    MetamaskCircleUSDCEntryOutputDtoToJSON,
     PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoToJSON,
-    SolanaUSDCTransactionRequest,
-    SolanaUSDCTransactionRequestFromJSON,
-    SolanaUSDCTransactionRequestToJSON,
-    StatusDto,
-    StatusDtoFromJSON,
-    StatusDtoToJSON,
+    PhantomCircleUSDCEntryInputDto,
+    PhantomCircleUSDCEntryInputDtoFromJSON,
+    PhantomCircleUSDCEntryInputDtoToJSON,
+    PhantomCircleUSDCEntryOutputDto,
+    PhantomCircleUSDCEntryOutputDtoFromJSON,
+    PhantomCircleUSDCEntryOutputDtoToJSON,
 } from '../models';
 
 export interface PaymentCheckCircleCardStatusRequest {
@@ -68,8 +80,16 @@ export interface PaymentDeleteCircleCardRequest {
     circleCardId: string;
 }
 
-export interface PaymentGenerateSolanaUSDCTransactionMessageRequest {
-    solanaUSDCTransactionRequest: SolanaUSDCTransactionRequest;
+export interface PaymentEntryMetamaskCircleETHRequest {
+    metamaskCircleETHEntryInputDto: MetamaskCircleETHEntryInputDto;
+}
+
+export interface PaymentEntryMetamaskCircleUSDCRequest {
+    metamaskCircleUSDCEntryInputDto: MetamaskCircleUSDCEntryInputDto;
+}
+
+export interface PaymentEntryPhantomCircleUSDCRequest {
+    phantomCircleUSDCEntryInputDto: PhantomCircleUSDCEntryInputDto;
 }
 
 export interface PaymentRecieveNotificationsRequest {
@@ -80,10 +100,6 @@ export interface PaymentSetDefaultPayinMethodRequest {
     payinMethodDto: PayinMethodDto;
 }
 
-export interface PaymentUpdateRequest {
-    createCardPaymentDto: CreateCardPaymentDto;
-}
-
 /**
  * 
  */
@@ -92,7 +108,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Check card status
      */
-    async paymentCheckCircleCardStatusRaw(requestParameters: PaymentCheckCircleCardStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
+    async paymentCheckCircleCardStatusRaw(requestParameters: PaymentCheckCircleCardStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling paymentCheckCircleCardStatus.');
         }
@@ -108,13 +124,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusDtoFromJSON(jsonValue));
     }
 
     /**
      * Check card status
      */
-    async paymentCheckCircleCardStatus(requestParameters: PaymentCheckCircleCardStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
+    async paymentCheckCircleCardStatus(requestParameters: PaymentCheckCircleCardStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusDto> {
         const response = await this.paymentCheckCircleCardStatusRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -122,7 +138,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Check payment status
      */
-    async paymentCheckCirclePaymentStatusRaw(requestParameters: PaymentCheckCirclePaymentStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
+    async paymentCheckCirclePaymentStatusRaw(requestParameters: PaymentCheckCirclePaymentStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling paymentCheckCirclePaymentStatus.');
         }
@@ -138,13 +154,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusDtoFromJSON(jsonValue));
     }
 
     /**
      * Check payment status
      */
-    async paymentCheckCirclePaymentStatus(requestParameters: PaymentCheckCirclePaymentStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
+    async paymentCheckCirclePaymentStatus(requestParameters: PaymentCheckCirclePaymentStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusDto> {
         const response = await this.paymentCheckCirclePaymentStatusRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -152,7 +168,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Check wire bank status
      */
-    async paymentCheckWireBankStatusRaw(requestParameters: PaymentCheckWireBankStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
+    async paymentCheckWireBankStatusRaw(requestParameters: PaymentCheckWireBankStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling paymentCheckWireBankStatus.');
         }
@@ -168,13 +184,13 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusDtoFromJSON(jsonValue));
     }
 
     /**
      * Check wire bank status
      */
-    async paymentCheckWireBankStatus(requestParameters: PaymentCheckWireBankStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
+    async paymentCheckWireBankStatus(requestParameters: PaymentCheckWireBankStatusRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusDto> {
         const response = await this.paymentCheckWireBankStatusRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -182,7 +198,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Creates a card
      */
-    async paymentCreateCircleCardRaw(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
+    async paymentCreateCircleCardRaw(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusDto>> {
         if (requestParameters.createCardAndExtraDto === null || requestParameters.createCardAndExtraDto === undefined) {
             throw new runtime.RequiredError('createCardAndExtraDto','Required parameter requestParameters.createCardAndExtraDto was null or undefined when calling paymentCreateCircleCard.');
         }
@@ -201,13 +217,13 @@ export class PaymentApi extends runtime.BaseAPI {
             body: CreateCardAndExtraDtoToJSON(requestParameters.createCardAndExtraDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a card
      */
-    async paymentCreateCircleCard(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
+    async paymentCreateCircleCard(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusDto> {
         const response = await this.paymentCreateCircleCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -215,7 +231,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Create wire bank account
      */
-    async paymentCreateCircleWireBankAccountRaw(requestParameters: PaymentCreateCircleWireBankAccountRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
+    async paymentCreateCircleWireBankAccountRaw(requestParameters: PaymentCreateCircleWireBankAccountRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusDto>> {
         if (requestParameters.createBankDto === null || requestParameters.createBankDto === undefined) {
             throw new runtime.RequiredError('createBankDto','Required parameter requestParameters.createBankDto was null or undefined when calling paymentCreateCircleWireBankAccount.');
         }
@@ -234,13 +250,13 @@ export class PaymentApi extends runtime.BaseAPI {
             body: CreateBankDtoToJSON(requestParameters.createBankDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusDtoFromJSON(jsonValue));
     }
 
     /**
      * Create wire bank account
      */
-    async paymentCreateCircleWireBankAccount(requestParameters: PaymentCreateCircleWireBankAccountRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
+    async paymentCreateCircleWireBankAccount(requestParameters: PaymentCreateCircleWireBankAccountRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusDto> {
         const response = await this.paymentCreateCircleWireBankAccountRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -276,11 +292,11 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get solana USDC transaction to sign
+     * Metamask ETH payin entrypoint
      */
-    async paymentGenerateSolanaUSDCTransactionMessageRaw(requestParameters: PaymentGenerateSolanaUSDCTransactionMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.solanaUSDCTransactionRequest === null || requestParameters.solanaUSDCTransactionRequest === undefined) {
-            throw new runtime.RequiredError('solanaUSDCTransactionRequest','Required parameter requestParameters.solanaUSDCTransactionRequest was null or undefined when calling paymentGenerateSolanaUSDCTransactionMessage.');
+    async paymentEntryMetamaskCircleETHRaw(requestParameters: PaymentEntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleETHEntryOutputDto>> {
+        if (requestParameters.metamaskCircleETHEntryInputDto === null || requestParameters.metamaskCircleETHEntryInputDto === undefined) {
+            throw new runtime.RequiredError('metamaskCircleETHEntryInputDto','Required parameter requestParameters.metamaskCircleETHEntryInputDto was null or undefined when calling paymentEntryMetamaskCircleETH.');
         }
 
         const queryParameters: any = {};
@@ -290,21 +306,87 @@ export class PaymentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/payment/sol/transaction`,
+            path: `/api/payment/payin/entry/metamask-eth`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SolanaUSDCTransactionRequestToJSON(requestParameters.solanaUSDCTransactionRequest),
+            body: MetamaskCircleETHEntryInputDtoToJSON(requestParameters.metamaskCircleETHEntryInputDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => MetamaskCircleETHEntryOutputDtoFromJSON(jsonValue));
     }
 
     /**
-     * Get solana USDC transaction to sign
+     * Metamask ETH payin entrypoint
      */
-    async paymentGenerateSolanaUSDCTransactionMessage(requestParameters: PaymentGenerateSolanaUSDCTransactionMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
-        const response = await this.paymentGenerateSolanaUSDCTransactionMessageRaw(requestParameters, initOverrides);
+    async paymentEntryMetamaskCircleETH(requestParameters: PaymentEntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleETHEntryOutputDto> {
+        const response = await this.paymentEntryMetamaskCircleETHRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Metamask USDC payin entrypoint
+     */
+    async paymentEntryMetamaskCircleUSDCRaw(requestParameters: PaymentEntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleUSDCEntryOutputDto>> {
+        if (requestParameters.metamaskCircleUSDCEntryInputDto === null || requestParameters.metamaskCircleUSDCEntryInputDto === undefined) {
+            throw new runtime.RequiredError('metamaskCircleUSDCEntryInputDto','Required parameter requestParameters.metamaskCircleUSDCEntryInputDto was null or undefined when calling paymentEntryMetamaskCircleUSDC.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/payment/payin/entry/metamask-usdc`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MetamaskCircleUSDCEntryInputDtoToJSON(requestParameters.metamaskCircleUSDCEntryInputDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MetamaskCircleUSDCEntryOutputDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Metamask USDC payin entrypoint
+     */
+    async paymentEntryMetamaskCircleUSDC(requestParameters: PaymentEntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleUSDCEntryOutputDto> {
+        const response = await this.paymentEntryMetamaskCircleUSDCRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Phantom USDC payin entrypoint
+     */
+    async paymentEntryPhantomCircleUSDCRaw(requestParameters: PaymentEntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PhantomCircleUSDCEntryOutputDto>> {
+        if (requestParameters.phantomCircleUSDCEntryInputDto === null || requestParameters.phantomCircleUSDCEntryInputDto === undefined) {
+            throw new runtime.RequiredError('phantomCircleUSDCEntryInputDto','Required parameter requestParameters.phantomCircleUSDCEntryInputDto was null or undefined when calling paymentEntryPhantomCircleUSDC.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/payment/payin/entry/circle-card`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PhantomCircleUSDCEntryInputDtoToJSON(requestParameters.phantomCircleUSDCEntryInputDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PhantomCircleUSDCEntryOutputDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Phantom USDC payin entrypoint
+     */
+    async paymentEntryPhantomCircleUSDC(requestParameters: PaymentEntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PhantomCircleUSDCEntryOutputDto> {
+        const response = await this.paymentEntryPhantomCircleUSDCRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -474,39 +556,6 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async paymentSetDefaultPayinMethod(requestParameters: PaymentSetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.paymentSetDefaultPayinMethodRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Make card payment
-     */
-    async paymentUpdateRaw(requestParameters: PaymentUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<StatusDto>> {
-        if (requestParameters.createCardPaymentDto === null || requestParameters.createCardPaymentDto === undefined) {
-            throw new runtime.RequiredError('createCardPaymentDto','Required parameter requestParameters.createCardPaymentDto was null or undefined when calling paymentUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/payment/pay`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateCardPaymentDtoToJSON(requestParameters.createCardPaymentDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => StatusDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Make card payment
-     */
-    async paymentUpdate(requestParameters: PaymentUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<StatusDto> {
-        const response = await this.paymentUpdateRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
 }
