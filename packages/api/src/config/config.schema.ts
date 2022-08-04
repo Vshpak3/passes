@@ -22,6 +22,8 @@ export const configValidationSchema = Joi.object({
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().required(),
 
+  MONITORING_SENTRY_DNS: Joi.string().uri().required(),
+
   // -----------------------------------------------------------
 
   OAUTH_GOOGLE_ID: Joi.string().required(),
@@ -45,7 +47,7 @@ export const configValidationSchema = Joi.object({
   // -----------------------------------------------------------
 
   CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
-  CLOUDFRONT_BASE_URL: Joi.string().required(),
+  CLOUDFRONT_BASE_URL: Joi.string().uri().required(),
   CLOUDFRONT_KEY_PAIR_ID: Joi.string().required(),
   CLOUDFRONT_PRIVATE_KEY: Joi.string().required(),
 
@@ -90,6 +92,9 @@ export const configConfiguration = async function (): Promise<
     redis: {
       host: getConfigValue('REDIS_HOST'),
       port: getConfigValue('REDIS_PORT', true),
+    },
+    monitoring: {
+      sentry_dns: getConfigValue('MONITORING_SENTRY_DNS'),
     },
     oauth: {
       google: {

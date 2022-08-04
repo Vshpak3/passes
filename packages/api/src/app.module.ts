@@ -1,7 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_INTERCEPTOR } from '@nestjs/core'
 import { RedisModule } from '@nestjs-modules/ioredis'
+import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry'
 
 import { configOptions } from './config/config.options'
 import { databaseOptions } from './database/mikro-orm.options'
@@ -27,32 +29,40 @@ import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
 import { WalletModule } from './modules/wallet/wallet.module'
+import { sentryOptions } from './monitoring/sentry/sentry.options'
 
 @Module({
   imports: [
+    ConfigModule.forRoot(configOptions),
     MikroOrmModule.forRootAsync(databaseOptions),
     RedisModule.forRootAsync(redisOptions),
-    ConfigModule.forRoot(configOptions),
-    RedisLockModule,
+    SentryModule.forRootAsync(sentryOptions),
     AuthModule,
-    ContentModule,
-    CommentModule,
-    HealthModule,
-    PassModule,
     CollectionModule,
+    CommentModule,
+    ContentModule,
+    CreatorSettingsModule,
+    EthModule,
+    FeedModule,
+    FollowModule,
+    HealthModule,
+    LambdaModule,
+    MessagesModule,
+    PassModule,
     PaymentModule,
     PostModule,
-    FeedModule,
     ProfileModule,
+    RedisLockModule,
     SettingsModule,
-    FollowModule,
+    SolModule,
     UserModule,
     WalletModule,
-    EthModule,
-    MessagesModule,
-    CreatorSettingsModule,
-    LambdaModule,
-    SolModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useFactory: () => new SentryInterceptor(),
+    },
   ],
 })
 export class AppModule implements NestModule {
