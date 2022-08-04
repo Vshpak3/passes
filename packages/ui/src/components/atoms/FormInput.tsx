@@ -1,13 +1,8 @@
 import PropTypes from "prop-types"
 import React from "react"
+import { Checkbox, File, Input, Select, TextArea } from "src/components/atoms"
+import { DragDropFile, TagsInput } from "src/components/molecules"
 
-import Checkbox from "./checkbox"
-import { DragDropFile } from "./drag-drop-file"
-import { File } from "./file"
-import { Input } from "./input"
-import { Select } from "./select"
-import { TagsInput } from "./tags-input"
-import { TextArea } from "./text-area"
 import {
   FileAccept,
   FormErrors,
@@ -18,7 +13,7 @@ import {
   FormRegister,
   FormSelectOptions,
   FormType
-} from "./types"
+} from "../FormTypes"
 
 type FormInputProps = {
   label?: FormLabel
@@ -39,7 +34,7 @@ type FormInputProps = {
   textPosition?: string
   tagsFromServer?: string[]
 }
-export const FormInput = ({
+const FormInput = ({
   textPosition,
   label,
   name,
@@ -188,3 +183,5 @@ FormInput.propTypes = {
   placeholder: PropTypes.string,
   options: PropTypes.any
 }
+
+export default FormInput

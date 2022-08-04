@@ -1,14 +1,12 @@
 import NextHead from "next/head"
 import { useState } from "react"
-import AnimatedHeart from "src/components/animated-heart"
-import Avatar from "src/components/avatar"
-import BackgroundGrainy from "src/components/background/grainy"
-import Button from "src/components/button"
-import Link from "src/components/link"
-import NFTPass from "src/components/nft-pass"
-import Popover from "src/components/popover"
-import Separator from "src/components/separator"
-import Text from "src/components/text"
+import { Button, Link, Separator, Text } from "src/components/atoms"
+import {
+  AnimatedHeart,
+  Avatar,
+  GrainyBackground
+} from "src/components/molecules"
+import { NFTPass, Popover } from "src/components/organisms"
 import ChatBubble from "src/icons/chat-bubble"
 import CheckVerified from "src/icons/check-verified"
 import Envelope from "src/icons/envelope"
@@ -347,7 +345,7 @@ const CreatorProfile = () => {
                   number={18}
                 />
               </div>
-              <BackgroundGrainy />
+              <GrainyBackground />
             </>
           ) : tab === "Fan" ? (
             <div

@@ -1,14 +1,14 @@
 import React from "react"
 import { classNames } from "src/helpers/classNames"
 
-import { Label } from "./label"
 import {
   FormErrors,
   FormLabel,
   FormName,
   FormOptions,
   FormRegister
-} from "./types"
+} from "../FormTypes"
+import Label from "./Label"
 
 type TextAreaProps = {
   label?: FormLabel
@@ -22,7 +22,7 @@ type TextAreaProps = {
   placeholder?: string
 }
 
-export const TextArea = ({
+const TextArea = ({
   name,
   label,
   register,
@@ -57,3 +57,4 @@ export const TextArea = ({
     </>
   )
 }
+export default TextArea

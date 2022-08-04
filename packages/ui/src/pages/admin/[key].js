@@ -2,9 +2,8 @@ import { Dialog, Transition } from "@headlessui/react"
 import Image from "next/image"
 import { Fragment, useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
+import { FormInput } from "src/components/atoms"
 import Cross from "src/icons/cross"
-
-import { FormInput } from "../../components/form/form-input"
 
 export async function getServerSideProps({ params }) {
   const { key } = params

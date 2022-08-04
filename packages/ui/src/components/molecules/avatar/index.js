@@ -1,6 +1,6 @@
 import * as RadixAvatar from "@radix-ui/react-avatar"
 import PropTypes from "prop-types"
-import Text from "src/components/text"
+import { Text } from "src/components/atoms"
 
 const Avatar = ({
   className = "",

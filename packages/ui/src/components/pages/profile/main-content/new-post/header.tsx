@@ -5,10 +5,9 @@ import Quiz from "public/icons/media-quiz.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import Calendar from "public/icons/profile-calendar-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
-
-import { classNames } from "../../../../../helpers/classNames"
-import { FormInput } from "../../../../form/form-input"
-import { FormErrors, FormOptions, FormRegister } from "../../../../form/types"
+import { FormInput } from "src/components/atoms"
+import { FormErrors, FormOptions, FormRegister } from "src/components/FormTypes"
+import { classNames } from "src/helpers/classNames"
 
 const mediaTypes = [
   {

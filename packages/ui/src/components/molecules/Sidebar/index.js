@@ -15,7 +15,7 @@ import UpdatedMomentLogo from "public/moment-logo-updated.svg"
 import { Fragment, useState } from "react"
 import { NewPost } from "src/components/pages/profile/main-content/new-post"
 
-import { Dialog as NewPostDialog } from "../dialog"
+import { Dialog as NewPostDialog } from "../../common/dialog"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")

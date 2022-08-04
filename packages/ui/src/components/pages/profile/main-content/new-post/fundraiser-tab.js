@@ -3,7 +3,7 @@ import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import FundraiserWhiteIcon from "public/icons/post-fundraiser-white-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
-import { FormInput } from "src/components/form/form-input"
+import { FormInput } from "src/components/atoms"
 import { classNames } from "src/helpers/classNames"
 import { formatCurrency } from "src/helpers/formatters"
 

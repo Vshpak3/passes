@@ -11,7 +11,7 @@ import {
   FormPlaceholder,
   FormRegister
   // FormType
-} from "./types"
+} from "../FormTypes"
 
 const dummyRecentTags = ["Jett", "Yoru"]
 const dummyAllTags = ["Jett", "Yoru", "Cipher", "Reyna", "Sova", "Viper"]
@@ -25,7 +25,8 @@ type InputProps = {
   tagsFromServer?: string[]
   className?: string
 }
-export function TagsInput({
+
+function TagsInput({
   name,
   label,
   placeholder,
@@ -125,3 +126,5 @@ export function TagsInput({
     </div>
   )
 }
+
+export default TagsInput

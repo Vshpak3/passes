@@ -1,6 +1,5 @@
 import React, { useRef } from "react"
 
-import { Label } from "./label"
 import {
   FileAccept,
   FormErrors,
@@ -9,7 +8,8 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "./types"
+} from "../FormTypes"
+import Label from "./Label"
 
 type InputProps = {
   label?: FormLabel
@@ -40,7 +40,7 @@ const acceptProp = (accept?: FileAccept) =>
     return acc
   }, "")
 
-export const File = ({
+const File = ({
   name,
   label,
   register,
@@ -81,3 +81,5 @@ export const File = ({
     </>
   )
 }
+
+export default File

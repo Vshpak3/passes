@@ -2,7 +2,7 @@ import * as RadixDialog from "@radix-ui/react-dialog"
 import PropTypes from "prop-types"
 import Cross from "src/icons/cross"
 
-import Text from "./text"
+import { Text } from "../atoms"
 
 const Dialog = ({
   children,

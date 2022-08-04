@@ -1,6 +1,6 @@
 import NextLink from "next/link"
-import Avatar from "src/components/avatar"
-import Text from "src/components/text"
+import { Text } from "src/components/atoms"
+import { Avatar } from "src/components/molecules"
 
 const Welcome = () => {
   return (

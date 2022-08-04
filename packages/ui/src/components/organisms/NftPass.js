@@ -1,8 +1,8 @@
 import Image from "next/image"
 import PropTypes from "prop-types"
 import Tilt from "react-parallax-tilt"
-import Avatar from "src/components/avatar"
-import Text from "src/components/text"
+import { Text } from "src/components/atoms"
+import { Avatar } from "src/components/molecules"
 
 const NFTPass = ({ avatarUrl, passUrl, number }) => {
   return (

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import Menu, { MenuPortal } from "src/containers/menu"
+import Menu, { MenuPortal } from "src/containers/Menu"
 
 import ChatView from "../../components/messages/chat-view"
 

@@ -1,7 +1,6 @@
 import React from "react"
 import { classNames } from "src/helpers/classNames"
 
-import { Label } from "./label"
 import {
   FormErrors,
   FormLabel,
@@ -10,7 +9,8 @@ import {
   FormPlaceholder,
   FormRegister,
   FormType
-} from "./types"
+} from "../FormTypes"
+import Label from "./Label"
 
 type InputProps = {
   label?: FormLabel
@@ -24,7 +24,7 @@ type InputProps = {
   icon?: React.ReactNode
 }
 
-export const Input = ({
+const Input = ({
   name,
   type,
   label,
@@ -75,3 +75,5 @@ export const Input = ({
     </>
   )
 }
+
+export default Input

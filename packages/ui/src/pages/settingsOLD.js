@@ -1,11 +1,9 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import Button from "src/components/button"
+import { Button, Separator, Text } from "src/components/atoms"
 import WalletSettings from "src/components/connected-wallets"
-import RadioGroup from "src/components/radio-group"
-import Separator from "src/components/separator"
-import Text from "src/components/text"
-import Menu, { MenuPortal } from "src/containers/menu"
+import { RadioGroup } from "src/components/organisms"
+import Menu, { MenuPortal } from "src/containers/Menu"
 import useUser from "src/hooks/useUser"
 
 const SettingsPage = () => {

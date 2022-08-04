@@ -8,7 +8,7 @@ interface ICreatorPassTiles {
   }
 }
 
-export const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
+const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
   const [hasMounted, setHasMounted] = useState(false)
   useEffect(() => {
     setHasMounted(true)
@@ -27,3 +27,5 @@ export const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
       </div>
     )
 }
+
+export default CreatorPassTiles

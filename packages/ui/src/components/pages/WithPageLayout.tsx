@@ -1,6 +1,6 @@
 import React from "react"
 
-import SideBar from "../common/Sidebar"
+import { SideBar } from "../molecules"
 import ProfileHeader from "./profile/header"
 
 type WithPageLayoutOptions = {

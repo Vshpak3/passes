@@ -1,7 +1,7 @@
 import React from "react"
 import { classNames } from "src/helpers/classNames"
 
-import { FormErrors, FormLabel, FormName, FormOptions } from "./types"
+import { FormErrors, FormLabel, FormName, FormOptions } from "../FormTypes"
 
 type LabelProps = {
   label?: FormLabel
@@ -9,12 +9,8 @@ type LabelProps = {
   options?: FormOptions
   errors?: FormErrors
 }
-export const Label = ({
-  name,
-  label,
-  errors = {},
-  options = {}
-}: LabelProps) => {
+
+const Label = ({ name, label, errors = {}, options = {} }: LabelProps) => {
   return (
     <label
       htmlFor={name}
@@ -27,3 +23,5 @@ export const Label = ({
     </label>
   )
 }
+
+export default Label

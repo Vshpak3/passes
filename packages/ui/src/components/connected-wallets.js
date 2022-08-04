@@ -1,9 +1,8 @@
 import { WalletApi } from "@passes/api-client"
 import { ethers } from "ethers"
+import { Button } from "src/components/atoms"
 import useUser from "src/hooks/useUser"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
-
-import Button from "./button"
 
 const WalletSettings = () => {
   const { accessToken } = useUser()

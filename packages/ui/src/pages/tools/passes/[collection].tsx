@@ -4,15 +4,15 @@ import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { FormInput } from "src/components/atoms"
 import {
   CoverButton,
   GradientButton,
   PassesPinkButton
 } from "src/components/common/Buttons"
-import { FormInput } from "src/components/form/form-input"
 import UploadPostMedia from "src/components/pages/profile/main-content/new-post/media"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { FormContainer } from "src/containers/form-container"
+import { FormContainer } from "src/containers"
 // import useLocalStorage from "src/hooks/useLocalStorage"
 
 const Collection = ({ options = {} }) => {

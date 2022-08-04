@@ -1,7 +1,6 @@
 import React from "react"
 import { classNames } from "src/helpers/classNames"
 
-import { Label } from "./label"
 import {
   FormErrors,
   FormLabel,
@@ -10,7 +9,8 @@ import {
   FormPlaceholder,
   FormRegister,
   FormSelectOptions
-} from "./types"
+} from "../FormTypes"
+import Label from "./Label"
 
 type SelectProps = {
   label?: FormLabel
@@ -22,7 +22,7 @@ type SelectProps = {
   selectOptions: FormSelectOptions
   className?: string
 }
-export const Select = ({
+const Select = ({
   name,
   label,
   register,
@@ -62,3 +62,5 @@ export const Select = ({
     </>
   )
 }
+
+export default Select

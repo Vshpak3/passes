@@ -6,7 +6,7 @@ import Router from "next/router"
 import nprogress from "nprogress"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import DefaultHead from "src/components/head"
+import { DefaultHead } from "src/components/atoms"
 import useMessageToDevelopers from "src/hooks/use-message-to-developers"
 import Providers from "src/providers"
 

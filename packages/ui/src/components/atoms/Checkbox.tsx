@@ -1,7 +1,6 @@
 import React from "react"
 import { classNames } from "src/helpers/classNames"
 
-import { Label } from "./label"
 import {
   FormErrors,
   FormLabel,
@@ -9,7 +8,8 @@ import {
   FormOptions,
   FormRegister,
   FormType
-} from "./types"
+} from "../FormTypes"
+import Label from "./Label"
 
 type CheckBoxProps = {
   textPosition?: string

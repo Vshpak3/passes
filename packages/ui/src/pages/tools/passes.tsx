@@ -4,7 +4,7 @@ import SubscriptionImg from "public/icons/subscription-pass.svg"
 import React from "react"
 import { PassesPinkButton } from "src/components/common/Buttons"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { FormContainer } from "src/containers/form-container"
+import { FormContainer } from "src/containers"
 
 const Passes = () => {
   const router = useRouter()

@@ -3,8 +3,8 @@ import PollIcon from "public/icons/post-poll-icon.svg"
 import DeleteIconSmall from "public/icons/post-x-icon-small.svg"
 import React, { useCallback, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
-import { Card } from "src/components/common/drag-drop/Card"
-import { FormInput } from "src/components/form/form-input"
+import { FormInput } from "src/components/atoms"
+import { Card } from "src/components/molecules"
 
 const defaultValues = { value: "Answer" }
 

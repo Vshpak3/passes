@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import { forwardRef } from "react"
 
-import Text from "./text"
+import Text from "./Text"
 
 const Button = forwardRef(
   (

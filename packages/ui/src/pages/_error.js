@@ -1,6 +1,4 @@
-import Button from "src/components/button"
-import Text from "src/components/text"
-import Wordmark from "src/components/wordmark"
+import { Button, Text, Wordmark } from "src/components/atoms"
 
 const ErrorPage = ({ statusCode }) => (
   <div className="relative h-full w-full bg-gradient-to-b from-transparent to-purple-purple4 dark:to-purpleDark-purple2">

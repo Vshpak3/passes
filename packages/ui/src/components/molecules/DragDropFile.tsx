@@ -1,14 +1,14 @@
 import UploadIcon from "public/icons/upload.svg"
 import { useState } from "react"
 
-import { File } from "./file"
+import { File } from "../atoms"
 import {
   FileAccept,
   FormErrors,
   FormName,
   FormOptions,
   FormRegister
-} from "./types"
+} from "../FormTypes"
 
 type DragDropFileProps = {
   name: FormName
@@ -20,7 +20,7 @@ type DragDropFileProps = {
   multiple?: boolean
 }
 
-export const DragDropFile = ({
+const DragDropFile = ({
   name,
   options = {},
   register,
@@ -77,7 +77,7 @@ export const DragDropFile = ({
       <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-solid border-[#BF7AF0] p-1">
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
-          <p className="flex gap-1">
+          <div className="flex gap-1">
             <File
               className="cursor-pointer "
               errors={errors}
@@ -95,7 +95,7 @@ export const DragDropFile = ({
             <span className="text-sm font-normal text-[#888689]">
               or drag and drop
             </span>
-          </p>
+          </div>
           <p className="self-stretch text-center text-sm font-normal text-[#888689]">
             You may upload video or up to 9 photos per post
           </p>
@@ -104,3 +104,5 @@ export const DragDropFile = ({
     </div>
   )
 }
+
+export default DragDropFile

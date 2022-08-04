@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import ProfileNFtPass from "src/components/common/ProfileNftPass"
+import { ProfileNFtPass } from "src/components/organisms"
 
 const AboutCreator = ({ mockCreator }) => {
   return (

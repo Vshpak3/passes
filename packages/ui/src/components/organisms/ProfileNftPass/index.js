@@ -1,7 +1,7 @@
 import Image from "next/image"
 import PropTypes from "prop-types"
 import React from "react"
-import { ChevronDown } from "src/icons/chevron-down"
+import ChevronDown from "src/icons/chevron-down"
 
 const ProfileNFtPass = ({ nftPass }) => (
   <div className="mb-5 w-[324px] rounded-[42px] bg-[conic-gradient(from_176.48deg_at_50%_52.18%,_#007888_0deg,_#00278A_48.75deg,_#340077_136.88deg,_#A83C00_206.25deg,_#A4A400_271.87deg,_#007888_360deg)] p-3">

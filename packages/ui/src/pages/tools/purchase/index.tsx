@@ -9,11 +9,11 @@ import TrelloIcon from "public/icons/trello-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import { useForm } from "react-hook-form"
+import { FormInput } from "src/components/atoms"
 import { PassesPinkButton } from "src/components/common/Buttons"
-import { FormInput } from "src/components/form/form-input"
+import { CreatorPassTiles } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { CreatorPassTiles } from "src/components/tiles/CreatorPassTiles"
-import { FormContainer } from "src/containers/form-container"
+import { FormContainer } from "src/containers"
 
 const mockData = {
   passName: "Kaila Troy Pro",
@@ -21,7 +21,7 @@ const mockData = {
   cost: "20.00"
 }
 
-export const Purchase = () => {
+const Purchase = () => {
   const {
     // handleSubmit,
     register
