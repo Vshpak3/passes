@@ -29,7 +29,7 @@ export const TextArea = ({
   errors = {},
   options = {},
   className,
-  rows = 5,
+  rows = 3,
   cols,
   placeholder,
   ...rest
@@ -39,19 +39,21 @@ export const TextArea = ({
       {label && (
         <Label name={name} label={label} errors={errors} options={options} />
       )}
-      <textarea
-        placeholder={placeholder}
-        name={name}
-        rows={rows}
-        cols={cols}
-        {...register(name, options)}
-        {...rest}
-        className={classNames(
-          errors[name] !== undefined ? "border-red-500" : "",
-          "block w-full appearance-none placeholder-[#FFFFFF]/50",
-          className || ""
-        )}
-      />
+      <div className="mt-1">
+        <textarea
+          placeholder={placeholder}
+          name={name}
+          rows={rows}
+          cols={cols}
+          {...register(name, options)}
+          {...rest}
+          className={classNames(
+            errors[name] !== undefined ? "border-red-500" : "",
+            "block w-full appearance-none placeholder-[#FFFFFF]/50",
+            className || ""
+          )}
+        />
+      </div>
     </>
   )
 }

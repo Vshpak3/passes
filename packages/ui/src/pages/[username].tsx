@@ -1,9 +1,11 @@
 import { GetProfileDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { useState } from "react"
 
 import MainContent from "../components/pages/profile/main-content"
 import Passes from "../components/pages/profile/passes"
 import ProfileDetails from "../components/pages/profile/profile-details"
+import { EditProfile } from "../components/pages/profile/profile-details/edit-profile"
 import { withPageLayout } from "../components/pages/WithPageLayout"
 import { getConnection } from "../helpers/demo"
 
@@ -91,15 +93,54 @@ const mockCreator = {
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Username = (props: GetProfileDto) => {
+  const [editProfile, setEditProfile] = useState(false)
+  const [profile, setProfile] = useState(props)
+  const onEditProfile = () => {
+    setEditProfile(true)
+  }
+
+  const onCloseEditProfile = () => {
+    setEditProfile(false)
+  }
+
+  const onSubmit = async (values: Record<string, any>) => {
+    const { profileImage, profileCoverImage, ...rest } = values
+    const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
+      [profileImage, profileCoverImage].map((files) => {
+        if (!files?.length) return Promise.resolve(null)
+        const file = files[0]
+        const url = URL.createObjectURL(file)
+        // TODO: upload Images to public bucket
+        return Promise.resolve(url)
+      })
+    )
+    const newValues = { ...rest }
+    if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
+    if (profileCoverImageUrl)
+      newValues.profileCoverImageUrl = profileCoverImageUrl
+    setProfile(newValues as any)
+    // TODO: Update Profile database
+    setEditProfile(false)
+  }
+
   return (
     <>
       <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
         <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
-          {props?.id && <ProfileDetails profile={props} />}
-          {props?.id && <Passes profile={props} />}
+          {profile?.id && (
+            <ProfileDetails profile={profile} onEditProfile={onEditProfile} />
+          )}
+          {editProfile && (
+            <EditProfile
+              profile={profile}
+              onSubmit={onSubmit}
+              onCloseEditProfile={onCloseEditProfile}
+            />
+          )}
+          {profile?.id && <Passes profile={profile} />}
         </div>
         <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          {props?.id && <MainContent profile={props} />}
+          {profile?.id && <MainContent profile={profile} />}
         </div>
       </div>
     </>

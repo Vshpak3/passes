@@ -1,6 +1,8 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import { Fragment, ReactNode, useState } from "react"
 
+import { classNames } from "../../helpers/classNames"
+
 type DialogProps = {
   triggerClassName?: string
   trigger?: JSX.Element
@@ -10,6 +12,7 @@ type DialogProps = {
   footer?: JSX.Element | string
   children?: ReactNode
   className?: string
+  media?: boolean
 }
 
 export const Dialog = ({
@@ -20,6 +23,7 @@ export const Dialog = ({
   title,
   footer,
   className,
+  media,
   children
 }: DialogProps) => {
   const [isOpen, setIsOpen] = useState(open)
@@ -44,7 +48,12 @@ export const Dialog = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="bg-opacity-15 fixed inset-0 bg-black" />
+            <div
+              className={classNames(
+                media ? "bg-black" : " backdrop-blur-md",
+                "bg-opacity-15 fixed inset-0 bg-transparent"
+              )}
+            />
           </Transition.Child>
 
           <div className="fixed inset-0">

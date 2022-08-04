@@ -197,6 +197,7 @@ export const NewPost = ({ passes = [] }) => {
               {hasVideo && (
                 <Dialog
                   open={true}
+                  media
                   title={
                     <div className="absolute top-3 left-1 z-30 flex  items-center">
                       <span
@@ -223,6 +224,7 @@ export const NewPost = ({ passes = [] }) => {
                 <Dialog
                   open={true}
                   className="bg-transparent"
+                  media
                   title={
                     <div className="absolute top-3 left-1 z-30 flex  items-center">
                       <span

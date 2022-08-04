@@ -1,3 +1,4 @@
+import EditProfileIcon from "public/icons/profile-edit-icon.svg"
 import React from "react"
 
 import {
@@ -8,9 +9,17 @@ import {
   Verified
 } from "./ProfileComponents"
 
-const ProfileDetails = ({ profile }) => (
+const ProfileDetails = ({ profile, onEditProfile }) => (
   <div className="min-h-12 flex flex-col items-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 px-4 pt-3 pb-10 backdrop-blur-[100px]">
-    <Verified isVerified={profile.isVerified} />
+    <div className="flex w-full items-center justify-between">
+      <Verified isVerified={profile.isVerified} />
+      <div>
+        <EditProfileIcon
+          className="cursor-pointer stroke-[#ffffff] hover:stroke-[#BF7AF0]"
+          onClick={onEditProfile}
+        />
+      </div>
+    </div>
     <ProfilePhoto url={profile.profileImageUrl} />
     <ProfileInformation
       fullName={profile.fullName}
