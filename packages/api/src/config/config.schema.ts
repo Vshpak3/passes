@@ -22,7 +22,7 @@ export const configValidationSchema = Joi.object({
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().required(),
 
-  MONITORING_SENTRY_DNS: Joi.string().uri().required(),
+  MONITORING_SENTRY_DSN: Joi.string().uri().required(),
 
   // -----------------------------------------------------------
 
@@ -94,7 +94,7 @@ export const configConfiguration = async function (): Promise<
       port: getConfigValue('REDIS_PORT', true),
     },
     monitoring: {
-      sentry_dns: getConfigValue('MONITORING_SENTRY_DNS'),
+      sentry_dsn: getConfigValue('MONITORING_SENTRY_DSN'),
     },
     oauth: {
       google: {
