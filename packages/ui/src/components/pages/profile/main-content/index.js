@@ -10,14 +10,14 @@ const MainContent = ({ profile }) => {
   const [followed, setFollowed] = useState(false)
   return (
     <>
-      <div className="flex flex-col justify-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 backdrop-blur-[100px] ">
+      <div className="hidden justify-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 backdrop-blur-[100px] md:flex md:flex-col ">
         <div className="relative flex max-h-[134px] items-center justify-center rounded-t-[20px]">
           <img // eslint-disable-line @next/next/no-img-element
             src={profile.profileCoverImageUrl}
             alt={profile.fullName}
             className="h-[134px] w-full rounded-t-[20px] object-cover"
           />
-          <div className="absolute text-center text-[36px] font-black leading-[22px] opacity-50">
+          <div className="absolute text-center text-4xl font-black  opacity-50">
             {profile.coverTitle}
           </div>
         </div>

@@ -14,7 +14,7 @@ export const withPageLayout = (
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen flex-1 bg-black">
       <SideBar />
-      <main className="flex-shrink flex-grow bg-[#1B141D]">
+      <main className="flex-shrink flex-grow bg-[#000]">
         <div className="cover-image h-[300px]">
           {options.header && <ProfileHeader />}
         </div>

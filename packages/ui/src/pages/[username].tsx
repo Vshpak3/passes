@@ -139,7 +139,7 @@ const Username = (props: GetProfileDto) => {
           )}
           {profile?.id && <Passes profile={profile} />}
         </div>
-        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+        <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.id && <MainContent profile={profile} />}
         </div>
       </div>

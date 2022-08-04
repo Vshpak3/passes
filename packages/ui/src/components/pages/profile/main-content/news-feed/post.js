@@ -7,7 +7,7 @@ import PostOptionsIcon from "public/icons/post-options-icon.svg"
 import PinnedActive from "public/icons/post-pinned-active.svg"
 import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
-import VerifiedSmall from "public/icons/profile-verified-small-icon.svg"
+import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import React, { useState } from "react"
 import { PostUnlockButton } from "src/components/common/Buttons"
 import { FormContainer } from "src/containers/form-container"
@@ -44,7 +44,7 @@ export const Post = ({ profile, post }) => {
 
 export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
   <div className="flex w-full items-center justify-between">
-    <div className="flex items-center space-x-4 pl-3">
+    <div className="flex items-center space-x-4">
       <img // eslint-disable-line @next/next/no-img-element
         className="h-12 w-12 rounded-full object-cover"
         src={profile.profileImageUrl}
@@ -52,14 +52,11 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
       />
       <div className="space-y-1 font-medium dark:text-white">
         <div className="flex items-center gap-[6px]">
-          <span className="text-[16px] font-medium leading-[22px]">
+          <span className="whitespace-nowrap font-semibold md:text-[20px] md:leading-[25px]">
             {profile.fullName}
           </span>
           <span className="flex items-center">
             <VerifiedSmall />
-            <span className="text-[12px] font-medium leading-[15px] text-[#FFFFFF]/50">
-              Verified
-            </span>
           </span>
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -67,26 +64,28 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
         </div>
       </div>
     </div>
-    <div className="-mt-[21px] flex items-center gap-2">
+    <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
       <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
         2 DAYS AGO
       </div>
-      <div
-        onClick={() => setPostPinned(!postPinned)}
-        className={classNames(
-          postPinned ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]" : "",
-          "flex cursor-pointer items-center py-[5px] "
-        )}
-      >
-        {postPinned && (
-          <span className="text-[12px] font-medium leading-[22px]">
-            Pinned post
-          </span>
-        )}
-        {postPinned ? <PinnedActive /> : <PinnedInactive />}
-      </div>
-      <div>
-        <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
+      <div className="flex items-center gap-[15px]">
+        <div
+          onClick={() => setPostPinned(!postPinned)}
+          className={classNames(
+            postPinned ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]" : "",
+            "flex cursor-pointer items-center py-[5px] "
+          )}
+        >
+          {postPinned && (
+            <span className="text-[12px] font-medium leading-[22px]">
+              Pinned post
+            </span>
+          )}
+          {postPinned ? <PinnedActive /> : <PinnedInactive />}
+        </div>
+        <div>
+          <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
+        </div>
       </div>
     </div>
   </div>
@@ -94,11 +93,11 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
 
 export const PostTextContent = ({ post }) => (
   <div className="flex flex-col items-start">
-    <p className="pl-[78px] pr-[30px] text-start text-base font-medium">
+    <p className="text-start text-base font-medium md:pl-[78px] md:pr-[30px]">
       {post.caption}
     </p>
     {post.fundraiser && (
-      <div className="flex pl-[78px] pt-3">
+      <div className="flex pt-3 md:pl-[78px]">
         <div className="flex cursor-pointer items-center gap-[10px] rounded-md bg-[#ffff]/10 py-[7px] px-[10px] ">
           <span className="text-[12px] font-medium leading-[22px] text-[#ffff]">
             Fundraiser
