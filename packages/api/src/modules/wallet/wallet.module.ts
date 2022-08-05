@@ -13,12 +13,10 @@ import { WalletService } from './wallet.service'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([
-      UserEntity,
-      WalletEntity,
-      EthNftEntity,
-      EthNftCollectionEntity,
-    ]),
+    MikroOrmModule.forFeature(
+      [UserEntity, WalletEntity, EthNftEntity, EthNftCollectionEntity],
+      'ReadWrite',
+    ),
   ],
   controllers: [WalletController],
   providers: [WalletService, EthService, RedisLockService, LambdaService],

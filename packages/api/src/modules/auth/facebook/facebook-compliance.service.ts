@@ -1,4 +1,3 @@
-import { EntityManager } from '@mikro-orm/mysql'
 import {
   BadRequestException,
   Injectable,
@@ -8,12 +7,17 @@ import { ConfigService } from '@nestjs/config'
 import crypto from 'crypto'
 import * as uuid from 'uuid'
 
+import { Database } from '../../../database/database.decorator'
+import { DatabaseService } from '../../../database/database.service'
 import { FacebookDeletionRequestDto } from '../dto/fb-deletion-request'
 
 @Injectable()
 export class FacebookComplianceService {
   constructor(
-    private readonly em: EntityManager,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -41,7 +45,7 @@ export class FacebookComplianceService {
       )
     }
 
-    const knex = this.em.getKnex()
+    const { knex } = this.ReadWriteDatabaseService
     knex
       .transaction(async (trx) => {
         const id = uuid.v4()
@@ -79,7 +83,7 @@ export class FacebookComplianceService {
   }
 
   async checkDeletionRequest(confirmationCode: string): Promise<boolean> {
-    const knex = this.em.getKnex()
+    const { knex } = this.ReadOnlyDatabaseService
     const res = await knex('facebook_deletion_request').where(
       'id',
       confirmationCode,

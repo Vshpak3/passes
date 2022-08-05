@@ -1,9 +1,13 @@
-import { EntityManager } from '@mikro-orm/mysql'
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ConfigService } from 'aws-sdk'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import {
+  databaseServiceMockFactory,
+  repositoryMockFactory,
+} from '../../database/test-helpers'
 import { CollectionEntity } from '../collection/entities/collection.entity'
 import { SolNftEntity } from '../sol/entities/sol-nft.entity'
 import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
@@ -23,6 +27,10 @@ describe('PassController', () => {
       controllers: [PassController],
       providers: [
         PassService,
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
         {
           provide: WalletService,
           useFactory: jest.fn(() => ({})),
@@ -36,31 +44,27 @@ describe('PassController', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: EntityManager,
-          useFactory: jest.fn(() => ({})),
-        },
-        {
-          provide: getRepositoryToken(CollectionEntity),
+          provide: getRepositoryToken(CollectionEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(SolNftCollectionEntity),
+          provide: getRepositoryToken(SolNftCollectionEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(SolNftEntity),
+          provide: getRepositoryToken(SolNftEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(PassEntity),
+          provide: getRepositoryToken(PassEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(PassOwnershipEntity),
+          provide: getRepositoryToken(PassOwnershipEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(UserEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
       ],

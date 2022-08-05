@@ -15,7 +15,7 @@ describe('SettingsController', () => {
       providers: [
         SettingsService,
         {
-          provide: getRepositoryToken(SettingsEntity),
+          provide: getRepositoryToken(SettingsEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
       ],

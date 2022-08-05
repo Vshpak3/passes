@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { ContentEntity } from '../entities/content.entity'
-
 export class GetContentDto {
   @ApiProperty()
   id: string
@@ -15,10 +13,10 @@ export class GetContentDto {
   @ApiProperty()
   contentType: string
 
-  constructor(contentEntity: ContentEntity) {
+  constructor(contentEntity) {
     this.id = contentEntity.id
-    this.postId = contentEntity.post.id
+    this.postId = contentEntity.post_id
     this.url = contentEntity.url
-    this.contentType = contentEntity.contentType
+    this.contentType = contentEntity.content_type
   }
 }

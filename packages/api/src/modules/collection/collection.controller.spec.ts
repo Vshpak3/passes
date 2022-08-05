@@ -1,7 +1,12 @@
 import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import {
+  databaseServiceMockFactory,
+  repositoryMockFactory,
+} from '../../database/test-helpers'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CollectionController } from './collection.controller'
@@ -17,17 +22,21 @@ describe('CollectionController', () => {
       providers: [
         CollectionService,
         {
-          provide: getRepositoryToken(CollectionEntity),
+          provide: getRepositoryToken(CollectionEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(PassEntity),
+          provide: getRepositoryToken(PassEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(UserEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
       ],
     }).compile()
 

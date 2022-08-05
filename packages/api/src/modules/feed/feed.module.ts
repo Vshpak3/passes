@@ -7,7 +7,7 @@ import { FeedController } from './feed.controller'
 import { FeedService } from './feed.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([PostEntity, UserEntity])],
+  imports: [MikroOrmModule.forFeature([PostEntity, UserEntity], 'ReadWrite')],
   controllers: [FeedController],
   providers: [FeedService],
 })

@@ -6,7 +6,7 @@ import {
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
-import { EntityManager, EntityRepository } from '@mikro-orm/mysql'
+import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -30,6 +30,8 @@ import {
 import { isString } from 'lodash'
 import * as uuid from 'uuid'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
@@ -89,9 +91,12 @@ export class SolService {
   constructor(
     private readonly configService: ConfigService,
 
-    private readonly em: EntityManager,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
 
-    @InjectRepository(UserEntity)
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
 
     private readonly lambdaService: LambdaService,
@@ -145,7 +150,7 @@ export class SolService {
       remaining: uses,
       total: uses,
     }
-    const knex = this.em.getKnex()
+    const knex = this.ReadOnlyDatabaseService.knex
     const collection = (
       await knex('sol_nft_collection').select('*').where('id', collectionId)
     )[0]
@@ -510,7 +515,7 @@ export class SolService {
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
 
-    const knex = this.em.getKnex()
+    const knex = this.ReadWriteDatabaseService.knex
 
     const walletSignature = await this.lambdaService.blockchainSignSignMessage(
       SOL_MASTER_WALLET_LAMBDA_KEY_ID,

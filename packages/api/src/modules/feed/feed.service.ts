@@ -1,5 +1,4 @@
 import { EntityRepository } from '@mikro-orm/core'
-import { EntityManager } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
@@ -7,6 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { GetContentDto } from '../content/dto/get-content.dto'
 import { GetPostDto } from '../post/dto/get-post.dto'
 import {
@@ -23,13 +24,16 @@ type ContentLookupByPost = {
 @Injectable()
 export class FeedService {
   constructor(
-    private readonly entityManager: EntityManager,
-    @InjectRepository(UserEntity)
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 
   async getFeed(userId: string, cursor: string): Promise<GetFeedDto> {
-    const knex = this.entityManager.getKnex()
+    const { knex } = this.ReadOnlyDatabaseService
 
     const following = await knex
       .select('creator_id')
@@ -75,6 +79,7 @@ export class FeedService {
     )
   }
 
+  // TODO: Refactor to new database setup
   async getPostsByCreatorUsername(
     username: string,
     cursor: string,
@@ -88,7 +93,7 @@ export class FeedService {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    const knex = this.entityManager.getKnex()
+    const { knex } = this.ReadOnlyDatabaseService
     let postsQuery = knex('post')
       .where('user_id', user.id)
       .where('deleted_at', null)
@@ -126,7 +131,7 @@ export class FeedService {
   private async getContentLookupForPosts(
     postIds: string[],
   ): Promise<ContentLookupByPost> {
-    const knex = this.entityManager.getKnex()
+    const { knex } = this.ReadOnlyDatabaseService
     const contentResults = await knex('content').whereIn('post_id', postIds)
 
     const ans: ContentLookupByPost = {}

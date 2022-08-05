@@ -18,9 +18,9 @@ export class MessagesService {
   streamClient: StreamChat
   constructor(
     private readonly configService: ConfigService,
-    @InjectRepository(UserEntity)
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
-    @InjectRepository(CreatorSettingsEntity)
+    @InjectRepository(CreatorSettingsEntity, 'ReadWrite')
     private readonly creatorSettingsRepository: EntityRepository<CreatorSettingsEntity>,
   ) {
     this.streamClient = StreamChat.getInstance(

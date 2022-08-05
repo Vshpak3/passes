@@ -1,12 +1,11 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { EntityManager } from '@mikro-orm/mysql'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { UserEntity } from '../user/entities/user.entity'
 import {
@@ -24,41 +23,37 @@ import { ProfileEntity } from './entities/profile.entity'
 // See https://docs.nestjs.com/security/authorization#integrating-casl
 @Injectable()
 export class ProfileService {
+  table: string
   constructor(
-    private readonly em: EntityManager,
-    @InjectRepository(ProfileEntity)
-    private readonly profileRepository: EntityRepository<ProfileEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: EntityRepository<UserEntity>,
-  ) {}
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+  ) {
+    this.table = this.ReadWriteDatabaseService.getTableName(ProfileEntity)
+  }
 
   async create(
     userId: string,
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
-    const user = await this.userRepository.getReference(userId)
-
-    const profile = this.profileRepository.create({
-      user,
-      description: createProfileDto.description,
-      instagramUrl: createProfileDto.instagramUrl,
-      tiktokUrl: createProfileDto.tiktokUrl,
-      youtubeUrl: createProfileDto.youtubeUrl,
-      discordUrl: createProfileDto.discordUrl,
-      twitchUrl: createProfileDto.twitchUrl,
+    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
+    const id = v4()
+    const data = toDict(ProfileEntity, {
+      id,
       isActive: true,
+      user: userId,
+      ...createProfileDto,
     })
 
-    await createOrThrowOnDuplicate(
-      this.profileRepository,
-      profile,
-      USER_HAS_PROFILE,
-    )
-    return new GetProfileDto(profile)
+    const query = () => knex(this.table).insert(data)
+    await createOrThrowOnDuplicate(query, USER_HAS_PROFILE)
+    return new GetProfileDto(data)
   }
 
   async findOne(id: string): Promise<GetProfileDto> {
-    const profile = await this.profileRepository.findOne(id)
+    const { knex } = this.ReadOnlyDatabaseService
+    const profile = await knex(this.table).where({ id }).first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
@@ -67,12 +62,14 @@ export class ProfileService {
   }
 
   async findOneByUsername(username: string): Promise<GetProfileDto> {
-    const profile = await this.profileRepository.findOne(
-      {
-        user: { userName: username },
-      },
-      {
-        populate: [
+    const { knex, populate, getTableName } = this.ReadOnlyDatabaseService
+    const userTable = getTableName(UserEntity)
+    const profile = await knex(this.table)
+      .innerJoin(`${userTable} as user`, `${this.table}.user_id`, 'user.id')
+      .where('user.user_name', username)
+      .select([
+        `${this.table}.id as id`,
+        ...populate(ProfileEntity, [
           'user',
           'description',
           'profileImageUrl',
@@ -82,9 +79,9 @@ export class ProfileService {
           'discordUrl',
           'twitchUrl',
           'isActive',
-        ],
-      },
-    )
+        ]),
+      ])
+      .first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
@@ -97,48 +94,48 @@ export class ProfileService {
     profileId: string,
     updateProfileDto: UpdateProfileDto,
   ): Promise<GetProfileDto> {
-    const currentProfile = await this.profileRepository.findOne(profileId)
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const profile = await knex(this.table).where('id', profileId).first()
 
-    if (!currentProfile) {
-      throw new NotFoundException(PROFILE_NOT_EXIST)
-    }
-
-    if (currentProfile.user.id !== userId) {
-      throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
-    }
-
-    const newProfile = wrap(currentProfile).assign({
-      ...updateProfileDto,
-    })
-
-    await this.profileRepository.persistAndFlush(newProfile)
-    return new GetProfileDto(newProfile)
-  }
-
-  async remove(userId: string, profileId: string): Promise<GetProfileDto> {
-    const profile = await this.profileRepository.findOne(profileId)
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
 
-    if (profile.user.id !== userId) {
+    if (profile.user_id !== userId) {
       throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
     }
 
-    const newProfile = wrap(profile).assign({
-      isActive: false,
-    })
+    const data = toDict(ProfileEntity, updateProfileDto)
 
-    await this.profileRepository.persistAndFlush(newProfile)
-    return new GetProfileDto(newProfile)
+    await knex(this.table).update(data).where('id', profileId)
+
+    return new GetProfileDto({ ...profile, ...data })
+  }
+
+  async remove(userId: string, profileId: string): Promise<GetProfileDto> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const profile = await knex(this.table).where({ id: profileId }).first()
+    if (!profile) {
+      throw new NotFoundException(PROFILE_NOT_EXIST)
+    }
+
+    if (profile.user_id !== userId) {
+      throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
+    }
+
+    const data = toDict(ProfileEntity, { isActive: false })
+
+    await knex(this.table).update(data).where({ id: profileId })
+    return new GetProfileDto({ ...profile, ...data })
   }
 
   async getAllUsernames(): Promise<GetUsernamesDto> {
-    const knex = this.em.getKnex()
-    const rawUsernames = await knex('profile')
-      .innerJoin('users', 'profile.user_id', 'users.id')
-      .where('users.is_creator', true)
-      .select('users.user_name')
+    const { knex, getTableName } = this.ReadOnlyDatabaseService
+    const userTable = getTableName(UserEntity)
+    const rawUsernames = await knex(this.table)
+      .innerJoin(`${userTable} as user`, `${this.table}.user_id`, 'user.id')
+      .where('user.is_creator', true)
+      .select('user.user_name')
 
     const usernames = rawUsernames.map((u) => u.user_name)
 

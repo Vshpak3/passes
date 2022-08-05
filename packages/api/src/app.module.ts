@@ -6,7 +6,9 @@ import { RedisModule } from '@nestjs-modules/ioredis'
 import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry'
 
 import { configOptions } from './config/config.options'
-import { databaseOptions } from './database/mikro-orm.options'
+import { DatabaseModule } from './database/database.module'
+import { MikroOrmConfigService } from './database/mikro-orm.config.service'
+import { contextNames } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { AuthModule } from './modules/auth/auth.module'
 import { CollectionModule } from './modules/collection/collection.module'
@@ -33,13 +35,19 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
 
 @Module({
   imports: [
+    ...contextNames.map((contextName) =>
+      MikroOrmModule.forRootAsync({
+        contextName,
+        useClass: MikroOrmConfigService,
+      }),
+    ),
     ConfigModule.forRoot(configOptions),
-    MikroOrmModule.forRootAsync(databaseOptions),
     RedisModule.forRootAsync(redisOptions),
     SentryModule.forRootAsync(sentryOptions),
     AuthModule,
     CollectionModule,
     CommentModule,
+    DatabaseModule,
     ContentModule,
     CreatorSettingsModule,
     EthModule,

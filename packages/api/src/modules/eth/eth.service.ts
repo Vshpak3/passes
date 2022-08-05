@@ -11,6 +11,8 @@ import {
 import { ConfigService } from '@nestjs/config'
 import * as https from 'https'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -24,49 +26,62 @@ import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
 
 @Injectable()
 export class EthService {
+  ethNftTable: string
+  ethNftCollectionTable: string
   constructor(
-    @InjectRepository(EthNftEntity)
+    @InjectRepository(EthNftEntity, 'ReadWrite')
     private readonly ethNftRepository: EntityRepository<EthNftEntity>,
 
-    @InjectRepository(EthNftCollectionEntity)
+    @InjectRepository(EthNftCollectionEntity, 'ReadWrite')
     private readonly ethNftCollectionRepository: EntityRepository<EthNftCollectionEntity>,
 
-    @InjectRepository(WalletEntity)
+    @InjectRepository(WalletEntity, 'ReadWrite')
     private readonly walletRepository: EntityRepository<WalletEntity>,
 
-    @InjectRepository(UserEntity)
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
+
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
 
     private readonly configService: ConfigService,
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-  ) {}
+  ) {
+    this.ethNftTable = this.ReadWriteDatabaseService.getTableName(EthNftEntity)
+    this.ethNftCollectionTable = this.ReadWriteDatabaseService.getTableName(
+      EthNftCollectionEntity,
+    )
+  }
 
   async createNftCollection(
     userId: string,
     createEthNftCollectionDto: CreateEthNftCollectionDto,
   ): Promise<EthNftCollectionEntity> {
     // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
-    const user = await this.userRepository.findOneOrFail(userId)
+    const { knex, toDict, v4, getTableName } = this.ReadWriteDatabaseService
+    const userTable = getTableName(UserEntity)
+    const user = await knex(userTable).where({ id: userId }).first()
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
-
-    const ethNftCollection = this.ethNftCollectionRepository.create({
-      tokenAddress: createEthNftCollectionDto.tokenAddress,
-      name: createEthNftCollectionDto.name,
+    const id = v4()
+    const data = toDict(EthNftCollectionEntity, {
+      id,
+      ...createEthNftCollectionDto,
     })
 
-    await createOrThrowOnDuplicate(
-      this.ethNftCollectionRepository,
-      ethNftCollection,
-      ETH_NFT_COLLECTION_EXISTS,
-    )
-    await this.ethNftCollectionRepository.persistAndFlush(ethNftCollection)
-    return ethNftCollection
+    const query = () => knex(this.ethNftCollectionTable).insert(data)
+
+    await createOrThrowOnDuplicate(query, ETH_NFT_COLLECTION_EXISTS)
+    // TODO: fix return type
+    return data as any
   }
 
+  // TODO: Refactor to new database setup
   async refreshNftsForWallet(
     userId: string,
     walletId: string,

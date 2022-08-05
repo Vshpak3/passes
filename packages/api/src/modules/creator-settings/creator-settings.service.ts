@@ -1,9 +1,8 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { UserEntity } from '../user/entities/user.entity'
 import { CreateCreatorSettingsDto } from './dto/create-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
 
@@ -11,18 +10,21 @@ export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorSettingsService {
+  table: string
   constructor(
-    @InjectRepository(CreatorSettingsEntity)
-    private readonly creatorSettingsRepository: EntityRepository<CreatorSettingsEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: EntityRepository<UserEntity>,
-  ) {}
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+  ) {
+    this.ReadWriteDatabaseService.getTableName(CreatorSettingsEntity)
+  }
 
   async findByUser(userId: string): Promise<CreatorSettingsEntity> {
-    const user = await this.userRepository.getReference(userId)
-    const creatorSettings = await this.creatorSettingsRepository.findOne({
-      user,
-    })
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const creatorSettings = await knex(this.table)
+      .where(toDict(CreatorSettingsEntity, { user: userId }))
+      .first()
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
     }
@@ -33,32 +35,32 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const user = await this.userRepository.getReference(userId)
-    const creatorSettings = await this.creatorSettingsRepository.findOne({
-      user,
-    })
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const creatorSettings = await knex(this.table)
+      .where(toDict(CreatorSettingsEntity, { user: userId }))
+      .first()
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
     }
-    creatorSettings.minimumTipAmount = createCreatorSettingsDto.minimumTipAmount
-    await this.creatorSettingsRepository.persistAndFlush(creatorSettings)
-    return creatorSettings
+
+    const data = toDict(CreatorSettingsEntity, createCreatorSettingsDto)
+    await knex.update(data).where({ id: creatorSettings.id })
+    return { ...creatorSettings, ...data }
   }
 
   async create(
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const user = await this.userRepository.getReference(userId)
-    const creatorSettings = this.creatorSettingsRepository.create({
-      user,
-      minimumTipAmount: createCreatorSettingsDto.minimumTipAmount,
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const id = v4()
+    const data = toDict(CreatorSettingsEntity, {
+      id,
+      user: userId,
+      ...createCreatorSettingsDto,
     })
-    await createOrThrowOnDuplicate(
-      this.creatorSettingsRepository,
-      creatorSettings,
-      CREATOR_SETTINGS_EXISTS,
-    )
-    return creatorSettings
+    const query = () => knex(this.table).insert(data)
+    await createOrThrowOnDuplicate(query, CREATOR_SETTINGS_EXISTS)
+    return data as any
   }
 }

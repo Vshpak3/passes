@@ -7,7 +7,9 @@ import { MessagesController } from './messages.controller'
 import { MessagesService } from './messages.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([UserEntity, CreatorSettingsEntity])],
+  imports: [
+    MikroOrmModule.forFeature([UserEntity, CreatorSettingsEntity], 'ReadWrite'),
+  ],
   controllers: [MessagesController],
   providers: [MessagesService],
 })

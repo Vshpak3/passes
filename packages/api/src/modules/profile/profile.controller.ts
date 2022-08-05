@@ -8,10 +8,12 @@ import {
   Patch,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { GetProfileDto } from './dto/get-profile.dto'
 import { GetUsernamesDto } from './dto/get-usernames.dto'
@@ -29,6 +31,7 @@ export class ProfileController {
     type: GetProfileDto,
     description: 'A profile was created',
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Req() req: RequestWithUser,
@@ -78,6 +81,7 @@ export class ProfileController {
     type: GetProfileDto,
     description: 'A profile was updated',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') profileId: string,
@@ -93,6 +97,7 @@ export class ProfileController {
     type: GetProfileDto,
     description: 'A profile was deleted',
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(
     @Param('id') profileId: string,

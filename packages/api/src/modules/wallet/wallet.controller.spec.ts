@@ -3,7 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import {
+  databaseServiceMockFactory,
+  repositoryMockFactory,
+} from '../../database/test-helpers'
 import { EthNftEntity } from '../eth/entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../eth/entities/eth-nft-collection.entity'
 import { EthService } from '../eth/eth.service'
@@ -29,19 +34,19 @@ describe('WalletController', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(UserEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(WalletEntity),
+          provide: getRepositoryToken(WalletEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(EthNftEntity),
+          provide: getRepositoryToken(EthNftEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(EthNftCollectionEntity),
+          provide: getRepositoryToken(EthNftCollectionEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
@@ -52,6 +57,10 @@ describe('WalletController', () => {
           provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
       ],
     }).compile()
 

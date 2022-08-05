@@ -6,7 +6,7 @@ import { SettingsController } from './settings.controller'
 import { SettingsService } from './settings.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([SettingsEntity])],
+  imports: [MikroOrmModule.forFeature([SettingsEntity], 'ReadWrite')],
   controllers: [SettingsController],
   providers: [SettingsService],
 })

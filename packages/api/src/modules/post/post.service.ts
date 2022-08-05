@@ -1,5 +1,4 @@
 import { EntityRepository, wrap } from '@mikro-orm/core'
-import { EntityManager } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   ForbiddenException,
@@ -9,6 +8,8 @@ import {
 } from '@nestjs/common'
 import * as uuid from 'uuid'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import {
   POST_DELETED,
   POST_NOT_EXIST,
@@ -22,8 +23,11 @@ import { PostEntity } from './entities/post.entity'
 @Injectable()
 export class PostService {
   constructor(
-    private readonly entityManager: EntityManager,
-    @InjectRepository(PostEntity)
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+    @InjectRepository(PostEntity, 'ReadWrite')
     private readonly postRepository: EntityRepository<PostEntity>,
   ) {}
 
@@ -31,7 +35,7 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostDto,
   ): Promise<CreatePostDto> {
-    const knex = this.entityManager.getKnex()
+    const { knex } = this.ReadWriteDatabaseService
     knex
       .transaction(async (trx) => {
         const now = new Date()
@@ -87,6 +91,7 @@ export class PostService {
     return createPostDto
   }
 
+  // TODO: Refactor to new database setup
   async findOne(id: string): Promise<GetPostDto> {
     const post = await this.postRepository.findOne(id, {
       populate: ['content'],
@@ -103,6 +108,7 @@ export class PostService {
     return new GetPostDto(post)
   }
 
+  // TODO: Refactor to new database setup
   async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
     const currentPost = await this.postRepository.findOne(postId)
 

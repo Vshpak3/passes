@@ -14,7 +14,7 @@ export const configValidationSchema = Joi.object({
 
   // -----------------------------------------------------------
 
-  DATABASE_HOST: Joi.string().required(),
+  DATABASE_HOSTS: Joi.string().required(),
   DATABASE_PORT: Joi.number().required(),
   DATABASE_USER: Joi.string().required(),
   DATABASE_PASSWORD: Joi.string().required(),
@@ -85,15 +85,15 @@ export const configConfiguration = async function (): Promise<
     clientUrl: getConfigValue('CLIENT_URL'),
     apiBaseUrl: getConfigValue('API_URL'),
     database: {
-      host: getConfigValue('DATABASE_HOST'),
-      port: getConfigValue('DATABASE_PORT', true),
+      hosts: getConfigValue('DATABASE_HOSTS', JSON.parse),
+      port: getConfigValue('DATABASE_PORT', parseInt),
       user: getConfigValue('DATABASE_USER'),
       password: getConfigValue('DATABASE_PASSWORD'),
       dbname: getConfigValue('DATABASE_DBNAME'),
     },
     redis: {
       host: getConfigValue('REDIS_HOST'),
-      port: getConfigValue('REDIS_PORT', true),
+      port: getConfigValue('REDIS_PORT', parseInt),
     },
     monitoring: {
       sentry_dsn: getConfigValue('MONITORING_SENTRY_DSN'),

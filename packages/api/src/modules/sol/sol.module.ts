@@ -9,7 +9,12 @@ import { SolController } from './sol.controller'
 import { SolService } from './sol.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([SolNftCollectionEntity, UserEntity])],
+  imports: [
+    MikroOrmModule.forFeature(
+      [SolNftCollectionEntity, UserEntity],
+      'ReadWrite',
+    ),
+  ],
   controllers: [SolController],
   providers: [SolService, LambdaService, ConfigService],
 })

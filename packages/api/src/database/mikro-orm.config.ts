@@ -7,10 +7,11 @@ import { getDatabaseOptions } from './mikro-orm.options'
 // TODO: pull from .env file
 export default getDatabaseOptions(
   new ConfigService({
-    'database.host': 'localhost',
+    'database.hosts': { ReadWrite: 'localhost', ReadOnly: 'localhost' },
     'database.port': '3306',
     'database.user': 'root',
     'database.password': 'root',
     'database.dbname': 'passes',
   }),
+  'ReadWrite',
 )

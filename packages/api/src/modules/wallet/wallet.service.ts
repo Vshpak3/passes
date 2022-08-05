@@ -24,9 +24,9 @@ export class WalletService {
   web3: Web3
   constructor(
     private readonly lambdaService: LambdaService,
-    @InjectRepository(WalletEntity)
+    @InjectRepository(WalletEntity, 'ReadWrite')
     private readonly walletRepository: EntityRepository<WalletEntity>,
-    @InjectRepository(UserEntity)
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
     @InjectRedis() private readonly redisService: Redis,
   ) {

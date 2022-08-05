@@ -1,18 +1,24 @@
-import { EntityManager } from '@mikro-orm/mysql'
 import { ConflictException, Injectable } from '@nestjs/common'
 import bcrypt from 'bcrypt'
 import * as uuid from 'uuid'
 
+import { Database } from '../../../database/database.decorator'
+import { DatabaseService } from '../../../database/database.service'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
 @Injectable()
 export class LocalAuthService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+  ) {}
 
   async createLocalUser(createLocalUserDto: CreateLocalUserDto) {
-    const knex = this.em.getKnex()
+    const knex = this.ReadWriteDatabaseService.knex
     const currentUser = await knex('users')
       .where('email', createLocalUserDto.email)
       .first()
@@ -46,7 +52,7 @@ export class LocalAuthService {
   }
 
   async validateLocalUser(email: string, password: string) {
-    const knex = this.em.getKnex()
+    const knex = this.ReadOnlyDatabaseService.knex
     const user: UserEntity & { password_hash: string } = await knex('users')
       .where('email', email)
       .first()

@@ -1,10 +1,9 @@
 import { EntityManager } from '@mikro-orm/mysql'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
-import { UserEntity } from '../user/entities/user.entity'
-import { ProfileEntity } from './entities/profile.entity'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import { databaseServiceMockFactory } from '../../database/test-helpers'
 import { ProfileController } from './profile.controller'
 import { ProfileService } from './profile.service'
 
@@ -20,14 +19,10 @@ describe('ProfileController', () => {
           provide: EntityManager,
           useFactory: jest.fn(() => ({})),
         },
-        {
-          provide: getRepositoryToken(ProfileEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(UserEntity),
-          useFactory: repositoryMockFactory,
-        },
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
       ],
     }).compile()
 

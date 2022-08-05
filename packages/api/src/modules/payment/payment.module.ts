@@ -14,15 +14,18 @@ import { PaymentService } from './payment.service'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([
-      CircleCardEntity,
-      CirclePaymentEntity,
-      DepositAddressEntity,
-      CircleBankEntity,
-      CircleNotificationEntity,
-      PaymentEntity,
-      DefaultPayinMethodEntity,
-    ]),
+    MikroOrmModule.forFeature(
+      [
+        CircleCardEntity,
+        CirclePaymentEntity,
+        DepositAddressEntity,
+        CircleBankEntity,
+        CircleNotificationEntity,
+        PaymentEntity,
+        DefaultPayinMethodEntity,
+      ],
+      'ReadWrite',
+    ),
     UserModule,
   ],
   controllers: [PaymentController],

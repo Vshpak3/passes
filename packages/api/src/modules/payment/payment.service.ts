@@ -70,19 +70,19 @@ export class PaymentService {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
-    @InjectRepository(CircleCardEntity)
+    @InjectRepository(CircleCardEntity, 'ReadWrite')
     private readonly circleCardRepository: EntityRepository<CircleCardEntity>,
-    @InjectRepository(CirclePaymentEntity)
+    @InjectRepository(CirclePaymentEntity, 'ReadWrite')
     private readonly circlePaymentRepository: EntityRepository<CirclePaymentEntity>,
-    @InjectRepository(DepositAddressEntity)
+    @InjectRepository(DepositAddressEntity, 'ReadWrite')
     private readonly depositAddressRepository: EntityRepository<DepositAddressEntity>,
-    @InjectRepository(CircleBankEntity)
+    @InjectRepository(CircleBankEntity, 'ReadWrite')
     private readonly circleBankRepository: EntityRepository<CircleBankEntity>,
-    @InjectRepository(CircleNotificationEntity)
+    @InjectRepository(CircleNotificationEntity, 'ReadWrite')
     private readonly circleNotificationRepository: EntityRepository<CircleNotificationEntity>,
-    @InjectRepository(PaymentEntity)
+    @InjectRepository(PaymentEntity, 'ReadWrite')
     private readonly paymentRepository: EntityRepository<PaymentEntity>,
-    @InjectRepository(DefaultPayinMethodEntity)
+    @InjectRepository(DefaultPayinMethodEntity, 'ReadWrite')
     private readonly defaultPayinMethodRepository: EntityRepository<DefaultPayinMethodEntity>,
   ) {
     this.circleConnector = new CircleConnector(this.configService)

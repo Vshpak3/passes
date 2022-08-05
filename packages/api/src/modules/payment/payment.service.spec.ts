@@ -26,31 +26,31 @@ describe('PaymentService', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRepositoryToken(CircleCardEntity),
+          provide: getRepositoryToken(CircleCardEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(CirclePaymentEntity),
+          provide: getRepositoryToken(CirclePaymentEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(DepositAddressEntity),
+          provide: getRepositoryToken(DepositAddressEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(CircleBankEntity),
+          provide: getRepositoryToken(CircleBankEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(CircleNotificationEntity),
+          provide: getRepositoryToken(CircleNotificationEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(PaymentEntity),
+          provide: getRepositoryToken(PaymentEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
         {
-          provide: getRepositoryToken(DefaultPayinMethodEntity),
+          provide: getRepositoryToken(DefaultPayinMethodEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
       ],

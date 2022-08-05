@@ -17,15 +17,18 @@ import { PassService } from './pass.service'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([
-      SolNftCollectionEntity,
-      CollectionEntity,
-      PassEntity,
-      PassOwnershipEntity,
-      UserEntity,
-      SolNftEntity,
-      WalletEntity,
-    ]),
+    MikroOrmModule.forFeature(
+      [
+        SolNftCollectionEntity,
+        CollectionEntity,
+        PassEntity,
+        PassOwnershipEntity,
+        UserEntity,
+        SolNftEntity,
+        WalletEntity,
+      ],
+      'ReadWrite',
+    ),
   ],
   controllers: [PassController],
   providers: [

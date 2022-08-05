@@ -7,7 +7,7 @@ import { FollowController } from './follow.controller'
 import { FollowService } from './follow.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([FollowEntity, UserEntity])],
+  imports: [MikroOrmModule.forFeature([FollowEntity, UserEntity], 'ReadWrite')],
   controllers: [FollowController],
   providers: [FollowService],
 })

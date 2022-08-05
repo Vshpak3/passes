@@ -13,7 +13,7 @@ describe('UserService', () => {
       providers: [
         UserService,
         {
-          provide: getRepositoryToken(UserEntity),
+          provide: getRepositoryToken(UserEntity, 'ReadWrite'),
           useFactory: repositoryMockFactory,
         },
       ],

@@ -7,7 +7,9 @@ import { CreatorSettingsService } from './creator-settings.service'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([UserEntity, CreatorSettingsEntity])],
+  imports: [
+    MikroOrmModule.forFeature([UserEntity, CreatorSettingsEntity], 'ReadWrite'),
+  ],
   controllers: [CreatorSettingsController],
   providers: [CreatorSettingsService],
 })

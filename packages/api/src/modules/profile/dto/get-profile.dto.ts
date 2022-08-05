@@ -1,7 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { ProfileEntity } from '../entities/profile.entity'
-
 export class GetProfileDto {
   @ApiProperty()
   id: string
@@ -39,18 +37,18 @@ export class GetProfileDto {
   @ApiProperty()
   isActive: boolean
 
-  constructor(profileEntity: ProfileEntity) {
+  constructor(profileEntity) {
     this.id = profileEntity.id
-    this.userId = profileEntity.user.id
+    this.userId = profileEntity.user_id
     this.description = profileEntity.description
-    this.fullName = profileEntity.user.fullName
-    this.isKYCVerified = profileEntity.user.isKYCVerified
-    this.profileImageUrl = profileEntity.profileImageUrl
-    this.instagramUrl = profileEntity.instagramUrl
-    this.tiktokUrl = profileEntity.tiktokUrl
-    this.youtubeUrl = profileEntity.youtubeUrl
-    this.discordUrl = profileEntity.discordUrl
-    this.twitchUrl = profileEntity.twitchUrl
-    this.isActive = profileEntity.isActive
+    this.fullName = profileEntity.user_full_name
+    this.isKYCVerified = profileEntity.user_is_kycverified
+    this.profileImageUrl = profileEntity.profile_image_url
+    this.instagramUrl = profileEntity.instagram_url
+    this.tiktokUrl = profileEntity.tiktok_url
+    this.youtubeUrl = profileEntity.youtube_url
+    this.discordUrl = profileEntity.discord_url
+    this.twitchUrl = profileEntity.twitch_url
+    this.isActive = profileEntity.is_active
   }
 }

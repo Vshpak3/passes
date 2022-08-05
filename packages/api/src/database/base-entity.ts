@@ -7,9 +7,9 @@ export abstract class BaseEntity<O = void> {
   @PrimaryKey({ customType: new UuidType() })
   id = v4()
 
-  @Property()
-  createdAt = new Date()
+  @Property({ defaultRaw: 'NOW()' })
+  createdAt: Date
 
-  @Property({ onUpdate: () => new Date() })
-  updatedAt = new Date()
+  @Property({ defaultRaw: 'NOW()', extra: 'on update now()' })
+  updatedAt: Date
 }

@@ -1,11 +1,10 @@
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
-import { UserEntity } from '../user/entities/user.entity'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import { databaseServiceMockFactory } from '../../database/test-helpers'
 import { CreatorSettingsController } from './creator-settings.controller'
 import { CreatorSettingsService } from './creator-settings.service'
-import { CreatorSettingsEntity } from './entities/creator-settings.entity'
 
 describe('CreatorSettingsController', () => {
   let controller: CreatorSettingsController
@@ -15,14 +14,10 @@ describe('CreatorSettingsController', () => {
       controllers: [CreatorSettingsController],
       providers: [
         CreatorSettingsService,
-        {
-          provide: getRepositoryToken(CreatorSettingsEntity),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(UserEntity),
-          useFactory: repositoryMockFactory,
-        },
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
       ],
     }).compile()
 

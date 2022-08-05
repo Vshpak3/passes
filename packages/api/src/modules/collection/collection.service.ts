@@ -21,9 +21,9 @@ import { CollectionEntity } from './entities/collection.entity'
 @Injectable()
 export class CollectionService {
   constructor(
-    @InjectRepository(CollectionEntity)
+    @InjectRepository(CollectionEntity, 'ReadWrite')
     private readonly collectionRepository: EntityRepository<CollectionEntity>,
-    @InjectRepository(UserEntity)
+    @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 

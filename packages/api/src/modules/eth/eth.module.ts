@@ -11,12 +11,10 @@ import { EthService } from './eth.service'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([
-      EthNftEntity,
-      EthNftCollectionEntity,
-      WalletEntity,
-      UserEntity,
-    ]),
+    MikroOrmModule.forFeature(
+      [EthNftEntity, EthNftCollectionEntity, WalletEntity, UserEntity],
+      'ReadWrite',
+    ),
   ],
   controllers: [EthController],
   providers: [EthService, RedisLockService],

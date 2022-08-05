@@ -9,7 +9,10 @@ import { CollectionEntity } from './entities/collection.entity'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([CollectionEntity, PassEntity, UserEntity]),
+    MikroOrmModule.forFeature(
+      [CollectionEntity, PassEntity, UserEntity],
+      'ReadWrite',
+    ),
   ],
   controllers: [CollectionController],
   providers: [CollectionService],

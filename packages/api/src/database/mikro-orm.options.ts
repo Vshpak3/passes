@@ -5,9 +5,20 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { ConfigService } from '@nestjs/config'
 import path from 'path'
 
+export const contextNames = ['ReadWrite', 'ReadOnly'] as const
+export type ContextName = typeof contextNames[number]
+
 export function getDatabaseOptions(
   configService: ConfigService,
-): Options<MySqlDriver> {
+  contextName: ContextName,
+): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
+  let migrations: { path: string } | undefined
+  if (contextName === 'ReadWrite')
+    migrations = {
+      path: path.join(__dirname, 'migrations'),
+    }
+
+  const hosts = configService.get('database.hosts')
   return {
     metadataProvider: TsMorphMetadataProvider,
     highlighter: new SqlHighlighter(),
@@ -15,14 +26,15 @@ export function getDatabaseOptions(
     entities: [path.join(__dirname, '..', '/**/entities/*.js')],
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
     dbName: configService.get('database.dbname'),
-    host: configService.get('database.host'),
+    contextName,
+    allowGlobalContext: true, // TODO: remove after migrating code to knex setup
+    registerRequestContext: false,
+    host: hosts[contextName],
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),
     // safe: false, // prevents dropping tables and columns <-- TODO: turn on soon
-    migrations: {
-      path: path.join(__dirname, 'migrations'),
-    },
+    migrations,
     cache: {
       pretty: true,
       options: {
@@ -31,11 +43,4 @@ export function getDatabaseOptions(
     },
     debug: process.env.NODE_ENV === 'dev',
   }
-}
-
-export const databaseOptions = {
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<Options<MySqlDriver>> => getDatabaseOptions(configService),
-  inject: [ConfigService],
 }

@@ -1,9 +1,9 @@
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
+import { getDatabaseProviderToken } from '../../database/database.provider'
+import { contextNames } from '../../database/mikro-orm.options'
+import { databaseServiceMockFactory } from '../../database/test-helpers'
 import { CommentService } from './comment.service'
-import { CommentEntity } from './entities/comment.entity'
 
 describe('CommentService', () => {
   let service: CommentService
@@ -12,10 +12,10 @@ describe('CommentService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommentService,
-        {
-          provide: getRepositoryToken(CommentEntity),
-          useFactory: repositoryMockFactory,
-        },
+        ...contextNames.map((contextName) => ({
+          provide: getDatabaseProviderToken(contextName),
+          useFactory: databaseServiceMockFactory,
+        })),
       ],
     }).compile()
 

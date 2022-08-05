@@ -9,7 +9,10 @@ import { PostService } from './post.service'
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([PostEntity, PostRequiredPassEntity, UserEntity]),
+    MikroOrmModule.forFeature(
+      [PostEntity, PostRequiredPassEntity, UserEntity],
+      'ReadWrite',
+    ),
   ],
   controllers: [PostController],
   providers: [PostService],

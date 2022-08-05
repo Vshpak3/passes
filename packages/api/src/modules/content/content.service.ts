@@ -1,5 +1,3 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
   Injectable,
@@ -7,6 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { PostEntity } from '../post/entities/post.entity'
 import { CONTENT_NOT_EXIST, POST_NOT_EXIST } from './constants/errors'
 import { CreateContentDto } from './dto/create-content.dto'
@@ -16,39 +16,53 @@ import { ContentEntity } from './entities/content.entity'
 
 @Injectable()
 export class ContentService {
+  table: string
   constructor(
-    @InjectRepository(ContentEntity)
-    private readonly contentRepository: EntityRepository<ContentEntity>,
-    @InjectRepository(PostEntity)
-    private readonly postRepository: EntityRepository<PostEntity>,
-  ) {}
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+  ) {
+    this.table = this.ReadWriteDatabaseService.getTableName(ContentEntity)
+  }
 
   async create(
     postId: string,
     createContentDto: CreateContentDto,
   ): Promise<GetContentDto> {
-    const post = await this.postRepository.getReference(postId)
+    const { knex, toDict, v4, getTableName } = this.ReadWriteDatabaseService
+
+    const post = await this.ReadOnlyDatabaseService.knex(
+      getTableName(PostEntity),
+    )
+      .where('id', postId)
+      .select('id')
+      .first()
 
     if (!post) {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
     try {
-      const content = this.contentRepository.create({
-        post,
-        url: createContentDto.url,
-        contentType: createContentDto.contentType,
+      const id = v4()
+      const data = toDict(ContentEntity, {
+        id,
+        post: postId,
+        ...createContentDto,
       })
+      await knex(this.table).insert(data)
 
-      await this.contentRepository.persistAndFlush(content)
-      return new GetContentDto(content)
+      return new GetContentDto(data)
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
   }
 
   async findOne(id: string): Promise<GetContentDto> {
-    const content = await this.contentRepository.findOne(id)
+    const content = await this.ReadOnlyDatabaseService.knex(this.table)
+      .where('id', id)
+      .select('*')
+      .first()
     if (!content) {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
@@ -60,17 +74,16 @@ export class ContentService {
     contentId: string,
     updateContentDto: UpdateContentDto,
   ): Promise<GetContentDto> {
-    const currentProfile = await this.contentRepository.findOne(contentId)
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const data = toDict(ContentEntity, updateContentDto)
+    const updateCount = await knex('content')
+      .update(data)
+      .where({ id: contentId })
 
-    if (!currentProfile) {
+    if (!updateCount) {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    const newContent = wrap(currentProfile).assign({
-      ...updateContentDto,
-    })
-
-    await this.contentRepository.persistAndFlush(newContent)
-    return new GetContentDto(newContent)
+    return new GetContentDto({ id: contentId, ...updateContentDto })
   }
 }

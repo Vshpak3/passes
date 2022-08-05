@@ -8,7 +8,7 @@ import { SettingsEntity } from './entities/settings.entity'
 @Injectable()
 export class SettingsService {
   constructor(
-    @InjectRepository(SettingsEntity)
+    @InjectRepository(SettingsEntity, 'ReadWrite')
     private readonly settingsRepository: EntityRepository<SettingsEntity>,
   ) {}
 
