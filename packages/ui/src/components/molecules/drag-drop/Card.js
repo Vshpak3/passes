@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd"
 
 import { ItemTypes } from "./item-types"
 
-export const Card = ({ id, children, index, moveCard }) => {
+const Card = ({ id, children, index, moveCard }) => {
   const ref = useRef(null)
   const previewRef = useRef(null)
 
@@ -76,3 +76,5 @@ export const Card = ({ id, children, index, moveCard }) => {
     </div>
   )
 }
+
+export default Card

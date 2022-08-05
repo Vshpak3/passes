@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import Marquee from "react-fast-marquee"
 import { Button, Separator, Text } from "src/components/atoms"
 import { Sparkles } from "src/components/molecules"
-import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
+import { usePrefersReducedMotion } from "src/hooks"
 // import useUser from "src/hooks/useUser"
 
 const backersList = [

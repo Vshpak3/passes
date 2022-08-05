@@ -1,7 +1,6 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import { Fragment, ReactNode, useState } from "react"
-
-import { classNames } from "../../helpers/classNames"
+import { classNames } from "src/helpers"
 
 type DialogProps = {
   triggerClassName?: string
@@ -15,7 +14,7 @@ type DialogProps = {
   media?: boolean
 }
 
-export const Dialog = ({
+const Dialog = ({
   triggerClassName = "",
   trigger,
   open = false,
@@ -84,3 +83,5 @@ export const Dialog = ({
     </>
   )
 }
+
+export default Dialog

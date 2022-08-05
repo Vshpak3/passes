@@ -1,4 +1,11 @@
-import Button from "./Button"
+import {
+  Button,
+  CoverButton,
+  HeaderChatButton,
+  PassesPinkButton,
+  PassesPurpleButton,
+  PostUnlockButton
+} from "./Button"
 import Checkbox from "./Checkbox"
 import File from "./File"
 import FormInput from "./FormInput"
@@ -15,12 +22,17 @@ import Wordmark from "./Wordmark"
 export {
   Button,
   Checkbox,
+  CoverButton,
   DefaultHead,
   File,
   FormInput,
+  HeaderChatButton,
   Input,
   Label,
   Link,
+  PassesPinkButton,
+  PassesPurpleButton,
+  PostUnlockButton,
   Select,
   Separator,
   Text,

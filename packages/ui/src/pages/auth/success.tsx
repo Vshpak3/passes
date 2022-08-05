@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-
-import useUser from "../../hooks/useUser"
+import { useUser } from "src/hooks"
 
 const AuthSuccess = () => {
   const router = useRouter()

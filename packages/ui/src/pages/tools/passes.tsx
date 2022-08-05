@@ -2,9 +2,9 @@ import { useRouter } from "next/router"
 import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
 import SubscriptionImg from "public/icons/subscription-pass.svg"
 import React from "react"
-import { PassesPinkButton } from "src/components/common/Buttons"
+import { PassesPinkButton } from "src/components/atoms"
+import { FormContainer } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { FormContainer } from "src/containers"
 
 const Passes = () => {
   const router = useRouter()

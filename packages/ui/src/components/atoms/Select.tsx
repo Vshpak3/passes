@@ -1,5 +1,5 @@
 import React from "react"
-import { classNames } from "src/helpers/classNames"
+import { classNames } from "src/helpers"
 
 import {
   FormErrors,

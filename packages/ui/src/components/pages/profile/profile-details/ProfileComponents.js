@@ -8,7 +8,7 @@ import VerticalSplitter from "public/icons/profile-vertical-splitter.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import React from "react"
-import { compactNumberFormatter } from "src/helpers/formatters"
+import { compactNumberFormatter } from "src/helpers"
 
 export const Verified = ({ isVerified }) => (
   <div className="flex items-center self-start">

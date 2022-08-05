@@ -7,7 +7,7 @@ import nprogress from "nprogress"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { DefaultHead } from "src/components/atoms"
-import useMessageToDevelopers from "src/hooks/use-message-to-developers"
+import { useMessageToDevelopers } from "src/hooks"
 import Providers from "src/providers"
 
 // Only show nprogress after 500ms (slow loading)

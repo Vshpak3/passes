@@ -7,7 +7,7 @@ import Calendar from "public/icons/profile-calendar-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { FormInput } from "src/components/atoms"
 import { FormErrors, FormOptions, FormRegister } from "src/components/FormTypes"
-import { classNames } from "src/helpers/classNames"
+import { classNames } from "src/helpers"
 
 const mediaTypes = [
   {

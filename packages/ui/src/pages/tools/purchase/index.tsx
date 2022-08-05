@@ -9,11 +9,9 @@ import TrelloIcon from "public/icons/trello-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
-import { PassesPinkButton } from "src/components/common/Buttons"
-import { CreatorPassTiles } from "src/components/organisms"
+import { FormInput, PassesPinkButton } from "src/components/atoms"
+import { CreatorPassTiles, FormContainer } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { FormContainer } from "src/containers"
 
 const mockData = {
   passName: "Kaila Troy Pro",

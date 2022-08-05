@@ -2,7 +2,7 @@ import NextHead from "next/head"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { Button, Separator, Text, Wordmark } from "src/components/atoms"
-import useUser from "src/hooks/useUser"
+import { useUser } from "src/hooks"
 import Arrow from "src/icons/arrow"
 import Social from "src/icons/social"
 

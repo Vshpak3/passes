@@ -1,7 +1,6 @@
 import { MessagesApi } from "@passes/api-client"
+import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
-
-import useLocalStorage from "./useLocalStorage"
 
 const useChat = (username: string) => {
   const [accessToken] = useLocalStorage("access-token", "")

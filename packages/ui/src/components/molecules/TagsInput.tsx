@@ -1,8 +1,8 @@
 import PlusSignIcon from "public/icons/plus-sign.svg"
 import React, { useRef, useState } from "react"
-import { classNames } from "src/helpers/classNames"
+import { classNames } from "src/helpers"
+import { useOnClickOutside } from "src/hooks"
 
-import { useOnClickOutside } from "../../hooks/useOnClickOutside"
 import {
   // FormErrors,
   FormLabel,

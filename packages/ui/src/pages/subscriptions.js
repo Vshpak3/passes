@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
-import { Welcome } from "src/containers"
-import Menu, { MenuPortal } from "src/containers/Menu"
+import { Welcome } from "src/components/organisms"
+import Menu, { MenuPortal } from "src/components/organisms/Menu"
 
 const ProfilePage = () => {
   const { data: session } = useSession()

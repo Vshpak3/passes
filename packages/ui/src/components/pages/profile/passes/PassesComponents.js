@@ -1,8 +1,9 @@
 import ChevronLeft from "public/icons/chevron-left-icon.svg"
 import ChevronRight from "public/icons/chevron-right-icon.svg"
 import React from "react"
-import { PassesPurpleButton } from "src/components/common/Buttons"
-import { formatCurrency } from "src/helpers/formatters"
+// import { PassesPurpleButton } from "src/components/common/Buttons"
+import { Button } from "src/components/atoms"
+import { formatCurrency } from "src/helpers"
 
 export const Pass = ({ pass }) => (
   <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
@@ -32,9 +33,20 @@ export const PassInformation = ({ pass }) => (
       {pass.description}
     </span>
     {{
-      Free: <PassesPurpleButton name="Follow Free" />,
-      Monthly: <PassesPurpleButton name="Subscribe" icon />,
-      Lifetime: <PassesPurpleButton name="Subscribe" icon />
+      // Free: <PassesPurpleButton name="Follow Free" />,
+
+      Free: <Button variant="purple">Follow Free</Button>,
+      Monthly: (
+        <Button variant="purple" icon>
+          Subscribe
+        </Button>
+      ),
+      // Monthly: <PassesPurpleButton name="Subscribe" icon />,
+      Lifetime: (
+        <Button variant="purple" icon>
+          Subscribe
+        </Button>
+      )
     }[pass.type] || null}
     {{
       Free: (

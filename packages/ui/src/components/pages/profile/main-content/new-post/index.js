@@ -6,8 +6,8 @@ import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/common/dialog"
-import { classNames } from "src/helpers/classNames"
+import { Dialog } from "src/components/organisms"
+import { classNames } from "src/helpers"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
@@ -19,7 +19,9 @@ import { NewsQuizTab } from "./quiz-tab"
 
 const RecordView = dynamic(
   () =>
-    import("src/components/common/media-record").then((mod) => mod.RecordView),
+    import("src/components/organisms/media-record").then(
+      (mod) => mod.RecordView
+    ),
   {
     ssr: false
   }

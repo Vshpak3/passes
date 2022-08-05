@@ -2,6 +2,7 @@ import "stream-chat-react/dist/css/index.css"
 
 import { MessagesApi } from "@passes/api-client"
 import React, { useEffect, useRef, useState } from "react"
+import { useChat, useUser } from "src/hooks"
 import { Channel as ChannelType, StreamChat } from "stream-chat"
 import {
   Channel,
@@ -15,8 +16,6 @@ import {
   Window
 } from "stream-chat-react"
 
-import useChat from "../../hooks/useChat"
-import useUser from "../../hooks/useUser"
 import { MomentMessage } from "./MomentMessage"
 import { MomentMessageInput } from "./MomentMessageInput"
 

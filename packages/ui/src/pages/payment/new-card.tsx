@@ -4,12 +4,9 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import encrypt from "src/helpers/openpgp"
+import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
-
-import encrypt from "../../helpers/openpgp"
-import useLocalStorage from "../../hooks/useLocalStorage"
-import useUser from "../../hooks/useUser"
-
 const NewCard = () => {
   const [submitting, setSubmitting] = useState(false)
   const [publicKey, setPublicKey] = useState<EncryptionKeyDto>()

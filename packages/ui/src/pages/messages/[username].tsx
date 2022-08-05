@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
-import Menu, { MenuPortal } from "src/containers/Menu"
-
-import ChatView from "../../components/messages/chat-view"
+import ChatView from "src/components/messages/chat-view"
+import Menu, { MenuPortal } from "src/components/organisms/Menu"
 
 const ChatViewPage = () => {
   const router = useRouter()

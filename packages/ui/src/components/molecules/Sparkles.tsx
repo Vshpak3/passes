@@ -1,7 +1,6 @@
 import { random, range } from "lodash"
 import { CSSProperties, ReactElement, useState } from "react"
-import usePrefersReducedMotion from "src/hooks/use-prefers-reduced-motion"
-import useRandomInterval from "src/hooks/use-random-interval"
+import { usePrefersReducedMotion, useRandomInterval } from "src/hooks"
 import styles from "src/styles/modules/sparkles.module.css"
 
 const DEFAULT_COLOR = "#FFC700"

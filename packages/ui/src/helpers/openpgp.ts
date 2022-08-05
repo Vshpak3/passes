@@ -9,7 +9,7 @@ import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
  *
  * @return {Object} Object containing encryptedMessage and keyId
  */
-export default async function encrypt(
+async function encrypt(
   dataToEncrypt: object,
   { keyId, publicKey }: EncryptionKeyDto
 ) {
@@ -29,3 +29,4 @@ export default async function encrypt(
     }
   })
 }
+export default encrypt

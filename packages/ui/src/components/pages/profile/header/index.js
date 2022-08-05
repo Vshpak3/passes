@@ -2,8 +2,8 @@ import { Menu, Transition } from "@headlessui/react"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
 import SearchIcon from "public/icons/header-search-icon.svg"
 import React, { Fragment } from "react"
-import { HeaderChatButton } from "src/components/common/Buttons"
-import { classNames } from "src/helpers/classNames"
+import { HeaderChatButton } from "src/components/atoms"
+import { classNames } from "src/helpers"
 
 const ProfileHeader = () => {
   const userNavigation = [

@@ -1,10 +1,9 @@
 import { useEffect } from "react"
 
 // Hook
-export function useOnClickOutside(ref, handler) {
+function useOnClickOutside(ref, handler) {
   useEffect(
     () => {
-      console.log("test")
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
         if (!ref.current || ref.current.contains(event.target)) {
@@ -28,3 +27,5 @@ export function useOnClickOutside(ref, handler) {
     [ref, handler]
   )
 }
+
+export default useOnClickOutside

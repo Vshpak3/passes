@@ -9,11 +9,9 @@ import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import React, { useState } from "react"
-import { PostUnlockButton } from "src/components/common/Buttons"
-import { FormContainer } from "src/containers"
-import { classNames } from "src/helpers/classNames"
-import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
-
+import { PostUnlockButton } from "src/components/atoms"
+import { FormContainer } from "src/components/organisms"
+import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.locked)
   const [postPinned, setPostPinned] = useState(false)

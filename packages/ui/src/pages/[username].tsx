@@ -1,13 +1,12 @@
 import { GetProfileDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useState } from "react"
-
-import MainContent from "../components/pages/profile/main-content"
-import Passes from "../components/pages/profile/passes"
-import ProfileDetails from "../components/pages/profile/profile-details"
-import { EditProfile } from "../components/pages/profile/profile-details/edit-profile"
-import { withPageLayout } from "../components/pages/WithPageLayout"
-import { getConnection } from "../helpers/demo"
+import MainContent from "src/components/pages/profile/main-content"
+import Passes from "src/components/pages/profile/passes"
+import ProfileDetails from "src/components/pages/profile/profile-details"
+import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
+import { withPageLayout } from "src/components/pages/WithPageLayout"
+import getConnection from "src/helpers/demo"
 
 const mockCreator = {
   id: "@drachnik",

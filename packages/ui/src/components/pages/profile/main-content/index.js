@@ -1,6 +1,6 @@
 import BellIcon from "public/icons/profile-bell-icon.svg"
 import React, { useState } from "react"
-import { CoverButton } from "src/components/common/Buttons"
+import { CoverButton } from "src/components/atoms"
 
 import { NewPost } from "./new-post"
 import NewsFeedNavigation from "./new-post/navigation"
@@ -35,7 +35,7 @@ const MainContent = ({ profile }) => {
               <BellIcon />
             </span>
             <span className="flex w-24 items-center justify-center">
-              <CoverButton name="Chat" onClick={() => null} />
+              <CoverButton name="Chat" />
             </span>
             <span className="flex w-24 items-center justify-center">
               <CoverButton
@@ -44,7 +44,7 @@ const MainContent = ({ profile }) => {
               />
             </span>
             <span className="flex w-24 items-center justify-center">
-              <CoverButton name="Tip" onClick={() => null} />
+              <CoverButton name="Tip" />
             </span>
           </div>
         </div>

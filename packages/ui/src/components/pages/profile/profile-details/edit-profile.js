@@ -1,7 +1,7 @@
 import React from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/common/dialog"
+import { Dialog } from "src/components/organisms"
 
 const form = {
   fullName: { type: "text", label: "Full Name" },

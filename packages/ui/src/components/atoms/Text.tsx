@@ -1,15 +1,24 @@
 import PropTypes from "prop-types"
 
-const pxToRem = (px) => {
+interface IText {
+  children: React.ReactNode
+  className?: string
+  enableMarginBottom?: boolean
+  fontSize?: number
+  style?: React.CSSProperties
+  tag?: keyof JSX.IntrinsicElements
+}
+
+const pxToRem = (px: number) => {
   return Number(px * 0.0625)
 }
 
-const dynamicLeading = (z) => {
+const dynamicLeading = (z: number) => {
   const l = 1.4
   return Number(pxToRem(Math.round(z * l)))
 }
 
-const dynamicTracking = (z) => {
+const dynamicTracking = (z: number) => {
   const a = -0.0223
   const b = 0.185
   const c = -0.1745
@@ -23,7 +32,7 @@ const Text = ({
   fontSize = 15,
   style = {},
   tag = "span"
-}) => {
+}: IText) => {
   const Tag = tag
 
   return (
@@ -35,7 +44,7 @@ const Text = ({
         marginBottom:
           enableMarginBottom || tag === "p" || tag === "pre"
             ? `${dynamicLeading(fontSize)}rem`
-            : null,
+            : "",
         ...style
       }}
       className={"font-sans" + (className && ` ${className}`)}

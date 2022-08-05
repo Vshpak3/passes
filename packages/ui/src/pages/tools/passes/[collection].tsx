@@ -4,15 +4,16 @@ import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
 import {
+  Button,
   CoverButton,
-  GradientButton,
+  FormInput,
+  // GradientButton,
   PassesPinkButton
-} from "src/components/common/Buttons"
+} from "src/components/atoms"
+import { FormContainer } from "src/components/organisms"
 import UploadPostMedia from "src/components/pages/profile/main-content/new-post/media"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-import { FormContainer } from "src/containers"
 // import useLocalStorage from "src/hooks/useLocalStorage"
 
 const Collection = ({ options = {} }) => {
@@ -141,7 +142,8 @@ const Collection = ({ options = {} }) => {
             <span className="text-center text-[#ffff]/90">
               Don&apos;t have art? Click to generate a pass!
             </span>
-            <GradientButton name="Make sumthing purty for me!" />
+            {/* <GradientButton name="Make sumthing purty for me!" /> */}
+            <Button variant="gradient">Make sumthing purty for me!</Button>
             {/* End Pass Creation Section */}
             {/* Begin Artwork Upload Section */}
             <span className="text-[#ffff]/70">or Upload Artwork</span>

@@ -13,9 +13,8 @@ import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import MomentLogo from "public/moment-logo.svg"
 import UpdatedMomentLogo from "public/moment-logo-updated.svg"
 import { Fragment, useState } from "react"
+import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/pages/profile/main-content/new-post"
-
-import { Dialog as NewPostDialog } from "../../common/dialog"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { classNames } from "src/helpers/classNames"
+import { classNames } from "src/helpers"
 
 const NewsFeedNavigation = () => {
   const [active, setActive] = useState("post")

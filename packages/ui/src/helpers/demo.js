@@ -6,7 +6,7 @@ const client = new MongoClient(connectionString, {
   useUnifiedTopology: true
 })
 
-export const getConnection = () => {
+const getConnection = () => {
   return new Promise((resolve, reject) => {
     client.connect(function (err, db) {
       // Verify we got a good "db" object
@@ -15,3 +15,5 @@ export const getConnection = () => {
     })
   })
 }
+
+export default getConnection

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
+import { classNames } from "src/helpers"
 
-import { classNames } from "../../../helpers/classNames"
 import { useReactMediaRecorder } from "./recorder"
 
 export const RecordView = ({

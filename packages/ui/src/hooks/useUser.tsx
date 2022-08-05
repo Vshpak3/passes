@@ -1,7 +1,6 @@
 import { AuthApi } from "@passes/api-client"
+import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
-
-import useLocalStorage from "./useLocalStorage"
 
 const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage("access-token", "")

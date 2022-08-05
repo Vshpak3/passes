@@ -1,7 +1,6 @@
 import { FeedApi } from "@passes/api-client"
+import { useUser } from "src/hooks"
 import useSWR from "swr"
-
-import useUser from "./useUser"
 
 interface UseCreatorProfileProps {
   username: string
