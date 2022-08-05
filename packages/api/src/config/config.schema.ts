@@ -10,6 +10,7 @@ export const configValidationSchema = Joi.object({
   // -----------------------------------------------------------
 
   CLIENT_URL: Joi.string().required(),
+  API_URL: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -82,6 +83,7 @@ export const configConfiguration = async function (): Promise<
       region: infra_config_aws_region || 'none',
     },
     clientUrl: getConfigValue('CLIENT_URL'),
+    apiBaseUrl: getConfigValue('API_URL'),
     database: {
       host: getConfigValue('DATABASE_HOST'),
       port: getConfigValue('DATABASE_PORT', true),
