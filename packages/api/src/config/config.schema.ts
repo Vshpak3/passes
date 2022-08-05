@@ -45,6 +45,8 @@ export const configValidationSchema = Joi.object({
   JWT_REFRESH_SECRET: Joi.string().required(),
   JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
 
+  OAUTH_TWITTER_COOKIE_SECRET: Joi.string().required(),
+
   // -----------------------------------------------------------
 
   CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
@@ -113,6 +115,7 @@ export const configConfiguration = async function (): Promise<
         consumerKey: getConfigValue('OAUTH_TWITTER_CONSUMER_KEY'),
         consumerSecret: getConfigValue('OAUTH_TWITTER_CONSUMER_SECRET'),
         redirect_url: getConfigValue('OAUTH_TWITTER_REDIRECT_URL'),
+        cookieSecret: getConfigValue('OAUTH_TWITTER_COOKIE_SECRET'),
       },
     },
     jwt: {
