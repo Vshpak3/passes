@@ -93,11 +93,13 @@ export class DatabaseService {
     return metadata.get(entity.name)
   }
 
+  // TODO: remove once everything is refactored to entityClass.table
   getTableName = <T>(entity: new (...args: any[]) => T) => {
     const { tableName } = this._getEntityMetadata(entity)
     return tableName
   }
 
+  // TODO: remove once everything is refactored to entityClass.populate
   populate = <T>(
     entity: new (...args: any[]) => T,
     fields: Array<keyof EntityData<T>>,
@@ -106,6 +108,7 @@ export class DatabaseService {
     return mapPopulateFields(propsToObj(props), fields as string[])
   }
 
+  // TODO: remove once everything is refactored to entityClass.toDict
   /**
    * Maps data object from entity property name to db column name
    * @example
@@ -121,5 +124,22 @@ export class DatabaseService {
   init(entityManager: EntityManager) {
     this._entityManager = entityManager
     this.knex = entityManager.getKnex()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const { metadata } = this._entityManager
+    const entityMetadata = Object.values(metadata.getAll())
+    entityMetadata.forEach(({ class: entityClass, props, tableName }) => {
+      if (!entityClass.isInitialized) {
+        entityClass.table = tableName
+
+        entityClass.toDict = (data) =>
+          mapEntityDataDBFields(propsToObj(props), data)
+
+        entityClass.populate = (fields) =>
+          mapPopulateFields(propsToObj(props), fields as string[])
+
+        entityClass.isInitialized = true
+      }
+    })
   }
 }

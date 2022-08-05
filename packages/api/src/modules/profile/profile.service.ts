@@ -23,37 +23,34 @@ import { ProfileEntity } from './entities/profile.entity'
 // See https://docs.nestjs.com/security/authorization#integrating-casl
 @Injectable()
 export class ProfileService {
-  table: string
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-  ) {
-    this.table = this.ReadWriteDatabaseService.getTableName(ProfileEntity)
-  }
+  ) {}
 
   async create(
     userId: string,
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
-    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
+    const { knex, v4 } = this.ReadOnlyDatabaseService
     const id = v4()
-    const data = toDict(ProfileEntity, {
+    const data = ProfileEntity.toDict<ProfileEntity>({
       id,
       isActive: true,
       user: userId,
       ...createProfileDto,
     })
 
-    const query = () => knex(this.table).insert(data)
+    const query = () => knex(ProfileEntity.table).insert(data)
     await createOrThrowOnDuplicate(query, USER_HAS_PROFILE)
     return new GetProfileDto(data)
   }
 
   async findOne(id: string): Promise<GetProfileDto> {
     const { knex } = this.ReadOnlyDatabaseService
-    const profile = await knex(this.table).where({ id }).first()
+    const profile = await knex(ProfileEntity.table).where({ id }).first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
@@ -62,14 +59,17 @@ export class ProfileService {
   }
 
   async findOneByUsername(username: string): Promise<GetProfileDto> {
-    const { knex, populate, getTableName } = this.ReadOnlyDatabaseService
-    const userTable = getTableName(UserEntity)
-    const profile = await knex(this.table)
-      .innerJoin(`${userTable} as user`, `${this.table}.user_id`, 'user.id')
+    const { knex } = this.ReadOnlyDatabaseService
+    const profile = await knex(ProfileEntity.table)
+      .innerJoin(
+        `${UserEntity.table} as user`,
+        `${ProfileEntity.table}.user_id`,
+        'user.id',
+      )
       .where('user.user_name', username)
       .select([
-        `${this.table}.id as id`,
-        ...populate(ProfileEntity, [
+        `${ProfileEntity.table}.id as id`,
+        ...ProfileEntity.populate<ProfileEntity>([
           'user',
           'description',
           'profileImageUrl',
@@ -94,8 +94,10 @@ export class ProfileService {
     profileId: string,
     updateProfileDto: UpdateProfileDto,
   ): Promise<GetProfileDto> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const profile = await knex(this.table).where('id', profileId).first()
+    const { knex } = this.ReadWriteDatabaseService
+    const profile = await knex(ProfileEntity.table)
+      .where('id', profileId)
+      .first()
 
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
@@ -105,16 +107,18 @@ export class ProfileService {
       throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
     }
 
-    const data = toDict(ProfileEntity, updateProfileDto)
+    const data = ProfileEntity.toDict<ProfileEntity>(updateProfileDto)
 
-    await knex(this.table).update(data).where('id', profileId)
+    await knex(ProfileEntity.table).update(data).where('id', profileId)
 
     return new GetProfileDto({ ...profile, ...data })
   }
 
   async remove(userId: string, profileId: string): Promise<GetProfileDto> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const profile = await knex(this.table).where({ id: profileId }).first()
+    const { knex } = this.ReadWriteDatabaseService
+    const profile = await knex(ProfileEntity.table)
+      .where({ id: profileId })
+      .first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
@@ -123,17 +127,20 @@ export class ProfileService {
       throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
     }
 
-    const data = toDict(ProfileEntity, { isActive: false })
+    const data = ProfileEntity.toDict<ProfileEntity>({ isActive: false })
 
-    await knex(this.table).update(data).where({ id: profileId })
+    await knex(ProfileEntity.table).update(data).where({ id: profileId })
     return new GetProfileDto({ ...profile, ...data })
   }
 
   async getAllUsernames(): Promise<GetUsernamesDto> {
-    const { knex, getTableName } = this.ReadOnlyDatabaseService
-    const userTable = getTableName(UserEntity)
-    const rawUsernames = await knex(this.table)
-      .innerJoin(`${userTable} as user`, `${this.table}.user_id`, 'user.id')
+    const { knex } = this.ReadOnlyDatabaseService
+    const rawUsernames = await knex(ProfileEntity.table)
+      .innerJoin(
+        `${UserEntity.table} as user`,
+        `${ProfileEntity.table}.user_id`,
+        'user.id',
+      )
       .where('user.is_creator', true)
       .select('user.user_name')
 
