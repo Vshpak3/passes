@@ -38,6 +38,8 @@ export class SolController {
       req.user.id,
       createSolNftCollectionDto.name,
       createSolNftCollectionDto.symbol,
+      'test pass',
+      '',
     )
   }
 

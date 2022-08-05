@@ -12,8 +12,6 @@ export class GetCollectionDto {
     this.id = collectionEntity.id
     this.title = collectionEntity.title
     this.description = collectionEntity.description
-    this.passes =
-      collectionEntity.passes.getItems().map((p) => new GetPassDto(p)) ?? []
     this.blockchain = collectionEntity.blockchain
   }
 }

@@ -14,7 +14,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreatePassDto } from './dto/create-pass.dto'
+import { CreatePassHolderDto } from './dto/create-pass-holder.dto'
 import { GetPassDto } from './dto/get-pass.dto'
+import { GetPassOwnershipDto } from './dto/get-pass-ownership.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
 
@@ -34,8 +36,27 @@ export class PassController {
   async create(
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassDto,
-  ): Promise<CreatePassDto> {
+  ): Promise<GetPassDto> {
     return this.passService.create(req.user.id, createPassDto)
+  }
+
+  @ApiOperation({ summary: 'Creates a pass holder' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetPassOwnershipDto,
+    description: 'A pass holder was created',
+  })
+  @Post('holder')
+  @UseGuards(JwtAuthGuard)
+  async addHolder(
+    @Req() req: RequestWithUser,
+    @Body() createPassHolderDto: CreatePassHolderDto,
+  ): Promise<GetPassOwnershipDto> {
+    return this.passService.addHolder(
+      req.user.id,
+      createPassHolderDto.passId,
+      createPassHolderDto.temporary,
+    )
   }
 
   @ApiOperation({ summary: 'Gets a pass' })

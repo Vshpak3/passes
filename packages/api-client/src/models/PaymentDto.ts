@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    AmountDto,
+    AmountDtoFromJSON,
+    AmountDtoFromJSONTyped,
+    AmountDtoToJSON,
+} from './AmountDto';
+import {
+    SourceDto,
+    SourceDtoFromJSON,
+    SourceDtoFromJSONTyped,
+    SourceDtoToJSON,
+} from './SourceDto';
+
 /**
  * 
  * @export
@@ -33,16 +46,16 @@ export interface PaymentDto {
     type: string;
     /**
      * 
-     * @type {object}
+     * @type {AmountDto}
      * @memberof PaymentDto
      */
-    amount: object;
+    amount: AmountDto;
     /**
      * 
-     * @type {object}
+     * @type {SourceDto}
      * @memberof PaymentDto
      */
-    source: object;
+    source: SourceDto;
     /**
      * 
      * @type {string}
@@ -81,8 +94,8 @@ export function PaymentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'id': json['id'],
         'type': json['type'],
-        'amount': json['amount'],
-        'source': json['source'],
+        'amount': AmountDtoFromJSON(json['amount']),
+        'source': SourceDtoFromJSON(json['source']),
         'status': json['status'],
         'merchantId': json['merchantId'],
         'merchantWalletId': json['merchantWalletId'],
@@ -101,8 +114,8 @@ export function PaymentDtoToJSON(value?: PaymentDto | null): any {
         
         'id': value.id,
         'type': value.type,
-        'amount': value.amount,
-        'source': value.source,
+        'amount': AmountDtoToJSON(value.amount),
+        'source': SourceDtoToJSON(value.source),
         'status': value.status,
         'merchantId': value.merchantId,
         'merchantWalletId': value.merchantWalletId,

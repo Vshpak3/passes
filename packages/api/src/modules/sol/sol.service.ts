@@ -27,6 +27,7 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js'
+import { isString } from 'lodash'
 import * as uuid from 'uuid'
 
 import { LambdaService } from '../lambda/lambda.service'
@@ -38,8 +39,6 @@ import * as SolHelper from './sol-helper'
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
 // remove this when integrating with Passes API (use the cloudfront uri provided in the create request)
-const PLACEHOLDER_IMAGE_URI =
-  'https://explorer.solana.com/static/media/dark-solana-logo.fa522d66.svg'
 
 export interface JsonMetadata<Uri = string> {
   name?: string
@@ -98,11 +97,27 @@ export class SolService {
     private readonly lambdaService: LambdaService,
   ) {
     this.connection = new Connection(
-      configService.get('alchemy.sol_https_endpoint') as string,
+      this.configService.get('alchemy.sol_https_endpoint') as string,
     )
-    this.s3Client = new S3Client({
-      region: configService.get('infra.region'),
-    })
+    if (
+      process.env.NODE_ENV == 'dev' &&
+      process.env.AWS_ACCESS_KEY_ID &&
+      process.env.AWS_SECRET_ACCESS_KEY &&
+      process.env.AWS_SESSION_TOKEN
+    ) {
+      this.s3Client = new S3Client({
+        region: 'us-east-1',
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          sessionToken: process.env.AWS_SESSION_TOKEN,
+        },
+      })
+    } else {
+      this.s3Client = new S3Client({
+        region: configService.get('infra.region'),
+      })
+    }
   }
 
   /**
@@ -143,14 +158,14 @@ export class SolService {
     const jsonMetadata = {
       name: collection.name,
       symbol: collection.symbol,
-      description: `${collectionId}: Deep in the heart of Dingus Forest echoes the sleepless cries of a troop of 10,000 apes. These aren't just regular apes, however. These are degenerate apes.`,
+      description: collection.description,
       seller_fee_basis_points: 0,
-      image: PLACEHOLDER_IMAGE_URI,
+      image: collection.image_url,
       properties: {
         files: [
           {
             type: 'image/png',
-            uri: PLACEHOLDER_IMAGE_URI,
+            uri: collection.image_url,
           },
         ],
         category: 'image',
@@ -171,11 +186,11 @@ export class SolService {
       throw 'The metadata has to contain the creators array.'
 
     const s3Input = {
-      ACL: 'public-read',
-      Bucket: 'passes-staging.com',
+      Bucket: 'passes-stage-nft',
       Body: JSON.stringify(jsonMetadata),
-      Key: `nft-${solNftId}`,
+      Key: `nft/nft-${solNftId}`,
     }
+    console.log('s3input', `nft-${solNftId}`)
     await this.s3Client.send(new PutObjectCommand(s3Input))
 
     const creators: Creator[] = jsonMetadata.properties.creators.map((c) => ({
@@ -257,7 +272,7 @@ export class SolService {
             data: {
               name: jsonMetadata.name ?? '',
               symbol: jsonMetadata.symbol ?? '',
-              uri: `https://moment-stage-public.s3.amazonaws.com/nft-${solNftId}`,
+              uri: `https://cdn.passes-staging.com/nft/nft-${solNftId}`,
               sellerFeeBasisPoints: jsonMetadata.seller_fee_basis_points ?? 0,
               creators,
               collection: collectionData,
@@ -324,7 +339,7 @@ export class SolService {
       metadata_public_key: metadataPda.toString(),
       name: 'Moment PASS',
       symbol: 'MoP',
-      uri_metadata: `https://s3.amazonaws.com/passes-staging.com/nft-${solNftId}`,
+      uri_metadata: `https://cdn.passes-staging.com/nft/nft-${solNftId}`,
       tx_signature: txSignature,
       created_at: new Date(),
       updated_at: new Date(),
@@ -333,12 +348,19 @@ export class SolService {
   }
 
   async createNftCollection(
-    userId: string,
+    userOrUserId: string | UserEntity,
     name: string,
     symbol: string,
+    description: string,
+    imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
     // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
-    const user = await this.userRepository.findOneOrFail(userId)
+    let user: undefined | UserEntity
+    if (isString(userOrUserId)) {
+      user = await this.userRepository.findOneOrFail(userOrUserId)
+    } else {
+      user = userOrUserId
+    }
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
@@ -352,30 +374,47 @@ export class SolService {
     const metadataJson = {
       name: name,
       symbol: symbol,
-      description: `${collectionId}: Deep in the heart of Dingus Forest echoes the sleepless cries of a troop of 10,000 apes. These aren't just regular apes, however. These are degenerate apes.`,
+      description: description,
+      image: imageUrl,
+      external_url: `https://www.passes.com/${user.userName}`,
       seller_fee_basis_points: 0,
-      image: PLACEHOLDER_IMAGE_URI,
       properties: {
-        files: [
-          {
-            type: 'image/png',
-            uri: PLACEHOLDER_IMAGE_URI,
-          },
-        ],
-        category: 'image',
         creators: [
           {
-            address: walletPubKey.toString(),
+            address: walletPubKey.toBase58(),
             share: 100,
           },
         ],
+        files: [
+          {
+            uri: imageUrl,
+            type: 'image/png',
+          },
+        ],
+        category: 'image',
       },
     }
     const s3Input = {
-      ACL: 'public-read',
-      Bucket: 'passes-staging.com',
+      Bucket: `passes-stage-nft`,
       Body: JSON.stringify(metadataJson),
-      Key: `collection-${collectionId}`,
+      Key: `nft/collection-${collectionId}`,
+    }
+
+    const metadata = {
+      name: name,
+      symbol: symbol,
+      description: description,
+      sellerFeeBasisPoints: 0,
+      uri: `https://cdn.passes-staging.com/nft/collection-${collectionId}`,
+      creators: [
+        {
+          address: walletPubKey,
+          share: 100,
+          verified: true,
+        },
+      ],
+      uses: null,
+      collection: null,
     }
     await this.s3Client.send(new PutObjectCommand(s3Input))
     const collectionPubKey = new PublicKey(
@@ -442,15 +481,7 @@ export class SolService {
         },
         {
           createMetadataAccountArgsV2: {
-            data: {
-              name: name ?? '',
-              symbol: symbol ?? '',
-              uri: `https://s3.amazonaws.com/passes-staging.com/collection-${collectionId}`,
-              sellerFeeBasisPoints: 0,
-              creators: [{ address: walletPubKey, share: 100, verified: true }],
-              collection: null,
-              uses: null,
-            },
+            data: metadata,
             isMutable: true,
           },
         },
@@ -482,7 +513,7 @@ export class SolService {
     const knex = this.em.getKnex()
 
     const walletSignature = await this.lambdaService.blockchainSignSignMessage(
-      'devnet-wallet',
+      SOL_MASTER_WALLET_LAMBDA_KEY_ID,
       Uint8Array.from(transaction.serializeMessage()),
     )
 
@@ -504,7 +535,9 @@ export class SolService {
       id: collectionId,
       name: name,
       symbol: symbol,
-      uri_metadata: `https://s3.amazonaws.com/passes-staging.com/collection-${collectionId}`,
+      description: description,
+      uri_metadata: `https://cdn.passes-staging.com/nft/collection-${collectionId}`,
+      image_url: imageUrl,
       public_key: collectionPubKey.toString(),
       tx_signature: txSignature,
       created_at: new Date(),

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AmountDto';
 export * from './AuthWalletRequestDto';
 export * from './AuthWalletResponseDto';
 export * from './BankAddressDto';
@@ -16,6 +17,7 @@ export * from './CreateChannelDto';
 export * from './CreateCreatorSettingsDto';
 export * from './CreateEthNftCollectionDto';
 export * from './CreatePassDto';
+export * from './CreatePassHolderDto';
 export * from './CreatePostDto';
 export * from './CreateProfileDto';
 export * from './CreateSolNftCollectionDto';
@@ -24,6 +26,7 @@ export * from './CreateUserDto';
 export * from './CreateWalletDto';
 export * from './EncryptionKeyDto';
 export * from './GetChannelDto';
+export * from './GetPassOwnershipDto';
 export * from './GetProfileDto';
 export * from './GetSolNftCollectionDto';
 export * from './GetSolNftDto';
@@ -40,6 +43,7 @@ export * from './PaymentDto';
 export * from './PhantomCircleUSDCEntryInputDto';
 export * from './PhantomCircleUSDCEntryOutputDto';
 export * from './SendMessageDto';
+export * from './SourceDto';
 export * from './TokenDto';
 export * from './UpdatePassDto';
 export * from './UpdatePostDto';

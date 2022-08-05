@@ -16,32 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UpdatePassDto
+ * @interface AmountDto
  */
-export interface UpdatePassDto {
+export interface AmountDto {
     /**
      * 
      * @type {string}
-     * @memberof UpdatePassDto
+     * @memberof AmountDto
      */
-    description: string;
+    amount: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AmountDto
+     */
+    currency: string;
 }
 
-export function UpdatePassDtoFromJSON(json: any): UpdatePassDto {
-    return UpdatePassDtoFromJSONTyped(json, false);
+export function AmountDtoFromJSON(json: any): AmountDto {
+    return AmountDtoFromJSONTyped(json, false);
 }
 
-export function UpdatePassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePassDto {
+export function AmountDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AmountDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'description': json['description'],
+        'amount': json['amount'],
+        'currency': json['currency'],
     };
 }
 
-export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
+export function AmountDtoToJSON(value?: AmountDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +57,8 @@ export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
     }
     return {
         
-        'description': value.description,
+        'amount': value.amount,
+        'currency': value.currency,
     };
 }
 

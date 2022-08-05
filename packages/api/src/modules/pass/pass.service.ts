@@ -1,20 +1,19 @@
 import { EntityRepository, wrap } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common'
+import { PublicKey } from '@solana/web3.js'
 
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import {
-  COLLECTION_NOT_EXIST,
-  COLLECTION_NOT_OWNED_BY_USER,
-} from '../collection/constants/errors'
 import { CollectionEntity } from '../collection/entities/collection.entity'
+import { SolNftEntity } from '../sol/entities/sol-nft.entity'
+import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
+import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { WalletService } from '../wallet/wallet.service'
 import {
   PASS_NOT_EXIST,
   PASS_NOT_OWNED_BY_USER,
@@ -22,6 +21,7 @@ import {
 } from './constants/errors'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { GetPassDto } from './dto/get-pass.dto'
+import { GetPassOwnershipDto } from './dto/get-pass-ownership.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassOwnershipEntity } from './entities/pass-ownership.entity'
@@ -37,30 +37,32 @@ export class PassService {
     private readonly passOwnershipRepository: EntityRepository<PassOwnershipEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: EntityRepository<UserEntity>,
+    @InjectRepository(SolNftCollectionEntity)
+    private readonly solNftCollectionRepository: EntityRepository<SolNftCollectionEntity>,
+    @InjectRepository(SolNftEntity)
+    private readonly solNftRepository: EntityRepository<SolNftEntity>,
+    private readonly solService: SolService,
+    private readonly walletService: WalletService,
   ) {}
 
   async create(
     userId: string,
     createPassDto: CreatePassDto,
-  ): Promise<CreatePassDto> {
-    const collection = await this.collectionRepository.findOne(
-      { id: createPassDto.collectionId },
-      { populate: ['owner'] },
+  ): Promise<GetPassDto> {
+    const user = await this.userRepository.findOneOrFail(userId)
+    const solNftCollectionDto = await this.solService.createNftCollection(
+      user,
+      createPassDto.title,
+      user.userName.replace(/[^a-zA-Z]/g, '').substring(0, 10),
+      createPassDto.description,
+      createPassDto.imageUrl,
     )
-
-    if (!collection) {
-      throw new BadRequestException(COLLECTION_NOT_EXIST)
-    }
-
-    if (collection.owner.id !== userId) {
-      throw new UnauthorizedException(COLLECTION_NOT_OWNED_BY_USER)
-    }
-
-    const user = await this.userRepository.getReference(userId)
-
+    const solNftCollection = await this.solNftCollectionRepository.getReference(
+      solNftCollectionDto.id,
+    )
     const pass = this.passRepository.create({
       owner: user,
-      collection: collection,
+      solNftCollection: solNftCollection,
       title: createPassDto.title,
       description: createPassDto.description,
       imageUrl: createPassDto.imageUrl,
@@ -75,7 +77,7 @@ export class PassService {
 
   async findOne(id: string): Promise<GetPassDto> {
     const pass = await this.passRepository.findOne(id, {
-      populate: ['owner', 'collection'],
+      populate: ['owner', 'solNftCollection'],
     })
     if (!pass) {
       throw new NotFoundException(PASS_NOT_EXIST)
@@ -105,14 +107,30 @@ export class PassService {
 
   async addHolder(userId: string, passId: string, temporary?: boolean) {
     const user = await this.userRepository.getReference(userId)
-    const pass = await this.passRepository.getReference(passId)
+    const pass = await this.passRepository.findOneOrFail(passId, {
+      populate: ['owner', 'solNftCollection'],
+    })
 
+    const expiresAt = temporary
+      ? new Date(new Date().getDate() + 30).valueOf()
+      : undefined
+
+    const userCustodialWallet = await this.walletService.getUserCustodialWallet(
+      userId,
+    )
+
+    const solNftDto = await this.solService.createNftPass(
+      user.id,
+      new PublicKey(userCustodialWallet.address),
+      pass.solNftCollection.id,
+    )
+
+    const solNft = await this.solNftRepository.getReference(solNftDto.id)
     const passOwnership = this.passOwnershipRepository.create({
       pass: pass,
       holder: user,
-      expiresAt: temporary
-        ? new Date(new Date().getDate() + 30).valueOf()
-        : undefined,
+      expiresAt: expiresAt,
+      solNft: solNft,
     })
 
     await createOrThrowOnDuplicate(
@@ -120,6 +138,8 @@ export class PassService {
       passOwnership,
       USER_ALREADY_OWNS_PASS,
     )
+
+    return new GetPassOwnershipDto(pass.id, user.id, expiresAt)
   }
 
   async doesUserHoldPass(userId: string, passId: string) {

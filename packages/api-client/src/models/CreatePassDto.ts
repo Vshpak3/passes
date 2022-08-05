@@ -24,18 +24,6 @@ export interface CreatePassDto {
      * @type {string}
      * @memberof CreatePassDto
      */
-    collectionId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePassDto
-     */
-    title: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePassDto
-     */
     description: string;
     /**
      * 
@@ -73,8 +61,6 @@ export function CreatePassDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'collectionId': json['collectionId'],
-        'title': json['title'],
         'description': json['description'],
         'imageUrl': json['imageUrl'],
         'type': json['type'],
@@ -92,8 +78,6 @@ export function CreatePassDtoToJSON(value?: CreatePassDto | null): any {
     }
     return {
         
-        'collectionId': value.collectionId,
-        'title': value.title,
         'description': value.description,
         'imageUrl': value.imageUrl,
         'type': value.type,

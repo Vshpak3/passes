@@ -40,7 +40,6 @@ export class CollectionService {
       owner: user,
       title: createPassDto.title,
       description: createPassDto.description,
-      passes: [],
       blockchain: 'solana',
     })
 
@@ -50,7 +49,7 @@ export class CollectionService {
 
   async findOne(id: string): Promise<GetCollectionDto> {
     const collection = await this.collectionRepository.findOne(id, {
-      populate: ['owner', 'passes'],
+      populate: ['owner'],
     })
     if (!collection) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
@@ -68,7 +67,7 @@ export class CollectionService {
     const collection = await this.collectionRepository.findOne(
       { owner: user.id },
       {
-        populate: ['owner', 'passes'],
+        populate: ['owner'],
       },
     )
     if (!collection) {

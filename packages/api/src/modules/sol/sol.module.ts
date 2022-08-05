@@ -1,5 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 
 import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -10,6 +11,6 @@ import { SolService } from './sol.service'
 @Module({
   imports: [MikroOrmModule.forFeature([SolNftCollectionEntity, UserEntity])],
   controllers: [SolController],
-  providers: [SolService, LambdaService],
+  providers: [SolService, LambdaService, ConfigService],
 })
 export class SolModule {}

@@ -15,6 +15,12 @@ export class SolNftCollectionEntity extends BaseEntity {
   symbol: string
 
   @Property()
+  description: string
+
+  @Property()
+  imageUrl: string
+
+  @Property()
   uriMetadata: string
 
   @Property()

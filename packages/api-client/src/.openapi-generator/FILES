@@ -23,6 +23,7 @@ apis/UserApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AmountDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BankAddressDto.ts
@@ -39,6 +40,7 @@ models/CreateChannelDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
 models/CreatePassDto.ts
+models/CreatePassHolderDto.ts
 models/CreatePostDto.ts
 models/CreateProfileDto.ts
 models/CreateSolNftCollectionDto.ts
@@ -47,6 +49,7 @@ models/CreateUserDto.ts
 models/CreateWalletDto.ts
 models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
+models/GetPassOwnershipDto.ts
 models/GetProfileDto.ts
 models/GetSolNftCollectionDto.ts
 models/GetSolNftDto.ts
@@ -63,6 +66,7 @@ models/PaymentDto.ts
 models/PhantomCircleUSDCEntryInputDto.ts
 models/PhantomCircleUSDCEntryOutputDto.ts
 models/SendMessageDto.ts
+models/SourceDto.ts
 models/TokenDto.ts
 models/UpdatePassDto.ts
 models/UpdatePostDto.ts

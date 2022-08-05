@@ -1,8 +1,9 @@
 import { PassEntity } from '../entities/pass.entity'
 
 export class GetPassDto {
+  id: string
   creatorId: string
-  collectionId: string
+  solNftCollectionId: string
   title: string
   description: string
   imageUrl: string
@@ -11,8 +12,9 @@ export class GetPassDto {
   totalSupply: number
 
   constructor(passEntity: PassEntity) {
+    this.id = passEntity.id
     this.creatorId = passEntity.owner.id
-    this.collectionId = passEntity.collection.id
+    this.solNftCollectionId = passEntity.solNftCollection.id
     this.title = passEntity.title
     this.description = passEntity.description
     this.imageUrl = passEntity.imageUrl
