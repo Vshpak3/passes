@@ -25,7 +25,7 @@ Router.events.on("routeChangeError", () => {
 
 const App = ({ Component, pageProps }) => {
   useMessageToDevelopers([
-    "Hey developers! We're hiring: https://jobs.lever.co/Moment",
+    "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
   ])
 

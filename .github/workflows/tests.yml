@@ -56,7 +56,7 @@ jobs:
       - name: Checkout infra code
         uses: actions/checkout@v2
         with:
-          repository: buildmoment/infra
+          repository: getpasses/infra
           ref: main
           token: ${{ secrets.INFRA_REPO_ACCESS }}
           path: infra

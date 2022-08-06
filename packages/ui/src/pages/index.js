@@ -180,7 +180,7 @@ const HomePage = () => {
           </Text>
 
           <div className="flex justify-center">
-            <Button variant="purple" bigger href="https://jobs.lever.co/Moment">
+            <Button variant="purple" bigger href="https://jobs.lever.co/Passes">
               See Open Positions
             </Button>
           </div>

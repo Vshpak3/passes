@@ -134,7 +134,7 @@ export class SolService {
     owner: PublicKey,
     collectionId: string,
   ): Promise<GetSolNftDto> {
-    // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
+    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.userRepository.findOneOrFail(userId)
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
@@ -359,7 +359,7 @@ export class SolService {
     description: string,
     imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
-    // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
+    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     let user: undefined | UserEntity
     if (isString(userOrUserId)) {
       user = await this.userRepository.findOneOrFail(userOrUserId)

@@ -61,7 +61,7 @@ export class EthService {
     userId: string,
     createEthNftCollectionDto: CreateEthNftCollectionDto,
   ): Promise<EthNftCollectionEntity> {
-    // TODO: find a better way to only allow admins to access this endpoint https://buildmoment.atlassian.net/browse/MNT-144
+    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const { knex, toDict, v4, getTableName } = this.ReadWriteDatabaseService
     const userTable = getTableName(UserEntity)
     const user = await knex(userTable).where({ id: userId }).first()
