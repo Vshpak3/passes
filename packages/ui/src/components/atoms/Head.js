@@ -1,10 +1,10 @@
 import NextHead from "next/head"
 import { useRouter } from "next/router"
 
-const TITLE = "Moment"
+const TITLE = "Passes"
 const DESCRIPTION =
   "web3 platform for creators to autonomously scale their content, and own their audiences."
-const PRODUCTION_URL = "https://moment.vip"
+const PRODUCTION_URL = "https://passes.com"
 const DEVELOPMENT_URL = "http://localhost:3000"
 const VERCEL_URL =
   process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
