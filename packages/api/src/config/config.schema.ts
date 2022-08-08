@@ -23,7 +23,7 @@ export const configValidationSchema = Joi.object({
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().required(),
 
-  MONITORING_SENTRY_DSN: Joi.string().uri().required(),
+  MONITORING_SENTRY_DSN: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -99,6 +99,8 @@ export const configConfiguration = async function (): Promise<
     },
     monitoring: {
       sentry_dsn: getConfigValue('MONITORING_SENTRY_DSN'),
+      sentry_enabled:
+        (await getConfigValue('MONITORING_SENTRY_DSN')) != 'disable',
     },
     oauth: {
       google: {

@@ -31,6 +31,8 @@ import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
 import { WalletModule } from './modules/wallet/wallet.module'
+import { MetricsModule } from './monitoring/metrics/metric.module'
+import { metricOptions } from './monitoring/metrics/metric.options'
 import { sentryOptions } from './monitoring/sentry/sentry.options'
 
 @Module({
@@ -44,6 +46,7 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
     ConfigModule.forRoot(configOptions),
     RedisModule.forRootAsync(redisOptions),
     SentryModule.forRootAsync(sentryOptions),
+    MetricsModule.forRootAsync(metricOptions),
     AuthModule,
     CollectionModule,
     CommentModule,
