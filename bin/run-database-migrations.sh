@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 #
-# Used in code pipeline, database migration step.
+# Used in code pipeline to run database migrations.
+# Script must be sh since bash is not installed.
 #
 set -o errexit
 set -o nounset
