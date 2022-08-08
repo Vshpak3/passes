@@ -24,7 +24,9 @@ type ChatViewProps = {
 }
 
 const ChatView = ({ username }: ChatViewProps) => {
-  const chatClient = StreamChat.getInstance("hx7kxuk3kyuf")
+  const chatClient = StreamChat.getInstance(
+    process.env.NEXT_PUBLIC_STREAM_CHAT_KEY as string
+  )
   const channel = useRef<ChannelType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [tipAmount, setTipAmount] = useState(20)
