@@ -14,6 +14,19 @@
 
 
 import * as runtime from '../runtime';
+import {
+    RawFacebookDeletionRequestDto,
+    RawFacebookDeletionRequestDtoFromJSON,
+    RawFacebookDeletionRequestDtoToJSON,
+} from '../models';
+
+export interface FacebookOauthFacebookDeletionConfirmationRequest {
+    confirmationCode: string;
+}
+
+export interface FacebookOauthFacebookInitiateDeleteRequest {
+    rawFacebookDeletionRequestDto: RawFacebookDeletionRequestDto;
+}
 
 /**
  * 
@@ -68,6 +81,71 @@ export class AuthFacebookApi extends runtime.BaseAPI {
      */
     async facebookOauthFacebookAuthRedirect(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.facebookOauthFacebookAuthRedirectRaw(initOverrides);
+    }
+
+    /**
+     * Check if a deletion request has been fulfilled
+     */
+    async facebookOauthFacebookDeletionConfirmationRaw(requestParameters: FacebookOauthFacebookDeletionConfirmationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.confirmationCode === null || requestParameters.confirmationCode === undefined) {
+            throw new runtime.RequiredError('confirmationCode','Required parameter requestParameters.confirmationCode was null or undefined when calling facebookOauthFacebookDeletionConfirmation.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.confirmationCode !== undefined) {
+            queryParameters['confirmationCode'] = requestParameters.confirmationCode;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/auth/facebook/deletion_confirmation`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Check if a deletion request has been fulfilled
+     */
+    async facebookOauthFacebookDeletionConfirmation(requestParameters: FacebookOauthFacebookDeletionConfirmationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.facebookOauthFacebookDeletionConfirmationRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Initiate a deletion request for a Facebook OAuth user
+     */
+    async facebookOauthFacebookInitiateDeleteRaw(requestParameters: FacebookOauthFacebookInitiateDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.rawFacebookDeletionRequestDto === null || requestParameters.rawFacebookDeletionRequestDto === undefined) {
+            throw new runtime.RequiredError('rawFacebookDeletionRequestDto','Required parameter requestParameters.rawFacebookDeletionRequestDto was null or undefined when calling facebookOauthFacebookInitiateDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/auth/facebook/deletion_callback`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RawFacebookDeletionRequestDtoToJSON(requestParameters.rawFacebookDeletionRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Initiate a deletion request for a Facebook OAuth user
+     */
+    async facebookOauthFacebookInitiateDelete(requestParameters: FacebookOauthFacebookInitiateDeleteRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.facebookOauthFacebookInitiateDeleteRaw(requestParameters, initOverrides);
     }
 
 }
