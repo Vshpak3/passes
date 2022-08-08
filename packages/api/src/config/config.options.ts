@@ -6,7 +6,7 @@ import { configConfiguration, configValidationSchema } from './config.schema'
 // variables (due to the setting ignoreEnvVars: true). We need to pull out the
 // variables we care about before this happen Since configs get evaluated at
 // import-time (that's when the module is created), we need to do this here
-export const infra_config_node_env = process.env.NODE_ENV
+export const infra_config_node_env = process.env.NODE_ENV ?? 'dev'
 export const infra_config_aws_region = process.env.AWS_REGION
 console.log(`Set by infra:
   - NODE_ENV: ${infra_config_node_env},

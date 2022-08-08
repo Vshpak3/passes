@@ -9,6 +9,7 @@ COPY package.json .
 COPY packages packages
 COPY tsconfig.json .
 COPY yarn.lock .
+COPY bin/run-database-migrations.sh bin/run-database-migrations.sh
 
 # Transitive dependencies of web3 (bufferutil and utf-8-validate) require these
 # packages to be built and subsequently installed

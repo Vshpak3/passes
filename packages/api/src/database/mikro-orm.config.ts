@@ -1,17 +1,20 @@
-import { ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { NestFactory } from '@nestjs/core'
 
+import { configOptions } from '../config/config.options'
 import { getDatabaseOptions } from './mikro-orm.options'
 
 // This is needed for the mikro-orm cli to run. This file is specified in
 // package.json.
-// TODO: pull from .env file
-export default getDatabaseOptions(
-  new ConfigService({
-    'database.hosts': { ReadWrite: 'localhost', ReadOnly: 'localhost' },
-    'database.port': '3306',
-    'database.user': 'root',
-    'database.password': 'root',
-    'database.dbname': 'passes',
-  }),
-  'ReadWrite',
-)
+
+export default (async () => {
+  // Use standalone applications to get the configService instance
+  // https://docs.nestjs.com/standalone-applications
+  const app = await NestFactory.createApplicationContext(
+    ConfigModule.forRoot(configOptions),
+  )
+  const configService = app.get(ConfigService)
+  const options = getDatabaseOptions(configService, 'ReadWrite')
+  await app.close()
+  return options
+})()
