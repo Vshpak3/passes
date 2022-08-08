@@ -3,6 +3,7 @@ import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
+import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
@@ -13,7 +14,7 @@ import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
 import { NewFundraiserTab } from "./fundraiser-tab"
 import MediaHeader from "./header"
-import UploadPostMedia from "./media"
+import { MediaFile } from "./media"
 import { PollsTab } from "./polls-tab"
 import { NewsQuizTab } from "./quiz-tab"
 
@@ -26,9 +27,23 @@ const RecordView = dynamic(
     ssr: false
   }
 )
+
+const MB = 1048576
+const MAX_FILE_SIZE = 10 * MB
+const MAX_FILES = 9
+
 export const NewPost = ({ passes = [] }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState([])
+  const [selectedMedia, setSelectedMedia] = useState()
+  const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
+  const [hasSchedule, setHasSchedule] = useState(false)
+  const [hasFundraiser, setHasFundraiser] = useState(false)
+  const [hasVideo, setHasVideo] = useState(false)
+  const [hasAudio, setHasAudio] = useState(false)
+  const [extended, setExtended] = useState(false)
+  const [selectedPasses, setSelectedPasses] = useState(passes)
   const {
     handleSubmit,
     register,
@@ -40,14 +55,8 @@ export const NewPost = ({ passes = [] }) => {
   } = useForm({
     defaultValues: {}
   })
-  const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
+  const isPaid = watch("isPaid")
   const fundraiserTarget = watch("fundraiserTarget")
-  const [hasSchedule, setHasSchedule] = useState(false)
-  const [hasFundraiser, setHasFundraiser] = useState(false)
-  const [hasVideo, setHasVideo] = useState(false)
-  const [hasAudio, setHasAudio] = useState(false)
-
   const onCloseTab = (tab) => {
     switch (tab) {
       case "Fundraiser":
@@ -65,29 +74,6 @@ export const NewPost = ({ passes = [] }) => {
   useEffect(() => {
     setHasMounted(true)
   }, [])
-
-  const [extended, setExtended] = useState(false)
-  const [selectedPasses, setSelectedPasses] = useState([])
-  const MB = 1048576
-  const MAX_FILE_SIZE = 10 * MB
-  const MAX_FILES = 9
-  const isPaid = watch("isPaid")
-
-  const mediaGridLayout = (length, index) => {
-    switch (length) {
-      case 1:
-        return "col-span-12"
-      case 2:
-      case 4:
-        return "col-span-6"
-      case 3:
-        return index === 0 ? "col-span-6 row-span-2" : "col-span-6"
-      case 5:
-        return index === 0 || index === 1 ? "col-span-6" : "col-span-4"
-      default:
-        return "col-span-4"
-    }
-  }
 
   const onPassSelect = () => {
     const { passes: _passes } = getValues()
@@ -109,9 +95,8 @@ export const NewPost = ({ passes = [] }) => {
 
   const onFileInputChange = (event) => {
     const files = [...event.target.files]
-
+    setSelectedMedia(files[0])
     onMediaChange(files)
-
     event.target.value = ""
   }
 
@@ -140,6 +125,7 @@ export const NewPost = ({ passes = [] }) => {
   const onDragDropChange = (event) => {
     if (event?.target?.files) return onFileInputChange(event)
     const files = [...event.target.files]
+
     onMediaChange(files)
     event.target.value = ""
   }
@@ -171,6 +157,7 @@ export const NewPost = ({ passes = [] }) => {
       lastModified: new Date().getTime(),
       url: mediaBlobUrl
     })
+    setSelectedMedia(file)
     setFiles([...files, file])
     if (hasVideo) setHasVideo(false)
     else setHasAudio(false)
@@ -182,7 +169,7 @@ export const NewPost = ({ passes = [] }) => {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
-          className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-7 py-5 backdrop-blur-[100px]"
+          className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-2 py-2 backdrop-blur-[100px] md:px-7 md:py-5"
           onClick={() => setExtended(true)}
         >
           {extended && (
@@ -307,20 +294,72 @@ export const NewPost = ({ passes = [] }) => {
                   errors={errors}
                 />
               ) : (
-                <div className="h-[170px] w-full">
-                  <div className="grid h-full grid-cols-12 gap-4">
-                    {files.length > 0 &&
-                      files.map((file, index) => (
+                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-[#BF7AF0]  md:h-[420px] md:p-9">
+                  <div className="relative flex h-[230px] w-full items-center justify-center rounded-[6px]">
+                    {selectedMedia ? (
+                      <MediaFile
+                        preview={true}
+                        file={selectedMedia}
+                        className={classNames(
+                          selectedMedia?.type.startsWith("image/")
+                            ? "rounded-[6px] object-contain"
+                            : selectedMedia.type.startsWith("video/")
+                            ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full rounded-[6px] object-cover"
+                            : selectedMedia.type.startsWith("aduio/")
+                            ? "absolute inset-0 m-auto min-w-full max-w-full rounded-[6px] object-cover"
+                            : null
+                        )}
+                      />
+                    ) : (
+                      <div className=" flex h-[232px] items-center justify-center  rounded-[6px] border-[1px] border-solid border-[#BF7AF0] "></div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-start gap-6">
+                    <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto sm:max-w-[410px]">
+                      {files.map((file, index) => (
                         <div
-                          key={`media_${index}`}
-                          className={mediaGridLayout(files.length, index)}
+                          key={index}
+                          className="relative flex h-[92px] w-[118px] flex-shrink-0 items-center justify-center rounded-[6px]"
                         >
-                          <UploadPostMedia
+                          <MediaFile
                             onRemove={() => onRemove(index)}
+                            onSelect={() => setSelectedMedia(file)}
                             file={file}
+                            className={classNames(
+                              file.type.startsWith("image/")
+                                ? "cursor-pointer rounded-[6px] object-contain"
+                                : file.type.startsWith("video/")
+                                ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                : file.type.startsWith("aduio/")
+                                ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                : null
+                            )}
                           />
                         </div>
                       ))}
+                    </div>
+                    <FormInput
+                      register={register}
+                      name="drag-drop"
+                      type="file"
+                      multiple={true}
+                      trigger={
+                        <div className="box-border flex h-[92px] w-[118px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-[#BF7AF0] bg-[#bf7af0]/10">
+                          <PlusIcon />
+                        </div>
+                      }
+                      options={{ onChange: onFileInputChange }}
+                      accept={[
+                        ".png",
+                        ".jpg",
+                        ".jpeg",
+                        ".mp4",
+                        ".mov",
+                        ".qt",
+                        ".mp3"
+                      ]}
+                      errors={errors}
+                    />
                   </div>
                 </div>
               )}
@@ -349,8 +388,10 @@ export const NewPost = ({ passes = [] }) => {
               )}
               {isPaid && (
                 <div className="block w-full border-b border-[#2C282D] p-0 pt-[38px] pb-7">
-                  <div className="flex flex-1 items-center gap-4 pb-5">
-                    <span>Paid for (if not in the audience list)</span>
+                  <div className="flex flex-1 items-center gap-1 pb-5 sm:gap-4">
+                    <span className="text-xs text-[#ffff] sm:text-base">
+                      Paid for (if not in the audience list)
+                    </span>
                     <InfoIcon />
                     <div className="relative flex max-w-[140px] justify-between rounded-md shadow-sm">
                       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

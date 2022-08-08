@@ -12,7 +12,7 @@ import {
   PassesPinkButton
 } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
-import UploadPostMedia from "src/components/pages/profile/main-content/new-post/media"
+import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 // import useLocalStorage from "src/hooks/useLocalStorage"
 
@@ -169,7 +169,7 @@ const Collection = ({ options = {} }) => {
                           key={`media_${index}`}
                           className={mediaGridLayout(files.length, index)}
                         >
-                          <UploadPostMedia
+                          <MediaFile
                             onRemove={() => onRemove(index)}
                             file={file}
                           />

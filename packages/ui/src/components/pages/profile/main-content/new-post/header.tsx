@@ -66,9 +66,9 @@ const MediaHeader = ({
   activeMediaHeader
 }: UploadPostMediaProps) => (
   <div className="relative flex h-full w-full items-center justify-between pb-4 text-[16px] font-normal">
-    <div className="flex items-center">
+    <div className="flex items-center ">
       {/* <span className="mr-2">Type</span> */}
-      <div className="flex w-full justify-between gap-1">
+      <div className="flex w-full flex-wrap justify-between gap-1">
         {mediaTypes.map(({ name, Icon, accept, type, multiple }) =>
           type === "button" ? (
             <button
@@ -138,7 +138,7 @@ const MediaHeader = ({
       errors={errors}
       options={options}
       name="isPaid"
-      className="group rounded-[56px] bg-[#BF7AF0] p-2 text-sm text-[#BF7AF0] ring-[#BF7AF0] hover:bg-[rgba(191,122,240,0.1)] focus:ring-[#BF7AF0]"
+      className="group"
     />
   </div>
 )

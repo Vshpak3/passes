@@ -66,7 +66,7 @@ const Input = ({
           className={classNames(
             errors[name] !== undefined ? "border-red-500" : "border-gray-300",
             `block w-full appearance-none rounded-md border p-2 placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:px-4 sm:py-3  sm:text-sm ${
-              icon ? "sm:pl-[50px]" : ""
+              icon ? "pl-[50px]" : "pl-2"
             }`,
             className
           )}

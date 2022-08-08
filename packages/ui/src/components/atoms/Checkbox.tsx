@@ -63,7 +63,7 @@ const Checkbox = ({
             className={classNames(
               errors[name] !== undefined ? "border-red-500" : "border-gray-300",
               type === "toggle" ? "w-9" : "",
-              "rounded border text-[#C943A8] placeholder-gray-400 shadow-sm focus:border-[#C943A8] focus:outline-none focus:ring-[#C943A8] sm:text-sm",
+              "rounded border placeholder-gray-400 shadow-sm ring-[#BF7AF0] focus:border-[#BF7AF0] focus:bg-[#BF7AF0] focus:text-[#BF7AF0] focus:outline-none focus:ring-[#BF7AF0] sm:text-sm",
               className
             )}
           />
