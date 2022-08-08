@@ -1,4 +1,4 @@
 export const BASE_CLAIMS = {
-  aud: 'moment-ui',
-  iss: 'moment-api',
+  aud: 'passes-ui',
+  iss: 'passes-api',
 }
