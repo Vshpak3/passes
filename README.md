@@ -41,7 +41,7 @@ yarn workspace @passes/api prettier:fix
 # runs eslint lint fixes
 yarn workspace @passes/api lint:fix
 
-# ensures all config keys are defined in all environments
+# ensures all config keys are defined in all environments (requires infra repo)
 ./bin/config-check.sh
 ```
 
