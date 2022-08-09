@@ -46,12 +46,12 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
       <img // eslint-disable-line @next/next/no-img-element
         className="h-12 w-12 rounded-full object-cover"
         src={profile.profileImageUrl}
-        alt={profile.fullName}
+        alt={profile.displayName}
       />
       <div className="space-y-1 font-medium dark:text-white">
         <div className="flex items-center gap-[6px]">
           <span className="whitespace-nowrap font-semibold md:text-[20px] md:leading-[25px]">
-            {profile.fullName}
+            {profile.displayName}
           </span>
           <span className="flex items-center">
             <VerifiedSmall />

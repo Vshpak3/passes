@@ -31,10 +31,10 @@ export const ProfilePhoto = ({ url }) => (
   </div>
 )
 
-export const ProfileInformation = ({ fullName, userId, description }) => (
+export const ProfileInformation = ({ displayName, userId, description }) => (
   <div className="flex flex-col items-center justify-center gap-[6px] pt-4">
     <span className="text-center text-base font-medium leading-[19px]">
-      {fullName}
+      {displayName}
     </span>
     <div className="flex cursor-pointer items-center justify-center rounded-[50px] bg-[#ffffff]/[0.05] px-3 py-[6px]">
       <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">

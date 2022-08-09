@@ -35,7 +35,7 @@ export class AuthController {
   @Get('user')
   @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Req() req: RequestWithUser) {
-    return new GetUserDto(await this.userService.findOne(req.user.id))
+    return new GetUserDto(await this.userService.findOne(req.user.id), true)
   }
 
   @Post('refresh')

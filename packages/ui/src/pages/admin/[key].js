@@ -19,7 +19,7 @@ export async function getServerSideProps({ params }) {
 const defaultValues = {
   id: "",
   userId: "",
-  fullName: "",
+  displayName: "",
   coverTitle: "",
   coverDescription: "",
   isKYCVerified: false,
@@ -282,7 +282,7 @@ const Admin = () => {
                   <Cross />
                 </button>
               </div>
-              {creator.fullName}
+              {creator.displayName}
             </div>
           ))}
         </div>
@@ -405,8 +405,8 @@ const Admin = () => {
                         <FormInput
                           type="text"
                           register={register}
-                          name="fullName"
-                          label="Full Name"
+                          name="displayName"
+                          label="Display Name"
                           className="mb-2 bg-transparent"
                         />
                       </div>

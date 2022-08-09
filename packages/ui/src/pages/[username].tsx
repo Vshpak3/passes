@@ -11,7 +11,7 @@ import getConnection from "src/helpers/demo"
 const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
-  fullName: "Alex Drachnik",
+  displayName: "Alex Drachnik",
   coverTitle: "DRACHNIK (SASHA)",
   coverDescription:
     " I help brands & DJs go viral on TikTok 📲 | Creative Director @ BAM 💥 | TikTok; 2M+",

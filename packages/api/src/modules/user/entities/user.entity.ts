@@ -25,7 +25,11 @@ export class UserEntity extends BaseEntity<
   userName: string
 
   @Property({ length: 50 })
-  fullName?: string
+  legalFullName?: string
+
+  @Property({ length: 50 })
+  @Index()
+  displayName?: string
 
   @Property()
   phoneNumber?: string

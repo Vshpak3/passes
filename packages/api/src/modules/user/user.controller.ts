@@ -14,6 +14,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { CreateUserDto } from './dto/create-user.dto'
 import { GetUserDto } from './dto/get-user.dto'
+import { SearchUserRequestDto } from './dto/search-user-request.dto'
+import { SearchCreatorResponseDto } from './dto/search-user-response.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserService } from './user.service'
 
@@ -33,6 +35,20 @@ export class UserController {
     return this.userService.create(createUserDto)
   }
 
+  @ApiOperation({ summary: 'Search for creators by query' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: SearchCreatorResponseDto,
+    description: 'A list of creators was returned',
+  })
+  @Post('/creator/search')
+  async searchCreatorByUsername(
+    @Body() searchCreatorDto: SearchUserRequestDto,
+  ): Promise<any> {
+    const creators = await this.userService.searchByQuery(searchCreatorDto)
+    return new SearchCreatorResponseDto(creators)
+  }
+
   @ApiOperation({ summary: 'Gets a user' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -41,7 +57,7 @@ export class UserController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<GetUserDto> {
-    return this.userService.findOne(id)
+    return new GetUserDto(await this.userService.findOne(id))
   }
 
   @ApiOperation({ summary: 'Updates a user' })
@@ -55,7 +71,9 @@ export class UserController {
     @Req() req: RequestWithUser,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<GetUserDto> {
-    return this.userService.update(req.user.id, updateUserDto)
+    return new GetUserDto(
+      await this.userService.update(req.user.id, updateUserDto),
+    )
   }
 
   @ApiOperation({ summary: 'Disables a user account' })
@@ -66,7 +84,7 @@ export class UserController {
   })
   @Delete('')
   async delete(@Req() req: RequestWithUser): Promise<GetUserDto> {
-    return this.userService.remove(req.user.id)
+    return new GetUserDto(await this.userService.remove(req.user.id))
   }
 
   @ApiOperation({ summary: 'Validates whether a username is available' })

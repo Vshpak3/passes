@@ -21,7 +21,7 @@ export class JwtAuthService {
   private isVerified(user: UserEntity): boolean {
     // TODO: Add email not verified check (for email password users)
 
-    if (!user.fullName) {
+    if (!user.legalFullName) {
       return false
     }
 

@@ -22,7 +22,7 @@ const ProfileDetails = ({ profile, onEditProfile }) => (
     </div>
     <ProfilePhoto url={profile.profileImageUrl} />
     <ProfileInformation
-      fullName={profile.fullName}
+      displayName={profile.displayName}
       userId={profile.userId}
       description={profile.description}
     />

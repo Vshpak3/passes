@@ -36,7 +36,13 @@ export interface GetProfileDto {
      * @type {string}
      * @memberof GetProfileDto
      */
-    fullName?: string;
+    legalFullName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileDto
+     */
+    displayName?: string;
     /**
      * 
      * @type {boolean}
@@ -105,7 +111,8 @@ export function GetProfileDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'id': json['id'],
         'userId': json['userId'],
-        'fullName': !exists(json, 'fullName') ? undefined : json['fullName'],
+        'legalFullName': !exists(json, 'legalFullName') ? undefined : json['legalFullName'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'profileImageUrl': !exists(json, 'profileImageUrl') ? undefined : json['profileImageUrl'],
@@ -129,7 +136,8 @@ export function GetProfileDtoToJSON(value?: GetProfileDto | null): any {
         
         'id': value.id,
         'userId': value.userId,
-        'fullName': value.fullName,
+        'legalFullName': value.legalFullName,
+        'displayName': value.displayName,
         'isKYCVerified': value.isKYCVerified,
         'description': value.description,
         'profileImageUrl': value.profileImageUrl,

@@ -3,6 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 import { CreateUserDto } from './dto/create-user.dto'
+import { SearchUserRequestDto } from './dto/search-user-request.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
 
@@ -78,6 +79,22 @@ export class UserService {
 
     await this.userRepository.persistAndFlush(newUser)
     return newUser
+  }
+
+  // TODO: Sort by creators that the user follows, most interacted with first?
+  async searchByQuery(searchUserDto: SearchUserRequestDto) {
+    const likeClause = `%${searchUserDto.query}%`
+    return await this.userRepository.find(
+      {
+        $or: [
+          { userName: { $like: likeClause } },
+          { displayName: { $like: likeClause } },
+        ],
+        isCreator: true,
+        isDisabled: false,
+      },
+      { limit: 10 },
+    )
   }
 
   async validateUsername(username: string): Promise<boolean> {

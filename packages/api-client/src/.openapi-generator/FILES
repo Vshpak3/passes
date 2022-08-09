@@ -66,6 +66,7 @@ models/PaymentDto.ts
 models/PhantomCircleUSDCEntryInputDto.ts
 models/PhantomCircleUSDCEntryOutputDto.ts
 models/RawFacebookDeletionRequestDto.ts
+models/SearchCreatorResponseDto.ts
 models/SendMessageDto.ts
 models/SourceDto.ts
 models/TokenDto.ts

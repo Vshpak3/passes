@@ -8,7 +8,10 @@ export class GetProfileDto {
   userId: string
 
   @ApiPropertyOptional()
-  fullName?: string
+  legalFullName?: string
+
+  @ApiPropertyOptional()
+  displayName?: string
 
   @ApiPropertyOptional()
   isKYCVerified?: boolean
@@ -41,7 +44,8 @@ export class GetProfileDto {
     this.id = profileEntity.id
     this.userId = profileEntity.user_id
     this.description = profileEntity.description
-    this.fullName = profileEntity.user_full_name
+    this.legalFullName = profileEntity.user_legal_full_name
+    this.displayName = profileEntity.user_display_name
     this.isKYCVerified = profileEntity.user_is_kycverified
     this.profileImageUrl = profileEntity.profile_image_url
     this.instagramUrl = profileEntity.instagram_url

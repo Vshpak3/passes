@@ -14,7 +14,7 @@ const MainContent = ({ profile }) => {
         <div className="relative flex max-h-[134px] items-center justify-center rounded-t-[20px]">
           <img // eslint-disable-line @next/next/no-img-element
             src={profile.profileCoverImageUrl}
-            alt={profile.fullName}
+            alt={profile.displayName}
             className="h-[134px] w-full rounded-t-[20px] object-cover"
           />
           <div className="absolute text-center text-4xl font-black  opacity-50">

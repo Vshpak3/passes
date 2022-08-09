@@ -4,7 +4,7 @@ import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 
 const form = {
-  fullName: { type: "text", label: "Full Name" },
+  displayName: { type: "text", label: "Display Name" },
   userId: { type: "text", label: "Username" },
   description: { type: "text-area", label: "Description" },
   coverDescription: { type: "text-area", label: "Cover Description" },

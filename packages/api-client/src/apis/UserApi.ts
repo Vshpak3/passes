@@ -21,6 +21,9 @@ import {
     GetUserDto,
     GetUserDtoFromJSON,
     GetUserDtoToJSON,
+    SearchCreatorResponseDto,
+    SearchCreatorResponseDtoFromJSON,
+    SearchCreatorResponseDtoToJSON,
     UpdateUserDto,
     UpdateUserDtoFromJSON,
     UpdateUserDtoToJSON,
@@ -32,6 +35,10 @@ export interface UserCreateRequest {
 
 export interface UserFindOneRequest {
     id: string;
+}
+
+export interface UserSearchCreatorByUsernameRequest {
+    body: object;
 }
 
 export interface UserUpdateRequest {
@@ -132,6 +139,39 @@ export class UserApi extends runtime.BaseAPI {
      */
     async userFindOne(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserDto> {
         const response = await this.userFindOneRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Search for creators by query
+     */
+    async userSearchCreatorByUsernameRaw(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userSearchCreatorByUsername.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/user/creator/search`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.body as any,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SearchCreatorResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Search for creators by query
+     */
+    async userSearchCreatorByUsername(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
+        const response = await this.userSearchCreatorByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

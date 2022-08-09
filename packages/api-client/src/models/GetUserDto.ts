@@ -42,7 +42,19 @@ export interface GetUserDto {
      * @type {string}
      * @memberof GetUserDto
      */
-    fullName: string;
+    displayName: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetUserDto
+     */
+    isCreator: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUserDto
+     */
+    legalFullName: string;
     /**
      * 
      * @type {string}
@@ -55,12 +67,6 @@ export interface GetUserDto {
      * @memberof GetUserDto
      */
     birthday: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetUserDto
-     */
-    isCreator: boolean;
 }
 
 export function GetUserDtoFromJSON(json: any): GetUserDto {
@@ -76,10 +82,11 @@ export function GetUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': json['id'],
         'email': json['email'],
         'userName': json['userName'],
-        'fullName': json['fullName'],
+        'displayName': json['displayName'],
+        'isCreator': json['isCreator'],
+        'legalFullName': json['legalFullName'],
         'phoneNumber': json['phoneNumber'],
         'birthday': json['birthday'],
-        'isCreator': json['isCreator'],
     };
 }
 
@@ -95,10 +102,11 @@ export function GetUserDtoToJSON(value?: GetUserDto | null): any {
         'id': value.id,
         'email': value.email,
         'userName': value.userName,
-        'fullName': value.fullName,
+        'displayName': value.displayName,
+        'isCreator': value.isCreator,
+        'legalFullName': value.legalFullName,
         'phoneNumber': value.phoneNumber,
         'birthday': value.birthday,
-        'isCreator': value.isCreator,
     };
 }
 

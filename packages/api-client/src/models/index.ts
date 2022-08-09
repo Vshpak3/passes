@@ -43,6 +43,7 @@ export * from './PaymentDto';
 export * from './PhantomCircleUSDCEntryInputDto';
 export * from './PhantomCircleUSDCEntryOutputDto';
 export * from './RawFacebookDeletionRequestDto';
+export * from './SearchCreatorResponseDto';
 export * from './SendMessageDto';
 export * from './SourceDto';
 export * from './TokenDto';
