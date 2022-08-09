@@ -66,7 +66,7 @@ export const Button = ({
       break
     case "white":
       variantClassName =
-        "bg-mauveDark-mauve12 text-black border border-mauveDark-mauve10 hover:bg-transparent hover:border-white hover:text-white"
+        "bg-mauveDark-mauve12 text-black max-h-[49px] border border-mauveDark-mauve10 hover:bg-transparent hover:border-white hover:text-white"
       break
     case "link-blue":
       variantClassName =

@@ -19,8 +19,15 @@ const tabsArray = [
 const mockData = {
   passName: "Kaila Troy Pro",
   creatorName: "Kaila Troy",
+  handle: "@kailatroy",
   cost: "20.00",
-  imgUrl: "https://images.dog.ceo/breeds/pointer-german/n02100236_3714.jpg"
+  imgUrl: "/bg-cover.png",
+  purchaseDate: "11/1/2022",
+  lastRenewal: "12/1/2022",
+  tagline:
+    "Lets just hang out and celebrate some chills time with some chill music and chill vibe and chillllllll",
+  description:
+    "Enjoy 900 photos and videos of exclusive content. You also get a free shot or something like that"
 }
 
 const Passes = () => {
@@ -36,7 +43,6 @@ const Passes = () => {
             {/* List View OOS right now, currently unused */}
             <Tabs tabsArray={tabsArray} />
           </div>
-          <div></div>
           <div className="flex flex-wrap gap-4">
             <CreatorPassTiles passData={mockData} />
             <CreatorPassTiles passData={mockData} />

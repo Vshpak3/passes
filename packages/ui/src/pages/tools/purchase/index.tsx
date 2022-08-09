@@ -16,8 +16,15 @@ import { withPageLayout } from "src/components/pages/WithPageLayout"
 const mockData = {
   passName: "Kaila Troy Pro",
   creatorName: "Kaila Troy",
+  handle: "@kailatroy",
   cost: "20.00",
-  imgUrl: "/bg-cover.png"
+  imgUrl: "/bg-cover.png",
+  purchaseDate: "11/1/2022",
+  lastRenewal: "12/1/2022",
+  tagline:
+    "Lets just hang out and celebrate some chills time with some chill music and chill vibe and chillllllll",
+  description:
+    "Enjoy 900 photos and videos of exclusive content. You also get a free shot or something like that"
 }
 
 const Purchase = () => {
@@ -31,8 +38,7 @@ const Purchase = () => {
     defaultValues: {}
   })
 
-  // const onPurchaseHandler = () => {}
-
+  console.log(mockData)
   return (
     <div className="mx-auto -mt-[205px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-3 mx-auto w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
