@@ -24,7 +24,7 @@ jobs:
       - run: yarn
       - run: yarn workspace @passes/api prettier:check
       - run: yarn workspace @passes/api lint:check
-      - run: yarn workspace @passes/api ts:build
+      - run: yarn workspace @passes/api ts:check
       - run: yarn workspace @passes/api test
 
   check-ui:
@@ -41,7 +41,7 @@ jobs:
       - run: yarn
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
-      - run: yarn workspace @passes/ui ts:build
+      - run: yarn workspace @passes/ui ts:check
       - run: yarn workspace @passes/ui build
 
   check-api-configs:
