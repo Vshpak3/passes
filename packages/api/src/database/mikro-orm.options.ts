@@ -12,10 +12,12 @@ export function getDatabaseOptions(
   configService: ConfigService,
   contextName: ContextName,
 ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
-  let migrations: { path: string } | undefined
+  const env = configService.get('infra.env')
+  let migrations: { path: string; emit?: 'ts' | 'js' } | undefined
   if (contextName === 'ReadWrite')
     migrations = {
       path: path.join(__dirname, 'migrations'),
+      emit: env === 'dev' ? 'ts' : 'js',
     }
 
   const hosts = configService.get('database.hosts')
@@ -41,6 +43,6 @@ export function getDatabaseOptions(
         cacheDir: path.join(__dirname, '.orm-cache'),
       },
     },
-    debug: configService.get('infra.env') === 'dev',
+    debug: env === 'dev',
   }
 }
