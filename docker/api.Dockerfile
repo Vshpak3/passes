@@ -2,15 +2,6 @@ FROM node:16-alpine as build
 
 WORKDIR /usr/src/app
 
-# Copy in all files
-COPY .yarn/releases .yarn/releases
-COPY .yarnrc.yml .
-COPY package.json .
-COPY packages packages
-COPY tsconfig.json .
-COPY yarn.lock .
-COPY bin/run-database-migrations.sh bin/run-database-migrations.sh
-
 # Transitive dependencies of web3 (bufferutil and utf-8-validate) require these
 # packages to be built and subsequently installed
 RUN apk add --update --no-cache \
@@ -19,13 +10,31 @@ RUN apk add --update --no-cache \
     gcc \
     g++
 
-# Install all dependencies
-RUN yarn install
+# Copy in all files
+COPY .yarn/releases .yarn/releases
+COPY .yarnrc.yml .
+COPY package.json .
+COPY packages/api/package.json packages/api/package.json
+COPY tsconfig.json .
+COPY yarn.lock .
+COPY bin/run-database-migrations.sh bin/run-database-migrations.sh
+
+# Install all dependencies of @passes/api workspace
+RUN yarn set version berry
+RUN yarn plugin import workspace-tools@3.1.3
+RUN yarn workspaces focus @passes/api
 RUN yarn config set enableNetwork false
 
+
 # Build the project
+COPY packages/api packages/api
 RUN yarn workspace @passes/api build
 
+# Purge dev dependencies
+# TODO: Find a better way to do it
+RUN rm -rf node_modules
+RUN yarn cache clean
+RUN yarn workspaces focus @passes/api --production
 
 FROM node:16-alpine as release
 
