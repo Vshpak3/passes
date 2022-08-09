@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import { getConnection } from "src/helpers/demo"
+import getConnection from "src/helpers/demo"
 
 const handler = async (req, res) => {
   const { id } = req.query
