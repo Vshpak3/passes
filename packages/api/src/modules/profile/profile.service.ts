@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -12,6 +13,7 @@ import {
   PROFILE_NOT_EXIST,
   PROFILE_NOT_OWNED_BY_USER,
   USER_HAS_PROFILE,
+  USER_IS_NOT_CREATOR,
 } from './constants/errors'
 import { CreateProfileDto } from './dto/create-profile.dto'
 import { GetProfileDto } from './dto/get-profile.dto'
@@ -35,6 +37,12 @@ export class ProfileService {
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
     const { knex, v4 } = this.ReadOnlyDatabaseService
+
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    if (!user || !user.is_creator) {
+      throw new BadRequestException(USER_IS_NOT_CREATOR)
+    }
+
     const id = v4()
     const data = ProfileEntity.toDict<ProfileEntity>({
       id,
@@ -50,7 +58,17 @@ export class ProfileService {
 
   async findOne(id: string): Promise<GetProfileDto> {
     const { knex } = this.ReadOnlyDatabaseService
-    const profile = await knex(ProfileEntity.table).where({ id }).first()
+    const profile = await knex(ProfileEntity.table)
+      .innerJoin(
+        `${UserEntity.table}`,
+        `${ProfileEntity.table}.user_id`,
+        `${UserEntity.table}.id`,
+      )
+      .where(`${ProfileEntity.table}.id`, id)
+      .where(`${ProfileEntity.table}.is_active`, true)
+      .where(`${UserEntity.table}.is_creator`, true)
+      .first()
+
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
@@ -64,9 +82,11 @@ export class ProfileService {
       .innerJoin(
         `${UserEntity.table} as user`,
         `${ProfileEntity.table}.user_id`,
-        'user.id',
+        `user.id`,
       )
+      .where(`${ProfileEntity.table}.is_active`, true)
       .where('user.user_name', username)
+      .where('user.is_creator', true)
       .select([
         `${ProfileEntity.table}.id as id`,
         ...ProfileEntity.populate<ProfileEntity>([
