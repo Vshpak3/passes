@@ -10,7 +10,7 @@ RUN apk add --update --no-cache \
     gcc \
     g++
 
-# Copy in all files
+# Copy in all non-code files
 COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml .
 COPY package.json .
@@ -19,16 +19,20 @@ COPY tsconfig.json .
 COPY yarn.lock .
 COPY bin/run-database-migrations.sh bin/run-database-migrations.sh
 
-# Install all dependencies of @passes/api workspace
+# Install all dependencies in the @passes/api workspace
+# We need to install all dev dependencies so that we can run tsc and have access
+# to all necessary types
 RUN yarn set version berry
 RUN yarn plugin import workspace-tools@3.1.3
 RUN yarn workspaces focus @passes/api
 RUN yarn config set enableNetwork false
 
+# Everything above this point should be cached as long as the dependencies don't
+# change
 
-# Build the project
+# Copy in the code and build the project
 COPY packages/api packages/api
-RUN yarn workspace @passes/api build
+RUN yarn workspace @passes/api ts:build
 
 # Purge dev dependencies
 # TODO: Find a better way to do it

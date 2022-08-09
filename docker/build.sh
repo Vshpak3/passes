@@ -50,12 +50,18 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"/..
 
 # Build and push the image
 if ! ${skip_build} ; then
+  if [[ -n ${tag_as_this} ]] ; then
+    echo "Pulling image '${tagged_image_name}' to be used as the cache image"
+    docker pull ${tagged_image_name}
+  fi
+
   echo "Building image '${full_image_name}'"
-  export DOCKER_BUILDKIT=0
   docker build \
     --platform linux/arm64 \
     --target release \
     --tag ${full_image_name} \
+    --cache-from ${tagged_image_name} \
+    --build-arg BUILDKIT_INLINE_CACHE=1 \
     -f 'docker/api.Dockerfile' .
   echo 'Finished building image'
 
