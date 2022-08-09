@@ -22,10 +22,13 @@ export abstract class BaseEntity<O = void> {
   @PrimaryKey({ customType: new UuidType() })
   id = v4()
 
-  @Property({ defaultRaw: 'NOW()' })
+  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
   createdAt: Date
 
-  @Property({ defaultRaw: 'NOW()', extra: 'on update now()' })
+  @Property({
+    defaultRaw: 'CURRENT_TIMESTAMP',
+    extra: 'on update CURRENT_TIMESTAMP',
+  })
   updatedAt: Date
 
   static isInitialized = false
