@@ -60,7 +60,7 @@ if ! ${skip_build} ; then
   fi
 
   echo "Building image '${full_image_name}'"
-  docker build \
+  DOCKER_BUILDKIT=1 docker build \
     --platform linux/arm64 \
     --target release \
     --tag ${full_image_name} \
