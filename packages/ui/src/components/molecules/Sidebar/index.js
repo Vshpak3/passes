@@ -51,6 +51,11 @@ const SideBar = () => {
           href: "/tools/passes"
         },
         {
+          id: "buyPassType",
+          name: "What type of Passes",
+          href: "/tools/passes/choice"
+        },
+        {
           id: "passCollection",
           name: "Pass Collection",
           href: "/tools/passes/collection"

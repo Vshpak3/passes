@@ -5,6 +5,7 @@ interface ICreatorPassTiles {
     passName: string
     creatorName: string
     cost: string
+    imgUrl: string
   }
 }
 
@@ -17,12 +18,20 @@ const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
     return null
   } else
     return (
-      <div className="flex min-h-[150px] flex-col justify-between rounded bg-white p-4">
+      <div
+        className="min-h-[213px] min-w-[260px] rounded bg-white p-4"
+        style={{
+          backgroundImage: `url(${passData.imgUrl})`,
+          backgroundSize: "cover"
+        }}
+      >
         <div>
-          <span className="text-2xl font-bold">{passData.passName}</span>
+          <span className="text-2xl font-bold text-[#ffff]/90">
+            {passData.passName}
+          </span>
         </div>
         <div>
-          <span>${passData.cost} / month</span>
+          <span className="text-[#ffff]/90">${passData.cost} / month</span>
         </div>
       </div>
     )

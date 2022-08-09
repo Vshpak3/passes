@@ -16,7 +16,8 @@ import { withPageLayout } from "src/components/pages/WithPageLayout"
 const mockData = {
   passName: "Kaila Troy Pro",
   creatorName: "Kaila Troy",
-  cost: "20.00"
+  cost: "20.00",
+  imgUrl: "/bg-cover.png"
 }
 
 const Purchase = () => {

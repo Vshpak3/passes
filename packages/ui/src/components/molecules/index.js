@@ -7,6 +7,7 @@ import DragDropCard from "./drag-drop/Card"
 import DragDropFile from "./DragDropFile"
 import SideBar from "./Sidebar"
 import Sparkles from "./Sparkles"
+import Tabs from "./Tabs"
 import TagsInput from "./TagsInput"
 
 export {
@@ -19,5 +20,6 @@ export {
   GrainyBackground,
   SideBar,
   Sparkles,
+  Tabs,
   TagsInput
 }
