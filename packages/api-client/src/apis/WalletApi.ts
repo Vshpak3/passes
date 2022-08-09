@@ -47,6 +47,10 @@ export interface WalletRefreshRequest {
     id: string;
 }
 
+export interface WalletRemoveRequest {
+    id: string;
+}
+
 /**
  * 
  */
@@ -198,6 +202,35 @@ export class WalletApi extends runtime.BaseAPI {
     async walletRefresh(requestParameters: WalletRefreshRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WalletResponseDto> {
         const response = await this.walletRefreshRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Removes authenticated wallet for a user
+     */
+    async walletRemoveRaw(requestParameters: WalletRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling walletRemove.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/wallet/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Removes authenticated wallet for a user
+     */
+    async walletRemove(requestParameters: WalletRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.walletRemoveRaw(requestParameters, initOverrides);
     }
 
 }

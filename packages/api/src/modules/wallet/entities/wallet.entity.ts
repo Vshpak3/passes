@@ -7,7 +7,7 @@ import { Chain } from '../enum/chain.enum'
 @Entity({ tableName: 'wallet' })
 export class WalletEntity extends BaseEntity {
   @ManyToOne()
-  user: UserEntity
+  user?: UserEntity
 
   @Unique()
   @Property()

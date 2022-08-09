@@ -5,7 +5,7 @@ import { Chain } from '../enum/chain.enum'
 
 export class WalletDto {
   @ApiProperty()
-  userId: string
+  userId?: string
 
   @ApiProperty()
   address: string
@@ -17,7 +17,7 @@ export class WalletDto {
   custodial: boolean
 
   constructor(walletEntity: WalletEntity) {
-    this.userId = walletEntity.user.id
+    this.userId = walletEntity.user?.id
     this.address = walletEntity.address
     this.chain = walletEntity.chain
     this.custodial = walletEntity.custodial

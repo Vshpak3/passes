@@ -101,7 +101,7 @@ export class EthService {
       user: user,
     })
 
-    if (wallet.user.id != userId || wallet.chain != Chain.ETH) {
+    if (!wallet.user || wallet.user.id != userId || wallet.chain != Chain.ETH) {
       throw new BadRequestException('invalid wallet id specified')
     }
 

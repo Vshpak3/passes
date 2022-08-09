@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -63,6 +64,20 @@ export class WalletController {
       return this.ethService.refreshNftsForWallet(req.user.id, wallet.id)
     }
     return new WalletResponseDto(wallet)
+  }
+
+  @ApiOperation({ summary: 'Removes authenticated wallet for a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Wallet was deleted',
+  })
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async remove(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ): Promise<boolean> {
+    return this.walletService.remove(req.user.id, id)
   }
 
   @ApiOperation({ summary: 'Creates wallet auth message to sign' })
