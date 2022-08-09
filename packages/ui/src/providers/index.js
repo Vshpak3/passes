@@ -1,8 +1,7 @@
-import SessionProvider from "./session-provider"
 import ThemeProvider from "./theme-provider"
 
 const Providers = ({ children, Component, pageProps }) => {
-  const providers = [SessionProvider, ThemeProvider]
+  const providers = [ThemeProvider]
 
   return (
     <>

@@ -1,21 +1,9 @@
 import NextHead from "next/head"
-import { useRouter } from "next/router"
-import { getProviders, signIn, useSession } from "next-auth/react"
-import { useEffect } from "react"
 import { Button, Separator, Text, Wordmark } from "src/components/atoms"
 import Arrow from "src/icons/arrow"
 import Social from "src/icons/social"
 
-const SignupPage = ({ providers }) => {
-  const router = useRouter()
-  const { data: session } = useSession()
-
-  useEffect(() => {
-    if (session) {
-      router.push("/subscriptions")
-    }
-  }, [router, session])
-
+const SignupPage = () => {
   return (
     <>
       <NextHead // hotfix for web font optimization issue: https://github.com/vercel/next.js/issues/35835#issuecomment-1125599724
@@ -70,9 +58,8 @@ const SignupPage = ({ providers }) => {
               </Text>
             </div>
           </div>
-          {Object.values(providers).map((provider) => (
+          {["Google", "Instagram", "Twitch"].map((provider) => (
             <Button
-              onClick={() => signIn(provider.id)}
               className={
                 (provider.name === "Discord"
                   ? "bg-[#5865F2] shadow-[#5865F2]/30 hover:bg-[#5865F2]/90"
@@ -98,14 +85,6 @@ const SignupPage = ({ providers }) => {
       </div>
     </>
   )
-}
-
-export async function getServerSideProps() {
-  const providers = await getProviders()
-
-  return {
-    props: { providers }
-  }
 }
 
 export default SignupPage

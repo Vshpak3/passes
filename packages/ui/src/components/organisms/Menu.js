@@ -1,6 +1,5 @@
 import * as Portal from "@radix-ui/react-portal"
 import { useRouter } from "next/router"
-import { signOut } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { Separator, Text, Wordmark } from "src/components/atoms"
 import Arrow from "src/icons/arrow"
@@ -42,7 +41,7 @@ export const MenuPortal = () => {
           >
             <HamburgerMenu width={22} height={22} />
           </button>
-          <button onClick={() => signOut()} className={"flex h-fit flex-col"}>
+          <button className={"flex h-fit flex-col"}>
             <div className="dark:hovertext-mauveDark-mauve12 flex items-center gap-2 text-mauve-mauve11 transition-colors hover:text-mauve-mauve12 dark:text-mauveDark-mauve11">
               <Text className="hidden sm:inline-block" fontSize={14}>
                 Logout
@@ -175,7 +174,6 @@ const Menu = () => {
         </div>
         <div className="mt-8 flex grow flex-col justify-end">
           <button
-            onClick={() => signOut()}
             className={
               "flex h-fit flex-col py-4 px-16 hover:bg-mauve-mauve3 hover:dark:bg-mauveDark-mauve3"
             }
