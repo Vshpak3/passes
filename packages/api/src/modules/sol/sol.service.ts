@@ -3,6 +3,7 @@ import {
   createCreateMasterEditionV3Instruction,
   createCreateMetadataAccountV2Instruction,
   createVerifyCollectionInstruction,
+  DataV2,
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
@@ -20,13 +21,17 @@ import {
 } from '@solana/spl-token'
 import {
   Connection,
+  Keypair,
   PublicKey,
   PublicKeyInitData,
   sendAndConfirmRawTransaction,
+  sendAndConfirmTransaction,
   SystemProgram,
   Transaction,
   TransactionInstruction,
+  TransactionSignature,
 } from '@solana/web3.js'
+import base58 from 'bs58'
 import { isString } from 'lodash'
 import * as uuid from 'uuid'
 
@@ -40,7 +45,8 @@ import * as SolHelper from './sol-helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
-// remove this when integrating with Passes API (use the cloudfront uri provided in the create request)
+const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
+  '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
 
 export interface JsonMetadata<Uri = string> {
   name?: string
@@ -370,63 +376,96 @@ export class SolService {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
 
-    const walletPubKey = new PublicKey(
-      await this.lambdaService.blockchainSignGetPublicAddress(
-        SOL_MASTER_WALLET_LAMBDA_KEY_ID,
-      ),
-    )
     const collectionId = uuid.v4()
-    const metadataJson = {
-      name: name,
-      symbol: symbol,
-      description: description,
-      image: imageUrl,
-      external_url: `https://www.passes.com/${user.userName}`,
-      seller_fee_basis_points: 0,
-      properties: {
+    let walletPubKey: PublicKey | undefined = undefined
+    let collectionPubKey: PublicKey | undefined = undefined
+    let wallet: Keypair | undefined = undefined
+    let collection: Keypair | undefined = undefined
+    let metadata: DataV2 | undefined = undefined
+    let metadataUri: string | undefined = undefined
+    if (process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID) {
+      wallet = Keypair.fromSecretKey(
+        base58.decode(SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY),
+      )
+      walletPubKey = wallet.publicKey
+      collection = Keypair.generate()
+      collectionPubKey = collection.publicKey
+      metadataUri =
+        'https://rfdufzqpc6bb3lpa4y4teg23rq6ugjn343dc2vvryobmtaam.arweave.net/iUdC5_g8Xgh2t4OY5-MhtbjD1DJbvmxi1WscOCyYAMs'
+      metadata = {
+        name: name,
+        symbol: symbol,
+        sellerFeeBasisPoints: 0,
+        uri: metadataUri,
         creators: [
           {
-            address: walletPubKey.toBase58(),
+            address: walletPubKey,
             share: 100,
+            verified: true,
           },
         ],
-        files: [
-          {
-            uri: imageUrl,
-            type: 'image/png',
-          },
-        ],
-        category: 'image',
-      },
-    }
-    const s3Input = {
-      Bucket: `passes-stage-nft`,
-      Body: JSON.stringify(metadataJson),
-      Key: `nft/collection-${collectionId}`,
-    }
+        uses: null,
+        collection: null,
+      }
+    } else {
+      walletPubKey = new PublicKey(
+        await this.lambdaService.blockchainSignGetPublicAddress(
+          SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+        ),
+      )
+      collectionPubKey = new PublicKey(
+        await this.lambdaService.blockchainSignCreateAddress(
+          `collection.${collectionId}`,
+        ),
+      )
 
-    const metadata = {
-      name: name,
-      symbol: symbol,
-      description: description,
-      sellerFeeBasisPoints: 0,
-      uri: `https://cdn.passes-staging.com/nft/collection-${collectionId}`,
-      creators: [
-        {
-          address: walletPubKey,
-          share: 100,
-          verified: true,
+      const metadataJson = {
+        name: name,
+        symbol: symbol,
+        description: description,
+        image: imageUrl,
+        external_url: `https://www.passes.com/${user.userName}`,
+        seller_fee_basis_points: 0,
+        properties: {
+          creators: [
+            {
+              address: walletPubKey.toBase58(),
+              share: 100,
+            },
+          ],
+          files: [
+            {
+              uri: imageUrl,
+              type: 'image/png',
+            },
+          ],
+          category: 'image',
         },
-      ],
-      uses: null,
-      collection: null,
+      }
+      const s3Input = {
+        Bucket: `passes-stage-nft`,
+        Body: JSON.stringify(metadataJson),
+        Key: `nft/collection-${collectionId}`,
+      }
+      metadataUri = `https://cdn.passes-staging.com/nft/collection-${collectionId}`
+
+      metadata = {
+        name: name,
+        symbol: symbol,
+        sellerFeeBasisPoints: 0,
+        uri: metadataUri,
+        creators: [
+          {
+            address: walletPubKey,
+            share: 100,
+            verified: true,
+          },
+        ],
+        uses: null,
+        collection: null,
+      }
+      await this.s3Client.send(new PutObjectCommand(s3Input))
     }
-    await this.s3Client.send(new PutObjectCommand(s3Input))
-    const collectionPubKey = new PublicKey(
-      await this.lambdaService.blockchainSignCreateAddress(
-        `collection.${collectionId}`,
-      ),
-    )
     // Minting logic
     const associatedTokenAccount = await getAssociatedTokenAddress(
       collectionPubKey,
@@ -517,31 +556,44 @@ export class SolService {
 
     const knex = this.ReadWriteDatabaseService.knex
 
-    const walletSignature = await this.lambdaService.blockchainSignSignMessage(
-      SOL_MASTER_WALLET_LAMBDA_KEY_ID,
-      Uint8Array.from(transaction.serializeMessage()),
-    )
+    let txSignature: undefined | TransactionSignature = undefined
+    if (process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID) {
+      txSignature = await sendAndConfirmTransaction(
+        this.connection,
+        transaction,
+        [wallet as Keypair, collection as Keypair],
+      )
+    } else {
+      const walletSignature =
+        await this.lambdaService.blockchainSignSignMessage(
+          SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+          Uint8Array.from(transaction.serializeMessage()),
+        )
 
-    const collectionSignature =
-      await this.lambdaService.blockchainSignSignMessage(
-        `collection.${collectionId}`,
-        Uint8Array.from(transaction.serializeMessage()),
+      const collectionSignature =
+        await this.lambdaService.blockchainSignSignMessage(
+          `collection.${collectionId}`,
+          Uint8Array.from(transaction.serializeMessage()),
+        )
+
+      transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
+      transaction.addSignature(
+        collectionPubKey,
+        Buffer.from(collectionSignature),
       )
 
-    transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
-    transaction.addSignature(collectionPubKey, Buffer.from(collectionSignature))
-
-    const txSignature = await sendAndConfirmRawTransaction(
-      this.connection,
-      transaction.serialize(),
-    )
+      txSignature = await sendAndConfirmRawTransaction(
+        this.connection,
+        transaction.serialize(),
+      )
+    }
 
     await knex('sol_nft_collection').insert({
       id: collectionId,
       name: name,
       symbol: symbol,
       description: description,
-      uri_metadata: `https://cdn.passes-staging.com/nft/collection-${collectionId}`,
+      uri_metadata: metadataUri,
       image_url: imageUrl,
       public_key: collectionPubKey.toString(),
       tx_signature: txSignature,
