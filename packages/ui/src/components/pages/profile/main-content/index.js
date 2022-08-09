@@ -4,7 +4,7 @@ import { CoverButton } from "src/components/atoms"
 
 import { NewPost } from "./new-post"
 import NewsFeedNavigation from "./new-post/navigation"
-import { Post } from "./news-feed/post"
+import CreatorContentFeed from "./news-feed/creator-content-feed"
 
 const MainContent = ({ profile }) => {
   const [followed, setFollowed] = useState(false)
@@ -53,9 +53,9 @@ const MainContent = ({ profile }) => {
         <NewsFeedNavigation />
       </div>
       <NewPost passes={profile?.passes} />
-      {profile?.posts?.map((post, index) => (
-        <Post key={`post_${index}`} profile={profile} post={post} />
-      ))}
+      {profile?.posts && (
+        <CreatorContentFeed profile={profile} existingPosts={profile.posts} />
+      )}
     </>
   )
 }
