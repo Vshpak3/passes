@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateUserDto
+ * @interface UpdateUsernameDto
  */
-export interface CreateUserDto {
+export interface UpdateUsernameDto {
     /**
      * 
      * @type {string}
-     * @memberof CreateUserDto
+     * @memberof UpdateUsernameDto
      */
-    email: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUserDto
-     */
-    userName: string;
+    username: string;
 }
 
-export function CreateUserDtoFromJSON(json: any): CreateUserDto {
-    return CreateUserDtoFromJSONTyped(json, false);
+export function UpdateUsernameDtoFromJSON(json: any): UpdateUsernameDto {
+    return UpdateUsernameDtoFromJSONTyped(json, false);
 }
 
-export function CreateUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateUserDto {
+export function UpdateUsernameDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateUsernameDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'email': json['email'],
-        'userName': json['userName'],
+        'username': json['username'],
     };
 }
 
-export function CreateUserDtoToJSON(value?: CreateUserDto | null): any {
+export function UpdateUsernameDtoToJSON(value?: UpdateUsernameDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function CreateUserDtoToJSON(value?: CreateUserDto | null): any {
     }
     return {
         
-        'email': value.email,
-        'userName': value.userName,
+        'username': value.username,
     };
 }
 

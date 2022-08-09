@@ -59,7 +59,7 @@ export class CollectionService {
   }
 
   async findOneByCreatorUsername(username: string): Promise<GetCollectionDto> {
-    const user = await this.userRepository.findOne({ userName: username })
+    const user = await this.userRepository.findOne({ username })
     if (!user) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }

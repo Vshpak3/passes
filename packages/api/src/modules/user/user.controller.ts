@@ -8,15 +8,17 @@ import {
   Patch,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { CreateUserDto } from './dto/create-user.dto'
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetUserDto } from './dto/get-user.dto'
 import { SearchUserRequestDto } from './dto/search-user-request.dto'
 import { SearchCreatorResponseDto } from './dto/search-user-response.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { UpdateUsernameDto } from './dto/update-username.dto'
 import { UserService } from './user.service'
 
 @ApiTags('user')
@@ -24,15 +26,22 @@ import { UserService } from './user.service'
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOperation({ summary: 'Creates a user' })
+  @ApiOperation({ summary: 'Set username for current user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateUserDto,
-    description: 'A user was created',
+    description: 'A username was set for the current user',
   })
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<GetUserDto> {
-    return this.userService.create(createUserDto)
+  @UseGuards(JwtAuthGuard)
+  @Post('username')
+  async setUsername(
+    @Req() req: RequestWithUser,
+    @Body() updateUsernameDto: UpdateUsernameDto,
+  ): Promise<GetUserDto> {
+    const updatedUser = await this.userService.setUsername(
+      req.user.id,
+      updateUsernameDto.username,
+    )
+    return new GetUserDto(updatedUser)
   }
 
   @ApiOperation({ summary: 'Search for creators by query' })
@@ -55,6 +64,7 @@ export class UserController {
     type: GetUserDto,
     description: 'A user was retrieved',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<GetUserDto> {
     return new GetUserDto(await this.userService.findOne(id))

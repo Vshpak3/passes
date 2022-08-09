@@ -81,7 +81,7 @@ const ChatView = ({ username }: ChatViewProps) => {
       await chatClient.connectUser(
         {
           id: user.id,
-          name: user.userName,
+          name: user.username,
           image: "https://www.moment.vip/moment.svg"
         },
         streamToken

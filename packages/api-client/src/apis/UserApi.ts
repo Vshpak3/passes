@@ -15,9 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateUserDto,
-    CreateUserDtoFromJSON,
-    CreateUserDtoToJSON,
     GetUserDto,
     GetUserDtoFromJSON,
     GetUserDtoToJSON,
@@ -27,11 +24,10 @@ import {
     UpdateUserDto,
     UpdateUserDtoFromJSON,
     UpdateUserDtoToJSON,
+    UpdateUsernameDto,
+    UpdateUsernameDtoFromJSON,
+    UpdateUsernameDtoToJSON,
 } from '../models';
-
-export interface UserCreateRequest {
-    createUserDto: CreateUserDto;
-}
 
 export interface UserFindOneRequest {
     id: string;
@@ -39,6 +35,10 @@ export interface UserFindOneRequest {
 
 export interface UserSearchCreatorByUsernameRequest {
     body: object;
+}
+
+export interface UserSetUsernameRequest {
+    updateUsernameDto: UpdateUsernameDto;
 }
 
 export interface UserUpdateRequest {
@@ -53,39 +53,6 @@ export interface UserValidateUsernameRequest {
  * 
  */
 export class UserApi extends runtime.BaseAPI {
-
-    /**
-     * Creates a user
-     */
-    async userCreateRaw(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateUserDto>> {
-        if (requestParameters.createUserDto === null || requestParameters.createUserDto === undefined) {
-            throw new runtime.RequiredError('createUserDto','Required parameter requestParameters.createUserDto was null or undefined when calling userCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/user`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateUserDtoToJSON(requestParameters.createUserDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateUserDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Creates a user
-     */
-    async userCreate(requestParameters: UserCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateUserDto> {
-        const response = await this.userCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Disables a user account
@@ -173,6 +140,38 @@ export class UserApi extends runtime.BaseAPI {
     async userSearchCreatorByUsername(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
         const response = await this.userSearchCreatorByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Set username for current user
+     */
+    async userSetUsernameRaw(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.updateUsernameDto === null || requestParameters.updateUsernameDto === undefined) {
+            throw new runtime.RequiredError('updateUsernameDto','Required parameter requestParameters.updateUsernameDto was null or undefined when calling userSetUsername.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/user/username`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUsernameDtoToJSON(requestParameters.updateUsernameDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set username for current user
+     */
+    async userSetUsername(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.userSetUsernameRaw(requestParameters, initOverrides);
     }
 
     /**

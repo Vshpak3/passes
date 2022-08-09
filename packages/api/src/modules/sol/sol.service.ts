@@ -424,7 +424,7 @@ export class SolService {
         symbol: symbol,
         description: description,
         image: imageUrl,
-        external_url: `https://www.passes.com/${user.userName}`,
+        external_url: `https://www.passes.com/${user.username}`,
         seller_fee_basis_points: 0,
         properties: {
           creators: [

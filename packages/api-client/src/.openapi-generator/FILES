@@ -45,7 +45,6 @@ models/CreatePostDto.ts
 models/CreateProfileDto.ts
 models/CreateSolNftCollectionDto.ts
 models/CreateSolNftDto.ts
-models/CreateUserDto.ts
 models/CreateWalletDto.ts
 models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
@@ -74,6 +73,7 @@ models/UpdatePassDto.ts
 models/UpdatePostDto.ts
 models/UpdateProfileDto.ts
 models/UpdateUserDto.ts
+models/UpdateUsernameDto.ts
 models/WalletDto.ts
 models/WalletResponseDto.ts
 models/index.ts

@@ -40,7 +40,7 @@ export class MessagesService {
     createChannelDto: CreateChannelDto,
   ): Promise<GetChannelDto> {
     const otherUser = await this.userRepository.findOne({
-      userName: createChannelDto.username,
+      username: createChannelDto.username,
     })
     if (otherUser == null) {
       throw new BadRequestException(

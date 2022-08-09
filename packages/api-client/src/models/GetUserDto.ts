@@ -36,7 +36,7 @@ export interface GetUserDto {
      * @type {string}
      * @memberof GetUserDto
      */
-    userName: string;
+    username: string;
     /**
      * 
      * @type {string}
@@ -81,7 +81,7 @@ export function GetUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'id': json['id'],
         'email': json['email'],
-        'userName': json['userName'],
+        'username': json['username'],
         'displayName': json['displayName'],
         'isCreator': json['isCreator'],
         'legalFullName': json['legalFullName'],
@@ -101,7 +101,7 @@ export function GetUserDtoToJSON(value?: GetUserDto | null): any {
         
         'id': value.id,
         'email': value.email,
-        'userName': value.userName,
+        'username': value.username,
         'displayName': value.displayName,
         'isCreator': value.isCreator,
         'legalFullName': value.legalFullName,

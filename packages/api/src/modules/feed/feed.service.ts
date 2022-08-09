@@ -84,7 +84,7 @@ export class FeedService {
     username: string,
     cursor: string,
   ): Promise<GetFeedDto> {
-    const user = await this.userRepository.findOne({ userName: username })
+    const user = await this.userRepository.findOne({ username })
     if (!user) {
       throw new NotFoundException(USER_NOT_EXIST)
     }

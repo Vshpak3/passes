@@ -4385,6 +4385,7 @@ __metadata:
     tsconfig-paths: 4.0.0
     tweetnacl: 1.0.3
     typescript: 4.7.4
+    unique-username-generator: 1.1.1
     web3: 1.7.4
   languageName: unknown
   linkType: soft
@@ -17504,6 +17505,13 @@ __metadata:
   dependencies:
     imurmurhash: ^0.1.4
   checksum: 5b6876a645da08d505dedb970d1571f6cebdf87044cb6b740c8dbb24f0d6e1dc8bdbf46825fd09f994d7cf50760e6f6e063cfa197d51c5902c00a861702eb75a
+  languageName: node
+  linkType: hard
+
+"unique-username-generator@npm:1.1.1":
+  version: 1.1.1
+  resolution: "unique-username-generator@npm:1.1.1"
+  checksum: ebd6a0a9d499501730d2dd89a488cbc97a1232e84b9a4f369c70aa1baa9eeee813534c676182a2836b005050e69b09b2897346b799d52df097e13fb17bcbd4b4
   languageName: node
   linkType: hard
 

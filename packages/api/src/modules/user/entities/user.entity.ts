@@ -22,7 +22,7 @@ export class UserEntity extends BaseEntity<
   @Property({ length: 30 })
   @Index()
   @Unique()
-  userName: string
+  username: string
 
   @Property({ length: 50 })
   legalFullName?: string

@@ -12,5 +12,5 @@ export class CreateUserDto {
   @ApiProperty()
   @Matches('[a-z0-9_]+')
   @Validate(IsNotBlocklistedUsername)
-  userName: string
+  username: string
 }

@@ -10,7 +10,7 @@ export class GetUserDto {
   email: string
 
   @ApiProperty()
-  userName: string
+  username: string
 
   @ApiProperty()
   displayName?: string
@@ -31,7 +31,7 @@ export class GetUserDto {
   constructor(userEntity: UserEntity, includeSensitiveFields = false) {
     this.id = userEntity.id
     this.email = userEntity.email
-    this.userName = userEntity.userName
+    this.username = userEntity.username
     this.displayName = userEntity.displayName
     this.isCreator = userEntity.isCreator
 

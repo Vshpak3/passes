@@ -79,6 +79,7 @@
     "stream-chat": "6.7.3",
     "swagger-ui-express": "4.5.0",
     "tweetnacl": "1.0.3",
+    "unique-username-generator": "1.1.1",
     "web3": "1.7.4"
   },
   "devDependencies": {

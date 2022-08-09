@@ -1,7 +1,10 @@
 import { EntityRepository, wrap } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { generateFromEmail } from 'unique-username-generator'
 
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { USERNAME_TAKEN } from './constants/errors'
 import { CreateUserDto } from './dto/create-user.dto'
 import { SearchUserRequestDto } from './dto/search-user-request.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -17,10 +20,22 @@ export class UserService {
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = this.userRepository.create({
       email: createUserDto.email,
-      userName: createUserDto.userName,
+      username: createUserDto.username,
     })
     await this.userRepository.persistAndFlush(user)
     return user
+  }
+
+  async setUsername(userId: string, username: string): Promise<UserEntity> {
+    const currentUser = await this.findOne(userId)
+    const newUser = wrap(currentUser).assign({
+      username,
+    })
+
+    const query = () => this.userRepository.persistAndFlush(newUser)
+    await createOrThrowOnDuplicate(query, USERNAME_TAKEN)
+
+    return newUser
   }
 
   async createOAuthUser(
@@ -30,8 +45,7 @@ export class UserService {
   ): Promise<UserEntity> {
     const user = this.userRepository.create({
       email: email,
-      // TODO: Do users supply a username, or randomly generate one?
-      userName: `${provider}-${providerId}`,
+      username: generateFromEmail(email, 3),
       oauthId: providerId,
       oauthProvider: provider,
     })
@@ -87,7 +101,7 @@ export class UserService {
     return await this.userRepository.find(
       {
         $or: [
-          { userName: { $like: likeClause } },
+          { username: { $like: likeClause } },
           { displayName: { $like: likeClause } },
         ],
         isCreator: true,
@@ -98,7 +112,7 @@ export class UserService {
   }
 
   async validateUsername(username: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ userName: username })
+    const user = await this.userRepository.findOne({ username })
     return !user
   }
 }

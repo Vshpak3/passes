@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 import bcrypt from 'bcrypt'
+import { generateFromEmail } from 'unique-username-generator'
 import * as uuid from 'uuid'
 
 import { Database } from '../../../database/database.decorator'
@@ -39,8 +40,7 @@ export class LocalAuthService {
         id: userId,
         email: createLocalUserDto.email,
         password_hash: passwordHash,
-        // TODO: Generate default usernames
-        user_name: createLocalUserDto.email,
+        username: generateFromEmail(createLocalUserDto.email, 3),
         is_kycverified: false,
         is_creator: false,
         is_disabled: false,

@@ -85,7 +85,7 @@ export class ProfileService {
         `user.id`,
       )
       .where(`${ProfileEntity.table}.is_active`, true)
-      .where('user.user_name', username)
+      .where('user.username', username)
       .where('user.is_creator', true)
       .select([
         `${ProfileEntity.table}.id as id`,
@@ -162,9 +162,9 @@ export class ProfileService {
         'user.id',
       )
       .where('user.is_creator', true)
-      .select('user.user_name')
+      .select('user.username')
 
-    const usernames = rawUsernames.map((u) => u.user_name)
+    const usernames = rawUsernames.map((u) => u.username)
 
     return {
       usernames,

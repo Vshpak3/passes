@@ -98,7 +98,7 @@ export class PassService {
     const solNftCollectionDto = await this.solService.createNftCollection(
       user,
       createPassDto.title,
-      user.userName.replace(/[^a-zA-Z]/g, '').substring(0, 10),
+      user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
       createPassDto.description,
       createPassDto.imageUrl,
     )
