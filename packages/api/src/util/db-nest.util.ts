@@ -12,6 +12,7 @@ export async function createOrThrowOnDuplicate<T>(
     if (error.code === 'ER_DUP_ENTRY') {
       throw new ConflictException(errorMessage)
     }
-    throw new InternalServerErrorException(error)
+    console.error(error)
+    throw new InternalServerErrorException('Internal Server Error')
   }
 }
