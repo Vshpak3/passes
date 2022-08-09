@@ -31,6 +31,9 @@ readonly tag_as_this=${4:-}
 readonly full_image_name=${registry_uri}:${image_tag}
 readonly tagged_image_name=${registry_uri}:${tag_as_this}
 
+# Log the docker version
+docker --version
+
 # Check if we should skip the docker build if the image already exists
 skip_build=false
 if [[ ${dedup_build} == 'true' ]] ; then
@@ -53,6 +56,7 @@ if ! ${skip_build} ; then
   if [[ -n ${tag_as_this} ]] ; then
     echo "Pulling image '${tagged_image_name}' to be used as the cache image"
     docker pull ${tagged_image_name} || true
+    echo
   fi
 
   echo "Building image '${full_image_name}'"
