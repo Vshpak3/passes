@@ -4,7 +4,7 @@
   "description": "Passes backend API package",
   "private": true,
   "scripts": {
-    "ts:build": "tsc --noEmit --project tsconfig.json",
+    "ts:build": "tsc --project tsconfig.json",
     "docker": "docker compose up --detach",
     "start": "NODE_ENV=dev nest start",
     "start:dev": "NODE_ENV=dev nest start --watch",
