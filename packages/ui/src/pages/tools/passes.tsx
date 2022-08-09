@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import GridViewIcon from "public/icons/grid-view-icon.svg"
 import ListViewIcon from "public/icons/list-view-icon.svg"
 import React from "react"
@@ -25,8 +24,6 @@ const mockData = {
 }
 
 const Passes = () => {
-  const router = useRouter()
-
   return (
     <div className="mx-auto -mt-[205px] grid grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-12 w-full">
