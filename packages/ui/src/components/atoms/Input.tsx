@@ -1,3 +1,4 @@
+import { toLower } from "lodash"
 import React from "react"
 import { classNames } from "src/helpers"
 
@@ -12,6 +13,11 @@ import {
 } from "../FormTypes"
 import Label from "./Label"
 
+export enum EIcon {
+  Left = "LEFT",
+  Right = "RIGHT"
+}
+
 type InputProps = {
   label?: FormLabel
   name: FormName
@@ -22,6 +28,7 @@ type InputProps = {
   placeholder?: FormPlaceholder
   className?: string
   icon?: React.ReactNode
+  iconAlign?: EIcon
 }
 
 const Input = ({
@@ -34,6 +41,7 @@ const Input = ({
   options = {},
   className = "",
   icon,
+  iconAlign,
   ...rest
 }: InputProps) => {
   return (
@@ -41,17 +49,15 @@ const Input = ({
       {label && (
         <Label name={name} label={label} errors={errors} options={options} />
       )}
-      {!!icon && (
-        <div className="relative text-gray-600">
-          <span className="absolute inset-y-0 left-0 flex pl-2 pt-3 sm:px-4 sm:pr-3">
-            {icon}
-          </span>
-        </div>
-      )}
+
       <div className="mt-1">
         {!!icon && (
           <div className="relative text-gray-600">
-            <span className="absolute inset-y-0 left-0 flex pl-2 pt-3 sm:px-4 sm:py-3">
+            <span
+              className={`absolute inset-y-0 ${toLower(
+                iconAlign
+              )}-0 flex pl-2 pt-3 sm:px-4 sm:pr-3`}
+            >
               {icon}
             </span>
           </div>

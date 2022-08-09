@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import React from "react"
 import { Checkbox, File, Input, Select, TextArea } from "src/components/atoms"
+import { EIcon } from "src/components/atoms/Input"
 import { DragDropFile, TagsInput } from "src/components/molecules"
 
 import {
@@ -33,6 +34,7 @@ type FormInputProps = {
   icon?: React.ReactNode
   textPosition?: string
   tagsFromServer?: string[]
+  iconAlign?: EIcon
 }
 const FormInput = ({
   textPosition,
@@ -48,6 +50,7 @@ const FormInput = ({
   multiple,
   accept,
   icon,
+  iconAlign,
   tagsFromServer,
   ...rest
 }: FormInputProps) => {
@@ -63,6 +66,7 @@ const FormInput = ({
         className={className}
         errors={errors}
         icon={icon}
+        iconAlign={iconAlign}
         {...rest}
       />
     ),

@@ -10,9 +10,9 @@ import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import { useForm } from "react-hook-form"
 import { FormInput, PassesPinkButton } from "src/components/atoms"
+import { EIcon } from "src/components/atoms/Input"
 import { CreatorPassTiles, FormContainer } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-
 const mockData = {
   passName: "Kaila Troy Pro",
   creatorName: "Kaila Troy",
@@ -85,7 +85,7 @@ const Purchase = () => {
               <WalletConnectIcon />
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-4">
             <span className="text-[#ffff]/90">or Pay with Credit card</span>
             <span className="text-[#ffff]/70">Card info</span>
             <FormInput
@@ -102,7 +102,40 @@ const Purchase = () => {
                   <DiscoverIcon />
                 </>
               }
+              iconAlign={EIcon.Right}
             />
+          </div>
+          <div className="flex gap-4">
+            <div>
+              <span className="text-[#ffff]/70">Month</span>
+              <FormInput
+                register={register}
+                type="text"
+                name="month"
+                placeholder="MM"
+                className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              />
+            </div>
+            <div>
+              <span className="text-[#ffff]/70">Year</span>
+              <FormInput
+                register={register}
+                type="text"
+                name="month"
+                placeholder="YYYY"
+                className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              />
+            </div>
+            <div>
+              <span className="text-[#ffff]/70">CVV</span>
+              <FormInput
+                register={register}
+                type="text"
+                name="month"
+                placeholder="CVV"
+                className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              />
+            </div>
           </div>
           <div>
             <span className="text-[#ffff]/90">Billing address</span>
