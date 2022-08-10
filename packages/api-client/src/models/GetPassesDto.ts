@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    GetPassDto,
+    GetPassDtoFromJSON,
+    GetPassDtoFromJSONTyped,
+    GetPassDtoToJSON,
+} from './GetPassDto';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface GetPassesDto {
     /**
      * 
-     * @type {object}
+     * @type {GetPassDto}
      * @memberof GetPassesDto
      */
-    passes: object;
+    passes: GetPassDto;
 }
 
 export function GetPassesDtoFromJSON(json: any): GetPassesDto {
@@ -37,7 +44,7 @@ export function GetPassesDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'passes': json['passes'],
+        'passes': GetPassDtoFromJSON(json['passes']),
     };
 }
 
@@ -50,7 +57,7 @@ export function GetPassesDtoToJSON(value?: GetPassesDto | null): any {
     }
     return {
         
-        'passes': value.passes,
+        'passes': GetPassDtoToJSON(value.passes),
     };
 }
 

@@ -18,6 +18,9 @@ import {
     CreatePostDto,
     CreatePostDtoFromJSON,
     CreatePostDtoToJSON,
+    GetPostDto,
+    GetPostDtoFromJSON,
+    GetPostDtoToJSON,
     UpdatePostDto,
     UpdatePostDtoFromJSON,
     UpdatePostDtoToJSON,
@@ -81,7 +84,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets a post
      */
-    async postFindOneRaw(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async postFindOneRaw(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPostDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postFindOne.');
         }
@@ -97,13 +100,13 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a post
      */
-    async postFindOne(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async postFindOne(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostDto> {
         const response = await this.postFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -111,7 +114,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Deletes a post
      */
-    async postRemoveRaw(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async postRemoveRaw(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPostDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postRemove.');
         }
@@ -127,13 +130,13 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostDtoFromJSON(jsonValue));
     }
 
     /**
      * Deletes a post
      */
-    async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostDto> {
         const response = await this.postRemoveRaw(requestParameters, initOverrides);
         return await response.value();
     }

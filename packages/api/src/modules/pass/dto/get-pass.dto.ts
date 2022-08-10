@@ -1,12 +1,31 @@
+import { ApiProperty } from '@nestjs/swagger'
+
 export class GetPassDto {
+  @ApiProperty()
   id: string
+
+  @ApiProperty()
   creatorId: string
+
+  @ApiProperty()
   solNftCollectionId: string
+
+  @ApiProperty()
   title: string
+
+  @ApiProperty()
   description: string
+
+  @ApiProperty()
   imageUrl: string
+
+  @ApiProperty()
   type: 'subscription' | 'lifetime'
+
+  @ApiProperty()
   price: number
+
+  @ApiProperty()
   totalSupply: number
 
   constructor(passEntity) {

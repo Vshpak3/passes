@@ -1,7 +1,16 @@
+import { ApiProperty } from '@nestjs/swagger'
+
 export class GetFollowingDto {
+  @ApiProperty()
   id: string
+
+  @ApiProperty()
   subscriberId: string
+
+  @ApiProperty()
   creatorId: string
+
+  @ApiProperty()
   isActive: boolean
 
   constructor(followEntity) {

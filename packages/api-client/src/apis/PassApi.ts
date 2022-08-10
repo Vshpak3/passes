@@ -21,6 +21,9 @@ import {
     CreatePassHolderDto,
     CreatePassHolderDtoFromJSON,
     CreatePassHolderDtoToJSON,
+    GetPassDto,
+    GetPassDtoFromJSON,
+    GetPassDtoToJSON,
     GetPassOwnershipDto,
     GetPassOwnershipDtoFromJSON,
     GetPassOwnershipDtoToJSON,
@@ -98,7 +101,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Creates a pass
      */
-    async passCreateRaw(requestParameters: PassCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async passCreateRaw(requestParameters: PassCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassDto>> {
         if (requestParameters.createPassDto === null || requestParameters.createPassDto === undefined) {
             throw new runtime.RequiredError('createPassDto','Required parameter requestParameters.createPassDto was null or undefined when calling passCreate.');
         }
@@ -117,13 +120,13 @@ export class PassApi extends runtime.BaseAPI {
             body: CreatePassDtoToJSON(requestParameters.createPassDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a pass
      */
-    async passCreate(requestParameters: PassCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async passCreate(requestParameters: PassCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassDto> {
         const response = await this.passCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -131,7 +134,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets a pass
      */
-    async passFindOneRaw(requestParameters: PassFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async passFindOneRaw(requestParameters: PassFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling passFindOne.');
         }
@@ -147,13 +150,13 @@ export class PassApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a pass
      */
-    async passFindOne(requestParameters: PassFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async passFindOne(requestParameters: PassFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassDto> {
         const response = await this.passFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -225,7 +228,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Updates a pass
      */
-    async passUpdateRaw(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async passUpdateRaw(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling passUpdate.');
         }
@@ -248,13 +251,13 @@ export class PassApi extends runtime.BaseAPI {
             body: UpdatePassDtoToJSON(requestParameters.updatePassDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassDtoFromJSON(jsonValue));
     }
 
     /**
      * Updates a pass
      */
-    async passUpdate(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async passUpdate(requestParameters: PassUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassDto> {
         const response = await this.passUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
