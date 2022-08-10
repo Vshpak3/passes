@@ -49,7 +49,7 @@ const Dialog = ({
           >
             <div
               className={classNames(
-                media ? "bg-black" : " backdrop-blur-md",
+                media ? "bg-black" : " bg-black/40",
                 "bg-opacity-15 fixed inset-0 bg-transparent"
               )}
             />
@@ -72,7 +72,9 @@ const Dialog = ({
                       <HeadlessDialog.Title>{title}</HeadlessDialog.Title>
                     )}
                     <div className="h-full overflow-y-auto">{children}</div>
-                    {footer && <div className="self-end">{footer}</div>}
+                    {footer && (
+                      <div className="relative w-full self-end">{footer}</div>
+                    )}
                   </div>
                 </HeadlessDialog.Panel>
               </Transition.Child>

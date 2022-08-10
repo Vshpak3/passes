@@ -1,7 +1,6 @@
 import ChevronLeft from "public/icons/chevron-left-icon.svg"
 import ChevronRight from "public/icons/chevron-right-icon.svg"
 import React from "react"
-// import { PassesPurpleButton } from "src/components/common/Buttons"
 import { Button } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
 
@@ -33,20 +32,9 @@ export const PassInformation = ({ pass }) => (
       {pass.description}
     </span>
     {{
-      // Free: <PassesPurpleButton name="Follow Free" />,
-
       Free: <Button variant="purple">Follow Free</Button>,
-      Monthly: (
-        <Button variant="purple" icon>
-          Subscribe
-        </Button>
-      ),
-      // Monthly: <PassesPurpleButton name="Subscribe" icon />,
-      Lifetime: (
-        <Button variant="purple" icon>
-          Subscribe
-        </Button>
-      )
+      Monthly: <Button variant="purple">Subscribe</Button>,
+      Lifetime: <Button variant="purple">Subscribe</Button>
     }[pass.type] || null}
     {{
       Free: (

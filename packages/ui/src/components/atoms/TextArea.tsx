@@ -29,7 +29,7 @@ const TextArea = ({
   errors = {},
   options = {},
   className,
-  rows = 3,
+  rows = 2,
   cols,
   placeholder,
   ...rest

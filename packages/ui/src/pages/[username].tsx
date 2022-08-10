@@ -23,7 +23,7 @@ const mockCreator = {
   tiktokUrl: "@drachnik",
   youtubeUrl: "AlexDrachnikFit",
   discordUrl: "AlexDrachnik",
-  twitchUrl: "drachnik",
+  twitchUrl: "",
   facebookUrl: "AlexDrachnikCreator",
   twitterUrl: "drachnik",
   postsCount: 12,
@@ -94,12 +94,9 @@ const mockCreator = {
 const Username = (props: GetProfileDto) => {
   const [editProfile, setEditProfile] = useState(false)
   const [profile, setProfile] = useState(props)
+
   const onEditProfile = () => {
     setEditProfile(true)
-  }
-
-  const onCloseEditProfile = () => {
-    setEditProfile(false)
   }
 
   const onSubmit = async (values: Record<string, any>) => {
@@ -114,6 +111,7 @@ const Username = (props: GetProfileDto) => {
       })
     )
     const newValues = { ...rest }
+    newValues.fullName = values.firstName + " " + values.lastName
     if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
     if (profileCoverImageUrl)
       newValues.profileCoverImageUrl = profileCoverImageUrl
@@ -129,13 +127,7 @@ const Username = (props: GetProfileDto) => {
           {profile?.id && (
             <ProfileDetails profile={profile} onEditProfile={onEditProfile} />
           )}
-          {editProfile && (
-            <EditProfile
-              profile={profile}
-              onSubmit={onSubmit}
-              onCloseEditProfile={onCloseEditProfile}
-            />
-          )}
+          {editProfile && <EditProfile profile={profile} onSubmit={onSubmit} />}
           {profile?.id && <Passes profile={profile} />}
         </div>
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">

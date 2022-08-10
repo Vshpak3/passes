@@ -63,7 +63,7 @@ export const ProfileSocialMedia = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Facebook />
+        <Facebook className="h-[22px] w-[22px]" />
       </a>
     )}
     {instagramUrl && (
@@ -72,7 +72,7 @@ export const ProfileSocialMedia = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Instagram />
+        <Instagram className="h-[22px] w-[22px]" />
       </a>
     )}
     {twitterUrl && (
@@ -81,7 +81,7 @@ export const ProfileSocialMedia = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Twitter />
+        <Twitter className="h-[22px] w-[22px]" />
       </a>
     )}
     {discordUrl && (
@@ -90,7 +90,7 @@ export const ProfileSocialMedia = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Discord />
+        <Discord className="h-[22px] w-[22px]" />
       </a>
     )}
     {youtubeUrl && (

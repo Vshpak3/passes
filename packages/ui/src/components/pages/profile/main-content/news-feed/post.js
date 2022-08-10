@@ -122,7 +122,6 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
           <PostUnlockButton
             onClick={() => setPostUnlocked(!postUnlocked)}
             value={postUnlocked}
-            icon
             name={`Unlock Post For ${formatCurrency(post.price)}`}
           />
           <div className="flex items-center justify-center pt-4">

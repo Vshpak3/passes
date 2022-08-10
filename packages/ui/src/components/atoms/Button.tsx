@@ -22,7 +22,6 @@ interface IButton {
 interface IGenericButton {
   name: string
   onClick?: () => void
-  icon?: React.ReactNode
   value?: string
 }
 
@@ -122,9 +121,9 @@ export const Button = ({
   )
 }
 
-export const PassesPurpleButton = ({ name, icon }: IGenericButton) => (
+export const PassesPurpleButton = ({ name }: IGenericButton) => (
   <button className="flex w-full items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
-    {icon && <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />}
+    <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />
     {name}
   </button>
 )
@@ -151,18 +150,13 @@ export const CoverButton = ({ name, onClick }: IGenericButton) => (
   </button>
 )
 
-export const PostUnlockButton = ({
-  name,
-  icon,
-  onClick,
-  value
-}: IGenericButton) => (
+export const PostUnlockButton = ({ name, onClick, value }: IGenericButton) => (
   <button
     className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
     value={value}
     onClick={onClick}
   >
-    {icon && <UnlockLockIcon className="flex h-6 w-6" />}
+    <UnlockLockIcon className="flex h-6 w-6" />
     {name}
   </button>
 )
