@@ -48,4 +48,4 @@ WORKDIR /home/node
 COPY --chown=node:node --from=build /usr/src/app .
 
 # Set the command to run node
-CMD ["node", "packages/api/dist/src/main.js"]
+CMD ["node", "packages/api/dist/src/entrypoint/app.js"]

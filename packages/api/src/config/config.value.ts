@@ -8,7 +8,9 @@ export async function getConfigValue(
 ): Promise<string | number | object> {
   const value = process.env[name]
   if (value === undefined) {
-    throw Error('This should never happen since joi should validate the config')
+    throw new Error(
+      'This should never happen since joi should validate the config',
+    )
   }
 
   if (value.startsWith(SECRET_PREFIX)) {
