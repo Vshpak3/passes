@@ -10,7 +10,7 @@
 #
 # Usage
 #
-#   ./docker/spec.sh <registry uri> <image tag> <container name> <task definition name>
+#   ./docker/spec.sh <registry uri> <image tag> <task family name>
 #
 set -o errexit
 set -o nounset
@@ -22,8 +22,7 @@ readonly application_port=3001
 # Input
 readonly docker_registry=${1}
 readonly image_tag=${2}
-readonly container_name=${3}
-readonly task_definition_name=${4}
+readonly task_family_name=${3}
 
 echo 'Writing definition specs...'
 
@@ -37,7 +36,7 @@ cat << EOT > appspec.json
         "Properties": {
            "TaskDefinition": "<TASK_DEFINITION>",
            "LoadBalancerInfo": {
-              "ContainerName": "${container_name}",
+              "ContainerName": "${task_family_name}",
               "ContainerPort": ${application_port}
            }
         }
@@ -49,7 +48,7 @@ EOT
 
 printf '{"ImageURI":"%s"}' ${docker_registry}:${image_tag} > imageDetail.json
 
-aws ecs describe-task-definition --task-definition ${task_definition_name} \
+aws ecs describe-task-definition --task-definition ${task_family_name} \
   | jq '.taskDefinition | .containerDefinitions[].image = "<IMAGE1_NAME>"' \
   > taskdef.json
 
