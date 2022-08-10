@@ -145,6 +145,35 @@ export class PassService {
     return new GetPassDto(pass)
   }
 
+  async findOwnedPasses(userId: string, creatorId?: string) {
+    const { knex, getTableName } = this.ReadOnlyDatabaseService
+    const usersTableName = getTableName(UserEntity)
+    const passOwnershipTableName = getTableName(PassOwnershipEntity)
+    let query = knex(this.table)
+      .rightJoin(
+        `${passOwnershipTableName} as passOwnership`,
+        `${this.table}.id`,
+        `passOwnership.pass_id`,
+      )
+      .innerJoin(
+        `${usersTableName} as owner`,
+        `passOwnership.holder_id`,
+        'owner.id',
+      )
+      .where('owner.id', userId)
+
+    if (creatorId) {
+      query = query.where('owner_id', creatorId)
+    }
+
+    return await query
+  }
+
+  async findPassesByCreator(creatorId: string) {
+    const { knex } = this.ReadOnlyDatabaseService
+    return await knex(this.table).where('owner_id', creatorId)
+  }
+
   async update(userId: string, passId: string, updatePassDto: UpdatePassDto) {
     const { knex, toDict } = this.ReadWriteDatabaseService
     const currentPass = await knex(this.table).where({ id: passId }).first()

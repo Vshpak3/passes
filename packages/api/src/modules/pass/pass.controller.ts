@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common'
@@ -17,6 +18,7 @@ import { CreatePassDto } from './dto/create-pass.dto'
 import { CreatePassHolderDto } from './dto/create-pass-holder.dto'
 import { GetPassDto } from './dto/get-pass.dto'
 import { GetPassOwnershipDto } from './dto/get-pass-ownership.dto'
+import { GetPassesDto } from './dto/get-passes-dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
 
@@ -56,6 +58,39 @@ export class PassController {
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.temporary,
+    )
+  }
+
+  @ApiOperation({ summary: 'Gets passes created by a creator' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetPassesDto,
+    description: 'A list of passes was retrieved',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('created/:creatorId')
+  async getCreatorPasses(
+    @Param('creatorId') creatorId: string,
+  ): Promise<GetPassesDto> {
+    return new GetPassesDto(
+      await this.passService.findPassesByCreator(creatorId),
+    )
+  }
+
+  @ApiOperation({ summary: 'Gets passes held by user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetPassesDto,
+    description: 'A list of passes was retrieved',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('owned')
+  async getOwnedPasses(
+    @Req() req: RequestWithUser,
+    @Query('creatorId') creatorId: string,
+  ): Promise<GetPassesDto> {
+    return new GetPassesDto(
+      await this.passService.findOwnedPasses(req.user.id, creatorId),
     )
   }
 
