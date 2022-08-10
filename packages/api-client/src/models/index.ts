@@ -26,6 +26,7 @@ export * from './CreateWalletDto';
 export * from './EncryptionKeyDto';
 export * from './GetChannelDto';
 export * from './GetPassOwnershipDto';
+export * from './GetPassesDto';
 export * from './GetProfileDto';
 export * from './GetSolNftCollectionDto';
 export * from './GetSolNftDto';

@@ -49,6 +49,7 @@ models/CreateWalletDto.ts
 models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
 models/GetPassOwnershipDto.ts
+models/GetPassesDto.ts
 models/GetProfileDto.ts
 models/GetSolNftCollectionDto.ts
 models/GetSolNftDto.ts

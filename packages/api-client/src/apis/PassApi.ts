@@ -24,6 +24,9 @@ import {
     GetPassOwnershipDto,
     GetPassOwnershipDtoFromJSON,
     GetPassOwnershipDtoToJSON,
+    GetPassesDto,
+    GetPassesDtoFromJSON,
+    GetPassesDtoToJSON,
     UpdatePassDto,
     UpdatePassDtoFromJSON,
     UpdatePassDtoToJSON,
@@ -158,7 +161,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes created by a creator
      */
-    async passGetCreatorPassesRaw(requestParameters: PassGetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async passGetCreatorPassesRaw(requestParameters: PassGetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling passGetCreatorPasses.');
         }
@@ -174,13 +177,13 @@ export class PassApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets passes created by a creator
      */
-    async passGetCreatorPasses(requestParameters: PassGetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async passGetCreatorPasses(requestParameters: PassGetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesDto> {
         const response = await this.passGetCreatorPassesRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -188,7 +191,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes held by user
      */
-    async passGetOwnedPassesRaw(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<object>> {
+    async passGetOwnedPassesRaw(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling passGetOwnedPasses.');
         }
@@ -208,13 +211,13 @@ export class PassApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse<any>(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets passes held by user
      */
-    async passGetOwnedPasses(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<object> {
+    async passGetOwnedPasses(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesDto> {
         const response = await this.passGetOwnedPassesRaw(requestParameters, initOverrides);
         return await response.value();
     }
