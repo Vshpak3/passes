@@ -5,14 +5,19 @@
 import { OptionalProps, PrimaryKey, Property, UuidType } from '@mikro-orm/core'
 import { v4 } from 'uuid'
 
-// Entity Class properties, for entity relationships assign string (id)
+// Entity Class properties for optional properties allow null
 declare type EntityData<T> = {
-  [K in keyof T as ExcludeFunctions<T, K>]?: T[K] extends object
-    ? string
-    : T[K] extends object | undefined
-    ? string | null
-    : T[K]
+  [K in keyof T as ExcludeFunctions<T, K>]?: T[K] extends T[K] | undefined
+    ? null | MappedType<T[K]>
+    : MappedType<T[K]>
 }
+
+// Map properties to type, for entity relationships (object) assign string (id)
+declare type MappedType<T> = T extends Date
+  ? Date
+  : T extends object
+  ? string
+  : T
 
 // Exclude functions and symbols from class, returning only class properties
 declare type ExcludeFunctions<
