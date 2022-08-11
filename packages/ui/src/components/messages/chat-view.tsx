@@ -16,6 +16,7 @@ import {
   Window
 } from "stream-chat-react"
 
+import { wrapApi } from "../../helpers/wrapApi"
 import { MomentMessage } from "./MomentMessage"
 import { MomentMessageInput } from "./MomentMessageInput"
 
@@ -32,30 +33,22 @@ const ChatView = ({ username }: ChatViewProps) => {
   const [tipAmount, setTipAmount] = useState(20)
 
   const { channelId, streamToken } = useChat(username)
-  const { user, accessToken } = useUser()
+  const { user } = useUser()
 
   const sendMessage = async (
     messageToSend: MessageToSend,
     channelId: string
   ) => {
     try {
-      const api = new MessagesApi()
-      await api.messagesSend(
-        {
-          sendMessageDto: {
-            text: messageToSend.text || "",
-            attachments: [],
-            channelId: channelId.split(":")[1],
-            tipAmount: tipAmount
-          }
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
+      const api = wrapApi(MessagesApi)
+      await api.messagesSend({
+        sendMessageDto: {
+          text: messageToSend.text || "",
+          attachments: [],
+          channelId: channelId.split(":")[1],
+          tipAmount: tipAmount
         }
-      )
+      })
     } catch (err) {
       console.log(err)
     }

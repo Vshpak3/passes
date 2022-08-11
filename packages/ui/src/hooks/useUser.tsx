@@ -2,6 +2,8 @@ import { AuthApi } from "@passes/api-client"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
+import { wrapApi } from "../helpers/wrapApi"
+
 const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage("access-token", "")
   const [refreshToken, setRefreshToken] = useLocalStorage("refresh-token", "")
@@ -9,10 +11,8 @@ const useUser = () => {
   const { data: user, isValidating: loading } = useSWR(
     accessToken ? "/user" : null,
     async () => {
-      const api = new AuthApi()
-      return await api.authGetCurrentUser({
-        headers: { Authorization: "Bearer " + accessToken }
-      })
+      const api = wrapApi(AuthApi)
+      return await api.authGetCurrentUser()
     }
   )
 

@@ -7,6 +7,8 @@ import { FormInput } from "src/components/atoms"
 import encrypt from "src/helpers/openpgp"
 import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
+
+import { wrapApi } from "../../helpers/wrapApi"
 const NewCard = () => {
   const [submitting, setSubmitting] = useState(false)
   const [publicKey, setPublicKey] = useState<EncryptionKeyDto>()
@@ -67,19 +69,13 @@ const NewCard = () => {
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
 
-      const paymentApi = new PaymentApi()
+      const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
       console.log(payload)
       console.log(JSON.stringify(payload))
-      await paymentApi.paymentCreateCircleCard(
-        { createCardAndExtraDto: payload },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.paymentCreateCircleCard({
+        createCardAndExtraDto: payload
+      })
       //TODO: handle returning back to previous page
       router.push("/gems/buy")
     } catch (error) {

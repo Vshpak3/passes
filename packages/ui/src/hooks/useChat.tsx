@@ -2,27 +2,21 @@ import { MessagesApi } from "@passes/api-client"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
+import { wrapApi } from "../helpers/wrapApi"
+
 const useChat = (username: string) => {
   const [accessToken] = useLocalStorage("access-token", "")
 
   const channelId = useSWR(
     accessToken ? "/messages/channel" : null,
     async () => {
-      const api = new MessagesApi()
+      const api = wrapApi(MessagesApi)
 
       const createChannelDto = {
         text: "",
         username: username
       }
-      const response = await api.messagesCreateChannel(
-        { createChannelDto },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      const response = await api.messagesCreateChannel({ createChannelDto })
       return response.id
     }
   )
@@ -30,12 +24,8 @@ const useChat = (username: string) => {
   const streamToken = useSWR(
     accessToken ? "/messages/token" : null,
     async () => {
-      const api = new MessagesApi()
-
-      const response = await api.messagesGetToken({
-        headers: { Authorization: "Bearer " + accessToken }
-      })
-
+      const api = wrapApi(MessagesApi)
+      const response = await api.messagesGetToken()
       return response.token
     }
   )

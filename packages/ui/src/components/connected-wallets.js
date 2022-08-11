@@ -1,10 +1,11 @@
 import { WalletApi } from "@passes/api-client"
 import { ethers } from "ethers"
 import { Button } from "src/components/atoms"
-import { useUser, useUserConnectedWallets } from "src/hooks"
+import { useUserConnectedWallets } from "src/hooks"
+
+import { wrapApi } from "../helpers/wrapApi"
 
 const WalletSettings = () => {
-  const { accessToken } = useUser()
   const { wallets, mutate } = useUserConnectedWallets()
 
   const handleOnETHWalletConnect = async () => {
@@ -35,16 +36,8 @@ const WalletSettings = () => {
         chain: "eth"
       }
 
-      const api = new WalletApi()
-      await api.walletCreate(
-        { createWalletDto },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      const api = wrapApi(WalletApi)
+      await api.walletCreate({ createWalletDto })
       mutate()
     } catch (err) {
       alert(err.message)
@@ -85,16 +78,8 @@ const WalletSettings = () => {
         chain: "sol"
       }
 
-      const api = new WalletApi()
-      await api.walletCreate(
-        { createWalletDto },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      const api = wrapApi(WalletApi)
+      await api.walletCreate({ createWalletDto })
       mutate()
     } catch (err) {
       alert(err.message)
@@ -103,16 +88,10 @@ const WalletSettings = () => {
 
   const getMessageToSign = async (walletAddress, chain) => {
     try {
-      const api = new WalletApi()
-      const res = await api.walletAuth(
-        { authWalletRequestDto: { walletAddress, chain } },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      const api = wrapApi(WalletApi)
+      const res = await api.walletAuth({
+        authWalletRequestDto: { walletAddress, chain }
+      })
 
       return res.rawMessage
     } catch (err) {
