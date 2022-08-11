@@ -20,6 +20,7 @@ import { FeedModule } from './modules/feed/feed.module'
 import { FollowModule } from './modules/follow/follow.module'
 import { HealthModule } from './modules/health/health.module'
 import { LambdaModule } from './modules/lambda/lambda.module'
+import { ListModule } from './modules/list/list.module'
 import { RequestLogger } from './modules/logging/request'
 import { MessagesModule } from './modules/messages/messages.module'
 import { PassModule } from './modules/pass/pass.module'
@@ -68,6 +69,7 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
     SolModule,
     UserModule,
     WalletModule,
+    ListModule,
   ],
   providers: [
     {

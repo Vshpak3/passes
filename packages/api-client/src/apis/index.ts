@@ -13,6 +13,7 @@ export * from './FeedApi';
 export * from './FollowApi';
 export * from './HealthApi';
 export * from './LambdaApi';
+export * from './ListApi';
 export * from './MessagesApi';
 export * from './PassApi';
 export * from './PaymentApi';

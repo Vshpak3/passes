@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AddListMemberDto';
 export * from './AmountDto';
 export * from './AuthWalletRequestDto';
 export * from './AuthWalletResponseDto';
@@ -16,6 +17,7 @@ export * from './CreateCardDto';
 export * from './CreateChannelDto';
 export * from './CreateCreatorSettingsDto';
 export * from './CreateEthNftCollectionDto';
+export * from './CreateListDto';
 export * from './CreatePassDto';
 export * from './CreatePassHolderDto';
 export * from './CreatePostDto';
@@ -27,6 +29,8 @@ export * from './EncryptionKeyDto';
 export * from './GetChannelDto';
 export * from './GetCollectionDto';
 export * from './GetFeedDto';
+export * from './GetListDto';
+export * from './GetListsDto';
 export * from './GetPassDto';
 export * from './GetPassOwnershipDto';
 export * from './GetPassesDto';

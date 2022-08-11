@@ -12,6 +12,7 @@ apis/FeedApi.ts
 apis/FollowApi.ts
 apis/HealthApi.ts
 apis/LambdaApi.ts
+apis/ListApi.ts
 apis/MessagesApi.ts
 apis/PassApi.ts
 apis/PaymentApi.ts
@@ -23,6 +24,7 @@ apis/UserApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AddListMemberDto.ts
 models/AmountDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
@@ -39,6 +41,7 @@ models/CreateCardDto.ts
 models/CreateChannelDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
+models/CreateListDto.ts
 models/CreatePassDto.ts
 models/CreatePassHolderDto.ts
 models/CreatePostDto.ts
@@ -50,6 +53,8 @@ models/EncryptionKeyDto.ts
 models/GetChannelDto.ts
 models/GetCollectionDto.ts
 models/GetFeedDto.ts
+models/GetListDto.ts
+models/GetListsDto.ts
 models/GetPassDto.ts
 models/GetPassOwnershipDto.ts
 models/GetPassesDto.ts
