@@ -97,7 +97,8 @@ export class UserService {
 
   // TODO: Sort by creators that the user follows, most interacted with first?
   async searchByQuery(searchUserDto: SearchUserRequestDto) {
-    const likeClause = `%${searchUserDto.query}%`
+    const strippedQuery = searchUserDto.query.replace(/\W/g, '')
+    const likeClause = `%${strippedQuery}%`
     return await this.userRepository.find(
       {
         $or: [
