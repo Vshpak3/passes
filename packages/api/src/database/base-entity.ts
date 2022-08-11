@@ -5,8 +5,13 @@
 import { OptionalProps, PrimaryKey, Property, UuidType } from '@mikro-orm/core'
 import { v4 } from 'uuid'
 
+// Entity Class properties, for entity relationships assign string (id)
 declare type EntityData<T> = {
-  [K in keyof T as ExcludeFunctions<T, K>]?: T[K] extends object ? string : T[K]
+  [K in keyof T as ExcludeFunctions<T, K>]?: T[K] extends object
+    ? string
+    : T[K] extends object | undefined
+    ? string | null
+    : T[K]
 }
 
 // Exclude functions and symbols from class, returning only class properties
