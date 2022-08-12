@@ -89,9 +89,11 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Query('creatorId') creatorId: string,
   ): Promise<GetPassesDto> {
-    return new GetPassesDto(
-      await this.passService.findOwnedPasses(req.user.id, creatorId),
+    const passes = await this.passService.findOwnedPasses(
+      req.user.id,
+      creatorId,
     )
+    return new GetPassesDto(passes)
   }
 
   @ApiOperation({ summary: 'Gets a pass' })

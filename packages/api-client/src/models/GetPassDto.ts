@@ -73,6 +73,18 @@ export interface GetPassDto {
      * @memberof GetPassDto
      */
     totalSupply: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassDto
+     */
+    creatorUsername?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassDto
+     */
+    creatorDisplayName?: string;
 }
 
 export function GetPassDtoFromJSON(json: any): GetPassDto {
@@ -94,6 +106,8 @@ export function GetPassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'type': json['type'],
         'price': json['price'],
         'totalSupply': json['totalSupply'],
+        'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
+        'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
 }
 
@@ -115,6 +129,8 @@ export function GetPassDtoToJSON(value?: GetPassDto | null): any {
         'type': value.type,
         'price': value.price,
         'totalSupply': value.totalSupply,
+        'creatorUsername': value.creatorUsername,
+        'creatorDisplayName': value.creatorDisplayName,
     };
 }
 

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class GetPassDto {
   @ApiProperty()
@@ -28,6 +28,12 @@ export class GetPassDto {
   @ApiProperty()
   totalSupply: number
 
+  @ApiPropertyOptional()
+  creatorUsername?: string
+
+  @ApiPropertyOptional()
+  creatorDisplayName?: string
+
   constructor(passEntity) {
     this.id = passEntity.id
     this.creatorId = passEntity.owner_id
@@ -38,5 +44,8 @@ export class GetPassDto {
     this.type = passEntity.type
     this.price = passEntity.price
     this.totalSupply = passEntity.total_supply
+
+    this.creatorUsername = passEntity.creator_username
+    this.creatorDisplayName = passEntity.creator_display_name
   }
 }

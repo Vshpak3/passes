@@ -112,6 +112,11 @@ export class PassService {
         'owner.id',
       )
       .where('owner.id', userId)
+      .select(
+        `${PassEntity.table}.*`,
+        `owner.username as creator_username`,
+        `owner.display_name as creator_display_name`,
+      )
 
     if (creatorId) {
       query = query.where('owner_id', creatorId)
