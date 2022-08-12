@@ -85,7 +85,7 @@ export class FeedService {
       throw new NotFoundException(USER_NOT_EXIST)
     }
 
-    if (!user.isCreator) {
+    if (!user.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
