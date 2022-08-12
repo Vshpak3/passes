@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property, Unique } from '@mikro-orm/core'
+import { Entity, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -9,13 +9,15 @@ export class WalletEntity extends BaseEntity {
   @ManyToOne()
   user?: UserEntity
 
-  @Unique()
   @Property()
   address: string
 
   @Property()
   chain: Chain
 
-  @Property()
+  @Property({ default: false })
   custodial = false
+
+  @Property({ default: true })
+  authenticated = true
 }

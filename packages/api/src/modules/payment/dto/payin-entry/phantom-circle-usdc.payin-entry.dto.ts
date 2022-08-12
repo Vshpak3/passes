@@ -1,13 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { PayinEntryInputDto, PayinEntryOutputDto } from './payin-entry.dto'
+import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
-export class PhantomCircleUSDCEntryInputDto extends PayinEntryInputDto {
-  @ApiProperty()
-  ownerAccount: string
+export class PhantomCircleUSDCEntryRequestDto extends PayinEntryRequestDto {
+  // @ApiProperty()
+  // ownerAccount: string
 }
 
-export class PhantomCircleUSDCEntryOutputDto extends PayinEntryOutputDto {
+export class PhantomCircleUSDCEntryResponseDto extends PayinEntryResponseDto {
+  // @ApiProperty()
+  // message: Uint8Array
+
   @ApiProperty()
-  message: Uint8Array
+  tokenAddress: string
+
+  @ApiProperty()
+  depositAddress: string
+
+  @ApiProperty()
+  networkUrl: string
 }

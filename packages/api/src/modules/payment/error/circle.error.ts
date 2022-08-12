@@ -12,9 +12,16 @@ export class CircleResponseStatusError extends CircleResponseError {
   }
 }
 
-export class CircleRequestError extends CircleResponseError {
+export class CircleRequestError extends Error {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, CircleRequestError.prototype)
+  }
+}
+
+export class CircleNotificationError extends Error {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, CircleNotificationError.prototype)
   }
 }

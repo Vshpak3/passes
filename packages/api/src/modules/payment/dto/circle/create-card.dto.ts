@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 import { BillingDetailsDto } from './billing-details.dto'
-import { MetaData } from './metadata.dto'
+import { CircleMetaDataDto } from './metadata.dto'
 
-export class CreateCardDto {
+export class CircleCreateCardDto {
   @ApiProperty()
   idempotencyKey: string
 
@@ -23,12 +23,12 @@ export class CreateCardDto {
   expYear: number
 
   @ApiProperty()
-  metadata: MetaData
+  metadata: CircleMetaDataDto
 }
 
-export class CreateCardAndExtraDto {
+export class CircleCreateCardAndExtraDto {
   @ApiProperty()
-  createCardDto: CreateCardDto
+  createCardDto: CircleCreateCardDto
 
   @ApiProperty()
   fourDigits: string

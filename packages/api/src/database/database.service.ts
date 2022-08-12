@@ -121,6 +121,11 @@ export class DatabaseService {
     return mapEntityDataDBFields(propsToObj(props), data)
   }
 
+  toEnttiy = <T>(entity: new (...args: any[]) => T, data: EntityData<T>) => {
+    const { props } = this._getEntityMetadata(entity)
+    return mapEntityDataDBFields(propsToObj(props), data)
+  }
+
   init(entityManager: EntityManager) {
     this._entityManager = entityManager
     this.knex = entityManager.getKnex()

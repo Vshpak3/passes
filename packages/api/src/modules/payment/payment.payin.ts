@@ -1,50 +1,73 @@
-import { EntityRepository } from '@mikro-orm/core'
-
-import { PaymentEntity } from './entities/payment.entity'
-import { PaymentCallbackEnum } from './enum/payment.callback.enum'
-import { PaymentStatusEnum } from './enum/payment.status.enum'
-import {
-  messageFailureCallback,
-  messageSuccessCallback,
-} from './payment.callback'
-import { MessagePaymentCallbackInput } from './types/callback.type'
+import { DatabaseService } from '../../database/database.service'
+import { PayinEntity } from './entities/payin.entity'
+import { PayinStatusEnum } from './enum/payin.status.enum'
+import { functionMapping } from './payment.callback'
 
 export async function handleSuccesfulCallbacks(
-  payment: PaymentEntity,
-  repo: EntityRepository<PaymentEntity>,
+  payin,
+  db: DatabaseService,
 ): Promise<void> {
   try {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (payment.callback) {
-      case PaymentCallbackEnum.MESSAGE: {
-        const input = JSON.parse(
-          payment.callbackInputJSON,
-        ) as MessagePaymentCallbackInput
-        messageSuccessCallback(input)
-      }
-    }
+    const func = functionMapping(payin.callback).success
+    type params = Parameters<typeof func>
+    await func(payin.callback_input_json as params[0])
   } catch (e) {
-    payment.paymentStatus = PaymentStatusEnum.SUCCESS_CALLBACK_FAILED
-    await repo.persistAndFlush(payment)
+    const { knex, toDict } = db
+    await knex
+      .table(db.getTableName(PayinEntity))
+      .update(
+        toDict(PayinEntity, {
+          payinStatus: PayinStatusEnum.SUCCESS_CALLBACK_FAILED,
+        }),
+      )
+      .where('id', payin.id)
+
+    throw e
   }
 }
 
 export async function handleFailedCallbacks(
-  payment: PaymentEntity,
-  repo: EntityRepository<PaymentEntity>,
+  payin,
+  db: DatabaseService,
 ): Promise<void> {
   try {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (payment.callback) {
-      case PaymentCallbackEnum.MESSAGE: {
-        const input = JSON.parse(
-          payment.callbackInputJSON,
-        ) as MessagePaymentCallbackInput
-        messageFailureCallback(input)
-      }
-    }
+    const func = functionMapping(payin.callback).failure
+    type params = Parameters<typeof func>
+    await func(payin.callback_input_json as params[0])
   } catch (e) {
-    payment.paymentStatus = PaymentStatusEnum.FAIL_CALLBACK_FAILED
-    await repo.persistAndFlush(payment)
+    const { knex, toDict } = db
+    await knex
+      .table(db.getTableName(PayinEntity))
+      .update(
+        toDict(PayinEntity, {
+          payinStatus: PayinStatusEnum.FAIL_CALLBACK_FAILED,
+        }),
+      )
+      .where('id', payin.id)
+
+    throw e
+  }
+}
+
+export async function handleCreationCallback(
+  payin,
+  db: DatabaseService,
+): Promise<void> {
+  try {
+    const func = functionMapping(payin.callback).creation
+    type params = Parameters<typeof func>
+    await func(payin.callback_input_json as params[0])
+  } catch (e) {
+    const { knex, toDict } = db
+    await knex
+      .table(db.getTableName(PayinEntity))
+      .update(
+        toDict(PayinEntity, {
+          payinStatus: PayinStatusEnum.CREATE_CALLBACK_FAILED,
+        }),
+      )
+      .where('id', payin.id)
+
+    throw e
   }
 }

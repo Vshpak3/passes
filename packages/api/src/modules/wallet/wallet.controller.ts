@@ -16,8 +16,10 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { EthService } from '../eth/eth.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
-import { CreateWalletDto } from './dto/create-wallet.dto'
-import { GetUserWalletsDto } from './dto/get-user-wallets.dto'
+import {
+  CreateUnauthenticatedWalletDto,
+  CreateWalletDto,
+} from './dto/create-wallet.dto'
 import { WalletDto } from './dto/wallet.dto'
 import { WalletResponseDto } from './dto/wallet-response.dto'
 import { Chain } from './enum/chain.enum'
@@ -98,14 +100,14 @@ export class WalletController {
   @ApiOperation({ summary: 'Get wallets for user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetUserWalletsDto,
+    type: [WalletDto],
     description: 'Wallets were retrieved',
   })
   @Get()
   @UseGuards(JwtAuthGuard)
-  async findAll(@Req() req: RequestWithUser): Promise<GetUserWalletsDto> {
+  async findAll(@Req() req: RequestWithUser): Promise<Array<WalletDto>> {
     const wallets = await this.walletService.getWalletsForUser(req.user.id)
-    return new GetUserWalletsDto(wallets)
+    return wallets.map((wallet) => new WalletDto(wallet))
   }
 
   @ApiOperation({ summary: 'Refresh tokens owned by a wallet' })
@@ -121,5 +123,23 @@ export class WalletController {
     @Param('id') id: string,
   ): Promise<WalletResponseDto> {
     return this.ethService.refreshNftsForWallet(req.user.id, id)
+  }
+
+  @ApiOperation({ summary: 'Creates unchecked wallet for a user' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: CreateWalletDto,
+    description: 'Unchecked wallet was created',
+  })
+  @Post('/unauthenticated')
+  @UseGuards(JwtAuthGuard)
+  async createUnauthenticated(
+    @Req() req: RequestWithUser,
+    @Body() createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,
+  ): Promise<void> {
+    await this.walletService.createUnauthenticated(
+      req.user.id,
+      createUnauthenticatedWalletDto,
+    )
   }
 }

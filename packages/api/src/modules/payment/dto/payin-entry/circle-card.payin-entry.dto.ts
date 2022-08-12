@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 import { CircleStatusDto } from '../circle/status.dto'
-import { PayinEntryInputDto, PayinEntryOutputDto } from './payin-entry.dto'
+import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
-export class CircleCardPayinEntryInputDto extends PayinEntryInputDto {
+export class CircleCardPayinEntryRequestDto extends PayinEntryRequestDto {
   @ApiProperty()
   ip: string
 
@@ -11,7 +11,7 @@ export class CircleCardPayinEntryInputDto extends PayinEntryInputDto {
   sessionId: string
 }
 
-export class CircleCardPayinEntryOutputDto extends PayinEntryOutputDto {
+export class CircleCardPayinEntryResponseDto extends PayinEntryResponseDto {
   @ApiProperty()
   status: CircleStatusDto
 }

@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { BillingDetailsDto } from './billing-details.dto'
 
-export class BankAddressDto {
+export class CircleBankAddressDto {
   @ApiPropertyOptional()
   bankName?: string
 
@@ -18,23 +18,26 @@ export class BankAddressDto {
   @ApiPropertyOptional()
   line2?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   district?: string
 }
 
-export class CreateBankDto {
+export class CircleCreateBankDto {
   @ApiProperty()
   idempotencyKey: string
 
-  @ApiProperty()
-  accountNumber: string
+  @ApiPropertyOptional()
+  accountNumber?: string
 
-  @ApiProperty()
-  routingNumber: string
+  @ApiPropertyOptional()
+  routingNumber?: string
+
+  @ApiPropertyOptional()
+  iban?: string
 
   @ApiProperty()
   billingDetails: BillingDetailsDto
 
   @ApiProperty()
-  bankAddress: BankAddressDto
+  bankAddress: CircleBankAddressDto
 }

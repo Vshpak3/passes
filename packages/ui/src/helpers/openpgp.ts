@@ -1,4 +1,4 @@
-import { EncryptionKeyDto } from "@passes/api-client"
+import { CircleEncryptionKeyDto } from "@passes/api-client"
 import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
 
 /**
@@ -11,7 +11,7 @@ import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
  */
 async function encrypt(
   dataToEncrypt: object,
-  { keyId, publicKey }: EncryptionKeyDto
+  { keyId, publicKey }: CircleEncryptionKeyDto
 ) {
   if (!publicKey || !keyId) {
     throw new Error("Unable to encrypt data")

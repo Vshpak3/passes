@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class UpdateCardDto {
+export class CircleUpdateCardDto {
   @ApiProperty()
   keyId: string
 

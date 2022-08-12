@@ -1,17 +1,17 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { AmountDto, SourceDto } from './circle-utils.dto'
-import { MetaData } from './metadata.dto'
+import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
+import { CircleMetaDataDto } from './metadata.dto'
 
-export class BasePaymentDto {
+export class CircleCreatePaymentDto {
   @ApiProperty()
   idempotencyKey: string
 
   @ApiProperty()
-  amount: AmountDto
+  amount: CircleAmountDto
 
   @ApiProperty()
-  source: SourceDto
+  source: CircleSourceDto
 
   @ApiPropertyOptional()
   description?: string
@@ -20,10 +20,10 @@ export class BasePaymentDto {
   channel?: string
 
   @ApiProperty()
-  metadata: MetaData
+  metadata: CircleMetaDataDto
 }
 
-export class CreateCardPaymentDto extends BasePaymentDto {
+export class CircleCreateCardPaymentDto extends CircleCreatePaymentDto {
   @ApiProperty()
   verification = 'none'
 

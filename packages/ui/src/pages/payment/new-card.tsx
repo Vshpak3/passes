@@ -1,4 +1,4 @@
-import { EncryptionKeyDto, PaymentApi } from "@passes/api-client"
+import { CircleEncryptionKeyDto, PaymentApi } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -11,7 +11,7 @@ import { v4 } from "uuid"
 import { wrapApi } from "../../helpers/wrapApi"
 const NewCard = () => {
   const [submitting, setSubmitting] = useState(false)
-  const [publicKey, setPublicKey] = useState<EncryptionKeyDto>()
+  const [publicKey, setPublicKey] = useState<CircleEncryptionKeyDto>()
   const idempotencyKey = v4()
 
   const {
@@ -62,7 +62,7 @@ const NewCard = () => {
       }
       const encryptedData = await encrypt(
         cardDetails,
-        publicKey as EncryptionKeyDto
+        publicKey as CircleEncryptionKeyDto
       )
       const { encryptedMessage, keyId } = encryptedData
 
@@ -71,13 +71,16 @@ const NewCard = () => {
 
       const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
-      console.log(payload)
-      console.log(JSON.stringify(payload))
-      await paymentApi.paymentCreateCircleCard({
-        createCardAndExtraDto: payload
-      })
-      //TODO: handle returning back to previous page
-      router.push("/gems/buy")
+      await paymentApi.paymentCreateCircleCard(
+        { circleCreateCardAndExtraDto: payload },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      router.push("/payment/default-payin-method")
     } catch (error) {
       console.log(error)
     } finally {
@@ -211,14 +214,7 @@ const NewCard = () => {
         register={register}
         type="text"
         name="district"
-        placeholder="district/state (2 letters)"
-        options={{
-          required: { message: "need a district/state", value: true },
-          pattern: {
-            message: "must be 2 letter district/state code",
-            value: /[A-Z]{2}/
-          }
-        }}
+        placeholder="district/state (2 letter code required for US or Canada)"
         errors={errors}
       />
       <FormInput

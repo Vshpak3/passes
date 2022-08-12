@@ -24,13 +24,19 @@ export interface PayinMethodDto {
      * @type {string}
      * @memberof PayinMethodDto
      */
-    methodId?: string;
+    method: PayinMethodDtoMethodEnum;
     /**
      * 
      * @type {string}
      * @memberof PayinMethodDto
      */
-    method: PayinMethodDtoMethodEnum;
+    cardId?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PayinMethodDto
+     */
+    chainId?: number;
 }
 
 
@@ -38,10 +44,10 @@ export interface PayinMethodDto {
  * @export
  */
 export const PayinMethodDtoMethodEnum = {
-    CircleCard: 'CIRCLE_CARD',
-    PhantomCircleUsdc: 'PHANTOM_CIRCLE_USDC',
-    MetamaskCircleUsdc: 'METAMASK_CIRCLE_USDC',
-    MetamaskCircleEth: 'METAMASK_CIRCLE_ETH'
+    CircleCard: 'circle_card',
+    PhantomCircleUsdc: 'phantom_circle_usdc',
+    MetamaskCircleUsdc: 'metamask_circle_usdc',
+    MetamaskCircleEth: 'metamask_circle_eth'
 } as const;
 export type PayinMethodDtoMethodEnum = typeof PayinMethodDtoMethodEnum[keyof typeof PayinMethodDtoMethodEnum];
 
@@ -56,8 +62,9 @@ export function PayinMethodDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'methodId': !exists(json, 'methodId') ? undefined : json['methodId'],
         'method': json['method'],
+        'cardId': !exists(json, 'cardId') ? undefined : json['cardId'],
+        'chainId': !exists(json, 'chainId') ? undefined : json['chainId'],
     };
 }
 
@@ -70,8 +77,9 @@ export function PayinMethodDtoToJSON(value?: PayinMethodDto | null): any {
     }
     return {
         
-        'methodId': value.methodId,
         'method': value.method,
+        'cardId': value.cardId,
+        'chainId': value.chainId,
     };
 }
 

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Head,
+  HttpCode,
   HttpStatus,
   Param,
   Post,
@@ -10,39 +11,53 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { get } from 'https'
 import { RealIP } from 'nestjs-real-ip'
+import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
-import { CardEntityDto } from './dto/circle/card.entity.dto'
-import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
-import { CreateBankDto } from './dto/circle/create-bank.dto'
-import { CreateCardAndExtraDto } from './dto/circle/create-card.dto'
-import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
+import { PayinCallbackInput } from './callback.types'
+import { CircleBankDto } from './dto/circle/circle-bank.dto'
+import { CircleCardDto } from './dto/circle/circle-card.dto'
+import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
+import { CircleCreateCardAndExtraDto } from './dto/circle/create-card.dto'
+import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusDto } from './dto/circle/status.dto'
 import {
-  CircleCardPayinEntryInputDto,
-  CircleCardPayinEntryOutputDto,
+  CircleCardPayinEntryRequestDto,
+  CircleCardPayinEntryResponseDto,
 } from './dto/payin-entry/circle-card.payin-entry.dto'
 import {
-  MetamaskCircleETHEntryInputDto,
-  MetamaskCircleETHEntryOutputDto,
+  MetamaskCircleETHEntryRequestDto,
+  MetamaskCircleETHEntryResponseDto,
 } from './dto/payin-entry/metamask-circle-eth.payin-entry.dto'
 import {
-  MetamaskCircleUSDCEntryInputDto,
-  MetamaskCircleUSDCEntryOutputDto,
+  MetamaskCircleUSDCEntryRequestDto,
+  MetamaskCircleUSDCEntryResponseDto,
 } from './dto/payin-entry/metamask-circle-usdc.payin-entry.dto'
 import {
-  PhantomCircleUSDCEntryInputDto,
-  PhantomCircleUSDCEntryOutputDto,
+  PhantomCircleUSDCEntryRequestDto,
+  PhantomCircleUSDCEntryResponseDto,
 } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
+import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
+import { PayoutMethodDto } from './dto/payout-method.dto'
+import { RegisterPayinResponseDto } from './dto/register-payin.dto'
+import { PayinCallbackEnum } from './enum/payin.callback.enum'
+import { CircleRequestError } from './error/circle.error'
 import { PaymentService } from './payment.service'
+
+const circleArn =
+  /^arn:aws:sns:.*:908968368384:(sandbox|prod)_platform-notifications-topic$/
 
 @ApiTags('payment')
 @Controller('payment')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  validator: MessageValidator
+  constructor(private readonly paymentService: PaymentService) {
+    this.validator = new MessageValidator()
+  }
 
   /*
   -------------------------------------------------------------------------------
@@ -53,12 +68,13 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get circle encryption key' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: EncryptionKeyDto,
+    type: CircleEncryptionKeyDto,
     description: 'Encryption key was returned',
   })
   @Get('key')
-  async getCircleEncryptionKey(): Promise<EncryptionKeyDto> {
-    return this.paymentService.getCircleEncryptionKey()
+  @HttpCode(200)
+  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyDto> {
+    return await this.paymentService.getCircleEncryptionKey()
   }
 
   @ApiOperation({ summary: 'Creates a card' })
@@ -72,9 +88,9 @@ export class PaymentController {
   async createCircleCard(
     @RealIP() ip: string,
     @Req() req: RequestWithUser,
-    @Body() createCardAndExtraDto: CreateCardAndExtraDto,
+    @Body() createCardAndExtraDto: CircleCreateCardAndExtraDto,
   ): Promise<CircleStatusDto> {
-    return this.paymentService.createCircleCard(
+    return await this.paymentService.createCircleCard(
       ip,
       req.user.id,
       createCardAndExtraDto.createCardDto,
@@ -82,99 +98,86 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Check card status' })
+  @ApiOperation({ summary: 'Delete a card' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleStatusDto,
-    description: 'Status of card was returned',
-  })
-  @Get('card/status/:id')
-  @UseGuards(JwtAuthGuard)
-  async checkCircleCardStatus(
-    @Param('id') id: string,
-  ): Promise<CircleStatusDto> {
-    return this.paymentService.checkCircleCardStatus(id)
-  }
-
-  @ApiOperation({ summary: 'Deletes a card' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
+    type: undefined,
     description: 'A card was deleted',
   })
   @Post('card/delete/:circleCardId')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   async deleteCircleCard(
     @Req() req: RequestWithUser,
     @Param('circleCardId') circleCardId: string,
-  ): Promise<boolean> {
-    return await this.paymentService.deleteCircleCard(req.user.id, circleCardId)
+  ): Promise<void> {
+    await this.paymentService.deleteCircleCard(req.user.id, circleCardId)
   }
 
   @ApiOperation({ summary: 'Get cards' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [CardEntityDto],
+    type: [CircleCardDto],
     description: 'Cards were returned',
   })
   @Get('cards')
   @UseGuards(JwtAuthGuard)
   async getCircleCards(
     @Req() req: RequestWithUser,
-  ): Promise<Array<CardEntityDto>> {
-    return (await this.paymentService.getCircleCards(req.user.id)).map(
-      (entity) => new CardEntityDto(entity),
-    )
+  ): Promise<Array<CircleCardDto>> {
+    return await this.paymentService.getCircleCards(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Check payment status' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: CircleStatusDto,
-    description: 'Status of payment was returned',
-  })
-  @Get('status/:id')
-  @UseGuards(JwtAuthGuard)
-  async checkCirclePaymentStatus(
-    @Param('id') id: string,
-  ): Promise<CircleStatusDto> {
-    return this.paymentService.checkCirclePaymentStatus(id)
-  }
-
-  @ApiOperation({ summary: 'Create wire bank account' })
+  @ApiOperation({ summary: 'Create a wire bank account' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: CircleStatusDto,
     description: 'A wire bank account was created',
   })
-  @Post('bank/wire/create')
+  @Post('bank/create')
   @UseGuards(JwtAuthGuard)
-  async createCircleWireBankAccount(
+  async createCircleBank(
     @Req() req: RequestWithUser,
-    @Body() createBankDto: CreateBankDto,
+    @Body() createBankDto: CircleCreateBankDto,
   ): Promise<CircleStatusDto> {
-    return this.paymentService.createCircleWireBankAccount(
+    return await this.paymentService.createCircleBank(
       req.user.id,
       createBankDto,
     )
   }
 
-  @ApiOperation({ summary: 'Check wire bank status' })
+  @ApiOperation({ summary: 'Delete a wire bank account' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: CircleStatusDto,
-    description: 'Status of bank was returned',
+    description: 'A wire bank account was dleted',
   })
-  @Get('bank/wire/status/:id')
+  @Post('bank/delete/:circleBankId')
   @UseGuards(JwtAuthGuard)
-  async checkWireBankStatus(@Param('id') id: string): Promise<CircleStatusDto> {
-    return this.paymentService.checkCircleWireBankStatus(id)
+  async deleteCircleBank(
+    @Req() req: RequestWithUser,
+    @Param('circleBankId') circleBankId: string,
+  ): Promise<void> {
+    await this.paymentService.deleteCircleBank(req.user.id, circleBankId)
+  }
+
+  @ApiOperation({ summary: 'Get wire bank acccounts' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [CircleBankDto],
+    description: 'Wire bank accounts were returned',
+  })
+  @Get('banks')
+  @UseGuards(JwtAuthGuard)
+  async getCircleBanks(
+    @Req() req: RequestWithUser,
+  ): Promise<Array<CircleBankDto>> {
+    return await this.paymentService.getCircleBanks(req.user.id)
   }
 
   // endpoint only called by circle to give us notifications
   // (must register endpoint through circle API if it changes)
   // TODO: authenticate circle url
-  // TODO: handle payout notifications (and card/bank if available)
   @ApiOperation({ summary: 'Circle notifications' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -182,20 +185,32 @@ export class PaymentController {
     description: 'Update from circle was received',
   })
   @Post('circle/notification')
-  async recieveNotifications(
-    @Body()
-    circleNotificationDto: CircleNotificationDto,
-  ) {
-    if (circleNotificationDto.clientId === undefined) {
-      return true
+  @HttpCode(200)
+  async recieveNotifications(@Body() body: string) {
+    const envelope = JSON.parse(body)
+    this.validator.validate(envelope, (err) => {
+      if (err) {
+        throw new CircleRequestError('bad notification request')
+      }
+    })
+    switch (envelope.Type) {
+      case 'SubscriptionConfirmation': {
+        if (!circleArn.test(envelope.TopicArn)) {
+          throw new CircleRequestError(
+            `Unable to confirm the subscription as the topic arn is not expected ${envelope.TopicArn}. Valid topic arn must match ${circleArn}.`,
+          )
+        }
+        get(envelope.SubscribeURL)
+        break
+      }
+      case 'Notification': {
+        await this.paymentService.processCircleUpdate(
+          JSON.parse(envelope.Message),
+        )
+      }
     }
-    return this.paymentService.processCircleUpdate(circleNotificationDto)
   }
 
-  // endpoint only called by circle to give us notifications
-  // (must register endpoint through circle API if it changes)
-  // TODO: authenticate circle url
-  // TODO: handle payout notifications (and card/bank if available)
   @ApiOperation({ summary: 'Circle notifications register' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -209,17 +224,98 @@ export class PaymentController {
 
   /*
   -------------------------------------------------------------------------------
-  GENERIC
+  PAYIN ENTRYPOINTS (one for each PayinMethodEnum)
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Set default payin' })
+  @ApiOperation({ summary: 'Circlecard payin entrypoint' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: CircleCardPayinEntryResponseDto,
+    description: 'Circecard payin was initiated',
+  })
+  @Post('payin/entry/circle-card')
+  @UseGuards(JwtAuthGuard)
+  async entryCircleCard(
+    @RealIP() ip: string,
+    @Req() req: RequestWithUser,
+    @Body() payinEntryInputDto: CircleCardPayinEntryRequestDto,
+  ): Promise<CircleCardPayinEntryResponseDto> {
+    payinEntryInputDto.ip = ip
+    return (await this.paymentService.payinEntryHandler(
+      req.user.id,
+      payinEntryInputDto,
+    )) as CircleCardPayinEntryResponseDto
+  }
+
+  @ApiOperation({ summary: 'Phantom USDC payin entrypoint' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: PhantomCircleUSDCEntryResponseDto,
+    description: 'Phantom USDC payin was initiated',
+  })
+  @Post('payin/entry/phantom-usdc')
+  @UseGuards(JwtAuthGuard)
+  async entryPhantomCircleUSDC(
+    @Req() req: RequestWithUser,
+    @Body() payinEntryInputDto: PhantomCircleUSDCEntryRequestDto,
+  ): Promise<PhantomCircleUSDCEntryResponseDto> {
+    return (await this.paymentService.payinEntryHandler(
+      req.user.id,
+      payinEntryInputDto,
+    )) as PhantomCircleUSDCEntryResponseDto
+  }
+
+  @ApiOperation({ summary: 'Metamask USDC payin entrypoint' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: MetamaskCircleUSDCEntryResponseDto,
+    description: 'Metamask USDC was initiated',
+  })
+  @Post('payin/entry/metamask-usdc')
+  @UseGuards(JwtAuthGuard)
+  async entryMetamaskCircleUSDC(
+    @Req() req: RequestWithUser,
+    @Body() payinEntryInputDto: MetamaskCircleUSDCEntryRequestDto,
+  ): Promise<MetamaskCircleUSDCEntryResponseDto> {
+    return (await this.paymentService.payinEntryHandler(
+      req.user.id,
+      payinEntryInputDto,
+    )) as MetamaskCircleUSDCEntryResponseDto
+  }
+
+  @ApiOperation({ summary: 'Metamask ETH payin entrypoint' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: MetamaskCircleETHEntryResponseDto,
+    description: 'Metamask ETH was initiated',
+  })
+  @Post('payin/entry/metamask-eth')
+  @UseGuards(JwtAuthGuard)
+  async entryMetamaskCircleETH(
+    @Req() req: RequestWithUser,
+    @Body() payinEntryInputDto: MetamaskCircleETHEntryRequestDto,
+  ): Promise<MetamaskCircleETHEntryResponseDto> {
+    return (await this.paymentService.payinEntryHandler(
+      req.user.id,
+      payinEntryInputDto,
+    )) as MetamaskCircleETHEntryResponseDto
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  GENERAL
+  -------------------------------------------------------------------------------
+  */
+
+  @ApiOperation({ summary: 'Set default payin method' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: undefined,
     description: 'A payin method was set as default',
   })
   @Post('payin/default')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   async setDefaultPayinMethod(
     @Req() req: RequestWithUser,
@@ -227,12 +323,11 @@ export class PaymentController {
   ): Promise<void> {
     return await this.paymentService.setDefaultPayinMethod(
       req.user.id,
-      payinMethodDto.method,
-      payinMethodDto.methodId,
+      payinMethodDto,
     )
   }
 
-  @ApiOperation({ summary: 'Get default payin' })
+  @ApiOperation({ summary: 'Get default payin method' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinMethodDto,
@@ -240,79 +335,123 @@ export class PaymentController {
   })
   @Get('payin/default')
   @UseGuards(JwtAuthGuard)
-  async getDefaultPayin(@Req() req: RequestWithUser): Promise<PayinMethodDto> {
+  async getDefaultPayinMethod(
+    @Req() req: RequestWithUser,
+  ): Promise<PayinMethodDto> {
     return await this.paymentService.getDefaultPayinMethod(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Circlecard payin entrypoint' })
+  @ApiOperation({ summary: 'Set default payout method' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleCardPayinEntryOutputDto,
-    description: 'Circecard payin was initiated',
+    type: undefined,
+    description: 'A payout method was set as default',
   })
-  @Post('payin/entry/circle-card')
+  @Post('payout/default')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async entryCircleCard(
+  async setDefaultPayoutMethod(
     @Req() req: RequestWithUser,
-    @Body() payinEntryInputDto: CircleCardPayinEntryInputDto,
-  ): Promise<CircleCardPayinEntryOutputDto> {
-    return (await this.paymentService.payinEntryHandler(
+    @Body() payoutMethodDto: PayoutMethodDto,
+  ): Promise<void> {
+    return await this.paymentService.setDefaultPayoutMethod(
       req.user.id,
-      payinEntryInputDto,
-    )) as CircleCardPayinEntryOutputDto
+      payoutMethodDto,
+    )
   }
 
-  @ApiOperation({ summary: 'Phantom USDC payin entrypoint' })
+  @ApiOperation({ summary: 'Get default payout method' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PhantomCircleUSDCEntryOutputDto,
-    description: 'Phantom USDC payin was initiated',
+    type: PayoutMethodDto,
+    description: 'Default payout method was returned',
   })
-  @Post('payin/entry/circle-card')
+  @Get('payout/default')
   @UseGuards(JwtAuthGuard)
-  async entryPhantomCircleUSDC(
+  async getDefaultPayoutMethod(
     @Req() req: RequestWithUser,
-    @Body() payinEntryInputDto: PhantomCircleUSDCEntryInputDto,
-  ): Promise<PhantomCircleUSDCEntryOutputDto> {
-    return (await this.paymentService.payinEntryHandler(
-      req.user.id,
-      payinEntryInputDto,
-    )) as PhantomCircleUSDCEntryOutputDto
+  ): Promise<PayoutMethodDto> {
+    return await this.paymentService.getDefaultPayoutMethod(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Metamask USDC payin entrypoint' })
+  @ApiOperation({ summary: 'Cancel a payin' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: MetamaskCircleUSDCEntryOutputDto,
-    description: 'Metamask USDC was initiated',
+    type: undefined,
+    description: 'Payin was cancelled',
   })
-  @Post('payin/entry/metamask-usdc')
+  @Post('payin/cancel/:payinId')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async entryMetamaskCircleUSDC(
+  async cancelPayin(
     @Req() req: RequestWithUser,
-    @Body() payinEntryInputDto: MetamaskCircleUSDCEntryInputDto,
-  ): Promise<MetamaskCircleUSDCEntryOutputDto> {
-    return (await this.paymentService.payinEntryHandler(
-      req.user.id,
-      payinEntryInputDto,
-    )) as MetamaskCircleUSDCEntryOutputDto
+    @Param('payinId') payinId: string,
+  ): Promise<void> {
+    await this.paymentService.userCancelPayin(payinId, req.user.id)
   }
 
-  @ApiOperation({ summary: 'Metamask ETH payin entrypoint' })
+  @ApiOperation({ summary: 'Get all payins' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: MetamaskCircleETHEntryOutputDto,
-    description: 'Metamask ETH was initiated',
+    type: PayinListResponseDto,
+    description: 'Payins were returned',
   })
-  @Post('payin/entry/metamask-eth')
+  @Post('payin')
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async entryMetamaskCircleETH(
+  async getPayins(
     @Req() req: RequestWithUser,
-    @Body() payinEntryInputDto: MetamaskCircleETHEntryInputDto,
-  ): Promise<MetamaskCircleETHEntryOutputDto> {
-    return (await this.paymentService.payinEntryHandler(
-      req.user.id,
-      payinEntryInputDto,
-    )) as MetamaskCircleETHEntryOutputDto
+    @Body() payinListRequest: PayinListRequestDto,
+  ): Promise<PayinListResponseDto> {
+    return await this.paymentService.getPayins(req.user.id, payinListRequest)
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  TEST (to be removed)
+  -------------------------------------------------------------------------------
+  */
+
+  @ApiOperation({ summary: 'Register payin' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: RegisterPayinResponseDto,
+    description: 'Payin registered',
+  })
+  @Post('test/register/payin')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  async registerPayin(
+    @Req() req: RequestWithUser,
+  ): Promise<RegisterPayinResponseDto> {
+    return await this.paymentService.registerPayin({
+      userId: req.user.id,
+      amount: 1000,
+      callback: PayinCallbackEnum.EXAMPLE,
+      callbackInputJSON: { example: 'asdf' } as PayinCallbackInput,
+      creatorShares: [{ creatorId: req.user.id, amount: 500 }],
+    })
+  }
+
+  @ApiOperation({ summary: 'Payout everyone' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Everyone paid out',
+  })
+  @Get('test/payout')
+  async payout(): Promise<void> {
+    return await this.paymentService.payoutAll()
+  }
+
+  @ApiOperation({ summary: 'Rerun payout' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Payout rerun',
+  })
+  @Get('test/payout/:payoutId')
+  async rePayout(@Param('payoutId') payoutId: string): Promise<void> {
+    return await this.paymentService.submitPayout(payoutId)
   }
 }

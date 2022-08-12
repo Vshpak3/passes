@@ -1,97 +1,148 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import {
-  createAssociatedTokenAccountInstruction,
-  createTransferInstruction,
-  getAccount,
-  getAssociatedTokenAddress,
-  TOKEN_PROGRAM_ID,
-} from '@solana/spl-token'
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
 import { v4 } from 'uuid'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
-import { SOL_ACCOUNT } from '../sol/sol.accounts'
+import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
+import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { CircleConnector } from './circle'
-import { CircleNotificationDto } from './dto/circle/circle-notification.dto'
-import { CreateBankDto } from './dto/circle/create-bank.dto'
-import { CreateCardDto } from './dto/circle/create-card.dto'
-import { CreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
-import { EncryptionKeyDto } from './dto/circle/encryption-key.dto'
-import { PaymentDto } from './dto/circle/payment.dto'
+import { CircleBankDto } from './dto/circle/circle-bank.dto'
+import { CircleCardDto } from './dto/circle/circle-card.dto'
+import {
+  CircleNotificationDto,
+  GenericCircleObjectWrapper,
+} from './dto/circle/circle-notification.dto'
+import { CirclePaymentDto } from './dto/circle/circle-payment.dto'
+import { CircleTransferDto } from './dto/circle/circle-transfer.dto'
+import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
+import { CircleCreateCardDto } from './dto/circle/create-card.dto'
+import { CircleCreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
+import { CircleCreatePayoutDto } from './dto/circle/create-circle-payout.dto'
+import { CircleCreateTransferDto } from './dto/circle/create-circle-transfer.dto'
+import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusDto } from './dto/circle/status.dto'
+import { PayinDto } from './dto/payin.dto'
 import {
-  CircleCardPayinEntryInputDto,
-  CircleCardPayinEntryOutputDto,
+  CircleCardPayinEntryRequestDto,
+  CircleCardPayinEntryResponseDto,
 } from './dto/payin-entry/circle-card.payin-entry.dto'
-import { MetamaskCircleETHEntryOutputDto } from './dto/payin-entry/metamask-circle-eth.payin-entry.dto'
-import { MetamaskCircleUSDCEntryOutputDto } from './dto/payin-entry/metamask-circle-usdc.payin-entry.dto'
+import { MetamaskCircleETHEntryResponseDto } from './dto/payin-entry/metamask-circle-eth.payin-entry.dto'
+import { MetamaskCircleUSDCEntryResponseDto } from './dto/payin-entry/metamask-circle-usdc.payin-entry.dto'
 import {
-  PayinEntryInputDto,
-  PayinEntryOutputDto,
+  PayinEntryRequestDto,
+  PayinEntryResponseDto,
 } from './dto/payin-entry/payin-entry.dto'
-import {
-  PhantomCircleUSDCEntryInputDto,
-  PhantomCircleUSDCEntryOutputDto,
-} from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
+import { PhantomCircleUSDCEntryResponseDto } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
+import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
+import { PayoutDto } from './dto/payout.dto'
+import { PayoutMethodDto } from './dto/payout-method.dto'
 import {
-  RegisterPaymentRequestDto,
-  RegisterPaymentResponseDto,
-} from './dto/register-payment.dto'
+  RegisterPayinRequestDto,
+  RegisterPayinResponseDto,
+} from './dto/register-payin.dto'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
+import { CirclePayoutEntity } from './entities/circle-payout.entity'
+import { CircleTransferEntity } from './entities/circle-transfer.entity'
+import { CreatorShareEntity } from './entities/creator-share.entity'
 import { DefaultPayinMethodEntity } from './entities/default-payin-method.entity'
-import { DepositAddressEntity } from './entities/deposit-address.entity'
-import { PaymentEntity } from './entities/payment.entity'
+import { DefaultPayoutMethodEntity } from './entities/default-payout-method.entity'
+import { PayinEntity } from './entities/payin.entity'
+import { PayoutEntity } from './entities/payout.entity'
 import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
-import { CirclePaymentSourceEnum } from './enum/circle-payment.source.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
+import { CircleTransferStatusEnum } from './enum/circle-transfer.status.enum'
 import { PayinMethodEnum } from './enum/payin.enum'
-import { PaymentStatusEnum } from './enum/payment.status.enum'
-import { CircleRequestError, CircleResponseError } from './error/circle.error'
+import { PayinStatusEnum } from './enum/payin.status.enum'
+import { PayoutMethodEnum } from './enum/payout.enum'
+import { PayoutStatusEnum } from './enum/payout.status.enum'
 import {
-  InvalidRequestPaymentRequest,
+  CircleNotificationError,
+  CircleRequestError,
+  CircleResponseError,
+} from './error/circle.error'
+import {
+  InvalidPayinRequestError,
+  InvalidPayinStatusError,
   NoPayinMethodError,
 } from './error/payin.error'
-import { handleFailedCallbacks } from './payment.payin'
+import {
+  handleCreationCallback,
+  handleFailedCallbacks,
+  handleSuccesfulCallbacks,
+} from './payment.payin'
+
+export const MAX_CARDS_PER_USER = 10
+export const MAX_BANKS_PER_USER = 5
+export const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // change to  60 * 60 * 24 * 7
 
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
+  circleCardTable: string
+  circleBankTable: string
+  circleNotificationTable: string
+  circlePaymentTable: string
+  circlePayoutTable: string
+  circleTransferTable: string
+  creatorShareTable: string
+  defaultPayinMethodTable: string
+  defaultPayoutMethodTable: string
+  payinTable: string
+  payoutTable: string
+  userTable: string
+  walletTable: string
+
+  circleMasterWallet: string
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
-    @InjectRepository(CircleCardEntity, 'ReadWrite')
-    private readonly circleCardRepository: EntityRepository<CircleCardEntity>,
-    @InjectRepository(CirclePaymentEntity, 'ReadWrite')
-    private readonly circlePaymentRepository: EntityRepository<CirclePaymentEntity>,
-    @InjectRepository(DepositAddressEntity, 'ReadWrite')
-    private readonly depositAddressRepository: EntityRepository<DepositAddressEntity>,
-    @InjectRepository(CircleBankEntity, 'ReadWrite')
-    private readonly circleBankRepository: EntityRepository<CircleBankEntity>,
-    @InjectRepository(CircleNotificationEntity, 'ReadWrite')
-    private readonly circleNotificationRepository: EntityRepository<CircleNotificationEntity>,
-    @InjectRepository(PaymentEntity, 'ReadWrite')
-    private readonly paymentRepository: EntityRepository<PaymentEntity>,
-    @InjectRepository(DefaultPayinMethodEntity, 'ReadWrite')
-    private readonly defaultPayinMethodRepository: EntityRepository<DefaultPayinMethodEntity>,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
+
+    this.circleCardTable =
+      this.ReadWriteDatabaseService.getTableName(CircleCardEntity)
+    this.circleBankTable =
+      this.ReadWriteDatabaseService.getTableName(CircleBankEntity)
+    this.circleNotificationTable = this.ReadWriteDatabaseService.getTableName(
+      CircleNotificationEntity,
+    )
+    this.circlePaymentTable =
+      this.ReadWriteDatabaseService.getTableName(CirclePaymentEntity)
+    this.circlePayoutTable =
+      this.ReadWriteDatabaseService.getTableName(CirclePayoutEntity)
+    this.circleTransferTable =
+      this.ReadWriteDatabaseService.getTableName(CircleTransferEntity)
+    this.creatorShareTable =
+      this.ReadWriteDatabaseService.getTableName(CreatorShareEntity)
+    this.defaultPayinMethodTable = this.ReadWriteDatabaseService.getTableName(
+      DefaultPayinMethodEntity,
+    )
+    this.defaultPayoutMethodTable = this.ReadWriteDatabaseService.getTableName(
+      DefaultPayoutMethodEntity,
+    )
+    this.payinTable = this.ReadWriteDatabaseService.getTableName(PayinEntity)
+    this.payoutTable = this.ReadWriteDatabaseService.getTableName(PayoutEntity)
+    this.userTable = this.ReadWriteDatabaseService.getTableName(UserEntity)
+    this.walletTable = this.ReadWriteDatabaseService.getTableName(WalletEntity)
+    this.circleMasterWallet = this.configService.get(
+      'circle.master_wallet_id',
+    ) as string
   }
 
-  EVM_USDC_CHAINIDS = {
-    mainnet: [1, 137, 43114],
-    testnet: [5, 80001, 43113],
-  }
   /*
   -------------------------------------------------------------------------------
   CIRCLE
@@ -103,14 +154,13 @@ export class PaymentService {
    *
    * @returns
    */
-  async getCircleEncryptionKey(): Promise<EncryptionKeyDto> {
+  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyDto> {
     const response = await this.circleConnector.getPCIPublicKey()
-    return new EncryptionKeyDto(response['keyId'], response['publicKey'])
+    return { keyId: response['keyId'], publicKey: response['publicKey'] }
   }
 
   /**
-   * create usable credit card using circle api, return status of creation
-   * makes card the default card for user
+   * create usable credit card using circle api
    *
    * @param userid
    * @param createCardDto
@@ -119,170 +169,166 @@ export class PaymentService {
    */
   async createCircleCard(
     ip: string,
-    userid: string,
-    createCardDto: CreateCardDto,
+    userId: string,
+    createCardDto: CircleCreateCardDto,
     fourDigits: string,
   ): Promise<CircleStatusDto> {
-    const checkCard = await this.circleCardRepository.findOne({
-      idempotencyKey: createCardDto.idempotencyKey,
-    })
-    if (checkCard !== null) {
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    if (
+      await knex(this.circleCardTable)
+        .where(
+          toDict(CircleCardEntity, {
+            idempotencyKey: createCardDto.idempotencyKey,
+          }),
+        )
+        .first()
+    ) {
       throw new CircleRequestError('reused idempotency key')
     }
 
-    const card = new CircleCardEntity()
-    card.user = await this.userService.findOne(userid)
-    card.expMonth = createCardDto.expMonth
-    card.expYear = createCardDto.expYear
-    card.fourDigits = fourDigits
-    card.name = createCardDto.billingDetails.name
+    const count = await knex
+      .table(this.circleCardTable)
+      .whereNotNull('deleted_at')
+      .andWhere('user_id', userId)
+      .count()
+    if (count[0]['count(*)'] >= MAX_CARDS_PER_USER) {
+      throw new BadRequestException(`${MAX_CARDS_PER_USER} card limit reached`)
+    }
 
-    //automatically fill in metadata
-    createCardDto.metadata.email = card.user.email
+    createCardDto.metadata.email = (
+      await this.userService.findOne(userId)
+    ).email
     createCardDto.metadata.ipAddress = ip
-
     const response = await this.circleConnector.createCard(createCardDto)
 
-    card.circleCardId = response['id']
-    card.status = CirclePaymentStatusEnum[response['status']]
-    await this.circleCardRepository.persistAndFlush(card)
-
-    return { id: card.circleCardId, status: card.status }
-  }
-
-  /**
-   * get status of added card
-   *
-   * @param cardId
-   * @returns
-   */
-  async checkCircleCardStatus(cardId: string): Promise<CircleStatusDto> {
-    const card = await this.circleCardRepository.findOneOrFail({
-      id: cardId,
+    const data = toDict(CircleCardEntity, {
+      id: v4(),
+      user: userId,
+      fourDigits,
+      circleCardId: response['id'],
+      status: response['status'],
+      name: createCardDto.billingDetails.name,
+      ...createCardDto,
     })
-    if (card.status == CircleAccountStatusEnum.PENDING) {
-      const response = await this.circleConnector.getCardById(cardId)
-      card.status = response['status']
-      await this.circleBankRepository.persistAndFlush(card)
-    }
-    return { id: card.circleCardId, status: card.status }
+
+    await knex(this.circleCardTable).insert(data)
+
+    return { id: data.circleCardId, status: data.status }
   }
 
   /**
    * delete existing card
-   * remove card from moment system but it still exists in circle system
    *
    * @param id
    * @returns
    */
-  async deleteCircleCard(userId: string, cardId: string): Promise<boolean> {
-    const user: UserEntity = await this.userService.findOne(userId)
-    const cardToRemove = await this.circleCardRepository.findOneOrFail({
-      id: cardId,
-      user: user,
-    })
-    cardToRemove.active = false
-    await this.circleCardRepository.persistAndFlush(cardToRemove)
-    return true
+  async deleteCircleCard(userId: string, cardId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    await knex(this.circleCardTable)
+      .update('deleted_at', knex.fn.now())
+      .where(toDict(CircleCardEntity, { user: userId, id: cardId }))
   }
 
   /**
-   * get all active cards you registered with moment
+   * get all undeleted cards
+   *
    * @param userid
    * @returns
    */
-  async getCircleCards(userId: string): Promise<CircleCardEntity[]> {
-    const user: UserEntity = await this.userService.findOne(userId)
-
-    return await this.circleCardRepository.find({
-      user: user,
-      active: true,
-    })
+  async getCircleCards(userId: string): Promise<Array<CircleCardDto>> {
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    return (
+      await knex(this.circleCardTable)
+        .select('*')
+        .where(
+          toDict(CircleCardEntity, {
+            user: userId,
+          }),
+        )
+        .whereNull('deleted_at')
+    ).map((card) => new CircleCardDto(card))
   }
 
+  /**
+   * create a card payment with a saved card
+   *
+   * @param ipAddress
+   * @param sessionId
+   * @param payin
+   * @returns
+   */
   async makeCircleCardPayment(
-    ip: string,
+    ipAddress: string,
     sessionId: string,
-    payment: PaymentEntity,
+    payin: PayinDto,
   ): Promise<CircleStatusDto> {
-    const user = await wrap(payment.user).init()
-    const card = await this.circleCardRepository.findOneOrFail({
-      id: payment.payinMethodId,
-    })
-    const circlePayment = new CirclePaymentEntity()
-    const createCardPaymentDto: CreateCardPaymentDto = {
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+
+    const card = await knex(this.circleCardTable)
+      .where({
+        id: payin.cardId,
+      })
+      .select('id', 'circle_card_id')
+      .first()
+
+    const createCardPaymentDto: CircleCreateCardPaymentDto = {
       idempotencyKey: v4(),
       amount: {
-        amount: payment.amount.toFixed(2),
+        amount: payin.amount.toFixed(2),
         currency: 'USD',
       },
       source: {
-        id: payment.payinMethodId,
+        id: card.circle_card_id,
         type: 'card',
       },
       metadata: {
-        ipAddress: ip,
-        email: user.email,
+        ipAddress,
+        email: (await this.userService.findOne(payin.userId)).email,
         sessionId: sessionId,
       },
       verification: 'none',
     }
 
-    circlePayment.idempotencyKey = createCardPaymentDto.idempotencyKey
-    circlePayment.amount = createCardPaymentDto.amount.amount
-    circlePayment.card = card
-    circlePayment.status = CirclePaymentStatusEnum.UNKOWN
-    circlePayment.verification = CircleCardVerificationEnum.NONE
-    circlePayment.source = CirclePaymentSourceEnum.CARD
-    // save first so we have a record in db
-    await this.circleCardRepository.persistAndFlush(payment)
+    const data = toDict(CirclePaymentEntity, {
+      id: v4(),
+      card: card.id,
+      payin: payin.id,
+      idempotencyKey: createCardPaymentDto.idempotencyKey,
+      amount: createCardPaymentDto.amount.amount,
+      verification: CircleCardVerificationEnum.NONE,
+      status: CirclePaymentStatusEnum.UNKOWN,
+    })
+    await knex(this.circlePaymentTable).insert(data)
 
     const response = await this.circleConnector.createPayment(
       createCardPaymentDto,
     )
 
-    circlePayment.circlePaymentId = response['id']
-    circlePayment.status = CirclePaymentStatusEnum[response['status']]
-    await this.circleCardRepository.persistAndFlush(payment)
+    await knex(this.circlePaymentTable)
+      .update(
+        toDict(CirclePaymentEntity, {
+          circlePaymentId: response['id'],
+          status: response['status'],
+        }),
+      )
+      .where({ id: data.id })
 
-    return { id: circlePayment.circlePaymentId, status: circlePayment.status }
+    return { id: response['id'], status: response['status'] }
   }
 
   /**
-   * check status for payment
-   * @param paymentId
+   * get new depositable blockchain address from circle
+   * addresses are unique per (chain, currency) pair
+   *
+   * @param currency
+   * @param chain
    * @returns
    */
-  async checkCirclePaymentStatus(paymentId: string): Promise<CircleStatusDto> {
-    const payment = await this.circlePaymentRepository.findOneOrFail({
-      id: paymentId,
-    })
-
-    // if payment is not in an end state, try to get an update
-    if (
-      !(
-        payment.status in
-        [CirclePaymentStatusEnum.PAID, CirclePaymentStatusEnum.FAILED]
-      )
-    ) {
-      const response = await this.circleConnector.getPaymentById(paymentId)
-      payment.status = response['status']
-      await this.circlePaymentRepository.persistAndFlush(payment)
-    }
-    return { id: payment.circlePaymentId, status: payment.status }
-  }
-
-  /**
-   * get new depositable solana address from Circle
-   *
-   * @param userId
-   * @param createAddressDto
-   * @returns solana address
-   */
   async getCircleAddress(currency: string, chain: string): Promise<string> {
+    const idempotencyKey = v4()
     const response = await this.circleConnector.createAddress(
-      this.configService.get('circle.master_wallet_id') as string,
-      { idempotencyKey: v4(), currency, chain },
+      this.circleMasterWallet,
+      { idempotencyKey, currency, chain },
     )
     return response['address']
   }
@@ -293,298 +339,678 @@ export class PaymentService {
    * @param createBankDto
    * @returns
    */
-  async createCircleWireBankAccount(
+  async createCircleBank(
     userId: string,
-    createBankDto: CreateBankDto,
+    createBankDto: CircleCreateBankDto,
   ): Promise<CircleStatusDto> {
-    const checkBank = await this.circleBankRepository.findOneOrFail({
-      idempotencyKey: createBankDto.idempotencyKey,
-    })
-    if (checkBank !== null) {
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    if (
+      await knex(this.circleBankTable)
+        .where(
+          toDict(CircleBankEntity, {
+            idempotencyKey: createBankDto.idempotencyKey,
+          }),
+        )
+        .first()
+    ) {
       throw new CircleRequestError('reused idempotency key')
     }
 
+    const count = await knex
+      .table(this.circleBankTable)
+      .whereNotNull('deleted_at')
+      .andWhere('user_id', userId)
+      .count()
+    if (count[0]['count(*)'] >= MAX_BANKS_PER_USER) {
+      throw new BadRequestException(`${MAX_BANKS_PER_USER} bank limit reached`)
+    }
+
     const response = await this.circleConnector.createBank(createBankDto)
+    await knex(this.circleBankTable).insert(
+      toDict(CircleBankEntity, {
+        id: v4(),
+        user: userId,
+        status: response['status'],
+        description: response['description'],
+        trackingRef: response['trackingRef'],
+        fingerprint: response['fingerprint'],
+        circleBankId: response['id'],
+      }),
+    )
 
-    // register new bank to db after creation
-    const bank = new CircleBankEntity()
-    const user: UserEntity = await this.userService.findOne(userId)
-    bank.user = user
-    bank.status = response['status']
-    bank.description = response['description']
-    bank.trackingRef = response['trackingRef']
-    bank.fingerprint = response['fingerprint']
-    bank.circleBankId = response['id']
-    await this.circleBankRepository.persistAndFlush(bank)
-
-    return { id: bank.circleBankId, status: bank.status }
+    return { id: response['id'], status: response['status'] }
   }
 
   /**
-   * get status of added bank for wire transfers (for creators)
-   * @param bankId
-   * @returns
+   * delete a creator's bank
+   *
+   * @param userId
+   * @param circleBankId
    */
-  async checkCircleWireBankStatus(bankId: string): Promise<CircleStatusDto> {
-    const bank = await this.circleBankRepository.findOneOrFail({
-      id: bankId,
-    })
-
-    // if last known status is pending, check for updates
-    if (bank.status == CircleAccountStatusEnum.PENDING) {
-      const response = await this.circleConnector.getBankById(bankId)
-      bank.status = response['status']
-      await this.circleBankRepository.persistAndFlush(bank)
-    }
-
-    return { id: bank.circleBankId, status: bank.status }
+  async deleteCircleBank(userId: string, circleBankId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    await knex(this.circleBankTable)
+      .update('deleted_at', knex.fn.now())
+      .where(toDict(CircleCardEntity, { user: userId, id: circleBankId }))
   }
 
-  // TODO: currently blocked on payout design
-  //
-  // /**
-  //  * payout to all creators
-  //  */
-  // async makePayoutsToAll() {
-  //   const users = await this.userRepository.find({ isCreator: true })
-  //   for (const user of users) {
-  //     this.makePayout(user.id)
-  //   }
-  // }
+  /**
+   * get all of a creator's banks
+   * @param userId
+   * @returns
+   */
+  async getCircleBanks(userId: string): Promise<Array<CircleBankDto>> {
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    return (
+      await knex(this.circleBankTable)
+        .select('*')
+        .where(
+          toDict(CircleBankEntity, {
+            user: userId,
+          }),
+        )
+        .whereNull('deleted_at')
+    ).map((bank) => new CircleBankDto(bank))
+  }
 
-  // /**
-  //  * makes a payout to a single creator
-  //  * empties their gems at a 2:1 ratio (gem to usd)
-  //  * @param userid
-  //  * @returns
-  //  */
-  // async makePayout(userid: string): Promise<PaymentDto> {
-  //   const user: UserEntity = await this.userRepository.findOneOrFail({
-  //     id: userid,
-  //   })
+  /**
+   * create bank payout to creator
+   *
+   * @param userId
+   * @param payout
+   * @returns
+   */
+  async makeCircleWirePayout(
+    userId: string,
+    payout: PayoutDto,
+  ): Promise<CircleStatusDto> {
+    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
 
-  //   createCardPaymentDto.metadata.email = user.email
-  //   assert(createCardPaymentDto.source.type == 'card')
-  //   const checkPayment = await this.paymentRepository.findOne({
-  //     idempotencyKey: createCardPaymentDto.idempotencyKey,
-  //   })
-  //   assert(checkPayment == null)
-  //   const card = await this.cardRepository.findOne({
-  //     circleCardId: createCardPaymentDto.source.id,
-  //   })
-  //   assert(card !== null && card.active && card.user.id === user.id)
+    const bank = await knex(this.circleBankTable)
+      .where({
+        id: payout.bankId,
+        user_id: userId,
+      })
+      .select('id', 'circle_bank_id')
+      .first()
 
-  //   const payment = new PaymentEntity()
-  //   payment.idempotencyKey = createCardPaymentDto.idempotencyKey
-  //   payment.amount = createCardPaymentDto.amount.amount
-  //   payment.card = card as CardEntity
-  //   payment.status = PaymentStatusEnum.UNKOWN
-  //   payment.verification =
-  //     CardVerificationEnum[createCardPaymentDto.verification]()
-  //   payment.source = PaymentSourceEnum.CARD
+    const user = await knex(this.userTable)
+      .where({
+        id: userId,
+      })
+      .select('email')
+      .first()
 
-  //   await this.cardRepository.persistAndFlush(payment)
-  //   const response = await createPayment(this.instance, createCardPaymentDto)
+    const createPayoutDto: CircleCreatePayoutDto = {
+      idempotencyKey: v4(),
+      source: {
+        type: 'wallet',
+        id: this.circleMasterWallet,
+      },
+      destination: {
+        type: 'wire',
+        id: bank.circle_bank_id,
+      },
+      amount: {
+        amount: payout.amount.toFixed(2),
+        currency: 'USD',
+      },
+      metadata: {
+        beneficiaryEmail: user.email,
+      },
+    }
 
-  //   assert((await response.status) == 201)
-  //   payment.status = PaymentStatusEnum[response['status']]
-  //   payment.circlePaymentId = response['id']
+    const data = toDict(CirclePayoutEntity, {
+      id: v4(),
+      bank: bank.id,
+      payout: payout.id,
+      idempotencyKey: createPayoutDto.idempotencyKey,
+      amount: createPayoutDto.amount.amount,
+      status: CircleAccountStatusEnum.PENDING,
+    })
+    await knex(this.circlePayoutTable).insert(data)
+    const response = await this.circleConnector.createPayout(createPayoutDto)
 
-  //   await this.cardRepository.persistAndFlush(payment)
-  //   const paymentDto = new PaymentDto()
-  //   paymentDto.id = payment.circlePaymentId
-  //   paymentDto.status = payment.status
-  //   return paymentDto
-  // }
+    await knex(this.circlePayoutTable)
+      .update(
+        toDict(CirclePayoutEntity, {
+          circlePayoutId: response['id'],
+          status: response['status'],
+        }),
+      )
+      .where({ id: data.id })
+
+    return { id: response['id'], status: response['status'] }
+  }
+
+  /**
+   * make blockchain payout to creator
+   *
+   * @param userId
+   * @param payout
+   * @returns
+   */
+  async makeCircleBlockchainTransfer(
+    userId: string,
+    payout: PayoutDto,
+  ): Promise<CircleStatusDto> {
+    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
+
+    const wallet = await knex(this.walletTable)
+      .where('id', payout.walletId)
+      .andWhere('user_id', userId)
+      .select('*')
+      .first()
+
+    const createTransferDto: CircleCreateTransferDto = {
+      idempotencyKey: v4(),
+      source: {
+        type: 'wallet',
+        id: this.circleMasterWallet,
+        identities: [
+          {
+            type: 'business',
+            name: 'Passes Inc',
+            addresses: [
+              {
+                line1: '100 Money Street', // TODO: USE OUR REAL NEW MIAMI ADDRESS
+                city: 'Boston',
+                district: 'MA',
+                country: 'US',
+                postalCode: '01234',
+              },
+            ],
+          },
+        ],
+      },
+      destination: {
+        type: 'blockchain',
+        id: wallet.circle_bank_id,
+        chain: wallet.chain.toUpperCase(),
+      },
+      amount: {
+        amount: payout.amount.toFixed(2),
+        currency: 'USD',
+      },
+    }
+
+    const data = toDict(CircleTransferEntity, {
+      id: v4(),
+      payout: payout.id,
+      idempotencyKey: createTransferDto.idempotencyKey,
+      amount: createTransferDto.amount.amount,
+      currency: createTransferDto.amount.currency,
+      status: CircleAccountStatusEnum.PENDING,
+    })
+    await knex(this.circleTransferTable).insert(data)
+
+    const response = await this.circleConnector.createTransfer(
+      createTransferDto,
+    )
+
+    await knex(this.circleTransferTable)
+      .update(
+        toDict(CircleTransferEntity, {
+          circleTransferId: response['id'],
+          status: response['status'],
+        }),
+      )
+      .where({ id: data.id })
+
+    return { id: response['id'], status: response['status'] }
+  }
 
   /*
   -------------------------------------------------------------------------------
   Notifications
   -------------------------------------------------------------------------------
   */
-  async processCircleUpdate(update: CircleNotificationDto) {
+
+  async processCircleUpdate(update: CircleNotificationDto): Promise<void> {
     //log new notification in DB
-    const newNotification = new CircleNotificationEntity()
-    newNotification.clientId = update.clientId
-    newNotification.notificationType = update.notificationType
-    newNotification.fullContent = JSON.stringify(update)
-    await this.circleNotificationRepository.persistAndFlush(newNotification)
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const id = v4()
+    await knex(this.circleNotificationTable).insert(
+      toDict(CircleNotificationEntity, {
+        id,
+        clientId: update.clientId,
+        notificationType: update.notificationType,
+        fullContent: JSON.stringify(update),
+      }),
+    )
 
     //update information with notification
-    switch (CircleNotificationTypeEnum[update.notificationType]) {
-      case CircleNotificationTypeEnum.PAYMENTS:
-        if (update.payment) {
-          await this.processCirclePaymentUpdate(update.payment)
-        } else if (update.reversal) {
+    try {
+      switch (update.notificationType as CircleNotificationTypeEnum) {
+        case CircleNotificationTypeEnum.PAYMENTS:
+          if (update.payment) {
+            await this.processCirclePaymentUpdate(update.payment)
+          } else if (update.reversal) {
+            //currently unhandled
+          } else if (update.chargeback) {
+            //currently unhandled
+          }
+          break
+        case CircleNotificationTypeEnum.SETTLEMENTS:
           //currently unhandled
-        } else if (update.chargeback) {
+          break
+        case CircleNotificationTypeEnum.PAYOUTS:
+          if (update.payout) {
+            await this.processCirclePayoutUpdate(update.payout)
+          } else if (update.return) {
+            //currently unhandled
+          }
+          break
+        case CircleNotificationTypeEnum.CARDS:
+          await this.processCircleCardUpdate(
+            update.card as GenericCircleObjectWrapper,
+          )
+          break
+        case CircleNotificationTypeEnum.ACH:
           //currently unhandled
-        }
-        break
-      case CircleNotificationTypeEnum.SETTLEMENTS:
-        //currently unhandled
-        break
-      case CircleNotificationTypeEnum.PAYOUTS:
-        if (update.payout) {
-          //TODO: handle
-          // eslint-disable-next-line sonarjs/no-duplicated-branches
-        } else if (update.return) {
-          //currently unhandled
-        }
-        break
-      case CircleNotificationTypeEnum.CARDS:
-        break
-      case CircleNotificationTypeEnum.ACH:
-        //currently unhandled
-        break
-      case CircleNotificationTypeEnum.WIRE:
-        break
-      case CircleNotificationTypeEnum.TRANSFERS:
-        //currently unhandled
-        break
-      default:
-        throw new CircleResponseError(
-          "notification type unrecognized: API might've updated",
-        )
-    }
-  }
-
-  /**
-   * update card info
-   * @param card type is 'any' since structure is unclear
-   */
-  async processCircleCardUpdate(card: any) {
-    const id = card['id'] // property must exist
-    const cardEntity = await this.circleCardRepository.findOneOrFail({
-      circleCardId: id,
-    })
-    cardEntity.status = CircleAccountStatusEnum.COMPLETE
-    await this.circleCardRepository.persistAndFlush(cardEntity)
-  }
-
-  /**
-   * update payment info
-   * @param payment
-   */
-  async processCirclePaymentUpdate(payment: PaymentDto) {
-    const checkPayment = await this.circlePaymentRepository.findOne({
-      circlePaymentId: payment.id,
-    })
-    if (checkPayment != null) {
-      checkPayment.status = CirclePaymentStatusEnum[payment.status]
-      await this.circlePaymentRepository.persistAndFlush(checkPayment)
-    } else {
-      const paymentEntity = new CirclePaymentEntity()
-      paymentEntity.circlePaymentId = payment.id
-      paymentEntity.amount = payment.amount.amount
-      paymentEntity.status = CirclePaymentStatusEnum[payment.status]
-
-      paymentEntity.source = CirclePaymentSourceEnum[payment.source.type]
-      if (paymentEntity.source == CirclePaymentSourceEnum.CARD) {
-        const checkCard = await this.circleCardRepository.findOneOrFail({
-          circleCardId: payment.source.id,
-        })
-        paymentEntity.card = checkCard
+          break
+        case CircleNotificationTypeEnum.WIRE:
+          await this.processCircleWireUpdate(
+            update.wire as GenericCircleObjectWrapper,
+          )
+          break
+        case CircleNotificationTypeEnum.TRANSFERS:
+          await this.processCircleTransferUpdate(
+            update.transfer as CircleTransferDto,
+          )
+          break
+        default:
+          throw new CircleResponseError(
+            "notification type unrecognized: API might've updated",
+          )
       }
-      await this.circlePaymentRepository.persistAndFlush(paymentEntity)
+      await knex(this.circleNotificationTable)
+        .update(toDict(CircleNotificationEntity, { processed: true }))
+        .where({ id })
+    } catch (e) {
+      await knex(this.circleNotificationTable)
+        .update(toDict(CircleNotificationEntity, { processed: false }))
+        .where({ id })
+      throw e
     }
   }
 
+  /**
+   * process updates for wire bank status
+   * @param wire
+   */
+  async processCircleWireUpdate(
+    wireDto: GenericCircleObjectWrapper,
+  ): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    await knex(this.circleBankTable)
+      .update(
+        toDict(CircleBankEntity, {
+          status: wireDto.status as CircleAccountStatusEnum,
+        }),
+      )
+      .where(toDict(CircleBankEntity, { circleBankId: wireDto.id }))
+  }
+
+  /**
+   * process updates for card status
+   * @param card
+   */
+  async processCircleCardUpdate(
+    cardDto: GenericCircleObjectWrapper,
+  ): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    await knex(this.circleCardTable)
+      .update(
+        toDict(CircleCardEntity, {
+          status: cardDto.status as CircleAccountStatusEnum,
+        }),
+      )
+      .where(toDict(CircleCardEntity, { circleCardId: cardDto.id }))
+  }
+
+  /**
+   * process updates for fiat payins
+   * @param paymentDto
+   */
+  async processCirclePaymentUpdate(
+    paymentDto: CirclePaymentDto,
+  ): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    const payin = await knex(this.payinTable)
+      .join(
+        this.circlePaymentTable,
+        this.payinTable + '.id',
+        this.circlePaymentTable + '.payin_id',
+      )
+      .select(this.payinTable + '.id as id', this.payinTable + '.user_id')
+      .where('circle_payment_id', paymentDto.id)
+      .first()
+
+    if (!payin) {
+      throw new CircleNotificationError('notification for unrecorded payin')
+    }
+
+    await knex(this.circlePaymentTable)
+      .where('circle_payment_id', paymentDto.id)
+      .update({ status: paymentDto.status })
+
+    switch (paymentDto.status) {
+      case CirclePaymentStatusEnum.PENDING:
+        await knex
+          .table(this.payinTable)
+          .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.PENDING }))
+          .where({ id: payin.id })
+        break
+      case CirclePaymentStatusEnum.CONFIRMED:
+      case CirclePaymentStatusEnum.PAID:
+        await this.completePayin(payin.id, payin.user_id)
+        break
+      case CirclePaymentStatusEnum.FAILED:
+        await this.failPayin(payin.id, payin.user_id)
+        break
+      case CirclePaymentStatusEnum.ACTION_REQUIRED:
+        await knex
+          .table(this.payinTable)
+          .update(
+            toDict(PayinEntity, {
+              payinStatus: PayinStatusEnum.ACTION_REQUIRED,
+            }),
+          )
+          .where({ id: payin.id })
+        break
+    }
+  }
+
+  /**
+   * process updates for fiat payouts
+   * @param payoutDto
+   */
+  async processCirclePayoutUpdate(payoutDto: any): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    const payout = await knex(this.payoutTable)
+      .join(
+        this.circlePayoutTable,
+        this.payoutTable + '.id',
+        this.circlePayoutTable + '.payout_id',
+      )
+      .select(this.payoutTable + '.id as id', this.payoutTable + '.user_id')
+      .where('circle_payout_id', payoutDto.id)
+      .first()
+
+    if (!payout) {
+      throw new CircleNotificationError('notification for unrecorded payout')
+    }
+
+    await knex(this.circlePayoutTable)
+      .where('circle_payout_id', payoutDto.id)
+      .update({ status: payoutDto.status, fee: payoutDto.fees.amount })
+
+    switch (payoutDto.status) {
+      case CircleAccountStatusEnum.PENDING:
+        await knex
+          .table(this.payoutTable)
+          .update(
+            toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.PENDING }),
+          )
+          .where({ id: payout.id })
+        break
+      case CircleAccountStatusEnum.COMPLETE:
+        await this.completePayout(payout.id, payout.user_id)
+        break
+      case CircleAccountStatusEnum.FAILED:
+        await this.failPayout(payout.id, payout.user_id)
+        break
+    }
+  }
+
+  /**
+   * process updates for all blockchain transfers
+   * @param transferDto
+   */
+  async processCircleTransferUpdate(
+    transferDto: CircleTransferDto,
+  ): Promise<void> {
+    if (
+      transferDto.source.type === 'blockchain' &&
+      transferDto.destination.type === 'wallet'
+    ) {
+      await this.processCircleIncomingTransferUpdate(transferDto)
+    } else if (
+      transferDto.source.type === 'wallet' &&
+      transferDto.destination.type === 'blockchain'
+    ) {
+      await this.processCircleOutgoingTransferUpdate(transferDto)
+    } else if (
+      transferDto.source.type === 'wallet' &&
+      transferDto.destination.type === 'wallet'
+    ) {
+      throw new CircleNotificationError(
+        'unsupported wallet to wallet transactions ',
+      )
+    } else {
+      throw new CircleNotificationError('unkown transfer event')
+    }
+  }
+
+  /**
+   * process updates for blockchain payin from users
+   * @param transferDto
+   */
+  async processCircleIncomingTransferUpdate(
+    transferDto: CircleTransferDto,
+  ): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    let method
+    let chainId
+    if (transferDto.source.chain === 'SOL') {
+      method = PayinMethodEnum.PHANTOM_CIRCLE_USDC
+    } else {
+      chainId =
+        this.CIRCLE_EVM_MAP[this.getBlockchainSelector()][
+          transferDto.source.chain
+        ]
+      if (
+        transferDto.source.chain === 'ETH' &&
+        transferDto.amount.currency === 'ETH'
+      ) {
+        method = PayinMethodEnum.METAMASK_CIRCLE_ETH
+      } else {
+        method = PayinMethodEnum.METAMASK_CIRCLE_USDC
+      }
+    }
+    let query = knex(this.payinTable).select('id', 'user_id').where({
+      address: transferDto.destination.address,
+      payin_method: method,
+    })
+    if (chainId !== undefined) {
+      query = query.where('chain_id', chainId)
+    }
+    const payin = await query.first()
+    await knex(this.payinTable)
+      .update({ transaction_hash: transferDto.transactionHash })
+      .where('id', payin.id)
+    switch (transferDto.status) {
+      case CircleTransferStatusEnum.PENDING:
+        await knex
+          .table(this.payinTable)
+          .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.PENDING }))
+          .where({ id: payin.id })
+        break
+      case CircleTransferStatusEnum.COMPLETE:
+        await this.completePayin(payin.id, payin.user_id)
+        break
+      case CircleTransferStatusEnum.FAILED:
+        await this.failPayin(payin.id, payin.user_id)
+        break
+    }
+  }
+
+  /**
+   * process uddates for blockchain payouts to creators
+   * @param transferDto
+   */
+  async processCircleOutgoingTransferUpdate(
+    transferDto: CircleTransferDto,
+  ): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const circleTransfer = await knex(this.circleTransferTable)
+      .where('circle_transfer_id', transferDto.id)
+      .select('payout_id')
+      .first()
+    const payout = await knex(this.payoutTable)
+      .where('id', circleTransfer.payout_id)
+      .select('*')
+      .first()
+
+    if (transferDto.transactionHash) {
+      await knex(this.payoutTable)
+        .where('id', payout.id)
+        .update({ transaction_hash: transferDto.transactionHash })
+    }
+
+    await knex(this.circleTransferTable)
+      .where('id', transferDto.id)
+      .update('status', transferDto.status)
+
+    switch (transferDto.status) {
+      case CircleTransferStatusEnum.PENDING:
+        await knex
+          .table(this.payoutTable)
+          .update(
+            toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.PENDING }),
+          )
+          .where({ id: payout.id })
+        break
+      case CircleTransferStatusEnum.COMPLETE:
+        await this.completePayout(payout.id, payout.user_id)
+        break
+      case CircleTransferStatusEnum.FAILED:
+        await this.failPayout(payout.id, payout.user_id)
+        break
+    }
+  }
   /*
   -------------------------------------------------------------------------------
   PAYIN ENTRYPOINTS (one for each PayinMethodEnum)
   -------------------------------------------------------------------------------
   */
+
+  /**
+   * Step 2 of payin process
+   * Called externally from FE pay-button
+   *
+   * @param userId
+   * @param entryDto
+   * @returns
+   */
   async payinEntryHandler(
     userId: string,
-    entryDto: PayinEntryInputDto,
-  ): Promise<PayinEntryOutputDto> {
-    const payment = await this.paymentRepository.findOneOrFail({
-      id: entryDto.paymentId,
-      user: userId,
-      paymentStatus: PaymentStatusEnum.CREATED,
-    })
-
+    entryDto: PayinEntryRequestDto,
+  ): Promise<PayinEntryResponseDto> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    const res = await knex(this.payinTable)
+      .select('*')
+      .where(
+        toDict(PayinEntity, {
+          id: entryDto.payinId,
+          user: userId,
+          payinStatus: PayinStatusEnum.REGISTERED,
+        }),
+      )
+      .first()
+    if (!res) {
+      throw new InvalidPayinStatusError(
+        'payin ' + entryDto.payinId + ' is not available for entry',
+      )
+    }
+    const payin = new PayinDto(res)
+    let ret: PayinEntryResponseDto
     try {
-      payment.paymentStatus = PaymentStatusEnum.CREATED
-      await this.paymentRepository.persistAndFlush(payment)
-
-      switch (payment.payinMethod) {
+      switch (payin.payinMethod) {
         case PayinMethodEnum.CIRCLE_CARD:
-          return await this.entryCircleCard(
-            payment,
-            entryDto as CircleCardPayinEntryInputDto,
+          ret = await this.entryCircleCard(
+            payin,
+            entryDto as CircleCardPayinEntryRequestDto,
           )
+          break
         case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
-          return await this.entryPhantomCircleUSDC(
-            payment,
-            entryDto as PhantomCircleUSDCEntryInputDto,
-          )
+          ret = await this.entryPhantomCircleUSDC(payin)
+          break
         case PayinMethodEnum.METAMASK_CIRCLE_USDC:
-          return await this.entryMetamaskCircleUSDC(payment)
+          ret = await this.entryMetamaskCircleUSDC(payin)
+          break
         case PayinMethodEnum.METAMASK_CIRCLE_ETH:
-          return await this.entryMetamaskCircleETH(payment)
+          ret = await this.entryMetamaskCircleETH(payin)
+          break
         default:
           throw new NoPayinMethodError('entrypoint hit with no method')
       }
+
+      await knex(this.payinTable)
+        .update({ payin_status: PayinStatusEnum.CREATED })
+        .where({ id: entryDto.payinId })
     } catch (e) {
-      await this.failPayment(payment)
+      await this.unregisterPayin(payin.id, userId)
       throw e
     }
+
+    await handleCreationCallback(payin, this.ReadWriteDatabaseService)
+    return ret
   }
 
   async entryCircleCard(
-    payment: PaymentEntity,
-    entryDto: CircleCardPayinEntryInputDto,
-  ): Promise<CircleCardPayinEntryOutputDto> {
+    payin: PayinDto,
+    entryDto: CircleCardPayinEntryRequestDto,
+  ): Promise<CircleCardPayinEntryResponseDto> {
     const status = await this.makeCircleCardPayment(
       entryDto.ip,
       entryDto.sessionId,
-      payment,
+      payin,
     )
-    return { paymentId: payment.id, status }
+    return { payinId: payin.id, status }
   }
 
   async entryPhantomCircleUSDC(
-    payment: PaymentEntity,
-    entryDto: PhantomCircleUSDCEntryInputDto,
-  ): Promise<PhantomCircleUSDCEntryOutputDto> {
-    // link address to payment to identify circle external transfers to our payments
-    await this.linkAddressToPayment(
-      await this.getCircleAddress('USD', 'SOL'),
-      payment,
-    )
+    payin: PayinDto,
+  ): Promise<PhantomCircleUSDCEntryResponseDto> {
+    const tokenAddress: string = SOL_ACCOUNT[this.getBlockchainSelector()].USDC
+    const networkUrl: string = SOL_NETWORK[this.getBlockchainSelector()]
+    const depositAddress = await this.getCircleAddress('USD', 'SOL')
+    await this.linkAddressToPayin(depositAddress, payin.id)
     return {
-      paymentId: payment.id,
-      message: await this.generateSolanaUSDCTransactionMessage(
-        payment,
-        entryDto.ownerAccount,
-      ),
+      payinId: payin.id,
+      tokenAddress,
+      depositAddress,
+      networkUrl,
     }
   }
 
   async entryMetamaskCircleUSDC(
-    payment: PaymentEntity,
-  ): Promise<MetamaskCircleUSDCEntryOutputDto> {
-    const chain = parseInt(payment.payinMethodId as string)
-    const address = EVM_ADDRESS[chain].USDC
-    // link address to payment to identify circle external transfers with our payments
-    await this.linkAddressToPayment(
-      await this.getCircleAddress('USD', 'ETH'),
-      payment,
-    )
-    return { paymentId: payment.id, address, chain }
+    payin: PayinDto,
+  ): Promise<MetamaskCircleUSDCEntryResponseDto> {
+    const chainId = payin.chainId as number
+    const tokenAddress = EVM_ADDRESS[chainId].USDC
+    const depositAddress = await this.getCircleAddress('USD', 'ETH')
+    await this.linkAddressToPayin(depositAddress, payin.id)
+    return {
+      payinId: payin.id,
+      chainId,
+      tokenAddress,
+      depositAddress,
+    }
   }
 
   async entryMetamaskCircleETH(
-    payment: PaymentEntity,
-  ): Promise<MetamaskCircleETHEntryOutputDto> {
-    // link address to payment to identify circle external transfers to our payments
-    await this.linkAddressToPayment(
-      await this.getCircleAddress('ETH', 'ETH'),
-      payment,
-    )
-    return { paymentId: payment.id }
+    payin: PayinDto,
+  ): Promise<MetamaskCircleETHEntryResponseDto> {
+    const chainId = payin.chainId as number
+    const depositAddress = await this.getCircleAddress('ETH', 'ETH')
+    await this.linkAddressToPayin(depositAddress, payin.id)
+    return { payinId: payin.id, depositAddress, chainId }
   }
 
   /*
@@ -593,97 +1019,76 @@ export class PaymentService {
   -------------------------------------------------------------------------------
   */
 
-  async linkAddressToPayment(
-    address: string,
-    payment: PaymentEntity,
-  ): Promise<void> {
-    const depositAddress = new DepositAddressEntity()
-    depositAddress.payment = payment
-    depositAddress.address = address
-    await this.depositAddressRepository.persistAndFlush(depositAddress)
+  async linkAddressToPayin(address: string, payinId: string): Promise<void> {
+    const { knex } = this.ReadWriteDatabaseService
+    await knex(this.payinTable).update({ address }).where({ id: payinId })
   }
 
-  /**
-   * generate SOL transaction to send USDC to a source destination
-   *
-   * @param amount
-   * @param destinationAddress
-   */
-  async generateSolanaUSDCTransactionMessage(
-    payment: PaymentEntity,
-    ownerAccount: string,
-  ): Promise<Uint8Array> {
-    const SOLANA_MAINNET_USDC_PUBKEY: string =
-      SOL_ACCOUNT[this.configService.get('blockchain.networks')].USDC
-    const connection = new Connection(
-      this.configService.get('alchemy.sol_https_endpoint') as string,
-    )
+  CIRCLE_EVM_MAP = {
+    mainnet: {
+      ETH: 1,
+      MATIC: 137,
+      AVAX: 43114,
+    },
+    testnet: {
+      ETH: 5,
+      MATIC: 80001,
+      AVAX: 43113,
+    },
+  }
 
-    const depositAddress = await this.depositAddressRepository.findOneOrFail({
-      payment: payment.id,
-    })
+  EVM_USDC_CHAINIDS = {
+    mainnet: [1, 137, 43114],
+    testnet: [5, 80001, 43113],
+  }
 
-    const from = new PublicKey(ownerAccount)
-    const transaction = new Transaction()
-    const mint = new PublicKey(SOLANA_MAINNET_USDC_PUBKEY)
-    const to = new PublicKey(depositAddress)
+  EVM_NATIVE_CHAINIDS = {
+    mainnet: [1],
+    testnet: [5],
+  }
 
-    const fromTokenAddress = await getAssociatedTokenAddress(mint, from)
-    const toTokenAccountAddress = await getAssociatedTokenAddress(mint, to)
-    try {
-      await getAccount(connection, toTokenAccountAddress)
-    } catch (e) {
-      transaction.add(
-        createAssociatedTokenAccountInstruction(
-          toTokenAccountAddress,
-          from,
-          to,
-          mint,
-        ),
-      )
-    }
+  VALID_PAYOUT_CHAINS = ['ETH', 'SOL', 'MATIC', 'AVAX']
 
-    transaction.add(
-      createTransferInstruction(
-        fromTokenAddress,
-        toTokenAccountAddress,
-        from,
-        payment.amount * 10 ** 6,
-        [],
-        TOKEN_PROGRAM_ID,
-      ),
-    )
+  getBlockchainSelector(): string {
+    return this.configService.get('blockchain.networks') as string
+  }
 
-    return transaction.serializeMessage()
+  getEvmChainIdsUSDC(): number[] {
+    return this.EVM_USDC_CHAINIDS[this.getBlockchainSelector()]
+  }
+
+  getEvmChainIdsNative(): number[] {
+    return this.EVM_NATIVE_CHAINIDS[this.getBlockchainSelector()]
   }
 
   /*
   -------------------------------------------------------------------------------
-  GENERIC
+  GENERAL
   -------------------------------------------------------------------------------
   */
 
   /**
-   * set default payment method
+   * set default payin method
    * @param userId
    * @param method
-   * @param methodId
+   * @param cardId
+   * @param chainId
    */
   async setDefaultPayinMethod(
     userId: string,
-    method: PayinMethodEnum,
-    methodId?: string,
+    payinMethoDto: PayinMethodDto,
   ): Promise<void> {
-    let defaultPayinMethod = await this.defaultPayinMethodRepository.findOne({
-      user: userId,
-    })
-    if (defaultPayinMethod == null) {
-      defaultPayinMethod = new DefaultPayinMethodEntity()
-      defaultPayinMethod.user = await this.userService.findOne(userId)
-    }
-    defaultPayinMethod.method = method
-    defaultPayinMethod.methodId = methodId
-    await this.defaultPayinMethodRepository.persistAndFlush(defaultPayinMethod)
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    await knex(this.defaultPayinMethodTable)
+      .insert({
+        id: v4(),
+        user_id: userId,
+        method: payinMethoDto.method,
+        card_id: payinMethoDto.cardId,
+        chain_id: payinMethoDto.chainId,
+      })
+      .onConflict('user_id')
+      .merge(['method', 'card_id', 'chain_id'])
   }
 
   /**
@@ -692,31 +1097,48 @@ export class PaymentService {
    * @returns
    */
   async getDefaultPayinMethod(userId: string): Promise<PayinMethodDto> {
-    const defaultPayinMethod = await this.defaultPayinMethodRepository.findOne({
-      user: userId,
-    })
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const defaultPayinMethod = await knex(this.defaultPayinMethodTable)
+      .where('user_id', userId)
+      .select('*')
+      .first()
 
-    if (defaultPayinMethod == null) {
+    if (!defaultPayinMethod) {
       throw new NoPayinMethodError('no default exists')
     }
 
     let isValid = false
-    if (defaultPayinMethod.method == PayinMethodEnum.CIRCLE_CARD) {
-      // methodId is id of CircleCardEntity
-      const card = await this.circleCardRepository.findOne({
-        user: userId,
-        active: true,
-        id: defaultPayinMethod.methodId,
-      })
-      isValid = card !== null
-    } else if (
-      defaultPayinMethod.method == PayinMethodEnum.METAMASK_CIRCLE_USDC
-    ) {
-      // methodId is chainId of EVM chain
-      isValid =
-        defaultPayinMethod.methodId !== undefined &&
-        parseInt(defaultPayinMethod.methodId) in
-          this.EVM_USDC_CHAINIDS[this.configService.get('blockchain.networks')]
+    switch (defaultPayinMethod.method) {
+      case PayinMethodEnum.CIRCLE_CARD:
+        // assert that card exists and is not deleted
+        isValid =
+          (await knex(this.circleCardTable)
+            .where(
+              toDict(CircleCardEntity, {
+                user: userId,
+                id: defaultPayinMethod.card_id,
+                status: CircleAccountStatusEnum.COMPLETE,
+              }),
+            )
+            .whereNull('deleted_at')
+            .select('id')
+            .first()) !== undefined
+        break
+      case PayinMethodEnum.METAMASK_CIRCLE_USDC:
+        // metamask payin must be on an approved chainId
+        isValid = this.getEvmChainIdsUSDC().includes(
+          defaultPayinMethod.chain_id,
+        )
+        break
+      case PayinMethodEnum.METAMASK_CIRCLE_ETH:
+        // metamask payin must be on an approved chainId
+        isValid = this.getEvmChainIdsNative().includes(
+          defaultPayinMethod.chain_id,
+        )
+        break
+      case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
+        isValid = true
+        break
     }
 
     if (!isValid) {
@@ -727,51 +1149,430 @@ export class PaymentService {
   }
 
   /**
-   * called when pay button is pressed
-   *
-   * @param payment
-   * fill in userId, amount, callback, and callbackInputJSON
-   * @returns RegisterPaymentResponse
-   * contains provider account type to respond appropriately to
-   * Phantom and Metamask should ask for a transaction to sign
+   * set default payin method
+   * @param userId
+   * @param method
+   * @param cardId
+   * @param chainId
    */
-  async registerPayment(
-    request: RegisterPaymentRequestDto,
-  ): Promise<RegisterPaymentResponseDto> {
-    // create and save a payment with REGISTERED status
-    const payment = new PaymentEntity()
+  async setDefaultPayoutMethod(
+    userId: string,
+    payoutMethodDto: PayoutMethodDto,
+  ): Promise<void> {
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    await knex(this.defaultPayoutMethodTable)
+      .insert({
+        id: v4(),
+        user_id: userId,
+        method: payoutMethodDto.method,
+        bank_id: payoutMethodDto.bankId,
+        wallet_id: payoutMethodDto.walletId,
+      })
+      .onConflict('user_id')
+      .merge(['method', 'bank_id', 'wallet_id'])
+  }
 
-    // validating request
-    payment.user = await this.userService.findOne(request.userId)
-    if (request.amount < 0 || (request.amount * 100) % 1 !== 0) {
-      throw new InvalidRequestPaymentRequest(
+  /**
+   * return default payin option of user if exists and valid
+   * @param userId
+   * @returns
+   */
+  async getDefaultPayoutMethod(userId: string): Promise<PayoutMethodDto> {
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const defaultPayoutMethod = await knex(this.defaultPayoutMethodTable)
+      .where('user_id', userId)
+      .select('*')
+      .first()
+
+    if (!defaultPayoutMethod) {
+      throw new NoPayinMethodError('no default exists')
+    }
+
+    let isValid = false
+    switch (defaultPayoutMethod.method) {
+      case PayoutMethodEnum.CIRCLE_WIRE:
+        // assert that bank exists and is not deleted
+        isValid =
+          (await knex(this.circleBankTable)
+            .where(
+              toDict(CircleCardEntity, {
+                user: userId,
+                id: defaultPayoutMethod.bank_id,
+                status: CircleAccountStatusEnum.COMPLETE,
+              }),
+            )
+            .whereNull('deleted_at')
+            .select('id')
+            .first()) !== undefined
+        break
+      case PayoutMethodEnum.CIRCLE_USDC:
+        // blockchain payout must be on an approved chain
+        isValid = this.VALID_PAYOUT_CHAINS.includes(
+          (
+            await knex(this.walletTable)
+              .where({ user_id: userId, id: defaultPayoutMethod.wallet_id })
+              .select('chain')
+              .first()
+          ).chain.toUpperCase(),
+        )
+        break
+    }
+
+    if (!isValid) {
+      throw new NoPayinMethodError('default value is invalid')
+    }
+
+    return new PayoutMethodDto(defaultPayoutMethod)
+  }
+
+  /**
+   * Step 1 of payin process
+   * Called INTERNALLY from other services
+   *
+   * @param request
+   * @returns
+   */
+  async registerPayin(
+    request: RegisterPayinRequestDto,
+  ): Promise<RegisterPayinResponseDto> {
+    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    // create and save a payin with REGISTERED status
+
+    // validating request information
+    if (request.amount <= 0 || (request.amount * 100) % 1 !== 0) {
+      throw new InvalidPayinRequestError(
         'invalid amount value ' + request.amount,
       )
     }
-    payment.amount = request.amount
-    payment.callback = request.callback
-    payment.callbackInputJSON = request.callbackInputJSON
-    payment.paymentStatus = PaymentStatusEnum.REGISTERED
-    payment.callbackSuccess = undefined
-    await this.paymentRepository.persistAndFlush(payment)
 
-    // use default payin method
-    // throws an error if no payin method exists
-    const payinMethod = await this.getDefaultPayinMethod(payment.user.id)
-    payment.payinMethod = payinMethod.method
-    payment.payinMethodId = payinMethod.methodId
+    const payinMethod = await this.getDefaultPayinMethod(request.userId)
+    const data = {
+      id: v4(),
+      user_id: request.userId,
+      payin_method: payinMethod.method,
+      card_id: payinMethod.cardId,
+      chain_id: payinMethod.chainId,
+      payin_status: PayinStatusEnum.REGISTERED,
+      callback: request.callback,
+      callback_input_json: JSON.stringify(request.callbackInputJSON),
+      amount: request.amount,
+    }
 
-    // save provider's id to internal payment object REQUESTED
-    await this.paymentRepository.persistAndFlush(payment)
+    await knex(this.payinTable).insert(data)
+
+    try {
+      // validate the parameters of the shares
+      let sum = 0
+      for (const creatorShareDto of request.creatorShares) {
+        const creator = await this.userService.findOne(
+          creatorShareDto.creatorId,
+        )
+
+        if (!creator.isCreator) {
+          throw new InvalidPayinRequestError('regular users can not earn money')
+        }
+        if (creatorShareDto.amount <= 0) {
+          throw new InvalidPayinRequestError(
+            'creator must have positive earning',
+          )
+        }
+        sum += creatorShareDto.amount
+        if (sum > request.amount) {
+          throw new InvalidPayinRequestError(
+            'creators can not earn more than total payment',
+          )
+        }
+      }
+
+      // create shares of payment profit that would go to creators
+      for (const creatorShareDto of request.creatorShares) {
+        await knex(this.creatorShareTable).insert(
+          toDict(CreatorShareEntity, {
+            id: v4(),
+            creator: creatorShareDto.creatorId,
+            amount: creatorShareDto.amount,
+            payin: data.id,
+          }),
+        )
+      }
+    } catch (e) {
+      await this.unregisterPayin(data.id, request.userId)
+      throw e
+    }
+
     return {
-      paymentId: payment.id,
-      method: payment.payinMethod,
+      payinId: data.id,
+      method: payinMethod.method,
+      amount: request.amount,
     }
   }
 
-  async failPayment(payment: PaymentEntity) {
-    payment.paymentStatus = PaymentStatusEnum.FAILED
-    await this.paymentRepository.persistAndFlush(payment)
-    handleFailedCallbacks(payment, this.paymentRepository)
+  async userCancelPayin(payinId: string, userId: string): Promise<void> {
+    // attempt to unregister or fail
+    // only one update will succeed since it updates based on current state
+    await this.unregisterPayin(payinId, userId)
+    await this.failPayin(payinId, userId)
+  }
+
+  async unregisterPayin(payinId: string, userId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+    await knex
+      .table(this.payinTable)
+      .where('id', payinId)
+      .andWhere('user_id', userId)
+      .andWhere('payin_status', PayinStatusEnum.REGISTERED)
+      .update(
+        toDict(PayinEntity, {
+          payinStatus: PayinStatusEnum.UNREGISTERED,
+        }),
+      )
+  }
+
+  async failPayin(payinId: string, userId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    const rows = await knex
+      .table(this.payinTable)
+      .where('id', payinId)
+      .andWhere('user_id', userId)
+      .andWhere('payin_status', 'in', [
+        PayinStatusEnum.CREATED,
+        PayinStatusEnum.PENDING,
+      ])
+      .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.FAILED }))
+    // check for completed update
+    if (rows == 1) {
+      const payin = await knex(this.payinTable)
+        .where('id', payinId)
+        .andWhere('user_id', userId)
+        .select(
+          ...PayinEntity.populate<PayinEntity>([
+            'id',
+            'callback',
+            'callbackInputJSON',
+          ]),
+        )
+        .first()
+      await handleFailedCallbacks(payin, this.ReadOnlyDatabaseService)
+    }
+  }
+
+  async completePayin(payinId: string, userId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    const rows = await knex
+      .table(this.payinTable)
+      .where('id', payinId)
+      .andWhere('user_id', userId)
+      .andWhere('payin_status', 'in', [
+        PayinStatusEnum.CREATED,
+        PayinStatusEnum.PENDING,
+      ])
+      .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.SUCCESSFUL }))
+    // check for completed update
+    if (rows == 1) {
+      const payin = await knex(this.payinTable)
+        .where('id', payinId)
+        .andWhere('user_id', userId)
+        .select(
+          ...PayinEntity.populate<PayinEntity>([
+            'id',
+            'callback',
+            'callbackInputJSON',
+          ]),
+        )
+        .first()
+      await handleSuccesfulCallbacks(payin, this.ReadOnlyDatabaseService)
+    }
+  }
+
+  async failPayout(payoutId: string, userId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    const rows = await knex
+      .table(this.payoutTable)
+      .where('id', payoutId)
+      .andWhere('user_id', userId)
+      .andWhere('payout_status', 'in', [
+        PayoutStatusEnum.CREATED,
+        PayoutStatusEnum.PENDING,
+      ])
+      .update(toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.FAILED }))
+    // check for completed update
+    if (rows == 1) {
+      await knex
+        .table(this.creatorShareTable)
+        .where('payout_id', payoutId)
+        .update(toDict(CreatorShareEntity, { payout: undefined }))
+    }
+  }
+
+  async completePayout(payoutId: string, userId: string): Promise<void> {
+    const { knex, toDict } = this.ReadWriteDatabaseService
+
+    await knex
+      .table(this.payoutTable)
+      .where('id', payoutId)
+      .andWhere('user_id', userId)
+      .andWhere('payout_status', 'in', [
+        PayoutStatusEnum.CREATED,
+        PayoutStatusEnum.PENDING,
+      ])
+      .update(
+        toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.SUCCESSFUL }),
+      )
+  }
+
+  /**
+   * return paginated payin information for user display
+   *
+   * @param userId
+   * @param payinListRequest
+   * @returns
+   */
+  async getPayins(
+    userId: string,
+    payinListRequest: PayinListRequestDto,
+  ): Promise<PayinListResponseDto> {
+    const { knex } = this.ReadWriteDatabaseService
+    const payins = await knex
+      .table(this.payinTable)
+      .where('user_id', userId)
+      .andWhere('payin_status', 'not in', [
+        PayinStatusEnum.REGISTERED,
+        PayinStatusEnum.UNREGISTERED,
+      ])
+      .select('*')
+      .orderBy('created_at', 'desc')
+      .offset(payinListRequest.offset)
+      .limit(payinListRequest.limit)
+    const count = await knex
+      .table(this.payinTable)
+      .where('user_id', userId)
+      .andWhere('payin_status', 'not in', [
+        PayinStatusEnum.REGISTERED,
+        PayinStatusEnum.UNREGISTERED,
+      ])
+      .count()
+    const cards = await knex
+      .table(this.circleCardTable)
+      .where(
+        'id',
+        'in',
+        payins.map((payin) => payin.card_id),
+      )
+      .select('*')
+    const cardsMap = cards.reduce((map, card) => {
+      map[card.id] = card
+      return map
+    }, {})
+    const payinsDto = payins.map((payin) => {
+      return new PayinDto(payin)
+    })
+    payinsDto.forEach((payinDto) => {
+      if (payinDto.payinMethod === PayinMethodEnum.CIRCLE_CARD) {
+        payinDto.card = new CircleCardDto(cardsMap[payinDto.cardId as string])
+      }
+    })
+    return {
+      count: parseInt(count[0]['count(*)']),
+      payins: payinsDto,
+    }
+  }
+
+  async payoutAll(): Promise<void> {
+    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const creators = await knex(this.userTable)
+      .where(toDict(UserEntity, { isCreator: true }))
+      .select('id')
+    creators.forEach(async (creator) => {
+      try {
+        await this.payoutCreator(creator.id)
+      } catch (e) {
+        console.log(`Error paying out ${creator.id}: ${e}`)
+      }
+    })
+  }
+
+  async payoutCreator(userId: string): Promise<void> {
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const time = new Date()
+    const minDate = new Date(
+      time.getTime() + 60 * MAX_TIME_BETWEEN_PAYOUTS_SECONDS,
+    )
+    const checkPayout = await knex(this.payoutTable).where(
+      'created_at',
+      '>=',
+      minDate.toISOString(),
+    )
+    if (!checkPayout) {
+      throw new BadRequestException(
+        'Payout created for creator recently, try again later',
+      )
+    }
+    const defaultPayoutMethod = await this.getDefaultPayoutMethod(userId)
+
+    const data = {
+      id: v4(),
+      user_id: userId,
+      bank_id: defaultPayoutMethod.bankId,
+      wallet_id: defaultPayoutMethod.walletId,
+      payout_method: defaultPayoutMethod.method,
+      payout_status: PayoutStatusEnum.CREATED,
+      amount: 0,
+    }
+    await knex(this.payoutTable).insert(data)
+
+    const creatorShares = await knex(this.creatorShareTable)
+      .join(
+        this.payinTable,
+        this.creatorShareTable + '.payin_id',
+        this.payinTable + '.id',
+      )
+      .whereNull('payout_id')
+      .andWhere('payin_status', PayinStatusEnum.SUCCESSFUL)
+      .andWhere('creator_id', userId)
+      .select(
+        this.creatorShareTable + '.id',
+        'creator_id',
+        this.creatorShareTable + '.amount',
+      )
+
+    await Promise.all(
+      creatorShares.map(async (creatorShare) => {
+        await knex.transaction(async (trx) => {
+          await trx(this.payoutTable)
+            .increment('amount', creatorShare.amount)
+            .where('id', data.id)
+          await trx(this.creatorShareTable)
+            .update('payout_id', data.id)
+            .where('id', creatorShare.id)
+        })
+      }),
+    )
+    await this.submitPayout(data.id)
+  }
+
+  /**
+   * seperate function to submit payouts in case it fails and we need to resend
+   * @param payout_id
+   */
+  async submitPayout(payout_id: string): Promise<void> {
+    const { knex } = this.ReadWriteDatabaseService
+    const payout = await knex(this.payoutTable)
+      .where('id', payout_id)
+      .select('*')
+      .first()
+    switch (payout.payout_method) {
+      case PayoutMethodEnum.CIRCLE_USDC:
+        await this.makeCircleBlockchainTransfer(
+          payout.user_id,
+          new PayoutDto(payout),
+        )
+        break
+      case PayoutMethodEnum.CIRCLE_WIRE:
+        await this.makeCircleWirePayout(payout.user_id, new PayoutDto(payout))
+        break
+    }
   }
 }

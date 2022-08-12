@@ -15,3 +15,11 @@ export class CreateWalletDto {
   @ApiProperty()
   chain: Chain
 }
+
+export class CreateUnauthenticatedWalletDto {
+  @ApiProperty()
+  walletAddress: string
+
+  @ApiProperty()
+  chain: Chain
+}

@@ -1,6 +1,6 @@
 export enum PayinMethodEnum {
-  CIRCLE_CARD,
-  PHANTOM_CIRCLE_USDC,
-  METAMASK_CIRCLE_USDC,
-  METAMASK_CIRCLE_ETH,
+  CIRCLE_CARD = 'circle_card',
+  PHANTOM_CIRCLE_USDC = 'phantom_circle_usdc',
+  METAMASK_CIRCLE_USDC = 'metamask_circle_usdc',
+  METAMASK_CIRCLE_ETH = 'metamask_circle_eth',
 }

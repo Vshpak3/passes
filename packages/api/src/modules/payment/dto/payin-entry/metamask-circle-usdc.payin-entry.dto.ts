@@ -1,13 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { PayinEntryInputDto, PayinEntryOutputDto } from './payin-entry.dto'
+import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
-export class MetamaskCircleUSDCEntryInputDto extends PayinEntryInputDto {}
+export class MetamaskCircleUSDCEntryRequestDto extends PayinEntryRequestDto {}
 
-export class MetamaskCircleUSDCEntryOutputDto extends PayinEntryOutputDto {
+export class MetamaskCircleUSDCEntryResponseDto extends PayinEntryResponseDto {
   @ApiProperty()
-  address: string
+  tokenAddress: string
 
   @ApiProperty()
-  chain: number
+  depositAddress: string
+
+  @ApiProperty()
+  chainId: number
 }

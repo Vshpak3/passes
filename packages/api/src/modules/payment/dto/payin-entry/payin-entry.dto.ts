@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class PayinEntryInputDto {
+export class PayinEntryRequestDto {
   @ApiProperty()
-  paymentId: string
+  payinId: string
 }
 
-export class PayinEntryOutputDto {
+export class PayinEntryResponseDto {
   @ApiProperty()
-  paymentId: string
+  payinId: string
 }

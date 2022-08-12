@@ -1,6 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { PaymentDto } from './payment.dto'
+import { CirclePaymentDto } from './circle-payment.dto'
+import { CircleTransferDto } from './circle-transfer.dto'
+
+export class GenericCircleObjectWrapper {
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  status: string
+}
 
 export class CircleNotificationDto {
   @ApiProperty()
@@ -15,7 +24,7 @@ export class CircleNotificationDto {
 
   //payments flow
   @ApiPropertyOptional()
-  payment?: PaymentDto
+  payment?: CirclePaymentDto
 
   @ApiPropertyOptional()
   reversal?: any
@@ -36,7 +45,7 @@ export class CircleNotificationDto {
 
   //card verification flow
   @ApiPropertyOptional()
-  card?: any
+  card?: GenericCircleObjectWrapper
 
   //ach verification flow
   @ApiPropertyOptional()
@@ -44,9 +53,9 @@ export class CircleNotificationDto {
 
   //bank account verification flow
   @ApiPropertyOptional()
-  wire?: any
+  wire?: GenericCircleObjectWrapper
 
   //transfer flow
   @ApiPropertyOptional()
-  transfer?: any
+  transfer?: CircleTransferDto
 }

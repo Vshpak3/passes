@@ -18,7 +18,10 @@ import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
-import { CreateWalletDto } from './dto/create-wallet.dto'
+import {
+  CreateUnauthenticatedWalletDto,
+  CreateWalletDto,
+} from './dto/create-wallet.dto'
 import { WalletEntity } from './entities/wallet.entity'
 import { Chain } from './enum/chain.enum'
 
@@ -221,6 +224,26 @@ export class WalletService {
         return walletResp
       }
     }
+  }
+
+  async createUnauthenticated(
+    userId: string,
+    createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,
+  ): Promise<void> {
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const numWallets = await knex('wallet').where('user_id', userId).count('*')
+    if (numWallets[0]['count(*)'] >= MAX_WALLETS_PER_USER) {
+      throw new BadRequestException(
+        `${MAX_WALLETS_PER_USER} wallet limit reached!`,
+      )
+    }
+    await knex('wallet').insert({
+      id: v4(),
+      user_id: userId,
+      authenticated: false,
+      address: createUnauthenticatedWalletDto.walletAddress,
+      chain: createUnauthenticatedWalletDto.chain,
+    })
   }
 
   async remove(userId: string, walletId: string): Promise<boolean> {

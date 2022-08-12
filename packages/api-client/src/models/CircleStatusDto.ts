@@ -24,7 +24,7 @@ export interface CircleStatusDto {
      * @type {string}
      * @memberof CircleStatusDto
      */
-    id: string;
+    id?: string;
     /**
      * 
      * @type {string}
@@ -43,7 +43,7 @@ export function CircleStatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'id': json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'status': json['status'],
     };
 }

@@ -2,11 +2,13 @@ import { ConfigService } from '@nestjs/config'
 import axios from 'axios'
 import { get } from 'lodash'
 
-import { CreateAddressDto } from './dto/circle/create-address.dto'
-import { CreateBankDto } from './dto/circle/create-bank.dto'
-import { CreateCardDto } from './dto/circle/create-card.dto'
-import { BasePaymentDto } from './dto/circle/create-card-payment.dto'
-import { UpdateCardDto } from './dto/circle/update-card.dto'
+import { CircleCreateAddressDto } from './dto/circle/create-address.dto'
+import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
+import { CircleCreateCardDto } from './dto/circle/create-card.dto'
+import { CircleCreatePaymentDto } from './dto/circle/create-card-payment.dto'
+import { CircleCreatePayoutDto } from './dto/circle/create-circle-payout.dto'
+import { CircleCreateTransferDto } from './dto/circle/create-circle-transfer.dto'
+import { CircleUpdateCardDto } from './dto/circle/update-card.dto'
 import { CircleResponseStatusError } from './error/circle.error'
 
 export class CircleConnector {
@@ -85,7 +87,7 @@ export class CircleConnector {
    * Create Card
    * @param {*} payload (contains form data and encrypted card details)
    */
-  createCard(payload: CreateCardDto) {
+  createCard(payload: CircleCreateCardDto) {
     const url = '/v1/cards'
     if (payload.metadata) {
       payload.metadata.phoneNumber = this.nullIfEmpty(
@@ -101,7 +103,7 @@ export class CircleConnector {
    * @param {String} cardId
    * @returns Promise
    */
-  updateCard(cardId: string, payload: UpdateCardDto) {
+  updateCard(cardId: string, payload: CircleUpdateCardDto) {
     return this.instance.put(`/v1/cards/${cardId}`, payload)
   }
 
@@ -109,13 +111,31 @@ export class CircleConnector {
    * Create payment
    * @param {*} payload (contains form data and encrypted payment details)
    */
-  createPayment(payload: BasePaymentDto) {
+  createPayment(payload: CircleCreatePaymentDto) {
     const url = '/v1/payments'
     if (payload.metadata) {
       payload.metadata.phoneNumber = this.nullIfEmpty(
         payload.metadata.phoneNumber,
       )
     }
+    return this.instance.post(url, payload)
+  }
+
+  /**
+   * Create payout
+   * @param {*} payload
+   */
+  createPayout(payload: CircleCreatePayoutDto) {
+    const url = '/v1/payouts'
+    return this.instance.post(url, payload)
+  }
+
+  /**
+   * Create transfer
+   * @param {*} payload
+   */
+  createTransfer(payload: CircleCreateTransferDto) {
+    const url = '/v1/transfers'
     return this.instance.post(url, payload)
   }
 
@@ -142,18 +162,18 @@ export class CircleConnector {
   /**
    * Create an address
    */
-  createAddress(walletid: string, payload: CreateAddressDto) {
+  createAddress(walletid: string, payload: CircleCreateAddressDto) {
     const url = `/v1/wallets/${walletid}/addresses`
 
-    return this.instance.get(url, payload)
+    return this.instance.post(url, payload)
   }
 
   /**
    * Create an address
    */
-  createBank(payload: CreateBankDto) {
+  createBank(payload: CircleCreateBankDto) {
     const url = `/v1/banks/wires`
 
-    return this.instance.get(url, payload)
+    return this.instance.post(url, payload)
   }
 }

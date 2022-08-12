@@ -15,7 +15,7 @@ export class CircleBankEntity extends BaseEntity {
 
   @Property()
   @Unique()
-  circleBankId: string
+  circleBankId?: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum
@@ -28,4 +28,7 @@ export class CircleBankEntity extends BaseEntity {
 
   @Property()
   fingerprint: string
+
+  @Property()
+  deletedAt?: Date
 }

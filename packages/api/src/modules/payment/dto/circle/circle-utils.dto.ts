@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-export class AmountDto {
+export class CircleAmountDto {
   @ApiProperty()
   amount: string
 
@@ -8,7 +8,7 @@ export class AmountDto {
   currency: string
 }
 
-export class SourceDto {
+export class CircleSourceDto {
   @ApiProperty()
   type: string
 
@@ -22,4 +22,9 @@ export class SourceDto {
   //for all other payments
   @ApiPropertyOptional()
   id?: string
+
+  @ApiPropertyOptional()
+  identities?: any
 }
+
+export type CircleDestinationDto = CircleSourceDto

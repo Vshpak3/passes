@@ -1,4 +1,4 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 
@@ -11,6 +11,9 @@ export class CircleNotificationEntity extends BaseEntity {
   @Property()
   notificationType: string
 
-  @Property()
+  @Property({ type: types.text })
   fullContent: string
+
+  @Property()
+  processed?: boolean
 }

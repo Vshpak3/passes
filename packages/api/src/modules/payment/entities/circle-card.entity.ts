@@ -15,7 +15,7 @@ export class CircleCardEntity extends BaseEntity {
 
   @Property()
   @Unique()
-  circleCardId: string
+  circleCardId?: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum
@@ -33,5 +33,5 @@ export class CircleCardEntity extends BaseEntity {
   name: string
 
   @Property()
-  active = true
+  deletedAt?: Date
 }
