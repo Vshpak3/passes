@@ -1,10 +1,10 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { BadRequestException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { StreamChat } from 'stream-chat'
 import * as uuid from 'uuid'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateChannelDto } from './dto/create-channel.dto'
@@ -18,10 +18,10 @@ export class MessagesService {
   streamClient: StreamChat
   constructor(
     private readonly configService: ConfigService,
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
-    @InjectRepository(CreatorSettingsEntity, 'ReadWrite')
-    private readonly creatorSettingsRepository: EntityRepository<CreatorSettingsEntity>,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
   ) {
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
@@ -39,9 +39,15 @@ export class MessagesService {
     userId: string,
     createChannelDto: CreateChannelDto,
   ): Promise<GetChannelDto> {
-    const otherUser = await this.userRepository.findOne({
-      username: createChannelDto.username,
-    })
+    const { knex } = this.ReadWriteDatabaseService
+    const otherUser = await knex(UserEntity.table)
+      .where(
+        UserEntity.toDict<UserEntity>({
+          username: createChannelDto.username,
+        }),
+      )
+      .first()
+
     if (otherUser == null) {
       throw new BadRequestException(
         `${createChannelDto.username} could not be found`,
@@ -80,6 +86,7 @@ export class MessagesService {
   }
 
   async sendMessage(userId: string, sendMessageDto: SendMessageDto) {
+    const { knex } = this.ReadOnlyDatabaseService
     if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
       throw new BadRequestException('invalid tip amount')
     }
@@ -98,11 +105,20 @@ export class MessagesService {
         otherUserId = membersResponse.members[i].user_id
       }
     }
-    const otherUser = await this.userRepository.findOne({ id: otherUserId })
 
-    const creatorSettings = await this.creatorSettingsRepository.findOne({
-      user: otherUser,
-    })
+    // TODO: check if user query is needed
+    const otherUser = await knex(UserEntity.table)
+      .where({ id: otherUserId })
+      .first()
+
+    const creatorSettings = await knex(CreatorSettingsEntity.table)
+      .where(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
+          user: otherUser.id,
+        }),
+      )
+      .first()
+
     if (
       creatorSettings != undefined &&
       creatorSettings.minimumTipAmount != undefined &&

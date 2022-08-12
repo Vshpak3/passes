@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 import { GetPassDto } from '../../pass/dto/get-pass.dto'
-import { CollectionEntity } from '../entities/collection.entity'
 
 export class GetCollectionDto {
   @ApiProperty()
@@ -19,7 +18,7 @@ export class GetCollectionDto {
   @ApiProperty()
   blockchain: 'solana'
 
-  constructor(collectionEntity: CollectionEntity) {
+  constructor(collectionEntity) {
     this.id = collectionEntity.id
     this.title = collectionEntity.title
     this.description = collectionEntity.description

@@ -1,8 +1,6 @@
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
-import { SettingsEntity } from './entities/settings.entity'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { SettingsController } from './settings.controller'
 import { SettingsService } from './settings.service'
 
@@ -12,13 +10,7 @@ describe('SettingsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SettingsController],
-      providers: [
-        SettingsService,
-        {
-          provide: getRepositoryToken(SettingsEntity, 'ReadWrite'),
-          useFactory: repositoryMockFactory,
-        },
-      ],
+      providers: [SettingsService, ...mockDatabaseService],
     }).compile()
 
     controller = module.get<SettingsController>(SettingsController)

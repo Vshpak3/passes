@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
-import { databaseServiceMockFactory } from '../../database/test-helpers'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { ContentService } from './content.service'
 
 describe('ContentService', () => {
@@ -10,13 +8,7 @@ describe('ContentService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ContentService,
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
-      ],
+      providers: [ContentService, ...mockDatabaseService],
     }).compile()
 
     service = module.get<ContentService>(ContentService)

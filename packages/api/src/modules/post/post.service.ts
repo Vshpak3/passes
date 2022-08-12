@@ -1,5 +1,3 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   ForbiddenException,
   Injectable,
@@ -10,6 +8,7 @@ import * as uuid from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ContentEntity } from '../content/entities/content.entity'
 import {
   POST_DELETED,
   POST_NOT_EXIST,
@@ -27,8 +26,6 @@ export class PostService {
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-    @InjectRepository(PostEntity, 'ReadWrite')
-    private readonly postRepository: EntityRepository<PostEntity>,
   ) {}
 
   async create(
@@ -91,11 +88,20 @@ export class PostService {
     return createPostDto
   }
 
-  // TODO: Refactor to new database setup
   async findOne(id: string): Promise<GetPostDto> {
-    const post = await this.postRepository.findOne(id, {
-      populate: ['content'],
-    })
+    const { knex } = this.ReadOnlyDatabaseService
+    const [post, content] = await Promise.all([
+      knex(PostEntity.table)
+        .where({
+          id,
+        })
+        .first(),
+      knex(ContentEntity.table).where(
+        ContentEntity.toDict<ContentEntity>({
+          post: id,
+        }),
+      ),
+    ])
 
     if (!post) {
       throw new NotFoundException(POST_NOT_EXIST)
@@ -105,35 +111,35 @@ export class PostService {
       throw new NotFoundException(POST_DELETED)
     }
 
-    return new GetPostDto(post)
+    return new GetPostDto({ ...post, content })
   }
 
-  // TODO: Refactor to new database setup
   async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const currentPost = await this.postRepository.findOne(postId)
+    const { knex } = this.ReadWriteDatabaseService
+    const currentPost = await knex(PostEntity.table)
+      .where({ id: postId })
+      .first()
 
     if (!currentPost) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (currentPost.user.id !== userId) {
+    if (currentPost.user_id !== userId) {
       throw new ForbiddenException(POST_NOT_OWNED_BY_USER)
     }
 
-    if (currentPost.deletedAt) {
+    if (currentPost.deleted_at) {
       throw new NotFoundException(POST_DELETED)
     }
 
-    const newPost = wrap(currentPost).assign({
-      ...updatePostDto,
-    })
-
-    await this.postRepository.persistAndFlush(newPost)
-    return new GetPostDto(newPost)
+    const data = PostEntity.toDict<PostEntity>(updatePostDto)
+    await knex(PostEntity.table).update(data).where({ id: postId })
+    return new GetPostDto({ ...currentPost, ...data })
   }
 
   async remove(userId: string, postId: string) {
-    const post = await this.postRepository.findOne(postId)
+    const { knex } = this.ReadWriteDatabaseService
+    const post = await knex(PostEntity.table).where({ id: postId }).first()
     if (!post) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
@@ -142,11 +148,8 @@ export class PostService {
       throw new ForbiddenException(POST_NOT_OWNED_BY_USER)
     }
 
-    const newPost = wrap(post).assign({
-      deletedAt: new Date(),
-    })
-
-    await this.postRepository.persistAndFlush(newPost)
-    return new GetPostDto(newPost)
+    const data = PostEntity.toDict<PostEntity>({ deletedAt: new Date() })
+    await knex(PostEntity.table).update(data).where({ id: postId })
+    return new GetPostDto({ ...post, ...data })
   }
 }

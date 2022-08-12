@@ -10,20 +10,19 @@ export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorSettingsService {
-  table: string
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-  ) {
-    this.ReadWriteDatabaseService.getTableName(CreatorSettingsEntity)
-  }
+  ) {}
 
   async findByUser(userId: string): Promise<CreatorSettingsEntity> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
-    const creatorSettings = await knex(this.table)
-      .where(toDict(CreatorSettingsEntity, { user: userId }))
+    const { knex } = this.ReadOnlyDatabaseService
+    const creatorSettings = await knex(CreatorSettingsEntity.table)
+      .where(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
+      )
       .first()
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
@@ -35,15 +34,19 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const creatorSettings = await knex(this.table)
-      .where(toDict(CreatorSettingsEntity, { user: userId }))
+    const { knex } = this.ReadWriteDatabaseService
+    const creatorSettings = await knex(CreatorSettingsEntity.table)
+      .where(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
+      )
       .first()
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
     }
 
-    const data = toDict(CreatorSettingsEntity, createCreatorSettingsDto)
+    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
+      createCreatorSettingsDto,
+    )
     await knex.update(data).where({ id: creatorSettings.id })
     return { ...creatorSettings, ...data }
   }
@@ -52,14 +55,14 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
     const id = v4()
-    const data = toDict(CreatorSettingsEntity, {
+    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
       id,
       user: userId,
       ...createCreatorSettingsDto,
     })
-    const query = () => knex(this.table).insert(data)
+    const query = () => knex(CreatorSettingsEntity.table).insert(data)
     await createOrThrowOnDuplicate(query, CREATOR_SETTINGS_EXISTS)
     return data as any
   }

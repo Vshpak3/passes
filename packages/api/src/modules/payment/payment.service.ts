@@ -88,20 +88,6 @@ export const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // change to  60 * 60 * 24 * 
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
-  circleCardTable: string
-  circleBankTable: string
-  circleNotificationTable: string
-  circlePaymentTable: string
-  circlePayoutTable: string
-  circleTransferTable: string
-  creatorShareTable: string
-  defaultPayinMethodTable: string
-  defaultPayoutMethodTable: string
-  payinTable: string
-  payoutTable: string
-  userTable: string
-  walletTable: string
-
   circleMasterWallet: string
   constructor(
     private readonly configService: ConfigService,
@@ -112,32 +98,6 @@ export class PaymentService {
     private readonly ReadWriteDatabaseService: DatabaseService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
-
-    this.circleCardTable =
-      this.ReadWriteDatabaseService.getTableName(CircleCardEntity)
-    this.circleBankTable =
-      this.ReadWriteDatabaseService.getTableName(CircleBankEntity)
-    this.circleNotificationTable = this.ReadWriteDatabaseService.getTableName(
-      CircleNotificationEntity,
-    )
-    this.circlePaymentTable =
-      this.ReadWriteDatabaseService.getTableName(CirclePaymentEntity)
-    this.circlePayoutTable =
-      this.ReadWriteDatabaseService.getTableName(CirclePayoutEntity)
-    this.circleTransferTable =
-      this.ReadWriteDatabaseService.getTableName(CircleTransferEntity)
-    this.creatorShareTable =
-      this.ReadWriteDatabaseService.getTableName(CreatorShareEntity)
-    this.defaultPayinMethodTable = this.ReadWriteDatabaseService.getTableName(
-      DefaultPayinMethodEntity,
-    )
-    this.defaultPayoutMethodTable = this.ReadWriteDatabaseService.getTableName(
-      DefaultPayoutMethodEntity,
-    )
-    this.payinTable = this.ReadWriteDatabaseService.getTableName(PayinEntity)
-    this.payoutTable = this.ReadWriteDatabaseService.getTableName(PayoutEntity)
-    this.userTable = this.ReadWriteDatabaseService.getTableName(UserEntity)
-    this.walletTable = this.ReadWriteDatabaseService.getTableName(WalletEntity)
     this.circleMasterWallet = this.configService.get(
       'circle.master_wallet_id',
     ) as string
@@ -173,11 +133,11 @@ export class PaymentService {
     createCardDto: CircleCreateCardDto,
     fourDigits: string,
   ): Promise<CircleStatusDto> {
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
     if (
-      await knex(this.circleCardTable)
+      await knex(CircleCardEntity.table)
         .where(
-          toDict(CircleCardEntity, {
+          CircleCardEntity.toDict<CircleCardEntity>({
             idempotencyKey: createCardDto.idempotencyKey,
           }),
         )
@@ -187,7 +147,7 @@ export class PaymentService {
     }
 
     const count = await knex
-      .table(this.circleCardTable)
+      .table(CircleCardEntity.table)
       .whereNotNull('deleted_at')
       .andWhere('user_id', userId)
       .count()
@@ -201,7 +161,7 @@ export class PaymentService {
     createCardDto.metadata.ipAddress = ip
     const response = await this.circleConnector.createCard(createCardDto)
 
-    const data = toDict(CircleCardEntity, {
+    const data = CircleCardEntity.toDict<CircleCardEntity>({
       id: v4(),
       user: userId,
       fourDigits,
@@ -211,7 +171,7 @@ export class PaymentService {
       ...createCardDto,
     })
 
-    await knex(this.circleCardTable).insert(data)
+    await knex(CircleCardEntity.table).insert(data)
 
     return { id: data.circleCardId, status: data.status }
   }
@@ -223,10 +183,12 @@ export class PaymentService {
    * @returns
    */
   async deleteCircleCard(userId: string, cardId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    await knex(this.circleCardTable)
+    const { knex } = this.ReadWriteDatabaseService
+    await knex(CircleCardEntity.table)
       .update('deleted_at', knex.fn.now())
-      .where(toDict(CircleCardEntity, { user: userId, id: cardId }))
+      .where(
+        CircleCardEntity.toDict<CircleCardEntity>({ user: userId, id: cardId }),
+      )
   }
 
   /**
@@ -236,12 +198,12 @@ export class PaymentService {
    * @returns
    */
   async getCircleCards(userId: string): Promise<Array<CircleCardDto>> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const { knex } = this.ReadOnlyDatabaseService
     return (
-      await knex(this.circleCardTable)
+      await knex(CircleCardEntity.table)
         .select('*')
         .where(
-          toDict(CircleCardEntity, {
+          CircleCardEntity.toDict<CircleCardEntity>({
             user: userId,
           }),
         )
@@ -262,9 +224,9 @@ export class PaymentService {
     sessionId: string,
     payin: PayinDto,
   ): Promise<CircleStatusDto> {
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
 
-    const card = await knex(this.circleCardTable)
+    const card = await knex(CircleCardEntity.table)
       .where({
         id: payin.cardId,
       })
@@ -289,7 +251,7 @@ export class PaymentService {
       verification: 'none',
     }
 
-    const data = toDict(CirclePaymentEntity, {
+    const data = CirclePaymentEntity.toDict<CirclePaymentEntity>({
       id: v4(),
       card: card.id,
       payin: payin.id,
@@ -298,15 +260,15 @@ export class PaymentService {
       verification: CircleCardVerificationEnum.NONE,
       status: CirclePaymentStatusEnum.UNKOWN,
     })
-    await knex(this.circlePaymentTable).insert(data)
+    await knex(CirclePaymentEntity.table).insert(data)
 
     const response = await this.circleConnector.createPayment(
       createCardPaymentDto,
     )
 
-    await knex(this.circlePaymentTable)
+    await knex(CirclePaymentEntity.table)
       .update(
-        toDict(CirclePaymentEntity, {
+        CirclePaymentEntity.toDict<CirclePaymentEntity>({
           circlePaymentId: response['id'],
           status: response['status'],
         }),
@@ -343,11 +305,11 @@ export class PaymentService {
     userId: string,
     createBankDto: CircleCreateBankDto,
   ): Promise<CircleStatusDto> {
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
     if (
-      await knex(this.circleBankTable)
+      await knex(CircleBankEntity.table)
         .where(
-          toDict(CircleBankEntity, {
+          CircleBankEntity.toDict<CircleBankEntity>({
             idempotencyKey: createBankDto.idempotencyKey,
           }),
         )
@@ -357,7 +319,7 @@ export class PaymentService {
     }
 
     const count = await knex
-      .table(this.circleBankTable)
+      .table(CircleBankEntity.table)
       .whereNotNull('deleted_at')
       .andWhere('user_id', userId)
       .count()
@@ -366,8 +328,8 @@ export class PaymentService {
     }
 
     const response = await this.circleConnector.createBank(createBankDto)
-    await knex(this.circleBankTable).insert(
-      toDict(CircleBankEntity, {
+    await knex(CircleBankEntity.table).insert(
+      CircleBankEntity.toDict<CircleBankEntity>({
         id: v4(),
         user: userId,
         status: response['status'],
@@ -388,10 +350,15 @@ export class PaymentService {
    * @param circleBankId
    */
   async deleteCircleBank(userId: string, circleBankId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    await knex(this.circleBankTable)
+    const { knex } = this.ReadWriteDatabaseService
+    await knex(CircleBankEntity.table)
       .update('deleted_at', knex.fn.now())
-      .where(toDict(CircleCardEntity, { user: userId, id: circleBankId }))
+      .where(
+        CircleCardEntity.toDict<CircleCardEntity>({
+          user: userId,
+          id: circleBankId,
+        }),
+      )
   }
 
   /**
@@ -400,12 +367,12 @@ export class PaymentService {
    * @returns
    */
   async getCircleBanks(userId: string): Promise<Array<CircleBankDto>> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
+    const { knex } = this.ReadOnlyDatabaseService
     return (
-      await knex(this.circleBankTable)
+      await knex(CircleBankEntity.table)
         .select('*')
         .where(
-          toDict(CircleBankEntity, {
+          CircleBankEntity.toDict<CircleBankEntity>({
             user: userId,
           }),
         )
@@ -424,9 +391,9 @@ export class PaymentService {
     userId: string,
     payout: PayoutDto,
   ): Promise<CircleStatusDto> {
-    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
+    const { knex, v4 } = this.ReadOnlyDatabaseService
 
-    const bank = await knex(this.circleBankTable)
+    const bank = await knex(CircleBankEntity.table)
       .where({
         id: payout.bankId,
         user_id: userId,
@@ -434,7 +401,7 @@ export class PaymentService {
       .select('id', 'circle_bank_id')
       .first()
 
-    const user = await knex(this.userTable)
+    const user = await knex(UserEntity.table)
       .where({
         id: userId,
       })
@@ -460,7 +427,7 @@ export class PaymentService {
       },
     }
 
-    const data = toDict(CirclePayoutEntity, {
+    const data = CirclePayoutEntity.toDict<CirclePayoutEntity>({
       id: v4(),
       bank: bank.id,
       payout: payout.id,
@@ -468,12 +435,12 @@ export class PaymentService {
       amount: createPayoutDto.amount.amount,
       status: CircleAccountStatusEnum.PENDING,
     })
-    await knex(this.circlePayoutTable).insert(data)
+    await knex(CirclePayoutEntity.table).insert(data)
     const response = await this.circleConnector.createPayout(createPayoutDto)
 
-    await knex(this.circlePayoutTable)
+    await knex(CirclePayoutEntity.table)
       .update(
-        toDict(CirclePayoutEntity, {
+        CirclePayoutEntity.toDict<CirclePayoutEntity>({
           circlePayoutId: response['id'],
           status: response['status'],
         }),
@@ -494,9 +461,9 @@ export class PaymentService {
     userId: string,
     payout: PayoutDto,
   ): Promise<CircleStatusDto> {
-    const { knex, toDict, v4 } = this.ReadOnlyDatabaseService
+    const { knex, v4 } = this.ReadOnlyDatabaseService
 
-    const wallet = await knex(this.walletTable)
+    const wallet = await knex(WalletEntity.table)
       .where('id', payout.walletId)
       .andWhere('user_id', userId)
       .select('*')
@@ -534,7 +501,7 @@ export class PaymentService {
       },
     }
 
-    const data = toDict(CircleTransferEntity, {
+    const data = CircleTransferEntity.toDict<CircleTransferEntity>({
       id: v4(),
       payout: payout.id,
       idempotencyKey: createTransferDto.idempotencyKey,
@@ -542,15 +509,15 @@ export class PaymentService {
       currency: createTransferDto.amount.currency,
       status: CircleAccountStatusEnum.PENDING,
     })
-    await knex(this.circleTransferTable).insert(data)
+    await knex(CircleTransferEntity.table).insert(data)
 
     const response = await this.circleConnector.createTransfer(
       createTransferDto,
     )
 
-    await knex(this.circleTransferTable)
+    await knex(CircleTransferEntity.table)
       .update(
-        toDict(CircleTransferEntity, {
+        CircleTransferEntity.toDict<CircleTransferEntity>({
           circleTransferId: response['id'],
           status: response['status'],
         }),
@@ -568,10 +535,10 @@ export class PaymentService {
 
   async processCircleUpdate(update: CircleNotificationDto): Promise<void> {
     //log new notification in DB
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
     const id = v4()
-    await knex(this.circleNotificationTable).insert(
-      toDict(CircleNotificationEntity, {
+    await knex(CircleNotificationEntity.table).insert(
+      CircleNotificationEntity.toDict<CircleNotificationEntity>({
         id,
         clientId: update.clientId,
         notificationType: update.notificationType,
@@ -624,12 +591,20 @@ export class PaymentService {
             "notification type unrecognized: API might've updated",
           )
       }
-      await knex(this.circleNotificationTable)
-        .update(toDict(CircleNotificationEntity, { processed: true }))
+      await knex(CircleNotificationEntity.table)
+        .update(
+          CircleNotificationEntity.toDict<CircleNotificationEntity>({
+            processed: true,
+          }),
+        )
         .where({ id })
     } catch (e) {
-      await knex(this.circleNotificationTable)
-        .update(toDict(CircleNotificationEntity, { processed: false }))
+      await knex(CircleNotificationEntity.table)
+        .update(
+          CircleNotificationEntity.toDict<CircleNotificationEntity>({
+            processed: false,
+          }),
+        )
         .where({ id })
       throw e
     }
@@ -642,14 +617,16 @@ export class PaymentService {
   async processCircleWireUpdate(
     wireDto: GenericCircleObjectWrapper,
   ): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    await knex(this.circleBankTable)
+    const { knex } = this.ReadWriteDatabaseService
+    await knex(CircleBankEntity.table)
       .update(
-        toDict(CircleBankEntity, {
+        CircleBankEntity.toDict<CircleBankEntity>({
           status: wireDto.status as CircleAccountStatusEnum,
         }),
       )
-      .where(toDict(CircleBankEntity, { circleBankId: wireDto.id }))
+      .where(
+        CircleBankEntity.toDict<CircleBankEntity>({ circleBankId: wireDto.id }),
+      )
   }
 
   /**
@@ -659,14 +636,16 @@ export class PaymentService {
   async processCircleCardUpdate(
     cardDto: GenericCircleObjectWrapper,
   ): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    await knex(this.circleCardTable)
+    const { knex } = this.ReadWriteDatabaseService
+    await knex(CircleCardEntity.table)
       .update(
-        toDict(CircleCardEntity, {
+        CircleCardEntity.toDict<CircleCardEntity>({
           status: cardDto.status as CircleAccountStatusEnum,
         }),
       )
-      .where(toDict(CircleCardEntity, { circleCardId: cardDto.id }))
+      .where(
+        CircleCardEntity.toDict<CircleCardEntity>({ circleCardId: cardDto.id }),
+      )
   }
 
   /**
@@ -676,15 +655,15 @@ export class PaymentService {
   async processCirclePaymentUpdate(
     paymentDto: CirclePaymentDto,
   ): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
-    const payin = await knex(this.payinTable)
+    const payin = await knex(PayinEntity.table)
       .join(
-        this.circlePaymentTable,
-        this.payinTable + '.id',
-        this.circlePaymentTable + '.payin_id',
+        CirclePaymentEntity.table,
+        PayinEntity.table + '.id',
+        CirclePaymentEntity.table + '.payin_id',
       )
-      .select(this.payinTable + '.id as id', this.payinTable + '.user_id')
+      .select(PayinEntity.table + '.id as id', PayinEntity.table + '.user_id')
       .where('circle_payment_id', paymentDto.id)
       .first()
 
@@ -692,15 +671,19 @@ export class PaymentService {
       throw new CircleNotificationError('notification for unrecorded payin')
     }
 
-    await knex(this.circlePaymentTable)
+    await knex(CirclePaymentEntity.table)
       .where('circle_payment_id', paymentDto.id)
       .update({ status: paymentDto.status })
 
     switch (paymentDto.status) {
       case CirclePaymentStatusEnum.PENDING:
         await knex
-          .table(this.payinTable)
-          .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.PENDING }))
+          .table(PayinEntity.table)
+          .update(
+            PayinEntity.toDict<PayinEntity>({
+              payinStatus: PayinStatusEnum.PENDING,
+            }),
+          )
           .where({ id: payin.id })
         break
       case CirclePaymentStatusEnum.CONFIRMED:
@@ -712,9 +695,9 @@ export class PaymentService {
         break
       case CirclePaymentStatusEnum.ACTION_REQUIRED:
         await knex
-          .table(this.payinTable)
+          .table(PayinEntity.table)
           .update(
-            toDict(PayinEntity, {
+            PayinEntity.toDict<PayinEntity>({
               payinStatus: PayinStatusEnum.ACTION_REQUIRED,
             }),
           )
@@ -728,15 +711,15 @@ export class PaymentService {
    * @param payoutDto
    */
   async processCirclePayoutUpdate(payoutDto: any): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
-    const payout = await knex(this.payoutTable)
+    const payout = await knex(PayoutEntity.table)
       .join(
-        this.circlePayoutTable,
-        this.payoutTable + '.id',
-        this.circlePayoutTable + '.payout_id',
+        CirclePayoutEntity.table,
+        PayoutEntity.table + '.id',
+        CirclePayoutEntity.table + '.payout_id',
       )
-      .select(this.payoutTable + '.id as id', this.payoutTable + '.user_id')
+      .select(PayoutEntity.table + '.id as id', PayoutEntity.table + '.user_id')
       .where('circle_payout_id', payoutDto.id)
       .first()
 
@@ -744,16 +727,18 @@ export class PaymentService {
       throw new CircleNotificationError('notification for unrecorded payout')
     }
 
-    await knex(this.circlePayoutTable)
+    await knex(CirclePayoutEntity.table)
       .where('circle_payout_id', payoutDto.id)
       .update({ status: payoutDto.status, fee: payoutDto.fees.amount })
 
     switch (payoutDto.status) {
       case CircleAccountStatusEnum.PENDING:
         await knex
-          .table(this.payoutTable)
+          .table(PayoutEntity.table)
           .update(
-            toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.PENDING }),
+            PayoutEntity.toDict<PayoutEntity>({
+              payoutStatus: PayoutStatusEnum.PENDING,
+            }),
           )
           .where({ id: payout.id })
         break
@@ -802,7 +787,7 @@ export class PaymentService {
   async processCircleIncomingTransferUpdate(
     transferDto: CircleTransferDto,
   ): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     let method
     let chainId
@@ -822,7 +807,7 @@ export class PaymentService {
         method = PayinMethodEnum.METAMASK_CIRCLE_USDC
       }
     }
-    let query = knex(this.payinTable).select('id', 'user_id').where({
+    let query = knex(PayinEntity.table).select('id', 'user_id').where({
       address: transferDto.destination.address,
       payin_method: method,
     })
@@ -830,14 +815,18 @@ export class PaymentService {
       query = query.where('chain_id', chainId)
     }
     const payin = await query.first()
-    await knex(this.payinTable)
+    await knex(PayinEntity.table)
       .update({ transaction_hash: transferDto.transactionHash })
       .where('id', payin.id)
     switch (transferDto.status) {
       case CircleTransferStatusEnum.PENDING:
         await knex
-          .table(this.payinTable)
-          .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.PENDING }))
+          .table(PayinEntity.table)
+          .update(
+            PayinEntity.toDict<PayinEntity>({
+              payinStatus: PayinStatusEnum.PENDING,
+            }),
+          )
           .where({ id: payin.id })
         break
       case CircleTransferStatusEnum.COMPLETE:
@@ -856,32 +845,34 @@ export class PaymentService {
   async processCircleOutgoingTransferUpdate(
     transferDto: CircleTransferDto,
   ): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const circleTransfer = await knex(this.circleTransferTable)
+    const { knex } = this.ReadWriteDatabaseService
+    const circleTransfer = await knex(CircleTransferEntity.table)
       .where('circle_transfer_id', transferDto.id)
       .select('payout_id')
       .first()
-    const payout = await knex(this.payoutTable)
+    const payout = await knex(PayoutEntity.table)
       .where('id', circleTransfer.payout_id)
       .select('*')
       .first()
 
     if (transferDto.transactionHash) {
-      await knex(this.payoutTable)
+      await knex(PayoutEntity.table)
         .where('id', payout.id)
         .update({ transaction_hash: transferDto.transactionHash })
     }
 
-    await knex(this.circleTransferTable)
+    await knex(CircleTransferEntity.table)
       .where('id', transferDto.id)
       .update('status', transferDto.status)
 
     switch (transferDto.status) {
       case CircleTransferStatusEnum.PENDING:
         await knex
-          .table(this.payoutTable)
+          .table(PayoutEntity.table)
           .update(
-            toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.PENDING }),
+            PayoutEntity.toDict<PayoutEntity>({
+              payoutStatus: PayoutStatusEnum.PENDING,
+            }),
           )
           .where({ id: payout.id })
         break
@@ -911,11 +902,11 @@ export class PaymentService {
     userId: string,
     entryDto: PayinEntryRequestDto,
   ): Promise<PayinEntryResponseDto> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const res = await knex(this.payinTable)
+    const { knex } = this.ReadWriteDatabaseService
+    const res = await knex(PayinEntity.table)
       .select('*')
       .where(
-        toDict(PayinEntity, {
+        PayinEntity.toDict<PayinEntity>({
           id: entryDto.payinId,
           user: userId,
           payinStatus: PayinStatusEnum.REGISTERED,
@@ -950,7 +941,7 @@ export class PaymentService {
           throw new NoPayinMethodError('entrypoint hit with no method')
       }
 
-      await knex(this.payinTable)
+      await knex(PayinEntity.table)
         .update({ payin_status: PayinStatusEnum.CREATED })
         .where({ id: entryDto.payinId })
     } catch (e) {
@@ -1021,7 +1012,7 @@ export class PaymentService {
 
   async linkAddressToPayin(address: string, payinId: string): Promise<void> {
     const { knex } = this.ReadWriteDatabaseService
-    await knex(this.payinTable).update({ address }).where({ id: payinId })
+    await knex(PayinEntity.table).update({ address }).where({ id: payinId })
   }
 
   CIRCLE_EVM_MAP = {
@@ -1079,7 +1070,7 @@ export class PaymentService {
     payinMethoDto: PayinMethodDto,
   ): Promise<void> {
     const { knex, v4 } = this.ReadWriteDatabaseService
-    await knex(this.defaultPayinMethodTable)
+    await knex(DefaultPayinMethodEntity.table)
       .insert({
         id: v4(),
         user_id: userId,
@@ -1097,8 +1088,8 @@ export class PaymentService {
    * @returns
    */
   async getDefaultPayinMethod(userId: string): Promise<PayinMethodDto> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
-    const defaultPayinMethod = await knex(this.defaultPayinMethodTable)
+    const { knex } = this.ReadOnlyDatabaseService
+    const defaultPayinMethod = await knex(DefaultPayinMethodEntity.table)
       .where('user_id', userId)
       .select('*')
       .first()
@@ -1112,9 +1103,9 @@ export class PaymentService {
       case PayinMethodEnum.CIRCLE_CARD:
         // assert that card exists and is not deleted
         isValid =
-          (await knex(this.circleCardTable)
+          (await knex(CircleCardEntity.table)
             .where(
-              toDict(CircleCardEntity, {
+              CircleCardEntity.toDict<CircleCardEntity>({
                 user: userId,
                 id: defaultPayinMethod.card_id,
                 status: CircleAccountStatusEnum.COMPLETE,
@@ -1160,7 +1151,7 @@ export class PaymentService {
     payoutMethodDto: PayoutMethodDto,
   ): Promise<void> {
     const { knex, v4 } = this.ReadWriteDatabaseService
-    await knex(this.defaultPayoutMethodTable)
+    await knex(DefaultPayoutMethodEntity.table)
       .insert({
         id: v4(),
         user_id: userId,
@@ -1178,8 +1169,8 @@ export class PaymentService {
    * @returns
    */
   async getDefaultPayoutMethod(userId: string): Promise<PayoutMethodDto> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
-    const defaultPayoutMethod = await knex(this.defaultPayoutMethodTable)
+    const { knex } = this.ReadOnlyDatabaseService
+    const defaultPayoutMethod = await knex(DefaultPayoutMethodEntity.table)
       .where('user_id', userId)
       .select('*')
       .first()
@@ -1193,9 +1184,9 @@ export class PaymentService {
       case PayoutMethodEnum.CIRCLE_WIRE:
         // assert that bank exists and is not deleted
         isValid =
-          (await knex(this.circleBankTable)
+          (await knex(CircleBankEntity.table)
             .where(
-              toDict(CircleCardEntity, {
+              CircleCardEntity.toDict<CircleCardEntity>({
                 user: userId,
                 id: defaultPayoutMethod.bank_id,
                 status: CircleAccountStatusEnum.COMPLETE,
@@ -1209,7 +1200,7 @@ export class PaymentService {
         // blockchain payout must be on an approved chain
         isValid = this.VALID_PAYOUT_CHAINS.includes(
           (
-            await knex(this.walletTable)
+            await knex(WalletEntity.table)
               .where({ user_id: userId, id: defaultPayoutMethod.wallet_id })
               .select('chain')
               .first()
@@ -1235,7 +1226,7 @@ export class PaymentService {
   async registerPayin(
     request: RegisterPayinRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { knex, toDict, v4 } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
     // create and save a payin with REGISTERED status
 
     // validating request information
@@ -1258,7 +1249,7 @@ export class PaymentService {
       amount: request.amount,
     }
 
-    await knex(this.payinTable).insert(data)
+    await knex(PayinEntity.table).insert(data)
 
     try {
       // validate the parameters of the shares
@@ -1286,8 +1277,8 @@ export class PaymentService {
 
       // create shares of payment profit that would go to creators
       for (const creatorShareDto of request.creatorShares) {
-        await knex(this.creatorShareTable).insert(
-          toDict(CreatorShareEntity, {
+        await knex(CreatorShareEntity.table).insert(
+          CreatorShareEntity.toDict<CreatorShareEntity>({
             id: v4(),
             creator: creatorShareDto.creatorId,
             amount: creatorShareDto.amount,
@@ -1315,34 +1306,38 @@ export class PaymentService {
   }
 
   async unregisterPayin(payinId: string, userId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
     await knex
-      .table(this.payinTable)
+      .table(PayinEntity.table)
       .where('id', payinId)
       .andWhere('user_id', userId)
       .andWhere('payin_status', PayinStatusEnum.REGISTERED)
       .update(
-        toDict(PayinEntity, {
+        PayinEntity.toDict<PayinEntity>({
           payinStatus: PayinStatusEnum.UNREGISTERED,
         }),
       )
   }
 
   async failPayin(payinId: string, userId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     const rows = await knex
-      .table(this.payinTable)
+      .table(PayinEntity.table)
       .where('id', payinId)
       .andWhere('user_id', userId)
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.FAILED }))
+      .update(
+        PayinEntity.toDict<PayinEntity>({
+          payinStatus: PayinStatusEnum.FAILED,
+        }),
+      )
     // check for completed update
     if (rows == 1) {
-      const payin = await knex(this.payinTable)
+      const payin = await knex(PayinEntity.table)
         .where('id', payinId)
         .andWhere('user_id', userId)
         .select(
@@ -1358,20 +1353,24 @@ export class PaymentService {
   }
 
   async completePayin(payinId: string, userId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     const rows = await knex
-      .table(this.payinTable)
+      .table(PayinEntity.table)
       .where('id', payinId)
       .andWhere('user_id', userId)
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .update(toDict(PayinEntity, { payinStatus: PayinStatusEnum.SUCCESSFUL }))
+      .update(
+        PayinEntity.toDict<PayinEntity>({
+          payinStatus: PayinStatusEnum.SUCCESSFUL,
+        }),
+      )
     // check for completed update
     if (rows == 1) {
-      const payin = await knex(this.payinTable)
+      const payin = await knex(PayinEntity.table)
         .where('id', payinId)
         .andWhere('user_id', userId)
         .select(
@@ -1387,31 +1386,10 @@ export class PaymentService {
   }
 
   async failPayout(payoutId: string, userId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     const rows = await knex
-      .table(this.payoutTable)
-      .where('id', payoutId)
-      .andWhere('user_id', userId)
-      .andWhere('payout_status', 'in', [
-        PayoutStatusEnum.CREATED,
-        PayoutStatusEnum.PENDING,
-      ])
-      .update(toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.FAILED }))
-    // check for completed update
-    if (rows == 1) {
-      await knex
-        .table(this.creatorShareTable)
-        .where('payout_id', payoutId)
-        .update(toDict(CreatorShareEntity, { payout: undefined }))
-    }
-  }
-
-  async completePayout(payoutId: string, userId: string): Promise<void> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-
-    await knex
-      .table(this.payoutTable)
+      .table(PayoutEntity.table)
       .where('id', payoutId)
       .andWhere('user_id', userId)
       .andWhere('payout_status', 'in', [
@@ -1419,7 +1397,36 @@ export class PaymentService {
         PayoutStatusEnum.PENDING,
       ])
       .update(
-        toDict(PayoutEntity, { payoutStatus: PayoutStatusEnum.SUCCESSFUL }),
+        PayoutEntity.toDict<PayoutEntity>({
+          payoutStatus: PayoutStatusEnum.FAILED,
+        }),
+      )
+    // check for completed update
+    if (rows == 1) {
+      await knex
+        .table(CreatorShareEntity.table)
+        .where('payout_id', payoutId)
+        .update(
+          CreatorShareEntity.toDict<CreatorShareEntity>({ payout: undefined }),
+        )
+    }
+  }
+
+  async completePayout(payoutId: string, userId: string): Promise<void> {
+    const { knex } = this.ReadWriteDatabaseService
+
+    await knex
+      .table(PayoutEntity.table)
+      .where('id', payoutId)
+      .andWhere('user_id', userId)
+      .andWhere('payout_status', 'in', [
+        PayoutStatusEnum.CREATED,
+        PayoutStatusEnum.PENDING,
+      ])
+      .update(
+        PayoutEntity.toDict<PayoutEntity>({
+          payoutStatus: PayoutStatusEnum.SUCCESSFUL,
+        }),
       )
   }
 
@@ -1436,7 +1443,7 @@ export class PaymentService {
   ): Promise<PayinListResponseDto> {
     const { knex } = this.ReadWriteDatabaseService
     const payins = await knex
-      .table(this.payinTable)
+      .table(PayinEntity.table)
       .where('user_id', userId)
       .andWhere('payin_status', 'not in', [
         PayinStatusEnum.REGISTERED,
@@ -1447,7 +1454,7 @@ export class PaymentService {
       .offset(payinListRequest.offset)
       .limit(payinListRequest.limit)
     const count = await knex
-      .table(this.payinTable)
+      .table(PayinEntity.table)
       .where('user_id', userId)
       .andWhere('payin_status', 'not in', [
         PayinStatusEnum.REGISTERED,
@@ -1455,7 +1462,7 @@ export class PaymentService {
       ])
       .count()
     const cards = await knex
-      .table(this.circleCardTable)
+      .table(CircleCardEntity.table)
       .where(
         'id',
         'in',
@@ -1481,9 +1488,9 @@ export class PaymentService {
   }
 
   async payoutAll(): Promise<void> {
-    const { knex, toDict } = this.ReadOnlyDatabaseService
-    const creators = await knex(this.userTable)
-      .where(toDict(UserEntity, { isCreator: true }))
+    const { knex } = this.ReadOnlyDatabaseService
+    const creators = await knex(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
       .select('id')
     creators.forEach(async (creator) => {
       try {
@@ -1500,7 +1507,7 @@ export class PaymentService {
     const minDate = new Date(
       time.getTime() + 60 * MAX_TIME_BETWEEN_PAYOUTS_SECONDS,
     )
-    const checkPayout = await knex(this.payoutTable).where(
+    const checkPayout = await knex(PayoutEntity.table).where(
       'created_at',
       '>=',
       minDate.toISOString(),
@@ -1521,30 +1528,30 @@ export class PaymentService {
       payout_status: PayoutStatusEnum.CREATED,
       amount: 0,
     }
-    await knex(this.payoutTable).insert(data)
+    await knex(PayoutEntity.table).insert(data)
 
-    const creatorShares = await knex(this.creatorShareTable)
+    const creatorShares = await knex(CreatorShareEntity.table)
       .join(
-        this.payinTable,
-        this.creatorShareTable + '.payin_id',
-        this.payinTable + '.id',
+        PayinEntity.table,
+        CreatorShareEntity.table + '.payin_id',
+        PayinEntity.table + '.id',
       )
       .whereNull('payout_id')
       .andWhere('payin_status', PayinStatusEnum.SUCCESSFUL)
       .andWhere('creator_id', userId)
       .select(
-        this.creatorShareTable + '.id',
+        CreatorShareEntity.table + '.id',
         'creator_id',
-        this.creatorShareTable + '.amount',
+        CreatorShareEntity.table + '.amount',
       )
 
     await Promise.all(
       creatorShares.map(async (creatorShare) => {
         await knex.transaction(async (trx) => {
-          await trx(this.payoutTable)
+          await trx(PayoutEntity.table)
             .increment('amount', creatorShare.amount)
             .where('id', data.id)
-          await trx(this.creatorShareTable)
+          await trx(CreatorShareEntity.table)
             .update('payout_id', data.id)
             .where('id', creatorShare.id)
         })
@@ -1559,7 +1566,7 @@ export class PaymentService {
    */
   async submitPayout(payout_id: string): Promise<void> {
     const { knex } = this.ReadWriteDatabaseService
-    const payout = await knex(this.payoutTable)
+    const payout = await knex(PayoutEntity.table)
       .where('id', payout_id)
       .select('*')
       .first()

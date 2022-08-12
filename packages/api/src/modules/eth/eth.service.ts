@@ -26,8 +26,6 @@ import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
 
 @Injectable()
 export class EthService {
-  ethNftTable: string
-  ethNftCollectionTable: string
   constructor(
     @InjectRepository(EthNftEntity, 'ReadWrite')
     private readonly ethNftRepository: EntityRepository<EthNftEntity>,
@@ -50,31 +48,25 @@ export class EthService {
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-  ) {
-    this.ethNftTable = this.ReadWriteDatabaseService.getTableName(EthNftEntity)
-    this.ethNftCollectionTable = this.ReadWriteDatabaseService.getTableName(
-      EthNftCollectionEntity,
-    )
-  }
+  ) {}
 
   async createNftCollection(
     userId: string,
     createEthNftCollectionDto: CreateEthNftCollectionDto,
   ): Promise<EthNftCollectionEntity> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const { knex, toDict, v4, getTableName } = this.ReadWriteDatabaseService
-    const userTable = getTableName(UserEntity)
-    const user = await knex(userTable).where({ id: userId }).first()
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
     const id = v4()
-    const data = toDict(EthNftCollectionEntity, {
+    const data = EthNftCollectionEntity.toDict<EthNftCollectionEntity>({
       id,
       ...createEthNftCollectionDto,
     })
 
-    const query = () => knex(this.ethNftCollectionTable).insert(data)
+    const query = () => knex(EthNftCollectionEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(query, ETH_NFT_COLLECTION_EXISTS)
     // TODO: fix return type

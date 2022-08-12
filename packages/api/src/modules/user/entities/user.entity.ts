@@ -37,12 +37,12 @@ export class UserEntity extends BaseEntity<
   @Property({ type: 'date' })
   birthday?: string
 
-  @Property()
+  @Property({ default: false })
   isKYCVerified = false
 
-  @Property()
+  @Property({ default: false })
   isCreator = false
 
-  @Property()
+  @Property({ default: false })
   isDisabled = false
 }

@@ -16,25 +16,20 @@ import { ContentEntity } from './entities/content.entity'
 
 @Injectable()
 export class ContentService {
-  table: string
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-  ) {
-    this.table = this.ReadWriteDatabaseService.getTableName(ContentEntity)
-  }
+  ) {}
 
   async create(
     postId: string,
     createContentDto: CreateContentDto,
   ): Promise<GetContentDto> {
-    const { knex, toDict, v4, getTableName } = this.ReadWriteDatabaseService
+    const { knex, v4 } = this.ReadWriteDatabaseService
 
-    const post = await this.ReadOnlyDatabaseService.knex(
-      getTableName(PostEntity),
-    )
+    const post = await this.ReadOnlyDatabaseService.knex(PostEntity.table)
       .where('id', postId)
       .select('id')
       .first()
@@ -45,12 +40,12 @@ export class ContentService {
 
     try {
       const id = v4()
-      const data = toDict(ContentEntity, {
+      const data = ContentEntity.toDict<ContentEntity>({
         id,
         post: postId,
         ...createContentDto,
       })
-      await knex(this.table).insert(data)
+      await knex(ContentEntity.table).insert(data)
 
       return new GetContentDto(data)
     } catch (error) {
@@ -59,7 +54,7 @@ export class ContentService {
   }
 
   async findOne(id: string): Promise<GetContentDto> {
-    const content = await this.ReadOnlyDatabaseService.knex(this.table)
+    const content = await this.ReadOnlyDatabaseService.knex(ContentEntity.table)
       .where('id', id)
       .select('*')
       .first()
@@ -74,8 +69,8 @@ export class ContentService {
     contentId: string,
     updateContentDto: UpdateContentDto,
   ): Promise<GetContentDto> {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const data = toDict(ContentEntity, updateContentDto)
+    const { knex } = this.ReadWriteDatabaseService
+    const data = ContentEntity.toDict<ContentEntity>(updateContentDto)
     const updateCount = await knex('content')
       .update(data)
       .where({ id: contentId })

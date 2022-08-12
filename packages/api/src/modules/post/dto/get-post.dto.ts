@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 import { GetContentDto } from '../../content/dto/get-content.dto'
-import { PostEntity } from '../entities/post.entity'
 
 export class GetPostDto {
   @ApiProperty()
@@ -28,15 +27,14 @@ export class GetPostDto {
   @ApiProperty()
   updatedAt: string
 
-  constructor(postEntity: PostEntity) {
+  constructor(postEntity) {
     this.id = postEntity.id
-    this.userId = postEntity.user.id
+    this.userId = postEntity.user_id
     this.text = postEntity.text
-    this.content =
-      postEntity.content.getItems().map((c) => new GetContentDto(c)) ?? []
-    this.numLikes = postEntity.numLikes
-    this.numComments = postEntity.numComments
-    this.createdAt = postEntity.createdAt.toISOString()
-    this.updatedAt = postEntity.createdAt.toISOString()
+    this.content = postEntity.content.map((c) => new GetContentDto(c)) ?? []
+    this.numLikes = postEntity.num_likes
+    this.numComments = postEntity.num_comments
+    this.createdAt = postEntity.created_at.toISOString()
+    this.updatedAt = postEntity.updated_at.toISOString()
   }
 }

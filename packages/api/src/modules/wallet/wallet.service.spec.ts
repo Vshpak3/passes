@@ -2,10 +2,8 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
 import {
-  databaseServiceMockFactory,
+  mockDatabaseService,
   repositoryMockFactory,
 } from '../../database/test-helpers'
 import { LambdaService } from '../lambda/lambda.service'
@@ -36,10 +34,7 @@ describe('WalletService', () => {
           provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
+        ...mockDatabaseService,
       ],
     }).compile()
 

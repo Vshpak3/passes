@@ -1,4 +1,3 @@
-import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { text } from 'body-parser'
 
@@ -7,7 +6,7 @@ import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
 
 @Module({
-  imports: [MikroOrmModule.forFeature([], 'ReadWrite'), UserModule],
+  imports: [UserModule],
   controllers: [PaymentController],
   providers: [PaymentService],
 })

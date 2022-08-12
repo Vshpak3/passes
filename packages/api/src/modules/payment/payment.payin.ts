@@ -12,11 +12,11 @@ export async function handleSuccesfulCallbacks(
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex, toDict } = db
+    const { knex } = db
     await knex
-      .table(db.getTableName(PayinEntity))
+      .table(PayinEntity.table)
       .update(
-        toDict(PayinEntity, {
+        PayinEntity.toDict<PayinEntity>({
           payinStatus: PayinStatusEnum.SUCCESS_CALLBACK_FAILED,
         }),
       )
@@ -35,11 +35,11 @@ export async function handleFailedCallbacks(
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex, toDict } = db
+    const { knex } = db
     await knex
-      .table(db.getTableName(PayinEntity))
+      .table(PayinEntity.table)
       .update(
-        toDict(PayinEntity, {
+        PayinEntity.toDict<PayinEntity>({
           payinStatus: PayinStatusEnum.FAIL_CALLBACK_FAILED,
         }),
       )
@@ -58,11 +58,11 @@ export async function handleCreationCallback(
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex, toDict } = db
+    const { knex } = db
     await knex
-      .table(db.getTableName(PayinEntity))
+      .table(PayinEntity.table)
       .update(
-        toDict(PayinEntity, {
+        PayinEntity.toDict<PayinEntity>({
           payinStatus: PayinStatusEnum.CREATE_CALLBACK_FAILED,
         }),
       )

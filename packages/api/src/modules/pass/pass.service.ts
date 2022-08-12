@@ -1,5 +1,3 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   ForbiddenException,
   Injectable,
@@ -10,8 +8,6 @@ import { PublicKey } from '@solana/web3.js'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { CollectionEntity } from '../collection/entities/collection.entity'
-import { SolNftEntity } from '../sol/entities/sol-nft.entity'
 import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -30,71 +26,26 @@ import { PassOwnershipEntity } from './entities/pass-ownership.entity'
 
 @Injectable()
 export class PassService {
-  table: string
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-    @InjectRepository(CollectionEntity, 'ReadWrite')
-    private readonly collectionRepository: EntityRepository<CollectionEntity>,
-    @InjectRepository(PassEntity, 'ReadWrite')
-    private readonly passRepository: EntityRepository<PassEntity>,
-    @InjectRepository(PassOwnershipEntity, 'ReadWrite')
-    private readonly passOwnershipRepository: EntityRepository<PassOwnershipEntity>,
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
-    @InjectRepository(SolNftCollectionEntity, 'ReadWrite')
-    private readonly solNftCollectionRepository: EntityRepository<SolNftCollectionEntity>,
-    @InjectRepository(SolNftEntity, 'ReadWrite')
-    private readonly solNftRepository: EntityRepository<SolNftEntity>,
+
     private readonly solService: SolService,
     private readonly walletService: WalletService,
-  ) {
-    this.table = this.ReadWriteDatabaseService.getTableName(PassEntity)
-  }
+  ) {}
 
   async create(
     userId: string,
     createPassDto: CreatePassDto,
   ): Promise<GetPassDto> {
-    // TODO: fix merge conflicts
-    // const { knex, toDict, populate, getTableName, v4 } =
-    // this.ReadWriteDatabaseService
-    // const collectionTable = getTableName(CollectionEntity)
-    // const userTable = getTableName(UserEntity)
-    // const collection = await knex(collectionTable)
-    //   .innerJoin(
-    //     `${userTable} as owner`,
-    //     `${collectionTable}.owner_id`,
-    //     'owner.id',
-    //   )
-    //   .select([
-    //     `${collectionTable}.id as id`,
-    //     ...populate(CollectionEntity, ['owner']),
-    //   ])
-    //   .where(`${collectionTable}.id`, createPassDto.collectionId)
-    //   .first()
+    const { knex, v4 } = this.ReadWriteDatabaseService
 
-    // if (!collection) {
-    //   throw new BadRequestException(COLLECTION_NOT_EXIST)
-    // }
-
-    // if (collection.owner_id !== userId) {
-    //   throw new UnauthorizedException(COLLECTION_NOT_OWNED_BY_USER)
-    // }
-
-    // const id = v4()
-    // const data = toDict(PassEntity, {
-    //   id,
-    //   owner: userId,
-    //   collection: collection.id,
-    //   ...createPassDto,
-    // })
-
-    // await knex(this.table).insert(data)
-    // return new GetPassDto(data)
-    const user = await this.userRepository.findOneOrFail(userId)
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
     const solNftCollectionDto = await this.solService.createNftCollection(
       user,
       createPassDto.title,
@@ -102,12 +53,12 @@ export class PassService {
       createPassDto.description,
       createPassDto.imageUrl,
     )
-    const solNftCollection = await this.solNftCollectionRepository.getReference(
-      solNftCollectionDto.id,
-    )
-    const pass = this.passRepository.create({
-      owner: user,
-      solNftCollection: solNftCollection,
+
+    const id = v4()
+    const data = PassEntity.toDict<PassEntity>({
+      id,
+      owner: userId,
+      solNftCollection: solNftCollectionDto.id,
       title: createPassDto.title,
       description: createPassDto.description,
       imageUrl: createPassDto.imageUrl,
@@ -116,28 +67,30 @@ export class PassService {
       totalSupply: createPassDto.totalSupply,
     })
 
-    await this.passRepository.persistAndFlush(pass)
-    return new GetPassDto(pass)
+    await knex(PassEntity.table).insert(data)
+    return new GetPassDto(data)
   }
 
   async findOne(id: string): Promise<GetPassDto> {
-    // TODO: fix merge conflicts
-    // const { knex, getTableName, populate } = this.ReadOnlyDatabaseService
-    // const collectionTable = getTableName(CollectionEntity)
-    // const userTable = getTableName(UserEntity)
-    // const pass = await knex(this.table)
-    //   .innerJoin(`${userTable} as owner`, `${this.table}.owner_id`, 'owner.id')
-    //   .innerJoin(
-    //     `${collectionTable} as collection`,
-    //     `${this.table}.collection_id`,
-    //     'collection.id',
-    //   )
-    //   .select(['*', ...populate(PassEntity, ['owner', 'collection'])])
-    //   .where(`${this.table}.id`, id)
-    //   .first()
-    const pass = await this.passRepository.findOne(id, {
-      populate: ['owner', 'solNftCollection'],
-    })
+    const { knex } = this.ReadOnlyDatabaseService
+    const pass = await knex(PassEntity.table)
+      .innerJoin(
+        `${UserEntity.table} as owner`,
+        `${PassEntity.table}.owner_id`,
+        'owner.id',
+      )
+      .innerJoin(
+        `${SolNftCollectionEntity.table} as solNftCollection`,
+        `${PassEntity.table}.sol_nft_collection_id`,
+        'solNftCollection.id',
+      )
+      .select([
+        '*',
+        ...PassEntity.populate<PassEntity>(['owner', 'solNftCollection']),
+      ])
+      .where(`${PassEntity.table}.id`, id)
+      .first()
+
     if (!pass) {
       throw new NotFoundException(PASS_NOT_EXIST)
     }
@@ -146,17 +99,15 @@ export class PassService {
   }
 
   async findOwnedPasses(userId: string, creatorId?: string) {
-    const { knex, getTableName } = this.ReadOnlyDatabaseService
-    const usersTableName = getTableName(UserEntity)
-    const passOwnershipTableName = getTableName(PassOwnershipEntity)
-    let query = knex(this.table)
+    const { knex } = this.ReadOnlyDatabaseService
+    let query = knex(PassEntity.table)
       .rightJoin(
-        `${passOwnershipTableName} as passOwnership`,
-        `${this.table}.id`,
+        `${PassOwnershipEntity.table} as passOwnership`,
+        `${PassEntity.table}.id`,
         `passOwnership.pass_id`,
       )
       .innerJoin(
-        `${usersTableName} as owner`,
+        `${UserEntity.table} as owner`,
         `passOwnership.holder_id`,
         'owner.id',
       )
@@ -171,12 +122,14 @@ export class PassService {
 
   async findPassesByCreator(creatorId: string) {
     const { knex } = this.ReadOnlyDatabaseService
-    return await knex(this.table).where('owner_id', creatorId)
+    return await knex(PassEntity.table).where('owner_id', creatorId)
   }
 
   async update(userId: string, passId: string, updatePassDto: UpdatePassDto) {
-    const { knex, toDict } = this.ReadWriteDatabaseService
-    const currentPass = await knex(this.table).where({ id: passId }).first()
+    const { knex } = this.ReadWriteDatabaseService
+    const currentPass = await knex(PassEntity.table)
+      .where({ id: passId })
+      .first()
 
     if (!currentPass) {
       throw new NotFoundException(PASS_NOT_EXIST)
@@ -186,32 +139,32 @@ export class PassService {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }
 
-    const data = toDict(PassEntity, updatePassDto)
-    await knex(this.table).update(data).where({ id: passId })
+    const data = PassEntity.toDict<PassEntity>(updatePassDto)
+    await knex(PassEntity.table).update(data).where({ id: passId })
     return new GetPassDto(data)
   }
 
   async addHolder(userId: string, passId: string, temporary?: boolean) {
-    // TODO: fix merge conflicts
-    // const { knex, toDict, getTableName, v4 } = this.ReadWriteDatabaseService
-    // const id = v4()
-    // const data = toDict(PassOwnershipEntity, {
-    //   id,
-    //   pass: passId,
-    //   holder: userId,
-    //   expiresAt: temporary
-    //     ? new Date(new Date().getDate() + 30).valueOf()
-    //     : undefined,
-    // })
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const id = v4()
 
-    // const passOwnershipTable = getTableName(PassOwnershipEntity)
-    // const query = () => knex(passOwnershipTable).insert(data)
-
-    // await createOrThrowOnDuplicate(query, USER_ALREADY_OWNS_PASS)
-    const user = await this.userRepository.getReference(userId)
-    const pass = await this.passRepository.findOneOrFail(passId, {
-      populate: ['owner', 'solNftCollection'],
-    })
+    const pass = await knex(PassEntity.table)
+      .innerJoin(
+        `${UserEntity.table} as owner`,
+        `${PassEntity.table}.owner_id`,
+        'owner.id',
+      )
+      .innerJoin(
+        `${SolNftCollectionEntity.table} as solNftCollection`,
+        `${PassEntity.table}.sol_nft_collection_id`,
+        'solNftCollection.id',
+      )
+      .select([
+        '*',
+        ...PassEntity.populate<PassEntity>(['owner', 'solNftCollection']),
+      ])
+      .where(`${PassEntity.table}.id`, id)
+      .first()
 
     const expiresAt = temporary
       ? new Date(new Date().getDate() + 30).valueOf()
@@ -222,32 +175,33 @@ export class PassService {
     )
 
     const solNftDto = await this.solService.createNftPass(
-      user.id,
+      userId,
       new PublicKey(userCustodialWallet.address),
-      pass.solNftCollection.id,
+      pass.solNftCollection_id,
     )
 
-    const solNft = await this.solNftRepository.getReference(solNftDto.id)
-    const passOwnership = this.passOwnershipRepository.create({
-      pass: pass,
-      holder: user,
+    const data = PassOwnershipEntity.toDict<PassOwnershipEntity>({
+      id,
+      pass: passId,
+      holder: userId,
       expiresAt: expiresAt,
-      solNft: solNft,
+      solNft: solNftDto.id,
     })
 
-    const query = () =>
-      this.passOwnershipRepository.persistAndFlush(passOwnership)
+    const query = () => knex(PassOwnershipEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(query, USER_ALREADY_OWNS_PASS)
 
-    return new GetPassOwnershipDto(pass.id, user.id, expiresAt)
+    return new GetPassOwnershipDto(pass.id, userId, expiresAt)
   }
 
   async doesUserHoldPass(userId: string, passId: string) {
-    const { knex, toDict, getTableName } = this.ReadOnlyDatabaseService
-    const passOwnershipTable = getTableName(PassOwnershipEntity)
-    const data = toDict(PassOwnershipEntity, { holder: userId, pass: passId })
-    const ownership = await knex(passOwnershipTable).where(data).first()
+    const { knex } = this.ReadOnlyDatabaseService
+    const data = PassOwnershipEntity.toDict<PassOwnershipEntity>({
+      holder: userId,
+      pass: passId,
+    })
+    const ownership = await knex(PassOwnershipEntity.table).where(data).first()
     return !!ownership
   }
 }

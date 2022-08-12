@@ -41,13 +41,16 @@ export abstract class BaseEntity<O = void> {
   })
   updatedAt: Date
 
+  // The following properties get initialized and replaced in the database service init function
   static isInitialized = false
 
+  // TODO: Get the entity type without passing it manually
   /**
    * Maps data object from entity property name to db column name
    * @example
    * knex(ProfileEntity.table).update(
-   *  ProfileEntity.toDict({ profileImageUrl: "url" }) // returns { profile_image_url: "url" }
+   *  ProfileEntity.toDict<ProfileEntity>({ profileImageUrl: "url" })
+   *  // returns { profile_image_url: "url" }
    * ).where({ id })
    */
   // @ts-ignore

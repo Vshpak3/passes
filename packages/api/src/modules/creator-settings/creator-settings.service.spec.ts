@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
-import { databaseServiceMockFactory } from '../../database/test-helpers'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { CreatorSettingsService } from './creator-settings.service'
 
 describe('CreatorSettingsService', () => {
@@ -10,13 +8,7 @@ describe('CreatorSettingsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CreatorSettingsService,
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
-      ],
+      providers: [CreatorSettingsService, ...mockDatabaseService],
     }).compile()
 
     service = module.get<CreatorSettingsService>(CreatorSettingsService)

@@ -7,9 +7,7 @@ import {
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
-import { EntityRepository } from '@mikro-orm/mysql'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { UnauthorizedException } from '@nestjs/common'
+import { NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
   createAssociatedTokenAccountInstruction,
@@ -102,9 +100,6 @@ export class SolService {
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
 
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
-
     private readonly lambdaService: LambdaService,
   ) {
     this.connection = new Connection(
@@ -140,8 +135,10 @@ export class SolService {
     owner: PublicKey,
     collectionId: string,
   ): Promise<GetSolNftDto> {
+    const { knex } = this.ReadWriteDatabaseService
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const user = await this.userRepository.findOneOrFail(userId)
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    if (!user) throw new NotFoundException('User does not exist')
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
@@ -156,7 +153,6 @@ export class SolService {
       remaining: uses,
       total: uses,
     }
-    const knex = this.ReadOnlyDatabaseService.knex
     const collection = (
       await knex('sol_nft_collection').select('*').where('id', collectionId)
     )[0]
@@ -365,10 +361,13 @@ export class SolService {
     description: string,
     imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
+    const { knex } = this.ReadWriteDatabaseService
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     let user: undefined | UserEntity
     if (isString(userOrUserId)) {
-      user = await this.userRepository.findOneOrFail(userOrUserId)
+      user = (await knex(UserEntity.table)
+        .where({ id: userOrUserId })
+        .first()) as UserEntity
     } else {
       user = userOrUserId
     }
@@ -553,8 +552,6 @@ export class SolService {
     )
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
-
-    const knex = this.ReadWriteDatabaseService.knex
 
     let txSignature: undefined | TransactionSignature = undefined
     if (process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID) {

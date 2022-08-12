@@ -1,14 +1,6 @@
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
-import {
-  databaseServiceMockFactory,
-  repositoryMockFactory,
-} from '../../database/test-helpers'
-import { PostEntity } from './entities/post.entity'
-import { PostRequiredPassEntity } from './entities/postrequiredpass.entity'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { PostController } from './post.controller'
 import { PostService } from './post.service'
 
@@ -18,21 +10,7 @@ describe('PostController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
-      providers: [
-        PostService,
-        {
-          provide: getRepositoryToken(PostEntity, 'ReadWrite'),
-          useFactory: repositoryMockFactory,
-        },
-        {
-          provide: getRepositoryToken(PostRequiredPassEntity),
-          useFactory: repositoryMockFactory,
-        },
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
-      ],
+      providers: [PostService, ...mockDatabaseService],
     }).compile()
 
     controller = module.get<PostController>(PostController)

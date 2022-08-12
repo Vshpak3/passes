@@ -1,9 +1,7 @@
 import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
-import { databaseServiceMockFactory } from '../../database/test-helpers'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { UserService } from '../user/user.service'
 import { PaymentService } from './payment.service'
 
@@ -19,10 +17,7 @@ describe('PaymentService', () => {
           provide: UserService,
           useFactory: jest.fn(() => ({})),
         },
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
+        ...mockDatabaseService,
       ],
     }).compile()
 

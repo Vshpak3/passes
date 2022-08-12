@@ -1,5 +1,3 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
   ForbiddenException,
@@ -7,6 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   COLLECTION_NOT_EXIST,
@@ -21,36 +21,41 @@ import { CollectionEntity } from './entities/collection.entity'
 @Injectable()
 export class CollectionService {
   constructor(
-    @InjectRepository(CollectionEntity, 'ReadWrite')
-    private readonly collectionRepository: EntityRepository<CollectionEntity>,
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
   ) {}
 
   async create(
     userId: string,
     createPassDto: CreateCollectionDto,
   ): Promise<CreateCollectionDto> {
-    const user = await this.userRepository.findOne({ id: userId })
-    if (!user?.isCreator) {
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    if (!user?.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    const collection = this.collectionRepository.create({
-      owner: user,
+    const id = v4()
+    const data = CollectionEntity.toDict<CollectionEntity>({
+      id,
+      owner: userId,
+      blockchain: 'solana',
       title: createPassDto.title,
       description: createPassDto.description,
-      blockchain: 'solana',
     })
 
-    await this.collectionRepository.persistAndFlush(collection)
-    return new GetCollectionDto(collection)
+    await knex(CollectionEntity.table).insert(data)
+
+    return new GetCollectionDto(data)
   }
 
   async findOne(id: string): Promise<GetCollectionDto> {
-    const collection = await this.collectionRepository.findOne(id, {
-      populate: ['owner'],
-    })
+    const { knex } = this.ReadOnlyDatabaseService
+    // TODO: check if populate: ['owner'] is needed
+    const collection = await knex(CollectionEntity.table).where({ id }).first()
+
     if (!collection) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
@@ -59,17 +64,23 @@ export class CollectionService {
   }
 
   async findOneByCreatorUsername(username: string): Promise<GetCollectionDto> {
-    const user = await this.userRepository.findOne({ username })
+    const { knex } = this.ReadOnlyDatabaseService
+
+    const user = await knex(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ username }))
+      .first()
     if (!user) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
 
-    const collection = await this.collectionRepository.findOne(
-      { owner: user.id },
-      {
-        populate: ['owner'],
-      },
-    )
+    // TODO: check if populate: ['owner'] is needed
+    const collection = await knex(CollectionEntity.table)
+      .where(
+        CollectionEntity.toDict<CollectionEntity>({
+          owner: user.id,
+        }),
+      )
+      .first()
     if (!collection) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
@@ -82,23 +93,22 @@ export class CollectionService {
     collectionId: string,
     updatePassDto: UpdateCollectionDto,
   ) {
-    const currentCollection = await this.collectionRepository.findOne(
-      collectionId,
-    )
+    const { knex } = this.ReadWriteDatabaseService
+    const currentCollection = await knex(CollectionEntity.table)
+      .where({ id: collectionId })
+      .first()
 
     if (!currentCollection) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
 
-    if (currentCollection.owner.id !== userId) {
+    if (currentCollection.owner_id !== userId) {
       throw new ForbiddenException(COLLECTION_NOT_OWNED_BY_USER)
     }
 
-    const newCollection = wrap(currentCollection).assign({
-      ...updatePassDto,
-    })
+    const data = CollectionEntity.toDict<CollectionEntity>(updatePassDto)
+    await knex(CollectionEntity.table).update(data).where({ id: collectionId })
 
-    await this.collectionRepository.persistAndFlush(newCollection)
-    return new GetCollectionDto(newCollection)
+    return new GetCollectionDto({ ...currentCollection, ...data })
   }
 }

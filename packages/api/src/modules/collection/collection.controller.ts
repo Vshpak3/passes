@@ -68,6 +68,7 @@ export class CollectionController {
     type: GetCollectionDto,
     description: 'A collection was updated',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Req() req: RequestWithUser,

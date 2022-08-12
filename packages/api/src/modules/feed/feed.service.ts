@@ -1,5 +1,3 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
   Injectable,
@@ -26,10 +24,6 @@ export class FeedService {
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
-    @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 
   async getFeed(userId: string, cursor: string): Promise<GetFeedDto> {
@@ -79,12 +73,14 @@ export class FeedService {
     )
   }
 
-  // TODO: Refactor to new database setup
   async getPostsByCreatorUsername(
     username: string,
     cursor: string,
   ): Promise<GetFeedDto> {
-    const user = await this.userRepository.findOne({ username })
+    const { knex } = this.ReadOnlyDatabaseService
+    const user = await knex(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ username }))
+      .first()
     if (!user) {
       throw new NotFoundException(USER_NOT_EXIST)
     }
@@ -93,7 +89,6 @@ export class FeedService {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    const { knex } = this.ReadOnlyDatabaseService
     let postsQuery = knex('post')
       .where('user_id', user.id)
       .where('deleted_at', null)

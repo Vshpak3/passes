@@ -3,10 +3,8 @@ import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
 import {
-  databaseServiceMockFactory,
+  mockDatabaseService,
   repositoryMockFactory,
 } from '../../database/test-helpers'
 import { EthNftEntity } from '../eth/entities/eth-nft.entity'
@@ -57,10 +55,7 @@ describe('WalletController', () => {
           provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
+        ...mockDatabaseService,
       ],
     }).compile()
 

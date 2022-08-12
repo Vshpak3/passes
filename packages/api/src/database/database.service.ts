@@ -16,7 +16,7 @@ declare type ExcludeFunctions<
 type MetadataProp = {
   name: string
   fieldNames: string[]
-  reference: 'scalar' | '1:1' | 'm:1' // TODO: ManyToMany case
+  reference: 'scalar' | '1:1' | 'm:1' | '1:m' // TODO: ManyToMany case
   targetMeta: { props: MetadataProp[] }
   [key: string]: any
 }
@@ -71,6 +71,9 @@ const mapPopulateFields = (
           ]
           break
         }
+        // TODO: OneToMany case
+        case '1:m':
+          break
         default:
           break
       }
@@ -85,46 +88,6 @@ export class DatabaseService {
   protected _entityManager: EntityManager
   knex: Knex
   v4 = v4
-
-  private _getEntityMetadata = <T>(entity: new (...args: any[]) => T) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    const { metadata } = this._entityManager
-    return metadata.get(entity.name)
-  }
-
-  // TODO: remove once everything is refactored to entityClass.table
-  getTableName = <T>(entity: new (...args: any[]) => T) => {
-    const { tableName } = this._getEntityMetadata(entity)
-    return tableName
-  }
-
-  // TODO: remove once everything is refactored to entityClass.populate
-  populate = <T>(
-    entity: new (...args: any[]) => T,
-    fields: Array<keyof EntityData<T>>,
-  ): string[] => {
-    const { props } = this._getEntityMetadata(entity)
-    return mapPopulateFields(propsToObj(props), fields as string[])
-  }
-
-  // TODO: remove once everything is refactored to entityClass.toDict
-  /**
-   * Maps data object from entity property name to db column name
-   * @example
-   * knex('profile').update(
-   *  toDict(ProfileEntity, { profileImageUrl: "url" }) // returns { profile_image_url: "url" }
-   * ).where('id', profileId)
-   */
-  toDict = <T>(entity: new (...args: any[]) => T, data: EntityData<T>) => {
-    const { props } = this._getEntityMetadata(entity)
-    return mapEntityDataDBFields(propsToObj(props), data)
-  }
-
-  toEnttiy = <T>(entity: new (...args: any[]) => T, data: EntityData<T>) => {
-    const { props } = this._getEntityMetadata(entity)
-    return mapEntityDataDBFields(propsToObj(props), data)
-  }
 
   init(entityManager: EntityManager) {
     this._entityManager = entityManager

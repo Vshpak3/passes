@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { getDatabaseProviderToken } from '../../database/database.provider'
-import { contextNames } from '../../database/mikro-orm.options'
-import { databaseServiceMockFactory } from '../../database/test-helpers'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { CommentController } from './comment.controller'
 import { CommentService } from './comment.service'
 
@@ -12,13 +10,7 @@ describe('CommentController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentController],
-      providers: [
-        CommentService,
-        ...contextNames.map((contextName) => ({
-          provide: getDatabaseProviderToken(contextName),
-          useFactory: databaseServiceMockFactory,
-        })),
-      ],
+      providers: [CommentService, ...mockDatabaseService],
     }).compile()
 
     controller = module.get<CommentController>(CommentController)

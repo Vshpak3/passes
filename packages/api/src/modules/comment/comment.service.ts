@@ -4,19 +4,15 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreateCommentDto } from './dto/create-comment.dto'
 import { UpdateCommentDto } from './dto/update-comment.dto'
-import { CommentEntity } from './entities/comment.entity'
 
 @Injectable()
 export class CommentService {
-  table: string
   constructor(
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-  ) {
-    this.table = this.ReadWriteDatabaseService.getTableName(CommentEntity)
-  }
+  ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<CreateCommentDto> {
     return `TODO: This action adds a new comment ${createCommentDto}`

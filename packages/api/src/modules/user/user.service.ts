@@ -1,8 +1,8 @@
-import { EntityRepository, wrap } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { generateFromEmail } from 'unique-username-generator'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { USERNAME_TAKEN } from './constants/errors'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -13,29 +13,38 @@ import { UserEntity } from './entities/user.entity'
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const user = this.userRepository.create({
-      email: createUserDto.email,
-      username: createUserDto.username,
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const id = v4()
+    const data = UserEntity.toDict<UserEntity>({
+      id,
+      ...createUserDto,
     })
-    await this.userRepository.persistAndFlush(user)
-    return user
+
+    await knex(UserEntity.table).insert(data)
+    // TODO: fix return type
+    return data as any
   }
 
   async setUsername(userId: string, username: string): Promise<UserEntity> {
-    const currentUser = await this.findOne(userId)
-    const newUser = wrap(currentUser).assign({
+    const { knex } = this.ReadWriteDatabaseService
+    // TODO: check if user query is needed
+    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const data = UserEntity.toDict<UserEntity>({
       username,
     })
 
-    const query = () => this.userRepository.persistAndFlush(newUser)
+    const query = () =>
+      knex(UserEntity.table).update(data).where({ id: userId })
     await createOrThrowOnDuplicate(query, USERNAME_TAKEN)
 
-    return newUser
+    return { ...user, ...data }
   }
 
   async createOAuthUser(
@@ -43,18 +52,23 @@ export class UserService {
     provider: string,
     providerId: string,
   ): Promise<UserEntity> {
-    const user = this.userRepository.create({
-      email: email,
+    const { knex, v4 } = this.ReadWriteDatabaseService
+    const id = v4()
+    const data = UserEntity.toDict<UserEntity>({
+      id,
+      email,
       username: generateFromEmail(email, 3),
       oauthId: providerId,
       oauthProvider: provider,
     })
-    await this.userRepository.persistAndFlush(user)
-    return user
+    await knex(UserEntity.table).insert(data)
+    // TODO: fix return type
+    return data as any
   }
 
   async findOne(id: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOne(id)
+    const { knex } = this.ReadOnlyDatabaseService
+    const user = await knex(UserEntity.table).where({ id }).first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
@@ -66,54 +80,65 @@ export class UserService {
     oauthId: string,
     oauthProvider: string,
   ): Promise<UserEntity | null> {
-    return await this.userRepository.findOne({ oauthId, oauthProvider })
+    return await this.ReadOnlyDatabaseService.knex(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ oauthId, oauthProvider }))
+      .first()
   }
 
   async update(
     userId: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntity> {
+    const { knex } = this.ReadWriteDatabaseService
+    // TODO: check if user query is needed
     const currentUser = await this.findOne(userId)
 
     // TODO: Only certain user fields should be allowed to be updated
-    const newUser = wrap(currentUser).assign({
+    const data = UserEntity.toDict<UserEntity>({
       ...updateUserDto,
     })
-
-    await this.userRepository.persistAndFlush(newUser)
-    return newUser
+    await knex(UserEntity.table).update(data).where({ id: userId })
+    return { ...currentUser, ...data }
   }
 
   async remove(userId: string): Promise<UserEntity> {
+    const { knex } = this.ReadWriteDatabaseService
+    // TODO: check if user query is needed
     const currentUser = await this.findOne(userId)
 
-    const newUser = wrap(currentUser).assign({
+    const data = UserEntity.toDict<UserEntity>({
       isDisabled: true,
     })
-
-    await this.userRepository.persistAndFlush(newUser)
-    return newUser
+    await knex(UserEntity.table).update(data).where({ id: userId })
+    return { ...currentUser, ...data }
   }
 
   // TODO: Sort by creators that the user follows, most interacted with first?
   async searchByQuery(searchUserDto: SearchUserRequestDto) {
+    const { knex } = this.ReadOnlyDatabaseService
     const strippedQuery = searchUserDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
-    return await this.userRepository.find(
-      {
-        $or: [
-          { username: { $like: likeClause } },
-          { displayName: { $like: likeClause } },
-        ],
-        isCreator: true,
-        isDisabled: false,
-      },
-      { limit: 10 },
-    )
+    return await knex(UserEntity.table)
+      .where(function () {
+        this.whereILike('username', likeClause).orWhereILike(
+          'display_name',
+          likeClause,
+        )
+      })
+      .andWhere(
+        UserEntity.toDict<UserEntity>({
+          isCreator: true,
+          isDisabled: false,
+        }),
+      )
+      .limit(10)
   }
 
   async validateUsername(username: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ username })
+    const { knex } = this.ReadOnlyDatabaseService
+    const user = await knex(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ username }))
+      .first()
     return !user
   }
 }

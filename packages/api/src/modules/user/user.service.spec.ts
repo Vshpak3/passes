@@ -1,8 +1,6 @@
-import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { repositoryMockFactory } from '../../database/test-helpers'
-import { UserEntity } from './entities/user.entity'
+import { mockDatabaseService } from '../../database/test-helpers'
 import { UserService } from './user.service'
 
 describe('UserService', () => {
@@ -10,13 +8,7 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UserService,
-        {
-          provide: getRepositoryToken(UserEntity, 'ReadWrite'),
-          useFactory: repositoryMockFactory,
-        },
-      ],
+      providers: [UserService, ...mockDatabaseService],
     }).compile()
 
     service = module.get<UserService>(UserService)

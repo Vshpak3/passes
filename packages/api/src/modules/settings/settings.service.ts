@@ -1,15 +1,16 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 
+import { Database } from '../../database/database.decorator'
+import { DatabaseService } from '../../database/database.service'
 import { UpdateSettingsDto } from './dto/update-settings.dto'
-import { SettingsEntity } from './entities/settings.entity'
 
 @Injectable()
 export class SettingsService {
   constructor(
-    @InjectRepository(SettingsEntity, 'ReadWrite')
-    private readonly settingsRepository: EntityRepository<SettingsEntity>,
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
   ) {}
 
   async findOne(id: string): Promise<string> {
