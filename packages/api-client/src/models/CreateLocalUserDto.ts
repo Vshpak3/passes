@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UpdatePassDto
+ * @interface CreateLocalUserDto
  */
-export interface UpdatePassDto {
+export interface CreateLocalUserDto {
     /**
      * 
      * @type {string}
-     * @memberof UpdatePassDto
+     * @memberof CreateLocalUserDto
      */
-    title: string;
+    email: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdatePassDto
+     * @memberof CreateLocalUserDto
      */
-    description: string;
+    password: string;
 }
 
-export function UpdatePassDtoFromJSON(json: any): UpdatePassDto {
-    return UpdatePassDtoFromJSONTyped(json, false);
+export function CreateLocalUserDtoFromJSON(json: any): CreateLocalUserDto {
+    return CreateLocalUserDtoFromJSONTyped(json, false);
 }
 
-export function UpdatePassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePassDto {
+export function CreateLocalUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateLocalUserDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'title': json['title'],
-        'description': json['description'],
+        'email': json['email'],
+        'password': json['password'],
     };
 }
 
-export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
+export function CreateLocalUserDtoToJSON(value?: CreateLocalUserDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
     }
     return {
         
-        'title': value.title,
-        'description': value.description,
+        'email': value.email,
+        'password': value.password,
     };
 }
 

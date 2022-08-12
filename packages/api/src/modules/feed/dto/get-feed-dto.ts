@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { GetPostDto } from '../../post/dto/get-post.dto'
 
 export class GetFeedDto {
-  @ApiProperty()
+  @ApiProperty({ type: [GetPostDto] })
   posts: GetPostDto[]
 
   @ApiProperty()

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    CreateContentDto,
+    CreateContentDtoFromJSON,
+    CreateContentDtoFromJSONTyped,
+    CreateContentDtoToJSON,
+} from './CreateContentDto';
+
 /**
  * 
  * @export
@@ -27,10 +34,10 @@ export interface CreatePostDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<CreateContentDto>}
      * @memberof CreatePostDto
      */
-    content: Array<string>;
+    content: Array<CreateContentDto>;
     /**
      * 
      * @type {Array<string>}
@@ -50,7 +57,7 @@ export function CreatePostDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'text': json['text'],
-        'content': json['content'],
+        'content': ((json['content'] as Array<any>).map(CreateContentDtoFromJSON)),
         'passes': json['passes'],
     };
 }
@@ -65,7 +72,7 @@ export function CreatePostDtoToJSON(value?: CreatePostDto | null): any {
     return {
         
         'text': value.text,
-        'content': value.content,
+        'content': ((value.content as Array<any>).map(CreateContentDtoToJSON)),
         'passes': value.passes,
     };
 }

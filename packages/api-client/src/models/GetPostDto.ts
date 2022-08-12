@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    GetContentDto,
+    GetContentDtoFromJSON,
+    GetContentDtoFromJSONTyped,
+    GetContentDtoToJSON,
+} from './GetContentDto';
+
 /**
  * 
  * @export
@@ -39,10 +46,10 @@ export interface GetPostDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<GetContentDto>}
      * @memberof GetPostDto
      */
-    content: Array<string>;
+    content: Array<GetContentDto>;
     /**
      * 
      * @type {number}
@@ -82,7 +89,7 @@ export function GetPostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': json['id'],
         'userId': json['userId'],
         'text': json['text'],
-        'content': json['content'],
+        'content': ((json['content'] as Array<any>).map(GetContentDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
         'createdAt': json['createdAt'],
@@ -102,7 +109,7 @@ export function GetPostDtoToJSON(value?: GetPostDto | null): any {
         'id': value.id,
         'userId': value.userId,
         'text': value.text,
-        'content': value.content,
+        'content': ((value.content as Array<any>).map(GetContentDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
         'createdAt': value.createdAt,

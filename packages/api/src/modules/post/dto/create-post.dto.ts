@@ -8,7 +8,7 @@ export class CreatePostDto {
   @Length(1, 400)
   text: string
 
-  @ApiProperty()
+  @ApiProperty({ type: [CreateContentDto] })
   content: CreateContentDto[]
 
   @ApiProperty()

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    GetPassDto,
+    GetPassDtoFromJSON,
+    GetPassDtoFromJSONTyped,
+    GetPassDtoToJSON,
+} from './GetPassDto';
+
 /**
  * 
  * @export
@@ -39,10 +46,10 @@ export interface GetCollectionDto {
     description: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<GetPassDto>}
      * @memberof GetCollectionDto
      */
-    passes: Array<string>;
+    passes: Array<GetPassDto>;
     /**
      * 
      * @type {string}
@@ -64,7 +71,7 @@ export function GetCollectionDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'id': json['id'],
         'title': json['title'],
         'description': json['description'],
-        'passes': json['passes'],
+        'passes': ((json['passes'] as Array<any>).map(GetPassDtoFromJSON)),
         'blockchain': json['blockchain'],
     };
 }
@@ -81,7 +88,7 @@ export function GetCollectionDtoToJSON(value?: GetCollectionDto | null): any {
         'id': value.id,
         'title': value.title,
         'description': value.description,
-        'passes': value.passes,
+        'passes': ((value.passes as Array<any>).map(GetPassDtoToJSON)),
         'blockchain': value.blockchain,
     };
 }

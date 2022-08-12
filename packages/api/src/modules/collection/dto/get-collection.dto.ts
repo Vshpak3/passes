@@ -12,7 +12,7 @@ export class GetCollectionDto {
   @ApiProperty()
   description: string
 
-  @ApiProperty()
+  @ApiProperty({ type: [GetPassDto] })
   passes: GetPassDto[]
 
   @ApiProperty()

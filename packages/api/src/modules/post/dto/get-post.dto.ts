@@ -12,7 +12,7 @@ export class GetPostDto {
   @ApiProperty()
   text: string
 
-  @ApiProperty()
+  @ApiProperty({ type: [GetContentDto] })
   content?: GetContentDto[]
 
   @ApiProperty()

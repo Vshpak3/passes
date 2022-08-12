@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    GetPostDto,
+    GetPostDtoFromJSON,
+    GetPostDtoFromJSONTyped,
+    GetPostDtoToJSON,
+} from './GetPostDto';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface GetFeedDto {
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<GetPostDto>}
      * @memberof GetFeedDto
      */
-    posts: Array<string>;
+    posts: Array<GetPostDto>;
     /**
      * 
      * @type {number}
@@ -49,7 +56,7 @@ export function GetFeedDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'posts': json['posts'],
+        'posts': ((json['posts'] as Array<any>).map(GetPostDtoFromJSON)),
         'count': json['count'],
         'cursor': json['cursor'],
     };
@@ -64,7 +71,7 @@ export function GetFeedDtoToJSON(value?: GetFeedDto | null): any {
     }
     return {
         
-        'posts': value.posts,
+        'posts': ((value.posts as Array<any>).map(GetPostDtoToJSON)),
         'count': value.count,
         'cursor': value.cursor,
     };

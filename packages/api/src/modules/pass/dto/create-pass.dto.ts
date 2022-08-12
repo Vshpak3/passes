@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsInt, IsUrl, Length, Min } from 'class-validator'
 
 export class CreatePassDto {
+  @ApiProperty()
   @Length(1, 100)
   title: string
 

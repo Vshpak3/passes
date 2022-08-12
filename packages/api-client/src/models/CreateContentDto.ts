@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface UpdatePassDto
+ * @interface CreateContentDto
  */
-export interface UpdatePassDto {
+export interface CreateContentDto {
     /**
      * 
      * @type {string}
-     * @memberof UpdatePassDto
+     * @memberof CreateContentDto
      */
-    title: string;
+    url: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdatePassDto
+     * @memberof CreateContentDto
      */
-    description: string;
+    contentType: string;
 }
 
-export function UpdatePassDtoFromJSON(json: any): UpdatePassDto {
-    return UpdatePassDtoFromJSONTyped(json, false);
+export function CreateContentDtoFromJSON(json: any): CreateContentDto {
+    return CreateContentDtoFromJSONTyped(json, false);
 }
 
-export function UpdatePassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePassDto {
+export function CreateContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateContentDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'title': json['title'],
-        'description': json['description'],
+        'url': json['url'],
+        'contentType': json['contentType'],
     };
 }
 
-export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
+export function CreateContentDtoToJSON(value?: CreateContentDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function UpdatePassDtoToJSON(value?: UpdatePassDto | null): any {
     }
     return {
         
-        'title': value.title,
-        'description': value.description,
+        'url': value.url,
+        'contentType': value.contentType,
     };
 }
 
