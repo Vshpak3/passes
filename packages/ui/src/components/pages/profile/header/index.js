@@ -1,16 +1,30 @@
 import { Menu, Transition } from "@headlessui/react"
+import { useRouter } from "next/router"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
 import SearchIcon from "public/icons/header-search-icon.svg"
 import React, { Fragment } from "react"
 import { HeaderChatButton } from "src/components/atoms"
 import { classNames } from "src/helpers"
+import { useUser } from "src/hooks"
 
 const ProfileHeader = () => {
+  const { logout } = useUser()
+  const router = useRouter()
+
+  const handleSignOut = () => {
+    logout()
+    router.push("/")
+  }
+
   const userNavigation = [
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
-    { name: "Sign out", href: "#" }
+    {
+      name: "Sign out",
+      onClick: handleSignOut
+    }
   ]
+
   return (
     <div className="hidden items-center justify-end gap-2 pl-4 pt-4 md:flex">
       <div className="flex items-center gap-3">
@@ -56,6 +70,7 @@ const ProfileHeader = () => {
                     {({ active }) => (
                       <a
                         href={item.href}
+                        onClick={item.onClick}
                         className={classNames(
                           active ? "bg-gray-100" : "",
                           "block px-4 py-2 text-sm text-gray-700"

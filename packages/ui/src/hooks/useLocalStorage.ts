@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-type SetValue<T> = Dispatch<SetStateAction<T>>
+type SetValue<T> = Dispatch<SetStateAction<T | undefined>>
 
 function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
   const readValue = useCallback((): T => {
@@ -41,12 +41,17 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
 
     try {
       const newValue = value instanceof Function ? value(storedValue) : value
-      window.localStorage.setItem(key, JSON.stringify(newValue))
-      setStoredValue(newValue)
+
+      if (newValue === undefined) {
+        window.localStorage.removeItem(key)
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(newValue))
+        setStoredValue(newValue)
+      }
 
       window.dispatchEvent(new Event("local-storage"))
     } catch (error) {
-      console.warn(`Error setting localStorage key “${key}”:`, error)
+      console.warn(`Error setting localStorage key "${key}":`, error)
     }
   })
 

@@ -16,13 +16,19 @@ const useUser = () => {
     }
   )
 
+  const logout = () => {
+    setAccessToken(undefined)
+    setRefreshToken(undefined)
+  }
+
   return {
     user,
     loading,
     accessToken,
     setAccessToken,
     refreshToken,
-    setRefreshToken
+    setRefreshToken,
+    logout
   }
 }
 
