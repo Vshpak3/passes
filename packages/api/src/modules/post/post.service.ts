@@ -58,12 +58,14 @@ export class PostService {
           })
 
         for (let i = 0; i < createPostDto.content.length; ++i) {
+          const contentId = uuid.v4()
           const createContentDto = createPostDto.content[i]
 
           const content = {
+            id: contentId,
             post_id: postId,
             url: createContentDto.url,
-            contentType: createContentDto.contentType,
+            content_type: createContentDto.contentType,
           }
           await trx('content').insert(content)
         }
