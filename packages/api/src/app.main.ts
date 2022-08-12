@@ -17,7 +17,9 @@ export class App {
     console.log('Starting application')
     console.log(`Node version ${process.version}`)
     await this.initApp()
-    await this.initSwagger()
+    if (process.env.NODE_ENV === 'dev') {
+      await this.initSwagger()
+    }
     console.log('Successfully initialized application')
   }
 

@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common'
+import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreateEthNftCollectionDto } from './dto/create-eth-nft-collection.dto'
 import { EthNftCollectionDto } from './dto/eth-nft-collection.dto'
 import { EthService } from './eth.service'
@@ -26,7 +18,6 @@ export class EthController {
     description: 'ETH NFT Collection was created',
   })
   @Post('nftcollection')
-  @UseGuards(JwtAuthGuard)
   async createNftCollection(
     @Req() req: RequestWithUser,
     @Body() createEthNftCollectionDto: CreateEthNftCollectionDto,

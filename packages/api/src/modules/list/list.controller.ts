@@ -7,12 +7,10 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { AddListMemberDto } from './dto/add-list-member.dto'
 import { CreateListDto } from './dto/create-list.dto'
 import { GetListDto } from './dto/get-list.dto'
@@ -31,7 +29,6 @@ export class ListController {
     description: 'List was created',
   })
   @Post()
-  @UseGuards(JwtAuthGuard)
   async create(
     @Req() req: RequestWithUser,
     @Body() createListDto: CreateListDto,
@@ -46,7 +43,6 @@ export class ListController {
     description: 'List was created',
   })
   @Post('/member')
-  @UseGuards(JwtAuthGuard)
   async addListMember(
     @Req() req: RequestWithUser,
     @Body() addListMemberDto: AddListMemberDto,
@@ -61,7 +57,6 @@ export class ListController {
     description: 'ListMember was removed',
   })
   @Delete('/member')
-  @UseGuards(JwtAuthGuard)
   async removeListMember(
     @Req() req: RequestWithUser,
     @Body() addListMemberDto: AddListMemberDto,
@@ -76,7 +71,6 @@ export class ListController {
     description: 'List was retrieved',
   })
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   async find(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
@@ -91,7 +85,6 @@ export class ListController {
     description: 'Lists were retrieved',
   })
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll(@Req() req: RequestWithUser): Promise<GetListsDto> {
     return await this.listService.getListsForUser(req.user.id)
   }
@@ -103,7 +96,6 @@ export class ListController {
     description: 'List was deleted',
   })
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   async delete(
     @Req() req: RequestWithUser,
     @Param('id') id: string,

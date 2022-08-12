@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common'
+import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { PublicKey } from '@solana/web3.js'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreateSolNftDto } from './dto/create-sol-nft.dto'
 import { CreateSolNftCollectionDto } from './dto/create-sol-nft-collection.dto'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
@@ -29,7 +21,6 @@ export class SolController {
     description: 'Sol NFT Collection was created',
   })
   @Post('nft_collection')
-  @UseGuards(JwtAuthGuard)
   async createNftCollection(
     @Req() req: RequestWithUser,
     @Body() createSolNftCollectionDto: CreateSolNftCollectionDto,
@@ -50,7 +41,6 @@ export class SolController {
     description: 'Sol NFT Collection was created',
   })
   @Post('nft')
-  @UseGuards(JwtAuthGuard)
   async createNft(
     @Req() req: RequestWithUser,
     @Body() createSolNftDto: CreateSolNftDto,

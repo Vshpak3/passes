@@ -80,6 +80,8 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(RequestLogger).forRoutes('*')
+    if (process.env.NODE_ENV === 'dev') {
+      consumer.apply(RequestLogger).forRoutes('*')
+    }
   }
 }

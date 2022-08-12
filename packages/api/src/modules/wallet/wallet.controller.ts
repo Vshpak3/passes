@@ -7,12 +7,10 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { EthService } from '../eth/eth.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
@@ -40,7 +38,6 @@ export class WalletController {
     description: 'User custodial wallet returned',
   })
   @Get('/custodial')
-  @UseGuards(JwtAuthGuard)
   async getUserCustodialWallet(
     @Req() req: RequestWithUser,
   ): Promise<WalletDto> {
@@ -56,7 +53,6 @@ export class WalletController {
     description: 'Wallet was created',
   })
   @Post()
-  @UseGuards(JwtAuthGuard)
   async create(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletDto,
@@ -74,7 +70,6 @@ export class WalletController {
     description: 'Wallet was deleted',
   })
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   async remove(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
@@ -88,7 +83,6 @@ export class WalletController {
     type: AuthWalletResponseDto,
     description: 'Wallet Auth Message created',
   })
-  @UseGuards(JwtAuthGuard)
   @Post('auth')
   async auth(
     @Req() req: RequestWithUser,
@@ -104,7 +98,6 @@ export class WalletController {
     description: 'Wallets were retrieved',
   })
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll(@Req() req: RequestWithUser): Promise<Array<WalletDto>> {
     const wallets = await this.walletService.getWalletsForUser(req.user.id)
     return wallets.map((wallet) => new WalletDto(wallet))
@@ -117,7 +110,6 @@ export class WalletController {
     description: 'Wallet tokens were updated',
   })
   @Post('/refresh/:id')
-  @UseGuards(JwtAuthGuard)
   async refresh(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
@@ -132,7 +124,6 @@ export class WalletController {
     description: 'Unchecked wallet was created',
   })
   @Post('/unauthenticated')
-  @UseGuards(JwtAuthGuard)
   async createUnauthenticated(
     @Req() req: RequestWithUser,
     @Body() createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,

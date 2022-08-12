@@ -22,10 +22,10 @@ import { JwtVerifiedStrategy } from './jwt-verified.strategy'
     }),
   ],
   providers: [
+    JwtAuthService,
     JwtAuthStrategy,
     JwtRefreshStrategy,
     JwtVerifiedStrategy,
-    JwtAuthService,
   ],
   exports: [JwtModule, JwtAuthService],
 })

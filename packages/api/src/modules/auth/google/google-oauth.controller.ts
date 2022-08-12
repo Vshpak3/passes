@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
+import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { UserEntity } from './../../user/entities/user.entity'
@@ -24,24 +25,26 @@ export class GoogleOauthController {
     private readonly configService: ConfigService,
   ) {}
 
-  @Get()
   @ApiOperation({ summary: 'Start the google oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Start the google oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(GoogleOauthGuard)
+  @Get()
   async googleAuth() {
     // Guard redirects
   }
 
-  @Get('redirect')
   @ApiOperation({ summary: 'Redirect from google oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Redirect from google oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(GoogleOauthGuard)
+  @Get('redirect')
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as UserEntity
     const accessToken = this.jwtAuthService.createAccessToken(user)

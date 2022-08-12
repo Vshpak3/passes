@@ -8,12 +8,10 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetUserDto } from './dto/get-user.dto'
 import { SearchUserRequestDto } from './dto/search-user-request.dto'
 import { SearchCreatorResponseDto } from './dto/search-user-response.dto'
@@ -31,7 +29,6 @@ export class UserController {
     status: HttpStatus.CREATED,
     description: 'A username was set for the current user',
   })
-  @UseGuards(JwtAuthGuard)
   @Post('username')
   async setUsername(
     @Req() req: RequestWithUser,
@@ -64,7 +61,6 @@ export class UserController {
     type: GetUserDto,
     description: 'A user was retrieved',
   })
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<GetUserDto> {
     return new GetUserDto(await this.userService.findOne(id))
@@ -76,7 +72,7 @@ export class UserController {
     type: GetUserDto,
     description: 'A user was updated',
   })
-  @Patch('')
+  @Patch()
   async update(
     @Req() req: RequestWithUser,
     @Body() updateUserDto: UpdateUserDto,
@@ -92,7 +88,7 @@ export class UserController {
     type: undefined,
     description: 'A user account was disabled',
   })
-  @Delete('')
+  @Delete()
   async delete(@Req() req: RequestWithUser): Promise<GetUserDto> {
     return new GetUserDto(await this.userService.remove(req.user.id))
   }

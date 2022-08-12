@@ -7,12 +7,10 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CollectionService } from './collection.service'
 import { CreateCollectionDto } from './dto/create-collection.dto'
 import { GetCollectionDto } from './dto/get-collection.dto'
@@ -29,7 +27,6 @@ export class CollectionController {
     type: GetCollectionDto,
     description: 'A collection was created',
   })
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Req() req: RequestWithUser,
@@ -68,7 +65,6 @@ export class CollectionController {
     type: GetCollectionDto,
     description: 'A collection was updated',
   })
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Req() req: RequestWithUser,

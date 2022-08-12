@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
+import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { LocalUserLoginDto } from '../dto/local-user-login'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -26,24 +27,26 @@ export class LocalAuthController {
     private readonly localAuthService: LocalAuthService,
   ) {}
 
-  @Post('/signup')
   @ApiOperation({ summary: 'Create a email and password user' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Create a email and password user',
   })
+  @AllowUnauthorizedRequest()
+  @Post('/signup')
   async createEmailPasswordUser(
     @Body() createLocalUserDto: CreateLocalUserDto,
   ) {
     return this.localAuthService.createLocalUser(createLocalUserDto)
   }
 
-  @Post('')
   @ApiOperation({ summary: 'Login with email and password' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Login with email and password',
   })
+  @AllowUnauthorizedRequest()
+  @Post()
   async loginWithEmailPassword(
     @Body() loginDto: LocalUserLoginDto,
     @Res() res: Response,

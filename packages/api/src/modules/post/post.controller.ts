@@ -8,12 +8,10 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreatePostDto } from './dto/create-post.dto'
 import { GetPostDto } from './dto/get-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
@@ -31,7 +29,6 @@ export class PostController {
     description: 'A post was created',
   })
   @Post()
-  @UseGuards(JwtAuthGuard)
   async create(
     @Req() req: RequestWithUser,
     @Body() createPostDto: CreatePostDto,
@@ -46,7 +43,6 @@ export class PostController {
     description: 'A post was retrieved',
   })
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string): Promise<GetPostDto> {
     return this.postService.findOne(id)
   }
@@ -58,7 +54,6 @@ export class PostController {
     description: 'A post was updated',
   })
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
   async update(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
@@ -74,7 +69,6 @@ export class PostController {
     description: 'A post was deleted',
   })
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   async remove(@Req() req: RequestWithUser, @Param('id') postId: string) {
     return this.postService.remove(req.user.id, postId)
   }

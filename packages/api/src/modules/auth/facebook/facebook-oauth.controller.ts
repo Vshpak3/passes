@@ -14,6 +14,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { UserEntity } from '../../user/entities/user.entity'
+import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { FacebookDeletionConfirmationDto } from '../dto/fb-deletion-confirmation'
 import { RawFacebookDeletionRequestDto } from '../dto/raw-fb-deletion-request'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -31,24 +32,26 @@ export class FacebookOauthController {
     private readonly fbComplianceService: FacebookComplianceService,
   ) {}
 
-  @Get()
   @ApiOperation({ summary: 'Start the facebook oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Start the facebook oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(FacebookOauthGuard)
+  @Get()
   async facebookAuth() {
     // Guard redirects
   }
 
-  @Get('redirect')
   @ApiOperation({ summary: 'Redirect from facebook oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Redirect from facebook oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(FacebookOauthGuard)
+  @Get('redirect')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as UserEntity
     const accessToken = this.jwtAuthService.createAccessToken(user)
@@ -63,7 +66,6 @@ export class FacebookOauthController {
     )
   }
 
-  @Post('deletion_callback')
   @ApiOperation({
     summary: 'Initiate a deletion request for a Facebook OAuth user',
   })
@@ -71,6 +73,8 @@ export class FacebookOauthController {
     status: HttpStatus.OK,
     description: 'Initiate a deletion request for a Facebook OAuth user',
   })
+  @AllowUnauthorizedRequest()
+  @Post('deletion_callback')
   async facebookInitiateDelete(
     @Body() body: RawFacebookDeletionRequestDto,
     @Res() res: Response,
@@ -89,12 +93,13 @@ export class FacebookOauthController {
     res.send(`{ url: '${url}', confirmation_code: '${confirmationCode}' }`)
   }
 
-  @Get('deletion_confirmation')
   @ApiOperation({ summary: 'Check if a deletion request has been fulfilled' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Check if a deletion request has been fulfilled',
   })
+  @AllowUnauthorizedRequest()
+  @Get('deletion_confirmation')
   async facebookDeletionConfirmation(
     @Query('confirmationCode') confirmationCode: string,
   ) {

@@ -8,7 +8,6 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { get } from 'https'
@@ -16,7 +15,6 @@ import { RealIP } from 'nestjs-real-ip'
 import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { PayinCallbackInput } from './callback.types'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -84,7 +82,6 @@ export class PaymentController {
     description: 'A card was created',
   })
   @Post('card/create')
-  @UseGuards(JwtAuthGuard)
   async createCircleCard(
     @RealIP() ip: string,
     @Req() req: RequestWithUser,
@@ -106,7 +103,6 @@ export class PaymentController {
   })
   @Post('card/delete/:circleCardId')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async deleteCircleCard(
     @Req() req: RequestWithUser,
     @Param('circleCardId') circleCardId: string,
@@ -121,7 +117,6 @@ export class PaymentController {
     description: 'Cards were returned',
   })
   @Get('cards')
-  @UseGuards(JwtAuthGuard)
   async getCircleCards(
     @Req() req: RequestWithUser,
   ): Promise<Array<CircleCardDto>> {
@@ -135,7 +130,6 @@ export class PaymentController {
     description: 'A wire bank account was created',
   })
   @Post('bank/create')
-  @UseGuards(JwtAuthGuard)
   async createCircleBank(
     @Req() req: RequestWithUser,
     @Body() createBankDto: CircleCreateBankDto,
@@ -153,7 +147,6 @@ export class PaymentController {
     description: 'A wire bank account was dleted',
   })
   @Post('bank/delete/:circleBankId')
-  @UseGuards(JwtAuthGuard)
   async deleteCircleBank(
     @Req() req: RequestWithUser,
     @Param('circleBankId') circleBankId: string,
@@ -168,7 +161,6 @@ export class PaymentController {
     description: 'Wire bank accounts were returned',
   })
   @Get('banks')
-  @UseGuards(JwtAuthGuard)
   async getCircleBanks(
     @Req() req: RequestWithUser,
   ): Promise<Array<CircleBankDto>> {
@@ -235,7 +227,6 @@ export class PaymentController {
     description: 'Circecard payin was initiated',
   })
   @Post('payin/entry/circle-card')
-  @UseGuards(JwtAuthGuard)
   async entryCircleCard(
     @RealIP() ip: string,
     @Req() req: RequestWithUser,
@@ -255,7 +246,6 @@ export class PaymentController {
     description: 'Phantom USDC payin was initiated',
   })
   @Post('payin/entry/phantom-usdc')
-  @UseGuards(JwtAuthGuard)
   async entryPhantomCircleUSDC(
     @Req() req: RequestWithUser,
     @Body() payinEntryInputDto: PhantomCircleUSDCEntryRequestDto,
@@ -273,7 +263,6 @@ export class PaymentController {
     description: 'Metamask USDC was initiated',
   })
   @Post('payin/entry/metamask-usdc')
-  @UseGuards(JwtAuthGuard)
   async entryMetamaskCircleUSDC(
     @Req() req: RequestWithUser,
     @Body() payinEntryInputDto: MetamaskCircleUSDCEntryRequestDto,
@@ -291,7 +280,6 @@ export class PaymentController {
     description: 'Metamask ETH was initiated',
   })
   @Post('payin/entry/metamask-eth')
-  @UseGuards(JwtAuthGuard)
   async entryMetamaskCircleETH(
     @Req() req: RequestWithUser,
     @Body() payinEntryInputDto: MetamaskCircleETHEntryRequestDto,
@@ -316,7 +304,6 @@ export class PaymentController {
   })
   @Post('payin/default')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async setDefaultPayinMethod(
     @Req() req: RequestWithUser,
     @Body() payinMethodDto: PayinMethodDto,
@@ -334,7 +321,6 @@ export class PaymentController {
     description: 'Default payin method was returned',
   })
   @Get('payin/default')
-  @UseGuards(JwtAuthGuard)
   async getDefaultPayinMethod(
     @Req() req: RequestWithUser,
   ): Promise<PayinMethodDto> {
@@ -349,7 +335,6 @@ export class PaymentController {
   })
   @Post('payout/default')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async setDefaultPayoutMethod(
     @Req() req: RequestWithUser,
     @Body() payoutMethodDto: PayoutMethodDto,
@@ -367,7 +352,6 @@ export class PaymentController {
     description: 'Default payout method was returned',
   })
   @Get('payout/default')
-  @UseGuards(JwtAuthGuard)
   async getDefaultPayoutMethod(
     @Req() req: RequestWithUser,
   ): Promise<PayoutMethodDto> {
@@ -382,7 +366,6 @@ export class PaymentController {
   })
   @Post('payin/cancel/:payinId')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async cancelPayin(
     @Req() req: RequestWithUser,
     @Param('payinId') payinId: string,
@@ -398,7 +381,6 @@ export class PaymentController {
   })
   @Post('payin')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async getPayins(
     @Req() req: RequestWithUser,
     @Body() payinListRequest: PayinListRequestDto,
@@ -420,7 +402,6 @@ export class PaymentController {
   })
   @Post('test/register/payin')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   async registerPayin(
     @Req() req: RequestWithUser,
   ): Promise<RegisterPayinResponseDto> {

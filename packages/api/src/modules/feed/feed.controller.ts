@@ -1,16 +1,7 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  Query,
-  Req,
-  UseGuards,
-} from '@nestjs/common'
+import { Controller, Get, HttpStatus, Param, Query, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetFeedDto } from './dto/get-feed-dto'
 import { FeedService } from './feed.service'
 
@@ -26,7 +17,6 @@ export class FeedController {
     description: 'A feed of posts was retrieved',
   })
   @Get()
-  @UseGuards(JwtAuthGuard)
   async getFeed(
     @Req() req: RequestWithUser,
     @Query('cursor') cursor: string,
@@ -41,7 +31,6 @@ export class FeedController {
     description: 'A list of posts was retrieved',
   })
   @Get('/:username')
-  @UseGuards(JwtAuthGuard)
   async getPostsForCreator(
     @Param('username') creatorUsername: string,
     @Query('cursor') cursor: string,

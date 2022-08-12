@@ -11,6 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { UserEntity } from '../../user/entities/user.entity'
+import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { TwitterOauthGuard } from './twitter-oauth.guard'
@@ -24,24 +25,26 @@ export class TwitterOauthController {
     private readonly configService: ConfigService,
   ) {}
 
-  @Get()
   @ApiOperation({ summary: 'Start the twitter oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Start the twitter oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(TwitterOauthGuard)
+  @Get()
   async twitterAuth() {
     // Guard redirects
   }
 
-  @Get('redirect')
   @ApiOperation({ summary: 'Redirect from twitter oauth flow' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Redirect from twitter oauth flow',
   })
+  @AllowUnauthorizedRequest()
   @UseGuards(TwitterOauthGuard)
+  @Get('redirect')
   async twitterAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as UserEntity
     const accessToken = this.jwtAuthService.createAccessToken(user)

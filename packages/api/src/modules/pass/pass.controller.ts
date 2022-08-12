@@ -8,12 +8,10 @@ import {
   Post,
   Query,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { CreatePassHolderDto } from './dto/create-pass-holder.dto'
 import { GetPassDto } from './dto/get-pass.dto'
@@ -34,7 +32,6 @@ export class PassController {
     description: 'A pass was created',
   })
   @Post()
-  @UseGuards(JwtAuthGuard)
   async create(
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassDto,
@@ -49,7 +46,6 @@ export class PassController {
     description: 'A pass holder was created',
   })
   @Post('holder')
-  @UseGuards(JwtAuthGuard)
   async addHolder(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderDto,
@@ -67,7 +63,6 @@ export class PassController {
     type: GetPassesDto,
     description: 'A list of passes was retrieved',
   })
-  @UseGuards(JwtAuthGuard)
   @Get('created/:creatorId')
   async getCreatorPasses(
     @Param('creatorId') creatorId: string,
@@ -83,7 +78,6 @@ export class PassController {
     type: GetPassesDto,
     description: 'A list of passes was retrieved',
   })
-  @UseGuards(JwtAuthGuard)
   @Get('owned')
   async getOwnedPasses(
     @Req() req: RequestWithUser,

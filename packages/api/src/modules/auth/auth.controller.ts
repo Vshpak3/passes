@@ -12,7 +12,7 @@ import { RequestWithUser } from '../../types/request'
 import { GetUserDto } from '../user/dto/get-user.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
-import { JwtAuthGuard } from './jwt/jwt-auth.guard'
+import { AllowUnauthorizedRequest } from './auth.metadata'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
 import { JwtRefreshService } from './jwt/jwt-refresh.service'
@@ -33,13 +33,13 @@ export class AuthController {
     description: 'Gets the current authenticated user',
   })
   @Get('user')
-  @UseGuards(JwtAuthGuard)
   async getCurrentUser(@Req() req: RequestWithUser) {
     return new GetUserDto(await this.userService.findOne(req.user.id), true)
   }
 
-  @Post('refresh')
+  @AllowUnauthorizedRequest()
   @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
   async refreshAccessToken(@Req() req: RequestWithUser) {
     return {
       accessToken: this.jwtAuthService.createAccessToken(
