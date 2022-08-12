@@ -8,6 +8,7 @@ import useLocalStorage from "./useLocalStorage"
 import useMessageToDevelopers from "./useMessageToDevelopers"
 import useMounted from "./useMounted"
 import useOnClickOutside from "./useOnClickOutside"
+import usePasses from "./usePasses"
 import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
 import useUser from "./useUser"
@@ -24,6 +25,7 @@ export {
   useMessageToDevelopers,
   useMounted,
   useOnClickOutside,
+  usePasses,
   usePrefersReducedMotion,
   useRandomInterval,
   useUser,

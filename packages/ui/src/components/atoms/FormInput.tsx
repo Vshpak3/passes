@@ -65,6 +65,7 @@ const FormInput = ({
         options={options}
         className={className}
         errors={errors}
+        textPosition={textPosition}
         icon={icon}
         iconAlign={iconAlign}
         {...rest}

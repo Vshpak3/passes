@@ -1,4 +1,4 @@
-// import { PassApi } from "@passes/api-client"
+import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
@@ -14,21 +14,30 @@ import {
 import { FormContainer } from "src/components/organisms"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-// import useLocalStorage from "src/hooks/useLocalStorage"
+import useLocalStorage from "src/hooks/useLocalStorage"
+
+type TFormValues = {
+  title: string
+  description: string
+  imageUrl: string
+  type: string
+  price: string
+  totalSupply: string
+}
 
 const Collection = ({ options = {} }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const router = useRouter()
-  // const [accessToken] = useLocalStorage("access-token", "")
+  const [accessToken] = useLocalStorage("access-token", "")
 
   const {
     // handleSubmit,
     register,
-    formState: { errors }
-    // getValues,
+    formState: { errors },
+    getValues
     // setValue
-  } = useForm({
+  } = useForm<TFormValues>({
     defaultValues: {}
   })
 
@@ -54,7 +63,7 @@ const Collection = ({ options = {} }) => {
         return "col-span-4"
     }
   }
-
+  console.log(files)
   const onMediaChange = (filesArray: File[]) => {
     let maxFileSizeExceeded = false
 
@@ -82,27 +91,33 @@ const Collection = ({ options = {} }) => {
   }
 
   const onCreateHandler = () => {
-    // const passApi = new PassApi()
-    // passApi.passCreate(
-    //   {
-    //     createPassDto: {
-    //       // owner: "Michael",
-    //       collectionId: "test",
-    //       title: "Test title",
-    //       description: "test description",
-    //       imageUrl: "www.google.com",
-    //       type: "subscription",
-    //       price: 20,
-    //       totalSupply: 1000
-    //     }
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: "Bearer " + accessToken,
-    //       "Content-Type": "application/json"
-    //     }
-    //   }
-    // )
+    const passApi = new PassApi()
+    const params = getValues()
+    console.log("params", params)
+    console.log(typeof params.price)
+    passApi.passCreate(
+      {
+        createPassDto: {
+          title: params.title,
+          description: params.description,
+          // imageUrl: files[0].name,
+          imageUrl:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ellie_Goulding_-_Global_Citizen_Festival_Hamburg_07.jpg/440px-Ellie_Goulding_-_Global_Citizen_Festival_Hamburg_07.jpg",
+          type:
+            typeof router.query.passType === "string"
+              ? router.query.passType
+              : "subscription",
+          price: parseInt(params.price),
+          totalSupply: parseInt(params.totalSupply)
+        }
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json"
+        }
+      }
+    )
   }
 
   const onRemove = (index: number) => {
@@ -114,12 +129,12 @@ const Collection = ({ options = {} }) => {
     return (
       <div className="mx-auto -mt-[205px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
         <div className="col-span-10 h-full w-full">
-          <div className="text-center text-base font-medium leading-[19px]">
+          <div className="my-4 text-center text-[24px] text-base font-bold leading-[19px]">
             <span className="text-[#ffff]/90">
               Create a new{" "}
               {router.query.passType === "subscription"
                 ? "Subsciption"
-                : "Limited Edition"}{" "}
+                : "Lifetime Pass"}{" "}
               Pass
             </span>
           </div>
@@ -128,22 +143,19 @@ const Collection = ({ options = {} }) => {
         {/* Begin Pass Creation Section */}
         <div className="col-span-10 mx-auto w-full space-y-6 lg:col-span-10 lg:max-w-[680px]">
           <FormContainer>
-            <span className="text-[#ffff]/90">Create New Pass</span>
-            <span className="text-[#BF7AF0]">Name this pass</span>
+            <span className="text-[#ffff]/90">Name this pass</span>
 
             <FormInput
               register={register}
               type="text"
-              name="pass-title"
-              className="flex-grow-1 m-0 border-[#2C282D] bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
+              name="title"
+              className="flex-grow-1 m-0 border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
               placeholder="Name of your new pass!"
             />
 
             <span className="text-center text-[#ffff]/90">
               Don&apos;t have art? Click to generate a pass!
             </span>
-            {/* <GradientButton name="Make sumthing purty for me!" /> */}
-            <Button variant="gradient">Make sumthing purty for me!</Button>
             {/* End Pass Creation Section */}
             {/* Begin Artwork Upload Section */}
             <span className="text-[#ffff]/70">or Upload Artwork</span>
@@ -178,10 +190,12 @@ const Collection = ({ options = {} }) => {
                   </div>
                 </div>
               )}
-              <div className="my-4">
+              <div className="mt-4">
                 <span className="text-[#ffff]/70">Upload Preview</span>
               </div>
             </div>
+            <Button variant="gradient">Make sumthing purty for me!</Button>
+
             {/* End Artwork Upload Section */}
             {/* Begin Description Section */}
 
@@ -192,39 +206,79 @@ const Collection = ({ options = {} }) => {
               <FormInput
                 register={register}
                 type="text"
-                name="pass-caption"
+                name="description"
                 className="m-0 w-full resize-none border-transparent border-[#2C282D] bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
                 placeholder="Type a caption here that describes the pass"
               />
             </div>
             {/* End Description Section */}
 
-            {/* Begin Passes Limited Edition Switch Section */}
+            {/* Begin Passes Lifetime Pass Switch Section */}
             <hr className="border-[#2C282D]" />
-            <div className="flex items-center">
-              <FormInput
-                textPosition="left"
-                label="Limited Edition"
-                type="toggle"
-                register={register}
-                errors={errors}
-                options={options}
-                name="limitedEdition"
-                className="group rounded-[56px] p-2 text-sm hover:bg-[rgba(191,122,240,0.1)]"
-              />
-              <div className="ml-4 mr-2">
-                <span className="text-[#ffff]/70">How many passes</span>
+            <div className="flex flex-wrap gap-8">
+              <div className="flex items-center">
+                {router.query.passType === "subscription" && (
+                  <FormInput
+                    textPosition="left"
+                    label="Lifetime Pass"
+                    type="toggle"
+                    register={register}
+                    errors={errors}
+                    options={options}
+                    name="lifetimePass"
+                    className="group mr-4 rounded-[56px] p-2 text-sm hover:bg-[rgba(191,122,240,0.1)]"
+                  />
+                )}
+
+                <div className="mr-2">
+                  <span className="text-[#ffff]/70">How many passes</span>
+                </div>
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="totalSupply"
+                  className="m-0 max-w-[60px] border-transparent bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
+                  placeholder="340"
+                />
               </div>
-              <FormInput
-                register={register}
-                type="text"
-                name="pass-amount"
-                className="m-0 max-w-[60px] border-transparent bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
-                placeholder="340"
-              />
+
+              {router.query.passType === "lifetime" && (
+                <>
+                  <div className="flex w-full items-center">
+                    <span className="text-[#ffff]/70">
+                      Royalty Fees on re-sales
+                    </span>
+                    <div className="mx-2">
+                      <InfoIcon />
+                    </div>
+                    <FormInput
+                      register={register}
+                      type="text"
+                      name="royalties"
+                      className="m-0 max-w-[90px] border-transparent bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
+                      placeholder="10"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-[#ffff]/70">Cost per pass</span>
+                    <div className="mx-2">
+                      <InfoIcon />
+                    </div>
+                    <FormInput
+                      register={register}
+                      type="text"
+                      name="price"
+                      className="m-0 max-w-[120px] border-transparent bg-transparent p-0 text-[#ffff]/90 focus:border-transparent focus:ring-0"
+                      placeholder="340"
+                      icon={<DollarIcon />}
+                      textPosition="RIGHT"
+                    />
+                  </div>
+                </>
+              )}
             </div>
             <hr className="border-[#2C282D]" />
-            {/* End Passes Limited Edition Switch Section */}
+            {/* End Passes Lifetime Pass Switch Section */}
             {/* Begin Unlock Tier Section */}
             <div className="my-4 bg-[#100C11]">
               <span className="text-[#ffff]/70">
@@ -335,25 +389,27 @@ const Collection = ({ options = {} }) => {
                   <span className="ml-4 text-[#ffff]/70">One time payment</span>
                 </div>
                 {/* automatic renewal time */}
-                <div className="my-4 flex items-center justify-between">
+                <div className="my-4 flex items-center gap-4">
                   <span className="text-[#ffff]/90">
                     Automatically renews every
                   </span>
-                  <InfoIcon />
+                  <div className="mx-2">
+                    <InfoIcon />
+                  </div>
 
                   <FormInput
                     register={register}
                     type="select"
                     selectOptions={["test", "test2"]}
-                    name="timeframe-dropdown"
-                    className=" m-0 border-[#ffff] bg-transparent p-0 text-left text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                    name="royalty"
+                    className="w-[150px] border-[#ffff] bg-transparent p-0 text-left text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
                     placeholder="Timeframe"
                   />
                   <FormInput
                     register={register}
                     type="text"
-                    name="pass-cost"
-                    className="m-0 border-transparent bg-transparent p-0 text-right text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                    name="price"
+                    className="m-0 w-[150px] border-transparent bg-transparent p-0 text-right text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
                     placeholder="340"
                     icon={<DollarIcon />}
                   />

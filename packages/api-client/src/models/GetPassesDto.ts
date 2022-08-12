@@ -28,10 +28,10 @@ import {
 export interface GetPassesDto {
     /**
      * 
-     * @type {GetPassDto}
+     * @type {Array<GetPassDto>}
      * @memberof GetPassesDto
      */
-    passes: GetPassDto;
+    passes: Array<GetPassDto>;
 }
 
 export function GetPassesDtoFromJSON(json: any): GetPassesDto {
@@ -44,7 +44,7 @@ export function GetPassesDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'passes': GetPassDtoFromJSON(json['passes']),
+        'passes': ((json['passes'] as Array<any>).map(GetPassDtoFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function GetPassesDtoToJSON(value?: GetPassesDto | null): any {
     }
     return {
         
-        'passes': GetPassDtoToJSON(value.passes),
+        'passes': ((value.passes as Array<any>).map(GetPassDtoToJSON)),
     };
 }
 

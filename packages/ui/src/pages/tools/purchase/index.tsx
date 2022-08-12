@@ -11,21 +11,8 @@ import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import { useForm } from "react-hook-form"
 import { FormInput, PassesPinkButton } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
-import { CreatorPassTiles, FormContainer } from "src/components/organisms"
+import { FormContainer } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
-const mockData = {
-  passName: "Kaila Troy Pro",
-  creatorName: "Kaila Troy",
-  handle: "@kailatroy",
-  cost: "20.00",
-  imgUrl: "/bg-cover.png",
-  purchaseDate: "11/1/2022",
-  lastRenewal: "12/1/2022",
-  tagline:
-    "Lets just hang out and celebrate some chills time with some chill music and chill vibe and chillllllll",
-  description:
-    "Enjoy 900 photos and videos of exclusive content. You also get a free shot or something like that"
-}
 
 const Purchase = () => {
   const {
@@ -38,11 +25,10 @@ const Purchase = () => {
     defaultValues: {}
   })
 
-  console.log(mockData)
   return (
     <div className="mx-auto -mt-[205px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-3 mx-auto w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
-        <CreatorPassTiles passData={mockData} />
+        {/* <CreatorPassTiles passData={mockData} /> */}
       </div>
       <div className="col-span-7 mx-auto w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
         <div>

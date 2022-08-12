@@ -2,7 +2,7 @@
 
 const nextConfig = {
   images: {
-    domains: [process.env.NEXT_PUBLIC_DEMO_BUCKET, "images.dog.ceo"]
+    domains: [process.env.NEXT_PUBLIC_DEMO_BUCKET, "upload.wikimedia.org"]
   },
   reactStrictMode: false,
   i18n: {

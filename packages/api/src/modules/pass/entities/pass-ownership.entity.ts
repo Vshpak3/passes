@@ -18,5 +18,5 @@ export class PassOwnershipEntity extends BaseEntity {
   expiresAt?: number
 
   @OneToOne()
-  solNft: SolNftEntity
+  solNft?: SolNftEntity
 }
