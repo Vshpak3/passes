@@ -67,6 +67,7 @@
     "ioredis": "5.2.2",
     "joi": "17.6.0",
     "lodash": "4.17.21",
+    "nest-winston": "1.7.0",
     "nestjs-real-ip": "2.2.0",
     "openpgp": "5.3.1",
     "passport": "0.6.0",
@@ -83,7 +84,8 @@
     "swagger-ui-express": "4.5.0",
     "tweetnacl": "1.0.3",
     "unique-username-generator": "1.1.1",
-    "web3": "1.7.4"
+    "web3": "1.7.4",
+    "winston": "3.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "9.0.0",

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 import passport from 'passport'
 
 import { AppModule } from './app.module'
@@ -25,6 +26,7 @@ export class App {
 
   private async initApp() {
     this.app = await NestFactory.create(AppModule)
+    this.app.useLogger(this.app.get(WINSTON_MODULE_NEST_PROVIDER))
     this.app.setGlobalPrefix('api', { exclude: [''] })
     this.app.useGlobalPipes(new ValidationPipe())
     this.app.enableCors()

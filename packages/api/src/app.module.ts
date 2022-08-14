@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { RedisModule } from '@nestjs-modules/ioredis'
 import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry'
+import { WinstonModule } from 'nest-winston'
 
 import { configOptions } from './config/config.options'
 import { DatabaseModule } from './database/database.module'
@@ -32,6 +33,7 @@ import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
 import { WalletModule } from './modules/wallet/wallet.module'
+import { loggingOptions } from './monitoring/logging/logging.options'
 import { MetricsModule } from './monitoring/metrics/metric.module'
 import { metricOptions } from './monitoring/metrics/metric.options'
 import { sentryOptions } from './monitoring/sentry/sentry.options'
@@ -45,9 +47,10 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
       }),
     ),
     ConfigModule.forRoot(configOptions),
+    MetricsModule.forRootAsync(metricOptions),
     RedisModule.forRootAsync(redisOptions),
     SentryModule.forRootAsync(sentryOptions),
-    MetricsModule.forRootAsync(metricOptions),
+    WinstonModule.forRootAsync(loggingOptions),
     AuthModule,
     CollectionModule,
     CommentModule,
