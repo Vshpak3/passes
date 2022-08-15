@@ -97,9 +97,9 @@ export class SolService {
     private readonly configService: ConfigService,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
 
     private readonly lambdaService: LambdaService,
   ) {
@@ -118,9 +118,10 @@ export class SolService {
     owner: PublicKey,
     collectionId: string,
   ): Promise<GetSolNftDto> {
-    const { knex } = this.ReadWriteDatabaseService
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user) throw new NotFoundException('User does not exist')
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
@@ -137,7 +138,9 @@ export class SolService {
       total: uses,
     }
     const collection = (
-      await knex('sol_nft_collection').select('*').where('id', collectionId)
+      await this.dbReader('sol_nft_collection')
+        .select('*')
+        .where('id', collectionId)
     )[0]
 
     if (collection == undefined) {
@@ -321,7 +324,7 @@ export class SolService {
       transaction.serialize(),
     )
 
-    await knex('sol_nft').insert({
+    await this.dbWriter('sol_nft').insert({
       id: solNftId,
       sol_nft_collection_id: collectionId,
       mint_public_key: mintPubKey.toString(),
@@ -341,11 +344,10 @@ export class SolService {
     description: string,
     imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
-    const { knex } = this.ReadWriteDatabaseService
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     let user: undefined | UserEntity
     if (isString(userOrUserId)) {
-      user = (await knex(UserEntity.table)
+      user = (await this.dbReader(UserEntity.table)
         .where({ id: userOrUserId })
         .first()) as UserEntity
     } else {
@@ -565,7 +567,7 @@ export class SolService {
       )
     }
 
-    await knex('sol_nft_collection').insert({
+    await this.dbWriter('sol_nft_collection').insert({
       id: collectionId,
       name: name,
       symbol: symbol,

@@ -24,18 +24,17 @@ export class ListService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     userId: string,
     createListDto: CreateListDto,
   ): Promise<GetListDto> {
-    const knex = this.ReadWriteDatabaseService.knex
     const listId = uuid.v4()
-    await knex('list').insert({
+    await this.dbWriter('list').insert({
       id: listId,
       user_id: userId,
       name: createListDto.name,
@@ -44,7 +43,7 @@ export class ListService {
   }
 
   async deleteList(userId: string, id: string): Promise<boolean> {
-    const dbResult = await this.ReadWriteDatabaseService.knex('list')
+    const dbResult = await this.dbWriter('list')
       .delete()
       .where('list.user_id', userId)
       .where('list.id', id)
@@ -52,7 +51,7 @@ export class ListService {
   }
 
   async getList(userId: string, id: string): Promise<GetListDto> {
-    const dbResult = await this.ReadOnlyDatabaseService.knex('list')
+    const dbResult = await this.dbReader('list')
       .leftJoin('list_member', 'list_member.list_id', 'list.id')
       .leftJoin('users', 'list_member.user_id', 'users.id')
       .select('list.id', 'list.name', 'list_member.user_id', 'users.username')
@@ -78,9 +77,8 @@ export class ListService {
   }
 
   async getListsForUser(userId: string): Promise<GetListsDto> {
-    const knex = this.ReadOnlyDatabaseService.knex
-    const dbResult = await knex('list')
-      .select('list.id', knex.raw('count(list_member.id) as count'))
+    const dbResult = await this.dbReader('list')
+      .select('list.id', this.dbReader.raw('count(list_member.id) as count'))
       .leftJoin('list_member', 'list_member.list_id', '=', 'list.id')
       .where('list.user_id', userId)
       .groupBy('list.id')
@@ -96,7 +94,7 @@ export class ListService {
     userId: string,
     addListMemberDto: AddListMemberDto,
   ): Promise<void> {
-    const listResult = await this.ReadOnlyDatabaseService.knex('list')
+    const listResult = await this.dbReader('list')
       .select('*')
       .where({ user_id: userId, id: addListMemberDto.list })
 
@@ -105,7 +103,7 @@ export class ListService {
     }
 
     const query = () =>
-      this.ReadWriteDatabaseService.knex('list_member').insert({
+      this.dbWriter('list_member').insert({
         id: uuid.v4(),
         list_id: addListMemberDto.list,
         user_id: addListMemberDto.user,
@@ -117,14 +115,14 @@ export class ListService {
     userId: string,
     removeListMemberDto: RemoveListMemberDto,
   ): Promise<boolean> {
-    const listResult = await this.ReadOnlyDatabaseService.knex('list')
+    const listResult = await this.dbReader('list')
       .select('*')
       .where({ user_id: userId, id: removeListMemberDto.list })
 
     if (listResult[0] == undefined) {
       throw new NotFoundException('list not found')
     }
-    const dbResult = await this.ReadWriteDatabaseService.knex('list_member')
+    const dbResult = await this.dbWriter('list_member')
       .delete()
       .where('list_member.list_id', removeListMemberDto.list)
       .where('list_member.user_id', removeListMemberDto.user)

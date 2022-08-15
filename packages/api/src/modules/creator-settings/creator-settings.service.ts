@@ -16,14 +16,13 @@ export class CreatorSettingsService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async findByUser(userId: string): Promise<CreatorSettingsEntity> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const creatorSettings = await knex(CreatorSettingsEntity.table)
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
       )
@@ -38,8 +37,7 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const { knex } = this.ReadWriteDatabaseService
-    const creatorSettings = await knex(CreatorSettingsEntity.table)
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
       )
@@ -51,7 +49,7 @@ export class CreatorSettingsService {
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
       createCreatorSettingsDto,
     )
-    await knex.update(data).where({ id: creatorSettings.id })
+    await this.dbWriter.update(data).where({ id: creatorSettings.id })
     return { ...creatorSettings, ...data }
   }
 
@@ -59,12 +57,11 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
       user: userId,
       ...createCreatorSettingsDto,
     })
-    const query = () => knex(CreatorSettingsEntity.table).insert(data)
+    const query = () => this.dbWriter(CreatorSettingsEntity.table).insert(data)
     await createOrThrowOnDuplicate(query, this.logger, CREATOR_SETTINGS_EXISTS)
     return data as any
   }

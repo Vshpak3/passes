@@ -5,15 +5,14 @@ import { functionMapping } from './payment.callback'
 
 export async function handleSuccesfulCallbacks(
   payin,
-  db: DatabaseService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   try {
     const func = functionMapping(payin.callback).success
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex } = db
-    await knex
+    await db
       .table(PayinEntity.table)
       .update(
         PayinEntity.toDict<PayinEntity>({
@@ -28,15 +27,14 @@ export async function handleSuccesfulCallbacks(
 
 export async function handleFailedCallbacks(
   payin,
-  db: DatabaseService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   try {
     const func = functionMapping(payin.callback).failure
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex } = db
-    await knex
+    await db
       .table(PayinEntity.table)
       .update(
         PayinEntity.toDict<PayinEntity>({
@@ -51,15 +49,14 @@ export async function handleFailedCallbacks(
 
 export async function handleCreationCallback(
   payin,
-  db: DatabaseService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   try {
     const func = functionMapping(payin.callback).creation
     type params = Parameters<typeof func>
     await func(payin.callback_input_json as params[0])
   } catch (e) {
-    const { knex } = db
-    await knex
+    await db
       .table(PayinEntity.table)
       .update(
         PayinEntity.toDict<PayinEntity>({

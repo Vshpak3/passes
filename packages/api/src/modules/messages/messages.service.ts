@@ -19,9 +19,9 @@ export class MessagesService {
   constructor(
     private readonly configService: ConfigService,
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
@@ -39,8 +39,7 @@ export class MessagesService {
     userId: string,
     createChannelDto: CreateChannelDto,
   ): Promise<GetChannelDto> {
-    const { knex } = this.ReadWriteDatabaseService
-    const otherUser = await knex(UserEntity.table)
+    const otherUser = await this.dbReader(UserEntity.table)
       .where(
         UserEntity.toDict<UserEntity>({
           username: createChannelDto.username,
@@ -86,7 +85,6 @@ export class MessagesService {
   }
 
   async sendMessage(userId: string, sendMessageDto: SendMessageDto) {
-    const { knex } = this.ReadOnlyDatabaseService
     if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
       throw new BadRequestException('invalid tip amount')
     }
@@ -107,11 +105,11 @@ export class MessagesService {
     }
 
     // TODO: check if user query is needed
-    const otherUser = await knex(UserEntity.table)
+    const otherUser = await this.dbReader(UserEntity.table)
       .where({ id: otherUserId })
       .first()
 
-    const creatorSettings = await knex(CreatorSettingsEntity.table)
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
           user: otherUser.id,

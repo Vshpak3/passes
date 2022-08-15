@@ -89,7 +89,7 @@ export class DatabaseService {
   knex: Knex
   v4 = v4
 
-  init(entityManager: EntityManager) {
+  constructor(entityManager: EntityManager) {
     this._entityManager = entityManager
     this.knex = entityManager.getKnex()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

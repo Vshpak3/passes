@@ -19,32 +19,32 @@ export class UserService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     const data = UserEntity.toDict<UserEntity>({
       ...createUserDto,
     })
 
-    await knex(UserEntity.table).insert(data)
+    await this.dbWriter(UserEntity.table).insert(data)
     // TODO: fix return type
     return data as any
   }
 
   async setUsername(userId: string, username: string): Promise<UserEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     // TODO: check if user query is needed
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     const data = UserEntity.toDict<UserEntity>({
       username,
     })
 
     const query = () =>
-      knex(UserEntity.table).update(data).where({ id: userId })
+      this.dbWriter(UserEntity.table).update(data).where({ id: userId })
     await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
 
     return { ...user, ...data }
@@ -55,21 +55,19 @@ export class UserService {
     provider: string,
     providerId: string,
   ): Promise<UserEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     const data = UserEntity.toDict<UserEntity>({
       email,
       username: generateFromEmail(email, 3),
       oauthId: providerId,
       oauthProvider: provider,
     })
-    await knex(UserEntity.table).insert(data)
+    await this.dbWriter(UserEntity.table).insert(data)
     // TODO: fix return type
     return data as any
   }
 
   async findOne(id: string): Promise<UserEntity> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const user = await knex(UserEntity.table).where({ id }).first()
+    const user = await this.dbReader(UserEntity.table).where({ id }).first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
@@ -81,7 +79,7 @@ export class UserService {
     oauthId: string,
     oauthProvider: string,
   ): Promise<UserEntity | null> {
-    return await this.ReadOnlyDatabaseService.knex(UserEntity.table)
+    return await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ oauthId, oauthProvider }))
       .first()
   }
@@ -90,7 +88,6 @@ export class UserService {
     userId: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     // TODO: check if user query is needed
     const currentUser = await this.findOne(userId)
 
@@ -98,28 +95,26 @@ export class UserService {
     const data = UserEntity.toDict<UserEntity>({
       ...updateUserDto,
     })
-    await knex(UserEntity.table).update(data).where({ id: userId })
+    await this.dbWriter(UserEntity.table).update(data).where({ id: userId })
     return { ...currentUser, ...data }
   }
 
   async remove(userId: string): Promise<UserEntity> {
-    const { knex } = this.ReadWriteDatabaseService
     // TODO: check if user query is needed
     const currentUser = await this.findOne(userId)
 
     const data = UserEntity.toDict<UserEntity>({
       isDisabled: true,
     })
-    await knex(UserEntity.table).update(data).where({ id: userId })
+    await this.dbWriter(UserEntity.table).update(data).where({ id: userId })
     return { ...currentUser, ...data }
   }
 
   // TODO: Sort by creators that the user follows, most interacted with first?
   async searchByQuery(searchUserDto: SearchUserRequestDto) {
-    const { knex } = this.ReadOnlyDatabaseService
     const strippedQuery = searchUserDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
-    return await knex(UserEntity.table)
+    return await this.dbReader(UserEntity.table)
       .where(function () {
         this.whereILike('username', likeClause).orWhereILike(
           'display_name',
@@ -136,8 +131,7 @@ export class UserService {
   }
 
   async validateUsername(username: string): Promise<boolean> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const user = await knex(UserEntity.table)
+    const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
     return !user

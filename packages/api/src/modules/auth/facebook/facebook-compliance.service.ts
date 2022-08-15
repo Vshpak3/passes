@@ -22,9 +22,9 @@ export class FacebookComplianceService {
     private readonly configService: ConfigService,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async initiateDeletionRequest(signedRequest: string): Promise<string> {
@@ -51,8 +51,7 @@ export class FacebookComplianceService {
       )
     }
 
-    const { knex } = this.ReadWriteDatabaseService
-    knex
+    this.dbWriter
       .transaction(async (trx) => {
         const id = uuid.v4()
         const userId = decodedBody.user_id
@@ -86,8 +85,7 @@ export class FacebookComplianceService {
   }
 
   async checkDeletionRequest(confirmationCode: string): Promise<boolean> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const res = await knex('facebook_deletion_request').where(
+    const res = await this.dbReader('facebook_deletion_request').where(
       'id',
       confirmationCode,
     )

@@ -7,7 +7,7 @@ import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import base58 from 'bs58'
 import dedent from 'dedent'
 import nacl from 'tweetnacl'
-import * as uuid from 'uuid'
+import { v4 } from 'uuid'
 import Web3 from 'web3'
 
 import { Database } from '../../database/database.decorator'
@@ -30,10 +30,10 @@ export class WalletService {
   web3: Web3
   constructor(
     private readonly lambdaService: LambdaService,
-    @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
+    @Database('ReadWrite')
+    private readonly dbWriter: DatabaseService['knex'],
     @InjectRedis() private readonly redisService: Redis,
   ) {
     this.web3 = new Web3(
@@ -58,8 +58,7 @@ export class WalletService {
    * @param userId
    */
   async getUserCustodialWallet(userId: string): Promise<WalletEntity> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-    const wallet = await knex(WalletEntity.table)
+    const wallet = await this.dbReader(WalletEntity.table)
       .where(
         WalletEntity.toDict<WalletEntity>({
           user: userId,
@@ -82,7 +81,7 @@ export class WalletService {
       chain: Chain.SOL,
       custodial: true,
     })
-    await knex(WalletEntity.table).insert(data)
+    await this.dbWriter(WalletEntity.table).insert(data)
     // TODO: fix return type
     return data as any
   }
@@ -91,9 +90,8 @@ export class WalletService {
     userId: string,
     authWalletRequestDto: AuthWalletRequestDto,
   ): Promise<AuthWalletResponseDto> {
-    const { knex } = this.ReadOnlyDatabaseService
     const numWallets = (
-      await knex(WalletEntity.table).where(
+      await this.dbReader(WalletEntity.table).where(
         WalletEntity.toDict<WalletEntity>({
           user: userId,
         }),
@@ -111,7 +109,7 @@ export class WalletService {
     const userWalletRedisKey = `walletservice.rawMessage.${userId},${walletAddress}}`
     let authMessage = await this.redisService.get(userWalletRedisKey)
     if (authMessage == null) {
-      authMessage = this.getRawMessage(walletAddress, uuid.v4())
+      authMessage = this.getRawMessage(walletAddress, v4())
     }
     await this.redisService.set(
       userWalletRedisKey,
@@ -128,8 +126,7 @@ export class WalletService {
   }
 
   async getWalletsForUser(userId: string): Promise<WalletEntity[]> {
-    const { knex } = this.ReadOnlyDatabaseService
-    return await knex(WalletEntity.table).where(
+    return await this.dbReader(WalletEntity.table).where(
       WalletEntity.toDict<WalletEntity>({
         user: userId,
       }),
@@ -140,10 +137,8 @@ export class WalletService {
     userId: string,
     createWalletDto: CreateWalletDto,
   ): Promise<WalletEntity> {
-    const { knex: readWriteKnex } = this.ReadWriteDatabaseService
-    const { knex: readKnex } = this.ReadOnlyDatabaseService
     const numWallets = (
-      await readKnex(WalletEntity.table).where(
+      await this.dbReader(WalletEntity.table).where(
         WalletEntity.toDict<WalletEntity>({
           user: userId,
         }),
@@ -195,11 +190,11 @@ export class WalletService {
       throw new BadRequestException('invalid chain specified')
     }
     const existingWallet = (
-      await readKnex('wallet').select('*').where('address', walletAddress)
+      await this.dbReader('wallet').select('*').where('address', walletAddress)
     )[0]
     if (existingWallet == undefined) {
       data.chain = createWalletDto.chain
-      await readWriteKnex(WalletEntity.table).insert(data)
+      await this.dbWriter(WalletEntity.table).insert(data)
       // TODO: fix return type
       return data as any
     } else {
@@ -214,8 +209,7 @@ export class WalletService {
     if (existingWallet.user_id != null) {
       throw new BadRequestException('invalid wallet address')
     } else {
-      const knex = this.ReadWriteDatabaseService.knex
-      const knexResult = await knex('wallet')
+      const knexResult = await this.dbWriter('wallet')
         .update({ user_id: userId })
         .where('id', existingWallet.id)
       if (knexResult != 1) {
@@ -232,14 +226,15 @@ export class WalletService {
     userId: string,
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,
   ): Promise<void> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-    const numWallets = await knex('wallet').where('user_id', userId).count('*')
+    const numWallets = await this.dbReader('wallet')
+      .where('user_id', userId)
+      .count('*')
     if (numWallets[0]['count(*)'] >= MAX_WALLETS_PER_USER) {
       throw new BadRequestException(
         `${MAX_WALLETS_PER_USER} wallet limit reached!`,
       )
     }
-    await knex('wallet').insert({
+    await this.dbWriter('wallet').insert({
       id: v4(),
       user_id: userId,
       authenticated: false,
@@ -249,8 +244,7 @@ export class WalletService {
   }
 
   async remove(userId: string, walletId: string): Promise<boolean> {
-    const knex = this.ReadWriteDatabaseService.knex
-    const knexResult = await knex('wallet')
+    const knexResult = await this.dbWriter('wallet')
       .update({ user_id: null })
       .where('id', walletId)
       .where('user_id', userId)

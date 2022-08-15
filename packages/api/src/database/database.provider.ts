@@ -8,12 +8,9 @@ export const getDatabaseProviderToken = (contextName: ContextName) =>
 
 export const createDatabaseProvider = (contextName: ContextName) => ({
   provide: getDatabaseProviderToken(contextName),
-  useFactory: async (
-    entityManager: EntityManager,
-    databaseService: DatabaseService,
-  ) => {
-    databaseService.init(entityManager)
-    return databaseService
+  useFactory: async (entityManager: EntityManager) => {
+    const databaseService = new DatabaseService(entityManager)
+    return databaseService.knex
   },
-  inject: [`${contextName}_EntityManager`, DatabaseService],
+  inject: [`${contextName}_EntityManager`],
 })

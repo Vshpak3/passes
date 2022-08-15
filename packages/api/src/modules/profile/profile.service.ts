@@ -33,18 +33,18 @@ export class ProfileService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     userId: string,
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user || !user.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
@@ -55,14 +55,13 @@ export class ProfileService {
       ...createProfileDto,
     })
 
-    const query = () => knex(ProfileEntity.table).insert(data)
+    const query = () => this.dbWriter(ProfileEntity.table).insert(data)
     await createOrThrowOnDuplicate(query, this.logger, USER_HAS_PROFILE)
     return new GetProfileDto(data)
   }
 
   async findOne(id: string): Promise<GetProfileDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const profile = await knex(ProfileEntity.table)
+    const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
         `${ProfileEntity.table}.user_id`,
@@ -81,8 +80,7 @@ export class ProfileService {
   }
 
   async findOneByUsername(username: string): Promise<GetProfileDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const profile = await knex(ProfileEntity.table)
+    const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table} as user`,
         `${ProfileEntity.table}.user_id`,
@@ -118,8 +116,7 @@ export class ProfileService {
     profileId: string,
     updateProfileDto: UpdateProfileDto,
   ): Promise<GetProfileDto> {
-    const { knex } = this.ReadWriteDatabaseService
-    const profile = await knex(ProfileEntity.table)
+    const profile = await this.dbWriter(ProfileEntity.table)
       .where('id', profileId)
       .first()
 
@@ -133,14 +130,13 @@ export class ProfileService {
 
     const data = ProfileEntity.toDict<ProfileEntity>(updateProfileDto)
 
-    await knex(ProfileEntity.table).update(data).where('id', profileId)
+    await this.dbWriter(ProfileEntity.table).update(data).where('id', profileId)
 
     return new GetProfileDto({ ...profile, ...data })
   }
 
   async remove(userId: string, profileId: string): Promise<GetProfileDto> {
-    const { knex } = this.ReadWriteDatabaseService
-    const profile = await knex(ProfileEntity.table)
+    const profile = await this.dbReader(ProfileEntity.table)
       .where({ id: profileId })
       .first()
     if (!profile) {
@@ -153,13 +149,14 @@ export class ProfileService {
 
     const data = ProfileEntity.toDict<ProfileEntity>({ isActive: false })
 
-    await knex(ProfileEntity.table).update(data).where({ id: profileId })
+    await this.dbWriter(ProfileEntity.table)
+      .update(data)
+      .where({ id: profileId })
     return new GetProfileDto({ ...profile, ...data })
   }
 
   async getAllUsernames(): Promise<GetUsernamesDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const rawUsernames = await knex(ProfileEntity.table)
+    const rawUsernames = await this.dbWriter(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table} as user`,
         `${ProfileEntity.table}.user_id`,

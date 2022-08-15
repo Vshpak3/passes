@@ -33,9 +33,9 @@ export class EthService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
 
     private readonly configService: ConfigService,
 
@@ -60,8 +60,9 @@ export class EthService {
     createEthNftCollectionDto: CreateEthNftCollectionDto,
   ): Promise<EthNftCollectionEntity> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const { knex } = this.ReadWriteDatabaseService
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
@@ -69,7 +70,7 @@ export class EthService {
       ...createEthNftCollectionDto,
     })
 
-    const query = () => knex(EthNftCollectionEntity.table).insert(data)
+    const query = () => this.dbWriter(EthNftCollectionEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(
       query,

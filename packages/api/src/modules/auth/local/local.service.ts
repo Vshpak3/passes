@@ -12,14 +12,13 @@ import { BCRYPT_SALT_ROUNDS } from './local.constants'
 export class LocalAuthService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async createLocalUser(createLocalUserDto: CreateLocalUserDto) {
-    const knex = this.ReadWriteDatabaseService.knex
-    const currentUser = await knex('users')
+    const currentUser = await this.dbReader('users')
       .where('email', createLocalUserDto.email)
       .first()
 
@@ -32,7 +31,7 @@ export class LocalAuthService {
       BCRYPT_SALT_ROUNDS,
     )
 
-    await knex('users').insert(
+    await this.dbWriter('users').insert(
       {
         email: createLocalUserDto.email,
         password_hash: passwordHash,
@@ -46,8 +45,9 @@ export class LocalAuthService {
   }
 
   async validateLocalUser(email: string, password: string) {
-    const knex = this.ReadOnlyDatabaseService.knex
-    const user: UserEntity & { password_hash: string } = await knex('users')
+    const user: UserEntity & { password_hash: string } = await this.dbReader(
+      UserEntity.table,
+    )
       .where('email', email)
       .first()
 

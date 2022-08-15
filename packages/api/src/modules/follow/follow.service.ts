@@ -33,20 +33,18 @@ export class FollowService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     userId: string,
     createFollowingDto: CreateFollowingDto,
   ): Promise<GetFollowingDto> {
-    const { knex } = this.ReadWriteDatabaseService
-
     const [subscriber, creator] = await Promise.all([
-      knex(UserEntity.table).where({ id: userId }).first(),
-      knex(UserEntity.table)
+      this.dbReader(UserEntity.table).where({ id: userId }).first(),
+      this.dbReader(UserEntity.table)
         .where({ id: createFollowingDto.creatorUserId })
         .first(),
     ])
@@ -67,15 +65,16 @@ export class FollowService {
       creator: createFollowingDto.creatorUserId,
       isActive: true,
     })
-    const query = () => knex(FollowEntity.table).insert(data)
+    const query = () => this.dbWriter(FollowEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(query, this.logger, FOLLOWING_ALREADY_EXIST)
     return new GetFollowingDto(data)
   }
 
   async findOne(id: string): Promise<GetFollowingDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const following = await knex(FollowEntity.table).where({ id }).first()
+    const following = await this.dbReader(FollowEntity.table)
+      .where({ id })
+      .first()
     if (!following) {
       throw new NotFoundException(FOLLOWING_NOT_EXIST)
     }
@@ -90,9 +89,8 @@ export class FollowService {
       throw new ForbiddenException(Following_NOT_OWNED_BY_USER)
     }
 
-    const { knex } = this.ReadWriteDatabaseService
     const data = FollowEntity.toDict<FollowEntity>({ isActive: false })
-    await knex(FollowEntity.table).update(data).where({ id: followId })
+    await this.dbWriter(FollowEntity.table).update(data).where({ id: followId })
 
     return new GetFollowingDto({ ...following, ...data })
   }

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { PublicKey } from '@solana/web3.js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
@@ -34,9 +35,9 @@ export class PassService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
 
     private readonly solService: SolService,
     private readonly walletService: WalletService,
@@ -46,9 +47,9 @@ export class PassService {
     userId: string,
     createPassDto: CreatePassDto,
   ): Promise<GetPassDto> {
-    const { knex } = this.ReadWriteDatabaseService
-
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
@@ -71,13 +72,12 @@ export class PassService {
       totalSupply: createPassDto.totalSupply,
     })
 
-    await knex(PassEntity.table).insert(data)
+    await this.dbWriter(PassEntity.table).insert(data)
     return new GetPassDto(data)
   }
 
   async findOne(id: string): Promise<GetPassDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const pass = await knex(PassEntity.table)
+    const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as owner`,
         `${PassEntity.table}.owner_id`,
@@ -103,8 +103,7 @@ export class PassService {
   }
 
   async findOwnedPasses(userId: string, creatorId?: string) {
-    const { knex } = this.ReadOnlyDatabaseService
-    let query = knex(PassEntity.table)
+    let query = this.dbReader(PassEntity.table)
       .rightJoin(
         `${PassOwnershipEntity.table} as passOwnership`,
         `${PassEntity.table}.id`,
@@ -130,13 +129,11 @@ export class PassService {
   }
 
   async findPassesByCreator(creatorId: string) {
-    const { knex } = this.ReadOnlyDatabaseService
-    return await knex(PassEntity.table).where('owner_id', creatorId)
+    return await this.dbReader(PassEntity.table).where('owner_id', creatorId)
   }
 
   async update(userId: string, passId: string, updatePassDto: UpdatePassDto) {
-    const { knex } = this.ReadWriteDatabaseService
-    const currentPass = await knex(PassEntity.table)
+    const currentPass = await this.dbReader(PassEntity.table)
       .where({ id: passId })
       .first()
 
@@ -149,15 +146,14 @@ export class PassService {
     }
 
     const data = PassEntity.toDict<PassEntity>(updatePassDto)
-    await knex(PassEntity.table).update(data).where({ id: passId })
+    await this.dbWriter(PassEntity.table).update(data).where({ id: passId })
     return new GetPassDto(data)
   }
 
   async addHolder(userId: string, passId: string, temporary?: boolean) {
-    const { knex, v4 } = this.ReadWriteDatabaseService
     const id = v4()
 
-    const pass = await knex(PassEntity.table)
+    const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as owner`,
         `${PassEntity.table}.owner_id`,
@@ -197,7 +193,7 @@ export class PassService {
       solNft: solNftDto.id,
     })
 
-    const query = () => knex(PassOwnershipEntity.table).insert(data)
+    const query = () => this.dbWriter(PassOwnershipEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(query, this.logger, USER_ALREADY_OWNS_PASS)
 
@@ -205,12 +201,13 @@ export class PassService {
   }
 
   async doesUserHoldPass(userId: string, passId: string) {
-    const { knex } = this.ReadOnlyDatabaseService
     const data = PassOwnershipEntity.toDict<PassOwnershipEntity>({
       holder: userId,
       pass: passId,
     })
-    const ownership = await knex(PassOwnershipEntity.table).where(data).first()
+    const ownership = await this.dbReader(PassOwnershipEntity.table)
+      .where(data)
+      .first()
     return !!ownership
   }
 }

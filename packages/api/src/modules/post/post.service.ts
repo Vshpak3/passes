@@ -29,17 +29,16 @@ export class PostService {
     private readonly logger: Logger,
 
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     userId: string,
     createPostDto: CreatePostDto,
   ): Promise<CreatePostDto> {
-    const { knex } = this.ReadWriteDatabaseService
-    knex
+    this.dbWriter
       .transaction(async (trx) => {
         const postId = uuid.v4()
         const post = {
@@ -48,7 +47,7 @@ export class PostService {
           text: createPostDto.text,
         }
 
-        await knex
+        await this.dbWriter
           .insert(post, '*')
           .into('post')
           .transacting(trx)
@@ -89,14 +88,13 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<GetPostDto> {
-    const { knex } = this.ReadOnlyDatabaseService
     const [post, content] = await Promise.all([
-      knex(PostEntity.table)
+      this.dbReader(PostEntity.table)
         .where({
           id,
         })
         .first(),
-      knex(ContentEntity.table).where(
+      this.dbReader(ContentEntity.table).where(
         ContentEntity.toDict<ContentEntity>({
           post: id,
         }),
@@ -115,8 +113,7 @@ export class PostService {
   }
 
   async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const { knex } = this.ReadWriteDatabaseService
-    const currentPost = await knex(PostEntity.table)
+    const currentPost = await this.dbReader(PostEntity.table)
       .where({ id: postId })
       .first()
 
@@ -133,13 +130,14 @@ export class PostService {
     }
 
     const data = PostEntity.toDict<PostEntity>(updatePostDto)
-    await knex(PostEntity.table).update(data).where({ id: postId })
+    await this.dbWriter(PostEntity.table).update(data).where({ id: postId })
     return new GetPostDto({ ...currentPost, ...data })
   }
 
   async remove(userId: string, postId: string) {
-    const { knex } = this.ReadWriteDatabaseService
-    const post = await knex(PostEntity.table).where({ id: postId }).first()
+    const post = await this.dbReader(PostEntity.table)
+      .where({ id: postId })
+      .first()
     if (!post) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
@@ -149,7 +147,7 @@ export class PostService {
     }
 
     const data = PostEntity.toDict<PostEntity>({ deletedAt: new Date() })
-    await knex(PostEntity.table).update(data).where({ id: postId })
+    await this.dbWriter(PostEntity.table).update(data).where({ id: postId })
     return new GetPostDto({ ...post, ...data })
   }
 }

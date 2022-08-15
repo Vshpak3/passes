@@ -9,9 +9,9 @@ import { UpdateCommentDto } from './dto/update-comment.dto'
 export class CommentService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<CreateCommentDto> {

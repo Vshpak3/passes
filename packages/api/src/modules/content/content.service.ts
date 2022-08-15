@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -18,18 +19,16 @@ import { ContentEntity } from './entities/content.entity'
 export class ContentService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     postId: string,
     createContentDto: CreateContentDto,
   ): Promise<GetContentDto> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-
-    const post = await this.ReadOnlyDatabaseService.knex(PostEntity.table)
+    const post = await this.dbReader(PostEntity.table)
       .where('id', postId)
       .select('id')
       .first()
@@ -45,7 +44,7 @@ export class ContentService {
         post: postId,
         ...createContentDto,
       })
-      await knex(ContentEntity.table).insert(data)
+      await this.dbWriter(ContentEntity.table).insert(data)
 
       return new GetContentDto(data)
     } catch (error) {
@@ -54,7 +53,7 @@ export class ContentService {
   }
 
   async findOne(id: string): Promise<GetContentDto> {
-    const content = await this.ReadOnlyDatabaseService.knex(ContentEntity.table)
+    const content = await this.dbReader(ContentEntity.table)
       .where('id', id)
       .select('*')
       .first()
@@ -69,9 +68,8 @@ export class ContentService {
     contentId: string,
     updateContentDto: UpdateContentDto,
   ): Promise<GetContentDto> {
-    const { knex } = this.ReadWriteDatabaseService
     const data = ContentEntity.toDict<ContentEntity>(updateContentDto)
-    const updateCount = await knex('content')
+    const updateCount = await this.dbWriter('content')
       .update(data)
       .where({ id: contentId })
 

@@ -8,9 +8,9 @@ import { UpdateSettingsDto } from './dto/update-settings.dto'
 export class SettingsService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async findOne(id: string): Promise<string> {

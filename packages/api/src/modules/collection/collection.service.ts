@@ -22,17 +22,18 @@ import { CollectionEntity } from './entities/collection.entity'
 export class CollectionService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
+    private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
   async create(
     userId: string,
     createPassDto: CreateCollectionDto,
   ): Promise<CreateCollectionDto> {
-    const { knex } = this.ReadWriteDatabaseService
-    const user = await knex(UserEntity.table).where({ id: userId }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user?.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
@@ -44,15 +45,16 @@ export class CollectionService {
       description: createPassDto.description,
     })
 
-    await knex(CollectionEntity.table).insert(data)
+    await this.dbWriter(CollectionEntity.table).insert(data)
 
     return new GetCollectionDto(data)
   }
 
   async findOne(id: string): Promise<GetCollectionDto> {
-    const { knex } = this.ReadOnlyDatabaseService
     // TODO: check if populate: ['owner'] is needed
-    const collection = await knex(CollectionEntity.table).where({ id }).first()
+    const collection = await this.dbReader(CollectionEntity.table)
+      .where({ id })
+      .first()
 
     if (!collection) {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
@@ -62,9 +64,7 @@ export class CollectionService {
   }
 
   async findOneByCreatorUsername(username: string): Promise<GetCollectionDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-
-    const user = await knex(UserEntity.table)
+    const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
     if (!user) {
@@ -72,7 +72,7 @@ export class CollectionService {
     }
 
     // TODO: check if populate: ['owner'] is needed
-    const collection = await knex(CollectionEntity.table)
+    const collection = await this.dbReader(CollectionEntity.table)
       .where(
         CollectionEntity.toDict<CollectionEntity>({
           owner: user.id,
@@ -91,8 +91,7 @@ export class CollectionService {
     collectionId: string,
     updatePassDto: UpdateCollectionDto,
   ) {
-    const { knex } = this.ReadWriteDatabaseService
-    const currentCollection = await knex(CollectionEntity.table)
+    const currentCollection = await this.dbReader(CollectionEntity.table)
       .where({ id: collectionId })
       .first()
 
@@ -105,7 +104,9 @@ export class CollectionService {
     }
 
     const data = CollectionEntity.toDict<CollectionEntity>(updatePassDto)
-    await knex(CollectionEntity.table).update(data).where({ id: collectionId })
+    await this.dbWriter(CollectionEntity.table)
+      .update(data)
+      .where({ id: collectionId })
 
     return new GetCollectionDto({ ...currentCollection, ...data })
   }
