@@ -2,9 +2,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BlobType, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core'
-
-import { UuidType } from './uuid.type'
+import {
+  BlobType,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+  UuidType,
+} from '@mikro-orm/core'
 
 // Entity Class properties for optional properties allow null
 declare type EntityData<T> = {
@@ -31,8 +35,8 @@ export abstract class BaseEntity<O = void> {
   [OptionalProps]?: O | 'createdAt' | 'updatedAt'
 
   @PrimaryKey({
-    type: UuidType,
-    defaultRaw: '(UUID_TO_BIN(UUID()))',
+    type: new UuidType(),
+    defaultRaw: '(UUID())',
   })
   id: string
 

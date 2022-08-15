@@ -23,15 +23,12 @@ type ContentLookupByPost = {
 export class FeedService {
   constructor(
     @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
+    private readonly dbReader: DatabaseService['knex'],
   ) {}
 
   async getFeed(userId: string, cursor: string): Promise<GetFeedDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-
-    const following = await knex
+    const following = await this.dbReader('subscription')
       .select('creator_id')
-      .from('subscription')
       .where('subscriber_id', userId)
       .where('is_active', true)
 
@@ -41,7 +38,7 @@ export class FeedService {
 
     const creatorIds: string[] = following.map((f) => f.creator_id)
 
-    let postsQuery = knex('post')
+    let postsQuery = this.dbReader('post')
       .whereIn('user_id', creatorIds)
       .where('deleted_at', null)
 
@@ -77,8 +74,7 @@ export class FeedService {
     username: string,
     cursor: string,
   ): Promise<GetFeedDto> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const user = await knex(UserEntity.table)
+    const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
     if (!user) {
@@ -89,7 +85,7 @@ export class FeedService {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    let postsQuery = knex('post')
+    let postsQuery = this.dbReader('post')
       .where('user_id', user.id)
       .where('deleted_at', null)
 
@@ -126,8 +122,10 @@ export class FeedService {
   private async getContentLookupForPosts(
     postIds: string[],
   ): Promise<ContentLookupByPost> {
-    const { knex } = this.ReadOnlyDatabaseService
-    const contentResults = await knex('content').whereIn('post_id', postIds)
+    const contentResults = await this.dbReader('content').whereIn(
+      'post_id',
+      postIds,
+    )
 
     const ans: ContentLookupByPost = {}
     for (let i = 0; i < contentResults.length; ++i) {
