@@ -52,6 +52,7 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
     /**
+     * Refresh the access token
      */
     async authRefreshAccessTokenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
@@ -69,6 +70,7 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
     /**
+     * Refresh the access token
      */
     async authRefreshAccessToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.authRefreshAccessTokenRaw(initOverrides);

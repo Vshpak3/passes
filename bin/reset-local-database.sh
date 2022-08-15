@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Resets all database state.
+# Used only in local development.
 #
 set -o errexit
 set -o nounset
@@ -9,7 +10,7 @@ set -o pipefail
 cd "$( dirname "${BASH_SOURCE[0]}" )"/..
 
 function log() {
-  echo -e "\n$1\n"
+  echo -e "\n${1}\n"
 }
 
 readonly input=${1:-}

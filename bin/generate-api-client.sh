@@ -8,11 +8,12 @@ set -o pipefail
 
 readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
-readonly api_client_path='packages/api-client'
-readonly spec_filename='openapi.json'
-readonly openapi_gen_version='6.0.0'
+readonly api_client_path=packages/api-client
+readonly spec_filename=openapi.json
+# Must use 6.0.0 until this issue is fixed: https://github.com/OpenAPITools/openapi-generator-cli/issues/655
+readonly openapi_gen_version=6.0.0
 
-out_path="${root}/${api_client_path}"
+readonly out_path="${root}/${api_client_path}"
 
 # Generate openapi.json file
 yarn workspace @passes/api generate-openapi-spec
@@ -64,4 +65,4 @@ EOT
 # Transpile generated .ts sources to js
 yarn workspace @passes/api-client build
 
-echo "Done!"
+echo 'Done!'

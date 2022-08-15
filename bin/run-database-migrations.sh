@@ -10,7 +10,7 @@ set -o pipefail
 cd "$(dirname "${0}")"/..
 
 function log() {
-  echo "\n$1\n"
+  echo "\n${1}\n"
 }
 
 log 'Generating schema migrations'

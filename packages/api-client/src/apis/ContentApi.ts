@@ -30,7 +30,7 @@ export interface ContentPreSignUrlRequest {
 export class ContentApi extends runtime.BaseAPI {
 
     /**
-     * Creates a collection
+     * Get signed url for specified path
      */
     async contentPreSignUrlRaw(requestParameters: ContentPreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSignedUrlDto>> {
         if (requestParameters.path === null || requestParameters.path === undefined) {
@@ -52,7 +52,7 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a collection
+     * Get signed url for specified path
      */
     async contentPreSignUrl(requestParameters: ContentPreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSignedUrlDto> {
         const response = await this.contentPreSignUrlRaw(requestParameters, initOverrides);

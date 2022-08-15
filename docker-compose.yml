@@ -5,20 +5,25 @@ version: "3.8"
 # Note: data is persisted after stopping containers. Run the following to delete:
 #   docker volume rm monorepo_mysql
 #   docker volume rm monorepo_redis
+#   docker volume rm monorepo_s3
 
 services:
+
+  # MySQL Database
+  # Should match AWS Aurora MySQL version:
+  # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraMySQLReleaseNotes/AuroraMySQL.Updates.3020.html
   mysql:
-    # Should match AWS Aurora MySQL version:
-    # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraMySQLReleaseNotes/AuroraMySQL.Updates.3020.html
     image: mysql:8.0.23
     platform: linux/x86_64  # needed for M1 macs
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=${MYSQL_DB:-passes}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD:-root}
+      - MYSQL_DATABASE=passes
+      - MYSQL_ROOT_PASSWORD=root
     volumes:
       - mysql:/var/lib/mysql
+
+  # Redis Server
   # Should match the AWS Redis version:
   # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/supported-engine-versions.html
   redis:
@@ -28,21 +33,22 @@ services:
       - 6379:6379
     volumes:
       - redis:/data
-  # Local S3 bucket
-  localstack:
-    image: localstack/localstack:0.13.1
-    environment: 
+
+  # S3 Bucket
+  s3:
+    image: localstack/localstack:1.0.4
+    environment:
       - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
       - DATA_DIR=/tmp/localstack/data
       - SERVICES=s3
       - EXTRA_CORS_ALLOWED_ORIGINS=http://localhost:3000
-    ports: 
-      - '4566:4566'
-    volumes: 
-      - localstack:/tmp/localstack
+    ports:
+      - 4566:4566
+    volumes:
+      - s3:/tmp/localstack
 
 volumes:
-  localstack:
   mysql:
   redis:
+  s3:

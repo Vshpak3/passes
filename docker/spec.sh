@@ -2,7 +2,7 @@
 #
 # Creates various deploy files. Used in build/deploy pipeline.
 # Requires AWS auth.
-
+#
 # Files are:
 #   appspec.json: https://docs.aws.amazon.com/codedeploy/latest/userguide/tutorial-ecs-create-appspec-file.html
 #   imageDetail.json: https://docs.aws.amazon.com/codepipeline/latest/userguide/file-reference.html#file-reference-ecs-bluegreen
@@ -56,7 +56,7 @@ function cat_file() {
   local filename=$1
   echo -e "${filename}:\n"
   cat ${filename}
-  echo -e "\n\n"
+  echo -e '\n\n'
 }
 
 cat_file appspec.json
