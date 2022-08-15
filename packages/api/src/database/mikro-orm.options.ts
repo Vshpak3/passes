@@ -29,7 +29,6 @@ export function getDatabaseOptions(
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
     dbName: configService.get('database.dbname'),
     contextName,
-    allowGlobalContext: true, // TODO: remove after migrating code to knex setup
     registerRequestContext: false,
     host: hosts[contextName],
     port: configService.get('database.port'),

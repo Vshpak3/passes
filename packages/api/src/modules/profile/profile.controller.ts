@@ -55,6 +55,7 @@ export class ProfileController {
     type: GetProfileDto,
     description: 'A profile was retrieved',
   })
+  @AllowUnauthorizedRequest()
   @Get('/usernames/:username')
   async findOneByUsername(
     @Param('username') username: string,

@@ -1,5 +1,3 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import {
   BadRequestException,
   Inject,
@@ -31,28 +29,15 @@ export class EthService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly configService: ConfigService,
 
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
 
-    private readonly configService: ConfigService,
-
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-
-    @InjectRepository(EthNftEntity, 'ReadWrite')
-    private readonly ethNftRepository: EntityRepository<EthNftEntity>,
-
-    @InjectRepository(EthNftCollectionEntity, 'ReadWrite')
-    private readonly ethNftCollectionRepository: EntityRepository<EthNftCollectionEntity>,
-
-    @InjectRepository(WalletEntity, 'ReadWrite')
-    private readonly walletRepository: EntityRepository<WalletEntity>,
-
-    @InjectRepository(UserEntity, 'ReadWrite')
-    private readonly userRepository: EntityRepository<UserEntity>,
   ) {}
 
   async createNftCollection(
@@ -95,17 +80,17 @@ export class EthService {
         } seconds`,
       )
     }
-    const user = await this.userRepository.getReference(userId)
-    const wallet = await this.walletRepository.findOneOrFail({
-      id: walletId,
-      user: user,
-    })
+    const wallet = await this.dbReader(WalletEntity.table)
+      .where({ id: walletId, user_id: userId })
+      .first()
 
     if (!wallet.user || wallet.user.id != userId || wallet.chain != Chain.ETH) {
       throw new BadRequestException('invalid wallet id specified')
     }
 
-    const nftCollections = await this.ethNftCollectionRepository.findAll()
+    const nftCollections = await this.dbReader(
+      EthNftCollectionEntity.table,
+    ).select('*')
     let onChainTokens: Array<any> = []
     for (let i = 0; i < nftCollections.length; i++) {
       const result = (await this.getTokenData(wallet, nftCollections[i])).result
@@ -119,7 +104,10 @@ export class EthService {
         onChainToken,
       )
     })
-    const walletTokens = await this.ethNftRepository.find({ wallet: wallet })
+    const walletTokens = await this.dbReader(EthNftEntity.table)
+      .where({ id: walletId })
+      .first()
+
     const ethNfts: Array<EthNftEntity> = []
 
     // first, remove tokens from our db that have been removed from the user's wallet
@@ -136,7 +124,7 @@ export class EthService {
         ethNfts.push(walletToken)
       } else {
         // this token has been removed from the user's wallet on-chain and should be removed from the db
-        this.ethNftRepository.nativeDelete(walletToken)
+        this.dbWriter(EthNftEntity.table).where({ id: walletToken.id }).del()
       }
     })
 
@@ -146,16 +134,20 @@ export class EthService {
       nftCollectionMap.set(nftCollection.tokenAddress, nftCollection)
     })
     onChainTokenMap.forEach((onChainToken) => {
-      const ethNft = this.ethNftRepository.create({
-        wallet: wallet,
-        ethNftCollection: nftCollectionMap.get(onChainToken['token_address']),
-        tokenId: onChainToken['token_id'],
-        tokenHash: onChainToken['token_hash'],
-      })
+      const ethNft = new EthNftEntity()
+      ethNft.wallet = wallet
+      ethNft.ethNftCollection = nftCollectionMap.get(
+        onChainToken['token_address'],
+      )
+      ethNft.tokenId = onChainToken['token_id']
+      ethNft.tokenHash = onChainToken['token_hash']
+
       ethNfts.push(ethNft)
+
+      // TODO: make this into a transaction
+      this.dbWriter(EthNftEntity.table).insert(EthNftEntity.toDict(ethNft))
     })
 
-    this.ethNftRepository.flush()
     return new WalletResponseDto(wallet, ethNfts)
   }
 
