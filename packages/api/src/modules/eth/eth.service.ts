@@ -55,14 +55,12 @@ export class EthService {
     createEthNftCollectionDto: CreateEthNftCollectionDto,
   ): Promise<EthNftCollectionEntity> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const { knex, v4 } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
     const user = await knex(UserEntity.table).where({ id: userId }).first()
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
-    const id = v4()
     const data = EthNftCollectionEntity.toDict<EthNftCollectionEntity>({
-      id,
       ...createEthNftCollectionDto,
     })
 

@@ -31,15 +31,13 @@ export class CollectionService {
     userId: string,
     createPassDto: CreateCollectionDto,
   ): Promise<CreateCollectionDto> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
     const user = await knex(UserEntity.table).where({ id: userId }).first()
     if (!user?.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    const id = v4()
     const data = CollectionEntity.toDict<CollectionEntity>({
-      id,
       owner: userId,
       blockchain: 'solana',
       title: createPassDto.title,

@@ -331,8 +331,6 @@ export class SolService {
       symbol: 'MoP',
       uri_metadata: `https://cdn.passes-staging.com/nft/nft-${solNftId}`,
       tx_signature: txSignature,
-      created_at: new Date(),
-      updated_at: new Date(),
     })
     return new GetSolNftDto(solNftId, mintPubKey, metadataPda, txSignature)
   }
@@ -577,8 +575,6 @@ export class SolService {
       image_url: imageUrl,
       public_key: collectionPubKey.toString(),
       tx_signature: txSignature,
-      created_at: new Date(),
-      updated_at: new Date(),
     })
 
     return new GetSolNftCollectionDto(

@@ -36,16 +36,14 @@ export class ProfileService {
     userId: string,
     createProfileDto: CreateProfileDto,
   ): Promise<GetProfileDto> {
-    const { knex, v4 } = this.ReadOnlyDatabaseService
+    const { knex } = this.ReadOnlyDatabaseService
 
     const user = await knex(UserEntity.table).where({ id: userId }).first()
     if (!user || !user.is_creator) {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    const id = v4()
     const data = ProfileEntity.toDict<ProfileEntity>({
-      id,
       isActive: true,
       user: userId,
       ...createProfileDto,

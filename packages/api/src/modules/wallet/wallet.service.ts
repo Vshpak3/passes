@@ -140,7 +140,7 @@ export class WalletService {
     userId: string,
     createWalletDto: CreateWalletDto,
   ): Promise<WalletEntity> {
-    const { knex: readWriteKnex, v4 } = this.ReadWriteDatabaseService
+    const { knex: readWriteKnex } = this.ReadWriteDatabaseService
     const { knex: readKnex } = this.ReadOnlyDatabaseService
     const numWallets = (
       await readKnex(WalletEntity.table).where(
@@ -159,9 +159,7 @@ export class WalletService {
       walletAddress = walletAddress.toLowerCase()
     }
 
-    const id = v4()
     const data = WalletEntity.toDict<WalletEntity>({
-      id,
       user: userId,
     })
     const userWalletRedisKey = `walletservice.rawMessage.${userId},${walletAddress}`
@@ -217,9 +215,8 @@ export class WalletService {
       throw new BadRequestException('invalid wallet address')
     } else {
       const knex = this.ReadWriteDatabaseService.knex
-      const now = new Date()
       const knexResult = await knex('wallet')
-        .update({ user_id: userId, updated_at: now })
+        .update({ user_id: userId })
         .where('id', existingWallet.id)
       if (knexResult != 1) {
         throw new InternalServerErrorException(

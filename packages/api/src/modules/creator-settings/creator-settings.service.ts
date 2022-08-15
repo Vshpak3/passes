@@ -55,10 +55,8 @@ export class CreatorSettingsService {
     userId: string,
     createCreatorSettingsDto: CreateCreatorSettingsDto,
   ): Promise<CreatorSettingsEntity> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-    const id = v4()
+    const { knex } = this.ReadWriteDatabaseService
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
-      id,
       user: userId,
       ...createCreatorSettingsDto,
     })

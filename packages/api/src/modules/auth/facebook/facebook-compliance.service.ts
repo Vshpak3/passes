@@ -49,19 +49,16 @@ export class FacebookComplianceService {
     knex
       .transaction(async (trx) => {
         const id = uuid.v4()
-        const now = Date.now()
         const userId = decodedBody.user_id
 
         const request = {
           id,
           facebook_user_id: userId,
-          created_at: now,
-          updated_at: now,
         }
         await trx('facebook_deletion_request').insert(request)
 
         await trx('users')
-          .update({ email: null, updated_at: now })
+          .update({ email: null })
           .where('oauth_id', userId)
           .where('oauth_provider', 'facebook')
 

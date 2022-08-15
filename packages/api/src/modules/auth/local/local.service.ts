@@ -1,7 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 import bcrypt from 'bcrypt'
 import { generateFromEmail } from 'unique-username-generator'
-import * as uuid from 'uuid'
 
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
@@ -28,8 +27,6 @@ export class LocalAuthService {
       throw new ConflictException('User already exists with this email')
     }
 
-    const now = new Date()
-    const userId = uuid.v4()
     const passwordHash = await bcrypt.hash(
       createLocalUserDto.password,
       BCRYPT_SALT_ROUNDS,
@@ -37,15 +34,12 @@ export class LocalAuthService {
 
     await knex('users').insert(
       {
-        id: userId,
         email: createLocalUserDto.email,
         password_hash: passwordHash,
         username: generateFromEmail(createLocalUserDto.email, 3),
         is_kycverified: false,
         is_creator: false,
         is_disabled: false,
-        created_at: now,
-        updated_at: now,
       },
       '*',
     )

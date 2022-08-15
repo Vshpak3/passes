@@ -40,7 +40,7 @@ export class PassService {
     userId: string,
     createPassDto: CreatePassDto,
   ): Promise<GetPassDto> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     const user = await knex(UserEntity.table).where({ id: userId }).first()
     if (!user) {
@@ -54,9 +54,7 @@ export class PassService {
       createPassDto.imageUrl,
     )
 
-    const id = v4()
     const data = PassEntity.toDict<PassEntity>({
-      id,
       owner: userId,
       solNftCollection: solNftCollectionDto.id,
       title: createPassDto.title,

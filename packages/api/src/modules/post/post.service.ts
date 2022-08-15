@@ -35,17 +35,11 @@ export class PostService {
     const { knex } = this.ReadWriteDatabaseService
     knex
       .transaction(async (trx) => {
-        const now = new Date()
-
         const postId = uuid.v4()
         const post = {
           id: postId,
           user_id: userId,
           text: createPostDto.text,
-          num_likes: 0,
-          num_comments: 0,
-          created_at: now,
-          updated_at: now,
         }
 
         await knex
@@ -75,8 +69,6 @@ export class PostService {
             id: uuid.v4(),
             post_id: postId,
             pass_id: createPostDto.passes[i],
-            created_at: now,
-            updated_at: now,
           }
 
           await trx('post_required_pass').insert(postRequiredPass)

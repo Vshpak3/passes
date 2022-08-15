@@ -36,7 +36,7 @@ export class FollowService {
     userId: string,
     createFollowingDto: CreateFollowingDto,
   ): Promise<GetFollowingDto> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
+    const { knex } = this.ReadWriteDatabaseService
 
     const [subscriber, creator] = await Promise.all([
       knex(UserEntity.table).where({ id: userId }).first(),
@@ -56,9 +56,7 @@ export class FollowService {
       throw new BadRequestException(IS_NOT_CREATOR)
     }
 
-    const id = v4()
     const data = FollowEntity.toDict<FollowEntity>({
-      id,
       subscriber: userId,
       creator: createFollowingDto.creatorUserId,
       isActive: true,

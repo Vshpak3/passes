@@ -29,8 +29,11 @@ declare type ExcludeFunctions<
 export abstract class BaseEntity<O = void> {
   [OptionalProps]?: O | 'createdAt' | 'updatedAt'
 
-  @PrimaryKey({ customType: new UuidType() })
-  id = v4()
+  @PrimaryKey({
+    customType: new UuidType(),
+    defaultRaw: '(UUID_TO_BIN(UUID()))',
+  })
+  id: string
 
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
   createdAt: Date

@@ -20,10 +20,8 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-    const id = v4()
+    const { knex } = this.ReadWriteDatabaseService
     const data = UserEntity.toDict<UserEntity>({
-      id,
       ...createUserDto,
     })
 
@@ -52,10 +50,8 @@ export class UserService {
     provider: string,
     providerId: string,
   ): Promise<UserEntity> {
-    const { knex, v4 } = this.ReadWriteDatabaseService
-    const id = v4()
+    const { knex } = this.ReadWriteDatabaseService
     const data = UserEntity.toDict<UserEntity>({
-      id,
       email,
       username: generateFromEmail(email, 3),
       oauthId: providerId,
