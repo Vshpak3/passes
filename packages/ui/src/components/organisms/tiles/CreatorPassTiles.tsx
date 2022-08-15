@@ -52,7 +52,7 @@ const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
     return (
       <>
         <div
-          className="min-h-[213px] min-w-[260px] max-w-[260px] rounded bg-white p-4 "
+          className="min-h-[213px] min-w-[260px] max-w-[260px] rounded-lg bg-white p-4 "
           style={{
             backgroundImage: `url(${passData.imageUrl})`,
             backgroundSize: "cover"

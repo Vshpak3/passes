@@ -1,20 +1,20 @@
-import GridViewIcon from "public/icons/grid-view-icon.svg"
-import ListViewIcon from "public/icons/list-view-icon.svg"
+// import GridViewIcon from "public/icons/grid-view-icon.svg"
+// import ListViewIcon from "public/icons/list-view-icon.svg"
 import React from "react"
-import { Tabs } from "src/components/molecules"
+// import { Tabs } from "src/components/molecules"
 import { CreatorPassTiles } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 import { usePasses } from "src/hooks"
-const tabsArray = [
-  {
-    tabName: "Grid View",
-    icon: <GridViewIcon />
-  },
-  {
-    tabName: "List View",
-    icon: <ListViewIcon />
-  }
-]
+// const tabsArray = [
+//   {
+//     tabName: "Grid View",
+//     icon: <GridViewIcon />
+//   },
+//   {
+//     tabName: "List View",
+//     icon: <ListViewIcon />
+//   }
+// ]
 // const mockData = {
 //   passName: "Kaila Troy Pro",
 //   creatorName: "Kaila Troy",
@@ -48,7 +48,7 @@ const Passes = () => {
             </span>
             <hr className="mt-2 grow border-[#2C282D]" />
             {/* List View OOS right now, currently unused */}
-            <Tabs tabsArray={tabsArray} />
+            {/* <Tabs tabsArray={tabsArray} /> */}
           </div>
           <div className="flex flex-wrap gap-4">
             {subscriptionPasses?.map((pass) => {
@@ -78,7 +78,7 @@ const Passes = () => {
         </div>
         <div className="mb-16 text-base font-medium leading-[19px]">
           <span className="my-4 text-[24px] font-bold text-[#ffff]/90">
-            Draft Subscription / inactive passes
+            Archived Passes
           </span>
           <div className="my-4 flex flex-wrap gap-4">
             {/* {inactive passes goes here} */}

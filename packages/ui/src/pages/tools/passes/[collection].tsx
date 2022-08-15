@@ -133,8 +133,8 @@ const Collection = ({ options = {} }) => {
             <span className="text-[#ffff]/90">
               Create a new{" "}
               {router.query.passType === "subscription"
-                ? "Subsciption"
-                : "Lifetime Pass"}{" "}
+                ? "Subscription"
+                : "Lifetime"}{" "}
               Pass
             </span>
           </div>
