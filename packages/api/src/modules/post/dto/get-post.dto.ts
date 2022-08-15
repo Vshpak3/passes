@@ -27,14 +27,23 @@ export class GetPostDto {
   @ApiProperty()
   updatedAt: string
 
-  constructor(postEntity) {
-    this.id = postEntity.id
-    this.userId = postEntity.user_id
-    this.text = postEntity.text
-    this.content = postEntity.content.map((c) => new GetContentDto(c)) ?? []
-    this.numLikes = postEntity.num_likes
-    this.numComments = postEntity.num_comments
-    this.createdAt = postEntity.created_at.toISOString()
-    this.updatedAt = postEntity.updated_at.toISOString()
+  constructor(
+    id: string,
+    userId: string,
+    text: string,
+    content: GetContentDto[],
+    numLikes: number,
+    numComments: number,
+    createdAt: string,
+    updatedAt: string,
+  ) {
+    this.id = id
+    this.userId = userId
+    this.text = text
+    this.content = content
+    this.numLikes = numLikes
+    this.numComments = numComments
+    this.createdAt = createdAt
+    this.updatedAt = updatedAt
   }
 }

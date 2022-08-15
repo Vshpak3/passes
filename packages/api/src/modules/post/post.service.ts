@@ -1,5 +1,4 @@
 import {
-  ForbiddenException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -11,12 +10,8 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { ContentEntity } from '../content/entities/content.entity'
-import {
-  POST_DELETED,
-  POST_NOT_EXIST,
-  POST_NOT_OWNED_BY_USER,
-} from './constants/errors'
+import { GetContentDto } from '../content/dto/get-content.dto'
+import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
 import { CreatePostDto } from './dto/create-post.dto'
 import { GetPostDto } from './dto/get-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
@@ -62,11 +57,19 @@ export class PostService {
 
           const content = {
             id: contentId,
-            post_id: postId,
+            user_id: userId,
             url: createContentDto.url,
             content_type: createContentDto.contentType,
           }
           await trx('content').insert(content)
+
+          const contentPost = {
+            id: uuid.v4(),
+            content_id: contentId,
+            post_id: postId,
+          }
+
+          await trx('content_post').insert(contentPost)
         }
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
@@ -88,50 +91,104 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<GetPostDto> {
-    const [post, content] = await Promise.all([
-      this.dbReader(PostEntity.table)
-        .where({
-          id,
-        })
-        .first(),
-      this.dbReader(ContentEntity.table).where(
-        ContentEntity.toDict<ContentEntity>({
-          post: id,
-        }),
-      ),
-    ])
+    const postDbResult = await this.dbReader('post')
+      .leftJoin('content_post', 'content_post.post_id', 'post.id')
+      .leftJoin('content', 'content.id', 'content_post.post_id')
+      .select(
+        'post.id',
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        'post.user_id',
+        'post.text',
+        'post.num_likes',
+        'post.num_comments',
+        'post.created_at',
+        'post.updated_at',
+        'content.id as content_id',
+        'content.url',
+        'content.content_type',
+        'post.deleted_at',
+      )
+      .where('post.id', id)
 
-    if (!post) {
+    if (!postDbResult[0]) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (post.deletedAt) {
+    if (postDbResult[0].deleted_at) {
       throw new NotFoundException(POST_DELETED)
     }
 
-    return new GetPostDto({ ...post, content })
+    const postContent = postDbResult
+      .map((postContentRow) => {
+        if (
+          postContentRow.content_id &&
+          postContentRow.url &&
+          postContentRow.content_type
+        ) {
+          return new GetContentDto(
+            postContentRow.content_id,
+            postContentRow.url,
+            postContentRow.content_type,
+          )
+        } else {
+          return undefined
+        }
+      })
+      .filter(
+        (postContentDtoOrUndefined) => postContentDtoOrUndefined != undefined,
+      )
+
+    return new GetPostDto(
+      postDbResult[0].id,
+      postDbResult[0].user_id,
+      postDbResult[0].text,
+      postContent as GetContentDto[],
+      postDbResult[0].num_likes,
+      postDbResult[0].num_comments,
+      postDbResult[0].created_at.toISOString(),
+      postDbResult[0].updated_at.toISOString(),
+    )
   }
 
   async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const currentPost = await this.dbReader(PostEntity.table)
-      .where({ id: postId })
-      .first()
+    const postDbResult = await this.dbReader('post')
+      .select(
+        'post.id',
+        'post.user_id',
+        'post.deleted_at',
+        'post.text',
+        'post.num_likes',
+        'post.num_comments',
+        'post.created_at',
+        'post.updated_at',
+      )
+      .where('post.id', postId)
+      .where('post.user_id', userId)
 
-    if (!currentPost) {
+    if (!postDbResult[0]) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (currentPost.user_id !== userId) {
-      throw new ForbiddenException(POST_NOT_OWNED_BY_USER)
-    }
-
-    if (currentPost.deleted_at) {
+    if (postDbResult[0].deletedAt) {
       throw new NotFoundException(POST_DELETED)
     }
 
-    const data = PostEntity.toDict<PostEntity>(updatePostDto)
-    await this.dbWriter(PostEntity.table).update(data).where({ id: postId })
-    return new GetPostDto({ ...currentPost, ...data })
+    //TODO: actually update post here
+    console.log(updatePostDto)
+
+    //TODO: actually update post here
+    console.log(updatePostDto)
+
+    return new GetPostDto(
+      postDbResult[0].id,
+      postDbResult[0].user_id,
+      postDbResult[0].text,
+      [],
+      postDbResult[0].num_likes,
+      postDbResult[0].num_comments,
+      postDbResult[0].created_at.toISOString(),
+      postDbResult[0].updated_at.toISOString(),
+    )
   }
 
   async remove(userId: string, postId: string) {
@@ -141,13 +198,6 @@ export class PostService {
     if (!post) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
-
-    if (post.user.id !== userId) {
-      throw new ForbiddenException(POST_NOT_OWNED_BY_USER)
-    }
-
-    const data = PostEntity.toDict<PostEntity>({ deletedAt: new Date() })
-    await this.dbWriter(PostEntity.table).update(data).where({ id: postId })
-    return new GetPostDto({ ...post, ...data })
+    return true
   }
 }

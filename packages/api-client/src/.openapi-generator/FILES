@@ -39,6 +39,7 @@ models/CircleCreateCardDto.ts
 models/CircleEncryptionKeyDto.ts
 models/CircleMetaDataDto.ts
 models/CircleStatusDto.ts
+models/CreateBatchMessageDto.ts
 models/CreateChannelDto.ts
 models/CreateContentDto.ts
 models/CreateCreatorSettingsDto.ts

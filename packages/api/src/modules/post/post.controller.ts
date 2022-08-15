@@ -65,11 +65,14 @@ export class PostController {
   @ApiOperation({ summary: 'Deletes a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetPostDto,
+    type: undefined,
     description: 'A post was deleted',
   })
   @Delete(':id')
-  async remove(@Req() req: RequestWithUser, @Param('id') postId: string) {
-    return this.postService.remove(req.user.id, postId)
+  async remove(
+    @Req() req: RequestWithUser,
+    @Param('id') postId: string,
+  ): Promise<void> {
+    await this.postService.remove(req.user.id, postId)
   }
 }

@@ -15,6 +15,7 @@ export * from './CircleCreateCardDto';
 export * from './CircleEncryptionKeyDto';
 export * from './CircleMetaDataDto';
 export * from './CircleStatusDto';
+export * from './CreateBatchMessageDto';
 export * from './CreateChannelDto';
 export * from './CreateContentDto';
 export * from './CreateCreatorSettingsDto';

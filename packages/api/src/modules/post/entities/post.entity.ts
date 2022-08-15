@@ -7,7 +7,6 @@ import {
 } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { ContentEntity } from '../../content/entities/content.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PostRequiredPassEntity } from './postrequiredpass.entity'
 
@@ -18,9 +17,6 @@ export class PostEntity extends BaseEntity {
 
   @Property({ length: 400 })
   text: string
-
-  @OneToMany(() => ContentEntity, (content) => content.post)
-  content = new Collection<ContentEntity>(this)
 
   @OneToMany(
     () => PostRequiredPassEntity,

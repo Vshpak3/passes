@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
 import { SendMessageDto } from './dto/send-message.dto'
@@ -25,6 +26,23 @@ export class MessagesController {
     @Body() sendMessageDto: SendMessageDto,
   ): Promise<any> {
     return await this.messagesService.sendMessage(req.user.id, sendMessageDto)
+  }
+
+  @ApiOperation({ summary: 'Batch message' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: undefined,
+    description: 'Batch Message was enqueued',
+  })
+  @Post('/batch')
+  async massSend(
+    @Req() req: RequestWithUser,
+    @Body() createBatchMessageDto: CreateBatchMessageDto,
+  ): Promise<void> {
+    await this.messagesService.createBatchMessage(
+      req.user.id,
+      createBatchMessageDto,
+    )
   }
 
   @ApiOperation({ summary: 'Gets token' })

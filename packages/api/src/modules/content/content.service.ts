@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -8,8 +7,7 @@ import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { PostEntity } from '../post/entities/post.entity'
-import { CONTENT_NOT_EXIST, POST_NOT_EXIST } from './constants/errors'
+import { CONTENT_NOT_EXIST } from './constants/errors'
 import { CreateContentDto } from './dto/create-content.dto'
 import { GetContentDto } from './dto/get-content.dto'
 import { UpdateContentDto } from './dto/update-content.dto'
@@ -25,28 +23,19 @@ export class ContentService {
   ) {}
 
   async create(
-    postId: string,
+    userId: string,
     createContentDto: CreateContentDto,
   ): Promise<GetContentDto> {
-    const post = await this.dbReader(PostEntity.table)
-      .where('id', postId)
-      .select('id')
-      .first()
-
-    if (!post) {
-      throw new BadRequestException(POST_NOT_EXIST)
-    }
-
     try {
       const id = v4()
       const data = ContentEntity.toDict<ContentEntity>({
         id,
-        post: postId,
+        user: userId,
         ...createContentDto,
       })
       await this.dbWriter(ContentEntity.table).insert(data)
 
-      return new GetContentDto(data)
+      return new GetContentDto(data.id, data.url, data.content_Type)
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
@@ -61,7 +50,7 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto(content)
+    return new GetContentDto(content.id, content.url, content.content_Type)
   }
 
   async update(
@@ -77,6 +66,10 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto({ id: contentId, ...updateContentDto })
+    return new GetContentDto(
+      contentId,
+      updateContentDto.url as string,
+      updateContentDto.contentType as string,
+    )
   }
 }

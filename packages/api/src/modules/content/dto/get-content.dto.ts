@@ -5,18 +5,14 @@ export class GetContentDto {
   id: string
 
   @ApiProperty()
-  postId: string
-
-  @ApiProperty()
   url: string
 
   @ApiProperty()
   contentType: string
 
-  constructor(contentEntity) {
-    this.id = contentEntity.id
-    this.postId = contentEntity.post_id
-    this.url = contentEntity.url
-    this.contentType = contentEntity.content_type
+  constructor(id: string, url: string, contentType: string) {
+    this.id = id
+    this.url = url
+    this.contentType = contentType
   }
 }

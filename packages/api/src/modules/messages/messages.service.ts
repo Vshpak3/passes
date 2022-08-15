@@ -1,4 +1,8 @@
-import { BadRequestException } from '@nestjs/common'
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { StreamChat } from 'stream-chat'
 import * as uuid from 'uuid'
@@ -7,6 +11,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { UserEntity } from '../user/entities/user.entity'
+import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
 import { SendMessageDto } from './dto/send-message.dto'
@@ -82,6 +87,56 @@ export class MessagesService {
     return {
       id: createResponse.channel.id,
     }
+  }
+
+  async createBatchMessage(
+    userId: string,
+    createBatchMessageDto: CreateBatchMessageDto,
+  ): Promise<void> {
+    const listResult = this.dbReader('list')
+      .select('list.id')
+      .where('list.user_id', userId)
+      .where('list.id', createBatchMessageDto.list)
+
+    if (listResult[0] == undefined) {
+      throw new NotFoundException('list not found')
+    }
+
+    const contentResult = this.dbReader('content')
+      .select('content.id')
+      .where('content.user_id', userId)
+      .where('content.id', createBatchMessageDto.content)
+
+    if (contentResult[0] == undefined) {
+      throw new NotFoundException('content not found')
+    }
+
+    const batchMessageId = uuid.v4()
+    this.dbWriter
+      .transaction(async (trx) => {
+        await trx('batch_message').insert({
+          id: batchMessageId,
+          user_id: userId,
+          list_id: createBatchMessageDto.list,
+          text: createBatchMessageDto.text,
+        })
+
+        if (createBatchMessageDto.content != undefined) {
+          const contentBatchMessageIds: string[] = []
+          for (let i = 0; i < createBatchMessageDto.content.length; i++) {
+            contentBatchMessageIds.push(uuid.v4())
+            await trx('content_batch_message').insert({
+              id: contentBatchMessageIds[i],
+              content_id: createBatchMessageDto.content[i],
+              batch_message_id: batchMessageId,
+            })
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        throw new InternalServerErrorException()
+      })
   }
 
   async sendMessage(userId: string, sendMessageDto: SendMessageDto) {

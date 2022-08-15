@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CreateBatchMessageDto,
+    CreateBatchMessageDtoFromJSON,
+    CreateBatchMessageDtoToJSON,
     CreateChannelDto,
     CreateChannelDtoFromJSON,
     CreateChannelDtoToJSON,
@@ -31,6 +34,10 @@ import {
 
 export interface MessagesCreateChannelRequest {
     createChannelDto: CreateChannelDto;
+}
+
+export interface MessagesMassSendRequest {
+    createBatchMessageDto: CreateBatchMessageDto;
 }
 
 export interface MessagesSendRequest {
@@ -99,6 +106,38 @@ export class MessagesApi extends runtime.BaseAPI {
     async messagesGetToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<TokenDto> {
         const response = await this.messagesGetTokenRaw(initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Batch message
+     */
+    async messagesMassSendRaw(requestParameters: MessagesMassSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.createBatchMessageDto === null || requestParameters.createBatchMessageDto === undefined) {
+            throw new runtime.RequiredError('createBatchMessageDto','Required parameter requestParameters.createBatchMessageDto was null or undefined when calling messagesMassSend.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/messages/batch`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateBatchMessageDtoToJSON(requestParameters.createBatchMessageDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Batch message
+     */
+    async messagesMassSend(requestParameters: MessagesMassSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.messagesMassSendRaw(requestParameters, initOverrides);
     }
 
     /**

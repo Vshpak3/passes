@@ -30,12 +30,6 @@ export interface GetContentDto {
      * @type {string}
      * @memberof GetContentDto
      */
-    postId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetContentDto
-     */
     url: string;
     /**
      * 
@@ -56,7 +50,6 @@ export function GetContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': json['id'],
-        'postId': json['postId'],
         'url': json['url'],
         'contentType': json['contentType'],
     };
@@ -72,7 +65,6 @@ export function GetContentDtoToJSON(value?: GetContentDto | null): any {
     return {
         
         'id': value.id,
-        'postId': value.postId,
         'url': value.url,
         'contentType': value.contentType,
     };
