@@ -27,6 +27,10 @@ export const configValidationSchema = Joi.object({
 
   // -----------------------------------------------------------
 
+  S3_BUCKET_NFT: Joi.string().required(),
+
+  // -----------------------------------------------------------
+
   OAUTH_GOOGLE_ID: Joi.string().required(),
   OAUTH_GOOGLE_SECRET: Joi.string().required(),
   OAUTH_GOOGLE_REDIRECT_URL: Joi.string().uri().required(),
@@ -101,6 +105,9 @@ export const configConfiguration = async function (): Promise<
       sentry_dsn: getConfigValue('MONITORING_SENTRY_DSN'),
       sentry_enabled:
         (await getConfigValue('MONITORING_SENTRY_DSN')) != 'disable',
+    },
+    s3_bucket: {
+      nft: getConfigValue('S3_BUCKET_NFT'),
     },
     oauth: {
       google: {

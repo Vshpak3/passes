@@ -40,6 +40,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
 import * as SolHelper from './sol-helper'
+import { getAwsConfig } from '../../util/aws.util'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
@@ -105,25 +106,7 @@ export class SolService {
     this.connection = new Connection(
       this.configService.get('alchemy.sol_https_endpoint') as string,
     )
-    if (
-      process.env.NODE_ENV == 'dev' &&
-      process.env.AWS_ACCESS_KEY_ID &&
-      process.env.AWS_SECRET_ACCESS_KEY &&
-      process.env.AWS_SESSION_TOKEN
-    ) {
-      this.s3Client = new S3Client({
-        region: 'us-east-1',
-        credentials: {
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          sessionToken: process.env.AWS_SESSION_TOKEN,
-        },
-      })
-    } else {
-      this.s3Client = new S3Client({
-        region: configService.get('infra.region'),
-      })
-    }
+    this.s3Client = new S3Client(getAwsConfig(this.configService))
   }
 
   /**
@@ -193,7 +176,7 @@ export class SolService {
       throw 'The metadata has to contain the creators array.'
 
     const s3Input = {
-      Bucket: 'passes-stage-nft',
+      Bucket: this.configService.get('s3_bucket.nft'),
       Body: JSON.stringify(jsonMetadata),
       Key: `nft/nft-${solNftId}`,
     }

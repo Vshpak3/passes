@@ -10,32 +10,15 @@ import {
   LambdaFunctionError,
   LambdaResponseStatusError,
 } from './error/lambda.error'
+import { getAwsConfig } from '../../util/aws.util'
+
 @Injectable()
 export class LambdaService {
   client: LambdaClient
   prefix: string
   constructor(private readonly configService: ConfigService) {
-    if (
-      process.env.NODE_ENV == 'dev' &&
-      process.env.AWS_ACCESS_KEY_ID &&
-      process.env.AWS_SECRET_ACCESS_KEY &&
-      process.env.AWS_SESSION_TOKEN
-    ) {
-      this.client = new LambdaClient({
-        region: 'us-east-1',
-        credentials: {
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          sessionToken: process.env.AWS_SESSION_TOKEN,
-        },
-      })
-    } else {
-      this.client = new LambdaClient({
-        region: configService.get('infra.region'),
-      })
-    }
-
-    this.prefix = 'passes-' + 'stage'
+    this.client = new LambdaClient(getAwsConfig(this.configService))
+    this.prefix = 'passes-' + configService.get('infra.env')
   }
 
   async invoke(command: InvokeCommand): Promise<string> {
