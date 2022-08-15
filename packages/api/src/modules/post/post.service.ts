@@ -33,7 +33,8 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostDto,
   ): Promise<CreatePostDto> {
-    this.dbWriter
+    let trxErr: Error | undefined = undefined
+    await this.dbWriter
       .transaction(async (trx) => {
         const postId = uuid.v4()
         const post = {
@@ -83,10 +84,12 @@ export class PostService {
         }
       })
       .catch((err) => {
+        trxErr = err
         this.logger.error(err)
-        throw new InternalServerErrorException()
       })
-
+    if (trxErr) {
+      throw new InternalServerErrorException()
+    }
     return createPostDto
   }
 

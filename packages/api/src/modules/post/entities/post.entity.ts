@@ -24,11 +24,11 @@ export class PostEntity extends BaseEntity {
   )
   passesRequired = new Collection<PostRequiredPassEntity>(this)
 
-  @Property()
-  numLikes = 0
+  @Property({ default: 0 })
+  numLikes: number
 
-  @Property()
-  numComments = 0
+  @Property({ default: 0 })
+  numComments: number
 
   @Property()
   deletedAt?: Date
