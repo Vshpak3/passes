@@ -1,16 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreateCreatorSettingsDto } from './dto/create-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
-
 export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorSettingsService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -61,7 +65,7 @@ export class CreatorSettingsService {
       ...createCreatorSettingsDto,
     })
     const query = () => knex(CreatorSettingsEntity.table).insert(data)
-    await createOrThrowOnDuplicate(query, CREATOR_SETTINGS_EXISTS)
+    await createOrThrowOnDuplicate(query, this.logger, CREATOR_SETTINGS_EXISTS)
     return data as any
   }
 }

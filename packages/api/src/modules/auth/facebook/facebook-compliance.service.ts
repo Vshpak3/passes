@@ -1,11 +1,14 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import crypto from 'crypto'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
+import { Logger } from 'winston'
 
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
@@ -14,11 +17,14 @@ import { FacebookDeletionRequestDto } from '../dto/fb-deletion-request'
 @Injectable()
 export class FacebookComplianceService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+    private readonly configService: ConfigService,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
-    private readonly configService: ConfigService,
   ) {}
 
   async initiateDeletionRequest(signedRequest: string): Promise<string> {
@@ -65,7 +71,7 @@ export class FacebookComplianceService {
         return id
       })
       .catch((err) => {
-        console.log(err)
+        this.logger.error(err)
         throw new InternalServerErrorException()
       })
 

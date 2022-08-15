@@ -1,7 +1,6 @@
-import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { UserService } from '../user/user.service'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
@@ -14,12 +13,11 @@ describe('PaymentController', () => {
       controllers: [PaymentController],
       providers: [
         PaymentService,
-        ConfigService,
         {
           provide: UserService,
           useFactory: jest.fn(() => ({})),
         },
-        ...mockDatabaseService,
+        ...getBaseProviders(),
       ],
     }).compile()
 

@@ -35,12 +35,12 @@ import * as uuid from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { getAwsConfig } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
 import * as SolHelper from './sol-helper'
-import { getAwsConfig } from '../../util/aws.util'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
@@ -180,7 +180,6 @@ export class SolService {
       Body: JSON.stringify(jsonMetadata),
       Key: `nft/nft-${solNftId}`,
     }
-    console.log('s3input', `nft-${solNftId}`)
     await this.s3Client.send(new PutObjectCommand(s3Input))
 
     const creators: Creator[] = jsonMetadata.properties.creators.map((c) => ({

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { ProfileService } from './profile.service'
 
 describe('ProfileService', () => {
@@ -8,7 +8,7 @@ describe('ProfileService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProfileService, ...mockDatabaseService],
+      providers: [ProfileService, ...getBaseProviders()],
     }).compile()
 
     service = module.get<ProfileService>(ProfileService)

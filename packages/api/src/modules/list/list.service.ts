@@ -1,7 +1,9 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable sonarjs/no-duplicate-string */
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -18,6 +20,9 @@ export const LIST_MEMBER_EXISTS = 'List member already exists'
 @Injectable()
 export class ListService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -79,7 +84,7 @@ export class ListService {
       .leftJoin('list_member', 'list_member.list_id', '=', 'list.id')
       .where('list.user_id', userId)
       .groupBy('list.id')
-    console.log(dbResult)
+
     return new GetListsDto(
       dbResult.map((list) => {
         return new GetListDto(list.id, list.name, [], list.count)
@@ -105,7 +110,7 @@ export class ListService {
         list_id: addListMemberDto.list,
         user_id: addListMemberDto.user,
       })
-    await createOrThrowOnDuplicate(query, LIST_MEMBER_EXISTS)
+    await createOrThrowOnDuplicate(query, this.logger, LIST_MEMBER_EXISTS)
   }
 
   async removeListMember(

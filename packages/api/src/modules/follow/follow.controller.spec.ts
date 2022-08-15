@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { FollowController } from './follow.controller'
 import { FollowService } from './follow.service'
 
@@ -10,7 +10,7 @@ describe('FollowController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FollowController],
-      providers: [FollowService, ...mockDatabaseService],
+      providers: [FollowService, ...getBaseProviders()],
     }).compile()
 
     controller = module.get<FollowController>(FollowController)

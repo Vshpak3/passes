@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/mysql'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { ProfileController } from './profile.controller'
 import { ProfileService } from './profile.service'
 
@@ -13,11 +13,11 @@ describe('ProfileController', () => {
       controllers: [ProfileController],
       providers: [
         ProfileService,
+        ...getBaseProviders(),
         {
           provide: EntityManager,
           useFactory: jest.fn(() => ({})),
         },
-        ...mockDatabaseService,
       ],
     }).compile()
 

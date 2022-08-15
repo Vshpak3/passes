@@ -1,9 +1,12 @@
 import {
   BadRequestException,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -26,6 +29,9 @@ import { FollowEntity } from './entities/follow.entity'
 @Injectable()
 export class FollowService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -63,7 +69,7 @@ export class FollowService {
     })
     const query = () => knex(FollowEntity.table).insert(data)
 
-    createOrThrowOnDuplicate(query, FOLLOWING_ALREADY_EXIST)
+    await createOrThrowOnDuplicate(query, this.logger, FOLLOWING_ALREADY_EXIST)
     return new GetFollowingDto(data)
   }
 

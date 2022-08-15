@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-twitter'
+import { Logger } from 'winston'
 
 import { UserService } from '../../user/user.service'
 
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -29,7 +33,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
 
       return user
     } catch (err) {
-      console.error('Error occurred while validating:', err)
+      this.logger.error('Error occurred while validating:', err)
       return null
     }
   }

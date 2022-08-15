@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-google-oauth20'
+import { Logger } from 'winston'
 
 import { UserService } from '../../user/user.service'
 
 @Injectable()
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -24,7 +28,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       const { id, emails } = profile
 
       if (!emails) {
-        console.error('Failed to get emails from profile')
+        this.logger.error('Failed to get emails from profile')
         return null
       }
 
@@ -39,7 +43,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
           'beratsalija@gmail.com',
         ].includes(email)
       ) {
-        console.error('blocking non-moment email login')
+        this.logger.error('blocking non-moment email login')
         return null
       }
 
@@ -50,7 +54,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
 
       return user
     } catch (err) {
-      console.error('Error occurred while validating:', err)
+      this.logger.error('Error occurred while validating:', err)
       return null
     }
   }

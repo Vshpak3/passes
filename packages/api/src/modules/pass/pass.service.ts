@@ -1,9 +1,12 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 import { PublicKey } from '@solana/web3.js'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -27,6 +30,9 @@ import { PassOwnershipEntity } from './entities/pass-ownership.entity'
 @Injectable()
 export class PassService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -193,7 +199,7 @@ export class PassService {
 
     const query = () => knex(PassOwnershipEntity.table).insert(data)
 
-    await createOrThrowOnDuplicate(query, USER_ALREADY_OWNS_PASS)
+    await createOrThrowOnDuplicate(query, this.logger, USER_ALREADY_OWNS_PASS)
 
     return new GetPassOwnershipDto(pass.id, userId, expiresAt)
   }

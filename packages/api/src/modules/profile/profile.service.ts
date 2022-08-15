@@ -1,9 +1,12 @@
 import {
   BadRequestException,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -26,6 +29,9 @@ import { ProfileEntity } from './entities/profile.entity'
 @Injectable()
 export class ProfileService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -50,7 +56,7 @@ export class ProfileService {
     })
 
     const query = () => knex(ProfileEntity.table).insert(data)
-    await createOrThrowOnDuplicate(query, USER_HAS_PROFILE)
+    await createOrThrowOnDuplicate(query, this.logger, USER_HAS_PROFILE)
     return new GetProfileDto(data)
   }
 

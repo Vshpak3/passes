@@ -1,7 +1,6 @@
-import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { UserService } from '../user/user.service'
 import { PaymentService } from './payment.service'
 
@@ -12,12 +11,11 @@ describe('PaymentService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PaymentService,
-        ConfigService,
+        ...getBaseProviders(),
         {
           provide: UserService,
           useFactory: jest.fn(() => ({})),
         },
-        ...mockDatabaseService,
       ],
     }).compile()
 

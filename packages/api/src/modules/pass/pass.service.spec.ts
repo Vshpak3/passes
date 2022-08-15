@@ -2,10 +2,8 @@ import { getRepositoryToken } from '@mikro-orm/nestjs'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ConfigService } from 'aws-sdk'
 
-import {
-  mockDatabaseService,
-  repositoryMockFactory,
-} from '../../database/test-helpers'
+import { repositoryMockFactory } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletService } from '../wallet/wallet.service'
@@ -18,7 +16,7 @@ describe('PassService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PassService,
-        ...mockDatabaseService,
+        ...getBaseProviders(),
         {
           provide: WalletService,
           useFactory: jest.fn(() => ({})),

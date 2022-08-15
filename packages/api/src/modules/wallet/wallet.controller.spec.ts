@@ -1,12 +1,9 @@
 import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
-import {
-  mockDatabaseService,
-  repositoryMockFactory,
-} from '../../database/test-helpers'
+import { repositoryMockFactory } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { EthNftEntity } from '../eth/entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../eth/entities/eth-nft-collection.entity'
 import { EthService } from '../eth/eth.service'
@@ -25,8 +22,8 @@ describe('WalletController', () => {
       controllers: [WalletController],
       providers: [
         WalletService,
+        ...getBaseProviders(),
         EthService,
-        ConfigService,
         {
           provide: RedisLockService,
           useFactory: jest.fn(() => ({})),
@@ -55,7 +52,6 @@ describe('WalletController', () => {
           provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
-        ...mockDatabaseService,
       ],
     }).compile()
 

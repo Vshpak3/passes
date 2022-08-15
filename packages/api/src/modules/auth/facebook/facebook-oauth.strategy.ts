@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-facebook'
+import { Logger } from 'winston'
 
 import { UserService } from '../../user/user.service'
 
@@ -11,6 +13,8 @@ export class FacebookOauthStrategy extends PassportStrategy(
   'facebook',
 ) {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -34,7 +38,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
 
       return user
     } catch (err) {
-      console.error('Error occurred while validating:', err)
+      this.logger.error('Error occurred while validating:', err)
       return null
     }
   }

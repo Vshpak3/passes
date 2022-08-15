@@ -1,10 +1,13 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -22,6 +25,9 @@ import { PostEntity } from './entities/post.entity'
 @Injectable()
 export class PostService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -47,7 +53,7 @@ export class PostService {
           .into('post')
           .transacting(trx)
           .catch((err) => {
-            console.log(err)
+            this.logger.error(err)
             throw new InternalServerErrorException()
           })
 
@@ -75,7 +81,7 @@ export class PostService {
         }
       })
       .catch((err) => {
-        console.log(err)
+        this.logger.error(err)
         throw new InternalServerErrorException()
       })
 

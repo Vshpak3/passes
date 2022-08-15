@@ -6,11 +6,11 @@ import {
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
+import { getAwsConfig } from '../../util/aws.util'
 import {
   LambdaFunctionError,
   LambdaResponseStatusError,
 } from './error/lambda.error'
-import { getAwsConfig } from '../../util/aws.util'
 
 @Injectable()
 export class LambdaService {

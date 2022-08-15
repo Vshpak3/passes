@@ -3,10 +3,11 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
+import { WinstonModule } from 'nest-winston'
 import passport from 'passport'
 
 import { AppModule } from './app.module'
+import { loggingOptions } from './monitoring/logging/logging.options'
 
 const APPLICATION_PORT = 3001
 
@@ -25,8 +26,10 @@ export class App {
   }
 
   private async initApp() {
-    this.app = await NestFactory.create(AppModule)
-    this.app.useLogger(this.app.get(WINSTON_MODULE_NEST_PROVIDER))
+    this.app = await NestFactory.create(AppModule, {
+      // Use a custom logger here to format the bootstrap/startup logs
+      logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
+    })
     this.app.setGlobalPrefix('api', { exclude: [''] })
     this.app.useGlobalPipes(new ValidationPipe())
     this.app.enableCors()

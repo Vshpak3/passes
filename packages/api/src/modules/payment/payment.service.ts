@@ -1,6 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -90,12 +92,16 @@ export class PaymentService {
   circleConnector: CircleConnector
   circleMasterWallet: string
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly configService: ConfigService,
-    private readonly userService: UserService,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
     private readonly ReadWriteDatabaseService: DatabaseService,
+
+    private readonly userService: UserService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -1496,7 +1502,7 @@ export class PaymentService {
       try {
         await this.payoutCreator(creator.id)
       } catch (e) {
-        console.log(`Error paying out ${creator.id}: ${e}`)
+        this.logger.error(`Error paying out ${creator.id}: ${e}`)
       }
     })
   }

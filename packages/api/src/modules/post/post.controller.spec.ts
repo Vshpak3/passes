@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { mockDatabaseService } from '../../database/test-helpers'
+import { getBaseProviders } from '../../util/providers.test'
 import { PostController } from './post.controller'
 import { PostService } from './post.service'
 
@@ -10,7 +10,7 @@ describe('PostController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
-      providers: [PostService, ...mockDatabaseService],
+      providers: [PostService, ...getBaseProviders()],
     }).compile()
 
     controller = module.get<PostController>(PostController)

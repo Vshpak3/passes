@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import * as https from 'https'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -27,6 +29,19 @@ import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
 @Injectable()
 export class EthService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
+    @Database('ReadOnly')
+    private readonly ReadOnlyDatabaseService: DatabaseService,
+    @Database('ReadWrite')
+    private readonly ReadWriteDatabaseService: DatabaseService,
+
+    private readonly configService: ConfigService,
+
+    @Inject(RedisLockService)
+    protected readonly lockService: RedisLockService,
+
     @InjectRepository(EthNftEntity, 'ReadWrite')
     private readonly ethNftRepository: EntityRepository<EthNftEntity>,
 
@@ -38,16 +53,6 @@ export class EthService {
 
     @InjectRepository(UserEntity, 'ReadWrite')
     private readonly userRepository: EntityRepository<UserEntity>,
-
-    @Database('ReadOnly')
-    private readonly ReadOnlyDatabaseService: DatabaseService,
-    @Database('ReadWrite')
-    private readonly ReadWriteDatabaseService: DatabaseService,
-
-    private readonly configService: ConfigService,
-
-    @Inject(RedisLockService)
-    protected readonly lockService: RedisLockService,
   ) {}
 
   async createNftCollection(
@@ -66,7 +71,11 @@ export class EthService {
 
     const query = () => knex(EthNftCollectionEntity.table).insert(data)
 
-    await createOrThrowOnDuplicate(query, ETH_NFT_COLLECTION_EXISTS)
+    await createOrThrowOnDuplicate(
+      query,
+      this.logger,
+      ETH_NFT_COLLECTION_EXISTS,
+    )
     // TODO: fix return type
     return data as any
   }

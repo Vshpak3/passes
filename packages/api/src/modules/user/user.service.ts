@@ -1,5 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { generateFromEmail } from 'unique-username-generator'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -13,6 +15,9 @@ import { UserEntity } from './entities/user.entity'
 @Injectable()
 export class UserService {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+
     @Database('ReadOnly')
     private readonly ReadOnlyDatabaseService: DatabaseService,
     @Database('ReadWrite')
@@ -40,7 +45,7 @@ export class UserService {
 
     const query = () =>
       knex(UserEntity.table).update(data).where({ id: userId })
-    await createOrThrowOnDuplicate(query, USERNAME_TAKEN)
+    await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
 
     return { ...user, ...data }
   }
