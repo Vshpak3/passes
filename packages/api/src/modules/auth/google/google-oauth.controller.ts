@@ -10,6 +10,8 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
+import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { S3Service } from '../../s3/s3.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
@@ -23,6 +25,7 @@ export class GoogleOauthController {
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
+    private readonly s3Service: S3Service,
   ) {}
 
   @ApiOperation({ summary: 'Start the google oauth flow' })
@@ -47,15 +50,6 @@ export class GoogleOauthController {
   @Get('redirect')
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as UserEntity
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-
-    return res.redirect(
-      this.configService.get('clientUrl') +
-        '/auth/success?accessToken=' +
-        accessToken +
-        '&refreshToken=' +
-        refreshToken,
-    )
+    return redirectAfterSuccessfulLogin.bind(this)(res, user)
   }
 }

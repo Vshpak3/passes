@@ -7,6 +7,7 @@ export * from './AuthLocalApi';
 export * from './AuthTwitterApi';
 export * from './CollectionApi';
 export * from './CommentApi';
+export * from './ContentApi';
 export * from './CreatorSettingsApi';
 export * from './EthApi';
 export * from './FeedApi';

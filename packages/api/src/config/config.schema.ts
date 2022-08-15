@@ -28,6 +28,8 @@ export const configValidationSchema = Joi.object({
   // -----------------------------------------------------------
 
   S3_BUCKET_NFT: Joi.string().required(),
+  S3_BUCKET_PUBLIC: Joi.string().required(),
+  S3_BUCKET_USERCONTENT: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -108,6 +110,8 @@ export const configConfiguration = async function (): Promise<
     },
     s3_bucket: {
       nft: getConfigValue('S3_BUCKET_NFT'),
+      public: getConfigValue('S3_BUCKET_PUBLIC'),
+      usercontent: getConfigValue('S3_BUCKET_USERCONTENT'),
     },
     oauth: {
       google: {
@@ -137,6 +141,8 @@ export const configConfiguration = async function (): Promise<
       baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),
       keyPairId: getConfigValue('CLOUDFRONT_KEY_PAIR_ID'),
       privateKey: getConfigValue('CLOUDFRONT_PRIVATE_KEY'),
+      signedUrlExpirationTime: 1000 * 60 * 5, // 5 minutes expiration time in ms
+      signedCookieExpirationTime: 1000 * 60 * 60 * 24, // 1 day expiration time in ms
       cookieOptions: {
         domain: getConfigValue('CLOUDFRONT_COOKIE_DOMAIN'),
         path: '/',

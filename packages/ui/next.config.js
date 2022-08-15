@@ -2,7 +2,12 @@
 
 const nextConfig = {
   images: {
-    domains: [process.env.NEXT_PUBLIC_DEMO_BUCKET, "upload.wikimedia.org"]
+    domains: [
+      process.env.NEXT_PUBLIC_DEMO_BUCKET,
+      "cdn.passes.com",
+      "cdn.passes-staging.com",
+      "upload.wikimedia.org"
+    ]
   },
   reactStrictMode: false,
   i18n: {

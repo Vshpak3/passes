@@ -13,6 +13,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
+import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
 import { UserEntity } from '../../user/entities/user.entity'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { FacebookDeletionConfirmationDto } from '../dto/fb-deletion-confirmation'
@@ -54,16 +55,7 @@ export class FacebookOauthController {
   @Get('redirect')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as UserEntity
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-
-    return res.redirect(
-      this.configService.get('clientUrl') +
-        '/auth/success?accessToken=' +
-        accessToken +
-        '&refreshToken=' +
-        refreshToken,
-    )
+    return redirectAfterSuccessfulLogin.bind(this)(res, user)
   }
 
   @ApiOperation({

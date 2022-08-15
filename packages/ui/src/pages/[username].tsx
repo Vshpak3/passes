@@ -9,6 +9,7 @@ import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 import getConnection from "src/helpers/demo"
+import { uploadFiles } from "src/helpers/uploadFile"
 import { useCreatorProfile, usePasses, useUser } from "src/hooks"
 
 const mockCreator = {
@@ -125,9 +126,7 @@ const Username = (props: GetProfileDto) => {
       [profileImage, profileCoverImage].map((files) => {
         if (!files?.length) return Promise.resolve(null)
         const file = files[0]
-        const url = URL.createObjectURL(file)
-        // TODO: upload Images to public bucket
-        return Promise.resolve(url)
+        return uploadFiles(file, "profile")
       })
     )
     const newValues = { ...rest }

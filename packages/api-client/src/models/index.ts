@@ -42,6 +42,7 @@ export * from './GetPassOwnershipDto';
 export * from './GetPassesDto';
 export * from './GetPostDto';
 export * from './GetProfileDto';
+export * from './GetSignedUrlDto';
 export * from './GetSolNftCollectionDto';
 export * from './GetSolNftDto';
 export * from './GetUserDto';

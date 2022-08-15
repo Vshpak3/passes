@@ -6,6 +6,7 @@ apis/AuthLocalApi.ts
 apis/AuthTwitterApi.ts
 apis/CollectionApi.ts
 apis/CommentApi.ts
+apis/ContentApi.ts
 apis/CreatorSettingsApi.ts
 apis/EthApi.ts
 apis/FeedApi.ts
@@ -66,6 +67,7 @@ models/GetPassOwnershipDto.ts
 models/GetPassesDto.ts
 models/GetPostDto.ts
 models/GetProfileDto.ts
+models/GetSignedUrlDto.ts
 models/GetSolNftCollectionDto.ts
 models/GetSolNftDto.ts
 models/GetUserDto.ts

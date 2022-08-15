@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
+import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { LocalUserLoginDto } from '../dto/local-user-login'
@@ -60,15 +61,6 @@ export class LocalAuthController {
       throw new UnauthorizedException('Invalid credentials')
     }
 
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-
-    return res.redirect(
-      this.configService.get('clientUrl') +
-        '/auth/success?accessToken=' +
-        accessToken +
-        '&refreshToken=' +
-        refreshToken,
-    )
+    return redirectAfterSuccessfulLogin.bind(this)(res, user)
   }
 }

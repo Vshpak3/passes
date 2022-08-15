@@ -29,6 +29,7 @@ import { PaymentModule } from './modules/payment/payment.module'
 import { PostModule } from './modules/post/post.module'
 import { ProfileModule } from './modules/profile/profile.module'
 import { RedisLockModule } from './modules/redisLock/redisLock.module'
+import { S3Module } from './modules/s3/s3.module'
 import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
@@ -68,6 +69,7 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
     PostModule,
     ProfileModule,
     RedisLockModule,
+    S3Module,
     SettingsModule,
     SolModule,
     UserModule,

@@ -1,4 +1,3 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import {
   createCreateMasterEditionV3Instruction,
   createCreateMetadataAccountV2Instruction,
@@ -35,8 +34,8 @@ import * as uuid from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { getAwsConfig } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
+import { S3Service } from '../s3/s3.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
@@ -92,7 +91,6 @@ export type Creator = Readonly<{
 
 export class SolService {
   connection: Connection
-  s3Client: S3Client
   constructor(
     private readonly configService: ConfigService,
 
@@ -102,11 +100,11 @@ export class SolService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly lambdaService: LambdaService,
+    private readonly s3Service: S3Service,
   ) {
     this.connection = new Connection(
       this.configService.get('alchemy.sol_https_endpoint') as string,
     )
-    this.s3Client = new S3Client(getAwsConfig(this.configService))
   }
 
   /**
@@ -183,7 +181,7 @@ export class SolService {
       Body: JSON.stringify(jsonMetadata),
       Key: `nft/nft-${solNftId}`,
     }
-    await this.s3Client.send(new PutObjectCommand(s3Input))
+    await this.s3Service.putObject(s3Input)
 
     const creators: Creator[] = jsonMetadata.properties.creators.map((c) => ({
       address: new PublicKey(c.address as PublicKeyInitData),
@@ -445,7 +443,7 @@ export class SolService {
         uses: null,
         collection: null,
       }
-      await this.s3Client.send(new PutObjectCommand(s3Input))
+      await this.s3Service.putObject(s3Input)
     }
     // Minting logic
     const associatedTokenAccount = await getAssociatedTokenAddress(
