@@ -17,7 +17,7 @@ export const Post = ({ profile, post }) => {
   const [postPinned, setPostPinned] = useState(false)
   return (
     //this is the rounded container
-    <FormContainer>
+    <FormContainer className="min-h-min">
       <PostProfileAvatar
         post={post}
         profile={profile}
@@ -91,8 +91,8 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
 
 export const PostTextContent = ({ post }) => (
   <div className="flex flex-col items-start">
-    <p className="text-start text-base font-medium md:pl-[78px] md:pr-[30px]">
-      {post.caption}
+    <p className="break-normal break-all text-start text-base font-medium md:pl-[78px] md:pr-[30px]">
+      {post.caption ? post.caption : post.text}
     </p>
     {post.fundraiser && (
       <div className="flex pt-3 md:pl-[78px]">
@@ -130,42 +130,46 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
         </div>
       )}
     </div>
-    <img // eslint-disable-line @next/next/no-img-element
-      src={post.imgUrl}
-      alt=""
-      className="w-full rounded-[20px] object-cover shadow-xl"
-    />
+    {post.content?.length > 0 && (
+      <img // eslint-disable-line @next/next/no-img-element
+        src={post.content[0].url}
+        alt=""
+        className="w-full rounded-[20px] object-cover shadow-xl"
+      />
+    )}
   </div>
 )
 
 export const PostEngagement = ({ post }) => (
-  <div className="flex w-full items-center justify-between">
-    <div className="flex items-start gap-[45px] p-0">
-      <div className="flex cursor-pointer items-center gap-[5px] p-0">
-        <HeartIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-          {compactNumberFormatter(post.likesCount)}
-        </span>
+  <div className="flex w-full items-center justify-end">
+    <div className="flex w-full items-center justify-between">
+      <div className="flex items-start gap-[45px] p-0">
+        <div className="flex cursor-pointer items-center gap-[5px] p-0">
+          <HeartIcon />
+          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            {compactNumberFormatter(post.likesCount)}
+          </span>
+        </div>
+        <div className="flex cursor-pointer items-center gap-[5px] p-0">
+          <MessagesIcon />
+          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            {compactNumberFormatter(post.commentsCount)}
+          </span>
+        </div>
+        <div className="flex cursor-pointer items-center gap-[5px] p-0">
+          <ShareIcon />
+          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            {compactNumberFormatter(post.sharesCount)}
+          </span>
+        </div>
       </div>
-      <div className="flex cursor-pointer items-center gap-[5px] p-0">
-        <MessagesIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-          {compactNumberFormatter(post.commentsCount)}
-        </span>
-      </div>
-      <div className="flex cursor-pointer items-center gap-[5px] p-0">
-        <ShareIcon />
-        <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-          {compactNumberFormatter(post.sharesCount)}
-        </span>
-      </div>
+      {post.price > 0 && (
+        <div className="flex items-center gap-2 pr-2">
+          <CostIcon />
+          <span className="text-[16px] leading-[25px]">{post.price}</span>
+        </div>
+      )}
     </div>
-    {post.price > 0 && (
-      <div className="flex items-center gap-2 pr-2">
-        <CostIcon />
-        <span className="text-[16px] leading-[25px]">{post.price}</span>
-      </div>
-    )}
   </div>
 )
 

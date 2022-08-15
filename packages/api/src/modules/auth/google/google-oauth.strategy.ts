@@ -41,6 +41,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
           'mailto.jtang@gmail.com',
           'jmaathur@gmail.com',
           'beratsalija@gmail.com',
+          'kelmendtairi@gmail.com',
         ].includes(email)
       ) {
         this.logger.error('blocking non-moment email login')

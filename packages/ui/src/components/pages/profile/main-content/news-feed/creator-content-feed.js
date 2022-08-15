@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Post } from "./post"
@@ -12,7 +12,9 @@ const mockPost = {
   date: "2022-07-23T19:00:00.000Z",
   caption:
     "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
-  imgUrl: "/pages/profile/profile-post-photo.png"
+  content: [
+    { url: "/pages/profile/profile-post-photo.png", type: "image/jpeg" }
+  ]
 }
 
 const CreatorContentFeed = ({ profile, existingPosts }) => {
@@ -25,21 +27,34 @@ const CreatorContentFeed = ({ profile, existingPosts }) => {
   }
 
   return (
-    <div className="flex overflow-y-auto md:h-[1150px]">
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={getMorePost}
-        hasMore={hasMore}
-        loader={<h3> Loading...</h3>}
-        endMessage={<h4>Nothing more to show</h4>}
-      >
-        {posts.map((post, index) => (
-          <div key={index} className="flex py-3">
-            <Post key={`post_${index}`} profile={profile} post={post} />
-          </div>
-        ))}
-      </InfiniteScroll>
-    </div>
+    <Fragment>
+      {/*  Overwrites style library's outer div unaccessible component */}
+      <style>
+        {`
+          .infinite-scroll-component__outerdiv {
+            width: 100%;
+          }
+        `}
+      </style>
+
+      <div className="flex w-full overflow-y-auto md:h-[1150px]">
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={getMorePost}
+          hasMore={hasMore}
+          loader={<h3> Loading...</h3>}
+          endMessage={<h4>Nothing more to show</h4>}
+          className="w-full"
+          style={{ width: "100%" }}
+        >
+          {posts.map((post, index) => (
+            <div key={index} className="flex w-full py-3">
+              <Post key={`post_${index}`} profile={profile} post={post} />
+            </div>
+          ))}
+        </InfiniteScroll>
+      </div>
+    </Fragment>
   )
 }
 

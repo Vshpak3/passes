@@ -1,5 +1,7 @@
 import { GetProfileDto, ProfileApi } from "@passes/api-client"
+import { UserApi } from "@passes/api-client/apis"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import MainContent from "src/components/pages/profile/main-content"
 import Passes from "src/components/pages/profile/passes"
@@ -7,6 +9,8 @@ import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 import getConnection from "src/helpers/demo"
+
+import { useCreatorProfile, useUser } from "../hooks"
 
 const mockCreator = {
   id: "@drachnik",
@@ -68,7 +72,10 @@ const mockCreator = {
       date: "2022-07-23T19:00:00.000Z",
       caption:
         "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
-      imgUrl: "/pages/profile/profile-post-photo.png"
+
+      content: [
+        { url: "/pages/profile/profile-post-photo.png", type: "image/jpeg" }
+      ]
     },
     {
       likesCount: 40,
@@ -83,21 +90,36 @@ const mockCreator = {
         "Tip $10 to get a video of me sharing my best tricks. Tip $25 to get a video and be able to ask a question that I’ll answer. Or tip $50 and I will make a custom video answering your question!",
       fundraiser: true,
       imgUrl: "/pages/profile/profile-post-photo.png",
-      images: [
-        "/pages/profile/fundraiser1.png",
-        "/pages/profile/fundraiser2.png"
+      content: [
+        {
+          url: "/pages/profile/fundraiser1.png",
+          type: "image/jpeg"
+        },
+        {
+          url: "/pages/profile/fundraiser2.png",
+          type: "image/jpeg"
+        }
       ]
     }
   ]
 }
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Username = (props: GetProfileDto) => {
   const [editProfile, setEditProfile] = useState(false)
   const [profile, setProfile] = useState(props)
 
+  // const [posts, setPosts] = useState([])
   const onEditProfile = () => {
     setEditProfile(true)
   }
+  const {
+    query: { username: _username }
+  } = useRouter()
+  const username = _username as string
+  const { user: { username: loggedInUsername } = {} } = useUser()
+  const ownsProfile = loggedInUsername === username
+  const { posts = [] } = useCreatorProfile({ username })
 
   const onSubmit = async (values: Record<string, any>) => {
     const { profileImage, profileCoverImage, ...rest } = values
@@ -115,9 +137,20 @@ const Username = (props: GetProfileDto) => {
     if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
     if (profileCoverImageUrl)
       newValues.profileCoverImageUrl = profileCoverImageUrl
+    await updateUsername(rest.userId)
+
     setProfile(newValues as any)
     // TODO: Update Profile database
     setEditProfile(false)
+  }
+
+  const updateUsername = async (username: string) => {
+    const api = new UserApi()
+    await api.userSetUsername({
+      updateUsernameDto: {
+        username
+      }
+    })
   }
 
   return (
@@ -125,13 +158,25 @@ const Username = (props: GetProfileDto) => {
       <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
         <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
           {profile?.id && (
-            <ProfileDetails profile={profile} onEditProfile={onEditProfile} />
+            <ProfileDetails
+              profile={profile}
+              onEditProfile={onEditProfile}
+              username={username}
+              ownsProfile={ownsProfile}
+            />
           )}
           {editProfile && <EditProfile profile={profile} onSubmit={onSubmit} />}
-          {profile?.id && <Passes profile={profile} />}
+          {profile?.id && <Passes profile={mockCreator} />}
         </div>
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          {profile?.id && <MainContent profile={profile} />}
+          {profile?.id && (
+            <MainContent
+              profile={profile}
+              ownsProfile={ownsProfile}
+              posts={posts}
+              username={username}
+            />
+          )}
         </div>
       </div>
     </>

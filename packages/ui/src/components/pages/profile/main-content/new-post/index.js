@@ -32,7 +32,7 @@ const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
-export const NewPost = ({ passes = [] }) => {
+export const NewPost = ({ passes = [], createPost }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState([])
   const [selectedMedia, setSelectedMedia] = useState()
@@ -51,7 +51,8 @@ export const NewPost = ({ passes = [] }) => {
     getValues,
     setValue,
     watch,
-    control
+    control,
+    reset
   } = useForm({
     defaultValues: {}
   })
@@ -88,9 +89,21 @@ export const NewPost = ({ passes = [] }) => {
     setSelectedPasses(selectedPasses.filter((pass) => pass.id !== id))
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const values = getValues()
-    console.log(values)
+    const content = await Promise.all(
+      files.map(() => {
+        // file will be used after content is fixed on backend so we can upload media to S3
+        const url =
+          "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
+        // TODO: upload Images to public bucket
+        return Promise.resolve({ url, contentType: "image/jpeg" })
+      })
+    )
+    setExtended(false)
+
+    createPost({ ...values, content })
+    reset()
   }
 
   const onFileInputChange = (event) => {

@@ -1,16 +1,47 @@
+import { PostApi } from "@passes/api-client"
 import BellIcon from "public/icons/profile-bell-icon.svg"
 import React, { useState } from "react"
 import { CoverButton } from "src/components/atoms"
+import { wrapApi } from "src/helpers/wrapApi"
+import { useSWRConfig } from "swr"
 
 import { NewPost } from "./new-post"
 import NewsFeedNavigation from "./new-post/navigation"
 import CreatorContentFeed from "./news-feed/creator-content-feed"
 
-const MainContent = ({ profile }) => {
+const MainContent = ({ profile, ownsProfile, posts, username }) => {
   const [followed, setFollowed] = useState(false)
+  const { mutate } = useSWRConfig()
+  const createPost = async (values) => {
+    const api = wrapApi(PostApi)
+    mutate(
+      [`/post/creator/`, username],
+      async () =>
+        await api.postCreate({
+          createPostDto: {
+            passes: [],
+            content: values.content,
+            text: values.text
+          }
+        }),
+      {
+        populateCache: (post, previousPosts) => {
+          return {
+            count: previousPosts.count + 1,
+            cursor: previousPosts.cursor,
+            posts: [post, ...previousPosts.posts]
+          }
+        },
+        // Since the API already gives us the updated information,
+        // we don't need to revalidate here.
+        revalidate: false
+      }
+    )
+  }
+
   return (
     <>
-      <div className="hidden justify-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 backdrop-blur-[100px] md:flex md:flex-col ">
+      <div className="hidden w-full justify-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 backdrop-blur-[100px] md:flex md:flex-col ">
         <div className="relative flex max-h-[134px] items-center justify-center rounded-t-[20px]">
           <img // eslint-disable-line @next/next/no-img-element
             src={profile.profileCoverImageUrl}
@@ -52,9 +83,11 @@ const MainContent = ({ profile }) => {
       <div className="min-h-12 hidden sm:flex  ">
         <NewsFeedNavigation />
       </div>
-      <NewPost passes={profile?.passes} />
-      {profile?.posts && (
-        <CreatorContentFeed profile={profile} existingPosts={profile.posts} />
+      {ownsProfile && (
+        <NewPost passes={profile?.passes} createPost={createPost} />
+      )}
+      {posts?.posts?.length > 0 && (
+        <CreatorContentFeed profile={profile} existingPosts={posts.posts} />
       )}
     </>
   )
