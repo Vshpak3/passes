@@ -21,7 +21,8 @@ if [[ ${input} == 'full' ]] ; then
   log 'Spinning back up docker containers'
   docker compose up --detach
 
-  echo 'Waiting for MySQL docker container to be ready'
+  log 'Waiting for MySQL docker container to be ready'
+  sleep 5
   while ! MYSQL_PWD=root mysqladmin ping -h 127.0.0.1 -P 3306 -u root --silent ; do
       sleep 1
   done
