@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { generateFromEmail } from 'unique-username-generator'
+import * as uuid from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
@@ -55,7 +56,9 @@ export class UserService {
     provider: string,
     providerId: string,
   ): Promise<UserEntity> {
+    const id = uuid.v4()
     const data = UserEntity.toDict<UserEntity>({
+      id,
       email,
       username: generateFromEmail(email, 3),
       oauthId: providerId,
