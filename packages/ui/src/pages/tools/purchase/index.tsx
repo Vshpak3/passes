@@ -26,7 +26,7 @@ const Purchase = () => {
   })
 
   return (
-    <div className="mx-auto -mt-[205px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+    <div className="mx-auto -mt-[160px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-3 mx-auto w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
         {/* <CreatorPassTiles passData={mockData} /> */}
       </div>

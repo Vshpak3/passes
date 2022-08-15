@@ -19,7 +19,7 @@ const Passes = () => {
   })
 
   return (
-    <div className="mx-auto -mt-[205px] grid grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+    <div className="mx-auto -mt-[160px] grid grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       {creatorPasses && creatorPasses.passes.length > 0 ? (
         <>
           <div className="my-4 flex gap-x-4">

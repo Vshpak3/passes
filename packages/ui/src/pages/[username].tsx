@@ -155,7 +155,7 @@ const Username = (props: GetProfileDto) => {
 
   return (
     <>
-      <div className="mx-auto -mt-[205px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
+      <div className="mx-auto -mt-[160px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
         <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
           {profile?.id && (
             <ProfileDetails

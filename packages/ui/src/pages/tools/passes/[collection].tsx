@@ -127,7 +127,7 @@ const Collection = ({ options = {} }) => {
     return null
   } else
     return (
-      <div className="mx-auto -mt-[205px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+      <div className="mx-auto -mt-[160px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
         <div className="col-span-10 h-full w-full">
           <div className="my-4 text-center text-[24px] text-base font-bold leading-[19px]">
             <span className="text-[#ffff]/90">
