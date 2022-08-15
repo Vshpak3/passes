@@ -10,7 +10,6 @@ import { usePasses } from "src/hooks"
 const Passes = () => {
   const router = useRouter()
   const { creatorPasses } = usePasses()
-  console.log(creatorPasses)
   const subscriptionPasses = creatorPasses?.passes.filter((pass) => {
     return pass.type === "subscription"
   })

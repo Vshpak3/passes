@@ -9,8 +9,7 @@ import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 import getConnection from "src/helpers/demo"
-
-import { useCreatorProfile, useUser } from "../hooks"
+import { useCreatorProfile, usePasses, useUser } from "src/hooks"
 
 const mockCreator = {
   id: "@drachnik",
@@ -34,34 +33,34 @@ const mockCreator = {
   likes: 22900,
   isVerified: true,
   isActive: true,
-  passes: [
-    {
-      title: "Basic Supporter",
-      description:
-        "See exclusive content at my most basic tier. I give broad advice to help your brand.",
-      imgUrl: "/pages/profile/pass-example-1.png",
-      type: "Free",
-      price: 0,
-      id: "pass_0"
-    },
-    {
-      title: "Monthly Ambassador",
-      description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
-      imgUrl: "/pages/profile/pass-example-2.png",
-      type: "Monthly",
-      price: 20,
-      id: "pass_1"
-    },
-    {
-      title: "Lifetime Pass",
-      description:
-        "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
-      imgUrl: "/pages/profile/pass-example-3.png",
-      type: "Lifetime",
-      price: 2000,
-      id: "pass_2"
-    }
-  ],
+  // passes: [
+  //   {
+  //     title: "Basic Supporter",
+  //     description:
+  //       "See exclusive content at my most basic tier. I give broad advice to help your brand.",
+  //     imgUrl: "/pages/profile/pass-example-1.png",
+  //     type: "Free",
+  //     price: 0,
+  //     id: "pass_0"
+  //   },
+  //   {
+  //     title: "Monthly Ambassador",
+  //     description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
+  //     imgUrl: "/pages/profile/pass-example-2.png",
+  //     type: "Monthly",
+  //     price: 20,
+  //     id: "pass_1"
+  //   },
+  //   {
+  //     title: "Lifetime Pass",
+  //     description:
+  //       "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
+  //     imgUrl: "/pages/profile/pass-example-3.png",
+  //     type: "Lifetime",
+  //     price: 2000,
+  //     id: "pass_2"
+  //   }
+  // ],
   posts: [
     {
       likesCount: 1400,
@@ -104,11 +103,10 @@ const mockCreator = {
   ]
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Username = (props: GetProfileDto) => {
+  const { creatorPasses } = usePasses(props.userId)
   const [editProfile, setEditProfile] = useState(false)
   const [profile, setProfile] = useState(props)
-
   // const [posts, setPosts] = useState([])
   const onEditProfile = () => {
     setEditProfile(true)
@@ -166,7 +164,8 @@ const Username = (props: GetProfileDto) => {
             />
           )}
           {editProfile && <EditProfile profile={profile} onSubmit={onSubmit} />}
-          {profile?.id && <Passes profile={mockCreator} />}
+          {/* passes here */}
+          {profile?.id && <Passes creatorPasses={creatorPasses} />}
         </div>
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.id && (
@@ -205,6 +204,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })
+    console.log("getProfile", profile)
     // TODO: Hack to remove undefined from generated API typings
     const props = JSON.parse(JSON.stringify(profile))
     return {
@@ -215,6 +215,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       revalidate: 5 * 60 // In seconds
     }
   } catch (err) {
+    console.log("Error found", err)
     return { props: {} }
   }
 }

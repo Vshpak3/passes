@@ -3,15 +3,15 @@ import { useUser } from "src/hooks"
 import useSWR from "swr"
 
 import { wrapApi } from "../helpers/wrapApi"
-const usePasses = () => {
+const usePasses = (userId = "") => {
   const { user } = useUser()
   const { data: creatorPasses, isValidating: isLoadingCreatorPasses } = useSWR(
-    user ? ["/pass/created/", user && user.id] : null,
+    user ? ["/pass/created/", userId] : null,
     async () => {
       if (user) {
-        const api = new PassApi()
+        const api = wrapApi(PassApi)
         return await api.passGetCreatorPasses({
-          creatorId: user.id
+          creatorId: userId
         })
       }
     }
