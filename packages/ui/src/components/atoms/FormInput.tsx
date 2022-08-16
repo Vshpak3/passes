@@ -35,6 +35,8 @@ type FormInputProps = {
   textPosition?: string
   tagsFromServer?: string[]
   iconAlign?: EIcon
+  onFocus?: (event: Event) => void
+  value?: string
 }
 const FormInput = ({
   textPosition,

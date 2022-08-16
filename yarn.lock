@@ -4655,6 +4655,7 @@ __metadata:
     "@types/openpgp": 4.4.18
     "@types/prop-types": 15.7.5
     "@types/react": 18.0.17
+    "@types/react-calendar": 3.5.2
     "@types/react-dom": 18.0.6
     "@types/uuid": 8.3.4
     "@typescript-eslint/eslint-plugin": 5.33.1
@@ -4684,6 +4685,7 @@ __metadata:
     lodash: 4.17.21
     lodash.debounce: 4.0.8
     lodash.throttle: 4.1.1
+    moment: 2.29.4
     mongodb: 4.8.1
     next: 12.2.5
     next-themes: 0.2.0
@@ -4694,6 +4696,7 @@ __metadata:
     prettier-plugin-tailwindcss: 0.1.13
     prop-types: 15.8.1
     react: 18.2.0
+    react-calendar: 3.7.0
     react-dnd: 16.0.1
     react-dnd-html5-backend: 16.0.1
     react-dom: 18.2.0
@@ -6160,6 +6163,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-calendar@npm:3.5.2":
+  version: 3.5.2
+  resolution: "@types/react-calendar@npm:3.5.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 6fc69c83ace58693620441caad2fe8d1ab8c8d4ddd7b27b3abd6bae8dc73eee5303ad9333656b3fde64b92d66b84b2c266924ce1b197ac3ecabfdb64087a7a8d
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:18.0.6":
   version: 18.0.6
   resolution: "@types/react-dom@npm:18.0.6"
@@ -6587,6 +6599,13 @@ __metadata:
     "@webassemblyjs/ast": 1.11.1
     "@xtuc/long": 4.2.2
   checksum: f15ae4c2441b979a3b4fce78f3d83472fb22350c6dc3fd34bfe7c3da108e0b2360718734d961bba20e7716cb8578e964b870da55b035e209e50ec9db0378a3f7
+  languageName: node
+  linkType: hard
+
+"@wojtekmaj/date-utils@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@wojtekmaj/date-utils@npm:1.0.3"
+  checksum: 70b7152160529295319ead97e070f85a50c0eab7973b5845e3a58eab9b0c999023975d2739b5e2a059d27b108ce7cdbf14da99737d6fa3e3822d4dafb76b06f0
   languageName: node
   linkType: hard
 
@@ -10987,6 +11006,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-user-locale@npm:^1.2.0":
+  version: 1.5.1
+  resolution: "get-user-locale@npm:1.5.1"
+  dependencies:
+    lodash.memoize: ^4.1.1
+  checksum: 4ab9ae83264c8b4f376b7690578ee3b332808d40f49e500469d476b832d4fddcf8477b7a01b60a242fd232b5a2ae8f6b7620f731d67350e89fd17ddd91fc8a0e
+  languageName: node
+  linkType: hard
+
 "getopts@npm:2.3.0":
   version: 2.3.0
   resolution: "getopts@npm:2.3.0"
@@ -13201,7 +13229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.memoize@npm:4.x":
+"lodash.memoize@npm:4.x, lodash.memoize@npm:^4.1.1":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
   checksum: 9ff3942feeccffa4f1fafa88d32f0d24fdc62fd15ded5a74a5f950ff5f0c6f61916157246744c620173dddf38d37095a92327d5fd3861e2063e736a5c207d089
@@ -13544,6 +13572,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"merge-class-names@npm:^1.1.1":
+  version: 1.4.2
+  resolution: "merge-class-names@npm:1.4.2"
+  checksum: 569c333ab0d7fa1e06ae6e637d58e0d4623d7b165ea78d085c1bbd042568d8793bb7ce54ec55580679416046b11fc6eaf4956d68d19964cb320edc034e182c1d
+  languageName: node
+  linkType: hard
+
 "merge-descriptors@npm:1.0.1":
   version: 1.0.1
   resolution: "merge-descriptors@npm:1.0.1"
@@ -13871,6 +13906,13 @@ __metadata:
   version: 4.14.0
   resolution: "mock-fs@npm:4.14.0"
   checksum: dccd976a8d753e19d3c7602ea422d1f7137def3c1128c177e1f5500fe8c50ec15fe0937cfc3a15c4577fe7adb9a37628b92da9294d13d90f08be4b669b0fca76
+  languageName: node
+  linkType: hard
+
+"moment@npm:2.29.4":
+  version: 2.29.4
+  resolution: "moment@npm:2.29.4"
+  checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
   languageName: node
   linkType: hard
 
@@ -15458,6 +15500,21 @@ __metadata:
   bin:
     rc: ./cli.js
   checksum: 2e26e052f8be2abd64e6d1dabfbd7be03f80ec18ccbc49562d31f617d0015fbdbcf0f9eed30346ea6ab789e0fdfe4337f033f8016efdbee0df5354751842080e
+  languageName: node
+  linkType: hard
+
+"react-calendar@npm:3.7.0":
+  version: 3.7.0
+  resolution: "react-calendar@npm:3.7.0"
+  dependencies:
+    "@wojtekmaj/date-utils": ^1.0.2
+    get-user-locale: ^1.2.0
+    merge-class-names: ^1.1.1
+    prop-types: ^15.6.0
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+  checksum: 368084515bdbc59dddf1a0e367c6bb49e9b9efdc1d01343afeeb412feb52d89b88ac6b09378433cdb3716557ff2cf56751f11183ecd99a5df2a5c48b1691e33d
   languageName: node
   linkType: hard
 

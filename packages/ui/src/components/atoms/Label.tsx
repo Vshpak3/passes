@@ -8,15 +8,23 @@ type LabelProps = {
   name: FormName
   options?: FormOptions
   errors?: FormErrors
+  className?: string
 }
 
-const Label = ({ name, label, errors = {}, options = {} }: LabelProps) => {
+const Label = ({
+  name,
+  label,
+  errors = {},
+  options = {},
+  className
+}: LabelProps) => {
   return (
     <label
       htmlFor={name}
       className={classNames(
         "block text-sm font-medium ",
-        errors[name] !== undefined ? "text-red-500" : "text-white"
+        errors[name] !== undefined ? "text-red-500" : "text-white",
+        className ?? ""
       )}
     >
       {label} {options.required && "*"}

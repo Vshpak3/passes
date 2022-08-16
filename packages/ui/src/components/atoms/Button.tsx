@@ -49,6 +49,10 @@ export const Button = ({
       variantClassName =
         "text-white bg-gradient-to-r from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
       break
+    case "vertical-gradient":
+      variantClassName =
+        "text-white bg-gradient-to-b from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
+      break
     case "inner-gradient":
       variantClassName =
         "bg-gradient-to-r from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-full group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
