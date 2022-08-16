@@ -14,6 +14,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { S3Service } from '../../s3/s3.service'
 import { UserEntity } from '../../user/entities/user.entity'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { FacebookDeletionConfirmationDto } from '../dto/fb-deletion-confirmation'
@@ -31,6 +32,7 @@ export class FacebookOauthController {
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
     private readonly fbComplianceService: FacebookComplianceService,
+    private readonly s3Service: S3Service,
   ) {}
 
   @ApiOperation({ summary: 'Start the facebook oauth flow' })
