@@ -146,8 +146,9 @@ export const configConfiguration = async function (): Promise<
       cookieOptions: {
         domain: getConfigValue('CLOUDFRONT_COOKIE_DOMAIN'),
         path: '/',
-        sameSite: 'none',
         httpOnly: true,
+        sameSite: 'none',
+        secure: true,
       },
     },
     moralis: {
