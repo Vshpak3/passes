@@ -133,6 +133,7 @@ export class PassController {
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.temporary,
+      createPassHolderDto.payinMethod,
     )
   }
 

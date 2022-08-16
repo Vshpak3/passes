@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    PayinMethodDto,
+    PayinMethodDtoFromJSON,
+    PayinMethodDtoFromJSONTyped,
+    PayinMethodDtoToJSON,
+} from './PayinMethodDto';
+
 /**
  * 
  * @export
@@ -31,6 +38,12 @@ export interface CreatePassHolderDto {
      * @memberof CreatePassHolderDto
      */
     temporary: boolean;
+    /**
+     * 
+     * @type {PayinMethodDto}
+     * @memberof CreatePassHolderDto
+     */
+    payinMethod?: PayinMethodDto;
 }
 
 export function CreatePassHolderDtoFromJSON(json: any): CreatePassHolderDto {
@@ -45,6 +58,7 @@ export function CreatePassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator:
         
         'passId': json['passId'],
         'temporary': json['temporary'],
+        'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
@@ -59,6 +73,7 @@ export function CreatePassHolderDtoToJSON(value?: CreatePassHolderDto | null): a
         
         'passId': value.passId,
         'temporary': value.temporary,
+        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }
 

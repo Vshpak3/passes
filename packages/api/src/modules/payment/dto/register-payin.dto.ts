@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { PayinCallbackInput } from '../callback.types'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinMethodEnum } from '../enum/payin.enum'
+import { PayinMethodDto } from './payin-method.dto'
 
 export class RegisterPayinResponseDto {
   @ApiProperty()
@@ -24,6 +25,9 @@ export class RegisterPayinRequestDto {
 
   @ApiProperty()
   amount: number
+
+  @ApiPropertyOptional()
+  payinMethod?: PayinMethodDto
 
   @ApiProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum

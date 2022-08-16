@@ -142,7 +142,7 @@ export class PaymentService {
     ip: string,
     userId: string,
     createCardDto: CircleCreateCardDto,
-    fourDigits: string,
+    cardNumber: string,
   ): Promise<CircleStatusDto> {
     if (
       await this.dbReader(CircleCardEntity.table)
@@ -177,7 +177,7 @@ export class PaymentService {
     const data = CircleCardEntity.toDict<CircleCardEntity>({
       id: v4(),
       user: userId,
-      fourDigits,
+      cardNumber,
       circleCardId: response['id'],
       status: response['status'],
       name: createCardDto.billingDetails.name,
@@ -1232,7 +1232,10 @@ export class PaymentService {
       )
     }
 
-    const payinMethod = await this.getDefaultPayinMethod(request.userId)
+    const payinMethod = request.payinMethod
+      ? request.payinMethod
+      : await this.getDefaultPayinMethod(request.userId)
+
     const data = {
       id: v4(),
       user_id: request.userId,

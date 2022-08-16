@@ -11,6 +11,9 @@ export class CircleCardDto {
   status: string
 
   @ApiProperty()
+  firstDigit: string
+
+  @ApiProperty()
   fourDigits: string
 
   @ApiProperty()
@@ -30,7 +33,8 @@ export class CircleCardDto {
       this.id = card.id
       this.circleCardId = card.circle_card_id
       this.status = card.status
-      this.fourDigits = card.four_digits
+      this.firstDigit = card.card_number.slice(0, 1)
+      this.fourDigits = card.card_number.slice(12)
       this.expMonth = card.exp_month
       this.expYear = card.exp_year
       this.active = card.active

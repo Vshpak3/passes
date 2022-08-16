@@ -62,6 +62,7 @@ const DefaultPayinMethod = () => {
   )
 
   const submit = async (dto: PayinMethodDto) => {
+    console.log(cards)
     const paymentApi = new PaymentApi()
     try {
       await paymentApi.paymentSetDefaultPayinMethod(

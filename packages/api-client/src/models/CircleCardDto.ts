@@ -42,6 +42,12 @@ export interface CircleCardDto {
      * @type {string}
      * @memberof CircleCardDto
      */
+    firstDigit: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CircleCardDto
+     */
     fourDigits: string;
     /**
      * 
@@ -82,6 +88,7 @@ export function CircleCardDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'circleCardId': !exists(json, 'circleCardId') ? undefined : json['circleCardId'],
         'status': json['status'],
+        'firstDigit': json['firstDigit'],
         'fourDigits': json['fourDigits'],
         'expMonth': json['expMonth'],
         'expYear': json['expYear'],
@@ -102,6 +109,7 @@ export function CircleCardDtoToJSON(value?: CircleCardDto | null): any {
         'id': value.id,
         'circleCardId': value.circleCardId,
         'status': value.status,
+        'firstDigit': value.firstDigit,
         'fourDigits': value.fourDigits,
         'expMonth': value.expMonth,
         'expYear': value.expYear,

@@ -94,7 +94,7 @@ export class PaymentController {
       ip,
       req.user.id,
       createCardAndExtraDto.createCardDto,
-      createCardAndExtraDto.fourDigits,
+      createCardAndExtraDto.cardNumber,
     )
   }
 

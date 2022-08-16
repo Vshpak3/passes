@@ -16,6 +16,7 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { NftPassPayinCallbackInput } from '../payment/callback.types'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
+import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinEntity } from '../payment/entities/payin.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
@@ -38,7 +39,7 @@ import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassOwnershipEntity } from './entities/pass-ownership.entity'
 
-const NFT_PASS_CREATOR_CUT = 0.5 //TODO: use correct cut
+const NFT_PASS_CREATOR_CUT = 0.8
 
 @Injectable()
 export class PassService {
@@ -236,6 +237,7 @@ export class PassService {
     userId: string,
     passId: string,
     temporary?: boolean,
+    payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
     const { amount, target, blocked } = await this.registerAddHolderData(
       userId,
@@ -258,6 +260,7 @@ export class PassService {
       userId,
       target,
       amount,
+      payinMethod,
       callback: PayinCallbackEnum.NFT_PASS,
       callbackInputJSON: JSON.stringify(callbackInput),
       creatorShares: [

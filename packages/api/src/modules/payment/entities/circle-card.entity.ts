@@ -21,7 +21,7 @@ export class CircleCardEntity extends BaseEntity {
   status: CircleAccountStatusEnum
 
   @Property()
-  fourDigits: string
+  cardNumber: string
 
   @Property()
   expMonth: number

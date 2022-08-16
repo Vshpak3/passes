@@ -58,7 +58,7 @@ const NewCard = () => {
             email: ""
           }
         },
-        fourDigits: values["card-number"].slice(12)
+        cardNumber: values["card-number"]
       }
       const encryptedData = await encrypt(
         cardDetails,

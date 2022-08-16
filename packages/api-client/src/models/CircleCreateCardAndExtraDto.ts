@@ -37,7 +37,7 @@ export interface CircleCreateCardAndExtraDto {
      * @type {string}
      * @memberof CircleCreateCardAndExtraDto
      */
-    fourDigits: string;
+    cardNumber: string;
 }
 
 export function CircleCreateCardAndExtraDtoFromJSON(json: any): CircleCreateCardAndExtraDto {
@@ -51,7 +51,7 @@ export function CircleCreateCardAndExtraDtoFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'createCardDto': CircleCreateCardDtoFromJSON(json['createCardDto']),
-        'fourDigits': json['fourDigits'],
+        'cardNumber': json['cardNumber'],
     };
 }
 
@@ -65,7 +65,7 @@ export function CircleCreateCardAndExtraDtoToJSON(value?: CircleCreateCardAndExt
     return {
         
         'createCardDto': CircleCreateCardDtoToJSON(value.createCardDto),
-        'fourDigits': value.fourDigits,
+        'cardNumber': value.cardNumber,
     };
 }
 

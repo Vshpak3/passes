@@ -31,5 +31,5 @@ export class CircleCreateCardAndExtraDto {
   createCardDto: CircleCreateCardDto
 
   @ApiProperty()
-  fourDigits: string
+  cardNumber: string
 }
