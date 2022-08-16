@@ -12,9 +12,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
+import { UserEntity } from '../../user/entities/user.entity'
 import { FacebookDeletionRequestDto } from '../dto/fb-deletion-request'
 import { FacebookDeletionRequestEntity } from '../entities/facebook-deletion-request.entity'
-import { UserEntity } from '../../user/entities/user.entity'
 
 @Injectable()
 export class FacebookComplianceService {
