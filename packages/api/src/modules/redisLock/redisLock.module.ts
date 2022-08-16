@@ -6,6 +6,7 @@ import { RedisLockService } from './redisLock.service'
 @Global()
 @Module({
   imports: [RedisModule],
+  controllers: [],
   providers: [RedisLockService],
   exports: [RedisLockService],
 })

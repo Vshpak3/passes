@@ -7,6 +7,8 @@ const databaseProviders = contextNames.map(createDatabaseProvider)
 
 @Global()
 @Module({
+  imports: [],
+  controllers: [],
   providers: [...databaseProviders],
   exports: [...databaseProviders],
 })

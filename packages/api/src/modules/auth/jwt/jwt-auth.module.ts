@@ -21,6 +21,7 @@ import { JwtVerifiedStrategy } from './jwt-verified.strategy'
       inject: [ConfigService],
     }),
   ],
+  controllers: [],
   providers: [
     JwtAuthService,
     JwtAuthStrategy,

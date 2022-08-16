@@ -11,5 +11,6 @@ import { LocalAuthService } from './local.service'
   imports: [UserModule, JwtAuthModule, JwtRefreshModule, S3Module],
   controllers: [LocalAuthController],
   providers: [LocalAuthService],
+  exports: [],
 })
 export class LocalAuthModule {}

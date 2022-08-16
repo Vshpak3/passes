@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common'
 
-import { EthService } from '../eth/eth.service'
-import { LambdaService } from '../lambda/lambda.service'
-import { RedisLockService } from '../redisLock/redisLock.service'
+import { EthModule } from '../eth/eth.module'
+import { LambdaModule } from '../lambda/lambda.module'
+import { RedisLockModule } from '../redisLock/redisLock.module'
 import { WalletController } from './wallet.controller'
 import { WalletService } from './wallet.service'
 
 @Module({
+  imports: [EthModule, RedisLockModule, LambdaModule],
   controllers: [WalletController],
-  providers: [WalletService, EthService, RedisLockService, LambdaService],
+  providers: [WalletService],
+  exports: [WalletService],
 })
 export class WalletModule {}

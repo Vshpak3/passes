@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 
-import { LambdaService } from '../lambda/lambda.service'
-import { S3Service } from '../s3/s3.service'
+import { LambdaModule } from '../lambda/lambda.module'
+import { S3Module } from '../s3/s3.module'
 import { SolController } from './sol.controller'
 import { SolService } from './sol.service'
 
 @Module({
+  imports: [LambdaModule, S3Module],
   controllers: [SolController],
-  providers: [SolService, LambdaService, ConfigService, S3Service],
+  providers: [SolService],
+  exports: [SolService],
 })
 export class SolModule {}

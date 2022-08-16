@@ -11,5 +11,6 @@ import { TwitterStrategy } from './twitter-oauth.strategy'
   imports: [UserModule, JwtAuthModule, JwtRefreshModule, S3Module],
   controllers: [TwitterOauthController],
   providers: [TwitterStrategy],
+  exports: [],
 })
 export class TwitterOauthModule {}

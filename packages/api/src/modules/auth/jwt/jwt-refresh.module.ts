@@ -19,6 +19,7 @@ import { JwtRefreshStrategy } from './jwt-refresh.strategy'
       inject: [ConfigService],
     }),
   ],
+  controllers: [],
   providers: [JwtRefreshStrategy, JwtRefreshService],
   exports: [JwtModule, JwtRefreshService],
 })

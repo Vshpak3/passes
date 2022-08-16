@@ -11,5 +11,6 @@ import { GoogleOauthStrategy } from './google-oauth.strategy'
   imports: [UserModule, JwtAuthModule, JwtRefreshModule, S3Module],
   controllers: [GoogleOauthController],
   providers: [GoogleOauthStrategy],
+  exports: [],
 })
 export class GoogleOauthModule {}

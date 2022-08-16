@@ -32,5 +32,6 @@ import { TwitterOauthModule } from './twitter/twitter-oauth-module'
     S3Module,
   ],
   controllers: [AuthController],
+  exports: [],
 })
 export class AuthModule {}
