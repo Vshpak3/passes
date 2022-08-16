@@ -1566,6 +1566,22 @@ export class PaymentService {
     }
   }
 
+  async aggregateAll(): Promise<void> {
+    const creators = await this.dbReader(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
+      .select('id')
+    creators.forEach(async (creator) => {
+      try {
+        await this.aggregateCreator(creator.id)
+      } catch (e) {
+        this.logger.error(`Error aggregating earnings for ${creator.id}: ${e}`)
+      }
+    })
+  }
+
+  async aggregateCreator(creatorId: string): Promise<void> {
+    console.log(creatorId)
+  }
   // TESTING FOR AWS BATCH IN STAGING, WILL REMOVE
   async printTest(): Promise<void> {
     console.log('print')

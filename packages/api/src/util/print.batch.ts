@@ -10,5 +10,6 @@ export async function examplePrint() {
   const payService = await app
     .select(PaymentModule)
     .get(PaymentService, { strict: true })
+  console.log('asdf')
   await payService.printTest()
 }

@@ -22,7 +22,7 @@ import { TaskDirectory } from '../batch.directory'
   // const app = await NestFactory.create(AppModule)
 
   // Run the task
-  TaskDirectory[batchTaskName](...batchTaskArgs)
+  await TaskDirectory[batchTaskName](...batchTaskArgs)
 
   console.log('Completed running task')
   process.exit(0)

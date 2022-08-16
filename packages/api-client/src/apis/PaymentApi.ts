@@ -726,7 +726,7 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Register payin
+     * Get register payin data
      */
     async paymentRegisterPayinDataRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         const queryParameters: any = {};
@@ -744,7 +744,7 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Register payin
+     * Get register payin data
      */
     async paymentRegisterPayinData(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
         const response = await this.paymentRegisterPayinDataRaw(initOverrides);
