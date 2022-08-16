@@ -30,6 +30,12 @@ import {
     GetPassesDto,
     GetPassesDtoFromJSON,
     GetPassesDtoToJSON,
+    PayinDataDto,
+    PayinDataDtoFromJSON,
+    PayinDataDtoToJSON,
+    RegisterPayinResponseDto,
+    RegisterPayinResponseDtoFromJSON,
+    RegisterPayinResponseDtoToJSON,
     UpdatePassDto,
     UpdatePassDtoFromJSON,
     UpdatePassDtoToJSON,
@@ -53,6 +59,14 @@ export interface PassGetCreatorPassesRequest {
 
 export interface PassGetOwnedPassesRequest {
     creatorId: string;
+}
+
+export interface PassRegisterRequest {
+    createPassHolderDto: CreatePassHolderDto;
+}
+
+export interface PassRegisterDataRequest {
+    createPassHolderDto: CreatePassHolderDto;
 }
 
 export interface PassUpdateRequest {
@@ -222,6 +236,72 @@ export class PassApi extends runtime.BaseAPI {
      */
     async passGetOwnedPasses(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesDto> {
         const response = await this.passGetOwnedPassesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Register payin for pass
+     */
+    async passRegisterRaw(requestParameters: PassRegisterRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.createPassHolderDto === null || requestParameters.createPassHolderDto === undefined) {
+            throw new runtime.RequiredError('createPassHolderDto','Required parameter requestParameters.createPassHolderDto was null or undefined when calling passRegister.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/pass/register`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePassHolderDtoToJSON(requestParameters.createPassHolderDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register payin for pass
+     */
+    async passRegister(requestParameters: PassRegisterRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.passRegisterRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get register pass data
+     */
+    async passRegisterDataRaw(requestParameters: PassRegisterDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+        if (requestParameters.createPassHolderDto === null || requestParameters.createPassHolderDto === undefined) {
+            throw new runtime.RequiredError('createPassHolderDto','Required parameter requestParameters.createPassHolderDto was null or undefined when calling passRegisterData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/pass/register/data`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePassHolderDtoToJSON(requestParameters.createPassHolderDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get register pass data
+     */
+    async passRegisterData(requestParameters: PassRegisterDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+        const response = await this.passRegisterDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

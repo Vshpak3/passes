@@ -13,6 +13,9 @@ export class PayinEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
 
+  @Property()
+  target?: string
+
   // payin method
   @Enum(() => PayinMethodEnum)
   payinMethod: PayinMethodEnum

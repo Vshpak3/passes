@@ -52,6 +52,7 @@ export * from './MetamaskCircleETHEntryRequestDto';
 export * from './MetamaskCircleETHEntryResponseDto';
 export * from './MetamaskCircleUSDCEntryRequestDto';
 export * from './MetamaskCircleUSDCEntryResponseDto';
+export * from './PayinDataDto';
 export * from './PayinDto';
 export * from './PayinListRequestDto';
 export * from './PayinListResponseDto';

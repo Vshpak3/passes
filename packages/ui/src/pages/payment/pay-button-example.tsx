@@ -21,6 +21,16 @@ const PayPage = () => {
     })
   }
 
+  const data = async () => {
+    const paymentApi = new PaymentApi()
+    return await paymentApi.paymentRegisterPayinData({
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json"
+      }
+    })
+  }
+
   useEffect(() => {
     if (!router.isReady || loading) {
       return
@@ -31,6 +41,6 @@ const PayPage = () => {
     }
   }, [router, user, loading])
 
-  return PayButton(submit, 1000)
+  return PayButton(submit, data)
 }
 export default PayPage

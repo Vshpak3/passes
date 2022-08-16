@@ -15,6 +15,7 @@ import { RealIP } from 'nestjs-real-ip'
 import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
+import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { PayinCallbackInput } from './callback.types'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -22,6 +23,7 @@ import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardAndExtraDto } from './dto/circle/create-card.dto'
 import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusDto } from './dto/circle/status.dto'
+import { PayinDataDto } from './dto/payin-data.dto'
 import {
   CircleCardPayinEntryRequestDto,
   CircleCardPayinEntryResponseDto,
@@ -71,6 +73,7 @@ export class PaymentController {
   })
   @Get('key')
   @HttpCode(200)
+  @AllowUnauthorizedRequest()
   async getCircleEncryptionKey(): Promise<CircleEncryptionKeyDto> {
     return await this.paymentService.getCircleEncryptionKey()
   }
@@ -178,6 +181,7 @@ export class PaymentController {
   })
   @Post('circle/notification')
   @HttpCode(200)
+  @AllowUnauthorizedRequest()
   async recieveNotifications(@Body() body: string) {
     const envelope = JSON.parse(body)
     this.validator.validate(envelope, (err) => {
@@ -209,6 +213,7 @@ export class PaymentController {
     type: Boolean,
     description: 'Updates from circle was registered',
   })
+  @AllowUnauthorizedRequest()
   @Head('circle/notification')
   async registerNotifications(): Promise<boolean> {
     return true
@@ -414,6 +419,18 @@ export class PaymentController {
     })
   }
 
+  @ApiOperation({ summary: 'Register payin' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PayinDataDto,
+    description: 'Payin registered',
+  })
+  @Post('test/register/payin/data')
+  @HttpCode(200)
+  async registerPayinData(): Promise<PayinDataDto> {
+    return { blocked: false, amount: 1000 }
+  }
+
   @ApiOperation({ summary: 'Payout everyone' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -421,6 +438,7 @@ export class PaymentController {
     description: 'Everyone paid out',
   })
   @Get('test/payout')
+  @AllowUnauthorizedRequest()
   async payout(): Promise<void> {
     return await this.paymentService.payoutAll()
   }
@@ -432,6 +450,7 @@ export class PaymentController {
     description: 'Payout rerun',
   })
   @Get('test/payout/:payoutId')
+  @AllowUnauthorizedRequest()
   async rePayout(@Param('payoutId') payoutId: string): Promise<void> {
     return await this.paymentService.submitPayout(payoutId)
   }

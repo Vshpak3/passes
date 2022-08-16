@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  forwardRef,
   Inject,
   Injectable,
   NotFoundException,
@@ -12,6 +13,14 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { NftPassPayinCallbackInput } from '../payment/callback.types'
+import { PayinDataDto } from '../payment/dto/payin-data.dto'
+import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
+import { PayinEntity } from '../payment/entities/payin.entity'
+import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
+import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
+import { InvalidPayinRequestError } from '../payment/error/payin.error'
+import { PaymentService } from '../payment/payment.service'
 import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -28,6 +37,8 @@ import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassOwnershipEntity } from './entities/pass-ownership.entity'
 
+const NFT_PASS_CREATOR_CUT = 0.5 //TODO: use correct cut
+
 @Injectable()
 export class PassService {
   constructor(
@@ -41,6 +52,8 @@ export class PassService {
 
     private readonly solService: SolService,
     private readonly walletService: WalletService,
+    @Inject(forwardRef(() => PaymentService))
+    private readonly payService: PaymentService,
   ) {}
 
   async create(
@@ -62,7 +75,7 @@ export class PassService {
     )
 
     const data = PassEntity.toDict<PassEntity>({
-      owner: userId,
+      creator: userId,
       solNftCollection: solNftCollectionDto.id,
       title: createPassDto.title,
       description: createPassDto.description,
@@ -80,7 +93,7 @@ export class PassService {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as owner`,
-        `${PassEntity.table}.owner_id`,
+        `${PassEntity.table}.creator_id`,
         'owner.id',
       )
       .innerJoin(
@@ -90,7 +103,7 @@ export class PassService {
       )
       .select([
         '*',
-        ...PassEntity.populate<PassEntity>(['owner', 'solNftCollection']),
+        ...PassEntity.populate<PassEntity>(['creator', 'solNftCollection']),
       ])
       .where(`${PassEntity.table}.id`, id)
       .first()
@@ -129,7 +142,7 @@ export class PassService {
   }
 
   async findPassesByCreator(creatorId: string) {
-    return await this.dbReader(PassEntity.table).where('owner_id', creatorId)
+    return await this.dbReader(PassEntity.table).where('creator_id', creatorId)
   }
 
   async update(userId: string, passId: string, updatePassDto: UpdatePassDto) {
@@ -141,7 +154,7 @@ export class PassService {
       throw new NotFoundException(PASS_NOT_EXIST)
     }
 
-    if (currentPass.owner_id !== userId) {
+    if (currentPass.creator_id !== userId) {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }
 
@@ -156,7 +169,7 @@ export class PassService {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as owner`,
-        `${PassEntity.table}.owner_id`,
+        `${PassEntity.table}.creator_id`,
         'owner.id',
       )
       .innerJoin(
@@ -166,7 +179,7 @@ export class PassService {
       )
       .select([
         '*',
-        ...PassEntity.populate<PassEntity>(['owner', 'solNftCollection']),
+        ...PassEntity.populate<PassEntity>(['creator', 'solNftCollection']),
       ])
       .where(`${PassEntity.table}.id`, id)
       .first()
@@ -179,23 +192,30 @@ export class PassService {
       userId,
     )
 
+    const data = PassOwnershipEntity.toDict<PassOwnershipEntity>({
+      id,
+      pass: passId,
+      holder: userId,
+      expiresAt: expiresAt,
+    })
+
+    const query = () => this.dbWriter(PassOwnershipEntity.table).insert(data)
+
+    await createOrThrowOnDuplicate(query, this.logger, USER_ALREADY_OWNS_PASS)
+
     const solNftDto = await this.solService.createNftPass(
       userId,
       new PublicKey(userCustodialWallet.address),
       pass.solNftCollection_id,
     )
 
-    const data = PassOwnershipEntity.toDict<PassOwnershipEntity>({
-      id,
-      pass: passId,
-      holder: userId,
-      expiresAt: expiresAt,
-      solNft: solNftDto.id,
-    })
-
-    const query = () => this.dbWriter(PassOwnershipEntity.table).insert(data)
-
-    await createOrThrowOnDuplicate(query, this.logger, USER_ALREADY_OWNS_PASS)
+    await this.dbWriter(PassOwnershipEntity.table)
+      .update(
+        PassOwnershipEntity.toDict<PassOwnershipEntity>({
+          solNft: solNftDto.id,
+        }),
+      )
+      .where('id', id)
 
     return new GetPassOwnershipDto(pass.id, userId, expiresAt)
   }
@@ -209,5 +229,74 @@ export class PassService {
       .where(data)
       .first()
     return !!ownership
+  }
+
+  async registerAddHolder(
+    userId: string,
+    passId: string,
+    temporary?: boolean,
+  ): Promise<RegisterPayinResponseDto> {
+    const { amount, target, blocked } = await this.registerAddHolderData(
+      userId,
+      passId,
+    )
+    if (blocked) {
+      throw new InvalidPayinRequestError('invalid nft pass payin')
+    }
+    const pass = await this.dbReader(PassEntity.table)
+      .where('id', passId)
+      .select('creator_id')
+      .first()
+
+    const callbackInput: NftPassPayinCallbackInput = {
+      userId,
+      passId,
+      temporary,
+    }
+    return await this.payService.registerPayin({
+      userId,
+      target,
+      amount,
+      callback: PayinCallbackEnum.NFT_PASS,
+      callbackInputJSON: JSON.stringify(callbackInput),
+      creatorShares: [
+        { creatorId: pass.creator_id, amount: amount * NFT_PASS_CREATOR_CUT },
+      ],
+    })
+  }
+
+  async registerAddHolderData(
+    userId: string,
+    passId: string,
+  ): Promise<PayinDataDto> {
+    const target = CryptoJS.SHA256(`nft-pass-${userId}-${passId}`).toString(
+      CryptoJS.enc.Hex,
+    )
+
+    const pass = await this.dbReader(PassEntity.table)
+      .where('id', passId)
+      .select('price')
+      .first() //TODO: check currrency
+
+    const checkPayin = await this.dbReader(PayinEntity.table)
+      .whereIn('payin_status', [
+        PayinStatusEnum.CREATED,
+        PayinStatusEnum.PENDING,
+      ])
+      .where('target', target)
+      .select('id')
+      .first()
+    const checkOwnership = await this.dbReader(PassOwnershipEntity.table)
+      .where(
+        PassOwnershipEntity.toDict<PassOwnershipEntity>({
+          pass: passId,
+          holder: userId,
+        }),
+      )
+      .select('id')
+      .first()
+    const blocked = checkPayin !== undefined || checkOwnership !== undefined
+
+    return { amount: pass.price, target, blocked }
   }
 }

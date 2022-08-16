@@ -1,4 +1,11 @@
-import { Entity, Index, ManyToOne, OneToOne, Property } from '@mikro-orm/core'
+import {
+  Entity,
+  Index,
+  ManyToOne,
+  OneToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { SolNftEntity } from '../../sol/entities/sol-nft.entity'
@@ -7,8 +14,9 @@ import { PassEntity } from './pass.entity'
 
 @Entity({ tableName: 'pass_ownership' })
 @Index({ properties: ['pass', 'holder'] })
+@Unique({ properties: ['pass', 'holder'] })
 export class PassOwnershipEntity extends BaseEntity {
-  @OneToOne()
+  @ManyToOne()
   pass: PassEntity
 
   @ManyToOne()

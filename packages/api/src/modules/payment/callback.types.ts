@@ -5,7 +5,9 @@ export class MessagePayinCallbackInput extends PayinCallbackInput {
 }
 
 export class NftPassPayinCallbackInput extends PayinCallbackInput {
-  // TODO: figure out inputs
+  userId: string
+  passId: string
+  temporary?: boolean
 }
 
 export class ExamplePayinCallbackInput extends PayinCallbackInput {

@@ -51,6 +51,9 @@ import {
     MetamaskCircleUSDCEntryResponseDto,
     MetamaskCircleUSDCEntryResponseDtoFromJSON,
     MetamaskCircleUSDCEntryResponseDtoToJSON,
+    PayinDataDto,
+    PayinDataDtoFromJSON,
+    PayinDataDtoToJSON,
     PayinListRequestDto,
     PayinListRequestDtoFromJSON,
     PayinListRequestDtoToJSON,
@@ -719,6 +722,32 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async paymentRegisterPayin(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.paymentRegisterPayinRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Register payin
+     */
+    async paymentRegisterPayinDataRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/payment/test/register/payin/data`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register payin
+     */
+    async paymentRegisterPayinData(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+        const response = await this.paymentRegisterPayinDataRaw(initOverrides);
         return await response.value();
     }
 

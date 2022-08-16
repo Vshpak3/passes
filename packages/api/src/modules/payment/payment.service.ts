@@ -1,5 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { ModuleRef } from '@nestjs/core'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -7,6 +8,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
+import { PassService } from '../pass/pass.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
@@ -85,12 +87,13 @@ import {
 
 export const MAX_CARDS_PER_USER = 10
 export const MAX_BANKS_PER_USER = 5
-export const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // change to  60 * 60 * 24 * 7
+export const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // TODO: change to  60 * 60 * 24 * 7
 
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
   circleMasterWallet: string
+  passService: PassService
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -100,8 +103,9 @@ export class PaymentService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
-
     private readonly userService: UserService,
+
+    private moduleRef: ModuleRef,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -109,6 +113,9 @@ export class PaymentService {
     ) as string
   }
 
+  async onModuleInit() {
+    this.passService = this.moduleRef.get(PassService, { strict: false })
+  }
   /*
   -------------------------------------------------------------------------------
   CIRCLE
@@ -932,7 +939,7 @@ export class PaymentService {
       throw e
     }
 
-    await handleCreationCallback(payin, this.dbWriter)
+    await handleCreationCallback(payin, this, this.dbWriter)
     return ret
   }
 
@@ -1328,7 +1335,7 @@ export class PaymentService {
           ]),
         )
         .first()
-      await handleFailedCallbacks(payin, this.dbReader)
+      await handleFailedCallbacks(payin, this, this.dbReader)
     }
   }
 
@@ -1359,7 +1366,7 @@ export class PaymentService {
           ]),
         )
         .first()
-      await handleSuccesfulCallbacks(payin, this.dbWriter)
+      await handleSuccesfulCallbacks(payin, this, this.dbWriter)
     }
   }
 

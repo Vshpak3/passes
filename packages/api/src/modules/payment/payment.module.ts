@@ -9,6 +9,7 @@ import { PaymentService } from './payment.service'
   imports: [UserModule],
   controllers: [PaymentController],
   providers: [PaymentService],
+  exports: [PaymentService],
 })
 export class PaymentModule {
   configure(consumer: MiddlewareConsumer) {

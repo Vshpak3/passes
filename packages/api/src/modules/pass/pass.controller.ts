@@ -12,6 +12,8 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { PayinDataDto } from '../payment/dto/payin-data.dto'
+import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { CreatePassHolderDto } from './dto/create-pass-holder.dto'
 import { GetPassDto } from './dto/get-pass.dto'
@@ -114,5 +116,40 @@ export class PassController {
     @Body() updatePassDto: UpdatePassDto,
   ) {
     return this.passService.update(req.user.id, id, updatePassDto)
+  }
+
+  @ApiOperation({ summary: 'Register payin for pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: RegisterPayinResponseDto,
+    description: 'Pass payin was registered',
+  })
+  @Post('register')
+  async register(
+    @Req() req: RequestWithUser,
+    @Body() createPassHolderDto: CreatePassHolderDto,
+  ): Promise<RegisterPayinResponseDto> {
+    return this.passService.registerAddHolder(
+      req.user.id,
+      createPassHolderDto.passId,
+      createPassHolderDto.temporary,
+    )
+  }
+
+  @ApiOperation({ summary: 'Get register pass data' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PayinDataDto,
+    description: 'Data for registering a pass was returned',
+  })
+  @Post('register/data')
+  async registerData(
+    @Req() req: RequestWithUser,
+    @Body() createPassHolderDto: CreatePassHolderDto,
+  ): Promise<PayinDataDto> {
+    return this.passService.registerAddHolderData(
+      req.user.id,
+      createPassHolderDto.passId,
+    )
   }
 }

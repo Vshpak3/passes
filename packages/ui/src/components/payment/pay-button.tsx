@@ -1,5 +1,6 @@
 import detectEthereumProvider from "@metamask/detect-provider"
 import {
+  PayinDataDto,
   PaymentApi,
   RegisterPayinResponseDto,
   RegisterPayinResponseDtoMethodEnum
@@ -23,9 +24,11 @@ import {
 export const PayButton = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
-  amountUSD: number
+  registerPaymentDataFunc: () => Promise<PayinDataDto>
 ) => {
   const [submitting, setSubmitting] = useState(false)
+  const [blocked, setBlocked] = useState(false)
+  const [amountUSD, setAmountUSD] = useState(0)
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
   const [metamaskProvider, setMetamaskProvider] = useState<EthereumProvider>()
   const [paymentApi] = useState<PaymentApi>(new PaymentApi())
@@ -142,7 +145,6 @@ export const PayButton = (
 
   const submit = async () => {
     setSubmitting(true)
-
     const paymentApi = new PaymentApi()
     try {
       const registerResponse = await registerPaymentFunc()
@@ -158,7 +160,7 @@ export const PayButton = (
         )
       }
       if (registerResponse.amount !== amountUSD) {
-        throw Error("amounts don't matchup")
+        throw Error("sanity check: amounts don't matchup")
       }
       switch (registerResponse.method) {
         case RegisterPayinResponseDtoMethodEnum.CircleCard:
@@ -193,9 +195,20 @@ export const PayButton = (
           setMetamaskProvider(provider as EthereumProvider)
         }
       }
+
+      const { amount, blocked } = await registerPaymentDataFunc()
+      setAmountUSD(amount)
+      setBlocked(blocked)
     }
     fetchData()
-  }, [router, user, loading, phantomProvider, metamaskProvider])
+  }, [
+    router,
+    user,
+    loading,
+    phantomProvider,
+    metamaskProvider,
+    registerPaymentDataFunc
+  ])
 
   return (
     <button
@@ -204,7 +217,7 @@ export const PayButton = (
       }}
       className="w-32 rounded-[50px] bg-[#C943A8] p-4"
       type="submit"
-      {...(submitting ? { disabled: true } : {})}
+      {...(blocked || submitting ? { disabled: true } : {})}
     >
       Pay ${amountUSD}
     </button>
