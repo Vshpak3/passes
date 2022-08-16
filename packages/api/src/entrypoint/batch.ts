@@ -1,13 +1,18 @@
-// import { NestFactory } from '@nestjs/core'
-// import { AppModule } from '../app.module'
+import { NestFactory } from '@nestjs/core'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
-import { TaskDirectory } from '../batch.directory'
+import { AppModule } from '../app.module'
+import { TaskDirectory } from '../batch/batch.directory'
 ;(async () => {
   const args = process.argv.slice(2)
   const batchTaskName = args[0]
   const batchTaskArgs = args.slice(1)
 
-  console.log(
+  // Instantiate the app
+  const app = await NestFactory.createApplicationContext(AppModule)
+  const logger = app.get(WINSTON_MODULE_PROVIDER)
+
+  logger.info(
     `Running batch task '${batchTaskName}' with args: ${batchTaskArgs}`,
   )
 
@@ -18,12 +23,9 @@ import { TaskDirectory } from '../batch.directory'
     process.exit(1)
   }
 
-  // TODO: properly integrate this with the app
-  // const app = await NestFactory.create(AppModule)
-
   // Run the task
-  await TaskDirectory[batchTaskName](...batchTaskArgs)
+  await new TaskDirectory[batchTaskName](app, logger).run(...batchTaskArgs)
 
-  console.log('Completed running task')
+  logger.info('Completed running task')
   process.exit(0)
 })()
