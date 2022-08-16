@@ -54,11 +54,9 @@ export class PostService {
           })
 
         for (let i = 0; i < createPostDto.content.length; ++i) {
-          const contentId = uuid.v4()
           const createContentDto = createPostDto.content[i]
 
           const content = {
-            id: contentId,
             user_id: userId,
             url: createContentDto.url,
             content_type: createContentDto.contentType,
@@ -66,7 +64,6 @@ export class PostService {
           await trx('content').insert(content)
 
           const contentPost = {
-            id: uuid.v4(),
             content_id: contentId,
             post_id: postId,
           }
@@ -76,7 +73,6 @@ export class PostService {
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
           const postRequiredPass = {
-            id: uuid.v4(),
             post_id: postId,
             pass_id: createPostDto.passes[i],
           }

@@ -124,7 +124,7 @@ export class EthService {
         ethNfts.push(walletToken)
       } else {
         // this token has been removed from the user's wallet on-chain and should be removed from the db
-        this.dbWriter(EthNftEntity.table).where({ id: walletToken.id }).del()
+        this.dbWriter(EthNftEntity.table).where({ id: walletToken.id }).delete()
       }
     })
 

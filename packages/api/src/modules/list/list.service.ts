@@ -47,9 +47,9 @@ export class ListService {
 
   async deleteList(userId: string, id: string): Promise<boolean> {
     const dbResult = await this.dbWriter(ListEntity.table)
-      .delete()
       .where('list.user_id', userId)
       .where('list.id', id)
+      .delete()
     return dbResult == 1
   }
 
@@ -107,7 +107,6 @@ export class ListService {
 
     const query = () =>
       this.dbWriter(ListMemberEntity.table).insert({
-        id: uuid.v4(),
         list_id: addListMemberDto.list,
         user_id: addListMemberDto.user,
       })
@@ -126,9 +125,9 @@ export class ListService {
       throw new NotFoundException('list not found')
     }
     const dbResult = await this.dbWriter(ListMemberEntity.table)
-      .delete()
       .where('list_member.list_id', removeListMemberDto.list)
       .where('list_member.user_id', removeListMemberDto.user)
+      .delete()
     return dbResult == 1
   }
 }
