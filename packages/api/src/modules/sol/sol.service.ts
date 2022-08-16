@@ -343,7 +343,7 @@ export class SolService {
     imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    let user: undefined | UserEntity
+    let user: string | UserEntity
     if (isString(userOrUserId)) {
       user = (await this.dbReader(UserEntity.table)
         .where({ id: userOrUserId })
