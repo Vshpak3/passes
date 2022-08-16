@@ -11,6 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { S3Service } from '../../s3/s3.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { LocalUserLoginDto } from '../dto/local-user-login'
@@ -26,6 +27,7 @@ export class LocalAuthController {
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
     private readonly localAuthService: LocalAuthService,
+    private readonly s3Service: S3Service,
   ) {}
 
   @ApiOperation({ summary: 'Create a email and password user' })
