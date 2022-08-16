@@ -7,7 +7,10 @@ import {
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { GetContentDto } from '../content/dto/get-content.dto'
+import { ContentEntity } from '../content/entities/content.entity'
+import { FollowEntity } from '../follow/entities/follow.entity'
 import { GetPostDto } from '../post/dto/get-post.dto'
+import { PostEntity } from '../post/entities/post.entity'
 import {
   USER_IS_NOT_CREATOR,
   USER_NOT_EXIST,
@@ -27,7 +30,7 @@ export class FeedService {
   ) {}
 
   async getFeed(userId: string, cursor: string): Promise<GetFeedDto> {
-    const following = await this.dbReader('subscription')
+    const following = await this.dbReader(FollowEntity.table)
       .select('creator_id')
       .where('subscriber_id', userId)
       .where('is_active', true)
@@ -38,7 +41,7 @@ export class FeedService {
 
     const creatorIds: string[] = following.map((f) => f.creator_id)
 
-    let postsQuery = this.dbReader('post')
+    let postsQuery = this.dbReader(PostEntity.table)
       .whereIn('user_id', creatorIds)
       .where('deleted_at', null)
 
@@ -85,7 +88,7 @@ export class FeedService {
       throw new BadRequestException(USER_IS_NOT_CREATOR)
     }
 
-    let postsQuery = this.dbReader('post')
+    let postsQuery = this.dbReader(PostEntity.table)
       .where('user_id', user.id)
       .where('deleted_at', null)
 
@@ -122,7 +125,7 @@ export class FeedService {
   private async getContentLookupForPosts(
     postIds: string[],
   ): Promise<ContentLookupByPost> {
-    const contentResults = await this.dbReader('content').whereIn(
+    const contentResults = await this.dbReader(ContentEntity.table).whereIn(
       'post_id',
       postIds,
     )

@@ -190,7 +190,9 @@ export class WalletService {
       throw new BadRequestException('invalid chain specified')
     }
     const existingWallet = (
-      await this.dbReader('wallet').select('*').where('address', walletAddress)
+      await this.dbReader(WalletEntity.table)
+        .select('*')
+        .where('address', walletAddress)
     )[0]
     if (existingWallet == undefined) {
       data.chain = createWalletDto.chain
@@ -209,7 +211,7 @@ export class WalletService {
     if (existingWallet.user_id != null) {
       throw new BadRequestException('invalid wallet address')
     } else {
-      const knexResult = await this.dbWriter('wallet')
+      const knexResult = await this.dbWriter(WalletEntity.table)
         .update({ user_id: userId })
         .where('id', existingWallet.id)
       if (knexResult != 1) {
@@ -226,7 +228,7 @@ export class WalletService {
     userId: string,
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,
   ): Promise<void> {
-    const numWallets = await this.dbReader('wallet')
+    const numWallets = await this.dbReader(WalletEntity.table)
       .where('user_id', userId)
       .count('*')
     if (numWallets[0]['count(*)'] >= MAX_WALLETS_PER_USER) {
@@ -234,7 +236,7 @@ export class WalletService {
         `${MAX_WALLETS_PER_USER} wallet limit reached!`,
       )
     }
-    await this.dbWriter('wallet').insert({
+    await this.dbWriter(WalletEntity.table).insert({
       id: v4(),
       user_id: userId,
       authenticated: false,
@@ -244,7 +246,7 @@ export class WalletService {
   }
 
   async remove(userId: string, walletId: string): Promise<boolean> {
-    const knexResult = await this.dbWriter('wallet')
+    const knexResult = await this.dbWriter(WalletEntity.table)
       .update({ user_id: null })
       .where('id', walletId)
       .where('user_id', userId)

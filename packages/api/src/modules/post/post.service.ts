@@ -11,6 +11,8 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { GetContentDto } from '../content/dto/get-content.dto'
+import { ContentEntity } from '../content/entities/content.entity'
+import { ContentPostEntity } from '../content/entities/content-post.entity'
 import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
 import { CreatePostDto } from './dto/create-post.dto'
 import { GetPostDto } from './dto/get-post.dto'
@@ -43,9 +45,8 @@ export class PostService {
           text: createPostDto.text,
         }
 
-        await this.dbWriter
+        await this.dbWriter(PostEntity.table)
           .insert(post, '*')
-          .into('post')
           .transacting(trx)
           .catch((err) => {
             this.logger.error(err)
@@ -94,9 +95,9 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<GetPostDto> {
-    const postDbResult = await this.dbReader('post')
-      .leftJoin('content_post', 'content_post.post_id', 'post.id')
-      .leftJoin('content', 'content.id', 'content_post.post_id')
+    const postDbResult = await this.dbReader(PostEntity.table)
+      .leftJoin(ContentPostEntity.table, 'content_post.post_id', 'post.id')
+      .leftJoin(ContentEntity.table, 'content.id', 'content_post.post_id')
       .select(
         'post.id',
         // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -154,7 +155,7 @@ export class PostService {
   }
 
   async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const postDbResult = await this.dbReader('post')
+    const postDbResult = await this.dbReader(PostEntity.table)
       .select(
         'post.id',
         'post.user_id',

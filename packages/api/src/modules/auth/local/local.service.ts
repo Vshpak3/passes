@@ -18,7 +18,7 @@ export class LocalAuthService {
   ) {}
 
   async createLocalUser(createLocalUserDto: CreateLocalUserDto) {
-    const currentUser = await this.dbReader('users')
+    const currentUser = await this.dbReader(UserEntity.table)
       .where('email', createLocalUserDto.email)
       .first()
 
@@ -31,7 +31,7 @@ export class LocalAuthService {
       BCRYPT_SALT_ROUNDS,
     )
 
-    await this.dbWriter('users').insert(
+    await this.dbWriter(UserEntity.table).insert(
       {
         email: createLocalUserDto.email,
         password_hash: passwordHash,

@@ -8,12 +8,15 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { UserEntity } from '../user/entities/user.entity'
 import { AddListMemberDto } from './dto/add-list-member.dto'
 import { CreateListDto } from './dto/create-list.dto'
 import { GetListDto } from './dto/get-list.dto'
 import { GetListMemberDto } from './dto/get-list-member.dto'
 import { GetListsDto } from './dto/get-lists.dto'
 import { RemoveListMemberDto } from './dto/remove-list-member.dto'
+import { ListEntity } from './entities/list.entity'
+import { ListMemberEntity } from './entities/list-member.entity'
 
 export const LIST_MEMBER_EXISTS = 'List member already exists'
 
@@ -34,7 +37,7 @@ export class ListService {
     createListDto: CreateListDto,
   ): Promise<GetListDto> {
     const listId = uuid.v4()
-    await this.dbWriter('list').insert({
+    await this.dbWriter(ListEntity.table).insert({
       id: listId,
       user_id: userId,
       name: createListDto.name,
@@ -43,7 +46,7 @@ export class ListService {
   }
 
   async deleteList(userId: string, id: string): Promise<boolean> {
-    const dbResult = await this.dbWriter('list')
+    const dbResult = await this.dbWriter(ListEntity.table)
       .delete()
       .where('list.user_id', userId)
       .where('list.id', id)
@@ -51,9 +54,9 @@ export class ListService {
   }
 
   async getList(userId: string, id: string): Promise<GetListDto> {
-    const dbResult = await this.dbReader('list')
-      .leftJoin('list_member', 'list_member.list_id', 'list.id')
-      .leftJoin('users', 'list_member.user_id', 'users.id')
+    const dbResult = await this.dbReader(ListEntity.table)
+      .leftJoin(ListMemberEntity.table, 'list_member.list_id', 'list.id')
+      .leftJoin(UserEntity.table, 'list_member.user_id', 'users.id')
       .select('list.id', 'list.name', 'list_member.user_id', 'users.username')
       .where('list.user_id', userId)
       .where('list.id', id)
@@ -77,9 +80,9 @@ export class ListService {
   }
 
   async getListsForUser(userId: string): Promise<GetListsDto> {
-    const dbResult = await this.dbReader('list')
+    const dbResult = await this.dbReader(ListEntity.table)
       .select('list.id', this.dbReader.raw('count(list_member.id) as count'))
-      .leftJoin('list_member', 'list_member.list_id', '=', 'list.id')
+      .leftJoin(ListMemberEntity.table, 'list_member.list_id', '=', 'list.id')
       .where('list.user_id', userId)
       .groupBy('list.id')
 
@@ -94,7 +97,7 @@ export class ListService {
     userId: string,
     addListMemberDto: AddListMemberDto,
   ): Promise<void> {
-    const listResult = await this.dbReader('list')
+    const listResult = await this.dbReader(ListEntity.table)
       .select('*')
       .where({ user_id: userId, id: addListMemberDto.list })
 
@@ -103,7 +106,7 @@ export class ListService {
     }
 
     const query = () =>
-      this.dbWriter('list_member').insert({
+      this.dbWriter(ListMemberEntity.table).insert({
         id: uuid.v4(),
         list_id: addListMemberDto.list,
         user_id: addListMemberDto.user,
@@ -115,14 +118,14 @@ export class ListService {
     userId: string,
     removeListMemberDto: RemoveListMemberDto,
   ): Promise<boolean> {
-    const listResult = await this.dbReader('list')
+    const listResult = await this.dbReader(ListEntity.table)
       .select('*')
       .where({ user_id: userId, id: removeListMemberDto.list })
 
     if (listResult[0] == undefined) {
       throw new NotFoundException('list not found')
     }
-    const dbResult = await this.dbWriter('list_member')
+    const dbResult = await this.dbWriter(ListMemberEntity.table)
       .delete()
       .where('list_member.list_id', removeListMemberDto.list)
       .where('list_member.user_id', removeListMemberDto.user)

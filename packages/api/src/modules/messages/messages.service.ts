@@ -12,7 +12,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { ListEntity } from '../list/entities/list.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
@@ -99,7 +101,7 @@ export class MessagesService {
     userId: string,
     createBatchMessageDto: CreateBatchMessageDto,
   ): Promise<void> {
-    const listResult = this.dbReader('list')
+    const listResult = this.dbReader(ListEntity.table)
       .select('list.id')
       .where('list.user_id', userId)
       .where('list.id', createBatchMessageDto.list)
@@ -108,7 +110,7 @@ export class MessagesService {
       throw new NotFoundException('list not found')
     }
 
-    const contentResult = this.dbReader('content')
+    const contentResult = this.dbReader(ContentEntity.table)
       .select('content.id')
       .where('content.user_id', userId)
       .where('content.id', createBatchMessageDto.content)

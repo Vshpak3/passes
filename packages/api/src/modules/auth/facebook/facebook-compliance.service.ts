@@ -13,6 +13,7 @@ import { Logger } from 'winston'
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { FacebookDeletionRequestDto } from '../dto/fb-deletion-request'
+import { FacebookDeletionRequestEntity } from '../entities/facebook-deletion-request.entity'
 
 @Injectable()
 export class FacebookComplianceService {
@@ -85,7 +86,7 @@ export class FacebookComplianceService {
   }
 
   async checkDeletionRequest(confirmationCode: string): Promise<boolean> {
-    const res = await this.dbReader('facebook_deletion_request').where(
+    const res = await this.dbReader(FacebookDeletionRequestEntity.table).where(
       'id',
       confirmationCode,
     )

@@ -38,6 +38,8 @@ import { S3Service } from '../s3/s3.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetSolNftDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
+import { SolNftEntity } from './entities/sol-nft.entity'
+import { SolNftCollectionEntity } from './entities/sol-nft-collection.entity'
 import * as SolHelper from './sol-helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
@@ -135,7 +137,7 @@ export class SolService {
       total: uses,
     }
     const collection = (
-      await this.dbReader('sol_nft_collection')
+      await this.dbReader(SolNftCollectionEntity.table)
         .select('*')
         .where('id', collectionId)
     )[0]
@@ -321,7 +323,7 @@ export class SolService {
       transaction.serialize(),
     )
 
-    await this.dbWriter('sol_nft').insert({
+    await this.dbWriter(SolNftEntity.table).insert({
       id: solNftId,
       sol_nft_collection_id: collectionId,
       mint_public_key: mintPubKey.toString(),
@@ -559,7 +561,7 @@ export class SolService {
       )
     }
 
-    await this.dbWriter('sol_nft_collection').insert({
+    await this.dbWriter(SolNftCollectionEntity.table).insert({
       id: collectionId,
       name: name,
       symbol: symbol,

@@ -58,7 +58,7 @@ export class ContentService {
     updateContentDto: UpdateContentDto,
   ): Promise<GetContentDto> {
     const data = ContentEntity.toDict<ContentEntity>(updateContentDto)
-    const updateCount = await this.dbWriter('content')
+    const updateCount = await this.dbWriter(ContentEntity.table)
       .update(data)
       .where({ id: contentId })
 
