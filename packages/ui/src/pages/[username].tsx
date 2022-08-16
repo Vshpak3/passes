@@ -105,7 +105,6 @@ const mockCreator = {
 }
 
 const Username = (props: GetProfileDto) => {
-  console.log("props", props)
   const { creatorPasses } = usePasses(props.userId)
   const [editProfile, setEditProfile] = useState(false)
   const [profile, setProfile] = useState(props)
@@ -189,7 +188,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log("start getStaticProps")
   if (!params || !params.username) return { props: {} }
   const username = Array.isArray(params.username)
     ? params.username[0]
@@ -203,7 +201,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { props: { ...props, id: _id.toString(), userId: "@" + username } }
 
   try {
-    console.log("pre getProfile call")
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })
     console.log("getProfile", profile)
@@ -217,7 +214,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       revalidate: 5 * 60 // In seconds
     }
   } catch (err) {
-    console.error("Error found", err)
+    console.log("Error found", err)
     return { props: {} }
   }
 }
