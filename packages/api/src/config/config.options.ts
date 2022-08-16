@@ -8,6 +8,7 @@ import { configConfiguration, configValidationSchema } from './config.schema'
 // import-time (that's when the module is created), we need to do this here
 export const infra_config_node_env = process.env.NODE_ENV ?? 'dev'
 export const infra_config_aws_region = process.env.AWS_REGION
+// eslint-disable-next-line no-console
 console.log(`Set by infra:
   - NODE_ENV: ${infra_config_node_env},
   - AWS_REGION: ${infra_config_aws_region}`)

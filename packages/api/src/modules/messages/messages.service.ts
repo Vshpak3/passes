@@ -4,8 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { StreamChat } from 'stream-chat'
 import * as uuid from 'uuid'
+import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -22,7 +24,10 @@ const MESSAGING_CHAT_TYPE = 'messaging'
 export class MessagesService {
   streamClient: StreamChat
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly configService: ConfigService,
+
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
@@ -134,7 +139,7 @@ export class MessagesService {
         }
       })
       .catch((err) => {
-        console.log(err)
+        this.logger.error(err)
         throw new InternalServerErrorException()
       })
   }

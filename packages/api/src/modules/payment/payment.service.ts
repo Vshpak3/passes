@@ -1583,14 +1583,14 @@ export class PaymentService {
   }
 
   async aggregateCreator(creatorId: string): Promise<void> {
-    console.log(creatorId)
-    console.log('aggregate')
+    this.logger.info(creatorId)
+    this.logger.info('aggregate')
   }
   // TESTING FOR AWS BATCH IN STAGING, WILL REMOVE
-  async printTest(): Promise<void> {
-    console.log('print')
-    console.log(
-      await this.dbReader(UserEntity.table).select('is_creator').first(),
-    )
-  }
+  // async printTest(): Promise<void> {
+  //   console.log('print')
+  //   console.log(
+  //     await this.dbReader(UserEntity.table).select('is_creator').first(),
+  //   )
+  // }
 }

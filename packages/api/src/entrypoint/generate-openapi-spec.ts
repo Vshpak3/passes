@@ -4,7 +4,7 @@ import { App } from '../app.main'
 
 // Generates OpenAPI JSON file from application
 ;(async () => {
-  console.log('Generating OpenAPI JSON file')
+  console.log('Generating OpenAPI JSON file') // eslint-disable-line no-console
   const app = new App()
   await app.init()
 

@@ -28,8 +28,9 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'simple-import-sort/imports': 'error',
+    'no-console': 'error',
     'simple-import-sort/exports': 'error',
+    'simple-import-sort/imports': 'error',
   },
   ignorePatterns: [
     '.eslintrc.js',

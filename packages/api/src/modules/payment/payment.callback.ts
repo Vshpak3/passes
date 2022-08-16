@@ -92,7 +92,7 @@ export async function examplePassSuccessCallback(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
 ): Promise<void> {
-  console.log('success')
+  // console.log('success')
   //TODO
 }
 
@@ -102,7 +102,7 @@ export async function examplePassFailureCallback(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
 ): Promise<void> {
-  console.log('fail')
+  // console.log('fail')
   //TODO
 }
 
@@ -112,6 +112,6 @@ export async function examplePassCreationCallback(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
 ): Promise<void> {
-  console.log('create')
+  // console.log('create')
   //TODO
 }

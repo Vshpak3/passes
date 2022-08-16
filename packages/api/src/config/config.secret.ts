@@ -39,7 +39,7 @@ export async function getSecretValue(secretId: string): Promise<string> {
       })
       .catch((response) => {
         // Logger is not yet available
-        console.error(response)
+        console.error(response) // eslint-disable-line no-console
       })
   })
 }

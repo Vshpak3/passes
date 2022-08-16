@@ -177,10 +177,10 @@ export class PostService {
     }
 
     //TODO: actually update post here
-    console.log(updatePostDto)
+    this.logger.info(updatePostDto)
 
     //TODO: actually update post here
-    console.log(updatePostDto)
+    this.logger.info(updatePostDto)
 
     return new GetPostDto(
       postDbResult[0].id,
