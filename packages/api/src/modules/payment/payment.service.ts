@@ -612,7 +612,7 @@ export class PaymentService {
           }),
         )
         .where({ id })
-      throw e
+      this.logger.error(`Error processing notification ${id}: ${e}`)
     }
   }
 
@@ -1564,5 +1564,11 @@ export class PaymentService {
         await this.makeCircleWirePayout(payout.user_id, new PayoutDto(payout))
         break
     }
+  }
+
+  // TESTING FOR AWS BATCH IN STAGING, WILL REMOVE
+  async printTest(): Promise<void> {
+    console.log('print')
+    console.log(this.dbReader(UserEntity.table).select('is_creator').first())
   }
 }
