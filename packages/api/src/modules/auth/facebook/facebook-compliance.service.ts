@@ -14,6 +14,7 @@ import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { FacebookDeletionRequestDto } from '../dto/fb-deletion-request'
 import { FacebookDeletionRequestEntity } from '../entities/facebook-deletion-request.entity'
+import { UserEntity } from '../../user/entities/user.entity'
 
 @Injectable()
 export class FacebookComplianceService {
@@ -61,9 +62,9 @@ export class FacebookComplianceService {
           id,
           facebook_user_id: userId,
         }
-        await trx('facebook_deletion_request').insert(request)
+        await trx(FacebookDeletionRequestEntity.table).insert(request)
 
-        await trx('users')
+        await trx(UserEntity.table)
           .update({ email: null })
           .where('oauth_id', userId)
           .where('oauth_provider', 'facebook')

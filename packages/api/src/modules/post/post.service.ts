@@ -18,6 +18,7 @@ import { CreatePostDto } from './dto/create-post.dto'
 import { GetPostDto } from './dto/get-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
+import { PostRequiredPassEntity } from './entities/postrequiredpass.entity'
 
 @Injectable()
 export class PostService {
@@ -54,21 +55,23 @@ export class PostService {
           })
 
         for (let i = 0; i < createPostDto.content.length; ++i) {
+          const contentId = uuid.v4()
           const createContentDto = createPostDto.content[i]
 
           const content = {
+            id: contentId,
             user_id: userId,
             url: createContentDto.url,
             content_type: createContentDto.contentType,
           }
-          await trx('content').insert(content)
+          await trx(ContentEntity.table).insert(content)
 
           const contentPost = {
             content_id: contentId,
             post_id: postId,
           }
 
-          await trx('content_post').insert(contentPost)
+          await trx(ContentPostEntity.table).insert(contentPost)
         }
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
@@ -77,7 +80,7 @@ export class PostService {
             pass_id: createPostDto.passes[i],
           }
 
-          await trx('post_required_pass').insert(postRequiredPass)
+          await trx(PostRequiredPassEntity.table).insert(postRequiredPass)
         }
       })
       .catch((err) => {

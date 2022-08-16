@@ -21,6 +21,8 @@ import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
 import { SendMessageDto } from './dto/send-message.dto'
 import { TokenDto } from './dto/token.dto'
+import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
+import { BatchMessageEntity } from './entities/batch-message.entity'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
 
@@ -122,7 +124,7 @@ export class MessagesService {
     const batchMessageId = uuid.v4()
     this.dbWriter
       .transaction(async (trx) => {
-        await trx('batch_message').insert({
+        await trx(BatchMessageEntity.table).insert({
           id: batchMessageId,
           user_id: userId,
           list_id: createBatchMessageDto.list,
@@ -133,7 +135,7 @@ export class MessagesService {
           const contentBatchMessageIds: string[] = []
           for (let i = 0; i < createBatchMessageDto.content.length; i++) {
             contentBatchMessageIds.push(uuid.v4())
-            await trx('content_batch_message').insert({
+            await trx(ContentBatchMessageEntity.table).insert({
               id: contentBatchMessageIds[i],
               content_id: createBatchMessageDto.content[i],
               batch_message_id: batchMessageId,
