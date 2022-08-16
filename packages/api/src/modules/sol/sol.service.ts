@@ -29,7 +29,6 @@ import {
   TransactionSignature,
 } from '@solana/web3.js'
 import base58 from 'bs58'
-import { isString } from 'lodash'
 import * as uuid from 'uuid'
 
 import { Database } from '../../database/database.decorator'
@@ -336,21 +335,16 @@ export class SolService {
   }
 
   async createNftCollection(
-    userOrUserId: string | UserEntity,
+    userId: string,
     name: string,
     symbol: string,
     description: string,
     imageUrl: string,
   ): Promise<GetSolNftCollectionDto> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    let user: string | UserEntity
-    if (isString(userOrUserId)) {
-      user = (await this.dbReader(UserEntity.table)
-        .where({ id: userOrUserId })
-        .first()) as UserEntity
-    } else {
-      user = userOrUserId
-    }
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id: userId })
+      .first()
     if (!user.email.endsWith('@moment.vip')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }

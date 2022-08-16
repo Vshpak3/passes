@@ -54,7 +54,7 @@ export class PassService {
       throw new NotFoundException('User does not exist')
     }
     const solNftCollectionDto = await this.solService.createNftCollection(
-      user,
+      user.id,
       createPassDto.title,
       user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
       createPassDto.description,
