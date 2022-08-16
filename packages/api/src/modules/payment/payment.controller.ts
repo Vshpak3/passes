@@ -419,11 +419,11 @@ export class PaymentController {
     })
   }
 
-  @ApiOperation({ summary: 'Register payin' })
+  @ApiOperation({ summary: 'Get register payin data' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Payin registered',
+    description: 'Register payin data returned',
   })
   @Post('test/register/payin/data')
   @HttpCode(200)

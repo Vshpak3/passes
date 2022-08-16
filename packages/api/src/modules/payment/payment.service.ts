@@ -11,7 +11,6 @@ import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { PassService } from '../pass/pass.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
-import { UserService } from '../user/user.service'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
@@ -103,7 +102,6 @@ export class PaymentService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
-    private readonly userService: UserService,
 
     private moduleRef: ModuleRef,
   ) {
@@ -168,7 +166,10 @@ export class PaymentService {
     }
 
     createCardDto.metadata.email = (
-      await this.userService.findOne(userId)
+      await this.dbReader(UserEntity.table)
+        .where('id', userId)
+        .select('email')
+        .first()
     ).email
     createCardDto.metadata.ipAddress = ip
     const response = await this.circleConnector.createCard(createCardDto)
@@ -253,7 +254,12 @@ export class PaymentService {
       },
       metadata: {
         ipAddress,
-        email: (await this.userService.findOne(payin.userId)).email,
+        email: (
+          await this.dbReader(UserEntity.table)
+            .where('id', payin.userId)
+            .select('email')
+            .first()
+        ).email,
         sessionId: sessionId,
       },
       verification: 'none',
@@ -1245,11 +1251,11 @@ export class PaymentService {
       // validate the parameters of the shares
       let sum = 0
       for (const creatorShareDto of request.creatorShares) {
-        const creator = await this.userService.findOne(
-          creatorShareDto.creatorId,
-        )
+        const creator = await this.dbReader(UserEntity.table)
+          .where('id', creatorShareDto.creatorId)
+          .first()
 
-        if (!creator.isCreator) {
+        if (!creator.is_creator) {
           throw new InvalidPayinRequestError('regular users can not earn money')
         }
         if (creatorShareDto.amount <= 0) {

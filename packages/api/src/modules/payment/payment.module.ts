@@ -1,12 +1,10 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { text } from 'body-parser'
 
-import { UserModule } from '../user/user.module'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
 
 @Module({
-  imports: [UserModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],
