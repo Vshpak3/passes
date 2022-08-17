@@ -7,7 +7,7 @@ import { CreatorPassTiles, FormContainer } from "src/components/organisms"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 import { usePasses } from "src/hooks"
 
-const Passes = () => {
+const Choice = () => {
   const router = useRouter()
   const { creatorPasses } = usePasses()
   const subscriptionPasses = creatorPasses?.passes.filter((pass) => {
@@ -115,4 +115,4 @@ const Passes = () => {
     </div>
   )
 }
-export default withPageLayout(Passes)
+export default withPageLayout(Choice)

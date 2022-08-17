@@ -108,7 +108,6 @@ const Username = (props: GetProfileDto) => {
   const { creatorPasses } = usePasses(props.userId)
   const [editProfile, setEditProfile] = useState(false)
   const [profile, setProfile] = useState(props)
-  // const [posts, setPosts] = useState([])
   const onEditProfile = () => {
     setEditProfile(true)
   }

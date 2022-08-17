@@ -8,17 +8,17 @@ import { classNames } from "src/helpers"
 import { useUser } from "src/hooks"
 
 const ProfileHeader = () => {
-  const { logout } = useUser()
+  const { logout, user } = useUser()
   const router = useRouter()
-
+  const profileUrl = user?.username ? user?.username : "test"
   const handleSignOut = () => {
     logout()
-    router.push("/")
+    router.push("/login")
   }
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
+    { name: "Your Profile", href: profileUrl },
+    { name: "Settings", href: "/settings" },
     {
       name: "Sign out",
       onClick: handleSignOut
@@ -64,7 +64,7 @@ const ProfileHeader = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 top-10 mt-2 box-border flex w-36 origin-top-right flex-col  items-start justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
                 {userNavigation.map((item) => (
                   <Menu.Item key={item.name}>
                     {({ active }) => (
@@ -72,8 +72,8 @@ const ProfileHeader = () => {
                         href={item.href}
                         onClick={item.onClick}
                         className={classNames(
-                          active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm text-gray-700"
+                          active ? "hover:bg-[#9C4DC1]" : "",
+                          "flex w-full cursor-pointer rounded bg-transparent px-3 text-base text-[#FFFF] ring-0 focus:shadow-none focus:ring-0 focus:ring-offset-0"
                         )}
                       >
                         {item.name}
