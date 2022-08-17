@@ -10,7 +10,6 @@ import NotificationIcon from "public/icons/sidebar-notification-icon.svg"
 import PassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import VaultIcon from "public/icons/sidebar-vault-icon.svg"
-import UpdatedMomentLogo from "public/moment-logo-updated.svg"
 import { Fragment, useEffect, useState } from "react"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/pages/profile/main-content/new-post"
@@ -193,7 +192,11 @@ const SideBar = () => {
                 <div className="flex flex-shrink-0 items-center justify-center sidebar-collapse:justify-start ">
                   <div className="">
                     <LogoSmall className="flex-no-shrink h-[40px] w-[40px] fill-current sidebar-collapse:hidden" />
-                    <UpdatedMomentLogo className="ml-10 hidden h-[26px] w-[136px] fill-current sidebar-collapse:block " />
+                    {/* <UpdatedMomentLogo className="ml-10 hidden h-[26px] w-[136px] fill-current sidebar-collapse:block " /> */}
+                    <h1 className="ml-10 hidden fill-current font-serif text-[40px] font-medium italic tracking-tight sidebar-collapse:block ">
+                      {/* TODO: replace with new logo passes */}
+                      Passes
+                    </h1>
                   </div>
                 </div>
                 <nav className="flex flex-col items-center gap-3 pt-[50px] sidebar-collapse:items-start sidebar-collapse:gap-[0px] ">
