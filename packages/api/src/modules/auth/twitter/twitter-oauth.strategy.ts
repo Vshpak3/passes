@@ -5,13 +5,14 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-twitter'
 import { Logger } from 'winston'
 
+import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { UserService } from '../../user/user.service'
-
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly metrics: MetricsService,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -31,9 +32,11 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
         user = await this.usersService.createOAuthUser('', 'twitter', id)
       }
 
+      this.metrics.increment('login.success.twitter')
       return user
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
+      this.metrics.increment('login.failure.twitter')
       return null
     }
   }

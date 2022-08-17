@@ -5,6 +5,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-google-oauth20'
 import { Logger } from 'winston'
 
+import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { UserService } from '../../user/user.service'
 
 @Injectable()
@@ -12,6 +13,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly metrics: MetricsService,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -24,11 +26,13 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
+    const failureEvid = 'login.failure.google'
     try {
       const { id, emails } = profile
 
       if (!emails) {
         this.logger.error('Failed to get emails from profile')
+        this.metrics.increment(failureEvid)
         return null
       }
 
@@ -45,6 +49,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         ].includes(email)
       ) {
         this.logger.error('blocking non-moment email login')
+        this.metrics.increment(failureEvid)
         return null
       }
 
@@ -53,9 +58,11 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         user = await this.usersService.createOAuthUser(email, 'google', id)
       }
 
+      this.metrics.increment('login.success.google')
       return user
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
+      this.metrics.increment(failureEvid)
       return null
     }
   }

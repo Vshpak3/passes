@@ -5,6 +5,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Profile, Strategy } from 'passport-facebook'
 import { Logger } from 'winston'
 
+import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { UserService } from '../../user/user.service'
 
 @Injectable()
@@ -15,6 +16,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly metrics: MetricsService,
     private readonly configService: ConfigService,
     private readonly usersService: UserService,
   ) {
@@ -36,9 +38,11 @@ export class FacebookOauthStrategy extends PassportStrategy(
         user = await this.usersService.createOAuthUser(email, 'facebook', id)
       }
 
+      this.metrics.increment('login.success.facebook')
       return user
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
+      this.metrics.increment('login.failure.facebook')
       return null
     }
   }

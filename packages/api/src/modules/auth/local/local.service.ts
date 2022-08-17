@@ -4,6 +4,7 @@ import { generateFromEmail } from 'unique-username-generator'
 
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
+import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
@@ -11,6 +12,7 @@ import { BCRYPT_SALT_ROUNDS } from './local.constants'
 @Injectable()
 export class LocalAuthService {
   constructor(
+    private readonly metrics: MetricsService,
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
@@ -52,14 +54,17 @@ export class LocalAuthService {
       .first()
 
     if (!user) {
+      this.metrics.increment('login.failure.local')
       return null
     }
 
     const doesPasswordMatch = await bcrypt.compare(password, user.password_hash)
     if (!doesPasswordMatch) {
+      this.metrics.increment('login.failure.local')
       return null
     }
 
+    this.metrics.increment('login.success.local')
     return user
   }
 }

@@ -5,7 +5,9 @@ import {
   ModuleMetadata,
   Provider,
 } from '@nestjs/common'
-import { ClientOptions, StatsD } from 'hot-shots'
+import { ClientOptions } from 'hot-shots'
+
+import { MetricsService } from './metric.service'
 
 export type MetricsModuleOptions = ClientOptions
 
@@ -25,9 +27,10 @@ export class MetricsModule {
   public static forRootAsync(
     options: MetricsModuleAsyncOptions,
   ): DynamicModule {
-    const StatsDFactoryProvider: Provider<StatsD> = {
-      provide: StatsD,
-      useFactory: (options: MetricsModuleOptions) => new StatsD(options),
+    const MetricsServiceFactoryProvider: Provider<MetricsService> = {
+      provide: MetricsService,
+      useFactory: (options: MetricsModuleOptions) =>
+        new MetricsService(options),
       inject: [METRICS_MODULE_OPTIONS],
     }
 
@@ -35,9 +38,9 @@ export class MetricsModule {
       module: MetricsModule,
       imports: options.imports,
       providers: this.createAsyncProviders(options).concat(
-        StatsDFactoryProvider,
+        MetricsServiceFactoryProvider,
       ),
-      exports: [StatsDFactoryProvider],
+      exports: [MetricsServiceFactoryProvider],
     }
   }
 
