@@ -26,32 +26,16 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    const failureEvid = 'login.failure.google'
     try {
       const { id, emails } = profile
 
       if (!emails) {
         this.logger.error('Failed to get emails from profile')
-        this.metrics.increment(failureEvid)
+        this.metrics.increment('login.failure.google')
         return null
       }
 
       const email = emails[0].value
-
-      // TODO: eventually remove this temporary login restriction
-      if (
-        !/^.*@moment.vip$/.test(email) &&
-        ![
-          'mailto.jtang@gmail.com',
-          'jmaathur@gmail.com',
-          'beratsalija@gmail.com',
-          'kelmendtairi@gmail.com',
-        ].includes(email)
-      ) {
-        this.logger.error('blocking non-moment email login')
-        this.metrics.increment(failureEvid)
-        return null
-      }
 
       let user = await this.usersService.findOneByOAuth(id, 'google')
       if (!user) {
@@ -62,7 +46,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       return user
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
-      this.metrics.increment(failureEvid)
+      this.metrics.increment('login.failure.google')
       return null
     }
   }
