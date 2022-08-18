@@ -73,6 +73,38 @@ const FormInput = ({
         {...rest}
       />
     ),
+    date: (
+      <Input
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        label={label}
+        register={register}
+        options={options}
+        className={className}
+        errors={errors}
+        textPosition={textPosition}
+        icon={icon}
+        iconAlign={iconAlign}
+        {...rest}
+      />
+    ),
+    password: (
+      <Input
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        label={label}
+        register={register}
+        options={options}
+        className={className}
+        errors={errors}
+        textPosition={textPosition}
+        icon={icon}
+        iconAlign={iconAlign}
+        {...rest}
+      />
+    ),
     tags: (
       <TagsInput
         name={name}

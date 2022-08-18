@@ -3,6 +3,7 @@ import Avatar from "./avatar"
 import AvatarSkeleton from "./avatar/skeleton"
 import GrainyBackground from "./background/grainy"
 import Card from "./Card"
+import CssGridTiles from "./CssGridTiles"
 import DragDropCard from "./drag-drop/Card"
 import DragDropFile from "./DragDropFile"
 import SideBar from "./Sidebar"
@@ -15,6 +16,7 @@ export {
   Avatar,
   AvatarSkeleton,
   Card,
+  CssGridTiles,
   DragDropCard,
   DragDropFile,
   GrainyBackground,

@@ -8,6 +8,7 @@ export type FormType =
   | "phone"
   | "number"
   | "password"
+  | "date"
   | "text-area"
   | "checkbox"
   | "toggle"

@@ -7,6 +7,7 @@ import {
   PostUnlockButton
 } from "./Button"
 import Checkbox from "./Checkbox"
+import CssTile from "./CssTile"
 import File from "./File"
 import FormInput from "./FormInput"
 import DefaultHead from "./Head"
@@ -23,6 +24,7 @@ export {
   Button,
   Checkbox,
   CoverButton,
+  CssTile,
   DefaultHead,
   File,
   FormInput,

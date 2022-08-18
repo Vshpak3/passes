@@ -7,7 +7,7 @@ export class CreateLocalUserDto {
   email: string
 
   // Minimum eight characters, at least one letter and one number
-  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+  @Matches(/^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/, {
     message:
       'Password must contain at least eight characters, one letter and one number',
   })
