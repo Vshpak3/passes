@@ -5,12 +5,13 @@ import { CoverButton } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
 
-import { NewPost } from "./new-post"
 import NewsFeedNavigation from "./new-post/navigation"
-import CreatorContentFeed from "./news-feed/creator-content-feed"
+import NewsFeedContent from "./news-feed/news-feed-content"
 
 const MainContent = ({ profile, ownsProfile, posts, username }) => {
   const [followed, setFollowed] = useState(false)
+  const [activeTab, setActiveTab] = useState("post")
+
   const { mutate } = useSWRConfig()
   const createPost = async (values) => {
     const api = wrapApi(PostApi)
@@ -81,14 +82,15 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
         </div>
       </div>
       <div className="min-h-12 hidden sm:flex  ">
-        <NewsFeedNavigation />
+        <NewsFeedNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
-      {ownsProfile && (
-        <NewPost passes={profile?.passes} createPost={createPost} />
-      )}
-      {posts?.posts?.length > 0 && (
-        <CreatorContentFeed profile={profile} existingPosts={posts.posts} />
-      )}
+      <NewsFeedContent
+        profile={profile}
+        activeTab={activeTab}
+        ownsProfile={ownsProfile}
+        posts={posts}
+        createPost={createPost}
+      />
     </>
   )
 }

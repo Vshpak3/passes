@@ -1,8 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import { classNames } from "src/helpers"
 
-const NewsFeedNavigation = () => {
-  const [active, setActive] = useState("post")
+const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
   const navigation = [
     {
       id: "post",
@@ -30,9 +29,9 @@ const NewsFeedNavigation = () => {
       {navigation.map((item, index) => (
         <span
           key={index}
-          onClick={() => setActive(item.id)}
+          onClick={() => setActiveTab(item.id)}
           className={classNames(
-            active === item.id
+            activeTab === item.id
               ? "border-b-[3px] border-[#9C4DC1]"
               : "border-[#9C4DC1]/60 hover:border-b-[3px] ",
             "group mt-[7px] box-border flex cursor-pointer items-start px-[10px] pb-3"
@@ -41,7 +40,7 @@ const NewsFeedNavigation = () => {
           <a
             // href={item.href}
             className={classNames(
-              item.id === active
+              item.id === activeTab
                 ? "border-b-2 text-base font-bold text-[#ffffff]/90 opacity-100"
                 : "opacity-50 group-hover:opacity-80",
               "inline-flex items-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold "

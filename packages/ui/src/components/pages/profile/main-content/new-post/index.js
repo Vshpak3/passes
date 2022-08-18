@@ -32,7 +32,7 @@ const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
-export const NewPost = ({ passes = [], createPost }) => {
+export const NewPost = ({ passes = [], placeholder, createPost }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState([])
   const [selectedMedia, setSelectedMedia] = useState()
@@ -288,7 +288,7 @@ export const NewPost = ({ passes = [], createPost }) => {
               type="text-area"
               name="text"
               className="m-0 w-full resize-none border-transparent bg-transparent p-0 focus:border-transparent focus:ring-0"
-              placeholder="What’s on your mind?"
+              placeholder={placeholder}
               rows={4}
               cols={40}
             />
