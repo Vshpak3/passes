@@ -72,8 +72,10 @@ export const configValidationSchema = Joi.object({
   STREAM_API_KEY: Joi.string().required(),
   STREAM_API_SECRET: Joi.string().required(),
 
-  ALCHEMY_SOL_HTTPS_ENDPOINT: Joi.string().required(),
-  ALCHEMY_SOL_WSS_ENDPOINT: Joi.string().required(),
+  ALCHEMY_SOL_API_KEY: Joi.string().required(),
+  ALCHEMY_SOL_HTTPS_ENDPOINT: Joi.string().uri().required(),
+  ALCHEMY_ETH_API_KEY: Joi.string().required(),
+  ALCHEMY_ETH_HTTPS_ENDPOINT: Joi.string().uri().required(),
 
   // -----------------------------------------------------------
 
@@ -165,8 +167,14 @@ export const configConfiguration = async function (): Promise<
       api_secret: getConfigValue('STREAM_API_SECRET'),
     },
     alchemy: {
-      sol_https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
-      sol_wss_endpoint: getConfigValue('ALCHEMY_SOL_WSS_ENDPOINT'),
+      sol: {
+        api_key: getConfigValue('ALCHEMY_SOL_API_KEY'),
+        https_endpoint: getConfigValue('ALCHEMY_SOL_HTTPS_ENDPOINT'),
+      },
+      eth: {
+        api_key: getConfigValue('ALCHEMY_ETH_API_KEY'),
+        https_endpoint: getConfigValue('ALCHEMY_ETH_HTTPS_ENDPOINT'),
+      },
     },
     blockchain: {
       networks: getConfigValue('BLOCKCHAIN_NETWORKS'),
