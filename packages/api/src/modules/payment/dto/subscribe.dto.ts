@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { PayinMethodDto } from './payin-method.dto'
-import { PayinTargetDto } from './payin-target.dto'
 
 export class SubscribeResponseDto {
   @ApiProperty()
@@ -21,7 +20,6 @@ export class SubscribeRequestDto {
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto
 
-  // target object
   @ApiProperty()
-  payinTarget: PayinTargetDto
+  passOwnershipId: string
 }

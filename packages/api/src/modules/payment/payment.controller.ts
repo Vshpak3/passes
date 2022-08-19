@@ -42,8 +42,13 @@ import {
 } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
 import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
+import {
+  PayoutListRequestDto,
+  PayoutListResponseDto,
+} from './dto/payout-list.dto'
 import { PayoutMethodDto } from './dto/payout-method.dto'
 import { RegisterPayinResponseDto } from './dto/register-payin.dto'
+import { SubscriptionDto } from './dto/subscription.dto'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { CircleRequestError } from './error/circle.error'
 import { PaymentService } from './payment.service'
@@ -401,8 +406,28 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get all payins' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayinListResponseDto,
+    type: PayoutListResponseDto,
     description: 'Payins were returned',
+  })
+  @Post('payin')
+  @HttpCode(200)
+  async getPayouts(
+    @Req() req: RequestWithUser,
+    @Body() payoutListRequest: PayoutListRequestDto,
+  ): Promise<PayoutListResponseDto> {
+    return await this.paymentService.getPayouts(req.user.id, payoutListRequest)
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  Payout
+  -------------------------------------------------------------------------------
+  */
+  @ApiOperation({ summary: 'Get all payouts' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PayinListResponseDto,
+    description: 'payouts were returned',
   })
   @Post('payin')
   @HttpCode(200)
@@ -412,7 +437,6 @@ export class PaymentController {
   ): Promise<PayinListResponseDto> {
     return await this.paymentService.getPayins(req.user.id, payinListRequest)
   }
-
   /*
   -------------------------------------------------------------------------------
   Subscriptions
@@ -438,36 +462,19 @@ export class PaymentController {
     )
   }
 
-  // @ApiOperation({ summary: 'Get subscriptions' })
-  // @ApiResponse({
-  //   status: HttpStatus.OK,
-  //   type: [SubscriptionDto],
-  //   description: 'Subscriptions were returned',
-  // })
-  // @Get('subscriptions')
-  // @HttpCode(200)
-  // async getSubscriptions(
-  //   @Req() req: RequestWithUser,
-  // ): Promise<Array<SubscriptionDto>> {
-  //   return await this.paymentService.getSubscriptions(req.user.id)
-  // }
-
-  // @ApiOperation({ summary: 'Get card by id' })
-  // @ApiResponse({
-  //   status: HttpStatus.OK,
-  //   type: SubscriptionDto,
-  //   description: 'Card was returned',
-  // })
-  // @Get('subscription/:subscriptionId')
-  // async getSubscription(
-  //   @Req() req: RequestWithUser,
-  //   @Param('subscriptionId') subscriptionId: string,
-  // ): Promise<SubscriptionDto> {
-  //   return await this.paymentService.getSubscription(
-  //     req.user.id,
-  //     subscriptionId,
-  //   )
-  // }
+  @ApiOperation({ summary: 'Get subscriptions' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [SubscriptionDto],
+    description: 'Subscriptions were returned',
+  })
+  @Get('subscriptions')
+  @HttpCode(200)
+  async getSubscriptions(
+    @Req() req: RequestWithUser,
+  ): Promise<Array<SubscriptionDto>> {
+    return await this.paymentService.getSubscriptions(req.user.id)
+  }
 
   /*
   -------------------------------------------------------------------------------
@@ -492,7 +499,6 @@ export class PaymentController {
       callback: PayinCallbackEnum.EXAMPLE,
       callbackInputJSON: { example: 'asdf' } as PayinCallbackInput,
       creatorShares: [{ creatorId: req.user.id, amount: 500 }],
-      payinTarget: {},
     })
   }
 

@@ -1,7 +1,6 @@
 import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { PassEntity } from '../../pass/entities/pass.entity'
 import { PassOwnershipEntity } from '../../pass/entities/pass-ownership.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
@@ -12,6 +11,9 @@ import { CircleCardEntity } from './circle-card.entity'
 export class SubscriptionEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
+
+  @Enum(() => SubscriptionStatusEnum)
+  subscriptionStatus: SubscriptionStatusEnum
 
   // payin method
   @Enum(() => PayinMethodEnum)
@@ -26,9 +28,6 @@ export class SubscriptionEntity extends BaseEntity {
   @Property({ type: types.float })
   amount: number
 
-  @Enum(() => SubscriptionStatusEnum)
-  subscriptionStatus: SubscriptionStatusEnum
-
   // card specific information
   @Property()
   ipAddress?: string
@@ -36,13 +35,6 @@ export class SubscriptionEntity extends BaseEntity {
   @Property()
   sessionId?: string
 
-  // payin target
-  @Property()
-  target?: string
-
-  @ManyToOne({ entity: () => PassEntity })
-  pass?: PassEntity
-
   @ManyToOne({ entity: () => PassOwnershipEntity })
-  passOwnership?: PassOwnershipEntity
+  passOwnership: PassOwnershipEntity
 }

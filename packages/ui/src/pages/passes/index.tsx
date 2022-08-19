@@ -31,10 +31,10 @@ import { usePasses } from "src/hooks"
 
 const Passes = () => {
   const { fanPasses } = usePasses()
-  const subscriptionPasses = fanPasses?.passes.filter((pass) => {
+  const subscriptionPasses = fanPasses?.filter((pass) => {
     return pass.type === "subscription"
   })
-  const lifetimePasses = fanPasses?.passes.filter((pass) => {
+  const lifetimePasses = fanPasses?.filter((pass) => {
     return pass.type === "lifetime"
   })
 

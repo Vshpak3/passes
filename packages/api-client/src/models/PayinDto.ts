@@ -25,12 +25,6 @@ import {
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
 } from './PayinMethodDto';
-import {
-    PayinTargetDto,
-    PayinTargetDtoFromJSON,
-    PayinTargetDtoFromJSONTyped,
-    PayinTargetDtoToJSON,
-} from './PayinTargetDto';
 
 /**
  * 
@@ -100,10 +94,16 @@ export interface PayinDto {
     address?: string;
     /**
      * 
-     * @type {PayinTargetDto}
+     * @type {string}
      * @memberof PayinDto
      */
-    payinTarget?: PayinTargetDto;
+    callbackOutputJSON: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PayinDto
+     */
+    target: string;
 }
 
 
@@ -130,7 +130,8 @@ export type PayinDtoPayinStatusEnum = typeof PayinDtoPayinStatusEnum[keyof typeo
  */
 export const PayinDtoCallbackEnum = {
     Message: 'message',
-    NftPass: 'nft_pass',
+    CreateNftPass: 'create_nft_pass',
+    RewnewNftPass: 'rewnew_nft_pass',
     Example: 'example'
 } as const;
 export type PayinDtoCallbackEnum = typeof PayinDtoCallbackEnum[keyof typeof PayinDtoCallbackEnum];
@@ -156,7 +157,8 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
         'transactionHash': !exists(json, 'transactionHash') ? undefined : json['transactionHash'],
         'address': !exists(json, 'address') ? undefined : json['address'],
-        'payinTarget': !exists(json, 'payinTarget') ? undefined : PayinTargetDtoFromJSON(json['payinTarget']),
+        'callbackOutputJSON': json['callbackOutputJSON'],
+        'target': json['target'],
     };
 }
 
@@ -179,7 +181,8 @@ export function PayinDtoToJSON(value?: PayinDto | null): any {
         'card': CircleCardDtoToJSON(value.card),
         'transactionHash': value.transactionHash,
         'address': value.address,
-        'payinTarget': PayinTargetDtoToJSON(value.payinTarget),
+        'callbackOutputJSON': value.callbackOutputJSON,
+        'target': value.target,
     };
 }
 

@@ -1,10 +1,10 @@
-import { GetPassesDto } from "@passes/api-client"
+import { GetPassDto } from "@passes/api-client"
 import React from "react"
 
 import Carousel from "./Carousel"
 import { Pass } from "./PassesComponents"
 interface IPasses {
-  creatorPasses: GetPassesDto | undefined
+  creatorPasses: GetPassDto[] | undefined
 }
 
 const Passes = ({ creatorPasses }: IPasses) => (
@@ -14,12 +14,12 @@ const Passes = ({ creatorPasses }: IPasses) => (
     </span>
     <div>
       <div className="lg:overflow-x-none hidden gap-3 lg:mx-0 lg:flex lg:flex-col lg:items-start lg:divide-y lg:divide-[#322E33]">
-        {creatorPasses?.passes.map((pass, index) => (
+        {creatorPasses?.map((pass, index) => (
           <Pass key={index} pass={pass} />
         ))}
       </div>
       <div className="-ml-[12px] -mr-[12px] lg:hidden">
-        {creatorPasses && <Carousel passes={creatorPasses.passes} />}
+        {creatorPasses && <Carousel passes={creatorPasses} />}
       </div>
     </div>
   </div>

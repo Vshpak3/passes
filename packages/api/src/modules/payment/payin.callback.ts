@@ -2,11 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DatabaseService } from '../../database/database.service'
 import {
-  ExamplePayinCallbackInput,
+  CreateNftPassPayinCallbackInput,
+  CreateNftPassPayinCallbackOutput,
   MessagePayinCallbackInput,
-  NftPassPayinCallbackInput,
+  PayinCallbackInput,
+  RenewNftPassPayinCallbackInput,
+  RenewNftPassPayinCallbackOutput,
 } from './callback.types'
-import { SubscriptionEntity } from './entities/subscription.entity'
+import { PayinDto } from './dto/payin.dto'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { NoPayinMethodError } from './error/payin.error'
 import { PaymentService } from './payment.service'
@@ -19,25 +22,39 @@ export const functionMapping = (key) => {
         failure: messageFailureCallback,
         creation: messageCreationCallback,
       }
-    case PayinCallbackEnum.NFT_PASS:
+    case PayinCallbackEnum.CREATE_NFT_PASS:
       return {
-        success: nftPassSuccessCallback,
-        failure: nftPassFailureCallback,
-        creation: nftPassCreationCallback,
+        success: createNftPassSuccessCallback,
+        failure: empty,
+        creation: empty,
+      }
+    case PayinCallbackEnum.RENEW_NFT_PASS:
+      return {
+        success: renewNftPassSuccessCallback,
+        failure: empty,
+        creation: empty,
       }
     case PayinCallbackEnum.EXAMPLE:
       return {
-        success: examplePassSuccessCallback,
-        failure: examplePassFailureCallback,
-        creation: examplePassCreationCallback,
+        success: empty,
+        failure: empty,
+        creation: empty,
       }
     default:
       throw new NoPayinMethodError('no method selected for callback')
   }
 }
 
+const empty = async (
+  payin: any,
+  input: PayinCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+) => {}
+
 export async function messageSuccessCallback(
-  payinId: string,
+  payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -46,7 +63,7 @@ export async function messageSuccessCallback(
 }
 
 export async function messageFailureCallback(
-  payinId: string,
+  payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -55,7 +72,7 @@ export async function messageFailureCallback(
 }
 
 export async function messageCreationCallback(
-  payinId: string,
+  payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -63,66 +80,42 @@ export async function messageCreationCallback(
   //TODO
 }
 
-export async function nftPassSuccessCallback(
-  payinId: string,
-  input: NftPassPayinCallbackInput,
+export async function createNftPassSuccessCallback(
+  payin: any,
+  input: CreateNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<void> {
-  const newPassOwnership = await payService.passService.extendOrAddHolder(
+): Promise<CreateNftPassPayinCallbackOutput> {
+  const newPassOwnership = await payService.passService.createPass(
     input.userId,
     input.passId,
-    input.temporary,
   )
-  if (newPassOwnership) {
-    await payService.fillTargetPass(payinId, newPassOwnership)
+  const payinDto = new PayinDto(payin)
+  if (newPassOwnership.expiresAt) {
+    await payService.subscribe({
+      userId: payinDto.userId,
+      passOwnershipId: newPassOwnership.id,
+      amount: payinDto.amount,
+      payinMethod: payinDto.payinMethod,
+    })
+  }
+  return {
+    passOwnershipId: newPassOwnership.id,
+    expiresAt: newPassOwnership.expiresAt,
   }
 }
 
-export async function nftPassFailureCallback(
-  payinId: string,
-  input: NftPassPayinCallbackInput,
+export async function renewNftPassSuccessCallback(
+  payin: any,
+  input: RenewNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<void> {
-  return
-}
-
-export async function nftPassCreationCallback(
-  payinId: string,
-  input: NftPassPayinCallbackInput,
-  payService: PaymentService,
-  db: DatabaseService['knex'],
-): Promise<void> {
-  return
-}
-
-export async function examplePassSuccessCallback(
-  payinId: string,
-  input: ExamplePayinCallbackInput,
-  payService: PaymentService,
-  db: DatabaseService['knex'],
-): Promise<void> {
-  // console.log('success')
-  //TODO
-}
-
-export async function examplePassFailureCallback(
-  payinId: string,
-  input: ExamplePayinCallbackInput,
-  payService: PaymentService,
-  db: DatabaseService['knex'],
-): Promise<void> {
-  // console.log('fail')
-  //TODO
-}
-
-export async function examplePassCreationCallback(
-  payinId: string,
-  input: ExamplePayinCallbackInput,
-  payService: PaymentService,
-  db: DatabaseService['knex'],
-): Promise<void> {
-  // console.log('create')
-  //TODO
+): Promise<RenewNftPassPayinCallbackOutput> {
+  const expiresAt = await payService.passService.renewPass(
+    input.passOwnershipId,
+  )
+  return {
+    passOwnershipId: input.passOwnershipId,
+    expiresAt,
+  }
 }

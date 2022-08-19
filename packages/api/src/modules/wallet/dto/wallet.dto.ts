@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { WalletEntity } from '../entities/wallet.entity'
 import { Chain } from '../enum/chain.enum'
 
 export class WalletDto {
@@ -19,11 +18,17 @@ export class WalletDto {
   @ApiProperty()
   custodial: boolean
 
-  constructor(walletEntity: WalletEntity) {
-    this.id = walletEntity.id
-    this.userId = walletEntity.user?.id
-    this.address = walletEntity.address
-    this.chain = walletEntity.chain
-    this.custodial = walletEntity.custodial
+  @ApiProperty()
+  authenticated: boolean
+
+  constructor(wallet) {
+    if (wallet) {
+      this.id = wallet.id
+      this.userId = wallet.user?.id
+      this.address = wallet.address
+      this.chain = wallet.chain
+      this.custodial = wallet.custodial
+      this.authenticated = wallet.authenticated
+    }
   }
 }

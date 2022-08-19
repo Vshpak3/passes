@@ -23,39 +23,39 @@ import {
 /**
  * 
  * @export
- * @interface CreatePassHolderDto
+ * @interface RenewPassHolderDto
  */
-export interface CreatePassHolderDto {
+export interface RenewPassHolderDto {
     /**
      * 
      * @type {string}
-     * @memberof CreatePassHolderDto
+     * @memberof RenewPassHolderDto
      */
-    passId: string;
+    passOwnershipId: string;
     /**
      * 
      * @type {PayinMethodDto}
-     * @memberof CreatePassHolderDto
+     * @memberof RenewPassHolderDto
      */
     payinMethod?: PayinMethodDto;
 }
 
-export function CreatePassHolderDtoFromJSON(json: any): CreatePassHolderDto {
-    return CreatePassHolderDtoFromJSONTyped(json, false);
+export function RenewPassHolderDtoFromJSON(json: any): RenewPassHolderDto {
+    return RenewPassHolderDtoFromJSONTyped(json, false);
 }
 
-export function CreatePassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreatePassHolderDto {
+export function RenewPassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): RenewPassHolderDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'passId': json['passId'],
+        'passOwnershipId': json['passOwnershipId'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
-export function CreatePassHolderDtoToJSON(value?: CreatePassHolderDto | null): any {
+export function RenewPassHolderDtoToJSON(value?: RenewPassHolderDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,7 +64,7 @@ export function CreatePassHolderDtoToJSON(value?: CreatePassHolderDto | null): a
     }
     return {
         
-        'passId': value.passId,
+        'passOwnershipId': value.passOwnershipId,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }

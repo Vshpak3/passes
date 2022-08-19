@@ -2,9 +2,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
-export class CreatePassHolderDto {
+export class RenewPassHolderDto {
   @ApiProperty()
-  passId: string
+  passOwnershipId: string
 
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto

@@ -65,7 +65,6 @@ models/GetListDto.ts
 models/GetListsDto.ts
 models/GetPassDto.ts
 models/GetPassOwnershipDto.ts
-models/GetPassesDto.ts
 models/GetPostDto.ts
 models/GetProfileDto.ts
 models/GetSignedUrlDto.ts
@@ -83,14 +82,18 @@ models/PayinDto.ts
 models/PayinListRequestDto.ts
 models/PayinListResponseDto.ts
 models/PayinMethodDto.ts
-models/PayinTargetDto.ts
+models/PayoutDto.ts
+models/PayoutListRequestDto.ts
+models/PayoutListResponseDto.ts
 models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/RawFacebookDeletionRequestDto.ts
 models/RegisterPayinResponseDto.ts
+models/RenewPassHolderDto.ts
 models/SearchCreatorResponseDto.ts
 models/SendMessageDto.ts
+models/SubscriptionDto.ts
 models/TokenDto.ts
 models/UpdatePassDto.ts
 models/UpdatePostDto.ts

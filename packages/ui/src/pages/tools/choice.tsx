@@ -10,16 +10,16 @@ import { usePasses } from "src/hooks"
 const Choice = () => {
   const router = useRouter()
   const { creatorPasses } = usePasses()
-  const subscriptionPasses = creatorPasses?.passes.filter((pass) => {
+  const subscriptionPasses = creatorPasses?.filter((pass) => {
     return pass.type === "subscription"
   })
-  const lifetimePasses = creatorPasses?.passes.filter((pass) => {
+  const lifetimePasses = creatorPasses?.filter((pass) => {
     return pass.type === "lifetime"
   })
 
   return (
     <div className="mx-auto -mt-[160px] grid grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-      {creatorPasses && creatorPasses.passes.length > 0 ? (
+      {creatorPasses && creatorPasses.length > 0 ? (
         <>
           <div className="my-4 flex gap-x-4">
             <span className="text-[24px] font-bold text-[#ffff]/90">

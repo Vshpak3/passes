@@ -75,6 +75,9 @@ import {
     RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
+    SubscriptionDto,
+    SubscriptionDtoFromJSON,
+    SubscriptionDtoToJSON,
 } from '../models';
 
 export interface PaymentCancelPayinRequest {
@@ -594,7 +597,7 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get all payins
+     * Get all payouts
      */
     async paymentGetPayinsRaw(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinListResponseDto>> {
         if (requestParameters.payinListRequestDto === null || requestParameters.payinListRequestDto === undefined) {
@@ -619,10 +622,36 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get all payins
+     * Get all payouts
      */
     async paymentGetPayins(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinListResponseDto> {
         const response = await this.paymentGetPayinsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get subscriptions
+     */
+    async paymentGetSubscriptionsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<SubscriptionDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/payment/subscriptions`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SubscriptionDtoFromJSON));
+    }
+
+    /**
+     * Get subscriptions
+     */
+    async paymentGetSubscriptions(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<SubscriptionDto>> {
+        const response = await this.paymentGetSubscriptionsRaw(initOverrides);
         return await response.value();
     }
 

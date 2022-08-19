@@ -4,7 +4,6 @@ import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
-import { PayinTargetDto } from './payin-target.dto'
 
 export class PayinDto {
   @ApiProperty()
@@ -37,8 +36,11 @@ export class PayinDto {
   @ApiPropertyOptional()
   address?: string
 
-  @ApiPropertyOptional()
-  payinTarget: PayinTargetDto
+  @ApiProperty()
+  callbackOutputJSON?: string
+
+  @ApiProperty()
+  target?: string
 
   constructor(payin) {
     if (payin) {
@@ -55,11 +57,8 @@ export class PayinDto {
       this.payinStatus = payin.payin_status
       this.address = payin.address
       this.transactionHash = payin.transaction_hash
-      this.payinTarget = {
-        target: payin.target,
-        passId: payin.pass_id,
-        passOwnershipId: payin.pass_ownership_id,
-      }
+      this.callbackOutputJSON = payin.callback_output_json
+      this.target = payin.target
     }
   }
 }

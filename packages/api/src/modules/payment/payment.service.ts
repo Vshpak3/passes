@@ -15,6 +15,7 @@ import { PassOwnershipEntity } from '../pass/entities/pass-ownership.entity'
 import { PassService } from '../pass/pass.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
+import { WalletDto } from '../wallet/dto/wallet.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
@@ -47,12 +48,17 @@ import { PhantomCircleUSDCEntryResponseDto } from './dto/payin-entry/phantom-cir
 import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
 import { PayoutDto } from './dto/payout.dto'
+import {
+  PayoutListRequestDto,
+  PayoutListResponseDto,
+} from './dto/payout-list.dto'
 import { PayoutMethodDto } from './dto/payout-method.dto'
 import {
   RegisterPayinRequestDto,
   RegisterPayinResponseDto,
 } from './dto/register-payin.dto'
 import { SubscribeRequestDto, SubscribeResponseDto } from './dto/subscribe.dto'
+import { SubscriptionDto } from './dto/subscription.dto'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
@@ -88,8 +94,8 @@ import {
 import { InvalidSubscriptionError } from './error/subscription.error'
 import {
   handleCreationCallback,
-  handleFailedCallbacks,
-  handleSuccesfulCallbacks,
+  handleFailedCallback,
+  handleSuccesfulCallback,
 } from './payment.payin'
 
 const MAX_CARDS_PER_USER = 10
@@ -1321,9 +1327,7 @@ export class PaymentService {
       callback: request.callback,
       callbackInputJSON: JSON.stringify(request.callbackInputJSON),
       amount: request.amount,
-      target: request.payinTarget.target,
-      pass: request.payinTarget.passId,
-      passOwnership: request.payinTarget.passOwnershipId,
+      target: request.target,
     })
 
     await this.dbWriter(PayinEntity.table).insert(data)
@@ -1422,7 +1426,7 @@ export class PaymentService {
           ]),
         )
         .first()
-      await handleFailedCallbacks(payin, this, this.dbReader)
+      await handleFailedCallback(payin, this, this.dbReader)
     }
   }
 
@@ -1453,7 +1457,7 @@ export class PaymentService {
           ]),
         )
         .first()
-      await handleSuccesfulCallbacks(payin, this, this.dbWriter)
+      await handleSuccesfulCallback(payin, this, this.dbWriter)
     }
   }
 
@@ -1501,28 +1505,12 @@ export class PaymentService {
       return map
     }, {})
 
-    const passTargets = await this.dbReader
-      .table(PassEntity.table)
-      .where(
-        'id',
-        'in',
-        payins.map((payin) => payin.pass_id),
-      )
-      .select('*')
-    const passTargetsMap = passTargets.reduce((map, pass) => {
-      map[pass.id] = new GetPassDto(pass)
-      return map
-    }, {})
-
     const payinsDto = payins.map((payin) => {
       return new PayinDto(payin)
     })
     payinsDto.forEach((payinDto) => {
       if (payinDto.payinMethod.method === PayinMethodEnum.CIRCLE_CARD) {
         payinDto.card = cardsMap[payinDto.payinMethod.cardId as string]
-      }
-      if (payinDto.payinTarget.passId) {
-        payinDto.payinTarget.pass = passTargetsMap[payinDto.payinTarget.passId]
       }
     })
     return {
@@ -1671,6 +1659,64 @@ export class PaymentService {
     }
   }
 
+  async getPayouts(
+    userId: string,
+    payoutListRequest: PayoutListRequestDto,
+  ): Promise<PayoutListResponseDto> {
+    const payouts = await this.dbReader(PayoutEntity.table)
+      .where('user_id', userId)
+      .select('*')
+      .orderBy('created_at', 'desc')
+      .offset(payoutListRequest.offset)
+      .limit(payoutListRequest.limit)
+    const count = await this.dbReader
+      .table(PayinEntity.table)
+      .where('user_id', userId)
+      .count()
+
+    const banks = await this.dbReader
+      .table(CircleCardEntity.table)
+      .where(
+        'id',
+        'in',
+        payouts.map((payout) => payout.bank_id),
+      )
+      .select('*')
+    const banksMap = banks.reduce((map, bank) => {
+      map[bank.id] = new CircleBankDto(bank)
+      return map
+    }, {})
+    const wallets = await this.dbReader
+      .table(WalletEntity.table)
+      .where(
+        'id',
+        'in',
+        payouts.map((payout) => payout.wallet_id),
+      )
+      .select('*')
+    const walletsMap = wallets.reduce((map, wallet) => {
+      map[wallet.id] = new WalletDto(wallet)
+      return map
+    }, {})
+
+    const payoutsDto = payouts.map((payout) => {
+      return new PayoutDto(payout)
+    })
+    payoutsDto.forEach((payoutDto) => {
+      if (payoutDto.payoutMethod.method === PayoutMethodEnum.CIRCLE_WIRE) {
+        payoutDto.bank = banksMap[payoutDto.payoutMethod.bankId as string]
+      } else if (
+        payoutDto.payoutMethod.method === PayoutMethodEnum.CIRCLE_USDC
+      ) {
+        payoutDto.wallet = walletsMap[payoutDto.payoutMethod.walletId as string]
+      }
+    })
+    return {
+      count: parseInt(count[0]['count(*)']),
+      payins: payoutsDto,
+    }
+  }
+
   /*
   -------------------------------------------------------------------------------
   Earnings Aggregation
@@ -1716,19 +1762,30 @@ export class PaymentService {
       )
     }
 
-    // try to find subscription if previously subscribed
-    const subscription =
-      request.payinTarget.target === undefined
-        ? undefined
-        : await this.dbReader(SubscriptionEntity.table)
-            .where(
-              SubscriptionEntity.toDict<SubscriptionEntity>({
-                target: request.payinTarget.target,
-                user: request.userId,
-              }),
-            )
-            .select('*')
-            .first()
+    // ensure that the subscription is for an accurate pass ownership object
+    if (
+      (
+        await this.dbReader(PassOwnershipEntity.table)
+          .where('id', request.passOwnershipId)
+          .select('holder_id')
+          .first()
+      ).holder_id !== request.userId
+    ) {
+      throw new InvalidSubscriptionError(
+        `${request.userId} is not the owner in pass-ownership ${request.passOwnershipId}`,
+      )
+    }
+
+    // try to find subscription object if previously subscribed
+    const subscription = await this.dbReader(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          passOwnership: request.passOwnershipId,
+          user: request.userId,
+        }),
+      )
+      .select('*')
+      .first()
 
     const payinMethod =
       request.payinMethod !== undefined &&
@@ -1737,32 +1794,27 @@ export class PaymentService {
         : await this.getDefaultPayinMethod(request.userId)
 
     if (!subscription) {
-      // make new subscription
+      // make new subscription object
       const data = SubscriptionEntity.toDict<SubscriptionEntity>({
         id: v4(),
+        subscriptionStatus: SubscriptionStatusEnum.ACTIVE,
         user: request.userId,
         payinMethod: payinMethod.method,
         card: payinMethod.cardId,
         chainId: payinMethod.chainId,
-        subscriptionStatus: SubscriptionStatusEnum.ACTIVE,
         amount: request.amount,
-        target: request.payinTarget.target,
-        pass: request.payinTarget.passId,
-        passOwnership: request.payinTarget.passOwnershipId,
+        passOwnership: request.passOwnershipId,
       })
       await this.dbWriter(SubscriptionEntity.table).insert(data)
       return { subscriptionId: data.id, payinMethod }
     } else if (
       subscription.subscription_status === SubscriptionStatusEnum.CANCELLED
     ) {
-      // renew subscription
-      await this.activateSubscription(subscription.id, request.userId)
       await this.setSubscriptionPayinMethod(
         subscription.id,
         request.userId,
         payinMethod,
       )
-
       await this.dbWriter(SubscriptionEntity.table)
         .where('id', subscription.id)
         .update('amount', request.amount)
@@ -1770,48 +1822,6 @@ export class PaymentService {
     } else {
       throw new InvalidSubscriptionError('subscription already exists')
     }
-  }
-
-  async activateSubscription(
-    subscriptionId: string,
-    userId: string,
-  ): Promise<void> {
-    await this.dbWriter(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          id: subscriptionId,
-          user: userId,
-        }),
-      )
-      .update('subscription_status', SubscriptionStatusEnum.ACTIVE)
-  }
-
-  async expiringSubscription(
-    subscriptionId: string,
-    userId: string,
-  ): Promise<void> {
-    await this.dbWriter(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          id: subscriptionId,
-          user: userId,
-        }),
-      )
-      .update('subscription_status', SubscriptionStatusEnum.EXPIRING)
-  }
-
-  async disableSubscription(
-    subscriptionId: string,
-    userId: string,
-  ): Promise<void> {
-    await this.dbWriter(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          id: subscriptionId,
-          user: userId,
-        }),
-      )
-      .update('subscription_status', SubscriptionStatusEnum.DISABLED)
   }
 
   async setSubscriptionPayinMethod(
@@ -1852,9 +1862,28 @@ export class PaymentService {
         `${SubscriptionEntity.table}.subscription_status`,
         SubscriptionStatusEnum.CANCELLED,
       )
-      .select('*')
+      .select([
+        `${SubscriptionEntity}'.id`,
+        `${SubscriptionEntity}'.user_id`,
+        ...SubscriptionEntity.populate<SubscriptionEntity>([
+          'payinMethod',
+          'chainId',
+          'card',
+        ]),
+        `${PassOwnershipEntity}'.expires_at`,
+        `${PassOwnershipEntity}'.holder_id`,
+      ])
+
     nftPassSubscriptions.forEach(async (subscription) => {
       try {
+        // holder of pass changed
+        if (subscription.user_id !== subscription.holder_id) {
+          await this.dbWriter
+            .where('id', subscription.id)
+            .update('subscription_status', SubscriptionStatusEnum.CANCELLED)
+          return
+        }
+
         let status = SubscriptionStatusEnum.DISABLED
         if (subscription.expires_at - EXPIRING_DURATION_MS > now) {
           status = SubscriptionStatusEnum.ACTIVE
@@ -1868,29 +1897,26 @@ export class PaymentService {
         // TODO: send email notifications
 
         // try to pay subscription if possible
-        try {
-          if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
-            const payinMethod: PayinMethodDto = {
-              method: subscription.payin_method,
-              cardId: subscription.card_id,
-              chainId: subscription.chain_id,
+        if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
+          try {
+            // can only autorenew with card
+            if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
+              const registerResponse = await this.passService.registerRenewPass(
+                subscription.user_id,
+                subscription.id,
+                new PayinMethodDto(subscription),
+              )
+              await this.payinEntryHandler(subscription.user_id, {
+                payinId: registerResponse.payinId,
+                ip: subscription.ip_address,
+                sessionId: subscription.session_id,
+              } as CircleCardPayinEntryRequestDto)
             }
-            const registerResponse = await this.passService.registerPass(
-              subscription.user_id,
-              subscription.pass_id,
-              true,
-              payinMethod,
+          } catch (e) {
+            this.logger.error(
+              `Error paying subscription for ${subscription.id}: ${e}`,
             )
-            await this.payinEntryHandler(subscription.user_id, {
-              payinId: registerResponse.payinId,
-              ip: subscription.ip_address,
-              sessionId: subscription.session_id,
-            } as CircleCardPayinEntryRequestDto)
           }
-        } catch (e) {
-          this.logger.error(
-            `Error paying subscription for ${subscription.id}: ${e}`,
-          )
         }
       } catch (e) {
         this.logger.error(
@@ -1900,47 +1926,48 @@ export class PaymentService {
     })
   }
 
-  // async getSubscriptions(userId: string): Promise<Array<SubscriptionDto>> {
-  //   return []
-  // }
-  // async getSubscription(
-  //   userId: string,
-  //   subscriptionId: string,
-  // ): Promise<SubscriptionDto> {
-  //   return Promise.reject()
-  // }
+  async getSubscriptions(userId: string): Promise<Array<SubscriptionDto>> {
+    const subscriptions = await this.dbReader
+      .table(SubscriptionEntity.table)
+      .where('user_id', userId)
+      .andWhereNot('subscription_status', SubscriptionStatusEnum.CANCELLED)
+      .select('*')
 
-  /*
-  -------------------------------------------------------------------------------
-  Target Objects
-  -------------------------------------------------------------------------------
-  */
+    const passOwnerships = await this.dbReader
+      .table(PassOwnershipEntity.table)
+      .where(
+        'id',
+        'in',
+        subscriptions.map((subscription) => subscription.pass_ownership_id),
+      )
+      .select('*')
+    const passOwnershipsMap = passOwnerships.reduce((map, passOwnership) => {
+      map[passOwnership.id] = new GetPassOwnershipDto(passOwnership)
+      return map
+    }, {})
 
-  async fillTargetPass(
-    payinId: string,
-    getPassOwnershipDto: GetPassOwnershipDto,
-  ): Promise<void> {
-    const target = (
-      await this.dbReader(PayinEntity.table)
-        .where('id', payinId)
-        .select('target')
-        .first()
-    ).target
-    await this.dbWriter(SubscriptionEntity.table)
-      .where('target', target)
-      .update(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          pass: getPassOwnershipDto.passId,
-          passOwnership: getPassOwnershipDto.id,
-        }),
+    const passes = await this.dbReader
+      .table(PassEntity.table)
+      .where(
+        'id',
+        'in',
+        passOwnerships.map((passOwnership) => passOwnership.pass_id),
       )
-    await this.dbWriter(PayinEntity.table)
-      .where('target', target)
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          pass: getPassOwnershipDto.passId,
-          passOwnership: getPassOwnershipDto.id,
-        }),
-      )
+      .select('*')
+    const passesMap = passes.reduce((map, pass) => {
+      map[pass.id] = new GetPassDto(pass)
+      return map
+    }, {})
+
+    const subscriptionsDto = subscriptions.map((subscription) => {
+      return new SubscriptionDto(subscription)
+    })
+    subscriptionsDto.forEach((subscriptionDto) => {
+      subscriptionDto.passOwnership =
+        passOwnershipsMap[subscriptionDto.passOwnershipId as string]
+      subscriptionDto.pass =
+        passesMap[subscriptionDto.passOwnership?.passId as string]
+    })
+    return subscriptionsDto
   }
 }

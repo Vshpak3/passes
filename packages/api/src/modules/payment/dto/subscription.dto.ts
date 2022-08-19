@@ -1,9 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
+import { GetPassDto } from '../../pass/dto/get-pass.dto'
+import { GetPassOwnershipDto } from '../../pass/dto/get-pass-ownership.dto'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
-import { PayinTargetDto } from './payin-target.dto'
 
 export class SubscriptionDto {
   @ApiProperty()
@@ -25,7 +26,13 @@ export class SubscriptionDto {
   card?: CircleCardDto
 
   @ApiPropertyOptional()
-  payinTarget?: PayinTargetDto
+  passOwnershipId?: string
+
+  @ApiPropertyOptional()
+  passOwnership?: GetPassOwnershipDto
+
+  @ApiPropertyOptional()
+  pass?: GetPassDto
 
   constructor(subscription) {
     if (subscription) {
@@ -37,11 +44,7 @@ export class SubscriptionDto {
         chainId: subscription.chain_id,
       }
       this.amount = subscription.amount
-      this.payinTarget = {
-        target: subscription.target,
-        passId: subscription.pass_id,
-        passOwnershipId: subscription.pass_ownership_id,
-      }
+      this.passOwnershipId = subscription.pass_ownership_id
     }
   }
 }

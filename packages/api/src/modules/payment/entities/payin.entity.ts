@@ -1,10 +1,8 @@
 import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { PassEntity } from '../../pass/entities/pass.entity'
-import { PassOwnershipEntity } from '../../pass/entities/pass-ownership.entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { PayinCallbackInput } from '../callback.types'
+import { PayinCallbackInput, PayinCallbackOutput } from '../callback.types'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
@@ -48,13 +46,13 @@ export class PayinEntity extends BaseEntity {
   @Property({ type: types.json })
   callbackInputJSON: PayinCallbackInput
 
+  @Property({ type: types.json })
+  callbackOutputJSON?: PayinCallbackOutput
+
   // payin target
+
+  // ensure that someone isn't paying for the same "target"
+  // while payin is inprogress
   @Property()
   target?: string
-
-  @ManyToOne({ entity: () => PassEntity })
-  pass?: PassEntity
-
-  @ManyToOne({ entity: () => PassOwnershipEntity })
-  passOwnership?: PassOwnershipEntity
 }
