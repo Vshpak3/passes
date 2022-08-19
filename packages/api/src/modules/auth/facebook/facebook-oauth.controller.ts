@@ -97,6 +97,10 @@ export class FacebookOauthController {
   async facebookDeletionConfirmation(
     @Query('confirmationCode') confirmationCode: string,
   ) {
+    if (!confirmationCode) {
+      return new FacebookDeletionConfirmationDto(false)
+    }
+
     const exists = await this.fbComplianceService.checkDeletionRequest(
       confirmationCode,
     )
