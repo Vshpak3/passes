@@ -31,6 +31,30 @@ export interface UpdateUserDto {
      * @memberof UpdateUserDto
      */
     username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    countryCode?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    birthday?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    phoneNumber?: string;
 }
 
 export function UpdateUserDtoFromJSON(json: any): UpdateUserDto {
@@ -45,6 +69,10 @@ export function UpdateUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'email': !exists(json, 'email') ? undefined : json['email'],
         'username': !exists(json, 'username') ? undefined : json['username'],
+        'countryCode': !exists(json, 'countryCode') ? undefined : json['countryCode'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'birthday': !exists(json, 'birthday') ? undefined : json['birthday'],
+        'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
     };
 }
 
@@ -59,6 +87,10 @@ export function UpdateUserDtoToJSON(value?: UpdateUserDto | null): any {
         
         'email': value.email,
         'username': value.username,
+        'countryCode': value.countryCode,
+        'displayName': value.displayName,
+        'birthday': value.birthday,
+        'phoneNumber': value.phoneNumber,
     };
 }
 

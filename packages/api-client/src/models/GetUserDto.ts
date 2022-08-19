@@ -67,6 +67,12 @@ export interface GetUserDto {
      * @memberof GetUserDto
      */
     birthday: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUserDto
+     */
+    countryCode: string;
 }
 
 export function GetUserDtoFromJSON(json: any): GetUserDto {
@@ -87,6 +93,7 @@ export function GetUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'legalFullName': json['legalFullName'],
         'phoneNumber': json['phoneNumber'],
         'birthday': json['birthday'],
+        'countryCode': json['countryCode'],
     };
 }
 
@@ -107,6 +114,7 @@ export function GetUserDtoToJSON(value?: GetUserDto | null): any {
         'legalFullName': value.legalFullName,
         'phoneNumber': value.phoneNumber,
         'birthday': value.birthday,
+        'countryCode': value.countryCode,
     };
 }
 

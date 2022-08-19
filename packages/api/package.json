@@ -67,6 +67,7 @@
     "express-session": "1.17.3",
     "hot-shots": "9.2.0",
     "ioredis": "5.2.2",
+    "iso-3166-1-alpha-2": "1.0.0",
     "joi": "17.6.0",
     "lodash": "4.17.21",
     "nest-winston": "1.7.0",

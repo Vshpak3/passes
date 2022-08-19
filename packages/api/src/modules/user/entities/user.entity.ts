@@ -42,6 +42,9 @@ export class UserEntity extends BaseEntity<
   @Property()
   phoneNumber?: string
 
+  @Property()
+  countryCode?: string
+
   @Property({ type: 'date' })
   birthday?: string
 

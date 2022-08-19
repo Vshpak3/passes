@@ -4587,6 +4587,7 @@ __metadata:
     express-session: 1.17.3
     hot-shots: 9.2.0
     ioredis: 5.2.2
+    iso-3166-1-alpha-2: 1.0.0
     jest: 28.1.3
     joi: 17.6.0
     lodash: 4.17.21
@@ -12115,6 +12116,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"iso-3166-1-alpha-2@npm:1.0.0":
+  version: 1.0.0
+  resolution: "iso-3166-1-alpha-2@npm:1.0.0"
+  dependencies:
+    mout: ^0.11.0
+  checksum: 0daa1252b031893393b058df4ba11ae48275b83d115674da3b53858964d5a1a015b18aaa0fcfd64aaf81d94198a4cd87e2b81fb986dc7c5abab7d8d29e4ce5b1
+  languageName: node
+  linkType: hard
+
 "isomorphic-ws@npm:^4.0.1":
   version: 4.0.1
   resolution: "isomorphic-ws@npm:4.0.1"
@@ -13947,6 +13957,13 @@ __metadata:
     saslprep:
       optional: true
   checksum: 97ff4ebe3fde7b3b5b133d8f7a2e4d6e372c44f8223a6d40b13bb3a705bbbb48ed50958a0fc6b3a33161605723479fced8e0eb83cf7fd5271f7530e6e2d67a2d
+  languageName: node
+  linkType: hard
+
+"mout@npm:^0.11.0":
+  version: 0.11.1
+  resolution: "mout@npm:0.11.1"
+  checksum: 1c046468f524db77ece605ee6d8eab634490a497fa77b69c76328a7545b8daf4e734a4cdb69eae0a8f6fdc9054e19842c79a82837e165b798ad6bff174e83f47
   languageName: node
   linkType: hard
 

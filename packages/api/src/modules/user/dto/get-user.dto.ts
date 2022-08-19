@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { UserEntity } from '../entities/user.entity'
-
 export class GetUserDto {
   @ApiProperty()
   id: string
@@ -28,17 +26,21 @@ export class GetUserDto {
   @ApiProperty()
   birthday?: string
 
-  constructor(userEntity: UserEntity, includeSensitiveFields = false) {
+  @ApiProperty()
+  countryCode?: string
+
+  constructor(userEntity, includeSensitiveFields = false) {
     this.id = userEntity.id
     this.email = userEntity.email
     this.username = userEntity.username
-    this.displayName = userEntity.displayName
-    this.isCreator = userEntity.isCreator
+    this.displayName = userEntity.display_name
+    this.isCreator = userEntity.is_creator
 
     if (includeSensitiveFields) {
-      this.legalFullName = userEntity.legalFullName
-      this.phoneNumber = userEntity.phoneNumber
+      this.legalFullName = userEntity.legal_full_name
+      this.phoneNumber = userEntity.phone_number
       this.birthday = userEntity.birthday
+      this.countryCode = userEntity.country_code
     }
   }
 }
