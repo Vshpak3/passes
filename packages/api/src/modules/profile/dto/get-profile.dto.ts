@@ -14,13 +14,19 @@ export class GetProfileDto {
   displayName?: string
 
   @ApiPropertyOptional()
-  isKYCVerified?: boolean
+  coverTitle?: string
+
+  @ApiPropertyOptional()
+  coverDescription?: string
 
   @ApiPropertyOptional()
   description?: string
 
   @ApiPropertyOptional()
   profileImageUrl?: string
+
+  @ApiPropertyOptional()
+  profileCoverImageUrl?: string
 
   @ApiPropertyOptional()
   instagramUrl?: string
@@ -37,6 +43,9 @@ export class GetProfileDto {
   @ApiPropertyOptional()
   twitchUrl?: string
 
+  @ApiPropertyOptional()
+  isKYCVerified?: boolean
+
   @ApiProperty()
   isActive: boolean
 
@@ -46,13 +55,21 @@ export class GetProfileDto {
     this.description = profileEntity.description
     this.legalFullName = profileEntity.user_legal_full_name
     this.displayName = profileEntity.user_display_name
-    this.isKYCVerified = profileEntity.user_is_kycverified
+
+    this.coverTitle = profileEntity.cover_title
+    this.coverDescription = profileEntity.cover_description
+
+    this.profileImageUrl = profileEntity.profile_image_url
+    this.profileCoverImageUrl = profileEntity.profile_cover_image_url
+
     this.profileImageUrl = profileEntity.profile_image_url
     this.instagramUrl = profileEntity.instagram_url
     this.tiktokUrl = profileEntity.tiktok_url
     this.youtubeUrl = profileEntity.youtube_url
     this.discordUrl = profileEntity.discord_url
     this.twitchUrl = profileEntity.twitch_url
+
+    this.isKYCVerified = profileEntity.user_is_kycverified
     this.isActive = profileEntity.is_active
   }
 }

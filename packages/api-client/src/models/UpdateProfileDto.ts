@@ -24,6 +24,24 @@ export interface UpdateProfileDto {
      * @type {string}
      * @memberof UpdateProfileDto
      */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProfileDto
+     */
+    coverTitle?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProfileDto
+     */
+    coverDescription?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProfileDto
+     */
     description?: string;
     /**
      * 
@@ -31,6 +49,12 @@ export interface UpdateProfileDto {
      * @memberof UpdateProfileDto
      */
     profileImageUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProfileDto
+     */
+    profileCoverImageUrl?: string;
     /**
      * 
      * @type {string}
@@ -73,8 +97,12 @@ export function UpdateProfileDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
+        'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'profileImageUrl': !exists(json, 'profileImageUrl') ? undefined : json['profileImageUrl'],
+        'profileCoverImageUrl': !exists(json, 'profileCoverImageUrl') ? undefined : json['profileCoverImageUrl'],
         'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
         'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
@@ -92,8 +120,12 @@ export function UpdateProfileDtoToJSON(value?: UpdateProfileDto | null): any {
     }
     return {
         
+        'displayName': value.displayName,
+        'coverTitle': value.coverTitle,
+        'coverDescription': value.coverDescription,
         'description': value.description,
         'profileImageUrl': value.profileImageUrl,
+        'profileCoverImageUrl': value.profileCoverImageUrl,
         'instagramUrl': value.instagramUrl,
         'tiktokUrl': value.tiktokUrl,
         'youtubeUrl': value.youtubeUrl,

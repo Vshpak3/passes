@@ -9,10 +9,22 @@ export class ProfileEntity extends BaseEntity {
   user: UserEntity
 
   @Property()
+  displayName?: string
+
+  @Property()
+  coverTitle?: string
+
+  @Property()
+  coverDescription?: string
+
+  @Property()
   description?: string
 
   @Property()
   profileImageUrl?: string
+
+  @Property()
+  profileCoverImageUrl?: string
 
   @Property()
   instagramUrl?: string

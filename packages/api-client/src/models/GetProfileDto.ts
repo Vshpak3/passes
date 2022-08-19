@@ -45,10 +45,16 @@ export interface GetProfileDto {
     displayName?: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof GetProfileDto
      */
-    isKYCVerified?: boolean;
+    coverTitle?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileDto
+     */
+    coverDescription?: string;
     /**
      * 
      * @type {string}
@@ -61,6 +67,12 @@ export interface GetProfileDto {
      * @memberof GetProfileDto
      */
     profileImageUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileDto
+     */
+    profileCoverImageUrl?: string;
     /**
      * 
      * @type {string}
@@ -96,6 +108,12 @@ export interface GetProfileDto {
      * @type {boolean}
      * @memberof GetProfileDto
      */
+    isKYCVerified?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetProfileDto
+     */
     isActive: boolean;
 }
 
@@ -113,14 +131,17 @@ export function GetProfileDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'userId': json['userId'],
         'legalFullName': !exists(json, 'legalFullName') ? undefined : json['legalFullName'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
-        'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
+        'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
+        'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'profileImageUrl': !exists(json, 'profileImageUrl') ? undefined : json['profileImageUrl'],
+        'profileCoverImageUrl': !exists(json, 'profileCoverImageUrl') ? undefined : json['profileCoverImageUrl'],
         'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
         'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
         'discordUrl': !exists(json, 'discordUrl') ? undefined : json['discordUrl'],
         'twitchUrl': !exists(json, 'twitchUrl') ? undefined : json['twitchUrl'],
+        'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
         'isActive': json['isActive'],
     };
 }
@@ -138,14 +159,17 @@ export function GetProfileDtoToJSON(value?: GetProfileDto | null): any {
         'userId': value.userId,
         'legalFullName': value.legalFullName,
         'displayName': value.displayName,
-        'isKYCVerified': value.isKYCVerified,
+        'coverTitle': value.coverTitle,
+        'coverDescription': value.coverDescription,
         'description': value.description,
         'profileImageUrl': value.profileImageUrl,
+        'profileCoverImageUrl': value.profileCoverImageUrl,
         'instagramUrl': value.instagramUrl,
         'tiktokUrl': value.tiktokUrl,
         'youtubeUrl': value.youtubeUrl,
         'discordUrl': value.discordUrl,
         'twitchUrl': value.twitchUrl,
+        'isKYCVerified': value.isKYCVerified,
         'isActive': value.isActive,
     };
 }
