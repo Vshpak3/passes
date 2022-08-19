@@ -113,6 +113,10 @@ export interface PaymentEntryPhantomCircleUSDCRequest {
     phantomCircleUSDCEntryRequestDto: PhantomCircleUSDCEntryRequestDto;
 }
 
+export interface PaymentGetCircleCardRequest {
+    cardId: string;
+}
+
 export interface PaymentGetPayinsRequest {
     payinListRequestDto: PayinListRequestDto;
 }
@@ -131,6 +135,11 @@ export interface PaymentSetDefaultPayinMethodRequest {
 
 export interface PaymentSetDefaultPayoutMethodRequest {
     payoutMethodDto: PayoutMethodDto;
+}
+
+export interface PaymentSetSubscriptionPayinMethodRequest {
+    subscriptionId: string;
+    payinMethodDto: PayinMethodDto;
 }
 
 /**
@@ -447,6 +456,36 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async paymentGetCircleBanks(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<CircleBankDto>> {
         const response = await this.paymentGetCircleBanksRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get card by id
+     */
+    async paymentGetCircleCardRaw(requestParameters: PaymentGetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleCardDto>> {
+        if (requestParameters.cardId === null || requestParameters.cardId === undefined) {
+            throw new runtime.RequiredError('cardId','Required parameter requestParameters.cardId was null or undefined when calling paymentGetCircleCard.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/payment/card/{cardId}`.replace(`{${"cardId"}}`, encodeURIComponent(String(requestParameters.cardId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CircleCardDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get card by id
+     */
+    async paymentGetCircleCard(requestParameters: PaymentGetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleCardDto> {
+        const response = await this.paymentGetCircleCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -813,6 +852,42 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async paymentSetDefaultPayoutMethod(requestParameters: PaymentSetDefaultPayoutMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.paymentSetDefaultPayoutMethodRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Set subscription payin method
+     */
+    async paymentSetSubscriptionPayinMethodRaw(requestParameters: PaymentSetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.subscriptionId === null || requestParameters.subscriptionId === undefined) {
+            throw new runtime.RequiredError('subscriptionId','Required parameter requestParameters.subscriptionId was null or undefined when calling paymentSetSubscriptionPayinMethod.');
+        }
+
+        if (requestParameters.payinMethodDto === null || requestParameters.payinMethodDto === undefined) {
+            throw new runtime.RequiredError('payinMethodDto','Required parameter requestParameters.payinMethodDto was null or undefined when calling paymentSetSubscriptionPayinMethod.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/payment/subscription/method/{subscriptionId}`.replace(`{${"subscriptionId"}}`, encodeURIComponent(String(requestParameters.subscriptionId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PayinMethodDtoToJSON(requestParameters.payinMethodDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set subscription payin method
+     */
+    async paymentSetSubscriptionPayinMethod(requestParameters: PaymentSetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.paymentSetSubscriptionPayinMethodRaw(requestParameters, initOverrides);
     }
 
 }

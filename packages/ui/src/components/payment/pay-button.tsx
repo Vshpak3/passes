@@ -1,9 +1,9 @@
 import detectEthereumProvider from "@metamask/detect-provider"
 import {
   PayinDataDto,
+  PayinMethodDtoMethodEnum,
   PaymentApi,
-  RegisterPayinResponseDto,
-  RegisterPayinResponseDtoMethodEnum
+  RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useRouter } from "next/router"
@@ -162,17 +162,17 @@ export const PayButton = (
       if (registerResponse.amount !== amountUSD) {
         throw Error("sanity check: amounts don't matchup")
       }
-      switch (registerResponse.method) {
-        case RegisterPayinResponseDtoMethodEnum.CircleCard:
+      switch (registerResponse.payinMethod.method) {
+        case PayinMethodDtoMethodEnum.CircleCard:
           await handleCircleCard(registerResponse, paymentApi)
           break
-        case RegisterPayinResponseDtoMethodEnum.PhantomCircleUsdc:
+        case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
           await handlePhantomCircleUSDC(registerResponse, cancelPayinCallback)
           break
-        case RegisterPayinResponseDtoMethodEnum.MetamaskCircleUsdc:
+        case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
           await handleMetamaskCircleUSDC(registerResponse, cancelPayinCallback)
           break
-        case RegisterPayinResponseDtoMethodEnum.MetamaskCircleEth:
+        case PayinMethodDtoMethodEnum.MetamaskCircleEth:
           await handleMetamaskCircleEth(registerResponse, cancelPayinCallback)
           break
       }

@@ -82,6 +82,7 @@ models/PayinDto.ts
 models/PayinListRequestDto.ts
 models/PayinListResponseDto.ts
 models/PayinMethodDto.ts
+models/PayinTargetDto.ts
 models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts

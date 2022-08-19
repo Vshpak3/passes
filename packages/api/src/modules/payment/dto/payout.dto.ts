@@ -1,9 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { WalletDto } from '../../wallet/dto/wallet.dto'
-import { PayoutMethodEnum } from '../enum/payout.enum'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
 import { CircleBankDto } from './circle/circle-bank.dto'
+import { PayoutMethodDto } from './payout-method.dto'
 
 export class PayoutDto {
   @ApiProperty()
@@ -12,14 +12,8 @@ export class PayoutDto {
   @ApiProperty()
   userId: string
 
-  @ApiProperty({ enum: PayoutMethodEnum })
-  payoutMethod: PayoutMethodEnum
-
-  @ApiPropertyOptional()
-  bankId?: string
-
-  @ApiPropertyOptional()
-  walletId?: string
+  @ApiProperty()
+  payoutMethod: PayoutMethodDto
 
   @ApiProperty({ enum: PayoutStatusEnum })
   payoutStatus: PayoutStatusEnum
@@ -43,9 +37,12 @@ export class PayoutDto {
     if (payout) {
       this.id = payout.id
       this.userId = payout.user_id
-      this.bankId = payout.bank_id
-      this.walletId = payout.wallet_id
-      this.payoutMethod = payout.payout_method
+
+      this.payoutMethod = {
+        method: payout.payout_method,
+        bankId: payout.bank_id,
+        walletId: payout.wallet_id,
+      }
       this.amount = payout.amount
       this.createdAt = payout.created_at
       this.payoutStatus = payout.payout_status

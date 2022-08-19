@@ -44,6 +44,7 @@ export interface PayinMethodDto {
  * @export
  */
 export const PayinMethodDtoMethodEnum = {
+    None: 'none',
     CircleCard: 'circle_card',
     PhantomCircleUsdc: 'phantom_circle_usdc',
     MetamaskCircleUsdc: 'metamask_circle_usdc',

@@ -126,6 +126,20 @@ export class PaymentController {
     return await this.paymentService.getCircleCards(req.user.id)
   }
 
+  @ApiOperation({ summary: 'Get card by id' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: CircleCardDto,
+    description: 'Card was returned',
+  })
+  @Get('card/:cardId')
+  async getCircleCard(
+    @Req() req: RequestWithUser,
+    @Param('cardId') cardId: string,
+  ): Promise<CircleCardDto> {
+    return await this.paymentService.getCircleCard(req.user.id, cardId)
+  }
+
   @ApiOperation({ summary: 'Create a wire bank account' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -297,7 +311,7 @@ export class PaymentController {
 
   /*
   -------------------------------------------------------------------------------
-  GENERAL
+  Payment Methods Get/Set
   -------------------------------------------------------------------------------
   */
 
@@ -363,6 +377,12 @@ export class PaymentController {
     return await this.paymentService.getDefaultPayoutMethod(req.user.id)
   }
 
+  /*
+  -------------------------------------------------------------------------------
+  Payin
+  -------------------------------------------------------------------------------
+  */
+
   @ApiOperation({ summary: 'Cancel a payin' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -395,6 +415,62 @@ export class PaymentController {
 
   /*
   -------------------------------------------------------------------------------
+  Subscriptions
+  -------------------------------------------------------------------------------
+  */
+  @ApiOperation({ summary: 'Set subscription payin method' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Subscription payin method was set',
+  })
+  @Post('subscription/method/:subscriptionId')
+  @HttpCode(200)
+  async setSubscriptionPayinMethod(
+    @Req() req: RequestWithUser,
+    @Param('subscriptionId') subscriptionId: string,
+    @Body() payinMethodDto: PayinMethodDto,
+  ): Promise<void> {
+    await this.paymentService.setSubscriptionPayinMethod(
+      subscriptionId,
+      req.user.id,
+      payinMethodDto,
+    )
+  }
+
+  // @ApiOperation({ summary: 'Get subscriptions' })
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  //   type: [SubscriptionDto],
+  //   description: 'Subscriptions were returned',
+  // })
+  // @Get('subscriptions')
+  // @HttpCode(200)
+  // async getSubscriptions(
+  //   @Req() req: RequestWithUser,
+  // ): Promise<Array<SubscriptionDto>> {
+  //   return await this.paymentService.getSubscriptions(req.user.id)
+  // }
+
+  // @ApiOperation({ summary: 'Get card by id' })
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  //   type: SubscriptionDto,
+  //   description: 'Card was returned',
+  // })
+  // @Get('subscription/:subscriptionId')
+  // async getSubscription(
+  //   @Req() req: RequestWithUser,
+  //   @Param('subscriptionId') subscriptionId: string,
+  // ): Promise<SubscriptionDto> {
+  //   return await this.paymentService.getSubscription(
+  //     req.user.id,
+  //     subscriptionId,
+  //   )
+  // }
+
+  /*
+  -------------------------------------------------------------------------------
   TEST (to be removed)
   -------------------------------------------------------------------------------
   */
@@ -416,6 +492,7 @@ export class PaymentController {
       callback: PayinCallbackEnum.EXAMPLE,
       callbackInputJSON: { example: 'asdf' } as PayinCallbackInput,
       creatorShares: [{ creatorId: req.user.id, amount: 500 }],
+      payinTarget: {},
     })
   }
 

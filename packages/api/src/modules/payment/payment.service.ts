@@ -8,6 +8,10 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
+import { GetPassDto } from '../pass/dto/get-pass.dto'
+import { GetPassOwnershipDto } from '../pass/dto/get-pass-ownership.dto'
+import { PassEntity } from '../pass/entities/pass.entity'
+import { PassOwnershipEntity } from '../pass/entities/pass-ownership.entity'
 import { PassService } from '../pass/pass.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
@@ -48,6 +52,7 @@ import {
   RegisterPayinRequestDto,
   RegisterPayinResponseDto,
 } from './dto/register-payin.dto'
+import { SubscribeRequestDto, SubscribeResponseDto } from './dto/subscribe.dto'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
@@ -59,15 +64,17 @@ import { DefaultPayinMethodEntity } from './entities/default-payin-method.entity
 import { DefaultPayoutMethodEntity } from './entities/default-payout-method.entity'
 import { PayinEntity } from './entities/payin.entity'
 import { PayoutEntity } from './entities/payout.entity'
+import { SubscriptionEntity } from './entities/subscription.entity'
 import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
 import { CircleTransferStatusEnum } from './enum/circle-transfer.status.enum'
-import { PayinMethodEnum } from './enum/payin.enum'
 import { PayinStatusEnum } from './enum/payin.status.enum'
-import { PayoutMethodEnum } from './enum/payout.enum'
+import { PayinMethodEnum } from './enum/payin-method.enum'
 import { PayoutStatusEnum } from './enum/payout.status.enum'
+import { PayoutMethodEnum } from './enum/payout-method.enum'
+import { SubscriptionStatusEnum } from './enum/subscription.status.enum'
 import {
   CircleNotificationError,
   CircleRequestError,
@@ -78,15 +85,18 @@ import {
   InvalidPayinStatusError,
   NoPayinMethodError,
 } from './error/payin.error'
+import { InvalidSubscriptionError } from './error/subscription.error'
 import {
   handleCreationCallback,
   handleFailedCallbacks,
   handleSuccesfulCallbacks,
 } from './payment.payin'
 
-export const MAX_CARDS_PER_USER = 10
-export const MAX_BANKS_PER_USER = 5
-export const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // TODO: change to  60 * 60 * 24 * 7
+const MAX_CARDS_PER_USER = 10
+const MAX_BANKS_PER_USER = 5
+const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // TODO: change to  60 * 60 * 24 * 7
+
+const EXPIRING_DURATION_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
 
 @Injectable()
 export class PaymentService {
@@ -186,7 +196,7 @@ export class PaymentService {
 
     await this.dbWriter(CircleCardEntity.table).insert(data)
 
-    return { id: data.circleCardId, status: data.status }
+    return { id: data.id, circleId: response['id'], status: response['status'] }
   }
 
   /**
@@ -223,6 +233,26 @@ export class PaymentService {
   }
 
   /**
+   * get all undeleted cards
+   *
+   * @param userid
+   * @returns
+   */
+  async getCircleCard(userId: string, cardId: string): Promise<CircleCardDto> {
+    return new CircleCardDto(
+      await this.dbReader(CircleCardEntity.table)
+        .select('*')
+        .where(
+          CircleCardEntity.toDict<CircleCardEntity>({
+            user: userId,
+            id: cardId,
+          }),
+        )
+        .whereNull('deleted_at'),
+    )
+  }
+
+  /**
    * create a card payment with a saved card
    *
    * @param ipAddress
@@ -236,11 +266,21 @@ export class PaymentService {
     payin: PayinDto,
   ): Promise<CircleStatusDto> {
     const card = await this.dbReader(CircleCardEntity.table)
-      .where({
-        id: payin.cardId,
-      })
+      .where('id', payin.payinMethod.cardId)
       .select('id', 'circle_card_id')
       .first()
+
+    // save metadata into subscription for repeat purchases
+    if (card.target) {
+      await this.dbWriter(SubscriptionEntity.table)
+        .where('target', card.target)
+        .update(
+          SubscriptionEntity.toDict<SubscriptionEntity>({
+            ipAddress,
+            sessionId,
+          }),
+        )
+    }
 
     const createCardPaymentDto: CircleCreateCardPaymentDto = {
       idempotencyKey: v4(),
@@ -289,7 +329,11 @@ export class PaymentService {
       )
       .where({ id: data.id })
 
-    return { id: response['id'], status: response['status'] }
+    return {
+      id: data.id,
+      circleId: response['id'],
+      status: response['status'],
+    }
   }
 
   /**
@@ -341,19 +385,24 @@ export class PaymentService {
     }
 
     const response = await this.circleConnector.createBank(createBankDto)
+    const data = {
+      id: v4(),
+      user: userId,
+      status: response['status'],
+      description: response['description'],
+      trackingRef: response['trackingRef'],
+      fingerprint: response['fingerprint'],
+      circleBankId: response['id'],
+    }
     await this.dbWriter(CircleBankEntity.table).insert(
-      CircleBankEntity.toDict<CircleBankEntity>({
-        id: v4(),
-        user: userId,
-        status: response['status'],
-        description: response['description'],
-        trackingRef: response['trackingRef'],
-        fingerprint: response['fingerprint'],
-        circleBankId: response['id'],
-      }),
+      CircleBankEntity.toDict<CircleBankEntity>(data),
     )
 
-    return { id: response['id'], status: response['status'] }
+    return {
+      id: data.id,
+      circleId: response['id'],
+      status: response['status'],
+    }
   }
 
   /**
@@ -404,7 +453,7 @@ export class PaymentService {
   ): Promise<CircleStatusDto> {
     const bank = await this.dbReader(CircleBankEntity.table)
       .where({
-        id: payout.bankId,
+        id: payout.payoutMethod.bankId,
         user_id: userId,
       })
       .select('id', 'circle_bank_id')
@@ -456,7 +505,11 @@ export class PaymentService {
       )
       .where({ id: data.id })
 
-    return { id: response['id'], status: response['status'] }
+    return {
+      id: data.id,
+      circleId: response['id'],
+      status: response['status'],
+    }
   }
 
   /**
@@ -471,7 +524,7 @@ export class PaymentService {
     payout: PayoutDto,
   ): Promise<CircleStatusDto> {
     const wallet = await this.dbReader(WalletEntity.table)
-      .where('id', payout.walletId)
+      .where('id', payout.payoutMethod.walletId)
       .andWhere('user_id', userId)
       .select('*')
       .first()
@@ -531,7 +584,11 @@ export class PaymentService {
       )
       .where({ id: data.id })
 
-    return { id: response['id'], status: response['status'] }
+    return {
+      id: data.id,
+      circleId: response['id'],
+      status: response['status'],
+    }
   }
 
   /*
@@ -917,7 +974,7 @@ export class PaymentService {
     const payin = new PayinDto(res)
     let ret: PayinEntryResponseDto
     try {
-      switch (payin.payinMethod) {
+      switch (payin.payinMethod.method) {
         case PayinMethodEnum.CIRCLE_CARD:
           ret = await this.entryCircleCard(
             payin,
@@ -979,7 +1036,7 @@ export class PaymentService {
   async entryMetamaskCircleUSDC(
     payin: PayinDto,
   ): Promise<MetamaskCircleUSDCEntryResponseDto> {
-    const chainId = payin.chainId as number
+    const chainId = payin.payinMethod.chainId as number
     const tokenAddress = EVM_ADDRESS[chainId].USDC
     const depositAddress = await this.getCircleAddress('USD', 'ETH')
     await this.linkAddressToPayin(depositAddress, payin.id)
@@ -994,7 +1051,7 @@ export class PaymentService {
   async entryMetamaskCircleETH(
     payin: PayinDto,
   ): Promise<MetamaskCircleETHEntryResponseDto> {
-    const chainId = payin.chainId as number
+    const chainId = payin.payinMethod.chainId as number
     const depositAddress = await this.getCircleAddress('ETH', 'ETH')
     await this.linkAddressToPayin(depositAddress, payin.id)
     return { payinId: payin.id, depositAddress, chainId }
@@ -1051,7 +1108,7 @@ export class PaymentService {
 
   /*
   -------------------------------------------------------------------------------
-  GENERAL
+  Payment Methods Get/Set
   -------------------------------------------------------------------------------
   */
 
@@ -1067,13 +1124,15 @@ export class PaymentService {
     payinMethoDto: PayinMethodDto,
   ): Promise<void> {
     await this.dbWriter(DefaultPayinMethodEntity.table)
-      .insert({
-        id: v4(),
-        user_id: userId,
-        method: payinMethoDto.method,
-        card_id: payinMethoDto.cardId,
-        chain_id: payinMethoDto.chainId,
-      })
+      .insert(
+        DefaultPayinMethodEntity.toDict<DefaultPayinMethodEntity>({
+          id: v4(),
+          user: userId,
+          method: payinMethoDto.method,
+          card: payinMethoDto.cardId,
+          chainId: payinMethoDto.chainId,
+        }),
+      )
       .onConflict('user_id')
       .merge(['method', 'card_id', 'chain_id'])
   }
@@ -1092,48 +1151,50 @@ export class PaymentService {
       .first()
 
     if (!defaultPayinMethod) {
-      throw new NoPayinMethodError('no default exists')
+      return { method: PayinMethodEnum.NONE }
     }
+    const dto = new PayinMethodDto(defaultPayinMethod)
+    if (!(await this.validatePayinMethod(userId, dto))) {
+      return { method: PayinMethodEnum.NONE }
+    }
+    return dto
+  }
 
-    let isValid = false
-    switch (defaultPayinMethod.method) {
+  async validatePayinMethod(
+    userId: string,
+    payinMethodDto: PayinMethodDto,
+  ): Promise<boolean> {
+    switch (payinMethodDto.method) {
       case PayinMethodEnum.CIRCLE_CARD:
         // assert that card exists and is not deleted
-        isValid =
+        return (
           (await this.dbReader(CircleCardEntity.table)
             .where(
               CircleCardEntity.toDict<CircleCardEntity>({
                 user: userId,
-                id: defaultPayinMethod.card_id,
+                id: payinMethodDto.cardId,
                 status: CircleAccountStatusEnum.COMPLETE,
               }),
             )
             .whereNull('deleted_at')
             .select('id')
             .first()) !== undefined
-        break
+        )
       case PayinMethodEnum.METAMASK_CIRCLE_USDC:
         // metamask payin must be on an approved chainId
-        isValid = this.getEvmChainIdsUSDC().includes(
-          defaultPayinMethod.chain_id,
+        return this.getEvmChainIdsUSDC().includes(
+          payinMethodDto.chainId as number,
         )
-        break
       case PayinMethodEnum.METAMASK_CIRCLE_ETH:
         // metamask payin must be on an approved chainId
-        isValid = this.getEvmChainIdsNative().includes(
-          defaultPayinMethod.chain_id,
+        return this.getEvmChainIdsNative().includes(
+          payinMethodDto.chainId as number,
         )
-        break
       case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
-        isValid = true
-        break
+        return true
+      default:
+        return false
     }
-
-    if (!isValid) {
-      throw new NoPayinMethodError('default value is invalid')
-    }
-
-    return new PayinMethodDto(defaultPayinMethod)
   }
 
   /**
@@ -1173,45 +1234,57 @@ export class PaymentService {
       .first()
 
     if (!defaultPayoutMethod) {
-      throw new NoPayinMethodError('no default exists')
+      return { method: PayoutMethodEnum.NONE }
     }
 
-    let isValid = false
-    switch (defaultPayoutMethod.method) {
+    const dto = new PayoutMethodDto(defaultPayoutMethod)
+    if (!this.validatePayoutMethod(userId, dto)) {
+      return { method: PayoutMethodEnum.NONE }
+    }
+
+    return dto
+  }
+
+  async validatePayoutMethod(
+    userId: string,
+    payoutMethodDto: PayoutMethodDto,
+  ): Promise<boolean> {
+    switch (payoutMethodDto.method) {
       case PayoutMethodEnum.CIRCLE_WIRE:
         // assert that bank exists and is not deleted
-        isValid =
+        return (
           (await this.dbReader(CircleBankEntity.table)
             .where(
               CircleCardEntity.toDict<CircleCardEntity>({
                 user: userId,
-                id: defaultPayoutMethod.bank_id,
-                status: CircleAccountStatusEnum.COMPLETE,
+                id: payoutMethodDto.bankId,
               }),
             )
             .whereNull('deleted_at')
             .select('id')
             .first()) !== undefined
+        )
         break
       case PayoutMethodEnum.CIRCLE_USDC:
         // blockchain payout must be on an approved chain
-        isValid = this.VALID_PAYOUT_CHAINS.includes(
+        return this.VALID_PAYOUT_CHAINS.includes(
           (
             await this.dbReader(WalletEntity.table)
-              .where({ user_id: userId, id: defaultPayoutMethod.wallet_id })
+              .where({ user_id: userId, id: payoutMethodDto.walletId })
               .select('chain')
               .first()
           ).chain.toUpperCase(),
         )
-        break
+      default:
+        return false
     }
-
-    if (!isValid) {
-      throw new NoPayinMethodError('default value is invalid')
-    }
-
-    return new PayoutMethodDto(defaultPayoutMethod)
   }
+
+  /*
+  -------------------------------------------------------------------------------
+  Payin
+  -------------------------------------------------------------------------------
+  */
 
   /**
    * Step 1 of payin process
@@ -1232,21 +1305,26 @@ export class PaymentService {
       )
     }
 
-    const payinMethod = request.payinMethod
-      ? request.payinMethod
-      : await this.getDefaultPayinMethod(request.userId)
+    const payinMethod =
+      request.payinMethod !== undefined &&
+      (await this.validatePayinMethod(request.userId, request.payinMethod))
+        ? request.payinMethod
+        : await this.getDefaultPayinMethod(request.userId)
 
-    const data = {
+    const data = PayinEntity.toDict<PayinEntity>({
       id: v4(),
-      user_id: request.userId,
-      payin_method: payinMethod.method,
-      card_id: payinMethod.cardId,
-      chain_id: payinMethod.chainId,
-      payin_status: PayinStatusEnum.REGISTERED,
+      user: request.userId,
+      payinMethod: payinMethod.method,
+      card: payinMethod.cardId,
+      chainId: payinMethod.chainId,
+      payinStatus: PayinStatusEnum.REGISTERED,
       callback: request.callback,
-      callback_input_json: JSON.stringify(request.callbackInputJSON),
+      callbackInputJSON: JSON.stringify(request.callbackInputJSON),
       amount: request.amount,
-    }
+      target: request.payinTarget.target,
+      pass: request.payinTarget.passId,
+      passOwnership: request.payinTarget.passOwnershipId,
+    })
 
     await this.dbWriter(PayinEntity.table).insert(data)
 
@@ -1292,7 +1370,7 @@ export class PaymentService {
 
     return {
       payinId: data.id,
-      method: payinMethod.method,
+      payinMethod,
       amount: request.amount,
     }
   }
@@ -1379,6 +1457,86 @@ export class PaymentService {
     }
   }
 
+  /**
+   * return paginated payin information for user display
+   *
+   * @param userId
+   * @param payinListRequest
+   * @returns
+   */
+  async getPayins(
+    userId: string,
+    payinListRequest: PayinListRequestDto,
+  ): Promise<PayinListResponseDto> {
+    const payins = await this.dbReader
+      .table(PayinEntity.table)
+      .where('user_id', userId)
+      .andWhere('payin_status', 'not in', [
+        PayinStatusEnum.REGISTERED,
+        PayinStatusEnum.UNREGISTERED,
+      ])
+      .select('*')
+      .orderBy('created_at', 'desc')
+      .offset(payinListRequest.offset)
+      .limit(payinListRequest.limit)
+    const count = await this.dbReader
+      .table(PayinEntity.table)
+      .where('user_id', userId)
+      .andWhere('payin_status', 'not in', [
+        PayinStatusEnum.REGISTERED,
+        PayinStatusEnum.UNREGISTERED,
+      ])
+      .count()
+
+    const cards = await this.dbReader
+      .table(CircleCardEntity.table)
+      .where(
+        'id',
+        'in',
+        payins.map((payin) => payin.card_id),
+      )
+      .select('*')
+    const cardsMap = cards.reduce((map, card) => {
+      map[card.id] = new CircleCardDto(card)
+      return map
+    }, {})
+
+    const passTargets = await this.dbReader
+      .table(PassEntity.table)
+      .where(
+        'id',
+        'in',
+        payins.map((payin) => payin.pass_id),
+      )
+      .select('*')
+    const passTargetsMap = passTargets.reduce((map, pass) => {
+      map[pass.id] = new GetPassDto(pass)
+      return map
+    }, {})
+
+    const payinsDto = payins.map((payin) => {
+      return new PayinDto(payin)
+    })
+    payinsDto.forEach((payinDto) => {
+      if (payinDto.payinMethod.method === PayinMethodEnum.CIRCLE_CARD) {
+        payinDto.card = cardsMap[payinDto.payinMethod.cardId as string]
+      }
+      if (payinDto.payinTarget.passId) {
+        payinDto.payinTarget.pass = passTargetsMap[payinDto.payinTarget.passId]
+      }
+    })
+    return {
+      count: parseInt(count[0]['count(*)']),
+      payins: payinsDto,
+    }
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  Payout
+  -------------------------------------------------------------------------------
+  */
+
   async failPayout(payoutId: string, userId: string): Promise<void> {
     const rows = await this.dbWriter
       .table(PayoutEntity.table)
@@ -1418,62 +1576,6 @@ export class PaymentService {
           payoutStatus: PayoutStatusEnum.SUCCESSFUL,
         }),
       )
-  }
-
-  /**
-   * return paginated payin information for user display
-   *
-   * @param userId
-   * @param payinListRequest
-   * @returns
-   */
-  async getPayins(
-    userId: string,
-    payinListRequest: PayinListRequestDto,
-  ): Promise<PayinListResponseDto> {
-    const payins = await this.dbReader
-      .table(PayinEntity.table)
-      .where('user_id', userId)
-      .andWhere('payin_status', 'not in', [
-        PayinStatusEnum.REGISTERED,
-        PayinStatusEnum.UNREGISTERED,
-      ])
-      .select('*')
-      .orderBy('created_at', 'desc')
-      .offset(payinListRequest.offset)
-      .limit(payinListRequest.limit)
-    const count = await this.dbReader
-      .table(PayinEntity.table)
-      .where('user_id', userId)
-      .andWhere('payin_status', 'not in', [
-        PayinStatusEnum.REGISTERED,
-        PayinStatusEnum.UNREGISTERED,
-      ])
-      .count()
-    const cards = await this.dbReader
-      .table(CircleCardEntity.table)
-      .where(
-        'id',
-        'in',
-        payins.map((payin) => payin.card_id),
-      )
-      .select('*')
-    const cardsMap = cards.reduce((map, card) => {
-      map[card.id] = card
-      return map
-    }, {})
-    const payinsDto = payins.map((payin) => {
-      return new PayinDto(payin)
-    })
-    payinsDto.forEach((payinDto) => {
-      if (payinDto.payinMethod === PayinMethodEnum.CIRCLE_CARD) {
-        payinDto.card = new CircleCardDto(cardsMap[payinDto.cardId as string])
-      }
-    })
-    return {
-      count: parseInt(count[0]['count(*)']),
-      payins: payinsDto,
-    }
   }
 
   async payoutAll(): Promise<void> {
@@ -1569,6 +1671,12 @@ export class PaymentService {
     }
   }
 
+  /*
+  -------------------------------------------------------------------------------
+  Earnings Aggregation
+  -------------------------------------------------------------------------------
+  */
+
   async aggregateAll(): Promise<void> {
     const creators = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
@@ -1585,5 +1693,254 @@ export class PaymentService {
   async aggregateCreator(creatorId: string): Promise<void> {
     this.logger.info(creatorId)
     this.logger.info('aggregate')
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  Subscriptions
+  -------------------------------------------------------------------------------
+  */
+
+  /**
+   * Step 1 of payin process
+   * Called INTERNALLY from other services
+   *
+   * @param request
+   * @returns
+   */
+  async subscribe(request: SubscribeRequestDto): Promise<SubscribeResponseDto> {
+    // validating request information
+    if (request.amount <= 0 || (request.amount * 100) % 1 !== 0) {
+      throw new InvalidPayinRequestError(
+        'invalid amount value ' + request.amount,
+      )
+    }
+
+    // try to find subscription if previously subscribed
+    const subscription =
+      request.payinTarget.target === undefined
+        ? undefined
+        : await this.dbReader(SubscriptionEntity.table)
+            .where(
+              SubscriptionEntity.toDict<SubscriptionEntity>({
+                target: request.payinTarget.target,
+                user: request.userId,
+              }),
+            )
+            .select('*')
+            .first()
+
+    const payinMethod =
+      request.payinMethod !== undefined &&
+      (await this.validatePayinMethod(request.userId, request.payinMethod))
+        ? request.payinMethod
+        : await this.getDefaultPayinMethod(request.userId)
+
+    if (!subscription) {
+      // make new subscription
+      const data = SubscriptionEntity.toDict<SubscriptionEntity>({
+        id: v4(),
+        user: request.userId,
+        payinMethod: payinMethod.method,
+        card: payinMethod.cardId,
+        chainId: payinMethod.chainId,
+        subscriptionStatus: SubscriptionStatusEnum.ACTIVE,
+        amount: request.amount,
+        target: request.payinTarget.target,
+        pass: request.payinTarget.passId,
+        passOwnership: request.payinTarget.passOwnershipId,
+      })
+      await this.dbWriter(SubscriptionEntity.table).insert(data)
+      return { subscriptionId: data.id, payinMethod }
+    } else if (
+      subscription.subscription_status === SubscriptionStatusEnum.CANCELLED
+    ) {
+      // renew subscription
+      await this.activateSubscription(subscription.id, request.userId)
+      await this.setSubscriptionPayinMethod(
+        subscription.id,
+        request.userId,
+        payinMethod,
+      )
+
+      await this.dbWriter(SubscriptionEntity.table)
+        .where('id', subscription.id)
+        .update('amount', request.amount)
+      return { subscriptionId: subscription.id as string, payinMethod }
+    } else {
+      throw new InvalidSubscriptionError('subscription already exists')
+    }
+  }
+
+  async activateSubscription(
+    subscriptionId: string,
+    userId: string,
+  ): Promise<void> {
+    await this.dbWriter(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          id: subscriptionId,
+          user: userId,
+        }),
+      )
+      .update('subscription_status', SubscriptionStatusEnum.ACTIVE)
+  }
+
+  async expiringSubscription(
+    subscriptionId: string,
+    userId: string,
+  ): Promise<void> {
+    await this.dbWriter(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          id: subscriptionId,
+          user: userId,
+        }),
+      )
+      .update('subscription_status', SubscriptionStatusEnum.EXPIRING)
+  }
+
+  async disableSubscription(
+    subscriptionId: string,
+    userId: string,
+  ): Promise<void> {
+    await this.dbWriter(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          id: subscriptionId,
+          user: userId,
+        }),
+      )
+      .update('subscription_status', SubscriptionStatusEnum.DISABLED)
+  }
+
+  async setSubscriptionPayinMethod(
+    subscriptionId: string,
+    userId: string,
+    payinMethodDto: PayinMethodDto,
+  ): Promise<void> {
+    if (!(await this.validatePayinMethod(userId, payinMethodDto))) {
+      throw new InvalidSubscriptionError(
+        'invalid payin method for subscription',
+      )
+    }
+    await this.dbWriter(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          id: subscriptionId,
+          user: userId,
+        }),
+      )
+      .update(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          payinMethod: payinMethodDto.method,
+          card: payinMethodDto.cardId,
+          chainId: payinMethodDto.chainId,
+        }),
+      )
+  }
+
+  async updateSubscriptions(): Promise<void> {
+    const now = Date.now()
+    const nftPassSubscriptions = await this.dbReader(SubscriptionEntity.table)
+      .join(
+        PassOwnershipEntity.table,
+        `${SubscriptionEntity.table}.pass_ownership_id`,
+        `${PassOwnershipEntity.table}.id`,
+      )
+      .whereNot(
+        `${SubscriptionEntity.table}.subscription_status`,
+        SubscriptionStatusEnum.CANCELLED,
+      )
+      .select('*')
+    nftPassSubscriptions.forEach(async (subscription) => {
+      try {
+        let status = SubscriptionStatusEnum.DISABLED
+        if (subscription.expires_at - EXPIRING_DURATION_MS > now) {
+          status = SubscriptionStatusEnum.ACTIVE
+        } else if (subscription.expires_at > now) {
+          status = SubscriptionStatusEnum.EXPIRING
+        }
+
+        await this.dbWriter
+          .where('id', subscription.id)
+          .update('subscription_status', status)
+        // TODO: send email notifications
+
+        // try to pay subscription if possible
+        try {
+          if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
+            const payinMethod: PayinMethodDto = {
+              method: subscription.payin_method,
+              cardId: subscription.card_id,
+              chainId: subscription.chain_id,
+            }
+            const registerResponse = await this.passService.registerPass(
+              subscription.user_id,
+              subscription.pass_id,
+              true,
+              payinMethod,
+            )
+            await this.payinEntryHandler(subscription.user_id, {
+              payinId: registerResponse.payinId,
+              ip: subscription.ip_address,
+              sessionId: subscription.session_id,
+            } as CircleCardPayinEntryRequestDto)
+          }
+        } catch (e) {
+          this.logger.error(
+            `Error paying subscription for ${subscription.id}: ${e}`,
+          )
+        }
+      } catch (e) {
+        this.logger.error(
+          `Error updating subscription for ${subscription.id}: ${e}`,
+        )
+      }
+    })
+  }
+
+  // async getSubscriptions(userId: string): Promise<Array<SubscriptionDto>> {
+  //   return []
+  // }
+  // async getSubscription(
+  //   userId: string,
+  //   subscriptionId: string,
+  // ): Promise<SubscriptionDto> {
+  //   return Promise.reject()
+  // }
+
+  /*
+  -------------------------------------------------------------------------------
+  Target Objects
+  -------------------------------------------------------------------------------
+  */
+
+  async fillTargetPass(
+    payinId: string,
+    getPassOwnershipDto: GetPassOwnershipDto,
+  ): Promise<void> {
+    const target = (
+      await this.dbReader(PayinEntity.table)
+        .where('id', payinId)
+        .select('target')
+        .first()
+    ).target
+    await this.dbWriter(SubscriptionEntity.table)
+      .where('target', target)
+      .update(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          pass: getPassOwnershipDto.passId,
+          passOwnership: getPassOwnershipDto.id,
+        }),
+      )
+    await this.dbWriter(PayinEntity.table)
+      .where('target', target)
+      .update(
+        PayinEntity.toDict<PayinEntity>({
+          pass: getPassOwnershipDto.passId,
+          passOwnership: getPassOwnershipDto.id,
+        }),
+      )
   }
 }

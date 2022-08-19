@@ -1,5 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsInt, IsUrl, Length, Min } from 'class-validator'
+
+import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassDto {
   @ApiProperty()
@@ -15,7 +17,7 @@ export class CreatePassDto {
   imageUrl: string
 
   @ApiProperty()
-  type: 'subscription' | 'lifetime'
+  type: PassTypeEnum
 
   @ApiProperty()
   @IsInt()
@@ -26,4 +28,9 @@ export class CreatePassDto {
   @IsInt()
   @Min(1)
   totalSupply: number
+
+  @ApiPropertyOptional()
+  @IsInt()
+  @Min(1)
+  duration?: number
 }

@@ -156,7 +156,7 @@ const DefaultPayoutMethod = () => {
               onClick={() => {
                 submit({
                   bankId: bank.id,
-                  method: PayoutMethodDtoMethodEnum.Wire
+                  method: PayoutMethodDtoMethodEnum.CircleWire
                 })
               }}
               {...(bank.status !== "complete" ? { disabled: true } : {})}
@@ -184,7 +184,7 @@ const DefaultPayoutMethod = () => {
               onClick={() => {
                 submit({
                   walletId: wallet.id,
-                  method: PayoutMethodDtoMethodEnum.Usdc
+                  method: PayoutMethodDtoMethodEnum.CircleUsdc
                 })
               }}
             >

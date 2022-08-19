@@ -55,6 +55,12 @@ export interface CreatePassDto {
      * @memberof CreatePassDto
      */
     totalSupply: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreatePassDto
+     */
+    duration?: number;
 }
 
 export function CreatePassDtoFromJSON(json: any): CreatePassDto {
@@ -73,6 +79,7 @@ export function CreatePassDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'type': json['type'],
         'price': json['price'],
         'totalSupply': json['totalSupply'],
+        'duration': !exists(json, 'duration') ? undefined : json['duration'],
     };
 }
 
@@ -91,6 +98,7 @@ export function CreatePassDtoToJSON(value?: CreatePassDto | null): any {
         'type': value.type,
         'price': value.price,
         'totalSupply': value.totalSupply,
+        'duration': value.duration,
     };
 }
 

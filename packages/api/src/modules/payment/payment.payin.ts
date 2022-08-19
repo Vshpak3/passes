@@ -1,7 +1,7 @@
 import { DatabaseService } from '../../database/database.service'
 import { PayinEntity } from './entities/payin.entity'
 import { PayinStatusEnum } from './enum/payin.status.enum'
-import { functionMapping } from './payment.callback'
+import { functionMapping } from './payin.callback'
 import { PaymentService } from './payment.service'
 
 export async function handleSuccesfulCallbacks(
@@ -12,7 +12,7 @@ export async function handleSuccesfulCallbacks(
   try {
     const func = functionMapping(payin.callback).success
     type params = Parameters<typeof func>
-    await func(payin.callback_input_json as params[0], payService)
+    await func(payin.id, payin.callback_input_json as params[0], payService, db)
   } catch (e) {
     await db
       .table(PayinEntity.table)
@@ -35,7 +35,7 @@ export async function handleFailedCallbacks(
   try {
     const func = functionMapping(payin.callback).failure
     type params = Parameters<typeof func>
-    await func(payin.callback_input_json as params[0], payService)
+    await func(payin.id, payin.callback_input_json as params[0], payService, db)
   } catch (e) {
     await db
       .table(PayinEntity.table)
@@ -58,7 +58,7 @@ export async function handleCreationCallback(
   try {
     const func = functionMapping(payin.callback).creation
     type params = Parameters<typeof func>
-    await func(payin.callback_input_json as params[0], payService)
+    await func(payin.id, payin.callback_input_json as params[0], payService, db)
   } catch (e) {
     await db
       .table(PayinEntity.table)

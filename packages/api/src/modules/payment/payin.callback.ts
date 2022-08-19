@@ -1,8 +1,12 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { DatabaseService } from '../../database/database.service'
 import {
   ExamplePayinCallbackInput,
   MessagePayinCallbackInput,
   NftPassPayinCallbackInput,
 } from './callback.types'
+import { SubscriptionEntity } from './entities/subscription.entity'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { NoPayinMethodError } from './error/payin.error'
 import { PaymentService } from './payment.service'
@@ -33,84 +37,91 @@ export const functionMapping = (key) => {
 }
 
 export async function messageSuccessCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: MessagePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   //TODO
 }
 
 export async function messageFailureCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: MessagePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   //TODO
 }
 
 export async function messageCreationCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: MessagePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   //TODO
 }
 
 export async function nftPassSuccessCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: NftPassPayinCallbackInput,
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
-  payService.passService.addHolder(input.userId, input.passId, input.temporary)
+  const newPassOwnership = await payService.passService.extendOrAddHolder(
+    input.userId,
+    input.passId,
+    input.temporary,
+  )
+  if (newPassOwnership) {
+    await payService.fillTargetPass(payinId, newPassOwnership)
+  }
 }
 
 export async function nftPassFailureCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: NftPassPayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
-  // allow them to try to pay again
-  //TODO
+  return
 }
 
 export async function nftPassCreationCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: NftPassPayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
-  // don't allow person to click pay button again
-  //TODO
+  return
 }
 
 export async function examplePassSuccessCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: ExamplePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   // console.log('success')
   //TODO
 }
 
 export async function examplePassFailureCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: ExamplePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   // console.log('fail')
   //TODO
 }
 
 export async function examplePassCreationCallback(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  payinId: string,
   input: ExamplePayinCallbackInput,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   payService: PaymentService,
+  db: DatabaseService['knex'],
 ): Promise<void> {
   // console.log('create')
   //TODO

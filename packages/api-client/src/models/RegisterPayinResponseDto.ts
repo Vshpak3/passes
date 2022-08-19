@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    PayinMethodDto,
+    PayinMethodDtoFromJSON,
+    PayinMethodDtoFromJSONTyped,
+    PayinMethodDtoToJSON,
+} from './PayinMethodDto';
+
 /**
  * 
  * @export
@@ -27,10 +34,10 @@ export interface RegisterPayinResponseDto {
     payinId: string;
     /**
      * 
-     * @type {string}
+     * @type {PayinMethodDto}
      * @memberof RegisterPayinResponseDto
      */
-    method: RegisterPayinResponseDtoMethodEnum;
+    payinMethod: PayinMethodDto;
     /**
      * 
      * @type {number}
@@ -38,19 +45,6 @@ export interface RegisterPayinResponseDto {
      */
     amount: number;
 }
-
-
-/**
- * @export
- */
-export const RegisterPayinResponseDtoMethodEnum = {
-    CircleCard: 'circle_card',
-    PhantomCircleUsdc: 'phantom_circle_usdc',
-    MetamaskCircleUsdc: 'metamask_circle_usdc',
-    MetamaskCircleEth: 'metamask_circle_eth'
-} as const;
-export type RegisterPayinResponseDtoMethodEnum = typeof RegisterPayinResponseDtoMethodEnum[keyof typeof RegisterPayinResponseDtoMethodEnum];
-
 
 export function RegisterPayinResponseDtoFromJSON(json: any): RegisterPayinResponseDto {
     return RegisterPayinResponseDtoFromJSONTyped(json, false);
@@ -63,7 +57,7 @@ export function RegisterPayinResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'payinId': json['payinId'],
-        'method': json['method'],
+        'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'amount': json['amount'],
     };
 }
@@ -78,7 +72,7 @@ export function RegisterPayinResponseDtoToJSON(value?: RegisterPayinResponseDto 
     return {
         
         'payinId': value.payinId,
-        'method': value.method,
+        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'amount': value.amount,
     };
 }

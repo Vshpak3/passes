@@ -1,8 +1,16 @@
-import { Entity, ManyToOne, OneToOne, Property, types } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToOne,
+  Property,
+  types,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { SolNftCollectionEntity } from '../../sol/entities/sol-nft-collection.entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import { PassTypeEnum } from '../enum/pass.enum'
 
 @Entity({ tableName: 'pass' })
 export class PassEntity extends BaseEntity {
@@ -21,12 +29,15 @@ export class PassEntity extends BaseEntity {
   @Property()
   imageUrl: string
 
-  @Property()
-  type: 'subscription' | 'lifetime'
+  @Enum(() => PassTypeEnum)
+  type: PassTypeEnum
 
   @Property({ type: types.float })
   price: number
 
   @Property()
   totalSupply: number
+
+  @Property()
+  duration: number
 }

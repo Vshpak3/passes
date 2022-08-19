@@ -19,6 +19,18 @@ import {
     CircleCardDtoFromJSONTyped,
     CircleCardDtoToJSON,
 } from './CircleCardDto';
+import {
+    PayinMethodDto,
+    PayinMethodDtoFromJSON,
+    PayinMethodDtoFromJSONTyped,
+    PayinMethodDtoToJSON,
+} from './PayinMethodDto';
+import {
+    PayinTargetDto,
+    PayinTargetDtoFromJSON,
+    PayinTargetDtoFromJSONTyped,
+    PayinTargetDtoToJSON,
+} from './PayinTargetDto';
 
 /**
  * 
@@ -40,22 +52,10 @@ export interface PayinDto {
     userId: string;
     /**
      * 
-     * @type {string}
+     * @type {PayinMethodDto}
      * @memberof PayinDto
      */
-    payinMethod: PayinDtoPayinMethodEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof PayinDto
-     */
-    cardId?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PayinDto
-     */
-    chainId?: number;
+    payinMethod: PayinMethodDto;
     /**
      * 
      * @type {string}
@@ -98,19 +98,14 @@ export interface PayinDto {
      * @memberof PayinDto
      */
     address?: string;
+    /**
+     * 
+     * @type {PayinTargetDto}
+     * @memberof PayinDto
+     */
+    payinTarget?: PayinTargetDto;
 }
 
-
-/**
- * @export
- */
-export const PayinDtoPayinMethodEnum = {
-    CircleCard: 'circle_card',
-    PhantomCircleUsdc: 'phantom_circle_usdc',
-    MetamaskCircleUsdc: 'metamask_circle_usdc',
-    MetamaskCircleEth: 'metamask_circle_eth'
-} as const;
-export type PayinDtoPayinMethodEnum = typeof PayinDtoPayinMethodEnum[keyof typeof PayinDtoPayinMethodEnum];
 
 /**
  * @export
@@ -153,9 +148,7 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         
         'id': json['id'],
         'userId': json['userId'],
-        'payinMethod': json['payinMethod'],
-        'cardId': !exists(json, 'cardId') ? undefined : json['cardId'],
-        'chainId': !exists(json, 'chainId') ? undefined : json['chainId'],
+        'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'payinStatus': json['payinStatus'],
         'amount': json['amount'],
         'createdAt': (new Date(json['createdAt'])),
@@ -163,6 +156,7 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
         'transactionHash': !exists(json, 'transactionHash') ? undefined : json['transactionHash'],
         'address': !exists(json, 'address') ? undefined : json['address'],
+        'payinTarget': !exists(json, 'payinTarget') ? undefined : PayinTargetDtoFromJSON(json['payinTarget']),
     };
 }
 
@@ -177,9 +171,7 @@ export function PayinDtoToJSON(value?: PayinDto | null): any {
         
         'id': value.id,
         'userId': value.userId,
-        'payinMethod': value.payinMethod,
-        'cardId': value.cardId,
-        'chainId': value.chainId,
+        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'payinStatus': value.payinStatus,
         'amount': value.amount,
         'createdAt': (value.createdAt.toISOString()),
@@ -187,6 +179,7 @@ export function PayinDtoToJSON(value?: PayinDto | null): any {
         'card': CircleCardDtoToJSON(value.card),
         'transactionHash': value.transactionHash,
         'address': value.address,
+        'payinTarget': PayinTargetDtoToJSON(value.payinTarget),
     };
 }
 

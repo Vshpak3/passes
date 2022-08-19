@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { PayoutMethodEnum } from '../enum/payout.enum'
+import { PayoutMethodEnum } from '../enum/payout-method.enum'
 
 export class PayoutMethodDto {
   @ApiProperty({ enum: PayoutMethodEnum })

@@ -21,6 +21,7 @@ import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinEntity } from '../payment/entities/payin.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
+import { PayinMethodEnum } from '../payment/enum/payin-method.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
@@ -34,12 +35,17 @@ import {
 } from './constants/errors'
 import { CreatePassDto } from './dto/create-pass.dto'
 import { GetPassDto } from './dto/get-pass.dto'
-import { GetPassOwnershipDto } from './dto/get-pass-ownership.dto'
 import { UpdatePassDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassOwnershipEntity } from './entities/pass-ownership.entity'
+import { PassTypeEnum } from './enum/pass.enum'
+import { ForbiddenPassException } from './error/pass.error'
 
-const NFT_PASS_CREATOR_CUT = 0.8
+export const NFT_PASS_CREATOR_CUT_FIAT = 0.8
+export const NFT_PASS_CREATOR_CUT_CRYPTO = 0.9
+
+const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
+const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
 
 @Injectable()
 export class PassService {
@@ -76,6 +82,12 @@ export class PassService {
       createPassDto.imageUrl,
     )
 
+    const duration =
+      createPassDto.duration === undefined &&
+      createPassDto.type === PassTypeEnum.SUBSCRIPTION
+        ? DEFAULT_PASS_DURATION_MS
+        : createPassDto.duration
+
     const data = PassEntity.toDict<PassEntity>({
       creator: userId,
       solNftCollection: solNftCollectionDto.id,
@@ -85,6 +97,7 @@ export class PassService {
       type: createPassDto.type,
       price: createPassDto.price,
       totalSupply: createPassDto.totalSupply,
+      duration,
     })
 
     await this.dbWriter(PassEntity.table).insert(data)
@@ -181,13 +194,17 @@ export class PassService {
       )
       .select([
         '*',
-        ...PassEntity.populate<PassEntity>(['creator', 'solNftCollection']),
+        ...PassEntity.populate<PassEntity>([
+          'creator',
+          'solNftCollection',
+          'duration',
+        ]),
       ])
       .where(`${PassEntity.table}.id`, id)
       .first()
 
     const expiresAt = temporary
-      ? new Date(new Date().getDate() + 30).valueOf()
+      ? Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS
       : undefined
 
     const userCustodialWallet = await this.walletService.getUserCustodialWallet(
@@ -219,7 +236,12 @@ export class PassService {
       )
       .where('id', id)
 
-    return new GetPassOwnershipDto(pass.id, userId, expiresAt)
+    return {
+      id,
+      passId: pass.id,
+      holderId: userId,
+      expiresAt,
+    }
   }
 
   async doesUserHoldPass(userId: string, passId: string) {
@@ -233,13 +255,57 @@ export class PassService {
     return !!ownership
   }
 
-  async registerAddHolder(
+  async extendOrAddHolder(userId: string, passId: string, temporary?: boolean) {
+    const pass = await this.dbReader(PassEntity.table)
+      .where(`id`, passId)
+      .select('*')
+      .first()
+
+    const passOwnership = await this.dbReader(PassOwnershipEntity.table)
+      .where(
+        PassOwnershipEntity.toDict<PassOwnershipEntity>({
+          pass: passId,
+          holder: userId,
+        }),
+      )
+      .select(
+        ...PassOwnershipEntity.populate<PassOwnershipEntity>([
+          'id',
+          'expiresAt',
+        ]),
+      )
+      .first()
+
+    if (passOwnership) {
+      if (pass.type === PassTypeEnum.LIFETIME) {
+        throw new ForbiddenPassException("can't extend lifetime pass")
+      } else {
+        // extend or renew ownership
+        if (pass.expires_at < Date.now()) {
+          await this.dbReader(PassOwnershipEntity.table)
+            .where('id', passOwnership.id)
+            .increment('expires_at', pass.duration)
+        } else {
+          await this.dbReader(PassOwnershipEntity.table)
+            .where('id', passOwnership.id)
+            .update(
+              'expires_at',
+              Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS,
+            )
+        }
+      }
+    } else {
+      return await this.addHolder(userId, passId, temporary)
+    }
+  }
+
+  async registerPass(
     userId: string,
     passId: string,
     temporary?: boolean,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { amount, target, blocked } = await this.registerAddHolderData(
+    const { amount, target, blocked } = await this.registerPassData(
       userId,
       passId,
     )
@@ -248,28 +314,44 @@ export class PassService {
     }
     const pass = await this.dbReader(PassEntity.table)
       .where('id', passId)
-      .select('creator_id')
+      .select('creator_id', 'type')
       .first()
-
+    const payinTarget = { target, passId }
+    if (pass.type === PassTypeEnum.SUBSCRIPTION && temporary) {
+      const subscriptionResponse = await this.payService.subscribe({
+        userId,
+        payinTarget,
+        amount,
+        payinMethod: payinMethod,
+      })
+      payinMethod = subscriptionResponse.payinMethod
+    }
     const callbackInput: NftPassPayinCallbackInput = {
       userId,
       passId,
       temporary,
     }
+    if (!payinMethod) {
+      payinMethod = await this.payService.getDefaultPayinMethod(userId)
+    }
+    const creatorCut =
+      payinMethod.method === PayinMethodEnum.CIRCLE_CARD
+        ? NFT_PASS_CREATOR_CUT_FIAT
+        : NFT_PASS_CREATOR_CUT_CRYPTO
     return await this.payService.registerPayin({
       userId,
-      target,
+      payinTarget,
       amount,
       payinMethod,
       callback: PayinCallbackEnum.NFT_PASS,
       callbackInputJSON: JSON.stringify(callbackInput),
       creatorShares: [
-        { creatorId: pass.creator_id, amount: amount * NFT_PASS_CREATOR_CUT },
+        { creatorId: pass.creator_id, amount: amount * creatorCut },
       ],
     })
   }
 
-  async registerAddHolderData(
+  async registerPassData(
     userId: string,
     passId: string,
   ): Promise<PayinDataDto> {
@@ -280,7 +362,7 @@ export class PassService {
     const pass = await this.dbReader(PassEntity.table)
       .where('id', passId)
       .select('price')
-      .first() //TODO: check currrency
+      .first()
 
     const checkPayin = await this.dbReader(PayinEntity.table)
       .whereIn('payin_status', [

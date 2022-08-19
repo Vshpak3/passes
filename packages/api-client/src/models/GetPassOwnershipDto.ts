@@ -24,13 +24,19 @@ export interface GetPassOwnershipDto {
      * @type {string}
      * @memberof GetPassOwnershipDto
      */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassOwnershipDto
+     */
     passId: string;
     /**
      * 
      * @type {string}
      * @memberof GetPassOwnershipDto
      */
-    holder: string;
+    holderId: string;
     /**
      * 
      * @type {number}
@@ -49,8 +55,9 @@ export function GetPassOwnershipDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'id': json['id'],
         'passId': json['passId'],
-        'holder': json['holder'],
+        'holderId': json['holderId'],
         'expiresAt': json['expiresAt'],
     };
 }
@@ -64,8 +71,9 @@ export function GetPassOwnershipDtoToJSON(value?: GetPassOwnershipDto | null): a
     }
     return {
         
+        'id': value.id,
         'passId': value.passId,
-        'holder': value.holder,
+        'holderId': value.holderId,
         'expiresAt': value.expiresAt,
     };
 }

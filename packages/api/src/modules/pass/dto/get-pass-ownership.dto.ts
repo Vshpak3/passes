@@ -2,17 +2,21 @@ import { ApiProperty } from '@nestjs/swagger'
 
 export class GetPassOwnershipDto {
   @ApiProperty()
+  id: string
+
+  @ApiProperty()
   passId: string
 
   @ApiProperty()
-  holder: string
+  holderId: string
 
   @ApiProperty()
   expiresAt?: number
 
-  constructor(passId, holder, expiresAt) {
-    this.passId = passId
-    this.holder = holder
-    this.expiresAt = expiresAt
+  constructor(passOwnership) {
+    this.id = passOwnership.id
+    this.passId = passOwnership.pass_id
+    this.holderId = passOwnership.holder_id
+    this.expiresAt = passOwnership.expires_at
   }
 }

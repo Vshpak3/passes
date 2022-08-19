@@ -3,8 +3,8 @@ import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { WalletEntity } from '../../wallet/entities/wallet.entity'
-import { PayoutMethodEnum } from '../enum/payout.enum'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
+import { PayoutMethodEnum } from '../enum/payout-method.enum'
 import { CircleBankEntity } from './circle-bank.entity'
 
 @Entity({ tableName: 'payout' })

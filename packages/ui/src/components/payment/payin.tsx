@@ -1,7 +1,7 @@
 import {
   PayinDto,
-  PayinDtoPayinMethodEnum,
   PayinDtoPayinStatusEnum,
+  PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
 import React from "react"
@@ -11,8 +11,8 @@ import React from "react"
 const Payin = (payin: PayinDto, accessToken: string) => {
   let payinMethodText = ""
   let canCancel = false
-  switch (payin.payinMethod) {
-    case PayinDtoPayinMethodEnum.CircleCard:
+  switch (payin.payinMethod.method) {
+    case PayinMethodDtoMethodEnum.CircleCard:
       payinMethodText =
         "Card ending in " +
         payin.card?.fourDigits +
@@ -21,11 +21,12 @@ const Payin = (payin: PayinDto, accessToken: string) => {
         "/" +
         payin.card?.expYear
       break
-    case PayinDtoPayinMethodEnum.PhantomCircleUsdc:
-    case PayinDtoPayinMethodEnum.MetamaskCircleUsdc:
-    case PayinDtoPayinMethodEnum.MetamaskCircleEth:
+    case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
+    case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
+    case PayinMethodDtoMethodEnum.MetamaskCircleEth:
       if (payin.transactionHash) {
-        payinMethodText = payin.payinMethod + " chain:" + payin.chainId
+        payinMethodText =
+          payin.payinMethod.method + " chain:" + payin.payinMethod.chainId
         payinMethodText += " Transaction hash " + payin.transactionHash
       }
       if (payin.payinStatus === PayinDtoPayinStatusEnum.Created) {

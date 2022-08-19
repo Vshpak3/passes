@@ -44,8 +44,9 @@ export interface PayoutMethodDto {
  * @export
  */
 export const PayoutMethodDtoMethodEnum = {
-    Wire: 'circle_wire',
-    Usdc: 'circle_usdc'
+    None: 'none',
+    CircleWire: 'circle_wire',
+    CircleUsdc: 'circle_usdc'
 } as const;
 export type PayoutMethodDtoMethodEnum = typeof PayoutMethodDtoMethodEnum[keyof typeof PayoutMethodDtoMethodEnum];
 

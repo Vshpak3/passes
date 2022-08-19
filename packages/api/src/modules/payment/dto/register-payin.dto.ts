@@ -2,15 +2,15 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { PayinCallbackInput } from '../callback.types'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
-import { PayinMethodEnum } from '../enum/payin.enum'
 import { PayinMethodDto } from './payin-method.dto'
+import { PayinTargetDto } from './payin-target.dto'
 
 export class RegisterPayinResponseDto {
   @ApiProperty()
   payinId: string
 
-  @ApiProperty({ enum: PayinMethodEnum })
-  method: PayinMethodEnum
+  @ApiProperty()
+  payinMethod: PayinMethodDto
 
   @ApiProperty()
   amount: number
@@ -20,15 +20,13 @@ export class RegisterPayinRequestDto {
   @ApiProperty()
   userId: string
 
-  @ApiPropertyOptional()
-  target?: string
-
   @ApiProperty()
   amount: number
 
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto
 
+  // callback
   @ApiProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
@@ -37,6 +35,10 @@ export class RegisterPayinRequestDto {
 
   @ApiProperty()
   creatorShares: Array<CreatorShareDto>
+
+  // target object
+  @ApiProperty()
+  payinTarget: PayinTargetDto
 }
 
 export class CreatorShareDto {

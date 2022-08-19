@@ -1,8 +1,11 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class CircleStatusDto {
-  @ApiPropertyOptional()
-  id?: string
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  circleId: string
 
   @ApiProperty()
   status: string

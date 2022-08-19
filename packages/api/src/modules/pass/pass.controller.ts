@@ -129,7 +129,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.passService.registerAddHolder(
+    return this.passService.registerPass(
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.temporary,
@@ -148,7 +148,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderDto,
   ): Promise<PayinDataDto> {
-    return this.passService.registerAddHolderData(
+    return this.passService.registerPassData(
       req.user.id,
       createPassHolderDto.passId,
     )

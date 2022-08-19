@@ -57,6 +57,7 @@ export * from './PayinDto';
 export * from './PayinListRequestDto';
 export * from './PayinListResponseDto';
 export * from './PayinMethodDto';
+export * from './PayinTargetDto';
 export * from './PayoutMethodDto';
 export * from './PhantomCircleUSDCEntryRequestDto';
 export * from './PhantomCircleUSDCEntryResponseDto';
