@@ -89,6 +89,7 @@ models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/RawFacebookDeletionRequestDto.ts
+models/RefreshAuthTokenDto.ts
 models/RegisterPayinResponseDto.ts
 models/RenewPassHolderDto.ts
 models/SearchCreatorResponseDto.ts

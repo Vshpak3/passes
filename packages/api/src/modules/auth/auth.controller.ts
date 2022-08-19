@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
@@ -16,9 +17,11 @@ import { GetUserDto } from '../user/dto/get-user.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { AllowUnauthorizedRequest } from './auth.metadata'
+import { RefreshAuthTokenDto } from './dto/refresh-auth-token'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
 import { JwtRefreshService } from './jwt/jwt-refresh.service'
+import { AuthTokenDto } from './local/auth-token.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -44,6 +47,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Refresh the access token' })
   @ApiResponse({
     status: HttpStatus.CREATED,
+    type: AuthTokenDto,
     description: 'Access token was created',
   })
   @AllowUnauthorizedRequest()
@@ -52,6 +56,9 @@ export class AuthController {
   async refreshAccessToken(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
+    // Note: jwt-refresh.strategy extracts from body, need this DTO for generated api client.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() body: RefreshAuthTokenDto,
   ) {
     await this.s3Service.signCookies(res, `*/${req.user.id}`)
     return {

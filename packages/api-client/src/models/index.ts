@@ -64,6 +64,7 @@ export * from './PayoutMethodDto';
 export * from './PhantomCircleUSDCEntryRequestDto';
 export * from './PhantomCircleUSDCEntryResponseDto';
 export * from './RawFacebookDeletionRequestDto';
+export * from './RefreshAuthTokenDto';
 export * from './RegisterPayinResponseDto';
 export * from './RenewPassHolderDto';
 export * from './SearchCreatorResponseDto';
