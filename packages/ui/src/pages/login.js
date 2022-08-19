@@ -17,7 +17,7 @@ import { wrapApi } from "../helpers/wrapApi"
 
 const LoginPage = () => {
   const router = useRouter()
-  const { user } = useUser()
+  const { user, setAccessToken, setRefreshToken } = useUser()
   const {
     register,
     handleSubmit,
@@ -56,8 +56,27 @@ const LoginPage = () => {
         localUserLoginDto
       })
 
-      console.log(res, "RESPONSE")
-      // router.push("/test")
+      const { accessToken, refreshToken } = res
+
+      if (!res.accessToken) {
+        alert("ERROR: Unexpected payload")
+        return
+      }
+
+      const _accessToken = Array.isArray(accessToken)
+        ? accessToken[0]
+        : accessToken
+      setAccessToken(_accessToken)
+
+      const _refreshToken = Array.isArray(refreshToken)
+        ? refreshToken[0]
+        : refreshToken
+
+      if (refreshToken) {
+        setRefreshToken(_refreshToken)
+      }
+
+      router.push("/test")
     } catch (err) {
       console.log(err, "CATCHED")
     }

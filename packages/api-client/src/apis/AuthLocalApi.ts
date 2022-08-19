@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    AuthTokenDto,
+    AuthTokenDtoFromJSON,
+    AuthTokenDtoToJSON,
     CreateLocalUserDto,
     CreateLocalUserDtoFromJSON,
     CreateLocalUserDtoToJSON,
@@ -71,7 +74,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPasswordRaw(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async localAuthLoginWithEmailPasswordRaw(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
         if (requestParameters.localUserLoginDto === null || requestParameters.localUserLoginDto === undefined) {
             throw new runtime.RequiredError('localUserLoginDto','Required parameter requestParameters.localUserLoginDto was null or undefined when calling localAuthLoginWithEmailPassword.');
         }
@@ -90,14 +93,15 @@ export class AuthLocalApi extends runtime.BaseAPI {
             body: LocalUserLoginDtoToJSON(requestParameters.localUserLoginDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
     }
 
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPassword(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.localAuthLoginWithEmailPasswordRaw(requestParameters, initOverrides);
+    async localAuthLoginWithEmailPassword(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenDto> {
+        const response = await this.localAuthLoginWithEmailPasswordRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

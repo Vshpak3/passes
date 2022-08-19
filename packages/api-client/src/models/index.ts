@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AddListMemberDto';
+export * from './AuthTokenDto';
 export * from './AuthWalletRequestDto';
 export * from './AuthWalletResponseDto';
 export * from './BillingDetailsDto';

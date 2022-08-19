@@ -10,13 +10,13 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
-import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
 import { S3Service } from '../../s3/s3.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserDto } from '../dto/create-local-user'
 import { LocalUserLoginDto } from '../dto/local-user-login'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
+import { AuthTokenDto } from './auth-token.dto'
 import { LocalAuthService } from './local.service'
 
 @Controller('auth/local')
@@ -46,6 +46,7 @@ export class LocalAuthController {
   @ApiOperation({ summary: 'Login with email and password' })
   @ApiResponse({
     status: HttpStatus.OK,
+    type: AuthTokenDto,
     description: 'Login with email and password',
   })
   @AllowUnauthorizedRequest()
@@ -63,6 +64,10 @@ export class LocalAuthController {
       throw new UnauthorizedException('Invalid credentials')
     }
 
-    return redirectAfterSuccessfulLogin.bind(this)(res, user)
+    const accessToken = this.jwtAuthService.createAccessToken(user)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
+    await this.s3Service.signCookies(res, `*/${user.id}`)
+
+    res.status(200).send({ accessToken, refreshToken })
   }
 }

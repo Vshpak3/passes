@@ -22,6 +22,7 @@ export class LocalAuthService {
   async createLocalUser(createLocalUserDto: CreateLocalUserDto) {
     const currentUser = await this.dbReader(UserEntity.table)
       .where('email', createLocalUserDto.email)
+      .where('oauth_provider', null)
       .first()
 
     if (currentUser) {
@@ -51,6 +52,7 @@ export class LocalAuthService {
       UserEntity.table,
     )
       .where('email', email)
+      .where('oauth_provider', null)
       .first()
 
     if (!user) {
