@@ -104,8 +104,8 @@ export class SolService {
     private readonly s3Service: S3Service,
   ) {
     this.connection = new Connection(
-      this.configService.get('alchemy.sol.https_endpoint') as string +
-        this.configService.get('alchemy.sol.api_key') as string,
+      (this.configService.get('alchemy.sol.https_endpoint') as string) +
+        (this.configService.get('alchemy.sol.api_key') as string),
     )
   }
 
