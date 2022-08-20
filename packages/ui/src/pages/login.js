@@ -110,7 +110,7 @@ const LoginPage = () => {
               <FormInput
                 register={register}
                 name="email"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your email"
                 type="text"
                 errors={errors}
@@ -137,7 +137,7 @@ const LoginPage = () => {
               <FormInput
                 register={register}
                 name="password"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your password"
                 type="password"
                 errors={errors}

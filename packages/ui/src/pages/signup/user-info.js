@@ -60,7 +60,7 @@ const UserInfoPage = () => {
         <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
           <Text
             fontSize={36}
-            className="mb-4 w-[360px] text-center font-semibold"
+            className="mb-4 w-[360px] text-center font-semibold text-white"
           >
             Let&apos;s get to know each other
           </Text>
@@ -75,7 +75,7 @@ const UserInfoPage = () => {
               <FormInput
                 register={register}
                 name="name"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your name"
                 type="text"
                 errors={errors}
@@ -97,7 +97,7 @@ const UserInfoPage = () => {
               <FormInput
                 register={register}
                 name="username"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your username"
                 type="text"
                 errors={errors}
@@ -119,7 +119,7 @@ const UserInfoPage = () => {
               <FormInput
                 register={register}
                 name="birthday"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your birthday"
                 type="text"
                 onFocus={(e) => (e.target.type = "date")}
@@ -142,7 +142,7 @@ const UserInfoPage = () => {
               <FormInput
                 register={register}
                 name="country"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your country"
                 type="select"
                 selectOptions={countryList}

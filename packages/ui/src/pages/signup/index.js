@@ -66,7 +66,7 @@ const SignupPage = () => {
         </div>
 
         <div className="flex flex-1 flex-col items-center gap-y-5">
-          <Text fontSize={36} className="mb-4 font-semibold">
+          <Text fontSize={36} className="mb-4 font-semibold text-white">
             Create an account
           </Text>
           <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">
@@ -81,7 +81,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="email"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your email"
                 type="text"
                 errors={errors}
@@ -108,7 +108,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="password"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your password"
                 type="password"
                 errors={errors}
@@ -138,7 +138,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="confirmPassword"
-                className="w-[360px] border-[#34343A60] bg-black focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Confirm your password"
                 type="password"
                 errors={errors}
@@ -190,10 +190,36 @@ const SignupPage = () => {
 
           <Text
             fontSize={13}
-            className="z-10 flex w-[360px] text-[#b3bee7] opacity-[0.6]"
+            className="z-10 w-[360px] text-[#b3bee7] opacity-[0.6]"
           >
-            By clicking the Register button, you agree to Moment&apos;s Terms &
-            Conditions.
+            By signing up, you agree to Moment&apos;s{" "}
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-blue10"
+            >
+              Terms of Use
+            </a>
+            ,{" "}
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-blue10"
+            >
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a
+              href="/cookie-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-blue10"
+            >
+              Cookie Policy
+            </a>
+            .
           </Text>
 
           <Text
