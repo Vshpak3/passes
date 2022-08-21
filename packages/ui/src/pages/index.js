@@ -62,16 +62,15 @@ const HomePage = () => {
 
   useEffect(() => {
     router.prefetch("/login")
-    router.prefetch("/signup")
   }, [router])
 
   return (
     <div className="dark:bg-jacarta-900 font-body text-jacarta-500 relative z-10 overflow-x-hidden bg-white">
       <section className="relative pb-10 pt-20 md:pt-32 lg:h-[88vh]">
-        <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 dark:hidden">
+        <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 select-none dark:hidden">
           <img src="img/gradient.jpg" alt="gradient" />
         </picture>
-        <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden dark:block">
+        <picture className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden select-none dark:block">
           <img src="img/gradient_dark.jpg" alt="gradient dark" />
         </picture>
 
@@ -105,7 +104,7 @@ const HomePage = () => {
             </div>
 
             <div className="col-span-6 xl:col-span-8">
-              <div className="relative text-center md:ml-28 md:pl-4 md:text-right">
+              <div className="relative select-none text-center md:ml-28 md:pl-4 md:text-right">
                 <LandingIcon />
                 <Image
                   src="/img/hero/3D_elements.png"
@@ -173,7 +172,7 @@ const HomePage = () => {
           </div>
         </div>
         <p className="text-jacarta-700 mx-auto mt-20 max-w-2xl text-center text-lg dark:text-white">
-          Join our mailing list to stay in the loop for our
+          Join our mailing list to stay in the loop
         </p>
 
         <div className="mx-auto mt-7 max-w-md text-center">
