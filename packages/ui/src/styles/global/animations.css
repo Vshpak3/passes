@@ -39,3 +39,17 @@
   animation-fill-mode: forwards;
   animation-delay: calc(var(--stagger) * var(--delay) + var(--start));
 }
+
+@keyframes fly {
+  0%,
+  to {
+    transform: translateY(5%);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+.animate-fly {
+  -webkit-animation: fly 6s cubic-bezier(0.75, 0.02, 0.31, 0.87) infinite;
+  animation: fly 6s cubic-bezier(0.75, 0.02, 0.31, 0.87) infinite;
+}
