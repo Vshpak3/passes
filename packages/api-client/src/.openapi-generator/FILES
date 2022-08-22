@@ -44,6 +44,7 @@ models/CircleMetaDataDto.ts
 models/CircleStatusDto.ts
 models/CreateBatchMessageDto.ts
 models/CreateChannelDto.ts
+models/CreateCommentDto.ts
 models/CreateContentDto.ts
 models/CreateCreatorSettingsDto.ts
 models/CreateEthNftCollectionDto.ts
@@ -60,6 +61,8 @@ models/CreateUnauthenticatedWalletDto.ts
 models/CreateWalletDto.ts
 models/GetChannelDto.ts
 models/GetCollectionDto.ts
+models/GetCommentDto.ts
+models/GetCommentsForPostDto.ts
 models/GetContentDto.ts
 models/GetFeedDto.ts
 models/GetListDto.ts

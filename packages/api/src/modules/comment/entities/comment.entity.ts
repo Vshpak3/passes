@@ -14,4 +14,12 @@ export class CommentEntity extends BaseEntity {
 
   @Property({ length: 150 })
   content: string
+
+  // Is Hidden by Post Owner (creator)
+  @Property({ default: false })
+  isHidden = false
+
+  // Deleted by commenter
+  @Property()
+  deletedAt?: Date
 }

@@ -7,12 +7,14 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
+import { RequestWithUser } from '../../types/request'
 import { CommentService } from './comment.service'
 import { CreateCommentDto } from './dto/create-comment.dto'
-import { UpdateCommentDto } from './dto/update-comment.dto'
+import { GetCommentsForPostDto } from './dto/get-comments-for-post-dto'
 
 @ApiTags('comment')
 @Controller('comment')
@@ -27,9 +29,23 @@ export class CommentController {
   })
   @Post()
   async create(
+    @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentDto,
   ): Promise<CreateCommentDto> {
-    return this.commentService.create(createCommentDto)
+    return this.commentService.create(req.user.id, createCommentDto)
+  }
+
+  @ApiOperation({ summary: 'Gets all comments for a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetCommentsForPostDto,
+    description: 'A list of comments was retrieved',
+  })
+  @Get('post/:id')
+  async findCommentsForPost(
+    @Param('id') id: string,
+  ): Promise<GetCommentsForPostDto> {
+    return this.commentService.findAllForPost(id)
   }
 
   @ApiOperation({ summary: 'Gets a comment' })
@@ -43,18 +59,15 @@ export class CommentController {
     return this.commentService.findOne(id)
   }
 
-  @ApiOperation({ summary: 'Updates a comment' })
+  @ApiOperation({ summary: 'Hides a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: undefined,
-    description: 'A comment was updated',
+    description: 'A comment was hidden',
   })
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCommentDto: UpdateCommentDto,
-  ) {
-    return this.commentService.update(id, updateCommentDto)
+  async hide(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.commentService.hide(req.user.id, id)
   }
 
   @ApiOperation({ summary: 'Deletes a comment' })
@@ -64,7 +77,7 @@ export class CommentController {
     description: 'A comment was deleted',
   })
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.commentService.remove(id)
+  async delete(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.commentService.delete(req.user.id, id)
   }
 }
