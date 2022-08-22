@@ -209,7 +209,7 @@ export class PassService {
         ? Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS
         : undefined
 
-    const userCustodialWallet = await this.walletService.getUserCustodialWallet(
+    const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
     )
 

@@ -19,6 +19,8 @@ import {
   CreateUnauthenticatedWalletDto,
   CreateWalletDto,
 } from './dto/create-wallet.dto'
+import { WalletDto } from './dto/wallet.dto'
+import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { Chain } from './enum/chain.enum'
 
@@ -84,6 +86,63 @@ export class WalletService {
     await this.dbWriter(WalletEntity.table).insert(data)
     // TODO: fix return type
     return data as any
+  }
+
+  /**
+   * get the user's default wallet
+   * default wallet can only be on the Solana chain where are passes are
+   *
+   * @param userId
+   * @returns
+   */
+  async getDefaultWallet(userId: string): Promise<WalletDto> {
+    const wallet = await this.dbReader(WalletEntity.table)
+      .join(
+        DefaultWalletEntity.table,
+        `${DefaultWalletEntity.table}.wallet_id`,
+        `${WalletEntity.table}.id`,
+      )
+      .where(
+        `${DefaultWalletEntity.table}.user_id`,
+        `${WalletEntity.table}.user_id`,
+      )
+      .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
+      .andWhere(
+        WalletEntity.toDict<WalletEntity>({
+          chain: Chain.SOL,
+        }),
+      )
+      .select([
+        `${WalletEntity.table}.id`,
+        `${WalletEntity.table}.user_id`,
+        ...WalletEntity.populate<WalletEntity>([
+          'address',
+          'chain',
+          'custodial',
+          'authenticated',
+        ]),
+      ])
+      .first()
+    if (wallet !== null) {
+      return new WalletDto(wallet)
+    }
+
+    // if no valid default exists, defer to custodial
+    const custodialWallet = await this.getUserCustodialWallet(userId)
+    await this.setDefaultWallet(userId, custodialWallet.id)
+    return custodialWallet
+  }
+
+  async setDefaultWallet(userId: string, walletId: string): Promise<void> {
+    await this.dbWriter(DefaultWalletEntity.table)
+      .insert(
+        DefaultWalletEntity.toDict<DefaultWalletEntity>({
+          user: userId,
+          wallet: walletId,
+        }),
+      )
+      .onConflict('user_id')
+      .merge(['wallet_id'])
   }
 
   async auth(

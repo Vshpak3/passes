@@ -46,6 +46,31 @@ export class WalletController {
     )
   }
 
+  @ApiOperation({ summary: 'Get default wallet' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: WalletDto,
+    description: 'Default wallet returned',
+  })
+  @Get('/default')
+  async getDefaultWallet(@Req() req: RequestWithUser): Promise<WalletDto> {
+    return await this.walletService.getDefaultWallet(req.user.id)
+  }
+
+  @ApiOperation({ summary: 'Set default wallet' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Default wallet set',
+  })
+  @Post('/default/:walletId')
+  async setDefaultWallet(
+    @Req() req: RequestWithUser,
+    @Param('walletId') walletId: string,
+  ): Promise<void> {
+    await this.walletService.setDefaultWallet(req.user.id, walletId)
+  }
+
   @ApiOperation({ summary: 'Creates authenticated wallet for a user' })
   @ApiResponse({
     status: HttpStatus.CREATED,

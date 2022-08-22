@@ -55,6 +55,10 @@ export interface WalletRemoveRequest {
     id: string;
 }
 
+export interface WalletSetDefaultWalletRequest {
+    walletId: string;
+}
+
 /**
  * 
  */
@@ -186,6 +190,32 @@ export class WalletApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get default wallet
+     */
+    async walletGetDefaultWalletRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WalletDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/wallet/default`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WalletDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get default wallet
+     */
+    async walletGetDefaultWallet(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WalletDto> {
+        const response = await this.walletGetDefaultWalletRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get user custodial wallet
      */
     async walletGetUserCustodialWalletRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WalletDto>> {
@@ -268,6 +298,35 @@ export class WalletApi extends runtime.BaseAPI {
      */
     async walletRemove(requestParameters: WalletRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.walletRemoveRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Set default wallet
+     */
+    async walletSetDefaultWalletRaw(requestParameters: WalletSetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.walletId === null || requestParameters.walletId === undefined) {
+            throw new runtime.RequiredError('walletId','Required parameter requestParameters.walletId was null or undefined when calling walletSetDefaultWallet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/wallet/default/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set default wallet
+     */
+    async walletSetDefaultWallet(requestParameters: WalletSetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.walletSetDefaultWalletRaw(requestParameters, initOverrides);
     }
 
 }
