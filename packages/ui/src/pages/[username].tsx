@@ -12,6 +12,8 @@ import getConnection from "src/helpers/demo"
 import { uploadFiles } from "src/helpers/uploadFile"
 import { useCreatorProfile, usePasses, useUser } from "src/hooks"
 
+import { wrapApi } from "../helpers/wrapApi"
+
 const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
@@ -111,9 +113,10 @@ const Username = (props: GetProfileDto) => {
   const onEditProfile = () => {
     setEditProfile(true)
   }
+  const router = useRouter()
   const {
     query: { username: _username }
-  } = useRouter()
+  } = router
   const username = _username as string
   const { user: { username: loggedInUsername } = {} } = useUser()
   const ownsProfile = loggedInUsername === username
@@ -123,7 +126,7 @@ const Username = (props: GetProfileDto) => {
     const { profileImage, profileCoverImage, ...rest } = values
     const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
       [profileImage, profileCoverImage].map((files) => {
-        if (!files?.length) return Promise.resolve(null)
+        if (!files?.length) return Promise.resolve(undefined)
         const file = files[0]
         return uploadFiles(file, "profile")
       })
@@ -133,20 +136,29 @@ const Username = (props: GetProfileDto) => {
     if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
     if (profileCoverImageUrl)
       newValues.profileCoverImageUrl = profileCoverImageUrl
-    await updateUsername(rest.userId)
-
     setProfile(newValues as any)
-    // TODO: Update Profile database
+    const api = wrapApi(ProfileApi)
+    await api.profileUpdate({
+      id: props.id,
+      updateProfileDto: {
+        profileImageUrl,
+        profileCoverImageUrl,
+        ...rest
+      }
+    })
     setEditProfile(false)
+
+    if (rest.username !== username) await updateUsername(rest.username)
   }
 
   const updateUsername = async (username: string) => {
-    const api = new UserApi()
+    const api = wrapApi(UserApi)
     await api.userSetUsername({
       updateUsernameDto: {
         username
       }
     })
+    router.replace("/" + username, undefined, { shallow: true })
   }
 
   return (
@@ -204,7 +216,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const profile = await api.profileFindOneByUsername({ username })
     console.log("getProfile", profile)
     // TODO: Hack to remove undefined from generated API typings
-    const props = JSON.parse(JSON.stringify(profile))
+    const props = { ...JSON.parse(JSON.stringify(profile)), username }
     return {
       props,
       // Next.js will attempt to re-generate the page:

@@ -89,20 +89,7 @@ export class ProfileService {
       .where(`${ProfileEntity.table}.is_active`, true)
       .where('user.username', username)
       .where('user.is_creator', true)
-      .select([
-        `${ProfileEntity.table}.id as id`,
-        ...ProfileEntity.populate<ProfileEntity>([
-          'user',
-          'description',
-          'profileImageUrl',
-          'instagramUrl',
-          'tiktokUrl',
-          'youtubeUrl',
-          'discordUrl',
-          'twitchUrl',
-          'isActive',
-        ]),
-      ])
+      .select(['*', `${ProfileEntity.table}.id as id`])
       .first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)

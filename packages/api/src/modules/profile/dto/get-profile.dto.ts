@@ -62,7 +62,6 @@ export class GetProfileDto {
     this.profileImageUrl = profileEntity.profile_image_url
     this.profileCoverImageUrl = profileEntity.profile_cover_image_url
 
-    this.profileImageUrl = profileEntity.profile_image_url
     this.instagramUrl = profileEntity.instagram_url
     this.tiktokUrl = profileEntity.tiktok_url
     this.youtubeUrl = profileEntity.youtube_url

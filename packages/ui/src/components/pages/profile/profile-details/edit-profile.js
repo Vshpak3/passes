@@ -19,7 +19,7 @@ const bioForm = {
 }
 
 const profileInformationForm = {
-  userId: { type: "text", label: "Username", colSpan: "col-span-6" },
+  username: { type: "text", label: "Username", colSpan: "col-span-6" },
   firstName: { type: "text", label: "First Name", colSpan: "col-span-3" },
   lastName: { type: "text", label: "Last Name", colSpan: "col-span-3" },
   location: { type: "text", label: "Location", colSpan: "col-span-6" },
