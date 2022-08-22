@@ -4,7 +4,7 @@ import { PayinMethodEnum } from '../enum/payin-method.enum'
 
 export class PayinMethodDto {
   @ApiProperty({ enum: PayinMethodEnum })
-  method: PayinMethodEnum
+  method: PayinMethodEnum = PayinMethodEnum.NONE
 
   @ApiPropertyOptional()
   cardId?: string

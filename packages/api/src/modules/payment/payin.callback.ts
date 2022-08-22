@@ -5,9 +5,14 @@ import {
   CreateNftPassPayinCallbackInput,
   CreateNftPassPayinCallbackOutput,
   MessagePayinCallbackInput,
+  MessagePayinCallbackOutput,
   PayinCallbackInput,
+  PurchasePostCallbackInput,
+  PurchasePostCallbackOutput,
   RenewNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackOutput,
+  TipPostCallbackInput,
+  TipPostCallbackOutput,
 } from './callback.types'
 import { PayinDto } from './dto/payin.dto'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
@@ -40,6 +45,18 @@ export const functionMapping = (key) => {
         failure: empty,
         creation: empty,
       }
+    case PayinCallbackEnum.PURCHASE_POST:
+      return {
+        success: purchasePostSuccessfulCallback,
+        failure: empty,
+        creation: empty,
+      }
+    case PayinCallbackEnum.TIP_POST:
+      return {
+        success: tipPostSuccessfulCallback,
+        failure: empty,
+        creation: empty,
+      }
     default:
       throw new NoPayinMethodError('no method selected for callback')
   }
@@ -53,69 +70,103 @@ const empty = async (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 ) => {}
 
-export async function messageSuccessCallback(
+async function messageSuccessCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<void> {
-  //TODO
+): Promise<MessagePayinCallbackOutput> {
+  await this.payService.messagesService.sendMessage(
+    input.userId,
+    input.sendMessageDto,
+  )
+  await this.payService.messagesService.delete(input.pendingMessageId)
+  return { userId: input.userId }
 }
 
-export async function messageFailureCallback(
+async function messageFailureCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<void> {
-  //TODO
+): Promise<MessagePayinCallbackOutput> {
+  if (input.pendingMessageId) {
+    await this.payService.messagesService.deletePendingMessage(
+      input.pendingMessageId,
+    )
+  }
+  return { userId: input.userId }
 }
 
-export async function messageCreationCallback(
+async function messageCreationCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<void> {
-  //TODO
+): Promise<MessagePayinCallbackOutput> {
+  input.pendingMessageId =
+    await this.payService.messagesService.createPendingMessage(
+      input.userId,
+      input.sendMessageDto,
+    )
+  await this.payService.updateInputJSON(payin.id, input)
+  return { userId: input.userId }
 }
 
-export async function createNftPassSuccessCallback(
+async function createNftPassSuccessCallback(
   payin: any,
   input: CreateNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<CreateNftPassPayinCallbackOutput> {
-  const newPassOwnership = await payService.passService.createPass(
+  const newPassHolder = await payService.passService.createPass(
     input.userId,
     input.passId,
   )
   const payinDto = new PayinDto(payin)
-  if (newPassOwnership.expiresAt) {
+  if (newPassHolder.expiresAt) {
     await payService.subscribe({
       userId: payinDto.userId,
-      passOwnershipId: newPassOwnership.id,
+      passHolderId: newPassHolder.id,
       amount: payinDto.amount,
       payinMethod: payinDto.payinMethod,
     })
   }
   return {
-    passOwnershipId: newPassOwnership.id,
-    expiresAt: newPassOwnership.expiresAt,
+    passHolderId: newPassHolder.id,
+    expiresAt: newPassHolder.expiresAt,
   }
 }
 
-export async function renewNftPassSuccessCallback(
+async function renewNftPassSuccessCallback(
   payin: any,
   input: RenewNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<RenewNftPassPayinCallbackOutput> {
-  const expiresAt = await payService.passService.renewPass(
-    input.passOwnershipId,
-  )
+  const expiresAt = await payService.passService.renewPass(input.passHolderId)
   return {
-    passOwnershipId: input.passOwnershipId,
+    passHolderId: input.passHolderId,
     expiresAt,
   }
+}
+
+async function purchasePostSuccessfulCallback(
+  payin: any,
+  input: PurchasePostCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchasePostCallbackOutput> {
+  payService.postService.addUserAccess(input.userId, input.postId)
+  return { postId: input.postId }
+}
+
+async function tipPostSuccessfulCallback(
+  payin: any,
+  input: TipPostCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<TipPostCallbackOutput> {
+  payService.postService.createTip(input.userId, input.postId, input.amount)
+  return { postId: input.postId, amount: input.amount }
 }

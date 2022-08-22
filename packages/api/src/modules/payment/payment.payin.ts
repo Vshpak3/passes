@@ -16,18 +16,19 @@ async function handleCallback(
     type params = Parameters<typeof func>
     const output = await func(
       payin,
-      payin.callback_input_json as params[0],
+      JSON.parse(payin.callback_input_json) as params[0],
       payService,
       db,
     )
-    await db
-      .table(PayinEntity.table)
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          callbackOutputJSON: JSON.stringify(output),
-        }),
-      )
-      .where('id', payin.id)
+    if (output)
+      await db
+        .table(PayinEntity.table)
+        .update(
+          PayinEntity.toDict<PayinEntity>({
+            callbackOutputJSON: JSON.stringify(output),
+          }),
+        )
+        .where('id', payin.id)
   } catch (e) {
     await db
       .table(PayinEntity.table)

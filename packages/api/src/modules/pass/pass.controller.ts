@@ -95,7 +95,7 @@ export class PassController {
 
   @ApiOperation({ summary: 'Register create pass payin' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: RegisterPayinResponseDto,
     description: 'Create pass payin was registered',
   })
@@ -111,13 +111,13 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Get register pass data' })
+  @ApiOperation({ summary: 'Get register create pass data' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Data for registering a pass was returned',
+    description: 'Data for register create pass was returned',
   })
-  @Post('pay/data/create')
+  @Get('pay/data/create')
   async registerCreatePassData(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderDto,
@@ -130,7 +130,7 @@ export class PassController {
 
   @ApiOperation({ summary: 'Register renew pass payin' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: RegisterPayinResponseDto,
     description: 'Renew pass payin was registered',
   })
@@ -141,25 +141,25 @@ export class PassController {
   ): Promise<RegisterPayinResponseDto> {
     return this.passService.registerRenewPass(
       req.user.id,
-      renewPassHolderDto.passOwnershipId,
+      renewPassHolderDto.passHolderId,
       renewPassHolderDto.payinMethod,
     )
   }
 
-  @ApiOperation({ summary: 'Get register pass data' })
+  @ApiOperation({ summary: 'Get register renew pass data' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Data for registering a pass was returned',
+    description: 'Data for register renew pass was returned',
   })
-  @Post('pay/data/renew')
+  @Get('pay/data/renew')
   async registerRenewPassData(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderDto,
   ): Promise<PayinDataDto> {
     return this.passService.registerRenewPassData(
       req.user.id,
-      renewPassHolderDto.passOwnershipId,
+      renewPassHolderDto.passHolderId,
     )
   }
 }

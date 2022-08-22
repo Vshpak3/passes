@@ -1,13 +1,15 @@
 import {
   BadRequestException,
+  forwardRef,
   Inject,
+  Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { StreamChat } from 'stream-chat'
-import * as uuid from 'uuid'
+import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
@@ -16,16 +18,22 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { ListEntity } from '../list/entities/list.entity'
+import { MessagePayinCallbackInput } from '../payment/callback.types'
+import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
+import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
+import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
-import { SendMessageDto } from './dto/send-message.dto'
+import { MessageDto } from './dto/message.dto'
 import { TokenDto } from './dto/token.dto'
 import { BatchMessageEntity } from './entities/batch-message.entity'
+import { PendingMessageEntity } from './entities/pending-message.entity'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
 
+@Injectable()
 export class MessagesService {
   streamClient: StreamChat
   constructor(
@@ -37,6 +45,9 @@ export class MessagesService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+
+    @Inject(forwardRef(() => PaymentService))
+    private readonly payService: PaymentService,
   ) {
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
@@ -121,7 +132,7 @@ export class MessagesService {
       throw new NotFoundException('content not found')
     }
 
-    const batchMessageId = uuid.v4()
+    const batchMessageId = v4()
     this.dbWriter
       .transaction(async (trx) => {
         await trx(BatchMessageEntity.table).insert({
@@ -134,7 +145,7 @@ export class MessagesService {
         if (createBatchMessageDto.content != undefined) {
           const contentBatchMessageIds: string[] = []
           for (let i = 0; i < createBatchMessageDto.content.length; i++) {
-            contentBatchMessageIds.push(uuid.v4())
+            contentBatchMessageIds.push(v4())
             await trx(ContentBatchMessageEntity.table).insert({
               id: contentBatchMessageIds[i],
               content_id: createBatchMessageDto.content[i],
@@ -149,10 +160,11 @@ export class MessagesService {
       })
   }
 
-  async sendMessage(userId: string, sendMessageDto: SendMessageDto) {
+  async registerSendMessage(userId: string, sendMessageDto: MessageDto) {
     if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
       throw new BadRequestException('invalid tip amount')
     }
+
     const channel = this.streamClient.channel(
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
@@ -168,7 +180,6 @@ export class MessagesService {
         otherUserId = membersResponse.members[i].user_id
       }
     }
-
     // TODO: check if user query is needed
     const otherUser = await this.dbReader(UserEntity.table)
       .where({ id: otherUserId })
@@ -190,51 +201,81 @@ export class MessagesService {
         sendMessageDto.tipAmount < creatorSettings.minimumTipAmount)
     ) {
       throw new BadRequestException(
-        `must tip at least ${creatorSettings.minimumTipAmount} gems to chat with ${otherUserId}}`,
+        `must tip at least ${creatorSettings.minimumTipAmount} gems to chat with ${otherUser.id}}`,
       )
     }
 
-    // const user = await this.userRepository.findOne(userId)
-    // const messageResp: any = undefined
-
-    const messageId = uuid.v4()
     if (
       sendMessageDto.tipAmount != undefined &&
       sendMessageDto.tipAmount != 0
     ) {
-      // TODO: move over to callback.type.ts
-      // const handleGems = async (): Promise<boolean> => {
-      //   const messageSendResponse = await channel.sendMessage({
-      //     id: messageId,
-      //     text: sendMessageDto.text,
-      //     user_id: userId,
-      //     tipAmount: sendMessageDto.tipAmount,
-      //   })
-      //   messageResp = messageSendResponse
-      //   return messageSendResponse.message != undefined
-      // }
-      // await this.gemService.executeGemTransactions(
-      //   [
-      //     new GemTransaction(
-      //       user as UserEntity,
-      //       sendMessageDto.tipAmount * -1,
-      //       `senttip.message.${messageId}`,
-      //     ),
-      //     new GemTransaction(
-      //       otherUser as UserEntity,
-      //       sendMessageDto.tipAmount,
-      //       `receivedtip.message.${messageId}`,
-      //     ),
-      //   ],
-      //   handleGems,
-      // )
-      // return messageResp
-    } else {
-      return await channel.sendMessage({
-        id: messageId,
-        text: sendMessageDto.text,
-        user_id: userId,
+      const callbackInput: MessagePayinCallbackInput = {
+        userId,
+        sendMessageDto,
+      }
+      const payinMethod = await this.payService.getDefaultPayinMethod(userId)
+      return await this.payService.registerPayin({
+        userId,
+        amount: sendMessageDto.tipAmount,
+        payinMethod,
+        callback: PayinCallbackEnum.MESSAGE,
+        callbackInputJSON: JSON.stringify(callbackInput),
+        creatorShares: this.payService.generateDefaultCreatorShares(
+          otherUser.id,
+          sendMessageDto.tipAmount,
+          payinMethod,
+        ),
       })
+    } else {
+      await this.sendMessage(userId, sendMessageDto)
+      return new RegisterPayinResponseDto()
     }
+  }
+
+  async sendMessage(userId: string, sendMessageDto: MessageDto) {
+    const channel = this.streamClient.channel(
+      MESSAGING_CHAT_TYPE,
+      sendMessageDto.channelId,
+    )
+
+    const messageId = v4()
+    return await channel.sendMessage({
+      id: messageId,
+      text: sendMessageDto.text,
+      user_id: userId,
+      tipAmount:
+        sendMessageDto.tipAmount === 0 ? undefined : sendMessageDto.tipAmount,
+    })
+  }
+
+  async createPendingMessage(userId: string, sendMessageDto: MessageDto) {
+    const id = v4()
+    await this.dbWriter(PendingMessageEntity.table).insert(
+      PendingMessageEntity.toDict<PendingMessageEntity>({
+        id,
+        sender: userId,
+        text: sendMessageDto.text,
+        attachmentsJSON: JSON.stringify(sendMessageDto.attachments),
+        channelId: sendMessageDto.channelId,
+        tipAmount: sendMessageDto.tipAmount,
+      }),
+    )
+    return id
+  }
+
+  async deletePendingMessage(pendingMessageId: string) {
+    return await this.dbWriter(PendingMessageEntity.table)
+      .where('id', pendingMessageId)
+      .delete()
+  }
+
+  async getPendingMessages(userId: string) {
+    return (
+      await this.dbReader(PendingMessageEntity.table).where(
+        PendingMessageEntity.toDict<PendingMessageEntity>({
+          sender: userId,
+        }),
+      )
+    ).map((message) => new MessageDto(message))
   }
 }

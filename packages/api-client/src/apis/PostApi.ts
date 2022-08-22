@@ -15,12 +15,21 @@
 
 import * as runtime from '../runtime';
 import {
+    CreatePostAccessDto,
+    CreatePostAccessDtoFromJSON,
+    CreatePostAccessDtoToJSON,
     CreatePostDto,
     CreatePostDtoFromJSON,
     CreatePostDtoToJSON,
     GetPostDto,
     GetPostDtoFromJSON,
     GetPostDtoToJSON,
+    RegisterPayinResponseDto,
+    RegisterPayinResponseDtoFromJSON,
+    RegisterPayinResponseDtoToJSON,
+    TipPostDto,
+    TipPostDtoFromJSON,
+    TipPostDtoToJSON,
     UpdatePostDto,
     UpdatePostDtoFromJSON,
     UpdatePostDtoToJSON,
@@ -32,6 +41,18 @@ export interface PostCreateRequest {
 
 export interface PostFindOneRequest {
     id: string;
+}
+
+export interface PostRegisterPurchasePostRequest {
+    createPostAccessDto: CreatePostAccessDto;
+}
+
+export interface PostRegisterPurchasePostDataRequest {
+    createPostAccessDto: CreatePostAccessDto;
+}
+
+export interface PostRegisterTipPostRequest {
+    tipPostDto: TipPostDto;
 }
 
 export interface PostRemoveRequest {
@@ -108,6 +129,105 @@ export class PostApi extends runtime.BaseAPI {
      */
     async postFindOne(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostDto> {
         const response = await this.postFindOneRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Register purchase post payin
+     */
+    async postRegisterPurchasePostRaw(requestParameters: PostRegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.createPostAccessDto === null || requestParameters.createPostAccessDto === undefined) {
+            throw new runtime.RequiredError('createPostAccessDto','Required parameter requestParameters.createPostAccessDto was null or undefined when calling postRegisterPurchasePost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/post/pay/purchase`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePostAccessDtoToJSON(requestParameters.createPostAccessDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register purchase post payin
+     */
+    async postRegisterPurchasePost(requestParameters: PostRegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.postRegisterPurchasePostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get register purchase post data
+     */
+    async postRegisterPurchasePostDataRaw(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.createPostAccessDto === null || requestParameters.createPostAccessDto === undefined) {
+            throw new runtime.RequiredError('createPostAccessDto','Required parameter requestParameters.createPostAccessDto was null or undefined when calling postRegisterPurchasePostData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/post/pay/data/purchase`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePostAccessDtoToJSON(requestParameters.createPostAccessDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get register purchase post data
+     */
+    async postRegisterPurchasePostData(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.postRegisterPurchasePostDataRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Register tip post payin
+     */
+    async postRegisterTipPostRaw(requestParameters: PostRegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.tipPostDto === null || requestParameters.tipPostDto === undefined) {
+            throw new runtime.RequiredError('tipPostDto','Required parameter requestParameters.tipPostDto was null or undefined when calling postRegisterTipPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/post/pay/tip`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TipPostDtoToJSON(requestParameters.tipPostDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register tip post payin
+     */
+    async postRegisterTipPost(requestParameters: PostRegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.postRegisterTipPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

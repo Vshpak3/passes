@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
+import { PaymentService } from '../payment/payment.service'
 import { PostService } from './post.service'
 
 describe('PostService', () => {
@@ -8,7 +9,14 @@ describe('PostService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PostService, ...getBaseProviders()],
+      providers: [
+        PostService,
+        ...getBaseProviders(),
+        {
+          provide: PaymentService,
+          useFactory: jest.fn(() => ({})),
+        },
+      ],
     }).compile()
 
     service = module.get<PostService>(PostService)

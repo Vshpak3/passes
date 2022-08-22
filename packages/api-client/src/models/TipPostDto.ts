@@ -23,39 +23,46 @@ import {
 /**
  * 
  * @export
- * @interface RenewPassHolderDto
+ * @interface TipPostDto
  */
-export interface RenewPassHolderDto {
+export interface TipPostDto {
     /**
      * 
      * @type {string}
-     * @memberof RenewPassHolderDto
+     * @memberof TipPostDto
      */
-    passHolderId: string;
+    postId: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TipPostDto
+     */
+    amount: number;
     /**
      * 
      * @type {PayinMethodDto}
-     * @memberof RenewPassHolderDto
+     * @memberof TipPostDto
      */
     payinMethod?: PayinMethodDto;
 }
 
-export function RenewPassHolderDtoFromJSON(json: any): RenewPassHolderDto {
-    return RenewPassHolderDtoFromJSONTyped(json, false);
+export function TipPostDtoFromJSON(json: any): TipPostDto {
+    return TipPostDtoFromJSONTyped(json, false);
 }
 
-export function RenewPassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): RenewPassHolderDto {
+export function TipPostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TipPostDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'passHolderId': json['passHolderId'],
+        'postId': json['postId'],
+        'amount': json['amount'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
-export function RenewPassHolderDtoToJSON(value?: RenewPassHolderDto | null): any {
+export function TipPostDtoToJSON(value?: TipPostDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,7 +71,8 @@ export function RenewPassHolderDtoToJSON(value?: RenewPassHolderDto | null): any
     }
     return {
         
-        'passHolderId': value.passHolderId,
+        'postId': value.postId,
+        'amount': value.amount,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }

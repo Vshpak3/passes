@@ -41,9 +41,7 @@ export class WalletController {
   async getUserCustodialWallet(
     @Req() req: RequestWithUser,
   ): Promise<WalletDto> {
-    return new WalletDto(
-      await this.walletService.getUserCustodialWallet(req.user.id),
-    )
+    return await this.walletService.getUserCustodialWallet(req.user.id)
   }
 
   @ApiOperation({ summary: 'Get default wallet' })

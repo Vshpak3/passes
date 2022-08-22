@@ -24,7 +24,7 @@ export class WalletDto {
   constructor(wallet) {
     if (wallet) {
       this.id = wallet.id
-      this.userId = wallet.user?.id
+      this.userId = wallet.user_id
       this.address = wallet.address
       this.chain = wallet.chain
       this.custodial = wallet.custodial

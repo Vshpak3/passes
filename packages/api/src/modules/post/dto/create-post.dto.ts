@@ -13,4 +13,7 @@ export class CreatePostDto {
 
   @ApiProperty()
   passes: string[]
+
+  @ApiProperty()
+  private: boolean
 }

@@ -1,7 +1,11 @@
+import { MessageDto } from '../messages/dto/message.dto'
+
 export class PayinCallbackInput {}
 
 export class MessagePayinCallbackInput extends PayinCallbackInput {
-  // TODO: figure out inputs
+  userId: string
+  sendMessageDto: MessageDto
+  pendingMessageId?: string
 }
 
 export class CreateNftPassPayinCallbackInput extends PayinCallbackInput {
@@ -10,7 +14,18 @@ export class CreateNftPassPayinCallbackInput extends PayinCallbackInput {
 }
 
 export class RenewNftPassPayinCallbackInput extends PayinCallbackInput {
-  passOwnershipId: string
+  passHolderId: string
+}
+
+export class PurchasePostCallbackInput extends PayinCallbackInput {
+  userId: string
+  postId: string
+}
+
+export class TipPostCallbackInput extends PayinCallbackInput {
+  userId: string
+  postId: string
+  amount: number
 }
 
 export class ExamplePayinCallbackInput extends PayinCallbackInput {
@@ -20,21 +35,30 @@ export class ExamplePayinCallbackInput extends PayinCallbackInput {
 
 export class PayinCallbackOutput {}
 
-export class MessagePayinCallbackOutput extends PayinCallbackInput {
-  // TODO: figure out inputs
+export class MessagePayinCallbackOutput extends PayinCallbackOutput {
+  userId: string
 }
 
-export class CreateNftPassPayinCallbackOutput extends PayinCallbackInput {
-  passOwnershipId: string
+export class CreateNftPassPayinCallbackOutput extends PayinCallbackOutput {
+  passHolderId: string
   expiresAt?: number
 }
 
-export class RenewNftPassPayinCallbackOutput extends PayinCallbackInput {
-  passOwnershipId: string
+export class RenewNftPassPayinCallbackOutput extends PayinCallbackOutput {
+  passHolderId: string
   expiresAt?: number
 }
 
-export class ExamplePayinCallbackOutput extends PayinCallbackInput {
+export class PurchasePostCallbackOutput extends PayinCallbackOutput {
+  postId: string
+}
+
+export class TipPostCallbackOutput extends PayinCallbackOutput {
+  postId: string
+  amount: number
+}
+
+export class ExamplePayinCallbackOutput extends PayinCallbackOutput {
   // TODO: figure out inputs
   example: string
 }

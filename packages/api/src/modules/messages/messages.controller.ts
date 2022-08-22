@@ -2,10 +2,11 @@ import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
-import { SendMessageDto } from './dto/send-message.dto'
+import { MessageDto } from './dto/message.dto'
 import { TokenDto } from './dto/token.dto'
 import { MessagesService } from './messages.service'
 
@@ -14,18 +15,32 @@ import { MessagesService } from './messages.service'
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @ApiOperation({ summary: 'Sends message' })
+  @ApiOperation({ summary: 'Register sending message' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: SendMessageDto,
-    description: 'Message was sent',
+    type: RegisterPayinResponseDto,
+    description: 'Sending message was registered',
   })
   @Post()
   async send(
     @Req() req: RequestWithUser,
-    @Body() sendMessageDto: SendMessageDto,
-  ): Promise<any> {
-    return await this.messagesService.sendMessage(req.user.id, sendMessageDto)
+    @Body() sendMessageDto: MessageDto,
+  ): Promise<RegisterPayinResponseDto> {
+    return await this.messagesService.registerSendMessage(
+      req.user.id,
+      sendMessageDto,
+    )
+  }
+
+  @ApiOperation({ summary: 'Get pending messages' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [MessageDto],
+    description: 'Pending messages was returned',
+  })
+  @Get('/pending')
+  async getPending(@Req() req: RequestWithUser): Promise<Array<MessageDto>> {
+    return await this.messagesService.getPendingMessages(req.user.id)
   }
 
   @ApiOperation({ summary: 'Batch message' })

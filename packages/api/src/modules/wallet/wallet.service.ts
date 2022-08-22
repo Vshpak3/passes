@@ -59,7 +59,7 @@ export class WalletService {
    * get (unique) internally managed wallet for user
    * @param userId
    */
-  async getUserCustodialWallet(userId: string): Promise<WalletEntity> {
+  async getUserCustodialWallet(userId: string): Promise<WalletDto> {
     const wallet = await this.dbReader(WalletEntity.table)
       .where(
         WalletEntity.toDict<WalletEntity>({
@@ -68,8 +68,8 @@ export class WalletService {
         }),
       )
       .first()
-    if (wallet !== null) {
-      return wallet
+    if (wallet) {
+      return new WalletDto(wallet)
     }
 
     // create wallet if it does not exist
@@ -85,7 +85,7 @@ export class WalletService {
     })
     await this.dbWriter(WalletEntity.table).insert(data)
     // TODO: fix return type
-    return data as any
+    return new WalletDto(data)
   }
 
   /**
@@ -129,7 +129,7 @@ export class WalletService {
 
     // if no valid default exists, defer to custodial
     const custodialWallet = await this.getUserCustodialWallet(userId)
-    await this.setDefaultWallet(userId, custodialWallet.id)
+    await this.setDefaultWallet(userId, custodialWallet.id as string)
     return custodialWallet
   }
 

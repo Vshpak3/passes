@@ -10,11 +10,13 @@ import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
+import { MessagesService } from '../messages/messages.service'
 import { GetPassDto } from '../pass/dto/get-pass.dto'
-import { GetPassOwnershipDto } from '../pass/dto/get-pass-ownership.dto'
+import { GetPassHolderDto } from '../pass/dto/get-pass-holder.dto'
 import { PassEntity } from '../pass/entities/pass.entity'
-import { PassOwnershipEntity } from '../pass/entities/pass-ownership.entity'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
+import { PostService } from '../post/post.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletDto } from '../wallet/dto/wallet.dto'
@@ -101,6 +103,9 @@ import {
   handleSuccesfulCallback,
 } from './payment.payin'
 
+const CREATOR_CUT_FIAT_RATE = 0.8
+const CREATOR_CUT_CRYPTO_RATE = 0.9
+
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
 const MAX_TIME_BETWEEN_PAYOUTS_MS = 1000 // change to 3 days:  3 * 24 * 60 * 60 * 1000
@@ -113,6 +118,8 @@ export class PaymentService {
   circleConnector: CircleConnector
   circleMasterWallet: string
   passService: PassService
+  messagesService: MessagesService
+  postService: PostService
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -133,6 +140,12 @@ export class PaymentService {
 
   async onModuleInit() {
     this.passService = this.moduleRef.get(PassService, { strict: false })
+    this.messagesService = this.moduleRef.get(MessagesService, {
+      strict: false,
+    })
+    this.postService = this.moduleRef.get(PostService, {
+      strict: false,
+    })
   }
   /*
   -------------------------------------------------------------------------------
@@ -966,7 +979,7 @@ export class PaymentService {
     userId: string,
     entryDto: PayinEntryRequestDto,
   ): Promise<PayinEntryResponseDto> {
-    const res = await this.dbReader(PayinEntity.table)
+    const payin = await this.dbReader(PayinEntity.table)
       .select('*')
       .where(
         PayinEntity.toDict<PayinEntity>({
@@ -976,29 +989,29 @@ export class PaymentService {
         }),
       )
       .first()
-    if (!res) {
+    if (!payin) {
       throw new InvalidPayinStatusError(
         'payin ' + entryDto.payinId + ' is not available for entry',
       )
     }
-    const payin = new PayinDto(res)
-    let ret: PayinEntryResponseDto
+    const payinDto = new PayinDto(payin)
+    let entryResponseDto: PayinEntryResponseDto
     try {
-      switch (payin.payinMethod.method) {
+      switch (payinDto.payinMethod.method) {
         case PayinMethodEnum.CIRCLE_CARD:
-          ret = await this.entryCircleCard(
-            payin,
+          entryResponseDto = await this.entryCircleCard(
+            payinDto,
             entryDto as CircleCardPayinEntryRequestDto,
           )
           break
         case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
-          ret = await this.entryPhantomCircleUSDC(payin)
+          entryResponseDto = await this.entryPhantomCircleUSDC(payinDto)
           break
         case PayinMethodEnum.METAMASK_CIRCLE_USDC:
-          ret = await this.entryMetamaskCircleUSDC(payin)
+          entryResponseDto = await this.entryMetamaskCircleUSDC(payinDto)
           break
         case PayinMethodEnum.METAMASK_CIRCLE_ETH:
-          ret = await this.entryMetamaskCircleETH(payin)
+          entryResponseDto = await this.entryMetamaskCircleETH(payinDto)
           break
         default:
           throw new NoPayinMethodError('entrypoint hit with no method')
@@ -1008,12 +1021,12 @@ export class PaymentService {
         .update({ payin_status: PayinStatusEnum.CREATED })
         .where({ id: entryDto.payinId })
     } catch (e) {
-      await this.unregisterPayin(payin.id, userId)
+      await this.unregisterPayin(payinDto.id, userId)
       throw e
     }
 
     await handleCreationCallback(payin, this, this.dbWriter)
-    return ret
+    return entryResponseDto
   }
 
   async entryCircleCard(
@@ -1316,10 +1329,12 @@ export class PaymentService {
     }
 
     const payinMethod =
-      request.payinMethod !== undefined &&
-      (await this.validatePayinMethod(request.userId, request.payinMethod))
+      request.payinMethod !== undefined
         ? request.payinMethod
         : await this.getDefaultPayinMethod(request.userId)
+    if (!(await this.validatePayinMethod(request.userId, payinMethod))) {
+      throw new InvalidPayinRequestError('invalid payin method')
+    }
 
     const data = PayinEntity.toDict<PayinEntity>({
       id: v4(),
@@ -1381,6 +1396,28 @@ export class PaymentService {
       payinMethod,
       amount: request.amount,
     }
+  }
+
+  generateDefaultCreatorShares(
+    creatorId: string,
+    amount: number,
+    payinMethod: PayinMethodDto,
+  ) {
+    const creatorCutRate =
+      payinMethod.method === PayinMethodEnum.CIRCLE_CARD
+        ? CREATOR_CUT_FIAT_RATE
+        : CREATOR_CUT_CRYPTO_RATE
+    return [{ creatorId: creatorId, amount: amount * creatorCutRate }]
+  }
+
+  async updateInputJSON(payinId: string, json: any) {
+    await this.dbWriter(PayinEntity.table)
+      .where('id', payinId)
+      .update(
+        PayinEntity.toDict<PayinEntity>({
+          callbackInputJSON: JSON.stringify(json),
+        }),
+      )
   }
 
   async userCancelPayin(payinId: string, userId: string): Promise<void> {
@@ -1677,7 +1714,12 @@ export class PaymentService {
    */
   async submitPayout(payout_id: string): Promise<void> {
     const payout = await this.dbReader(PayoutEntity.table)
-      .where('id', payout_id)
+      .where(
+        PayoutEntity.toDict<PayoutEntity>({
+          id: payout_id,
+          payoutStatus: PayoutStatusEnum.FAILED,
+        }),
+      )
       .select('*')
       .first()
     switch (payout.payout_method) {
@@ -1781,13 +1823,6 @@ export class PaymentService {
   -------------------------------------------------------------------------------
   */
 
-  /**
-   * Step 1 of payin process
-   * Called INTERNALLY from other services
-   *
-   * @param request
-   * @returns
-   */
   async subscribe(request: SubscribeRequestDto): Promise<SubscribeResponseDto> {
     // validating request information
     if (request.amount <= 0 || (request.amount * 100) % 1 !== 0) {
@@ -1796,17 +1831,17 @@ export class PaymentService {
       )
     }
 
-    // ensure that the subscription is for an accurate pass ownership object
+    // ensure that the subscription is for an accurate pass holder object
     if (
       (
-        await this.dbReader(PassOwnershipEntity.table)
-          .where('id', request.passOwnershipId)
+        await this.dbReader(PassHolderEntity.table)
+          .where('id', request.passHolderId)
           .select('holder_id')
           .first()
       ).holder_id !== request.userId
     ) {
       throw new InvalidSubscriptionError(
-        `${request.userId} is not the owner in pass-ownership ${request.passOwnershipId}`,
+        `${request.userId} is not the holder in pass-holder ${request.passHolderId}`,
       )
     }
 
@@ -1814,7 +1849,7 @@ export class PaymentService {
     const subscription = await this.dbReader(SubscriptionEntity.table)
       .where(
         SubscriptionEntity.toDict<SubscriptionEntity>({
-          passOwnership: request.passOwnershipId,
+          passHolder: request.passHolderId,
           user: request.userId,
         }),
       )
@@ -1837,7 +1872,7 @@ export class PaymentService {
         card: payinMethod.cardId,
         chainId: payinMethod.chainId,
         amount: request.amount,
-        passOwnership: request.passOwnershipId,
+        passHolder: request.passHolderId,
       })
       await this.dbWriter(SubscriptionEntity.table).insert(data)
       return { subscriptionId: data.id, payinMethod }
@@ -1884,13 +1919,31 @@ export class PaymentService {
       )
   }
 
+  async cancelSubscription(
+    userId: string,
+    subscriptionId: string,
+  ): Promise<void> {
+    await this.dbWriter(SubscriptionEntity.table)
+      .where(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          id: subscriptionId,
+          user: userId,
+        }),
+      )
+      .update(
+        SubscriptionEntity.toDict<SubscriptionEntity>({
+          subscriptionStatus: SubscriptionStatusEnum.CANCELLED,
+        }),
+      )
+  }
+
   async updateSubscriptions(): Promise<void> {
     const now = Date.now()
     const nftPassSubscriptions = await this.dbReader(SubscriptionEntity.table)
       .join(
-        PassOwnershipEntity.table,
-        `${SubscriptionEntity.table}.pass_ownership_id`,
-        `${PassOwnershipEntity.table}.id`,
+        PassHolderEntity.table,
+        `${SubscriptionEntity.table}.pass_holder_id`,
+        `${PassHolderEntity.table}.id`,
       )
       .whereNot(
         `${SubscriptionEntity.table}.subscription_status`,
@@ -1904,8 +1957,8 @@ export class PaymentService {
           'chainId',
           'card',
         ]),
-        `${PassOwnershipEntity}'.expires_at`,
-        `${PassOwnershipEntity}'.holder_id`,
+        `${PassHolderEntity}'.expires_at`,
+        `${PassHolderEntity}'.holder_id`,
       ])
 
     await Promise.all(
@@ -1970,16 +2023,16 @@ export class PaymentService {
       .andWhereNot('subscription_status', SubscriptionStatusEnum.CANCELLED)
       .select('*')
 
-    const passOwnerships = await this.dbReader
-      .table(PassOwnershipEntity.table)
+    const passHoldings = await this.dbReader
+      .table(PassHolderEntity.table)
       .where(
         'id',
         'in',
-        subscriptions.map((subscription) => subscription.pass_ownership_id),
+        subscriptions.map((subscription) => subscription.pass_holder_id),
       )
       .select('*')
-    const passOwnershipsMap = passOwnerships.reduce((map, passOwnership) => {
-      map[passOwnership.id] = new GetPassOwnershipDto(passOwnership)
+    const passHoldingsMap = passHoldings.reduce((map, passHolding) => {
+      map[passHolding.id] = new GetPassHolderDto(passHolding)
       return map
     }, {})
 
@@ -1988,7 +2041,7 @@ export class PaymentService {
       .where(
         'id',
         'in',
-        passOwnerships.map((passOwnership) => passOwnership.pass_id),
+        passHoldings.map((passHolding) => passHolding.pass_id),
       )
       .select('*')
     const passesMap = passes.reduce((map, pass) => {
@@ -2000,10 +2053,10 @@ export class PaymentService {
       return new SubscriptionDto(subscription)
     })
     subscriptionsDto.forEach((subscriptionDto) => {
-      subscriptionDto.passOwnership =
-        passOwnershipsMap[subscriptionDto.passOwnershipId as string]
+      subscriptionDto.passHolder =
+        passHoldingsMap[subscriptionDto.passHolderId as string]
       subscriptionDto.pass =
-        passesMap[subscriptionDto.passOwnership?.passId as string]
+        passesMap[subscriptionDto.passHolder?.passId as string]
     })
     return subscriptionsDto
   }

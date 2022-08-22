@@ -16,40 +16,40 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetPassOwnershipDto
+ * @interface GetPassHolderDto
  */
-export interface GetPassOwnershipDto {
+export interface GetPassHolderDto {
     /**
      * 
      * @type {string}
-     * @memberof GetPassOwnershipDto
+     * @memberof GetPassHolderDto
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof GetPassOwnershipDto
+     * @memberof GetPassHolderDto
      */
     passId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetPassOwnershipDto
+     * @memberof GetPassHolderDto
      */
     holderId: string;
     /**
      * 
      * @type {number}
-     * @memberof GetPassOwnershipDto
+     * @memberof GetPassHolderDto
      */
     expiresAt: number;
 }
 
-export function GetPassOwnershipDtoFromJSON(json: any): GetPassOwnershipDto {
-    return GetPassOwnershipDtoFromJSONTyped(json, false);
+export function GetPassHolderDtoFromJSON(json: any): GetPassHolderDto {
+    return GetPassHolderDtoFromJSONTyped(json, false);
 }
 
-export function GetPassOwnershipDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPassOwnershipDto {
+export function GetPassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPassHolderDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -62,7 +62,7 @@ export function GetPassOwnershipDtoFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function GetPassOwnershipDtoToJSON(value?: GetPassOwnershipDto | null): any {
+export function GetPassHolderDtoToJSON(value?: GetPassHolderDto | null): any {
     if (value === undefined) {
         return undefined;
     }

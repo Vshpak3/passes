@@ -53,6 +53,7 @@ models/CreateListDto.ts
 models/CreateLocalUserDto.ts
 models/CreatePassDto.ts
 models/CreatePassHolderDto.ts
+models/CreatePostAccessDto.ts
 models/CreatePostDto.ts
 models/CreateProfileDto.ts
 models/CreateSolNftCollectionDto.ts
@@ -68,7 +69,7 @@ models/GetFeedDto.ts
 models/GetListDto.ts
 models/GetListsDto.ts
 models/GetPassDto.ts
-models/GetPassOwnershipDto.ts
+models/GetPassHolderDto.ts
 models/GetPostDto.ts
 models/GetProfileDto.ts
 models/GetSignedUrlDto.ts
@@ -77,6 +78,7 @@ models/GetSolNftDto.ts
 models/GetUserDto.ts
 models/GetUsernamesDto.ts
 models/LocalUserLoginDto.ts
+models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts
 models/MetamaskCircleUSDCEntryRequestDto.ts
@@ -97,8 +99,8 @@ models/RefreshAuthTokenDto.ts
 models/RegisterPayinResponseDto.ts
 models/RenewPassHolderDto.ts
 models/SearchCreatorResponseDto.ts
-models/SendMessageDto.ts
 models/SubscriptionDto.ts
+models/TipPostDto.ts
 models/TokenDto.ts
 models/UpdatePassDto.ts
 models/UpdatePostDto.ts

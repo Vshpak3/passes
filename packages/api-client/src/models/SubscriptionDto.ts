@@ -26,11 +26,11 @@ import {
     GetPassDtoToJSON,
 } from './GetPassDto';
 import {
-    GetPassOwnershipDto,
-    GetPassOwnershipDtoFromJSON,
-    GetPassOwnershipDtoFromJSONTyped,
-    GetPassOwnershipDtoToJSON,
-} from './GetPassOwnershipDto';
+    GetPassHolderDto,
+    GetPassHolderDtoFromJSON,
+    GetPassHolderDtoFromJSONTyped,
+    GetPassHolderDtoToJSON,
+} from './GetPassHolderDto';
 import {
     PayinMethodDto,
     PayinMethodDtoFromJSON,
@@ -85,13 +85,13 @@ export interface SubscriptionDto {
      * @type {string}
      * @memberof SubscriptionDto
      */
-    passOwnershipId?: string;
+    passHolderId?: string;
     /**
      * 
-     * @type {GetPassOwnershipDto}
+     * @type {GetPassHolderDto}
      * @memberof SubscriptionDto
      */
-    passOwnership?: GetPassOwnershipDto;
+    passHolder?: GetPassHolderDto;
     /**
      * 
      * @type {GetPassDto}
@@ -129,8 +129,8 @@ export function SubscriptionDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'subscriptionStatus': json['subscriptionStatus'],
         'amount': json['amount'],
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
-        'passOwnershipId': !exists(json, 'passOwnershipId') ? undefined : json['passOwnershipId'],
-        'passOwnership': !exists(json, 'passOwnership') ? undefined : GetPassOwnershipDtoFromJSON(json['passOwnership']),
+        'passHolderId': !exists(json, 'passHolderId') ? undefined : json['passHolderId'],
+        'passHolder': !exists(json, 'passHolder') ? undefined : GetPassHolderDtoFromJSON(json['passHolder']),
         'pass': !exists(json, 'pass') ? undefined : GetPassDtoFromJSON(json['pass']),
     };
 }
@@ -150,8 +150,8 @@ export function SubscriptionDtoToJSON(value?: SubscriptionDto | null): any {
         'subscriptionStatus': value.subscriptionStatus,
         'amount': value.amount,
         'card': CircleCardDtoToJSON(value.card),
-        'passOwnershipId': value.passOwnershipId,
-        'passOwnership': GetPassOwnershipDtoToJSON(value.passOwnership),
+        'passHolderId': value.passHolderId,
+        'passHolder': GetPassHolderDtoToJSON(value.passHolder),
         'pass': GetPassDtoToJSON(value.pass),
     };
 }

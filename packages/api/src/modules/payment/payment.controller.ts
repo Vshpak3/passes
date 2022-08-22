@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Head,
   HttpCode,
@@ -109,7 +110,7 @@ export class PaymentController {
     type: undefined,
     description: 'A card was deleted',
   })
-  @Post('card/delete/:circleCardId')
+  @Delete('card/delete/:circleCardId')
   @HttpCode(200)
   async deleteCircleCard(
     @Req() req: RequestWithUser,
@@ -168,7 +169,7 @@ export class PaymentController {
     type: CircleStatusDto,
     description: 'A wire bank account was dleted',
   })
-  @Post('bank/delete/:circleBankId')
+  @Delete('bank/delete/:circleBankId')
   async deleteCircleBank(
     @Req() req: RequestWithUser,
     @Param('circleBankId') circleBankId: string,
@@ -406,10 +407,30 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get all payins' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayoutListResponseDto,
+    type: PayinListResponseDto,
     description: 'Payins were returned',
   })
-  @Post('payin')
+  @Post('payins')
+  @HttpCode(200)
+  async getPayins(
+    @Req() req: RequestWithUser,
+    @Body() payinListRequest: PayinListRequestDto,
+  ): Promise<PayinListResponseDto> {
+    return await this.paymentService.getPayins(req.user.id, payinListRequest)
+  }
+  /*
+  -------------------------------------------------------------------------------
+  Payout
+  -------------------------------------------------------------------------------
+  */
+
+  @ApiOperation({ summary: 'Get all payouts' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PayoutListResponseDto,
+    description: 'Payouts were returned',
+  })
+  @Post('payouts')
   @HttpCode(200)
   async getPayouts(
     @Req() req: RequestWithUser,
@@ -418,25 +439,17 @@ export class PaymentController {
     return await this.paymentService.getPayouts(req.user.id, payoutListRequest)
   }
 
-  /*
-  -------------------------------------------------------------------------------
-  Payout
-  -------------------------------------------------------------------------------
-  */
-  @ApiOperation({ summary: 'Get all payouts' })
+  @ApiOperation({ summary: 'Payout manually' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayinListResponseDto,
-    description: 'payouts were returned',
+    type: undefined,
+    description: 'Payout was made',
   })
-  @Post('payin')
-  @HttpCode(200)
-  async getPayins(
-    @Req() req: RequestWithUser,
-    @Body() payinListRequest: PayinListRequestDto,
-  ): Promise<PayinListResponseDto> {
-    return await this.paymentService.getPayins(req.user.id, payinListRequest)
+  @Post('payout')
+  async payout(@Req() req: RequestWithUser): Promise<void> {
+    await this.paymentService.payoutCreator(req.user.id)
   }
+
   /*
   -------------------------------------------------------------------------------
   Subscriptions
@@ -462,6 +475,20 @@ export class PaymentController {
     )
   }
 
+  @ApiOperation({ summary: 'Cancel subscription' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Subscription was cancelled',
+  })
+  @Delete('subscription/:subscriptionId')
+  async cancelSubscription(
+    @Req() req: RequestWithUser,
+    @Param('subscriptionId') subscriptionId: string,
+  ): Promise<void> {
+    await this.paymentService.cancelSubscription(req.user.id, subscriptionId)
+  }
+
   @ApiOperation({ summary: 'Get subscriptions' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -469,7 +496,6 @@ export class PaymentController {
     description: 'Subscriptions were returned',
   })
   @Get('subscriptions')
-  @HttpCode(200)
   async getSubscriptions(
     @Req() req: RequestWithUser,
   ): Promise<Array<SubscriptionDto>> {
@@ -522,7 +548,7 @@ export class PaymentController {
   })
   @Get('test/payout')
   @AllowUnauthorizedRequest()
-  async payout(): Promise<void> {
+  async payoutAll(): Promise<void> {
     return await this.paymentService.payoutAll()
   }
 

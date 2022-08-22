@@ -132,6 +132,8 @@ export const PayinDtoCallbackEnum = {
     Message: 'message',
     CreateNftPass: 'create_nft_pass',
     RewnewNftPass: 'rewnew_nft_pass',
+    PurchasePost: 'purchase_post',
+    TipPost: 'tip_post',
     Example: 'example'
 } as const;
 export type PayinDtoCallbackEnum = typeof PayinDtoCallbackEnum[keyof typeof PayinDtoCallbackEnum];

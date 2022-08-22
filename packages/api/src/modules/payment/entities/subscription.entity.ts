@@ -1,7 +1,7 @@
 import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { PassOwnershipEntity } from '../../pass/entities/pass-ownership.entity'
+import { PassHolderEntity } from '../../pass/entities/pass-holder.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
@@ -35,6 +35,6 @@ export class SubscriptionEntity extends BaseEntity {
   @Property()
   sessionId?: string
 
-  @ManyToOne({ entity: () => PassOwnershipEntity })
-  passOwnership: PassOwnershipEntity
+  @ManyToOne({ entity: () => PassHolderEntity })
+  passHolder: PassHolderEntity
 }

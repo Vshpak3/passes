@@ -21,5 +21,5 @@ export class SubscribeRequestDto {
   payinMethod?: PayinMethodDto
 
   @ApiProperty()
-  passOwnershipId: string
+  passHolderId: string
 }

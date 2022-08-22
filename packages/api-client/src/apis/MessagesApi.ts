@@ -24,9 +24,12 @@ import {
     GetChannelDto,
     GetChannelDtoFromJSON,
     GetChannelDtoToJSON,
-    SendMessageDto,
-    SendMessageDtoFromJSON,
-    SendMessageDtoToJSON,
+    MessageDto,
+    MessageDtoFromJSON,
+    MessageDtoToJSON,
+    RegisterPayinResponseDto,
+    RegisterPayinResponseDtoFromJSON,
+    RegisterPayinResponseDtoToJSON,
     TokenDto,
     TokenDtoFromJSON,
     TokenDtoToJSON,
@@ -41,7 +44,7 @@ export interface MessagesMassSendRequest {
 }
 
 export interface MessagesSendRequest {
-    sendMessageDto: SendMessageDto;
+    messageDto: MessageDto;
 }
 
 /**
@@ -79,6 +82,32 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelDto> {
         const response = await this.messagesCreateChannelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get pending messages
+     */
+    async messagesGetPendingRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MessageDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/messages/pending`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MessageDtoFromJSON));
+    }
+
+    /**
+     * Get pending messages
+     */
+    async messagesGetPending(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MessageDto>> {
+        const response = await this.messagesGetPendingRaw(initOverrides);
         return await response.value();
     }
 
@@ -141,11 +170,11 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Sends message
+     * Register sending message
      */
-    async messagesSendRaw(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SendMessageDto>> {
-        if (requestParameters.sendMessageDto === null || requestParameters.sendMessageDto === undefined) {
-            throw new runtime.RequiredError('sendMessageDto','Required parameter requestParameters.sendMessageDto was null or undefined when calling messagesSend.');
+    async messagesSendRaw(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.messageDto === null || requestParameters.messageDto === undefined) {
+            throw new runtime.RequiredError('messageDto','Required parameter requestParameters.messageDto was null or undefined when calling messagesSend.');
         }
 
         const queryParameters: any = {};
@@ -159,16 +188,16 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SendMessageDtoToJSON(requestParameters.sendMessageDto),
+            body: MessageDtoToJSON(requestParameters.messageDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => SendMessageDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
     }
 
     /**
-     * Sends message
+     * Register sending message
      */
-    async messagesSend(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SendMessageDto> {
+    async messagesSend(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.messagesSendRaw(requestParameters, initOverrides);
         return await response.value();
     }

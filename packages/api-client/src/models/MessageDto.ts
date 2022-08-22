@@ -16,40 +16,40 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface SendMessageDto
+ * @interface MessageDto
  */
-export interface SendMessageDto {
+export interface MessageDto {
     /**
      * 
      * @type {string}
-     * @memberof SendMessageDto
+     * @memberof MessageDto
      */
     text: string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof SendMessageDto
+     * @memberof MessageDto
      */
     attachments: Array<string>;
     /**
      * 
      * @type {string}
-     * @memberof SendMessageDto
+     * @memberof MessageDto
      */
     channelId: string;
     /**
      * 
      * @type {number}
-     * @memberof SendMessageDto
+     * @memberof MessageDto
      */
-    tipAmount: number;
+    tipAmount?: number;
 }
 
-export function SendMessageDtoFromJSON(json: any): SendMessageDto {
-    return SendMessageDtoFromJSONTyped(json, false);
+export function MessageDtoFromJSON(json: any): MessageDto {
+    return MessageDtoFromJSONTyped(json, false);
 }
 
-export function SendMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SendMessageDto {
+export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MessageDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -58,11 +58,11 @@ export function SendMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
-        'tipAmount': json['tipAmount'],
+        'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
     };
 }
 
-export function SendMessageDtoToJSON(value?: SendMessageDto | null): any {
+export function MessageDtoToJSON(value?: MessageDto | null): any {
     if (value === undefined) {
         return undefined;
     }

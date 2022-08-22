@@ -5,8 +5,8 @@ import { SolNftEntity } from '../../sol/entities/sol-nft.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PassEntity } from './pass.entity'
 
-@Entity({ tableName: 'pass_ownership' })
-export class PassOwnershipEntity extends BaseEntity {
+@Entity({ tableName: 'pass_holder' })
+export class PassHolderEntity extends BaseEntity {
   @ManyToOne()
   pass: PassEntity
 

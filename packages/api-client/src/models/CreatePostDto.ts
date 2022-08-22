@@ -44,6 +44,12 @@ export interface CreatePostDto {
      * @memberof CreatePostDto
      */
     passes: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreatePostDto
+     */
+    _private: boolean;
 }
 
 export function CreatePostDtoFromJSON(json: any): CreatePostDto {
@@ -59,6 +65,7 @@ export function CreatePostDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'text': json['text'],
         'content': ((json['content'] as Array<any>).map(CreateContentDtoFromJSON)),
         'passes': json['passes'],
+        '_private': json['private'],
     };
 }
 
@@ -74,6 +81,7 @@ export function CreatePostDtoToJSON(value?: CreatePostDto | null): any {
         'text': value.text,
         'content': ((value.content as Array<any>).map(CreateContentDtoToJSON)),
         'passes': value.passes,
+        'private': value._private,
     };
 }
 

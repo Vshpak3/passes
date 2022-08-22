@@ -42,7 +42,7 @@ const ChatView = ({ username }: ChatViewProps) => {
     try {
       const api = wrapApi(MessagesApi)
       await api.messagesSend({
-        sendMessageDto: {
+        messageDto: {
           text: messageToSend.text || "",
           attachments: [],
           channelId: channelId.split(":")[1],

@@ -241,7 +241,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get register pass data
+     * Get register create pass data
      */
     async passRegisterCreatePassDataRaw(requestParameters: PassRegisterCreatePassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.createPassHolderDto === null || requestParameters.createPassHolderDto === undefined) {
@@ -256,7 +256,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/pay/data/create`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
             body: CreatePassHolderDtoToJSON(requestParameters.createPassHolderDto),
@@ -266,7 +266,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get register pass data
+     * Get register create pass data
      */
     async passRegisterCreatePassData(requestParameters: PassRegisterCreatePassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
         const response = await this.passRegisterCreatePassDataRaw(requestParameters, initOverrides);
@@ -307,7 +307,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get register pass data
+     * Get register renew pass data
      */
     async passRegisterRenewPassDataRaw(requestParameters: PassRegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.renewPassHolderDto === null || requestParameters.renewPassHolderDto === undefined) {
@@ -322,7 +322,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/pay/data/renew`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
             body: RenewPassHolderDtoToJSON(requestParameters.renewPassHolderDto),
@@ -332,7 +332,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get register pass data
+     * Get register renew pass data
      */
     async passRegisterRenewPassData(requestParameters: PassRegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
         const response = await this.passRegisterRenewPassDataRaw(requestParameters, initOverrides);
