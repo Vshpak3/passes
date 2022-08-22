@@ -1789,7 +1789,7 @@ export class PaymentService {
     })
     return {
       count: parseInt(count[0]['count(*)']),
-      payins: payoutsDto,
+      payouts: payoutsDto,
     }
   }
 

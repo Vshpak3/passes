@@ -15,5 +15,5 @@ export class PayoutListResponseDto {
   count: number
 
   @ApiProperty({ type: [PayoutDto] })
-  payins: Array<PayoutDto>
+  payouts: Array<PayoutDto>
 }

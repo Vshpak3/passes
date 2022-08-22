@@ -37,7 +37,7 @@ export interface PayoutListResponseDto {
      * @type {Array<PayoutDto>}
      * @memberof PayoutListResponseDto
      */
-    payins: Array<PayoutDto>;
+    payouts: Array<PayoutDto>;
 }
 
 export function PayoutListResponseDtoFromJSON(json: any): PayoutListResponseDto {
@@ -51,7 +51,7 @@ export function PayoutListResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'count': json['count'],
-        'payins': ((json['payins'] as Array<any>).map(PayoutDtoFromJSON)),
+        'payouts': ((json['payouts'] as Array<any>).map(PayoutDtoFromJSON)),
     };
 }
 
@@ -65,7 +65,7 @@ export function PayoutListResponseDtoToJSON(value?: PayoutListResponseDto | null
     return {
         
         'count': value.count,
-        'payins': ((value.payins as Array<any>).map(PayoutDtoToJSON)),
+        'payouts': ((value.payouts as Array<any>).map(PayoutDtoToJSON)),
     };
 }
 
