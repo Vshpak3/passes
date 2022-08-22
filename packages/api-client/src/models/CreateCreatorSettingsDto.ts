@@ -25,6 +25,12 @@ export interface CreateCreatorSettingsDto {
      * @memberof CreateCreatorSettingsDto
      */
     minimumTipAmount: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCreatorSettingsDto
+     */
+    payoutFrequency: string;
 }
 
 export function CreateCreatorSettingsDtoFromJSON(json: any): CreateCreatorSettingsDto {
@@ -38,6 +44,7 @@ export function CreateCreatorSettingsDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'minimumTipAmount': json['minimumTipAmount'],
+        'payoutFrequency': json['payoutFrequency'],
     };
 }
 
@@ -51,6 +58,7 @@ export function CreateCreatorSettingsDtoToJSON(value?: CreateCreatorSettingsDto 
     return {
         
         'minimumTipAmount': value.minimumTipAmount,
+        'payoutFrequency': value.payoutFrequency,
     };
 }
 

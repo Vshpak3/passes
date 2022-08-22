@@ -7,6 +7,8 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { GetPassDto } from '../pass/dto/get-pass.dto'
 import { GetPassOwnershipDto } from '../pass/dto/get-pass-ownership.dto'
@@ -91,6 +93,7 @@ import {
   InvalidPayinStatusError,
   NoPayinMethodError,
 } from './error/payin.error'
+import { PayoutFrequencyError } from './error/payout.error'
 import { InvalidSubscriptionError } from './error/subscription.error'
 import {
   handleCreationCallback,
@@ -100,10 +103,11 @@ import {
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MAX_TIME_BETWEEN_PAYOUTS_SECONDS = 60 // TODO: change to  60 * 60 * 24 * 7
+const MAX_TIME_BETWEEN_PAYOUTS_MS = 1000 // change to 3 days:  3 * 24 * 60 * 60 * 1000
 
 const EXPIRING_DURATION_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
 
+const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
@@ -1568,31 +1572,61 @@ export class PaymentService {
 
   async payoutAll(): Promise<void> {
     const creators = await this.dbReader(UserEntity.table)
+      .join(
+        CreatorSettingsEntity.table,
+        `${UserEntity.table}.id`,
+        `${CreatorSettingsEntity.table}.user_id`,
+      )
       .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
-      .select('id')
-    creators.forEach(async (creator) => {
-      try {
-        await this.payoutCreator(creator.id)
-      } catch (e) {
-        this.logger.error(`Error paying out ${creator.id}: ${e}`)
-      }
-    })
+      .select([`${UserEntity.table}.id`, 'payout_frequency'])
+    await Promise.all(
+      creators.map(async (creator) => {
+        try {
+          await this.payoutCreator(creator.id, creator.payout_frequency)
+        } catch (e) {
+          this.logger.error(`Error paying out ${creator.id}: ${e}`)
+        }
+      }),
+    )
   }
 
-  async payoutCreator(userId: string): Promise<void> {
-    const time = new Date()
-    const minDate = new Date(
-      time.getTime() + 60 * MAX_TIME_BETWEEN_PAYOUTS_SECONDS,
-    )
-    const checkPayout = await this.dbReader(PayoutEntity.table).where(
-      'created_at',
-      '>=',
-      minDate.toISOString(),
-    )
-    if (!checkPayout) {
-      throw new BadRequestException(
+  async payoutCreator(
+    userId: string,
+    // only defined when payout is automatic from batch job
+    payoutFrequency?: PayoutFrequencyEnum,
+  ): Promise<void> {
+    const now = Date.now()
+    const checkPayout = await this.dbReader(PayoutEntity.table)
+      .select('UNIX_TIMESTAMP(created_at) as time')
+      .orderBy('created_at', 'desc')
+      .limit(1)
+      .first()
+    if (checkPayout && checkPayout.time > now - MAX_TIME_BETWEEN_PAYOUTS_MS) {
+      throw new PayoutFrequencyError(
         'Payout created for creator recently, try again later',
       )
+    }
+
+    if (payoutFrequency && checkPayout) {
+      switch (payoutFrequency) {
+        case PayoutFrequencyEnum.ONE_WEEK:
+          break
+        case PayoutFrequencyEnum.TWO_WEEKS:
+          if (now % (ONE_WEEK_MS * 2) > ONE_WEEK_MS) {
+            // job is run every week
+            // ensure that creators opting for biweekly don't get paid too often
+            return
+          }
+          break
+        case PayoutFrequencyEnum.MANUAL:
+          throw new PayoutFrequencyError(
+            'automatic payout with manual selected',
+          )
+        default:
+          throw new PayoutFrequencyError(
+            'automatic payout with no frequency selected',
+          )
+      }
     }
     const defaultPayoutMethod = await this.getDefaultPayoutMethod(userId)
 
@@ -1874,56 +1908,59 @@ export class PaymentService {
         `${PassOwnershipEntity}'.holder_id`,
       ])
 
-    nftPassSubscriptions.forEach(async (subscription) => {
-      try {
-        // holder of pass changed
-        if (subscription.user_id !== subscription.holder_id) {
+    await Promise.all(
+      nftPassSubscriptions.map(async (subscription) => {
+        try {
+          // holder of pass changed
+          if (subscription.user_id !== subscription.holder_id) {
+            await this.dbWriter
+              .where('id', subscription.id)
+              .update('subscription_status', SubscriptionStatusEnum.CANCELLED)
+            return
+          }
+
+          let status = SubscriptionStatusEnum.DISABLED
+          if (subscription.expires_at - EXPIRING_DURATION_MS > now) {
+            status = SubscriptionStatusEnum.ACTIVE
+          } else if (subscription.expires_at > now) {
+            status = SubscriptionStatusEnum.EXPIRING
+          }
+
           await this.dbWriter
             .where('id', subscription.id)
-            .update('subscription_status', SubscriptionStatusEnum.CANCELLED)
-          return
-        }
+            .update('subscription_status', status)
+          // TODO: send email notifications
 
-        let status = SubscriptionStatusEnum.DISABLED
-        if (subscription.expires_at - EXPIRING_DURATION_MS > now) {
-          status = SubscriptionStatusEnum.ACTIVE
-        } else if (subscription.expires_at > now) {
-          status = SubscriptionStatusEnum.EXPIRING
-        }
-
-        await this.dbWriter
-          .where('id', subscription.id)
-          .update('subscription_status', status)
-        // TODO: send email notifications
-
-        // try to pay subscription if possible
-        if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
-          try {
-            // can only autorenew with card
-            if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
-              const registerResponse = await this.passService.registerRenewPass(
-                subscription.user_id,
-                subscription.id,
-                new PayinMethodDto(subscription),
+          // try to pay subscription if possible
+          if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
+            try {
+              // can only autorenew with card
+              if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
+                const registerResponse =
+                  await this.passService.registerRenewPass(
+                    subscription.user_id,
+                    subscription.id,
+                    new PayinMethodDto(subscription),
+                  )
+                await this.payinEntryHandler(subscription.user_id, {
+                  payinId: registerResponse.payinId,
+                  ip: subscription.ip_address,
+                  sessionId: subscription.session_id,
+                } as CircleCardPayinEntryRequestDto)
+              }
+            } catch (e) {
+              this.logger.error(
+                `Error paying subscription for ${subscription.id}: ${e}`,
               )
-              await this.payinEntryHandler(subscription.user_id, {
-                payinId: registerResponse.payinId,
-                ip: subscription.ip_address,
-                sessionId: subscription.session_id,
-              } as CircleCardPayinEntryRequestDto)
             }
-          } catch (e) {
-            this.logger.error(
-              `Error paying subscription for ${subscription.id}: ${e}`,
-            )
           }
+        } catch (e) {
+          this.logger.error(
+            `Error updating subscription for ${subscription.id}: ${e}`,
+          )
         }
-      } catch (e) {
-        this.logger.error(
-          `Error updating subscription for ${subscription.id}: ${e}`,
-        )
-      }
-    })
+      }),
+    )
   }
 
   async getSubscriptions(userId: string): Promise<Array<SubscriptionDto>> {
