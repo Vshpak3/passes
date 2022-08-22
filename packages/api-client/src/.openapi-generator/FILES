@@ -13,6 +13,7 @@ apis/FeedApi.ts
 apis/FollowApi.ts
 apis/HealthApi.ts
 apis/LambdaApi.ts
+apis/LikeApi.ts
 apis/ListApi.ts
 apis/MessagesApi.ts
 apis/PassApi.ts
