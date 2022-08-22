@@ -1,6 +1,10 @@
 /* eslint no-console: 0 */
 
-import { INestApplication, ValidationPipe } from '@nestjs/common'
+import {
+  INestApplication,
+  INestApplicationContext,
+  ValidationPipe,
+} from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
@@ -8,8 +12,8 @@ import session from 'express-session'
 import { WinstonModule } from 'nest-winston'
 import passport from 'passport'
 
-import { AppModule } from './app.module'
-import { loggingOptions } from './monitoring/logging/logging.options'
+import { AppModule } from '../app.module'
+import { loggingOptions } from '../monitoring/logging/logging.options'
 
 const APPLICATION_PORT = 3001
 
@@ -25,6 +29,15 @@ export class App {
       await this.initSwagger()
     }
     console.log('Successfully initialized application')
+  }
+
+  static async initStandalone(): Promise<INestApplicationContext> {
+    console.log('Starting application')
+    console.log(`Node version ${process.version}`)
+    return await NestFactory.createApplicationContext(AppModule, {
+      // Use a custom logger here to format the bootstrap/startup logs
+      logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
+    })
   }
 
   private async initApp() {

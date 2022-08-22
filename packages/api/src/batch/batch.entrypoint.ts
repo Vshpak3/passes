@@ -1,7 +1,6 @@
-import { NestFactory } from '@nestjs/core'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
-import { AppModule } from '../app.module'
+import { App } from '../app/app.main'
 import { TaskDirectory } from '../batch/batch.directory'
 ;(async () => {
   const args = process.argv.slice(2)
@@ -9,7 +8,7 @@ import { TaskDirectory } from '../batch/batch.directory'
   const batchTaskArgs = args.slice(1)
 
   // Instantiate the app
-  const app = await NestFactory.createApplicationContext(AppModule)
+  const app = await App.initStandalone()
   const logger = app.get(WINSTON_MODULE_PROVIDER)
 
   logger.info(
@@ -20,7 +19,6 @@ import { TaskDirectory } from '../batch/batch.directory'
     throw new Error(
       `A batch task with name '${batchTaskName}' is not in the task directory`,
     )
-    process.exit(1)
   }
 
   // Run the task

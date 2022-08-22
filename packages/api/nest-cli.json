@@ -2,5 +2,5 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
-  "entryFile": "src/entrypoint/app.js"
+  "entryFile": "src/app/app.entrypoint.js"
 }

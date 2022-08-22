@@ -6,12 +6,10 @@ import { Test } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import request from 'supertest'
 
-import { AppModule } from './../src/app.module'
-import { getDatabaseProviderToken } from './database/database.provider'
-import { contextNames } from './database/mikro-orm.options'
+import { AppModule } from '../app.module'
+import { getDatabaseProviderToken } from '../database/database.provider'
+import { contextNames } from '../database/mikro-orm.options'
 
-// TODO: enable once we move to knex
-// eslint-disable-next-line jest/no-disabled-tests
 describe('App e2e', () => {
   let app: INestApplication
 

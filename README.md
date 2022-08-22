@@ -19,7 +19,7 @@ System Requirements
 yarn install
 
 # spins up docker containers for testing
-yarn workspace @passes/api docker
+./bin/reset-local-database.sh full
 ```
 
 ### Local Testing

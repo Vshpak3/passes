@@ -22,11 +22,15 @@ if [[ ${input} == 'full' ]] ; then
   log 'Spinning back up docker containers'
   docker compose up --detach
 
-  log 'Waiting for MySQL docker container to be ready'
-  sleep 5
-  while ! MYSQL_PWD=root mysqladmin ping -h 127.0.0.1 -P 3306 -u root --silent ; do
+  log 'Waiting for MySQL docker container to be ready (takes around 30 seconds)'
+  sleep 20
+  if command -v mysqladmin &> /dev/null ; then
+    while ! MYSQL_PWD=root mysqladmin ping -h 127.0.0.1 -P 3306 -u root --silent ; do
       sleep 1
-  done
+    done
+  else
+    sleep 15
+  fi
 fi
 
 log 'Removing all ORM metadata'
