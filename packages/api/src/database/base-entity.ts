@@ -31,24 +31,7 @@ declare type ExcludeFunctions<
   // eslint-disable-next-line @typescript-eslint/ban-types
 > = T[K] extends Function ? never : K extends symbol ? never : K
 
-export abstract class BaseEntity<O = void> {
-  [OptionalProps]?: O | 'createdAt' | 'updatedAt'
-
-  @PrimaryKey({
-    type: new UuidType(),
-    defaultRaw: '(UUID())',
-  })
-  id: string
-
-  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-  createdAt: Date
-
-  @Property({
-    defaultRaw: 'CURRENT_TIMESTAMP',
-    extra: 'on update CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date
-
+export class EntityDBHelpers {
   // The following properties get initialized and replaced in the database service init function
   static isInitialized = false
 
@@ -67,4 +50,23 @@ export abstract class BaseEntity<O = void> {
   static populate<T>(fields: Array<keyof EntityData<T>>): string[] {}
 
   static table: string
+}
+
+export abstract class BaseEntity<O = void> extends EntityDBHelpers {
+  [OptionalProps]?: O | 'createdAt' | 'updatedAt'
+
+  @PrimaryKey({
+    type: new UuidType(),
+    defaultRaw: '(UUID())',
+  })
+  id: string
+
+  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
+  createdAt: Date
+
+  @Property({
+    defaultRaw: 'CURRENT_TIMESTAMP',
+    extra: 'on update CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date
 }

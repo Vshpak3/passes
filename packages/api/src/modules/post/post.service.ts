@@ -128,11 +128,10 @@ export class PostService {
           postContentRow.url &&
           postContentRow.content_type
         ) {
-          return new GetContentDto(
-            postContentRow.content_id,
-            postContentRow.url,
-            postContentRow.content_type,
-          )
+          return new GetContentDto({
+            id: postContentRow.content_id,
+            ...postContentRow,
+          })
         } else {
           return undefined
         }

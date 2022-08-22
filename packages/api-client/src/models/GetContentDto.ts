@@ -27,6 +27,18 @@ export interface GetContentDto {
     id: string;
     /**
      * 
+     * @type {Date}
+     * @memberof GetContentDto
+     */
+    createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetContentDto
+     */
+    updatedAt: Date;
+    /**
+     * 
      * @type {string}
      * @memberof GetContentDto
      */
@@ -50,6 +62,8 @@ export function GetContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': json['id'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
         'url': json['url'],
         'contentType': json['contentType'],
     };
@@ -65,6 +79,8 @@ export function GetContentDtoToJSON(value?: GetContentDto | null): any {
     return {
         
         'id': value.id,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
         'url': value.url,
         'contentType': value.contentType,
     };

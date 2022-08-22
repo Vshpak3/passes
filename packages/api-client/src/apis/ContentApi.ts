@@ -15,10 +15,18 @@
 
 import * as runtime from '../runtime';
 import {
+    GetContentDto,
+    GetContentDtoFromJSON,
+    GetContentDtoToJSON,
     GetSignedUrlDto,
     GetSignedUrlDtoFromJSON,
     GetSignedUrlDtoToJSON,
 } from '../models';
+
+export interface ContentGetVaultContentRequest {
+    category?: ContentGetVaultContentCategoryEnum;
+    type?: ContentGetVaultContentTypeEnum;
+}
 
 export interface ContentPreSignUrlRequest {
     path: string;
@@ -28,6 +36,40 @@ export interface ContentPreSignUrlRequest {
  * 
  */
 export class ContentApi extends runtime.BaseAPI {
+
+    /**
+     * Gets all content associated with the current authenticated user
+     */
+    async contentGetVaultContentRaw(requestParameters: ContentGetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GetContentDto>>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.category !== undefined) {
+            queryParameters['category'] = requestParameters.category;
+        }
+
+        if (requestParameters.type !== undefined) {
+            queryParameters['type'] = requestParameters.type;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/content/vault`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetContentDtoFromJSON));
+    }
+
+    /**
+     * Gets all content associated with the current authenticated user
+     */
+    async contentGetVaultContent(requestParameters: ContentGetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetContentDto>> {
+        const response = await this.contentGetVaultContentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Get signed url for specified path
@@ -60,3 +102,23 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const ContentGetVaultContentCategoryEnum = {
+    Posts: 'posts',
+    Messages: 'messages',
+    Uploads: 'uploads'
+} as const;
+export type ContentGetVaultContentCategoryEnum = typeof ContentGetVaultContentCategoryEnum[keyof typeof ContentGetVaultContentCategoryEnum];
+/**
+ * @export
+ */
+export const ContentGetVaultContentTypeEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type ContentGetVaultContentTypeEnum = typeof ContentGetVaultContentTypeEnum[keyof typeof ContentGetVaultContentTypeEnum];

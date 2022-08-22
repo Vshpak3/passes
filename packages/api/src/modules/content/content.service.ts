@@ -8,10 +8,13 @@ import { v4 } from 'uuid'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
+import { ContentType, VaultCategory } from './constants/validation'
 import { CreateContentDto } from './dto/create-content.dto'
 import { GetContentDto } from './dto/get-content.dto'
 import { UpdateContentDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
+import { ContentMessageEntity } from './entities/content-message.entity'
+import { ContentPostEntity } from './entities/content-post.entity'
 
 @Injectable()
 export class ContentService {
@@ -35,7 +38,7 @@ export class ContentService {
       })
       await this.dbWriter(ContentEntity.table).insert(data)
 
-      return new GetContentDto(data.id, data.url, data.content_Type)
+      return new GetContentDto(data)
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
@@ -50,7 +53,7 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto(content.id, content.url, content.content_Type)
+    return new GetContentDto(content)
   }
 
   async update(
@@ -66,10 +69,64 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto(
-      contentId,
-      updateContentDto.url as string,
-      updateContentDto.contentType as string,
+    return new GetContentDto({
+      id: contentId,
+      ...updateContentDto,
+    })
+  }
+
+  async getVault(userId: string, category?: VaultCategory, type?: ContentType) {
+    let query = this.dbReader(ContentEntity.table).where(
+      ContentEntity.toDict<ContentEntity>({
+        user: userId,
+      }),
     )
+    switch (category) {
+      // filter content that has been used in messages
+      case VaultCategory.MESSAGES:
+        query = query
+          .innerJoin(
+            ContentMessageEntity.table,
+            `${ContentEntity.table}.id`,
+            `${ContentMessageEntity.table}.content_id`,
+          )
+          .select(['*', `${ContentEntity.table}.id`])
+        break
+      // filter content that has been used in posts
+      case VaultCategory.POSTS:
+        query = query
+          .innerJoin(
+            ContentPostEntity.table,
+            `${ContentEntity.table}.id`,
+            `${ContentPostEntity.table}.content_id`,
+          )
+          .select(['*', `${ContentEntity.table}.id`])
+        break
+      case VaultCategory.UPLOADS:
+        // filter content that has not been used anywhere (uploaded directly to vault)
+        query = query
+          .leftJoin(
+            ContentMessageEntity.table,
+            `${ContentEntity.table}.id`,
+            `${ContentMessageEntity.table}.content_id`,
+          )
+          .leftJoin(
+            ContentPostEntity.table,
+            `${ContentEntity.table}.id`,
+            `${ContentPostEntity.table}.content_id`,
+          )
+          .andWhere(`${ContentMessageEntity.table}.content_id`, null)
+          .andWhere(`${ContentPostEntity.table}.content_id`, null)
+          .select(['*', `${ContentEntity.table}.id`])
+        break
+
+      default:
+        break
+    }
+    if (type)
+      query = query.andWhere(
+        ContentEntity.toDict<ContentEntity>({ contentType: type }),
+      )
+    return (await query).map((content) => new GetContentDto(content))
   }
 }

@@ -97,7 +97,7 @@ export class DatabaseService {
     const { metadata } = this._entityManager
     const entityMetadata = Object.values(metadata.getAll())
     entityMetadata.forEach(({ class: entityClass, props, tableName }) => {
-      if (!entityClass.isInitialized) {
+      if (entityClass && !entityClass.isInitialized) {
         entityClass.table = tableName
 
         entityClass.toDict = (data) =>
