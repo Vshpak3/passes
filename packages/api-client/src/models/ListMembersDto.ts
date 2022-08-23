@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateListDto
+ * @interface ListMembersDto
  */
-export interface CreateListDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateListDto
-     */
-    name: string;
+export interface ListMembersDto {
     /**
      * 
      * @type {Array<string>}
-     * @memberof CreateListDto
+     * @memberof ListMembersDto
      */
     users: Array<string>;
 }
 
-export function CreateListDtoFromJSON(json: any): CreateListDto {
-    return CreateListDtoFromJSONTyped(json, false);
+export function ListMembersDtoFromJSON(json: any): ListMembersDto {
+    return ListMembersDtoFromJSONTyped(json, false);
 }
 
-export function CreateListDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateListDto {
+export function ListMembersDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ListMembersDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
         'users': json['users'],
     };
 }
 
-export function CreateListDtoToJSON(value?: CreateListDto | null): any {
+export function ListMembersDtoToJSON(value?: ListMembersDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +50,6 @@ export function CreateListDtoToJSON(value?: CreateListDto | null): any {
     }
     return {
         
-        'name': value.name,
         'users': value.users,
     };
 }

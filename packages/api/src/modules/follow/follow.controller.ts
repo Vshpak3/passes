@@ -12,7 +12,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { CreateFollowingDto } from './dto/create-following.dto'
+import { GetFanDto } from './dto/get-fan.dto'
 import { GetFollowingDto } from './dto/get-following.dto'
+import { SearchFanDto } from './dto/search-fan.dto'
 import { FollowService } from './follow.service'
 
 @ApiTags('follow')
@@ -57,5 +59,19 @@ export class FollowController {
     @Param('id') id: string,
   ): Promise<GetFollowingDto> {
     return this.followService.remove(req.user.id, id)
+  }
+
+  @ApiOperation({ summary: 'Search for followers by query' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: [GetFanDto],
+    description: 'A list of followers was returned',
+  })
+  @Post('/search')
+  async searchFans(
+    @Req() req: RequestWithUser,
+    @Body() searchFanDto: SearchFanDto,
+  ): Promise<Array<GetFanDto>> {
+    return await this.followService.searchByQuery(req.user.id, searchFanDto)
   }
 }

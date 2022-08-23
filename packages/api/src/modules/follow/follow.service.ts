@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
   ForbiddenException,
@@ -11,6 +13,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
@@ -21,7 +24,9 @@ import {
   IS_NOT_CREATOR,
 } from './constants/errors'
 import { CreateFollowingDto } from './dto/create-following.dto'
+import { GetFanDto } from './dto/get-fan.dto'
 import { GetFollowingDto } from './dto/get-following.dto'
+import { SearchFanDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
 
 // TODO: Use CASL to determine if user can access an entity
@@ -69,6 +74,47 @@ export class FollowService {
 
     await createOrThrowOnDuplicate(query, this.logger, FOLLOWING_ALREADY_EXIST)
     return new GetFollowingDto(data)
+  }
+
+  async searchByQuery(
+    userId: string,
+    searchFanDto: SearchFanDto,
+  ): Promise<GetFanDto[]> {
+    const strippedQuery = searchFanDto.query.replace(/\W/g, '')
+    const likeClause = `%${strippedQuery}%`
+    const query = this.dbReader(FollowEntity.table)
+      .innerJoin(UserEntity.table, 'user.id', 'follow.subscriber_id')
+      .leftJoin(ProfileEntity.table, 'profile.user_id', 'follow.subscriber_id')
+      .select(
+        'user.id',
+        'user.username',
+        'user.display_name',
+        'profile.profile_image_url',
+      )
+      .where(function () {
+        this.whereILike('user.username', likeClause).orWhereILike(
+          'user.display_name',
+          likeClause,
+        )
+      })
+      .andWhere('follow.creator_id', userId)
+
+    if (searchFanDto.cursor) {
+      query.andWhere(this.dbReader.raw(`user.id > ${searchFanDto.cursor}`))
+    }
+
+    const followResult = await query
+      .orderBy('user.display_name', 'asc')
+      .limit(50)
+
+    return followResult.map((follow) => {
+      return new GetFanDto(
+        follow.id,
+        follow.username,
+        follow.display_name,
+        follow.profile_image_url,
+      )
+    })
   }
 
   async findOne(id: string): Promise<GetFollowingDto> {

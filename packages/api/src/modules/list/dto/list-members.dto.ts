@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateListDto {
-  @ApiProperty()
-  name: string
-
+export class ListMembersDto {
   @ApiProperty()
   users: string[]
 }

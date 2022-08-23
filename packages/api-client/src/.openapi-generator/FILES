@@ -26,7 +26,6 @@ apis/UserApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
-models/AddListMemberDto.ts
 models/AuthTokenDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
@@ -65,6 +64,7 @@ models/GetCollectionDto.ts
 models/GetCommentDto.ts
 models/GetCommentsForPostDto.ts
 models/GetContentDto.ts
+models/GetFanDto.ts
 models/GetFeedDto.ts
 models/GetListDto.ts
 models/GetListsDto.ts
@@ -77,6 +77,7 @@ models/GetSolNftCollectionDto.ts
 models/GetSolNftDto.ts
 models/GetUserDto.ts
 models/GetUsernamesDto.ts
+models/ListMembersDto.ts
 models/LocalUserLoginDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts

@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AddListMemberDto';
 export * from './AuthTokenDto';
 export * from './AuthWalletRequestDto';
 export * from './AuthWalletResponseDto';
@@ -39,6 +38,7 @@ export * from './GetCollectionDto';
 export * from './GetCommentDto';
 export * from './GetCommentsForPostDto';
 export * from './GetContentDto';
+export * from './GetFanDto';
 export * from './GetFeedDto';
 export * from './GetListDto';
 export * from './GetListsDto';
@@ -51,6 +51,7 @@ export * from './GetSolNftCollectionDto';
 export * from './GetSolNftDto';
 export * from './GetUserDto';
 export * from './GetUsernamesDto';
+export * from './ListMembersDto';
 export * from './LocalUserLoginDto';
 export * from './MessageDto';
 export * from './MetamaskCircleETHEntryRequestDto';

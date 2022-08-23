@@ -18,6 +18,9 @@ import {
     CreateFollowingDto,
     CreateFollowingDtoFromJSON,
     CreateFollowingDtoToJSON,
+    GetFanDto,
+    GetFanDtoFromJSON,
+    GetFanDtoToJSON,
 } from '../models';
 
 export interface FollowCreateRequest {
@@ -30,6 +33,10 @@ export interface FollowFindOneRequest {
 
 export interface FollowRemoveRequest {
     id: string;
+}
+
+export interface FollowSearchFansRequest {
+    body: object;
 }
 
 /**
@@ -127,6 +134,39 @@ export class FollowApi extends runtime.BaseAPI {
      */
     async followRemove(requestParameters: FollowRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.followRemoveRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Search for followers by query
+     */
+    async followSearchFansRaw(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GetFanDto>>> {
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling followSearchFans.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/follow/search`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.body as any,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetFanDtoFromJSON));
+    }
+
+    /**
+     * Search for followers by query
+     */
+    async followSearchFans(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetFanDto>> {
+        const response = await this.followSearchFansRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }
