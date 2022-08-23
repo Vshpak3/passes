@@ -1,5 +1,6 @@
+import MessagesComponent from "src/components/messages"
 import { withPageLayout } from "src/components/pages/WithPageLayout"
 
-const Messages = () => <div>Messaages</div>
+const Messages = () => <MessagesComponent />
 
 export default withPageLayout(Messages)
