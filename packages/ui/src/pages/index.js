@@ -2,34 +2,9 @@ import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import CarouselCard from "src/components/molecules/CarouselCard"
+import CardCarousel from "src/components/molecules/CardCarousel"
 import LandingIcon from "src/icons/landingIcon"
 // import useUser from "src/hooks/useUser"
-
-const backersList = [
-  {
-    image: "/img/investors/kyle.jpg",
-    name: "Kyle Samani",
-    org: "Multicoin Capital"
-  },
-  {
-    image: "/img/investors/david.jpg",
-    name: "David Sacks",
-    org: "Craft Ventures"
-  },
-  {
-    image: "/img/investors/wenwen.jpg",
-    name: "Wen-Wen Lam",
-    org: "Gradient Ventures"
-  },
-  { image: "/img/investors/jake.jpg", name: "Jake Paul", org: "Antifund" },
-  { image: "/img/investors/ryan.jpg", name: "Ryan Wilson", org: "ThankYouX" },
-  {
-    image: "/img/investors/kevin.jpg",
-    name: "Kevin Hartz",
-    org: "CEO Eventbrite"
-  }
-]
 
 const HomePage = () => {
   const router = useRouter()
@@ -111,6 +86,7 @@ const HomePage = () => {
                   alt=""
                   layout="fill"
                   className="animate-fly absolute top-0 md:-right-[10%]"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -124,58 +100,13 @@ const HomePage = () => {
             <span className="mr-1 inline-block h-6 w-6 bg-[url(https://cdn.jsdelivr.net/npm/emoji-datasource-apple@7.0.2/img/apple/64/1f525.png)] bg-contain bg-center text-xl"></span>
             Backed by
           </h2>
-
-          <div className="relative">
-            <div className="carousel w-full gap-2">
-              <div className="absolute left-2 right-3 top-1/2 z-10 flex -translate-y-1/2 transform justify-between">
-                <a
-                  href="#slide1"
-                  className="shadow-white-volume group absolute top-1/2 -left-4 -mt-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-3 text-base sm:-left-6"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    className="fill-jacarta-700 hover:fill-[#8358ff]"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z" />
-                  </svg>
-                </a>
-                <a
-                  href="#slide6"
-                  className="shadow-white-volume group absolute top-1/2 -right-4 z-10 -mt-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-3 text-base sm:-right-6"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    className="fill-jacarta-700 hover:fill-[#8358ff]"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z" />
-                  </svg>
-                </a>
-              </div>
-              {backersList.map((item, index) => (
-                <CarouselCard
-                  id={`slide${index + 1}`}
-                  key={item.name}
-                  name={item.name}
-                  org={item.org}
-                  img={item.image}
-                />
-              ))}
-            </div>
-          </div>
+          <CardCarousel />
         </div>
         <p className="text-jacarta-700 mx-auto mt-20 max-w-2xl text-center text-lg dark:text-white">
           Join our mailing list to stay in the loop
         </p>
 
-        <div className="mx-auto mt-7 max-w-md text-center">
+        <div className="mx-auto mt-7 max-w-md px-3 text-center">
           <form className="relative">
             <input
               id="email"

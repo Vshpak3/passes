@@ -45,7 +45,7 @@ const DefaultHead = () => {
       <meta
         key="twitter-image-alt"
         property="twitter:image:alt"
-        content="Moment wordmark"
+        content="Passes wordmark"
       />
       <meta key="og-title" property="og:title" content={TITLE} />
       <meta key="og-site-name" property="og:site_name" content={TITLE} />
@@ -69,7 +69,7 @@ const DefaultHead = () => {
       <meta
         key="og-image-alt"
         property="og:image:alt"
-        content="Moment wordmark"
+        content="Passes wordmark"
       />
       <meta
         key="viewport"
