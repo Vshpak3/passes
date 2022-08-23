@@ -100,6 +100,7 @@ models/RefreshAuthTokenDto.ts
 models/RegisterPayinResponseDto.ts
 models/RenewPassHolderDto.ts
 models/SearchCreatorResponseDto.ts
+models/SearchUserRequestDto.ts
 models/SubscriptionDto.ts
 models/TipPostDto.ts
 models/TokenDto.ts

@@ -44,6 +44,11 @@ export interface ListDeleteRequest {
 
 export interface ListFindRequest {
     id: string;
+    cursor: string;
+}
+
+export interface ListFindAllRequest {
+    cursor: string;
 }
 
 export interface ListRemoveListMembersRequest {
@@ -163,7 +168,15 @@ export class ListApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling listFind.');
         }
 
+        if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
+            throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling listFind.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -188,8 +201,16 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async listFindAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListsDto>> {
+    async listFindAllRaw(requestParameters: ListFindAllRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListsDto>> {
+        if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
+            throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling listFindAll.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -206,8 +227,8 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async listFindAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListsDto> {
-        const response = await this.listFindAllRaw(initOverrides);
+    async listFindAll(requestParameters: ListFindAllRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListsDto> {
+        const response = await this.listFindAllRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

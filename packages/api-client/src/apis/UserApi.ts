@@ -21,6 +21,9 @@ import {
     SearchCreatorResponseDto,
     SearchCreatorResponseDtoFromJSON,
     SearchCreatorResponseDtoToJSON,
+    SearchUserRequestDto,
+    SearchUserRequestDtoFromJSON,
+    SearchUserRequestDtoToJSON,
     UpdateUserDto,
     UpdateUserDtoFromJSON,
     UpdateUserDtoToJSON,
@@ -34,7 +37,7 @@ export interface UserFindOneRequest {
 }
 
 export interface UserSearchCreatorByUsernameRequest {
-    body: object;
+    searchUserRequestDto: SearchUserRequestDto;
 }
 
 export interface UserSetUsernameRequest {
@@ -113,8 +116,8 @@ export class UserApi extends runtime.BaseAPI {
      * Search for creators by query
      */
     async userSearchCreatorByUsernameRaw(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling userSearchCreatorByUsername.');
+        if (requestParameters.searchUserRequestDto === null || requestParameters.searchUserRequestDto === undefined) {
+            throw new runtime.RequiredError('searchUserRequestDto','Required parameter requestParameters.searchUserRequestDto was null or undefined when calling userSearchCreatorByUsername.');
         }
 
         const queryParameters: any = {};
@@ -128,7 +131,7 @@ export class UserApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: SearchUserRequestDtoToJSON(requestParameters.searchUserRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SearchCreatorResponseDtoFromJSON(jsonValue));
