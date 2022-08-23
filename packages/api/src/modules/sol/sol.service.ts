@@ -6,7 +6,7 @@ import {
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
-import { NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
   createAssociatedTokenAccountInstruction,
@@ -105,6 +105,7 @@ export class SolService {
   ) {
     this.connection = new Connection(
       (this.configService.get('alchemy.sol.https_endpoint') as string) +
+        '/' +
         (this.configService.get('alchemy.sol.api_key') as string),
     )
   }
@@ -123,9 +124,6 @@ export class SolService {
       .where({ id: userId })
       .first()
     if (!user) throw new NotFoundException('User does not exist')
-    if (!user.email.endsWith('@moment.vip')) {
-      throw new UnauthorizedException('this endpoint is not accessible')
-    }
     const walletPubKey = new PublicKey(
       await this.lambdaService.blockchainSignGetPublicAddress(
         SOL_MASTER_WALLET_LAMBDA_KEY_ID,
@@ -348,10 +346,6 @@ export class SolService {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
-    if (!user.email.endsWith('@moment.vip')) {
-      throw new UnauthorizedException('this endpoint is not accessible')
-    }
-
     const collectionId = uuid.v4()
     let walletPubKey: PublicKey | undefined = undefined
     let collectionPubKey: PublicKey | undefined = undefined
