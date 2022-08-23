@@ -22,6 +22,9 @@ export class GetPostDto {
   numComments: number
 
   @ApiProperty()
+  hasLiked?: boolean
+
+  @ApiProperty()
   createdAt: string
 
   @ApiProperty()
@@ -36,6 +39,7 @@ export class GetPostDto {
     numComments: number,
     createdAt: string,
     updatedAt: string,
+    hasLiked?: boolean,
   ) {
     this.id = id
     this.userId = userId
@@ -45,5 +49,6 @@ export class GetPostDto {
     this.numComments = numComments
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.hasLiked = hasLiked
   }
 }

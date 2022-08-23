@@ -32,9 +32,14 @@ export class FeedController {
   })
   @Get('/:username')
   async getPostsForCreator(
+    @Req() req: RequestWithUser,
     @Param('username') creatorUsername: string,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedDto> {
-    return this.feedService.getPostsByCreatorUsername(creatorUsername, cursor)
+    return this.feedService.getPostsByCreatorUsername(
+      creatorUsername,
+      cursor,
+      req.user.id,
+    )
   }
 }

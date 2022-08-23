@@ -13,6 +13,7 @@ import {
   POST_NOT_OWNED_BY_USER,
 } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
+import { UserEntity } from '../user/entities/user.entity'
 import {
   COMMENT_NOT_EXIST,
   COMMENT_NOT_OWNED_BY_USER,
@@ -66,7 +67,9 @@ export class CommentService {
 
   async findOne(id: string): Promise<GetCommentDto> {
     const comment = await this.dbReader(CommentEntity.table)
-      .where({ id })
+      .leftJoin(UserEntity.table, 'comment.commenter_id', 'users.id')
+      .where({ 'comment.id': id })
+      .select('comment.*', 'users.username as commenter_username')
       .first()
 
     if (!comment) {

@@ -42,6 +42,12 @@ export class FeedService {
     const creatorIds: string[] = following.map((f) => f.creator_id)
 
     let postsQuery = this.dbReader(PostEntity.table)
+      .select(
+        '*',
+        this.dbReader.raw(
+          `exists(select * from post_like l where l.post_id = ${PostEntity.table}.id and l.liker_id = '${userId}') as is_liked`,
+        ),
+      )
       .whereIn('user_id', creatorIds)
       .where('deleted_at', null)
 
@@ -63,6 +69,7 @@ export class FeedService {
       content: contentLookup[p.id] ?? [],
       numComments: p.num_comments,
       numLikes: p.num_likes,
+      hasLiked: !!p.is_liked,
       createdAt: p.created_at,
       updatedAt: p.updated_at,
     }))
@@ -76,6 +83,7 @@ export class FeedService {
   async getPostsByCreatorUsername(
     username: string,
     cursor: string,
+    userId?: string,
   ): Promise<GetFeedDto> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
@@ -89,6 +97,16 @@ export class FeedService {
     }
 
     let postsQuery = this.dbReader(PostEntity.table)
+      .select(
+        userId
+          ? [
+              '*',
+              this.dbReader.raw(
+                `exists(select * from post_like l where l.post_id = ${PostEntity.table}.id and l.liker_id = '${userId}') as is_liked`,
+              ),
+            ]
+          : '*',
+      )
       .where('user_id', user.id)
       .where('deleted_at', null)
 
@@ -111,6 +129,7 @@ export class FeedService {
         content: contentLookup[p.id] ?? [],
         numComments: p.num_comments,
         numLikes: p.num_likes,
+        hasLiked: !!p.is_liked,
         createdAt: p.created_at,
         updatedAt: p.updated_at,
       }

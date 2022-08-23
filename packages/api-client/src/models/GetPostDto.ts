@@ -64,6 +64,12 @@ export interface GetPostDto {
     numComments: number;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetPostDto
+     */
+    hasLiked: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetPostDto
      */
@@ -92,6 +98,7 @@ export function GetPostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'content': ((json['content'] as Array<any>).map(GetContentDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
+        'hasLiked': json['hasLiked'],
         'createdAt': json['createdAt'],
         'updatedAt': json['updatedAt'],
     };
@@ -112,6 +119,7 @@ export function GetPostDtoToJSON(value?: GetPostDto | null): any {
         'content': ((value.content as Array<any>).map(GetContentDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
+        'hasLiked': value.hasLiked,
         'createdAt': value.createdAt,
         'updatedAt': value.updatedAt,
     };
