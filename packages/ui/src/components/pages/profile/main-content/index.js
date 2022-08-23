@@ -67,16 +67,13 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
               <BellIcon />
             </span>
             <span className="flex w-24 items-center justify-center">
-              <CoverButton name="Chat" />
-            </span>
-            <span className="flex w-24 items-center justify-center">
               <CoverButton
                 name={followed ? "Unfollow" : "Follow"}
                 onClick={() => setFollowed(!followed)}
               />
             </span>
             <span className="flex w-24 items-center justify-center">
-              <CoverButton name="Tip" />
+              <CoverButton name="Chat" />
             </span>
           </div>
         </div>

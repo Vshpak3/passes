@@ -3,8 +3,8 @@
 import React from "react"
 // import { Tabs } from "src/components/molecules"
 import { CreatorPassTiles } from "src/components/organisms"
-import { withPageLayout } from "src/components/pages/WithPageLayout"
 import { usePasses } from "src/hooks"
+import { withPageLayout } from "src/layout/WithPageLayout"
 // const tabsArray = [
 //   {
 //     tabName: "Grid View",

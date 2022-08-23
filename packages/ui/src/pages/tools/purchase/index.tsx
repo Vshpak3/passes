@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { FormInput, PassesPinkButton } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import { FormContainer } from "src/components/organisms"
-import { withPageLayout } from "src/components/pages/WithPageLayout"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Purchase = () => {
   const {

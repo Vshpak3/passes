@@ -6,7 +6,7 @@ import Card from "./Card"
 import CssGridTiles from "./CssGridTiles"
 import DragDropCard from "./drag-drop/Card"
 import DragDropFile from "./DragDropFile"
-import SideBar from "./Sidebar"
+import * as SidebarComponents from "./Sidebar"
 import Sparkles from "./Sparkles"
 import Tabs from "./Tabs"
 import TagsInput from "./TagsInput"
@@ -20,7 +20,7 @@ export {
   DragDropCard,
   DragDropFile,
   GrainyBackground,
-  SideBar,
+  SidebarComponents,
   Sparkles,
   Tabs,
   TagsInput

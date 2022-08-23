@@ -1,7 +1,7 @@
 import React from "react"
-import { SideBar } from "src/components/molecules"
 
-import ProfileHeader from "./profile/header"
+import CreatorSearchBar from "./CreatorSearchBar"
+import Sidebar from "./Sidebar"
 
 type WithPageLayoutOptions = {
   header?: boolean
@@ -13,10 +13,10 @@ export const withPageLayout = (
 ) => {
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen flex-1 bg-black">
-      <SideBar />
+      <Sidebar />
       <main className="flex-shrink flex-grow bg-[#000]">
         <div className="cover-image h-[300px]">
-          {options.header && <ProfileHeader />}
+          {options.header && <CreatorSearchBar />}
         </div>
         <Page {...props} ref={ref} />
       </main>

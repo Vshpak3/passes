@@ -7,10 +7,10 @@ import MainContent from "src/components/pages/profile/main-content"
 import Passes from "src/components/pages/profile/passes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
-import { withPageLayout } from "src/components/pages/WithPageLayout"
 import getConnection from "src/helpers/demo"
 import { uploadFiles } from "src/helpers/uploadFile"
 import { useCreatorProfile, usePasses, useUser } from "src/hooks"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 import { wrapApi } from "../helpers/wrapApi"
 

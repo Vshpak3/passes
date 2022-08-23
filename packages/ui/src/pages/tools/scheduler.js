@@ -1,4 +1,4 @@
-import { withPageLayout } from "src/components/pages/WithPageLayout"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Scheduler = () => <div>Scheduler</div>
 

@@ -13,8 +13,8 @@ import {
 } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
-import { withPageLayout } from "src/components/pages/WithPageLayout"
 import useLocalStorage from "src/hooks/useLocalStorage"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 type TFormValues = {
   title: string
