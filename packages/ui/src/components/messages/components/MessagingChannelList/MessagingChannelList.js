@@ -107,6 +107,7 @@ const MessagingChannelList = ({ children, error = false, loading }) => {
                   outline: none;
                 }`}</style>
         <div className="messaging__channel-list">
+          <div className="mb-4 w-full border-b-[2px] border-b-[#1E1820]"></div>
           {/* <div className="messaging__channel-list__header">
             <Avatar image={image} name={name} size={40} />
             <div className="messaging__channel-list__header__name">

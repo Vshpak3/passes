@@ -3,7 +3,6 @@ import { ChatContext } from "stream-chat-react"
 
 import { getCleanImage } from "../../assets"
 import { Avatar } from "../ChannelListAvatar.js"
-
 const getAvatarGroup = (members) => {
   if (members.length === 1) {
     return (
@@ -292,7 +291,7 @@ const MessagingChannelPreview = (props) => {
       >
         {getAvatarGroup(members)}
         <div className="channel-preview__content-wrapper">
-          <div className="flex w-full justify-between">
+          <div className="flex w-full items-center justify-between">
             <div className="flex flex-col items-start">
               <p className="channel-preview__content-name">
                 {channel.data.name || getChannelName(members)}
@@ -301,13 +300,13 @@ const MessagingChannelPreview = (props) => {
                 {latestMessage || "Send a message"}
               </p>
             </div>
-            <div>
-              <div>
-                <span className="text-[10px] font-medium leading-[16px] text-[#FFF]">
+            <div className="flex flex-col items-center justify-center pt-2">
+              <div className="flex h-[20px] w-[60px] items-center justify-center gap-4 rounded-[30px] bg-[#BF7AF0]">
+                <span className="cursor-pointer text-[10px] font-medium leading-[16px] text-[#FFF]">
                   Tip: $250
                 </span>
               </div>
-              <p className="channel-preview__content-time">
+              <p className="channel-preview__content-time ">
                 {getTimeStamp(channel)}
               </p>
             </div>

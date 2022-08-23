@@ -442,7 +442,7 @@ const SideBar = () => {
           </div>
         </header>
 
-        <div className="min-h-16 fixed top-0 left-0 z-30 flex w-full flex-1 items-center justify-between bg-[#252525]/50 px-2 backdrop-blur-lg md:hidden">
+        <div className="fixed top-0 left-0 z-30 flex h-16 w-full flex-1 items-center justify-between bg-[#252525]/50 px-2 backdrop-blur-lg md:hidden">
           <div>icon 1</div>
           <div>icon 2</div>
         </div>

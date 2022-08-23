@@ -59,6 +59,35 @@ export const ChannelInner = (props) => {
     <>
       <Window>
         <MessagingChannelHeader theme={theme} toggleMobile={toggleMobile} />
+        <div className="custom-border-second-header spending-tips-buttons flex min-h-[54px] items-center justify-start gap-[18px] bg-[#1b141d]/50 pl-5">
+          <span>Tips spent</span>
+          <div className="flex items-center justify-start gap-[10px]">
+            <div className="m-0 flex cursor-pointer items-center p-0">
+              <span className="flex h-[36px] w-[87px] items-center justify-center rounded-l-[40px] bg-[#E58230] text-[16px] font-medium leading-[16px] text-[#ffff]">
+                Today 👑
+              </span>
+              <span className="flex h-[36px] w-[60px] items-center justify-center rounded-r-[40px] bg-[#D55C26] text-[16px] font-medium leading-[16px] text-[#ffff] ">
+                $200
+              </span>
+            </div>
+            <div className="m-0 flex cursor-pointer items-center p-0">
+              <span className="flex h-[36px] w-[125px] items-center justify-center rounded-l-[40px] bg-[#499B8E] text-[16px] font-medium leading-[16px] text-[#ffff]">
+                4 days ago 👏🏻
+              </span>
+              <span className="flex h-[36px] w-[58px] items-center justify-center rounded-r-[40px] bg-[#3B867A] text-[16px] font-medium leading-[16px] text-[#ffff] ">
+                $150
+              </span>
+            </div>
+            <div className="m-0 flex cursor-pointer items-center p-0">
+              <span className="flex h-[36px] w-[89px] items-center justify-center rounded-l-[40px] bg-[#589752] text-[16px] font-medium leading-[16px] text-[#ffff]">
+                March 👍
+              </span>
+              <span className="flex h-[36px] w-[40px] items-center justify-center rounded-r-[40px] bg-[#488243] text-[16px] font-medium leading-[16px] text-[#ffff] ">
+                $5
+              </span>
+            </div>
+          </div>
+        </div>
         <MessageList messageActions={actions} />
         <MessageInput focus overrideSubmitHandler={overrideSubmitHandler} />
       </Window>

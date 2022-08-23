@@ -1,5 +1,6 @@
 import "@stream-io/stream-chat-css/dist/css/index.css"
 
+import ThreeLines from "public/icons/three-lines-icon.svg"
 // import { MessagesApi } from "@passes/api-client/apis"
 import React, { useEffect, useRef, useState } from "react"
 // import { wrapApi } from "src/helpers/wrapApi"
@@ -89,6 +90,17 @@ const MessagesComponent = ({ username }) => {
   // }
 
   useEffect(() => {
+    const mobileChannelList = document.querySelector("#mobile-channel-list")
+    if (isMobileNavVisible && mobileChannelList) {
+      mobileChannelList.classList.add("show")
+      document.body.style.overflow = "hidden"
+    } else if (!isMobileNavVisible && mobileChannelList) {
+      mobileChannelList.classList.remove("show")
+      document.body.style.overflow = "auto"
+    }
+  }, [isMobileNavVisible])
+
+  useEffect(() => {
     if (!user?.id || !channelId || !streamToken) {
       return
     }
@@ -139,11 +151,16 @@ const MessagesComponent = ({ username }) => {
   if (!chatClient) return null
 
   return (
-    <div className="">
+    <div className="-mt-56">
       <style>
         {`
+        .str-chat{
+          height:100vh;
+        }
+
         .str-chat__channel-search{
           background-color:#120C14 !important;
+          order:2;
         }
         .str-chat__channel-search input:focus {
           border: 1px solid #2C282D;
@@ -163,7 +180,7 @@ const MessagesComponent = ({ username }) => {
           border: 1px solid #2C282D;
           border-radius: 6px;
           background:#120C14;
-          text-color:white;
+          color:white;
           top:70px;
           right:24px !important;
           left:24px !important;
@@ -176,6 +193,8 @@ const MessagesComponent = ({ username }) => {
           backdrop-filter: blur(100px);
           max-width:420px;
           width:100%;
+          display:flex;
+          flex-direction:column;
         }
           .str-chat.str-chat-channel.messaging {
             background: #120C14;
@@ -192,7 +211,7 @@ const MessagesComponent = ({ username }) => {
           }
           
           .dark.str-chat.str-chat-channel-list.messaging {
-            background: ##120C14 !important;
+            background: #120C14 !important;
           }
   
           
@@ -206,8 +225,8 @@ const MessagesComponent = ({ username }) => {
           }
           
           .messaging.str-chat.dark .str-chat__list {
-            padding: 0 30px 0;
-            background: #282a2d;
+            padding: 0 20px 0;
+            background: #000;
           }
           
           .str-chat-channel.messaging .str-chat__main-panel {
@@ -243,6 +262,7 @@ const MessagesComponent = ({ username }) => {
           .str-chat__message--system {
             padding: 20px;
           }
+
           
           /* Mobile View */
           @media screen and (max-width: 640px) {
@@ -253,6 +273,10 @@ const MessagesComponent = ({ username }) => {
              */
             .str-chat-channel {
               height: var(--app-height);
+            }
+            .str-chat__main-panel{
+              height: calc(100vh - 64px) !important;
+              justify-content: space-between;
             }
           
             .str-chat-channel-list.messaging {
@@ -274,9 +298,42 @@ const MessagesComponent = ({ username }) => {
               z-index: 1000;
             }
           }
+          .str-chat__message-simple-text-inner {
+            flex: initial;
+            text-align: left;
+            max-width: 460px;
+            word-wrap: break-word;
+            word-break: break-word;
+          }
+          .dark.str-chat .str-chat__message-text-inner, .dark.str-chat .str-chat__message-simple-text-inner {
+            background: #1E1820;
+            color: #ffff;
+           }
+           
+
+          .dark.str-chat .str-chat__message--me .str-chat__message-text-inner, .dark.str-chat .str-chat__message-simple--me .str-chat__message-text-inner {
+            background: var(--black40);
+            border: 1px solid #363037;
+            border-color: #363037;
+           }
+
+           .str-chat__message-text-inner, .str-chat__message-simple-text-inner {
+            position: relative;
+            flex: 1;
+            display: block;
+            min-height: 32px;
+            padding: 10px;
+            font-size: var(--lg-font);
+            color: var(--black);
+            border-radius:6px;
+            background: var(--white-snow);
+            border:1px solid #363037;
+            margin-left: 0;
+            }
           
           /* To fix inherited styles (as per Team and Customer Support apps */
           @media screen and (max-width: 960px) {
+      
             .str-chat-channel-list.messaging {
               position: unset;
               left: unset;
@@ -300,21 +357,23 @@ const MessagesComponent = ({ username }) => {
             additionalChannelSearchProps={additionalProps}
             showChannelSearch
             List={(props) => (
-              <div className="">
-                <div className="flex w-full flex-col px-[25px]">
+              <>
+                <div className="order-1 flex w-full flex-col px-[25px]">
                   <div className="flex items-center justify-between pt-6">
                     <span>Followers</span>
-                    <span>Most Recent</span>
+                    <div className="flex cursor-pointer items-center justify-center gap-[5px]">
+                      <ThreeLines />
+                      <span>Most Recent</span>
+                    </div>
                   </div>
-                  <div className="w-full border-b-[2px] border-b-[#1E1820] pt-6"></div>
                 </div>
-                <div className="pt-5">
+                <div className="order-3 pt-5 ">
                   <MessagingChannelList
                     {...props}
                     onCreateChannel={() => setIsCreating(!isCreating)}
                   />
                 </div>
-              </div>
+              </>
             )}
             Preview={(props) => (
               <MessagingChannelPreview {...props} {...{ setIsCreating }} />

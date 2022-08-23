@@ -5,13 +5,8 @@ import {
   useChatContext
 } from "stream-chat-react"
 
-import {
-  ChannelInfoIcon,
-  ChannelSaveIcon,
-  getCleanImage,
-  HamburgerIcon
-} from "../../assets"
-import { TypingIndicator } from "../TypingIndicator/TypingIndicator"
+import { getCleanImage, HamburgerIcon } from "../../assets"
+// import { TypingIndicator } from "../TypingIndicator/TypingIndicator"
 
 const getAvatarGroup = (members) => {
   if (members.length === 1) {
@@ -190,15 +185,19 @@ const MessagingChannelHeader = (props) => {
           background: rgba(255, 255, 255, 0.9);
           box-shadow: 0px 7px 9px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.03);
           transform: matrix(1, 0, 0, 1, 0, 0);
-          border-radius: 10px 10px 0px 0px;
+          border-top:1px solid rgba(255, 255, 255, 0.15);
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-start;
           min-height: 60px;
+        }
+        .custom-border-second-header{
+          border-top:1px solid rgba(255, 255, 255, 0.15);
+          border-bottom:1px solid rgba(255, 255, 255, 0.15);
         }
         
         .messaging__channel-header .channel-header__name {
-          flex: 1;
+          display:flex;
           font-weight: bold;
           font-size: 15px;
           color: rgba(0, 0, 0, 0.9);
@@ -208,12 +207,27 @@ const MessagingChannelHeader = (props) => {
         }
         
         .str-chat.dark .messaging__channel-header {
-          background: rgba(46, 48, 51, 0.98);
+          background: rgba(27, 20, 29, 0.5);
           box-shadow: 0px 7px 9px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.03);
         }
         
         .str-chat.dark .messaging__channel-header .channel-header__name {
-          color: rgba(255, 255, 255, 0.9);
+          color: rgba(255, 255, 255,1);
+          max-width:120px;
+          min-width:120px;
+        }
+
+        .messaging__channel-header__left{
+          display:flex;
+        }
+
+        @media screen and (max-width: 1210px) {
+          .messaging__channel-header__left{
+            display:none;
+          }
+          .spending-tips-buttons{
+            display:none;
+          }
         }
         
         .messaging__channel-header__right {
@@ -230,8 +244,7 @@ const MessagingChannelHeader = (props) => {
           max-width: 40px;
           border-radius: 20px;
           overflow: hidden;
-          margin-right: 20px;
-          margin-left: 20px;
+          margin-left:20px;
         }
         
         .messaging__channel-header__avatars.two div:first-child {
@@ -303,7 +316,7 @@ const MessagingChannelHeader = (props) => {
         }
         `}
       </style>
-      <div className="messaging__channel-header">
+      <div className="messaging__channel-header gap-3">
         <div
           id="mobile-nav-icon"
           className={`${props.theme}`}
@@ -317,7 +330,47 @@ const MessagingChannelHeader = (props) => {
         ) : (
           <EditHeader />
         )}
-        <div className="messaging__channel-header__right">
+        <div className="messaging__channel-header__left gap-14">
+          <div className="flex items-center gap-3">
+            <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-[#BF7AF0]">
+              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                Vip Pass
+              </span>
+            </div>
+            <div className="via-neutral-100 flex h-[31px] w-[124px] items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500">
+              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                Limited Pass
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-8">
+            <div className="flex flex-col items-start justify-center gap-[2px]">
+              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                $520
+              </span>
+              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                Total spent
+              </span>
+            </div>
+            <div className="flex flex-col items-start justify-center gap-[2px]">
+              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                $350
+              </span>
+              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                This month
+              </span>
+            </div>
+            <div className="flex flex-col items-start justify-center gap-[2px]">
+              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                Rank
+              </span>
+              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                2/100
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* <div className="messaging__channel-header__right">
           <TypingIndicator />
           {channelName !== "Social Demo" &&
             (!isEditing ? (
@@ -325,7 +378,7 @@ const MessagingChannelHeader = (props) => {
             ) : (
               <ChannelSaveIcon />
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )
