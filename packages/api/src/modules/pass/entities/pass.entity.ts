@@ -39,5 +39,5 @@ export class PassEntity extends BaseEntity {
   totalSupply: number
 
   @Property({ type: types.bigint })
-  duration: number
+  duration?: number
 }
