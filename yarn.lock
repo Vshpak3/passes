@@ -4550,7 +4550,7 @@ __metadata:
     "@ntegral/nestjs-sentry": 3.0.7
     "@sentry/node": 7.10.0
     "@sentry/tracing": 7.10.0
-    "@solana/spl-token": 0.3.2
+    "@solana/spl-token": 0.3.0
     "@solana/web3.js": 1.53.0
     "@types/bcrypt": 5.0.0
     "@types/crypto-js": 4.1.1
@@ -5347,6 +5347,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@solana/spl-token@npm:0.3.0":
+  version: 0.3.0
+  resolution: "@solana/spl-token@npm:0.3.0"
+  dependencies:
+    "@solana/buffer-layout": ^4.0.0
+    "@solana/buffer-layout-utils": ^0.2.0
+    "@solana/web3.js": ^1.41.0
+  checksum: 47a314f3a8208ac4ca50da7ec743e17bc70f4743f79da1cdd1ceab89f1032c23dd1e90c6089e72034cea0bd96eb9caf08638ef6c291949029ab7a188973e1928
+  languageName: node
+  linkType: hard
+
 "@solana/spl-token@npm:0.3.2":
   version: 0.3.2
   resolution: "@solana/spl-token@npm:0.3.2"
@@ -5397,7 +5408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/web3.js@npm:1.53.0, @solana/web3.js@npm:^1.32.0, @solana/web3.js@npm:^1.35.1, @solana/web3.js@npm:^1.44.0":
+"@solana/web3.js@npm:1.53.0, @solana/web3.js@npm:^1.32.0, @solana/web3.js@npm:^1.35.1, @solana/web3.js@npm:^1.41.0, @solana/web3.js@npm:^1.44.0":
   version: 1.53.0
   resolution: "@solana/web3.js@npm:1.53.0"
   dependencies:
