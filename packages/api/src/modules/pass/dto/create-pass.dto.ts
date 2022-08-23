@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsInt, IsUrl, Length, Min } from 'class-validator'
+import { IsInt, IsOptional, IsUrl, Length, Min } from 'class-validator'
 
 import { PassTypeEnum } from '../enum/pass.enum'
 
@@ -30,6 +30,7 @@ export class CreatePassDto {
   totalSupply: number
 
   @ApiPropertyOptional()
+  @IsOptional()
   @IsInt()
   @Min(1)
   duration?: number
