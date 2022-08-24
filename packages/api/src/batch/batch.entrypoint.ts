@@ -22,7 +22,12 @@ import { TaskDirectory } from '../batch/batch.directory'
   }
 
   // Run the task
-  await new TaskDirectory[batchTaskName](app, logger).run(...batchTaskArgs)
+  try {
+    await new TaskDirectory[batchTaskName](app, logger).run(...batchTaskArgs)
+  } catch (err) {
+    logger.error(`Batch job '${batchTaskName}' failed`, err)
+    throw err
+  }
 
   logger.info('Completed running task')
   process.exit(0)

@@ -1,6 +1,7 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "request.**.expect"] }] */
 
 import { getMikroORMToken } from '@mikro-orm/nestjs'
+import { MikroOrmCoreModule } from '@mikro-orm/nestjs/mikro-orm-core.module'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
@@ -28,16 +29,16 @@ describe('App e2e', () => {
     })
 
     overrides.forEach((override) =>
-      moduleBuilder
-        .overrideProvider(override)
-        // Needed so the OnApplicationShutdown for MikroORM doesn't break app.close()
-        .useValue({ close: () => undefined }),
+      moduleBuilder.overrideProvider(override).useValue({}),
     )
 
-    // Mock database module onModuleInit function
     moduleBuilder
+      // Mock database module onModuleInit function
       .overrideProvider(DatabaseModule)
       .useValue({ onModuleInit: () => undefined })
+      // Mock mikroorm core module onApplicationShutdown function
+      .overrideProvider(MikroOrmCoreModule)
+      .useValue({ onApplicationShugtdown: () => undefined })
 
     const moduleFixture = await moduleBuilder.compile()
     app = moduleFixture.createNestApplication()
