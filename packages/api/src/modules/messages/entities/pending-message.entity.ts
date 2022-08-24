@@ -8,13 +8,13 @@ export class PendingMessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   sender: UserEntity
 
-  @Property()
+  @Property({ length: 255 })
   text: string
 
   @Property({ type: types.json })
   attachmentsJSON: string
 
-  @Property()
+  @Property({ length: 255 })
   channelId: string
 
   @Property()

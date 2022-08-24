@@ -12,10 +12,10 @@ export class PostEntity extends BaseEntity {
   text: string
 
   @Property({ default: 0 })
-  numLikes: number
+  numLikes = 0
 
   @Property({ default: 0 })
-  numComments: number
+  numComments = 0
 
   @Property()
   deletedAt?: Date

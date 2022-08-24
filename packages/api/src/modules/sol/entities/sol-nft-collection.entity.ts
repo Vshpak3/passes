@@ -4,25 +4,25 @@ import { BaseEntity } from '../../../database/base-entity'
 
 @Entity({ tableName: 'sol_nft_collection' })
 export class SolNftCollectionEntity extends BaseEntity {
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   publicKey: string
 
-  @Property()
+  @Property({ length: 255 })
   name: string
 
-  @Property()
+  @Property({ length: 255 })
   symbol: string
 
-  @Property()
+  @Property({ length: 255 })
   description: string
 
-  @Property()
+  @Property({ length: 255 })
   imageUrl: string
 
-  @Property()
+  @Property({ length: 255 })
   uriMetadata: string
 
-  @Property()
+  @Property({ length: 255 })
   txSignature: string
 }

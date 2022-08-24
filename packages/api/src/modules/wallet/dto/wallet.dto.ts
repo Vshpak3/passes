@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { Chain } from '../enum/chain.enum'
+import { ChainEnum } from '../enum/chain.enum'
 
 export class WalletDto {
   @ApiProperty()
@@ -13,7 +13,7 @@ export class WalletDto {
   address: string
 
   @ApiProperty()
-  chain: Chain
+  chain: ChainEnum
 
   @ApiProperty()
   custodial: boolean

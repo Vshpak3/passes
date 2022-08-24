@@ -9,26 +9,26 @@ export class CircleBankEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   idempotencyKey?: string
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   circleBankId?: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum
 
-  @Property()
+  @Property({ length: 255 })
   description: string
 
-  @Property()
+  @Property({ length: 255 })
   trackingRef: string
 
-  @Property()
+  @Property({ length: 255 })
   fingerprint: string
 
-  @Property()
+  @Property({ length: 255 })
   deletedAt?: Date
 }

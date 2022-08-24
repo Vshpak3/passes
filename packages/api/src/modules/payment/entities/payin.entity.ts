@@ -23,10 +23,10 @@ export class PayinEntity extends BaseEntity {
   @Property()
   chainId?: number
 
-  @Property()
+  @Property({ length: 255 })
   address?: string
 
-  @Property()
+  @Property({ length: 255 })
   transactionHash?: string
 
   // transaction information
@@ -53,6 +53,6 @@ export class PayinEntity extends BaseEntity {
 
   // ensure that someone isn't paying for the same "target"
   // while payin is inprogress
-  @Property()
+  @Property({ length: 255 })
   target?: string
 }

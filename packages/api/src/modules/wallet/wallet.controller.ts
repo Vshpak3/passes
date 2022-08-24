@@ -20,7 +20,7 @@ import {
 } from './dto/create-wallet.dto'
 import { WalletDto } from './dto/wallet.dto'
 import { WalletResponseDto } from './dto/wallet-response.dto'
-import { Chain } from './enum/chain.enum'
+import { ChainEnum } from './enum/chain.enum'
 import { WalletService } from './wallet.service'
 
 @ApiTags('wallet')
@@ -81,7 +81,7 @@ export class WalletController {
     @Body() createWalletDto: CreateWalletDto,
   ): Promise<WalletResponseDto> {
     const wallet = await this.walletService.create(req.user.id, createWalletDto)
-    if (wallet.chain == Chain.ETH) {
+    if (wallet.chain == ChainEnum.ETH) {
       return this.ethService.refreshNftsForWallet(req.user.id, wallet.id)
     }
     return new WalletResponseDto(wallet)

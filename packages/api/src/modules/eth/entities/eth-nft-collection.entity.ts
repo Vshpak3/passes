@@ -4,10 +4,10 @@ import { BaseEntity } from '../../../database/base-entity'
 
 @Entity({ tableName: 'eth_nft_collection' })
 export class EthNftCollectionEntity extends BaseEntity {
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   tokenAddress: string
 
-  @Property()
+  @Property({ length: 255 })
   name: string
 }

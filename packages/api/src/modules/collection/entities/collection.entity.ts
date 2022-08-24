@@ -1,7 +1,12 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
+import {
+  COLLECTION_DESCRIPTION_LENGTH,
+  COLLECTION_TITLE_LENGTH,
+} from '../constants/schema'
 
 @Entity({ tableName: 'collection' })
 export class CollectionEntity extends BaseEntity {
@@ -11,12 +16,12 @@ export class CollectionEntity extends BaseEntity {
   // @OneToMany(() => PassEntity, (pass) => pass.collection)
   // passes = new Collection<PassEntity>(this)
 
-  @Property()
+  @Property({ length: COLLECTION_TITLE_LENGTH })
   title: string
 
-  @Property()
+  @Property({ length: COLLECTION_DESCRIPTION_LENGTH })
   description: string
 
-  @Property()
-  blockchain: 'solana'
+  @Enum(() => ChainEnum)
+  blockchain: ChainEnum
 }

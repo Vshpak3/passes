@@ -15,16 +15,16 @@ import { ContentEntity } from '../../content/entities/content.entity'
 export class UserEntity extends BaseEntity<
   'isKYCVerified' | 'isCreator' | 'isDisabled'
 > {
-  @Property()
+  @Property({ length: 255 })
   email: string
 
-  @Property()
+  @Property({ length: 255 })
   passwordHash?: string
 
-  @Property()
+  @Property({ length: 255 })
   oauthId?: string
 
-  @Property()
+  @Property({ length: 255 })
   oauthProvider?: string
 
   @Property({ length: 30 })
@@ -39,10 +39,10 @@ export class UserEntity extends BaseEntity<
   @Index()
   displayName?: string
 
-  @Property()
+  @Property({ length: 255 })
   phoneNumber?: string
 
-  @Property()
+  @Property({ length: 255 })
   countryCode?: string
 
   @Property({ type: 'date' })

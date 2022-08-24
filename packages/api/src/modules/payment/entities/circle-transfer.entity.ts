@@ -9,18 +9,18 @@ export class CircleTransferEntity extends BaseEntity {
   @OneToOne({ entity: () => PayoutEntity })
   payout: PayoutEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   idempotencyKey?: string
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   circleTransferId?: string
 
-  @Property()
+  @Property({ length: 255 })
   amount: string
 
-  @Property()
+  @Property({ length: 255 })
   currency: string
 
   @Enum(() => CircleAccountStatusEnum)

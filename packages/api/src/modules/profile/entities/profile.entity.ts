@@ -8,37 +8,37 @@ export class ProfileEntity extends BaseEntity {
   @OneToOne()
   user: UserEntity
 
-  @Property()
+  @Property({ length: 255 })
   displayName?: string
 
-  @Property()
+  @Property({ length: 255 })
   coverTitle?: string
 
-  @Property()
+  @Property({ length: 255 })
   coverDescription?: string
 
-  @Property()
+  @Property({ length: 255 })
   description?: string
 
-  @Property()
+  @Property({ length: 255 })
   profileImageUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   profileCoverImageUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   instagramUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   tiktokUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   youtubeUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   discordUrl?: string
 
-  @Property()
+  @Property({ length: 255 })
   twitchUrl?: string
 
   @Property()

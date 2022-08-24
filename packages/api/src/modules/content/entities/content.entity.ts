@@ -12,9 +12,9 @@ export class ContentEntity extends BaseEntity {
   @ManyToOne()
   post: PostEntity
 
-  @Property()
+  @Property({ length: 255 })
   url: string
 
-  @Property()
+  @Property({ length: 255 })
   contentType: string
 }

@@ -20,18 +20,18 @@ export class CirclePayoutEntity extends BaseEntity {
   @OneToOne({ entity: () => PayoutEntity })
   payout: PayoutEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   idempotencyKey?: string
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   circlePayoutId?: string
 
-  @Property()
+  @Property({ length: 255 })
   fee?: string
 
-  @Property()
+  @Property({ length: 255 })
   amount: string
 
   @Enum(() => CircleAccountStatusEnum)

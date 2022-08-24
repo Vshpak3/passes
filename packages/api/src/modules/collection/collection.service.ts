@@ -8,6 +8,7 @@ import {
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import {
   COLLECTION_NOT_EXIST,
   COLLECTION_NOT_OWNED_BY_USER,
@@ -40,7 +41,7 @@ export class CollectionService {
 
     const data = CollectionEntity.toDict<CollectionEntity>({
       owner: userId,
-      blockchain: 'solana',
+      blockchain: ChainEnum.SOL,
       title: createPassDto.title,
       description: createPassDto.description,
     })

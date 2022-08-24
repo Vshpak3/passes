@@ -6,6 +6,6 @@ import { BaseEntity } from '../../../database/base-entity'
 // See: https://developers.facebook.com/docs/development/create-an-app/app-dashboard/data-deletion-callback/
 @Entity({ tableName: 'facebook_deletion_request' })
 export class FacebookDeletionRequestEntity extends BaseEntity {
-  @Property()
+  @Property({ length: 255 })
   facebookUserId: string
 }

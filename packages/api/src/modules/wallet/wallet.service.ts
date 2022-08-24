@@ -22,7 +22,7 @@ import {
 import { WalletDto } from './dto/wallet.dto'
 import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
-import { Chain } from './enum/chain.enum'
+import { ChainEnum } from './enum/chain.enum'
 
 export const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
 export const MAX_WALLETS_PER_USER = 10
@@ -80,7 +80,7 @@ export class WalletService {
       address: await this.lambdaService.blockchainSignCreateAddress(
         'user-' + id,
       ),
-      chain: Chain.SOL,
+      chain: ChainEnum.SOL,
       custodial: true,
     })
     await this.dbWriter(WalletEntity.table).insert(data)
@@ -109,7 +109,7 @@ export class WalletService {
       .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
       .andWhere(
         WalletEntity.toDict<WalletEntity>({
-          chain: Chain.SOL,
+          chain: ChainEnum.SOL,
         }),
       )
       .select([
@@ -162,7 +162,7 @@ export class WalletService {
       )
     }
     let walletAddress = authWalletRequestDto.walletAddress
-    if (authWalletRequestDto.chain == Chain.ETH) {
+    if (authWalletRequestDto.chain == ChainEnum.ETH) {
       walletAddress = walletAddress.toLowerCase()
     }
     const userWalletRedisKey = `walletservice.rawMessage.${userId},${walletAddress}}`
@@ -209,7 +209,7 @@ export class WalletService {
       )
     }
     let walletAddress = createWalletDto.walletAddress
-    if (createWalletDto.chain == Chain.ETH) {
+    if (createWalletDto.chain == ChainEnum.ETH) {
       walletAddress = walletAddress.toLowerCase()
     }
 
@@ -222,7 +222,7 @@ export class WalletService {
     if (rawMessage != createWalletDto.rawMessage) {
       throw new BadRequestException('invalid rawMessage supplied')
     }
-    if (createWalletDto.chain == Chain.ETH) {
+    if (createWalletDto.chain == ChainEnum.ETH) {
       const address = this.web3.eth.accounts.recover(
         createWalletDto.rawMessage,
         createWalletDto.signedMessage,
@@ -231,7 +231,7 @@ export class WalletService {
         throw new BadRequestException('recovered address does not match input')
       }
       data.address = walletAddress
-    } else if (createWalletDto.chain == Chain.SOL) {
+    } else if (createWalletDto.chain == ChainEnum.SOL) {
       const signatureUint8 = base58.decode(createWalletDto.signedMessage)
       const nonceUint8 = new TextEncoder().encode(createWalletDto.rawMessage)
       const pubKeyUint8 = base58.decode(walletAddress)

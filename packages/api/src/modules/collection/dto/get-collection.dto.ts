@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsEnum } from 'class-validator'
 
 import { GetPassDto } from '../../pass/dto/get-pass.dto'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
 
 export class GetCollectionDto {
   @ApiProperty()
@@ -15,8 +17,8 @@ export class GetCollectionDto {
   @ApiProperty({ type: [GetPassDto] })
   passes: GetPassDto[]
 
-  @ApiProperty()
-  blockchain: 'solana'
+  @IsEnum(ChainEnum)
+  blockchain: ChainEnum
 
   constructor(collectionEntity) {
     this.id = collectionEntity.id

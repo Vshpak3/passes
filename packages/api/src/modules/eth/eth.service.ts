@@ -18,7 +18,7 @@ import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletResponseDto } from '../wallet/dto/wallet-response.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
-import { Chain } from '../wallet/enum/chain.enum'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import { ETH_NFT_COLLECTION_EXISTS } from './constants/errors'
 import { CreateEthNftCollectionDto } from './dto/create-eth-nft-collection.dto'
 import { EthNftEntity } from './entities/eth-nft.entity'
@@ -84,7 +84,11 @@ export class EthService {
       .where({ id: walletId, user_id: userId })
       .first()
 
-    if (!wallet.user || wallet.user.id != userId || wallet.chain != Chain.ETH) {
+    if (
+      !wallet.user ||
+      wallet.user.id != userId ||
+      wallet.chain != ChainEnum.ETH
+    ) {
       throw new BadRequestException('invalid wallet id specified')
     }
 

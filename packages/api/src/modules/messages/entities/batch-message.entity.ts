@@ -13,7 +13,7 @@ export class BatchMessageEntity extends BaseEntity {
   @ManyToOne()
   list: ListEntity
 
-  @Property()
+  @Property({ length: 255 })
   text: string
 
   @Property()

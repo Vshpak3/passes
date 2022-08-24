@@ -13,9 +13,9 @@ export class EthNftEntity extends BaseEntity {
   @ManyToOne()
   ethNftCollection: EthNftCollectionEntity
 
-  @Property()
+  @Property({ length: 255 })
   tokenId: string
 
-  @Property()
+  @Property({ length: 255 })
   tokenHash: string
 }

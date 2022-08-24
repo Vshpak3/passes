@@ -16,7 +16,7 @@ export class ListEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
 
-  @Property()
+  @Property({ length: 255 })
   name: string
 
   @OneToMany({

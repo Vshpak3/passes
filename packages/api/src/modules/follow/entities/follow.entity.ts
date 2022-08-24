@@ -12,6 +12,6 @@ export class FollowEntity extends BaseEntity {
   @ManyToOne()
   creator: UserEntity
 
-  @Property()
+  @Property({ default: true })
   isActive = true
 }

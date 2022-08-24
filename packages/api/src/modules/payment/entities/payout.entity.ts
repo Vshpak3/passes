@@ -22,7 +22,7 @@ export class PayoutEntity extends BaseEntity {
   @Enum(() => PayoutMethodEnum)
   payoutMethod: PayoutMethodEnum
 
-  @Property()
+  @Property({ length: 255 })
   transactionHash?: string
 
   // transaction information

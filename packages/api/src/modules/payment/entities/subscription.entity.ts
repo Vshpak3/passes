@@ -29,10 +29,10 @@ export class SubscriptionEntity extends BaseEntity {
   amount: number
 
   // card specific information
-  @Property()
+  @Property({ length: 255 })
   ipAddress?: string
 
-  @Property()
+  @Property({ length: 255 })
   sessionId?: string
 
   @ManyToOne({ entity: () => PassHolderEntity })

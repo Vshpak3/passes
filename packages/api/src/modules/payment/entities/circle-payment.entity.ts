@@ -21,15 +21,15 @@ export class CirclePaymentEntity extends BaseEntity {
   @OneToOne({ entity: () => PayinEntity })
   payin: PayinEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   idempotencyKey?: string
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   circlePaymentId?: string
 
-  @Property()
+  @Property({ length: 255 })
   amount: string
 
   @Enum(() => CircleCardVerificationEnum)

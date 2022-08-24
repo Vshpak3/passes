@@ -8,22 +8,22 @@ export class SolNftEntity extends BaseEntity {
   @ManyToOne()
   solNftCollection: SolNftCollectionEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   mintPublicKey: string
 
-  @Property()
+  @Property({ length: 255 })
   metadataPublicKey: string
 
-  @Property()
+  @Property({ length: 255 })
   name: string
 
-  @Property()
+  @Property({ length: 255 })
   symbol: string
 
-  @Property()
+  @Property({ length: 255 })
   uriMetadata: string
 
-  @Property()
+  @Property({ length: 255 })
   txSignature: string
 }

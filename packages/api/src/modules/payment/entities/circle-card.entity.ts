@@ -9,18 +9,18 @@ export class CircleCardEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   idempotencyKey?: string
 
-  @Property()
+  @Property({ length: 255 })
   @Unique()
   circleCardId?: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum
 
-  @Property()
+  @Property({ length: 255 })
   cardNumber: string
 
   @Property()
@@ -29,7 +29,7 @@ export class CircleCardEntity extends BaseEntity {
   @Property()
   expYear: number
 
-  @Property()
+  @Property({ length: 255 })
   name: string
 
   @Property()

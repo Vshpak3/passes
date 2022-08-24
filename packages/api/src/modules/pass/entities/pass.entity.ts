@@ -20,13 +20,13 @@ export class PassEntity extends BaseEntity {
   @OneToOne()
   solNftCollection: SolNftCollectionEntity
 
-  @Property()
+  @Property({ length: 255 })
   title: string
 
-  @Property()
+  @Property({ length: 255 })
   description: string
 
-  @Property()
+  @Property({ length: 255 })
   imageUrl: string
 
   @Enum(() => PassTypeEnum)
