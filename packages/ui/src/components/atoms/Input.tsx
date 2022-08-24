@@ -52,7 +52,7 @@ const Input = ({
         <Label name={name} label={label} errors={errors} options={options} />
       )}
 
-      <div>
+      <div className="w-full">
         {!!icon && (
           <div className="relative text-gray-600">
             <span

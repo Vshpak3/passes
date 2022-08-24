@@ -2,6 +2,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import iso3311a2 from 'iso-3166-1-alpha-2'
 
 @ValidatorConstraint({ name: 'IsValidCountryCode', async: false })

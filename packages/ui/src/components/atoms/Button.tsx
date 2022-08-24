@@ -29,6 +29,7 @@ export const Button = ({
   bigger = false,
   children,
   className = "",
+  icon,
   innerClassName = "",
   fontSize,
   href,
@@ -65,7 +66,7 @@ export const Button = ({
       break
     case "purple":
       variantClassName =
-        "text-black dark:text-white bg-purple-purple3 hover:bg-purple-purple4 dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
+        "text-white dark:text-white border-[#BF7AF0] bg-[#BF7AF0] dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
       break
     case "white":
       variantClassName =
@@ -108,17 +109,19 @@ export const Button = ({
         }
         fontSize={fontSize || 16}
       >
+        {icon}
         {children}
       </Text>
       <Text
         style={{ lineHeight: 1 }}
         className={
-          "hidden items-center space-x-2 xs:flex " +
+          "hidden items-center gap-2 space-x-2 xs:flex " +
           (variantInnerClassName && ` ${variantInnerClassName}`) +
           innerClassName
         }
         fontSize={fontSize || 14}
       >
+        {icon}
         {children}
       </Text>
     </Tag>

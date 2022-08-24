@@ -1,6 +1,7 @@
 import * as RadixPopover from "@radix-ui/react-popover"
 import PropTypes from "prop-types"
 import { Text } from "src/components/atoms"
+import { classNames } from "src/helpers"
 import Cross from "src/icons/cross"
 
 const Popover = ({
@@ -9,29 +10,38 @@ const Popover = ({
   description,
   title,
   trigger,
-  triggerClassName = ""
+  triggerClassName = "",
+  popoverClassName = ""
 }) => (
-  <RadixPopover.Root>
+  <RadixPopover.Root className="bg-[#0000]">
     <RadixPopover.Trigger className={triggerClassName}>
       {trigger}
     </RadixPopover.Trigger>
     <RadixPopover.Content
-      className="relative mt-2 max-w-full overflow-y-auto rounded-t-xl border-0 border-t border-mauve-mauve7 bg-mauve-mauve1 p-4 pb-12 dark:border-mauveDark-mauve7 dark:bg-black lg:w-80 lg:rounded-xl lg:border lg:pb-4"
+      // className=
+      className={classNames(
+        "relative max-w-full overflow-y-auto rounded-t-xl border-0 border-t p-4 pb-12 dark:border-mauveDark-mauve7 dark:bg-black lg:w-80 lg:rounded-xl lg:border lg:pb-4",
+        popoverClassName
+      )}
       avoidCollisions={avoidCollisions}
     >
-      <div className="flex max-w-full justify-between space-x-6">
-        <div className="min-w-0 break-words">
-          <Text fontSize={18} className="font-bold">
-            {title}
+      {title && (
+        <div className="flex max-w-full justify-between space-x-6">
+          <div className="min-w-0 break-words">
+            <Text fontSize={18} className="font-bold">
+              {title}
+            </Text>
+          </div>
+          <div className="h-4 w-4" />
+        </div>
+      )}
+      {description && (
+        <div className="my-4">
+          <Text className="text-mauve-mauve11 dark:text-mauveDark-mauve11">
+            {description}
           </Text>
         </div>
-        <div className="h-4 w-4" />
-      </div>
-      <div className="my-2">
-        <Text className="text-mauve-mauve11 dark:text-mauveDark-mauve11">
-          {description}
-        </Text>
-      </div>
+      )}
       {children}
       <RadixPopover.Close className="pushable click-target-helper absolute top-4 right-5 flex min-w-fit rounded-full text-mauve-mauve11 hover:text-mauve-mauve12 focus:outline-none focus-visible:ring-2 focus-visible:ring-mauve-mauve7 focus-visible:ring-offset-4 focus-visible:ring-offset-mauve-mauve1 active:text-mauve-mauve12 dark:text-mauveDark-mauve11 dark:hover:text-mauveDark-mauve12 dark:focus-visible:ring-mauveDark-mauve7 dark:focus-visible:ring-offset-mauveDark-mauve1 dark:active:text-mauveDark-mauve12">
         <Cross width={16} height={16} />

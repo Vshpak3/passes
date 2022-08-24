@@ -108,7 +108,8 @@ const Collection = ({ options = {} }) => {
               ? router.query.passType
               : "subscription",
           price: parseInt(params.price),
-          totalSupply: parseInt(params.totalSupply)
+          totalSupply: parseInt(params.totalSupply),
+          duration: 2900000
         }
       },
       {
