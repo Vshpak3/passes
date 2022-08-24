@@ -75,6 +75,7 @@ export * from './RegisterPayinResponseDto';
 export * from './RenewPassHolderDto';
 export * from './SearchCreatorResponseDto';
 export * from './SearchUserRequestDto';
+export * from './SendMessageDto';
 export * from './SubscriptionDto';
 export * from './TipPostDto';
 export * from './TokenDto';

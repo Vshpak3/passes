@@ -5,7 +5,7 @@ export class PayinCallbackInput {}
 export class MessagePayinCallbackInput extends PayinCallbackInput {
   userId: string
   sendMessageDto: MessageDto
-  pendingMessageId?: string
+  tippedMessageId?: string
 }
 
 export class CreateNftPassPayinCallbackInput extends PayinCallbackInput {

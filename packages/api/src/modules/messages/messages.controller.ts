@@ -7,6 +7,7 @@ import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
 import { MessageDto } from './dto/message.dto'
+import { SendMessageDto } from './dto/send-message.dto'
 import { TokenDto } from './dto/token.dto'
 import { MessagesService } from './messages.service'
 
@@ -24,7 +25,7 @@ export class MessagesController {
   @Post()
   async send(
     @Req() req: RequestWithUser,
-    @Body() sendMessageDto: MessageDto,
+    @Body() sendMessageDto: SendMessageDto,
   ): Promise<RegisterPayinResponseDto> {
     return await this.messagesService.registerSendMessage(
       req.user.id,
@@ -40,7 +41,20 @@ export class MessagesController {
   })
   @Get('/pending')
   async getPending(@Req() req: RequestWithUser): Promise<Array<MessageDto>> {
-    return await this.messagesService.getPendingMessages(req.user.id)
+    return await this.messagesService.getPendingTippedMessages(req.user.id)
+  }
+
+  @ApiOperation({ summary: 'Get completed tipped messages' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [MessageDto],
+    description: 'Completed tipped messages returned',
+  })
+  @Post('channel')
+  async getCompletedTippedMessages(
+    @Req() req: RequestWithUser,
+  ): Promise<Array<MessageDto>> {
+    return await this.messagesService.getCompletedTippedMessages(req.user.id)
   }
 
   @ApiOperation({ summary: 'Batch message' })
@@ -86,5 +100,18 @@ export class MessagesController {
       req.user.id,
       createChannelDto,
     )
+  }
+
+  @ApiOperation({ summary: 'Get channels stats' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [GetChannelDto],
+    description: 'Get channels stats ',
+  })
+  @Get('channel/stats')
+  async getChannelsStats(
+    @Req() req: RequestWithUser,
+  ): Promise<Array<GetChannelDto>> {
+    return await this.messagesService.getChannelsStats(req.user.id)
   }
 }

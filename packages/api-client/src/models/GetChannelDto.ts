@@ -25,6 +25,12 @@ export interface GetChannelDto {
      * @memberof GetChannelDto
      */
     id: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetChannelDto
+     */
+    totalTipAmount: number;
 }
 
 export function GetChannelDtoFromJSON(json: any): GetChannelDto {
@@ -38,6 +44,7 @@ export function GetChannelDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': json['id'],
+        'totalTipAmount': json['totalTipAmount'],
     };
 }
 
@@ -51,6 +58,7 @@ export function GetChannelDtoToJSON(value?: GetChannelDto | null): any {
     return {
         
         'id': value.id,
+        'totalTipAmount': value.totalTipAmount,
     };
 }
 

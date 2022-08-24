@@ -3,8 +3,8 @@ import { Entity, ManyToOne, Property, types } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity({ tableName: 'pending_message' })
-export class PendingMessageEntity extends BaseEntity {
+@Entity({ tableName: 'tipped_message' })
+export class TippedMessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   sender: UserEntity
 
@@ -19,4 +19,10 @@ export class PendingMessageEntity extends BaseEntity {
 
   @Property()
   tipAmount: number
+
+  @Property()
+  pending: boolean
+
+  @Property()
+  messageId?: string
 }

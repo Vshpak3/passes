@@ -76,11 +76,10 @@ async function messageSuccessCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<MessagePayinCallbackOutput> {
-  await this.payService.messagesService.sendMessage(
+  await payService.messagesService.sendMessage(
     input.userId,
     input.sendMessageDto,
   )
-  await this.payService.messagesService.delete(input.pendingMessageId)
   return { userId: input.userId }
 }
 
@@ -90,10 +89,8 @@ async function messageFailureCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<MessagePayinCallbackOutput> {
-  if (input.pendingMessageId) {
-    await this.payService.messagesService.deletePendingMessage(
-      input.pendingMessageId,
-    )
+  if (input.tippedMessageId) {
+    await payService.messagesService.deleteTippedMessage(input.tippedMessageId)
   }
   return { userId: input.userId }
 }
@@ -104,12 +101,11 @@ async function messageCreationCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<MessagePayinCallbackOutput> {
-  input.pendingMessageId =
-    await this.payService.messagesService.createPendingMessage(
-      input.userId,
-      input.sendMessageDto,
-    )
-  await this.payService.updateInputJSON(payin.id, input)
+  input.tippedMessageId = await payService.messagesService.createTippedMessage(
+    input.userId,
+    input.sendMessageDto,
+  )
+  await payService.updateInputJSON(payin.id, input)
   return { userId: input.userId }
 }
 

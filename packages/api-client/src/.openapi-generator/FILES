@@ -101,6 +101,7 @@ models/RegisterPayinResponseDto.ts
 models/RenewPassHolderDto.ts
 models/SearchCreatorResponseDto.ts
 models/SearchUserRequestDto.ts
+models/SendMessageDto.ts
 models/SubscriptionDto.ts
 models/TipPostDto.ts
 models/TokenDto.ts

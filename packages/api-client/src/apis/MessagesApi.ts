@@ -30,6 +30,9 @@ import {
     RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
+    SendMessageDto,
+    SendMessageDtoFromJSON,
+    SendMessageDtoToJSON,
     TokenDto,
     TokenDtoFromJSON,
     TokenDtoToJSON,
@@ -44,7 +47,7 @@ export interface MessagesMassSendRequest {
 }
 
 export interface MessagesSendRequest {
-    messageDto: MessageDto;
+    sendMessageDto: SendMessageDto;
 }
 
 /**
@@ -82,6 +85,32 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelDto> {
         const response = await this.messagesCreateChannelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get channels stats
+     */
+    async messagesGetChannelsStatsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GetChannelDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/messages/channel/stats`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetChannelDtoFromJSON));
+    }
+
+    /**
+     * Get channels stats
+     */
+    async messagesGetChannelsStats(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetChannelDto>> {
+        const response = await this.messagesGetChannelsStatsRaw(initOverrides);
         return await response.value();
     }
 
@@ -173,8 +202,8 @@ export class MessagesApi extends runtime.BaseAPI {
      * Register sending message
      */
     async messagesSendRaw(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
-        if (requestParameters.messageDto === null || requestParameters.messageDto === undefined) {
-            throw new runtime.RequiredError('messageDto','Required parameter requestParameters.messageDto was null or undefined when calling messagesSend.');
+        if (requestParameters.sendMessageDto === null || requestParameters.sendMessageDto === undefined) {
+            throw new runtime.RequiredError('sendMessageDto','Required parameter requestParameters.sendMessageDto was null or undefined when calling messagesSend.');
         }
 
         const queryParameters: any = {};
@@ -188,7 +217,7 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MessageDtoToJSON(requestParameters.messageDto),
+            body: SendMessageDtoToJSON(requestParameters.sendMessageDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));

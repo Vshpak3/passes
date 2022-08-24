@@ -13,70 +13,70 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    PayinMethodDto,
+    PayinMethodDtoFromJSON,
+    PayinMethodDtoFromJSONTyped,
+    PayinMethodDtoToJSON,
+} from './PayinMethodDto';
+
 /**
  * 
  * @export
- * @interface MessageDto
+ * @interface SendMessageDto
  */
-export interface MessageDto {
+export interface SendMessageDto {
     /**
      * 
      * @type {string}
-     * @memberof MessageDto
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MessageDto
+     * @memberof SendMessageDto
      */
     text: string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof MessageDto
+     * @memberof SendMessageDto
      */
     attachments: Array<string>;
     /**
      * 
      * @type {string}
-     * @memberof MessageDto
+     * @memberof SendMessageDto
      */
     channelId: string;
     /**
      * 
      * @type {number}
-     * @memberof MessageDto
+     * @memberof SendMessageDto
      */
     tipAmount?: number;
     /**
      * 
-     * @type {number}
-     * @memberof MessageDto
+     * @type {PayinMethodDto}
+     * @memberof SendMessageDto
      */
-    createdAt?: number;
+    payinMethod?: PayinMethodDto;
 }
 
-export function MessageDtoFromJSON(json: any): MessageDto {
-    return MessageDtoFromJSONTyped(json, false);
+export function SendMessageDtoFromJSON(json: any): SendMessageDto {
+    return SendMessageDtoFromJSONTyped(json, false);
 }
 
-export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MessageDto {
+export function SendMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SendMessageDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
-        'createdAt': !exists(json, 'created_at') ? undefined : json['created_at'],
+        'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
-export function MessageDtoToJSON(value?: MessageDto | null): any {
+export function SendMessageDtoToJSON(value?: SendMessageDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -85,12 +85,11 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
     }
     return {
         
-        'id': value.id,
         'text': value.text,
         'attachments': value.attachments,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
-        'created_at': value.createdAt,
+        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }
 

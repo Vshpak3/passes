@@ -50,12 +50,6 @@ export interface GetCollectionDto {
      * @memberof GetCollectionDto
      */
     passes: Array<GetPassDto>;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetCollectionDto
-     */
-    blockchain: string;
 }
 
 export function GetCollectionDtoFromJSON(json: any): GetCollectionDto {
@@ -72,7 +66,6 @@ export function GetCollectionDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'title': json['title'],
         'description': json['description'],
         'passes': ((json['passes'] as Array<any>).map(GetPassDtoFromJSON)),
-        'blockchain': json['blockchain'],
     };
 }
 
@@ -89,7 +82,6 @@ export function GetCollectionDtoToJSON(value?: GetCollectionDto | null): any {
         'title': value.title,
         'description': value.description,
         'passes': ((value.passes as Array<any>).map(GetPassDtoToJSON)),
-        'blockchain': value.blockchain,
     };
 }
 

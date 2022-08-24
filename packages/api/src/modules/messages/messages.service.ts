@@ -27,9 +27,11 @@ import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
 import { MessageDto } from './dto/message.dto'
+import { SendMessageDto } from './dto/send-message.dto'
 import { TokenDto } from './dto/token.dto'
 import { BatchMessageEntity } from './entities/batch-message.entity'
-import { PendingMessageEntity } from './entities/pending-message.entity'
+import { ChannelStatEntity } from './entities/channel-stat.entity'
+import { TippedMessageEntity } from './entities/tipped-message.entity'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
 
@@ -83,6 +85,7 @@ export class MessagesService {
       members: [userId, otherUser.id],
       created_by_id: userId,
     })
+
     // create channel
     const createResponse = await channel.create()
 
@@ -105,8 +108,18 @@ export class MessagesService {
       },
     })
 
+    await this.dbWriter(ChannelStatEntity.table).insert(
+      ChannelStatEntity.toDict<ChannelStatEntity>({
+        channelId: createResponse.channel.id,
+        totalTipAmount: 0,
+        user: userId,
+        otherUser: otherUser.id,
+      }),
+    )
+
     return {
       id: createResponse.channel.id,
+      totalTipAmount: 0,
     }
   }
 
@@ -160,7 +173,7 @@ export class MessagesService {
       })
   }
 
-  async registerSendMessage(userId: string, sendMessageDto: MessageDto) {
+  async registerSendMessage(userId: string, sendMessageDto: SendMessageDto) {
     if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
       throw new BadRequestException('invalid tip amount')
     }
@@ -201,7 +214,7 @@ export class MessagesService {
         sendMessageDto.tipAmount < creatorSettings.minimumTipAmount)
     ) {
       throw new BadRequestException(
-        `must tip at least ${creatorSettings.minimumTipAmount} gems to chat with ${otherUser.id}}`,
+        `must tip at least ${creatorSettings.minimumTipAmount} to chat with ${otherUser.id}}`,
       )
     }
 
@@ -232,50 +245,95 @@ export class MessagesService {
     }
   }
 
-  async sendMessage(userId: string, sendMessageDto: MessageDto) {
+  async sendMessage(
+    userId: string,
+    sendMessageDto: MessageDto,
+    tippedMessageId?: string,
+  ) {
     const channel = this.streamClient.channel(
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
     )
 
     const messageId = v4()
-    return await channel.sendMessage({
+    const response = await channel.sendMessage({
       id: messageId,
       text: sendMessageDto.text,
       user_id: userId,
       tipAmount:
         sendMessageDto.tipAmount === 0 ? undefined : sendMessageDto.tipAmount,
     })
+    if (tippedMessageId) {
+      await this.dbWriter(TippedMessageEntity.table)
+        .update(
+          TippedMessageEntity.toDict<TippedMessageEntity>({
+            pending: false,
+            messageId: messageId,
+          }),
+        )
+        .where('id', tippedMessageId)
+      await this.dbWriter(ChannelStatEntity.table)
+        .join(
+          TippedMessageEntity.table,
+          `${TippedMessageEntity.table}.channel_id`,
+          `${ChannelStatEntity.table}.channel_id`,
+        )
+        .increment('total_tip_amount', sendMessageDto.tipAmount)
+        .where(`${TippedMessageEntity.table}.id`, tippedMessageId)
+    }
+    return response
   }
 
-  async createPendingMessage(userId: string, sendMessageDto: MessageDto) {
+  async createTippedMessage(userId: string, sendMessageDto: MessageDto) {
     const id = v4()
-    await this.dbWriter(PendingMessageEntity.table).insert(
-      PendingMessageEntity.toDict<PendingMessageEntity>({
+    await this.dbWriter(TippedMessageEntity.table).insert(
+      TippedMessageEntity.toDict<TippedMessageEntity>({
         id,
         sender: userId,
         text: sendMessageDto.text,
         attachmentsJSON: JSON.stringify(sendMessageDto.attachments),
         channelId: sendMessageDto.channelId,
         tipAmount: sendMessageDto.tipAmount,
+        pending: true,
       }),
     )
     return id
   }
 
-  async deletePendingMessage(pendingMessageId: string) {
-    return await this.dbWriter(PendingMessageEntity.table)
-      .where('id', pendingMessageId)
+  async deleteTippedMessage(tippedMessageId: string) {
+    return await this.dbWriter(TippedMessageEntity.table)
+      .where('id', tippedMessageId)
       .delete()
   }
 
-  async getPendingMessages(userId: string) {
+  async getPendingTippedMessages(userId: string) {
     return (
-      await this.dbReader(PendingMessageEntity.table).where(
-        PendingMessageEntity.toDict<PendingMessageEntity>({
+      await this.dbReader(TippedMessageEntity.table).where(
+        TippedMessageEntity.toDict<TippedMessageEntity>({
           sender: userId,
+          pending: true,
         }),
       )
     ).map((message) => new MessageDto(message))
+  }
+
+  async getCompletedTippedMessages(userId: string) {
+    return (
+      await this.dbReader(TippedMessageEntity.table).where(
+        TippedMessageEntity.toDict<TippedMessageEntity>({
+          sender: userId,
+          pending: false,
+        }),
+      )
+    ).map((message) => new MessageDto(message))
+  }
+
+  async getChannelsStats(userId: string) {
+    return (
+      await this.dbReader(ChannelStatEntity.table)
+        .where('user', userId)
+        .orWhere('other_user', userId)
+        .select('*')
+    ).map((channelStat) => new GetChannelDto(channelStat))
   }
 }
