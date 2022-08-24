@@ -14,6 +14,7 @@ async function handleCallback(
   try {
     const func = functionMapping(payin.callback)[selector]
     type params = Parameters<typeof func>
+
     const output = await func(
       payin,
       JSON.parse(payin.callback_input_json) as params[0],

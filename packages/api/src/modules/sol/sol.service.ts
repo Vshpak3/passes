@@ -44,7 +44,7 @@ import * as SolHelper from './sol-helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
-const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
+export const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
   '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
 
 export interface JsonMetadata<Uri = string> {
@@ -124,6 +124,10 @@ export class SolService {
       .where({ id: userId })
       .first()
     if (!user) throw new NotFoundException('User does not exist')
+    if (process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID) {
+      return this.createSampleNftPass(owner, collectionId)
+    }
+    const solNftId = uuid.v4()
     const walletPubKey = new PublicKey(
       await this.lambdaService.blockchainSignGetPublicAddress(
         SOL_MASTER_WALLET_LAMBDA_KEY_ID,
@@ -145,7 +149,6 @@ export class SolService {
       throw 'bad request, invalid collectionId'
     }
     const collectionPubKey = new PublicKey(collection.public_key)
-    const solNftId = uuid.v4()
     const jsonMetadata = {
       name: collection.name,
       symbol: collection.symbol,
@@ -327,9 +330,38 @@ export class SolService {
       sol_nft_collection_id: collectionId,
       mint_public_key: mintPubKey.toString(),
       metadata_public_key: metadataPda.toString(),
-      name: 'Moment PASS',
-      symbol: 'MoP',
+      name: collection.name,
+      symbol: collection.symbol,
       uri_metadata: `https://cdn.passes-staging.com/nft/nft-${solNftId}`,
+      tx_signature: txSignature,
+    })
+    return new GetSolNftDto(solNftId, mintPubKey, metadataPda, txSignature)
+  }
+
+  async createSampleNftPass(
+    owner: PublicKey,
+    collectionId: string,
+  ): Promise<GetSolNftDto> {
+    const collection = (
+      await this.dbReader(SolNftCollectionEntity.table)
+        .select('*')
+        .where('sol_nft_collection.id', collectionId)
+    )[0]
+
+    const solNftId = uuid.v4()
+    const mintPubKey = uuid.v4()
+    const metadataPda = uuid.v4()
+    const txSignature = uuid.v4()
+
+    await this.dbWriter(SolNftEntity.table).insert({
+      id: solNftId,
+      sol_nft_collection_id: collectionId,
+      mint_public_key: mintPubKey,
+      metadata_public_key: metadataPda,
+      name: collection.name,
+      symbol: collection.symbol,
+      uri_metadata:
+        'https://cdn.passes-staging.com/nft/nft-51dac6fb-95b4-4e25-a6e9-f8ce3f527811',
       tx_signature: txSignature,
     })
     return new GetSolNftDto(solNftId, mintPubKey, metadataPda, txSignature)
@@ -474,7 +506,6 @@ export class SolService {
         1,
       ),
     ]
-
     // 2 - Calling metaplex instruction to initiate a new NFT
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [metadataPda, _metadataPdaBump] = await SolHelper.findMetadataPda(

@@ -3,8 +3,14 @@ import ChatIcon from "public/icons/profile-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 
+import { classNames } from "../../helpers"
 import Text from "./Text"
 
+export enum ButtonTypeEnum {
+  BUTTON = "button",
+  SUBMIT = "submit",
+  RESET = "reset"
+}
 interface IButton {
   bigger?: boolean
   children: React.ReactNode
@@ -23,6 +29,8 @@ interface IGenericButton {
   name: string
   onClick?: () => void
   value?: string
+  type?: ButtonTypeEnum
+  className?: string
 }
 
 export const Button = ({
@@ -135,14 +143,25 @@ export const PassesPurpleButton = ({ name }: IGenericButton) => (
   </button>
 )
 
-export const PassesPinkButton = ({ name, onClick }: IGenericButton) => (
-  <button
-    className="flex w-full items-center justify-center rounded-full border border-solid border-[#C943A8] bg-[#C943A8] py-[10px] text-base font-semibold text-white"
-    onClick={onClick}
-  >
-    {name}
-  </button>
-)
+export const PassesPinkButton = ({
+  type,
+  name,
+  onClick,
+  className = ""
+}: IGenericButton) => {
+  return (
+    <button
+      className={classNames(
+        "flex w-full items-center justify-center rounded-full border border-solid border-[#C943A8] bg-[#C943A8] py-[10px] text-base font-semibold text-white",
+        className
+      )}
+      onClick={onClick}
+      type={type}
+    >
+      {name}
+    </button>
+  )
+}
 
 export const CoverButton = ({ name, onClick }: IGenericButton) => (
   <button

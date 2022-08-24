@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonTypeEnum,
   CoverButton,
   HeaderChatButton,
   PassesPinkButton,
@@ -22,6 +23,7 @@ import Wordmark from "./Wordmark"
 
 export {
   Button,
+  ButtonTypeEnum,
   Checkbox,
   CoverButton,
   CssTile,

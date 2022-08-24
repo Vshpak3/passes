@@ -1,32 +1,33 @@
-import { PaymentApi } from "@passes/api-client"
+import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
 import { PayButton } from "../../components/payment/pay-button"
-import useLocalStorage from "../../hooks/useLocalStorage"
+import { wrapApi } from "../../helpers/wrapApi"
 import useUser from "../../hooks/useUser"
 
-const PayPage = () => {
+interface IPayPage {
+  defaultPayin: any
+  passId?: string | undefined
+}
+
+const PayPage = ({ passId }: IPayPage) => {
   const { user, loading } = useUser()
   const router = useRouter()
-  const [accessToken] = useLocalStorage("access-token", "")
+  const api = wrapApi(PassApi)
 
   const submit = async () => {
-    const paymentApi = new PaymentApi()
-    return await paymentApi.paymentRegisterPayin({
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json"
+    return await api.passRegisterCreatePass({
+      createPassHolderDto: {
+        passId: passId || ""
       }
     })
   }
 
   const data = async () => {
-    const paymentApi = new PaymentApi()
-    return await paymentApi.paymentRegisterPayinData({
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json"
+    return await api.passRegisterCreatePassData({
+      createPassHolderDto: {
+        passId: passId || ""
       }
     })
   }

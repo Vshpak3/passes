@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { CarouselButton, CarouselPass } from "./PassesComponents"
 
-const Carousel = ({ passes }) => {
+const Carousel = ({ passes, setModalOpen }) => {
   const maxScrollWidth = useRef(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const carousel = useRef(null)
@@ -60,7 +60,13 @@ const Carousel = ({ passes }) => {
           className="carousel-container relative z-0 ml-12 mr-12 flex touch-pan-x snap-x snap-mandatory items-start gap-4 overflow-hidden scroll-smooth sm:gap-9"
         >
           {passes.map((pass, index) => {
-            return <CarouselPass key={index} pass={pass} />
+            return (
+              <CarouselPass
+                key={index}
+                pass={pass}
+                setModalOpen={setModalOpen}
+              />
+            )
           })}
         </div>
       </div>

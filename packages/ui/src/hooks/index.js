@@ -9,11 +9,11 @@ import useMessageToDevelopers from "./useMessageToDevelopers"
 import useMounted from "./useMounted"
 import useOnClickOutside from "./useOnClickOutside"
 import usePasses from "./usePasses"
+import usePayment from "./usePayment"
 import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
 import useUser from "./useUser"
 import useUserConnectedWallets from "./useUserConnectedWallets"
-
 export {
   useChat,
   useCreatorProfile,
@@ -26,6 +26,7 @@ export {
   useMounted,
   useOnClickOutside,
   usePasses,
+  usePayment,
   usePrefersReducedMotion,
   useRandomInterval,
   useUser,

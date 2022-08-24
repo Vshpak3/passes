@@ -93,8 +93,6 @@ const Collection = ({ options = {} }) => {
   const onCreateHandler = () => {
     const passApi = new PassApi()
     const params = getValues()
-    console.log("params", params)
-    console.log(typeof params.price)
     passApi.passCreate(
       {
         createPassDto: {

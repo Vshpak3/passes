@@ -12,8 +12,8 @@ const FormContainer = ({ children, className = "" }: IFormContainer) => {
   return (
     <div
       className={classNames(
-        "flex min-h-[360px] flex-grow flex-col items-stretch gap-4 rounded-[20px] bg-[#1b141d]/50 px-2 pt-3 pb-5 backdrop-blur-[100px] md:border md:border-[#ffffff]/10 md:px-5 md:pt-8",
-        className
+        className,
+        "flex max-h-[700px] min-h-[360px] flex-grow flex-col items-stretch gap-4 overflow-y-auto rounded-[20px] bg-[#1b141d]/50 px-2 pt-3 pb-5 backdrop-blur-[100px] md:border md:border-[#ffffff]/10 md:px-5 md:pt-8"
       )}
     >
       {children}

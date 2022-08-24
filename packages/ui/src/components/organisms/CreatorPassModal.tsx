@@ -1,18 +1,18 @@
 import { GetPassDto } from "@passes/api-client"
 import Image from "next/image"
 import React, { Dispatch, SetStateAction } from "react"
+import { Button } from "src/components/atoms"
 
-import { Button } from "../atoms"
 import Modal from "./Modal"
 
 interface ICreatorPassModal {
-  isOpen: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  isOpen: any
+  setOpen: Dispatch<SetStateAction<any>>
   passData: GetPassDto
 }
 
 const CreatorPassModal = ({
-  isOpen = false,
+  isOpen = null,
   setOpen,
   passData
 }: ICreatorPassModal) => {

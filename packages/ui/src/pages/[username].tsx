@@ -107,17 +107,17 @@ const mockCreator = {
 }
 
 const Username = (props: GetProfileDto) => {
-  const { creatorPasses } = usePasses(props.userId)
-  const [editProfile, setEditProfile] = useState(false)
-  const [profile, setProfile] = useState(props)
-  const onEditProfile = () => {
-    setEditProfile(true)
-  }
   const router = useRouter()
   const {
     query: { username: _username }
   } = router
   const username = _username as string
+  const [editProfile, setEditProfile] = useState(false)
+  const [profile, setProfile] = useState(props)
+  const { creatorPasses } = usePasses(profile.userId)
+  const onEditProfile = () => {
+    setEditProfile(true)
+  }
   const { user: { username: loggedInUsername } = {} } = useUser()
   const ownsProfile = loggedInUsername === username
   const { posts = [] } = useCreatorProfile({ username })
@@ -214,7 +214,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const api = new ProfileApi()
     const profile = await api.profileFindOneByUsername({ username })
-    console.log("getProfile", profile)
     // TODO: Hack to remove undefined from generated API typings
     const props = { ...JSON.parse(JSON.stringify(profile)), username }
     return {

@@ -3,36 +3,8 @@ import React, { useEffect, useState } from "react"
 
 import CreatorPassModal from "../CreatorPassModal"
 
-// interface ICreatorPassTiles {
-//   passData: {
-//     passName: string
-//     creatorName: string
-//     handle: string
-//     cost: string
-//     imgUrl: string
-//     purchaseDate: string
-//     lastRenewal: string
-//     tagline: string
-//     description: string
-//   }
-// }
-
 interface ICreatorPassTiles {
   passData: GetPassDto
-  // passData: {
-  //   creatorId: string
-  //   description: string
-  //   id: string
-  //   imageUrl: string
-  //   price: string
-  //   handle: string
-  //   title: string
-  //   totalSupply: number
-  //   // purchaseDate: string
-  //   // lastRenewal: string
-  //   // tagline: string
-  //   type: string
-  // }
 }
 
 const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {

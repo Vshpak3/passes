@@ -4,23 +4,23 @@ import React from "react"
 import { Button } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
 
-export const Pass = ({ pass }) => {
+export const Pass = ({ pass, setModalOpen }) => {
   return (
     <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
-      <PassInformation pass={pass} />
+      <PassInformation pass={pass} setModalOpen={setModalOpen} />
     </div>
   )
 }
 
-export const CarouselPass = ({ pass }) => (
+export const CarouselPass = ({ pass, setModalOpen }) => (
   <div className="carousel-item w-fit snap-start">
     <div className="flex w-fit flex-shrink-0 flex-col items-center justify-center gap-3 break-all  p-0 py-5 sm:max-w-[235px] sm:items-start  md:py-0 md:pt-5">
-      <PassInformation pass={pass} />
+      <PassInformation pass={pass} setModalOpen={setModalOpen} />
     </div>
   </div>
 )
 
-export const PassInformation = ({ pass }) => {
+export const PassInformation = ({ pass, setModalOpen }) => {
   return (
     <>
       <img // eslint-disable-line @next/next/no-img-element
@@ -35,17 +35,25 @@ export const PassInformation = ({ pass }) => {
         {pass.description}
       </span>
       {{
-        Free: <Button variant="purple">Follow Free</Button>,
-        Monthly: <Button variant="purple">Subscribe</Button>,
-        Lifetime: <Button variant="purple">Subscribe</Button>
+        free: <Button variant="purple">Follow Free</Button>,
+        subscription: (
+          <Button variant="purple" onClick={() => setModalOpen(pass)}>
+            Subscribe
+          </Button>
+        ),
+        lifetime: (
+          <Button variant="purple" onClick={() => setModalOpen(pass)}>
+            Subscribe
+          </Button>
+        )
       }[pass.type] || null}
       {{
-        Free: (
+        free: (
           <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
             {pass.type}
           </span>
         ),
-        Monthly: (
+        subscription: (
           <span className="flex items-center">
             <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
               {formatCurrency(pass.price)}
@@ -55,7 +63,7 @@ export const PassInformation = ({ pass }) => {
             </span>
           </span>
         ),
-        Lifetime: (
+        lifetime: (
           <span className="flex items-center">
             <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
               {formatCurrency(pass.price)}

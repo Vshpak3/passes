@@ -37,6 +37,7 @@ type FormInputProps = {
   iconAlign?: EIcon
   onFocus?: (event: Event) => void
   value?: string
+  mask?: string
 }
 const FormInput = ({
   textPosition,

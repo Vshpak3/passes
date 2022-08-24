@@ -191,11 +191,10 @@ export class PassService {
     const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
     )
-
     const solNftDto = await this.solService.createNftPass(
       userId,
       new PublicKey(userCustodialWallet.address),
-      pass.solNftCollection_id,
+      pass.sol_nft_collection_id,
     )
     const data = PassHolderEntity.toDict<PassHolderEntity>({
       id,
@@ -204,7 +203,6 @@ export class PassService {
       expiresAt: expiresAt,
       solNft: solNftDto.id,
     })
-
     await this.dbWriter(PassHolderEntity.table).insert(data)
 
     return {

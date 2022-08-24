@@ -55,7 +55,7 @@ const NewCard = () => {
             sessionId: SHA256(accessToken).toString().substr(0, 50),
             ipAddress: "",
             phoneNumber: values["phone-number"],
-            email: ""
+            email: "bangbang@gmail.com"
           }
         },
         cardNumber: values["card-number"]

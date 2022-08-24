@@ -117,7 +117,7 @@ export class PassController {
     type: PayinDataDto,
     description: 'Data for register create pass was returned',
   })
-  @Get('pay/data/create')
+  @Post('pay/data/create')
   async registerCreatePassData(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderDto,
