@@ -49,6 +49,12 @@ export interface GetCommentDto {
      * @memberof GetCommentDto
      */
     commenterUsername: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetCommentDto
+     */
+    createdAt: Date;
 }
 
 export function GetCommentDtoFromJSON(json: any): GetCommentDto {
@@ -66,6 +72,7 @@ export function GetCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'commenterId': json['commenterId'],
         'content': json['content'],
         'commenterUsername': json['commenterUsername'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -83,6 +90,7 @@ export function GetCommentDtoToJSON(value?: GetCommentDto | null): any {
         'commenterId': value.commenterId,
         'content': value.content,
         'commenterUsername': value.commenterUsername,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

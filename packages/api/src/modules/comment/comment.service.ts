@@ -87,6 +87,7 @@ export class CommentService {
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
       .first()
+
     if (!post) {
       throw new BadRequestException(POST_NOT_EXIST)
     }
@@ -95,11 +96,15 @@ export class CommentService {
       throw new BadRequestException(POST_DELETED)
     }
 
-    const comments = await this.dbReader(CommentEntity.table).where({
-      post_id: postId,
-      is_hidden: false,
-      deleted_at: null,
-    })
+    const comments = await this.dbReader(CommentEntity.table)
+      .leftJoin(UserEntity.table, 'comment.commenter_id', 'users.id')
+      .where({
+        post_id: postId,
+        is_hidden: false,
+        deleted_at: null,
+      })
+      .select('comment.*', 'users.username as commenter_username')
+
     return new GetCommentsForPostDto(postId, comments)
   }
 

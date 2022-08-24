@@ -47,8 +47,11 @@ export class PostController {
     description: 'A post was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetPostDto> {
-    return this.postService.findOne(id)
+  async findOne(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ): Promise<GetPostDto> {
+    return this.postService.findOne(id, req.user.id)
   }
 
   @ApiOperation({ summary: 'Updates a post' })

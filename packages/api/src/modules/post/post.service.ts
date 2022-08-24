@@ -112,7 +112,7 @@ export class PostService {
     return createPostDto
   }
 
-  async findOne(id: string): Promise<GetPostDto> {
+  async findOne(id: string, userId?: string): Promise<GetPostDto> {
     const postDbResult = await this.dbReader(PostEntity.table)
       .leftJoin(ContentPostEntity.table, 'content_post.post_id', 'post.id')
       .leftJoin(ContentEntity.table, 'content.id', 'content_post.post_id')
@@ -129,6 +129,9 @@ export class PostService {
         'content.url',
         'content.content_type',
         'post.deleted_at',
+        this.dbReader.raw(
+          `exists(select * from post_like l where l.post_id = ${PostEntity.table}.id and l.liker_id = '${userId}') as is_liked`,
+        ),
       )
       .where('post.id', id)
 
@@ -168,6 +171,7 @@ export class PostService {
       postDbResult[0].num_comments,
       postDbResult[0].created_at.toISOString(),
       postDbResult[0].updated_at.toISOString(),
+      !!postDbResult[0].is_liked,
     )
   }
 
