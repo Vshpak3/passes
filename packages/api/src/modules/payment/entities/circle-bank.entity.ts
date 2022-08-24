@@ -29,6 +29,6 @@ export class CircleBankEntity extends BaseEntity {
   @Property({ length: 255 })
   fingerprint: string
 
-  @Property({ length: 255 })
+  @Property()
   deletedAt?: Date
 }

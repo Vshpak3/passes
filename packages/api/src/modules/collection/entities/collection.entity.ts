@@ -13,9 +13,6 @@ export class CollectionEntity extends BaseEntity {
   @ManyToOne()
   owner: UserEntity
 
-  // @OneToMany(() => PassEntity, (pass) => pass.collection)
-  // passes = new Collection<PassEntity>(this)
-
   @Property({ length: COLLECTION_TITLE_LENGTH })
   title: string
 
