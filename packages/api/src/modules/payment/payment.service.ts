@@ -37,6 +37,7 @@ import { CircleCreatePayoutDto } from './dto/circle/create-circle-payout.dto'
 import { CircleCreateTransferDto } from './dto/circle/create-circle-transfer.dto'
 import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusDto } from './dto/circle/status.dto'
+import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { PayinDto } from './dto/payin.dto'
 import {
   CircleCardPayinEntryRequestDto,
@@ -69,6 +70,7 @@ import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
 import { CirclePayoutEntity } from './entities/circle-payout.entity'
 import { CircleTransferEntity } from './entities/circle-transfer.entity'
+import { CreatorFeeEntity } from './entities/creator-fee.entity'
 import { CreatorShareEntity } from './entities/creator-share.entity'
 import { DefaultPayinMethodEntity } from './entities/default-payin-method.entity'
 import { DefaultPayoutMethodEntity } from './entities/default-payout-method.entity'
@@ -103,8 +105,11 @@ import {
   handleSuccesfulCallback,
 } from './payment.payin'
 
-const CREATOR_CUT_FIAT_RATE = 0.8
-const CREATOR_CUT_CRYPTO_RATE = 0.9
+const DEFAULT_FIAT_FEE_RATE = 0.2
+const DEFAULT_CRYPTO_FEE_RATE = 0.1
+
+const DEFAULT_FIAT_FEE_FLAT = 0.25
+const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
@@ -692,7 +697,7 @@ export class PaymentService {
           }),
         )
         .where({ id })
-      this.logger.error(`Error processing notification ${id}: ${e}`)
+      this.logger.error(`Error processing notification ${id}`, e)
     }
   }
 
@@ -1149,7 +1154,6 @@ export class PaymentService {
     await this.dbWriter(DefaultPayinMethodEntity.table)
       .insert(
         DefaultPayinMethodEntity.toDict<DefaultPayinMethodEntity>({
-          id: v4(),
           user: userId,
           method: payinMethoDto.method,
           card: payinMethoDto.cardId,
@@ -1233,7 +1237,6 @@ export class PaymentService {
   ): Promise<void> {
     await this.dbWriter(DefaultPayoutMethodEntity.table)
       .insert({
-        id: v4(),
         user_id: userId,
         method: payoutMethodDto.method,
         bank_id: payoutMethodDto.bankId,
@@ -1351,41 +1354,14 @@ export class PaymentService {
 
     await this.dbWriter(PayinEntity.table).insert(data)
 
+    // create creator share of payment
     try {
-      // validate the parameters of the shares
-      let sum = 0
-      for (const creatorShareDto of request.creatorShares) {
-        const creator = await this.dbReader(UserEntity.table)
-          .where('id', creatorShareDto.creatorId)
-          .first()
-
-        if (!creator.is_creator) {
-          throw new InvalidPayinRequestError('regular users can not earn money')
-        }
-        if (creatorShareDto.amount <= 0) {
-          throw new InvalidPayinRequestError(
-            'creator must have positive earning',
-          )
-        }
-        sum += creatorShareDto.amount
-        if (sum > request.amount) {
-          throw new InvalidPayinRequestError(
-            'creators can not earn more than total payment',
-          )
-        }
-      }
-
-      // create shares of payment profit that would go to creators
-      for (const creatorShareDto of request.creatorShares) {
-        await this.dbWriter(CreatorShareEntity.table).insert(
-          CreatorShareEntity.toDict<CreatorShareEntity>({
-            id: v4(),
-            creator: creatorShareDto.creatorId,
-            amount: creatorShareDto.amount,
-            payin: data.id,
-          }),
-        )
-      }
+      await this.createCreatorShare(
+        request.creatorId,
+        request.amount,
+        payinMethod,
+        data.id,
+      )
     } catch (e) {
       await this.unregisterPayin(data.id, request.userId)
       throw e
@@ -1398,16 +1374,86 @@ export class PaymentService {
     }
   }
 
-  generateDefaultCreatorShares(
+  async createCreatorShare(
     creatorId: string,
     amount: number,
     payinMethod: PayinMethodDto,
+    payinId: string,
   ) {
-    const creatorCutRate =
-      payinMethod.method === PayinMethodEnum.CIRCLE_CARD
-        ? CREATOR_CUT_FIAT_RATE
-        : CREATOR_CUT_CRYPTO_RATE
-    return [{ creatorId: creatorId, amount: amount * creatorCutRate }]
+    const creator = await this.dbReader(UserEntity.table)
+      .leftJoin(
+        CreatorFeeEntity.table,
+        `${UserEntity.table}.id`,
+        `${CreatorFeeEntity.table}.creator_id`,
+      )
+      .where(`${UserEntity.table}.id`, creatorId)
+      .select([
+        `${UserEntity.table}.id`,
+        'is_creator',
+        'fiat_rate',
+        'fiat_flat',
+        'crypto_rate',
+        'crypto_flat',
+      ])
+      .first()
+
+    if (!creator.is_creator) {
+      throw new InvalidPayinRequestError('regular users can not earn money')
+    }
+    let shareAmount = amount
+
+    // calculate creator share of payin
+    if (payinMethod.method === PayinMethodEnum.CIRCLE_CARD) {
+      if (creator.fiat_rate && creator.fiat_flat) {
+        shareAmount = shareAmount * (1 - creator.fiat_rate) - creator.flat
+      } else {
+        shareAmount =
+          shareAmount * (1 - DEFAULT_FIAT_FEE_RATE) - DEFAULT_FIAT_FEE_FLAT
+      }
+    } else {
+      if (creator.crypto_rate && creator.crypto_flat) {
+        shareAmount =
+          shareAmount * (1 - creator.crypto_rate) - creator.crypto_flat
+      } else {
+        shareAmount =
+          shareAmount * (1 - DEFAULT_CRYPTO_FEE_RATE) - DEFAULT_CRYPTO_FEE_FLAT
+      }
+    }
+
+    // can't get a negative amount of money
+    shareAmount = Math.max(shareAmount, 0)
+
+    await this.dbWriter(CreatorShareEntity.table).insert(
+      CreatorShareEntity.toDict<CreatorShareEntity>({
+        creator: creatorId,
+        amount: shareAmount,
+        payin: payinId,
+      }),
+    )
+  }
+
+  async setCreatorFee(creatorFeeDto: CreatorFeeDto) {
+    await this.dbWriter(CreatorFeeEntity.table)
+      .insert(
+        CreatorFeeEntity.toDict<CreatorFeeEntity>({
+          creator: creatorFeeDto.creatorId,
+          fiatRate: creatorFeeDto.fiatFlat,
+          fiatFlat: creatorFeeDto.fiatFlat,
+          cryptoRate: creatorFeeDto.cryptoRate,
+          cryptoFlat: creatorFeeDto.cryptoFlat,
+        }),
+      )
+      .onConflict('creator_id')
+      .merge(['fiat_rate', 'fiat_flat', 'crypto_rate', 'crypto_flat'])
+  }
+
+  async getCreatorFee(creatorId: string) {
+    return new CreatorFeeDto(
+      await this.dbReader(CreatorFeeEntity.table)
+        .where('creator_id', creatorId)
+        .select('*')
+        .first(),
+    )
   }
 
   async updateInputJSON(payinId: string, json: any) {
@@ -1621,7 +1667,7 @@ export class PaymentService {
         try {
           await this.payoutCreator(creator.id, creator.payout_frequency)
         } catch (e) {
-          this.logger.error(`Error paying out ${creator.id}: ${e}`)
+          this.logger.error(`Error paying out ${creator.id}`, e)
         }
       }),
     )
@@ -1807,7 +1853,7 @@ export class PaymentService {
       try {
         await this.aggregateCreator(creator.id)
       } catch (e) {
-        this.logger.error(`Error aggregating earnings for ${creator.id}: ${e}`)
+        this.logger.error(`Error aggregating earnings for ${creator.id}`, e)
       }
     })
   }
@@ -1950,15 +1996,15 @@ export class PaymentService {
         SubscriptionStatusEnum.CANCELLED,
       )
       .select([
-        `${SubscriptionEntity}'.id`,
-        `${SubscriptionEntity}'.user_id`,
+        `${SubscriptionEntity.table}'.id`,
+        `${SubscriptionEntity.table}'.user_id`,
         ...SubscriptionEntity.populate<SubscriptionEntity>([
           'payinMethod',
           'chainId',
           'card',
         ]),
-        `${PassHolderEntity}'.expires_at`,
-        `${PassHolderEntity}'.holder_id`,
+        `${PassHolderEntity.table}'.expires_at`,
+        `${PassHolderEntity.table}'.holder_id`,
       ])
 
     await Promise.all(
@@ -2003,13 +2049,15 @@ export class PaymentService {
               }
             } catch (e) {
               this.logger.error(
-                `Error paying subscription for ${subscription.id}: ${e}`,
+                `Error paying subscription for ${subscription.id}`,
+                e,
               )
             }
           }
         } catch (e) {
           this.logger.error(
-            `Error updating subscription for ${subscription.id}: ${e}`,
+            `Error updating subscription for ${subscription.id}`,
+            e,
           )
         }
       }),

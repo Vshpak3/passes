@@ -524,7 +524,7 @@ export class PaymentController {
       amount: 1000,
       callback: PayinCallbackEnum.EXAMPLE,
       callbackInputJSON: { example: 'asdf' } as PayinCallbackInput,
-      creatorShares: [{ creatorId: req.user.id, amount: 500 }],
+      creatorId: req.user.id,
     })
   }
 

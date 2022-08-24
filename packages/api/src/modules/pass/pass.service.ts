@@ -308,11 +308,7 @@ export class PassService {
       payinMethod,
       callback: PayinCallbackEnum.RENEW_NFT_PASS,
       callbackInputJSON: JSON.stringify(callbackInput),
-      creatorShares: this.payService.generateDefaultCreatorShares(
-        passHolder.creator_id,
-        amount,
-        payinMethod,
-      ),
+      creatorId: passHolder.creator_id,
     })
   }
 
@@ -397,11 +393,7 @@ export class PassService {
       payinMethod,
       callback: PayinCallbackEnum.CREATE_NFT_PASS,
       callbackInputJSON: JSON.stringify(callbackInput),
-      creatorShares: this.payService.generateDefaultCreatorShares(
-        pass.creator_id,
-        amount,
-        payinMethod,
-      ),
+      creatorId: pass.creator_id,
     })
   }
 

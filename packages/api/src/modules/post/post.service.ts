@@ -274,11 +274,7 @@ export class PostService {
       payinMethod,
       callback: PayinCallbackEnum.TIP_POST,
       callbackInputJSON: JSON.stringify(callbackInput),
-      creatorShares: this.payService.generateDefaultCreatorShares(
-        post.userId,
-        amount,
-        payinMethod,
-      ),
+      creatorId: post.userId,
     })
   }
 
@@ -315,11 +311,7 @@ export class PostService {
       payinMethod,
       callback: PayinCallbackEnum.PURCHASE_POST,
       callbackInputJSON: JSON.stringify(callbackInput),
-      creatorShares: this.payService.generateDefaultCreatorShares(
-        post.userId,
-        amount,
-        payinMethod,
-      ),
+      creatorId: post.userId,
     })
   }
 

@@ -32,12 +32,12 @@ export class RegisterPayinRequestDto {
   @ApiProperty()
   callbackInputJSON: PayinCallbackInput
 
-  @ApiProperty()
-  creatorShares: Array<CreatorShareDto>
-
   // target object
   @ApiPropertyOptional()
   target?: string
+
+  @ApiProperty()
+  creatorId: string
 }
 
 export class CreatorShareDto {

@@ -233,11 +233,7 @@ export class MessagesService {
         payinMethod,
         callback: PayinCallbackEnum.MESSAGE,
         callbackInputJSON: JSON.stringify(callbackInput),
-        creatorShares: this.payService.generateDefaultCreatorShares(
-          otherUser.id,
-          sendMessageDto.tipAmount,
-          payinMethod,
-        ),
+        creatorId: otherUser.id,
       })
     } else {
       await this.sendMessage(userId, sendMessageDto)
