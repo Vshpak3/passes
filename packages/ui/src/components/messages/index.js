@@ -191,7 +191,7 @@ const MessagesComponent = ({ username }) => {
           border:1px solid rgba(255, 255, 255, 0.15);
           border-radius: 0px;
           backdrop-filter: blur(100px);
-          max-width:420px;
+          max-width:370px;
           width:100%;
           display:flex;
           flex-direction:column;

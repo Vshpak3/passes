@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react"
+import React, { useCallback, useContext, useState } from "react"
 import { ImageDropzone } from "react-file-utils"
 import {
   ChatAutoComplete,
@@ -8,8 +8,9 @@ import {
   useMessageInputContext
 } from "stream-chat-react"
 
-import { EmojiIcon, LightningBoltSmall, SendIcon } from "../../assets"
+import { EmojiIcon, LightningBoltSmall } from "../../assets"
 import { GiphyContext } from "../../index.js"
+import { CustomMediaInput } from "../CustomMediaInput"
 
 const GiphyIcon = () => (
   <div className="giphy-icon__wrapper">
@@ -22,8 +23,33 @@ const MessagingInput = () => {
   const { giphyState, setGiphyState } = useContext(GiphyContext)
   const { acceptedFiles, maxNumberOfFiles, multipleUploads } =
     useChannelStateContext()
-
   const messageInput = useMessageInputContext()
+  const [activeMedia, setActiveMedia] = useState("Media")
+  const [hasMedia, setHasMedia] = useState(false)
+  const [hasVideo, setHasVideo] = useState(false)
+  const [hasVault, setHasVault] = useState(false)
+  const [hasPrice, setHasPrice] = useState(false)
+
+  const onMediaChange = (name) => {
+    switch (name) {
+      case "Media":
+        setHasMedia(true)
+        break
+      case "Video":
+        setHasVideo(true)
+        break
+      case "Vault":
+        setHasVault(true)
+        break
+      case "Message price":
+        setHasPrice(true)
+        break
+      default:
+        setActiveMedia(name)
+        break
+    }
+    setActiveMedia(name)
+  }
 
   const onChange = useCallback(
     (event) => {
@@ -56,42 +82,47 @@ const MessagingInput = () => {
           background: #ffffff;
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
           display: flex;
-          align-items: center;
-          padding: 8px;
+          align-items: start;
+          padding: 10px 20px;
           position: relative;
+          display:flex;
+          flex-direction:column;
+          justify-content:flex-start;
+
         }
         
         .str-chat.dark .str-chat__messaging-input {
-          background: #2e3033;
-          border-top: 1px solid rgba(0, 0, 0, 0.16);
+          background: #000;
+          border-top: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .messaging-input__container {
           display: flex;
-          align-items: center;
+          justify-content:flex-start;
+          align-items: start;
+          width:100%;
         }
         
         .messaging-input__input-wrapper {
           display: flex;
-          align-items: center;
+          justify-content: flex-start;
+          align-items: start;
           width: 100%;
-          min-height: 40px;
+          min-height: 100px;
           height: fit-content;
           z-index: 100;
-          border-radius: 20px;
-          background: #ffffff;
-          border: 2px solid rgba(0, 0, 0, 0.16);
-          transition: border 0.2s ease-in-out;
+          background: transparent;
+          border: none;
           position: relative;
         }
         
         .str-chat.dark .messaging-input__input-wrapper {
-          border: 2px solid rgba(0, 0, 0, 0.16);
-          background: #323437;
+          border: none;
+          background: transparent;
         }
         
         .str-chat__messaging-input .messaging-input__input-wrapper:focus-within {
-          border: 2px solid #005fff;
+          border: transparent;
         }
         
         .str-chat__messaging-input > *:not(:first-of-type) {
@@ -117,7 +148,7 @@ const MessagingInput = () => {
         }
         
         .str-chat.dark .str-chat__messaging-input .str-chat__textarea textarea {
-          background: #323437;
+          background: transparent;
           border: 1px solid rgba(0, 0, 0, 0.16);
           color: rgba(255, 255, 255, 0.9);
         }
@@ -129,7 +160,7 @@ const MessagingInput = () => {
         }
         
         .messaging-input__button {
-          opacity: 0.5;
+          opacity: 0.8;
           cursor: pointer;
           padding: 0 4px;
           transition: opacity 0.2s ease-in-out;
@@ -145,7 +176,7 @@ const MessagingInput = () => {
         }
         
         .messaging-input__button:hover svg path {
-          fill: #005fff !important;
+          fill: #BF7AF0 !important;
         }
         
         .str-chat__input--emojipicker {
@@ -263,47 +294,67 @@ const MessagingInput = () => {
         }
         `}</style>
       <div className="str-chat__messaging-input">
-        <ImageDropzone
-          accept={acceptedFiles}
-          handleFiles={messageInput.uploadNewFiles}
-          multiple={multipleUploads}
-          disabled={
-            (maxNumberOfFiles !== undefined &&
-              messageInput.numberOfUploads >= maxNumberOfFiles) ||
-            giphyState
-          }
-        >
-          <UploadsPreview />
-          <div className="messaging-input__container">
-            <div
-              className="messaging-input__button emoji-button"
-              role="button"
-              aria-roledescription="button"
-              onClick={messageInput.openEmojiPicker}
-              ref={messageInput.emojiPickerRef}
-            >
-              <EmojiIcon />
-            </div>
-            <div className="messaging-input__input-wrapper">
-              {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
+        <div className="w-full">
+          <ImageDropzone
+            accept={acceptedFiles}
+            handleFiles={messageInput.uploadNewFiles}
+            multiple={multipleUploads}
+            disabled={
+              (maxNumberOfFiles !== undefined &&
+                messageInput.numberOfUploads >= maxNumberOfFiles) ||
+              giphyState
+            }
+          >
+            <UploadsPreview />
+            <div className="messaging-input__container">
+              <div
+                className="messaging-input__button emoji-button"
+                role="button"
+                aria-roledescription="button"
+                onClick={messageInput.openEmojiPicker}
+                ref={messageInput.emojiPickerRef}
+              >
+                <div className="pt-[9px]">
+                  <EmojiIcon />
+                </div>
+              </div>
+              <div className="messaging-input__input-wrapper">
+                {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
 
-              <ChatAutoComplete
-                onChange={onChange}
-                rows={1}
-                placeholder="Send a message"
-              />
+                <ChatAutoComplete
+                  onChange={onChange}
+                  rows={3}
+                  placeholder="Send a message"
+                />
+              </div>
             </div>
+          </ImageDropzone>
+          <EmojiPicker />
+        </div>
+
+        <div className="flex w-full items-center justify-between border-t border-[#2C282D] py-3 pr-5">
+          <form>
+            <CustomMediaInput
+              activeMedia={activeMedia}
+              onMediaChange={onMediaChange}
+            />
+            {hasMedia || hasVideo || hasVault || (hasPrice && <div></div>)}
+            {/* TODO: upper line is only to pass es lint, i will continue my work on the next branch for these functionalities */}
+          </form>
+          <div>
             <div
               className="messaging-input__button"
               role="button"
               aria-roledescription="button"
               onClick={messageInput.handleSubmit}
             >
-              <SendIcon />
+              {/* <SendIcon /> */}
+              <button className="cursor-pointer gap-[10px] rounded-[50px] bg-[#2C282D] px-[18px] py-[10px] text-white">
+                Send message
+              </button>
             </div>
           </div>
-        </ImageDropzone>
-        <EmojiPicker />
+        </div>
       </div>
     </div>
   )
