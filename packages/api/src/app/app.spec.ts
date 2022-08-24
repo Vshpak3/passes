@@ -7,6 +7,7 @@ import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import request from 'supertest'
 
 import { AppModule } from '../app.module'
+import { DatabaseModule } from '../database/database.module'
 import { getDatabaseProviderToken } from '../database/database.provider'
 import { contextNames } from '../database/mikro-orm.options'
 
@@ -32,6 +33,11 @@ describe('App e2e', () => {
         // Needed so the OnApplicationShutdown for MikroORM doesn't break app.close()
         .useValue({ close: () => undefined }),
     )
+
+    // Mock database module onModuleInit function
+    moduleBuilder
+      .overrideProvider(DatabaseModule)
+      .useValue({ onModuleInit: () => undefined })
 
     const moduleFixture = await moduleBuilder.compile()
     app = moduleFixture.createNestApplication()
