@@ -14,7 +14,6 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { GetContentDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
-import { ContentPostEntity } from '../content/entities/content-post.entity'
 import {
   PurchasePostCallbackInput,
   TipPostCallbackInput,
@@ -90,7 +89,7 @@ export class PostService {
             post_id: postId,
           }
 
-          await trx(ContentPostEntity.table).insert(contentPost)
+          await trx('content_post').insert(contentPost)
         }
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
@@ -114,7 +113,7 @@ export class PostService {
 
   async findOne(id: string, userId?: string): Promise<GetPostDto> {
     const postDbResult = await this.dbReader(PostEntity.table)
-      .leftJoin(ContentPostEntity.table, 'content_post.post_id', 'post.id')
+      .leftJoin('content_post', 'content_post.post_id', 'post.id')
       .leftJoin(ContentEntity.table, 'content.id', 'content_post.post_id')
       .select(
         'post.id',

@@ -17,5 +17,5 @@ export class BatchMessageEntity extends BaseEntity {
   text: string
 
   @Property()
-  lastProcessed?: ListMemberEntity
+  lastProcessedId?: ListMemberEntity
 }

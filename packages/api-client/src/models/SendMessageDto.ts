@@ -56,6 +56,12 @@ export interface SendMessageDto {
      * @memberof SendMessageDto
      */
     payinMethod?: PayinMethodDto;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SendMessageDto
+     */
+    content: Array<string>;
 }
 
 export function SendMessageDtoFromJSON(json: any): SendMessageDto {
@@ -73,6 +79,7 @@ export function SendMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
+        'content': json['content'],
     };
 }
 
@@ -90,6 +97,7 @@ export function SendMessageDtoToJSON(value?: SendMessageDto | null): any {
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
+        'content': value.content,
     };
 }
 

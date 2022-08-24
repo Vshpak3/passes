@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   Injectable,
   InternalServerErrorException,
@@ -14,7 +16,6 @@ import { GetContentDto } from './dto/get-content.dto'
 import { UpdateContentDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentMessageEntity } from './entities/content-message.entity'
-import { ContentPostEntity } from './entities/content-post.entity'
 
 @Injectable()
 export class ContentService {
@@ -96,9 +97,9 @@ export class ContentService {
       case VaultCategory.POSTS:
         query = query
           .innerJoin(
-            ContentPostEntity.table,
+            'content_post',
             `${ContentEntity.table}.id`,
-            `${ContentPostEntity.table}.content_id`,
+            'content_post.content_id',
           )
           .select(['*', `${ContentEntity.table}.id`])
         break
@@ -111,12 +112,12 @@ export class ContentService {
             `${ContentMessageEntity.table}.content_id`,
           )
           .leftJoin(
-            ContentPostEntity.table,
+            'content_post',
             `${ContentEntity.table}.id`,
-            `${ContentPostEntity.table}.content_id`,
+            'content_post.content_id',
           )
           .andWhere(`${ContentMessageEntity.table}.content_id`, null)
-          .andWhere(`${ContentPostEntity.table}.content_id`, null)
+          .andWhere('content_post.content_id', null)
           .select(['*', `${ContentEntity.table}.id`])
         break
 

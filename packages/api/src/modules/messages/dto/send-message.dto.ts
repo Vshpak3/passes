@@ -17,4 +17,7 @@ export class SendMessageDto {
 
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto
+
+  @ApiProperty()
+  content: string[]
 }

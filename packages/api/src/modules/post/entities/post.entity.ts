@@ -1,12 +1,23 @@
-import { Entity, ManyToOne, Property, types } from '@mikro-orm/core'
+import {
+  Collection,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  Property,
+  types,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { ContentEntity } from '../../content/entities/content.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'post' })
 export class PostEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
+
+  @ManyToMany(() => ContentEntity, (content) => content.post)
+  content = new Collection<ContentEntity>(this)
 
   @Property({ length: 400 })
   text: string

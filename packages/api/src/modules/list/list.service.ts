@@ -69,7 +69,9 @@ export class ListService {
         user_id: userId,
         name: createListDto.name,
       })
-      await trx(ListMemberEntity.table).insert(listMemberRecords)
+      if (listMemberRecords.length != 0) {
+        await trx(ListMemberEntity.table).insert(listMemberRecords)
+      }
     })
 
     return new GetListDto(
@@ -78,7 +80,7 @@ export class ListService {
       followResult.map((followResult) => {
         return new GetListMemberDto(followResult.user_id, followResult.username)
       }),
-      0,
+      listMemberRecords.length,
     )
   }
 

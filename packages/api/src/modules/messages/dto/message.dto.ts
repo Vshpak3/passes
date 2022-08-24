@@ -11,6 +11,9 @@ export class MessageDto {
   attachments: any[]
 
   @ApiProperty()
+  content: string[]
+
+  @ApiProperty()
   channelId: string
 
   @ApiPropertyOptional()
@@ -19,13 +22,21 @@ export class MessageDto {
   @ApiPropertyOptional()
   created_at?: number
 
-  constructor(message) {
-    if (message) {
-      this.id = message.id
-      this.text = message.test
-      this.attachments = JSON.parse(message.attachments)
-      this.channelId = message.channel_id
-      this.tipAmount = message.tip_amount
-    }
+  constructor(
+    text: string,
+    attachments: any[],
+    channelId: string,
+    content: string[],
+    tipAmount?: number,
+    created_at?: number,
+    id?: string,
+  ) {
+    this.text = text
+    this.attachments = attachments
+    this.content = content
+    this.channelId = channelId
+    this.tipAmount = tipAmount
+    this.created_at = created_at
+    this.id = id
   }
 }

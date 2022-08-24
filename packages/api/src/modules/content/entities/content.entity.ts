@@ -1,6 +1,7 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { ListEntity } from '../../list/entities/list.entity'
 import { PostEntity } from '../../post/entities/post.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
@@ -9,7 +10,7 @@ export class ContentEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
 
-  @ManyToOne()
+  @ManyToMany()
   post: PostEntity
 
   @Property({ length: 255 })
@@ -17,4 +18,7 @@ export class ContentEntity extends BaseEntity {
 
   @Property({ length: 255 })
   contentType: string
+
+  @ManyToMany()
+  list: ListEntity
 }

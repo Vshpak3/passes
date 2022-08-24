@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
   forwardRef,
@@ -16,6 +18,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { ContentEntity } from '../content/entities/content.entity'
 import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
+import { ContentMessageEntity } from '../content/entities/content-message.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
@@ -34,6 +37,7 @@ import { ChannelStatEntity } from './entities/channel-stat.entity'
 import { TippedMessageEntity } from './entities/tipped-message.entity'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
+const BATCH_MESSAGE_CHUNK_SIZE = 500
 
 @Injectable()
 export class MessagesService {
@@ -127,7 +131,7 @@ export class MessagesService {
     userId: string,
     createBatchMessageDto: CreateBatchMessageDto,
   ): Promise<void> {
-    const listResult = this.dbReader(ListEntity.table)
+    const listResult = await this.dbReader(ListEntity.table)
       .select('list.id')
       .where('list.user_id', userId)
       .where('list.id', createBatchMessageDto.list)
@@ -136,13 +140,28 @@ export class MessagesService {
       throw new NotFoundException('list not found')
     }
 
-    const contentResult = this.dbReader(ContentEntity.table)
-      .select('content.id')
-      .where('content.user_id', userId)
-      .where('content.id', createBatchMessageDto.content)
+    if (createBatchMessageDto.content != undefined) {
+      const contentListResult = await this.dbReader('content_list')
+        .select('content_list.content_entity_id')
+        .where('content_list.list_entity_id', createBatchMessageDto.list)
+        .whereIn(
+          'content_list.content_entity_id',
+          createBatchMessageDto.content,
+        )
+        .limit(1)
+      if (contentListResult.length > 0) {
+        throw new BadRequestException(
+          'content has already been sent to this list',
+        )
+      }
+      const contentResult = await this.dbReader(ContentEntity.table)
+        .select('content.id')
+        .where('content.user_id', userId)
+        .whereIn('content.id', createBatchMessageDto.content)
 
-    if (contentResult[0] == undefined) {
-      throw new NotFoundException('content not found')
+      if (contentResult.length != createBatchMessageDto.content.length) {
+        throw new NotFoundException('content not found')
+      }
     }
 
     const batchMessageId = v4()
@@ -164,6 +183,10 @@ export class MessagesService {
               content_id: createBatchMessageDto.content[i],
               batch_message_id: batchMessageId,
             })
+            await trx('content_list').insert({
+              content_entity_id: createBatchMessageDto.content[i],
+              list_entity_id: createBatchMessageDto.list,
+            })
           }
         }
       })
@@ -171,6 +194,105 @@ export class MessagesService {
         this.logger.error(err)
         throw new InternalServerErrorException()
       })
+  }
+
+  async getBatchMessagesToBeProcessed(): Promise<any[]> {
+    return await this.dbReader(BatchMessageEntity.table)
+      .select('batch_message.id', 'batch_message.last_processed_id')
+      .where('batch_message.last_processed_id', null)
+      .orWhereNot(
+        'batch_message.last_processed_id',
+        'ffffffff-ffff-ffff-ffff-ffffffffffff',
+      )
+  }
+
+  async processBatchMessageChunk(
+    batchMessageId: string,
+    lastProcessed: string | null,
+  ): Promise<void> {
+    const batchMessageListMembersQuery = this.dbReader(BatchMessageEntity.table)
+      .innerJoin('list', 'list.id', 'batch_message.list_id')
+      .innerJoin('list_member', 'list_member.list_id', 'list.id')
+      .select(
+        'batch_message.id',
+        'batch_message.text',
+        'batch_message.last_processed_id',
+        this.dbReader.raw('batch_message.user_id as sender'),
+        this.dbReader.raw('list_member.id as list_member_id'),
+        this.dbReader.raw('list_member.user_id as recipient'),
+      )
+      .where('batch_message.id', batchMessageId)
+
+    if (lastProcessed != null) {
+      batchMessageListMembersQuery.where(
+        this.dbReader.raw('list_member.id > batch_message.last_processed_id'),
+      )
+    }
+
+    const batchMessageListMembers = await batchMessageListMembersQuery
+      .orderBy('list_member.id', 'asc')
+      .limit(BATCH_MESSAGE_CHUNK_SIZE)
+
+    if (batchMessageListMembers.length == 0) {
+      await this.dbWriter(BatchMessageEntity.table)
+        .update(
+          'batch_message.last_processed_id',
+          'ffffffff-ffff-ffff-ffff-ffffffffffff',
+        )
+        .where('batch_message.id', batchMessageId)
+      return
+    }
+
+    const batchMessageContentResult = await this.dbReader(
+      BatchMessageEntity.table,
+    )
+      .innerJoin(
+        'content_batch_message',
+        'content_batch_message.batch_message_id',
+        'batch_message.id',
+      )
+      .select('content_batch_message.content_id')
+      .where('batch_message.id', batchMessageId)
+    const content = batchMessageContentResult.map((batchMessageContent) => {
+      return batchMessageContent.content_id
+    })
+
+    for (let i = 0; i < batchMessageListMembers.length; i++) {
+      await this.streamClient.upsertUser({
+        id: batchMessageListMembers[i].recipient,
+      })
+      const channel = this.streamClient.channel('messaging', {
+        members: [
+          batchMessageListMembers[i].sender,
+          batchMessageListMembers[i].recipient,
+        ],
+        created_by_id: batchMessageListMembers[i].sender,
+      })
+      // create channel
+      const createResponse = await channel.create()
+      try {
+        await this.sendMessage(
+          batchMessageListMembers[i].sender,
+          new MessageDto(
+            batchMessageListMembers[i].text,
+            [],
+            createResponse.channel.id,
+            content,
+          ),
+        )
+      } catch (err) {
+        this.logger.info(
+          `error sending message to recipient ${batchMessageListMembers[i].recipient} as part of batch message ${batchMessageId}`,
+          err,
+        )
+      }
+      await this.dbWriter(BatchMessageEntity.table)
+        .update(
+          'batch_message.last_processed_id',
+          batchMessageListMembers[i].list_member_id,
+        )
+        .where('batch_message.id', batchMessageId)
+    }
   }
 
   async registerSendMessage(userId: string, sendMessageDto: SendMessageDto) {
@@ -250,6 +372,44 @@ export class MessagesService {
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
     )
+    const membersResponse = await channel.queryMembers({})
+    let otherUserId: string | undefined = undefined
+    for (const i in membersResponse.members) {
+      if (
+        membersResponse.members[i].user_id != undefined &&
+        membersResponse.members[i].user_id != userId
+      ) {
+        otherUserId = membersResponse.members[i].user_id
+      }
+    }
+    if (sendMessageDto.content.length > 0) {
+      const contentMessageResult = await this.dbReader(
+        ContentMessageEntity.table,
+      )
+        .select('content_message.id')
+        .whereIn('content_message.content_id', sendMessageDto.content)
+        .where('content_message.recipient_id', otherUserId)
+      if (contentMessageResult[0] != undefined) {
+        throw new BadRequestException(
+          'content has already been sent to recipient',
+        )
+      }
+
+      const messageId = v4()
+      const contentMessageRecords: Array<any> = []
+      for (let i = 0; i < sendMessageDto.content.length; i++) {
+        contentMessageRecords.push({
+          id: v4(),
+          content_id: sendMessageDto.content[i],
+          message_id: messageId,
+          recipient_id: otherUserId,
+          sender_id: userId,
+        })
+      }
+      await this.dbWriter(ContentMessageEntity.table).insert(
+        contentMessageRecords,
+      )
+    }
 
     const messageId = v4()
     const response = await channel.sendMessage({
@@ -258,6 +418,7 @@ export class MessagesService {
       user_id: userId,
       tipAmount:
         sendMessageDto.tipAmount === 0 ? undefined : sendMessageDto.tipAmount,
+      creatorContent: sendMessageDto.content.join(','),
     })
     if (tippedMessageId) {
       await this.dbWriter(TippedMessageEntity.table)
@@ -310,7 +471,16 @@ export class MessagesService {
           pending: true,
         }),
       )
-    ).map((message) => new MessageDto(message))
+    ).map(
+      (message) =>
+        new MessageDto(
+          message.text,
+          JSON.parse(message.attachments),
+          message.channel_id,
+          [],
+          message.tip_amount,
+        ),
+    )
   }
 
   async getCompletedTippedMessages(userId: string) {
@@ -321,7 +491,16 @@ export class MessagesService {
           pending: false,
         }),
       )
-    ).map((message) => new MessageDto(message))
+    ).map(
+      (message) =>
+        new MessageDto(
+          message.text,
+          JSON.parse(message.attachments),
+          message.channel_id,
+          [],
+          message.tip_amount,
+        ),
+    )
   }
 
   async getChannelsStats(userId: string) {
