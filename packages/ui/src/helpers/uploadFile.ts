@@ -4,7 +4,7 @@ import { wrapApi } from "./wrapApi"
 
 const api = wrapApi(ContentApi)
 
-export const uploadFiles = async (
+export const uploadFile = async (
   file: File,
   folder: "uploads" | "profile" | "nft" = "uploads"
 ) => {

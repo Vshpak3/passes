@@ -8,11 +8,10 @@ import Passes from "src/components/pages/profile/passes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import getConnection from "src/helpers/demo"
-import { uploadFiles } from "src/helpers/uploadFile"
+import { uploadFile } from "src/helpers/uploadFile"
+import { wrapApi } from "src/helpers/wrapApi"
 import { useCreatorProfile, usePasses, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import { wrapApi } from "../helpers/wrapApi"
 
 const mockCreator = {
   id: "@drachnik",
@@ -128,7 +127,7 @@ const Username = (props: GetProfileDto) => {
       [profileImage, profileCoverImage].map((files) => {
         if (!files?.length) return Promise.resolve(undefined)
         const file = files[0]
-        return uploadFiles(file, "profile")
+        return uploadFile(file, "profile")
       })
     )
     const newValues = { ...rest }
@@ -141,9 +140,9 @@ const Username = (props: GetProfileDto) => {
     await api.profileUpdate({
       id: props.id,
       updateProfileDto: {
-        profileImageUrl,
-        profileCoverImageUrl,
-        ...rest
+        ...rest,
+        profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
+        profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
       }
     })
     setEditProfile(false)

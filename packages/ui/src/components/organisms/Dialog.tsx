@@ -56,7 +56,7 @@ const Dialog = ({
           </Transition.Child>
 
           <div className="fixed inset-0">
-            <div className="flex min-h-full items-center justify-center text-center md:px-4">
+            <div className="flex min-h-full items-center justify-center bg-inherit text-center md:px-4">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -67,13 +67,19 @@ const Dialog = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <HeadlessDialog.Panel className={className}>
-                  <div className="relative flex h-full flex-col justify-between">
+                  <div className="relative flex h-full w-full flex-col justify-between">
                     {title && (
-                      <HeadlessDialog.Title>{title}</HeadlessDialog.Title>
+                      <HeadlessDialog.Title className="z-20">
+                        {title}
+                      </HeadlessDialog.Title>
                     )}
-                    <div className="h-full overflow-y-auto">{children}</div>
+                    <div className="z-10 h-full w-full overflow-y-auto">
+                      {children}
+                    </div>
                     {footer && (
-                      <div className="relative w-full self-end">{footer}</div>
+                      <div className="relative z-20 w-full self-end">
+                        {footer}
+                      </div>
                     )}
                   </div>
                 </HeadlessDialog.Panel>
