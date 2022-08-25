@@ -353,8 +353,8 @@ export class MessagesService {
         userId,
         amount: sendMessageDto.tipAmount,
         payinMethod,
-        callback: PayinCallbackEnum.MESSAGE,
-        callbackInputJSON: JSON.stringify(callbackInput),
+        callback: PayinCallbackEnum.TIPPED_MESSAGE,
+        callbackInputJSON: callbackInput,
         creatorId: otherUser.id,
       })
     } else {

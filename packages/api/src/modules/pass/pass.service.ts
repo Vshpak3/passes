@@ -305,7 +305,7 @@ export class PassService {
       amount,
       payinMethod,
       callback: PayinCallbackEnum.RENEW_NFT_PASS,
-      callbackInputJSON: JSON.stringify(callbackInput),
+      callbackInputJSON: callbackInput,
       creatorId: passHolder.creator_id,
     })
   }
@@ -389,8 +389,11 @@ export class PassService {
       target,
       amount,
       payinMethod,
-      callback: PayinCallbackEnum.CREATE_NFT_PASS,
-      callbackInputJSON: JSON.stringify(callbackInput),
+      callback:
+        pass.type === PassTypeEnum.LIFETIME
+          ? PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS
+          : PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS,
+      callbackInputJSON: callbackInput,
       creatorId: pass.creator_id,
     })
   }

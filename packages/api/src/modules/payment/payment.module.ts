@@ -1,11 +1,12 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { text } from 'body-parser'
 
+import { CreatorStatsModule } from '../creator-stats/creator-stats.module'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
 
 @Module({
-  imports: [],
+  imports: [CreatorStatsModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],

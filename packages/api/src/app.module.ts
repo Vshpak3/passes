@@ -16,6 +16,7 @@ import { CollectionModule } from './modules/collection/collection.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
 import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
+import { CreatorStatsModule } from './modules/creator-stats/creator-stats.module'
 import { EthModule } from './modules/eth/eth.module'
 import { FeedModule } from './modules/feed/feed.module'
 import { FollowModule } from './modules/follow/follow.module'
@@ -60,6 +61,7 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
     DatabaseModule,
     ContentModule,
     CreatorSettingsModule,
+    CreatorStatsModule,
     EthModule,
     FeedModule,
     FollowModule,

@@ -152,7 +152,7 @@ export class PassController {
     type: PayinDataDto,
     description: 'Data for register renew pass was returned',
   })
-  @Get('pay/data/renew')
+  @Post('pay/data/renew')
   async registerRenewPassData(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderDto,

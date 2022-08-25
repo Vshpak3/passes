@@ -9,6 +9,7 @@ export * from './CollectionApi';
 export * from './CommentApi';
 export * from './ContentApi';
 export * from './CreatorSettingsApi';
+export * from './CreatorStatsApi';
 export * from './EthApi';
 export * from './FeedApi';
 export * from './FollowApi';

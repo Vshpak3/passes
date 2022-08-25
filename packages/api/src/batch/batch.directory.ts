@@ -1,5 +1,6 @@
 import { ExampleTask } from '../util/example.batch'
 import { BatchMessageTask } from './batch-message.batch'
+import { CreateEarningHistoryTask } from './create-earning-history.batch'
 import { PayoutCreatorsTask } from './payout-creators.batch'
 import { UpdateSubscriptionsTask } from './update-subscriptions.batch'
 
@@ -9,5 +10,6 @@ export const TaskDirectory = {
   example_task: ExampleTask,
   batch_message_task: BatchMessageTask,
   payout_creators_task: PayoutCreatorsTask,
-  update_subscriptions: UpdateSubscriptionsTask,
+  update_subscriptions_task: UpdateSubscriptionsTask,
+  create_earning_history_task: CreateEarningHistoryTask,
 }

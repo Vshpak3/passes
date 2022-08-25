@@ -97,6 +97,7 @@ export class PostController {
     return this.postService.registerPurchasePost(
       req.user.id,
       createPostAccessDto.postId,
+      createPostAccessDto.fromDM,
       createPostAccessDto.payinMethod,
     )
   }
@@ -107,7 +108,7 @@ export class PostController {
     type: RegisterPayinResponseDto,
     description: 'Data for register purchase post was returned',
   })
-  @Get('pay/data/purchase')
+  @Post('pay/data/purchase')
   async registerPurchasePostData(
     @Req() req: RequestWithUser,
     @Body() createPostAccessDto: CreatePostAccessDto,

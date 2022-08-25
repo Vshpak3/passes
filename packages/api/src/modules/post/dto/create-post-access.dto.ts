@@ -6,6 +6,9 @@ export class CreatePostAccessDto {
   @ApiProperty()
   postId: string
 
+  @ApiProperty()
+  fromDM: boolean
+
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto
 }

@@ -17,7 +17,7 @@ import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
 import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
-import { PayinCallbackInput } from './callback.types'
+import { ExamplePayinCallbackInput } from './callback.types'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
 import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
@@ -523,7 +523,7 @@ export class PaymentController {
       userId: req.user.id,
       amount: 1000,
       callback: PayinCallbackEnum.EXAMPLE,
-      callbackInputJSON: { example: 'asdf' } as PayinCallbackInput,
+      callbackInputJSON: { example: 'asdf' } as ExamplePayinCallbackInput,
       creatorId: req.user.id,
     })
   }

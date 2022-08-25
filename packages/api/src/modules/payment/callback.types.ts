@@ -35,7 +35,7 @@ export class ExamplePayinCallbackInput extends PayinCallbackInput {
 
 export class PayinCallbackOutput {}
 
-export class MessagePayinCallbackOutput extends PayinCallbackOutput {
+export class TippedMessagePayinCallbackOutput extends PayinCallbackOutput {
   userId: string
 }
 

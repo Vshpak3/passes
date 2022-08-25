@@ -8,6 +8,7 @@ apis/CollectionApi.ts
 apis/CommentApi.ts
 apis/ContentApi.ts
 apis/CreatorSettingsApi.ts
+apis/CreatorStatsApi.ts
 apis/EthApi.ts
 apis/FeedApi.ts
 apis/FollowApi.ts
@@ -59,11 +60,13 @@ models/CreateSolNftCollectionDto.ts
 models/CreateSolNftDto.ts
 models/CreateUnauthenticatedWalletDto.ts
 models/CreateWalletDto.ts
+models/CreatorEarningDto.ts
 models/GetChannelDto.ts
 models/GetCollectionDto.ts
 models/GetCommentDto.ts
 models/GetCommentsForPostDto.ts
 models/GetContentDto.ts
+models/GetCreatorEarningsHistoryDto.ts
 models/GetFanDto.ts
 models/GetFeedDto.ts
 models/GetListDto.ts

@@ -17,7 +17,7 @@ async function handleCallback(
 
     const output = await func(
       payin,
-      JSON.parse(payin.callback_input_json) as params[0],
+      payin.callback_input_json as params[0],
       payService,
       db,
     )

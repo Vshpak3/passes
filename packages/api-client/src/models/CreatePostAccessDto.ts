@@ -34,6 +34,12 @@ export interface CreatePostAccessDto {
     postId: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof CreatePostAccessDto
+     */
+    fromDM: boolean;
+    /**
+     * 
      * @type {PayinMethodDto}
      * @memberof CreatePostAccessDto
      */
@@ -51,6 +57,7 @@ export function CreatePostAccessDtoFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'postId': json['postId'],
+        'fromDM': json['fromDM'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
@@ -65,6 +72,7 @@ export function CreatePostAccessDtoToJSON(value?: CreatePostAccessDto | null): a
     return {
         
         'postId': value.postId,
+        'fromDM': value.fromDM,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }

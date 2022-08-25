@@ -5,12 +5,12 @@ import {
   CreateNftPassPayinCallbackInput,
   CreateNftPassPayinCallbackOutput,
   MessagePayinCallbackInput,
-  MessagePayinCallbackOutput,
   PayinCallbackInput,
   PurchasePostCallbackInput,
   PurchasePostCallbackOutput,
   RenewNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackOutput,
+  TippedMessagePayinCallbackOutput,
   TipPostCallbackInput,
   TipPostCallbackOutput,
 } from './callback.types'
@@ -19,15 +19,16 @@ import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { NoPayinMethodError } from './error/payin.error'
 import { PaymentService } from './payment.service'
 
-export const functionMapping = (key) => {
-  switch (key) {
-    case PayinCallbackEnum.MESSAGE:
+export const functionMapping = (payinCallbackEnum: PayinCallbackEnum) => {
+  switch (payinCallbackEnum) {
+    case PayinCallbackEnum.TIPPED_MESSAGE:
       return {
-        success: messageSuccessCallback,
-        failure: messageFailureCallback,
-        creation: messageCreationCallback,
+        success: tippedMessageSuccessCallback,
+        failure: tippedMessageFailureCallback,
+        creation: tippedMessageCreationCallback,
       }
-    case PayinCallbackEnum.CREATE_NFT_PASS:
+    case PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS:
+    case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
       return {
         success: createNftPassSuccessCallback,
         failure: empty,
@@ -45,7 +46,8 @@ export const functionMapping = (key) => {
         failure: empty,
         creation: empty,
       }
-    case PayinCallbackEnum.PURCHASE_POST:
+    case PayinCallbackEnum.PURCHASE_FEED_POST:
+    case PayinCallbackEnum.PURCHASE_DM_POST:
       return {
         success: purchasePostSuccessfulCallback,
         failure: empty,
@@ -70,12 +72,12 @@ const empty = async (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 ) => {}
 
-async function messageSuccessCallback(
+async function tippedMessageSuccessCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<MessagePayinCallbackOutput> {
+): Promise<TippedMessagePayinCallbackOutput> {
   await payService.messagesService.sendMessage(
     input.userId,
     input.sendMessageDto,
@@ -83,24 +85,24 @@ async function messageSuccessCallback(
   return { userId: input.userId }
 }
 
-async function messageFailureCallback(
+async function tippedMessageFailureCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<MessagePayinCallbackOutput> {
+): Promise<TippedMessagePayinCallbackOutput> {
   if (input.tippedMessageId) {
     await payService.messagesService.deleteTippedMessage(input.tippedMessageId)
   }
   return { userId: input.userId }
 }
 
-async function messageCreationCallback(
+async function tippedMessageCreationCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
-): Promise<MessagePayinCallbackOutput> {
+): Promise<TippedMessagePayinCallbackOutput> {
   input.tippedMessageId = await payService.messagesService.createTippedMessage(
     input.userId,
     input.sendMessageDto,

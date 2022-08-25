@@ -276,7 +276,7 @@ export class PostService {
       amount,
       payinMethod,
       callback: PayinCallbackEnum.TIP_POST,
-      callbackInputJSON: JSON.stringify(callbackInput),
+      callbackInputJSON: callbackInput,
       creatorId: post.userId,
     })
   }
@@ -284,6 +284,7 @@ export class PostService {
   async registerPurchasePost(
     userId: string,
     postId: string,
+    fromDM: boolean,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
     const { amount, target, blocked } = await this.registerPurchasePostData(
@@ -312,8 +313,10 @@ export class PostService {
       target,
       amount,
       payinMethod,
-      callback: PayinCallbackEnum.PURCHASE_POST,
-      callbackInputJSON: JSON.stringify(callbackInput),
+      callback: fromDM
+        ? PayinCallbackEnum.PURCHASE_DM_POST
+        : PayinCallbackEnum.PURCHASE_FEED_POST,
+      callbackInputJSON: callbackInput,
       creatorId: post.userId,
     })
   }

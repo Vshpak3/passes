@@ -9,6 +9,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
+import { CreatorStatsService } from '../creator-stats/creator-stats.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { MessagesService } from '../messages/messages.service'
 import { GetPassDto } from '../pass/dto/get-pass.dto'
@@ -113,11 +114,12 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MAX_TIME_BETWEEN_PAYOUTS_MS = 1000 // change to 3 days:  3 * 24 * 60 * 60 * 1000
+const MAX_TIME_BETWEEN_PAYOUTS_MS = 1000 // TODO: change to 3 days:  3 * 24 * 60 * 60 * 1000
 
 const EXPIRING_DURATION_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
 
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
+
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
@@ -135,6 +137,7 @@ export class PaymentService {
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
 
+    private readonly creatorStatsService: CreatorStatsService,
     private moduleRef: ModuleRef,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
@@ -1541,10 +1544,27 @@ export class PaymentService {
             'id',
             'callback',
             'callbackInputJSON',
+            'amount',
+            'payinMethod',
           ]),
         )
         .first()
       await handleSuccesfulCallback(payin, this, this.dbWriter)
+      const creatorShares = await this.dbReader
+        .table(CreatorShareEntity.table)
+        .where('payin_id', payin.id)
+        .select('*')
+
+      await Promise.all(
+        creatorShares.map(
+          async (creatorShare) =>
+            await this.creatorStatsService.handlePayin(
+              creatorShare.creator_id,
+              payin.callback,
+              creatorShare.amount,
+            ),
+        ),
+      )
     }
   }
 
@@ -1638,7 +1658,7 @@ export class PaymentService {
   }
 
   async completePayout(payoutId: string, userId: string): Promise<void> {
-    await this.dbWriter
+    const rows = await this.dbWriter
       .table(PayoutEntity.table)
       .where('id', payoutId)
       .andWhere('user_id', userId)
@@ -1651,6 +1671,14 @@ export class PaymentService {
           payoutStatus: PayoutStatusEnum.SUCCESSFUL,
         }),
       )
+    if (rows == 1) {
+      const payout = await this.dbReader(PayoutEntity.table)
+        .where('id', payoutId)
+        .andWhere('user_id', userId)
+        .select(...PayoutEntity.populate<PayoutEntity>(['id', 'amount']))
+        .first()
+      await this.creatorStatsService.handlePayout(userId, payout.amount)
+    }
   }
 
   async payoutAll(): Promise<void> {
@@ -1680,11 +1708,14 @@ export class PaymentService {
   ): Promise<void> {
     const now = Date.now()
     const checkPayout = await this.dbReader(PayoutEntity.table)
-      .select('UNIX_TIMESTAMP(created_at) as time')
+      .select('created_at')
       .orderBy('created_at', 'desc')
       .limit(1)
       .first()
-    if (checkPayout && checkPayout.time > now - MAX_TIME_BETWEEN_PAYOUTS_MS) {
+    if (
+      checkPayout &&
+      checkPayout.created_at > now - MAX_TIME_BETWEEN_PAYOUTS_MS
+    ) {
       throw new PayoutFrequencyError(
         'Payout created for creator recently, try again later',
       )
@@ -1739,18 +1770,23 @@ export class PaymentService {
         CreatorShareEntity.table + '.amount',
       )
 
-    await Promise.all(
-      creatorShares.map(async (creatorShare) => {
-        await this.dbWriter.transaction(async (trx) => {
+    // no amount of money to payout
+    if (creatorShares.length === 0) {
+      return
+    }
+
+    await this.dbWriter.transaction(async (trx) => {
+      await Promise.all(
+        creatorShares.map(async (creatorShare) => {
           await trx(PayoutEntity.table)
             .increment('amount', creatorShare.amount)
             .where('id', data.id)
           await trx(CreatorShareEntity.table)
             .update('payout_id', data.id)
             .where('id', creatorShare.id)
-        })
-      }),
-    )
+        }),
+      )
+    })
     await this.submitPayout(data.id)
   }
 
@@ -1760,14 +1796,14 @@ export class PaymentService {
    */
   async submitPayout(payout_id: string): Promise<void> {
     const payout = await this.dbReader(PayoutEntity.table)
-      .where(
-        PayoutEntity.toDict<PayoutEntity>({
-          id: payout_id,
-          payoutStatus: PayoutStatusEnum.FAILED,
-        }),
-      )
+      .whereIn('payout_status', [
+        PayoutStatusEnum.FAILED,
+        PayoutStatusEnum.CREATED,
+      ])
+      .andWhere('id', payout_id)
       .select('*')
       .first()
+
     switch (payout.payout_method) {
       case PayoutMethodEnum.CIRCLE_USDC:
         await this.makeCircleBlockchainTransfer(
@@ -1837,30 +1873,6 @@ export class PaymentService {
       count: parseInt(count[0]['count(*)']),
       payouts: payoutsDto,
     }
-  }
-
-  /*
-  -------------------------------------------------------------------------------
-  Earnings Aggregation
-  -------------------------------------------------------------------------------
-  */
-
-  async aggregateAll(): Promise<void> {
-    const creators = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
-      .select('id')
-    creators.forEach(async (creator) => {
-      try {
-        await this.aggregateCreator(creator.id)
-      } catch (e) {
-        this.logger.error(`Error aggregating earnings for ${creator.id}`, e)
-      }
-    })
-  }
-
-  async aggregateCreator(creatorId: string): Promise<void> {
-    this.logger.info(creatorId)
-    this.logger.info('aggregate')
   }
 
   /*

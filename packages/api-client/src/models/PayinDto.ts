@@ -129,10 +129,12 @@ export type PayinDtoPayinStatusEnum = typeof PayinDtoPayinStatusEnum[keyof typeo
  * @export
  */
 export const PayinDtoCallbackEnum = {
-    Message: 'message',
-    CreateNftPass: 'create_nft_pass',
+    TippedMessage: 'tipped_message',
+    CreateNftLifetimePass: 'create_nft_lifetime_pass',
+    CreateNftSubscriptionPass: 'create_nft_subscription_pass',
     RewnewNftPass: 'rewnew_nft_pass',
-    PurchasePost: 'purchase_post',
+    PurchaseFeedPost: 'purchase_feed_post',
+    PurchaseDmPost: 'purchase_dm_post',
     TipPost: 'tip_post',
     Example: 'example'
 } as const;
