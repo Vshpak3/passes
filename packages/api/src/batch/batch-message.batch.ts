@@ -16,6 +16,7 @@ export class BatchMessageTask extends BatchTask {
       )
       if (!lockResult) {
         this.logger.info(`BatchMessageTask locked, skipping`)
+        return
       }
 
       const batchMessages =
@@ -27,8 +28,6 @@ export class BatchMessageTask extends BatchTask {
           batchMessages[i].last_processed_id,
         )
       }
-    } catch (err) {
-      this.logger.error(`BatchMessageTask failed with error`, err)
     } finally {
       await lockService.unlock(BatchMessageTask.toString())
     }

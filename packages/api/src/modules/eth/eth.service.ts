@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
   Inject,
@@ -9,6 +11,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import * as https from 'https'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import * as uuid from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
@@ -21,8 +24,11 @@ import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { ETH_NFT_COLLECTION_EXISTS } from './constants/errors'
 import { CreateEthNftCollectionDto } from './dto/create-eth-nft-collection.dto'
+import { BatchEthWalletRefreshEntity } from './entities/batch-eth-wallet-refresh.entity'
 import { EthNftEntity } from './entities/eth-nft.entity'
 import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
+
+const BATCH_WALLET_REFRESH_CHUNK_SIZE = 500
 
 @Injectable()
 export class EthService {
@@ -64,6 +70,74 @@ export class EthService {
     )
     // TODO: fix return type
     return data as any
+  }
+
+  async getBatchEthWalletRefresh(): Promise<{
+    id: string
+    last_processed_id: string | null
+  }> {
+    const batchEthWalletRefresh = await this.dbReader(
+      BatchEthWalletRefreshEntity.table,
+    )
+      .select(
+        'batch_eth_wallet_refresh.id',
+        'batch_eth_wallet_refresh.last_processed_id',
+      )
+      .where('batch_eth_wallet_refresh.last_processed_id', null)
+      .orWhereNot(
+        'batch_eth_wallet_refresh.last_processed_id',
+        'ffffffff-ffff-ffff-ffff-ffffffffffff',
+      )
+      .first()
+    if (batchEthWalletRefresh) {
+      return batchEthWalletRefresh
+    } else {
+      const batchId = uuid.v4()
+      await this.dbWriter(BatchEthWalletRefreshEntity.table).insert({
+        id: batchId,
+        last_processed_id: null,
+      })
+      return {
+        id: batchId,
+        last_processed_id: null,
+      }
+    }
+  }
+
+  async processBatchWalletRefreshChunk(
+    id: string,
+    lastProcessedId: string | null,
+  ): Promise<void> {
+    const walletsQuery = this.dbReader(WalletEntity.table)
+      .select('wallet.id', 'wallet.user_id')
+      .where('wallet.chain', ChainEnum.ETH)
+    if (lastProcessedId != null) {
+      walletsQuery.where('wallet.id', '>', lastProcessedId)
+    }
+    const wallets = await walletsQuery.limit(BATCH_WALLET_REFRESH_CHUNK_SIZE)
+
+    if (wallets.length == 0) {
+      await this.dbWriter(BatchEthWalletRefreshEntity.table)
+        .update(
+          'batch_eth_wallet_refresh.last_processed_id',
+          'ffffffff-ffff-ffff-ffff-ffffffffffff',
+        )
+        .where('batch_eth_wallet_refresh.id', id)
+      return
+    }
+    for (let i = 0; i < wallets.length; i++) {
+      try {
+        await this.refreshNftsForWallet(wallets[i].user_id, wallets[i].id)
+        await this.dbWriter(BatchEthWalletRefreshEntity.table)
+          .update('batch_eth_wallet_refresh.last_processed_id', wallets[i].id)
+          .where('batch_eth_wallet_refresh.id', id)
+      } catch (err) {
+        this.logger.error(
+          `error refreshing wallet ${wallets[i].id} as part of batch eth wallet refresh ${id}`,
+          err,
+        )
+      }
+    }
   }
 
   // TODO: Refactor to new database setup
