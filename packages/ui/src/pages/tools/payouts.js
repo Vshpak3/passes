@@ -17,8 +17,6 @@ import BankIcon from "../../icons/bank-icon"
 //   totalSupply: string
 // }
 
-const now = new Date()
-
 function getMonths(startDate, endDate) {
   const startMoment = moment(startDate).startOf("month")
   const endMoment = moment(endDate).startOf("month")
@@ -67,14 +65,37 @@ const Payouts = () => {
   const [selectedMonth, setSelectedMonth] = useState(
     moment(new Date()).startOf("month").format("MMMM YYYY")
   )
-  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDate()
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
-  const year = now.getFullYear()
+
+  const selectedfullDate = new Date(selectedMonth)
+  const firstDate = new Date(
+    selectedfullDate.getFullYear(),
+    selectedfullDate.getMonth(),
+    1
+  )
+  const lastDate = new Date(
+    selectedfullDate.getFullYear(),
+    selectedfullDate.getMonth() + 1,
+    0
+  )
+  const firstDay = firstDate.getDate()
+
+  const lastDay = lastDate.getDate()
+  const year = selectedfullDate.getFullYear()
   const { register } = useForm({
     defaultValues: {}
   })
-
-  // const checkIfInDateRange = () => {}
+  const datesInRange = (transactions) => {
+    let tempArray = []
+    for (let i = 0; i < transactions.length; i++) {
+      if (
+        new Date(transactions[i].payoutDate) > firstDate &&
+        new Date(transactions[i].payoutDate) < lastDate
+      ) {
+        tempArray.push(transactions[i])
+      }
+    }
+    return tempArray
+  }
 
   return (
     <div className="mx-auto -mt-[160px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
@@ -198,7 +219,7 @@ const Payouts = () => {
             >
               {arr.map((month) => (
                 <div
-                  key="month"
+                  key={month}
                   onClick={() => setSelectedMonth(month)}
                   className={classNames(
                     "py-1 pl-4 hover:bg-[#2a242b]",
@@ -227,7 +248,7 @@ const Payouts = () => {
           </div>
         </div>
         <div className="">
-          {payoutTransaction.map((transaction, index) => (
+          {datesInRange(payoutTransaction).map((transaction, index) => (
             <div
               key={transaction.buyer}
               className={index % 2 === 0 ? "py-2" : "bg-[#ffff]/30 py-2"}
