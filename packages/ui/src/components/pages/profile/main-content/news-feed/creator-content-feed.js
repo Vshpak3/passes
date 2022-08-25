@@ -4,8 +4,8 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { Post } from "./post"
 
 const mockPost = {
-  likesCount: 1400,
-  commentsCount: 338,
+  numLikes: 1400,
+  numComments: 338,
   sharesCount: 220,
   locked: true,
   price: 32,

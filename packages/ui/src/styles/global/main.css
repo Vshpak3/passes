@@ -301,3 +301,7 @@ i {
   --tw-text-opacity: 1;
   color: rgb(196 197 207 / var(--tw-text-opacity));
 }
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}

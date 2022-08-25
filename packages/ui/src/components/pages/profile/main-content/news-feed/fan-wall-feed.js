@@ -10,8 +10,8 @@ const mockPost = {
     profileImageUrl:
       "https://images.unsplash.com/photo-1582758420652-97455135fb09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
   },
-  likesCount: 1400,
-  commentsCount: 338,
+  numLikes: 1400,
+  numComments: 338,
   sharesCount: 220,
   locked: false,
   price: 32,
@@ -29,8 +29,8 @@ const MOCKED_FANWALL_POSTS = [
       profileImageUrl:
         "https://images.unsplash.com/photo-1535189005916-e5e47dc88316?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3131&q=80"
     },
-    likesCount: 1400,
-    commentsCount: 338,
+    numLikes: 1400,
+    numComments: 338,
     sharesCount: 220,
     locked: false,
     price: 32,
@@ -46,8 +46,8 @@ const MOCKED_FANWALL_POSTS = [
       profileImageUrl:
         "https://images.unsplash.com/photo-1654850900859-be34bd2e217c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     },
-    likesCount: 1400,
-    commentsCount: 338,
+    numLikes: 1400,
+    numComments: 338,
     sharesCount: 220,
     locked: false,
     price: 32,

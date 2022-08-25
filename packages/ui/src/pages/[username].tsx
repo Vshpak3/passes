@@ -66,8 +66,8 @@ const mockCreator = {
   // ],
   posts: [
     {
-      likesCount: 1400,
-      commentsCount: 338,
+      numLikes: 1400,
+      numComments: 338,
       sharesCount: 220,
       locked: true,
       price: 32,
@@ -80,8 +80,8 @@ const mockCreator = {
       ]
     },
     {
-      likesCount: 40,
-      commentsCount: 10,
+      numLikes: 40,
+      numComments: 10,
       sharesCount: 5,
       goal: 100000,
       collectedAmount: 75000,

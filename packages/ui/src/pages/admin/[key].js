@@ -51,8 +51,8 @@ const passesDefaultValue = {
 
 const postsDefaultValue = {
   id: "",
-  likesCount: 0,
-  commentsCount: 0,
+  numLikes: 0,
+  numComments: 0,
   sharesCount: 0,
   locked: false,
   price: 0,
@@ -665,14 +665,14 @@ const Admin = () => {
                           <FormInput
                             type="number"
                             register={register}
-                            name={`posts.${index}.likesCount`}
+                            name={`posts.${index}.numLikes`}
                             label="Likes"
                             className="mb-2 bg-transparent"
                           />
                           <FormInput
                             type="number"
                             register={register}
-                            name={`posts.${index}.commentsCount`}
+                            name={`posts.${index}.numComments`}
                             label="Comments"
                             className="mb-2 bg-transparent"
                           />

@@ -4722,6 +4722,7 @@ __metadata:
     react-input-mask: 2.0.4
     react-modal: 3.15.1
     react-parallax-tilt: 1.7.52
+    react-timeago: 7.1.0
     sharp: 0.30.7
     stream-chat: 6.8.0
     stream-chat-react: 9.4.1
@@ -16425,6 +16426,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 87360d4392276d4e87511a73be9b0634b8bcce8f4f648cf659334d993f25ad3d4062f468f1e1944fc614123acae4299580aad00b760c6a96cec190e076f847f5
+  languageName: node
+  linkType: hard
+
+"react-timeago@npm:7.1.0":
+  version: 7.1.0
+  resolution: "react-timeago@npm:7.1.0"
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: cfc3959701f657f7d2766e8ef1a8c2f8b87fdb6e6aa60812dd9d6b68d096740f80976e0a69e08c1bd07f5514f6c82ed01905afea3bb08941dbb9cc49136810d9
   languageName: node
   linkType: hard
 

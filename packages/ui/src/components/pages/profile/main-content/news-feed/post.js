@@ -1,3 +1,4 @@
+import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
@@ -8,10 +9,13 @@ import PinnedActive from "public/icons/post-pinned-active.svg"
 import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
-import React, { useState } from "react"
-import { PostUnlockButton } from "src/components/atoms"
+import React, { useCallback, useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import TimeAgo from "react-timeago"
+import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
+import { wrapApi } from "src/helpers/wrapApi"
 export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.locked)
   const [postPinned, setPostPinned] = useState(false)
@@ -34,7 +38,7 @@ export const Post = ({ profile, post }) => {
           setPostUnlocked={setPostUnlocked}
         />
       )}
-      <PostEngagement post={post} />
+      <PostEngagement post={post} postUnlocked={postUnlocked} />
       {post.fundraiser && <FundraiserTab post={post} />}
     </FormContainer>
   )
@@ -140,39 +144,216 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
   </div>
 )
 
-export const PostEngagement = ({ post }) => (
-  <div className="flex w-full items-center justify-end">
-    <div className="flex w-full items-center justify-between">
-      <div className="flex items-start gap-[45px] p-0">
-        <div className="flex cursor-pointer items-center gap-[5px] p-0">
-          <HeartIcon />
-          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-            {compactNumberFormatter(post.likesCount)}
-          </span>
-        </div>
-        <div className="flex cursor-pointer items-center gap-[5px] p-0">
-          <MessagesIcon />
-          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-            {compactNumberFormatter(post.commentsCount)}
-          </span>
-        </div>
-        <div className="flex cursor-pointer items-center gap-[5px] p-0">
-          <ShareIcon />
-          <span className="text-[12px] leading-[15px] text-[#A09FA6]">
-            {compactNumberFormatter(post.sharesCount)}
-          </span>
-        </div>
-      </div>
-      {post.price > 0 && (
-        <div className="flex items-center gap-2 pr-2">
-          <CostIcon />
-          <span className="text-[16px] leading-[25px]">{post.price}</span>
-        </div>
-      )}
-    </div>
-  </div>
-)
+export const PostEngagement = ({ post, postUnlocked = false }) => {
+  const [numLikes, setNumLikes] = useState(post.numLikes)
+  const [numComments, setNumComments] = useState(post.numComments)
+  const [liked, setLiked] = useState(post.hasLiked)
+  const [showCommentSection, setShowCommentSection] = useState(false)
 
+  async function updateEngagement() {
+    try {
+      const api = wrapApi(PostApi)
+      const response = await api.postFindOne({
+        id: post.id
+      })
+
+      setNumLikes(response.numLikes)
+      setNumComments(response.numComments)
+      setLiked(response.hasLiked)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function likePost() {
+    try {
+      if (!postUnlocked) return
+
+      const api = wrapApi(LikeApi)
+
+      if (!liked)
+        await api.likeCreate({
+          id: post.id
+        })
+      else
+        await api.likeDelete({
+          id: post.id
+        })
+
+      setTimeout(updateEngagement, 1000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center justify-end">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-start gap-[45px] p-0">
+          <div
+            onClick={likePost}
+            className="flex cursor-pointer items-center gap-[5px] p-0"
+          >
+            <HeartIcon fill={liked ? "#A09FA6" : "none"} />
+            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+              {compactNumberFormatter(numLikes)}
+            </span>
+          </div>
+          <div
+            onClick={() => {
+              postUnlocked && setShowCommentSection((prev) => !prev)
+            }}
+            className="flex cursor-pointer items-center gap-[5px] p-0"
+          >
+            <MessagesIcon />
+            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+              {compactNumberFormatter(numComments)}
+            </span>
+          </div>
+          <div className="flex cursor-pointer items-center gap-[5px] p-0">
+            <ShareIcon />
+            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+              {compactNumberFormatter(post.sharesCount)}
+            </span>
+          </div>
+        </div>
+        {post.price > 0 && (
+          <div className="flex items-center gap-2 pr-2">
+            <CostIcon />
+            <span className="text-[16px] leading-[25px]">{post.price}</span>
+          </div>
+        )}
+      </div>
+      <CommentSection
+        postId={post.id}
+        visible={showCommentSection}
+        updateEngagement={updateEngagement}
+      />
+    </div>
+  )
+}
+
+export const CommentSection = ({
+  postId = "",
+  visible = false,
+  updateEngagement
+}) => {
+  const [isLoadingComments, setLoadingComments] = useState(false)
+  const [comments, setComments] = useState([])
+  const { register, getValues, setValue } = useForm()
+
+  const getComments = useCallback(async () => {
+    try {
+      setLoadingComments(true)
+      const api = wrapApi(CommentApi)
+
+      const response = await api.commentFindCommentsForPost({
+        id: postId
+      })
+
+      setComments(response.comments)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoadingComments(false)
+    }
+  }, [postId])
+
+  useEffect(() => {
+    if (visible) {
+      getComments()
+    }
+  }, [getComments, visible])
+
+  async function postComment() {
+    try {
+      const content = getValues("comment")
+      if (content.length === 0) return
+
+      const api = wrapApi(CommentApi)
+
+      const response = await api.commentCreate({
+        createCommentDto: {
+          content,
+          postId: postId
+        }
+      })
+
+      setComments((prev) => [...prev, { ...response, createdAt: new Date() }])
+      setValue("comment", "")
+      setTimeout(updateEngagement, 1000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div
+      className={classNames(
+        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10",
+        !visible && "hidden"
+      )}
+    >
+      {isLoadingComments ? (
+        <div className="flex w-full items-center justify-center">
+          <span className="h-7 w-7 animate-spin rounded-[50%] border-4 border-t-4 border-gray-400 border-t-white" />
+        </div>
+      ) : (
+        comments.map((comment) => (
+          <Comment comment={comment} key={comment.commentId} />
+        ))
+      )}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          postComment()
+        }}
+        className="flex w-full flex-row items-center pt-5"
+      >
+        <FormInput
+          className="hide-scroll flex flex-1 resize-none overflow-auto overflow-y-visible rounded-lg bg-black/10 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
+          type="text-area"
+          name="comment"
+          placeholder="Type a comment..."
+          register={register}
+        />
+        <Button
+          tag="button"
+          type="submit"
+          variant="pink"
+          className="ml-4 h-[40px] w-[10%] min-w-[70px]"
+        >
+          Post
+        </Button>
+      </form>
+    </div>
+  )
+}
+
+export const Comment = ({ comment }) => {
+  return (
+    <div className="flex w-full flex-row border-b-[1px] border-b-gray-300/10 py-2">
+      <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full bg-red-300" />
+      <TimeAgo
+        className="absolute right-5 text-[12px] text-gray-300/60"
+        date={comment?.createdAt}
+        live={false}
+      />
+      <div className="ml-4 flex max-w-[100%] flex-col flex-wrap">
+        <Text fontSize={14} className="mb-1 font-bold">
+          {comment?.commenterUsername ?? "Fan"}
+        </Text>
+        <Text
+          fontSize={14}
+          className="break-normal break-all text-start font-light"
+        >
+          {comment?.content}
+        </Text>
+      </div>
+    </div>
+  )
+}
 export const FundraiserMedia = ({ images }) => {
   const mediaGridLayout = (length, index) => {
     switch (length) {
