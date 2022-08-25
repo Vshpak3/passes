@@ -15,6 +15,7 @@ import DefaultHead from "./Head"
 import Input from "./Input"
 import Label from "./Label"
 import Link from "./Link"
+import MonogramIcon from "./MonogramIcon"
 import Select from "./Select"
 import Separator from "./Separator"
 import Text from "./Text"
@@ -34,6 +35,7 @@ export {
   Input,
   Label,
   Link,
+  MonogramIcon,
   PassesPinkButton,
   PassesPurpleButton,
   PostUnlockButton,
