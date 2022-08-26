@@ -1,0 +1,1 @@
+export const POST_CONTENT_LENGTH = 500

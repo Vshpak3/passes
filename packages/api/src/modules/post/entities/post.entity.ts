@@ -10,6 +10,7 @@ import {
 import { BaseEntity } from '../../../database/base-entity'
 import { ContentEntity } from '../../content/entities/content.entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import { POST_CONTENT_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'post' })
 export class PostEntity extends BaseEntity {
@@ -19,7 +20,7 @@ export class PostEntity extends BaseEntity {
   @ManyToMany(() => ContentEntity, (content) => content.post)
   content = new Collection<ContentEntity>(this)
 
-  @Property({ length: 400 })
+  @Property({ length: POST_CONTENT_LENGTH })
   text: string
 
   @Property({ default: 0 })

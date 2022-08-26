@@ -5,11 +5,17 @@ import {
   IsPhoneNumber,
   Length,
   Matches,
+  MaxLength,
   Validate,
 } from 'class-validator'
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
+import {
+  USER_DISPLAY_NAME_LENGTH,
+  USER_PHONE_NUMBER_LENGTH,
+  USER_USERNAME_LENGTH,
+} from '../constant/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 
 export class CreateUserDto {
@@ -17,7 +23,7 @@ export class CreateUserDto {
   @ApiProperty()
   email: string
 
-  @Length(1, 30)
+  @Length(1, USER_USERNAME_LENGTH)
   @ApiProperty()
   @Matches(USERNAME_REGEX, undefined, {
     message:
@@ -30,7 +36,7 @@ export class CreateUserDto {
   @Validate(IsValidCountryCode)
   countryCode?: string
 
-  @Length(1, 50)
+  @Length(1, USER_DISPLAY_NAME_LENGTH)
   @ApiProperty()
   displayName?: string
 
@@ -39,6 +45,7 @@ export class CreateUserDto {
   birthday?: string
 
   @IsPhoneNumber()
+  @MaxLength(USER_PHONE_NUMBER_LENGTH)
   @ApiPropertyOptional()
   phoneNumber?: string
 }
