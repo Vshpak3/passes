@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Req } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -28,8 +28,8 @@ export class CreatorStatsController {
     type: [CreatorEarningDto],
     description: 'Historic earnings returned',
   })
-  @Get('balance')
-  async getCircleEncryptionKey(
+  @Post('earnings/historic')
+  async getHistoricEarnings(
     @Req() req: RequestWithUser,
     @Body() getCreatorEarningHistoryDto: GetCreatorEarningsHistoryDto,
   ): Promise<Array<CreatorEarningDto>> {

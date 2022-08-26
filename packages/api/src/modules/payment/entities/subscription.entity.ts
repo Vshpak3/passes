@@ -1,8 +1,13 @@
-import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { PassHolderEntity } from '../../pass/entities/pass-holder.entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import {
+  IP_ADDRESS_LENGTH,
+  SHA256_LENGTH,
+  USD_AMOUNT_TYPE,
+} from '../constants/schema'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardEntity } from './circle-card.entity'
@@ -25,14 +30,14 @@ export class SubscriptionEntity extends BaseEntity {
   @Property()
   chainId?: number
 
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 
   // card specific information
-  @Property({ length: 255 })
+  @Property({ length: IP_ADDRESS_LENGTH })
   ipAddress?: string
 
-  @Property({ length: 255 })
+  @Property({ length: SHA256_LENGTH })
   sessionId?: string
 
   @ManyToOne({ entity: () => PassHolderEntity })

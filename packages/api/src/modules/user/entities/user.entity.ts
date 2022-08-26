@@ -11,7 +11,7 @@ import {
   USER_PASSWORD_HASH_LENGTH,
   USER_PHONE_NUMBER_LENGTH,
   USER_USERNAME_LENGTH,
-} from '../constant/schema'
+} from '../constants/schema'
 
 @Entity({ tableName: 'users' }) // not a good idea to have a table named "user" in mysql
 @Index({ properties: ['oauthId', 'oauthProvider'] })

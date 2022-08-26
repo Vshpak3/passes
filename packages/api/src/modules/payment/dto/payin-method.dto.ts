@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
+import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 
 export class PayinMethodDto {
@@ -11,6 +12,9 @@ export class PayinMethodDto {
 
   @ApiPropertyOptional()
   chainId?: number
+
+  @ApiPropertyOptional({ enum: ChainEnum })
+  chain?: ChainEnum
 
   constructor(payinMethod) {
     if (payinMethod) {

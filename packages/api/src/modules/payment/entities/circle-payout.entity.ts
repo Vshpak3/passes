@@ -8,6 +8,11 @@ import {
 } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import {
+  CIRCLE_ID_LENGTH,
+  CIRCLE_IDEMPOTENCY_KEY_LENGTH,
+  CIRCLE_MONEY_AMOUNT_STRING_LENGTH,
+} from '../constants/schema'
 import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 import { CircleBankEntity } from './circle-bank.entity'
 import { PayoutEntity } from './payout.entity'
@@ -20,18 +25,18 @@ export class CirclePayoutEntity extends BaseEntity {
   @OneToOne({ entity: () => PayoutEntity })
   payout: PayoutEntity
 
-  @Property({ length: 255 })
+  @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()
   idempotencyKey?: string
 
-  @Property({ length: 255 })
+  @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
   circlePayoutId?: string
 
-  @Property({ length: 255 })
+  @Property({ length: CIRCLE_MONEY_AMOUNT_STRING_LENGTH })
   fee?: string
 
-  @Property({ length: 255 })
+  @Property({ length: CIRCLE_MONEY_AMOUNT_STRING_LENGTH })
   amount: string
 
   @Enum(() => CircleAccountStatusEnum)

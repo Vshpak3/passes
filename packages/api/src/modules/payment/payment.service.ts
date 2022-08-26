@@ -22,6 +22,7 @@ import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletDto } from '../wallet/dto/wallet.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -416,7 +417,7 @@ export class PaymentService {
     }
 
     const response = await this.circleConnector.createBank(createBankDto)
-    const data = {
+    const data = CircleBankEntity.toDict<CircleBankEntity>({
       id: v4(),
       user: userId,
       status: response['status'],
@@ -424,10 +425,9 @@ export class PaymentService {
       trackingRef: response['trackingRef'],
       fingerprint: response['fingerprint'],
       circleBankId: response['id'],
-    }
-    await this.dbWriter(CircleBankEntity.table).insert(
-      CircleBankEntity.toDict<CircleBankEntity>(data),
-    )
+      idempotencyKey: createBankDto.idempotencyKey,
+    })
+    await this.dbWriter(CircleBankEntity.table).insert(data)
 
     return {
       id: data.id,
@@ -881,9 +881,7 @@ export class PaymentService {
       method = PayinMethodEnum.PHANTOM_CIRCLE_USDC
     } else {
       chainId =
-        this.CIRCLE_EVM_MAP[this.getBlockchainSelector()][
-          transferDto.source.chain
-        ]
+        this.EVM_MAP[this.getBlockchainSelector()][transferDto.source.chain]
       if (
         transferDto.source.chain === 'ETH' &&
         transferDto.amount.currency === 'ETH'
@@ -1100,7 +1098,7 @@ export class PaymentService {
       .where({ id: payinId })
   }
 
-  CIRCLE_EVM_MAP = {
+  EVM_MAP = {
     mainnet: {
       ETH: 1,
       MATIC: 137,
@@ -1125,8 +1123,12 @@ export class PaymentService {
 
   VALID_PAYOUT_CHAINS = ['ETH', 'SOL', 'MATIC', 'AVAX']
 
-  getBlockchainSelector(): string {
+  getBlockchainSelector() {
     return this.configService.get('blockchain.networks') as string
+  }
+
+  getEvmChainId(chain: ChainEnum) {
+    return this.EVM_MAP[this.getBlockchainSelector()][chain.toUpperCase()]
   }
 
   getEvmChainIdsUSDC(): number[] {
@@ -1154,6 +1156,11 @@ export class PaymentService {
     userId: string,
     payinMethoDto: PayinMethodDto,
   ): Promise<void> {
+    // find mainnet or testnet chainId
+    if (!payinMethoDto.chainId && payinMethoDto.chain) {
+      payinMethoDto.chainId = this.getEvmChainId(payinMethoDto.chain)
+    }
+
     await this.dbWriter(DefaultPayinMethodEntity.table)
       .insert(
         DefaultPayinMethodEntity.toDict<DefaultPayinMethodEntity>({

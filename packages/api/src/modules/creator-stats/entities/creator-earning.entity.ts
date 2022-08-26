@@ -1,13 +1,7 @@
-import {
-  Entity,
-  Enum,
-  ManyToOne,
-  Property,
-  types,
-  Unique,
-} from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
@@ -17,7 +11,7 @@ export class CreatorEarningEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
 
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 
   @Enum(() => EarningTypeEnum)

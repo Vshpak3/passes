@@ -37,6 +37,12 @@ export interface PayinMethodDto {
      * @memberof PayinMethodDto
      */
     chainId?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PayinMethodDto
+     */
+    chain?: PayinMethodDtoChainEnum;
 }
 
 
@@ -52,6 +58,17 @@ export const PayinMethodDtoMethodEnum = {
 } as const;
 export type PayinMethodDtoMethodEnum = typeof PayinMethodDtoMethodEnum[keyof typeof PayinMethodDtoMethodEnum];
 
+/**
+ * @export
+ */
+export const PayinMethodDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type PayinMethodDtoChainEnum = typeof PayinMethodDtoChainEnum[keyof typeof PayinMethodDtoChainEnum];
+
 
 export function PayinMethodDtoFromJSON(json: any): PayinMethodDto {
     return PayinMethodDtoFromJSONTyped(json, false);
@@ -66,6 +83,7 @@ export function PayinMethodDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'method': json['method'],
         'cardId': !exists(json, 'cardId') ? undefined : json['cardId'],
         'chainId': !exists(json, 'chainId') ? undefined : json['chainId'],
+        'chain': !exists(json, 'chain') ? undefined : json['chain'],
     };
 }
 
@@ -81,6 +99,7 @@ export function PayinMethodDtoToJSON(value?: PayinMethodDto | null): any {
         'method': value.method,
         'cardId': value.cardId,
         'chainId': value.chainId,
+        'chain': value.chain,
     };
 }
 

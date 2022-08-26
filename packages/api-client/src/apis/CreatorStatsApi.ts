@@ -23,7 +23,7 @@ import {
     GetCreatorEarningsHistoryDtoToJSON,
 } from '../models';
 
-export interface CreatorStatsGetCircleEncryptionKeyRequest {
+export interface CreatorStatsGetHistoricEarningsRequest {
     getCreatorEarningsHistoryDto: GetCreatorEarningsHistoryDto;
 }
 
@@ -33,11 +33,37 @@ export interface CreatorStatsGetCircleEncryptionKeyRequest {
 export class CreatorStatsApi extends runtime.BaseAPI {
 
     /**
+     * Get balance
+     */
+    async creatorStatsGetBalanceRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatorEarningDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/creator-stats/balance`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatorEarningDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get balance
+     */
+    async creatorStatsGetBalance(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatorEarningDto> {
+        const response = await this.creatorStatsGetBalanceRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get historic earnings
      */
-    async creatorStatsGetCircleEncryptionKeyRaw(requestParameters: CreatorStatsGetCircleEncryptionKeyRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<CreatorEarningDto>>> {
+    async creatorStatsGetHistoricEarningsRaw(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<CreatorEarningDto>>> {
         if (requestParameters.getCreatorEarningsHistoryDto === null || requestParameters.getCreatorEarningsHistoryDto === undefined) {
-            throw new runtime.RequiredError('getCreatorEarningsHistoryDto','Required parameter requestParameters.getCreatorEarningsHistoryDto was null or undefined when calling creatorStatsGetCircleEncryptionKey.');
+            throw new runtime.RequiredError('getCreatorEarningsHistoryDto','Required parameter requestParameters.getCreatorEarningsHistoryDto was null or undefined when calling creatorStatsGetHistoricEarnings.');
         }
 
         const queryParameters: any = {};
@@ -47,8 +73,8 @@ export class CreatorStatsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/creator-stats/balance`,
-            method: 'GET',
+            path: `/api/creator-stats/earnings/historic`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: GetCreatorEarningsHistoryDtoToJSON(requestParameters.getCreatorEarningsHistoryDto),
@@ -60,8 +86,8 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get historic earnings
      */
-    async creatorStatsGetCircleEncryptionKey(requestParameters: CreatorStatsGetCircleEncryptionKeyRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<CreatorEarningDto>> {
-        const response = await this.creatorStatsGetCircleEncryptionKeyRaw(requestParameters, initOverrides);
+    async creatorStatsGetHistoricEarnings(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<CreatorEarningDto>> {
+        const response = await this.creatorStatsGetHistoricEarningsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

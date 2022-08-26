@@ -1,0 +1,1 @@
+export const WALLET_ADDRESS_LENGTH = 64
