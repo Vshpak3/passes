@@ -28,7 +28,7 @@ const AuthSuccess = () => {
       setRefreshToken(refreshToken)
     }
 
-    router.push("/test")
+    router.push("/home")
   }, [router, setAccessToken, setRefreshToken])
 
   if (typeof window === "undefined") {

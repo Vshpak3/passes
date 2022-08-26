@@ -12,7 +12,7 @@ import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
 
 import { RoundedIconButton } from "../components/atoms/Button"
-import { GridTile, GridTileSm } from "../components/molecules/CssGridTiles"
+import { GridTile } from "../components/molecules/CssGridTiles"
 import { wrapApi } from "../helpers/wrapApi"
 
 const LoginPage = () => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
       return
     }
 
-    router.push("/test")
+    router.push("/home")
   }, [router, user])
 
   const handleLoginWithGoogle = async () => {
@@ -75,8 +75,6 @@ const LoginPage = () => {
       if (refreshToken) {
         setRefreshToken(_refreshToken)
       }
-
-      router.push("/test")
     } catch (err) {
       console.log(err, "CATCHED")
     }
@@ -208,7 +206,6 @@ const LoginPage = () => {
               </div>
             </NextLink>
           </Text>
-          <GridTileSm />
         </div>
       </div>
     </div>

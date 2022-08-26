@@ -18,28 +18,3 @@ export const GridTile = () => {
     </div>
   )
 }
-
-export const GridTileSm = () => {
-  return (
-    <div className="fixed -bottom-12 -left-28 flex flex-col gap-[45px] lg:hidden">
-      <div className="flex flex-row gap-[45px]">
-        <CssTile fill />
-        <CssTile fill />
-        <CssTile />
-        <CssTile fill />
-        <CssTile fill />
-        <CssTile />
-        <CssTile fill />
-      </div>
-      <div className="flex flex-row gap-[45px]">
-        <CssTile />
-        <CssTile fill />
-        <CssTile fill />
-        <CssTile />
-        <CssTile fill />
-        <CssTile fill />
-        <CssTile />
-      </div>
-    </div>
-  )
-}

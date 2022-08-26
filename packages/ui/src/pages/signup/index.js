@@ -6,21 +6,40 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { useUser } from "src/hooks"
 
 import { RoundedIconButton } from "../../components/atoms/Button"
-import { GridTile, GridTileSm } from "../../components/molecules/CssGridTiles"
+import { GridTile } from "../../components/molecules/CssGridTiles"
 import { wrapApi } from "../../helpers/wrapApi"
 
 const SignupPage = () => {
   const router = useRouter()
+  const { user, setAccessToken, setRefreshToken } = useUser()
+
   const {
     register,
     handleSubmit,
     watch,
+    getValues,
     formState: { errors }
   } = useForm()
+
+  useEffect(() => {
+    if (!router.isReady || !user?.id) {
+      return
+    }
+
+    router.push(
+      {
+        pathname: "signup/user-info",
+        query: { email: getValues().email }
+      },
+      "signup/user-info"
+    )
+  }, [router, user, getValues])
 
   const onUserRegister = async (email, password) => {
     try {
@@ -33,9 +52,25 @@ const SignupPage = () => {
       const res = await api.localAuthCreateEmailPasswordUser({
         createLocalUserDto
       })
+      const { accessToken, refreshToken } = res
 
-      router.push("signup/user-info")
-      console.log(res, "RESPONSE")
+      if (!res.accessToken) {
+        alert("ERROR: Unexpected payload")
+        return
+      }
+
+      const _accessToken = Array.isArray(accessToken)
+        ? accessToken[0]
+        : accessToken
+      setAccessToken(_accessToken)
+
+      const _refreshToken = Array.isArray(refreshToken)
+        ? refreshToken[0]
+        : refreshToken
+
+      if (refreshToken) {
+        setRefreshToken(_refreshToken)
+      }
     } catch (err) {
       console.log(err, "CATCHED")
     }
@@ -234,7 +269,6 @@ const SignupPage = () => {
               </div>
             </NextLink>
           </Text>
-          <GridTileSm />
         </div>
       </div>
     </div>
