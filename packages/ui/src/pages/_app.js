@@ -1,8 +1,10 @@
 import "src/styles/global/main.css"
 
+import * as snippet from "@segment/snippet"
 // import "../components/messages/MomentMessage.scss"
 import debounce from "lodash.debounce"
 import Router from "next/router"
+import Script from "next/script"
 import nprogress from "nprogress"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -29,9 +31,19 @@ const App = ({ Component, pageProps }) => {
     "Have an awesome day :-)"
   ])
 
+  const loadSegment = () => {
+    return snippet.min({
+      apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY
+    })
+  }
+
   return (
     <Providers Component={Component} pageProps={pageProps}>
       <DefaultHead />
+      <Script
+        dangerouslySetInnerHTML={{ __html: loadSegment() }}
+        id="segmentScript"
+      />
       <DndProvider backend={HTML5Backend}>
         <Component {...pageProps} />
       </DndProvider>
