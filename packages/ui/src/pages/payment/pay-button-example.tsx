@@ -18,7 +18,7 @@ const PayPage = ({ passId }: IPayPage) => {
 
   const submit = async () => {
     return await api.passRegisterCreatePass({
-      createPassHolderDto: {
+      createPassHolderRequestDto: {
         passId: passId || ""
       }
     })
@@ -26,7 +26,7 @@ const PayPage = ({ passId }: IPayPage) => {
 
   const data = async () => {
     return await api.passRegisterCreatePassData({
-      createPassHolderDto: {
+      createPassHolderRequestDto: {
         passId: passId || ""
       }
     })

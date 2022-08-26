@@ -6,20 +6,20 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { GetContentDto } from '../content/dto/get-content.dto'
+import { GetContentResponseDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
-import { GetPostDto } from '../post/dto/get-post.dto'
+import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import {
   USER_IS_NOT_CREATOR,
   USER_NOT_EXIST,
 } from '../profile/constants/errors'
 import { UserEntity } from '../user/entities/user.entity'
-import { GetFeedDto } from './dto/get-feed-dto'
+import { GetFeedResponseDto } from './dto/get-feed-dto'
 
 type ContentLookupByPost = {
-  [postId: number]: GetContentDto[]
+  [postId: number]: GetContentResponseDto[]
 }
 
 @Injectable()
@@ -29,14 +29,14 @@ export class FeedService {
     private readonly dbReader: DatabaseService['knex'],
   ) {}
 
-  async getFeed(userId: string, cursor: string): Promise<GetFeedDto> {
+  async getFeed(userId: string, cursor: string): Promise<GetFeedResponseDto> {
     const following = await this.dbReader(FollowEntity.table)
       .select('creator_id')
       .where('subscriber_id', userId)
       .where('is_active', true)
 
     if (following.length === 0) {
-      return new GetFeedDto([], '')
+      return new GetFeedResponseDto([], '')
     }
 
     const creatorIds: string[] = following.map((f) => f.creator_id)
@@ -62,7 +62,8 @@ export class FeedService {
 
     const contentLookup = await this.getContentLookupForPosts(postIds)
 
-    const postDtos: GetPostDto[] = posts.map((p) => ({
+    const postDtos: PostDto[] = posts.map((p) => ({
+      //TODO: use dto constructor
       id: p.id,
       userId: p.user_id,
       text: p.text,
@@ -74,7 +75,7 @@ export class FeedService {
       updatedAt: p.updated_at,
     }))
 
-    return new GetFeedDto(
+    return new GetFeedResponseDto(
       postDtos,
       postDtos.length ? postDtos[postDtos.length - 1].createdAt : '',
     )
@@ -84,7 +85,7 @@ export class FeedService {
     username: string,
     cursor: string,
     userId?: string,
-  ): Promise<GetFeedDto> {
+  ): Promise<GetFeedResponseDto> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
@@ -121,7 +122,8 @@ export class FeedService {
 
     const contentLookup = await this.getContentLookupForPosts(postIds)
 
-    const postDtos: GetPostDto[] = posts.map((p) => {
+    const postDtos: PostDto[] = posts.map((p) => {
+      // TODO: use constructor
       return {
         id: p.id,
         userId: p.user_id,
@@ -135,7 +137,7 @@ export class FeedService {
       }
     })
 
-    return new GetFeedDto(
+    return new GetFeedResponseDto(
       postDtos,
       postDtos.length ? postDtos[postDtos.length - 1].createdAt : '',
     )

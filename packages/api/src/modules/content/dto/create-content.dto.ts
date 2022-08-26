@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateContentDto {
+export class CreateContentRequestDto {
   @ApiProperty()
   url: string
 

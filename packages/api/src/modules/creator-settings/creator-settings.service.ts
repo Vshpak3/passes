@@ -5,7 +5,8 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { CreateCreatorSettingsDto } from './dto/create-creator-settings.dto'
+import { CreateCreatorSettingsRequestDto } from './dto/create-creator-settings.dto'
+import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
 export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
@@ -35,7 +36,7 @@ export class CreatorSettingsService {
 
   async update(
     userId: string,
-    createCreatorSettingsDto: CreateCreatorSettingsDto,
+    updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
   ): Promise<CreatorSettingsEntity> {
     const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
@@ -47,7 +48,7 @@ export class CreatorSettingsService {
     }
 
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
-      createCreatorSettingsDto,
+      updateCreatorSettingsDto,
     )
     await this.dbWriter.update(data).where({ id: creatorSettings.id })
     return { ...creatorSettings, ...data }
@@ -55,7 +56,7 @@ export class CreatorSettingsService {
 
   async create(
     userId: string,
-    createCreatorSettingsDto: CreateCreatorSettingsDto,
+    createCreatorSettingsDto: CreateCreatorSettingsRequestDto,
   ): Promise<CreatorSettingsEntity> {
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
       user: userId,

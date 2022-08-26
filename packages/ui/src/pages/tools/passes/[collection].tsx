@@ -95,7 +95,7 @@ const Collection = ({ options = {} }) => {
     const params = getValues()
     passApi.passCreate(
       {
-        createPassDto: {
+        createPassRequestDto: {
           title: params.title,
           description: params.description,
           // imageUrl: files[0].name,

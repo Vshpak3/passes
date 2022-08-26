@@ -12,11 +12,11 @@ import { Response } from 'express'
 
 import { S3Service } from '../../s3/s3.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
-import { CreateLocalUserDto } from '../dto/create-local-user'
-import { LocalUserLoginDto } from '../dto/local-user-login'
+import { CreateLocalUserRequestDto } from '../dto/create-local-user'
+import { LocalUserLoginRequestDto } from '../dto/local-user-login'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
-import { AuthTokenDto } from './auth-token.dto'
+import { AuthTokenResponseDto } from './auth-token.dto'
 import { LocalAuthService } from './local.service'
 
 @Controller('auth/local')
@@ -33,13 +33,13 @@ export class LocalAuthController {
   @ApiOperation({ summary: 'Create a email and password user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: AuthTokenDto,
+    type: AuthTokenResponseDto,
     description: 'Create a email and password user',
   })
   @AllowUnauthorizedRequest()
   @Post('/signup')
   async createEmailPasswordUser(
-    @Body() createLocalUserDto: CreateLocalUserDto,
+    @Body() createLocalUserDto: CreateLocalUserRequestDto,
     @Res() res: Response,
   ) {
     const user = await this.localAuthService.createLocalUser(createLocalUserDto)
@@ -54,13 +54,13 @@ export class LocalAuthController {
   @ApiOperation({ summary: 'Login with email and password' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: AuthTokenDto,
+    type: AuthTokenResponseDto,
     description: 'Login with email and password',
   })
   @AllowUnauthorizedRequest()
   @Post()
   async loginWithEmailPassword(
-    @Body() loginDto: LocalUserLoginDto,
+    @Body() loginDto: LocalUserLoginRequestDto,
     @Res() res: Response,
   ) {
     const user = await this.localAuthService.validateLocalUser(

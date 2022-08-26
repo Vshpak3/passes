@@ -55,9 +55,11 @@ export const wrapApi = <T extends Api.BaseAPI>(api: {
 
       try {
         const authApi = new AuthApi()
-        const refreshAuthTokenDto = { refreshToken: JSON.parse(refreshToken) }
+        const refreshAuthTokenRequestDto = {
+          refreshToken: JSON.parse(refreshToken)
+        }
         const res = await authApi.authRefreshAccessToken({
-          refreshAuthTokenDto
+          refreshAuthTokenRequestDto
         })
 
         if (res.accessToken) {

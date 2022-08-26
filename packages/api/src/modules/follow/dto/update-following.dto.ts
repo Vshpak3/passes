@@ -1,7 +1,8 @@
 import { OmitType } from '@nestjs/swagger'
 
-import { CreateFollowingDto } from './create-following.dto'
+import { CreateFollowingRequestDto } from './create-following.dto'
 
-export class UpdateFollowingDto extends OmitType(CreateFollowingDto, [
-  'creatorUserId',
-] as const) {}
+export class UpdateFollowingResponseDto extends OmitType(
+  CreateFollowingRequestDto,
+  ['creatorUserId'] as const,
+) {}

@@ -30,7 +30,7 @@ const NewAddress = () => {
       //TODO: handle error on frontend (display some generic message)
       await walletApi.walletCreateUnauthenticated(
         {
-          createUnauthenticatedWalletDto: {
+          createUnauthenticatedWalletRequestDto: {
             walletAddress: values["address"],
             chain: values["chain"]
           }

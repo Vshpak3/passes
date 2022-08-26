@@ -13,8 +13,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { CommentService } from './comment.service'
-import { CreateCommentDto } from './dto/create-comment.dto'
-import { GetCommentsForPostDto } from './dto/get-comments-for-post-dto'
+import { CreateCommentRequestDto } from './dto/create-comment.dto'
+import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
 
 @ApiTags('comment')
 @Controller('comment')
@@ -24,38 +24,38 @@ export class CommentController {
   @ApiOperation({ summary: 'Creates a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateCommentDto,
+    type: CreateCommentRequestDto,
     description: 'A comment was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
-    @Body() createCommentDto: CreateCommentDto,
-  ): Promise<CreateCommentDto> {
+    @Body() createCommentDto: CreateCommentRequestDto,
+  ): Promise<CreateCommentRequestDto> {
     return this.commentService.create(req.user.id, createCommentDto)
   }
 
   @ApiOperation({ summary: 'Gets all comments for a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetCommentsForPostDto,
+    type: GetCommentsForPostResponseDto,
     description: 'A list of comments was retrieved',
   })
   @Get('post/:id')
   async findCommentsForPost(
     @Param('id') id: string,
-  ): Promise<GetCommentsForPostDto> {
+  ): Promise<GetCommentsForPostResponseDto> {
     return this.commentService.findAllForPost(id)
   }
 
   @ApiOperation({ summary: 'Gets a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateCommentDto,
+    type: CreateCommentRequestDto,
     description: 'A comment was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreateCommentDto> {
+  async findOne(@Param('id') id: string): Promise<CreateCommentRequestDto> {
     return this.commentService.findOne(id)
   }
 

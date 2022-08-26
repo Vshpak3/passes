@@ -3,7 +3,7 @@ import { IsInt, IsOptional, IsUrl, Length, Min } from 'class-validator'
 
 import { PassTypeEnum } from '../enum/pass.enum'
 
-export class CreatePassDto {
+export class CreatePassRequestDto {
   @ApiProperty()
   @Length(1, 100)
   title: string

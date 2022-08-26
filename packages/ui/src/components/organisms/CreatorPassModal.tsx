@@ -1,4 +1,3 @@
-import { GetPassDto } from "@passes/api-client"
 import Image from "next/image"
 import React, { Dispatch, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
@@ -8,7 +7,7 @@ import Modal from "./Modal"
 interface ICreatorPassModal {
   isOpen: any
   setOpen: Dispatch<SetStateAction<any>>
-  passData: GetPassDto
+  passData: any
 }
 
 const CreatorPassModal = ({

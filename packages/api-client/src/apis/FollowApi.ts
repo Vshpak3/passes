@@ -15,16 +15,16 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateFollowingDto,
-    CreateFollowingDtoFromJSON,
-    CreateFollowingDtoToJSON,
-    GetFanDto,
-    GetFanDtoFromJSON,
-    GetFanDtoToJSON,
+    CreateFollowingRequestDto,
+    CreateFollowingRequestDtoFromJSON,
+    CreateFollowingRequestDtoToJSON,
+    GetFansResponseDto,
+    GetFansResponseDtoFromJSON,
+    GetFansResponseDtoToJSON,
 } from '../models';
 
 export interface FollowCreateRequest {
-    createFollowingDto: CreateFollowingDto;
+    createFollowingRequestDto: CreateFollowingRequestDto;
 }
 
 export interface FollowFindOneRequest {
@@ -47,9 +47,9 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Creates a follow
      */
-    async followCreateRaw(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingDto>> {
-        if (requestParameters.createFollowingDto === null || requestParameters.createFollowingDto === undefined) {
-            throw new runtime.RequiredError('createFollowingDto','Required parameter requestParameters.createFollowingDto was null or undefined when calling followCreate.');
+    async followCreateRaw(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingRequestDto>> {
+        if (requestParameters.createFollowingRequestDto === null || requestParameters.createFollowingRequestDto === undefined) {
+            throw new runtime.RequiredError('createFollowingRequestDto','Required parameter requestParameters.createFollowingRequestDto was null or undefined when calling followCreate.');
         }
 
         const queryParameters: any = {};
@@ -63,16 +63,16 @@ export class FollowApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateFollowingDtoToJSON(requestParameters.createFollowingDto),
+            body: CreateFollowingRequestDtoToJSON(requestParameters.createFollowingRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingRequestDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a follow
      */
-    async followCreate(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingDto> {
+    async followCreate(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingRequestDto> {
         const response = await this.followCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -80,7 +80,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Gets a following
      */
-    async followFindOneRaw(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingDto>> {
+    async followFindOneRaw(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingRequestDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followFindOne.');
         }
@@ -96,13 +96,13 @@ export class FollowApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingRequestDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a following
      */
-    async followFindOne(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingDto> {
+    async followFindOne(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingRequestDto> {
         const response = await this.followFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -139,7 +139,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Search for followers by query
      */
-    async followSearchFansRaw(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GetFanDto>>> {
+    async followSearchFansRaw(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFansResponseDto>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling followSearchFans.');
         }
@@ -158,13 +158,13 @@ export class FollowApi extends runtime.BaseAPI {
             body: requestParameters.body as any,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetFanDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFansResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Search for followers by query
      */
-    async followSearchFans(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetFanDto>> {
+    async followSearchFans(requestParameters: FollowSearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFansResponseDto> {
         const response = await this.followSearchFansRaw(requestParameters, initOverrides);
         return await response.value();
     }

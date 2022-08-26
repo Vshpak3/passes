@@ -1,4 +1,4 @@
-import { GetProfileDto, ProfileApi } from "@passes/api-client"
+import { GetProfileResponseDto, ProfileApi } from "@passes/api-client"
 import { UserApi } from "@passes/api-client/apis"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
@@ -105,7 +105,7 @@ const mockCreator = {
   ]
 }
 
-const Username = (props: GetProfileDto) => {
+const Username = (props: GetProfileResponseDto) => {
   const router = useRouter()
   const {
     query: { username: _username }
@@ -139,7 +139,7 @@ const Username = (props: GetProfileDto) => {
     const api = wrapApi(ProfileApi)
     await api.profileUpdate({
       id: props.id,
-      updateProfileDto: {
+      updateProfileRequestDto: {
         ...rest,
         profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
         profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
@@ -153,7 +153,7 @@ const Username = (props: GetProfileDto) => {
   const updateUsername = async (username: string) => {
     const api = wrapApi(UserApi)
     await api.userSetUsername({
-      updateUsernameDto: {
+      updateUsernameRequestDto: {
         username
       }
     })

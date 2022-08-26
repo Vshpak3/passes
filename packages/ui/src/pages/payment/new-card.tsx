@@ -1,4 +1,4 @@
-import { CircleEncryptionKeyDto, PaymentApi } from "@passes/api-client"
+import { CircleEncryptionKeyResponseDto, PaymentApi } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -11,7 +11,7 @@ import { v4 } from "uuid"
 import { wrapApi } from "../../helpers/wrapApi"
 const NewCard = () => {
   const [submitting, setSubmitting] = useState(false)
-  const [publicKey, setPublicKey] = useState<CircleEncryptionKeyDto>()
+  const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
 
   const {
@@ -62,7 +62,7 @@ const NewCard = () => {
       }
       const encryptedData = await encrypt(
         cardDetails,
-        publicKey as CircleEncryptionKeyDto
+        publicKey as CircleEncryptionKeyResponseDto
       )
       const { encryptedMessage, keyId } = encryptedData
 
@@ -72,7 +72,7 @@ const NewCard = () => {
       const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
       await paymentApi.paymentCreateCircleCard(
-        { circleCreateCardAndExtraDto: payload },
+        { circleCreateCardAndExtraRequestDto: payload },
         {
           headers: {
             Authorization: "Bearer " + accessToken,

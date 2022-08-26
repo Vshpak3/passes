@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateBatchMessageDto {
+export class CreateBatchMessageRequestDto {
   @ApiProperty()
   text: string
 

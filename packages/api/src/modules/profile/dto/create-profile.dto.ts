@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
 
-export class CreateProfileDto {
+export class CreateProfileRequestDto {
   @ApiPropertyOptional()
   displayName?: string
 

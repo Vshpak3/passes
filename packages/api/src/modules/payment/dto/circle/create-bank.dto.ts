@@ -22,7 +22,7 @@ export class CircleBankAddressDto {
   district?: string
 }
 
-export class CircleCreateBankDto {
+export class CircleCreateBankRequestDto {
   @ApiProperty()
   idempotencyKey: string
 

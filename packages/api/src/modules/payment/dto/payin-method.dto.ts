@@ -24,3 +24,6 @@ export class PayinMethodDto {
     }
   }
 }
+
+export class SetPayinMethodRequestDto extends PayinMethodDto {}
+export class GetPayinMethodResponseDto extends PayinMethodDto {}

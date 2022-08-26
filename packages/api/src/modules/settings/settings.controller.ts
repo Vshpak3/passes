@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Param, Patch } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { CreateSettingsDto } from './dto/create-settings.dto'
-import { UpdateSettingsDto } from './dto/update-settings.dto'
+import { GetSettingsResponseDto } from './dto/get-settings.dto'
+import { UpdateSettingsRequestDto } from './dto/update-settings.dto'
 import { SettingsService } from './settings.service'
 
 @ApiTags('settings')
@@ -13,11 +13,11 @@ export class SettingsController {
   @ApiOperation({ summary: 'Gets settings' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateSettingsDto,
+    type: GetSettingsResponseDto,
     description: 'Settings were retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreateSettingsDto> {
+  async findOne(@Param('id') id: string): Promise<GetSettingsResponseDto> {
     return this.settingsService.findOne(id)
   }
 
@@ -30,7 +30,7 @@ export class SettingsController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateSettingsDto: UpdateSettingsDto,
+    @Body() updateSettingsDto: UpdateSettingsRequestDto,
   ) {
     return this.settingsService.update(id, updateSettingsDto)
   }

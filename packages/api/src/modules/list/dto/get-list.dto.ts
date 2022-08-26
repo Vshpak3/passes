@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { GetListMemberDto } from './get-list-member.dto'
+import { ListMemberDto } from './list-member.dto'
 
-export class GetListDto {
+export class GetListResponseDto {
   @ApiProperty()
   id: string
 
@@ -10,7 +10,7 @@ export class GetListDto {
   name: string
 
   @ApiProperty()
-  listMembers: GetListMemberDto[]
+  listMembers: ListMemberDto[]
 
   @ApiProperty()
   size: number
@@ -18,7 +18,7 @@ export class GetListDto {
   constructor(
     id: string,
     name: string,
-    listMembers: GetListMemberDto[],
+    listMembers: ListMemberDto[],
     size: number,
   ) {
     this.id = id

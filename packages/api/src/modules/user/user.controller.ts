@@ -12,11 +12,13 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { GetUserDto } from './dto/get-user.dto'
-import { SearchUserRequestDto } from './dto/search-user-request.dto'
-import { SearchCreatorResponseDto } from './dto/search-user-response.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
-import { UpdateUsernameDto } from './dto/update-username.dto'
+import { GetUserResponseDto } from './dto/get-user.dto'
+import {
+  SearchCreatorRequestDto,
+  SearchCreatorResponseDto,
+} from './dto/search-creator.dto'
+import { UpdateUserRequestDto } from './dto/update-user.dto'
+import { UpdateUsernameRequestDto } from './dto/update-username.dto'
 import { UserService } from './user.service'
 
 @ApiTags('user')
@@ -32,13 +34,13 @@ export class UserController {
   @Post('username')
   async setUsername(
     @Req() req: RequestWithUser,
-    @Body() updateUsernameDto: UpdateUsernameDto,
-  ): Promise<GetUserDto> {
+    @Body() updateUsernameDto: UpdateUsernameRequestDto,
+  ): Promise<GetUserResponseDto> {
     const updatedUser = await this.userService.setUsername(
       req.user.id,
       updateUsernameDto.username,
     )
-    return new GetUserDto(updatedUser)
+    return new GetUserResponseDto(updatedUser)
   }
 
   @ApiOperation({ summary: 'Search for creators by query' })
@@ -49,7 +51,7 @@ export class UserController {
   })
   @Post('/creator/search')
   async searchCreatorByUsername(
-    @Body() searchCreatorDto: SearchUserRequestDto,
+    @Body() searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<any> {
     const creators = await this.userService.searchByQuery(searchCreatorDto)
     return new SearchCreatorResponseDto(creators)
@@ -58,26 +60,26 @@ export class UserController {
   @ApiOperation({ summary: 'Gets a user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetUserDto,
+    type: GetUserResponseDto,
     description: 'A user was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetUserDto> {
-    return new GetUserDto(await this.userService.findOne(id))
+  async findOne(@Param('id') id: string): Promise<GetUserResponseDto> {
+    return new GetUserResponseDto(await this.userService.findOne(id))
   }
 
   @ApiOperation({ summary: 'Updates a user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetUserDto,
+    type: GetUserResponseDto,
     description: 'A user was updated',
   })
   @Patch()
   async update(
     @Req() req: RequestWithUser,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<GetUserDto> {
-    return new GetUserDto(
+    @Body() updateUserDto: UpdateUserRequestDto,
+  ): Promise<GetUserResponseDto> {
+    return new GetUserResponseDto(
       await this.userService.update(req.user.id, updateUserDto),
     )
   }
@@ -89,8 +91,8 @@ export class UserController {
     description: 'A user account was disabled',
   })
   @Delete()
-  async delete(@Req() req: RequestWithUser): Promise<GetUserDto> {
-    return new GetUserDto(await this.userService.remove(req.user.id))
+  async delete(@Req() req: RequestWithUser): Promise<GetUserResponseDto> {
+    return new GetUserResponseDto(await this.userService.remove(req.user.id))
   }
 
   @ApiOperation({ summary: 'Validates whether a username is available' })

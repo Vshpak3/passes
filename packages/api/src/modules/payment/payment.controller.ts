@@ -18,12 +18,16 @@ import MessageValidator from 'sns-validator'
 import { RequestWithUser } from '../../types/request'
 import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { ExamplePayinCallbackInput } from './callback.types'
-import { CircleBankDto } from './dto/circle/circle-bank.dto'
-import { CircleCardDto } from './dto/circle/circle-card.dto'
-import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
-import { CircleCreateCardAndExtraDto } from './dto/circle/create-card.dto'
-import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
-import { CircleStatusDto } from './dto/circle/status.dto'
+import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
+import { CircleCreateCardAndExtraRequestDto } from './dto/circle/create-card.dto'
+import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
+import { GetCircleBanksResponseDto } from './dto/circle/get-bank.dto'
+import {
+  GetCircleCardResponseDto,
+  GetCircleCardsResponseDto,
+} from './dto/circle/get-card.dto'
+import { CircleStatusResponseDto } from './dto/circle/status.dto'
+import { GetSubscriptionsResponseDto } from './dto/get-subscription.dto'
 import { PayinDataDto } from './dto/payin-data.dto'
 import {
   CircleCardPayinEntryRequestDto,
@@ -42,14 +46,19 @@ import {
   PhantomCircleUSDCEntryResponseDto,
 } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
 import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
-import { PayinMethodDto } from './dto/payin-method.dto'
+import {
+  GetPayinMethodResponseDto,
+  SetPayinMethodRequestDto,
+} from './dto/payin-method.dto'
 import {
   PayoutListRequestDto,
   PayoutListResponseDto,
 } from './dto/payout-list.dto'
-import { PayoutMethodDto } from './dto/payout-method.dto'
+import {
+  GetPayoutMethodResponseDto,
+  SetPayoutMethodRequestDto,
+} from './dto/payout-method.dto'
 import { RegisterPayinResponseDto } from './dto/register-payin.dto'
-import { SubscriptionDto } from './dto/subscription.dto'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { CircleRequestError } from './error/circle.error'
 import { PaymentService } from './payment.service'
@@ -74,28 +83,28 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get circle encryption key' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleEncryptionKeyDto,
+    type: CircleEncryptionKeyResponseDto,
     description: 'Encryption key was returned',
   })
   @Get('key')
   @HttpCode(200)
   @AllowUnauthorizedRequest()
-  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyDto> {
+  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyResponseDto> {
     return await this.paymentService.getCircleEncryptionKey()
   }
 
   @ApiOperation({ summary: 'Creates a card' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CircleStatusDto,
+    type: CircleStatusResponseDto,
     description: 'A card was created',
   })
   @Post('card/create')
   async createCircleCard(
     @RealIP() ip: string,
     @Req() req: RequestWithUser,
-    @Body() createCardAndExtraDto: CircleCreateCardAndExtraDto,
-  ): Promise<CircleStatusDto> {
+    @Body() createCardAndExtraDto: CircleCreateCardAndExtraRequestDto,
+  ): Promise<CircleStatusResponseDto> {
     return await this.paymentService.createCircleCard(
       ip,
       req.user.id,
@@ -122,41 +131,43 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get cards' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [CircleCardDto],
+    type: GetCircleCardsResponseDto,
     description: 'Cards were returned',
   })
   @Get('cards')
   async getCircleCards(
     @Req() req: RequestWithUser,
-  ): Promise<Array<CircleCardDto>> {
-    return await this.paymentService.getCircleCards(req.user.id)
+  ): Promise<GetCircleCardsResponseDto> {
+    return new GetCircleCardsResponseDto(
+      await this.paymentService.getCircleCards(req.user.id),
+    )
   }
 
   @ApiOperation({ summary: 'Get card by id' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleCardDto,
+    type: GetCircleCardResponseDto,
     description: 'Card was returned',
   })
   @Get('card/:cardId')
   async getCircleCard(
     @Req() req: RequestWithUser,
     @Param('cardId') cardId: string,
-  ): Promise<CircleCardDto> {
+  ): Promise<GetCircleCardResponseDto> {
     return await this.paymentService.getCircleCard(req.user.id, cardId)
   }
 
   @ApiOperation({ summary: 'Create a wire bank account' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CircleStatusDto,
+    type: CircleStatusResponseDto,
     description: 'A wire bank account was created',
   })
   @Post('bank/create')
   async createCircleBank(
     @Req() req: RequestWithUser,
-    @Body() createBankDto: CircleCreateBankDto,
-  ): Promise<CircleStatusDto> {
+    @Body() createBankDto: CircleCreateBankRequestDto,
+  ): Promise<CircleStatusResponseDto> {
     return await this.paymentService.createCircleBank(
       req.user.id,
       createBankDto,
@@ -166,7 +177,7 @@ export class PaymentController {
   @ApiOperation({ summary: 'Delete a wire bank account' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleStatusDto,
+    type: CircleStatusResponseDto,
     description: 'A wire bank account was dleted',
   })
   @Delete('bank/delete/:circleBankId')
@@ -180,14 +191,16 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get wire bank acccounts' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [CircleBankDto],
+    type: GetCircleBanksResponseDto,
     description: 'Wire bank accounts were returned',
   })
   @Get('banks')
   async getCircleBanks(
     @Req() req: RequestWithUser,
-  ): Promise<Array<CircleBankDto>> {
-    return await this.paymentService.getCircleBanks(req.user.id)
+  ): Promise<GetCircleBanksResponseDto> {
+    return new GetCircleBanksResponseDto(
+      await this.paymentService.getCircleBanks(req.user.id),
+    )
   }
 
   // endpoint only called by circle to give us notifications
@@ -331,7 +344,7 @@ export class PaymentController {
   @HttpCode(200)
   async setDefaultPayinMethod(
     @Req() req: RequestWithUser,
-    @Body() payinMethodDto: PayinMethodDto,
+    @Body() payinMethodDto: SetPayinMethodRequestDto,
   ): Promise<void> {
     return await this.paymentService.setDefaultPayinMethod(
       req.user.id,
@@ -342,13 +355,13 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get default payin method' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayinMethodDto,
+    type: GetPayinMethodResponseDto,
     description: 'Default payin method was returned',
   })
   @Get('payin/default')
   async getDefaultPayinMethod(
     @Req() req: RequestWithUser,
-  ): Promise<PayinMethodDto> {
+  ): Promise<GetPayinMethodResponseDto> {
     return await this.paymentService.getDefaultPayinMethod(req.user.id)
   }
 
@@ -362,7 +375,7 @@ export class PaymentController {
   @HttpCode(200)
   async setDefaultPayoutMethod(
     @Req() req: RequestWithUser,
-    @Body() payoutMethodDto: PayoutMethodDto,
+    @Body() payoutMethodDto: SetPayoutMethodRequestDto,
   ): Promise<void> {
     return await this.paymentService.setDefaultPayoutMethod(
       req.user.id,
@@ -373,13 +386,13 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get default payout method' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayoutMethodDto,
+    type: GetPayoutMethodResponseDto,
     description: 'Default payout method was returned',
   })
   @Get('payout/default')
   async getDefaultPayoutMethod(
     @Req() req: RequestWithUser,
-  ): Promise<PayoutMethodDto> {
+  ): Promise<GetPayoutMethodResponseDto> {
     return await this.paymentService.getDefaultPayoutMethod(req.user.id)
   }
 
@@ -466,7 +479,7 @@ export class PaymentController {
   async setSubscriptionPayinMethod(
     @Req() req: RequestWithUser,
     @Param('subscriptionId') subscriptionId: string,
-    @Body() payinMethodDto: PayinMethodDto,
+    @Body() payinMethodDto: SetPayinMethodRequestDto,
   ): Promise<void> {
     await this.paymentService.setSubscriptionPayinMethod(
       subscriptionId,
@@ -492,14 +505,16 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get subscriptions' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [SubscriptionDto],
+    type: GetSubscriptionsResponseDto,
     description: 'Subscriptions were returned',
   })
   @Get('subscriptions')
   async getSubscriptions(
     @Req() req: RequestWithUser,
-  ): Promise<Array<SubscriptionDto>> {
-    return await this.paymentService.getSubscriptions(req.user.id)
+  ): Promise<GetSubscriptionsResponseDto> {
+    return new GetSubscriptionsResponseDto(
+      await this.paymentService.getSubscriptions(req.user.id),
+    )
   }
 
   /*

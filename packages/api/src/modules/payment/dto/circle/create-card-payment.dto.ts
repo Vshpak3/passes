@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
-export class CircleCreatePaymentDto {
+export class CircleCreatePaymentRequestDto {
   @ApiProperty()
   idempotencyKey: string
 
@@ -23,7 +23,7 @@ export class CircleCreatePaymentDto {
   metadata: CircleMetaDataDto
 }
 
-export class CircleCreateCardPaymentDto extends CircleCreatePaymentDto {
+export class CircleCreateCardPaymentRequestDto extends CircleCreatePaymentRequestDto {
   @ApiProperty()
   verification = 'none'
 

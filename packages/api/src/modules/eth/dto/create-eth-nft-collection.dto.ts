@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateEthNftCollectionDto {
+export class CreateEthNftCollectionRequestDto {
   @ApiProperty()
   tokenAddress: string
 

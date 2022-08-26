@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    CircleStatusDto,
-    CircleStatusDtoFromJSON,
-    CircleStatusDtoFromJSONTyped,
-    CircleStatusDtoToJSON,
-} from './CircleStatusDto';
+    CircleStatusResponseDto,
+    CircleStatusResponseDtoFromJSON,
+    CircleStatusResponseDtoFromJSONTyped,
+    CircleStatusResponseDtoToJSON,
+} from './CircleStatusResponseDto';
 
 /**
  * 
@@ -34,10 +34,10 @@ export interface CircleCardPayinEntryResponseDto {
     payinId: string;
     /**
      * 
-     * @type {CircleStatusDto}
+     * @type {CircleStatusResponseDto}
      * @memberof CircleCardPayinEntryResponseDto
      */
-    status: CircleStatusDto;
+    status: CircleStatusResponseDto;
 }
 
 export function CircleCardPayinEntryResponseDtoFromJSON(json: any): CircleCardPayinEntryResponseDto {
@@ -51,7 +51,7 @@ export function CircleCardPayinEntryResponseDtoFromJSONTyped(json: any, ignoreDi
     return {
         
         'payinId': json['payinId'],
-        'status': CircleStatusDtoFromJSON(json['status']),
+        'status': CircleStatusResponseDtoFromJSON(json['status']),
     };
 }
 
@@ -65,7 +65,7 @@ export function CircleCardPayinEntryResponseDtoToJSON(value?: CircleCardPayinEnt
     return {
         
         'payinId': value.payinId,
-        'status': CircleStatusDtoToJSON(value.status),
+        'status': CircleStatusResponseDtoToJSON(value.status),
     };
 }
 

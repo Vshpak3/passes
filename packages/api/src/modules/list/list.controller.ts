@@ -12,10 +12,13 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { CreateListDto } from './dto/create-list.dto'
-import { GetListDto } from './dto/get-list.dto'
-import { GetListsDto } from './dto/get-lists.dto'
-import { ListMembersDto } from './dto/list-members.dto'
+import { CreateListRequestDto } from './dto/create-list.dto'
+import { GetListResponseDto } from './dto/get-list.dto'
+import { GetListsResponseDto } from './dto/get-lists.dto'
+import {
+  AddListMembersRequestDto,
+  RemoveListMembersRequestDto,
+} from './dto/list-members.dto'
 import { ListService } from './list.service'
 
 @ApiTags('list')
@@ -26,14 +29,14 @@ export class ListController {
   @ApiOperation({ summary: 'Creates List for a user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateListDto,
+    type: GetListResponseDto,
     description: 'List was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
-    @Body() createListDto: CreateListDto,
-  ): Promise<GetListDto> {
+    @Body() createListDto: CreateListRequestDto,
+  ): Promise<GetListResponseDto> {
     return await this.listService.create(req.user.id, createListDto)
   }
 
@@ -47,7 +50,7 @@ export class ListController {
   async addListMembers(
     @Req() req: RequestWithUser,
     @Param('id') listId: string,
-    @Body() addListMembersDto: ListMembersDto,
+    @Body() addListMembersDto: AddListMembersRequestDto,
   ): Promise<void> {
     return this.listService.addListMembers(
       req.user.id,
@@ -66,7 +69,7 @@ export class ListController {
   async removeListMembers(
     @Req() req: RequestWithUser,
     @Param('id') listId: string,
-    @Body() removeListMembersDto: ListMembersDto,
+    @Body() removeListMembersDto: RemoveListMembersRequestDto,
   ): Promise<void> {
     return this.listService.removeListMembers(
       req.user.id,
@@ -78,7 +81,7 @@ export class ListController {
   @ApiOperation({ summary: 'Get list for user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetListDto,
+    type: GetListResponseDto,
     description: 'List was retrieved',
   })
   @Get(':id')
@@ -86,21 +89,21 @@ export class ListController {
     @Req() req: RequestWithUser,
     @Param('id') listId: string,
     @Query('cursor') cursor: string,
-  ): Promise<GetListDto> {
+  ): Promise<GetListResponseDto> {
     return await this.listService.getList(req.user.id, listId, cursor)
   }
 
   @ApiOperation({ summary: 'Get all lists for user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetListsDto,
+    type: GetListsResponseDto,
     description: 'Lists were retrieved',
   })
   @Get()
   async findAll(
     @Req() req: RequestWithUser,
     @Query('cursor') cursor: string,
-  ): Promise<GetListsDto> {
+  ): Promise<GetListsResponseDto> {
     return await this.listService.getListsForUser(req.user.id, cursor)
   }
 

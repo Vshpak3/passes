@@ -1,26 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class GetContentDto {
-  @ApiProperty()
-  id: string
+import { ContentDto } from './content.dto'
 
-  @ApiProperty()
-  createdAt: Date
+export class GetContentResponseDto extends ContentDto {}
 
-  @ApiProperty()
-  updatedAt: Date
+export class GetContentsResponseDto {
+  @ApiProperty({ type: [ContentDto] })
+  contents: ContentDto[]
 
-  @ApiProperty()
-  url: string
-
-  @ApiProperty()
-  contentType: string
-
-  constructor(contentEntity) {
-    this.id = contentEntity.id
-    this.createdAt = contentEntity.created_at
-    this.updatedAt = contentEntity.updated_at
-    this.url = contentEntity.url
-    this.contentType = contentEntity.content_type
+  constructor(contents: ContentDto[]) {
+    this.contents = contents
   }
 }

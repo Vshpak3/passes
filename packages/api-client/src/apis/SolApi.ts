@@ -15,26 +15,26 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateSolNftCollectionDto,
-    CreateSolNftCollectionDtoFromJSON,
-    CreateSolNftCollectionDtoToJSON,
-    CreateSolNftDto,
-    CreateSolNftDtoFromJSON,
-    CreateSolNftDtoToJSON,
-    GetSolNftCollectionDto,
-    GetSolNftCollectionDtoFromJSON,
-    GetSolNftCollectionDtoToJSON,
-    GetSolNftDto,
-    GetSolNftDtoFromJSON,
-    GetSolNftDtoToJSON,
+    CreateSolNftCollectionRequestDto,
+    CreateSolNftCollectionRequestDtoFromJSON,
+    CreateSolNftCollectionRequestDtoToJSON,
+    CreateSolNftRequestDto,
+    CreateSolNftRequestDtoFromJSON,
+    CreateSolNftRequestDtoToJSON,
+    GetSolNftCollectionResponseDto,
+    GetSolNftCollectionResponseDtoFromJSON,
+    GetSolNftCollectionResponseDtoToJSON,
+    GetSolNftResponseDto,
+    GetSolNftResponseDtoFromJSON,
+    GetSolNftResponseDtoToJSON,
 } from '../models';
 
 export interface SolCreateNftRequest {
-    createSolNftDto: CreateSolNftDto;
+    createSolNftRequestDto: CreateSolNftRequestDto;
 }
 
 export interface SolCreateNftCollectionRequest {
-    createSolNftCollectionDto: CreateSolNftCollectionDto;
+    createSolNftCollectionRequestDto: CreateSolNftCollectionRequestDto;
 }
 
 /**
@@ -45,9 +45,9 @@ export class SolApi extends runtime.BaseAPI {
     /**
      * Creates Sol NFT from Collection
      */
-    async solCreateNftRaw(requestParameters: SolCreateNftRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSolNftDto>> {
-        if (requestParameters.createSolNftDto === null || requestParameters.createSolNftDto === undefined) {
-            throw new runtime.RequiredError('createSolNftDto','Required parameter requestParameters.createSolNftDto was null or undefined when calling solCreateNft.');
+    async solCreateNftRaw(requestParameters: SolCreateNftRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSolNftResponseDto>> {
+        if (requestParameters.createSolNftRequestDto === null || requestParameters.createSolNftRequestDto === undefined) {
+            throw new runtime.RequiredError('createSolNftRequestDto','Required parameter requestParameters.createSolNftRequestDto was null or undefined when calling solCreateNft.');
         }
 
         const queryParameters: any = {};
@@ -61,16 +61,16 @@ export class SolApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateSolNftDtoToJSON(requestParameters.createSolNftDto),
+            body: CreateSolNftRequestDtoToJSON(requestParameters.createSolNftRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetSolNftDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSolNftResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates Sol NFT from Collection
      */
-    async solCreateNft(requestParameters: SolCreateNftRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSolNftDto> {
+    async solCreateNft(requestParameters: SolCreateNftRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSolNftResponseDto> {
         const response = await this.solCreateNftRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -78,9 +78,9 @@ export class SolApi extends runtime.BaseAPI {
     /**
      * Creates Sol NFT Collection
      */
-    async solCreateNftCollectionRaw(requestParameters: SolCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSolNftCollectionDto>> {
-        if (requestParameters.createSolNftCollectionDto === null || requestParameters.createSolNftCollectionDto === undefined) {
-            throw new runtime.RequiredError('createSolNftCollectionDto','Required parameter requestParameters.createSolNftCollectionDto was null or undefined when calling solCreateNftCollection.');
+    async solCreateNftCollectionRaw(requestParameters: SolCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSolNftCollectionResponseDto>> {
+        if (requestParameters.createSolNftCollectionRequestDto === null || requestParameters.createSolNftCollectionRequestDto === undefined) {
+            throw new runtime.RequiredError('createSolNftCollectionRequestDto','Required parameter requestParameters.createSolNftCollectionRequestDto was null or undefined when calling solCreateNftCollection.');
         }
 
         const queryParameters: any = {};
@@ -94,16 +94,16 @@ export class SolApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateSolNftCollectionDtoToJSON(requestParameters.createSolNftCollectionDto),
+            body: CreateSolNftCollectionRequestDtoToJSON(requestParameters.createSolNftCollectionRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetSolNftCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSolNftCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates Sol NFT Collection
      */
-    async solCreateNftCollection(requestParameters: SolCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSolNftCollectionDto> {
+    async solCreateNftCollection(requestParameters: SolCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSolNftCollectionResponseDto> {
         const response = await this.solCreateNftCollectionRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -19,9 +19,9 @@ import {
   COMMENT_NOT_OWNED_BY_USER,
   COMMENT_REMOVED,
 } from './constants/errors'
-import { CreateCommentDto } from './dto/create-comment.dto'
-import { GetCommentDto } from './dto/get-comment.dto'
-import { GetCommentsForPostDto } from './dto/get-comments-for-post-dto'
+import { CreateCommentRequestDto } from './dto/create-comment.dto'
+import { GetCommentResponseDto } from './dto/get-comment.dto'
+import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
 import { CommentEntity } from './entities/comment.entity'
 
 @Injectable()
@@ -35,8 +35,8 @@ export class CommentService {
 
   async create(
     userId: string,
-    createCommentDto: CreateCommentDto,
-  ): Promise<GetCommentDto> {
+    createCommentDto: CreateCommentRequestDto,
+  ): Promise<GetCommentResponseDto> {
     const { postId, content } = createCommentDto
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
@@ -62,10 +62,10 @@ export class CommentService {
         .increment('num_comments', 1)
     })
 
-    return new GetCommentDto(data)
+    return new GetCommentResponseDto(data)
   }
 
-  async findOne(id: string): Promise<GetCommentDto> {
+  async findOne(id: string): Promise<GetCommentResponseDto> {
     const comment = await this.dbReader(CommentEntity.table)
       .leftJoin(UserEntity.table, 'comment.commenter_id', 'users.id')
       .where({ 'comment.id': id })
@@ -80,10 +80,10 @@ export class CommentService {
       throw new BadRequestException(COMMENT_REMOVED)
     }
 
-    return new GetCommentDto(comment)
+    return new GetCommentResponseDto(comment)
   }
 
-  async findAllForPost(postId: string): Promise<GetCommentsForPostDto> {
+  async findAllForPost(postId: string): Promise<GetCommentsForPostResponseDto> {
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
       .first()
@@ -105,7 +105,7 @@ export class CommentService {
       })
       .select('comment.*', 'users.username as commenter_username')
 
-    return new GetCommentsForPostDto(postId, comments)
+    return new GetCommentsForPostResponseDto(postId, comments)
   }
 
   async hide(userId: string, id: string) {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CircleEncryptionKeyDto {
+export class CircleEncryptionKeyResponseDto {
   @ApiProperty()
   keyId: string
 

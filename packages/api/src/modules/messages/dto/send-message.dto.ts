@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
-export class SendMessageDto {
+export class SendMessageRequestDto {
   @ApiProperty()
   text: string
 

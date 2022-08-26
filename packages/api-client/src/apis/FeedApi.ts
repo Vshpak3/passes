@@ -15,9 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
-    GetFeedDto,
-    GetFeedDtoFromJSON,
-    GetFeedDtoToJSON,
+    GetFeedResponseDto,
+    GetFeedResponseDtoFromJSON,
+    GetFeedResponseDtoToJSON,
 } from '../models';
 
 export interface FeedGetFeedRequest {
@@ -37,7 +37,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a users feed
      */
-    async feedGetFeedRaw(requestParameters: FeedGetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedDto>> {
+    async feedGetFeedRaw(requestParameters: FeedGetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
             throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling feedGetFeed.');
         }
@@ -57,13 +57,13 @@ export class FeedApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a users feed
      */
-    async feedGetFeed(requestParameters: FeedGetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedDto> {
+    async feedGetFeed(requestParameters: FeedGetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
         const response = await this.feedGetFeedRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -71,7 +71,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a list of posts for a given creator
      */
-    async feedGetPostsForCreatorRaw(requestParameters: FeedGetPostsForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedDto>> {
+    async feedGetPostsForCreatorRaw(requestParameters: FeedGetPostsForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
             throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling feedGetPostsForCreator.');
         }
@@ -95,13 +95,13 @@ export class FeedApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a list of posts for a given creator
      */
-    async feedGetPostsForCreator(requestParameters: FeedGetPostsForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedDto> {
+    async feedGetPostsForCreator(requestParameters: FeedGetPostsForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
         const response = await this.feedGetPostsForCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }

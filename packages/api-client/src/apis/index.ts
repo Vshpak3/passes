@@ -14,7 +14,6 @@ export * from './EthApi';
 export * from './FeedApi';
 export * from './FollowApi';
 export * from './HealthApi';
-export * from './LambdaApi';
 export * from './LikeApi';
 export * from './ListApi';
 export * from './MessagesApi';

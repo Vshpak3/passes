@@ -14,11 +14,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { CreatePostDto } from './dto/create-post.dto'
-import { CreatePostAccessDto } from './dto/create-post-access.dto'
-import { GetPostDto } from './dto/get-post.dto'
-import { TipPostDto } from './dto/tip-post.dto'
-import { UpdatePostDto } from './dto/update-post.dto'
+import { CreatePostRequestDto } from './dto/create-post.dto'
+import { CreatePostAccessRequestDto } from './dto/create-post-access.dto'
+import { GetPostResponseDto } from './dto/get-post.dto'
+import { TipPostRequestDto } from './dto/tip-post.dto'
+import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostService } from './post.service'
 
 @ApiTags('post')
@@ -29,28 +29,28 @@ export class PostController {
   @ApiOperation({ summary: 'Creates a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreatePostDto,
+    type: CreatePostRequestDto,
     description: 'A post was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
-    @Body() createPostDto: CreatePostDto,
-  ): Promise<CreatePostDto> {
+    @Body() createPostDto: CreatePostRequestDto,
+  ): Promise<CreatePostRequestDto> {
     return this.postService.create(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetPostDto,
+    type: GetPostResponseDto,
     description: 'A post was retrieved',
   })
   @Get(':id')
   async findOne(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
-  ): Promise<GetPostDto> {
+  ): Promise<GetPostResponseDto> {
     return this.postService.findOne(id, req.user.id)
   }
 
@@ -64,7 +64,7 @@ export class PostController {
   async update(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
-    @Body() updatePostDto: UpdatePostDto,
+    @Body() updatePostDto: UpdatePostRequestDto,
   ) {
     return this.postService.update(req.user.id, id, updatePostDto)
   }
@@ -92,7 +92,7 @@ export class PostController {
   @Post('pay/purchase')
   async registerPurchasePost(
     @Req() req: RequestWithUser,
-    @Body() createPostAccessDto: CreatePostAccessDto,
+    @Body() createPostAccessDto: CreatePostAccessRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return this.postService.registerPurchasePost(
       req.user.id,
@@ -111,7 +111,7 @@ export class PostController {
   @Post('pay/data/purchase')
   async registerPurchasePostData(
     @Req() req: RequestWithUser,
-    @Body() createPostAccessDto: CreatePostAccessDto,
+    @Body() createPostAccessDto: CreatePostAccessRequestDto,
   ): Promise<PayinDataDto> {
     return this.postService.registerPurchasePostData(
       req.user.id,
@@ -128,7 +128,7 @@ export class PostController {
   @Post('pay/tip')
   async registerTipPost(
     @Req() req: RequestWithUser,
-    @Body() tipPostDto: TipPostDto,
+    @Body() tipPostDto: TipPostRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return this.postService.registerTipPost(
       req.user.id,

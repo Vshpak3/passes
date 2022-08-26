@@ -30,9 +30,9 @@ import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
-import { CreatePassDto } from './dto/create-pass.dto'
-import { GetPassDto } from './dto/get-pass.dto'
-import { UpdatePassDto } from './dto/update-pass.dto'
+import { CreatePassRequestDto } from './dto/create-pass.dto'
+import { PassDto } from './dto/pass.dto'
+import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassTypeEnum } from './enum/pass.enum'
@@ -60,8 +60,8 @@ export class PassService {
 
   async create(
     userId: string,
-    createPassDto: CreatePassDto,
-  ): Promise<GetPassDto> {
+    createPassDto: CreatePassRequestDto,
+  ): Promise<PassDto> {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
@@ -96,10 +96,10 @@ export class PassService {
     })
 
     await this.dbWriter(PassEntity.table).insert(data)
-    return new GetPassDto(data)
+    return new PassDto(data)
   }
 
-  async findOne(id: string): Promise<GetPassDto> {
+  async findOne(id: string): Promise<PassDto> {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as owner`,
@@ -122,7 +122,7 @@ export class PassService {
       throw new NotFoundException(PASS_NOT_EXIST)
     }
 
-    return new GetPassDto(pass)
+    return new PassDto(pass)
   }
 
   async findOwnedPasses(userId: string, creatorId?: string) {
@@ -148,16 +148,20 @@ export class PassService {
       query = query.where('owner_id', creatorId)
     }
 
-    return (await query).map((pass) => new GetPassDto(pass))
+    return (await query).map((pass) => new PassDto(pass))
   }
 
   async findPassesByCreator(creatorId: string) {
     return (
       await this.dbReader(PassEntity.table).where('creator_id', creatorId)
-    ).map((pass) => new GetPassDto(pass))
+    ).map((pass) => new PassDto(pass))
   }
 
-  async update(userId: string, passId: string, updatePassDto: UpdatePassDto) {
+  async update(
+    userId: string,
+    passId: string,
+    updatePassDto: UpdatePassRequestDto,
+  ) {
     const currentPass = await this.dbReader(PassEntity.table)
       .where({ id: passId })
       .first()
@@ -172,7 +176,7 @@ export class PassService {
 
     const data = PassEntity.toDict<PassEntity>(updatePassDto)
     await this.dbWriter(PassEntity.table).update(data).where({ id: passId })
-    return new GetPassDto(data)
+    return new PassDto(data)
   }
 
   async createPass(userId: string, passId: string) {

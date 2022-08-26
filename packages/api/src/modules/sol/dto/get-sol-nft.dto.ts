@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class GetSolNftDto {
+export class GetSolNftResponseDto {
   @ApiProperty()
   id: string
 

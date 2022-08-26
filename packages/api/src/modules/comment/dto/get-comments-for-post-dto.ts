@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { GetCommentDto } from './get-comment.dto'
+import { CommentDto } from './comment.dto'
 
-export class GetCommentsForPostDto {
+export class GetCommentsForPostResponseDto {
   @ApiProperty()
   postId: string
 
-  @ApiProperty({ type: [GetCommentDto] })
-  comments: GetCommentDto[]
+  @ApiProperty({ type: [CommentDto] })
+  comments: CommentDto[]
 
   constructor(postId, commentEntities) {
     this.postId = postId
-    this.comments = commentEntities.map((c) => new GetCommentDto(c))
+    this.comments = commentEntities.map((c) => new CommentDto(c))
   }
 }

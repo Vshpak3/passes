@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CircleCreateAddressDto {
+export class CircleCreateAddressRequestDto {
   @ApiProperty()
   idempotencyKey: string
 

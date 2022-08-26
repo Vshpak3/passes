@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class GetFanDto {
+export class GetFanResponseDto {
   @ApiProperty()
   userId: string
 
@@ -23,5 +23,14 @@ export class GetFanDto {
     this.username = username
     this.displayName = displayName
     this.profileImageUrl = profileImageUrl
+  }
+}
+
+export class GetFansResponseDto {
+  @ApiProperty({ type: GetFanResponseDto })
+  fans: GetFanResponseDto[]
+
+  constructor(fans: GetFanResponseDto[]) {
+    this.fans = fans
   }
 }

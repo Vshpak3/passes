@@ -12,7 +12,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { GetContentDto } from '../content/dto/get-content.dto'
+import { GetContentResponseDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import {
   PurchasePostCallbackInput,
@@ -27,9 +27,9 @@ import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
-import { CreatePostDto } from './dto/create-post.dto'
-import { GetPostDto } from './dto/get-post.dto'
-import { UpdatePostDto } from './dto/update-post.dto'
+import { CreatePostRequestDto } from './dto/create-post.dto'
+import { PostDto } from './dto/post.dto'
+import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
@@ -52,8 +52,8 @@ export class PostService {
 
   async create(
     userId: string,
-    createPostDto: CreatePostDto,
-  ): Promise<CreatePostDto> {
+    createPostDto: CreatePostRequestDto,
+  ): Promise<CreatePostRequestDto> {
     let trxErr: Error | undefined = undefined
     await this.dbWriter
       .transaction(async (trx) => {
@@ -111,7 +111,7 @@ export class PostService {
     return createPostDto
   }
 
-  async findOne(id: string, userId?: string): Promise<GetPostDto> {
+  async findOne(id: string, userId?: string): Promise<PostDto> {
     const postDbResult = await this.dbReader(PostEntity.table)
       .leftJoin('content_post', 'content_post.post_id', 'post.id')
       .leftJoin(ContentEntity.table, 'content.id', 'content_post.post_id')
@@ -149,7 +149,7 @@ export class PostService {
           postContentRow.url &&
           postContentRow.content_type
         ) {
-          return new GetContentDto({
+          return new GetContentResponseDto({
             id: postContentRow.content_id,
             ...postContentRow,
           })
@@ -161,11 +161,11 @@ export class PostService {
         (postContentDtoOrUndefined) => postContentDtoOrUndefined != undefined,
       )
 
-    return new GetPostDto(
+    return new PostDto(
       postDbResult[0].id,
       postDbResult[0].user_id,
       postDbResult[0].text,
-      postContent as GetContentDto[],
+      postContent as GetContentResponseDto[],
       postDbResult[0].num_likes,
       postDbResult[0].num_comments,
       postDbResult[0].created_at.toISOString(),
@@ -174,7 +174,11 @@ export class PostService {
     )
   }
 
-  async update(userId: string, postId: string, updatePostDto: UpdatePostDto) {
+  async update(
+    userId: string,
+    postId: string,
+    updatePostDto: UpdatePostRequestDto,
+  ) {
     const postDbResult = await this.dbReader(PostEntity.table)
       .select(
         'post.id',
@@ -203,7 +207,7 @@ export class PostService {
     //TODO: actually update post here
     this.logger.info(updatePostDto)
 
-    return new GetPostDto(
+    return new PostDto(
       postDbResult[0].id,
       postDbResult[0].user_id,
       postDbResult[0].text,

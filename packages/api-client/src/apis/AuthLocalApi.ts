@@ -15,23 +15,23 @@
 
 import * as runtime from '../runtime';
 import {
-    AuthTokenDto,
-    AuthTokenDtoFromJSON,
-    AuthTokenDtoToJSON,
-    CreateLocalUserDto,
-    CreateLocalUserDtoFromJSON,
-    CreateLocalUserDtoToJSON,
-    LocalUserLoginDto,
-    LocalUserLoginDtoFromJSON,
-    LocalUserLoginDtoToJSON,
+    AuthTokenResponseDto,
+    AuthTokenResponseDtoFromJSON,
+    AuthTokenResponseDtoToJSON,
+    CreateLocalUserRequestDto,
+    CreateLocalUserRequestDtoFromJSON,
+    CreateLocalUserRequestDtoToJSON,
+    LocalUserLoginRequestDto,
+    LocalUserLoginRequestDtoFromJSON,
+    LocalUserLoginRequestDtoToJSON,
 } from '../models';
 
 export interface LocalAuthCreateEmailPasswordUserRequest {
-    createLocalUserDto: CreateLocalUserDto;
+    createLocalUserRequestDto: CreateLocalUserRequestDto;
 }
 
 export interface LocalAuthLoginWithEmailPasswordRequest {
-    localUserLoginDto: LocalUserLoginDto;
+    localUserLoginRequestDto: LocalUserLoginRequestDto;
 }
 
 /**
@@ -42,9 +42,9 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Create a email and password user
      */
-    async localAuthCreateEmailPasswordUserRaw(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
-        if (requestParameters.createLocalUserDto === null || requestParameters.createLocalUserDto === undefined) {
-            throw new runtime.RequiredError('createLocalUserDto','Required parameter requestParameters.createLocalUserDto was null or undefined when calling localAuthCreateEmailPasswordUser.');
+    async localAuthCreateEmailPasswordUserRaw(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+        if (requestParameters.createLocalUserRequestDto === null || requestParameters.createLocalUserRequestDto === undefined) {
+            throw new runtime.RequiredError('createLocalUserRequestDto','Required parameter requestParameters.createLocalUserRequestDto was null or undefined when calling localAuthCreateEmailPasswordUser.');
         }
 
         const queryParameters: any = {};
@@ -58,16 +58,16 @@ export class AuthLocalApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateLocalUserDtoToJSON(requestParameters.createLocalUserDto),
+            body: CreateLocalUserRequestDtoToJSON(requestParameters.createLocalUserRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Create a email and password user
      */
-    async localAuthCreateEmailPasswordUser(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenDto> {
+    async localAuthCreateEmailPasswordUser(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.localAuthCreateEmailPasswordUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -75,9 +75,9 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPasswordRaw(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenDto>> {
-        if (requestParameters.localUserLoginDto === null || requestParameters.localUserLoginDto === undefined) {
-            throw new runtime.RequiredError('localUserLoginDto','Required parameter requestParameters.localUserLoginDto was null or undefined when calling localAuthLoginWithEmailPassword.');
+    async localAuthLoginWithEmailPasswordRaw(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+        if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
+            throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling localAuthLoginWithEmailPassword.');
         }
 
         const queryParameters: any = {};
@@ -91,16 +91,16 @@ export class AuthLocalApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: LocalUserLoginDtoToJSON(requestParameters.localUserLoginDto),
+            body: LocalUserLoginRequestDtoToJSON(requestParameters.localUserLoginRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPassword(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenDto> {
+    async localAuthLoginWithEmailPassword(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.localAuthLoginWithEmailPasswordRaw(requestParameters, initOverrides);
         return await response.value();
     }

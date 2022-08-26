@@ -7,7 +7,7 @@ import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { UserEntity } from '../../user/entities/user.entity'
-import { CreateLocalUserDto } from '../dto/create-local-user'
+import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
 @Injectable()
@@ -20,7 +20,7 @@ export class LocalAuthService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async createLocalUser(createLocalUserDto: CreateLocalUserDto) {
+  async createLocalUser(createLocalUserDto: CreateLocalUserRequestDto) {
     const currentUser = await this.dbReader(UserEntity.table)
       .where('email', createLocalUserDto.email)
       .where('oauth_provider', null)

@@ -11,10 +11,10 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { CreateFollowingDto } from './dto/create-following.dto'
-import { GetFanDto } from './dto/get-fan.dto'
-import { GetFollowingDto } from './dto/get-following.dto'
-import { SearchFanDto } from './dto/search-fan.dto'
+import { CreateFollowingRequestDto } from './dto/create-following.dto'
+import { GetFansResponseDto } from './dto/get-fan.dto'
+import { GetFollowingResponseDto } from './dto/get-following.dto'
+import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowService } from './follow.service'
 
 @ApiTags('follow')
@@ -25,25 +25,25 @@ export class FollowController {
   @ApiOperation({ summary: 'Creates a follow' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateFollowingDto,
+    type: CreateFollowingRequestDto,
     description: 'A follow was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
-    @Body() createFollowingDto: CreateFollowingDto,
-  ): Promise<GetFollowingDto> {
+    @Body() createFollowingDto: CreateFollowingRequestDto,
+  ): Promise<GetFollowingResponseDto> {
     return this.followService.create(req.user.id, createFollowingDto)
   }
 
   @ApiOperation({ summary: 'Gets a following' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateFollowingDto,
+    type: CreateFollowingRequestDto,
     description: 'A following was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetFollowingDto> {
+  async findOne(@Param('id') id: string): Promise<GetFollowingResponseDto> {
     return this.followService.findOne(id)
   }
 
@@ -57,21 +57,23 @@ export class FollowController {
   async remove(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
-  ): Promise<GetFollowingDto> {
+  ): Promise<GetFollowingResponseDto> {
     return this.followService.remove(req.user.id, id)
   }
 
   @ApiOperation({ summary: 'Search for followers by query' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: [GetFanDto],
+    type: GetFansResponseDto,
     description: 'A list of followers was returned',
   })
   @Post('/search')
   async searchFans(
     @Req() req: RequestWithUser,
-    @Body() searchFanDto: SearchFanDto,
-  ): Promise<Array<GetFanDto>> {
-    return await this.followService.searchByQuery(req.user.id, searchFanDto)
+    @Body() searchFanDto: SearchFanRequestDto,
+  ): Promise<GetFansResponseDto> {
+    return new GetFansResponseDto(
+      await this.followService.searchByQuery(req.user.id, searchFanDto),
+    )
   }
 }

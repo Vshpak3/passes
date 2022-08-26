@@ -14,9 +14,9 @@ import {
   COLLECTION_NOT_OWNED_BY_USER,
   USER_IS_NOT_CREATOR,
 } from './constants/errors'
+import { CollectionDto } from './dto/collection.dto'
 import { CreateCollectionDto } from './dto/create-collection.dto'
-import { GetCollectionDto } from './dto/get-collection.dto'
-import { UpdateCollectionDto } from './dto/update-collection.dto'
+import { UpdateCollectionRequestDto } from './dto/update-collection.dto'
 import { CollectionEntity } from './entities/collection.entity'
 
 @Injectable()
@@ -48,10 +48,10 @@ export class CollectionService {
 
     await this.dbWriter(CollectionEntity.table).insert(data)
 
-    return new GetCollectionDto(data)
+    return new CollectionDto(data)
   }
 
-  async findOne(id: string): Promise<GetCollectionDto> {
+  async findOne(id: string): Promise<CollectionDto> {
     // TODO: check if populate: ['owner'] is needed
     const collection = await this.dbReader(CollectionEntity.table)
       .where({ id })
@@ -61,10 +61,10 @@ export class CollectionService {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
 
-    return new GetCollectionDto(collection)
+    return new CollectionDto(collection)
   }
 
-  async findOneByCreatorUsername(username: string): Promise<GetCollectionDto> {
+  async findOneByCreatorUsername(username: string): Promise<CollectionDto> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
@@ -84,13 +84,13 @@ export class CollectionService {
       throw new NotFoundException(COLLECTION_NOT_EXIST)
     }
 
-    return new GetCollectionDto(collection)
+    return new CollectionDto(collection)
   }
 
   async update(
     userId: string,
     collectionId: string,
-    updatePassDto: UpdateCollectionDto,
+    updatePassDto: UpdateCollectionRequestDto,
   ) {
     const currentCollection = await this.dbReader(CollectionEntity.table)
       .where({ id: collectionId })
@@ -109,6 +109,6 @@ export class CollectionService {
       .update(data)
       .where({ id: collectionId })
 
-    return new GetCollectionDto({ ...currentCollection, ...data })
+    return new CollectionDto({ ...currentCollection, ...data })
   }
 }

@@ -18,8 +18,8 @@ import { SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY } from '../sol/sol.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import {
-  CreateUnauthenticatedWalletDto,
-  CreateWalletDto,
+  CreateUnauthenticatedWalletRequestDto,
+  CreateWalletRequestDto,
 } from './dto/create-wallet.dto'
 import { WalletDto } from './dto/wallet.dto'
 import { DefaultWalletEntity } from './entities/default-wallet.entity'
@@ -224,17 +224,19 @@ export class WalletService {
     }
   }
 
-  async getWalletsForUser(userId: string): Promise<WalletEntity[]> {
-    return await this.dbReader(WalletEntity.table).where(
-      WalletEntity.toDict<WalletEntity>({
-        user: userId,
-      }),
-    )
+  async getWalletsForUser(userId: string): Promise<Array<WalletDto>> {
+    return (
+      await this.dbReader(WalletEntity.table).where(
+        WalletEntity.toDict<WalletEntity>({
+          user: userId,
+        }),
+      )
+    ).map((wallet) => new WalletDto(wallet))
   }
 
   async create(
     userId: string,
-    createWalletDto: CreateWalletDto,
+    createWalletDto: CreateWalletRequestDto,
   ): Promise<WalletEntity> {
     const numWallets = (
       await this.dbReader(WalletEntity.table).where(
@@ -325,7 +327,7 @@ export class WalletService {
 
   async createUnauthenticated(
     userId: string,
-    createUnauthenticatedWalletDto: CreateUnauthenticatedWalletDto,
+    createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
   ): Promise<void> {
     const numWallets = await this.dbReader(WalletEntity.table)
       .where('user_id', userId)

@@ -39,7 +39,7 @@ IQuickPayModal) => {
           createPassHolderDto
         )
         await passApi.passRegisterCreatePass({
-          createPassHolderDto: createPassHolderDto
+          createPassHolderRequestDto: createPassHolderDto
         })
       } catch (error) {
         console.log(error)

@@ -6,7 +6,7 @@ import {
   CircleSourceDto,
 } from './circle-utils.dto'
 
-export class CircleCreateTransferDto {
+export class CircleCreateTransferRequestDto {
   @ApiProperty()
   idempotencyKey: string
 

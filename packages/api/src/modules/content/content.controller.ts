@@ -11,11 +11,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
-import { GetSignedUrlDto } from '../s3/dto/get-signed-url.dto'
+import { GetSignedUrlResponseDto } from '../s3/dto/get-signed-url.dto'
 import { S3Service } from '../s3/s3.service'
 import { ContentService } from './content.service'
-import { GetContentDto } from './dto/get-content.dto'
-import { GetVaultQueryDto } from './dto/get-vault-query-dto'
+import { GetContentsResponseDto } from './dto/get-content.dto'
+import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 
 @ApiTags('content')
 @Controller('content')
@@ -28,7 +28,7 @@ export class ContentController {
   @ApiOperation({ summary: 'Get signed url for specified path' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetSignedUrlDto,
+    type: GetSignedUrlResponseDto,
     description: 'Url was signed',
   })
   @UseGuards(JwtAuthGuard)
@@ -36,7 +36,7 @@ export class ContentController {
   async preSignUrl(
     @Req() req: RequestWithUser,
     @Param('path') path: string,
-  ): Promise<GetSignedUrlDto> {
+  ): Promise<GetSignedUrlResponseDto> {
     // TODO: validate path
     const url = await this.s3Service.preSignUrl(path, req.user.id)
     return { url }
@@ -47,15 +47,17 @@ export class ContentController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [GetContentDto],
+    type: GetContentsResponseDto,
     description: 'Creator vault was retrieved',
   })
   @Get('vault')
   async getVaultContent(
     @Req() req: RequestWithUser,
-    @Query() { category, type }: GetVaultQueryDto,
-  ): Promise<GetContentDto[]> {
+    @Query() { category, type }: GetVaultQueryRequestDto,
+  ): Promise<GetContentsResponseDto> {
     // TODO: add pagination
-    return this.contentService.getVault(req.user.id, category, type)
+    return new GetContentsResponseDto(
+      await this.contentService.getVault(req.user.id, category, type),
+    )
   }
 }

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
-export class GetCreatorEarningsHistoryDto {
+export class GetCreatorEarningsHistoryRequestDto {
   @ApiProperty()
   start: Date
 

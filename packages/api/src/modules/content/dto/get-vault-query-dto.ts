@@ -9,4 +9,4 @@ class VaultQueryDto {
   type: ContentType
 }
 
-export class GetVaultQueryDto extends PartialType(VaultQueryDto) {}
+export class GetVaultQueryRequestDto extends PartialType(VaultQueryDto) {}

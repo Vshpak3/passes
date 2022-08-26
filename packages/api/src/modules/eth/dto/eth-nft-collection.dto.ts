@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { EthNftCollectionEntity } from '../entities/eth-nft-collection.entity'
-
 export class EthNftCollectionDto {
   @ApiProperty()
   tokenAddress: string
@@ -9,8 +7,8 @@ export class EthNftCollectionDto {
   @ApiProperty()
   name: string
 
-  constructor(ethNftCollectionEntity: EthNftCollectionEntity) {
-    this.tokenAddress = ethNftCollectionEntity.tokenAddress
-    this.name = ethNftCollectionEntity.name
+  constructor(ethNftCollection) {
+    this.tokenAddress = ethNftCollection.token_address
+    this.name = ethNftCollection.name
   }
 }

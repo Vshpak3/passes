@@ -5,6 +5,7 @@ import { EthNftEntity } from '../../eth/entities/eth-nft.entity'
 import { WalletEntity } from '../entities/wallet.entity'
 import { WalletDto } from './wallet.dto'
 
+// TODO: refactor with new eth refresh
 export class WalletResponseDto {
   @ApiProperty()
   wallet: WalletDto

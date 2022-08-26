@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
-  CircleEncryptionKeyDto,
   PayinMethodDto,
   PayinMethodDtoMethodEnum,
   PaymentApi
@@ -90,10 +89,7 @@ const CreditCardModal = ({
 
     const publicKey = await paymentApi.paymentGetCircleEncryptionKey()
 
-    const encryptedData = await encrypt(
-      cardDetails,
-      publicKey as CircleEncryptionKeyDto
-    )
+    const encryptedData = await encrypt(cardDetails, publicKey)
 
     const { encryptedMessage, keyId } = encryptedData
 
@@ -102,7 +98,7 @@ const CreditCardModal = ({
 
     //TODO: handle error on frontend (display some generic message)
     const createdCard = await paymentApi.paymentCreateCircleCard(
-      { circleCreateCardAndExtraDto: payload },
+      { circleCreateCardAndExtraRequestDto: payload },
       {
         headers: {
           Authorization: "Bearer " + accessToken,
@@ -118,7 +114,7 @@ const CreditCardModal = ({
           "Content-Type": "application/json"
         }
       })
-      const card = cardsResp.find((item) => item.id === createdCard.id)
+      const card = cardsResp.cards.find((item) => item.id === createdCard.id)
       console.log(
         "🚀 ~ file: CreditCardModal.tsx ~ line 131 ~ setTimeout ~ card",
         card
@@ -128,7 +124,7 @@ const CreditCardModal = ({
         // set here paymentSetDefaultPayinMethod
         await paymentApi.paymentSetDefaultPayinMethod(
           {
-            payinMethodDto: {
+            setPayinMethodRequestDto: {
               method: PayinMethodDtoMethodEnum.CircleCard,
               cardId: createdCard.id
             }

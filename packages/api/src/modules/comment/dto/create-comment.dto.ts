@@ -3,7 +3,7 @@ import { Length } from 'class-validator'
 
 import { COMMENT_CONTENT_LENGTH } from '../constants/schema'
 
-export class CreateCommentDto {
+export class CreateCommentRequestDto {
   @ApiProperty()
   postId: string
 

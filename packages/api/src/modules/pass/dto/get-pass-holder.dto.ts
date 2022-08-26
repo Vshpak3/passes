@@ -1,22 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { PassHolderDto } from './pass-holder.dto'
 
-export class GetPassHolderDto {
-  @ApiProperty()
-  id: string
-
-  @ApiProperty()
-  passId: string
-
-  @ApiProperty()
-  holderId: string
-
-  @ApiProperty()
-  expiresAt?: number
-
-  constructor(passHolder) {
-    this.id = passHolder.id
-    this.passId = passHolder.pass_id
-    this.holderId = passHolder.holder_id
-    this.expiresAt = passHolder.expires_at
-  }
-}
+export class GetPassHolderResponseDto extends PassHolderDto {}

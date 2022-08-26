@@ -23,7 +23,8 @@ import { WalletResponseDto } from '../wallet/dto/wallet-response.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { ETH_NFT_COLLECTION_EXISTS } from './constants/errors'
-import { CreateEthNftCollectionDto } from './dto/create-eth-nft-collection.dto'
+import { CreateEthNftCollectionRequestDto } from './dto/create-eth-nft-collection.dto'
+import { EthNftCollectionDto } from './dto/eth-nft-collection.dto'
 import { BatchEthWalletRefreshEntity } from './entities/batch-eth-wallet-refresh.entity'
 import { EthNftEntity } from './entities/eth-nft.entity'
 import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
@@ -48,8 +49,8 @@ export class EthService {
 
   async createNftCollection(
     userId: string,
-    createEthNftCollectionDto: CreateEthNftCollectionDto,
-  ): Promise<EthNftCollectionEntity> {
+    createEthNftCollectionDto: CreateEthNftCollectionRequestDto,
+  ): Promise<EthNftCollectionDto> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
@@ -69,7 +70,7 @@ export class EthService {
       ETH_NFT_COLLECTION_EXISTS,
     )
     // TODO: fix return type
-    return data as any
+    return new EthNftCollectionDto(data)
   }
 
   async getBatchEthWalletRefresh(): Promise<{

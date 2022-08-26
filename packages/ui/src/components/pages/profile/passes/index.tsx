@@ -1,11 +1,11 @@
-import { GetPassDto } from "@passes/api-client"
+import { PassDto } from "@passes/api-client"
 import React, { useState } from "react"
 import { QuickPayModal } from "src/components/organisms"
 
 import Carousel from "./Carousel"
 import { Pass } from "./PassesComponents"
 interface IPasses {
-  creatorPasses: GetPassDto[] | undefined
+  creatorPasses: PassDto[] | undefined
 }
 
 export interface PaymentModalInfo {

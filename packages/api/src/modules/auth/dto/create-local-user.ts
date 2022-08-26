@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, Matches } from 'class-validator'
 
-export class CreateLocalUserDto {
+export class CreateLocalUserRequestDto {
   @IsEmail()
   @ApiProperty()
   email: string

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateFollowingDto {
+export class CreateFollowingRequestDto {
   @ApiProperty()
   creatorUserId: string
 

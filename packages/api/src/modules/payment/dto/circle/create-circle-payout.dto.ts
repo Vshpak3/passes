@@ -7,7 +7,7 @@ import {
 } from './circle-utils.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
-export class CircleCreatePayoutDto {
+export class CircleCreatePayoutRequestDto {
   @ApiProperty()
   idempotencyKey: string
 

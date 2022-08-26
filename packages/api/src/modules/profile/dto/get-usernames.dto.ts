@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class GetUsernamesDto {
+export class GetUsernamesResponseDto {
   @ApiProperty()
   usernames: string[]
 }

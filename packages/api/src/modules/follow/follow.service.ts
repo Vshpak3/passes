@@ -23,10 +23,10 @@ import {
   Following_NOT_OWNED_BY_USER,
   IS_NOT_CREATOR,
 } from './constants/errors'
-import { CreateFollowingDto } from './dto/create-following.dto'
-import { GetFanDto } from './dto/get-fan.dto'
-import { GetFollowingDto } from './dto/get-following.dto'
-import { SearchFanDto } from './dto/search-fan.dto'
+import { CreateFollowingRequestDto } from './dto/create-following.dto'
+import { FollowDto } from './dto/follow.dto'
+import { GetFanResponseDto } from './dto/get-fan.dto'
+import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
 
 // TODO: Use CASL to determine if user can access an entity
@@ -45,8 +45,8 @@ export class FollowService {
 
   async create(
     userId: string,
-    createFollowingDto: CreateFollowingDto,
-  ): Promise<GetFollowingDto> {
+    createFollowingDto: CreateFollowingRequestDto,
+  ): Promise<FollowDto> {
     const [subscriber, creator] = await Promise.all([
       this.dbReader(UserEntity.table).where({ id: userId }).first(),
       this.dbReader(UserEntity.table)
@@ -73,13 +73,13 @@ export class FollowService {
     const query = () => this.dbWriter(FollowEntity.table).insert(data)
 
     await createOrThrowOnDuplicate(query, this.logger, FOLLOWING_ALREADY_EXIST)
-    return new GetFollowingDto(data)
+    return new FollowDto(data)
   }
 
   async searchByQuery(
     userId: string,
-    searchFanDto: SearchFanDto,
-  ): Promise<GetFanDto[]> {
+    searchFanDto: SearchFanRequestDto,
+  ): Promise<GetFanResponseDto[]> {
     const strippedQuery = searchFanDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     const query = this.dbReader(FollowEntity.table)
@@ -108,7 +108,7 @@ export class FollowService {
       .limit(50)
 
     return followResult.map((follow) => {
-      return new GetFanDto(
+      return new GetFanResponseDto(
         follow.id,
         follow.username,
         follow.display_name,
@@ -117,7 +117,7 @@ export class FollowService {
     })
   }
 
-  async findOne(id: string): Promise<GetFollowingDto> {
+  async findOne(id: string): Promise<FollowDto> {
     const following = await this.dbReader(FollowEntity.table)
       .where({ id })
       .first()
@@ -125,10 +125,10 @@ export class FollowService {
       throw new NotFoundException(FOLLOWING_NOT_EXIST)
     }
 
-    return new GetFollowingDto(following)
+    return new FollowDto(following)
   }
 
-  async remove(userId: string, followId: string): Promise<GetFollowingDto> {
+  async remove(userId: string, followId: string): Promise<FollowDto> {
     const following = await this.findOne(followId)
 
     if (following.subscriberId !== userId) {
@@ -138,6 +138,6 @@ export class FollowService {
     const data = FollowEntity.toDict<FollowEntity>({ isActive: false })
     await this.dbWriter(FollowEntity.table).update(data).where({ id: followId })
 
-    return new GetFollowingDto({ ...following, ...data })
+    return new FollowDto({ ...following, ...data })
   }
 }

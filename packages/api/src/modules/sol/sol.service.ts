@@ -46,8 +46,8 @@ import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
-import { GetSolNftDto } from './dto/get-sol-nft.dto'
-import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
+import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
+import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
 import { BatchSolNftRefreshEntity } from './entities/batch-sol-nft-refresh.entity'
 import { SolNftEntity } from './entities/sol-nft.entity'
 import { SolNftCollectionEntity } from './entities/sol-nft-collection.entity'
@@ -284,7 +284,8 @@ export class SolService {
     walletId: string,
     collectionId: string,
     owner: PublicKey,
-  ): Promise<GetSolNftDto> {
+  ): Promise<GetSolNftResponseDto> {
+    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
@@ -501,13 +502,18 @@ export class SolService {
       tx_signature: txSignature,
       wallet_id: walletId,
     })
-    return new GetSolNftDto(solNftId, mintPubKey, metadataPda, txSignature)
+    return new GetSolNftResponseDto(
+      solNftId,
+      mintPubKey,
+      metadataPda,
+      txSignature,
+    )
   }
 
   async createSampleNftPass(
     walletId: string,
     collectionId: string,
-  ): Promise<GetSolNftDto> {
+  ): Promise<GetSolNftResponseDto> {
     const collection = (
       await this.dbReader(SolNftCollectionEntity.table)
         .select('*')
@@ -531,7 +537,12 @@ export class SolService {
       tx_signature: txSignature,
       wallet_id: walletId,
     })
-    return new GetSolNftDto(solNftId, mintPubKey, metadataPda, txSignature)
+    return new GetSolNftResponseDto(
+      solNftId,
+      mintPubKey,
+      metadataPda,
+      txSignature,
+    )
   }
 
   async createNftCollection(
@@ -540,7 +551,7 @@ export class SolService {
     symbol: string,
     description: string,
     imageUrl: string,
-  ): Promise<GetSolNftCollectionDto> {
+  ): Promise<GetSolNftCollectionResponseDto> {
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
@@ -765,7 +776,7 @@ export class SolService {
       tx_signature: txSignature,
     })
 
-    return new GetSolNftCollectionDto(
+    return new GetSolNftCollectionResponseDto(
       collectionId,
       collectionPubKey,
       txSignature,

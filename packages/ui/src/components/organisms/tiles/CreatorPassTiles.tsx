@@ -1,10 +1,10 @@
-import { GetPassDto } from "@passes/api-client"
+import { PassDto } from "@passes/api-client"
 import React, { useEffect, useState } from "react"
 
 import CreatorPassModal from "../CreatorPassModal"
 
 interface ICreatorPassTiles {
-  passData: GetPassDto
+  passData: PassDto
 }
 
 const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {

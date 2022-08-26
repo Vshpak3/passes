@@ -8,9 +8,9 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { USERNAME_TAKEN } from './constants/errors'
-import { CreateUserDto } from './dto/create-user.dto'
-import { SearchUserRequestDto } from './dto/search-user-request.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
+import { CreateUserRequestDto } from './dto/create-user.dto'
+import { SearchCreatorRequestDto } from './dto/search-creator.dto'
+import { UpdateUserRequestDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
 
 @Injectable()
@@ -25,7 +25,7 @@ export class UserService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(createUserDto: CreateUserRequestDto): Promise<UserEntity> {
     const data = UserEntity.toDict<UserEntity>({
       ...createUserDto,
     })
@@ -89,7 +89,7 @@ export class UserService {
 
   async update(
     userId: string,
-    updateUserDto: UpdateUserDto,
+    updateUserDto: UpdateUserRequestDto,
   ): Promise<UserEntity> {
     // TODO: check if user query is needed
     const currentUser = await this.findOne(userId)
@@ -114,8 +114,8 @@ export class UserService {
   }
 
   // TODO: Sort by creators that the user follows, most interacted with first?
-  async searchByQuery(searchUserDto: SearchUserRequestDto) {
-    const strippedQuery = searchUserDto.query.replace(/\W/g, '')
+  async searchByQuery(searchCreatorDto: SearchCreatorRequestDto) {
+    const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     return await this.dbReader(UserEntity.table)
       .where(function () {

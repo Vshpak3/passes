@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus, Param, Query, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { GetFeedDto } from './dto/get-feed-dto'
+import { GetFeedResponseDto } from './dto/get-feed-dto'
 import { FeedService } from './feed.service'
 
 @ApiTags('feed')
@@ -13,21 +13,21 @@ export class FeedController {
   @ApiOperation({ summary: 'Gets a users feed' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetFeedDto,
+    type: GetFeedResponseDto,
     description: 'A feed of posts was retrieved',
   })
   @Get()
   async getFeed(
     @Req() req: RequestWithUser,
     @Query('cursor') cursor: string,
-  ): Promise<GetFeedDto> {
+  ): Promise<GetFeedResponseDto> {
     return this.feedService.getFeed(req.user.id, cursor)
   }
 
   @ApiOperation({ summary: 'Gets a list of posts for a given creator' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetFeedDto,
+    type: GetFeedResponseDto,
     description: 'A list of posts was retrieved',
   })
   @Get('/:username')
@@ -35,7 +35,7 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Param('username') creatorUsername: string,
     @Query('cursor') cursor: string,
-  ): Promise<GetFeedDto> {
+  ): Promise<GetFeedResponseDto> {
     return this.feedService.getPostsByCreatorUsername(
       creatorUsername,
       cursor,

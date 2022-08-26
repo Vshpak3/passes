@@ -1,4 +1,4 @@
-import { CircleCreateBankDto, PaymentApi } from "@passes/api-client"
+import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -33,7 +33,7 @@ const NewCard = () => {
     setSubmitting(true)
     try {
       const values: any = getValues()
-      const payload: CircleCreateBankDto = {
+      const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
           bankType === BankTypeEnum.US || bankType == BankTypeEnum.NON_IBAN
@@ -63,7 +63,7 @@ const NewCard = () => {
       const paymentApi = new PaymentApi()
       //TODO: handle error on frontend (display some generic message)
       await paymentApi.paymentCreateCircleBank(
-        { circleCreateBankDto: payload },
+        { circleCreateBankRequestDto: payload },
         {
           headers: {
             Authorization: "Bearer " + accessToken,

@@ -121,12 +121,14 @@ const DefaultPayoutMethod = () => {
   const getBanks = useCallback(
     async (paymentApi: PaymentApi) => {
       setBanks(
-        await paymentApi.paymentGetCircleBanks({
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        })
+        (
+          await paymentApi.paymentGetCircleBanks({
+            headers: {
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json"
+            }
+          })
+        ).banks
       )
     },
     [accessToken]
@@ -135,12 +137,14 @@ const DefaultPayoutMethod = () => {
   const getWallets = useCallback(
     async (walletApi: WalletApi) => {
       setWallets(
-        await walletApi.walletFindAll({
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        })
+        (
+          await walletApi.walletFindAll({
+            headers: {
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json"
+            }
+          })
+        ).wallets
       )
     },
     [accessToken]
@@ -150,7 +154,7 @@ const DefaultPayoutMethod = () => {
     const paymentApi = new PaymentApi()
     try {
       await paymentApi.paymentSetDefaultPayoutMethod(
-        { payoutMethodDto: dto },
+        { setPayoutMethodRequestDto: dto },
         {
           headers: {
             Authorization: "Bearer " + accessToken,

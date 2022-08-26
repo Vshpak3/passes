@@ -12,11 +12,13 @@ const useChat = (username: string) => {
     async () => {
       const api = wrapApi(MessagesApi)
 
-      const createChannelDto = {
+      const createChannelRequestDto = {
         text: "",
         username: username
       }
-      const response = await api.messagesCreateChannel({ createChannelDto })
+      const response = await api.messagesCreateChannel({
+        createChannelRequestDto
+      })
       return response.id
     }
   )

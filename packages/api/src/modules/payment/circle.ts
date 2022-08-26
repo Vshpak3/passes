@@ -2,12 +2,12 @@ import { ConfigService } from '@nestjs/config'
 import axios from 'axios'
 import { get } from 'lodash'
 
-import { CircleCreateAddressDto } from './dto/circle/create-address.dto'
-import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
+import { CircleCreateAddressRequestDto } from './dto/circle/create-address.dto'
+import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardDto } from './dto/circle/create-card.dto'
-import { CircleCreatePaymentDto } from './dto/circle/create-card-payment.dto'
-import { CircleCreatePayoutDto } from './dto/circle/create-circle-payout.dto'
-import { CircleCreateTransferDto } from './dto/circle/create-circle-transfer.dto'
+import { CircleCreatePaymentRequestDto } from './dto/circle/create-card-payment.dto'
+import { CircleCreatePayoutRequestDto } from './dto/circle/create-circle-payout.dto'
+import { CircleCreateTransferRequestDto } from './dto/circle/create-circle-transfer.dto'
 import { CircleUpdateCardDto } from './dto/circle/update-card.dto'
 import { CircleResponseStatusError } from './error/circle.error'
 
@@ -111,7 +111,7 @@ export class CircleConnector {
    * Create payment
    * @param {*} payload (contains form data and encrypted payment details)
    */
-  createPayment(payload: CircleCreatePaymentDto) {
+  createPayment(payload: CircleCreatePaymentRequestDto) {
     const url = '/v1/payments'
     if (payload.metadata) {
       payload.metadata.phoneNumber = this.nullIfEmpty(
@@ -125,7 +125,7 @@ export class CircleConnector {
    * Create payout
    * @param {*} payload
    */
-  createPayout(payload: CircleCreatePayoutDto) {
+  createPayout(payload: CircleCreatePayoutRequestDto) {
     const url = '/v1/payouts'
     return this.instance.post(url, payload)
   }
@@ -134,7 +134,7 @@ export class CircleConnector {
    * Create transfer
    * @param {*} payload
    */
-  createTransfer(payload: CircleCreateTransferDto) {
+  createTransfer(payload: CircleCreateTransferRequestDto) {
     const url = '/v1/transfers'
     return this.instance.post(url, payload)
   }
@@ -162,7 +162,7 @@ export class CircleConnector {
   /**
    * Create an address
    */
-  createAddress(walletid: string, payload: CircleCreateAddressDto) {
+  createAddress(walletid: string, payload: CircleCreateAddressRequestDto) {
     const url = `/v1/wallets/${walletid}/addresses`
 
     return this.instance.post(url, payload)
@@ -171,7 +171,7 @@ export class CircleConnector {
   /**
    * Create an address
    */
-  createBank(payload: CircleCreateBankDto) {
+  createBank(payload: CircleCreateBankRequestDto) {
     const url = `/v1/banks/wires`
 
     return this.instance.post(url, payload)

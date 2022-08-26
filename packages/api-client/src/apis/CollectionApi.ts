@@ -15,9 +15,12 @@
 
 import * as runtime from '../runtime';
 import {
-    GetCollectionDto,
-    GetCollectionDtoFromJSON,
-    GetCollectionDtoToJSON,
+    GetCollectionResponseDto,
+    GetCollectionResponseDtoFromJSON,
+    GetCollectionResponseDtoToJSON,
+    UpdateCollectionRequestDto,
+    UpdateCollectionRequestDtoFromJSON,
+    UpdateCollectionRequestDtoToJSON,
 } from '../models';
 
 export interface CollectionCreateRequest {
@@ -34,7 +37,7 @@ export interface CollectionFindOneRequest {
 
 export interface CollectionUpdateRequest {
     id: string;
-    body: object;
+    updateCollectionRequestDto: UpdateCollectionRequestDto;
 }
 
 /**
@@ -45,7 +48,7 @@ export class CollectionApi extends runtime.BaseAPI {
     /**
      * Creates a collection
      */
-    async collectionCreateRaw(requestParameters: CollectionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionDto>> {
+    async collectionCreateRaw(requestParameters: CollectionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionResponseDto>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling collectionCreate.');
         }
@@ -64,13 +67,13 @@ export class CollectionApi extends runtime.BaseAPI {
             body: requestParameters.body as any,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a collection
      */
-    async collectionCreate(requestParameters: CollectionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionDto> {
+    async collectionCreate(requestParameters: CollectionCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionResponseDto> {
         const response = await this.collectionCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -78,7 +81,7 @@ export class CollectionApi extends runtime.BaseAPI {
     /**
      * Gets a collection by creator username
      */
-    async collectionFindByCreatorUsernameRaw(requestParameters: CollectionFindByCreatorUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionDto>> {
+    async collectionFindByCreatorUsernameRaw(requestParameters: CollectionFindByCreatorUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionResponseDto>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
             throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling collectionFindByCreatorUsername.');
         }
@@ -94,13 +97,13 @@ export class CollectionApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a collection by creator username
      */
-    async collectionFindByCreatorUsername(requestParameters: CollectionFindByCreatorUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionDto> {
+    async collectionFindByCreatorUsername(requestParameters: CollectionFindByCreatorUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionResponseDto> {
         const response = await this.collectionFindByCreatorUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -108,7 +111,7 @@ export class CollectionApi extends runtime.BaseAPI {
     /**
      * Gets a collection
      */
-    async collectionFindOneRaw(requestParameters: CollectionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionDto>> {
+    async collectionFindOneRaw(requestParameters: CollectionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionResponseDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling collectionFindOne.');
         }
@@ -124,13 +127,13 @@ export class CollectionApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a collection
      */
-    async collectionFindOne(requestParameters: CollectionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionDto> {
+    async collectionFindOne(requestParameters: CollectionFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionResponseDto> {
         const response = await this.collectionFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -138,13 +141,13 @@ export class CollectionApi extends runtime.BaseAPI {
     /**
      * Updates a collection
      */
-    async collectionUpdateRaw(requestParameters: CollectionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionDto>> {
+    async collectionUpdateRaw(requestParameters: CollectionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCollectionResponseDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling collectionUpdate.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling collectionUpdate.');
+        if (requestParameters.updateCollectionRequestDto === null || requestParameters.updateCollectionRequestDto === undefined) {
+            throw new runtime.RequiredError('updateCollectionRequestDto','Required parameter requestParameters.updateCollectionRequestDto was null or undefined when calling collectionUpdate.');
         }
 
         const queryParameters: any = {};
@@ -158,16 +161,16 @@ export class CollectionApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: UpdateCollectionRequestDtoToJSON(requestParameters.updateCollectionRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Updates a collection
      */
-    async collectionUpdate(requestParameters: CollectionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionDto> {
+    async collectionUpdate(requestParameters: CollectionUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCollectionResponseDto> {
         const response = await this.collectionUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }

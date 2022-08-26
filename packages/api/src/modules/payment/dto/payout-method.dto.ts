@@ -20,3 +20,6 @@ export class PayoutMethodDto {
     }
   }
 }
+
+export class SetPayoutMethodRequestDto extends PayoutMethodDto {}
+export class GetPayoutMethodResponseDto extends PayoutMethodDto {}

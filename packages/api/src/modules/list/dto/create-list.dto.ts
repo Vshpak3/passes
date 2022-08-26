@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class CreateListDto {
+export class CreateListRequestDto {
   @ApiProperty()
   name: string
 

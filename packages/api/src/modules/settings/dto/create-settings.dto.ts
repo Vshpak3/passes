@@ -1,1 +1,1 @@
-export class CreateSettingsDto {}
+export class CreateSettingsRequestDto {}

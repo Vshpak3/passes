@@ -7,14 +7,14 @@ import {
   Req,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { PublicKey } from '@solana/web3.js'
 
 import { RequestWithUser } from '../../types/request'
+import { GetWalletResponseDto } from '../wallet/dto/get-wallet.dto'
 import { WalletService } from '../wallet/wallet.service'
-import { CreateSolNftDto } from './dto/create-sol-nft.dto'
-import { CreateSolNftCollectionDto } from './dto/create-sol-nft-collection.dto'
-import { GetSolNftDto } from './dto/get-sol-nft.dto'
-import { GetSolNftCollectionDto } from './dto/get-sol-nft-collection.dto'
+import { CreateSolNftRequestDto } from './dto/create-sol-nft.dto'
+import { CreateSolNftCollectionRequestDto } from './dto/create-sol-nft-collection.dto'
+import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
+import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
 import { SolService } from './sol.service'
 
 @ApiTags('sol')
@@ -28,14 +28,14 @@ export class SolController {
   @ApiOperation({ summary: 'Creates Sol NFT Collection' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetSolNftCollectionDto,
+    type: GetSolNftCollectionResponseDto,
     description: 'Sol NFT Collection was created',
   })
   @Post('nft_collection')
   async createNftCollection(
     @Req() req: RequestWithUser,
-    @Body() createSolNftCollectionDto: CreateSolNftCollectionDto,
-  ): Promise<GetSolNftCollectionDto> {
+    @Body() createSolNftCollectionDto: CreateSolNftCollectionRequestDto,
+  ): Promise<GetSolNftCollectionResponseDto> {
     return await this.solService.createNftCollection(
       req.user.id,
       createSolNftCollectionDto.name,
@@ -48,23 +48,18 @@ export class SolController {
   @ApiOperation({ summary: 'Creates Sol NFT from Collection' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetSolNftDto,
+    type: GetSolNftResponseDto,
     description: 'Sol NFT Collection was created',
   })
   @Post('nft')
   async createNft(
     @Req() req: RequestWithUser,
-    @Body() createSolNftDto: CreateSolNftDto,
-  ): Promise<GetSolNftDto> {
+    @Body() createSolNftDto: CreateSolNftRequestDto,
+  ): Promise<GetWalletResponseDto> {
     const wallet = await this.walletService.findOne(createSolNftDto.walletId)
     if (!wallet) {
       throw new NotFoundException('wallet not found')
     }
-    return await this.solService.createNftPass(
-      req.user.id,
-      wallet.id as string,
-      createSolNftDto.collectionId,
-      new PublicKey(wallet.address as string),
-    )
+    return wallet
   }
 }

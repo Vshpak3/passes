@@ -26,7 +26,7 @@ export class CircleCreateCardDto {
   metadata: CircleMetaDataDto
 }
 
-export class CircleCreateCardAndExtraDto {
+export class CircleCreateCardAndExtraRequestDto {
   @ApiProperty()
   createCardDto: CircleCreateCardDto
 

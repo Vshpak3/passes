@@ -20,17 +20,17 @@ import {
     CircleCardDtoToJSON,
 } from './CircleCardDto';
 import {
-    GetPassDto,
-    GetPassDtoFromJSON,
-    GetPassDtoFromJSONTyped,
-    GetPassDtoToJSON,
-} from './GetPassDto';
+    PassDto,
+    PassDtoFromJSON,
+    PassDtoFromJSONTyped,
+    PassDtoToJSON,
+} from './PassDto';
 import {
-    GetPassHolderDto,
-    GetPassHolderDtoFromJSON,
-    GetPassHolderDtoFromJSONTyped,
-    GetPassHolderDtoToJSON,
-} from './GetPassHolderDto';
+    PassHolderDto,
+    PassHolderDtoFromJSON,
+    PassHolderDtoFromJSONTyped,
+    PassHolderDtoToJSON,
+} from './PassHolderDto';
 import {
     PayinMethodDto,
     PayinMethodDtoFromJSON,
@@ -88,16 +88,16 @@ export interface SubscriptionDto {
     passHolderId?: string;
     /**
      * 
-     * @type {GetPassHolderDto}
+     * @type {PassHolderDto}
      * @memberof SubscriptionDto
      */
-    passHolder?: GetPassHolderDto;
+    passHolder?: PassHolderDto;
     /**
      * 
-     * @type {GetPassDto}
+     * @type {PassDto}
      * @memberof SubscriptionDto
      */
-    pass?: GetPassDto;
+    pass?: PassDto;
 }
 
 
@@ -130,8 +130,8 @@ export function SubscriptionDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'amount': json['amount'],
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
         'passHolderId': !exists(json, 'passHolderId') ? undefined : json['passHolderId'],
-        'passHolder': !exists(json, 'passHolder') ? undefined : GetPassHolderDtoFromJSON(json['passHolder']),
-        'pass': !exists(json, 'pass') ? undefined : GetPassDtoFromJSON(json['pass']),
+        'passHolder': !exists(json, 'passHolder') ? undefined : PassHolderDtoFromJSON(json['passHolder']),
+        'pass': !exists(json, 'pass') ? undefined : PassDtoFromJSON(json['pass']),
     };
 }
 
@@ -151,8 +151,8 @@ export function SubscriptionDtoToJSON(value?: SubscriptionDto | null): any {
         'amount': value.amount,
         'card': CircleCardDtoToJSON(value.card),
         'passHolderId': value.passHolderId,
-        'passHolder': GetPassHolderDtoToJSON(value.passHolder),
-        'pass': GetPassDtoToJSON(value.pass),
+        'passHolder': PassHolderDtoToJSON(value.passHolder),
+        'pass': PassDtoToJSON(value.pass),
     };
 }
 

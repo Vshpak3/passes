@@ -15,10 +15,10 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_PHONE_NUMBER_LENGTH,
   USER_USERNAME_LENGTH,
-} from '../constant/schema'
+} from '../constants/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 
-export class CreateUserDto {
+export class CreateUserRequestDto {
   @IsEmail()
   @ApiProperty()
   email: string

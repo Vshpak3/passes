@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { GetPostDto } from './get-post.dto'
+import { PostDto } from './post.dto'
 
-export class GetFeedDto {
-  @ApiProperty({ type: [GetPostDto] })
-  posts: GetPostDto[]
+export class GetFeedRequestDto {
+  @ApiProperty({ type: [PostDto] })
+  posts: PostDto[]
 
   @ApiProperty()
   count: number
@@ -12,7 +12,7 @@ export class GetFeedDto {
   @ApiProperty()
   cursor: string
 
-  constructor(posts: GetPostDto[], cursor: string) {
+  constructor(posts: PostDto[], cursor: string) {
     this.posts = posts
     this.count = posts.length
     this.cursor = cursor

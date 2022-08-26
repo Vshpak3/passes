@@ -26,12 +26,12 @@ import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
-import { CreateChannelDto } from './dto/create-channel.dto'
-import { GetChannelDto } from './dto/get-channel.dto'
+import { ChannelStatDto } from './dto/channel-stat.dto'
+import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
+import { CreateChannelRequestDto } from './dto/create-channel.dto'
 import { MessageDto } from './dto/message.dto'
-import { SendMessageDto } from './dto/send-message.dto'
-import { TokenDto } from './dto/token.dto'
+import { SendMessageRequestDto } from './dto/send-message.dto'
+import { TokenResponseDto } from './dto/token.dto'
 import { BatchMessageEntity } from './entities/batch-message.entity'
 import { ChannelStatEntity } from './entities/channel-stat.entity'
 import { TippedMessageEntity } from './entities/tipped-message.entity'
@@ -61,7 +61,7 @@ export class MessagesService {
     )
   }
 
-  async getToken(userId: string): Promise<TokenDto> {
+  async getToken(userId: string): Promise<TokenResponseDto> {
     await this.streamClient.upsertUser({ id: userId })
 
     return { token: this.streamClient.createToken(userId) }
@@ -69,8 +69,8 @@ export class MessagesService {
 
   async createChannel(
     userId: string,
-    createChannelDto: CreateChannelDto,
-  ): Promise<GetChannelDto> {
+    createChannelDto: CreateChannelRequestDto,
+  ): Promise<ChannelStatDto> {
     const otherUser = await this.dbReader(UserEntity.table)
       .where(
         UserEntity.toDict<UserEntity>({
@@ -129,7 +129,7 @@ export class MessagesService {
 
   async createBatchMessage(
     userId: string,
-    createBatchMessageDto: CreateBatchMessageDto,
+    createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
     const listResult = await this.dbReader(ListEntity.table)
       .select('list.id')
@@ -295,7 +295,10 @@ export class MessagesService {
     }
   }
 
-  async registerSendMessage(userId: string, sendMessageDto: SendMessageDto) {
+  async registerSendMessage(
+    userId: string,
+    sendMessageDto: SendMessageRequestDto,
+  ) {
     if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
       throw new BadRequestException('invalid tip amount')
     }
@@ -509,6 +512,6 @@ export class MessagesService {
         .where('user', userId)
         .orWhere('other_user', userId)
         .select('*')
-    ).map((channelStat) => new GetChannelDto(channelStat))
+    ).map((channelStat) => new ChannelStatDto(channelStat))
   }
 }

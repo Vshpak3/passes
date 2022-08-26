@@ -15,16 +15,16 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateCommentDto,
-    CreateCommentDtoFromJSON,
-    CreateCommentDtoToJSON,
-    GetCommentsForPostDto,
-    GetCommentsForPostDtoFromJSON,
-    GetCommentsForPostDtoToJSON,
+    CreateCommentRequestDto,
+    CreateCommentRequestDtoFromJSON,
+    CreateCommentRequestDtoToJSON,
+    GetCommentsForPostResponseDto,
+    GetCommentsForPostResponseDtoFromJSON,
+    GetCommentsForPostResponseDtoToJSON,
 } from '../models';
 
 export interface CommentCreateRequest {
-    createCommentDto: CreateCommentDto;
+    createCommentRequestDto: CreateCommentRequestDto;
 }
 
 export interface CommentDeleteRequest {
@@ -51,9 +51,9 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Creates a comment
      */
-    async commentCreateRaw(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateCommentDto>> {
-        if (requestParameters.createCommentDto === null || requestParameters.createCommentDto === undefined) {
-            throw new runtime.RequiredError('createCommentDto','Required parameter requestParameters.createCommentDto was null or undefined when calling commentCreate.');
+    async commentCreateRaw(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateCommentRequestDto>> {
+        if (requestParameters.createCommentRequestDto === null || requestParameters.createCommentRequestDto === undefined) {
+            throw new runtime.RequiredError('createCommentRequestDto','Required parameter requestParameters.createCommentRequestDto was null or undefined when calling commentCreate.');
         }
 
         const queryParameters: any = {};
@@ -67,16 +67,16 @@ export class CommentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateCommentDtoToJSON(requestParameters.createCommentDto),
+            body: CreateCommentRequestDtoToJSON(requestParameters.createCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateCommentDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateCommentRequestDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a comment
      */
-    async commentCreate(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateCommentDto> {
+    async commentCreate(requestParameters: CommentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateCommentRequestDto> {
         const response = await this.commentCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -113,7 +113,7 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Gets all comments for a post
      */
-    async commentFindCommentsForPostRaw(requestParameters: CommentFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCommentsForPostDto>> {
+    async commentFindCommentsForPostRaw(requestParameters: CommentFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCommentsForPostResponseDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentFindCommentsForPost.');
         }
@@ -129,13 +129,13 @@ export class CommentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCommentsForPostDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCommentsForPostResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets all comments for a post
      */
-    async commentFindCommentsForPost(requestParameters: CommentFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCommentsForPostDto> {
+    async commentFindCommentsForPost(requestParameters: CommentFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCommentsForPostResponseDto> {
         const response = await this.commentFindCommentsForPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -143,7 +143,7 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Gets a comment
      */
-    async commentFindOneRaw(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateCommentDto>> {
+    async commentFindOneRaw(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateCommentRequestDto>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentFindOne.');
         }
@@ -159,13 +159,13 @@ export class CommentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateCommentDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateCommentRequestDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a comment
      */
-    async commentFindOne(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateCommentDto> {
+    async commentFindOne(requestParameters: CommentFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateCommentRequestDto> {
         const response = await this.commentFindOneRaw(requestParameters, initOverrides);
         return await response.value();
     }

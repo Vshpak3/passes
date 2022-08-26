@@ -18,10 +18,10 @@ import {
   USER_HAS_PROFILE,
   USER_IS_NOT_CREATOR,
 } from './constants/errors'
-import { CreateProfileDto } from './dto/create-profile.dto'
-import { GetProfileDto } from './dto/get-profile.dto'
-import { GetUsernamesDto } from './dto/get-usernames.dto'
-import { UpdateProfileDto } from './dto/update-profile.dto'
+import { CreateProfileRequestDto } from './dto/create-profile.dto'
+import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
+import { ProfileDto } from './dto/profile.dto'
+import { UpdateProfileRequestDto } from './dto/update-profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
 
 // TODO: Use CASL to determine if user can access an entity
@@ -40,8 +40,8 @@ export class ProfileService {
 
   async create(
     userId: string,
-    createProfileDto: CreateProfileDto,
-  ): Promise<GetProfileDto> {
+    createProfileDto: CreateProfileRequestDto,
+  ): Promise<ProfileDto> {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
@@ -57,10 +57,10 @@ export class ProfileService {
 
     const query = () => this.dbWriter(ProfileEntity.table).insert(data)
     await createOrThrowOnDuplicate(query, this.logger, USER_HAS_PROFILE)
-    return new GetProfileDto(data)
+    return new ProfileDto(data)
   }
 
-  async findOne(id: string): Promise<GetProfileDto> {
+  async findOne(id: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
@@ -76,10 +76,10 @@ export class ProfileService {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
 
-    return new GetProfileDto(profile)
+    return new ProfileDto(profile)
   }
 
-  async findOneByUsername(username: string): Promise<GetProfileDto> {
+  async findOneByUsername(username: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table} as user`,
@@ -95,14 +95,14 @@ export class ProfileService {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
 
-    return new GetProfileDto(profile)
+    return new ProfileDto(profile)
   }
 
   async update(
     userId: string,
     profileId: string,
-    updateProfileDto: UpdateProfileDto,
-  ): Promise<GetProfileDto> {
+    updateProfileDto: UpdateProfileRequestDto,
+  ): Promise<ProfileDto> {
     const profile = await this.dbWriter(ProfileEntity.table)
       .where('id', profileId)
       .first()
@@ -119,10 +119,10 @@ export class ProfileService {
 
     await this.dbWriter(ProfileEntity.table).update(data).where('id', profileId)
 
-    return new GetProfileDto({ ...profile, ...data })
+    return new ProfileDto({ ...profile, ...data })
   }
 
-  async remove(userId: string, profileId: string): Promise<GetProfileDto> {
+  async remove(userId: string, profileId: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .where({ id: profileId })
       .first()
@@ -139,10 +139,10 @@ export class ProfileService {
     await this.dbWriter(ProfileEntity.table)
       .update(data)
       .where({ id: profileId })
-    return new GetProfileDto({ ...profile, ...data })
+    return new ProfileDto({ ...profile, ...data })
   }
 
-  async getAllUsernames(): Promise<GetUsernamesDto> {
+  async getAllUsernames(): Promise<GetUsernamesResponseDto> {
     const rawUsernames = await this.dbWriter(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table} as user`,

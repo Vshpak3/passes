@@ -14,11 +14,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { CreatePassDto } from './dto/create-pass.dto'
-import { CreatePassHolderDto } from './dto/create-pass-holder.dto'
-import { GetPassDto } from './dto/get-pass.dto'
-import { RenewPassHolderDto } from './dto/renew-pass-holder.dto'
-import { UpdatePassDto } from './dto/update-pass.dto'
+import { CreatePassRequestDto } from './dto/create-pass.dto'
+import { CreatePassHolderRequestDto } from './dto/create-pass-holder.dto'
+import { GetPassesResponseDto, GetPassResponseDto } from './dto/get-pass.dto'
+import { RenewPassHolderRequestDto } from './dto/renew-pass-holder.dto'
+import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
 
 @ApiTags('pass')
@@ -29,67 +29,71 @@ export class PassController {
   @ApiOperation({ summary: 'Creates a pass' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetPassDto,
+    type: GetPassResponseDto,
     description: 'A pass was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
-    @Body() createPassDto: CreatePassDto,
-  ): Promise<GetPassDto> {
+    @Body() createPassDto: CreatePassRequestDto,
+  ): Promise<GetPassResponseDto> {
     return this.passService.create(req.user.id, createPassDto)
   }
 
   @ApiOperation({ summary: 'Gets passes created by a creator' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [GetPassDto],
+    type: GetPassesResponseDto,
     description: 'A list of passes was retrieved',
   })
   @Get('created/:creatorId')
   async getCreatorPasses(
     @Param('creatorId') creatorId: string,
-  ): Promise<Array<GetPassDto>> {
-    return await this.passService.findPassesByCreator(creatorId)
+  ): Promise<GetPassesResponseDto> {
+    return new GetPassesResponseDto(
+      await this.passService.findPassesByCreator(creatorId),
+    )
   }
 
   @ApiOperation({ summary: 'Gets passes held by user' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [GetPassDto],
+    type: GetPassesResponseDto,
     description: 'A list of passes was retrieved',
   })
   @Get('owned')
   async getOwnedPasses(
     @Req() req: RequestWithUser,
     @Query('creatorId') creatorId: string,
-  ): Promise<Array<GetPassDto>> {
-    return await this.passService.findOwnedPasses(req.user.id, creatorId)
+  ): Promise<GetPassesResponseDto> {
+    return new GetPassesResponseDto(
+      await this.passService.findOwnedPasses(req.user.id, creatorId),
+    )
   }
 
   @ApiOperation({ summary: 'Gets a pass' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetPassDto,
+    type: GetPassResponseDto,
     description: 'A pass was retrieved',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetPassDto> {
+  async findOne(@Param('id') id: string): Promise<GetPassResponseDto> {
     return this.passService.findOne(id)
   }
 
   @ApiOperation({ summary: 'Updates a pass' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetPassDto,
+    type: GetPassResponseDto,
     description: 'A pass was updated',
   })
   @Patch(':id')
   async update(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
-    @Body() updatePassDto: UpdatePassDto,
-  ) {
+    @Body() updatePassDto: UpdatePassRequestDto,
+  ): Promise<GetPassResponseDto> {
     return this.passService.update(req.user.id, id, updatePassDto)
   }
 
@@ -102,7 +106,7 @@ export class PassController {
   @Post('pay/create')
   async registerCreatePass(
     @Req() req: RequestWithUser,
-    @Body() createPassHolderDto: CreatePassHolderDto,
+    @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return this.passService.registerCreatePass(
       req.user.id,
@@ -120,7 +124,7 @@ export class PassController {
   @Post('pay/data/create')
   async registerCreatePassData(
     @Req() req: RequestWithUser,
-    @Body() createPassHolderDto: CreatePassHolderDto,
+    @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<PayinDataDto> {
     return this.passService.registerCreatePassData(
       req.user.id,
@@ -137,7 +141,7 @@ export class PassController {
   @Post('pay/renew')
   async registerRenewPass(
     @Req() req: RequestWithUser,
-    @Body() renewPassHolderDto: RenewPassHolderDto,
+    @Body() renewPassHolderDto: RenewPassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return this.passService.registerRenewPass(
       req.user.id,
@@ -155,7 +159,7 @@ export class PassController {
   @Post('pay/data/renew')
   async registerRenewPassData(
     @Req() req: RequestWithUser,
-    @Body() renewPassHolderDto: RenewPassHolderDto,
+    @Body() renewPassHolderDto: RenewPassHolderRequestDto,
   ): Promise<PayinDataDto> {
     return this.passService.registerRenewPassData(
       req.user.id,

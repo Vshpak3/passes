@@ -1,5 +1,7 @@
 import { PickType } from '@nestjs/swagger'
 
-import { CreatePostDto } from './create-post.dto'
+import { CreatePostRequestDto } from './create-post.dto'
 
-export class UpdatePostDto extends PickType(CreatePostDto, ['text'] as const) {}
+export class UpdatePostRequestDto extends PickType(CreatePostRequestDto, [
+  'text',
+] as const) {}

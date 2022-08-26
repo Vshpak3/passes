@@ -12,8 +12,8 @@ import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.e
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { MessagesService } from '../messages/messages.service'
-import { GetPassDto } from '../pass/dto/get-pass.dto'
-import { GetPassHolderDto } from '../pass/dto/get-pass-holder.dto'
+import { PassDto } from '../pass/dto/pass.dto'
+import { PassHolderDto } from '../pass/dto/pass-holder.dto'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
@@ -32,13 +32,13 @@ import {
 } from './dto/circle/circle-notification.dto'
 import { CirclePaymentDto } from './dto/circle/circle-payment.dto'
 import { CircleTransferDto } from './dto/circle/circle-transfer.dto'
-import { CircleCreateBankDto } from './dto/circle/create-bank.dto'
+import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardDto } from './dto/circle/create-card.dto'
-import { CircleCreateCardPaymentDto } from './dto/circle/create-card-payment.dto'
-import { CircleCreatePayoutDto } from './dto/circle/create-circle-payout.dto'
-import { CircleCreateTransferDto } from './dto/circle/create-circle-transfer.dto'
-import { CircleEncryptionKeyDto } from './dto/circle/encryption-key.dto'
-import { CircleStatusDto } from './dto/circle/status.dto'
+import { CircleCreateCardPaymentRequestDto } from './dto/circle/create-card-payment.dto'
+import { CircleCreatePayoutRequestDto } from './dto/circle/create-circle-payout.dto'
+import { CircleCreateTransferRequestDto } from './dto/circle/create-circle-transfer.dto'
+import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
+import { CircleStatusResponseDto } from './dto/circle/status.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { PayinDto } from './dto/payin.dto'
 import {
@@ -167,7 +167,7 @@ export class PaymentService {
    *
    * @returns
    */
-  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyDto> {
+  async getCircleEncryptionKey(): Promise<CircleEncryptionKeyResponseDto> {
     const response = await this.circleConnector.getPCIPublicKey()
     return { keyId: response['keyId'], publicKey: response['publicKey'] }
   }
@@ -185,7 +185,7 @@ export class PaymentService {
     userId: string,
     createCardDto: CircleCreateCardDto,
     cardNumber: string,
-  ): Promise<CircleStatusDto> {
+  ): Promise<CircleStatusResponseDto> {
     if (
       await this.dbReader(CircleCardEntity.table)
         .where(
@@ -296,7 +296,7 @@ export class PaymentService {
     ipAddress: string,
     sessionId: string,
     payin: PayinDto,
-  ): Promise<CircleStatusDto> {
+  ): Promise<CircleStatusResponseDto> {
     const card = await this.dbReader(CircleCardEntity.table)
       .where('id', payin.payinMethod.cardId)
       .select('id', 'circle_card_id')
@@ -314,7 +314,7 @@ export class PaymentService {
         )
     }
 
-    const createCardPaymentDto: CircleCreateCardPaymentDto = {
+    const createCardPaymentDto: CircleCreateCardPaymentRequestDto = {
       idempotencyKey: v4(),
       amount: {
         amount: payin.amount.toFixed(2),
@@ -393,8 +393,8 @@ export class PaymentService {
    */
   async createCircleBank(
     userId: string,
-    createBankDto: CircleCreateBankDto,
-  ): Promise<CircleStatusDto> {
+    createBankDto: CircleCreateBankRequestDto,
+  ): Promise<CircleStatusResponseDto> {
     if (
       await this.dbReader(CircleBankEntity.table)
         .where(
@@ -481,7 +481,7 @@ export class PaymentService {
   async makeCircleWirePayout(
     userId: string,
     payout: PayoutDto,
-  ): Promise<CircleStatusDto> {
+  ): Promise<CircleStatusResponseDto> {
     const bank = await this.dbReader(CircleBankEntity.table)
       .where({
         id: payout.payoutMethod.bankId,
@@ -497,7 +497,7 @@ export class PaymentService {
       .select('email')
       .first()
 
-    const createPayoutDto: CircleCreatePayoutDto = {
+    const createPayoutDto: CircleCreatePayoutRequestDto = {
       idempotencyKey: v4(),
       source: {
         type: 'wallet',
@@ -553,14 +553,14 @@ export class PaymentService {
   async makeCircleBlockchainTransfer(
     userId: string,
     payout: PayoutDto,
-  ): Promise<CircleStatusDto> {
+  ): Promise<CircleStatusResponseDto> {
     const wallet = await this.dbReader(WalletEntity.table)
       .where('id', payout.payoutMethod.walletId)
       .andWhere('user_id', userId)
       .select('*')
       .first()
 
-    const createTransferDto: CircleCreateTransferDto = {
+    const createTransferDto: CircleCreateTransferRequestDto = {
       idempotencyKey: v4(),
       source: {
         type: 'wallet',
@@ -2099,7 +2099,7 @@ export class PaymentService {
       )
       .select('*')
     const passHoldingsMap = passHoldings.reduce((map, passHolding) => {
-      map[passHolding.id] = new GetPassHolderDto(passHolding)
+      map[passHolding.id] = new PassHolderDto(passHolding)
       return map
     }, {})
 
@@ -2112,7 +2112,7 @@ export class PaymentService {
       )
       .select('*')
     const passesMap = passes.reduce((map, pass) => {
-      map[pass.id] = new GetPassDto(pass)
+      map[pass.id] = new PassDto(pass)
       return map
     }, {})
 

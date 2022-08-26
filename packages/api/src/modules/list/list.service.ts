@@ -10,11 +10,11 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import { CreateListDto } from './dto/create-list.dto'
-import { GetListDto } from './dto/get-list.dto'
-import { GetListMemberDto } from './dto/get-list-member.dto'
-import { GetListsDto } from './dto/get-lists.dto'
-import { ListMembersDto } from './dto/list-members.dto'
+import { CreateListRequestDto } from './dto/create-list.dto'
+import { GetListResponseDto } from './dto/get-list.dto'
+import { GetListsResponseDto } from './dto/get-lists.dto'
+import { ListMemberDto } from './dto/list-member.dto'
+import { ListMembersRequestDto } from './dto/list-members.dto'
 import { ListEntity } from './entities/list.entity'
 import { ListMemberEntity } from './entities/list-member.entity'
 
@@ -34,8 +34,8 @@ export class ListService {
 
   async create(
     userId: string,
-    createListDto: CreateListDto,
-  ): Promise<GetListDto> {
+    createListDto: CreateListRequestDto,
+  ): Promise<GetListResponseDto> {
     const listId = uuid.v4()
     let followResult: any[] = []
     let listMemberRecords: { id: string; list_id: string; user_id: string }[] =
@@ -74,11 +74,11 @@ export class ListService {
       }
     })
 
-    return new GetListDto(
+    return new GetListResponseDto(
       listId,
       createListDto.name,
       followResult.map((followResult) => {
-        return new GetListMemberDto(followResult.user_id, followResult.username)
+        return new ListMemberDto(followResult.user_id, followResult.username)
       }),
       listMemberRecords.length,
     )
@@ -96,7 +96,7 @@ export class ListService {
     userId: string,
     id: string,
     cursor?: string,
-  ): Promise<GetListDto> {
+  ): Promise<GetListResponseDto> {
     const listMemberQuery = this.dbReader(ListEntity.table)
       .leftJoin(ListMemberEntity.table, 'list_member.list_id', 'list.id')
       .leftJoin(UserEntity.table, 'list_member.user_id', 'users.id')
@@ -114,22 +114,25 @@ export class ListService {
     const listMembers = dbResult
       .map((listMember) => {
         if (listMember.user_id && listMember.username) {
-          return new GetListMemberDto(listMember.user_id, listMember.username)
+          return new ListMemberDto(listMember.user_id, listMember.username)
         } else {
           return undefined
         }
       })
       .filter((listMember) => listMember != undefined)
 
-    return new GetListDto(
+    return new GetListResponseDto(
       dbResult[0].id,
       dbResult[0].name,
-      listMembers as GetListMemberDto[],
-      (listMembers as GetListMemberDto[]).length,
+      listMembers as ListMemberDto[],
+      (listMembers as ListMemberDto[]).length,
     )
   }
 
-  async getListsForUser(userId: string, cursor?: string): Promise<GetListsDto> {
+  async getListsForUser(
+    userId: string,
+    cursor?: string,
+  ): Promise<GetListsResponseDto> {
     const listQuery = this.dbReader(ListEntity.table)
       .select('list.id', this.dbReader.raw('count(list_member.id) as count'))
       .leftJoin(ListMemberEntity.table, 'list_member.list_id', '=', 'list.id')
@@ -141,9 +144,9 @@ export class ListService {
     listQuery.orderBy('list.name', 'asc')
     listQuery.groupBy('list.id')
 
-    return new GetListsDto(
+    return new GetListsResponseDto(
       (await listQuery).map((list) => {
-        return new GetListDto(list.id, list.name, [], list.count)
+        return new GetListResponseDto(list.id, list.name, [], list.count)
       }),
     )
   }
@@ -151,7 +154,7 @@ export class ListService {
   async addListMembers(
     userId: string,
     listId: string,
-    addListMembersDto: ListMembersDto,
+    addListMembersDto: ListMembersRequestDto,
   ): Promise<void> {
     const listResult = await this.dbReader(ListEntity.table)
       .select('*')
@@ -181,7 +184,7 @@ export class ListService {
   async removeListMembers(
     userId: string,
     listId: string,
-    removeListMembersDto: ListMembersDto,
+    removeListMembersDto: ListMembersRequestDto,
   ): Promise<void> {
     const listResult = await this.dbReader(ListEntity.table)
       .select('*')

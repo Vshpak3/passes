@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
-import { GetPassDto } from '../../pass/dto/get-pass.dto'
-import { GetPassHolderDto } from '../../pass/dto/get-pass-holder.dto'
+import { PassDto } from '../../pass/dto/pass.dto'
+import { PassHolderDto } from '../../pass/dto/pass-holder.dto'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
@@ -29,10 +29,10 @@ export class SubscriptionDto {
   passHolderId?: string
 
   @ApiPropertyOptional()
-  passHolder?: GetPassHolderDto
+  passHolder?: PassHolderDto
 
   @ApiPropertyOptional()
-  pass?: GetPassDto
+  pass?: PassDto
 
   constructor(subscription) {
     if (subscription) {

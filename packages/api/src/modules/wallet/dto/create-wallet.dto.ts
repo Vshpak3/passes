@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 
 import { ChainEnum } from '../enum/chain.enum'
 
-export class CreateWalletDto {
+export class CreateWalletRequestDto {
   @ApiProperty()
   signedMessage: string
 
@@ -16,7 +16,7 @@ export class CreateWalletDto {
   chain: ChainEnum
 }
 
-export class CreateUnauthenticatedWalletDto {
+export class CreateUnauthenticatedWalletRequestDto {
   @ApiProperty()
   walletAddress: string
 

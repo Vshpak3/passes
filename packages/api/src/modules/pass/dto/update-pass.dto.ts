@@ -1,8 +1,8 @@
 import { PickType } from '@nestjs/swagger'
 
-import { CreatePassDto } from './create-pass.dto'
+import { CreatePassRequestDto } from './create-pass.dto'
 
-export class UpdatePassDto extends PickType(CreatePassDto, [
+export class UpdatePassRequestDto extends PickType(CreatePassRequestDto, [
   'title',
   'description',
 ] as const) {}

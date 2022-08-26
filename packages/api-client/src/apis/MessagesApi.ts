@@ -15,42 +15,42 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateBatchMessageDto,
-    CreateBatchMessageDtoFromJSON,
-    CreateBatchMessageDtoToJSON,
-    CreateChannelDto,
-    CreateChannelDtoFromJSON,
-    CreateChannelDtoToJSON,
-    GetChannelDto,
-    GetChannelDtoFromJSON,
-    GetChannelDtoToJSON,
-    GetCompleteTippedMessagedDto,
-    GetCompleteTippedMessagedDtoFromJSON,
-    GetCompleteTippedMessagedDtoToJSON,
-    MessageDto,
-    MessageDtoFromJSON,
-    MessageDtoToJSON,
+    CreateBatchMessageRequestDto,
+    CreateBatchMessageRequestDtoFromJSON,
+    CreateBatchMessageRequestDtoToJSON,
+    CreateChannelRequestDto,
+    CreateChannelRequestDtoFromJSON,
+    CreateChannelRequestDtoToJSON,
+    GetChannelStatResponseDto,
+    GetChannelStatResponseDtoFromJSON,
+    GetChannelStatResponseDtoToJSON,
+    GetChannelStatsResponseDto,
+    GetChannelStatsResponseDtoFromJSON,
+    GetChannelStatsResponseDtoToJSON,
+    GetMessagesResponseDto,
+    GetMessagesResponseDtoFromJSON,
+    GetMessagesResponseDtoToJSON,
     RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
-    SendMessageDto,
-    SendMessageDtoFromJSON,
-    SendMessageDtoToJSON,
-    TokenDto,
-    TokenDtoFromJSON,
-    TokenDtoToJSON,
+    SendMessageRequestDto,
+    SendMessageRequestDtoFromJSON,
+    SendMessageRequestDtoToJSON,
+    TokenResponseDto,
+    TokenResponseDtoFromJSON,
+    TokenResponseDtoToJSON,
 } from '../models';
 
 export interface MessagesCreateChannelRequest {
-    createChannelDto: CreateChannelDto;
+    createChannelRequestDto: CreateChannelRequestDto;
 }
 
 export interface MessagesMassSendRequest {
-    createBatchMessageDto: CreateBatchMessageDto;
+    createBatchMessageRequestDto: CreateBatchMessageRequestDto;
 }
 
 export interface MessagesSendRequest {
-    sendMessageDto: SendMessageDto;
+    sendMessageRequestDto: SendMessageRequestDto;
 }
 
 /**
@@ -61,9 +61,9 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Creates a channel
      */
-    async messagesCreateChannelRaw(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelDto>> {
-        if (requestParameters.createChannelDto === null || requestParameters.createChannelDto === undefined) {
-            throw new runtime.RequiredError('createChannelDto','Required parameter requestParameters.createChannelDto was null or undefined when calling messagesCreateChannel.');
+    async messagesCreateChannelRaw(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatResponseDto>> {
+        if (requestParameters.createChannelRequestDto === null || requestParameters.createChannelRequestDto === undefined) {
+            throw new runtime.RequiredError('createChannelRequestDto','Required parameter requestParameters.createChannelRequestDto was null or undefined when calling messagesCreateChannel.');
         }
 
         const queryParameters: any = {};
@@ -77,16 +77,16 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateChannelDtoToJSON(requestParameters.createChannelDto),
+            body: CreateChannelRequestDtoToJSON(requestParameters.createChannelRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelStatResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a channel
      */
-    async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelDto> {
+    async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatResponseDto> {
         const response = await this.messagesCreateChannelRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -94,7 +94,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels stats
      */
-    async messagesGetChannelsStatsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<GetChannelDto>>> {
+    async messagesGetChannelsStatsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -106,13 +106,13 @@ export class MessagesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GetChannelDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelStatsResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get channels stats
      */
-    async messagesGetChannelsStats(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetChannelDto>> {
+    async messagesGetChannelsStats(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatsResponseDto> {
         const response = await this.messagesGetChannelsStatsRaw(initOverrides);
         return await response.value();
     }
@@ -120,7 +120,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get completed tipped messages
      */
-    async messagesGetCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCompleteTippedMessagedDto>> {
+    async messagesGetCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -132,13 +132,13 @@ export class MessagesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCompleteTippedMessagedDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessagesResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get completed tipped messages
      */
-    async messagesGetCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCompleteTippedMessagedDto> {
+    async messagesGetCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetMessagesResponseDto> {
         const response = await this.messagesGetCompletedTippedMessagesRaw(initOverrides);
         return await response.value();
     }
@@ -146,7 +146,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get pending messages
      */
-    async messagesGetPendingRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<MessageDto>>> {
+    async messagesGetPendingRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -158,13 +158,13 @@ export class MessagesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MessageDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessagesResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get pending messages
      */
-    async messagesGetPending(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<MessageDto>> {
+    async messagesGetPending(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetMessagesResponseDto> {
         const response = await this.messagesGetPendingRaw(initOverrides);
         return await response.value();
     }
@@ -172,7 +172,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Gets token
      */
-    async messagesGetTokenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<TokenDto>> {
+    async messagesGetTokenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<TokenResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -184,13 +184,13 @@ export class MessagesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TokenDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TokenResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets token
      */
-    async messagesGetToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<TokenDto> {
+    async messagesGetToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<TokenResponseDto> {
         const response = await this.messagesGetTokenRaw(initOverrides);
         return await response.value();
     }
@@ -199,8 +199,8 @@ export class MessagesApi extends runtime.BaseAPI {
      * Batch message
      */
     async messagesMassSendRaw(requestParameters: MessagesMassSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.createBatchMessageDto === null || requestParameters.createBatchMessageDto === undefined) {
-            throw new runtime.RequiredError('createBatchMessageDto','Required parameter requestParameters.createBatchMessageDto was null or undefined when calling messagesMassSend.');
+        if (requestParameters.createBatchMessageRequestDto === null || requestParameters.createBatchMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('createBatchMessageRequestDto','Required parameter requestParameters.createBatchMessageRequestDto was null or undefined when calling messagesMassSend.');
         }
 
         const queryParameters: any = {};
@@ -214,7 +214,7 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateBatchMessageDtoToJSON(requestParameters.createBatchMessageDto),
+            body: CreateBatchMessageRequestDtoToJSON(requestParameters.createBatchMessageRequestDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -231,8 +231,8 @@ export class MessagesApi extends runtime.BaseAPI {
      * Register sending message
      */
     async messagesSendRaw(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
-        if (requestParameters.sendMessageDto === null || requestParameters.sendMessageDto === undefined) {
-            throw new runtime.RequiredError('sendMessageDto','Required parameter requestParameters.sendMessageDto was null or undefined when calling messagesSend.');
+        if (requestParameters.sendMessageRequestDto === null || requestParameters.sendMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('sendMessageRequestDto','Required parameter requestParameters.sendMessageRequestDto was null or undefined when calling messagesSend.');
         }
 
         const queryParameters: any = {};
@@ -246,7 +246,7 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SendMessageDtoToJSON(requestParameters.sendMessageDto),
+            body: SendMessageRequestDtoToJSON(requestParameters.sendMessageRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));

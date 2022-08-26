@@ -15,13 +15,16 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateEthNftCollectionDto,
-    CreateEthNftCollectionDtoFromJSON,
-    CreateEthNftCollectionDtoToJSON,
+    CreateEthNftCollectionRequestDto,
+    CreateEthNftCollectionRequestDtoFromJSON,
+    CreateEthNftCollectionRequestDtoToJSON,
+    GetEthNftCollectionResponseDto,
+    GetEthNftCollectionResponseDtoFromJSON,
+    GetEthNftCollectionResponseDtoToJSON,
 } from '../models';
 
 export interface EthCreateNftCollectionRequest {
-    createEthNftCollectionDto: CreateEthNftCollectionDto;
+    createEthNftCollectionRequestDto: CreateEthNftCollectionRequestDto;
 }
 
 /**
@@ -32,9 +35,9 @@ export class EthApi extends runtime.BaseAPI {
     /**
      * Creates ETH NFT Collection
      */
-    async ethCreateNftCollectionRaw(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateEthNftCollectionDto>> {
-        if (requestParameters.createEthNftCollectionDto === null || requestParameters.createEthNftCollectionDto === undefined) {
-            throw new runtime.RequiredError('createEthNftCollectionDto','Required parameter requestParameters.createEthNftCollectionDto was null or undefined when calling ethCreateNftCollection.');
+    async ethCreateNftCollectionRaw(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetEthNftCollectionResponseDto>> {
+        if (requestParameters.createEthNftCollectionRequestDto === null || requestParameters.createEthNftCollectionRequestDto === undefined) {
+            throw new runtime.RequiredError('createEthNftCollectionRequestDto','Required parameter requestParameters.createEthNftCollectionRequestDto was null or undefined when calling ethCreateNftCollection.');
         }
 
         const queryParameters: any = {};
@@ -48,16 +51,16 @@ export class EthApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateEthNftCollectionDtoToJSON(requestParameters.createEthNftCollectionDto),
+            body: CreateEthNftCollectionRequestDtoToJSON(requestParameters.createEthNftCollectionRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateEthNftCollectionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetEthNftCollectionResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates ETH NFT Collection
      */
-    async ethCreateNftCollection(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateEthNftCollectionDto> {
+    async ethCreateNftCollection(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetEthNftCollectionResponseDto> {
         const response = await this.ethCreateNftCollectionRaw(requestParameters, initOverrides);
         return await response.value();
     }

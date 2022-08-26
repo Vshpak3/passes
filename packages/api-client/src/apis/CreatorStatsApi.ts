@@ -15,16 +15,19 @@
 
 import * as runtime from '../runtime';
 import {
-    CreatorEarningDto,
-    CreatorEarningDtoFromJSON,
-    CreatorEarningDtoToJSON,
-    GetCreatorEarningsHistoryDto,
-    GetCreatorEarningsHistoryDtoFromJSON,
-    GetCreatorEarningsHistoryDtoToJSON,
+    GetCreatorEarningResponseDto,
+    GetCreatorEarningResponseDtoFromJSON,
+    GetCreatorEarningResponseDtoToJSON,
+    GetCreatorEarningsHistoryRequestDto,
+    GetCreatorEarningsHistoryRequestDtoFromJSON,
+    GetCreatorEarningsHistoryRequestDtoToJSON,
+    GetCreatorEarningsResponseDto,
+    GetCreatorEarningsResponseDtoFromJSON,
+    GetCreatorEarningsResponseDtoToJSON,
 } from '../models';
 
 export interface CreatorStatsGetHistoricEarningsRequest {
-    getCreatorEarningsHistoryDto: GetCreatorEarningsHistoryDto;
+    getCreatorEarningsHistoryRequestDto: GetCreatorEarningsHistoryRequestDto;
 }
 
 /**
@@ -35,7 +38,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get balance
      */
-    async creatorStatsGetBalanceRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatorEarningDto>> {
+    async creatorStatsGetBalanceRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -47,13 +50,13 @@ export class CreatorStatsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreatorEarningDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorEarningResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get balance
      */
-    async creatorStatsGetBalance(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatorEarningDto> {
+    async creatorStatsGetBalance(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorEarningResponseDto> {
         const response = await this.creatorStatsGetBalanceRaw(initOverrides);
         return await response.value();
     }
@@ -61,9 +64,9 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get historic earnings
      */
-    async creatorStatsGetHistoricEarningsRaw(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<CreatorEarningDto>>> {
-        if (requestParameters.getCreatorEarningsHistoryDto === null || requestParameters.getCreatorEarningsHistoryDto === undefined) {
-            throw new runtime.RequiredError('getCreatorEarningsHistoryDto','Required parameter requestParameters.getCreatorEarningsHistoryDto was null or undefined when calling creatorStatsGetHistoricEarnings.');
+    async creatorStatsGetHistoricEarningsRaw(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorEarningsResponseDto>> {
+        if (requestParameters.getCreatorEarningsHistoryRequestDto === null || requestParameters.getCreatorEarningsHistoryRequestDto === undefined) {
+            throw new runtime.RequiredError('getCreatorEarningsHistoryRequestDto','Required parameter requestParameters.getCreatorEarningsHistoryRequestDto was null or undefined when calling creatorStatsGetHistoricEarnings.');
         }
 
         const queryParameters: any = {};
@@ -77,16 +80,16 @@ export class CreatorStatsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetCreatorEarningsHistoryDtoToJSON(requestParameters.getCreatorEarningsHistoryDto),
+            body: GetCreatorEarningsHistoryRequestDtoToJSON(requestParameters.getCreatorEarningsHistoryRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CreatorEarningDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorEarningsResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get historic earnings
      */
-    async creatorStatsGetHistoricEarnings(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<CreatorEarningDto>> {
+    async creatorStatsGetHistoricEarnings(requestParameters: CreatorStatsGetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorEarningsResponseDto> {
         const response = await this.creatorStatsGetHistoricEarningsRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -11,9 +11,10 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentType, VaultCategory } from './constants/validation'
-import { CreateContentDto } from './dto/create-content.dto'
-import { GetContentDto } from './dto/get-content.dto'
-import { UpdateContentDto } from './dto/update-content.dto'
+import { ContentDto } from './dto/content.dto'
+import { CreateContentRequestDto } from './dto/create-content.dto'
+import { GetContentResponseDto } from './dto/get-content.dto'
+import { UpdateContentRequestDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentMessageEntity } from './entities/content-message.entity'
 
@@ -28,8 +29,8 @@ export class ContentService {
 
   async create(
     userId: string,
-    createContentDto: CreateContentDto,
-  ): Promise<GetContentDto> {
+    createContentDto: CreateContentRequestDto,
+  ): Promise<GetContentResponseDto> {
     try {
       const id = v4()
       const data = ContentEntity.toDict<ContentEntity>({
@@ -39,13 +40,13 @@ export class ContentService {
       })
       await this.dbWriter(ContentEntity.table).insert(data)
 
-      return new GetContentDto(data)
+      return new GetContentResponseDto(data)
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
   }
 
-  async findOne(id: string): Promise<GetContentDto> {
+  async findOne(id: string): Promise<GetContentResponseDto> {
     const content = await this.dbReader(ContentEntity.table)
       .where('id', id)
       .select('*')
@@ -54,13 +55,13 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto(content)
+    return new GetContentResponseDto(content)
   }
 
   async update(
     contentId: string,
-    updateContentDto: UpdateContentDto,
-  ): Promise<GetContentDto> {
+    updateContentDto: UpdateContentRequestDto,
+  ): Promise<GetContentResponseDto> {
     const data = ContentEntity.toDict<ContentEntity>(updateContentDto)
     const updateCount = await this.dbWriter(ContentEntity.table)
       .update(data)
@@ -70,7 +71,7 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentDto({
+    return new GetContentResponseDto({
       id: contentId,
       ...updateContentDto,
     })
@@ -128,6 +129,6 @@ export class ContentService {
       query = query.andWhere(
         ContentEntity.toDict<ContentEntity>({ contentType: type }),
       )
-    return (await query).map((content) => new GetContentDto(content))
+    return (await query).map((content) => new ContentDto(content))
   }
 }
