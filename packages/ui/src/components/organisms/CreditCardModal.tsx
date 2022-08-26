@@ -53,10 +53,8 @@ const CreditCardModal = ({
     resolver: yupResolver(creditCardSchema)
   })
   const [accessToken] = useLocalStorage("access-token", "")
-  console.log(defaultPayin)
 
   async function onSubmit(data: any) {
-    console.log("submitted data", data)
     const idempotencyKey = v4()
     const cardDetails = {
       number: data.cardNumber.trim().replace(/\D/g, ""),
@@ -88,7 +86,6 @@ const CreditCardModal = ({
       },
       cardNumber: cardDetails.number
     }
-    console.log("PAYLOAD", payload)
     const paymentApi = wrapApi(PaymentApi)
 
     const publicKey = await paymentApi.paymentGetCircleEncryptionKey()
@@ -96,10 +93,6 @@ const CreditCardModal = ({
     const encryptedData = await encrypt(
       cardDetails,
       publicKey as CircleEncryptionKeyDto
-    )
-    console.log(
-      "🚀 ~ file: CreditCardModal.tsx ~ line 98 ~ onSubmit ~ encryptedData",
-      encryptedData
     )
 
     const { encryptedMessage, keyId } = encryptedData
@@ -304,7 +297,7 @@ const CreditCardModal = ({
             className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
             mask="aa"
           />
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-4">
             <FormInput
               errors={errors}
               register={register}

@@ -23,6 +23,7 @@ interface IButton {
   style?: React.CSSProperties
   tag?: keyof JSX.IntrinsicElements
   variant: string
+  disabled?: boolean
 }
 
 interface IGenericButton {
@@ -45,6 +46,7 @@ export const Button = ({
   style = {},
   tag = "a",
   variant,
+  disabled,
   ...restOfProps
 }: IButton) => {
   let variantClassName
@@ -101,11 +103,13 @@ export const Button = ({
         "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors xs:px-3 xs:py-2" +
         (bigger ? " !px-4 !py-3" : "") +
         (variantClassName && ` ${variantClassName}`) +
-        (className && ` ${className}`)
+        (className && ` ${className}`) +
+        (disabled && " border-[#3333]/80 bg-[#3333]/80")
       }
       role={tag === "a" ? "button" : undefined}
       tabIndex={tag === "a" ? 0 : undefined}
       data-focus-ring=""
+      disabled={disabled}
       {...restOfProps}
     >
       <Text

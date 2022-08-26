@@ -50,12 +50,32 @@ const creditCardSchema = yup.object({
   email: yup.string().email()
 })
 
+const bankingSchema = yup.object({
+  routingNumber: yup.string().max(19).required("Enter a card number"),
+  accountNumber: yup.string().max(19).required("Enter a card number"),
+  accountType: yup.string(),
+  billingAddress: yup.string().min(4).required(),
+  alternativeAddress: yup.string(),
+  city: yup.string(),
+  country: yup.string().min(2).max(2),
+  district: yup.string(),
+  postalCode: yup.string(),
+  email: yup.string().email()
+})
+
+const walletSchema = yup.object({
+  walletAddress: yup.string().max(19).required("Enter a wallet address"),
+  chain: yup.string()
+})
+
 export {
+  bankingSchema,
   creditCardSchema,
   digitsOnly,
   passwordRegex,
   phoneRegex,
   sanitizeString,
   signInSchema,
-  signUpSchema
+  signUpSchema,
+  walletSchema
 }

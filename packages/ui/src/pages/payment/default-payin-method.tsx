@@ -27,7 +27,6 @@ const DefaultPayinMethod = () => {
 
   const { user, loading } = useUser()
   const router = useRouter()
-  console.log(user)
 
   const submit = async (dto: PayinMethodDto) => {
     setDefaultPayinMethod(dto)
