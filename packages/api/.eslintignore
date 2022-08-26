@@ -1,4 +1,4 @@
 /dist
+/src/**/tracer.js
 /src/generated
 /types
-/src/**/tracer.js

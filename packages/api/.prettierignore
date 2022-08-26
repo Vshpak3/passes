@@ -1,5 +1,5 @@
-/dist
-/src/database/migrations/*
-/src/database/.orm-cache
 /coverage
+/dist
+/src/database/.orm-cache
+/src/database/migrations/*
 /**/*.json

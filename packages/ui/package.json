@@ -4,8 +4,8 @@
   "description": "Passes frontend UI package",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
+    "dev": "next dev",
     "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check . || { echo; echo 'run prettier:fix to fix this issue'; exit 1; }",
