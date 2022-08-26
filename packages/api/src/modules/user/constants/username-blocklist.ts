@@ -173,9 +173,4 @@ export const USERNAME_BLOCKLIST = new Set([
   'widget',
   'widgets',
   'yourname',
-
-  // moment names
-  'buildmoment',
-  'moment',
-  'momenthq',
 ])

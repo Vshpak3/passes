@@ -55,7 +55,7 @@ export class EthService {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
-    if (!user.email.endsWith('@moment.vip')) {
+    if (!user.email.endsWith('@passes.com')) {
       throw new UnauthorizedException('this endpoint is not accessible')
     }
     const data = EthNftCollectionEntity.toDict<EthNftCollectionEntity>({

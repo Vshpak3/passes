@@ -24,7 +24,7 @@
 }
 
 .cover-image {
-  background-image: url("/bg-cover.png");
+  background-image: url("/img/bg-cover.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

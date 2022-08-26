@@ -1,7 +1,6 @@
 import "src/styles/global/main.css"
 
 import * as snippet from "@segment/snippet"
-// import "../components/messages/MomentMessage.scss"
 import debounce from "lodash.debounce"
 import Router from "next/router"
 import Script from "next/script"

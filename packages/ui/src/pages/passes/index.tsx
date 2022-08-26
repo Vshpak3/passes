@@ -5,29 +5,6 @@ import React from "react"
 import { CreatorPassTiles } from "src/components/organisms"
 import { usePasses } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
-// const tabsArray = [
-//   {
-//     tabName: "Grid View",
-//     icon: <GridViewIcon />
-//   },
-//   {
-//     tabName: "List View",
-//     icon: <ListViewIcon />
-//   }
-// ]
-// const mockData = {
-//   passName: "Kaila Troy Pro",
-//   creatorName: "Kaila Troy",
-//   handle: "@kailatroy",
-//   cost: "20.00",
-//   imgUrl: "/bg-cover.png",
-//   purchaseDate: "11/1/2022",
-//   lastRenewal: "12/1/2022",
-//   tagline:
-//     "Lets just hang out and celebrate some chills time with some chill music and chill vibe and chillllllll",
-//   description:
-//     "Enjoy 900 photos and videos of exclusive content. You also get a free shot or something like that"
-// }
 
 const Passes = () => {
   const { fanPasses } = usePasses()

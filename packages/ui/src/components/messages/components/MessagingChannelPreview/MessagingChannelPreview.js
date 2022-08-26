@@ -7,7 +7,7 @@ const getAvatarGroup = (members) => {
   if (members.length === 1) {
     return (
       <Avatar
-        image="/images/backers/david.png"
+        image="/img/backers/david.png"
         name={members[0].user?.id}
         size={40}
       />
@@ -165,28 +165,28 @@ const MessagingChannelPreview = (props) => {
           padding-right: 15px;
 
         }
-     
+
         .channel-preview__container:hover {
           background: #1E1820;
           box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.07);
           transition: background 0.1s ease-in-out;
         }
-        
+
         .str-chat.dark .channel-preview__container:hover {
           background: #1E1820;
         }
-        
+
         .channel-preview__container.selected {
           background: #1E1820;
           background-color:#1E1820;
           box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.07);
           transition: background 0.1s ease-in-out;
         }
-        
+
         .str-chat.dark .channel-preview__container.selected {
           background: #1E1820;
         }
-        
+
         .channel-preview__content-wrapper {
           display: flex;
           // flex-direction: column;
@@ -195,7 +195,7 @@ const MessagingChannelPreview = (props) => {
           margin-right: 8px;
           width: 100%;
         }
-        
+
         .channel-preview__content-top {
           display: flex;
           justify-content: space-between;
@@ -204,7 +204,7 @@ const MessagingChannelPreview = (props) => {
           height: 18px;
           margin-bottom: 4px;
         }
-        
+
         .channel-preview__content-name {
           font-family: Helvetica Neue, sans-serif;
           font-weight: 500;
@@ -216,18 +216,18 @@ const MessagingChannelPreview = (props) => {
           text-overflow: ellipsis;
           white-space: nowrap;
         }
-        
+
         .str-chat.dark .channel-preview__content-name {
           color: #ffffff;
         }
-        
+
         .channel-preview__content-time {
           font-family: Helvetica Neue, sans-serif;
           font-size: 11px;
           color: #858688;
           margin: 0;
         }
-        
+
         .channel-preview__content-message {
           font-family: Helvetica Neue, sans-serif;
           font-size: 13px;
@@ -240,11 +240,11 @@ const MessagingChannelPreview = (props) => {
           text-overflow: ellipsis;
           white-space: nowrap;
         }
-        
+
         .channel-preview__container .str-chat__avatar {
           margin-right: 0;
         }
-        
+
         .channel-preview__avatars {
           display: flex;
           align-items: center;
@@ -254,27 +254,27 @@ const MessagingChannelPreview = (props) => {
           border-radius: 20px;
           overflow: hidden;
         }
-        
+
         .channel-preview__avatars.two div:first-child {
           position: relative;
           right: 10px;
         }
-        
+
         .channel-preview__avatars.two div:nth-child(2) {
           position: relative;
           right: 30px;
         }
-        
+
         .channel-preview__avatars.two span {
           width: 20px;
           overflow: hidden;
         }
-        
+
         .channel-preview__avatars.three span {
           width: 20px;
           overflow: hidden;
         }
-        
+
         `}
       </style>
 

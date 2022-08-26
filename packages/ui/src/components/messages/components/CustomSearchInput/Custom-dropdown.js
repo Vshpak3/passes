@@ -14,7 +14,7 @@ export const CustomDropdown = (props) => {
           align-items: center;
           margin-left: 12px;
         }
-        
+
         .result-hashtag {
           margin: 12px;
           display: flex;
@@ -23,7 +23,7 @@ export const CustomDropdown = (props) => {
           font-weight: bold;
           color: #005fff;
         }
-        
+
         .channel-search__result-text {
           width: 100%;
           font-family: Helvetica Neue, sans-serif;
@@ -32,14 +32,14 @@ export const CustomDropdown = (props) => {
           line-height: 120%;
           color: #2c2c30;
         }
-        
+
         .user-online {
           color: red;
           font-size: 10px;
           padding-top: 2px;
           padding-left: 5px;
         }
-        
+
         .channel-search-header {
           font-weight: 700;
           font-size: 16px;
@@ -103,7 +103,7 @@ export const CustomResultItem = (props) => {
         }`}
         onClick={() => selectResult(result)}
       >
-        <Avatar image="/images/backers/wenwen.png" />
+        <Avatar image="/img/backers/wenwen.png" />
         {result.name}
         {result.online && <p className="user-online"> Online Now!</p>}
       </div>
