@@ -38,6 +38,7 @@ export * from './GetChannelDto';
 export * from './GetCollectionDto';
 export * from './GetCommentDto';
 export * from './GetCommentsForPostDto';
+export * from './GetCompleteTippedMessagedDto';
 export * from './GetContentDto';
 export * from './GetCreatorEarningsHistoryDto';
 export * from './GetFanDto';

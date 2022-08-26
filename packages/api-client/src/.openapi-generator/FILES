@@ -65,6 +65,7 @@ models/GetChannelDto.ts
 models/GetCollectionDto.ts
 models/GetCommentDto.ts
 models/GetCommentsForPostDto.ts
+models/GetCompleteTippedMessagedDto.ts
 models/GetContentDto.ts
 models/GetCreatorEarningsHistoryDto.ts
 models/GetFanDto.ts

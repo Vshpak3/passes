@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
+import { GetCompleteTippedMessagedDto } from './dto/complete-tipped-messages.dto'
 import { CreateBatchMessageDto } from './dto/create-batch-message.dto'
 import { CreateChannelDto } from './dto/create-channel.dto'
 import { GetChannelDto } from './dto/get-channel.dto'
@@ -47,14 +48,17 @@ export class MessagesController {
   @ApiOperation({ summary: 'Get completed tipped messages' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: [MessageDto],
+    type: GetCompleteTippedMessagedDto,
     description: 'Completed tipped messages returned',
   })
-  @Post('channel')
+  @Post('completed-tipped')
   async getCompletedTippedMessages(
     @Req() req: RequestWithUser,
-  ): Promise<Array<MessageDto>> {
-    return await this.messagesService.getCompletedTippedMessages(req.user.id)
+  ): Promise<GetCompleteTippedMessagedDto> {
+    const messages = await this.messagesService.getCompletedTippedMessages(
+      req.user.id,
+    )
+    return new GetCompleteTippedMessagedDto(messages)
   }
 
   @ApiOperation({ summary: 'Batch message' })

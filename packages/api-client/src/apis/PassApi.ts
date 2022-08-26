@@ -322,7 +322,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/pay/data/renew`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: RenewPassHolderDtoToJSON(requestParameters.renewPassHolderDto),

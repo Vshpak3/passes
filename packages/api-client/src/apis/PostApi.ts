@@ -181,7 +181,7 @@ export class PostApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/post/pay/data/purchase`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: CreatePostAccessDtoToJSON(requestParameters.createPostAccessDto),

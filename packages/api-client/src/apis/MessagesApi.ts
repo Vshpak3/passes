@@ -24,6 +24,9 @@ import {
     GetChannelDto,
     GetChannelDtoFromJSON,
     GetChannelDtoToJSON,
+    GetCompleteTippedMessagedDto,
+    GetCompleteTippedMessagedDtoFromJSON,
+    GetCompleteTippedMessagedDtoToJSON,
     MessageDto,
     MessageDtoFromJSON,
     MessageDtoToJSON,
@@ -111,6 +114,32 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async messagesGetChannelsStats(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<GetChannelDto>> {
         const response = await this.messagesGetChannelsStatsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get completed tipped messages
+     */
+    async messagesGetCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCompleteTippedMessagedDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/messages/completed-tipped`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCompleteTippedMessagedDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get completed tipped messages
+     */
+    async messagesGetCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCompleteTippedMessagedDto> {
+        const response = await this.messagesGetCompletedTippedMessagesRaw(initOverrides);
         return await response.value();
     }
 
