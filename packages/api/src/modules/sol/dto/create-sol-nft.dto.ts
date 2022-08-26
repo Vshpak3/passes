@@ -6,5 +6,5 @@ export class CreateSolNftDto {
   collectionId: string
 
   @ApiProperty()
-  owner: string
+  walletId: string
 }

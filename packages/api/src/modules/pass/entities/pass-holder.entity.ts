@@ -11,11 +11,11 @@ export class PassHolderEntity extends BaseEntity {
   pass: PassEntity
 
   @ManyToOne()
-  holder: UserEntity
+  holder?: UserEntity
 
   @Property({ type: types.bigint })
   expiresAt?: number
 
   @OneToOne()
-  solNft?: SolNftEntity
+  solNft: SolNftEntity
 }

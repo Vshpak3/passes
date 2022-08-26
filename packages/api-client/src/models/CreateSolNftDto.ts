@@ -30,7 +30,7 @@ export interface CreateSolNftDto {
      * @type {string}
      * @memberof CreateSolNftDto
      */
-    owner: string;
+    walletId: string;
 }
 
 export function CreateSolNftDtoFromJSON(json: any): CreateSolNftDto {
@@ -44,7 +44,7 @@ export function CreateSolNftDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'collectionId': json['collectionId'],
-        'owner': json['owner'],
+        'walletId': json['walletId'],
     };
 }
 
@@ -58,7 +58,7 @@ export function CreateSolNftDtoToJSON(value?: CreateSolNftDto | null): any {
     return {
         
         'collectionId': value.collectionId,
-        'owner': value.owner,
+        'walletId': value.walletId,
     };
 }
 

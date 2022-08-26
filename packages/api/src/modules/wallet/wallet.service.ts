@@ -57,6 +57,34 @@ export class WalletService {
     ${nonce}`
   }
 
+  async findOne(id: string): Promise<WalletDto | undefined> {
+    const wallet = await this.dbReader(WalletEntity.table)
+      .select('*')
+      .where(`${WalletEntity.table}.id`, id)
+      .first()
+
+    if (!wallet) {
+      return undefined
+    }
+    return new WalletDto(wallet)
+  }
+
+  async findByAddress(
+    address: string,
+    chain: ChainEnum,
+  ): Promise<WalletDto | undefined> {
+    const wallet = await this.dbReader(WalletEntity.table)
+      .select('*')
+      .where(`${WalletEntity.table}.address`, address)
+      .where(`${WalletEntity.table}.chain`, chain)
+      .first()
+
+    if (!wallet) {
+      return undefined
+    }
+    return new WalletDto(wallet)
+  }
+
   /**
    * get (unique) internally managed wallet for user
    * @param userId
@@ -321,6 +349,7 @@ export class WalletService {
       .update({ user_id: null })
       .where('id', walletId)
       .where('user_id', userId)
+    // TODO: update passholders + subscriptions
     return knexResult == 1
   }
 }

@@ -193,8 +193,9 @@ export class PassService {
     )
     const solNftDto = await this.solService.createNftPass(
       userId,
-      new PublicKey(userCustodialWallet.address),
+      userCustodialWallet.id as string,
       pass.sol_nft_collection_id,
+      new PublicKey(userCustodialWallet.address),
     )
     const data = PassHolderEntity.toDict<PassHolderEntity>({
       id,
