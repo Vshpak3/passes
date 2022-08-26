@@ -33,14 +33,22 @@ export class LocalAuthController {
   @ApiOperation({ summary: 'Create a email and password user' })
   @ApiResponse({
     status: HttpStatus.OK,
+    type: AuthTokenDto,
     description: 'Create a email and password user',
   })
   @AllowUnauthorizedRequest()
   @Post('/signup')
   async createEmailPasswordUser(
     @Body() createLocalUserDto: CreateLocalUserDto,
+    @Res() res: Response,
   ) {
-    return this.localAuthService.createLocalUser(createLocalUserDto)
+    const user = await this.localAuthService.createLocalUser(createLocalUserDto)
+
+    const accessToken = this.jwtAuthService.createAccessToken(user)
+    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
+    await this.s3Service.signCookies(res, `*/${user.id}`)
+
+    res.status(201).send({ accessToken, refreshToken })
   }
 
   @ApiOperation({ summary: 'Login with email and password' })
