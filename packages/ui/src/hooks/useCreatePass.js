@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 // import { PassApi } from "@passes/api-client"
-import { useRouter } from "next/router"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 // import useLocalStorage from "src/hooks/useLocalStorage"
@@ -8,12 +7,14 @@ import * as yup from "yup"
 
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
+const MAX_FILES_SUBSCRIPTION = 1
+const MIN_FILES_SUBSCRIPTION = 0
+const MAX_FILES_LIFETIME = 5000
+const MIN_FILES_LIFETIME = 10
 
 const createPassSchema = yup.object({
   passName: yup.string().required(),
-  passDescription: yup.string().required(),
-  royalties: yup.number().required(),
-  passCost: yup.number().required()
+  passDescription: yup.string().required()
 })
 
 export const PassTypeEnum = {
@@ -21,15 +22,18 @@ export const PassTypeEnum = {
   LIFETIME: "lifetime"
 }
 
-const useCreatePass = () => {
+const useCreatePass = ({ passType }) => {
   const [files, setFiles] = useState([])
+  const [fileUploadError, setFileUploadError] = useState(null)
   // const [accessToken] = useLocalStorage("access-token", "")
-  const router = useRouter()
-  const isLifetimePass = router.query.passType === PassTypeEnum.LIFETIME
-  const isSubscriptionPass = router.query.passType === PassTypeEnum.SUBSCRIPTION
-  const isSelectPassOption = !isLifetimePass && !isSubscriptionPass
+  const isLifetimePass = passType === PassTypeEnum.LIFETIME
+  const isSubscriptionPass = passType === PassTypeEnum.SUBSCRIPTION
 
-  const MAX_FILES = isLifetimePass ? 5000 : 1
+  const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION
+  const MIN_FILES = isLifetimePass ? MIN_FILES_LIFETIME : MIN_FILES_SUBSCRIPTION
+
+  const maxFileError = `Maximum upload is ${MAX_FILES} file(s).`
+  const minFileError = `Minimum upload is ${MIN_FILES} file(s).`
 
   const {
     handleSubmit,
@@ -41,6 +45,8 @@ const useCreatePass = () => {
   })
 
   const onMediaChange = (filesArray) => {
+    if (fileUploadError) setFileUploadError(null)
+
     let maxFileSizeExceeded = false
 
     const _files = filesArray.filter((file) => {
@@ -51,10 +57,18 @@ const useCreatePass = () => {
     })
 
     if (maxFileSizeExceeded) {
-      // TODO: show error message
+      setFileUploadError(`Maximum file size exceeded.`)
+      return
+    }
+    if (files.length + _files.length > MAX_FILES) {
+      setFileUploadError(maxFileError)
+      return
+    }
+    if (files.length + _files.length < MIN_FILES) {
+      setFileUploadError(minFileError)
+      return
     }
 
-    if (files.length + _files.length > MAX_FILES) return // TODO: max file limit error message
     setFiles([...files, ..._files])
   }
 
@@ -67,6 +81,15 @@ const useCreatePass = () => {
   }
 
   const submitPassCreation = async (data) => {
+    if (files.length < MIN_FILES) {
+      setFileUploadError(minFileError)
+      return
+    }
+    if (files.length > MAX_FILES) {
+      setFileUploadError(maxFileError)
+      return
+    }
+
     // TODO: use data values to post to API
     console.log({ data })
 
@@ -99,21 +122,21 @@ const useCreatePass = () => {
 
   const onCreatePass = handleSubmit((data) => submitPassCreation(data))
 
-  const onRemove = (index) => {
+  const onRemoveFileUpload = (index) => {
     setFiles(files.filter((_, i) => i !== index))
   }
 
   return {
-    isSubscriptionPass,
-    register,
-    files,
-    onDragDropChange,
     errors,
-    onRemove,
-    onCreatePass,
-    isSelectPassOption,
+    files,
+    fileUploadError,
     isLifetimePass,
-    maximumLimit: MAX_FILES
+    isSubscriptionPass,
+    maximumLimit: MAX_FILES,
+    onCreatePass,
+    onDragDropChange,
+    onRemoveFileUpload,
+    register
   }
 }
 

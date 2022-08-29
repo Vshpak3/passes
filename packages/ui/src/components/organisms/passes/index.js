@@ -1,4 +1,4 @@
-import { CreatePassSection, SelectPassTypeSection } from "./CreatePass"
+import { CreatePassForm, SelectPassType } from "./CreatePass"
 import { PassesListSection } from "./MyPasses"
 
-export { CreatePassSection, PassesListSection, SelectPassTypeSection }
+export { CreatePassForm, PassesListSection, SelectPassType }

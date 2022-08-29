@@ -16,13 +16,14 @@ import {
   PassRenewal,
   PassUnlockTier
 } from "src/components/molecules"
+import { useCreatePass } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 
 import FormContainer from "../FormContainer"
 
 const CREATE_PASS_URL = "/tools/manage-passes/create"
 
-const SelectPassTypeSection = ({ initialCreation = false }) => {
+const SelectPassType = ({ initialCreation = false }) => {
   const router = useRouter()
   const createPassTitle = `Create a Pass${
     initialCreation ? " to get started" : ""
@@ -54,17 +55,20 @@ const SelectPassTypeSection = ({ initialCreation = false }) => {
   )
 }
 
-const CreatePassSection = ({
-  errors,
-  register,
-  files,
-  onDragDropChange,
-  onRemove,
-  maximumLimit,
-  isLifetimePass,
-  isSubscriptionPass,
-  onCreatePass
-}) => {
+const CreatePassForm = ({ passType }) => {
+  const {
+    errors,
+    files,
+    fileUploadError,
+    isLifetimePass,
+    isSubscriptionPass,
+    maximumLimit,
+    onCreatePass,
+    onDragDropChange,
+    onRemoveFileUpload,
+    register
+  } = useCreatePass({ passType })
+
   const createPassHeader = `Create a new ${
     isSubscriptionPass ? "Subscription" : "Lifetime"
   } Pass`
@@ -76,12 +80,13 @@ const CreatePassSection = ({
         <FormContainer>
           <PassNameInput errors={errors} register={register} />
           <PassFileUpload
-            files={files}
-            register={register}
-            onDragDropChange={onDragDropChange}
             errors={errors}
-            onRemove={onRemove}
+            files={files}
+            fileUploadError={fileUploadError}
             maximumLimit={maximumLimit}
+            onDragDropChange={onDragDropChange}
+            onRemoveFileUpload={onRemoveFileUpload}
+            register={register}
           />
           <PassDescriptionInput register={register} errors={errors} />
           {isLifetimePass && <PassLifetimeOptions register={register} />}
@@ -95,4 +100,4 @@ const CreatePassSection = ({
   )
 }
 
-export { CreatePassSection, SelectPassTypeSection }
+export { CreatePassForm, SelectPassType }

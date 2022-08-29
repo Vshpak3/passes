@@ -1,25 +1,17 @@
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import {
-  CreatePassSection,
-  SelectPassTypeSection
-} from "src/components/organisms"
-import { useCreatePass } from "src/hooks"
+import { CreatePassForm, SelectPassType } from "src/components/organisms"
+import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { withPageLayout } from "src/layout/WithPageLayout"
+
+const PASS_TYPES = [PassTypeEnum.LIFETIME, PassTypeEnum.SUBSCRIPTION]
 
 const CreatePass = () => {
   const [hasMounted, setHasMounted] = useState(false)
-  const {
-    register,
-    files,
-    isSubscriptionPass,
-    onDragDropChange,
-    errors,
-    onRemove,
-    onCreatePass,
-    isLifetimePass,
-    isSelectPassOption,
-    maximumLimit
-  } = useCreatePass()
+  const router = useRouter()
+
+  const { passType } = router.query
+  const isSelectPassOption = !PASS_TYPES.includes(passType)
 
   useEffect(() => {
     setHasMounted(true)
@@ -27,22 +19,13 @@ const CreatePass = () => {
 
   if (!hasMounted) {
     return null
-  } else
-    return isSelectPassOption ? (
-      <SelectPassTypeSection />
-    ) : (
-      <CreatePassSection
-        errors={errors}
-        register={register}
-        files={files}
-        onDragDropChange={onDragDropChange}
-        onRemove={onRemove}
-        maximumLimit={maximumLimit}
-        isLifetimePass={isLifetimePass}
-        isSubscriptionPass={isSubscriptionPass}
-        onCreatePass={onCreatePass}
-      />
-    )
+  }
+
+  return isSelectPassOption ? (
+    <SelectPassType />
+  ) : (
+    <CreatePassForm passType={passType} />
+  )
 }
 
 export default withPageLayout(CreatePass, { header: true })

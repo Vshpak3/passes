@@ -1,9 +1,6 @@
 import { useRouter } from "next/router"
 import React from "react"
-import {
-  PassesListSection,
-  SelectPassTypeSection
-} from "src/components/organisms"
+import { PassesListSection, SelectPassType } from "src/components/organisms"
 import { usePasses } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -25,12 +22,12 @@ const ManagePasses = () => {
 
   return existingPasses ? (
     <PassesListSection
+      lifetimePasses={lifetimePasses}
       onCreatePass={onCreatePass}
       subscriptionPasses={subscriptionPasses}
-      lifetimePasses={lifetimePasses}
     />
   ) : (
-    <SelectPassTypeSection initialCreation />
+    <SelectPassType initialCreation />
   )
 }
 export default withPageLayout(ManagePasses)

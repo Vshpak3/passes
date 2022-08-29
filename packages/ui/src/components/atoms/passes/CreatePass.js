@@ -1,8 +1,10 @@
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { Button, FormInput } from "src/components/atoms"
 
-const PassFormError = ({ message }) => (
-  <div className="text-md font-semibold text-[#ba3333]">{message}</div>
+const PassFormError = ({ message, className = "" }) => (
+  <div className={`text-md font-semibold text-[#ba3333] ${className}`}>
+    {message}
+  </div>
 )
 
 const PassFormCheckbox = ({ label, name, register }) => (

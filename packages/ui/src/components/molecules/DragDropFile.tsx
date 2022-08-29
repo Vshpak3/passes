@@ -83,7 +83,7 @@ const DragDropFile = ({
             <File
               className="cursor-pointer "
               errors={errors}
-              name={`dropbox-input-${name}`}
+              name={name}
               options={options}
               register={register}
               multiple={multiple}

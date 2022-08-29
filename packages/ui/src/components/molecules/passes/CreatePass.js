@@ -7,6 +7,7 @@ import {
   PassesPinkButton,
   PassesSectionTitle,
   PassFormCheckbox,
+  PassFormError,
   PassNumberInput
 } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
@@ -76,15 +77,16 @@ const PassFilePreview = ({ files, onRemove }) => {
 }
 
 const PassFileUpload = ({
-  files,
-  register,
-  onDragDropChange,
   errors,
-  onRemove,
-  maximumLimit = 1
+  fileUploadError,
+  files,
+  maximumLimit = 1,
+  onDragDropChange,
+  onRemoveFileUpload,
+  register
 }) => {
   return (
-    <div className="overflow-y-full h-full w-full items-center pb-5">
+    <div className="overflow-y-full h-full w-full items-center pb-2">
       <div className="mb-3">
         <PassesSectionTitle title="Upload an image" />
       </div>
@@ -101,11 +103,14 @@ const PassFileUpload = ({
           maximumLimit={maximumLimit}
         />
       ) : (
-        <PassFilePreview files={files} onRemove={onRemove} />
+        <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
       )}
       <div className="mt-4">
         <span className="text-[#ffff]/30">Upload Preview</span>
       </div>
+      {fileUploadError && (
+        <PassFormError className="mt-3" message={fileUploadError} />
+      )}
     </div>
   )
 }
