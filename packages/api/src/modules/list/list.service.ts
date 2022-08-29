@@ -134,7 +134,11 @@ export class ListService {
     cursor?: string,
   ): Promise<GetListsResponseDto> {
     const listQuery = this.dbReader(ListEntity.table)
-      .select('list.id', this.dbReader.raw('count(list_member.id) as count'))
+      .select(
+        'list.id',
+        'list.name',
+        this.dbReader.raw('count(list_member.id) as count'),
+      )
       .leftJoin(ListMemberEntity.table, 'list_member.list_id', '=', 'list.id')
       .where('list.user_id', userId)
 
