@@ -4,7 +4,6 @@ import CreditCardModal from "./CreditCardModal"
 import Dialog from "./Dialog"
 import FormContainer from "./FormContainer"
 import Modal from "./Modal"
-import NavigationMenu from "./navigation-menu/navigation-menu"
 import NFTPass from "./NftPass"
 import { CreatePassForm, PassesListSection, SelectPassType } from "./passes"
 import Popover from "./Popover"
@@ -23,7 +22,6 @@ export {
   Dialog,
   FormContainer,
   Modal,
-  NavigationMenu,
   NFTPass,
   PassesListSection,
   Popover,

@@ -240,8 +240,8 @@ const SignupPage = () => {
               className="text-blue-blue10"
             >
               Terms of Use
-            </a>
-            {" "}and{" "}
+            </a>{" "}
+            and{" "}
             <a
               href="/privacy"
               target="_blank"
