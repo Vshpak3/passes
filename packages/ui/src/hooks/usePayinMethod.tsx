@@ -2,7 +2,7 @@ import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
 
 import { wrapApi } from "../helpers/wrapApi"
-const usePayment = () => {
+const usePayinMethod = () => {
   const [defaultPayinMethod, setDefaultPayinMethod] = useState<PayinMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [cards, setCards] = useState<CircleCardDto[]>([])
@@ -78,4 +78,4 @@ const usePayment = () => {
   }
 }
 
-export default usePayment
+export default usePayinMethod

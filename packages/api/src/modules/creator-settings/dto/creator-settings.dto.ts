@@ -6,6 +6,6 @@ export class CreatorSettingsDto {
   @ApiProperty()
   minimumTipAmount: number
 
-  @ApiProperty()
+  @ApiProperty({ enum: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 }

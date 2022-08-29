@@ -6,9 +6,11 @@ import {
 } from "@passes/api-client"
 import React from "react"
 
+import { wrapApi } from "../wrapApi"
+
 //TODO: add FE for payment object specific stuff
 // e.g. displaying nft picture of nft brought, or name of person for tipped message
-const Payin = (payin: PayinDto, accessToken: string) => {
+const Payin = (payin: PayinDto) => {
   let payinMethodText = ""
   let canCancel = false
   switch (payin.payinMethod.method) {
@@ -35,16 +37,8 @@ const Payin = (payin: PayinDto, accessToken: string) => {
       break
   }
   const cancel = async () => {
-    const paymentApi = new PaymentApi()
-    await paymentApi.paymentCancelPayin(
-      { payinId: payin.id },
-      {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json"
-        }
-      }
-    )
+    const paymentApi = wrapApi(PaymentApi)
+    await paymentApi.paymentCancelPayin({ payinId: payin.id })
     window.location.reload()
   }
   return (

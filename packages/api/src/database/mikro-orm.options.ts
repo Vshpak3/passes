@@ -8,7 +8,7 @@ import path from 'path'
 export const contextNames = ['ReadWrite', 'ReadOnly'] as const
 export type ContextName = typeof contextNames[number]
 
-export function getDatabaseOptions(
+export function getMikroOrmOptions(
   configService: ConfigService,
   contextName: ContextName,
 ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {

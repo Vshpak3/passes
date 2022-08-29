@@ -30,8 +30,20 @@ export interface UpdateCreatorSettingsRequestDto {
      * @type {string}
      * @memberof UpdateCreatorSettingsRequestDto
      */
-    payoutFrequency?: string;
+    payoutFrequency?: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum;
 }
+
+
+/**
+ * @export
+ */
+export const UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = {
+    Manual: 'manual',
+    TwoWeeks: 'two weeks',
+    OneWeek: 'one week'
+} as const;
+export type UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum[keyof typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum];
+
 
 export function UpdateCreatorSettingsRequestDtoFromJSON(json: any): UpdateCreatorSettingsRequestDto {
     return UpdateCreatorSettingsRequestDtoFromJSONTyped(json, false);

@@ -28,7 +28,7 @@ import { wrapApi } from "src/helpers/wrapApi"
 import { useLocalStorage } from "src/hooks"
 import { v4 } from "uuid"
 
-import PayPage from "../../pages/payment/pay-button-example"
+import { BuyPassButton } from "../payment/buy-pass"
 import Modal from "./Modal"
 
 interface ICreditCardModal {
@@ -37,11 +37,7 @@ interface ICreditCardModal {
   defaultPayin: PayinMethodDto | undefined
 }
 
-const CreditCardModal = ({
-  isOpen = false,
-  setOpen,
-  defaultPayin
-}: ICreditCardModal) => {
+const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
   const {
     register,
     handleSubmit,
@@ -327,7 +323,7 @@ const CreditCardModal = ({
           />
         </div>
         {/* this component needs to be renamed but its a button currently */}
-        <PayPage defaultPayin={defaultPayin} />
+        <BuyPassButton passId="to-fill" />
         <PassesPinkButton
           name="Confirm and Continue"
           type={ButtonTypeEnum.SUBMIT}

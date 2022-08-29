@@ -5,9 +5,9 @@ import { wrapApi } from "src/helpers/wrapApi"
 import { usePayment, useUser } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
-import PayPage from "../../pages/payment/pay-button-example"
 import { PassesPinkButton } from "../atoms"
 import { PaymentModalInfo } from "../pages/profile/passes"
+import { BuyPassButton } from "../payment/buy-pass"
 import Modal from "./Modal"
 
 interface IQuickPayModal {
@@ -93,7 +93,7 @@ IQuickPayModal) => {
             Settings
           </span>
         </div>
-        <PayPage defaultPayin={defaultPayinMethod} passId={isOpen?.id} />
+        <BuyPassButton passId={isOpen?.id as string} />
         <PassesPinkButton name="Confirm" onClick={handlePayment} />
       </div>
     </Modal>

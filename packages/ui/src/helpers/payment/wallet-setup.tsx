@@ -58,7 +58,6 @@ export const setUpPhantomProvider = (
   provider: PhantomProvider,
   paymentApi: PaymentApi,
   payinId: string,
-  accessToken: string,
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
@@ -71,19 +70,11 @@ export const setUpPhantomProvider = (
   }
   provider.on("connect", async (publicKey: PublicKey) => {
     console.log(depositAddress)
-    const response = await paymentApi.paymentEntryPhantomCircleUSDC(
-      {
-        phantomCircleUSDCEntryRequestDto: {
-          payinId
-        }
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json"
-        }
+    const response = await paymentApi.paymentEntryPhantomCircleUSDC({
+      phantomCircleUSDCEntryRequestDto: {
+        payinId
       }
-    )
+    })
     depositAddress = response.depositAddress
     tokenAddress = response.tokenAddress
     network = response.networkUrl
@@ -112,26 +103,17 @@ export const executeMetamaskUSDCProvider = async (
   provider: EthereumProvider,
   paymentApi: PaymentApi,
   payinId: string,
-  accessToken: string,
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
   let depositAddress = ""
   let tokenAddress = ""
   let chainId = ""
-  const response = await paymentApi.paymentEntryMetamaskCircleUSDC(
-    {
-      metamaskCircleUSDCEntryRequestDto: {
-        payinId
-      }
-    },
-    {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json"
-      }
+  const response = await paymentApi.paymentEntryMetamaskCircleUSDC({
+    metamaskCircleUSDCEntryRequestDto: {
+      payinId
     }
-  )
+  })
   depositAddress = response.depositAddress
   tokenAddress = response.tokenAddress
   chainId = "0x" + response.chainId.toString(16)
@@ -166,25 +148,16 @@ export const executeMetamaskEthProvider = async (
   provider: EthereumProvider,
   paymentApi: PaymentApi,
   payinId: string,
-  accessToken: string,
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
   let depositAddress = ""
   let chainId = ""
-  const response = await paymentApi.paymentEntryMetamaskCircleETH(
-    {
-      metamaskCircleETHEntryRequestDto: {
-        payinId
-      }
-    },
-    {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json"
-      }
+  const response = await paymentApi.paymentEntryMetamaskCircleETH({
+    metamaskCircleETHEntryRequestDto: {
+      payinId
     }
-  )
+  })
   depositAddress = response.depositAddress
   chainId = "0x" + response.chainId.toString(16)
   try {

@@ -2,7 +2,8 @@ import { PayinDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 
-import Payin from "../../components/payment/payin"
+import { wrapApi } from "../../helpers"
+import Payin from "../../helpers/payment/payin"
 import { useLocalStorage } from "../../hooks"
 import useUser from "../../hooks/useUser"
 
@@ -14,7 +15,6 @@ const MyPayments = () => {
 
   const { user, loading } = useUser()
   const router = useRouter()
-  const [accessToken] = useLocalStorage("access-token", "")
   const [page, setPage] = useLocalStorage<number>("payment-page-number", 0)
 
   useEffect(() => {
@@ -26,23 +26,15 @@ const MyPayments = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = new PaymentApi()
-      const payinListResponse = await paymentApi.paymentGetPayins(
-        {
-          payinListRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      const paymentApi = wrapApi(PaymentApi)
+      const payinListResponse = await paymentApi.paymentGetPayins({
+        payinListRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
+      })
       setPayins(payinListResponse.payins)
       setCount(payinListResponse.count)
     }
     fetchData()
-  }, [router, user, loading, page, accessToken])
+  }, [router, user, loading, page])
 
   return (
     <div>
@@ -62,7 +54,7 @@ const MyPayments = () => {
       {payins?.map((payin, i) => {
         return (
           <div key={i}>
-            {Payin(payin, accessToken)}
+            {Payin(payin)}
             <br />
           </div>
         )

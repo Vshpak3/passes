@@ -1,47 +1,34 @@
-import { PassApi } from "@passes/api-client"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { PaymentApi } from "@passes/api-client"
 
-import { PayButton } from "../../components/payment/pay-button"
 import { wrapApi } from "../../helpers/wrapApi"
-import useUser from "../../hooks/useUser"
+import { usePay } from "../../hooks/usePay"
 
-interface IPayPage {
-  defaultPayin: any
-  passId?: string | undefined
-}
-
-const PayPage = ({ passId }: IPayPage) => {
-  const { user, loading } = useUser()
-  const router = useRouter()
-  const api = wrapApi(PassApi)
-
-  const submit = async () => {
-    return await api.passRegisterCreatePass({
-      createPassHolderRequestDto: {
-        passId: passId || ""
-      }
-    })
+const PayPage = () => {
+  const api = wrapApi(PaymentApi)
+  const register = async () => {
+    return await api.paymentRegisterPayin()
   }
 
-  const data = async () => {
-    return await api.passRegisterCreatePassData({
-      createPassHolderRequestDto: {
-        passId: passId || ""
-      }
-    })
+  const registerData = async () => {
+    return await api.paymentRegisterPayinData()
   }
 
-  useEffect(() => {
-    if (!router.isReady || loading) {
-      return
-    }
+  const { blocked, amountUSD, submitting, loading, submit } = usePay(
+    register,
+    registerData
+  )
 
-    if (!user) {
-      router.push("/login")
-    }
-  }, [router, user, loading])
-
-  return PayButton(submit, data)
+  return (
+    <button
+      onClick={() => {
+        submit()
+      }}
+      className="w-32 rounded-[50px] bg-[#C943A8] p-4"
+      type="submit"
+      {...(blocked || submitting ? { disabled: true } : {})}
+    >
+      {loading ? "loading" : `Pay ${amountUSD}`}
+    </button>
+  )
 }
 export default PayPage

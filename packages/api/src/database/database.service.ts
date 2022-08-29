@@ -1,6 +1,8 @@
-import { EntityManager, Knex } from '@mikro-orm/mysql'
+import { EntityManager, Knex, knex } from '@mikro-orm/mysql'
 import { Injectable, Scope } from '@nestjs/common'
 import { v4 } from 'uuid'
+
+import { getKnexOptions } from './database.options'
 
 declare type EntityData<T> = {
   [K in keyof T as ExcludeFunctions<T, K>]?: T[K] extends object ? string : T[K]
@@ -92,6 +94,7 @@ export class DatabaseService {
   constructor(entityManager: EntityManager) {
     this._entityManager = entityManager
     this.knex = entityManager.getKnex()
+    this.knex = knex(getKnexOptions(this.knex))
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     const { metadata } = this._entityManager

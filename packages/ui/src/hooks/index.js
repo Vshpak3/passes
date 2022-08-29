@@ -11,7 +11,7 @@ import useMessageToDevelopers from "./useMessageToDevelopers"
 import useMounted from "./useMounted"
 import useOnClickOutside from "./useOnClickOutside"
 import usePasses from "./usePasses"
-import usePayment from "./usePayment"
+import usePayinMethod from "./usePayinMethod"
 import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
 import useUser from "./useUser"
@@ -30,7 +30,7 @@ export {
   useMounted,
   useOnClickOutside,
   usePasses,
-  usePayment,
+  usePayinMethod as usePayment,
   usePrefersReducedMotion,
   useRandomInterval,
   useUser,

@@ -105,7 +105,7 @@ export class PostController {
   @ApiOperation({ summary: 'Get register purchase post data' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: RegisterPayinResponseDto,
+    type: PayinDataDto,
     description: 'Data for register purchase post was returned',
   })
   @Post('pay/data/purchase')

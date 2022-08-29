@@ -15,9 +15,9 @@ export class SendMessageRequestDto {
   @ApiPropertyOptional()
   tipAmount?: number
 
-  @ApiPropertyOptional()
-  payinMethod?: PayinMethodDto
-
   @ApiProperty()
   content: string[]
+
+  @ApiPropertyOptional()
+  payinMethod?: PayinMethodDto
 }

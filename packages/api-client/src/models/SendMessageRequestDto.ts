@@ -52,16 +52,16 @@ export interface SendMessageRequestDto {
     tipAmount?: number;
     /**
      * 
-     * @type {PayinMethodDto}
-     * @memberof SendMessageRequestDto
-     */
-    payinMethod?: PayinMethodDto;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof SendMessageRequestDto
      */
     content: Array<string>;
+    /**
+     * 
+     * @type {PayinMethodDto}
+     * @memberof SendMessageRequestDto
+     */
+    payinMethod?: PayinMethodDto;
 }
 
 export function SendMessageRequestDtoFromJSON(json: any): SendMessageRequestDto {
@@ -78,8 +78,8 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'attachments': json['attachments'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
-        'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
         'content': json['content'],
+        'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
@@ -96,8 +96,8 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
         'attachments': value.attachments,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
-        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'content': value.content,
+        'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }
 

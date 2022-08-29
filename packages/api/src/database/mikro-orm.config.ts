@@ -2,7 +2,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 
 import { configOptions } from '../config/config.options'
-import { getDatabaseOptions } from './mikro-orm.options'
+import { getMikroOrmOptions } from './mikro-orm.options'
 
 // This is needed for the mikro-orm cli to run. This file is specified in
 // package.json.
@@ -14,7 +14,7 @@ export default (async () => {
     ConfigModule.forRoot(configOptions),
   )
   const configService = app.get(ConfigService)
-  const options = getDatabaseOptions(configService, 'ReadWrite')
+  const options = getMikroOrmOptions(configService, 'ReadWrite')
   await app.close()
   return options
 })()

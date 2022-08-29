@@ -6,12 +6,10 @@ import {
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
-import useLocalStorage from "../../hooks/useLocalStorage"
-import useUser from "../../hooks/useUser"
-import { getPhantomProvider } from "./payment-wallet"
+import { wrapApi } from "../helpers"
+import { getPhantomProvider } from "../helpers/payment/payment-wallet"
 import {
   connectMetamask,
   EthereumProvider,
@@ -19,43 +17,35 @@ import {
   executeMetamaskUSDCProvider,
   PhantomProvider,
   setUpPhantomProvider
-} from "./wallet-setup"
+} from "../helpers/payment/wallet-setup"
+import useLocalStorage from "./useLocalStorage"
 
-export const PayButton = (
+export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
   registerPaymentDataFunc: () => Promise<PayinDataDto>
 ) => {
   const [submitting, setSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [blocked, setBlocked] = useState(false)
   const [amountUSD, setAmountUSD] = useState(0)
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
   const [metamaskProvider, setMetamaskProvider] = useState<EthereumProvider>()
   const [paymentApi] = useState<PaymentApi>(new PaymentApi())
 
-  const { user, loading } = useUser()
-  const router = useRouter()
   const [accessToken] = useLocalStorage("access-token", "")
 
   const handleCircleCard = async (
     registerResponse: RegisterPayinResponseDto,
     paymentApi: PaymentApi
   ) => {
-    await paymentApi.paymentEntryCircleCard(
-      {
-        circleCardPayinEntryRequestDto: {
-          payinId: registerResponse.payinId,
-          ip: "",
-          sessionId: SHA256(accessToken).toString().substr(0, 50)
-        }
-      },
-      {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json"
-        }
+    await paymentApi.paymentEntryCircleCard({
+      circleCardPayinEntryRequestDto: {
+        payinId: registerResponse.payinId,
+        ip: "",
+        sessionId: SHA256(accessToken).toString().substr(0, 50)
       }
-    )
+    })
   }
 
   const handlePhantomCircleUSDC = async (
@@ -71,7 +61,6 @@ export const PayButton = (
         phantomProvider,
         paymentApi,
         registerResponse.payinId,
-        accessToken,
         registerResponse.amount * 10 ** 6,
         cancelPayinCallback
       )
@@ -110,7 +99,6 @@ export const PayButton = (
       metamaskProvider,
       paymentApi,
       registerResponse.payinId,
-      accessToken,
       registerResponse.amount * 10 ** 6,
       cancelPayinCallback
     )
@@ -137,7 +125,6 @@ export const PayButton = (
       metamaskProvider,
       paymentApi,
       registerResponse.payinId,
-      accessToken,
       registerResponse.amount * 10 ** 18,
       cancelPayinCallback
     )
@@ -145,19 +132,13 @@ export const PayButton = (
 
   const submit = async () => {
     setSubmitting(true)
-    const paymentApi = new PaymentApi()
+    const paymentApi = wrapApi(PaymentApi)
     try {
       const registerResponse = await registerPaymentFunc()
       const cancelPayinCallback = async () => {
-        await paymentApi.paymentCancelPayin(
-          { payinId: registerResponse.payinId },
-          {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          }
-        )
+        await paymentApi.paymentCancelPayin({
+          payinId: registerResponse.payinId
+        })
       }
       if (registerResponse.amount !== amountUSD) {
         throw Error("sanity check: amounts don't matchup")
@@ -199,27 +180,10 @@ export const PayButton = (
       const { amount, blocked } = await registerPaymentDataFunc()
       setAmountUSD(amount)
       setBlocked(blocked)
+      setLoading(false)
     }
     fetchData()
-  }, [
-    router,
-    user,
-    loading,
-    phantomProvider,
-    metamaskProvider,
-    registerPaymentDataFunc
-  ])
+  }, [phantomProvider, metamaskProvider, registerPaymentDataFunc])
 
-  return (
-    <button
-      onClick={() => {
-        submit()
-      }}
-      className="w-32 rounded-[50px] bg-[#C943A8] p-4"
-      type="submit"
-      {...(blocked || submitting ? { disabled: true } : {})}
-    >
-      Pay ${amountUSD}
-    </button>
-  )
+  return { blocked, amountUSD, submitting, loading, submit }
 }

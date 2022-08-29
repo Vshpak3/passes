@@ -24,6 +24,9 @@ import {
     GetPostResponseDto,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
+    PayinDataDto,
+    PayinDataDtoFromJSON,
+    PayinDataDtoToJSON,
     RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
@@ -168,7 +171,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Get register purchase post data
      */
-    async postRegisterPurchasePostDataRaw(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async postRegisterPurchasePostDataRaw(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.createPostAccessRequestDto === null || requestParameters.createPostAccessRequestDto === undefined) {
             throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling postRegisterPurchasePostData.');
         }
@@ -187,13 +190,13 @@ export class PostApi extends runtime.BaseAPI {
             body: CreatePostAccessRequestDtoToJSON(requestParameters.createPostAccessRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
     }
 
     /**
      * Get register purchase post data
      */
-    async postRegisterPurchasePostData(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+    async postRegisterPurchasePostData(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
         const response = await this.postRegisterPurchasePostDataRaw(requestParameters, initOverrides);
         return await response.value();
     }

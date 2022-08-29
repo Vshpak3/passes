@@ -6,7 +6,7 @@ import {
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
-import { ContextName, getDatabaseOptions } from './mikro-orm.options'
+import { ContextName, getMikroOrmOptions } from './mikro-orm.options'
 
 @Injectable()
 export class MikroOrmConfigService implements MikroOrmOptionsFactory {
@@ -16,6 +16,6 @@ export class MikroOrmConfigService implements MikroOrmOptionsFactory {
   ):
     | MikroOrmModuleOptions<IDatabaseDriver<Connection>>
     | Promise<MikroOrmModuleOptions<IDatabaseDriver<Connection>>> {
-    return getDatabaseOptions(this.configService, contextName)
+    return getMikroOrmOptions(this.configService, contextName)
   }
 }
