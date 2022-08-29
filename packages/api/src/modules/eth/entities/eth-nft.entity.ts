@@ -17,5 +17,5 @@ export class EthNftEntity extends BaseEntity {
   tokenId: string
 
   @Property({ length: 255 })
-  tokenHash: string
+  tokenHash?: string
 }

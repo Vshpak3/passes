@@ -9,7 +9,7 @@ export class EthNftDto {
   tokenId: string
 
   @ApiProperty()
-  tokenHash: string
+  tokenHash?: string
 
   @ApiProperty()
   ethNftCollection: EthNftCollectionDto

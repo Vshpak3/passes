@@ -4,12 +4,11 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import * as https from 'https'
+import { Alchemy, Network, OwnedNft } from 'alchemy-sdk'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -33,6 +32,7 @@ const BATCH_WALLET_REFRESH_CHUNK_SIZE = 500
 
 @Injectable()
 export class EthService {
+  alchemy: Alchemy
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -45,7 +45,13 @@ export class EthService {
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-  ) {}
+  ) {
+    const settings = {
+      apiKey: this.configService.get('alchemy.sol.api_key') as string,
+      network: Network.ETH_MAINNET,
+    }
+    this.alchemy = new Alchemy(settings)
+  }
 
   async createNftCollection(
     userId: string,
@@ -170,19 +176,20 @@ export class EthService {
     const nftCollections = await this.dbReader(
       EthNftCollectionEntity.table,
     ).select('*')
-    let onChainTokens: Array<any> = []
+    const onChainTokenMap = new Map<string, OwnedNft>()
     for (let i = 0; i < nftCollections.length; i++) {
-      const result = (await this.getTokenData(wallet, nftCollections[i])).result
-      onChainTokens = onChainTokens.concat(result)
+      const ownedNfts = (
+        await this.alchemy.nft.getNftsForOwner(wallet.address, {
+          contractAddresses: [nftCollections[i].tokenAddress],
+        })
+      ).ownedNfts
+      for (let j = 0; j < ownedNfts.length; j++) {
+        onChainTokenMap.set(
+          `${nftCollections[i].tokenAddress},${ownedNfts[j].tokenId}`,
+          ownedNfts[j],
+        )
+      }
     }
-
-    const onChainTokenMap = new Map()
-    onChainTokens.forEach((onChainToken) => {
-      onChainTokenMap.set(
-        `${onChainToken['token_address']},${onChainToken['token_id']}`,
-        onChainToken,
-      )
-    })
     const walletTokens = await this.dbReader(EthNftEntity.table)
       .where({ id: walletId })
       .first()
@@ -212,14 +219,12 @@ export class EthService {
     nftCollections.forEach((nftCollection) => {
       nftCollectionMap.set(nftCollection.tokenAddress, nftCollection)
     })
-    onChainTokenMap.forEach((onChainToken) => {
+    onChainTokenMap.forEach((_, key) => {
+      const tokenData = key.split(',')
       const ethNft = new EthNftEntity()
       ethNft.wallet = wallet
-      ethNft.ethNftCollection = nftCollectionMap.get(
-        onChainToken['token_address'],
-      )
-      ethNft.tokenId = onChainToken['token_id']
-      ethNft.tokenHash = onChainToken['token_hash']
+      ethNft.ethNftCollection = nftCollectionMap.get(tokenData[0])
+      ethNft.tokenId = tokenData[1]
 
       ethNfts.push(ethNft)
 
@@ -228,41 +233,5 @@ export class EthService {
     })
 
     return new WalletResponseDto(wallet, ethNfts)
-  }
-
-  private async getTokenData(
-    wallet: WalletEntity,
-    nftCollection: EthNftCollectionEntity,
-  ): Promise<any> {
-    return new Promise((resolve) => {
-      const path = `/api/v2/${wallet.address}/nft?chain=eth&token_addresses=${nftCollection.tokenAddress}&limit=1`
-      const options = {
-        hostname: this.configService.get('moralis.api_host'),
-        path: path,
-        headers: {
-          accept: 'application/json',
-          'X-API-Key': this.configService.get('moralis.api_key'),
-        },
-      }
-      https.get(options, (res) => {
-        let data = ''
-        res.on('data', (chunk) => {
-          data += chunk
-        })
-        res.on('end', () => {
-          if (
-            res.statusCode != undefined &&
-            res.statusCode >= 200 &&
-            res.statusCode <= 299
-          ) {
-            resolve(JSON.parse(data))
-          } else {
-            throw new InternalServerErrorException(
-              `Request to Moralis failed. status: ${res.statusCode} body: ${data}`,
-            )
-          }
-        })
-      })
-    })
   }
 }
