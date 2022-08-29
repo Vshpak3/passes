@@ -232,7 +232,7 @@ const SignupPage = () => {
             fontSize={13}
             className="z-10 w-[360px] text-[#b3bee7] opacity-[0.6]"
           >
-            By signing up, you agree to Passes&apos;s{" "}
+            By signing up, you agree to Passes&apos;{" "}
             <a
               href="/terms"
               target="_blank"
@@ -241,7 +241,7 @@ const SignupPage = () => {
             >
               Terms of Use
             </a>
-            and{" "}
+            {" "}and{" "}
             <a
               href="/privacy"
               target="_blank"
