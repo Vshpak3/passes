@@ -58,11 +58,12 @@ export class PostService {
     await this.dbWriter
       .transaction(async (trx) => {
         const postId = v4()
-        const post = {
+        const post = PostEntity.toDict<PostEntity>({
           id: postId,
-          user_id: userId,
+          user: userId,
           text: createPostDto.text,
-        }
+          private: createPostDto.private,
+        })
 
         await this.dbWriter(PostEntity.table)
           .insert(post, '*')
@@ -72,25 +73,12 @@ export class PostService {
             throw new InternalServerErrorException()
           })
 
-        for (let i = 0; i < createPostDto.content.length; ++i) {
-          const contentId = v4()
-          const createContentDto = createPostDto.content[i]
+        const contentPosts = createPostDto.content?.map((contentId) => ({
+          content_entity_id: contentId,
+          post_entity_id: postId,
+        }))
 
-          const content = {
-            id: contentId,
-            user_id: userId,
-            url: createContentDto.url,
-            content_type: createContentDto.contentType,
-          }
-          await trx(ContentEntity.table).insert(content)
-
-          const contentPost = {
-            content_id: contentId,
-            post_id: postId,
-          }
-
-          await trx('content_post').insert(contentPost)
-        }
+        if (contentPosts?.length) await trx('content_post').insert(contentPosts)
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
           const postPassAccess = {

@@ -15,6 +15,12 @@
 
 import * as runtime from '../runtime';
 import {
+    CreateContentRequestDto,
+    CreateContentRequestDtoFromJSON,
+    CreateContentRequestDtoToJSON,
+    GetContentResponseDto,
+    GetContentResponseDtoFromJSON,
+    GetContentResponseDtoToJSON,
     GetContentsResponseDto,
     GetContentsResponseDtoFromJSON,
     GetContentsResponseDtoToJSON,
@@ -22,6 +28,10 @@ import {
     GetSignedUrlResponseDtoFromJSON,
     GetSignedUrlResponseDtoToJSON,
 } from '../models';
+
+export interface ContentCreateRequest {
+    createContentRequestDto: CreateContentRequestDto;
+}
 
 export interface ContentGetVaultContentRequest {
     category?: ContentGetVaultContentCategoryEnum;
@@ -36,6 +46,39 @@ export interface ContentPreSignUrlRequest {
  * 
  */
 export class ContentApi extends runtime.BaseAPI {
+
+    /**
+     * Create content
+     */
+    async contentCreateRaw(requestParameters: ContentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
+        if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
+            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling contentCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/content`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateContentRequestDtoToJSON(requestParameters.createContentRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetContentResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Create content
+     */
+    async contentCreate(requestParameters: ContentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
+        const response = await this.contentCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Gets all content associated with the current authenticated user

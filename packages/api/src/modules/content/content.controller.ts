@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
   Param,
+  Post,
   Query,
   Req,
   UseGuards,
@@ -14,7 +16,11 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetSignedUrlResponseDto } from '../s3/dto/get-signed-url.dto'
 import { S3Service } from '../s3/s3.service'
 import { ContentService } from './content.service'
-import { GetContentsResponseDto } from './dto/get-content.dto'
+import { CreateContentRequestDto } from './dto/create-content.dto'
+import {
+  GetContentResponseDto,
+  GetContentsResponseDto,
+} from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 
 @ApiTags('content')
@@ -24,6 +30,20 @@ export class ContentController {
     private readonly contentService: ContentService,
     private readonly s3Service: S3Service,
   ) {}
+
+  @ApiOperation({ summary: 'Create content' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: GetContentResponseDto,
+    description: 'Content was created',
+  })
+  @Post()
+  async create(
+    @Req() req: RequestWithUser,
+    @Body() createContentRequestDto: CreateContentRequestDto,
+  ): Promise<GetContentResponseDto> {
+    return this.contentService.create(req.user.id, createContentRequestDto)
+  }
 
   @ApiOperation({ summary: 'Get signed url for specified path' })
   @ApiResponse({

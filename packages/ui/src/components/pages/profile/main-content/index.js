@@ -22,7 +22,8 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
           createPostDto: {
             passes: [],
             content: values.content,
-            text: values.text
+            text: values.text,
+            _private: true
           }
         }),
       {

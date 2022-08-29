@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    ContentDto,
-    ContentDtoFromJSON,
-    ContentDtoFromJSONTyped,
-    ContentDtoToJSON,
-} from './ContentDto';
-
 /**
  * 
  * @export
@@ -34,10 +27,10 @@ export interface CreatePostRequestDto {
     text: string;
     /**
      * 
-     * @type {Array<ContentDto>}
+     * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
-    content: Array<ContentDto>;
+    content: Array<string>;
     /**
      * 
      * @type {Array<string>}
@@ -63,7 +56,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
-        'content': ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
+        'content': json['content'],
         'passes': json['passes'],
         '_private': json['private'],
     };
@@ -79,7 +72,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
     return {
         
         'text': value.text,
-        'content': ((value.content as Array<any>).map(ContentDtoToJSON)),
+        'content': value.content,
         'passes': value.passes,
         'private': value._private,
     };

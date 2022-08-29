@@ -22,6 +22,7 @@ export * from './ContentDto';
 export * from './CreateBatchMessageRequestDto';
 export * from './CreateChannelRequestDto';
 export * from './CreateCommentRequestDto';
+export * from './CreateContentRequestDto';
 export * from './CreateCreatorSettingsRequestDto';
 export * from './CreateEthNftCollectionRequestDto';
 export * from './CreateFollowingRequestDto';

@@ -146,20 +146,24 @@ export class FeedService {
   private async getContentLookupForPosts(
     postIds: string[],
   ): Promise<ContentLookupByPost> {
-    const contentResults = await this.dbReader(ContentEntity.table).whereIn(
-      'post_id',
-      postIds,
-    )
+    const contentResults = await this.dbReader(ContentEntity.table)
+      .innerJoin(
+        'content_post',
+        `${ContentEntity.table}.id`,
+        'content_post.content_entity_id',
+      )
+      .whereIn('content_post.post_entity_id', postIds)
+      .select(['*', `${ContentEntity.table}.id`])
 
     const ans: ContentLookupByPost = {}
     for (let i = 0; i < contentResults.length; ++i) {
       const c = contentResults[i]
 
-      if (!(c.post_id in ans)) {
-        ans[c.post_id] = []
+      if (!(c.post_entity_id in ans)) {
+        ans[c.post_entity_id] = []
       }
 
-      ans[c.post_id].push(c)
+      ans[c.post_entity_id].push(c)
     }
 
     return ans

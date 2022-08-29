@@ -100,7 +100,7 @@ export class ContentService {
           .innerJoin(
             'content_post',
             `${ContentEntity.table}.id`,
-            'content_post.content_id',
+            'content_post.content_entity_id',
           )
           .select(['*', `${ContentEntity.table}.id`])
         break
@@ -115,10 +115,10 @@ export class ContentService {
           .leftJoin(
             'content_post',
             `${ContentEntity.table}.id`,
-            'content_post.content_id',
+            'content_post.content_entity_id',
           )
           .andWhere(`${ContentMessageEntity.table}.content_id`, null)
-          .andWhere('content_post.content_id', null)
+          .andWhere('content_post.content_entity_id', null)
           .select(['*', `${ContentEntity.table}.id`])
         break
 

@@ -1,3 +1,4 @@
+import { ContentApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
@@ -8,7 +9,8 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
-import { classNames } from "src/helpers"
+import { classNames, wrapApi } from "src/helpers"
+import { uploadFile } from "src/helpers/uploadFile"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
@@ -90,14 +92,21 @@ export const NewPost = ({ passes = [], placeholder, createPost }) => {
   }
 
   const onSubmit = async () => {
+    const api = wrapApi(ContentApi)
     const values = getValues()
     const content = await Promise.all(
-      files.map(() => {
-        // file will be used after content is fixed on backend so we can upload media to S3
-        const url =
-          "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg"
-        // TODO: upload Images to public bucket
-        return Promise.resolve({ url, contentType: "image/jpeg" })
+      files.map(async (file) => {
+        const url = await uploadFile(file, "uploads")
+        let contentType = file.type
+        if (file.type.startsWith("image/")) contentType = "image/jpeg"
+        if (file.type.startsWith("video/")) contentType = "video/mp4"
+        const content = await api.contentCreate({
+          createContentDto: {
+            url,
+            contentType
+          }
+        })
+        return content.id
       })
     )
     setExtended(false)
