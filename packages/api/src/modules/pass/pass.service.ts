@@ -294,7 +294,8 @@ export class PassService {
         `${PassHolderEntity}.pass_id`,
       )
       .where(`${PassHolderEntity.table}.id`, passHolderId)
-      .select([`${PassEntity.table}.creator_id`])
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .select(`${PassEntity.table}.creator_id`)
       .first()
 
     const callbackInput: RenewNftPassPayinCallbackInput = {
@@ -436,5 +437,35 @@ export class PassService {
     const blocked = checkPayin !== undefined || checkHolder !== undefined
 
     return { amount: pass.price, target, blocked }
+  }
+
+  /**
+   * subscription pass exists in your wallet, but no subscription is found
+   * occurs when pass is transferred on chain or subscription was cancelled and pass still held
+   *
+   * @param userId
+   * @param passHolderId
+   */
+  async addPassSubscription(userId: string, passHolderId: string) {
+    const passHolder = await this.dbReader(PassHolderEntity.table)
+      .join(
+        PassEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity}.pass_id`,
+      )
+      .where(`${PassHolderEntity.table}.id`, passHolderId)
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .select(`${PassEntity.table}.price`)
+      .first()
+
+    if (!passHolder) {
+      throw new ForbiddenPassException('user does not own pass')
+    }
+
+    await this.payService.subscribe({
+      userId,
+      passHolderId,
+      amount: passHolder.price,
+    })
   }
 }

@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { PassHolderEntity } from '../../pass/entities/pass-holder.entity'
@@ -13,6 +13,7 @@ import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardEntity } from './circle-card.entity'
 
 @Entity({ tableName: 'subscription' })
+@Unique({ properties: ['user', 'passHolder'] })
 export class SubscriptionEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity

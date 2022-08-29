@@ -124,7 +124,6 @@ export class WalletService {
       custodial: true,
     })
     await this.dbWriter(WalletEntity.table).insert(data)
-    // TODO: fix return type
     return new WalletDto(data)
   }
 
@@ -351,7 +350,6 @@ export class WalletService {
       .update({ user_id: null })
       .where('id', walletId)
       .where('user_id', userId)
-    // TODO: update passholders + subscriptions
     return knexResult == 1
   }
 }

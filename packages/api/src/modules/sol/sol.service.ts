@@ -44,7 +44,6 @@ import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { S3Service } from '../s3/s3.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
-import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
@@ -166,6 +165,8 @@ export class SolService {
         'sol_nft.mint_public_key',
         'pass_holder.id as pass_holder_id',
         'wallet.address as wallet_address',
+        'wallet.user_id as wallet_user_id',
+        'wallet.id as wallet_id',
       )
     if (lastProcessedId != null) {
       solNftsQuery.where('sol_nft.id', '>', lastProcessedId)
@@ -187,6 +188,8 @@ export class SolService {
           solNfts[i].sol_nft_id,
           solNfts[i].pass_holder_id,
           solNfts[i].wallet_address,
+          solNfts[i].wallet_user_id,
+          solNfts[i].wallet_id,
           solNfts[i].mint_public_key,
         )
         await this.dbWriter(BatchSolNftRefreshEntity.table)
@@ -205,6 +208,8 @@ export class SolService {
     solNftId: string,
     passHolderId: string | null,
     walletAddress: string | null,
+    walletUserId: string | null,
+    walletId: string | null,
     mintPublicKey: string,
   ): Promise<void> {
     const owner = await this.getOwnerOfPass(
@@ -212,31 +217,21 @@ export class SolService {
       new PublicKey(mintPublicKey),
     )
 
+    // always try update incase of wallet transfer
+    if (passHolderId) {
+      await this.dbWriter(PassHolderEntity.table)
+        .update('pass_holder.holder_id', walletUserId)
+        .where('pass_holder.id', passHolderId)
+    }
+
     // if unowned or same owner, skip this record
     if (!owner || owner.toString() == walletAddress) {
       return
     }
 
-    // update PassOwnership and Wallet relationships with SolNft
-    const wallet = await this.walletService.findByAddress(
-      owner.toString(),
-      ChainEnum.SOL,
-    )
-
-    const walletId = wallet?.id || null
-    const walletUserId = wallet?.userId || null
-
-    this.dbWriter.transaction(async (trx) => {
-      await trx(SolNftEntity.table)
-        .update('sol_nft.wallet_id', walletId)
-        .where('sol_nft.id', solNftId)
-      if (passHolderId) {
-        await trx(PassHolderEntity.table)
-          .update('pass_holder.holder_id', walletUserId)
-          .where('pass_holder.id', passHolderId)
-      }
-      // TODO: if pass changes ownership, remove the subscription of the previous owner
-    })
+    await this.dbWriter(SolNftEntity.table)
+      .update('sol_nft.wallet_id', walletId)
+      .where('sol_nft.id', solNftId)
   }
 
   /**

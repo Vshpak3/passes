@@ -166,4 +166,18 @@ export class PassController {
       renewPassHolderDto.passHolderId,
     )
   }
+
+  @ApiOperation({ summary: 'Add pass subscription' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: undefined,
+    description: 'Pass subscription was added',
+  })
+  @Post('subscription/add/:passHolderId')
+  async addPassSubscription(
+    @Req() req: RequestWithUser,
+    @Param('passHolderId') passHolderId: string,
+  ) {
+    await this.passService.addPassSubscription(req.user.id, passHolderId)
+  }
 }

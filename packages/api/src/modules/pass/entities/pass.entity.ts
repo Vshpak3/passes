@@ -8,6 +8,7 @@ import {
 } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { SolNftCollectionEntity } from '../../sol/entities/sol-nft-collection.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PassTypeEnum } from '../enum/pass.enum'
@@ -32,7 +33,7 @@ export class PassEntity extends BaseEntity {
   @Enum(() => PassTypeEnum)
   type: PassTypeEnum
 
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   price: number
 
   @Property()

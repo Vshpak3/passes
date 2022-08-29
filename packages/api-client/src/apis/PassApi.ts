@@ -41,6 +41,10 @@ import {
     UpdatePassRequestDtoToJSON,
 } from '../models';
 
+export interface PassAddPassSubscriptionRequest {
+    passHolderId: string;
+}
+
 export interface PassCreateRequest {
     createPassRequestDto: CreatePassRequestDto;
 }
@@ -82,6 +86,35 @@ export interface PassUpdateRequest {
  * 
  */
 export class PassApi extends runtime.BaseAPI {
+
+    /**
+     * Add pass subscription
+     */
+    async passAddPassSubscriptionRaw(requestParameters: PassAddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.passHolderId === null || requestParameters.passHolderId === undefined) {
+            throw new runtime.RequiredError('passHolderId','Required parameter requestParameters.passHolderId was null or undefined when calling passAddPassSubscription.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/pass/subscription/add/{passHolderId}`.replace(`{${"passHolderId"}}`, encodeURIComponent(String(requestParameters.passHolderId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Add pass subscription
+     */
+    async passAddPassSubscription(requestParameters: PassAddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.passAddPassSubscriptionRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Creates a pass
