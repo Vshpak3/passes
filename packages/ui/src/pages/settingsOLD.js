@@ -63,13 +63,13 @@ const SettingsPage = () => {
                 <Separator />
                 <div className="flex flex-col gap-3 pt-5 pb-8 pr-4 pl-8">
                   <Text className="font-semibold text-mauve-mauve12 dark:text-mauveDark-mauve12">
-                    Moment HQ Inc.
+                    Passes Inc.
                   </Text>
                   <Text
                     className="text-mauve-mauve11 dark:text-mauveDark-mauve11"
                     fontSize={13}
                   >
-                    Thank you for using Moment. We are commited to protecting
+                    Thank you for using Passes. We are commited to protecting
                     your user data and privacy.
                   </Text>
                 </div>

@@ -10,7 +10,7 @@ const MOCK_POSTS = [
     metaData: {
       likes: 328,
       comments: 578,
-      sharableUrl: "moment.com/example/url"
+      sharableUrl: "passes.com/example/url"
     }
   },
   {
@@ -22,7 +22,7 @@ const MOCK_POSTS = [
     metaData: {
       likes: 123,
       comments: 78,
-      sharableUrl: "moment.com/example/url"
+      sharableUrl: "passes.com/example/url"
     }
   }
 ]

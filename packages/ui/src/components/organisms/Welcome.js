@@ -12,7 +12,7 @@ const Welcome = () => {
           tag="h1"
           fontSize={36}
         >
-          Welcome to Moment
+          Welcome to Passes
         </Text>
         <Text
           style={{ "--stagger": 1 }}

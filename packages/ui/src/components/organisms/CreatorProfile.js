@@ -21,7 +21,7 @@ const mockData = {
   avatarUrl: "/andrea-botez/avatar.jpeg",
   name: "Andrea Botez",
   username: "andreabotez",
-  bio: "Welcome to my Moment, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
+  bio: "Welcome to my Passes, a casual page for fans who want to get to know me better. I share stream & other content updates, candid photos of myself or my travels, and random daily thoughts. Thank you for supporting me 💞",
   links: {
     youtube: "Botezlive",
     twitch: "botezlive",
@@ -121,7 +121,7 @@ const CreatorProfile = () => {
                     </span>
                   }
                   description={
-                    <span>This creator has been verified by Moment staff.</span>
+                    <span>This creator has been verified by Passes staff.</span>
                   }
                   trigger={
                     <span className="min-w-fit" title="Verified Creator">
@@ -374,7 +374,7 @@ const CreatorProfile = () => {
                       }
                       description={
                         <span>
-                          This post was posted by the creator of this Moment
+                          This post was posted by the creator of this Passes
                           Page.
                         </span>
                       }

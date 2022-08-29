@@ -46,7 +46,7 @@ export class WalletService {
   }
 
   private getRawMessage(walletAddress: string, nonce: string): string {
-    return dedent`Click to verify your wallet with Moment
+    return dedent`Click to verify your wallet with Passes
 
     This request will not trigger a blockchain transaction or cost any gas fees.
 

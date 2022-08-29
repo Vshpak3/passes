@@ -396,7 +396,7 @@ const Admin = () => {
                           type="text"
                           register={register}
                           name="userId"
-                          label="User ID (used in url slug. eg: www.moment.vip/<user_id>)"
+                          label="User ID (used in url slug. eg: www.passes.com/<user_id>)"
                           placeholder="User ID"
                           className="mb-2 bg-transparent"
                         />

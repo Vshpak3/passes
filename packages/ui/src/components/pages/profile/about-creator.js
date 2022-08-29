@@ -19,7 +19,7 @@ const AboutCreator = ({ mockCreator }) => {
           Who is Andrea Botez
         </h2>
         <h2 className="text-gray-400  dark:text-mauveDark-mauve12">
-          Welcome to my Moment, a casual page for fans who want to get to know
+          Welcome to my Passes, a casual page for fans who want to get to know
           me better. I share stream & other content updates, candid photos of
           myself or my travels, and random daily thoughts. Thank you for
           supporting me 💞

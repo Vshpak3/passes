@@ -232,7 +232,7 @@ const SignupPage = () => {
             fontSize={13}
             className="z-10 w-[360px] text-[#b3bee7] opacity-[0.6]"
           >
-            By signing up, you agree to Moment&apos;s{" "}
+            By signing up, you agree to Passes&apos;s{" "}
             <a
               href="/terms"
               target="_blank"
@@ -241,7 +241,7 @@ const SignupPage = () => {
             >
               Terms of Use
             </a>
-            ,{" "}
+            and{" "}
             <a
               href="/privacy"
               target="_blank"
@@ -249,15 +249,6 @@ const SignupPage = () => {
               className="text-blue-blue10"
             >
               Privacy Policy
-            </a>{" "}
-            and{" "}
-            <a
-              href="/cookie-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-blue10"
-            >
-              Cookie Policy
             </a>
             .
           </Text>
