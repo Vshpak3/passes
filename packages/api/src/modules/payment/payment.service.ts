@@ -1432,6 +1432,8 @@ export class PaymentService {
 
     // can't get a negative amount of money
     shareAmount = Math.max(shareAmount, 0)
+    // round to cents
+    shareAmount = Math.round(shareAmount * 100) / 100
 
     await this.dbWriter(CreatorShareEntity.table).insert(
       CreatorShareEntity.toDict<CreatorShareEntity>({

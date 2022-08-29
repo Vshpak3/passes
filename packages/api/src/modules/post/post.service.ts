@@ -269,7 +269,7 @@ export class PostService {
       payinMethod,
       callback: PayinCallbackEnum.TIP_POST,
       callbackInputJSON: callbackInput,
-      creatorId: post.userId,
+      creatorId: post.user_id,
     })
   }
 
@@ -309,7 +309,7 @@ export class PostService {
         ? PayinCallbackEnum.PURCHASE_DM_POST
         : PayinCallbackEnum.PURCHASE_FEED_POST,
       callbackInputJSON: callbackInput,
-      creatorId: post.userId,
+      creatorId: post.user_id,
     })
   }
 

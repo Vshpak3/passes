@@ -36,8 +36,25 @@ export interface GetCreatorEarningsHistoryRequestDto {
      * @type {string}
      * @memberof GetCreatorEarningsHistoryRequestDto
      */
-    type: string;
+    type: GetCreatorEarningsHistoryRequestDtoTypeEnum;
 }
+
+
+/**
+ * @export
+ */
+export const GetCreatorEarningsHistoryRequestDtoTypeEnum = {
+    Balance: 'balance',
+    Total: 'total',
+    Subscription: 'subscription',
+    Tips: 'tips',
+    Posts: 'posts',
+    Messages: 'messages',
+    Lifetime: 'lifetime',
+    Other: 'other'
+} as const;
+export type GetCreatorEarningsHistoryRequestDtoTypeEnum = typeof GetCreatorEarningsHistoryRequestDtoTypeEnum[keyof typeof GetCreatorEarningsHistoryRequestDtoTypeEnum];
+
 
 export function GetCreatorEarningsHistoryRequestDtoFromJSON(json: any): GetCreatorEarningsHistoryRequestDto {
     return GetCreatorEarningsHistoryRequestDtoFromJSONTyped(json, false);

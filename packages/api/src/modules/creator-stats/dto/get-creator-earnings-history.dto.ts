@@ -9,6 +9,6 @@ export class GetCreatorEarningsHistoryRequestDto {
   @ApiProperty()
   end: Date
 
-  @ApiProperty()
+  @ApiProperty({ enum: EarningTypeEnum })
   type?: EarningTypeEnum
 }
