@@ -131,6 +131,31 @@ const HomePage = () => {
           </form>
         </div>
       </section>
+      <div className="mb-4 flex flex-col items-center justify-between p-2">
+        <span className="dark:text-jacarta-400 text-center text-sm">
+          <p>
+            © 2022 Passes.{" "}
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-blue10"
+            >
+              Privacy Policy
+            </a>{" "}
+            |{" "}
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-blue10"
+            >
+              Terms of Service
+            </a>{" "}
+            - All rights reserved by <a href="">Passes.</a>
+          </p>
+        </span>
+      </div>
     </div>
   )
 }

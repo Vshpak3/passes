@@ -86,7 +86,12 @@ const LoginPage = () => {
 
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
-      <Wordmark height={28} width={122} className="self-center lg:self-start" />
+      <Wordmark
+        height={28}
+        width={122}
+        whiteOnly
+        className="self-center lg:self-start"
+      />
       <div className="mt-10 flex md:mt-20 lg:my-auto">
         <div className="hidden flex-1 justify-center lg:flex">
           <GridTile />

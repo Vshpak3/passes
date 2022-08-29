@@ -104,6 +104,7 @@ const UserInfoPage = () => {
       <Wordmark
         height={28}
         width={122}
+        whiteOnly
         className="z-10 self-center lg:self-start"
       />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/userInfoBackground.png')] bg-cover opacity-[50] backdrop-blur-[164px]"></div>
