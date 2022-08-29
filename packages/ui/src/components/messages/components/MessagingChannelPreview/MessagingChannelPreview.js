@@ -7,7 +7,7 @@ const getAvatarGroup = (members) => {
   if (members.length === 1) {
     return (
       <Avatar
-        image="/img/backers/david.png"
+        image={getCleanImage(members[0])}
         name={members[0].user?.id}
         size={40}
       />

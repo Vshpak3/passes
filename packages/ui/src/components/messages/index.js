@@ -1,9 +1,7 @@
 import "@stream-io/stream-chat-css/dist/css/index.css"
 
 import ThreeLines from "public/icons/three-lines-icon.svg"
-// import { MessagesApi } from "@passes/api-client/apis"
-import React, { useEffect, useRef, useState } from "react"
-// import { wrapApi } from "src/helpers/wrapApi"
+import React, { useEffect, useState } from "react"
 import { useChat, useUser } from "src/hooks"
 import { StreamChat } from "stream-chat"
 import { Channel, ChannelList, Chat } from "stream-chat-react"
@@ -22,28 +20,6 @@ import {
   CustomResultItem,
   SearchResultsHeader
 } from "./components/CustomSearchInput/Custom-dropdown"
-// let urlParams
-// if (typeof window !== "undefined") {
-//   urlParams = new URLSearchParams(window && window.location.search)
-// }
-
-// const apiKey = "8vqzkuc59psk"
-// const user = "drachnik"
-// const userToken =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjUxNTQ1MC1lODE3LTQwOTgtODhlMy01OTlkZDJmNDRhZDUiLCJpc1ZlcmlmaWVkIjpmYWxzZSwiYXVkIjoicGFzc2VzLXVpIiwiaXNzIjoicGFzc2VzLWFwaSIsImlhdCI6MTY2MDc1OTAxNiwiZXhwIjoxNjYwODQ1NDE2fQ.L0s9r4aAQv_R9yi3IhoV_KE-YTbafPuYn_yrADIDcD8"
-// const targetOrigin = "kelmend877"
-
-// const noChannelNameFilter = false
-// const skipNameImageSet = false
-
-//
-
-// const userToConnect = { id: user, name: user, image: getRandomImage() }
-
-// if (skipNameImageSet) {
-//   delete userToConnect.name
-//   delete userToConnect.image
-// }
 
 export const GiphyContext = React.createContext({})
 
@@ -51,43 +27,13 @@ const MessagesComponent = ({ username }) => {
   const chatClient = StreamChat.getInstance(
     process.env.NEXT_PUBLIC_STREAM_CHAT_KEY
   )
-  const channel = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
   const [giphyState, setGiphyState] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [isMobileNavVisible, setMobileNav] = useState(false)
   const [theme] = useState("dark")
-  const { channelId, streamToken } = useChat(username)
+  const { streamToken } = useChat(username)
   const { user } = useUser()
-
-  // const sendMessage = async (messageToSend, channelId) => {
-  //   try {
-  //     const api = wrapApi(MessagesApi)
-  //     await api.messagesSend({
-  //       sendMessageDto: {
-  //         text: messageToSend.text || "",
-  //         attachments: [],
-  //         channelId: channelId.split(":")[1]
-  //       }
-  //     })
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-  // TODO: Jeevan this might need to go at ChannelInner Component
-
-  // const overrideSubmitHandler = async (message, _cid) => {
-  //   try {
-  //     await sendMessage(message, _cid)
-  //   } catch (reason) {
-  //     console.error(reason)
-  //   }
-  // }
-  // TODO: Jeevan this might need to go at ChannelInner Component
-
-  // const getUserImage = () => {
-  // TODO: getUserImage and use random image as fallback
-  // }
 
   useEffect(() => {
     const mobileChannelList = document.querySelector("#mobile-channel-list")
@@ -101,7 +47,7 @@ const MessagesComponent = ({ username }) => {
   }, [isMobileNavVisible])
 
   useEffect(() => {
-    if (!user?.id || !channelId || !streamToken) {
+    if (!user?.id || !streamToken) {
       return
     }
 
@@ -115,14 +61,15 @@ const MessagesComponent = ({ username }) => {
         streamToken
       )
 
-      channel.current = chatClient.channel("messaging", channelId)
+      // channel.current = chatClient.channel("messaging", channelId)
+
       setIsLoading(false)
     }
 
     connect()
-  }, [user, channelId, streamToken, chatClient])
+  }, [user, streamToken, chatClient])
 
-  if (isLoading || !user?.id || !channelId || !streamToken) {
+  if (isLoading || !user?.id || !streamToken) {
     return null
   }
 
@@ -400,3 +347,30 @@ const MessagesComponent = ({ username }) => {
 }
 
 export default MessagesComponent
+
+// const sendMessage = async (messageToSend, channelId) => {
+//   try {
+//     const api = wrapApi(MessagesApi)
+//     await api.messagesSend({
+//       sendMessageDto: {
+//         text: messageToSend.text || "",
+//         attachments: [],
+//         channelId: channelId.split(":")[1]
+//       }
+//     })
+//   } catch (err) {
+//     console.log(err)
+//   }
+// }
+
+// const overrideSubmitHandler = async (message, _cid) => {
+//   try {
+//     await sendMessage(message, _cid)
+//   } catch (reason) {
+//     console.error(reason)
+//   }
+// }
+
+// const getUserImage = () => {
+// TODO: getUserImage and use random image as fallback
+// }

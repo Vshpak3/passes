@@ -6,10 +6,10 @@ import { wrapApi } from "../helpers/wrapApi"
 
 const useChat = (username: string) => {
   const [accessToken] = useLocalStorage("access-token", "")
-
   const channelId = useSWR(
-    accessToken ? "/messages/channel" : null,
+    accessToken ? "/messages/channel" + "/" + username : null,
     async () => {
+      if (!username) return null
       const api = wrapApi(MessagesApi)
 
       const createChannelRequestDto = {

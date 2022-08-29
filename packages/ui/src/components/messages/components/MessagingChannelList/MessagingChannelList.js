@@ -5,8 +5,8 @@ import { SkeletonLoader } from "./SkeletonLoader"
 
 const MessagingChannelList = ({ children, error = false, loading }) => {
   const { client, setActiveChannel } = useChatContext()
-  // const { id, image = streamLogo, name = "Example User" } = client.user || {}
 
+  // const { id, image = streamLogo, name = "Example User" } = client.user || {}
   useEffect(() => {
     const getDemoChannel = async (client) => {
       const channel = client.channel("messaging", "first", {

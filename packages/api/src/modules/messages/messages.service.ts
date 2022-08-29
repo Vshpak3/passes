@@ -112,14 +112,17 @@ export class MessagesService {
       },
     })
 
-    await this.dbWriter(ChannelStatEntity.table).insert(
-      ChannelStatEntity.toDict<ChannelStatEntity>({
-        channelId: createResponse.channel.id,
-        totalTipAmount: 0,
-        user: userId,
-        otherUser: otherUser.id,
-      }),
-    )
+    await this.dbWriter(ChannelStatEntity.table)
+      .insert(
+        ChannelStatEntity.toDict<ChannelStatEntity>({
+          channelId: createResponse.channel.id,
+          totalTipAmount: 0,
+          user: userId,
+          otherUser: otherUser.id,
+        }),
+      )
+      .onConflict('channel_id')
+      .ignore()
 
     return {
       id: createResponse.channel.id,

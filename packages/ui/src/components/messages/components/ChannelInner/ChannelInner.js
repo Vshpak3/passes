@@ -1,10 +1,14 @@
+import { MessagesApi } from "@passes/api-client/apis"
 import React, { useContext } from "react"
+import { wrapApi } from "src/helpers/wrapApi"
+import { useChat } from "src/hooks"
 import { logChatPromiseExecution } from "stream-chat"
 import {
+  ChatContext,
   MessageInput,
   MessageList,
   Thread,
-  useChannelActionContext,
+  useChatContext,
   Window
 } from "stream-chat-react"
 
@@ -13,9 +17,30 @@ import { GiphyContext } from "../../index"
 
 export const ChannelInner = (props) => {
   const { theme, toggleMobile } = props
-
   const { giphyState, setGiphyState } = useContext(GiphyContext)
-  const { sendMessage } = useChannelActionContext()
+
+  const { channel: activeChannel, client } = useChatContext(ChatContext)
+
+  const members = Object.values(activeChannel?.state?.members).filter(
+    ({ user }) => user.id !== client.userID
+  )
+
+  const { channelId } = useChat(members[0].user.name)
+  const sendMessage = async (messageToSend) => {
+    try {
+      const api = wrapApi(MessagesApi)
+      await api.messagesSend({
+        sendMessageRequestDto: {
+          text: messageToSend.text || "",
+          attachments: [],
+          content: [],
+          channelId
+        }
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const overrideSubmitHandler = (message) => {
     let updatedMessage
