@@ -1291,7 +1291,7 @@ export class PaymentService {
         return (
           (await this.dbReader(CircleBankEntity.table)
             .where(
-              CircleCardEntity.toDict<CircleCardEntity>({
+              CircleBankEntity.toDict<CircleBankEntity>({
                 user: userId,
                 id: payoutMethodDto.bankId,
               }),
@@ -1300,16 +1300,17 @@ export class PaymentService {
             .select('id')
             .first()) !== undefined
         )
-        break
       case PayoutMethodEnum.CIRCLE_USDC:
-        // blockchain payout must be on an approved chain
-        return this.VALID_PAYOUT_CHAINS.includes(
-          (
-            await this.dbReader(WalletEntity.table)
-              .where({ user_id: userId, id: payoutMethodDto.walletId })
-              .select('chain')
-              .first()
-          ).chain.toUpperCase(),
+        return (
+          (await this.dbReader(WalletEntity.table)
+            .where(
+              WalletEntity.toDict<WalletEntity>({
+                user: userId,
+                id: payoutMethodDto.walletId,
+              }),
+            )
+            .select('id')
+            .first()) !== undefined
         )
       default:
         return false
