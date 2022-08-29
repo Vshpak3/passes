@@ -41,9 +41,9 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
             // href={item.href}
             className={classNames(
               item.id === activeTab
-                ? "border-b-2 text-base font-bold text-[#ffffff]/90 opacity-100"
+                ? "border-b-2 text-base font-bold opacity-100"
                 : "opacity-50 group-hover:opacity-80",
-              "inline-flex items-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold "
+              "inline-flex items-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold text-[#ffffff]/90 "
             )}
           >
             {item.name}

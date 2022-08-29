@@ -296,7 +296,7 @@ export const NewPost = ({ passes = [], placeholder, createPost }) => {
               register={register}
               type="text-area"
               name="text"
-              className="m-0 w-full resize-none border-transparent bg-transparent p-0 focus:border-transparent focus:ring-0"
+              className="m-0 w-full resize-none  border-transparent bg-transparent p-0 text-[#ffffff]/90 focus:border-transparent focus:ring-0"
               placeholder={placeholder}
               rows={4}
               cols={40}

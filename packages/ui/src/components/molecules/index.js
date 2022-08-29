@@ -6,6 +6,15 @@ import Card from "./Card"
 import CssGridTiles from "./CssGridTiles"
 import DragDropCard from "./drag-drop/Card"
 import DragDropFile from "./DragDropFile"
+import {
+  CreatePassOption,
+  CreatorPasses,
+  PassDirectMessage,
+  PassFileUpload,
+  PassLifetimeOptions,
+  PassRenewal,
+  PassUnlockTier
+} from "./passes"
 import * as SidebarComponents from "./Sidebar"
 import Sparkles from "./Sparkles"
 import Tabs from "./Tabs"
@@ -16,10 +25,17 @@ export {
   Avatar,
   AvatarSkeleton,
   Card,
+  CreatePassOption,
+  CreatorPasses,
   CssGridTiles,
   DragDropCard,
   DragDropFile,
   GrainyBackground,
+  PassDirectMessage,
+  PassFileUpload,
+  PassLifetimeOptions,
+  PassRenewal,
+  PassUnlockTier,
   SidebarComponents,
   Sparkles,
   Tabs,

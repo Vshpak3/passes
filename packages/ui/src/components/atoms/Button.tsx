@@ -169,7 +169,7 @@ export const PassesPinkButton = ({
 
 export const CoverButton = ({ name, onClick }: IGenericButton) => (
   <button
-    className="flex w-full items-center justify-center rounded-[56px] border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10 "
+    className="flex w-full items-center justify-center rounded-full border border-solid border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10"
     onClick={onClick}
   >
     {{

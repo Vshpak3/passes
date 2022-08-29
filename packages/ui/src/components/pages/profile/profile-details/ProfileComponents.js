@@ -32,7 +32,7 @@ export const ProfilePhoto = ({ url }) => (
 )
 
 export const ProfileInformation = ({ displayName, username, description }) => (
-  <div className="flex flex-col items-center justify-center gap-[6px] pt-4">
+  <div className="flex flex-col items-center justify-center gap-[6px] pt-4 text-[#ffffff]/80">
     <span className="text-center text-base font-medium leading-[19px]">
       {displayName}
     </span>
@@ -41,7 +41,7 @@ export const ProfileInformation = ({ displayName, username, description }) => (
         @{username}
       </span>
     </div>
-    <span className="text-sm font-normal leading-[17px] text-[#ffffff]/30">
+    <span className="text-sm font-normal leading-[17px] text-[#ffffff]/60">
       {description}
     </span>
   </div>
@@ -126,15 +126,15 @@ export const ProfileSocialMedia = ({
 export const ProfileAdditionalInformation = ({ posts, likes }) => (
   <div className="grid grid-cols-3 place-items-center pt-14">
     <div className="flex flex-col items-center justify-center">
-      <span className="text-base font-medium">{posts}</span>
-      <span className="text-sm font-normal text-[#ffffff]/30">POSTS</span>
+      <span className="text-base font-medium text-[#ffffff]/60">{posts}</span>
+      <span className="text-sm font-normal text-[#ffffff]/80">POSTS</span>
     </div>
     <VerticalSplitter />
     <div className="flex flex-col items-center justify-center">
-      <span className="text-base font-medium">
+      <span className="text-base font-medium text-[#ffffff]/60">
         {compactNumberFormatter(likes)}
       </span>
-      <span className="text-sm font-normal text-[#ffffff]/30">LIKES</span>
+      <span className="text-sm font-normal text-[#ffffff]/80">LIKES</span>
     </div>
   </div>
 )

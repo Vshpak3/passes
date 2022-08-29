@@ -1,13 +1,18 @@
 import { PassDto } from "@passes/api-client"
 import React, { useEffect, useState } from "react"
+import { classNames } from "src/helpers"
 
 import CreatorPassModal from "../CreatorPassModal"
 
 interface ICreatorPassTiles {
   passData: PassDto
+  alternateBg?: boolean
 }
 
-const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
+const CreatorPassTiles = ({
+  passData,
+  alternateBg = false
+}: ICreatorPassTiles) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [isModalOpen, setModalOpen] = useState(false)
   useEffect(() => {
@@ -24,20 +29,24 @@ const CreatorPassTiles = ({ passData }: ICreatorPassTiles) => {
     return (
       <>
         <div
-          className="min-h-[213px] min-w-[260px] max-w-[260px] rounded-lg bg-white p-4 "
-          style={{
-            backgroundImage: `url(${passData.imageUrl})`,
-            backgroundSize: "cover"
-          }}
+          className={classNames(
+            alternateBg
+              ? "bg-gradient-to-r from-[#598BF4] to-[#e292b3]"
+              : "bg-gradient-to-r from-[#a159d3] to-[#598BF4]",
+            "col-span-1 min-h-[213px] min-w-[260px] max-w-[260px] cursor-pointer rounded-lg  p-4 drop-shadow transition-colors"
+          )}
           onClick={handleClick}
         >
-          <div>
-            <span className="text-2xl font-bold text-[#ffff]/90">
-              {passData.title}
-            </span>
-          </div>
-          <div>
-            <span className="text-[#ffff]/90">${passData.price} / month</span>
+          <div className="grid h-full grid-flow-row gap-6 p-2">
+            <div className="row-span-1 flex h-[55px] items-start justify-start">
+              <span className="text-2xl font-bold text-[#ffff]/90">
+                {passData.title}
+              </span>
+            </div>
+            <div className="row-span-1 flex items-start justify-start text-lg text-[#ffff]/90">
+              <span className="font-bold">{passData.price}.00</span>
+              <span className="ml-2 font-light">/month</span>
+            </div>
           </div>
         </div>
         <CreatorPassModal

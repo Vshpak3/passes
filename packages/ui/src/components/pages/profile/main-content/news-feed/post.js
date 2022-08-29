@@ -95,7 +95,7 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
 
 export const PostTextContent = ({ post }) => (
   <div className="flex flex-col items-start">
-    <p className="break-normal break-all text-start text-base font-medium md:pl-[78px] md:pr-[30px]">
+    <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90 md:pl-[78px] md:pr-[30px]">
       {post.caption ? post.caption : post.text}
     </p>
     {post.fundraiser && (

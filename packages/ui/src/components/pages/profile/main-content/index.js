@@ -50,16 +50,16 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
             alt={profile.displayName}
             className="h-[134px] w-full rounded-t-[20px] object-cover"
           />
-          <div className="absolute text-center text-4xl font-black  opacity-50">
+          <div className="absolute text-center text-4xl text-[#ffffff]/60 opacity-50">
             {profile.coverTitle}
           </div>
         </div>
         <div className="flex flex-1 flex-col">
           <div className="flex flex-1 flex-col pl-[26px] pr-3 pt-5">
-            <span className="text-sm font-normal text-[#ffffff]/30">
+            <span className="text-sm font-normal text-[#ffffff]/40">
               About me
             </span>
-            <span className="text-base font-medium">
+            <span className="mt-2 text-base font-medium text-[#ffffff]/60">
               {profile.coverDescription}
             </span>
           </div>

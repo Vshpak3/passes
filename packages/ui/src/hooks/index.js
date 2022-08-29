@@ -1,4 +1,5 @@
 import useChat from "./useChat"
+import useCreatePass from "./useCreatePass"
 import useCreatorProfile from "./useCreatorProfile"
 import useCreatorSearch from "./useCreatorSearch"
 import useEventCallback from "./useEventCallback"
@@ -17,6 +18,7 @@ import useUser from "./useUser"
 import useUserConnectedWallets from "./useUserConnectedWallets"
 export {
   useChat,
+  useCreatePass,
   useCreatorProfile,
   useCreatorSearch,
   useEventCallback,

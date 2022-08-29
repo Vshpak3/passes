@@ -18,6 +18,7 @@ type DragDropFileProps = {
   className?: string
   accept?: FileAccept
   multiple?: boolean
+  maximumLimit?: number
 }
 
 const DragDropFile = ({
@@ -27,7 +28,8 @@ const DragDropFile = ({
   errors = {},
   multiple,
   className,
-  accept
+  accept,
+  maximumLimit = 1
 }: DragDropFileProps) => {
   const [dragActive, setDragActive] = useState(false)
   const { onChange, onBlur, name: registerName, ref } = register(name, options)
@@ -97,7 +99,7 @@ const DragDropFile = ({
             </span>
           </div>
           <p className="self-stretch text-center text-sm font-normal text-[#888689]">
-            You may upload video or up to 9 photos per post
+            You may upload video or up to {maximumLimit} photos per post
           </p>
         </div>
       </div>

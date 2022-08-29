@@ -16,6 +16,16 @@ import Input from "./Input"
 import Label from "./Label"
 import Link from "./Link"
 import MonogramIcon from "./MonogramIcon"
+import {
+  CreatePassButton,
+  CreatePassHeader,
+  PassDescriptionInput,
+  PassesSectionTitle,
+  PassFormCheckbox,
+  PassFormError,
+  PassNameInput,
+  PassNumberInput
+} from "./passes/CreatePass"
 import Select from "./Select"
 import Separator from "./Separator"
 import Text from "./Text"
@@ -27,6 +37,8 @@ export {
   ButtonTypeEnum,
   Checkbox,
   CoverButton,
+  CreatePassButton,
+  CreatePassHeader,
   CssTile,
   DefaultHead,
   File,
@@ -36,8 +48,14 @@ export {
   Label,
   Link,
   MonogramIcon,
+  PassDescriptionInput,
   PassesPinkButton,
   PassesPurpleButton,
+  PassesSectionTitle,
+  PassFormCheckbox,
+  PassFormError,
+  PassNameInput,
+  PassNumberInput,
   PostUnlockButton,
   Select,
   Separator,

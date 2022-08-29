@@ -40,26 +40,23 @@ export const MediaFile = ({
   if (file.type.startsWith("image/"))
     return (
       <>
-        <Image
-          className={className}
-          alt=""
-          onClick={() => {
-            onSelect()
-          }}
-          layout="fill"
-          src={URL.createObjectURL(file)}
-          objectFit="cover"
-        />
         {!preview && (
           <div
-            onClick={() => {
-              onRemove()
-            }}
-            className="absolute top-1 left-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
+            onClick={() => onRemove()}
+            className="relative top-1 left-1  mb-5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[#BF7AF0] p-2 text-white"
           >
             <Cross className="h-full w-full" />
           </div>
         )}
+        <Image
+          className={className}
+          alt=""
+          layout="fixed"
+          width="300px"
+          height="300px"
+          src={URL.createObjectURL(file)}
+          objectFit="contain"
+        />
       </>
     )
 

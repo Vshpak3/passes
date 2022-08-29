@@ -2,8 +2,6 @@ import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
-import NotificationIcon from "public/icons/sidebar-notification-icon.svg"
-import PassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import VaultIcon from "public/icons/sidebar-vault-icon.svg"
 
@@ -24,33 +22,15 @@ export const navigation = [
     current: false
   },
   {
-    id: "passes",
-    name: "My Passes",
-    href: "/passes",
-    icon: PassesIcon,
-    current: false
-  },
-
-  {
     id: "tools",
     name: "Creator Tools",
     icon: CreatorToolsIcon,
     current: false,
     children: [
       {
-        id: "choice",
-        name: "Manage Passes",
-        href: "/tools/choice"
-      },
-      {
-        id: "[collection]",
-        name: "Pass Collection",
-        href: "/tools/passes/collection"
-      },
-      {
-        id: "purchase",
-        name: "Purchase Pass",
-        href: "/tools/purchase"
+        id: "manage-passes",
+        name: "My Passes",
+        href: "/tools/manage-passes"
       },
       {
         id: "list",
@@ -80,13 +60,6 @@ export const navigation = [
     ]
   },
   {
-    id: "notification",
-    name: "Notification",
-    href: "/notification",
-    icon: NotificationIcon,
-    current: false
-  },
-  {
     id: "settings",
     name: "Settings",
     href: "/settings",
@@ -104,14 +77,9 @@ export const navigation = [
 
 export const collapsedNavigation = [
   {
-    id: "choice",
+    id: "manage-passes",
     name: "Manage Passes",
-    href: "/tools/choice"
-  },
-  {
-    id: "[collection]",
-    name: "Pass Collection",
-    href: "/tools/passes/collection"
+    href: "/tools/manage-passes"
   },
   {
     id: "purchase",
