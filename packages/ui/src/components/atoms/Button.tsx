@@ -15,6 +15,7 @@ interface IButton {
   bigger?: boolean
   children: React.ReactNode
   className?: string
+  disabled?: boolean
   icon?: React.ReactNode
   innerClassName?: string
   fontSize?: number
@@ -22,8 +23,8 @@ interface IButton {
   onClick?: () => void
   style?: React.CSSProperties
   tag?: keyof JSX.IntrinsicElements
+  type?: ButtonTypeEnum
   variant: string
-  disabled?: boolean
 }
 
 interface IGenericButton {
@@ -47,6 +48,7 @@ export const Button = ({
   tag = "a",
   variant,
   disabled,
+  type,
   ...restOfProps
 }: IButton) => {
   let variantClassName
@@ -110,6 +112,9 @@ export const Button = ({
       tabIndex={tag === "a" ? 0 : undefined}
       data-focus-ring=""
       disabled={disabled}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      type={type}
       {...restOfProps}
     >
       <Text

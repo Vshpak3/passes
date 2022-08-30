@@ -25,7 +25,6 @@ const NewAddress = () => {
     setSubmitting(true)
     try {
       const values: any = getValues()
-
       const walletApi = new WalletApi()
       //TODO: handle error on frontend (display some generic message)
       await walletApi.walletCreateUnauthenticated(

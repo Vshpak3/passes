@@ -51,20 +51,31 @@ const creditCardSchema = yup.object({
 })
 
 const bankingSchema = yup.object({
-  routingNumber: yup.string().max(19).required("Enter a card number"),
   accountNumber: yup.string().max(19).required("Enter a card number"),
+  routingNumber: yup.string().max(19).required("Enter a card number"),
+  beneficiaryName: yup.string().required(),
+  city: yup.string(),
+  country: yup.string().min(2).max(2),
   accountType: yup.string(),
   billingAddress: yup.string().min(4).required(),
   alternativeAddress: yup.string(),
-  city: yup.string(),
-  country: yup.string().min(2).max(2),
   district: yup.string(),
   postalCode: yup.string(),
-  email: yup.string().email()
+  email: yup.string().email(),
+  bankAddress: yup.object().shape({
+    // bankName: yup.string().min(2).required("Enter a bank name"),
+    // city: yup.string().min(2).required("Enter a bank city"),
+    country: yup
+      .string()
+      .min(2)
+      .max(2)
+      .matches(/^[A-Z]{2}$/)
+      .required("Enter a bank country code")
+  })
 })
 
 const walletSchema = yup.object({
-  walletAddress: yup.string().max(19).required("Enter a wallet address"),
+  walletAddress: yup.string().required("Enter a wallet address"),
   chain: yup.string()
 })
 

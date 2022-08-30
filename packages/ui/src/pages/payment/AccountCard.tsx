@@ -1,22 +1,26 @@
+import { CircleBankDto } from "@passes/api-client"
+
 import { Button } from "../../components/atoms"
+interface IAccountCard {
+  account?: CircleBankDto
+  handleClick: () => void
+  isDefault?: boolean
+}
 
-// interface IAccountCard {
-//   account: any
-//   handleClick: () => void
-// }
-
-const AccountCard = () => {
-  // const AccountCard = ({ account, handleClick }: IAccountCard) => {
+const AccountCard = ({ account, handleClick, isDefault }: IAccountCard) => {
   return (
     <div className="mb-16 text-base font-medium leading-[19px] lg:h-full">
       <div className="flex flex-col justify-around rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:h-full">
         <div className="flex flex-col">
           <span className="text-sm text-[#ffff]/70 lg:self-start">
-            IDR /BCA {/* Name of Bank */}
+            {account?.description}
+          </span>
+          {/* <span className="text-sm text-[#ffff]/70 lg:self-start">
+            IDR /BCA
           </span>
           <span className="text-sm text-[#ffff]/70 lg:self-start">
-            ********8920 {/* Bank Account Number */}
-          </span>
+            ********8920 
+          </span> */}
         </div>
         <div className="flex flex-row justify-between gap-16">
           <div className="flex flex-col">
@@ -44,14 +48,11 @@ const AccountCard = () => {
             </span>
           </div>
           <div className="flex flex-col">
-            <Button
-              variant="pink"
-              onClick={() => {
-                // setDefault()
-              }}
-            >
-              Set Default
-            </Button>
+            {!isDefault && (
+              <Button variant="pink" onClick={handleClick}>
+                Set Default
+              </Button>
+            )}
           </div>
         </div>
       </div>

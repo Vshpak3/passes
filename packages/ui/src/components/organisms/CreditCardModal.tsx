@@ -115,7 +115,6 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
         "🚀 ~ file: CreditCardModal.tsx ~ line 131 ~ setTimeout ~ card",
         card
       )
-      console.log("whatsi n here2", createdCard)
       if (card && card.status === "complete") {
         // set here paymentSetDefaultPayinMethod
         await paymentApi.paymentSetDefaultPayinMethod(

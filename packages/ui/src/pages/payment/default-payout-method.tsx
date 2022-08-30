@@ -12,9 +12,8 @@ import { Button } from "src/components/atoms"
 import { useLocalStorage, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-import AddPayoutModal, {
-  EPayout
-} from "../../components/organisms/AddPayoutModal"
+import AddBankingModal from "../../components/organisms/AddBankingModal"
+import AddWalletModal from "../../components/organisms/AddWalletModal"
 import BankIcon from "../../icons/bank-icon"
 import AccountCard from "./AccountCard"
 
@@ -28,44 +27,6 @@ import AccountCard from "./AccountCard"
 //   43114: "Avalance($AVAX)",
 //   43113: "Avalance($AVAX)"
 // }
-// const defaultAccount = {
-//   id: 0,
-//   name: "Scotia",
-//   accountNumber: "********0000",
-//   transferType: "Domestic",
-//   country: "Canada",
-//   description: "Transfers to this account will always be made in BMO",
-//   status: "complete"
-// }
-const bankAccounts = [
-  {
-    id: 1,
-    name: "BMO",
-    accountNumber: "********8920",
-    transferType: "Domestic",
-    country: "Canada",
-    description: "Transfers to this account will always be made in BMO",
-    status: "complete"
-  },
-  {
-    id: 2,
-    name: "BMO",
-    accountNumber: "********8920",
-    transferType: "Domestic",
-    country: "Canada",
-    description: "Transfers to this account will always be made in BMO",
-    status: "complete"
-  },
-  {
-    id: 3,
-    name: "BMO",
-    accountNumber: "********8920",
-    transferType: "Domestic",
-    country: "Canada",
-    description: "Transfers to this account will always be made in BMO",
-    status: "complete"
-  }
-]
 
 // const wallets = [
 //   {
@@ -93,10 +54,13 @@ const bankAccounts = [
 const DefaultPayoutMethod = () => {
   const [banks, setBanks] = useState<CircleBankDto[]>([])
   const [wallets, setWallets] = useState<WalletDto[]>([])
-  const [isModalOpen, setModalOpen] = useState(false)
-  const [type, setType] = useState(EPayout.BANK)
+  const [isWalletModalOpen, setWalletModalOpen] = useState(false)
+  const [isBankingModalOpen, setBankingModalOpen] = useState(false)
   const [defaultPayout, setDefaultPayout] = useState<PayoutMethodDto>()
 
+  const filteredDefaultPayout = banks.find(
+    (bank) => bank.id === defaultPayout?.bankId
+  )
   const { user, loading } = useUser()
   const router = useRouter()
   const [accessToken] = useLocalStorage("access-token", "")
@@ -221,8 +185,7 @@ const DefaultPayoutMethod = () => {
                   variant="purple"
                   icon={<BankIcon width={25} height={25} />}
                   onClick={() => {
-                    setType(EPayout.WALLET)
-                    setModalOpen(true)
+                    setWalletModalOpen(true)
                   }}
                 >
                   Add Wallet
@@ -231,8 +194,7 @@ const DefaultPayoutMethod = () => {
                   variant="purple"
                   icon={<BankIcon width={25} height={25} />}
                   onClick={() => {
-                    setType(EPayout.BANK)
-                    setModalOpen(true)
+                    setBankingModalOpen(true)
                   }}
                 >
                   Add Bank
@@ -245,12 +207,13 @@ const DefaultPayoutMethod = () => {
             <div className="mb-16 text-base font-medium leading-[19px] lg:h-full">
               <div className="flex flex-col justify-around rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:h-full">
                 <div className="flex flex-col">
-                  <span className="text-sm text-[#ffff]/70 lg:self-start">
-                    IDR /BCA {/* Name of Bank */}
+                  {filteredDefaultPayout?.description}
+                  {/* <span className="text-sm text-[#ffff]/70 lg:self-start">
+                    IDR /BCA  
                   </span>
                   <span className="text-sm text-[#ffff]/70 lg:self-start">
-                    ********8920 {/* Bank Account Number */}
-                  </span>
+                    ********8920  
+                  </span>  */}
                 </div>
                 <div className="flex flex-row justify-between gap-16">
                   <div className="flex flex-col">
@@ -288,17 +251,17 @@ const DefaultPayoutMethod = () => {
           </div>
           {/* DEFAULT PAYOUT */}
           {/* List of bank accounts */}
-          {bankAccounts.map((account) => {
+          {banks.map((account) => {
             return (
               <div key={account.id} className="col-span-10 w-full md:space-y-6">
                 <AccountCard
-                // account={account}
-                // handleClick={() => {
-                //   submit({
-                //     bankId: account.id.toString(),
-                //     method: PayoutMethodDtoMethodEnum.CircleUsdc
-                //   })
-                // }}
+                  account={account}
+                  handleClick={() => {
+                    submit({
+                      bankId: account.id.toString(),
+                      method: PayoutMethodDtoMethodEnum.CircleUsdc
+                    })
+                  }}
                 />
               </div>
             )
@@ -363,11 +326,15 @@ const DefaultPayoutMethod = () => {
           )
         })}
       </div>
-      <AddPayoutModal
-        isOpen={isModalOpen}
-        setOpen={setModalOpen}
+      <AddBankingModal
+        isOpen={isBankingModalOpen}
+        setOpen={setBankingModalOpen}
         defaultPayout={defaultPayout}
-        payoutType={type}
+      />
+      <AddWalletModal
+        isOpen={isWalletModalOpen}
+        setOpen={setWalletModalOpen}
+        defaultPayout={defaultPayout}
       />
     </>
   )

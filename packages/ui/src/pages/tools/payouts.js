@@ -1,12 +1,15 @@
+import { PaymentApi } from "@passes/api-client"
 import moment from "moment"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { Button, FormInput, PassesPinkButton } from "src/components/atoms"
+import { useRouter } from "next/router"
+import { useCallback, useEffect, useState } from "react"
+import { Button, PassesPinkButton } from "src/components/atoms"
 import { Popover } from "src/components/organisms"
-import { classNames } from "src/helpers"
+import { classNames, wrapApi } from "src/helpers"
+import { useLocalStorage, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 import BankIcon from "../../icons/bank-icon"
+import AccountCard from "../payment/AccountCard"
 
 // type TFormValues = {
 //   title: string
@@ -62,10 +65,19 @@ const payoutTransaction = [
 ]
 
 const Payouts = () => {
+  const router = useRouter()
+  const [banks, setBanks] = useState([])
+  const [defaultPayout, setDefaultPayout] = useState()
+  const [accessToken] = useLocalStorage("access-token", "")
+
   const [selectedMonth, setSelectedMonth] = useState(
     moment(new Date()).startOf("month").format("MMMM YYYY")
   )
-
+  const { user, loading } = useUser()
+  const filteredDefaultPayout = banks.find(
+    (bank) => bank.id === defaultPayout?.bankId
+  )
+  console.log(filteredDefaultPayout)
   const selectedfullDate = new Date(selectedMonth)
   const firstDate = new Date(
     selectedfullDate.getFullYear(),
@@ -81,11 +93,9 @@ const Payouts = () => {
 
   const lastDay = lastDate.getDate()
   const year = selectedfullDate.getFullYear()
-  const { register } = useForm({
-    defaultValues: {}
-  })
+
   const datesInRange = (transactions) => {
-    let tempArray = []
+    const tempArray = []
     for (let i = 0; i < transactions.length; i++) {
       if (
         new Date(transactions[i].payoutDate) > firstDate &&
@@ -96,6 +106,64 @@ const Payouts = () => {
     }
     return tempArray
   }
+
+  const onManualPayoutClick = async () => {
+    const paymentApi = wrapApi(PaymentApi)
+    try {
+      await paymentApi.paymentPayout()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getDefaultPayout = useCallback(
+    async (api) => {
+      try {
+        setDefaultPayout(
+          await api.paymentGetDefaultPayoutMethod({
+            headers: {
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json"
+            }
+          })
+        )
+      } catch (error) {
+        setDefaultPayout(undefined)
+      }
+    },
+    [accessToken]
+  )
+  const getBanks = useCallback(
+    async (paymentApi) => {
+      setBanks(
+        (
+          await paymentApi.paymentGetCircleBanks({
+            headers: {
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json"
+            }
+          })
+        ).banks
+      )
+    },
+    [accessToken]
+  )
+
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      console.log("r2")
+      return
+    }
+    if (!user) {
+      router.push("/login")
+    }
+    const fetchData = async () => {
+      const paymentApi = new PaymentApi()
+      await getBanks(paymentApi)
+      await getDefaultPayout(paymentApi)
+    }
+    fetchData()
+  }, [router, user, loading, getBanks, getDefaultPayout])
 
   return (
     <div className="mx-auto -mt-[160px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
@@ -128,24 +196,13 @@ const Payouts = () => {
               Your earnings balance must not below $25.00 which is the minimum
               to request a payout.
             </span>
-            <span className="text-base font-bold text-[#ffff]/90 lg:self-start">
-              Enter amount
-            </span>
             <div className="flex w-full flex-col justify-around gap-4 lg:flex-row">
-              <div>
-                <FormInput
-                  register={register}
-                  type="text"
-                  name="title"
-                  className="w-full basis-1/3 border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
-                  placeholder="Name of your new pass!"
-                />
-              </div>
-              <div className="flex w-full basis-2/3 flex-row items-center justify-end gap-x-4">
-                {/* <span className="text-[#ffff]/90">Schedule</span>
-                <ClockIcon /> */}
+              <div className="flex w-full flex-row items-center justify-end gap-x-4">
                 <div className="w-[222px]">
-                  <PassesPinkButton name="Request Payment" />
+                  <PassesPinkButton
+                    name="Request Payment"
+                    onClick={() => onManualPayoutClick()}
+                  />
                 </div>
               </div>
             </div>
@@ -157,49 +214,20 @@ const Payouts = () => {
           <span className="text-[24px] font-bold text-[#ffff]/90">
             Bank Account
           </span>
-          <Button variant="purple" icon={<BankIcon width={25} height={25} />}>
+          <Button
+            variant="purple"
+            icon={<BankIcon width={25} height={25} />}
+            onClick={() => router.push("/payment/default-payout-method")}
+          >
             Manage Bank
           </Button>
         </div>
       </div>
       <div className="col-span-10 w-full md:space-y-6">
         <div className="mb-16 text-base font-medium leading-[19px] lg:h-full">
-          <div className="flex flex-col justify-around rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:h-full">
-            <div className="flex flex-col">
-              <span className="text-sm text-[#ffff]/70 lg:self-start">
-                IDR /BCA {/* Name of Bank */}
-              </span>
-              <span className="text-sm text-[#ffff]/70 lg:self-start">
-                ********8920 {/* Bank Account Number */}
-              </span>
-            </div>
-            <div className="flex flex-row justify-between gap-16">
-              <div className="flex flex-col">
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  Transfer type
-                </span>
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  Domestic {/* Domestic or Foreign */}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  Bank Country
-                </span>
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  USA {/* Domestic or Foreign */}
-                </span>
-              </div>
-              <div className="flex grow flex-col">
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  We&apos;ll use this bank account for:
-                </span>
-                <span className="text-sm text-[#ffff]/70 lg:self-start">
-                  Transfer to this account will always be made in IDR.
-                </span>
-              </div>
-            </div>
-          </div>
+          {filteredDefaultPayout && (
+            <AccountCard account={filteredDefaultPayout} isDefault={true} />
+          )}
         </div>
       </div>
       <div className="col-span-10 w-full">
