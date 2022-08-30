@@ -1,5 +1,4 @@
 import HeaderChatIcon from "public/icons/header-chat-icon.svg"
-import ChatIcon from "public/icons/profile-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 
@@ -178,7 +177,6 @@ export const CoverButton = ({ name, onClick }: IGenericButton) => (
     onClick={onClick}
   >
     {{
-      Chat: <ChatIcon className="mr-[6px]" />,
       Tip: <DollarIcon className="mr-[6px]" />
     }[name] || null}
     {name}

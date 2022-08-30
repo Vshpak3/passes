@@ -34,7 +34,12 @@ const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
-export const NewPost = ({ passes = [], placeholder, createPost }) => {
+export const NewPost = ({
+  passes = [],
+  placeholder,
+  createPost,
+  onlyText = false
+}) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState([])
   const [selectedMedia, setSelectedMedia] = useState()
@@ -196,14 +201,16 @@ export const NewPost = ({ passes = [], placeholder, createPost }) => {
         >
           {extended && (
             <>
-              <MediaHeader
-                register={register}
-                errors={errors}
-                onChange={onMediaHeaderChange}
-                activeMediaHeader={activeMediaHeader}
-                hasSchedule={hasSchedule}
-                hasFundraiser={hasFundraiser}
-              />
+              {!onlyText && (
+                <MediaHeader
+                  register={register}
+                  errors={errors}
+                  onChange={onMediaHeaderChange}
+                  activeMediaHeader={activeMediaHeader}
+                  hasSchedule={hasSchedule}
+                  hasFundraiser={hasFundraiser}
+                />
+              )}
               {hasSchedule === "Schedule" && <div>Schedule</div>}
               {hasVideo && (
                 <Dialog
@@ -302,7 +309,7 @@ export const NewPost = ({ passes = [], placeholder, createPost }) => {
               cols={40}
             />
           </div>
-          {extended && (
+          {!onlyText && extended && (
             <div className="h-full w-full items-center overflow-y-auto pt-5">
               {files.length === 0 ? (
                 <FormInput

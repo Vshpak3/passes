@@ -35,6 +35,7 @@ const NewsFeedContent = ({
           <NewPost
             passes={profile?.passes}
             placeholder={`Write something to ${profile?.displayName}...`}
+            onlyText
           />
           <FanWallFeed />
         </>

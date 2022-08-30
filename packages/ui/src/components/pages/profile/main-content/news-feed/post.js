@@ -5,8 +5,8 @@ import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
-import PinnedActive from "public/icons/post-pinned-active.svg"
-import PinnedInactive from "public/icons/post-pinned-inactive.svg"
+// import PinnedActive from "public/icons/post-pinned-active.svg"
+// import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import React, { useCallback, useEffect, useState } from "react"
@@ -47,18 +47,18 @@ export const Post = ({ profile, post }) => {
   )
 }
 
-export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
+export const PostProfileAvatar = ({ profile }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-center space-x-4">
       <img // eslint-disable-line @next/next/no-img-element
         className="h-12 w-12 rounded-full object-cover"
         src={profile.profileImageUrl}
-        alt={profile.displayName}
+        alt={profile.fullName}
       />
       <div className="space-y-1 font-medium dark:text-white">
         <div className="flex items-center gap-[6px]">
           <span className="whitespace-nowrap font-semibold md:text-[20px] md:leading-[25px]">
-            {profile.displayName}
+            {profile.fullName}
           </span>
           <span className="flex items-center">
             <VerifiedSmall />
@@ -74,7 +74,7 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
         2 DAYS AGO
       </div>
       <div className="flex items-center gap-[15px]">
-        <div
+        {/* <div
           onClick={() => setPostPinned(!postPinned)}
           className={classNames(
             postPinned ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]" : "",
@@ -87,7 +87,7 @@ export const PostProfileAvatar = ({ profile, postPinned, setPostPinned }) => (
             </span>
           )}
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
-        </div>
+        </div> */}
         <div>
           <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
         </div>

@@ -1,6 +1,3 @@
-import BarChart from "public/icons/media-bar-chart.svg"
-import Fundraising from "public/icons/media-fundraising.svg"
-import Microphone from "public/icons/media-microphone.svg"
 import Quiz from "public/icons/media-quiz.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
@@ -13,7 +10,7 @@ import { classNames } from "src/helpers"
 
 const messagesMediaTypes = [
   {
-    name: "Media",
+    name: "Photo",
     Icon: Photos,
     accept: [".png", ".jpg", ".jpeg"],
     multiple: true,
@@ -41,7 +38,7 @@ const messagesMediaTypes = [
 
 const mediaTypes = [
   {
-    name: "Media",
+    name: "Photo",
     Icon: Photos,
     accept: [".png", ".jpg", ".jpeg", ".mp4", ".mov", ".qt", ".mp3"],
     multiple: true,
@@ -51,22 +48,6 @@ const mediaTypes = [
     name: "Video",
     Icon: Recorder,
     accept: [".mp4", ".mov", ".qt"],
-    type: "button"
-  },
-  {
-    name: "Audio",
-    Icon: Microphone,
-    accept: ["audio"],
-    type: "button"
-  },
-  {
-    name: "Polls",
-    Icon: BarChart,
-    type: "button"
-  },
-  {
-    name: "Fundraiser",
-    Icon: Fundraising,
     type: "button"
   },
   {

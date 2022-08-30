@@ -13,11 +13,11 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
       name: "Fan Wall",
       href: ""
     },
-    {
-      id: "events",
-      name: "Events",
-      href: ""
-    },
+    // {
+    //   id: "events",
+    //   name: "Events",
+    //   href: ""
+    // },
     {
       id: "passes",
       name: "Passes",
@@ -25,7 +25,7 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
     }
   ]
   return (
-    <nav className="flex w-full items-start justify-between border-b border-[#2C282D] p-0">
+    <nav className="flex w-full items-start border-b border-[#2C282D] p-0">
       {navigation.map((item, index) => (
         <span
           key={index}
@@ -34,7 +34,7 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
             activeTab === item.id
               ? "border-b-[3px] border-[#9C4DC1]"
               : "border-[#9C4DC1]/60 hover:border-b-[3px] ",
-            "group mt-[7px] box-border flex cursor-pointer items-start px-[10px] pb-3"
+            "group mt-[7px] mr-8 box-border flex cursor-pointer items-start px-[10px] pb-3"
           )}
         >
           <a
