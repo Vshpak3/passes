@@ -7,6 +7,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { USERNAME_TAKEN } from './constants/errors'
 import { CreateUserRequestDto } from './dto/create-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
@@ -138,5 +139,17 @@ export class UserService {
       .where(UserEntity.toDict<UserEntity>({ username }))
       .first()
     return !user
+  }
+
+  async makeCreator(userId: string): Promise<void> {
+    await this.dbWriter(UserEntity.table)
+      .where('id', userId)
+      .update('is_creator', true)
+    await this.dbWriter(CreatorSettingsEntity.table)
+      .insert(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
+      )
+      .onConflict('user_id')
+      .ignore()
   }
 }

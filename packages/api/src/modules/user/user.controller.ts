@@ -12,6 +12,7 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { GetUserResponseDto } from './dto/get-user.dto'
 import {
   SearchCreatorRequestDto,
@@ -99,12 +100,30 @@ export class UserController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: Boolean,
-    description: 'Validates whether a username is available',
+    description: 'A username was checked for validity',
   })
   @Get('/usernames/validate/:username')
+  @AllowUnauthorizedRequest()
   async validateUsername(
     @Param('username') username: string,
   ): Promise<boolean> {
     return this.userService.validateUsername(username)
+  }
+
+  /*
+  -------------------------------------------------------------------------------
+  TEST (to be removed)
+  -------------------------------------------------------------------------------
+  */
+
+  @ApiOperation({ summary: 'Make yourself a creator' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'You were made a creator',
+  })
+  @Get('make/creator')
+  async makeCreator(@Req() req: RequestWithUser): Promise<void> {
+    return await this.userService.makeCreator(req.user.id)
   }
 }

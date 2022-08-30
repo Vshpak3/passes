@@ -113,6 +113,31 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
+     * Make yourself a creator
+     */
+    async userMakeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/user/make/creator`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Make yourself a creator
+     */
+    async userMakeCreator(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.userMakeCreatorRaw(initOverrides);
+    }
+
+    /**
      * Search for creators by query
      */
     async userSearchCreatorByUsernameRaw(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {

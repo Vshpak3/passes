@@ -10,9 +10,12 @@ export class CreatorSettingsEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
   user: UserEntity
 
-  @Property({ columnType: USD_AMOUNT_TYPE })
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   minimumTipAmount: number
 
-  @Enum(() => PayoutFrequencyEnum)
+  @Enum({
+    type: () => PayoutFrequencyEnum,
+    default: PayoutFrequencyEnum.MANUAL,
+  })
   payoutFrequency: PayoutFrequencyEnum
 }
