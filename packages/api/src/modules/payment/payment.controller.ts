@@ -177,7 +177,7 @@ export class PaymentController {
   @ApiOperation({ summary: 'Delete a wire bank account' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CircleStatusResponseDto,
+    type: undefined,
     description: 'A wire bank account was dleted',
   })
   @Delete('bank/delete/:circleBankId')

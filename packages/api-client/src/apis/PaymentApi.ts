@@ -300,7 +300,7 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Delete a wire bank account
      */
-    async paymentDeleteCircleBankRaw(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusResponseDto>> {
+    async paymentDeleteCircleBankRaw(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.circleBankId === null || requestParameters.circleBankId === undefined) {
             throw new runtime.RequiredError('circleBankId','Required parameter requestParameters.circleBankId was null or undefined when calling paymentDeleteCircleBank.');
         }
@@ -316,15 +316,14 @@ export class PaymentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CircleStatusResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Delete a wire bank account
      */
-    async paymentDeleteCircleBank(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusResponseDto> {
-        const response = await this.paymentDeleteCircleBankRaw(requestParameters, initOverrides);
-        return await response.value();
+    async paymentDeleteCircleBank(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.paymentDeleteCircleBankRaw(requestParameters, initOverrides);
     }
 
     /**

@@ -200,7 +200,7 @@ export class PaymentService {
 
     const count = await this.dbReader
       .table(CircleCardEntity.table)
-      .whereNotNull('deleted_at')
+      .whereNull('deleted_at')
       .andWhere('user_id', userId)
       .count()
     if (count[0]['count(*)'] >= MAX_CARDS_PER_USER) {
@@ -409,7 +409,7 @@ export class PaymentService {
 
     const count = await this.dbReader
       .table(CircleBankEntity.table)
-      .whereNotNull('deleted_at')
+      .whereNull('deleted_at')
       .andWhere('user_id', userId)
       .count()
     if (count[0]['count(*)'] >= MAX_BANKS_PER_USER) {
@@ -446,7 +446,7 @@ export class PaymentService {
     await this.dbWriter(CircleBankEntity.table)
       .update('deleted_at', this.dbWriter.fn.now())
       .where(
-        CircleCardEntity.toDict<CircleCardEntity>({
+        CircleBankEntity.toDict<CircleBankEntity>({
           user: userId,
           id: circleBankId,
         }),

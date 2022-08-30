@@ -50,7 +50,9 @@ export class CreatorSettingsService {
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
       updateCreatorSettingsDto,
     )
-    await this.dbWriter.update(data).where({ id: creatorSettings.id })
+    await this.dbWriter(CreatorSettingsEntity.table)
+      .update(data)
+      .where({ id: creatorSettings.id })
     return { ...creatorSettings, ...data }
   }
 
