@@ -12,6 +12,7 @@ import {
   MessagingChannelList,
   MessagingChannelPreview,
   MessagingInput,
+  MessagingInputFanPerspective,
   MessagingThreadHeader
 } from "./components"
 import { ChannelInner } from "./components/ChannelInner/ChannelInner"
@@ -31,6 +32,7 @@ const MessagesComponent = ({ username }) => {
   const [giphyState, setGiphyState] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [isMobileNavVisible, setMobileNav] = useState(false)
+  const [isCreator, setIsCreator] = useState(false)
   const [files, setFiles] = useState([])
   const [theme] = useState("dark")
   const { streamToken } = useChat(username)
@@ -48,6 +50,13 @@ const MessagesComponent = ({ username }) => {
   }, [isMobileNavVisible])
 
   useEffect(() => {
+    if (!user?.isCreator) {
+      return
+    }
+    if (user?.isCreator === 1) setIsCreator(true)
+  }, [user])
+
+  useEffect(() => {
     if (!user?.id || !streamToken) {
       return
     }
@@ -61,9 +70,6 @@ const MessagesComponent = ({ username }) => {
         },
         streamToken
       )
-
-      // channel.current = chatClient.channel("messaging", channelId)
-
       setIsLoading(false)
     }
 
@@ -77,7 +83,14 @@ const MessagesComponent = ({ username }) => {
   const filters = { members: { $in: [user.id] } }
   const toggleMobile = () => setMobileNav(!isMobileNavVisible)
 
-  const giphyContextValue = { giphyState, setGiphyState, files, setFiles }
+  const giphyContextValue = {
+    giphyState,
+    setGiphyState,
+    files,
+    setFiles,
+    isCreator,
+    setIsCreator
+  }
   const options = { state: true, watch: true, presence: true, limit: 8 }
 
   const sort = {
@@ -330,7 +343,7 @@ const MessagesComponent = ({ username }) => {
         </div>
         <div>
           <Channel
-            Input={MessagingInput}
+            Input={isCreator ? MessagingInput : MessagingInputFanPerspective}
             maxNumberOfFiles={10}
             Message={CustomMessage}
             multipleUploads={true}
@@ -348,30 +361,3 @@ const MessagesComponent = ({ username }) => {
 }
 
 export default MessagesComponent
-
-// const sendMessage = async (messageToSend, channelId) => {
-//   try {
-//     const api = wrapApi(MessagesApi)
-//     await api.messagesSend({
-//       sendMessageDto: {
-//         text: messageToSend.text || "",
-//         attachments: [],
-//         channelId: channelId.split(":")[1]
-//       }
-//     })
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
-
-// const overrideSubmitHandler = async (message, _cid) => {
-//   try {
-//     await sendMessage(message, _cid)
-//   } catch (reason) {
-//     console.error(reason)
-//   }
-// }
-
-// const getUserImage = () => {
-// TODO: getUserImage and use random image as fallback
-// }

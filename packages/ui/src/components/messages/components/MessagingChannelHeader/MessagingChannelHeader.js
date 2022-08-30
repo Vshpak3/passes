@@ -1,4 +1,10 @@
+import CurrencyIcon from "public/icons/messages-currency-icon.svg"
+import SearchIcon from "public/icons/messages-search-icon.svg"
+import StarIcon from "public/icons/messages-star-icon.svg"
+import BellIcon from "public/icons/profile-bell-icon.svg"
 import React, { useEffect, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
+import { FormInput } from "src/components/atoms"
 import {
   Avatar,
   useChannelStateContext,
@@ -119,7 +125,9 @@ const MessagingChannelHeader = (props) => {
   const [channelName, setChannelName] = useState(channel?.data.name || "")
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState("")
-
+  const { register } = useForm({
+    defaultValues: {}
+  })
   const inputRef = useRef()
 
   const members = Object.values(channel.state?.members || {}).filter(
@@ -190,6 +198,7 @@ const MessagingChannelHeader = (props) => {
           align-items: center;
           justify-content: flex-start;
           min-height: 60px;
+          width:100%;
         }
         .custom-border-second-header{
           border-top:1px solid rgba(255, 255, 255, 0.15);
@@ -219,6 +228,7 @@ const MessagingChannelHeader = (props) => {
 
         .messaging__channel-header__left{
           display:flex;
+          width:100%;
         }
 
         @media screen and (max-width: 1210px) {
@@ -330,55 +340,80 @@ const MessagingChannelHeader = (props) => {
         ) : (
           <EditHeader />
         )}
-        <div className="messaging__channel-header__left gap-14">
-          <div className="flex items-center gap-3">
-            <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-[#BF7AF0]">
-              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                Vip Pass
+        <div className="messaging__channel-header__left py-4">
+          {props.isCreator ? (
+            <div className="flex items-center gap-3">
+              <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-[#BF7AF0]">
+                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                  Vip Pass
+                </span>
+              </div>
+              <div className="via-neutral-100 flex h-[31px] w-[124px] items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500">
+                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                  Limited Pass
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 border-r border-[#2C282D] pr-3">
+              <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10 ">
+                <BellIcon />
+              </span>
+              <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10">
+                <StarIcon />
               </span>
             </div>
-            <div className="via-neutral-100 flex h-[31px] w-[124px] items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500">
-              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                Limited Pass
-              </span>
+          )}
+          {props.isCreator ? (
+            <div className="flex items-center gap-8 pl-3">
+              <div className="flex flex-col items-start justify-center gap-[2px]">
+                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                  $520
+                </span>
+                <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                  Total spent
+                </span>
+              </div>
+              <div className="flex flex-col items-start justify-center gap-[2px]">
+                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                  $350
+                </span>
+                <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                  This month
+                </span>
+              </div>
+              <div className="flex flex-col items-start justify-center gap-[2px]">
+                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                  Rank
+                </span>
+                <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+                  2/100
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-8">
-            <div className="flex flex-col items-start justify-center gap-[2px]">
-              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                $520
-              </span>
-              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                Total spent
-              </span>
+          ) : (
+            <div className="flex w-full items-center justify-between">
+              <div>
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="search"
+                  className="w-full items-center  border-none border-[#2C282D] bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
+                  placeholder="Find.."
+                  icon={<SearchIcon className="mt-[5px]" />}
+                />
+              </div>
+              <div className="flex items-center justify-start pr-5">
+                <span className="pr-3">
+                  <CurrencyIcon />
+                </span>
+                <span className="text-[16px] font-medium leading-[24px] text-white">
+                  Purchased
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col items-start justify-center gap-[2px]">
-              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                $350
-              </span>
-              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                This month
-              </span>
-            </div>
-            <div className="flex flex-col items-start justify-center gap-[2px]">
-              <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                Rank
-              </span>
-              <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                2/100
-              </span>
-            </div>
-          </div>
+          )}
         </div>
-        {/* <div className="messaging__channel-header__right">
-          <TypingIndicator />
-          {channelName !== "Social Demo" &&
-            (!isEditing ? (
-              <ChannelInfoIcon {...{ isEditing, setIsEditing }} />
-            ) : (
-              <ChannelSaveIcon />
-            ))}
-        </div> */}
       </div>
     </div>
   )

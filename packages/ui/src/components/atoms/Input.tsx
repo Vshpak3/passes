@@ -38,7 +38,7 @@ const Input = ({
   name,
   type,
   label,
-  placeholder,
+  placeholder = "",
   register,
   errors = {},
   options = {},
