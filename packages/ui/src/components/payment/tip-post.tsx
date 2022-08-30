@@ -8,22 +8,30 @@ interface ITipPostButton {
   postId: string
   amount: number
   payinMethod?: PayinMethodDto
+  onClick: (submit: () => Promise<void>) => void
+  onCompleted?: () => void
 }
 
-export const BuyPassButton = ({
+export const TipPostButton = ({
   postId,
   amount,
-  payinMethod
+  payinMethod,
+  onClick,
+  onCompleted
 }: ITipPostButton) => {
   const api = wrapApi(PostApi)
   const register = async () => {
-    return await api.postRegisterTipPost({
+    const response = await api.postRegisterTipPost({
       tipPostRequestDto: {
         postId,
         amount,
         payinMethod
       }
     })
+
+    onCompleted && onCompleted()
+
+    return response
   }
 
   const registerData = async () => {
@@ -38,7 +46,7 @@ export const BuyPassButton = ({
   return (
     <button
       onClick={() => {
-        submit()
+        onClick(submit)
       }}
       className="w-32 rounded-[50px] bg-[#C943A8] p-4"
       type="submit"

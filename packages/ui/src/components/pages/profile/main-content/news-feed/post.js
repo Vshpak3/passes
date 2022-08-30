@@ -16,12 +16,15 @@ import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 import { wrapApi } from "src/helpers/wrapApi"
+
+import TipsModal from "../../../../organisms/TipsModal"
+
 export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.locked)
   const [postPinned, setPostPinned] = useState(false)
   return (
     //this is the rounded container
-    <FormContainer className="min-h-min">
+    <FormContainer className="!min-h-[10px]">
       <PostProfileAvatar
         post={post}
         profile={profile}
@@ -145,6 +148,7 @@ export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
 )
 
 export const PostEngagement = ({ post, postUnlocked = false }) => {
+  const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
   const [numComments, setNumComments] = useState(post.numComments)
   const [liked, setLiked] = useState(post.hasLiked)
@@ -217,17 +221,23 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
             </span>
           </div>
         </div>
-        {post.price > 0 && (
-          <div className="flex items-center gap-2 pr-2">
-            <CostIcon />
-            <span className="text-[16px] leading-[25px]">{post.price}</span>
-          </div>
-        )}
+        <div
+          onClick={() => setIsTipsModalOpen((prev) => !prev)}
+          className="flex items-center gap-2 pr-2"
+        >
+          <span className="text-[16px] leading-[25px]">{post.price}</span>
+          <CostIcon />
+        </div>
       </div>
       <CommentSection
         postId={post.id}
         visible={showCommentSection}
         updateEngagement={updateEngagement}
+      />
+      <TipsModal
+        isOpen={isTipsModalOpen}
+        postId={post.id}
+        setOpen={setIsTipsModalOpen}
       />
     </div>
   )
