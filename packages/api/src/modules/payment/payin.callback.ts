@@ -155,7 +155,7 @@ async function purchasePostSuccessfulCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<PurchasePostCallbackOutput> {
-  payService.postService.addUserAccess(input.userId, input.postId)
+  await payService.postService.addUserAccess(input.userId, input.postId)
   return { postId: input.postId }
 }
 
@@ -165,6 +165,10 @@ async function tipPostSuccessfulCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TipPostCallbackOutput> {
-  payService.postService.createTip(input.userId, input.postId, input.amount)
+  await payService.postService.createTip(
+    input.userId,
+    input.postId,
+    input.amount,
+  )
   return { postId: input.postId, amount: input.amount }
 }

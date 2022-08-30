@@ -34,4 +34,7 @@ export class CreatePassRequestDto {
   @IsInt()
   @Min(1)
   duration?: number
+
+  @ApiPropertyOptional()
+  freetrial: boolean
 }

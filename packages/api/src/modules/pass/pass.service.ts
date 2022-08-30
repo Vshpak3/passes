@@ -35,6 +35,7 @@ import { PassDto } from './dto/pass.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
+import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { PassTypeEnum } from './enum/pass.enum'
 import { ForbiddenPassException } from './error/pass.error'
 
@@ -93,6 +94,7 @@ export class PassService {
       price: createPassDto.price,
       totalSupply: createPassDto.totalSupply,
       duration,
+      freetrial: createPassDto.freetrial,
     })
 
     await this.dbWriter(PassEntity.table).insert(data)
@@ -209,6 +211,8 @@ export class PassService {
       solNft: solNftDto.id,
     })
     await this.dbWriter(PassHolderEntity.table).insert(data)
+
+    await this.passPurchased(userId, passId)
 
     return {
       id,
@@ -371,16 +375,38 @@ export class PassService {
       throw new InvalidPayinRequestError('invalid nft pass creation')
     }
 
-    // free pass
-    if (amount === 0) {
+    // free pass or free trial
+    const pass = await this.dbReader(PassEntity.table)
+      .where('id', passId)
+      .select(
+        ...PassEntity.populate<PassEntity>(['creator', 'type', 'freetrial']),
+      )
+      .first()
+
+    // stop people from following scenario -
+    //    1. get free trial for pass
+    //    2. transfer pass after free trial
+    //    3. get new pass with free trial
+
+    const passPurchaseQuery = this.dbReader(PassPurchaseEntity.table)
+      .where(
+        PassPurchaseEntity.toDict<PassPurchaseEntity>({
+          user: userId,
+          pass: passId,
+        }),
+      )
+      .select('id')
+      .first()
+
+    if (
+      amount === 0 ||
+      (pass.freetrial &&
+        pass.type === PassTypeEnum.SUBSCRIPTION &&
+        (await passPurchaseQuery))
+    ) {
       await this.createPass(userId, passId)
       return new RegisterPayinResponseDto()
     }
-
-    const pass = await this.dbReader(PassEntity.table)
-      .where('id', passId)
-      .select('creator_id', 'type')
-      .first()
 
     const callbackInput: CreateNftPassPayinCallbackInput = {
       userId,
@@ -467,5 +493,17 @@ export class PassService {
       passHolderId,
       amount: passHolder.price,
     })
+  }
+
+  async passPurchased(userId: string, passId: string) {
+    await this.dbWriter(PassPurchaseEntity.table)
+      .insert(
+        PassPurchaseEntity.toDict<PassPurchaseEntity>({
+          pass: passId,
+          user: userId,
+        }),
+      )
+      .onConflict(['pass_id', 'user_id'])
+      .ignore()
   }
 }
