@@ -1,6 +1,7 @@
 import { PayinDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 import { wrapApi } from "../../helpers"
 import Payin from "../../helpers/payment/payin"
@@ -62,4 +63,4 @@ const MyPayments = () => {
     </div>
   )
 }
-export default MyPayments
+export default withPageLayout(MyPayments)

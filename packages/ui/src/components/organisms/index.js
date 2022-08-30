@@ -6,6 +6,7 @@ import FormContainer from "./FormContainer"
 import Modal from "./Modal"
 import NFTPass from "./NftPass"
 import { CreatePassForm, PassesListSection, SelectPassType } from "./passes"
+import { PastTransactions } from "./payouts"
 import Popover from "./Popover"
 import ProfileNftPass from "./ProfileNftPass"
 import QuickPayModal from "./QuickPayModal"
@@ -24,6 +25,7 @@ export {
   Modal,
   NFTPass,
   PassesListSection,
+  PastTransactions,
   Popover,
   ProfileNftPass,
   QuickPayModal,
