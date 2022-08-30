@@ -4,14 +4,13 @@ import Instagram from "public/icons/profile-instagram-icon.svg"
 import TikTok from "public/icons/profile-tiktok-icon.svg"
 import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
-import VerticalSplitter from "public/icons/profile-vertical-splitter.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import React from "react"
 import { compactNumberFormatter } from "src/helpers"
 
 export const Verified = ({ isVerified }) => (
-  <div className="flex items-center self-start">
+  <div className="flex translate-y-[4px] items-center self-start">
     <LogoSmall className="flex-no-shrink h-[28px] w-[28px] fill-current" />
     <span className="pl-2 text-sm font-medium">
       {isVerified ? "Verified" : "Not Verified"}
@@ -20,30 +19,69 @@ export const Verified = ({ isVerified }) => (
 )
 
 export const ProfilePhoto = ({ url }) => (
-  <div className="flex cursor-pointer items-center justify-center">
+  <div className="flex cursor-pointer">
     <img // eslint-disable-line @next/next/no-img-element
       src={url}
-      className="-mt-[10px] max-h-[98px] min-h-[98px] min-w-[98px] max-w-[98px] rounded-full border border-black object-cover drop-shadow-profile-photo"
-      width="98"
-      height="98"
+      className="max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] -translate-y-[69px] rounded-full border border-black object-cover drop-shadow-profile-photo"
+      width="136"
+      height="136"
       alt=""
     />
   </div>
 )
 
-export const ProfileInformation = ({ displayName, username, description }) => (
-  <div className="flex flex-col items-center justify-center gap-[6px] pt-4 text-[#ffffff]/80">
-    <span className="text-center text-base font-medium leading-[19px]">
-      {displayName}
-    </span>
-    <div className="flex cursor-pointer items-center justify-center rounded-[50px] bg-[#ffffff]/[0.05] px-3 py-[6px]">
+export const ProfileInformation = ({
+  displayName,
+  username,
+  quote,
+  posts,
+  likes,
+  instagramUrl,
+  tiktokUrl,
+  youtubeUrl,
+  discordUrl,
+  twitchUrl,
+  facebookUrl,
+  twitterUrl
+}) => (
+  <div className="flex flex-col items-start gap-[6px]">
+    <div className="flex items-center justify-center gap-4">
+      <span className="text-[32px] font-medium leading-9">{displayName}</span>
+      <Verified />
+    </div>
+    <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-[#ffffff]/[0.05] px-3 py-[6px]">
       <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
         @{username}
       </span>
     </div>
-    <span className="text-sm font-normal leading-[17px] text-[#ffffff]/60">
-      {description}
+    <span className="text-md mb-3 font-semibold leading-[22px] text-white">
+      {quote}
     </span>
+    <div className="flex w-full flex-row items-center gap-[68px]">
+      <div className="flex items-center">
+        <div className="flex items-center justify-center">
+          <span className="mr-[6px] text-base font-medium">{posts}</span>
+          <span className="text-sm font-normal text-[#ffffff]/30">POSTS</span>
+        </div>
+        <div className="mx-[30px] h-[18px] w-[1px] bg-[#2C282D]" />
+        <div className="flex items-center justify-center">
+          <span className="mr-[6px] text-base font-medium">
+            {compactNumberFormatter(likes)}
+          </span>
+          <span className="text-sm font-normal text-[#ffffff]/30">LIKES</span>
+        </div>
+      </div>
+
+      <ProfileSocialMedia
+        instagramUrl={instagramUrl}
+        tiktokUrl={tiktokUrl}
+        youtubeUrl={youtubeUrl}
+        discordUrl={discordUrl}
+        twitchUrl={twitchUrl}
+        facebookUrl={facebookUrl}
+        twitterUrl={twitterUrl}
+      />
+    </div>
   </div>
 )
 
@@ -56,7 +94,7 @@ export const ProfileSocialMedia = ({
   facebookUrl,
   twitterUrl
 }) => (
-  <div className="flex cursor-pointer items-center justify-center gap-3 pt-6">
+  <div className="flex cursor-pointer items-center justify-center gap-3">
     {facebookUrl && (
       <a
         href={`https://www.facebook.com/${facebookUrl}`}
@@ -120,21 +158,5 @@ export const ProfileSocialMedia = ({
         <TikTok className="h-[22px] w-[22px]" />
       </a>
     )}
-  </div>
-)
-
-export const ProfileAdditionalInformation = ({ posts, likes }) => (
-  <div className="grid grid-cols-3 place-items-center pt-14">
-    <div className="flex flex-col items-center justify-center">
-      <span className="text-base font-medium text-[#ffffff]/60">{posts}</span>
-      <span className="text-sm font-normal text-[#ffffff]/80">POSTS</span>
-    </div>
-    <VerticalSplitter />
-    <div className="flex flex-col items-center justify-center">
-      <span className="text-base font-medium text-[#ffffff]/60">
-        {compactNumberFormatter(likes)}
-      </span>
-      <span className="text-sm font-normal text-[#ffffff]/80">LIKES</span>
-    </div>
   </div>
 )

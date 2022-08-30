@@ -1,4 +1,4 @@
-import { GetProfileResponseDto, ProfileApi } from "@passes/api-client"
+import { GetProfileResponseDto, PassDto, ProfileApi } from "@passes/api-client"
 import { UserApi } from "@passes/api-client/apis"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
@@ -19,7 +19,7 @@ const mockCreator = {
   displayName: "Alex Drachnik",
   coverTitle: "DRACHNIK (SASHA)",
   coverDescription:
-    " I help brands & DJs go viral on TikTok 📲 | Creative Director @ BAM 💥 | TikTok; 2M+",
+    "I help brands & DJs go viral on TikTok 📲 | Creative Director @ BAM 💥 | TikTok; 2M+",
   isKYCVerified: false,
   description: "Viral Tiktok Marketer. 2M+ followers",
   profileImageUrl: "/pages/profile/profile-photo.png",
@@ -35,34 +35,34 @@ const mockCreator = {
   likes: 22900,
   isVerified: true,
   isActive: true,
-  // passes: [
-  //   {
-  //     title: "Basic Supporter",
-  //     description:
-  //       "See exclusive content at my most basic tier. I give broad advice to help your brand.",
-  //     imgUrl: "/pages/profile/pass-example-1.png",
-  //     type: "Free",
-  //     price: 0,
-  //     id: "pass_0"
-  //   },
-  //   {
-  //     title: "Monthly Ambassador",
-  //     description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
-  //     imgUrl: "/pages/profile/pass-example-2.png",
-  //     type: "Monthly",
-  //     price: 20,
-  //     id: "pass_1"
-  //   },
-  //   {
-  //     title: "Lifetime Pass",
-  //     description:
-  //       "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
-  //     imgUrl: "/pages/profile/pass-example-3.png",
-  //     type: "Lifetime",
-  //     price: 2000,
-  //     id: "pass_2"
-  //   }
-  // ],
+  passes: [
+    {
+      title: "Basic Supporter",
+      description:
+        "See exclusive content at my most basic tier. I give broad advice to help your brand.",
+      imgUrl: "/pages/profile/pass-example-1.png",
+      type: "Free",
+      price: 0,
+      id: "pass_0"
+    },
+    {
+      title: "Monthly Ambassador",
+      description: `You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.`,
+      imgUrl: "/pages/profile/pass-example-2.png",
+      type: "Monthly",
+      price: 20,
+      id: "pass_1"
+    },
+    {
+      title: "Lifetime Pass",
+      description:
+        "All the perks of the monthly pass for life. You'll get even more exclusive content, access to in-person workshops, and more. ",
+      imgUrl: "/pages/profile/pass-example-3.png",
+      type: "Lifetime",
+      price: 2000,
+      id: "pass_2"
+    }
+  ],
   posts: [
     {
       numLikes: 1400,
@@ -162,8 +162,8 @@ const Username = (props: GetProfileResponseDto) => {
 
   return (
     <>
-      <div className="mx-auto -mt-[160px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
-        <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[280px]">
+      <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
+        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.id && (
             <ProfileDetails
               profile={profile}
@@ -173,10 +173,6 @@ const Username = (props: GetProfileResponseDto) => {
             />
           )}
           {editProfile && <EditProfile profile={profile} onSubmit={onSubmit} />}
-          {/* passes here */}
-          {profile?.id && <Passes creatorPasses={creatorPasses} />}
-        </div>
-        <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.id && (
             <MainContent
               profile={profile}
@@ -186,10 +182,23 @@ const Username = (props: GetProfileResponseDto) => {
             />
           )}
         </div>
+        <div className="col-span-10 w-full pt-7 md:space-y-6 lg:col-span-3 lg:max-w-[280px]">
+          {/* passes here */}
+          {profile?.id && (
+            <Passes
+              creatorPasses={
+                username !== "test"
+                  ? creatorPasses
+                  : (mockCreator.passes as unknown as PassDto[])
+              }
+            />
+          )}
+        </div>
       </div>
     </>
   )
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
