@@ -31,6 +31,7 @@ const MessagesComponent = ({ username }) => {
   const [giphyState, setGiphyState] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [isMobileNavVisible, setMobileNav] = useState(false)
+  const [files, setFiles] = useState([])
   const [theme] = useState("dark")
   const { streamToken } = useChat(username)
   const { user } = useUser()
@@ -76,7 +77,7 @@ const MessagesComponent = ({ username }) => {
   const filters = { members: { $in: [user.id] } }
   const toggleMobile = () => setMobileNav(!isMobileNavVisible)
 
-  const giphyContextValue = { giphyState, setGiphyState }
+  const giphyContextValue = { giphyState, setGiphyState, files, setFiles }
   const options = { state: true, watch: true, presence: true, limit: 8 }
 
   const sort = {

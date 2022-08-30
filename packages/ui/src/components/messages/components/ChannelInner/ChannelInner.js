@@ -1,5 +1,6 @@
-import { MessagesApi } from "@passes/api-client/apis"
+import { ContentApi, MessagesApi } from "@passes/api-client/apis"
 import React, { useContext } from "react"
+import { uploadFile } from "src/helpers/uploadFile"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useChat } from "src/hooks"
 import { logChatPromiseExecution } from "stream-chat"
@@ -17,8 +18,8 @@ import { GiphyContext } from "../../index"
 
 export const ChannelInner = (props) => {
   const { theme, toggleMobile } = props
-  const { giphyState, setGiphyState } = useContext(GiphyContext)
-
+  const { giphyState, setGiphyState, files, setFiles } =
+    useContext(GiphyContext)
   const { channel: activeChannel, client } = useChatContext(ChatContext)
 
   const members = Object.values(activeChannel?.state?.members).filter(
@@ -27,16 +28,36 @@ export const ChannelInner = (props) => {
 
   const { channelId } = useChat(members[0].user.name)
   const sendMessage = async (messageToSend) => {
+    let content = []
+    if (files.length > 0) {
+      const api = wrapApi(ContentApi)
+      content = await Promise.all(
+        files.map(async (file) => {
+          const url = await uploadFile(file, "uploads")
+          let contentType = file.type
+          if (file.type.startsWith("image/")) contentType = "image/jpeg"
+          if (file.type.startsWith("video/")) contentType = "video/mp4"
+          const content = await api.contentCreate({
+            createContentRequestDto: {
+              url,
+              contentType
+            }
+          })
+          return content.id
+        })
+      )
+    }
     try {
       const api = wrapApi(MessagesApi)
       await api.messagesSend({
         sendMessageRequestDto: {
           text: messageToSend.text || "",
           attachments: [],
-          content: [],
+          content,
           channelId
         }
       })
+      setFiles([])
     } catch (err) {
       console.log(err)
     }

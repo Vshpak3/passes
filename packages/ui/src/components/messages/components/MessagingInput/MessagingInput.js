@@ -28,9 +28,9 @@ const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
 const MessagingInput = () => {
-  const { giphyState, setGiphyState } = useContext(GiphyContext)
+  const { giphyState, setGiphyState, files, setFiles } =
+    useContext(GiphyContext)
   const messageInput = useMessageInputContext()
-  const [files, setFiles] = useState([])
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
   const [hasPrice, setHasPrice] = useState(false)
