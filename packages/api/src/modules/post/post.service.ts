@@ -35,6 +35,8 @@ import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 
+export const MINIMUM_POST_TIP_AMOUNT = 5.0
+
 @Injectable()
 export class PostService {
   constructor(

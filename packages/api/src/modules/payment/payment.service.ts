@@ -99,7 +99,7 @@ import {
   InvalidPayinStatusError,
   NoPayinMethodError,
 } from './error/payin.error'
-import { PayoutFrequencyError } from './error/payout.error'
+import { PayoutAmountError, PayoutFrequencyError } from './error/payout.error'
 import { InvalidSubscriptionError } from './error/subscription.error'
 import {
   handleCreationCallback,
@@ -121,6 +121,8 @@ const EXPIRING_DURATION_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
 
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
+const MIN_PAYOUT_AMOUNT = 25.0
+
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
@@ -128,6 +130,7 @@ export class PaymentService {
   passService: PassService
   messagesService: MessagesService
   postService: PostService
+  creatorShares: any
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -1782,9 +1785,12 @@ export class PaymentService {
         CreatorShareEntity.table + '.amount',
       )
 
-    // no amount of money to payout
-    if (creatorShares.length === 0) {
-      return
+    // check total payout amount
+    const totalSum = this.creatorShares.reduce((accumulator, creatorShare) => {
+      return accumulator + creatorShare.amount
+    }, 0)
+    if (totalSum < MIN_PAYOUT_AMOUNT) {
+      throw new PayoutAmountError(`${totalSum} is not enough to payout`)
     }
 
     await this.dbWriter.transaction(async (trx) => {
