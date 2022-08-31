@@ -39,7 +39,10 @@ import { WalletModule } from './modules/wallet/wallet.module'
 import { loggingOptions } from './monitoring/logging/logging.options'
 import { MetricsModule } from './monitoring/metrics/metric.module'
 import { metricOptions } from './monitoring/metrics/metric.options'
-import { sentryOptions } from './monitoring/sentry/sentry.options'
+import {
+  sentryInterceptorOptions,
+  sentryOptions,
+} from './monitoring/sentry/sentry.options'
 
 @Module({
   imports: [
@@ -83,7 +86,7 @@ import { sentryOptions } from './monitoring/sentry/sentry.options'
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useFactory: () => new SentryInterceptor(),
+      useFactory: () => new SentryInterceptor(sentryInterceptorOptions),
     },
   ],
 })
