@@ -4024,13 +4024,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/detect-provider\n@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@metamask/detect-provider\n@npm:1.2.0::__archiveUrl=https%3A%2F%2Fregistry.npmjs.org%2F%40metamask%2Fdetect-provider%2F-%2Fdetect-provider-1.2.0.tgz"
-  checksum: d55b7ce8929056e3587e9d91af4b0c60fcf8c85bbf1be132f4ea7887dd92711ab62338d6c6eb252c95ca047f808ed6707853ebb5a38f579a6992c970d4074090
-  languageName: node
-  linkType: hard
-
 "@metamask/detect-provider@npm:1.2.0":
   version: 1.2.0
   resolution: "@metamask/detect-provider@npm:1.2.0"
@@ -5048,7 +5041,6 @@ __metadata:
     "@hookform/resolvers": 2.9.7
     "@mailchimp/mailchimp_marketing": 3.0.78
     "@metamask/detect-provider": 1.2.0
-    "@metamask/detect-provider\n": 1.2.0
     "@metamask/providers": 9.1.0
     "@metamask/types": 1.1.0
     "@passes/api-client": "workspace:*"

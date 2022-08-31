@@ -16,7 +16,6 @@
     "@hookform/resolvers": "2.9.7",
     "@mailchimp/mailchimp_marketing": "3.0.78",
     "@metamask/detect-provider": "1.2.0",
-    "@metamask/detect-provider\n": "1.2.0",
     "@metamask/providers": "9.1.0",
     "@metamask/types": "1.1.0",
     "@passes/api-client": "workspace:*",
