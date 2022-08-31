@@ -1,5 +1,7 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Home = () => <div>Home</div>
+import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
+
+const Home = () => <AuthOnlyWrapper isPage>Home</AuthOnlyWrapper>
 
 export default withPageLayout(Home)

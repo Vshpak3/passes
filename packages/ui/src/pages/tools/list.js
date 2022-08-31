@@ -1,5 +1,7 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const List = () => <div>List</div>
+import CreatorOnlyWrapper from "../../components/wrappers/CreatorOnly"
+
+const List = () => <CreatorOnlyWrapper isPage>List</CreatorOnlyWrapper>
 
 export default withPageLayout(List)

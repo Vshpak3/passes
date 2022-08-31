@@ -12,20 +12,23 @@ export const navigation = [
     name: "Messages",
     href: "/messages",
     icon: MessagesIcon,
-    current: false
+    current: false,
+    authOnly: true
   },
   {
     id: "vault",
     name: "Vault",
     href: "/vault",
     icon: VaultIcon,
-    current: false
+    current: false,
+    creatorOnly: true
   },
   {
     id: "tools",
     name: "Creator Tools",
     icon: CreatorToolsIcon,
     current: false,
+    creatorOnly: true,
     children: [
       {
         id: "manage-passes",
@@ -64,14 +67,16 @@ export const navigation = [
     name: "Settings",
     href: "/settings",
     icon: SettingsIcon,
-    current: false
+    current: false,
+    authOnly: true
   },
   {
     id: "profile",
     name: "Profile",
     href: "/test",
     icon: ProfileIcon,
-    current: false
+    current: false,
+    authOnly: true
   }
 ]
 

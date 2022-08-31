@@ -1,5 +1,9 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Scheduler = () => <div>Scheduler</div>
+import CreatorOnlyWrapper from "../../components/wrappers/CreatorOnly"
+
+const Scheduler = () => (
+  <CreatorOnlyWrapper isPage>Scheduler</CreatorOnlyWrapper>
+)
 
 export default withPageLayout(Scheduler)

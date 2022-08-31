@@ -4,6 +4,8 @@ import { CreatePassForm, SelectPassType } from "src/components/organisms"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
+import CreatorOnlyWrapper from "../../../components/wrappers/CreatorOnly"
+
 const PASS_TYPES = [PassTypeEnum.LIFETIME, PassTypeEnum.SUBSCRIPTION]
 
 const CreatePass = () => {
@@ -21,10 +23,14 @@ const CreatePass = () => {
     return null
   }
 
-  return isSelectPassOption ? (
-    <SelectPassType />
-  ) : (
-    <CreatePassForm passType={passType} />
+  return (
+    <CreatorOnlyWrapper isPage>
+      {isSelectPassOption ? (
+        <SelectPassType />
+      ) : (
+        <CreatePassForm passType={passType} />
+      )}
+    </CreatorOnlyWrapper>
   )
 }
 

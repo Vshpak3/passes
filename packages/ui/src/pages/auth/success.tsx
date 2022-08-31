@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useUser } from "src/hooks"
@@ -28,7 +29,12 @@ const AuthSuccess = () => {
       setRefreshToken(refreshToken)
     }
 
-    router.push("/home")
+    const decodedAuthToken = jwtDecode(token) as any
+    if (decodedAuthToken.isVerified) {
+      router.push("/home")
+    } else {
+      router.push("/signup/user-info")
+    }
   }, [router, setAccessToken, setRefreshToken])
 
   if (typeof window === "undefined") {

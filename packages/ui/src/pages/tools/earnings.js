@@ -1,5 +1,7 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Earnings = () => <div>Earnings</div>
+import CreatorOnlyWrapper from "../../components/wrappers/CreatorOnly"
+
+const Earnings = () => <CreatorOnlyWrapper isPage>Earnings</CreatorOnlyWrapper>
 
 export default withPageLayout(Earnings)

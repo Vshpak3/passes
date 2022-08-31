@@ -1,5 +1,9 @@
-import React, { Fragment, useState } from "react"
+import React, { useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
+
+import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
+import ConditionalWrap from "../../../wrappers/ConditionalWrap"
+import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
 
 const SidebarMobile = ({
   active,
@@ -9,10 +13,10 @@ const SidebarMobile = ({
   handleLogout
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const toggleSidebar = () => setMobileSidebarOpen(!mobileSidebarOpen)
+  const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
 
-  const renderSidebarItems = navigation.map((item) =>
-    !item.children ? (
+  const renderSidebarItems = navigation.map((item) => {
+    const child = !item.children ? (
       <SB.SidebarMobileItem
         key={item.id}
         item={item}
@@ -28,7 +32,22 @@ const SidebarMobile = ({
         router={router}
       />
     )
-  )
+
+    return (
+      <ConditionalWrap
+        key={`sidebar-${item.id}`}
+        if={item.creatorOnly}
+        wrapper={CreatorOnlyWrapper}
+      >
+        <ConditionalWrap
+          if={item.authOnly && !item.creatorOnly}
+          wrapper={AuthOnlyWrapper}
+        >
+          {child}
+        </ConditionalWrap>
+      </ConditionalWrap>
+    )
+  })
 
   return (
     <>
@@ -38,7 +57,9 @@ const SidebarMobile = ({
         toggleSidebar={toggleSidebar}
       >
         {renderSidebarItems}
-        <SB.MobileLogoutButton handleLogout={handleLogout} />
+        <AuthOnlyWrapper>
+          <SB.MobileLogoutButton handleLogout={handleLogout} />
+        </AuthOnlyWrapper>
       </SB.SidebarMobileContainer>
     </>
   )

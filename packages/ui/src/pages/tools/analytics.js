@@ -1,5 +1,9 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Analytics = () => <div>Analytics</div>
+import CreatorOnlyWrapper from "../../components/wrappers/CreatorOnly"
+
+const Analytics = () => (
+  <CreatorOnlyWrapper isPage>Analytics</CreatorOnlyWrapper>
+)
 
 export default withPageLayout(Analytics)

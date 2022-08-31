@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { SidebarDefault, SidebarMobile } from "src/components/organisms"
 
 import { useUser } from "../../hooks"
@@ -39,29 +39,30 @@ const Sidebar = () => {
 
   if (!hasMounted) {
     return null
-  } else
-    return (
-      <>
-        <SidebarDefault
-          handleLogout={handleLogout}
-          active={active}
-          navigation={navigation}
-          setActive={setActive}
-          router={router}
-          user={user}
-          collapsedNavigation={collapsedNavigation}
-          collapsedAdditionalSidebarOpen={collapsedAdditionalSidebarOpen}
-          openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
-          closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
-        />
-        <SidebarMobile
-          handleLogout={handleLogout}
-          active={active}
-          navigation={navigation}
-          setActive={setActive}
-          router={router}
-        />
-      </>
-    )
+  }
+
+  return (
+    <>
+      <SidebarDefault
+        handleLogout={handleLogout}
+        active={active}
+        navigation={navigation}
+        setActive={setActive}
+        router={router}
+        user={user}
+        collapsedNavigation={collapsedNavigation}
+        collapsedAdditionalSidebarOpen={collapsedAdditionalSidebarOpen}
+        openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
+        closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
+      />
+      <SidebarMobile
+        handleLogout={handleLogout}
+        active={active}
+        navigation={navigation}
+        setActive={setActive}
+        router={router}
+      />
+    </>
+  )
 }
 export default Sidebar

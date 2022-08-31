@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form"
 import { FormInput, PassesPinkButton } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import { FormContainer } from "src/components/organisms"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Purchase = () => {
@@ -26,163 +27,165 @@ const Purchase = () => {
   })
 
   return (
-    <div className="mx-auto -mt-[160px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-      <div className="col-span-3 mx-auto w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
-        {/* <CreatorPassTiles passData={mockData} /> */}
-      </div>
-      <div className="col-span-7 mx-auto w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-        <div>
-          <span className="text-[#ffff]">Your order</span>
+    <CreatorOnlyWrapper isPage>
+      <div className="mx-auto -mt-[160px] mb-[70px] grid w-full grid-cols-10 justify-center gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+        <div className="col-span-3 mx-auto w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
+          {/* <CreatorPassTiles passData={mockData} /> */}
         </div>
-        <div className="flex justify-between text-2xl font-bold">
-          <span className="text-[#ffff]">Kaila Troy Pro</span>
-          <span className="text-[#ffff]">$20.00 / month</span>
-        </div>
-        <div className="flex items-center">
-          <InfoIcon />
-          <span className="ml-2 text-[#ffff]/70">
-            Your subscription will be automatically renewed every month
-          </span>
-        </div>
-        <FormContainer>
+        <div className="col-span-7 mx-auto w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
           <div>
-            <span className="text-[#ffff]/70">About your membership</span>
+            <span className="text-[#ffff]">Your order</span>
           </div>
-          <div>
-            <span className="font-semibold text-[#ffff]/90">
-              No long-term commitment. Cancel anytime in your account settings.
-              Plan will automatically renew until cancelled.
+          <div className="flex justify-between text-2xl font-bold">
+            <span className="text-[#ffff]">Kaila Troy Pro</span>
+            <span className="text-[#ffff]">$20.00 / month</span>
+          </div>
+          <div className="flex items-center">
+            <InfoIcon />
+            <span className="ml-2 text-[#ffff]/70">
+              Your subscription will be automatically renewed every month
             </span>
           </div>
-          <div className="align-center mx-auto flex w-[250px] justify-center">
-            <div className="px-2">
-              <MetamaskIcon />
-            </div>
-            <div className="px-2">
-              <CoinbaseIcon />
-            </div>
-            <div className="px-2">
-              <TrelloIcon />
-            </div>
-            <div className="px-2">
-              <PhantomIcon />
-            </div>
-            <div className="px-2">
-              <WalletConnectIcon />
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <span className="text-[#ffff]/90">or Pay with Credit card</span>
-            <span className="text-[#ffff]/70">Card info</span>
-            <FormInput
-              register={register}
-              type="text"
-              name="credit-card-number"
-              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-              placeholder="0000 0000 0000 0000"
-              icon={
-                <>
-                  <AmexIcon />
-                  <VisaIcon />
-                  <MastercardIcon />
-                  <DiscoverIcon />
-                </>
-              }
-              iconAlign={EIcon.Right}
-            />
-          </div>
-          <div className="flex gap-4">
+          <FormContainer>
             <div>
-              <span className="text-[#ffff]/70">Month</span>
-              <FormInput
-                register={register}
-                type="text"
-                name="month"
-                placeholder="MM"
-                className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-              />
+              <span className="text-[#ffff]/70">About your membership</span>
             </div>
             <div>
-              <span className="text-[#ffff]/70">Year</span>
+              <span className="font-semibold text-[#ffff]/90">
+                No long-term commitment. Cancel anytime in your account
+                settings. Plan will automatically renew until cancelled.
+              </span>
+            </div>
+            <div className="align-center mx-auto flex w-[250px] justify-center">
+              <div className="px-2">
+                <MetamaskIcon />
+              </div>
+              <div className="px-2">
+                <CoinbaseIcon />
+              </div>
+              <div className="px-2">
+                <TrelloIcon />
+              </div>
+              <div className="px-2">
+                <PhantomIcon />
+              </div>
+              <div className="px-2">
+                <WalletConnectIcon />
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <span className="text-[#ffff]/90">or Pay with Credit card</span>
+              <span className="text-[#ffff]/70">Card info</span>
               <FormInput
                 register={register}
                 type="text"
-                name="month"
-                placeholder="YYYY"
-                className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                name="credit-card-number"
+                className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                placeholder="0000 0000 0000 0000"
+                icon={
+                  <>
+                    <AmexIcon />
+                    <VisaIcon />
+                    <MastercardIcon />
+                    <DiscoverIcon />
+                  </>
+                }
+                iconAlign={EIcon.Right}
               />
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <span className="text-[#ffff]/70">Month</span>
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="month"
+                  placeholder="MM"
+                  className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                />
+              </div>
+              <div>
+                <span className="text-[#ffff]/70">Year</span>
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="month"
+                  placeholder="YYYY"
+                  className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                />
+              </div>
+              <div>
+                <span className="text-[#ffff]/70">CVV</span>
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="month"
+                  placeholder="CVV"
+                  className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                />
+              </div>
             </div>
             <div>
-              <span className="text-[#ffff]/70">CVV</span>
+              <span className="text-[#ffff]/90">Billing address</span>
               <FormInput
                 register={register}
                 type="text"
-                name="month"
-                placeholder="CVV"
-                className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-              />
-            </div>
-          </div>
-          <div>
-            <span className="text-[#ffff]/90">Billing address</span>
-            <FormInput
-              register={register}
-              type="text"
-              name="address"
-              placeholder="Street address"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-            />
-            <FormInput
-              register={register}
-              type="text"
-              name="address-optional"
-              placeholder="Street address (optinal)"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-            />
-            <FormInput
-              register={register}
-              type="text"
-              name="city"
-              placeholder="City"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-            />
-            <div className="flex justify-between">
-              <FormInput
-                register={register}
-                type="text"
-                name="state"
-                placeholder="State"
+                name="address"
+                placeholder="Street address"
                 className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
               <FormInput
                 register={register}
                 type="text"
-                name="zip"
-                placeholder="Zip"
+                name="address-optional"
+                placeholder="Street address (optinal)"
                 className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
+              <FormInput
+                register={register}
+                type="text"
+                name="city"
+                placeholder="City"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+              />
+              <div className="flex justify-between">
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="state"
+                  placeholder="State"
+                  className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                />
+                <FormInput
+                  register={register}
+                  type="text"
+                  name="zip"
+                  placeholder="Zip"
+                  className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                />
+              </div>
             </div>
-          </div>
-          <div>
-            <span className="font-semibold text-[#ffff]/90">
-              Send email recipients to
-            </span>
+            <div>
+              <span className="font-semibold text-[#ffff]/90">
+                Send email recipients to
+              </span>
 
-            <FormInput
-              register={register}
-              type="text"
-              name="email"
-              placeholder="Email address"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+              <FormInput
+                register={register}
+                type="text"
+                name="email"
+                placeholder="Email address"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+              />
+            </div>
+            <PassesPinkButton
+              name="Confirm and Continue"
+              // onClick={onPurchaseHandler}
             />
-          </div>
-          <PassesPinkButton
-            name="Confirm and Continue"
-            // onClick={onPurchaseHandler}
-          />
-        </FormContainer>
+          </FormContainer>
+        </div>
       </div>
-    </div>
+    </CreatorOnlyWrapper>
   )
 }
 

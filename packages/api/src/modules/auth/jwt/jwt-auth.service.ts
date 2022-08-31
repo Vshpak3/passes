@@ -13,6 +13,7 @@ export class JwtAuthService {
     const payload: JwtPayload = {
       sub: user.id,
       isVerified: this.isVerified(user),
+      isCreator: user.isCreator,
       ...BASE_CLAIMS,
     }
     return this.jwtService.sign(payload)

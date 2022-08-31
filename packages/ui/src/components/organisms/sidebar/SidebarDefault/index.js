@@ -1,5 +1,9 @@
 import { SidebarComponents as SB } from "src/components/molecules"
 
+import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
+import ConditionalWrap from "../../../wrappers/ConditionalWrap"
+import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
+
 const SidebarDefault = ({
   active,
   navigation,
@@ -12,8 +16,8 @@ const SidebarDefault = ({
   collapsedNavigation,
   user
 }) => {
-  const renderSidebarItems = navigation.map((item) =>
-    !item.children ? (
+  const renderSidebarItems = navigation.map((item) => {
+    const child = !item.children ? (
       <SB.SidebarItem
         key={`sidebar-${item.id}`}
         isActive={item.id === active}
@@ -29,7 +33,22 @@ const SidebarDefault = ({
         router={router}
       />
     )
-  )
+
+    return (
+      <ConditionalWrap
+        key={`sidebar-${item.id}`}
+        if={item.creatorOnly}
+        wrapper={CreatorOnlyWrapper}
+      >
+        <ConditionalWrap
+          if={item.authOnly && !item.creatorOnly}
+          wrapper={AuthOnlyWrapper}
+        >
+          {child}
+        </ConditionalWrap>
+      </ConditionalWrap>
+    )
+  })
 
   return (
     <>
@@ -38,15 +57,24 @@ const SidebarDefault = ({
           <SB.SidebarHeader />
           <nav className="flex flex-col items-center gap-3 pt-[50px] sidebar-collapse:items-start sidebar-collapse:gap-[0px]">
             {renderSidebarItems}
-            <SB.CreatorToolsItem
-              active={active}
-              openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
-            />
-            {user?.isCreator && <SB.NewPostButton />}
-            {!user?.isCreator && <SB.BecomeCreatorButton />}
+            <CreatorOnlyWrapper>
+              <SB.CreatorToolsItem
+                active={active}
+                openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
+              />
+            </CreatorOnlyWrapper>
+            <AuthOnlyWrapper>
+              {user?.isCreator ? (
+                <SB.NewPostButton />
+              ) : (
+                <SB.BecomeCreatorButton />
+              )}
+            </AuthOnlyWrapper>
           </nav>
         </div>
-        <SB.LogoutButton handleLogout={handleLogout} />
+        <AuthOnlyWrapper>
+          <SB.LogoutButton handleLogout={handleLogout} />
+        </AuthOnlyWrapper>
       </SB.SidebarContainer>
       <SB.CreatorToolsSidebar
         active={active}

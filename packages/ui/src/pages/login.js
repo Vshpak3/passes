@@ -47,14 +47,14 @@ const LoginPage = () => {
 
   const onUserLogin = async (email, password) => {
     try {
-      const localUserLoginDto = {
+      const localUserLoginRequestDto = {
         email: email,
         password: password
       }
 
       const api = wrapApi(AuthLocalApi)
       const res = await api.localAuthLoginWithEmailPassword({
-        localUserLoginDto
+        localUserLoginRequestDto
       })
 
       const { accessToken, refreshToken } = res

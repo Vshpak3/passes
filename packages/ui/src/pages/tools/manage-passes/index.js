@@ -5,6 +5,8 @@ import { usePasses } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
+import CreatorOnlyWrapper from "../../../components/wrappers/CreatorOnly"
+
 const filterCreatorPasses = (passes) => (type) =>
   passes?.filter((pass) => pass.type === type)
 
@@ -20,14 +22,18 @@ const ManagePasses = () => {
 
   const onCreatePass = () => router.push("/tools/manage-passes/create")
 
-  return existingPasses ? (
-    <PassesListSection
-      lifetimePasses={lifetimePasses}
-      onCreatePass={onCreatePass}
-      subscriptionPasses={subscriptionPasses}
-    />
-  ) : (
-    <SelectPassType initialCreation />
+  return (
+    <CreatorOnlyWrapper isPage>
+      {existingPasses ? (
+        <PassesListSection
+          lifetimePasses={lifetimePasses}
+          onCreatePass={onCreatePass}
+          subscriptionPasses={subscriptionPasses}
+        />
+      ) : (
+        <SelectPassType initialCreation />
+      )}
+    </CreatorOnlyWrapper>
   )
 }
 export default withPageLayout(ManagePasses)

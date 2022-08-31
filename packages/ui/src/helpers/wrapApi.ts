@@ -34,6 +34,21 @@ export const wrapApi = <T extends Api.BaseAPI>(api: {
     .withPreMiddleware(async (context) => {
       const refreshToken = window.localStorage.getItem("refresh-token")
       if (!accessToken || !refreshToken) {
+        if (!refreshToken) {
+          return context
+        }
+
+        const _accessToken = await refreshAccessToken(refreshToken)
+
+        if (_accessToken) {
+          const accessToken = JSON.stringify(_accessToken)
+          window.localStorage.setItem("access-token", accessToken)
+          context.init.headers = {
+            ...context.init.headers,
+            Authorization: "Bearer " + accessToken
+          }
+        }
+
         return context
       }
 
@@ -53,29 +68,18 @@ export const wrapApi = <T extends Api.BaseAPI>(api: {
         return context
       }
 
-      try {
-        const authApi = new AuthApi()
-        const refreshAuthTokenRequestDto = {
-          refreshToken: JSON.parse(refreshToken)
-        }
-        const res = await authApi.authRefreshAccessToken({
-          refreshAuthTokenRequestDto
-        })
+      const _accessToken = await refreshAccessToken(refreshToken)
 
-        if (res.accessToken) {
-          const accessToken = JSON.stringify(res.accessToken)
-          window.localStorage.setItem("access-token", accessToken)
-          context.init.headers = {
-            ...context.init.headers,
-            Authorization: "Bearer " + accessToken
-          }
+      if (_accessToken) {
+        const accessToken = JSON.stringify(_accessToken)
+        window.localStorage.setItem("access-token", accessToken)
+        context.init.headers = {
+          ...context.init.headers,
+          Authorization: "Bearer " + accessToken
         }
-
-        return context
-      } catch (err) {
-        console.error("failed to refresh access token in interceptor", err)
-        return context
       }
+
+      return context
     })
     .withPostMiddleware(async (context) => {
       if (context.response.status === 401) {
@@ -85,4 +89,23 @@ export const wrapApi = <T extends Api.BaseAPI>(api: {
 
       return context.response
     })
+}
+
+const refreshAccessToken = async (
+  refreshToken: string
+): Promise<string | null> => {
+  try {
+    const authApi = new AuthApi()
+    const refreshAuthTokenRequestDto = {
+      refreshToken: JSON.parse(refreshToken)
+    }
+    const res = await authApi.authRefreshAccessToken({
+      refreshAuthTokenRequestDto
+    })
+
+    return res.accessToken
+  } catch (e) {
+    console.error("failed to refresh access token in interceptor:", e)
+    return null
+  }
 }

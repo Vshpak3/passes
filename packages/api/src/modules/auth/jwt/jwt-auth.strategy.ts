@@ -13,6 +13,9 @@ export class JwtPayload {
 
   @ApiProperty()
   isVerified: boolean
+
+  @ApiProperty()
+  isCreator: boolean
 }
 
 @Injectable()

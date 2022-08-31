@@ -16,6 +16,9 @@ export class GetUserResponseDto {
   @ApiProperty()
   isCreator?: boolean
 
+  @ApiProperty()
+  isVerified?: boolean
+
   // Sensitive fields (when viewing own profile)
   @ApiProperty()
   legalFullName?: string
@@ -35,6 +38,7 @@ export class GetUserResponseDto {
     this.username = userEntity.username
     this.displayName = userEntity.display_name
     this.isCreator = userEntity.is_creator
+    this.isVerified = userEntity.legal_full_name && userEntity.birthday
 
     if (includeSensitiveFields) {
       this.legalFullName = userEntity.legal_full_name
