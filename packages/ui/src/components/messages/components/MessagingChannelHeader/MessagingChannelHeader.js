@@ -20,7 +20,7 @@ const getAvatarGroup = (members) => {
       <div className="messaging__channel-header__avatars">
         <Avatar
           image={getCleanImage(members[0])}
-          name={members[0].user?.id}
+          name={members[0]?.user?.id}
           size={40}
         />
         ;
@@ -34,7 +34,7 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[0])}
-            name={members[0].user?.id}
+            name={members[0]?.user?.id}
             shape="square"
             size={40}
           />
@@ -42,7 +42,7 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[1])}
-            name={members[1].user?.id}
+            name={members[1]?.user?.id}
             shape="square"
             size={40}
           />
@@ -57,7 +57,7 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[0])}
-            name={members[0].user?.id}
+            name={members[0]?.user?.id}
             shape="square"
             size={40}
           />
@@ -65,13 +65,13 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[1])}
-            name={members[1].user?.id}
+            name={members[1]?.user?.id}
             shape="square"
             size={20}
           />
           <Avatar
             image={getCleanImage(members[2])}
-            name={members[2].user?.id}
+            name={members[2]?.user?.id}
             shape="square"
             size={20}
           />
@@ -86,13 +86,13 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[members.length - 1])}
-            name={members[0].user?.id}
+            name={members[0]?.user?.id}
             shape="square"
             size={20}
           />
           <Avatar
             image={getCleanImage(members[members.length - 2])}
-            name={members[1].user?.id}
+            name={members[1]?.user?.id}
             shape="square"
             size={20}
           />
@@ -100,13 +100,13 @@ const getAvatarGroup = (members) => {
         <span>
           <Avatar
             image={getCleanImage(members[members.length - 3])}
-            name={members[2].user?.id}
+            name={members[2]?.user?.id}
             shape="square"
             size={20}
           />
           <Avatar
             image={getCleanImage(members[members.length - 4])}
-            name={members[3].user?.id}
+            name={members[3]?.user?.id}
             shape="square"
             size={20}
           />
@@ -131,7 +131,7 @@ const MessagingChannelHeader = (props) => {
   const inputRef = useRef()
 
   const members = Object.values(channel.state?.members || {}).filter(
-    (member) => member.user?.id !== client.user?.id
+    (member) => member.user?.id !== client?.user?.id
   )
 
   const updateChannel = async (e) => {
@@ -158,7 +158,7 @@ const MessagingChannelHeader = (props) => {
       setTitle(
         members
           .map(
-            (member) => member.user?.name || member.user?.id || "Unnamed User"
+            (member) => member?.user?.name || member?.user?.id || "Unnamed User"
           )
           .join(", ")
       )

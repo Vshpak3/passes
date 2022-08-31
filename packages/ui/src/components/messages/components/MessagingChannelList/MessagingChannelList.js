@@ -14,7 +14,7 @@ const MessagingChannelList = ({ children, error = false, loading }) => {
         demo: "social"
       })
       await channel.watch()
-      await channel.addMembers([client.user.id])
+      await channel.addMembers([client?.user.id])
       setActiveChannel(channel)
     }
 

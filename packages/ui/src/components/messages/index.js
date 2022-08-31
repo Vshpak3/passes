@@ -64,8 +64,8 @@ const MessagesComponent = ({ username }) => {
     const connect = async () => {
       await chatClient.connectUser(
         {
-          id: user.id,
-          name: user.username,
+          id: user?.id,
+          name: user?.username,
           image: getRandomImage()
         },
         streamToken

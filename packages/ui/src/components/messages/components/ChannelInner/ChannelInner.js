@@ -28,10 +28,10 @@ export const ChannelInner = (props) => {
   const { channel: activeChannel, client } = useChatContext(ChatContext)
 
   const members = Object.values(activeChannel?.state?.members).filter(
-    ({ user }) => user.id !== client.userID
+    ({ user }) => user?.id !== client.userID
   )
 
-  const { channelId } = useChat(members[0].user.name)
+  const { channelId } = useChat(members[0]?.user.name)
   const sendMessage = async (messageToSend) => {
     let content = []
     if (files.length > 0) {

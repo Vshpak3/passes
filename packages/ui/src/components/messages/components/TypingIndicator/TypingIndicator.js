@@ -8,8 +8,8 @@ export const TypingIndicator = () => {
   if (!client || !typing) return null
 
   const users = Object.values(typing)
-    .filter(({ user }) => user?.id !== client.user?.id)
-    .map(({ user }) => user.name || user.id)
+    .filter(({ user }) => user?.id !== client?.user?.id)
+    .map(({ user }) => user?.name || user.id)
 
   let text = ""
 
