@@ -9,7 +9,7 @@ export async function redirectAfterSuccessfulLogin(
   const accessToken = this.jwtAuthService.createAccessToken(user)
   const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
   // TODO: only generate signed cookies for creators
-  await this.s3Service.signCookies(res, `*/${user.id}`)
+  await this.s3contentService.signCookies(res, `*/${user.id}`)
   return res.redirect(
     this.configService.get('clientUrl') +
       '/auth/success?accessToken=' +

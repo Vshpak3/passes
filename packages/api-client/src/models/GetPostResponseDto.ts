@@ -34,10 +34,22 @@ export interface GetPostResponseDto {
     id: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetPostResponseDto
+     */
+    paywall: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetPostResponseDto
      */
     userId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPostResponseDto
+     */
+    username: string;
     /**
      * 
      * @type {string}
@@ -82,10 +94,10 @@ export interface GetPostResponseDto {
     updatedAt: Date;
     /**
      * 
-     * @type {Date}
+     * @type {number}
      * @memberof GetPostResponseDto
      */
-    expiresAt?: Date;
+    expiresAt?: number;
     /**
      * 
      * @type {string}
@@ -111,7 +123,9 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'id': json['id'],
+        'paywall': json['paywall'],
         'userId': json['userId'],
+        'username': json['username'],
         'text': json['text'],
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
         'numLikes': json['numLikes'],
@@ -119,7 +133,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'isLiked': json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': json['totalTipAmount'],
     };
@@ -135,7 +149,9 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
     return {
         
         'id': value.id,
+        'paywall': value.paywall,
         'userId': value.userId,
+        'username': value.username,
         'text': value.text,
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
         'numLikes': value.numLikes,
@@ -143,7 +159,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'expiresAt': value.expiresAt,
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
     };

@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
-import { S3Service } from '../../s3/s3.service'
+import { S3ContentService } from '../../s3content/s3content.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { LocalUserLoginRequestDto } from '../dto/local-user-login'
@@ -27,7 +27,7 @@ export class LocalAuthController {
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
     private readonly localAuthService: LocalAuthService,
-    private readonly s3Service: S3Service,
+    private readonly s3contentService: S3ContentService,
   ) {}
 
   @ApiOperation({ summary: 'Create a email and password user' })
@@ -46,7 +46,7 @@ export class LocalAuthController {
 
     const accessToken = this.jwtAuthService.createAccessToken(user)
     const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-    await this.s3Service.signCookies(res, `*/${user.id}`)
+    await this.s3contentService.signCookies(res, `*/${user.id}`)
 
     res.status(201).send({ accessToken, refreshToken })
   }
@@ -74,7 +74,7 @@ export class LocalAuthController {
 
     const accessToken = this.jwtAuthService.createAccessToken(user)
     const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-    await this.s3Service.signCookies(res, `*/${user.id}`)
+    await this.s3contentService.signCookies(res, `*/${user.id}`)
 
     res.status(200).send({ accessToken, refreshToken })
   }

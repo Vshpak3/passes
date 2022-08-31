@@ -1,3 +1,4 @@
+import { Knex } from '@mikro-orm/mysql'
 import {
   forwardRef,
   Inject,
@@ -14,6 +15,7 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { GetContentResponseDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import {
   PurchasePostCallbackInput,
   TipPostCallbackInput,
@@ -26,6 +28,7 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { UserEntity } from '../user/entities/user.entity'
 import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
 import { CreatePostRequestDto } from './dto/create-post.dto'
 import { PostDto } from './dto/post.dto'
@@ -36,6 +39,10 @@ import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
+
+type ContentLookupByPost = {
+  [postId: number]: GetContentResponseDto[]
+}
 
 @Injectable()
 export class PostService {
@@ -103,61 +110,102 @@ export class PostService {
     return createPostDto
   }
 
-  async findOne(id: string, userId?: string): Promise<PostDto> {
-    const postDbResult = await this.dbReader(PostEntity.table)
-      .leftJoin('content_post', 'content_post.post_id', 'post.id')
-      .leftJoin(ContentEntity.table, 'content.id', 'content_post.post_id')
-      .select(
-        'post.id',
-        // eslint-disable-next-line sonarjs/no-duplicate-string
-        'post.user_id',
-        'post.text',
-        'post.num_likes',
-        'post.num_comments',
-        'post.created_at',
-        'post.updated_at',
-        'post.price',
-        'post.expires_at',
-        'post.total_tip_amount',
-        'content.id as content_id',
-        'content.url',
-        'content.content_type',
-        'post.deleted_at',
-        this.dbReader.raw(
-          `exists(select * from post_like l where l.post_id = ${PostEntity.table}.id and l.liker_id = '${userId}') as is_liked`,
-        ),
+  async findOne(id: string, userId: string): Promise<PostDto> {
+    const dbquery = this.dbReader(PostEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${PostEntity.table}.user_id`,
       )
-      .where('post.id', id)
+      .select([`${PostEntity.table}.*`, `${UserEntity.table}.username`])
+      .whereNull(`${PostEntity.table}.deleted_at`)
+      .andWhere(`${PostEntity.table}.id`, id)
       .first()
 
-    if (!postDbResult) {
+    const postDtos = await this.getPostsFromQuery(userId, dbquery)
+
+    if (postDtos.length === 0) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (postDbResult.deleted_at) {
-      throw new NotFoundException(POST_DELETED)
+    return postDtos[0]
+  }
+
+  async getPostsFromQuery(
+    userId: string,
+    query: Knex.QueryBuilder,
+  ): Promise<Array<PostDto>> {
+    const posts = await query
+
+    const passAccesses = await this.dbReader(PostPassAccessEntity.table)
+      .innerJoin(
+        PassHolderEntity.table,
+        `${PostPassAccessEntity.table}.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .whereIn(
+        `${PostPassAccessEntity.table}.post_id`,
+        posts.map((post) => post.id),
+      )
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .andWhere(`${PassHolderEntity.table}.expires_at`, '>', Date.now())
+      .select('post_id')
+    const postsFromPass = new Set(
+      passAccesses.map((passAccess) => passAccess.post_id),
+    )
+
+    const accessiblePosts = posts.reduce((arr, post) => {
+      if (
+        post.access || // single post purchase
+        postsFromPass.has(post.id) || // owns pass that gives access
+        post.user_id === userId || // user made post
+        !post.price || // no price on post
+        post.price === 0 // price of post is 0
+      )
+        arr.push(post)
+      return arr
+    }, [])
+
+    const contentLookup = await this.getContentLookupForPosts(
+      accessiblePosts.map((post) => post.id),
+    )
+
+    const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
+
+    return posts.map(
+      (post) =>
+        new PostDto(
+          post,
+          !accessiblePostIds.has(post.id),
+          contentLookup[post.id],
+        ),
+    )
+  }
+
+  private async getContentLookupForPosts(
+    postIds: string[],
+  ): Promise<ContentLookupByPost> {
+    const contentResults = await this.dbReader(ContentEntity.table)
+      .innerJoin(
+        'content_post',
+        `${ContentEntity.table}.id`,
+        'content_post.content_entity_id',
+      )
+      .whereIn('content_post.post_entity_id', postIds)
+      .select(['*', `${ContentEntity.table}.id`])
+
+    const ans: ContentLookupByPost = {}
+    for (let i = 0; i < contentResults.length; ++i) {
+      const c = contentResults[i]
+
+      if (!(c.post_entity_id in ans)) {
+        ans[c.post_entity_id] = []
+      }
+
+      ans[c.post_entity_id].push(c)
     }
 
-    const postContent = postDbResult
-      .map((postContentRow) => {
-        if (
-          postContentRow.content_id &&
-          postContentRow.url &&
-          postContentRow.content_type
-        ) {
-          return new GetContentResponseDto({
-            id: postContentRow.content_id,
-            ...postContentRow,
-          })
-        } else {
-          return undefined
-        }
-      })
-      .filter(
-        (postContentDtoOrUndefined) => postContentDtoOrUndefined != undefined,
-      )
-
-    return new PostDto(postDbResult, postContent as GetContentResponseDto[])
+    return ans
   }
 
   async update(

@@ -42,7 +42,7 @@ import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { S3Service } from '../s3/s3.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { WalletService } from '../wallet/wallet.service'
@@ -115,7 +115,7 @@ export class SolService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly lambdaService: LambdaService,
-    private readonly s3Service: S3Service,
+    private readonly s3contentService: S3ContentService,
     private readonly walletService: WalletService,
   ) {
     this.connection = new Connection(
@@ -348,7 +348,7 @@ export class SolService {
       Body: JSON.stringify(jsonMetadata),
       Key: `nft/nft-${solNftId}`,
     }
-    await this.s3Service.putObject(s3Input)
+    await this.s3contentService.putObject(s3Input)
 
     const creators: Creator[] = jsonMetadata.properties.creators.map((c) => ({
       address: new PublicKey(c.address as PublicKeyInitData),
@@ -646,7 +646,7 @@ export class SolService {
         uses: null,
         collection: null,
       }
-      await this.s3Service.putObject(s3Input)
+      await this.s3contentService.putObject(s3Input)
     }
     // Minting logic
     const associatedTokenAccount = await getAssociatedTokenAddress(

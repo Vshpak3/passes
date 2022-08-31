@@ -13,8 +13,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
-import { GetSignedUrlResponseDto } from '../s3/dto/get-signed-url.dto'
-import { S3Service } from '../s3/s3.service'
+import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
+import { S3ContentService } from '../s3content/s3content.service'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import {
@@ -28,7 +28,7 @@ import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 export class ContentController {
   constructor(
     private readonly contentService: ContentService,
-    private readonly s3Service: S3Service,
+    private readonly s3contentService: S3ContentService,
   ) {}
 
   @ApiOperation({ summary: 'Create content' })
@@ -58,7 +58,7 @@ export class ContentController {
     @Param('path') path: string,
   ): Promise<GetSignedUrlResponseDto> {
     // TODO: validate path
-    const url = await this.s3Service.preSignUrl(path, req.user.id)
+    const url = await this.s3contentService.preSignUrl(path, req.user.id)
     return { url }
   }
 

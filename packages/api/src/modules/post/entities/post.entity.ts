@@ -25,10 +25,10 @@ export class PostEntity extends BaseEntity {
   text: string
 
   @Property({ default: 0 })
-  numLikes
+  numLikes: number
 
   @Property({ default: 0 })
-  numComments
+  numComments: number
 
   @Property()
   deletedAt?: Date
@@ -36,7 +36,7 @@ export class PostEntity extends BaseEntity {
   @Property()
   private: boolean
 
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   price?: number
 
   @Property({ type: types.bigint })

@@ -21,7 +21,7 @@ const FOLDER_BUCKET_MAP = {
 type S3Bucket = typeof FOLDER_BUCKET_MAP[keyof typeof FOLDER_BUCKET_MAP]
 
 @Injectable()
-export class S3Service {
+export class S3ContentService {
   private s3Client: S3Client
   private s3Buckets: { [K in S3Bucket]: string }
   private env: string

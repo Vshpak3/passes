@@ -12,7 +12,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { RequestWithUser } from '../../types/request'
-import { S3Service } from '../s3/s3.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { GetUserResponseDto } from '../user/dto/get-user.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
@@ -30,7 +30,7 @@ export class AuthController {
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly userService: UserService,
-    private readonly s3Service: S3Service,
+    private readonly s3contentService: S3ContentService,
   ) {}
 
   @ApiOperation({ summary: 'Gets the current authenticated user' })
@@ -63,7 +63,7 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() body: RefreshAuthTokenRequestDto,
   ) {
-    await this.s3Service.signCookies(res, `*/${req.user.id}`)
+    await this.s3contentService.signCookies(res, `*/${req.user.id}`)
     return {
       accessToken: this.jwtAuthService.createAccessToken(
         req.user as UserEntity,

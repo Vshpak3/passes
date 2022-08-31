@@ -11,7 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
-import { S3Service } from '../../s3/s3.service'
+import { S3ContentService } from '../../s3content/s3content.service'
 import { UserEntity } from '../../user/entities/user.entity'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -25,7 +25,7 @@ export class TwitterOauthController {
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly configService: ConfigService,
-    private readonly s3Service: S3Service,
+    private readonly s3contentService: S3ContentService,
   ) {}
 
   @ApiOperation({ summary: 'Start the twitter oauth flow' })

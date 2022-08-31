@@ -38,8 +38,8 @@ export class FeedController {
   ): Promise<GetFeedResponseDto> {
     return this.feedService.getPostsByCreatorUsername(
       creatorUsername,
-      cursor,
       req.user.id,
+      cursor,
     )
   }
 }
