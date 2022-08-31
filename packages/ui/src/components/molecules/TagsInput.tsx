@@ -4,13 +4,11 @@ import { classNames } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 import {
-  // FormErrors,
   FormLabel,
   FormName,
   FormOptions,
   FormPlaceholder,
   FormRegister
-  // FormType
 } from "../FormTypes"
 
 const dummyRecentTags = ["Jett", "Yoru"]
@@ -64,7 +62,7 @@ function TagsInput({
   }
 
   return (
-    <div className="flex flex-wrap items-center rounded border border-[#2C282D] bg-[#100C11] p-2">
+    <div className="flex flex-wrap items-center rounded border border-passes-dark-200 bg-[#100C11] p-2">
       {tags.map((tag, index) => (
         <div
           className="m-1 inline-block rounded-full bg-[#767676] p-2 text-[#ffff] "
@@ -94,13 +92,13 @@ function TagsInput({
           id="popover-content"
           className={`${
             popoverVisibility ? "visible" : "invisible"
-          } absolute left-[-280px] w-auto bg-[#28282C] pb-6 pl-6 pr-6 before:right-[calc(50%_-_10px)] ${
+          } absolute left-[-280px] w-auto bg-passes-dark-100 pb-6 pl-6 pr-6 before:right-[calc(50%_-_10px)] ${
             popoverVisibility ? "opacity-100" : "opacity-0"
           } max-h-[300px] overflow-y-auto rounded transition-all duration-1000 ease-in-out before:absolute before:content-[""]`}
         >
           <div
             id="popover-header"
-            className="sticky top-0 overflow-hidden bg-[#28282C] pt-6"
+            className="sticky top-0 overflow-hidden bg-passes-dark-100 pt-6"
           >
             <input
               readOnly={options.readOnly}

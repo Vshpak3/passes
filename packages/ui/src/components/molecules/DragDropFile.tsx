@@ -76,7 +76,7 @@ const DragDropFile = ({
           onDrop={handleDrop}
         />
       )}
-      <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-solid border-[#BF7AF0] p-1">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-solid border-passes-secondary-color p-1">
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
           <div className="flex gap-1">
@@ -89,7 +89,7 @@ const DragDropFile = ({
               multiple={multiple}
               accept={accept}
               trigger={
-                <span className="text-sm font-medium text-[#BF7AF0]">
+                <span className="text-sm font-medium text-passes-secondary-color">
                   Click to upload
                 </span>
               }

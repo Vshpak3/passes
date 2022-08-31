@@ -297,19 +297,19 @@ const MessagingInputFanPerspective = () => {
             aria-roledescription="button"
             onClick={messageInput.handleSubmit}
           >
-            <button className="cursor-pointer gap-[10px] rounded-[50px] bg-[#2C282D] px-[18px] py-[10px] text-white">
+            <button className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white">
               Send message
             </button>
           </div>
         </div>
-        <div className="border-l-none flex flex-col justify-between border-t border-[#2C282D] sm:max-w-[254px] sm:items-center sm:justify-center sm:border-t-0 sm:border-l">
+        <div className="border-l-none flex flex-col justify-between border-t border-passes-dark-200 sm:max-w-[254px] sm:items-center sm:justify-center sm:border-t-0 sm:border-l">
           <div className="flex flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4 ">
             <FormInput
               register={register}
               type="number"
               name="tipAmount"
               placeholder="50"
-              className="w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-[#BF7AF0] placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0 sm:w-full"
+              className="w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0 sm:w-full"
             />
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
               Minimum $5
@@ -319,7 +319,7 @@ const MessagingInputFanPerspective = () => {
             disabled={tip < 4}
             className={classNames(
               tip < 4 ? "cursor-not-allowed opacity-50" : "",
-              "w-full cursor-pointer items-center justify-center bg-[#BF7AF0] py-4 text-center text-[16px] leading-[25px] text-white"
+              "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
             )}
           >
             Send Tip

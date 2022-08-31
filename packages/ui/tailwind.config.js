@@ -22,7 +22,19 @@ module.exports = {
         "sidebar-shadow": "0px 0px 2px rgba(255, 255, 255, 0.8)",
         "profile-photo": "0px 4px 4px rgba(0, 0, 0, 0.25)"
       },
-      colors: radixColors,
+      colors: {
+        ...radixColors,
+        passes: {
+          "primary-color": "#9C4DC1",
+          "secondary-color": "#BF7AF0",
+          "blue-100": "#598BF4",
+          "blue-200": "#b3bee799",
+          "purple-100": "#B53BEC",
+          "pink-100": "#C943A8",
+          "dark-100": "#28282C",
+          "dark-200": "#2C282D"
+        }
+      },
       fontFamily: {
         "sans-system": defaultTheme.fontFamily.sans,
         sans: ["Inter", ...defaultTheme.fontFamily.sans],

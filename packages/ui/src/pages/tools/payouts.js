@@ -198,7 +198,7 @@ const Payouts = () => {
                       handleChange()
                     }}
                     // handleChange={handleChange}
-                    className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                    className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                   />
                 </div>
                 <div className="w-[222px]">

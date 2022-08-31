@@ -9,7 +9,7 @@ const ProfileDetails = ({ profile, onEditProfile, username, ownsProfile }) => (
       <div className="absolute my-2 flex w-full items-center justify-between">
         <div>
           <EditProfileIcon
-            className="cursor-pointer stroke-[#ffffff] hover:stroke-[#BF7AF0]"
+            className="cursor-pointer stroke-[#ffffff] hover:stroke-passes-secondary-color"
             onClick={onEditProfile}
           />
         </div>

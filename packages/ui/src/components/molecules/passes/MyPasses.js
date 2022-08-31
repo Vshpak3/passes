@@ -10,7 +10,7 @@ const CreatorPasses = ({ passes, title, alternateBg = false }) => {
     <>
       <div className="mt-4 mb-2 flex gap-x-4">
         <span className="text-[24px] font-bold text-[#ffff]/90">{title}</span>
-        <hr className="my-auto grow border-[#2C282D]" />
+        <hr className="my-auto grow border-passes-dark-200" />
       </div>
       <div className="grid grid-cols-1 gap-6 py-4 md:grid-cols-2 sidebar-collapse:grid-cols-3">
         {renderPassesGrid}

@@ -5,7 +5,7 @@ import { Button } from "../../../atoms"
 const BecomeCreatorButton = () => (
   <>
     <div className="flex items-center justify-center sidebar-collapse:hidden">
-      <span className="flex h-12 w-12 items-center justify-center rounded-[50%] bg-[#BF7AF0] sidebar-collapse:hidden">
+      <span className="flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color sidebar-collapse:hidden">
         <PlusSign className="h-4 w-4 " />
       </span>
     </div>

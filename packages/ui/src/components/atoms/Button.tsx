@@ -59,25 +59,25 @@ export const Button = ({
       break
     case "gradient":
       variantClassName =
-        "text-white bg-gradient-to-r from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
+        "text-white bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
       break
     case "vertical-gradient":
       variantClassName =
-        "text-white bg-gradient-to-b from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
+        "text-white bg-gradient-to-b from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
       break
     case "inner-gradient":
       variantClassName =
-        "bg-gradient-to-r from-[#598BF4] to-[#B53BEC] dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-full group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
+        "bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-full group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
       variantInnerClassName =
         "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-full group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
       break
     case "pink":
       variantClassName =
-        "flex w-full items-center justify-center rounded-full border border-solid border-[#C943A8] bg-[#C943A8] py-[10px] text-base font-semibold text-white"
+        "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       break
     case "purple":
       variantClassName =
-        "text-white dark:text-white border-[#BF7AF0] bg-[#BF7AF0] dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
+        "text-white dark:text-white border-passes-secondary-color bg-passes-secondary-color dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
       break
     case "white":
       variantClassName =
@@ -148,7 +148,7 @@ export const Button = ({
 }
 
 export const PassesPurpleButton = ({ name }: IGenericButton) => (
-  <button className="flex w-full items-center justify-center rounded-full border border-solid border-[#BF7AF0] bg-[#BF7AF0] py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
+  <button className="flex w-full items-center justify-center rounded-full border border-solid border-passes-secondary-color bg-passes-secondary-color py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
     <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />
     {name}
   </button>
@@ -163,7 +163,7 @@ export const PassesPinkButton = ({
   return (
     <button
       className={classNames(
-        "flex w-full items-center justify-center rounded-full border border-solid border-[#C943A8] bg-[#C943A8] py-[10px] text-base font-semibold text-white",
+        "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
         className
       )}
       onClick={onClick}
@@ -176,7 +176,7 @@ export const PassesPinkButton = ({
 
 export const CoverButton = ({ name, onClick }: IGenericButton) => (
   <button
-    className="flex w-full items-center justify-center rounded-full border border-solid border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-[#bf7af0]/10"
+    className="flex w-full items-center justify-center rounded-full border border-solid border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
     onClick={onClick}
   >
     {{

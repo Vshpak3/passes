@@ -1,7 +1,7 @@
+// import { Tabs } from "src/components/molecules"
 // import GridViewIcon from "public/icons/grid-view-icon.svg"
 // import ListViewIcon from "public/icons/list-view-icon.svg"
 import React from "react"
-// import { Tabs } from "src/components/molecules"
 import { CreatorPassTiles } from "src/components/organisms"
 import { usePasses } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -23,7 +23,7 @@ const Passes = () => {
             <span className="text-[24px] font-bold text-[#ffff]/90">
               Active subscriptions
             </span>
-            <hr className="mt-2 grow border-[#2C282D]" />
+            <hr className="mt-2 grow border-passes-dark-200" />
             {/* List View OOS right now, currently unused */}
             {/* <Tabs tabsArray={tabsArray} /> */}
           </div>

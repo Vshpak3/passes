@@ -295,7 +295,7 @@ export const NewPost = ({
             className={classNames(
               !extended
                 ? "border-none border-b-transparent"
-                : "border-b border-[#2C282D]",
+                : "border-b border-passes-dark-200",
               "w-full"
             )}
           >
@@ -323,7 +323,7 @@ export const NewPost = ({
                   errors={errors}
                 />
               ) : (
-                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-[#BF7AF0]  md:h-[420px] md:p-9">
+                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color  md:h-[420px] md:p-9">
                   <div className="relative flex h-[230px] w-full items-center justify-center rounded-[6px]">
                     {selectedMedia ? (
                       <MediaFile
@@ -340,7 +340,7 @@ export const NewPost = ({
                         )}
                       />
                     ) : (
-                      <div className=" flex h-[232px] items-center justify-center  rounded-[6px] border-[1px] border-solid border-[#BF7AF0] "></div>
+                      <div className=" flex h-[232px] items-center justify-center  rounded-[6px] border-[1px] border-solid border-passes-secondary-color "></div>
                     )}
                   </div>
                   <div className="flex items-center justify-start gap-6">
@@ -373,7 +373,7 @@ export const NewPost = ({
                       type="file"
                       multiple={true}
                       trigger={
-                        <div className="box-border flex h-[92px] w-[118px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-[#BF7AF0] bg-[#bf7af0]/10">
+                        <div className="box-border flex h-[92px] w-[118px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
                           <PlusIcon />
                         </div>
                       }
@@ -397,8 +397,8 @@ export const NewPost = ({
           {extended && (
             <>
               {isPaid && (
-                <div className="flex w-full flex-col items-start gap-[17px] border-b border-[#2C282D] p-0 pt-[53px] pb-[56px] ">
-                  <span className="text-base font-normal text-[#BF7AF0]">
+                <div className="flex w-full flex-col items-start gap-[17px] border-b border-passes-dark-200 p-0 pt-[53px] pb-[56px] ">
+                  <span className="text-base font-normal text-passes-secondary-color">
                     Who’s is this content for?
                   </span>
                   <div className="flex flex-col items-start gap-[15px]">
@@ -416,7 +416,7 @@ export const NewPost = ({
                 </div>
               )}
               {isPaid && (
-                <div className="block w-full border-b border-[#2C282D] p-0 pt-[38px] pb-7">
+                <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
                   <div className="flex flex-1 items-center gap-1 pb-5 sm:gap-4">
                     <span className="text-xs text-[#ffff] sm:text-base">
                       Paid for (if not in the audience list)
@@ -433,7 +433,7 @@ export const NewPost = ({
                         register={register}
                         type="number"
                         name="price"
-                        className="w-full rounded-md border-[#2C282D]  bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0 "
+                        className="w-full rounded-md border-passes-dark-200  bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
                       />
                     </div>
                   </div>
@@ -441,7 +441,7 @@ export const NewPost = ({
                     {selectedPasses.map((pass, index) => (
                       <div
                         key={index}
-                        className="flex flex-shrink-0 animate-fade-in-down items-start gap-[10px] rounded-[56px] border border-[#2C282D] bg-[#100C11] py-[10px] px-[18px]"
+                        className="flex flex-shrink-0 animate-fade-in-down items-start gap-[10px] rounded-[56px] border border-passes-dark-200 bg-[#100C11] py-[10px] px-[18px]"
                       >
                         <span>
                           <AudienceChevronIcon />

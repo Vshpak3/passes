@@ -465,7 +465,7 @@ export const FundraiserTab = ({ post }) => {
           <button
             key={index}
             onClick={() => onDonate(amount)}
-            className="flex items-start gap-[10px] rounded-[56px] bg-[#0E0A0F] py-[10px] px-[18px] text-base font-bold leading-[25px] text-[#ffff]/90 hover:bg-[#bf7af0]/10"
+            className="flex items-start gap-[10px] rounded-[56px] bg-[#0E0A0F] py-[10px] px-[18px] text-base font-bold leading-[25px] text-[#ffff]/90 hover:bg-passes-secondary-color/10"
           >
             ${amount}
           </button>

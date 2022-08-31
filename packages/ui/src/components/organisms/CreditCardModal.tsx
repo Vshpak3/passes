@@ -180,7 +180,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="cardholderName"
               placeholder="Name"
-              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -190,7 +190,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               register={register}
               type="text"
               name="cardNumber"
-              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               placeholder="0000 0000 0000 0000"
               mask={"9999 9999 9999 9999"}
               icon={
@@ -215,7 +215,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="expiryMonth"
               placeholder="MM"
-              className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -227,7 +227,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="expiryYear"
               placeholder="YYYY"
-              className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -239,7 +239,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="cvv"
               placeholder="CVV"
-              className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
         </div>
@@ -251,7 +251,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             type="text"
             name="billingAddress"
             placeholder="Street address"
-            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
           <FormInput
             errors={errors}
@@ -259,7 +259,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             type="text"
             name="alternativeAddress"
             placeholder="Street address (optinal)"
-            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
           <FormInput
             errors={errors}
@@ -267,7 +267,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             type="text"
             name="city"
             placeholder="City"
-            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
           <FormInput
             errors={errors}
@@ -275,7 +275,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             type="text"
             name="country"
             placeholder="Country (2 letters)"
-            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             mask="aa"
           />
           <div className="flex justify-between gap-4">
@@ -285,7 +285,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="district"
               placeholder="State/District"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
             <FormInput
               errors={errors}
@@ -293,7 +293,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
               type="text"
               name="postalCode"
               placeholder="Postal Code"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
         </div>
@@ -308,7 +308,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             type="text"
             name="email"
             placeholder="Email address"
-            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+            className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
         </div>
         <PassesPinkButton

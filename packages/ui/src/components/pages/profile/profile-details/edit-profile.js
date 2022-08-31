@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
+
 const bioForm = {
   coverDescription: {
     type: "text-area",
@@ -115,7 +116,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
       <FormInput
         register={register}
         name={key}
-        className="w-full cursor-pointer rounded-md border-[#2C282D] bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+        className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
         type={input.type}
         placeholder={input.label}
         accept={input?.accept}
@@ -152,7 +153,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
         footer={
           <div className="left-20 -mb-4 flex cursor-pointer self-center ">
             <span
-              className="flex w-full items-center justify-center self-center rounded-[50px] bg-[#C943A8] py-[10px] text-center "
+              className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
               onClick={handleSubmit(() => onSubmit(getValues()))}
             >
               Confirm and Continue
@@ -233,7 +234,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                   <FormInput
                     register={register}
                     name={key}
-                    className="w-full cursor-pointer rounded-md border-[#2C282D] bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+                    className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
                     type={input.type}
                     placeholder={input.label}
                     accept={input?.accept}
@@ -258,7 +259,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                             {fields[key]}
                           </span>
                           <span
-                            className="float-right cursor-pointer text-end text-[16px] font-medium leading-[22px] text-[#C943A8] hover:underline"
+                            className="float-right cursor-pointer text-end text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline"
                             onClick={() => onDisconnectSocialMedia(key)}
                           >
                             Disconnect
@@ -283,7 +284,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                                 <FormInput
                                   register={register}
                                   name={key}
-                                  className="w-full cursor-pointer rounded-md border-[#2C282D] bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+                                  className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
                                   type={input.type}
                                   onChange={() => {
                                     return null
@@ -296,7 +297,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                                 />
 
                                 <span
-                                  className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-[#C943A8] hover:underline "
+                                  className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline "
                                   onClick={() => setEnableInput(false)}
                                 >
                                   Connect

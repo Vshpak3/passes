@@ -12,6 +12,7 @@ import {
 } from "stream-chat-react"
 
 import { getCleanImage, HamburgerIcon } from "../../assets"
+
 // import { TypingIndicator } from "../TypingIndicator/TypingIndicator"
 
 const getAvatarGroup = (members) => {
@@ -343,7 +344,7 @@ const MessagingChannelHeader = (props) => {
         <div className="messaging__channel-header__left py-4">
           {props.isCreator ? (
             <div className="flex items-center gap-3">
-              <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-[#BF7AF0]">
+              <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color">
                 <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
                   Vip Pass
                 </span>
@@ -355,7 +356,7 @@ const MessagingChannelHeader = (props) => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-3 border-r border-[#2C282D] pr-3">
+            <div className="flex items-center gap-3 border-r border-passes-dark-200 pr-3">
               <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10 ">
                 <BellIcon />
               </span>
@@ -398,7 +399,7 @@ const MessagingChannelHeader = (props) => {
                   register={register}
                   type="text"
                   name="search"
-                  className="w-full items-center  border-none border-[#2C282D] bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
+                  className="w-full items-center  border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
                   placeholder="Find.."
                   icon={<SearchIcon className="mt-[5px]" />}
                 />

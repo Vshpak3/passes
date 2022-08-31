@@ -14,7 +14,7 @@ const PassFormCheckbox = ({ label, name, register }) => (
       type="checkbox"
       name={name}
       label={label}
-      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
     />
   </div>
 )
@@ -34,7 +34,7 @@ const PassNumberInput = ({ register, title, name, infoIcon = false }) => (
           type="number"
           name={name}
           placeholder="340"
-          className="max-w-[140px] border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
+          className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
         />
       </div>
     </div>
@@ -73,7 +73,7 @@ const PassDescriptionInput = ({ register, errors }) => (
       register={register}
       type="text"
       name="passDescription"
-      className="m-0 w-full border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
+      className="m-0 w-full border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
       placeholder="Type a caption here that describes the pass"
     />
     {errors.passDescription?.type === "required" && (
@@ -89,7 +89,7 @@ const PassNameInput = ({ register, errors }) => (
       register={register}
       type="text"
       name="passName"
-      className="flex-grow-1 m-0 border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
+      className="flex-grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
       placeholder="Name of your new pass!"
     />
     {errors.passName?.type === "required" && (

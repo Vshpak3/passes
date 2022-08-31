@@ -30,8 +30,8 @@ const CreatorPassTiles = ({
         <div
           className={classNames(
             alternateBg
-              ? "bg-gradient-to-r from-[#598BF4] to-[#e292b3]"
-              : "bg-gradient-to-r from-[#a159d3] to-[#598BF4]",
+              ? "bg-gradient-to-r from-passes-blue-100 to-[#e292b3]"
+              : "bg-gradient-to-r from-[#a159d3] to-passes-blue-100",
             "col-span-1 min-h-[213px] min-w-[260px] max-w-[260px] cursor-pointer rounded-lg  p-4 drop-shadow transition-colors"
           )}
           onClick={handleClick}

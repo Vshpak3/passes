@@ -179,7 +179,7 @@ const Username = (props: GetProfileResponseDto) => {
             you typed the address, double-check the spelling.
           </span>
           <Link href="/home">
-            <span className="cursor-pointer text-base font-medium leading-6 text-[#9C4DC1] ">
+            <span className="cursor-pointer text-base font-medium leading-6 text-passes-primary-color">
               Back to Passes home
             </span>
           </Link>

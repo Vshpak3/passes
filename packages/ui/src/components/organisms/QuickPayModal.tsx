@@ -69,7 +69,7 @@ IQuickPayModal) => {
           {/* <span className="text-[#ffff]/70">Frame 34242</span> */}
           <span className="text-[#ffff]/90">Pay with</span>
         </div>
-        <div className="flex justify-evenly rounded border border-[#2C282D] bg-[#100C11] p-2 text-left text-[#ffff]/90">
+        <div className="flex justify-evenly rounded border border-passes-dark-200 bg-[#100C11] p-2 text-left text-[#ffff]/90">
           {/* fake info here, needs to grab user default CC data to fill this out automatically */}
           <div className="flex flex-1 gap-4 justify-self-start">
             {creditCardIcons["mastercard"]}

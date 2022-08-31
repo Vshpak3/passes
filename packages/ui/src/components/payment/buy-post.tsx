@@ -64,7 +64,7 @@ export const BuyPostButton = ({
       onClick={() => {
         submit()
       }}
-      className="w-32 rounded-[50px] bg-[#C943A8] p-4"
+      className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
       type="submit"
       {...(blocked || submitting ? { disabled: true } : {})}
     >

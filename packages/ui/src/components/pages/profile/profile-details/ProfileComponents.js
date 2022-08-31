@@ -63,7 +63,7 @@ export const ProfileInformation = ({
           <span className="mr-[6px] text-base font-medium">{posts}</span>
           <span className="text-sm font-normal text-[#ffffff]/30">POSTS</span>
         </div>
-        <div className="mx-[30px] h-[18px] w-[1px] bg-[#2C282D]" />
+        <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
         <div className="flex items-center justify-center">
           <span className="mr-[6px] text-base font-medium">
             {compactNumberFormatter(likes)}

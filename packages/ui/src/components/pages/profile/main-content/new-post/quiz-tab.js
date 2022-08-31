@@ -52,14 +52,14 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
             register={register}
             type="text"
             name={`quizOptions.${index}.value`}
-            className="w-full rounded-md border-[#2C282D] bg-[#100C11] py-[10px]  text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0"
+            className="w-full rounded-md border-passes-dark-200 bg-[#100C11] py-[10px]  text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
             placeholder="Type an Answer here.."
             icon={
               <div
                 className="items-center pl-2 pt-[1px]"
                 onClick={() => onChangeCorrectAnswer(index)}
               >
-                <span className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-[#bf7af0]">
+                <span className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-passes-secondary-color">
                   {field.isTrue ? (
                     <CheckIcon className="h-3 w-3" />
                   ) : (
@@ -88,7 +88,7 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
               type="select"
               register={register}
               name="quizExpire"
-              className="box-border flex items-start justify-between rounded-md border border-[#2C282D] bg-[#100C11]  focus:border-[#2C282D] focus:ring-0"
+              className="box-border flex items-start justify-between rounded-md border border-passes-dark-200 bg-[#100C11]  focus:border-passes-dark-200 focus:ring-0"
               selectOptions={options}
             />
           </span>
@@ -100,7 +100,7 @@ export const NewsQuizTab = ({ control, register, onCloseTab }) => {
         <button
           type="button"
           onClick={() => append(defaultValues)}
-          className=" flex cursor-pointer items-center justify-start pt-1 text-base text-[#bf7af0] hover:underline"
+          className=" flex cursor-pointer items-center justify-start pt-1 text-base text-passes-secondary-color hover:underline"
         >
           + Add another option
         </button>

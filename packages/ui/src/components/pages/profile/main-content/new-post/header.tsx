@@ -95,7 +95,7 @@ const MediaHeader = ({
                   activeMediaHeader === name
                     ? " bg-[rgba(191,122,240,0.1)] "
                     : "hover:bg-[rgba(191,122,240,0.1)]",
-                  "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0]"
+                  "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
                 )}
                 onClick={() => onChange(name)}
               >
@@ -122,7 +122,7 @@ const MediaHeader = ({
                       activeMediaHeader === name
                         ? " bg-[rgba(191,122,240,0.1)] "
                         : "hover:bg-[rgba(191,122,240,0.1)]",
-                      "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0]"
+                      "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
                     )}
                     // onClick={() => onChange(name)}
                   >
@@ -153,7 +153,7 @@ const MediaHeader = ({
                   activeMediaHeader === name
                     ? " bg-[rgba(191,122,240,0.1)] "
                     : "hover:bg-[rgba(191,122,240,0.1)]",
-                  "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#BF7AF0]"
+                  "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
                 )}
               />
             )

@@ -25,7 +25,7 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
     }
   ]
   return (
-    <nav className="flex w-full items-start border-b border-[#2C282D] p-0">
+    <nav className="flex w-full items-start border-b border-passes-dark-200 p-0">
       {navigation.map((item, index) => (
         <span
           key={index}

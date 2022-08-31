@@ -102,8 +102,8 @@ function SidebarTabletItem({ isActive, item, setActive }) {
       onClick={setActive}
       className={classNames(
         isActive
-          ? "border border-solid border-[#BF7AF0] bg-[#bf7af0]/10"
-          : "hover:bg-[#bf7af0]/10 hover:text-white",
+          ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
+          : "hover:bg-passes-secondary-color/10 hover:text-white",
         "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
       )}
     >

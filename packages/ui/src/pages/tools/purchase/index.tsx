@@ -78,7 +78,7 @@ const Purchase = () => {
               register={register}
               type="text"
               name="credit-card-number"
-              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               placeholder="0000 0000 0000 0000"
               icon={
                 <>
@@ -99,7 +99,7 @@ const Purchase = () => {
                 type="text"
                 name="month"
                 placeholder="MM"
-                className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 max-w-[60px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ const Purchase = () => {
                 type="text"
                 name="month"
                 placeholder="YYYY"
-                className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 max-w-[75px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
             <div>
@@ -119,7 +119,7 @@ const Purchase = () => {
                 type="text"
                 name="month"
                 placeholder="CVV"
-                className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 max-w-[70px] border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
           </div>
@@ -130,21 +130,21 @@ const Purchase = () => {
               type="text"
               name="address"
               placeholder="Street address"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
             <FormInput
               register={register}
               type="text"
               name="address-optional"
               placeholder="Street address (optinal)"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
             <FormInput
               register={register}
               type="text"
               name="city"
               placeholder="City"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
             <div className="flex justify-between">
               <FormInput
@@ -152,14 +152,14 @@ const Purchase = () => {
                 type="text"
                 name="state"
                 placeholder="State"
-                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
               <FormInput
                 register={register}
                 type="text"
                 name="zip"
                 placeholder="Zip"
-                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
           </div>
@@ -173,7 +173,7 @@ const Purchase = () => {
               type="text"
               name="email"
               placeholder="Email address"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <PassesPinkButton

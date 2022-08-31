@@ -3,6 +3,7 @@ import { ChatContext } from "stream-chat-react"
 
 import { getCleanImage } from "../../assets"
 import { Avatar } from "../ChannelListAvatar.js"
+
 const getAvatarGroup = (members) => {
   if (members.length === 1) {
     return (
@@ -301,7 +302,7 @@ const MessagingChannelPreview = (props) => {
               </p>
             </div>
             <div className="flex flex-col items-center justify-center pt-2">
-              <div className="flex h-[20px] w-[60px] items-center justify-center gap-4 rounded-[30px] bg-[#BF7AF0]">
+              <div className="flex h-[20px] w-[60px] items-center justify-center gap-4 rounded-[30px] bg-passes-secondary-color">
                 <span className="cursor-pointer text-[10px] font-medium leading-[16px] text-[#FFF]">
                   Tip: $250
                 </span>

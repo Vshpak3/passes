@@ -408,7 +408,7 @@ const MessagingInput = () => {
                     type="file"
                     multiple={true}
                     trigger={
-                      <div className="box-border flex h-[66px] w-[79px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-[#BF7AF0] bg-[#bf7af0]/10">
+                      <div className="box-border flex h-[66px] w-[79px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
                         <PlusIcon />
                       </div>
                     }
@@ -455,7 +455,7 @@ const MessagingInput = () => {
           <EmojiPicker />
         </div>
 
-        <div className="flex w-full items-center justify-between border-t border-[#2C282D] py-3 pr-5">
+        <div className="flex w-full items-center justify-between border-t border-passes-dark-200 py-3 pr-5">
           <div>
             <MediaHeader
               messages={true}
@@ -472,7 +472,7 @@ const MessagingInput = () => {
               aria-roledescription="button"
               onClick={messageInput.handleSubmit}
             >
-              <button className="cursor-pointer gap-[10px] rounded-[50px] bg-[#2C282D] px-[18px] py-[10px] text-white">
+              <button className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white">
                 Send message
               </button>
             </div>
@@ -496,12 +496,12 @@ const MessagingInput = () => {
                         type="text"
                         name="postPrice"
                         placeholder={"Minimum $3 USD or free"}
-                        className="w-full rounded-md border-[#2C282D] bg-[#100C11]  pl-4 text-base font-bold text-[#ffffff]/90 focus:border-[#2C282D] focus:ring-0 "
+                        className="w-full rounded-md border-passes-dark-200 bg-[#100C11]  pl-4 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
                       />
                     </div>
                     <div className="flex w-full items-end justify-end gap-3">
                       <button
-                        className="rounded-full bg-[#bf7af0] py-2 px-6"
+                        className="rounded-full bg-passes-secondary-color py-2 px-6"
                         type="button"
                         onClick={() => setHasPrice(false)}
                       >
@@ -510,7 +510,7 @@ const MessagingInput = () => {
                       <button
                         className={classNames(
                           !(postPrice > 10) ? "opacity-50" : "",
-                          "rounded-full bg-[#bf7af0] py-2 px-6"
+                          "rounded-full bg-passes-secondary-color py-2 px-6"
                         )}
                         type="button"
                         onClick={() => onTargetAcquired()}
@@ -536,14 +536,14 @@ const MessagingInput = () => {
                   <div>Vault Items come here</div>
                   <div className="flex w-full items-end justify-end gap-3">
                     <button
-                      className="rounded-full bg-[#bf7af0] py-2 px-6"
+                      className="rounded-full bg-passes-secondary-color py-2 px-6"
                       type="button"
                       onClick={() => setHasVault(false)}
                     >
                       Cancel
                     </button>
                     <button
-                      className="rounded-full bg-[#bf7af0] py-2 px-6"
+                      className="rounded-full bg-passes-secondary-color py-2 px-6"
                       type="button"
                       onClick={() => setHasVault(false)}
                     >

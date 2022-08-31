@@ -16,7 +16,7 @@ import { composeMediaGridLayout } from "src/helpers"
 
 const PassDirectMessage = ({ register }) => (
   <>
-    <hr className="border-[#2C282D]" />
+    <hr className="border-passes-dark-200" />
     <div className="mb-2">
       <PassesSectionTitle title="Direct messages" />
     </div>
@@ -31,14 +31,14 @@ const PassDirectMessage = ({ register }) => (
         type="checkbox"
         name="free-dm-month-checkbox"
         label="Free DMs per month:"
-        className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+        className="rounded border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
       />
       <div className="align-center ml-10 flex items-center justify-center">
         <FormInput
           register={register}
           type="number"
           name="free-dms-month"
-          className="max-w-[140px] border-[#2C282D] bg-transparent p-0 text-[#ffff]/90"
+          className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
           placeholder="340"
           icon={<HashtagIcon />}
         />
@@ -118,7 +118,7 @@ const PassFileUpload = ({
 const PassLifetimeOptions = ({ register }) => {
   return (
     <>
-      <hr className="border-[#2C282D]" />
+      <hr className="border-passes-dark-200" />
       <div className="grid grid-rows-2 gap-1">
         <PassNumberInput
           register={register}
@@ -139,7 +139,7 @@ const PassLifetimeOptions = ({ register }) => {
 
 const PassRenewal = ({ register }) => (
   <div>
-    <hr className="border-[#2C282D]" />
+    <hr className="border-passes-dark-200" />
     <div className="my-4 grid grid-cols-1 grid-rows-2 items-center gap-4 md:grid-cols-3 md:grid-rows-1">
       <span className="text-lg font-bold text-[#ffff]/90 md:text-[15px] md:font-semibold ">
         Automatically renews every
@@ -154,14 +154,14 @@ const PassRenewal = ({ register }) => (
             type="select"
             selectOptions={["test", "test2"]}
             name="royalty"
-            className="w-[150px] border-[#2C282D] bg-transparent p-0 text-left text-[#ffff]/90"
+            className="w-[150px] border-passes-dark-200 bg-transparent p-0 text-left text-[#ffff]/90"
             placeholder="1 month"
           />
           <FormInput
             register={register}
             type="text"
             name="price"
-            className="ml-2 w-full border-[#2C282D] bg-transparent p-0 text-right text-[#ffff]/90"
+            className="ml-2 w-full border-passes-dark-200 bg-transparent p-0 text-right text-[#ffff]/90"
             placeholder="0"
             icon={<DollarIcon />}
           />
@@ -173,7 +173,7 @@ const PassRenewal = ({ register }) => (
 
 const PassUnlockTier = ({ register }) => (
   <>
-    <hr className="border-[#2C282D]" />
+    <hr className="border-passes-dark-200" />
     <div className="my-4">
       <PassesSectionTitle title="What does this tier of pass unlock?" />
       <PassFormCheckbox

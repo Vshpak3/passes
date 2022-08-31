@@ -84,15 +84,15 @@ const AdditionalInfoBlock = () => {
             <Text fontSize={36} className="font-bold">
               Let&apos;s get to know each other
             </Text>
-            <Text className="mb-8 text-[#b3bee799]">description</Text>
+            <Text className="mb-8 text-passes-blue-200">description</Text>
           </div>
           <Label
             name="username"
             label="Username"
-            className="mb-2 text-[#b3bee799]"
+            className="mb-2 text-passes-blue-200"
           />
           <FormInput
-            className="mb-4 border-[#b3bee799] border-opacity-80 bg-transparent ring-opacity-80 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
+            className="mb-4 border-passes-blue-200 border-opacity-80 bg-transparent ring-opacity-80 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
             type="text"
             name="username"
             placeholder="Username"
@@ -107,9 +107,13 @@ const AdditionalInfoBlock = () => {
               required: true
             }}
           />
-          <Label name="name" label="Name" className="mb-2 text-[#b3bee799]" />
+          <Label
+            name="name"
+            label="Name"
+            className="mb-2 text-passes-blue-200"
+          />
           <FormInput
-            className="mb-4 border-[#b3bee799] border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
+            className="mb-4 border-passes-blue-200 border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
             type="text"
             name="name"
             placeholder="Name"
@@ -119,11 +123,11 @@ const AdditionalInfoBlock = () => {
           <Label
             name="birthday"
             label="Birthday"
-            className="mb-2 text-[#b3bee799]"
+            className="mb-2 text-passes-blue-200"
           />
           <div style={{ position: "relative" }}>
             <FormInput
-              className="mb-4 border-[#b3bee799] border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
+              className="mb-4 border-passes-blue-200 border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
               type="text"
               name="birthday"
               placeholder="Birthday"
@@ -155,10 +159,10 @@ const AdditionalInfoBlock = () => {
           <Label
             name="country"
             label="Country"
-            className="mb-2 text-[#b3bee799]"
+            className="mb-2 text-passes-blue-200"
           />
           <FormInput
-            className="mb-4 border-[#b3bee799] border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
+            className="mb-4 border-passes-blue-200 border-opacity-80 bg-transparent focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
             type="select"
             name="country"
             placeholder="Country"

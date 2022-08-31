@@ -10,7 +10,7 @@ const NewPostButton = () => (
     className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
     trigger={
       <>
-        <span className="flex h-12 w-12 items-center justify-center rounded-[50%] bg-[#BF7AF0] sidebar-collapse:hidden">
+        <span className="flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color sidebar-collapse:hidden">
           <PlusSign className="h-4 w-4 " />
         </span>
         <div className="hidden sidebar-collapse:flex">

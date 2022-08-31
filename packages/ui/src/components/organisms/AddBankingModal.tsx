@@ -180,7 +180,7 @@ IAddPayoutModal) => {
                   type="text"
                   name="routingNumber"
                   placeholder="Routing Number"
-                  className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                  className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                 />
               </div>
               <div>
@@ -191,7 +191,7 @@ IAddPayoutModal) => {
                   type="text"
                   name="accountNumber"
                   placeholder=" - "
-                  className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                  className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                 />
               </div>
             </>
@@ -210,7 +210,7 @@ IAddPayoutModal) => {
                 }
               }}
               errors={errors}
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           )}
           <div>
@@ -221,7 +221,7 @@ IAddPayoutModal) => {
               type="text"
               name="accountType"
               placeholder="Choose"
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -235,7 +235,7 @@ IAddPayoutModal) => {
                 required: { message: "need a name", value: true }
               }}
               errors={errors}
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -245,7 +245,7 @@ IAddPayoutModal) => {
               type="text"
               name="billingAddress"
               placeholder="Address 1"
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -255,7 +255,7 @@ IAddPayoutModal) => {
               type="text"
               name="alternativeAddress"
               placeholder="Address 2"
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>
@@ -265,7 +265,7 @@ IAddPayoutModal) => {
               type="text"
               name="city"
               placeholder="City"
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div className="flex justify-between gap-4">
@@ -275,7 +275,7 @@ IAddPayoutModal) => {
               type="text"
               name="district"
               placeholder="State/District"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
             <FormInput
               errors={errors}
@@ -283,7 +283,7 @@ IAddPayoutModal) => {
               type="text"
               name="postalCode"
               placeholder="Postal Code"
-              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
 
@@ -296,7 +296,7 @@ IAddPayoutModal) => {
                 name="bankAddress.bankName"
                 placeholder="Bank Name"
                 errors={errors}
-                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
             <div>
@@ -306,7 +306,7 @@ IAddPayoutModal) => {
                 name="bankAddress.city"
                 placeholder="Bank City"
                 errors={errors}
-                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
             <div>
@@ -316,7 +316,7 @@ IAddPayoutModal) => {
                 name="bankAddress.country"
                 placeholder="Bank Country (2 letters)"
                 errors={errors}
-                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+                className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
               />
             </div>
           </div>
@@ -331,7 +331,7 @@ IAddPayoutModal) => {
               type="text"
               name="email"
               placeholder="Email address"
-              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
+              className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             />
           </div>
           <div>

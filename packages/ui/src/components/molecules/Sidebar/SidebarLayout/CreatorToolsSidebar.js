@@ -49,8 +49,8 @@ const CreatorToolsSidebar = ({
                           key={item.id}
                           className={classNames(
                             item.id === active
-                              ? "border border-solid border-[#BF7AF0] bg-[#bf7af0]/10"
-                              : "hover:bg-[#bf7af0]/10 hover:text-white",
+                              ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
+                              : "hover:bg-passes-secondary-color/10 hover:text-white",
                             "group flex cursor-pointer items-start justify-center rounded-full px-4 py-2 "
                           )}
                         >
