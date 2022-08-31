@@ -10,14 +10,9 @@ import Modal from "./Modal"
 interface IBuyPostModal {
   isOpen: PaymentModalInfo | null
   setOpen: Dispatch<SetStateAction<PaymentModalInfo | null>>
-  //product TODO: support posts and passes
 }
 
-const BuyPostModal = ({
-  isOpen = null,
-  setOpen
-}: // passData
-IBuyPostModal) => {
+const BuyPostModal = ({ isOpen = null, setOpen }: IBuyPostModal) => {
   const router = useRouter()
   const { defaultPayinMethod } = usePayment()
 
