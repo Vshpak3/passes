@@ -5,6 +5,7 @@ import {
 } from "extendable-media-recorder"
 import { connect } from "extendable-media-recorder-wav-encoder"
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
 let registered = false
 let skipOnStop = false
 export type ReactMediaRecorderRenderProps = {
@@ -232,6 +233,7 @@ export function useReactMediaRecorder({
     } catch (error: any) {
       setError(error.name)
       setStatus("idle")
+      toast.error(error.name)
     }
   }, [audio, video, screen, stopRecording, customMediaStream])
 

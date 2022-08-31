@@ -12,6 +12,7 @@ import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import React, { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
+import { toast } from "react-toastify"
 import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
@@ -174,6 +175,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
       setLiked(response.hasLiked)
     } catch (error) {
       console.log(error)
+      toast.error(error)
     }
   }
 
@@ -195,6 +197,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
       setTimeout(updateEngagement, 1000)
     } catch (error) {
       console.log(error)
+      toast.error(error)
     }
   }
 
@@ -272,6 +275,7 @@ export const CommentSection = ({
       setComments(response.comments)
     } catch (error) {
       console.log(error)
+      toast.error(error)
     } finally {
       setLoadingComments(false)
     }
@@ -302,6 +306,7 @@ export const CommentSection = ({
       setTimeout(updateEngagement, 1000)
     } catch (error) {
       console.log(error)
+      toast.error(error)
     }
   }
 

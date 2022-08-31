@@ -1,6 +1,7 @@
 import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
+import { toast } from "react-toastify"
 import { wrapApi } from "src/helpers/wrapApi"
 import { usePayment, useUser } from "src/hooks"
 
@@ -36,8 +37,9 @@ IQuickPayModal) => {
         await passApi.passRegisterCreatePass({
           createPassHolderRequestDto: createPassHolderDto
         })
-      } catch (error) {
+      } catch (error: any) {
         console.log(error)
+        toast.error(error)
       } finally {
         // await getDefaultPayin(paymentApi)
       }

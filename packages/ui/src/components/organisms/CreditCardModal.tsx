@@ -16,6 +16,7 @@ import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import {
   ButtonTypeEnum,
   FormInput,
@@ -28,7 +29,6 @@ import { wrapApi } from "src/helpers/wrapApi"
 import { useLocalStorage } from "src/hooks"
 import { v4 } from "uuid"
 
-import { BuyPassButton } from "../payment/buy-pass"
 import Modal from "./Modal"
 
 interface ICreditCardModal {
@@ -130,7 +130,6 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
         )
       }
     }, 1000)
-    // else lemao
   }
 
   return (
@@ -139,9 +138,10 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
       {/* <Image src="www.google.ca" alt="test" width={200} height={50} /> */}
       <form
         onSubmit={(e) => {
-          handleSubmit(onSubmit)(e).catch((err) =>
+          handleSubmit(onSubmit)(e).catch((err) => {
             console.log(`errors: ${err}`)
-          )
+            toast.error(err)
+          })
         }}
       >
         <div>
@@ -311,8 +311,6 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
           />
         </div>
-        {/* this component needs to be renamed but its a button currently */}
-        <BuyPassButton passId="to-fill" />
         <PassesPinkButton
           name="Confirm and Continue"
           type={ButtonTypeEnum.SUBMIT}

@@ -3,6 +3,7 @@ import { SHA256 } from "crypto-js"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import encrypt from "src/helpers/openpgp"
 import { useLocalStorage, useUser } from "src/hooks"
@@ -81,8 +82,8 @@ const NewCard = () => {
         }
       )
       router.push("/payment/default-payin-method")
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error)
     } finally {
       setSubmitting(false)
     }

@@ -1,5 +1,6 @@
 import mailchimp from "@mailchimp/mailchimp_marketing"
 import type { NextApiRequest, NextApiResponse } from "next"
+import { toast } from "react-toastify"
 
 mailchimp.setConfig({
   apiKey: process.env.MAILCHIMP_API_KEY,
@@ -31,8 +32,8 @@ const F = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).send({})
       return
     }
-
     console.log(errMsg)
+    toast.error(errMsg)
     res.status(501).send({ error: errMsg })
   }
 }

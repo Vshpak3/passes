@@ -7,6 +7,7 @@ import {
 import { useRouter } from "next/router"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import {
   Button,
   ButtonTypeEnum,
@@ -95,7 +96,8 @@ IAddPayoutModal) => {
         }
       )
       router.push("/payment/default-payout-method")
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error)
       console.log(error)
     }
   }
@@ -118,9 +120,10 @@ IAddPayoutModal) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <form
         onSubmit={(e) => {
-          handleSubmit(onSubmit)(e).catch((err) =>
+          handleSubmit(onSubmit)(e).catch((err) => {
+            toast.error(err)
             console.log(`errors: ${err}`)
-          )
+          })
         }}
       >
         <button

@@ -1,5 +1,6 @@
 import { WalletApi } from "@passes/api-client"
 import { ethers } from "ethers"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms"
 import { useUserConnectedWallets } from "src/hooks"
 
@@ -40,7 +41,7 @@ const WalletSettings = () => {
       await api.walletCreate({ createWalletDto })
       mutate()
     } catch (err) {
-      alert(err.message)
+      toast.error(err.message)
     }
   }
 
@@ -82,7 +83,7 @@ const WalletSettings = () => {
       await api.walletCreate({ createWalletDto })
       mutate()
     } catch (err) {
-      alert(err.message)
+      toast.error(err.message)
     }
   }
 
@@ -96,6 +97,7 @@ const WalletSettings = () => {
       return res.rawMessage
     } catch (err) {
       console.log(err)
+      toast.error(err)
     }
   }
 

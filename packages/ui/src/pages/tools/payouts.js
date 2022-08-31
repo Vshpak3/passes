@@ -6,6 +6,7 @@ import {
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Button, FormInput, PassesPinkButton } from "src/components/atoms"
 import { PastTransactions } from "src/components/organisms"
 import { wrapApi } from "src/helpers"
@@ -50,7 +51,7 @@ const Payouts = () => {
     try {
       await paymentApi.paymentPayout()
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
   }
 
@@ -90,6 +91,7 @@ const Payouts = () => {
           })
         )
       } catch (error) {
+        toast.error(error)
         setDefaultPayout(undefined)
       }
     },
@@ -116,8 +118,8 @@ const Payouts = () => {
       try {
         await creatorSettingsApi.creatorSettingsFind({
           headers: {
-            Authorization: "Bearer " + accessToken
-            // "Content-Type": "application/json"
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json"
           }
         })
       } catch (error) {

@@ -1,5 +1,6 @@
 import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { wrapApi } from "../helpers/wrapApi"
 const usePayinMethod = () => {
@@ -16,7 +17,8 @@ const usePayinMethod = () => {
       const response = await api.paymentGetDefaultPayinMethod()
 
       setDefaultPayinMethod(response)
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error)
       console.log(error)
     } finally {
       setIsLoading(false)
@@ -28,7 +30,8 @@ const usePayinMethod = () => {
       setIsLoading(true)
       const response = await api.paymentGetCircleCards()
       setCards(response.cards)
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error)
       console.log(error)
     } finally {
       setIsLoading(false)
@@ -43,7 +46,8 @@ const usePayinMethod = () => {
       })
 
       getDefaultPayinMethod()
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error)
       console.log(error)
     } finally {
       setIsLoading(false)
@@ -56,7 +60,8 @@ const usePayinMethod = () => {
       await api.paymentDeleteCircleCard({
         circleCardId: cardId
       })
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error)
       console.log(error)
     } finally {
       await getCards()

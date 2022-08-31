@@ -3,6 +3,7 @@ import { UserApi } from "@passes/api-client/apis"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { toast } from "react-toastify"
 import MainContent from "src/components/pages/profile/main-content"
 import Passes from "src/components/pages/profile/passes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
@@ -231,7 +232,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       // - At most once every 5 minutes
       revalidate: 5 * 60 // In seconds
     }
-  } catch (err) {
+  } catch (err: any) {
+    toast.error(err)
     console.log("Error found", err)
     return { props: {} }
   }

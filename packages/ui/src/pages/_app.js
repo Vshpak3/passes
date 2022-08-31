@@ -1,4 +1,5 @@
 import "src/styles/global/main.css"
+import "react-toastify/dist/ReactToastify.css"
 
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
@@ -7,6 +8,7 @@ import Script from "next/script"
 import nprogress from "nprogress"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
+import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms"
 import { useMessageToDevelopers } from "src/hooks"
 import Providers from "src/providers"
@@ -45,6 +47,19 @@ const App = ({ Component, pageProps }) => {
       />
       <DndProvider backend={HTML5Backend}>
         <Component {...pageProps} />
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          limit={3}
+          theme="colored"
+        />
       </DndProvider>
     </Providers>
   )

@@ -5129,6 +5129,7 @@ __metadata:
     react-parallax-tilt: 1.7.52
     react-slick: 0.29.0
     react-timeago: 7.1.0
+    react-toastify: 9.0.8
     sharp: 0.30.7
     slick-carousel: 1.8.1
     stream-chat: 6.8.0
@@ -8925,6 +8926,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: d06418b7335897209e77bdd430d04f882189582e67bd1f75a04565f3f07f5b3f119a9d670c943b6697d0afb100f03b866b3b8a1f91d4d02d72c4ecf2bb64b5dd
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.1.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
   languageName: node
   linkType: hard
 
@@ -17084,6 +17092,18 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: cfc3959701f657f7d2766e8ef1a8c2f8b87fdb6e6aa60812dd9d6b68d096740f80976e0a69e08c1bd07f5514f6c82ed01905afea3bb08941dbb9cc49136810d9
+  languageName: node
+  linkType: hard
+
+"react-toastify@npm:9.0.8":
+  version: 9.0.8
+  resolution: "react-toastify@npm:9.0.8"
+  dependencies:
+    clsx: ^1.1.1
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: d48fa369b3d19c63f9b6b1ecef076911aa97a43bb84ecdb1532e6f32932e3625c1c3e12a4c63e7eb211d33b8aa962e9b9a81ab6a47fef2c51185ce8c9a780336
   languageName: node
   linkType: hard
 

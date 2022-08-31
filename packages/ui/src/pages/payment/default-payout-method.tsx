@@ -8,6 +8,7 @@ import {
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React, { useCallback, useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms"
 import { useLocalStorage, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -41,7 +42,8 @@ const DefaultPayoutMethod = () => {
             }
           })
         )
-      } catch (error) {
+      } catch (error: any) {
+        toast.error(error)
         setDefaultPayout(undefined)
       }
     },
@@ -92,8 +94,8 @@ const DefaultPayoutMethod = () => {
           }
         }
       )
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error)
     } finally {
       await getDefaultPayout(paymentApi)
     }
@@ -111,8 +113,8 @@ const DefaultPayoutMethod = () => {
           }
         }
       )
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error)
     } finally {
       await getBanks(paymentApi)
       await getDefaultPayout(paymentApi)

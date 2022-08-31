@@ -2,9 +2,10 @@ import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+// import useUser from "src/hooks/useUser"
+import { toast } from "react-toastify"
 import CardCarousel from "src/components/molecules/CardCarousel"
 import LandingIcon from "src/icons/landingIcon"
-// import useUser from "src/hooks/useUser"
 
 const HomePage = () => {
   const router = useRouter()
@@ -29,6 +30,7 @@ const HomePage = () => {
       await axios.post("/api/email", { emailAddress })
       setEmailFeedback("Thank you for subscribing!")
     } catch (err) {
+      toast.error(err)
       setEmailFeedback("An error occurred...")
     } finally {
       setIsSubmittingEmail(false)

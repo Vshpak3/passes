@@ -2,6 +2,7 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
@@ -72,8 +73,8 @@ const NewCard = () => {
         }
       )
       router.push("/payment/default-payout-method")
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error)
     } finally {
       setSubmitting(false)
     }

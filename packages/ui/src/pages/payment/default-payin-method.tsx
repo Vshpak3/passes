@@ -191,6 +191,9 @@ const DefaultPayinMethod = () => {
             )
           })}
         </div>
+        {/* <div onClick={() => toast.success("rewognerg")}>
+          <span className="text-white">gekjwbnfkjwbedfkj</span>
+        </div> */}
       </div>
       {/* pass in payment method to the modal to the button */}
       <CreditCardModal

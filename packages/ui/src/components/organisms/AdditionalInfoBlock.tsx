@@ -3,6 +3,7 @@ import moment from "moment"
 import { useEffect, useState } from "react"
 import { default as Calendar } from "react-calendar"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Button, FormInput, Label, Text } from "src/components/atoms"
 import Arrow from "src/icons/arrow"
 
@@ -44,6 +45,7 @@ const AdditionalInfoBlock = () => {
         })
       }
     } catch (error: any) {
+      toast.error(error)
       setError("username", {
         message: error?.message || ""
       })

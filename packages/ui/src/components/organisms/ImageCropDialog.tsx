@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import Cropper from "react-easy-crop"
+import { toast } from "react-toastify"
 
 import { Button } from "../atoms"
 import Dialog from "./Dialog"
@@ -97,8 +98,9 @@ export const ImageCropDialog = ({
     try {
       const croppedImage = await getCroppedImg(src, croppedArea, width, height)
       onCrop(croppedImage)
-    } catch (e) {
+    } catch (e: any) {
       console.error(e)
+      toast.error(e)
     }
   }, [croppedArea, src, height, width, onCrop])
 

@@ -7,6 +7,7 @@ import {
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { wrapApi } from "../helpers"
 import { getPhantomProvider } from "../helpers/payment/payment-wallet"
@@ -66,9 +67,10 @@ export const usePay = (
       )
       try {
         await phantomProvider.connect()
-      } catch (error) {
+      } catch (error: any) {
         //display message to user
         await cancelPayinCallback()
+        toast.error(error)
         throw error
       }
     } finally {
@@ -92,6 +94,7 @@ export const usePay = (
     } catch (error) {
       //display message to user
       console.log("connection was refused")
+      toast.error("connection was refused")
       throw error
     }
     await executeMetamaskUSDCProvider(
@@ -118,6 +121,7 @@ export const usePay = (
     } catch (error) {
       //display message to user
       console.log("connection was refused")
+      toast.error("connection was refused")
       throw error
     }
     await executeMetamaskEthProvider(

@@ -3,6 +3,7 @@ import { PayoutMethodDto, WalletApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React, { Dispatch, SetStateAction, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import {
   ButtonTypeEnum,
   FormInput,
@@ -48,8 +49,9 @@ IAddPayoutModal) => {
         }
       })
       router.push("/payment/default-payout-method")
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
+      toast.error(error)
     }
   }
 
@@ -67,9 +69,10 @@ IAddPayoutModal) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <form
         onSubmit={(e) => {
-          handleSubmit(onSubmit)(e).catch((err) =>
+          handleSubmit(onSubmit)(e).catch((err) => {
             console.log(`errors: ${err}`)
-          )
+            toast.error(err)
+          })
         }}
       >
         <div className="mb-3">

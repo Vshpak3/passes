@@ -3,6 +3,7 @@ import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
 
@@ -52,7 +53,7 @@ const UserInfoPage = () => {
 
       router.push("/login")
     } catch (err) {
-      console.log(err, "CATCHED")
+      toast.error(err)
     }
   }
 

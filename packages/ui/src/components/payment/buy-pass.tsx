@@ -39,7 +39,7 @@ export const BuyPassButton = ({ passId, payinMethod }: IBuyPassButton) => {
       onClick={() => {
         submit()
       }}
-      className="w-32 rounded-[50px] bg-[#C943A8] p-4"
+      className="w-32 rounded-[50px] bg-[#C943A8] p-4 text-white"
       type="submit"
       {...(blocked || submitting ? { disabled: true } : {})}
     >

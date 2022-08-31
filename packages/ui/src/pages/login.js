@@ -8,6 +8,7 @@ import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
 
@@ -75,8 +76,8 @@ const LoginPage = () => {
       if (refreshToken) {
         setRefreshToken(_refreshToken)
       }
-    } catch (err) {
-      console.log(err, "CATCHED")
+    } catch (error) {
+      toast.error(error)
     }
   }
 

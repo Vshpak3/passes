@@ -1,5 +1,6 @@
 import { ContentApi, MessagesApi } from "@passes/api-client/apis"
 import React, { useContext } from "react"
+import { toast } from "react-toastify"
 import { uploadFile } from "src/helpers/uploadFile"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useChat } from "src/hooks"
@@ -64,6 +65,7 @@ export const ChannelInner = (props) => {
       })
       setFiles([])
     } catch (err) {
+      toast.error(err)
       console.log(err)
     }
   }
