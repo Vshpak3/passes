@@ -43,6 +43,18 @@ export interface CreatePostRequestDto {
      * @memberof CreatePostRequestDto
      */
     _private: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreatePostRequestDto
+     */
+    price?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreatePostRequestDto
+     */
+    expiresAt?: number;
 }
 
 export function CreatePostRequestDtoFromJSON(json: any): CreatePostRequestDto {
@@ -59,6 +71,8 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'content': json['content'],
         'passes': json['passes'],
         '_private': json['private'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
     };
 }
 
@@ -75,6 +89,8 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'content': value.content,
         'passes': value.passes,
         'private': value._private,
+        'price': value.price,
+        'expiresAt': value.expiresAt,
     };
 }
 

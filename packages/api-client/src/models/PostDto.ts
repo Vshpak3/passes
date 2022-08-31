@@ -49,7 +49,7 @@ export interface PostDto {
      * @type {Array<GetContentResponseDto>}
      * @memberof PostDto
      */
-    content: Array<GetContentResponseDto>;
+    content?: Array<GetContentResponseDto>;
     /**
      * 
      * @type {number}
@@ -67,19 +67,37 @@ export interface PostDto {
      * @type {boolean}
      * @memberof PostDto
      */
-    hasLiked: boolean;
+    isLiked: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PostDto
+     */
+    createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PostDto
+     */
+    updatedAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PostDto
+     */
+    expiresAt?: Date;
     /**
      * 
      * @type {string}
      * @memberof PostDto
      */
-    createdAt: string;
+    price?: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof PostDto
      */
-    updatedAt: string;
+    totalTipAmount: number;
 }
 
 export function PostDtoFromJSON(json: any): PostDto {
@@ -95,12 +113,15 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'id': json['id'],
         'userId': json['userId'],
         'text': json['text'],
-        'content': ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
+        'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
-        'hasLiked': json['hasLiked'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'isLiked': json['isLiked'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'price': !exists(json, 'price') ? undefined : json['price'],
+        'totalTipAmount': json['totalTipAmount'],
     };
 }
 
@@ -116,12 +137,15 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'id': value.id,
         'userId': value.userId,
         'text': value.text,
-        'content': ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
+        'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
-        'hasLiked': value.hasLiked,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'isLiked': value.isLiked,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'price': value.price,
+        'totalTipAmount': value.totalTipAmount,
     };
 }
 

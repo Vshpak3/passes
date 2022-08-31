@@ -77,7 +77,9 @@ export class FeedService {
 
     return new GetFeedResponseDto(
       postDtos,
-      postDtos.length ? postDtos[postDtos.length - 1].createdAt : '',
+      postDtos.length
+        ? postDtos[postDtos.length - 1].createdAt.toISOString()
+        : '',
     )
   }
 
@@ -139,7 +141,9 @@ export class FeedService {
 
     return new GetFeedResponseDto(
       postDtos,
-      postDtos.length ? postDtos[postDtos.length - 1].createdAt : '',
+      postDtos.length
+        ? postDtos[postDtos.length - 1].createdAt.toISOString()
+        : '',
     )
   }
 

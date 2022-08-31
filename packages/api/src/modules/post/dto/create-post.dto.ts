@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { Length } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsInt, Length } from 'class-validator'
 
 import { POST_CONTENT_LENGTH } from '../constants/schema'
 
@@ -16,4 +16,11 @@ export class CreatePostRequestDto {
 
   @ApiProperty()
   private: boolean
+
+  @ApiPropertyOptional()
+  price?: number
+
+  @IsInt()
+  @ApiPropertyOptional()
+  expiresAt?: number
 }

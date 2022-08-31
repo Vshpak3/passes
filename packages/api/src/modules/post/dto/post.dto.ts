@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { GetContentResponseDto } from '../../content/dto/get-content.dto'
 
@@ -12,7 +12,7 @@ export class PostDto {
   @ApiProperty()
   text: string
 
-  @ApiProperty({ type: [GetContentResponseDto] })
+  @ApiPropertyOptional({ type: [GetContentResponseDto] })
   content?: GetContentResponseDto[]
 
   @ApiProperty()
@@ -22,33 +22,40 @@ export class PostDto {
   numComments: number
 
   @ApiProperty()
-  hasLiked?: boolean
+  isLiked?: boolean
 
   @ApiProperty()
-  createdAt: string
+  createdAt: Date
 
   @ApiProperty()
-  updatedAt: string
+  updatedAt: Date
 
-  constructor(
-    id: string,
-    userId: string,
-    text: string,
-    content: GetContentResponseDto[],
-    numLikes: number,
-    numComments: number,
-    createdAt: string,
-    updatedAt: string,
-    hasLiked?: boolean,
-  ) {
-    this.id = id
-    this.userId = userId
-    this.text = text
-    this.content = content
-    this.numLikes = numLikes
-    this.numComments = numComments
-    this.createdAt = createdAt
-    this.updatedAt = updatedAt
-    this.hasLiked = hasLiked
+  @ApiPropertyOptional()
+  expiresAt?: Date
+
+  @ApiPropertyOptional()
+  price?: string
+
+  @ApiProperty()
+  totalTipAmount?: number
+
+  constructor(post, content?: GetContentResponseDto[]) {
+    if (post) {
+      this.id = post.id
+      this.userId = post.user_id
+      this.text = post.text
+      this.numLikes = post.num_likes
+      this.numComments = post.num_comments
+      this.createdAt = post.created_at
+      this.updatedAt = post.updated_at
+      this.expiresAt = post.expires_at
+        ? post.expires_at
+        : new Date(post.expires_at)
+      this.isLiked = !!post.is_liked
+      this.totalTipAmount = post.total_tip_amount
+    }
+    if (content) {
+      this.content = content
+    }
   }
 }

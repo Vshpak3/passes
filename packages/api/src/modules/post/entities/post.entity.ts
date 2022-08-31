@@ -9,6 +9,7 @@ import {
 
 import { BaseEntity } from '../../../database/base-entity'
 import { ContentEntity } from '../../content/entities/content.entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { POST_CONTENT_LENGTH } from '../constants/schema'
 
@@ -37,4 +38,10 @@ export class PostEntity extends BaseEntity {
 
   @Property({ type: types.float })
   price?: number
+
+  @Property({ type: types.bigint })
+  expiresAt?: number
+
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
+  totalTipAmount: number
 }

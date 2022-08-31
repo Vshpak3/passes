@@ -63,6 +63,8 @@ export class PostService {
           user: userId,
           text: createPostDto.text,
           private: createPostDto.private,
+          price: createPostDto.price,
+          expiresAt: createPostDto.expiresAt,
         })
 
         await this.dbWriter(PostEntity.table)
@@ -112,6 +114,9 @@ export class PostService {
         'post.num_comments',
         'post.created_at',
         'post.updated_at',
+        'post.price',
+        'post.expires_at',
+        'post.total_tip_amount',
         'content.id as content_id',
         'content.url',
         'content.content_type',
@@ -121,12 +126,13 @@ export class PostService {
         ),
       )
       .where('post.id', id)
+      .first()
 
-    if (!postDbResult[0]) {
+    if (!postDbResult) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (postDbResult[0].deleted_at) {
+    if (postDbResult.deleted_at) {
       throw new NotFoundException(POST_DELETED)
     }
 
@@ -149,17 +155,7 @@ export class PostService {
         (postContentDtoOrUndefined) => postContentDtoOrUndefined != undefined,
       )
 
-    return new PostDto(
-      postDbResult[0].id,
-      postDbResult[0].user_id,
-      postDbResult[0].text,
-      postContent as GetContentResponseDto[],
-      postDbResult[0].num_likes,
-      postDbResult[0].num_comments,
-      postDbResult[0].created_at.toISOString(),
-      postDbResult[0].updated_at.toISOString(),
-      !!postDbResult[0].is_liked,
-    )
+    return new PostDto(postDbResult, postContent as GetContentResponseDto[])
   }
 
   async update(
@@ -168,24 +164,16 @@ export class PostService {
     updatePostDto: UpdatePostRequestDto,
   ) {
     const postDbResult = await this.dbReader(PostEntity.table)
-      .select(
-        'post.id',
-        'post.user_id',
-        'post.deleted_at',
-        'post.text',
-        'post.num_likes',
-        'post.num_comments',
-        'post.created_at',
-        'post.updated_at',
-      )
+      .select('*')
       .where('post.id', postId)
       .where('post.user_id', userId)
+      .first()
 
-    if (!postDbResult[0]) {
+    if (!postDbResult) {
       throw new NotFoundException(POST_NOT_EXIST)
     }
 
-    if (postDbResult[0].deletedAt) {
+    if (postDbResult.deletedAt) {
       throw new NotFoundException(POST_DELETED)
     }
 
@@ -195,16 +183,7 @@ export class PostService {
     //TODO: actually update post here
     this.logger.info(updatePostDto)
 
-    return new PostDto(
-      postDbResult[0].id,
-      postDbResult[0].user_id,
-      postDbResult[0].text,
-      [],
-      postDbResult[0].num_likes,
-      postDbResult[0].num_comments,
-      postDbResult[0].created_at.toISOString(),
-      postDbResult[0].updated_at.toISOString(),
-    )
+    return new PostDto(postDbResult, [])
   }
 
   async remove(userId: string, postId: string) {
@@ -235,12 +214,14 @@ export class PostService {
   async createTip(userId: string, postId: string, amount: number) {
     await this.dbWriter(PostTipEntity.table).insert(
       PostTipEntity.toDict<PostTipEntity>({
-        id: v4(),
         user: userId,
         post: postId,
         amount,
       }),
     )
+    await this.dbWriter(PostEntity.table)
+      .increment('total_tip_amount', amount)
+      .where('id', postId)
   }
 
   async registerTipPost(
