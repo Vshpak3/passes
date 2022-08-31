@@ -19,6 +19,14 @@ import * as SidebarComponents from "./Sidebar"
 import Sparkles from "./Sparkles"
 import Tabs from "./Tabs"
 import TagsInput from "./TagsInput"
+import {
+  VaultAddToDropdown,
+  VaultDeleteModal,
+  VaultFilterContainer,
+  VaultMediaItem,
+  VaultSelectContainer,
+  VaultSortDropdown
+} from "./vault"
 
 export {
   AnimatedHeart,
@@ -39,5 +47,11 @@ export {
   SidebarComponents,
   Sparkles,
   Tabs,
-  TagsInput
+  TagsInput,
+  VaultAddToDropdown,
+  VaultDeleteModal,
+  VaultFilterContainer,
+  VaultMediaItem,
+  VaultSelectContainer,
+  VaultSortDropdown
 }

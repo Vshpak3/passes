@@ -30,6 +30,15 @@ import Select from "./Select"
 import Separator from "./Separator"
 import Text from "./Text"
 import TextArea from "./TextArea"
+import {
+  VaultAddToItem,
+  VaultDeselectButton,
+  VaultFilterOption,
+  VaultItemDate,
+  VaultItemSelect,
+  VaultSelectLabel,
+  VaultSortItem
+} from "./vault"
 import Wordmark from "./Wordmark"
 
 export {
@@ -61,5 +70,12 @@ export {
   Separator,
   Text,
   TextArea,
+  VaultAddToItem,
+  VaultDeselectButton,
+  VaultFilterOption,
+  VaultItemDate,
+  VaultItemSelect,
+  VaultSelectLabel,
+  VaultSortItem,
   Wordmark
 }

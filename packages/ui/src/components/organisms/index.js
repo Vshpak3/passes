@@ -13,6 +13,7 @@ import QuickPayModal from "./QuickPayModal"
 import RadioGroup from "./RadioGroup"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
+import { VaultMediaGrid, VaultNavigation } from "./vault"
 import Welcome from "./Welcome"
 export {
   CreatePassForm,
@@ -33,5 +34,7 @@ export {
   SelectPassType,
   SidebarDefault,
   SidebarMobile,
+  VaultMediaGrid,
+  VaultNavigation,
   Welcome
 }
