@@ -83,6 +83,9 @@ export const Button = ({
       variantClassName =
         "bg-mauveDark-mauve12 text-black max-h-[49px] border border-mauveDark-mauve10 hover:bg-transparent hover:border-white hover:text-white"
       break
+    case "white-outline":
+      variantClassName = "text-white max-h-[49px] border border-white "
+      break
     case "link-blue":
       variantClassName =
         "text-blue-blue10 transition-colors hover:text-[hsl(208,_100%,_52%)] active:text-[hsl(208,_100%,_45%)] p-1"
@@ -102,10 +105,10 @@ export const Button = ({
       style={style}
       className={
         "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors xs:px-3 xs:py-2" +
-        (bigger ? " !px-4 !py-3" : "") +
+        (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
         (className && ` ${className}`) +
-        (disabled && " border-[#3333]/80 bg-[#3333]/80")
+        (disabled && " border-[#3333]/80 bg-[#3333]/80 ")
       }
       role={tag === "a" ? "button" : undefined}
       tabIndex={tag === "a" ? 0 : undefined}

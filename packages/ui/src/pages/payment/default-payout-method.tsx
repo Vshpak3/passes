@@ -17,40 +17,6 @@ import AddWalletModal from "../../components/organisms/AddWalletModal"
 import BankIcon from "../../icons/bank-icon"
 import AccountCard from "./AccountCard"
 
-// const EVM_CHAINID = {
-//   1: "Ethereum($ETH)",
-//   5: "Ethereum($ETH)",
-
-//   137: "Polygon($MATIC)",
-//   80001: "Polygon($MATIC)",
-
-//   43114: "Avalance($AVAX)",
-//   43113: "Avalance($AVAX)"
-// }
-
-// const wallets = [
-//   {
-//     id: 1,
-//     address: "0x23435745756",
-//     chain: "AVAX"
-//   },
-//   {
-//     id: 2,
-//     address: "0x11111111",
-//     chain: "SOL"
-//   },
-//   {
-//     id: 3,
-//     address: "0x999999999",
-//     chain: "FTM"
-//   },
-//   {
-//     id: 4,
-//     address: "0x999999999",
-//     chain: "ONE"
-//   }
-// ]
-
 const DefaultPayoutMethod = () => {
   const [banks, setBanks] = useState<CircleBankDto[]>([])
   const [wallets, setWallets] = useState<WalletDto[]>([])
@@ -153,6 +119,27 @@ const DefaultPayoutMethod = () => {
     }
   }
 
+  const deleteWallet = async (walletId: string) => {
+    const walletApi = new WalletApi()
+    const paymentApi = new PaymentApi()
+    try {
+      await walletApi.walletRemove(
+        { id: walletId },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    } finally {
+      await getWallets(walletApi)
+      await getDefaultPayout(paymentApi)
+    }
+  }
+
   useEffect(() => {
     if (!router.isReady || loading) {
       console.log("r2")
@@ -208,12 +195,6 @@ const DefaultPayoutMethod = () => {
               <div className="flex flex-col justify-around rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:h-full">
                 <div className="flex flex-col">
                   {filteredDefaultPayout?.description}
-                  {/* <span className="text-sm text-[#ffff]/70 lg:self-start">
-                    IDR /BCA  
-                  </span>
-                  <span className="text-sm text-[#ffff]/70 lg:self-start">
-                    ********8920  
-                  </span>  */}
                 </div>
                 <div className="flex flex-row justify-between gap-16">
                   <div className="flex flex-col">
@@ -262,6 +243,24 @@ const DefaultPayoutMethod = () => {
                       method: PayoutMethodDtoMethodEnum.CircleUsdc
                     })
                   }}
+                  deleteBank={() => deleteBank(account.id)}
+                />
+              </div>
+            )
+          })}
+          {/* List of walletes */}
+          {wallets.map((wallet) => {
+            return (
+              <div key={wallet.id} className="col-span-10 w-full md:space-y-6">
+                <AccountCard
+                  wallet={wallet}
+                  handleClick={() => {
+                    submit({
+                      bankId: wallet.id.toString(),
+                      method: PayoutMethodDtoMethodEnum.CircleUsdc
+                    })
+                  }}
+                  deleteWallet={() => deleteWallet(wallet.id)}
                 />
               </div>
             )

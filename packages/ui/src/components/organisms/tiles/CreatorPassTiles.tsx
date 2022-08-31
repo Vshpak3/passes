@@ -22,7 +22,6 @@ const CreatorPassTiles = ({
   const handleClick = () => {
     setModalOpen(true)
   }
-  console.log(passData)
   if (!hasMounted) {
     return null
   } else

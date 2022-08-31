@@ -93,20 +93,11 @@ const PastTransactions = () => {
   // purely for demo as BE takes care of pagination
   const currentTsxData = useMemo(() => {
     const firstPageIndex = page * PAGE_SIZE
-    console.log("firstpgeagendex", firstPageIndex)
     const lastPageIndex = firstPageIndex + PAGE_SIZE
-    console.log("lastpageindex  ", lastPageIndex)
-    console.log(
-      "sliceanddice",
-      payoutTransaction.slice(firstPageIndex, lastPageIndex)
-    )
     return payoutTransaction.slice(firstPageIndex, lastPageIndex)
   }, [page])
 
-  console.log(currentTsxData)
-
   const datesInRange = (transactions) => {
-    console.log(transactions)
     const tempArray = []
     for (let i = 0; i < transactions.length; i++) {
       if (
@@ -127,13 +118,11 @@ const PastTransactions = () => {
     if (!user) {
       router.push("/login")
     }
-    console.log(page)
     const fetchData = async () => {
       const paymentApi = wrapApi(PaymentApi)
       const payinListResponse = await paymentApi.paymentGetPayins({
         payinListRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
       })
-      console.log(payoutTransaction.slice(page, page * PAGE_SIZE))
       // uses dummy data if payin is empty
       setPayins(
         payinListResponse.payins.length !== 0

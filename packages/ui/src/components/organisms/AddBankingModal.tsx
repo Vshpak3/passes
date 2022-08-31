@@ -55,8 +55,7 @@ IAddPayoutModal) => {
   const onSubmit = async () => {
     try {
       const values: any = getValues()
-      console.log(values)
-      console.log("specifics", values["bankAddress"])
+
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
@@ -119,7 +118,6 @@ IAddPayoutModal) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <form
         onSubmit={(e) => {
-          console.log("test")
           handleSubmit(onSubmit)(e).catch((err) =>
             console.log(`errors: ${err}`)
           )

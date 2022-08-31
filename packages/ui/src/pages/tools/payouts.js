@@ -14,22 +14,33 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 
 import BankIcon from "../../icons/bank-icon"
 import AccountCard from "../payment/AccountCard"
+
+const payoutFrequencyOptions = [
+  {
+    label: "Weekly",
+    value: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.OneWeek
+  },
+  {
+    label: "Biweekly",
+    value: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
+  }
+]
+
 const Payouts = () => {
   const router = useRouter()
+  const { user, loading } = useUser()
   const [banks, setBanks] = useState([])
-  const [, setCreatorSettings] = useState()
-
   const {
     register: register,
     // handleSubmit,
-    // getValues,
+    getValues,
+    setValue,
     formState: { errors }
   } = useForm({})
 
   const [defaultPayout, setDefaultPayout] = useState()
   const [accessToken] = useLocalStorage("access-token", "")
 
-  const { user, loading } = useUser()
   const filteredDefaultPayout = banks.find(
     (bank) => bank.id === defaultPayout?.bankId
   )
@@ -40,6 +51,30 @@ const Payouts = () => {
       await paymentApi.paymentPayout()
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleChange = async () => {
+    try {
+      const creatorSettingsApi = wrapApi(CreatorSettingsApi)
+      const payoutFrequency = getValues("payoutFrequency")
+
+      await creatorSettingsApi.creatorSettingsUpdate({
+        updateCreatorSettingsRequestDto: {
+          payoutFrequency
+        },
+        headers: {
+          Authorization: "Bearer " + accessToken
+          // "Content-Type": "application/json"
+        }
+      })
+    } catch (error) {
+      console.log("🚀 ~ file: payouts.js ~ line 90 ~ error", error)
+      // setCreatorSettings({
+      //   minimumTipAmount: "90000.00",
+      //   payoutFrequency:
+      //     CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
+      // })
     }
   }
 
@@ -79,25 +114,18 @@ const Payouts = () => {
   const getAutomaticPayoutSchedule = useCallback(
     async (creatorSettingsApi) => {
       try {
-        setCreatorSettings(
-          await creatorSettingsApi.creatorSettingsFind({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        )
-      } catch {
-        setCreatorSettings({
-          minimumTipAmount: "5.00",
-          payoutFrequency:
-            CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
+        await creatorSettingsApi.creatorSettingsFind({
+          headers: {
+            Authorization: "Bearer " + accessToken
+            // "Content-Type": "application/json"
+          }
         })
+      } catch (error) {
+        console.log(error)
       }
     },
     [accessToken]
   )
-
   useEffect(() => {
     if (!router.isReady || loading) {
       console.log("r2")
@@ -122,7 +150,6 @@ const Payouts = () => {
     getDefaultPayout,
     getAutomaticPayoutSchedule
   ])
-
   return (
     <div className="mx-auto -mt-[160px] grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
       <div className="col-span-10 w-full">
@@ -161,9 +188,14 @@ const Payouts = () => {
                   <FormInput
                     register={register}
                     type="select"
-                    name="chain"
-                    selectOptions={["Weekly", "Biweekly"]}
+                    name="payoutFrequency"
+                    selectOptions={payoutFrequencyOptions}
                     errors={errors}
+                    onChange={(e) => {
+                      setValue("payoutFrequency", e.target.value)
+                      handleChange()
+                    }}
+                    // handleChange={handleChange}
                     className="m-0 mt-2 border-transparent bg-transparent text-[#ffff]/90 focus:border-[#BF7AF0] focus:ring-0"
                   />
                 </div>
@@ -182,7 +214,7 @@ const Payouts = () => {
       <div className="col-span-10 w-full">
         <div className="my-4 flex flex-row justify-between gap-x-4">
           <span className="text-[24px] font-bold text-[#ffff]/90">
-            Bank Account
+            Default Payout Method
           </span>
           <Button
             variant="purple"

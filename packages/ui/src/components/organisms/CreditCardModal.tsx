@@ -14,7 +14,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import TrelloIcon from "public/icons/trello-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
-import React, { Dispatch, SetStateAction, useEffect } from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import {
   ButtonTypeEnum,
@@ -111,10 +111,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
         }
       })
       const card = cardsResp.cards.find((item) => item.id === createdCard.id)
-      console.log(
-        "🚀 ~ file: CreditCardModal.tsx ~ line 131 ~ setTimeout ~ card",
-        card
-      )
+
       if (card && card.status === "complete") {
         // set here paymentSetDefaultPayinMethod
         await paymentApi.paymentSetDefaultPayinMethod(
@@ -135,13 +132,6 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
     }, 1000)
     // else lemao
   }
-
-  // res.status === completed, then we can set
-  // the default card to the newly created card
-
-  useEffect(() => {
-    console.log("🚀 ~ file: CreditCardModal.tsx ~ line 54 ~ errors", errors)
-  }, [errors])
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>

@@ -26,7 +26,6 @@ IQuickPayModal) => {
   const { defaultPayinMethod } = usePayment()
 
   const handlePayment = async () => {
-    console.log("defaultPayinMethod", defaultPayinMethod)
     const passApi = wrapApi(PassApi)
     if (user && isOpen) {
       const createPassHolderDto = {
@@ -34,10 +33,6 @@ IQuickPayModal) => {
         payinMethod: defaultPayinMethod
       }
       try {
-        console.log(
-          "🚀 ~ file: QuickPayModal.tsx ~ line 52 ~ handlePayment ~ createPassHolderDto",
-          createPassHolderDto
-        )
         await passApi.passRegisterCreatePass({
           createPassHolderRequestDto: createPassHolderDto
         })

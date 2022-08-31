@@ -10,7 +10,6 @@ interface ITabs {
 
 const Tabs = ({ tabsArray }: ITabs) => {
   const [activeTab, setActiveTab] = useState(tabsArray[0].tabName)
-  console.log(activeTab)
   return (
     <>
       {tabsArray.map((tab, index) => {

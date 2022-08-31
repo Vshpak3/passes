@@ -32,5 +32,5 @@ export type FormOptions = Partial<{
 export type FormRegister = any
 export type FormControl = any
 export type FormErrors = any
-export type FormSelectOptions = string[]
+export type FormSelectOptions = Array<string | { value: string; label: string }>
 export type FileAccept = Array<"audio" | "image" | "video" | `.${string}`>
