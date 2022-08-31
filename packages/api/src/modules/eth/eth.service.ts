@@ -100,10 +100,12 @@ export class EthService {
       return batchEthWalletRefresh
     } else {
       const batchId = uuid.v4()
-      await this.dbWriter(BatchEthWalletRefreshEntity.table).insert({
-        id: batchId,
-        last_processed_id: null,
-      })
+      await this.dbWriter(BatchEthWalletRefreshEntity.table).insert(
+        BatchEthWalletRefreshEntity.toDict<BatchEthWalletRefreshEntity>({
+          id: batchId,
+          lastProcessedId: null,
+        }),
+      )
       return {
         id: batchId,
         last_processed_id: null,
@@ -119,7 +121,7 @@ export class EthService {
       .select('wallet.id', 'wallet.user_id')
       .where('wallet.chain', ChainEnum.ETH)
     if (lastProcessedId != null) {
-      walletsQuery.where('wallet.id', '>', lastProcessedId)
+      await walletsQuery.where('wallet.id', '>', lastProcessedId)
     }
     const wallets = await walletsQuery.limit(BATCH_WALLET_REFRESH_CHUNK_SIZE)
 
@@ -197,7 +199,7 @@ export class EthService {
     const ethNfts: Array<EthNftEntity> = []
 
     // first, remove tokens from our db that have been removed from the user's wallet
-    walletTokens.forEach((walletToken) => {
+    walletTokens.forEach(async (walletToken) => {
       if (
         onChainTokenMap.has(
           `${walletToken.ethNftCollection.tokenAddress},${walletToken.tokenId}`,
@@ -210,7 +212,9 @@ export class EthService {
         ethNfts.push(walletToken)
       } else {
         // this token has been removed from the user's wallet on-chain and should be removed from the db
-        this.dbWriter(EthNftEntity.table).where({ id: walletToken.id }).delete()
+        await this.dbWriter(EthNftEntity.table)
+          .where({ id: walletToken.id })
+          .delete()
       }
     })
 
@@ -219,7 +223,7 @@ export class EthService {
     nftCollections.forEach((nftCollection) => {
       nftCollectionMap.set(nftCollection.tokenAddress, nftCollection)
     })
-    onChainTokenMap.forEach((_, key) => {
+    onChainTokenMap.forEach(async (_, key) => {
       const tokenData = key.split(',')
       const ethNft = new EthNftEntity()
       ethNft.wallet = wallet
@@ -229,7 +233,9 @@ export class EthService {
       ethNfts.push(ethNft)
 
       // TODO: make this into a transaction
-      this.dbWriter(EthNftEntity.table).insert(EthNftEntity.toDict(ethNft))
+      await this.dbWriter(EthNftEntity.table).insert(
+        EthNftEntity.toDict(ethNft),
+      )
     })
 
     return new WalletResponseDto(wallet, ethNfts)

@@ -58,10 +58,11 @@ export class FacebookComplianceService {
         const id = uuid.v4()
         const userId = decodedBody.user_id
 
-        const request = {
-          id,
-          facebook_user_id: userId,
-        }
+        const request =
+          FacebookDeletionRequestEntity.toDict<FacebookDeletionRequestEntity>({
+            id,
+            facebookUserId: userId,
+          })
         await trx(FacebookDeletionRequestEntity.table).insert(request)
 
         await trx(UserEntity.table)

@@ -1,4 +1,4 @@
-export class LambdaResponseError extends Error {
+class LambdaResponseError extends Error {
   constructor(msg: string) {
     super('bad AWS lambda response: ' + msg)
 

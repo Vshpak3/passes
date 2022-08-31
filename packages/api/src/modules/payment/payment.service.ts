@@ -1246,12 +1246,14 @@ export class PaymentService {
     payoutMethodDto: PayoutMethodDto,
   ): Promise<void> {
     await this.dbWriter(DefaultPayoutMethodEntity.table)
-      .insert({
-        user_id: userId,
-        method: payoutMethodDto.method,
-        bank_id: payoutMethodDto.bankId,
-        wallet_id: payoutMethodDto.walletId,
-      })
+      .insert(
+        DefaultPayoutMethodEntity.toDict<DefaultPayoutMethodEntity>({
+          user: userId,
+          method: payoutMethodDto.method,
+          bank: payoutMethodDto.bankId,
+          wallet: payoutMethodDto.walletId,
+        }),
+      )
       .onConflict('user_id')
       .merge(['method', 'bank_id', 'wallet_id'])
   }

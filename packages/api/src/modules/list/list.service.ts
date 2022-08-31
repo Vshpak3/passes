@@ -18,7 +18,7 @@ import { ListMembersRequestDto } from './dto/list-members.dto'
 import { ListEntity } from './entities/list.entity'
 import { ListMemberEntity } from './entities/list-member.entity'
 
-export const LIST_MEMBER_EXISTS = 'List member already exists'
+const LIST_MEMBER_EXISTS = 'List member already exists'
 
 @Injectable()
 export class ListService {
@@ -38,8 +38,7 @@ export class ListService {
   ): Promise<GetListResponseDto> {
     const listId = uuid.v4()
     let followResult: any[] = []
-    let listMemberRecords: { id: string; list_id: string; user_id: string }[] =
-      []
+    let listMemberRecords: any[] = []
 
     if (createListDto.users) {
       followResult = await this.dbReader(FollowEntity.table)
@@ -55,20 +54,22 @@ export class ListService {
 
       listMemberRecords = followResult.map(
         (followResult: { subscriber_id: string }) => {
-          return {
-            id: uuid.v4(),
-            list_id: listId,
-            user_id: followResult.subscriber_id,
-          }
+          return ListMemberEntity.toDict<ListMemberEntity>({
+            list: listId,
+            user: followResult.subscriber_id,
+          })
         },
       )
     }
+
     await this.dbWriter.transaction(async (trx) => {
-      await trx(ListEntity.table).insert({
-        id: listId,
-        user_id: userId,
-        name: createListDto.name,
-      })
+      await trx(ListEntity.table).insert(
+        ListEntity.toDict<ListEntity>({
+          id: listId,
+          user: userId,
+          name: createListDto.name,
+        }),
+      )
       if (listMemberRecords.length != 0) {
         await trx(ListMemberEntity.table).insert(listMemberRecords)
       }
@@ -105,9 +106,9 @@ export class ListService {
       .where('list.id', id)
 
     if (cursor) {
-      listMemberQuery.where('list_member.user_id', '>', cursor)
+      await listMemberQuery.where('list_member.user_id', '>', cursor)
     }
-    listMemberQuery.orderBy('users.display_name', 'asc')
+    await listMemberQuery.orderBy('users.display_name', 'asc')
 
     const dbResult = await listMemberQuery
 
@@ -143,10 +144,10 @@ export class ListService {
       .where('list.user_id', userId)
 
     if (cursor) {
-      listQuery.where('list.id', '>', cursor)
+      await listQuery.where('list.id', '>', cursor)
     }
-    listQuery.orderBy('list.name', 'asc')
-    listQuery.groupBy('list.id')
+    await listQuery.orderBy('list.name', 'asc')
+    await listQuery.groupBy('list.id')
 
     return new GetListsResponseDto(
       (await listQuery).map((list) => {

@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { BillingDetailsDto } from './billing-details.dto'
 
-export class CircleBankAddressDto {
+class CircleBankAddressDto {
   @ApiPropertyOptional()
   bankName?: string
 

@@ -1,5 +1,9 @@
 import { ConfigService } from '@nestjs/config'
 
+export function localMockedAwsDev(): boolean {
+  return process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID
+}
+
 export function getAwsConfig(
   configService: ConfigService,
 ): Record<string, any> {

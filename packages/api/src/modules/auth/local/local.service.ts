@@ -38,16 +38,15 @@ export class LocalAuthService {
     const id = v4()
 
     await this.dbWriter(UserEntity.table).insert(
-      {
+      UserEntity.toDict<UserEntity>({
         id,
         email: createLocalUserDto.email,
-        password_hash: passwordHash,
+        passwordHash: passwordHash,
         username: generateFromEmail(createLocalUserDto.email, 3),
-        is_kycverified: false,
-        is_creator: false,
-        is_disabled: false,
-      },
-      '*',
+        isKYCVerified: false,
+        isCreator: false,
+        isDisabled: false,
+      }),
     )
 
     // MySQL doesn't support insert and returning the record

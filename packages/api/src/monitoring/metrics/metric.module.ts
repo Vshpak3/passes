@@ -11,15 +11,14 @@ import { MetricsService } from './metric.service'
 
 export type MetricsModuleOptions = ClientOptions
 
-export interface MetricsModuleAsyncOptions
-  extends Pick<ModuleMetadata, 'imports'> {
+interface MetricsModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   useFactory: (
     ...args: any[]
   ) => Promise<MetricsModuleOptions> | MetricsModuleOptions
   inject?: any[]
 }
 
-export const METRICS_MODULE_OPTIONS = 'metrics:module-options'
+const METRICS_MODULE_OPTIONS = 'metrics:module-options'
 
 @Global()
 @Module({})

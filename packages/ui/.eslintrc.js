@@ -1,19 +1,26 @@
 module.exports = {
   extends: "../../.eslintrc.js",
+  parserOptions: {
+    project: "./tsconfig.json"
+  },
   extends: [
     "next/core-web-vitals",
     // 'plugin:jsx-a11y/recommended',
-    "plugin:react-hooks/recommended"
-    // 'plugin:react/recommended',
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended"
   ],
   overrides: [
     {
       files: ["./src/**/*"],
       rules: {
+        "@typescript-eslint/no-floating-promises": "off",
         "no-console": "off",
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
         "sonarjs/cognitive-complexity": "off",
         "sonarjs/no-duplicate-string": "off"
       }
     }
-  ]
+  ],
+  ignorePatterns: ["*.config.js"]
 }

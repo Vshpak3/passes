@@ -3,6 +3,7 @@ import { writeFileSync } from 'fs'
 import { App } from '../app/app.main'
 
 // Generates OpenAPI JSON file from application
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 ;(async () => {
   console.log('Generating OpenAPI JSON file') // eslint-disable-line no-console
   const app = new App()

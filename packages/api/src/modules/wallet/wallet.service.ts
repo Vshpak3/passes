@@ -13,6 +13,7 @@ import Web3 from 'web3'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY } from '../sol/sol.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
@@ -26,8 +27,8 @@ import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { ChainEnum } from './enum/chain.enum'
 
-export const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
-export const MAX_WALLETS_PER_USER = 10
+const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
+const MAX_WALLETS_PER_USER = 10
 
 @Injectable()
 export class WalletService {
@@ -106,7 +107,7 @@ export class WalletService {
     const id = v4()
     // create wallet if it does not exist
     let address = ''
-    if (process.env.NODE_ENV == 'dev' && !process.env.AWS_ACCESS_KEY_ID) {
+    if (localMockedAwsDev()) {
       const keypair = Keypair.fromSecretKey(
         base58.decode(SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY),
       )
@@ -336,13 +337,14 @@ export class WalletService {
         `${MAX_WALLETS_PER_USER} wallet limit reached!`,
       )
     }
-    await this.dbWriter(WalletEntity.table).insert({
-      id: v4(),
-      user_id: userId,
-      authenticated: false,
-      address: createUnauthenticatedWalletDto.walletAddress,
-      chain: createUnauthenticatedWalletDto.chain,
-    })
+    await this.dbWriter(WalletEntity.table).insert(
+      WalletEntity.toDict<WalletEntity>({
+        user: userId,
+        authenticated: false,
+        address: createUnauthenticatedWalletDto.walletAddress,
+        chain: createUnauthenticatedWalletDto.chain,
+      }),
+    )
   }
 
   async remove(userId: string, walletId: string): Promise<boolean> {

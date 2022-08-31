@@ -43,7 +43,7 @@ export class LikeService {
       return
     }
 
-    this.dbWriter.transaction(async (trx) => {
+    await this.dbWriter.transaction(async (trx) => {
       const data = LikeEntity.toDict<LikeEntity>({
         post: postId,
         liker: userId,
@@ -77,7 +77,7 @@ export class LikeService {
       return
     }
 
-    this.dbWriter.transaction(async (trx) => {
+    await this.dbWriter.transaction(async (trx) => {
       await trx(LikeEntity.table)
         .where({
           post_id: postId,

@@ -6,6 +6,7 @@ import { Profile, Strategy } from 'passport-twitter'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
+import { GetUserResponseDto } from '../../user/dto/get-user.dto'
 import { UserService } from '../../user/user.service'
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
@@ -33,7 +34,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
       }
 
       this.metrics.increment('login.success.twitter')
-      return user
+      return new GetUserResponseDto(user)
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
       this.metrics.increment('login.failure.twitter')

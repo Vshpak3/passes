@@ -9,7 +9,6 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { USERNAME_TAKEN } from './constants/errors'
-import { CreateUserRequestDto } from './dto/create-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
 import { UpdateUserRequestDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
@@ -25,16 +24,6 @@ export class UserService {
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
-
-  async create(createUserDto: CreateUserRequestDto): Promise<UserEntity> {
-    const data = UserEntity.toDict<UserEntity>({
-      ...createUserDto,
-    })
-
-    await this.dbWriter(UserEntity.table).insert(data)
-    // TODO: fix return type
-    return data as any
-  }
 
   async setUsername(userId: string, username: string): Promise<UserEntity> {
     // TODO: check if user query is needed
@@ -57,17 +46,17 @@ export class UserService {
     provider: string,
     providerId: string,
   ): Promise<UserEntity> {
-    const id = uuid.v4()
     const data = UserEntity.toDict<UserEntity>({
-      id,
+      id: uuid.v4(),
       email,
       username: generateFromEmail(email, 3),
       oauthId: providerId,
       oauthProvider: provider,
     })
     await this.dbWriter(UserEntity.table).insert(data)
-    // TODO: fix return type
-    return data as any
+
+    // TODO: fix this cast
+    return data as UserEntity
   }
 
   async findOne(id: string): Promise<UserEntity> {
@@ -119,8 +108,8 @@ export class UserService {
     const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     return await this.dbReader(UserEntity.table)
-      .where(function () {
-        this.whereILike('username', likeClause).orWhereILike(
+      .where(async function () {
+        await this.whereILike('username', likeClause).orWhereILike(
           'display_name',
           likeClause,
         )

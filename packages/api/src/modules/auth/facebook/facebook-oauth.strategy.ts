@@ -6,6 +6,7 @@ import { Profile, Strategy } from 'passport-facebook'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
+import { GetUserResponseDto } from '../../user/dto/get-user.dto'
 import { UserService } from '../../user/user.service'
 
 @Injectable()
@@ -39,7 +40,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
       }
 
       this.metrics.increment('login.success.facebook')
-      return user
+      return new GetUserResponseDto(user)
     } catch (err) {
       this.logger.error('Error occurred while validating:', err)
       this.metrics.increment('login.failure.facebook')

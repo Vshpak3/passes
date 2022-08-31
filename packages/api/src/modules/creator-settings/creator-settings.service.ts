@@ -8,7 +8,8 @@ import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreateCreatorSettingsRequestDto } from './dto/create-creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
-export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
+
+const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorSettingsService {

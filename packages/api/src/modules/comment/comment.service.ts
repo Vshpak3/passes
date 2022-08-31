@@ -55,7 +55,7 @@ export class CommentService {
       content: content,
     })
 
-    this.dbWriter.transaction(async (trx) => {
+    await this.dbWriter.transaction(async (trx) => {
       await trx(CommentEntity.table).insert(data)
       await trx(PostEntity.table)
         .where('id', postId)
@@ -140,7 +140,7 @@ export class CommentService {
       isHidden: true,
     })
 
-    this.dbWriter.transaction(async (trx) => {
+    await this.dbWriter.transaction(async (trx) => {
       await trx(CommentEntity.table).update(data).where({ id })
       await trx(PostEntity.table)
         .where('id', post.id)
@@ -180,7 +180,7 @@ export class CommentService {
       deletedAt: new Date(),
     })
 
-    this.dbWriter.transaction(async (trx) => {
+    await this.dbWriter.transaction(async (trx) => {
       await trx(CommentEntity.table).update(data).where({ id })
       await trx(PostEntity.table)
         .where('id', post.id)

@@ -91,8 +91,8 @@ export class FollowService {
         'user.display_name',
         'profile.profile_image_url',
       )
-      .where(function () {
-        this.whereILike('user.username', likeClause).orWhereILike(
+      .where(async function () {
+        await this.whereILike('user.username', likeClause).orWhereILike(
           'user.display_name',
           likeClause,
         )
@@ -100,7 +100,9 @@ export class FollowService {
       .andWhere('follow.creator_id', userId)
 
     if (searchFanDto.cursor) {
-      query.andWhere(this.dbReader.raw(`user.id > ${searchFanDto.cursor}`))
+      await query.andWhere(
+        this.dbReader.raw(`user.id > ${searchFanDto.cursor}`),
+      )
     }
 
     const followResult = await query

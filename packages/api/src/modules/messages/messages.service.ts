@@ -170,25 +170,29 @@ export class MessagesService {
     const batchMessageId = v4()
     this.dbWriter
       .transaction(async (trx) => {
-        await trx(BatchMessageEntity.table).insert({
-          id: batchMessageId,
-          user_id: userId,
-          list_id: createBatchMessageDto.list,
-          text: createBatchMessageDto.text,
-        })
+        await trx(BatchMessageEntity.table).insert(
+          BatchMessageEntity.toDict<BatchMessageEntity>({
+            id: batchMessageId,
+            user: userId,
+            list: createBatchMessageDto.list,
+            text: createBatchMessageDto.text,
+          }),
+        )
 
         if (createBatchMessageDto.content != undefined) {
           const contentBatchMessageIds: string[] = []
           for (let i = 0; i < createBatchMessageDto.content.length; i++) {
             contentBatchMessageIds.push(v4())
-            await trx(ContentBatchMessageEntity.table).insert({
-              id: contentBatchMessageIds[i],
-              content_id: createBatchMessageDto.content[i],
-              batch_message_id: batchMessageId,
-            })
-            await trx('content_list').insert({
-              content_entity_id: createBatchMessageDto.content[i],
-              list_entity_id: createBatchMessageDto.list,
+            await trx(ContentBatchMessageEntity.table).insert(
+              ContentBatchMessageEntity.toDict<ContentBatchMessageEntity>({
+                id: contentBatchMessageIds[i],
+                content: createBatchMessageDto.content[i],
+                batchMessage: batchMessageId,
+              }),
+            )
+            await trx('contentList').insert({
+              contentEntity: createBatchMessageDto.content[i],
+              listEntity: createBatchMessageDto.list,
             })
           }
         }
@@ -227,7 +231,7 @@ export class MessagesService {
       .where('batch_message.id', batchMessageId)
 
     if (lastProcessed != null) {
-      batchMessageListMembersQuery.where(
+      await batchMessageListMembersQuery.where(
         this.dbReader.raw('list_member.id > batch_message.last_processed_id'),
       )
     }

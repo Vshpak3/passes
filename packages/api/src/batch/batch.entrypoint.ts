@@ -2,6 +2,8 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
 import { App } from '../app/app.main'
 import { TaskDirectory } from '../batch/batch.directory'
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 ;(async () => {
   const args = process.argv.slice(2)
   const batchTaskName = args[0]

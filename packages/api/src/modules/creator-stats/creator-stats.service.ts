@@ -10,7 +10,6 @@ import { CreatorEarningEntity } from './entities/creator-earning.entity'
 import { CreatorEarningHistoryEntity } from './entities/creator-earning-history.entity'
 import { EarningTypeEnum } from './enum/earning.type.enum'
 import { EarningsTypeError } from './error/earnings.error'
-export const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorStatsService {

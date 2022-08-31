@@ -44,12 +44,12 @@ async function handleCallback(
   }
 }
 
-export const handleSuccesfulCallback = (
+export const handleSuccesfulCallback = async (
   payin,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
-  handleCallback(
+  await handleCallback(
     payin,
     payService,
     db,
@@ -58,12 +58,12 @@ export const handleSuccesfulCallback = (
   )
 }
 
-export const handleFailedCallback = (
+export const handleFailedCallback = async (
   payin,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
-  handleCallback(
+  await handleCallback(
     payin,
     payService,
     db,
@@ -72,12 +72,12 @@ export const handleFailedCallback = (
   )
 }
 
-export const handleCreationCallback = (
+export const handleCreationCallback = async (
   payin,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
-  handleCallback(
+  await handleCallback(
     payin,
     payService,
     db,
