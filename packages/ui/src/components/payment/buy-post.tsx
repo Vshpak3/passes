@@ -1,4 +1,10 @@
-import { PayinMethodDto, PostApi } from "@passes/api-client"
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  PayinMethodDto,
+  PayinMethodDtoMethodEnum,
+  PostApi
+} from "@passes/api-client"
 import React from "react"
 
 import { wrapApi } from "../../helpers"
@@ -17,23 +23,35 @@ export const BuyPostButton = ({
 }: IBuyPostButton) => {
   const api = wrapApi(PostApi)
   const register = async () => {
-    return await api.postRegisterPurchasePost({
-      createPostAccessRequestDto: {
-        postId,
-        fromDM,
-        payinMethod
+    // return await api.postRegisterPurchasePost({
+    //   createPostAccessRequestDto: {
+    //     postId,
+    //     fromDM,
+    //     payinMethod
+    //   }
+    // })
+    return {
+      payinId: "",
+      amount: 100,
+      payinMethod: {
+        method: PayinMethodDtoMethodEnum.None
       }
-    })
+    }
   }
 
   const registerData = async () => {
-    return await api.postRegisterPurchasePostData({
-      createPostAccessRequestDto: {
-        postId,
-        fromDM,
-        payinMethod
-      }
-    })
+    // return await api.postRegisterPurchasePostData({
+    //   createPostAccessRequestDto: {
+    //     postId,
+    //     fromDM,
+    //     payinMethod
+    //   }
+    // })
+    return {
+      amount: 100,
+      blocked: false,
+      target: ""
+    }
   }
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(

@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
+import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 import { wrapApi } from "src/helpers/wrapApi"
 
@@ -116,36 +117,43 @@ export const PostTextContent = ({ post }) => (
   </div>
 )
 
-export const LockedMedia = ({ postUnlocked, setPostUnlocked, post }) => (
-  <div className="relative w-full bg-transparent ">
-    <div
-      className={classNames(
-        postUnlocked ? "" : "bg-[#1B141D]/50 backdrop-blur-[40px]",
-        "absolute flex h-full w-full items-center justify-center rounded-[20px]"
-      )}
-    >
-      {!postUnlocked && (
-        <div className="flex-center h-45 flex w-[245px] flex-col ">
-          <PostUnlockButton
-            onClick={() => setPostUnlocked(!postUnlocked)}
-            value={postUnlocked}
-            name={`Unlock Post For ${formatCurrency(post.price)}`}
-          />
-          <div className="flex items-center justify-center pt-4">
-            <span>UNLOCK 4 videos, 20 photos</span>
-          </div>
+export const LockedMedia = ({ postUnlocked, post }) => {
+  const [openBuyPostModal, setOpenBuyPostModal] = useState(null)
+
+  return (
+    <>
+      <div className="relative w-full bg-transparent ">
+        <div
+          className={classNames(
+            postUnlocked ? "" : "bg-[#1B141D]/50 backdrop-blur-[40px]",
+            "absolute flex h-full w-full items-center justify-center rounded-[20px]"
+          )}
+        >
+          {!postUnlocked && (
+            <div className="flex-center h-45 flex w-[245px] flex-col ">
+              <PostUnlockButton
+                onClick={() => setOpenBuyPostModal(post)}
+                value={postUnlocked}
+                name={`Unlock Post For ${formatCurrency(post.price ?? 100)}`}
+              />
+              <div className="flex items-center justify-center pt-4">
+                <span>UNLOCK 4 videos, 20 photos</span>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-    {post.content?.length > 0 && (
-      <img // eslint-disable-line @next/next/no-img-element
-        src={post.content[0].url}
-        alt=""
-        className="w-full rounded-[20px] object-cover shadow-xl"
-      />
-    )}
-  </div>
-)
+        {post.content?.length > 0 && (
+          <img // eslint-disable-line @next/next/no-img-element
+            src={post.content[0].url}
+            alt=""
+            className="w-full rounded-[20px] object-cover shadow-xl"
+          />
+        )}
+      </div>
+      <BuyPostModal isOpen={openBuyPostModal} setOpen={setOpenBuyPostModal} />
+    </>
+  )
+}
 
 export const PostEngagement = ({ post, postUnlocked = false }) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
