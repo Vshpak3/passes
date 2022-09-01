@@ -149,17 +149,12 @@ export class FollowService {
     )
   }
 
-  async restrict(
-    creatorId: string,
-    subscriberId: string,
-    reason?: string,
-  ): Promise<void> {
+  async restrict(creatorId: string, subscriberId: string): Promise<void> {
     await this.dbWriter(FollowRestrictEntity.table).insert(
       FollowRestrictEntity.toDict({
         id: uuid.v4(),
         creator: creatorId,
         subscriber: subscriberId,
-        reason: reason,
       }),
     )
   }
@@ -171,17 +166,12 @@ export class FollowService {
       .delete()
   }
 
-  async block(
-    creatorId: string,
-    subscriberId: string,
-    reason?: string,
-  ): Promise<void> {
+  async block(creatorId: string, subscriberId: string): Promise<void> {
     await this.dbWriter(FollowBlockEntity.table).insert(
       FollowBlockEntity.toDict({
         id: uuid.v4(),
         creator: creatorId,
         subscriber: subscriberId,
-        reason: reason,
       }),
     )
   }

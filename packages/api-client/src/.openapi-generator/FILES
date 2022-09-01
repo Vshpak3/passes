@@ -125,6 +125,7 @@ models/RefreshAuthTokenRequestDto.ts
 models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts
 models/RenewPassHolderRequestDto.ts
+models/ReportFanDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SendMessageRequestDto.ts

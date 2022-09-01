@@ -21,11 +21,13 @@ import {
     GetFansResponseDto,
     GetFansResponseDtoFromJSON,
     GetFansResponseDtoToJSON,
+    ReportFanDto,
+    ReportFanDtoFromJSON,
+    ReportFanDtoToJSON,
 } from '../models';
 
 export interface FollowBlockRequest {
     id: string;
-    body: string;
 }
 
 export interface FollowCreateRequest {
@@ -42,12 +44,11 @@ export interface FollowRemoveRequest {
 
 export interface FollowReportRequest {
     id: string;
-    body: string;
+    reportFanDto: ReportFanDto;
 }
 
 export interface FollowRestrictRequest {
     id: string;
-    body: string;
 }
 
 export interface FollowSearchFansRequest {
@@ -75,22 +76,15 @@ export class FollowApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followBlock.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling followBlock.');
-        }
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/api/follow/block/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -203,8 +197,8 @@ export class FollowApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followReport.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling followReport.');
+        if (requestParameters.reportFanDto === null || requestParameters.reportFanDto === undefined) {
+            throw new runtime.RequiredError('reportFanDto','Required parameter requestParameters.reportFanDto was null or undefined when calling followReport.');
         }
 
         const queryParameters: any = {};
@@ -218,7 +212,7 @@ export class FollowApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: ReportFanDtoToJSON(requestParameters.reportFanDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -239,22 +233,15 @@ export class FollowApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followRestrict.');
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling followRestrict.');
-        }
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/api/follow/restrict/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

@@ -14,6 +14,7 @@ import { RequestWithUser } from '../../types/request'
 import { CreateFollowingRequestDto } from './dto/create-following.dto'
 import { GetFansResponseDto } from './dto/get-fan.dto'
 import { GetFollowingResponseDto } from './dto/get-following.dto'
+import { ReportFanDto } from './dto/report-fan.dto'
 import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowService } from './follow.service'
 
@@ -87,9 +88,8 @@ export class FollowController {
   async block(
     @Req() req: RequestWithUser,
     @Param('id') followUserId: string,
-    @Body() reason?: string,
   ): Promise<void> {
-    return this.followService.block(req.user.id, followUserId, reason)
+    return this.followService.block(req.user.id, followUserId)
   }
 
   @ApiOperation({ summary: 'Reports a follower' })
@@ -102,9 +102,13 @@ export class FollowController {
   async report(
     @Req() req: RequestWithUser,
     @Param('id') followUserId: string,
-    @Body() reason: string,
+    @Body() reportFanDto: ReportFanDto,
   ): Promise<void> {
-    return this.followService.report(req.user.id, followUserId, reason)
+    return this.followService.report(
+      req.user.id,
+      followUserId,
+      reportFanDto.reason,
+    )
   }
 
   @ApiOperation({ summary: 'Restricts a follower' })
@@ -117,9 +121,8 @@ export class FollowController {
   async restrict(
     @Req() req: RequestWithUser,
     @Param('id') followUserId: string,
-    @Body() reason?: string,
   ): Promise<void> {
-    return this.followService.restrict(req.user.id, followUserId, reason)
+    return this.followService.restrict(req.user.id, followUserId)
   }
 
   @ApiOperation({ summary: 'Unrestricts a follower' })

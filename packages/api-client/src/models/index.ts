@@ -98,6 +98,7 @@ export * from './RefreshAuthTokenRequestDto';
 export * from './RegisterPayinResponseDto';
 export * from './RemoveListMembersRequestDto';
 export * from './RenewPassHolderRequestDto';
+export * from './ReportFanDto';
 export * from './SearchCreatorRequestDto';
 export * from './SearchCreatorResponseDto';
 export * from './SendMessageRequestDto';
