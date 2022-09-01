@@ -76,4 +76,77 @@ export class FollowController {
       await this.followService.searchByQuery(req.user.id, searchFanDto),
     )
   }
+
+  @ApiOperation({ summary: 'Blocks a follower' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: undefined,
+    description: 'A follower was blocked',
+  })
+  @Post('/block/:id')
+  async block(
+    @Req() req: RequestWithUser,
+    @Param('id') followUserId: string,
+    @Body() reason?: string,
+  ): Promise<void> {
+    return this.followService.block(req.user.id, followUserId, reason)
+  }
+
+  @ApiOperation({ summary: 'Reports a follower' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: undefined,
+    description: 'A follower was reported',
+  })
+  @Post('/report/:id')
+  async report(
+    @Req() req: RequestWithUser,
+    @Param('id') followUserId: string,
+    @Body() reason: string,
+  ): Promise<void> {
+    return this.followService.report(req.user.id, followUserId, reason)
+  }
+
+  @ApiOperation({ summary: 'Restricts a follower' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: undefined,
+    description: 'A follower was restricted',
+  })
+  @Post('/restrict/:id')
+  async restrict(
+    @Req() req: RequestWithUser,
+    @Param('id') followUserId: string,
+    @Body() reason?: string,
+  ): Promise<void> {
+    return this.followService.restrict(req.user.id, followUserId, reason)
+  }
+
+  @ApiOperation({ summary: 'Unrestricts a follower' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A follower was unrestricted',
+  })
+  @Post('/unrestrict/:id')
+  async unrestrict(
+    @Req() req: RequestWithUser,
+    @Param('id') followUserId: string,
+  ): Promise<void> {
+    return this.followService.unrestrict(req.user.id, followUserId)
+  }
+
+  @ApiOperation({ summary: 'Unblocks a follower' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'A follower was unblocked',
+  })
+  @Post('/unblock/:id')
+  async unblock(
+    @Req() req: RequestWithUser,
+    @Param('id') followUserId: string,
+  ): Promise<void> {
+    return this.followService.unblock(req.user.id, followUserId)
+  }
 }

@@ -8,6 +8,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import * as uuid from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
@@ -28,6 +29,9 @@ import { FollowDto } from './dto/follow.dto'
 import { GetFanResponseDto } from './dto/get-fan.dto'
 import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
+import { FollowBlockEntity } from './entities/follow-block.entity'
+import { FollowReportEntity } from './entities/follow-report.entity'
+import { FollowRestrictEntity } from './entities/follow-restrict.entity'
 
 // TODO: Use CASL to determine if user can access an entity
 // See https://docs.nestjs.com/security/authorization#integrating-casl
@@ -128,6 +132,65 @@ export class FollowService {
     }
 
     return new FollowDto(following)
+  }
+
+  async report(
+    creatorId: string,
+    subscriberId: string,
+    reason: string,
+  ): Promise<void> {
+    await this.dbWriter(FollowReportEntity.table).insert(
+      FollowReportEntity.toDict({
+        id: uuid.v4(),
+        creator: creatorId,
+        subscriber: subscriberId,
+        reason: reason,
+      }),
+    )
+  }
+
+  async restrict(
+    creatorId: string,
+    subscriberId: string,
+    reason?: string,
+  ): Promise<void> {
+    await this.dbWriter(FollowRestrictEntity.table).insert(
+      FollowRestrictEntity.toDict({
+        id: uuid.v4(),
+        creator: creatorId,
+        subscriber: subscriberId,
+        reason: reason,
+      }),
+    )
+  }
+
+  async unrestrict(creatorId: string, subscriberId: string): Promise<void> {
+    await this.dbWriter(FollowRestrictEntity.table)
+      .where(`${FollowRestrictEntity.table}.creator_id`, creatorId)
+      .where(`${FollowRestrictEntity.table}.subscriber_id`, subscriberId)
+      .delete()
+  }
+
+  async block(
+    creatorId: string,
+    subscriberId: string,
+    reason?: string,
+  ): Promise<void> {
+    await this.dbWriter(FollowBlockEntity.table).insert(
+      FollowBlockEntity.toDict({
+        id: uuid.v4(),
+        creator: creatorId,
+        subscriber: subscriberId,
+        reason: reason,
+      }),
+    )
+  }
+
+  async unblock(creatorId: string, subscriberId: string): Promise<void> {
+    await this.dbWriter(FollowBlockEntity.table)
+      .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
+      .where(`${FollowBlockEntity.table}.subscriber_id`, subscriberId)
+      .delete()
   }
 
   async remove(userId: string, followId: string): Promise<FollowDto> {

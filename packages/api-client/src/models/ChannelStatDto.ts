@@ -31,6 +31,12 @@ export interface ChannelStatDto {
      * @memberof ChannelStatDto
      */
     totalTipAmount: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChannelStatDto
+     */
+    blocked: boolean;
 }
 
 export function ChannelStatDtoFromJSON(json: any): ChannelStatDto {
@@ -45,6 +51,7 @@ export function ChannelStatDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'id': json['id'],
         'totalTipAmount': json['totalTipAmount'],
+        'blocked': json['blocked'],
     };
 }
 
@@ -59,6 +66,7 @@ export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
         
         'id': value.id,
         'totalTipAmount': value.totalTipAmount,
+        'blocked': value.blocked,
     };
 }
 

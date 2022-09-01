@@ -11,6 +11,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   PROFILE_NOT_EXIST,
@@ -60,7 +61,7 @@ export class ProfileService {
     return new ProfileDto(data)
   }
 
-  async findOne(id: string): Promise<ProfileDto> {
+  async findOne(id: string, userId?: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
@@ -76,10 +77,24 @@ export class ProfileService {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }
 
+    if (userId) {
+      const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+        .where(`${FollowBlockEntity.table}.subscriber_id`, userId)
+        .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
+        .first()
+
+      if (followBlockResult) {
+        throw new BadRequestException(PROFILE_NOT_EXIST)
+      }
+    }
+
     return new ProfileDto(profile)
   }
 
-  async findOneByUsername(username: string): Promise<ProfileDto> {
+  async findOneByUsername(
+    username: string,
+    userId?: string,
+  ): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table} as user`,
@@ -93,6 +108,17 @@ export class ProfileService {
       .first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
+    }
+
+    if (userId) {
+      const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+        .where(`${FollowBlockEntity.table}.subscriber_id`, userId)
+        .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
+        .first()
+
+      if (followBlockResult) {
+        throw new BadRequestException(PROFILE_NOT_EXIST)
+      }
     }
 
     return new ProfileDto(profile)

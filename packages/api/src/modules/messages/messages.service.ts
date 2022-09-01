@@ -20,6 +20,7 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
 import { ContentMessageEntity } from '../content/entities/content-message.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { FollowRestrictEntity } from '../follow/entities/follow-restrict.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
@@ -124,9 +125,23 @@ export class MessagesService {
       .onConflict('channel_id')
       .ignore()
 
+    // check if either user is blocked
+    const followReportResult = await this.dbReader(FollowRestrictEntity.table)
+      .whereIn(`${FollowRestrictEntity.table}.subscriber_id`, [
+        userId,
+        otherUser.id,
+      ])
+      .whereIn(`${FollowRestrictEntity.table}.creator_id`, [
+        userId,
+        otherUser.id,
+      ])
+      .select(`${FollowRestrictEntity.table}.id`)
+      .first()
+
     return {
       id: createResponse.channel.id,
       totalTipAmount: 0,
+      blocked: !!followReportResult,
     }
   }
 
@@ -325,6 +340,23 @@ export class MessagesService {
         otherUserId = membersResponse.members[i].user_id
       }
     }
+
+    // check if either user is blocked
+    const followReportResult = await this.dbReader(FollowRestrictEntity.table)
+      .whereIn(`${FollowRestrictEntity.table}.subscriber_id`, [
+        userId,
+        otherUserId as string,
+      ])
+      .whereIn(`${FollowRestrictEntity.table}.creator_id`, [
+        userId,
+        otherUserId as string,
+      ])
+      .select(`${FollowRestrictEntity.table}.id`)
+      .first()
+    if (followReportResult) {
+      throw new BadRequestException(`user is blocked`)
+    }
+
     // TODO: check if user query is needed
     const otherUser = await this.dbReader(UserEntity.table)
       .where({ id: otherUserId })

@@ -58,9 +58,10 @@ export class ProfileController {
   @AllowUnauthorizedRequest()
   @Get('/usernames/:username')
   async findOneByUsername(
+    @Req() req: RequestWithUser,
     @Param('username') username: string,
   ): Promise<GetProfileResponseDto> {
-    return this.profileService.findOneByUsername(username)
+    return this.profileService.findOneByUsername(username, req.user?.id)
   }
 
   @ApiOperation({ summary: 'Gets a profile' })
@@ -71,8 +72,11 @@ export class ProfileController {
   })
   @AllowUnauthorizedRequest()
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetProfileResponseDto> {
-    return this.profileService.findOne(id)
+  async findOne(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ): Promise<GetProfileResponseDto> {
+    return this.profileService.findOne(id, req.user?.id)
   }
 
   @ApiOperation({ summary: 'Updates a profile' })

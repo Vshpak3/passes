@@ -31,6 +31,12 @@ export interface GetChannelStatResponseDto {
      * @memberof GetChannelStatResponseDto
      */
     totalTipAmount: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetChannelStatResponseDto
+     */
+    blocked: boolean;
 }
 
 export function GetChannelStatResponseDtoFromJSON(json: any): GetChannelStatResponseDto {
@@ -45,6 +51,7 @@ export function GetChannelStatResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
         
         'id': json['id'],
         'totalTipAmount': json['totalTipAmount'],
+        'blocked': json['blocked'],
     };
 }
 
@@ -59,6 +66,7 @@ export function GetChannelStatResponseDtoToJSON(value?: GetChannelStatResponseDt
         
         'id': value.id,
         'totalTipAmount': value.totalTipAmount,
+        'blocked': value.blocked,
     };
 }
 
