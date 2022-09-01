@@ -23,7 +23,6 @@ export * from './PassApi';
 export * from './PaymentApi';
 export * from './PostApi';
 export * from './ProfileApi';
-export * from './SettingsApi';
 export * from './SolApi';
 export * from './UserApi';
 export * from './VerificationApi';

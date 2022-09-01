@@ -34,7 +34,6 @@ import { PostModule } from './modules/post/post.module'
 import { ProfileModule } from './modules/profile/profile.module'
 import { RedisLockModule } from './modules/redisLock/redisLock.module'
 import { S3ContentModule } from './modules/s3content/s3content.module'
-import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
 import { VerificationModule } from './modules/verification/verification.module'
@@ -83,7 +82,6 @@ import {
     ProfileModule,
     RedisLockModule,
     S3ContentModule,
-    SettingsModule,
     SolModule,
     UserModule,
     VerificationModule,

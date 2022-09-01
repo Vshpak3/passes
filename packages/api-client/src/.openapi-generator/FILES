@@ -22,7 +22,6 @@ apis/PassApi.ts
 apis/PaymentApi.ts
 apis/PostApi.ts
 apis/ProfileApi.ts
-apis/SettingsApi.ts
 apis/SolApi.ts
 apis/UserApi.ts
 apis/VerificationApi.ts
