@@ -40,6 +40,11 @@ import { CircleCreateTransferRequestDto } from './dto/circle/create-circle-trans
 import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusResponseDto } from './dto/circle/status.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
+import { GetPayinsRequestDto, GetPayinsResponseDto } from './dto/get-payin.dto'
+import {
+  GetPayoutsRequestDto,
+  GetPayoutsResponseDto,
+} from './dto/get-payout.dto'
 import { PayinDto } from './dto/payin.dto'
 import {
   CircleCardPayinEntryRequestDto,
@@ -52,13 +57,8 @@ import {
   PayinEntryResponseDto,
 } from './dto/payin-entry/payin-entry.dto'
 import { PhantomCircleUSDCEntryResponseDto } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
-import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
 import { PayoutDto } from './dto/payout.dto'
-import {
-  PayoutListRequestDto,
-  PayoutListResponseDto,
-} from './dto/payout-list.dto'
 import { PayoutMethodDto } from './dto/payout-method.dto'
 import {
   RegisterPayinRequestDto,
@@ -1587,13 +1587,13 @@ export class PaymentService {
    * return paginated payin information for user display
    *
    * @param userId
-   * @param payinListRequest
+   * @param getPayinsRequest
    * @returns
    */
   async getPayins(
     userId: string,
-    payinListRequest: PayinListRequestDto,
-  ): Promise<PayinListResponseDto> {
+    getPayinsRequest: GetPayinsRequestDto,
+  ): Promise<GetPayinsResponseDto> {
     const payins = await this.dbReader
       .table(PayinEntity.table)
       .where('user_id', userId)
@@ -1603,8 +1603,8 @@ export class PaymentService {
       ])
       .select('*')
       .orderBy('created_at', 'desc')
-      .offset(payinListRequest.offset)
-      .limit(payinListRequest.limit)
+      .offset(getPayinsRequest.offset)
+      .limit(getPayinsRequest.limit)
     const count = await this.dbReader
       .table(PayinEntity.table)
       .where('user_id', userId)
@@ -1837,14 +1837,14 @@ export class PaymentService {
 
   async getPayouts(
     userId: string,
-    payoutListRequest: PayoutListRequestDto,
-  ): Promise<PayoutListResponseDto> {
+    getPayoutsRequest: GetPayoutsRequestDto,
+  ): Promise<GetPayoutsResponseDto> {
     const payouts = await this.dbReader(PayoutEntity.table)
       .where('user_id', userId)
       .select('*')
       .orderBy('created_at', 'desc')
-      .offset(payoutListRequest.offset)
-      .limit(payoutListRequest.limit)
+      .offset(getPayoutsRequest.offset)
+      .limit(getPayoutsRequest.limit)
     const count = await this.dbReader
       .table(PayinEntity.table)
       .where('user_id', userId)

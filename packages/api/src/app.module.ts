@@ -27,6 +27,7 @@ import { LikeModule } from './modules/likes/like.module'
 import { ListModule } from './modules/list/list.module'
 import { RequestLogger } from './modules/logging/request'
 import { MessagesModule } from './modules/messages/messages.module'
+import { NotificationsModule } from './modules/notifications/notifications.module'
 import { PassModule } from './modules/pass/pass.module'
 import { PaymentModule } from './modules/payment/payment.module'
 import { PostModule } from './modules/post/post.module'
@@ -85,6 +86,7 @@ import {
     UserModule,
     WalletModule,
     ListModule,
+    NotificationsModule,
     VerificationModule,
   ],
   providers: [

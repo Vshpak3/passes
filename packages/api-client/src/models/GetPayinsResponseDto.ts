@@ -23,28 +23,28 @@ import {
 /**
  * 
  * @export
- * @interface PayinListResponseDto
+ * @interface GetPayinsResponseDto
  */
-export interface PayinListResponseDto {
+export interface GetPayinsResponseDto {
     /**
      * 
      * @type {number}
-     * @memberof PayinListResponseDto
+     * @memberof GetPayinsResponseDto
      */
     count: number;
     /**
      * 
      * @type {Array<PayinDto>}
-     * @memberof PayinListResponseDto
+     * @memberof GetPayinsResponseDto
      */
     payins: Array<PayinDto>;
 }
 
-export function PayinListResponseDtoFromJSON(json: any): PayinListResponseDto {
-    return PayinListResponseDtoFromJSONTyped(json, false);
+export function GetPayinsResponseDtoFromJSON(json: any): GetPayinsResponseDto {
+    return GetPayinsResponseDtoFromJSONTyped(json, false);
 }
 
-export function PayinListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PayinListResponseDto {
+export function GetPayinsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPayinsResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -55,7 +55,7 @@ export function PayinListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function PayinListResponseDtoToJSON(value?: PayinListResponseDto | null): any {
+export function GetPayinsResponseDtoToJSON(value?: GetPayinsResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }

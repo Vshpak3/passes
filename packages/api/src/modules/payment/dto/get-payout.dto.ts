@@ -1,16 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsInt, Min } from 'class-validator'
 
 import { PayoutDto } from './payout.dto'
 
-export class PayoutListRequestDto {
+export class GetPayoutsRequestDto {
+  @IsInt()
+  @Min(0)
   @ApiProperty()
   offset: number
 
+  @IsInt()
+  @Min(1)
   @ApiProperty()
   limit: number
 }
 
-export class PayoutListResponseDto {
+export class GetPayoutsResponseDto {
   @ApiProperty()
   count: number
 

@@ -45,9 +45,21 @@ import {
     GetPayinMethodResponseDto,
     GetPayinMethodResponseDtoFromJSON,
     GetPayinMethodResponseDtoToJSON,
+    GetPayinsRequestDto,
+    GetPayinsRequestDtoFromJSON,
+    GetPayinsRequestDtoToJSON,
+    GetPayinsResponseDto,
+    GetPayinsResponseDtoFromJSON,
+    GetPayinsResponseDtoToJSON,
     GetPayoutMethodResponseDto,
     GetPayoutMethodResponseDtoFromJSON,
     GetPayoutMethodResponseDtoToJSON,
+    GetPayoutsRequestDto,
+    GetPayoutsRequestDtoFromJSON,
+    GetPayoutsRequestDtoToJSON,
+    GetPayoutsResponseDto,
+    GetPayoutsResponseDtoFromJSON,
+    GetPayoutsResponseDtoToJSON,
     GetSubscriptionsResponseDto,
     GetSubscriptionsResponseDtoFromJSON,
     GetSubscriptionsResponseDtoToJSON,
@@ -66,18 +78,6 @@ import {
     PayinDataDto,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
-    PayinListRequestDto,
-    PayinListRequestDtoFromJSON,
-    PayinListRequestDtoToJSON,
-    PayinListResponseDto,
-    PayinListResponseDtoFromJSON,
-    PayinListResponseDtoToJSON,
-    PayoutListRequestDto,
-    PayoutListRequestDtoFromJSON,
-    PayoutListRequestDtoToJSON,
-    PayoutListResponseDto,
-    PayoutListResponseDtoFromJSON,
-    PayoutListResponseDtoToJSON,
     PhantomCircleUSDCEntryRequestDto,
     PhantomCircleUSDCEntryRequestDtoFromJSON,
     PhantomCircleUSDCEntryRequestDtoToJSON,
@@ -140,11 +140,11 @@ export interface PaymentGetCircleCardRequest {
 }
 
 export interface PaymentGetPayinsRequest {
-    payinListRequestDto: PayinListRequestDto;
+    getPayinsRequestDto: GetPayinsRequestDto;
 }
 
 export interface PaymentGetPayoutsRequest {
-    payoutListRequestDto: PayoutListRequestDto;
+    getPayoutsRequestDto: GetPayoutsRequestDto;
 }
 
 export interface PaymentRePayoutRequest {
@@ -650,9 +650,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get all payins
      */
-    async paymentGetPayinsRaw(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinListResponseDto>> {
-        if (requestParameters.payinListRequestDto === null || requestParameters.payinListRequestDto === undefined) {
-            throw new runtime.RequiredError('payinListRequestDto','Required parameter requestParameters.payinListRequestDto was null or undefined when calling paymentGetPayins.');
+    async paymentGetPayinsRaw(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayinsResponseDto>> {
+        if (requestParameters.getPayinsRequestDto === null || requestParameters.getPayinsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPayinsRequestDto','Required parameter requestParameters.getPayinsRequestDto was null or undefined when calling paymentGetPayins.');
         }
 
         const queryParameters: any = {};
@@ -666,16 +666,16 @@ export class PaymentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PayinListRequestDtoToJSON(requestParameters.payinListRequestDto),
+            body: GetPayinsRequestDtoToJSON(requestParameters.getPayinsRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PayinListResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPayinsResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get all payins
      */
-    async paymentGetPayins(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinListResponseDto> {
+    async paymentGetPayins(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayinsResponseDto> {
         const response = await this.paymentGetPayinsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -683,9 +683,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get all payouts
      */
-    async paymentGetPayoutsRaw(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayoutListResponseDto>> {
-        if (requestParameters.payoutListRequestDto === null || requestParameters.payoutListRequestDto === undefined) {
-            throw new runtime.RequiredError('payoutListRequestDto','Required parameter requestParameters.payoutListRequestDto was null or undefined when calling paymentGetPayouts.');
+    async paymentGetPayoutsRaw(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayoutsResponseDto>> {
+        if (requestParameters.getPayoutsRequestDto === null || requestParameters.getPayoutsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPayoutsRequestDto','Required parameter requestParameters.getPayoutsRequestDto was null or undefined when calling paymentGetPayouts.');
         }
 
         const queryParameters: any = {};
@@ -699,16 +699,16 @@ export class PaymentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PayoutListRequestDtoToJSON(requestParameters.payoutListRequestDto),
+            body: GetPayoutsRequestDtoToJSON(requestParameters.getPayoutsRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PayoutListResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPayoutsResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get all payouts
      */
-    async paymentGetPayouts(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayoutListResponseDto> {
+    async paymentGetPayouts(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayoutsResponseDto> {
         const response = await this.paymentGetPayoutsRaw(requestParameters, initOverrides);
         return await response.value();
     }

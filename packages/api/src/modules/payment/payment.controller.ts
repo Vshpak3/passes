@@ -27,6 +27,11 @@ import {
   GetCircleCardsResponseDto,
 } from './dto/circle/get-card.dto'
 import { CircleStatusResponseDto } from './dto/circle/status.dto'
+import { GetPayinsRequestDto, GetPayinsResponseDto } from './dto/get-payin.dto'
+import {
+  GetPayoutsRequestDto,
+  GetPayoutsResponseDto,
+} from './dto/get-payout.dto'
 import { GetSubscriptionsResponseDto } from './dto/get-subscription.dto'
 import { PayinDataDto } from './dto/payin-data.dto'
 import {
@@ -45,15 +50,10 @@ import {
   PhantomCircleUSDCEntryRequestDto,
   PhantomCircleUSDCEntryResponseDto,
 } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
-import { PayinListRequestDto, PayinListResponseDto } from './dto/payin-list.dto'
 import {
   GetPayinMethodResponseDto,
   SetPayinMethodRequestDto,
 } from './dto/payin-method.dto'
-import {
-  PayoutListRequestDto,
-  PayoutListResponseDto,
-} from './dto/payout-list.dto'
 import {
   GetPayoutMethodResponseDto,
   SetPayoutMethodRequestDto,
@@ -420,16 +420,16 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get all payins' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayinListResponseDto,
+    type: GetPayinsResponseDto,
     description: 'Payins were returned',
   })
   @Post('payins')
   @HttpCode(200)
   async getPayins(
     @Req() req: RequestWithUser,
-    @Body() payinListRequest: PayinListRequestDto,
-  ): Promise<PayinListResponseDto> {
-    return await this.paymentService.getPayins(req.user.id, payinListRequest)
+    @Body() getPayinsRequest: GetPayinsRequestDto,
+  ): Promise<GetPayinsResponseDto> {
+    return await this.paymentService.getPayins(req.user.id, getPayinsRequest)
   }
   /*
   -------------------------------------------------------------------------------
@@ -440,16 +440,16 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get all payouts' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PayoutListResponseDto,
+    type: GetPayoutsResponseDto,
     description: 'Payouts were returned',
   })
   @Post('payouts')
   @HttpCode(200)
   async getPayouts(
     @Req() req: RequestWithUser,
-    @Body() payoutListRequest: PayoutListRequestDto,
-  ): Promise<PayoutListResponseDto> {
-    return await this.paymentService.getPayouts(req.user.id, payoutListRequest)
+    @Body() getPayoutsRequest: GetPayoutsRequestDto,
+  ): Promise<GetPayoutsResponseDto> {
+    return await this.paymentService.getPayouts(req.user.id, getPayoutsRequest)
   }
 
   @ApiOperation({ summary: 'Payout manually' })

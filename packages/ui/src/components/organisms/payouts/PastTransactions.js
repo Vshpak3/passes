@@ -120,18 +120,18 @@ const PastTransactions = () => {
     }
     const fetchData = async () => {
       const paymentApi = wrapApi(PaymentApi)
-      const payinListResponse = await paymentApi.paymentGetPayins({
-        payinListRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
+      const payinsResponse = await paymentApi.paymentGetPayins({
+        getPayinsRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
       })
       // uses dummy data if payin is empty
       setPayins(
-        payinListResponse.payins.length !== 0
-          ? payinListResponse.payins
+        payinsResponse.payins.length !== 0
+          ? payinsResponse.payins
           : payoutTransaction
       )
       setCount(
-        payinListResponse.count !== 0
-          ? payinListResponse.count
+        payinsResponse.count !== 0
+          ? payinsResponse.count
           : payoutTransaction.length
       )
     }

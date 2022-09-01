@@ -16,28 +16,28 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PayoutListRequestDto
+ * @interface GetPayinsRequestDto
  */
-export interface PayoutListRequestDto {
+export interface GetPayinsRequestDto {
     /**
      * 
      * @type {number}
-     * @memberof PayoutListRequestDto
+     * @memberof GetPayinsRequestDto
      */
     offset: number;
     /**
      * 
      * @type {number}
-     * @memberof PayoutListRequestDto
+     * @memberof GetPayinsRequestDto
      */
     limit: number;
 }
 
-export function PayoutListRequestDtoFromJSON(json: any): PayoutListRequestDto {
-    return PayoutListRequestDtoFromJSONTyped(json, false);
+export function GetPayinsRequestDtoFromJSON(json: any): GetPayinsRequestDto {
+    return GetPayinsRequestDtoFromJSONTyped(json, false);
 }
 
-export function PayoutListRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PayoutListRequestDto {
+export function GetPayinsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPayinsRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function PayoutListRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function PayoutListRequestDtoToJSON(value?: PayoutListRequestDto | null): any {
+export function GetPayinsRequestDtoToJSON(value?: GetPayinsRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

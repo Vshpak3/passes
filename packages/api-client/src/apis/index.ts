@@ -18,6 +18,7 @@ export * from './HealthApi';
 export * from './LikeApi';
 export * from './ListApi';
 export * from './MessagesApi';
+export * from './NotificationsApi';
 export * from './PassApi';
 export * from './PaymentApi';
 export * from './PostApi';

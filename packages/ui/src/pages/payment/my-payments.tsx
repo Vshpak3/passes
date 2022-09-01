@@ -28,11 +28,11 @@ const MyPayments = () => {
     }
     const fetchData = async () => {
       const paymentApi = wrapApi(PaymentApi)
-      const payinListResponse = await paymentApi.paymentGetPayins({
-        payinListRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
+      const payinsResponse = await paymentApi.paymentGetPayins({
+        getPayinsRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
       })
-      setPayins(payinListResponse.payins)
-      setCount(payinListResponse.count)
+      setPayins(payinsResponse.payins)
+      setCount(payinsResponse.count)
     }
     fetchData()
   }, [router, user, loading, page])
