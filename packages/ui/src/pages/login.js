@@ -81,8 +81,8 @@ const LoginPage = () => {
     }
   }
 
-  const onSubmit = (data) => {
-    onUserLogin(data?.email, data?.password)
+  const onSubmit = async (data) => {
+    await onUserLogin(data.email, data.password)
   }
 
   return (

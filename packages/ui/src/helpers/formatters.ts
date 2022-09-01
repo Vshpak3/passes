@@ -16,3 +16,11 @@ export function formatCurrency(value: number, options: any = {}) {
   )
   return formatter.format(value)
 }
+
+export function getFormattedDate(date: Date) {
+  return `${date.getDate().toLocaleString()}  ${date
+    .toLocaleDateString("en-us", {
+      month: "short"
+    })
+    .toLocaleString()},  ${date.getFullYear()}`
+}

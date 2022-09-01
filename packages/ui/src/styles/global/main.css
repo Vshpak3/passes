@@ -9,6 +9,14 @@
   background-size: cover;
 }
 
+.rdrDefinedRangesWrapper {
+  display: none;
+}
+.rdrDateRangeWrapper,
+.rdrDateDisplayWrapper {
+  border-radius: 8px;
+}
+
 @layer components {
   .container {
     @apply mx-auto max-w-4xl pr-[var(--wrapper-padding-right)] pl-[var(--wrapper-padding-left)];

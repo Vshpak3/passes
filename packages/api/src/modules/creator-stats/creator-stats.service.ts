@@ -45,14 +45,15 @@ export class CreatorStatsService {
 
   async getBalance(userId: string) {
     return new CreatorEarningDto(
-      await this.dbReader(CreatorEarningEntity.table).where(
-        CreatorEarningEntity.toDict<CreatorEarningEntity>({
-          user: userId,
-          type: EarningTypeEnum.BALANCE,
-        })
-          .select('*')
-          .first(),
-      ),
+      await this.dbReader(CreatorEarningEntity.table)
+        .where(
+          CreatorEarningEntity.toDict<CreatorEarningEntity>({
+            user: userId,
+            type: EarningTypeEnum.BALANCE,
+          }),
+        )
+        .select('*')
+        .first(),
     )
   }
 

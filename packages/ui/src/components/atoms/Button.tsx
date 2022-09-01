@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import HeaderChatIcon from "public/icons/header-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
@@ -22,8 +23,9 @@ interface IButton {
   onClick?: () => void
   style?: React.CSSProperties
   tag?: keyof JSX.IntrinsicElements
+  variant: string | "tab"
+  active?: boolean
   type?: ButtonTypeEnum
-  variant: string
 }
 
 interface IGenericButton {
@@ -207,6 +209,24 @@ export const HeaderChatButton = ({ name }: IGenericButton) => (
 export const RoundedIconButton = ({ children, onClick }: IButton) => (
   <button
     className="flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-full bg-white p-4"
+    onClick={onClick}
+  >
+    {children}
+  </button>
+)
+
+export const TabButton = ({
+  children,
+  onClick,
+  active,
+  className
+}: IButton) => (
+  <button
+    className={clsx(
+      className,
+      "rounded-[56px] bg-[#191919] !py-[10px] !px-[30px] font-bold text-white",
+      { ["bg-[#EDEDED] !text-[#000]"]: active }
+    )}
     onClick={onClick}
   >
     {children}
