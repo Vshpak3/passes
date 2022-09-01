@@ -10,6 +10,7 @@ apis/ContentApi.ts
 apis/CreatorSettingsApi.ts
 apis/CreatorStatsApi.ts
 apis/EthApi.ts
+apis/FanWallApi.ts
 apis/FeedApi.ts
 apis/FollowApi.ts
 apis/HealthApi.ts
@@ -51,6 +52,7 @@ models/CreateCommentRequestDto.ts
 models/CreateContentRequestDto.ts
 models/CreateCreatorSettingsRequestDto.ts
 models/CreateEthNftCollectionRequestDto.ts
+models/CreateFanWallCommentRequestDto.ts
 models/CreateFollowingRequestDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
@@ -78,6 +80,7 @@ models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
 models/GetEthNftCollectionResponseDto.ts
 models/GetFanResponseDto.ts
+models/GetFanWallForCreatorResponseDto.ts
 models/GetFansResponseDto.ts
 models/GetFeedResponseDto.ts
 models/GetListResponseDto.ts

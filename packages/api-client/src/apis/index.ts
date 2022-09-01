@@ -11,6 +11,7 @@ export * from './ContentApi';
 export * from './CreatorSettingsApi';
 export * from './CreatorStatsApi';
 export * from './EthApi';
+export * from './FanWallApi';
 export * from './FeedApi';
 export * from './FollowApi';
 export * from './HealthApi';
