@@ -240,7 +240,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     ? params.username[0]
     : params.username
   if (username === "test") return { props: mockCreator }
-  const connection = await getConnection()
+  const connection: any = await getConnection()
   const collection = connection.db("test").collection("creators")
   const { _id, ...props } =
     (await collection.findOne({ userId: username })) || {}

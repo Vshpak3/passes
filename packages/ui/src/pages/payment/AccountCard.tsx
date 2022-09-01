@@ -1,6 +1,7 @@
 import { CircleBankDto, WalletDto } from "@passes/api-client"
 
 import { Button } from "../../components/atoms"
+
 interface IAccountCard {
   account?: CircleBankDto
   handleClick: () => void
