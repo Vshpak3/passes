@@ -46,6 +46,10 @@ export interface PostFindOneRequest {
     id: string;
 }
 
+export interface PostPinPostRequest {
+    postId: string;
+}
+
 export interface PostRegisterPurchasePostRequest {
     createPostAccessRequestDto: CreatePostAccessRequestDto;
 }
@@ -60,6 +64,10 @@ export interface PostRegisterTipPostRequest {
 
 export interface PostRemoveRequest {
     id: string;
+}
+
+export interface PostUnpinPostRequest {
+    postId: string;
 }
 
 export interface PostUpdateRequest {
@@ -132,6 +140,36 @@ export class PostApi extends runtime.BaseAPI {
      */
     async postFindOne(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostResponseDto> {
         const response = await this.postFindOneRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Pin a post
+     */
+    async postPinPostRaw(requestParameters: PostPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling postPinPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/post/pin/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Pin a post
+     */
+    async postPinPost(requestParameters: PostPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.postPinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -261,6 +299,36 @@ export class PostApi extends runtime.BaseAPI {
      */
     async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.postRemoveRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Unpin a post
+     */
+    async postUnpinPostRaw(requestParameters: PostUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling postUnpinPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/post/unpin/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Unpin a post
+     */
+    async postUnpinPost(requestParameters: PostUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.postUnpinPostRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

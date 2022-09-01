@@ -506,4 +506,22 @@ export class PassService {
       .onConflict(['pass_id', 'user_id'])
       .ignore()
   }
+
+  async pinPass(userId: string, passId: string): Promise<boolean> {
+    return (
+      (await this.dbWriter(PassEntity.table)
+        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
+        .update(
+          PassEntity.toDict<PassEntity>({ pinnedAt: this.dbWriter.fn.now() }),
+        )) === 1
+    )
+  }
+
+  async unpinPass(userId: string, passId: string): Promise<boolean> {
+    return (
+      (await this.dbWriter(PassEntity.table)
+        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
+        .update(PassEntity.toDict<PassEntity>({ pinnedAt: null }))) === 1
+    )
+  }
 }

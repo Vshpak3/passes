@@ -191,7 +191,7 @@ export class CommentService {
     }
 
     const data = CommentEntity.toDict<CommentEntity>({
-      deletedAt: new Date(),
+      deletedAt: this.dbWriter.fn.now(),
     })
 
     await this.dbWriter.transaction(async (trx) => {

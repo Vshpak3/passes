@@ -63,7 +63,7 @@ async function getCroppedImg(
     canvas.toBlob((blob) => {
       resolve(
         new File([blob as Blob], "image.jpeg", {
-          lastModified: new Date().getTime(),
+          lastModified: Date.now(),
           type: blob?.type
         })
       )

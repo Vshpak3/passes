@@ -410,4 +410,22 @@ export class PostService {
 
     return { amount: post.price, target, blocked }
   }
+
+  async pinPost(userId: string, postId: string): Promise<boolean> {
+    return (
+      (await this.dbWriter(PostEntity.table)
+        .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
+        .update(
+          PostEntity.toDict<PostEntity>({ pinnedAt: this.dbWriter.fn.now() }),
+        )) === 1
+    )
+  }
+
+  async unpinPost(userId: string, postId: string): Promise<boolean> {
+    return (
+      (await this.dbWriter(PostEntity.table)
+        .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
+        .update(PostEntity.toDict<PostEntity>({ pinnedAt: null }))) === 1
+    )
+  }
 }

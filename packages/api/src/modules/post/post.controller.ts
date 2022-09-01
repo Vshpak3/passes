@@ -37,7 +37,7 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Body() createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostRequestDto> {
-    return this.postService.create(req.user.id, createPostDto)
+    return await this.postService.create(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })
@@ -51,7 +51,7 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Param('id') id: string,
   ): Promise<GetPostResponseDto> {
-    return this.postService.findOne(id, req.user.id)
+    return await this.postService.findOne(id, req.user.id)
   }
 
   @ApiOperation({ summary: 'Updates a post' })
@@ -66,7 +66,7 @@ export class PostController {
     @Param('id') id: string,
     @Body() updatePostDto: UpdatePostRequestDto,
   ) {
-    return this.postService.update(req.user.id, id, updatePostDto)
+    return await this.postService.update(req.user.id, id, updatePostDto)
   }
 
   @ApiOperation({ summary: 'Deletes a post' })
@@ -94,7 +94,7 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Body() createPostAccessDto: CreatePostAccessRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.postService.registerPurchasePost(
+    return await this.postService.registerPurchasePost(
       req.user.id,
       createPostAccessDto.postId,
       createPostAccessDto.fromDM,
@@ -113,7 +113,7 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Body() createPostAccessDto: CreatePostAccessRequestDto,
   ): Promise<PayinDataDto> {
-    return this.postService.registerPurchasePostData(
+    return await this.postService.registerPurchasePostData(
       req.user.id,
       createPostAccessDto.postId,
     )
@@ -130,11 +130,39 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Body() tipPostDto: TipPostRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.postService.registerTipPost(
+    return await this.postService.registerTipPost(
       req.user.id,
       tipPostDto.postId,
       tipPostDto.amount,
       tipPostDto.payinMethod,
     )
+  }
+
+  @ApiOperation({ summary: 'Pin a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A post was pinned',
+  })
+  @Get('pin/:postId')
+  async pinPost(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<boolean> {
+    return await this.postService.pinPost(req.user.id, postId)
+  }
+
+  @ApiOperation({ summary: 'Unpin a post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A post was unpinned',
+  })
+  @Get('unpin/:postId')
+  async unpinPost(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<boolean> {
+    return await this.postService.unpinPost(req.user.id, postId)
   }
 }

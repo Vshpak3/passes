@@ -44,4 +44,7 @@ export class PassEntity extends BaseEntity {
 
   @Property()
   freetrial: boolean
+
+  @Property()
+  pinnedAt?: Date
 }

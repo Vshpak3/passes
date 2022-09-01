@@ -9,6 +9,7 @@ import {
   Property,
   UuidType,
 } from '@mikro-orm/core'
+import { Knex } from '@mikro-orm/mysql'
 
 // Entity Class properties for optional properties allow null
 declare type EntityData<T> = {
@@ -18,11 +19,9 @@ declare type EntityData<T> = {
 }
 
 // Map properties to type, for entity relationships (object) assign string (id)
-declare type MappedType<T> = T extends Date
-  ? Date | string
-  : T extends object
-  ? string
-  : T
+declare type MappedType<T> =
+  | (T extends Date ? Date | string : T extends object ? string : T)
+  | Knex.Raw<any>
 
 // Exclude functions and symbols from class, returning only class properties
 declare type ExcludeFunctions<

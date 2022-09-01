@@ -61,6 +61,10 @@ export interface PassGetOwnedPassesRequest {
     creatorId: string;
 }
 
+export interface PassPinPostRequest {
+    passId: string;
+}
+
 export interface PassRegisterCreatePassRequest {
     createPassHolderRequestDto: CreatePassHolderRequestDto;
 }
@@ -75,6 +79,10 @@ export interface PassRegisterRenewPassRequest {
 
 export interface PassRegisterRenewPassDataRequest {
     renewPassHolderRequestDto: RenewPassHolderRequestDto;
+}
+
+export interface PassUnpinPostRequest {
+    passId: string;
 }
 
 export interface PassUpdateRequest {
@@ -244,6 +252,36 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
+     * Pin a pass
+     */
+    async passPinPostRaw(requestParameters: PassPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.passId === null || requestParameters.passId === undefined) {
+            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling passPinPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/pass/pin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Pin a pass
+     */
+    async passPinPost(requestParameters: PassPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.passPinPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Register create pass payin
      */
     async passRegisterCreatePassRaw(requestParameters: PassRegisterCreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
@@ -372,6 +410,36 @@ export class PassApi extends runtime.BaseAPI {
      */
     async passRegisterRenewPassData(requestParameters: PassRegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
         const response = await this.passRegisterRenewPassDataRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Unpin a pass
+     */
+    async passUnpinPostRaw(requestParameters: PassUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.passId === null || requestParameters.passId === undefined) {
+            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling passUnpinPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/pass/unpin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Unpin a pass
+     */
+    async passUnpinPost(requestParameters: PassUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.passUnpinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

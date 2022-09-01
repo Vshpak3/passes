@@ -180,4 +180,32 @@ export class PassController {
   ) {
     await this.passService.addPassSubscription(req.user.id, passHolderId)
   }
+
+  @ApiOperation({ summary: 'Pin a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A pass was pinned',
+  })
+  @Get('pin/:passId')
+  async pinPost(
+    @Req() req: RequestWithUser,
+    @Param('passId') passId: string,
+  ): Promise<boolean> {
+    return await this.passService.pinPass(req.user.id, passId)
+  }
+
+  @ApiOperation({ summary: 'Unpin a pass' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A pass was unpinned',
+  })
+  @Get('unpin/:passId')
+  async unpinPost(
+    @Req() req: RequestWithUser,
+    @Param('passId') passId: string,
+  ): Promise<boolean> {
+    return await this.passService.unpinPass(req.user.id, passId)
+  }
 }

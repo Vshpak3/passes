@@ -117,7 +117,7 @@ export class FanWallService {
     }
 
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
-      deletedAt: new Date(),
+      deletedAt: this.dbWriter.fn.now(),
     })
 
     await this.dbWriter(FanWallCommentEntity.table).update(data).where({ id })
