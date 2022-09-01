@@ -91,13 +91,13 @@ export const wrapApi = <T extends Api.BaseAPI>(api: {
     })
 }
 
-const refreshAccessToken = async (
+export const refreshAccessToken = async (
   refreshToken: string
 ): Promise<string | null> => {
   try {
     const authApi = new AuthApi()
     const refreshAuthTokenRequestDto = {
-      refreshToken: JSON.parse(refreshToken)
+      refreshToken
     }
     const res = await authApi.authRefreshAccessToken({
       refreshAuthTokenRequestDto

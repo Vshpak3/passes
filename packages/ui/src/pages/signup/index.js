@@ -44,14 +44,14 @@ const SignupPage = () => {
 
   const onUserRegister = async (email, password) => {
     try {
-      const createLocalUserDto = {
+      const createLocalUserRequestDto = {
         email: email,
         password: password
       }
 
       const api = wrapApi(AuthLocalApi)
       const res = await api.localAuthCreateEmailPasswordUser({
-        createLocalUserDto
+        createLocalUserRequestDto
       })
       const { accessToken, refreshToken } = res
 

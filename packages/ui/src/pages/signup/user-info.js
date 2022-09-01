@@ -23,7 +23,7 @@ export async function getServerSideProps({ query }) {
 }
 
 const UserInfoPage = () => {
-  const { loading, user } = useUser()
+  const { loading, user, refreshAccessToken } = useUser()
   const router = useRouter()
   const {
     register,
@@ -39,7 +39,7 @@ const UserInfoPage = () => {
     birthday
   ) => {
     try {
-      const updateUserDto = {
+      const updateUserRequestDto = {
         email: email,
         username: username,
         countryCode: countryCode,
@@ -49,13 +49,16 @@ const UserInfoPage = () => {
 
       const api = wrapApi(UserApi)
       const res = await api.userUpdate({
-        updateUserDto
+        updateUserRequestDto
       })
+
       if (!res.id) {
         alert("ERROR: Unexpected payload")
       }
 
-      router.push("/login")
+      await refreshAccessToken()
+
+      router.push("/home")
     } catch (err) {
       toast.error(err)
     }
