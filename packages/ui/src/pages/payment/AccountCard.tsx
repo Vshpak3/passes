@@ -28,7 +28,7 @@ const AccountCard = ({
                 {account.description}
               </span>
               <Button variant="white-outline" className="w-[72px]  rounded ">
-                {account.circleBankId ? "Bank" : "Wallet"}
+                {account.circleId ? "Bank" : "Wallet"}
               </Button>
             </div>
           </div>
