@@ -24,6 +24,7 @@ apis/ProfileApi.ts
 apis/SettingsApi.ts
 apis/SolApi.ts
 apis/UserApi.ts
+apis/VerificationApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
@@ -131,6 +132,7 @@ models/SearchCreatorResponseDto.ts
 models/SendMessageRequestDto.ts
 models/SetPayinMethodRequestDto.ts
 models/SetPayoutMethodRequestDto.ts
+models/SubmitInquiryRequestDto.ts
 models/SubscriptionDto.ts
 models/TipPostRequestDto.ts
 models/TokenResponseDto.ts

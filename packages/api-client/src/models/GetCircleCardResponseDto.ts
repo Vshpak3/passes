@@ -30,7 +30,7 @@ export interface GetCircleCardResponseDto {
      * @type {string}
      * @memberof GetCircleCardResponseDto
      */
-    circleCardId?: string;
+    circleId?: string;
     /**
      * 
      * @type {string}
@@ -86,7 +86,7 @@ export function GetCircleCardResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'id': json['id'],
-        'circleCardId': !exists(json, 'circleCardId') ? undefined : json['circleCardId'],
+        'circleId': !exists(json, 'circleId') ? undefined : json['circleId'],
         'status': json['status'],
         'firstDigit': json['firstDigit'],
         'fourDigits': json['fourDigits'],
@@ -107,7 +107,7 @@ export function GetCircleCardResponseDtoToJSON(value?: GetCircleCardResponseDto 
     return {
         
         'id': value.id,
-        'circleCardId': value.circleCardId,
+        'circleId': value.circleId,
         'status': value.status,
         'firstDigit': value.firstDigit,
         'fourDigits': value.fourDigits,

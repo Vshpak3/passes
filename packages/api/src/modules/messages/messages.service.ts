@@ -183,7 +183,7 @@ export class MessagesService {
     }
 
     const batchMessageId = v4()
-    this.dbWriter
+    await this.dbWriter
       .transaction(async (trx) => {
         await trx(BatchMessageEntity.table).insert(
           BatchMessageEntity.toDict<BatchMessageEntity>({

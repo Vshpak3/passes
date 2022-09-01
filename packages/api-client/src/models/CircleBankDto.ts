@@ -30,7 +30,7 @@ export interface CircleBankDto {
      * @type {string}
      * @memberof CircleBankDto
      */
-    circleBankId?: string;
+    circleId?: string;
     /**
      * 
      * @type {string}
@@ -56,7 +56,7 @@ export function CircleBankDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'id': json['id'],
-        'circleBankId': !exists(json, 'circleBankId') ? undefined : json['circleBankId'],
+        'circleId': !exists(json, 'circleId') ? undefined : json['circleId'],
         'status': json['status'],
         'description': json['description'],
     };
@@ -72,7 +72,7 @@ export function CircleBankDtoToJSON(value?: CircleBankDto | null): any {
     return {
         
         'id': value.id,
-        'circleBankId': value.circleBankId,
+        'circleId': value.circleId,
         'status': value.status,
         'description': value.description,
     };

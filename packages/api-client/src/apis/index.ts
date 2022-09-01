@@ -25,4 +25,5 @@ export * from './ProfileApi';
 export * from './SettingsApi';
 export * from './SolApi';
 export * from './UserApi';
+export * from './VerificationApi';
 export * from './WalletApi';

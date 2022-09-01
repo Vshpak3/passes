@@ -31,7 +31,7 @@ export class CirclePayoutEntity extends BaseEntity {
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circlePayoutId?: string
+  circleId?: string
 
   @Property({ length: CIRCLE_MONEY_AMOUNT_STRING_LENGTH })
   fee?: string

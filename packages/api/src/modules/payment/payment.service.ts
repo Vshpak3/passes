@@ -223,7 +223,7 @@ export class PaymentService {
       id: v4(),
       user: userId,
       cardNumber,
-      circleCardId: response['id'],
+      circleId: response['id'],
       status: response['status'],
       name: createCardDto.billingDetails.name,
       ...createCardDto,
@@ -302,7 +302,7 @@ export class PaymentService {
   ): Promise<CircleStatusResponseDto> {
     const card = await this.dbReader(CircleCardEntity.table)
       .where('id', payin.payinMethod.cardId)
-      .select('id', 'circle_card_id')
+      .select('id', 'circle_id')
       .first()
 
     // save metadata into subscription for repeat purchases
@@ -324,7 +324,7 @@ export class PaymentService {
         currency: 'USD',
       },
       source: {
-        id: card.circle_card_id,
+        id: card.circle_id,
         type: 'card',
       },
       metadata: {
@@ -358,7 +358,7 @@ export class PaymentService {
     await this.dbWriter(CirclePaymentEntity.table)
       .update(
         CirclePaymentEntity.toDict<CirclePaymentEntity>({
-          circlePaymentId: response['id'],
+          circleId: response['id'],
           status: response['status'],
         }),
       )
@@ -427,7 +427,7 @@ export class PaymentService {
       description: response['description'],
       trackingRef: response['trackingRef'],
       fingerprint: response['fingerprint'],
-      circleBankId: response['id'],
+      circleId: response['id'],
       idempotencyKey: createBankDto.idempotencyKey,
     })
     await this.dbWriter(CircleBankEntity.table).insert(data)
@@ -490,7 +490,7 @@ export class PaymentService {
         id: payout.payoutMethod.bankId,
         user_id: userId,
       })
-      .select('id', 'circle_bank_id')
+      .select('id', 'circle_id')
       .first()
 
     const user = await this.dbReader(UserEntity.table)
@@ -508,7 +508,7 @@ export class PaymentService {
       },
       destination: {
         type: 'wire',
-        id: bank.circle_bank_id,
+        id: bank.circle_id,
       },
       amount: {
         amount: payout.amount.toFixed(2),
@@ -533,7 +533,7 @@ export class PaymentService {
     await this.dbWriter(CirclePayoutEntity.table)
       .update(
         CirclePayoutEntity.toDict<CirclePayoutEntity>({
-          circlePayoutId: response['id'],
+          circleId: response['id'],
           status: response['status'],
         }),
       )
@@ -586,7 +586,7 @@ export class PaymentService {
       },
       destination: {
         type: 'blockchain',
-        id: wallet.circle_bank_id,
+        address: wallet.address,
         chain: wallet.chain.toUpperCase(),
       },
       amount: {
@@ -612,7 +612,7 @@ export class PaymentService {
     await this.dbWriter(CircleTransferEntity.table)
       .update(
         CircleTransferEntity.toDict<CircleTransferEntity>({
-          circleTransferId: response['id'],
+          circleId: response['id'],
           status: response['status'],
         }),
       )
@@ -721,7 +721,7 @@ export class PaymentService {
         }),
       )
       .where(
-        CircleBankEntity.toDict<CircleBankEntity>({ circleBankId: wireDto.id }),
+        CircleBankEntity.toDict<CircleBankEntity>({ circleId: wireDto.id }),
       )
   }
 
@@ -739,7 +739,7 @@ export class PaymentService {
         }),
       )
       .where(
-        CircleCardEntity.toDict<CircleCardEntity>({ circleCardId: cardDto.id }),
+        CircleCardEntity.toDict<CircleCardEntity>({ circleId: cardDto.id }),
       )
   }
 
@@ -757,7 +757,7 @@ export class PaymentService {
         CirclePaymentEntity.table + '.payin_id',
       )
       .select(PayinEntity.table + '.id as id', PayinEntity.table + '.user_id')
-      .where('circle_payment_id', paymentDto.id)
+      .where('circle_id', paymentDto.id)
       .first()
 
     if (!payin) {
@@ -765,7 +765,7 @@ export class PaymentService {
     }
 
     await this.dbWriter(CirclePaymentEntity.table)
-      .where('circle_payment_id', paymentDto.id)
+      .where('circle_id', paymentDto.id)
       .update({ status: paymentDto.status })
 
     switch (paymentDto.status) {
@@ -811,7 +811,7 @@ export class PaymentService {
         CirclePayoutEntity.table + '.payout_id',
       )
       .select(PayoutEntity.table + '.id as id', PayoutEntity.table + '.user_id')
-      .where('circle_payout_id', payoutDto.id)
+      .where('circle_id', payoutDto.id)
       .first()
 
     if (!payout) {
@@ -819,7 +819,7 @@ export class PaymentService {
     }
 
     await this.dbWriter(CirclePayoutEntity.table)
-      .where('circle_payout_id', payoutDto.id)
+      .where('circle_id', payoutDto.id)
       .update({ status: payoutDto.status, fee: payoutDto.fees.amount })
 
     switch (payoutDto.status) {
@@ -933,7 +933,7 @@ export class PaymentService {
     transferDto: CircleTransferDto,
   ): Promise<void> {
     const circleTransfer = await this.dbReader(CircleTransferEntity.table)
-      .where('circle_transfer_id', transferDto.id)
+      .where('circle_id', transferDto.id)
       .select('payout_id')
       .first()
     const payout = await this.dbReader(PayoutEntity.table)

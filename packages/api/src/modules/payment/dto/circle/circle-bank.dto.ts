@@ -5,7 +5,7 @@ export class CircleBankDto {
   id: string
 
   @ApiPropertyOptional()
-  circleBankId?: string
+  circleId?: string
 
   @ApiProperty()
   status: string
@@ -16,7 +16,7 @@ export class CircleBankDto {
   constructor(bank) {
     if (bank) {
       this.id = bank.id
-      this.circleBankId = bank.circle_bank_id
+      this.circleId = bank.circle_id
       this.status = bank.status
       this.description = bank.description
     }

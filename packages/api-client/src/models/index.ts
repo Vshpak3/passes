@@ -104,6 +104,7 @@ export * from './SearchCreatorResponseDto';
 export * from './SendMessageRequestDto';
 export * from './SetPayinMethodRequestDto';
 export * from './SetPayoutMethodRequestDto';
+export * from './SubmitInquiryRequestDto';
 export * from './SubscriptionDto';
 export * from './TipPostRequestDto';
 export * from './TokenResponseDto';

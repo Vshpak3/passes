@@ -5,7 +5,7 @@ export class CircleCardDto {
   id: string
 
   @ApiPropertyOptional()
-  circleCardId?: string
+  circleId?: string
 
   @ApiProperty()
   status: string
@@ -31,7 +31,7 @@ export class CircleCardDto {
   constructor(card) {
     if (card) {
       this.id = card.id
-      this.circleCardId = card.circle_card_id
+      this.circleId = card.circle_id
       this.status = card.status
       this.firstDigit = card.card_number.slice(0, 1)
       this.fourDigits = card.card_number.slice(12)

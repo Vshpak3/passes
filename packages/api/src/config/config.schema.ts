@@ -77,6 +77,8 @@ export const configValidationSchema = Joi.object({
   ALCHEMY_ETH_API_KEY: Joi.string().required(),
   ALCHEMY_ETH_HTTPS_ENDPOINT: Joi.string().uri().required(),
 
+  PERSONA_API_KEY: Joi.string().required(),
+
   // -----------------------------------------------------------
 
   BLOCKCHAIN_NETWORKS: Joi.string().required(),
@@ -175,6 +177,9 @@ export const configConfiguration = async function (): Promise<
         api_key: getConfigValue('ALCHEMY_ETH_API_KEY'),
         https_endpoint: getConfigValue('ALCHEMY_ETH_HTTPS_ENDPOINT'),
       },
+    },
+    persona: {
+      api_key: getConfigValue('PERSONA_API_KEY'),
     },
     blockchain: {
       networks: getConfigValue('BLOCKCHAIN_NETWORKS'),

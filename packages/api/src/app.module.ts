@@ -36,6 +36,7 @@ import { S3ContentModule } from './modules/s3content/s3content.module'
 import { SettingsModule } from './modules/settings/settings.module'
 import { SolModule } from './modules/sol/sol.module'
 import { UserModule } from './modules/user/user.module'
+import { VerificationModule } from './modules/verification/verification.module'
 import { WalletModule } from './modules/wallet/wallet.module'
 import { loggingOptions } from './monitoring/logging/logging.options'
 import { MetricsModule } from './monitoring/metrics/metric.module'
@@ -84,6 +85,7 @@ import {
     UserModule,
     WalletModule,
     ListModule,
+    VerificationModule,
   ],
   providers: [
     {

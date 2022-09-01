@@ -22,7 +22,7 @@ export class CircleBankEntity extends BaseEntity {
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleBankId?: string
+  circleId?: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum

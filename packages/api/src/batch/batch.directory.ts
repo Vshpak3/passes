@@ -5,6 +5,7 @@ import { PayoutCreatorsTask } from './payout-creators.batch'
 import { RefreshEthWalletTask } from './refresh-eth-wallet.batch'
 import { RefreshSolNftTask } from './refresh-sol-nft.batch'
 import { UpdateSubscriptionsTask } from './update-subscriptions.batch'
+import { UpdateVerificationsTask } from './update-verifications.batch'
 
 // Maps an identifier (to be specified in the job definition) to the batch task
 // class to run
@@ -16,4 +17,5 @@ export const TaskDirectory = {
   create_earning_history_task: CreateEarningHistoryTask,
   refresh_eth_wallet_task: RefreshEthWalletTask,
   refresh_sol_nft_task: RefreshSolNftTask,
+  update_verifications_task: UpdateVerificationsTask,
 }

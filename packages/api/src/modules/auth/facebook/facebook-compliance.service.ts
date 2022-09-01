@@ -53,7 +53,7 @@ export class FacebookComplianceService {
       )
     }
 
-    this.dbWriter
+    await this.dbWriter
       .transaction(async (trx) => {
         const id = uuid.v4()
         const userId = decodedBody.user_id
