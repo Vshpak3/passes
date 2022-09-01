@@ -104,9 +104,9 @@ export class PassService {
   async findOne(id: string): Promise<PassDto> {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
-        `${UserEntity.table} as owner`,
+        `${UserEntity.table} as creator`,
         `${PassEntity.table}.creator_id`,
-        'owner.id',
+        'creator.id',
       )
       .innerJoin(
         `${SolNftCollectionEntity.table} as solNftCollection`,
