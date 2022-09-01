@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { VaultFilterOption } from "src/components/atoms"
-import { composeMediaFilter, composeSortKey } from "src/hooks/useVaultSort"
+import {
+  composeMediaFilter,
+  composeSortKey
+} from "src/hooks/vault/useVaultSort"
 
 const DEFAULT_FILTER = "All"
 const MEDIA_TYPES = [DEFAULT_FILTER, "Image", "Video", "GIF"]
@@ -38,9 +41,9 @@ const VaultFilterContainer = ({
   ])
 
   return (
-    <div className="items-align align-center my-6 flex md:my-0">
-      <div className="align-items flex w-full flex-col justify-start md:mt-5">
-        <div className="mb-[15px] flex items-start md:mb-[20px]">
+    <div className="items-align align-center flex">
+      <div className="align-items mt-5 flex w-full flex-col justify-start">
+        <div className="mb-[15px] flex items-start">
           {SOURCE_TYPES.map((source, index) => {
             const isActive = source === activeSourceFilter
             const onClick = () => setActiveSourceFilter(source)
@@ -55,7 +58,7 @@ const VaultFilterContainer = ({
             )
           })}
         </div>
-        <div className="mb-[15px] flex items-center md:mb-[20px]">
+        <div className="flex items-center">
           {MEDIA_TYPES.map((media, index) => {
             const isActive = media === activeMediaFilter
             const onClick = () => setActiveMediaFilter(media)

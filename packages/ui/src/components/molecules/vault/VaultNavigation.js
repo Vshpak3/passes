@@ -7,7 +7,7 @@ import {
   VaultSelectContainer,
   VaultSortDropdown
 } from "src/components/molecules"
-import useVaultSort from "src/hooks/useVaultSort"
+import useVaultSort from "src/hooks/vault/useVaultSort"
 
 const VaultNavigation = ({
   selectedItems,
@@ -30,7 +30,7 @@ const VaultNavigation = ({
   } = useVaultSort()
 
   return (
-    <div className="mx-2 flex-col justify-between px-1 md:mb-8">
+    <div className="flex-col justify-between">
       <div className="align-items flex items-center justify-between">
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
@@ -92,11 +92,9 @@ const VaultMediaGrid = ({ selectedItems, setSelectedItems, filteredItems }) => {
   ))
 
   return (
-    <div className=" mt-3 max-h-[62vh] min-w-[320px] max-w-[653px] overflow-y-auto md:min-w-[650px] sidebar-collapse:min-w-[1000px]">
-      <div className="align-center flex items-center justify-center px-2 md:px-0">
-        <div className="grid grid-cols-3 items-center gap-4 md:grid-cols-2 md:gap-4 sidebar-collapse:grid-cols-3">
-          {filteredItems.length > 0 ? mediaGrid : emptyGrid}
-        </div>
+    <div className="mt-[30px] max-h-[530px] justify-center overflow-y-scroll md:max-h-[590px] sidebar-collapse:mt-[30px] sidebar-collapse:max-w-[1000px]">
+      <div className="grid grid-cols-3 gap-2">
+        {filteredItems.length > 0 ? mediaGrid : emptyGrid}
       </div>
     </div>
   )

@@ -28,19 +28,12 @@ const VaultItemSelect = ({ isSelected, onSelectItem }) => {
     "h-[21px] w-[21px] rounded-full border-2 hover:shadow-[0px_20px_20px_#1b141d]] hover:shadow"
   )
 
-  return (
-    <div
-      onClick={onSelectItem}
-      className="absolute top-2 right-2 flex h-[55px] cursor-pointer md:top-5 md:right-5"
-    >
-      <div className={className} />
-    </div>
-  )
+  return <div className={className} onClick={onSelectItem} />
 }
 
 const VaultItemDate = ({ date }) => (
-  <div className="absolute top-2 left-2 flex hidden w-[50px] cursor-pointer items-center justify-items-center rounded-md bg-[#00000030] md:top-3 md:right-3 md:block">
-    <div className="text-center text-[11px] font-semibold text-[#ffffff]">
+  <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
+    <div className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block">
       {date}
     </div>
   </div>

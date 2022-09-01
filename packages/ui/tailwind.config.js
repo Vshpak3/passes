@@ -62,5 +62,5 @@ module.exports = {
       }
     }
   },
-  plugins: [forms, require("daisyui")]
+  plugins: [forms, require("daisyui"), require("@tailwindcss/aspect-ratio")]
 }
