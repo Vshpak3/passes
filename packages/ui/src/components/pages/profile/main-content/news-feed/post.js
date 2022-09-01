@@ -49,7 +49,7 @@ export const Post = ({ profile, post }) => {
   )
 }
 
-export const PostProfileAvatar = ({ profile }) => (
+export const PostProfileAvatar = ({ profile, post }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-center space-x-4">
       <img // eslint-disable-line @next/next/no-img-element
@@ -73,7 +73,11 @@ export const PostProfileAvatar = ({ profile }) => (
     </div>
     <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
       <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
-        2 DAYS AGO
+        <TimeAgo
+          className="uppercase text-gray-300/60"
+          date={post.date}
+          minPeriod={30}
+        />
       </div>
       <div className="flex items-center gap-[15px]">
         {/* <div

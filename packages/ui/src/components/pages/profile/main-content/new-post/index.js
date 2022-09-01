@@ -323,7 +323,7 @@ export const NewPost = ({
                   errors={errors}
                 />
               ) : (
-                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color  md:h-[420px] md:p-9">
+                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color  md:h-[480px] md:p-9">
                   <div className="relative flex h-[230px] w-full items-center justify-center rounded-[6px]">
                     {selectedMedia ? (
                       <MediaFile
@@ -334,7 +334,7 @@ export const NewPost = ({
                             ? "rounded-[6px] object-contain"
                             : selectedMedia.type.startsWith("video/")
                             ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full rounded-[6px] object-cover"
-                            : selectedMedia.type.startsWith("aduio/")
+                            : selectedMedia.type.startsWith("audio/")
                             ? "absolute inset-0 m-auto min-w-full max-w-full rounded-[6px] object-cover"
                             : null
                         )}
@@ -348,7 +348,7 @@ export const NewPost = ({
                       {files.map((file, index) => (
                         <div
                           key={index}
-                          className="relative flex h-[92px] w-[118px] flex-shrink-0 items-center justify-center rounded-[6px]"
+                          className="relative flex h-[92px] w-[118px] flex-shrink-0 items-center justify-center overflow-hidden rounded-[6px]"
                         >
                           <MediaFile
                             onRemove={() => onRemove(index)}
@@ -356,10 +356,10 @@ export const NewPost = ({
                             file={file}
                             className={classNames(
                               file.type.startsWith("image/")
-                                ? "cursor-pointer rounded-[6px] object-contain"
+                                ? "rounded-[6px] object-contain"
                                 : file.type.startsWith("video/")
                                 ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                                : file.type.startsWith("aduio/")
+                                : file.type.startsWith("audio/")
                                 ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
                                 : null
                             )}
@@ -373,7 +373,7 @@ export const NewPost = ({
                       type="file"
                       multiple={true}
                       trigger={
-                        <div className="box-border flex h-[92px] w-[118px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
+                        <div className="box-border flex h-[92px] w-[118px] cursor-pointer items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
                           <PlusIcon />
                         </div>
                       }

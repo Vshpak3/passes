@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Post } from "./post"
@@ -21,51 +21,18 @@ const mockPost = {
     "https://images.unsplash.com/photo-1582758420652-97455135fb09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
 }
 
-const MOCKED_FANWALL_POSTS = [
-  {
-    profile: {
-      fullName: "Fan Limani",
-      userId: "@alexfan",
-      profileImageUrl:
-        "https://images.unsplash.com/photo-1535189005916-e5e47dc88316?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3131&q=80"
-    },
-    numLikes: 1400,
-    numComments: 338,
-    sharesCount: 220,
-    locked: false,
-    price: 32,
-    date: "2022-06-21T19:00:00.000Z",
-    caption:
-      "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
-    imgUrl: "/pages/profile/profile-post-photo.png"
-  },
-  {
-    profile: {
-      fullName: "Alex Drachnik Fan",
-      userId: "@drach",
-      profileImageUrl:
-        "https://images.unsplash.com/photo-1654850900859-be34bd2e217c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-    },
-    numLikes: 1400,
-    numComments: 338,
-    sharesCount: 220,
-    locked: false,
-    price: 32,
-    date: "2022-05-23T19:00:00.000Z",
-    caption: "Peace",
-    imgUrl:
-      "https://images.unsplash.com/photo-1555415859-4b0d889d8239?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80"
-  }
-]
-
-const FanWallFeed = () => {
-  const [posts, setPosts] = useState(MOCKED_FANWALL_POSTS)
+const FanWallFeed = ({ fanWallposts }) => {
+  const [posts, setPosts] = useState(fanWallposts)
   const [hasMore] = useState(true)
 
   const getMorePost = async () => {
     const newPosts = new Array(10).fill(1).map(() => mockPost)
     setPosts((post) => [...post, ...newPosts])
   }
+
+  useEffect(() => {
+    setPosts(fanWallposts)
+  }, [fanWallposts])
 
   return (
     <div className="flex overflow-y-auto md:h-[1150px]">

@@ -30,7 +30,7 @@ export const MediaFile = ({
         {!preview && (
           <div
             onClick={onRemove}
-            className="absolute top-1 left-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
+            className="absolute top-1 left-1 z-[1] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
           >
             <Cross className="h-full w-full" />
           </div>
@@ -43,7 +43,7 @@ export const MediaFile = ({
         {!preview && (
           <div
             onClick={() => onRemove()}
-            className="relative top-1 left-1  mb-5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-passes-secondary-color p-2 text-white"
+            className="absolute top-1 left-1 z-[1] mb-5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-passes-secondary-color p-2 text-white"
           >
             <Cross className="h-full w-full" />
           </div>
