@@ -8,7 +8,6 @@ import NewsFeedContent from "./news-feed/news-feed-content"
 
 const MainContent = ({ profile, ownsProfile, posts, username }) => {
   const [activeTab, setActiveTab] = useState("post")
-
   const { mutate } = useSWRConfig()
   const createPost = async (values) => {
     const api = wrapApi(PostApi)
@@ -16,7 +15,7 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
       [`/post/creator/`, username],
       async () =>
         await api.postCreate({
-          createPostDto: {
+          createPostRequestDto: {
             passes: [],
             content: values.content,
             text: values.text,
@@ -25,11 +24,18 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
         }),
       {
         populateCache: (post, previousPosts) => {
-          return {
-            count: previousPosts.count + 1,
-            cursor: previousPosts.cursor,
-            posts: [post, ...previousPosts.posts]
-          }
+          if (!previousPosts)
+            return {
+              count: 1,
+              cursor: username,
+              posts: [post]
+            }
+          else
+            return {
+              count: previousPosts.count + 1,
+              cursor: previousPosts.cursor,
+              posts: [post, ...previousPosts.posts]
+            }
         },
         // Since the API already gives us the updated information,
         // we don't need to revalidate here.

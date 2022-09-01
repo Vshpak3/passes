@@ -9,7 +9,7 @@ const mockPost = {
   sharesCount: 220,
   locked: true,
   price: 32,
-  date: "2022-07-23T19:00:00.000Z",
+  date: "2022-09-01T11:52:25.712Z",
   caption:
     "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
   content: [

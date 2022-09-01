@@ -75,7 +75,7 @@ export const PostProfileAvatar = ({ profile, post }) => (
       <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
         <TimeAgo
           className="uppercase text-gray-300/60"
-          date={post.date}
+          date={post.createdAt ? post.createdAt : post.date}
           minPeriod={30}
         />
       </div>
