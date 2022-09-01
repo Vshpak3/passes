@@ -13,7 +13,7 @@ jobs:
   check-api:
     name: Check @passes/api package
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
   check-ui:
     name: Check @passes/ui package
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

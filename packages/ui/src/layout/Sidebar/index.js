@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { SidebarDefault, SidebarMobile } from "src/components/organisms"
 
 import { useUser } from "../../hooks"
@@ -65,4 +65,4 @@ const Sidebar = () => {
     </>
   )
 }
-export default Sidebar
+export default memo(Sidebar)
