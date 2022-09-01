@@ -24,9 +24,9 @@ import {
     SearchCreatorResponseDto,
     SearchCreatorResponseDtoFromJSON,
     SearchCreatorResponseDtoToJSON,
-    UpdateUserRequestDto,
-    UpdateUserRequestDtoFromJSON,
-    UpdateUserRequestDtoToJSON,
+    SetInitialUserInfoRequestDto,
+    SetInitialUserInfoRequestDtoFromJSON,
+    SetInitialUserInfoRequestDtoToJSON,
     UpdateUsernameRequestDto,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
@@ -40,12 +40,12 @@ export interface UserSearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
 }
 
-export interface UserSetUsernameRequest {
-    updateUsernameRequestDto: UpdateUsernameRequestDto;
+export interface UserSetInitialInfoRequest {
+    setInitialUserInfoRequestDto: SetInitialUserInfoRequestDto;
 }
 
-export interface UserUpdateRequest {
-    updateUserRequestDto: UpdateUserRequestDto;
+export interface UserSetUsernameRequest {
+    updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
 
 export interface UserValidateUsernameRequest {
@@ -171,6 +171,39 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
+     * Sets initial user info
+     */
+    async userSetInitialInfoRaw(requestParameters: UserSetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+        if (requestParameters.setInitialUserInfoRequestDto === null || requestParameters.setInitialUserInfoRequestDto === undefined) {
+            throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling userSetInitialInfo.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/user`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetInitialUserInfoRequestDtoToJSON(requestParameters.setInitialUserInfoRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Sets initial user info
+     */
+    async userSetInitialInfo(requestParameters: UserSetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+        const response = await this.userSetInitialInfoRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Set username for current user
      */
     async userSetUsernameRaw(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
@@ -200,39 +233,6 @@ export class UserApi extends runtime.BaseAPI {
      */
     async userSetUsername(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.userSetUsernameRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Updates a user
-     */
-    async userUpdateRaw(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
-        if (requestParameters.updateUserRequestDto === null || requestParameters.updateUserRequestDto === undefined) {
-            throw new runtime.RequiredError('updateUserRequestDto','Required parameter requestParameters.updateUserRequestDto was null or undefined when calling userUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/user`,
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateUserRequestDtoToJSON(requestParameters.updateUserRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Updates a user
-     */
-    async userUpdate(requestParameters: UserUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
-        const response = await this.userUpdateRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
     /**

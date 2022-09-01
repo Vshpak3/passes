@@ -51,12 +51,6 @@ export interface GetUserResponseDto {
     isCreator: boolean;
     /**
      * 
-     * @type {boolean}
-     * @memberof GetUserResponseDto
-     */
-    isVerified: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
@@ -96,7 +90,6 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'username': json['username'],
         'displayName': json['displayName'],
         'isCreator': json['isCreator'],
-        'isVerified': json['isVerified'],
         'legalFullName': json['legalFullName'],
         'phoneNumber': json['phoneNumber'],
         'birthday': json['birthday'],
@@ -118,7 +111,6 @@ export function GetUserResponseDtoToJSON(value?: GetUserResponseDto | null): any
         'username': value.username,
         'displayName': value.displayName,
         'isCreator': value.isCreator,
-        'isVerified': value.isVerified,
         'legalFullName': value.legalFullName,
         'phoneNumber': value.phoneNumber,
         'birthday': value.birthday,

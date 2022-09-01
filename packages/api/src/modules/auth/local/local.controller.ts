@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
+import { createTokens } from '../../../util/auth.util'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
@@ -32,7 +33,7 @@ export class LocalAuthController {
 
   @ApiOperation({ summary: 'Create a email and password user' })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     type: AuthTokenResponseDto,
     description: 'Create a email and password user',
   })
@@ -44,11 +45,15 @@ export class LocalAuthController {
   ) {
     const user = await this.localAuthService.createLocalUser(createLocalUserDto)
 
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-    await this.s3contentService.signCookies(res, `*/${user.id}`)
+    const tokens = await createTokens(
+      res,
+      user,
+      this.jwtAuthService,
+      this.jwtRefreshService,
+      this.s3contentService,
+    )
 
-    res.status(201).send({ accessToken, refreshToken })
+    res.status(HttpStatus.CREATED).send(tokens)
   }
 
   @ApiOperation({ summary: 'Login with email and password' })
@@ -72,10 +77,14 @@ export class LocalAuthController {
       throw new UnauthorizedException('Invalid credentials')
     }
 
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    const refreshToken = this.jwtRefreshService.createRefreshToken(user.id)
-    await this.s3contentService.signCookies(res, `*/${user.id}`)
+    const tokens = await createTokens(
+      res,
+      user,
+      this.jwtAuthService,
+      this.jwtRefreshService,
+      this.s3contentService,
+    )
 
-    res.status(200).send({ accessToken, refreshToken })
+    res.status(HttpStatus.OK).send(tokens)
   }
 }

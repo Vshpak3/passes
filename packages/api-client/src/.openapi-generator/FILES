@@ -134,6 +134,7 @@ models/ReportFanDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SendMessageRequestDto.ts
+models/SetInitialUserInfoRequestDto.ts
 models/SetPayinMethodRequestDto.ts
 models/SetPayoutMethodRequestDto.ts
 models/SubmitInquiryRequestDto.ts
@@ -145,7 +146,6 @@ models/UpdateCreatorSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePostRequestDto.ts
 models/UpdateProfileRequestDto.ts
-models/UpdateUserRequestDto.ts
 models/UpdateUsernameRequestDto.ts
 models/WalletDto.ts
 models/WalletResponseDto.ts

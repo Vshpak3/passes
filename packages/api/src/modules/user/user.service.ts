@@ -9,8 +9,8 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { USERNAME_TAKEN } from './constants/errors'
+import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
-import { UpdateUserRequestDto } from './dto/update-user.dto'
 import { UserEntity } from './entities/user.entity'
 
 @Injectable()
@@ -77,18 +77,18 @@ export class UserService {
       .first()
   }
 
-  async update(
+  async setInitialUserInfo(
     userId: string,
-    updateUserDto: UpdateUserRequestDto,
+    setInitialUserInfoDto: SetInitialUserInfoRequestDto,
   ): Promise<UserEntity> {
-    // TODO: check if user query is needed
+    // TODO: this isn't actually needed if we update the create access token method
     const currentUser = await this.findOne(userId)
 
-    // TODO: Only certain user fields should be allowed to be updated
     const data = UserEntity.toDict<UserEntity>({
-      ...updateUserDto,
+      ...setInitialUserInfoDto,
     })
     await this.dbWriter(UserEntity.table).update(data).where({ id: userId })
+
     return { ...currentUser, ...data }
   }
 

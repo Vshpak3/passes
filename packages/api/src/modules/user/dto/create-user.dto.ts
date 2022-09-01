@@ -1,21 +1,15 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 import {
   IsDateString,
   IsEmail,
-  IsPhoneNumber,
   Length,
   Matches,
-  MaxLength,
   Validate,
 } from 'class-validator'
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
-import {
-  USER_DISPLAY_NAME_LENGTH,
-  USER_PHONE_NUMBER_LENGTH,
-  USER_USERNAME_LENGTH,
-} from '../constants/schema'
+import { USER_USERNAME_LENGTH } from '../constants/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 
 export class CreateUserRequestDto {
@@ -32,20 +26,24 @@ export class CreateUserRequestDto {
   @Validate(IsNotBlocklistedUsername)
   username: string
 
+  // TODO: add validation
+  @ApiProperty()
+  legalFullName: string
+
   @ApiProperty()
   @Validate(IsValidCountryCode)
-  countryCode?: string
-
-  @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @ApiProperty()
-  displayName?: string
+  countryCode: string
 
   @IsDateString()
-  @ApiPropertyOptional()
-  birthday?: string
+  @ApiProperty()
+  birthday: string
 
-  @IsPhoneNumber()
-  @MaxLength(USER_PHONE_NUMBER_LENGTH)
-  @ApiPropertyOptional()
-  phoneNumber?: string
+  // @Length(1, USER_DISPLAY_NAME_LENGTH)
+  // @ApiProperty()
+  // displayName?: string
+
+  // @IsPhoneNumber()
+  // @MaxLength(USER_PHONE_NUMBER_LENGTH)
+  // @ApiPropertyOptional()
+  // phoneNumber?: string
 }

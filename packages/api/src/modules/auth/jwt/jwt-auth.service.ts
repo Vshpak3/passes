@@ -19,18 +19,12 @@ export class JwtAuthService {
     return this.jwtService.sign(payload)
   }
 
-  private isVerified(user: UserEntity): boolean {
-    // TODO: Add email not verified check (for email password users)
-
-    if (!user.legalFullName) {
-      return false
-    }
-
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-    if (!user.birthday) {
-      return false
-    }
-
-    return true
+  public isVerified(user: UserEntity): boolean {
+    return (
+      !!user.email &&
+      !!user.legalFullName &&
+      !!user.birthday &&
+      !!user.countryCode
+    )
   }
 }

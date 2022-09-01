@@ -12,9 +12,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { RequestWithUser } from '../../types/request'
+import { createTokens } from '../../util/auth.util'
 import { S3ContentService } from '../s3content/s3content.service'
 import { GetUserResponseDto } from '../user/dto/get-user.dto'
-import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { AllowUnauthorizedRequest } from './auth.metadata'
 import { RefreshAuthTokenRequestDto } from './dto/refresh-auth-token'
@@ -51,7 +51,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: AuthTokenResponseDto,
-    description: 'Access token was created',
+    description: 'Refresh token token was created',
   })
   @AllowUnauthorizedRequest()
   @UseGuards(JwtRefreshGuard)
@@ -63,11 +63,15 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() body: RefreshAuthTokenRequestDto,
   ) {
-    await this.s3contentService.signCookies(res, `*/${req.user.id}`)
+    const tokens = await createTokens(
+      res,
+      await this.userService.findOne(req.user.id),
+      this.jwtAuthService,
+      this.jwtRefreshService,
+      this.s3contentService,
+    )
     return {
-      accessToken: this.jwtAuthService.createAccessToken(
-        req.user as UserEntity,
-      ),
+      accessToken: tokens.accessToken,
     }
   }
 }
