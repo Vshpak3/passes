@@ -40,11 +40,11 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
   }
 
   // TODO
-  // const isVerified = jwtDecode(token) as any).isVerified
-  // if (!isVerified && !allowUnverified) {
-  //   router.push(`/signup/user-info?email=${user.email}`)
-  //   return null
-  // }
+  const isVerified = true // jwtDecode(token) as any).isVerified
+  if (isPage && !isVerified && !allowUnverified) {
+    router.push(`/signup/user-info?email=${user.email}`)
+    return null
+  }
 
   return <>{children}</>
 }

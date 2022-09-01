@@ -31,18 +31,13 @@ const UserInfoPage = () => {
     formState: { errors }
   } = useForm()
 
-  const onUserRegister = async (
-    username,
-    countryCode,
-    displayName,
-    birthday
-  ) => {
+  const onUserRegister = async (name, username, countryCode, birthday) => {
     try {
       const userSetInitialInfoRequestDto = {
+        legalFullName: name,
         username: username,
         countryCode: countryCode,
-        birthday: birthday,
-        legalFullName.name,
+        birthday: birthday
       }
 
       const api = wrapApi(UserApi)
@@ -63,12 +58,10 @@ const UserInfoPage = () => {
   }
 
   const onSubmit = (data) => {
-    const email = router?.query?.email
     onUserRegister(
-      email,
+      data.name,
       data.username,
       iso3311a2.getCode(data.countryCode),
-      data.displayName,
       data.birthday
     )
   }
