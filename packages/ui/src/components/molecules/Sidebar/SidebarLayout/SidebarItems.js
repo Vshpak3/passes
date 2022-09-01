@@ -1,11 +1,12 @@
 import { Disclosure } from "@headlessui/react"
+import Link from "next/link"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import React, { Fragment } from "react"
 import { classNames } from "src/helpers"
 
 function SidebarChildItem({ subItem, isActive, setActive }) {
   return (
-    <a
+    <Link
       key={subItem.name}
       href={subItem.href}
       as={subItem.href}
@@ -25,7 +26,7 @@ function SidebarChildItem({ subItem, isActive, setActive }) {
       >
         {subItem.name}
       </span>
-    </a>
+    </Link>
   )
 }
 
@@ -48,7 +49,7 @@ function SidebarDropdown({ active, item, setActive, router }) {
                 `group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex`
               )}
             >
-              <a
+              <Link
                 href={item.href}
                 as={item.href}
                 className={classNames(
@@ -68,7 +69,7 @@ function SidebarDropdown({ active, item, setActive, router }) {
                   aria-hidden="true"
                 />
                 {item.name}
-              </a>
+              </Link>
 
               <ChevronDown
                 className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
@@ -107,7 +108,7 @@ function SidebarTabletItem({ isActive, item, setActive }) {
         "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
       )}
     >
-      <a
+      <Link
         href={item.href}
         as={item.href}
         className={classNames(
@@ -124,7 +125,7 @@ function SidebarTabletItem({ isActive, item, setActive }) {
           )}
           aria-hidden="true"
         />
-      </a>
+      </Link>
     </span>
   )
 }
@@ -141,7 +142,7 @@ function SidebarDesktopItem({ isActive, item, setActive }) {
         `group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex`
       )}
     >
-      <a
+      <Link
         href={item.href}
         as={item.href}
         className={classNames(
@@ -149,17 +150,19 @@ function SidebarDesktopItem({ isActive, item, setActive }) {
           `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
         )}
       >
-        <item.icon
-          className={classNames(
-            isActive
-              ? "fill-transparent stroke-white stroke-2"
-              : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-            "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
-          )}
-          aria-hidden="true"
-        />
-        {item.name}
-      </a>
+        <>
+          <item.icon
+            className={classNames(
+              isActive
+                ? "fill-transparent stroke-white stroke-2"
+                : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
+            )}
+            aria-hidden="true"
+          />
+          {item.name}
+        </>
+      </Link>
     </span>
   )
 }
