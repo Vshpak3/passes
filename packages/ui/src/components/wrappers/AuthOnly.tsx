@@ -33,7 +33,8 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
     return null
   }
 
-  if (!user.isVerified && !allowUnverified && isPage) {
+  // TODO: !user.isVerified
+  if (!allowUnverified && isPage) {
     router.push(`/signup/user-info?email=${user.email}`)
     return null
   }
