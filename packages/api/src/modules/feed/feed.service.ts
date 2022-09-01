@@ -4,6 +4,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { FollowEntity } from '../follow/entities/follow.entity'
+import { LikeEntity } from '../likes/entities/like.entity'
 import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
@@ -43,10 +44,16 @@ export class FeedService {
           `${PostUserAccessEntity.table}.post_id`,
         )
       })
+      .leftJoin(
+        LikeEntity.table,
+        `${LikeEntity.table}.post_id`,
+        `${PostEntity.table}.id`,
+      )
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${PostUserAccessEntity.table}.post_id as access`,
+        `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${FollowEntity.table}.is_active`, true)
@@ -93,10 +100,16 @@ export class FeedService {
           `${PostUserAccessEntity.table}.post_id`,
         )
       })
+      .leftJoin(
+        LikeEntity.table,
+        `${LikeEntity.table}.post_id`,
+        `${PostEntity.table}.id`,
+      )
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${PostUserAccessEntity.table}.post_id as access`,
+        `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${UserEntity.table}.username`, username)

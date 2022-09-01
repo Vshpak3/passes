@@ -76,6 +76,12 @@ export interface PostDto {
     numComments: number;
     /**
      * 
+     * @type {number}
+     * @memberof PostDto
+     */
+    numPurchases: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof PostDto
      */
@@ -136,6 +142,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
+        'numPurchases': json['numPurchases'],
         'isLiked': json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -163,6 +170,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
+        'numPurchases': value.numPurchases,
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

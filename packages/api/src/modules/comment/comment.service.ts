@@ -121,6 +121,7 @@ export class CommentService {
   async hide(userId: string, id: string) {
     const comment = await this.dbReader(CommentEntity.table)
       .where({ id })
+      .select(['id', 'is_hidden', 'deleted_at'])
       .first()
 
     if (!comment) {
@@ -151,16 +152,19 @@ export class CommentService {
     })
 
     await this.dbWriter.transaction(async (trx) => {
+      if (!comment.is_hidden && !comment.deleted_at) {
+        await trx(PostEntity.table)
+          .where('id', post.id)
+          .decrement('num_comments', 1)
+      }
       await trx(CommentEntity.table).update(data).where({ id })
-      await trx(PostEntity.table)
-        .where('id', post.id)
-        .decrement('num_comments', 1)
     })
   }
 
   async delete(userId: string, id: string) {
     const comment = await this.dbReader(CommentEntity.table)
       .where({ id })
+      .select(['id', 'is_hidden', 'deleted_at'])
       .first()
 
     if (!comment) {
@@ -191,10 +195,12 @@ export class CommentService {
     })
 
     await this.dbWriter.transaction(async (trx) => {
+      if (!comment.is_hidden && !comment.deleted_at) {
+        await trx(PostEntity.table)
+          .where('id', post.id)
+          .decrement('num_comments', 1)
+      }
       await trx(CommentEntity.table).update(data).where({ id })
-      await trx(PostEntity.table)
-        .where('id', post.id)
-        .decrement('num_comments', 1)
     })
   }
 }

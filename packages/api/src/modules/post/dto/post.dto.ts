@@ -28,6 +28,9 @@ export class PostDto {
   numComments: number
 
   @ApiProperty()
+  numPurchases: number
+
+  @ApiProperty()
   isLiked?: boolean
 
   @ApiProperty()
@@ -50,13 +53,13 @@ export class PostDto {
 
   constructor(post, paywall, content?: GetContentResponseDto[]) {
     if (post) {
-      if (!paywall) {
-        this.text = post.text
-        this.numLikes = post.num_likes
-        this.numComments = post.num_comments
-        this.isLiked = post.num_likes > 0
-        this.totalTipAmount = post.total_tip_amount
-      }
+      // only content gets paywalled
+      this.text = post.text
+      this.numLikes = post.num_likes
+      this.numComments = post.num_comments
+      this.numPurchases = post.num_purchases
+      this.isLiked = post.is_liked
+      this.totalTipAmount = post.total_tip_amount
       this.updatedAt = post.updated_at
       this.expiresAt = post.expires_at
         ? post.expires_at

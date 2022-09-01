@@ -30,6 +30,9 @@ export class PostEntity extends BaseEntity {
   @Property({ default: 0 })
   numComments: number
 
+  @Property({ default: 0 })
+  numPurchases: number
+
   @Property()
   deletedAt?: Date
 
@@ -41,6 +44,9 @@ export class PostEntity extends BaseEntity {
 
   @Property({ type: types.bigint })
   expiresAt?: number
+
+  @Property()
+  pinnedAt?: Date
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   totalTipAmount: number

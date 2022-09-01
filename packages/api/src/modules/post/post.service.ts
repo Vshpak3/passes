@@ -16,6 +16,7 @@ import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { GetContentResponseDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
+import { LikeEntity } from '../likes/entities/like.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import {
   PurchasePostCallbackInput,
@@ -122,7 +123,26 @@ export class PostService {
         `${UserEntity.table}.id`,
         `${PostEntity.table}.user_id`,
       )
-      .select([`${PostEntity.table}.*`, `${UserEntity.table}.username`])
+      .leftJoin(PostUserAccessEntity.table, function () {
+        this.on(
+          `${UserEntity.table}.id`,
+          `${PostUserAccessEntity.table}.user_id`,
+        ).andOn(
+          `${PostEntity.table}.id`,
+          `${PostUserAccessEntity.table}.post_id`,
+        )
+      })
+      .leftJoin(
+        LikeEntity.table,
+        `${LikeEntity.table}.post_id`,
+        `${PostEntity.table}.id`,
+      )
+      .select([
+        `${PostEntity.table}.*`,
+        `${UserEntity.table}.username`,
+        `${PostUserAccessEntity.table}.post_id as access`,
+        `${LikeEntity.table}.id as is_liked`,
+      ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.id`, id)
       .first()
@@ -172,7 +192,7 @@ export class PostService {
     }, [])
 
     const contentLookup = await this.getContentLookupForPosts(
-      accessiblePosts.map((post) => post.id),
+      posts.map((post) => post.id),
     )
 
     const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
@@ -181,8 +201,8 @@ export class PostService {
       (post) =>
         new PostDto(
           post,
-          !accessiblePostIds.has(post.id),
-          contentLookup[post.id],
+          !accessiblePostIds.has(post.id) && contentLookup[post.id],
+          accessiblePostIds.has(post.id) ? contentLookup[post.id] : undefined,
         ),
     )
   }
@@ -242,8 +262,9 @@ export class PostService {
   }
 
   async remove(userId: string, postId: string) {
+    //TODO: allow admins + managers to remove posts
     const post = await this.dbReader(PostEntity.table)
-      .where({ id: postId })
+      .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
       .first()
     if (!post) {
       throw new NotFoundException(POST_NOT_EXIST)
@@ -251,19 +272,24 @@ export class PostService {
     return true
   }
 
-  async addUserAccess(userId: string, postId: string) {
-    await createOrThrowOnDuplicate(
-      () =>
-        this.dbWriter(PostUserAccessEntity.table).insert(
-          PostUserAccessEntity.toDict<PostUserAccessEntity>({
-            id: v4(),
-            user: userId,
-            post: postId,
-          }),
-        ),
-      this.logger,
-      `user ${userId} already has access to post ${postId}`,
-    )
+  async purchasePost(userId: string, postId: string) {
+    await this.dbWriter.transaction(async (trx) => {
+      await createOrThrowOnDuplicate(
+        () =>
+          trx(PostUserAccessEntity.table).insert(
+            PostUserAccessEntity.toDict<PostUserAccessEntity>({
+              id: v4(),
+              user: userId,
+              post: postId,
+            }),
+          ),
+        this.logger,
+        `user ${userId} already has access to post ${postId}`,
+      )
+      await trx(PostEntity.table)
+        .where('id', postId)
+        .increment('num_purchases', 1)
+    })
   }
 
   async createTip(userId: string, postId: string, amount: number) {

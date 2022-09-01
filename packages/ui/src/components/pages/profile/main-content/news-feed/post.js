@@ -190,12 +190,12 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
       const api = wrapApi(LikeApi)
 
       if (!liked)
-        await api.likeCreate({
-          id: post.id
+        await api.likeLikePost({
+          postId: post.id
         })
       else
-        await api.likeDelete({
-          id: post.id
+        await api.likeUnlikePost({
+          postId: post.id
         })
 
       setTimeout(updateEngagement, 1000)

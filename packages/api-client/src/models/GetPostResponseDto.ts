@@ -76,6 +76,12 @@ export interface GetPostResponseDto {
     numComments: number;
     /**
      * 
+     * @type {number}
+     * @memberof GetPostResponseDto
+     */
+    numPurchases: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetPostResponseDto
      */
@@ -136,6 +142,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
+        'numPurchases': json['numPurchases'],
         'isLiked': json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -163,6 +170,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
+        'numPurchases': value.numPurchases,
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

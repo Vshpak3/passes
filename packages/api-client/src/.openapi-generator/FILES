@@ -55,7 +55,6 @@ models/CreateContentRequestDto.ts
 models/CreateCreatorSettingsRequestDto.ts
 models/CreateEthNftCollectionRequestDto.ts
 models/CreateFanWallCommentRequestDto.ts
-models/CreateFollowingRequestDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
 models/CreatePassHolderRequestDto.ts
@@ -85,6 +84,7 @@ models/GetFanResponseDto.ts
 models/GetFanWallForCreatorResponseDto.ts
 models/GetFansResponseDto.ts
 models/GetFeedResponseDto.ts
+models/GetFollowingResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsResponseDto.ts
 models/GetMessagesResponseDto.ts

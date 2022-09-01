@@ -15,52 +15,52 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateFollowingRequestDto,
-    CreateFollowingRequestDtoFromJSON,
-    CreateFollowingRequestDtoToJSON,
     GetFansResponseDto,
     GetFansResponseDtoFromJSON,
     GetFansResponseDtoToJSON,
+    GetFollowingResponseDto,
+    GetFollowingResponseDtoFromJSON,
+    GetFollowingResponseDtoToJSON,
     ReportFanDto,
     ReportFanDtoFromJSON,
     ReportFanDtoToJSON,
 } from '../models';
 
-export interface FollowBlockRequest {
-    id: string;
+export interface FollowBlockFollowerRequest {
+    followerId: string;
 }
 
-export interface FollowCreateRequest {
-    createFollowingRequestDto: CreateFollowingRequestDto;
+export interface FollowCheckFollowRequest {
+    creatorId: string;
 }
 
-export interface FollowFindOneRequest {
-    id: string;
+export interface FollowFollowCreatorRequest {
+    creatorId: string;
 }
 
-export interface FollowRemoveRequest {
-    id: string;
-}
-
-export interface FollowReportRequest {
-    id: string;
+export interface FollowReportFollowerRequest {
+    followerId: string;
     reportFanDto: ReportFanDto;
 }
 
-export interface FollowRestrictRequest {
-    id: string;
+export interface FollowRestrictFollowerRequest {
+    followerId: string;
 }
 
 export interface FollowSearchFansRequest {
     body: object;
 }
 
-export interface FollowUnblockRequest {
-    id: string;
+export interface FollowUnblockFlowerRequest {
+    followerId: string;
 }
 
-export interface FollowUnrestrictRequest {
-    id: string;
+export interface FollowUnfollowCreatorRequest {
+    creatorId: string;
+}
+
+export interface FollowUnrestrictFollowerRequest {
+    followerId: string;
 }
 
 /**
@@ -71,9 +71,9 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Blocks a follower
      */
-    async followBlockRaw(requestParameters: FollowBlockRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followBlock.');
+    async followBlockFollowerRaw(requestParameters: FollowBlockFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
+            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling followBlockFollower.');
         }
 
         const queryParameters: any = {};
@@ -81,7 +81,7 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/block/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/block/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -93,49 +93,16 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Blocks a follower
      */
-    async followBlock(requestParameters: FollowBlockRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followBlockRaw(requestParameters, initOverrides);
+    async followBlockFollower(requestParameters: FollowBlockFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followBlockFollowerRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Creates a follow
+     * Check if you follow a creator
      */
-    async followCreateRaw(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingRequestDto>> {
-        if (requestParameters.createFollowingRequestDto === null || requestParameters.createFollowingRequestDto === undefined) {
-            throw new runtime.RequiredError('createFollowingRequestDto','Required parameter requestParameters.createFollowingRequestDto was null or undefined when calling followCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/follow`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateFollowingRequestDtoToJSON(requestParameters.createFollowingRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingRequestDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Creates a follow
-     */
-    async followCreate(requestParameters: FollowCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingRequestDto> {
-        const response = await this.followCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets a following
-     */
-    async followFindOneRaw(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreateFollowingRequestDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followFindOne.');
+    async followCheckFollowRaw(requestParameters: FollowCheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling followCheckFollow.');
         }
 
         const queryParameters: any = {};
@@ -143,29 +110,29 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/check/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFollowingRequestDtoFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
-     * Gets a following
+     * Check if you follow a creator
      */
-    async followFindOne(requestParameters: FollowFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreateFollowingRequestDto> {
-        const response = await this.followFindOneRaw(requestParameters, initOverrides);
+    async followCheckFollow(requestParameters: FollowCheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.followCheckFollowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Deletes a following
+     * Creates a follow
      */
-    async followRemoveRaw(requestParameters: FollowRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followRemove.');
+    async followFollowCreatorRaw(requestParameters: FollowFollowCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFollowingResponseDto>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling followFollowCreator.');
         }
 
         const queryParameters: any = {};
@@ -173,32 +140,33 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
+            path: `/api/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFollowingResponseDtoFromJSON(jsonValue));
     }
 
     /**
-     * Deletes a following
+     * Creates a follow
      */
-    async followRemove(requestParameters: FollowRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followRemoveRaw(requestParameters, initOverrides);
+    async followFollowCreator(requestParameters: FollowFollowCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFollowingResponseDto> {
+        const response = await this.followFollowCreatorRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
      * Reports a follower
      */
-    async followReportRaw(requestParameters: FollowReportRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followReport.');
+    async followReportFollowerRaw(requestParameters: FollowReportFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
+            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling followReportFollower.');
         }
 
         if (requestParameters.reportFanDto === null || requestParameters.reportFanDto === undefined) {
-            throw new runtime.RequiredError('reportFanDto','Required parameter requestParameters.reportFanDto was null or undefined when calling followReport.');
+            throw new runtime.RequiredError('reportFanDto','Required parameter requestParameters.reportFanDto was null or undefined when calling followReportFollower.');
         }
 
         const queryParameters: any = {};
@@ -208,7 +176,7 @@ export class FollowApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/follow/report/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/report/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -221,16 +189,16 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Reports a follower
      */
-    async followReport(requestParameters: FollowReportRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followReportRaw(requestParameters, initOverrides);
+    async followReportFollower(requestParameters: FollowReportFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followReportFollowerRaw(requestParameters, initOverrides);
     }
 
     /**
      * Restricts a follower
      */
-    async followRestrictRaw(requestParameters: FollowRestrictRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followRestrict.');
+    async followRestrictFollowerRaw(requestParameters: FollowRestrictFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
+            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling followRestrictFollower.');
         }
 
         const queryParameters: any = {};
@@ -238,7 +206,7 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/restrict/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/restrict/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -250,8 +218,8 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Restricts a follower
      */
-    async followRestrict(requestParameters: FollowRestrictRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followRestrictRaw(requestParameters, initOverrides);
+    async followRestrictFollower(requestParameters: FollowRestrictFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followRestrictFollowerRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -290,9 +258,9 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Unblocks a follower
      */
-    async followUnblockRaw(requestParameters: FollowUnblockRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followUnblock.');
+    async followUnblockFlowerRaw(requestParameters: FollowUnblockFlowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
+            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling followUnblockFlower.');
         }
 
         const queryParameters: any = {};
@@ -300,7 +268,7 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/unblock/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/unblock/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -312,16 +280,16 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Unblocks a follower
      */
-    async followUnblock(requestParameters: FollowUnblockRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followUnblockRaw(requestParameters, initOverrides);
+    async followUnblockFlower(requestParameters: FollowUnblockFlowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followUnblockFlowerRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Unrestricts a follower
+     * Deletes a following
      */
-    async followUnrestrictRaw(requestParameters: FollowUnrestrictRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling followUnrestrict.');
+    async followUnfollowCreatorRaw(requestParameters: FollowUnfollowCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling followUnfollowCreator.');
         }
 
         const queryParameters: any = {};
@@ -329,7 +297,36 @@ export class FollowApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/follow/unrestrict/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a following
+     */
+    async followUnfollowCreator(requestParameters: FollowUnfollowCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followUnfollowCreatorRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Unrestricts a follower
+     */
+    async followUnrestrictFollowerRaw(requestParameters: FollowUnrestrictFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
+            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling followUnrestrictFollower.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/follow/unrestrict/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -341,8 +338,8 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Unrestricts a follower
      */
-    async followUnrestrict(requestParameters: FollowUnrestrictRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.followUnrestrictRaw(requestParameters, initOverrides);
+    async followUnrestrictFollower(requestParameters: FollowUnrestrictFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.followUnrestrictFollowerRaw(requestParameters, initOverrides);
     }
 
 }

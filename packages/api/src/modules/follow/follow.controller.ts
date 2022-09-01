@@ -11,7 +11,6 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { CreateFollowingRequestDto } from './dto/create-following.dto'
 import { GetFansResponseDto } from './dto/get-fan.dto'
 import { GetFollowingResponseDto } from './dto/get-following.dto'
 import { ReportFanDto } from './dto/report-fan.dto'
@@ -23,29 +22,32 @@ import { FollowService } from './follow.service'
 export class FollowController {
   constructor(private readonly followService: FollowService) {}
 
+  @ApiOperation({ summary: 'Check if you follow a creator' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A follow was checked',
+  })
+  @Get('/check/:creatorId')
+  async checkFollow(
+    @Req() req: RequestWithUser,
+    @Param('creatorId') creatorId: string,
+  ): Promise<boolean> {
+    return await this.followService.checkFollow(req.user.id, creatorId)
+  }
+
   @ApiOperation({ summary: 'Creates a follow' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateFollowingRequestDto,
+    type: GetFollowingResponseDto,
     description: 'A follow was created',
   })
-  @Post()
-  async create(
+  @Post(':creatorId')
+  async followCreator(
     @Req() req: RequestWithUser,
-    @Body() createFollowingDto: CreateFollowingRequestDto,
+    @Param('creatorId') creatorId: string,
   ): Promise<GetFollowingResponseDto> {
-    return this.followService.create(req.user.id, createFollowingDto)
-  }
-
-  @ApiOperation({ summary: 'Gets a following' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: CreateFollowingRequestDto,
-    description: 'A following was retrieved',
-  })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetFollowingResponseDto> {
-    return this.followService.findOne(id)
+    return await this.followService.followCreator(req.user.id, creatorId)
   }
 
   @ApiOperation({ summary: 'Deletes a following' })
@@ -54,12 +56,12 @@ export class FollowController {
     type: undefined,
     description: 'A following was deleted',
   })
-  @Delete(':id')
-  async remove(
+  @Delete(':creatorId')
+  async unfollowCreator(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
-  ): Promise<GetFollowingResponseDto> {
-    return this.followService.remove(req.user.id, id)
+    @Param('creatorId') creatorId: string,
+  ): Promise<void> {
+    await this.followService.unfollowCreator(req.user.id, creatorId)
   }
 
   @ApiOperation({ summary: 'Search for followers by query' })
@@ -84,12 +86,12 @@ export class FollowController {
     type: undefined,
     description: 'A follower was blocked',
   })
-  @Post('/block/:id')
-  async block(
+  @Post('/block/:followerId')
+  async blockFollower(
     @Req() req: RequestWithUser,
-    @Param('id') followUserId: string,
+    @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.block(req.user.id, followUserId)
+    return this.followService.blockFollower(req.user.id, followerId)
   }
 
   @ApiOperation({ summary: 'Reports a follower' })
@@ -98,15 +100,15 @@ export class FollowController {
     type: undefined,
     description: 'A follower was reported',
   })
-  @Post('/report/:id')
-  async report(
+  @Post('/report/:followerId')
+  async reportFollower(
     @Req() req: RequestWithUser,
-    @Param('id') followUserId: string,
+    @Param('followerId') followerId: string,
     @Body() reportFanDto: ReportFanDto,
   ): Promise<void> {
-    return this.followService.report(
+    return this.followService.reportFollower(
       req.user.id,
-      followUserId,
+      followerId,
       reportFanDto.reason,
     )
   }
@@ -117,12 +119,12 @@ export class FollowController {
     type: undefined,
     description: 'A follower was restricted',
   })
-  @Post('/restrict/:id')
-  async restrict(
+  @Post('/restrict/:followerId')
+  async restrictFollower(
     @Req() req: RequestWithUser,
-    @Param('id') followUserId: string,
+    @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.restrict(req.user.id, followUserId)
+    return this.followService.restrictFollower(req.user.id, followerId)
   }
 
   @ApiOperation({ summary: 'Unrestricts a follower' })
@@ -131,12 +133,12 @@ export class FollowController {
     type: undefined,
     description: 'A follower was unrestricted',
   })
-  @Post('/unrestrict/:id')
-  async unrestrict(
+  @Post('/unrestrict/:followerId')
+  async unrestrictFollower(
     @Req() req: RequestWithUser,
-    @Param('id') followUserId: string,
+    @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.unrestrict(req.user.id, followUserId)
+    return this.followService.unrestrictFollower(req.user.id, followerId)
   }
 
   @ApiOperation({ summary: 'Unblocks a follower' })
@@ -145,11 +147,11 @@ export class FollowController {
     type: undefined,
     description: 'A follower was unblocked',
   })
-  @Post('/unblock/:id')
-  async unblock(
+  @Post('/unblock/:followerId')
+  async unblockFlower(
     @Req() req: RequestWithUser,
-    @Param('id') followUserId: string,
+    @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.unblock(req.user.id, followUserId)
+    return this.followService.unblockFollower(req.user.id, followerId)
   }
 }

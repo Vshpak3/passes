@@ -155,7 +155,7 @@ async function purchasePostSuccessfulCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<PurchasePostCallbackOutput> {
-  await payService.postService.addUserAccess(input.userId, input.postId)
+  await payService.postService.purchasePost(input.userId, input.postId)
   return { postId: input.postId }
 }
 

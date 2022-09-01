@@ -1,6 +1,7 @@
 import {
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Param,
   Post,
@@ -16,23 +17,45 @@ import { LikeService } from './like.service'
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
+  @ApiOperation({ summary: 'Check if post is liked' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'A like was created',
+  })
+  @Get(':postId')
+  async checkLike(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<boolean> {
+    return await this.likeService.checkLike(req.user.id, postId)
+  }
+
   @ApiOperation({ summary: 'Creates a like on a post' })
   @ApiResponse({
     status: HttpStatus.OK,
+    type: undefined,
     description: 'A like was created',
   })
-  @Post(':id')
-  async create(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.likeService.create(req.user.id, id)
+  @Post(':postId')
+  async likePost(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<void> {
+    await this.likeService.likePost(req.user.id, postId)
   }
 
   @ApiOperation({ summary: 'Removes a like on a post' })
   @ApiResponse({
     status: HttpStatus.OK,
+    type: undefined,
     description: 'A like was deleted',
   })
-  @Delete(':id')
-  async delete(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.likeService.delete(req.user.id, id)
+  @Delete(':postId')
+  async unlikePost(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<void> {
+    await this.likeService.unlikePost(req.user.id, postId)
   }
 }

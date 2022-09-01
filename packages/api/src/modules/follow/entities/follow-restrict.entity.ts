@@ -4,11 +4,11 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 // Represents a creator restricting a follower
-@Unique({ properties: ['subscriber', 'creator'] })
 @Entity({ tableName: 'follow_restrict' })
+@Unique({ properties: ['follower', 'creator'] })
 export class FollowRestrictEntity extends BaseEntity {
   @ManyToOne()
-  subscriber: UserEntity
+  follower: UserEntity
 
   @ManyToOne()
   creator: UserEntity

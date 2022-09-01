@@ -7,7 +7,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Entity({ tableName: 'follow_report' })
 export class FollowReportEntity extends BaseEntity {
   @ManyToOne()
-  subscriber: UserEntity
+  follower: UserEntity
 
   @ManyToOne()
   creator: UserEntity

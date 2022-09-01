@@ -8,6 +8,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { USERNAME_TAKEN } from './constants/errors'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
@@ -131,14 +132,18 @@ export class UserService {
   }
 
   async makeCreator(userId: string): Promise<void> {
-    await this.dbWriter(UserEntity.table)
-      .where('id', userId)
-      .update('is_creator', true)
-    await this.dbWriter(CreatorSettingsEntity.table)
-      .insert(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
-      )
-      .onConflict('user_id')
-      .ignore()
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(UserEntity.table).where('id', userId).update('is_creator', true)
+      await trx(CreatorSettingsEntity.table)
+        .insert(
+          CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
+        )
+        .onConflict('user_id')
+        .ignore()
+      await trx(CreatorStatEntity.table)
+        .insert(CreatorStatEntity.toDict<CreatorStatEntity>({ user: userId }))
+        .onConflict('user_id')
+        .ignore()
+    })
   }
 }

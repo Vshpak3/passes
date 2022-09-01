@@ -5,7 +5,7 @@ export class FollowDto {
   id: string
 
   @ApiProperty()
-  subscriberId: string
+  followerId: string
 
   @ApiProperty()
   creatorId: string
@@ -15,7 +15,7 @@ export class FollowDto {
 
   constructor(follow) {
     this.id = follow.id
-    this.subscriberId = follow.subscriber_id
+    this.followerId = follow.follower_id
     this.creatorId = follow.creator_id
     this.isActive = follow.is_active
   }

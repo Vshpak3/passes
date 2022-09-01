@@ -2,7 +2,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
-  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -13,18 +12,15 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
   FOLLOWER_NOT_EXIST,
-  FOLLOWING_ALREADY_EXIST,
   FOLLOWING_NOT_EXIST,
-  Following_NOT_OWNED_BY_USER,
   IS_NOT_CREATOR,
 } from './constants/errors'
-import { CreateFollowingRequestDto } from './dto/create-following.dto'
 import { FollowDto } from './dto/follow.dto'
 import { GetFanResponseDto } from './dto/get-fan.dto'
 import { SearchFanRequestDto } from './dto/search-fan.dto'
@@ -47,17 +43,25 @@ export class FollowService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(
-    userId: string,
-    createFollowingDto: CreateFollowingRequestDto,
-  ): Promise<FollowDto> {
-    const [subscriber, creator] = await Promise.all([
+  async checkFollow(userId: string, creatorId: string): Promise<boolean> {
+    return !!(await this.dbReader(FollowEntity.table)
+      .where(
+        FollowEntity.toDict<FollowEntity>({
+          follower: userId,
+          creator: creatorId,
+          isActive: true,
+        }),
+      )
+      .select('id')
+      .first())
+  }
+
+  async followCreator(userId: string, creatorId: string): Promise<FollowDto> {
+    const [follower, creator] = await Promise.all([
       this.dbReader(UserEntity.table).where({ id: userId }).first(),
-      this.dbReader(UserEntity.table)
-        .where({ id: createFollowingDto.creatorUserId })
-        .first(),
+      this.dbReader(UserEntity.table).where({ id: creatorId }).first(),
     ])
-    if (!subscriber) {
+    if (!follower) {
       throw new BadRequestException(FOLLOWER_NOT_EXIST)
     }
 
@@ -65,18 +69,36 @@ export class FollowService {
       throw new BadRequestException(CREATOR_NOT_EXIST)
     }
 
-    if (!creator.isCreator) {
+    if (!creator.is_creator) {
       throw new BadRequestException(IS_NOT_CREATOR)
     }
 
     const data = FollowEntity.toDict<FollowEntity>({
-      subscriber: userId,
-      creator: createFollowingDto.creatorUserId,
-      isActive: true,
+      follower: userId,
+      creator: creatorId,
+      isActive: false,
     })
-    const query = () => this.dbWriter(FollowEntity.table).insert(data)
 
-    await createOrThrowOnDuplicate(query, this.logger, FOLLOWING_ALREADY_EXIST)
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(FollowEntity.table)
+        .insert(data)
+        .onConflict(['follower_id', 'creator_id'])
+        .ignore()
+      const updated = await trx(FollowEntity.table)
+        .where(
+          FollowEntity.toDict<FollowEntity>({
+            follower: userId,
+            creator: creatorId,
+            isActive: false,
+          }),
+        )
+        .update('is_active', true)
+      if (updated === 1) {
+        await trx(CreatorStatEntity.table)
+          .where('user_id', userId)
+          .increment('num_followers', 1)
+      }
+    })
     return new FollowDto(data)
   }
 
@@ -87,13 +109,21 @@ export class FollowService {
     const strippedQuery = searchFanDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     const query = this.dbReader(FollowEntity.table)
-      .innerJoin(UserEntity.table, 'user.id', 'follow.subscriber_id')
-      .leftJoin(ProfileEntity.table, 'profile.user_id', 'follow.subscriber_id')
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${FollowEntity.table}.follower_id`,
+      )
+      .leftJoin(
+        ProfileEntity.table,
+        `${ProfileEntity.table}.user_id`,
+        `${FollowEntity.table}.follower_id`,
+      )
       .select(
-        'user.id',
-        'user.username',
-        'user.display_name',
-        'profile.profile_image_url',
+        `${UserEntity.table}.id`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+        `${ProfileEntity.table}.profile_image_url`,
       )
       .where(async function () {
         await this.whereILike('user.username', likeClause).orWhereILike(
@@ -101,7 +131,8 @@ export class FollowService {
           likeClause,
         )
       })
-      .andWhere('follow.creator_id', userId)
+      .andWhere(`${FollowEntity.table}.creator_id`, userId)
+      .andWhere(`${FollowEntity.table}.is_active`, true)
 
     if (searchFanDto.cursor) {
       await query.andWhere(
@@ -134,65 +165,72 @@ export class FollowService {
     return new FollowDto(following)
   }
 
-  async report(
+  async reportFollower(
     creatorId: string,
-    subscriberId: string,
+    followerId: string,
     reason: string,
   ): Promise<void> {
     await this.dbWriter(FollowReportEntity.table).insert(
       FollowReportEntity.toDict({
         id: uuid.v4(),
         creator: creatorId,
-        subscriber: subscriberId,
+        follower: followerId,
         reason: reason,
       }),
     )
   }
 
-  async restrict(creatorId: string, subscriberId: string): Promise<void> {
+  async restrictFollower(creatorId: string, followerId: string): Promise<void> {
     await this.dbWriter(FollowRestrictEntity.table).insert(
       FollowRestrictEntity.toDict({
-        id: uuid.v4(),
         creator: creatorId,
-        subscriber: subscriberId,
+        follower: followerId,
       }),
     )
   }
 
-  async unrestrict(creatorId: string, subscriberId: string): Promise<void> {
+  async unrestrictFollower(
+    creatorId: string,
+    followerId: string,
+  ): Promise<void> {
     await this.dbWriter(FollowRestrictEntity.table)
       .where(`${FollowRestrictEntity.table}.creator_id`, creatorId)
-      .where(`${FollowRestrictEntity.table}.subscriber_id`, subscriberId)
+      .where(`${FollowRestrictEntity.table}.follower_id`, followerId)
       .delete()
   }
 
-  async block(creatorId: string, subscriberId: string): Promise<void> {
+  async blockFollower(creatorId: string, followerId: string): Promise<void> {
     await this.dbWriter(FollowBlockEntity.table).insert(
       FollowBlockEntity.toDict({
-        id: uuid.v4(),
         creator: creatorId,
-        subscriber: subscriberId,
+        follower: followerId,
       }),
     )
   }
 
-  async unblock(creatorId: string, subscriberId: string): Promise<void> {
+  async unblockFollower(creatorId: string, followerId: string): Promise<void> {
     await this.dbWriter(FollowBlockEntity.table)
       .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
-      .where(`${FollowBlockEntity.table}.subscriber_id`, subscriberId)
+      .where(`${FollowBlockEntity.table}.follower_id`, followerId)
       .delete()
   }
 
-  async remove(userId: string, followId: string): Promise<FollowDto> {
-    const following = await this.findOne(followId)
-
-    if (following.subscriberId !== userId) {
-      throw new ForbiddenException(Following_NOT_OWNED_BY_USER)
-    }
-
-    const data = FollowEntity.toDict<FollowEntity>({ isActive: false })
-    await this.dbWriter(FollowEntity.table).update(data).where({ id: followId })
-
-    return new FollowDto({ ...following, ...data })
+  async unfollowCreator(userId: string, creatorId: string): Promise<void> {
+    await this.dbWriter.transaction(async (trx) => {
+      const updated = await trx(FollowEntity.table)
+        .update(FollowEntity.toDict<FollowEntity>({ isActive: false }))
+        .where(
+          FollowEntity.toDict<FollowEntity>({
+            follower: userId,
+            creator: creatorId,
+            isActive: true,
+          }),
+        )
+      if (updated === 1) {
+        await trx(CreatorStatEntity.table)
+          .where('user_id', userId)
+          .decrement('num_followers', 1)
+      }
+    })
   }
 }
