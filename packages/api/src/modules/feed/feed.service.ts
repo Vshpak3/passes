@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
@@ -100,6 +101,7 @@ export class FeedService {
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${UserEntity.table}.username`, username)
       .orderBy('created_at', 'desc')
+      .where('scheduled_at', '<=', formatDateTimeToDbDateTime(Date.now()))
 
     if (cursor) {
       query = query.andWhere('created_at', '<', cursor)

@@ -13,6 +13,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { GetContentResponseDto } from '../content/dto/get-content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -67,6 +68,9 @@ export class PostService {
     await this.dbWriter
       .transaction(async (trx) => {
         const postId = v4()
+        const scheduledAt = createPostDto.scheduledAt
+          ? formatDateTimeToDbDateTime(createPostDto.scheduledAt)
+          : undefined
         const post = PostEntity.toDict<PostEntity>({
           id: postId,
           user: userId,
@@ -74,6 +78,7 @@ export class PostService {
           private: createPostDto.private,
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
+          scheduledAt,
         })
 
         await this.dbWriter(PostEntity.table)

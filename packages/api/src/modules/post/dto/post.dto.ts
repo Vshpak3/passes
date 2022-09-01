@@ -37,6 +37,9 @@ export class PostDto {
   updatedAt: Date
 
   @ApiPropertyOptional()
+  scheduledAt?: string
+
+  @ApiPropertyOptional()
   expiresAt?: number
 
   @ApiPropertyOptional()
@@ -62,6 +65,7 @@ export class PostDto {
       this.userId = post.user_id
       this.username = post.username
       this.createdAt = post.created_at
+      this.scheduledAt = post.scheduled_at
       this.paywall = paywall
       if (content) {
         this.content = content

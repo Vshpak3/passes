@@ -44,4 +44,7 @@ export class PostEntity extends BaseEntity {
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   totalTipAmount: number
+
+  @Property()
+  scheduledAt?: Date
 }

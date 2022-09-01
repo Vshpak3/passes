@@ -23,4 +23,7 @@ export class CreatePostRequestDto {
   @IsInt()
   @ApiPropertyOptional()
   expiresAt?: number
+
+  @ApiPropertyOptional()
+  scheduledAt?: Date
 }

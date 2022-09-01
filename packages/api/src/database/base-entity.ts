@@ -19,7 +19,7 @@ declare type EntityData<T> = {
 
 // Map properties to type, for entity relationships (object) assign string (id)
 declare type MappedType<T> = T extends Date
-  ? Date
+  ? Date | string
   : T extends object
   ? string
   : T

@@ -55,6 +55,12 @@ export interface CreatePostRequestDto {
      * @memberof CreatePostRequestDto
      */
     expiresAt?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof CreatePostRequestDto
+     */
+    scheduledAt?: Date;
 }
 
 export function CreatePostRequestDtoFromJSON(json: any): CreatePostRequestDto {
@@ -73,6 +79,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         '_private': json['private'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
 
@@ -91,6 +98,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'private': value._private,
         'price': value.price,
         'expiresAt': value.expiresAt,
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

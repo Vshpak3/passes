@@ -94,6 +94,12 @@ export interface GetPostResponseDto {
     updatedAt: Date;
     /**
      * 
+     * @type {string}
+     * @memberof GetPostResponseDto
+     */
+    scheduledAt?: string;
+    /**
+     * 
      * @type {number}
      * @memberof GetPostResponseDto
      */
@@ -133,6 +139,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'isLiked': json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : json['scheduledAt'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': json['totalTipAmount'],
@@ -159,6 +166,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
+        'scheduledAt': value.scheduledAt,
         'expiresAt': value.expiresAt,
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
