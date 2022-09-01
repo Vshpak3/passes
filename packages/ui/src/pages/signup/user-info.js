@@ -11,7 +11,7 @@ import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { useUser } from "../../hooks"
 
 export async function getServerSideProps({ query }) {
-  if (!query.email && !query.hash) {
+  if (!query.hash) {
     return {
       notFound: true
     }
@@ -32,24 +32,22 @@ const UserInfoPage = () => {
   } = useForm()
 
   const onUserRegister = async (
-    email,
     username,
     countryCode,
     displayName,
     birthday
   ) => {
     try {
-      const updateUserRequestDto = {
-        email: email,
+      const userSetInitialInfoRequestDto = {
         username: username,
         countryCode: countryCode,
-        displayName: displayName,
-        birthday: birthday
+        birthday: birthday,
+        legalFullName.name,
       }
 
       const api = wrapApi(UserApi)
-      const res = await api.userUpdate({
-        updateUserRequestDto
+      const res = await api.userSetInitialInfo({
+        userSetInitialInfoRequestDto
       })
 
       if (!res.id) {

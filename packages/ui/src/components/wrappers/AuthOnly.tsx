@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { FC } from "react"
 
@@ -33,11 +34,17 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
     return null
   }
 
-  // TODO: !user.isVerified
-  if (!allowUnverified && isPage) {
-    router.push(`/signup/user-info?email=${user.email}`)
+  if (isPage && !user.email) {
+    router.push(`/signup/user-email`)
     return null
   }
+
+  // TODO
+  // const isVerified = jwtDecode(token) as any).isVerified
+  // if (!isVerified && !allowUnverified) {
+  //   router.push(`/signup/user-info?email=${user.email}`)
+  //   return null
+  // }
 
   return <>{children}</>
 }
