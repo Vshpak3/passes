@@ -115,7 +115,7 @@ export class UserController {
     type: SearchCreatorResponseDto,
     description: 'A list of creators was returned',
   })
-  @Post('/creator/search')
+  @Post('creator/search')
   async searchCreatorByUsername(
     @Body() searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<any> {

@@ -1,4 +1,5 @@
 .openapi-generator-ignore
+apis/AdminApi.ts
 apis/AuthApi.ts
 apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
@@ -107,6 +108,7 @@ models/GetUserResponseDto.ts
 models/GetUsernamesResponseDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
+models/ImpersonateUserRequestDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts

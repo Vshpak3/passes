@@ -90,7 +90,7 @@ export class UserService {
     })
     await this.dbWriter(UserEntity.table).update(data).where({ id: userId })
 
-    return { ...currentUser, ...data }
+    return new UserEntity().instantiate({ ...currentUser, ...data })
   }
 
   async remove(userId: string): Promise<UserEntity> {
@@ -101,7 +101,7 @@ export class UserService {
       isDisabled: true,
     })
     await this.dbWriter(UserEntity.table).update(data).where({ id: userId })
-    return { ...currentUser, ...data }
+    return new UserEntity().instantiate({ ...currentUser, ...data })
   }
 
   // TODO: Sort by creators that the user follows, most interacted with first?

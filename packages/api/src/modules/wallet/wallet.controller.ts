@@ -66,7 +66,7 @@ export class WalletController {
     type: undefined,
     description: 'Default wallet set',
   })
-  @Post('/default/:walletId')
+  @Post('default/:walletId')
   async setDefaultWallet(
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,
@@ -138,7 +138,7 @@ export class WalletController {
     type: WalletResponseDto,
     description: 'Wallet tokens were updated',
   })
-  @Post('/refresh/:id')
+  @Post('refresh/:id')
   async refresh(
     @Req() req: RequestWithUser,
     @Param('id') id: string,
@@ -152,7 +152,7 @@ export class WalletController {
     type: CreateWalletRequestDto,
     description: 'Unchecked wallet was created',
   })
-  @Post('/unauthenticated')
+  @Post('unauthenticated')
   async createUnauthenticated(
     @Req() req: RequestWithUser,
     @Body()

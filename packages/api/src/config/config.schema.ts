@@ -53,6 +53,8 @@ export const configValidationSchema = Joi.object({
 
   OAUTH_TWITTER_COOKIE_SECRET: Joi.string().required(),
 
+  ADMIN_IMPERSONATE_SECRET: Joi.string().required(),
+
   // -----------------------------------------------------------
 
   CLOUDFRONT_COOKIE_DOMAIN: Joi.string().required(),
@@ -140,6 +142,9 @@ export const configConfiguration = async function (): Promise<
       expiresIn: getConfigValue('JWT_EXPIRES_IN'),
       refreshSecret: getConfigValue('JWT_REFRESH_SECRET'),
       refreshExpiresIn: getConfigValue('JWT_REFRESH_EXPIRES_IN'),
+    },
+    admin: {
+      impersonate: getConfigValue('ADMIN_IMPERSONATE_SECRET'),
     },
     cloudfront: {
       baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),

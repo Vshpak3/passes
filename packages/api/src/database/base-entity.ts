@@ -49,6 +49,11 @@ export class EntityDBHelpers {
   static populate<T>(fields: Array<keyof EntityData<T>>): string[] {}
 
   static table: string
+
+  instantiate<T>(init?: Partial<T>): this {
+    Object.assign(this, init)
+    return this
+  }
 }
 
 export abstract class BaseEntity<O = void> extends EntityDBHelpers {

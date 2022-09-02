@@ -225,10 +225,12 @@ export class EthService {
     })
     onChainTokenMap.forEach(async (_, key) => {
       const tokenData = key.split(',')
-      const ethNft = new EthNftEntity()
-      ethNft.wallet = wallet
-      ethNft.ethNftCollection = nftCollectionMap.get(tokenData[0])
-      ethNft.tokenId = tokenData[1]
+
+      const ethNft = new EthNftEntity().instantiate({
+        wallet: wallet,
+        ethNftCollection: nftCollectionMap.get(tokenData[0]),
+        tokenId: tokenData[1],
+      })
 
       ethNfts.push(ethNft)
 

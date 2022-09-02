@@ -6,7 +6,6 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
@@ -26,7 +25,6 @@ export class LocalAuthController {
   constructor(
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
-    private readonly configService: ConfigService,
     private readonly localAuthService: LocalAuthService,
     private readonly s3contentService: S3ContentService,
   ) {}
@@ -38,7 +36,7 @@ export class LocalAuthController {
     description: 'Create a email and password user',
   })
   @AllowUnauthorizedRequest()
-  @Post('/signup')
+  @Post('signup')
   async createEmailPasswordUser(
     @Body() createLocalUserDto: CreateLocalUserRequestDto,
     @Res() res: Response,

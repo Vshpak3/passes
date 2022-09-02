@@ -46,7 +46,7 @@ export class ListController {
     type: undefined,
     description: 'List Members added',
   })
-  @Post('/member/:id')
+  @Post('member/:id')
   async addListMembers(
     @Req() req: RequestWithUser,
     @Param('id') listId: string,

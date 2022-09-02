@@ -73,7 +73,7 @@ export class MessagesController {
     type: undefined,
     description: 'Batch Message was enqueued',
   })
-  @Post('/batch')
+  @Post('batch')
   async massSend(
     @Req() req: RequestWithUser,
     @Body() createBatchMessageDto: CreateBatchMessageRequestDto,

@@ -70,7 +70,7 @@ export class FollowController {
     type: GetFansResponseDto,
     description: 'A list of followers was returned',
   })
-  @Post('/search')
+  @Post('search')
   async searchFans(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFanRequestDto,
@@ -86,7 +86,7 @@ export class FollowController {
     type: undefined,
     description: 'A follower was blocked',
   })
-  @Post('/block/:followerId')
+  @Post('block/:followerId')
   async blockFollower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
@@ -100,7 +100,7 @@ export class FollowController {
     type: undefined,
     description: 'A follower was reported',
   })
-  @Post('/report/:followerId')
+  @Post('report/:followerId')
   async reportFollower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
@@ -119,7 +119,7 @@ export class FollowController {
     type: undefined,
     description: 'A follower was restricted',
   })
-  @Post('/restrict/:followerId')
+  @Post('restrict/:followerId')
   async restrictFollower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
@@ -133,7 +133,7 @@ export class FollowController {
     type: undefined,
     description: 'A follower was unrestricted',
   })
-  @Post('/unrestrict/:followerId')
+  @Post('unrestrict/:followerId')
   async unrestrictFollower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
@@ -147,7 +147,7 @@ export class FollowController {
     type: undefined,
     description: 'A follower was unblocked',
   })
-  @Post('/unblock/:followerId')
+  @Post('unblock/:followerId')
   async unblockFlower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
