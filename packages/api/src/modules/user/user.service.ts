@@ -69,6 +69,17 @@ export class UserService {
     return user
   }
 
+  async findOneByUsername(username: string): Promise<UserEntity> {
+    const user = await this.dbReader(UserEntity.table)
+      .where({ username })
+      .first()
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
+
+    return user
+  }
+
   async findOneByOAuth(
     oauthId: string,
     oauthProvider: string,

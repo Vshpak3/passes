@@ -17,6 +17,7 @@ import { createTokens } from '../../util/auth.util'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { S3ContentService } from '../s3content/s3content.service'
+import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import {
   ImpersonateUserRequestDto,
@@ -58,9 +59,18 @@ export class AdminController {
       throw new BadRequestException('Invalid request')
     }
 
+    let impersonateUser: UserEntity
+    if (body.userId) {
+      impersonateUser = await this.userService.findOne(body.userId)
+    } else if (body.username) {
+      impersonateUser = await this.userService.findOneByUsername(body.username)
+    } else {
+      throw new BadRequestException('Must provide either a userId or username')
+    }
+
     const tokens = await createTokens(
       res,
-      await this.userService.findOne(body.userId),
+      impersonateUser,
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,

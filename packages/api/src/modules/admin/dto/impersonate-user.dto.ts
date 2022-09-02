@@ -1,10 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 export class ImpersonateUserRequestDto {
   @IsUUID()
-  @ApiProperty()
-  userId: string
+  @ApiPropertyOptional()
+  userId?: string
+
+  @ApiPropertyOptional()
+  username?: string
 
   @ApiProperty()
   secret: string
