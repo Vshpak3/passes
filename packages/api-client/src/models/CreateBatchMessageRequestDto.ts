@@ -30,7 +30,7 @@ export interface CreateBatchMessageRequestDto {
      * @type {string}
      * @memberof CreateBatchMessageRequestDto
      */
-    list: string;
+    listId: string;
     /**
      * 
      * @type {Array<string>}
@@ -50,7 +50,7 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'text': json['text'],
-        'list': json['list'],
+        'listId': json['listId'],
         'content': json['content'],
     };
 }
@@ -65,7 +65,7 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
     return {
         
         'text': value.text,
-        'list': value.list,
+        'listId': value.listId,
         'content': value.content,
     };
 }

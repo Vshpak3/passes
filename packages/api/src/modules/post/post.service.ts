@@ -3,7 +3,6 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -14,7 +13,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
-import { GetContentResponseDto } from '../content/dto/get-content.dto'
+import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -36,15 +35,12 @@ import { CreatePostRequestDto } from './dto/create-post.dto'
 import { PostDto } from './dto/post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
+import { PostContentEntity } from './entities/post-content.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
-
-type ContentLookupByPost = {
-  [postId: number]: GetContentResponseDto[]
-}
 
 @Injectable()
 export class PostService {
@@ -64,8 +60,7 @@ export class PostService {
   async create(
     userId: string,
     createPostDto: CreatePostRequestDto,
-  ): Promise<CreatePostRequestDto> {
-    let trxErr: Error | undefined = undefined
+  ): Promise<void> {
     await this.dbWriter
       .transaction(async (trx) => {
         const postId = v4()
@@ -82,38 +77,31 @@ export class PostService {
           scheduledAt,
         })
 
-        await this.dbWriter(PostEntity.table)
-          .insert(post, '*')
-          .transacting(trx)
-          .catch((err) => {
-            this.logger.error(err)
-            throw new InternalServerErrorException()
-          })
+        await this.dbWriter(PostEntity.table).insert(post)
 
-        const contentPosts = createPostDto.content?.map((contentId) => ({
-          content_entity_id: contentId,
-          post_entity_id: postId,
-        }))
+        const postContent = createPostDto.content?.map((contentId) =>
+          PostContentEntity.toDict<PostContentEntity>({
+            content: contentId,
+            post: postId,
+          }),
+        )
 
-        if (contentPosts?.length) await trx('content_post').insert(contentPosts)
+        if (postContent?.length)
+          await trx(PostContentEntity.table).insert(postContent)
 
         for (let i = 0; i < createPostDto.passes.length; ++i) {
-          const postPassAccess = {
-            post_id: postId,
-            pass_id: createPostDto.passes[i],
-          }
-
+          const postPassAccess =
+            PostPassAccessEntity.toDict<PostPassAccessEntity>({
+              post: postId,
+              pass: createPostDto.passes[i],
+            })
           await trx(PostPassAccessEntity.table).insert(postPassAccess)
         }
       })
       .catch((err) => {
-        trxErr = err
         this.logger.error(err)
+        throw err
       })
-    if (trxErr) {
-      throw new InternalServerErrorException()
-    }
-    return createPostDto
   }
 
   async findOne(id: string, userId: string): Promise<PostDto> {
@@ -209,28 +197,23 @@ export class PostService {
 
   private async getContentLookupForPosts(
     postIds: string[],
-  ): Promise<ContentLookupByPost> {
-    const contentResults = await this.dbReader(ContentEntity.table)
+  ): Promise<Map<string, Array<ContentDto>>> {
+    const postContents = await this.dbReader(PostContentEntity.table)
       .innerJoin(
-        'content_post',
+        ContentEntity.table,
         `${ContentEntity.table}.id`,
-        'content_post.content_entity_id',
+        `${PostContentEntity.table}.content_id`,
       )
-      .whereIn('content_post.post_entity_id', postIds)
-      .select(['*', `${ContentEntity.table}.id`])
+      .whereIn(`${PostContentEntity.table}.post_id`, postIds)
+      .select([
+        `${PostContentEntity.table}.post_id`,
+        `${ContentEntity.table}.*`,
+      ])
 
-    const ans: ContentLookupByPost = {}
-    for (let i = 0; i < contentResults.length; ++i) {
-      const c = contentResults[i]
-
-      if (!(c.post_entity_id in ans)) {
-        ans[c.post_entity_id] = []
-      }
-
-      ans[c.post_entity_id].push(c)
-    }
-
-    return ans
+    return postContents.reduce((map, postContent) => {
+      if (!map[postContent.post_id]) map[postContent.post_id] = []
+      map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
+    }, {})
   }
 
   async update(

@@ -16,53 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ChannelStatDto
+ * @interface GetChannelResponseDto
  */
-export interface ChannelStatDto {
+export interface GetChannelResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof ChannelStatDto
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChannelStatDto
+     * @memberof GetChannelResponseDto
      */
     channelId: string;
     /**
      * 
-     * @type {number}
-     * @memberof ChannelStatDto
-     */
-    totalTipAmount: number;
-    /**
-     * 
      * @type {boolean}
-     * @memberof ChannelStatDto
+     * @memberof GetChannelResponseDto
      */
     blocked: boolean;
 }
 
-export function ChannelStatDtoFromJSON(json: any): ChannelStatDto {
-    return ChannelStatDtoFromJSONTyped(json, false);
+export function GetChannelResponseDtoFromJSON(json: any): GetChannelResponseDto {
+    return GetChannelResponseDtoFromJSONTyped(json, false);
 }
 
-export function ChannelStatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ChannelStatDto {
+export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetChannelResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
         'channelId': json['channelId'],
-        'totalTipAmount': json['totalTipAmount'],
         'blocked': json['blocked'],
     };
 }
 
-export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
+export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -71,9 +57,7 @@ export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
     }
     return {
         
-        'id': value.id,
         'channelId': value.channelId,
-        'totalTipAmount': value.totalTipAmount,
         'blocked': value.blocked,
     };
 }

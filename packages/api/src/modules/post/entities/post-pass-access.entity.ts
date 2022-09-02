@@ -7,9 +7,9 @@ import { PostEntity } from './post.entity'
 @Entity({ tableName: 'post_pass_access' })
 @Unique({ properties: ['post', 'pass'] })
 export class PostPassAccessEntity extends BaseEntity {
-  @ManyToOne()
+  @ManyToOne({ entity: () => PostEntity })
   post: PostEntity
 
-  @ManyToOne()
+  @ManyToOne({ entity: () => PassEntity })
   pass: PassEntity
 }

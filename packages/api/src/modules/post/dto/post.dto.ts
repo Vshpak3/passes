@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
-import { GetContentResponseDto } from '../../content/dto/get-content.dto'
+import { ContentDto } from '../../content/dto/content.dto'
 
 export class PostDto {
   @IsUUID()
@@ -24,8 +24,8 @@ export class PostDto {
   @ApiProperty()
   text: string
 
-  @ApiPropertyOptional({ type: [GetContentResponseDto] })
-  content?: GetContentResponseDto[]
+  @ApiPropertyOptional({ type: [ContentDto] })
+  content?: ContentDto[]
 
   @ApiProperty()
   numLikes: number
@@ -57,7 +57,7 @@ export class PostDto {
   @ApiProperty()
   totalTipAmount?: number
 
-  constructor(post, paywall, content?: GetContentResponseDto[]) {
+  constructor(post, paywall, content?: ContentDto[]) {
     if (post) {
       // only content gets paywalled
       this.text = post.text

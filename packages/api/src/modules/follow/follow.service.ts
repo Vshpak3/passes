@@ -29,7 +29,6 @@ import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { FollowReportEntity } from './entities/follow-report.entity'
-import { FollowRestrictEntity } from './entities/follow-restrict.entity'
 
 // TODO: Use CASL to determine if user can access an entity
 // See https://docs.nestjs.com/security/authorization#integrating-casl
@@ -94,7 +93,7 @@ export class FollowService {
         text: creatorSettings.welcomeMessage,
         attachments: [],
         content: [],
-        channelId: channel.id,
+        channelId: channel.channelId,
       })
     }
 
@@ -205,25 +204,6 @@ export class FollowService {
     )
   }
 
-  async restrictFollower(creatorId: string, followerId: string): Promise<void> {
-    await this.dbWriter(FollowRestrictEntity.table).insert(
-      FollowRestrictEntity.toDict({
-        creator: creatorId,
-        follower: followerId,
-      }),
-    )
-  }
-
-  async unrestrictFollower(
-    creatorId: string,
-    followerId: string,
-  ): Promise<void> {
-    await this.dbWriter(FollowRestrictEntity.table)
-      .where(`${FollowRestrictEntity.table}.creator_id`, creatorId)
-      .where(`${FollowRestrictEntity.table}.follower_id`, followerId)
-      .delete()
-  }
-
   async blockFollower(creatorId: string, followerId: string): Promise<void> {
     await this.dbWriter(FollowBlockEntity.table).insert(
       FollowBlockEntity.toDict({
@@ -231,6 +211,7 @@ export class FollowService {
         follower: followerId,
       }),
     )
+    await this.unblockFollower(followerId, creatorId)
   }
 
   async unblockFollower(creatorId: string, followerId: string): Promise<void> {

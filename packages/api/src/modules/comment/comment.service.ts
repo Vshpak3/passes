@@ -7,7 +7,7 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { FollowRestrictEntity } from '../follow/entities/follow-restrict.entity'
+import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import {
   POST_DELETED,
   POST_NOT_EXIST,
@@ -50,12 +50,12 @@ export class CommentService {
       throw new BadRequestException(POST_DELETED)
     }
 
-    const followRestrictResult = await this.dbReader(FollowRestrictEntity.table)
-      .where(`${FollowRestrictEntity.table}.follower_id`, userId)
-      .where(`${FollowRestrictEntity.table}.creator_id`, post.user_id)
+    const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+      .where(`${FollowBlockEntity.table}.follower_id`, userId)
+      .where(`${FollowBlockEntity.table}.creator_id`, post.user_id)
       .first()
 
-    if (followRestrictResult) {
+    if (followBlockResult) {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { StreamChat } from 'stream-chat'
+import { Channel, StreamChat } from 'stream-chat'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
@@ -20,22 +20,31 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
 import { ContentMessageEntity } from '../content/entities/content-message.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
-import { FollowRestrictEntity } from '../follow/entities/follow-restrict.entity'
+import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { ListEntity } from '../list/entities/list.entity'
+import { PassEntity } from '../pass/entities/pass.entity'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
+import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { ChannelSettingsDto } from './dto/channel-settings.dto'
 import { ChannelStatDto } from './dto/channel-stat.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
 import { CreateChannelRequestDto } from './dto/create-channel.dto'
+import { GetChannelResponseDto } from './dto/get-channel.dto'
 import { MessageDto } from './dto/message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
+import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { BatchMessageEntity } from './entities/batch-message.entity'
+import { ChannelSettingsEntity } from './entities/channel-settings.entity'
 import { ChannelStatEntity } from './entities/channel-stat.entity'
 import { TippedMessageEntity } from './entities/tipped-message.entity'
+import { ChannelMissingMembersError } from './error/channel.error'
+import { MessageTipError } from './error/message.error'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
 const BATCH_MESSAGE_CHUNK_SIZE = 500
@@ -71,7 +80,7 @@ export class MessagesService {
   async createChannel(
     userId: string,
     createChannelDto: CreateChannelRequestDto,
-  ): Promise<ChannelStatDto> {
+  ): Promise<GetChannelResponseDto> {
     const otherUser = await this.dbReader(UserEntity.table)
       .where(
         UserEntity.toDict<UserEntity>({
@@ -125,23 +134,23 @@ export class MessagesService {
       .onConflict('channel_id')
       .ignore()
 
-    // check if either user is blocked
-    const followReportResult = await this.dbReader(FollowRestrictEntity.table)
-      .whereIn(`${FollowRestrictEntity.table}.follower_id`, [
-        userId,
-        otherUser.id,
+    await this.dbWriter(ChannelSettingsEntity.table)
+      .insert([
+        ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
+          channelId: createResponse.channel.id,
+          user: userId,
+        }),
+        ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
+          channelId: createResponse.channel.id,
+          user: otherUser.id,
+        }),
       ])
-      .whereIn(`${FollowRestrictEntity.table}.creator_id`, [
-        userId,
-        otherUser.id,
-      ])
-      .select(`${FollowRestrictEntity.table}.id`)
-      .first()
+      .onConflict(['channel_id', 'user_id'])
+      .ignore()
 
     return {
-      id: createResponse.channel.id,
-      totalTipAmount: 0,
-      blocked: !!followReportResult,
+      channelId: createResponse.channel.id,
+      blocked: await this.checkBlocked(userId, otherUser.id),
     }
   }
 
@@ -150,18 +159,19 @@ export class MessagesService {
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
     const listResult = await this.dbReader(ListEntity.table)
-      .select('list.id')
-      .where('list.user_id', userId)
-      .where('list.id', createBatchMessageDto.list)
+      .select('id')
+      .where('user_id', userId)
+      .where('id', createBatchMessageDto.listId)
+      .first()
 
-    if (listResult[0] == undefined) {
+    if (listResult == undefined) {
       throw new NotFoundException('list not found')
     }
 
-    if (createBatchMessageDto.content != undefined) {
+    if (createBatchMessageDto.content !== undefined) {
       const contentListResult = await this.dbReader('content_list')
         .select('content_list.content_entity_id')
-        .where('content_list.list_entity_id', createBatchMessageDto.list)
+        .where('content_list.list_entity_id', createBatchMessageDto.listId)
         .whereIn(
           'content_list.content_entity_id',
           createBatchMessageDto.content,
@@ -189,7 +199,7 @@ export class MessagesService {
           BatchMessageEntity.toDict<BatchMessageEntity>({
             id: batchMessageId,
             user: userId,
-            list: createBatchMessageDto.list,
+            list: createBatchMessageDto.listId,
             text: createBatchMessageDto.text,
           }),
         )
@@ -207,7 +217,7 @@ export class MessagesService {
             )
             await trx('contentList').insert({
               contentEntity: createBatchMessageDto.content[i],
-              listEntity: createBatchMessageDto.list,
+              listEntity: createBatchMessageDto.listId,
             })
           }
         }
@@ -321,88 +331,164 @@ export class MessagesService {
     userId: string,
     sendMessageDto: SendMessageRequestDto,
   ) {
-    if (sendMessageDto.tipAmount != undefined && sendMessageDto.tipAmount < 0) {
-      throw new BadRequestException('invalid tip amount')
-    }
-
     const channel = this.streamClient.channel(
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
     )
-
-    const membersResponse = await channel.queryMembers({})
-    let otherUserId: string | undefined = undefined
-    for (const i in membersResponse.members) {
-      if (
-        membersResponse.members[i].user_id != undefined &&
-        membersResponse.members[i].user_id != userId
-      ) {
-        otherUserId = membersResponse.members[i].user_id
-      }
-    }
-
-    // check if either user is blocked
-    const followReportResult = await this.dbReader(FollowRestrictEntity.table)
-      .whereIn(`${FollowRestrictEntity.table}.follower_id`, [
-        userId,
-        otherUserId as string,
-      ])
-      .whereIn(`${FollowRestrictEntity.table}.creator_id`, [
-        userId,
-        otherUserId as string,
-      ])
-      .select(`${FollowRestrictEntity.table}.id`)
-      .first()
-    if (followReportResult) {
-      throw new BadRequestException(`user is blocked`)
-    }
-
-    // TODO: check if user query is needed
-    const otherUser = await this.dbReader(UserEntity.table)
-      .where({ id: otherUserId })
-      .first()
-
-    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
-      .where(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
-          user: otherUser.id,
-        }),
-      )
-      .first()
-
-    if (
-      creatorSettings != undefined &&
-      creatorSettings.minimumTipAmount != undefined &&
-      creatorSettings.minimumTipAmount > 0 &&
-      (sendMessageDto.tipAmount == undefined ||
-        sendMessageDto.tipAmount < creatorSettings.minimumTipAmount)
-    ) {
-      throw new BadRequestException(
-        `must tip at least ${creatorSettings.minimumTipAmount} to chat with ${otherUser.id}}`,
-      )
-    }
-
-    if (
-      sendMessageDto.tipAmount != undefined &&
-      sendMessageDto.tipAmount != 0
-    ) {
+    const otherUserId = await this.getOtherUserId(userId, channel)
+    const { blocked, amount } = await this.registerSendMessageData(
+      userId,
+      sendMessageDto,
+      otherUserId,
+    )
+    if (blocked) throw new MessageTipError('insufficient tip for message')
+    if (amount !== 0) {
       const callbackInput: MessagePayinCallbackInput = {
         userId,
         sendMessageDto,
       }
-      const payinMethod = await this.payService.getDefaultPayinMethod(userId)
       return await this.payService.registerPayin({
         userId,
         amount: sendMessageDto.tipAmount,
-        payinMethod,
         callback: PayinCallbackEnum.TIPPED_MESSAGE,
         callbackInputJSON: callbackInput,
-        creatorId: otherUser.id,
+        creatorId: otherUserId,
       })
     } else {
       await this.sendMessage(userId, sendMessageDto)
+      await this.removeFreeMessage(
+        userId,
+        otherUserId,
+        sendMessageDto.channelId,
+      )
       return new RegisterPayinResponseDto()
     }
+  }
+
+  async registerSendMessageData(
+    userId: string,
+    sendMessageDto: SendMessageRequestDto,
+    otherUserId?: string,
+  ): Promise<PayinDataDto> {
+    if (!otherUserId) {
+      const channel = this.streamClient.channel(
+        MESSAGING_CHAT_TYPE,
+        sendMessageDto.channelId,
+      )
+
+      otherUserId = await this.getOtherUserId(userId, channel)
+    }
+    const blocked = await this.checkMessageBlocked(
+      userId,
+      otherUserId,
+      sendMessageDto.channelId,
+      sendMessageDto.tipAmount,
+    )
+
+    return { blocked, amount: sendMessageDto.tipAmount }
+  }
+
+  async removeFreeMessage(
+    userId: string,
+    creatorId: string,
+    channelId: string,
+  ) {
+    if (
+      (await this.getChannelSettings(creatorId, channelId)).unlimitedMessages
+    ) {
+      return
+    }
+    const passHoldings = await this.dbReader(PassHolderEntity.table)
+      .innerJoin(
+        PassHolderEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .where(`${PassEntity.table}.creator_id`, creatorId)
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .andWhere(function () {
+        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+          `${PassHolderEntity.table}.expires_at`,
+          '<=',
+          Date.now(),
+        )
+      })
+      .select([
+        `${PassHolderEntity.table}.id`,
+        `${PassHolderEntity.table}.messages`,
+      ])
+      .orderBy('messages', 'desc')
+    if (
+      passHoldings.length === 0 ||
+      passHoldings[passHoldings.length - 1].messages === null
+    )
+      return
+    await this.dbWriter(PassHolderEntity.table)
+      .where('id', passHoldings[0].id)
+      .andWhere('messages', '>', 0)
+      .decrement('messages', 1)
+  }
+
+  async checkFreeMessages(
+    userId: string,
+    creatorId: string,
+    channelId: string,
+  ): Promise<number | null> {
+    if (
+      (await this.getChannelSettings(creatorId, channelId)).unlimitedMessages
+    ) {
+      return null
+    }
+
+    const passHoldings = await this.dbReader(PassHolderEntity.table)
+      .innerJoin(
+        PassHolderEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .where(`${PassEntity.table}.creator_id`, creatorId)
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .andWhere(function () {
+        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+          `${PassHolderEntity.table}.expires_at`,
+          '<=',
+          Date.now(),
+        )
+      })
+      .select(`${PassHolderEntity.table}.messages`)
+      .orderBy('messages', 'desc')
+    if (passHoldings.length === 0) return 0
+    if (passHoldings[passHoldings.length - 1].messages === null) return null
+    else
+      return passHoldings.reduce((sum, passHolding) => {
+        if (passHolding.messages) sum += passHolding.messages
+      }, 0)
+  }
+
+  async checkMessageBlocked(
+    userId: string,
+    otherUserId: string,
+    channelId: string,
+    tipAmount: number,
+  ): Promise<boolean> {
+    if (await this.checkBlocked(userId, otherUserId)) return true
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
+      .where(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
+          user: otherUserId,
+        }),
+      )
+      .select('minimum_tip_amount')
+      .first()
+    if (!creatorSettings) return true
+    const freeMessages = await this.checkFreeMessages(
+      userId,
+      otherUserId,
+      channelId,
+    )
+    if (freeMessages === null || (freeMessages > 0 && tipAmount === 0))
+      return true
+    return tipAmount >= creatorSettings?.minimum_tip_amount
   }
 
   async sendMessage(
@@ -414,16 +500,12 @@ export class MessagesService {
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
     )
-    const membersResponse = await channel.queryMembers({})
-    let otherUserId: string | undefined = undefined
-    for (const i in membersResponse.members) {
-      if (
-        membersResponse.members[i].user_id != undefined &&
-        membersResponse.members[i].user_id != userId
-      ) {
-        otherUserId = membersResponse.members[i].user_id
-      }
+
+    const otherUserId = await this.getOtherUserId(userId, channel)
+    if (await this.checkBlocked(userId, otherUserId)) {
+      throw new BadRequestException(`user is blocked`)
     }
+
     if (sendMessageDto.content.length > 0) {
       const contentMessageResult = await this.dbReader(
         ContentMessageEntity.table,
@@ -499,13 +581,15 @@ export class MessagesService {
     return id
   }
 
-  async deleteTippedMessage(tippedMessageId: string) {
-    return await this.dbWriter(TippedMessageEntity.table)
-      .where('id', tippedMessageId)
-      .delete()
+  async deleteTippedMessage(tippedMessageId: string): Promise<boolean> {
+    return (
+      (await this.dbWriter(TippedMessageEntity.table)
+        .where('id', tippedMessageId)
+        .delete()) === 1
+    )
   }
 
-  async getPendingTippedMessages(userId: string) {
+  async getPendingTippedMessages(userId: string): Promise<Array<MessageDto>> {
     return (
       await this.dbReader(TippedMessageEntity.table).where(
         TippedMessageEntity.toDict<TippedMessageEntity>({
@@ -525,7 +609,7 @@ export class MessagesService {
     )
   }
 
-  async getCompletedTippedMessages(userId: string) {
+  async getCompletedTippedMessages(userId: string): Promise<Array<MessageDto>> {
     return (
       await this.dbReader(TippedMessageEntity.table).where(
         TippedMessageEntity.toDict<TippedMessageEntity>({
@@ -545,12 +629,70 @@ export class MessagesService {
     )
   }
 
-  async getChannelsStats(userId: string) {
+  async getChannelsStats(userId: string): Promise<Array<ChannelStatDto>> {
     return (
       await this.dbReader(ChannelStatEntity.table)
-        .where('user', userId)
-        .orWhere('other_user', userId)
+        .where('user_id', userId)
+        .orWhere('other_user_id', userId)
         .select('*')
     ).map((channelStat) => new ChannelStatDto(channelStat))
+  }
+
+  async getChannelSettings(userId: string, channelId: string) {
+    return new ChannelSettingsDto(
+      await this.dbReader(ChannelSettingsEntity.table)
+        .where(
+          ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
+            user: userId,
+            channelId: channelId,
+          }),
+        )
+        .orWhere('other_user', userId),
+    )
+  }
+
+  async updateChannelSettings(
+    userId: string,
+    channelId: string,
+    updateChannelSettingsDto: UpdateChannelSettingsRequestDto,
+  ) {
+    if (Object.keys(updateChannelSettingsDto).length === 0) return
+    await this.dbWriter(ChannelSettingsEntity.table)
+      .update(
+        ChannelSettingsEntity.toDict<ChannelSettingsEntity>(
+          updateChannelSettingsDto,
+        ),
+      )
+      .where(
+        ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
+          user: userId,
+          channelId: channelId,
+        }),
+      )
+  }
+
+  async checkBlocked(userId: string, otherUserId: string): Promise<boolean> {
+    const followReportResult = await this.dbReader(FollowBlockEntity.table)
+      .whereIn(`${FollowBlockEntity.table}.follower_id`, [userId, otherUserId])
+      .whereIn(`${FollowBlockEntity.table}.creator_id`, [userId, otherUserId])
+      .select(`${FollowBlockEntity.table}.id`)
+      .first()
+    return !!followReportResult
+  }
+
+  async getOtherUserId(userId: string, channel: Channel): Promise<string> {
+    const userIds = (await channel.queryMembers({})).members.map(
+      (member) => member.user_id,
+    )
+    if (userIds.indexOf(userId) < 0)
+      throw new ChannelMissingMembersError(`${userId} is not in this channel`)
+    for (const id in userIds) {
+      if (id && id != userId) {
+        return id as string
+      }
+    }
+    throw new ChannelMissingMembersError(
+      `channel with ${userId} is missing another member`,
+    )
   }
 }

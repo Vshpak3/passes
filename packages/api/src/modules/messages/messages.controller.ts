@@ -1,17 +1,26 @@
-import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+} from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
 import { CreateChannelRequestDto } from './dto/create-channel.dto'
-import {
-  GetChannelStatResponseDto,
-  GetChannelStatsResponseDto,
-} from './dto/get-channel-stat.dto'
+import { GetChannelResponseDto } from './dto/get-channel.dto'
+import { GetChannelSettingsResponseDto } from './dto/get-channel-settings.dto'
+import { GetChannelStatsResponseDto } from './dto/get-channel-stat.dto'
 import { GetMessagesResponseDto } from './dto/get-messages.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
+import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { MessagesService } from './messages.service'
 
 @ApiTags('messages')
@@ -31,6 +40,23 @@ export class MessagesController {
     @Body() sendMessageDto: SendMessageRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return await this.messagesService.registerSendMessage(
+      req.user.id,
+      sendMessageDto,
+    )
+  }
+
+  @ApiOperation({ summary: 'Register sending message data' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PayinDataDto,
+    description: 'Sending message data was returned',
+  })
+  @Post('/data')
+  async sendMessageData(
+    @Req() req: RequestWithUser,
+    @Body() sendMessageDto: SendMessageRequestDto,
+  ): Promise<PayinDataDto> {
+    return await this.messagesService.registerSendMessageData(
       req.user.id,
       sendMessageDto,
     )
@@ -98,14 +124,14 @@ export class MessagesController {
   @ApiOperation({ summary: 'Creates a channel' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetChannelStatResponseDto,
+    type: GetChannelResponseDto,
     description: 'Channel was created',
   })
   @Post('channel')
   async createChannel(
     @Req() req: RequestWithUser,
     @Body() createChannelDto: CreateChannelRequestDto,
-  ): Promise<GetChannelStatResponseDto> {
+  ): Promise<GetChannelResponseDto> {
     return await this.messagesService.createChannel(
       req.user.id,
       createChannelDto,
@@ -116,7 +142,7 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetChannelStatsResponseDto,
-    description: 'Get channels stats ',
+    description: 'Channel stats was returned ',
   })
   @Get('channel/stats')
   async getChannelsStats(
@@ -124,6 +150,39 @@ export class MessagesController {
   ): Promise<GetChannelStatsResponseDto> {
     return new GetChannelStatsResponseDto(
       await this.messagesService.getChannelsStats(req.user.id),
+    )
+  }
+
+  @ApiOperation({ summary: 'Get channels settings' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetChannelSettingsResponseDto,
+    description: 'Channel settings was returned ',
+  })
+  @Get('channel/settings/:channelId')
+  async getChannelSettings(
+    @Req() req: RequestWithUser,
+    @Param('channelId') channelId: string,
+  ): Promise<GetChannelSettingsResponseDto> {
+    return await this.messagesService.getChannelSettings(req.user.id, channelId)
+  }
+
+  @ApiOperation({ summary: 'update channels settings' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Channel settings was updated ',
+  })
+  @Post('channel/settings/:channelId')
+  async updateChannelSettings(
+    @Req() req: RequestWithUser,
+    @Param('channelId') channelId: string,
+    @Body() updateChannelSettingsDto: UpdateChannelSettingsRequestDto,
+  ): Promise<void> {
+    return await this.messagesService.updateChannelSettings(
+      req.user.id,
+      channelId,
+      updateChannelSettingsDto,
     )
   }
 }

@@ -19,7 +19,7 @@ const useChat = (username: string) => {
       const response = await api.messagesCreateChannel({
         createChannelRequestDto
       })
-      return response.id
+      return response.channelId
     }
   )
 

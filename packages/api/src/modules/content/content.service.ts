@@ -8,14 +8,16 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { PostContentEntity } from '../post/entities/post-content.entity'
 import { CONTENT_NOT_EXIST } from './constants/errors'
-import { ContentType, VaultCategory } from './constants/validation'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { UpdateContentRequestDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentMessageEntity } from './entities/content-message.entity'
+import { ContentTypeEnum } from './enums/content-type.enum'
+import { VaultCategoryEnum } from './enums/vault-category.enum'
 
 @Injectable()
 export class ContentService {
@@ -37,7 +39,7 @@ export class ContentService {
       })
       await this.dbWriter(ContentEntity.table).insert(data)
 
-      return new GetContentResponseDto(data)
+      return new GetContentResponseDto(data, '') //TODO: put in signed url
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
@@ -52,7 +54,7 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentResponseDto(content)
+    return new GetContentResponseDto(content, '') //TODO: put in signed url
   }
 
   async update(
@@ -68,13 +70,20 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentResponseDto({
-      id: contentId,
-      ...updateContentDto,
-    })
+    return new GetContentResponseDto(
+      {
+        id: contentId,
+        ...updateContentDto,
+      },
+      '', //TODO: put in signed url
+    )
   }
 
-  async getVault(userId: string, category?: VaultCategory, type?: ContentType) {
+  async getVault(
+    userId: string,
+    category?: VaultCategoryEnum,
+    type?: ContentTypeEnum,
+  ) {
     let query = this.dbReader(ContentEntity.table).where(
       ContentEntity.toDict<ContentEntity>({
         user: userId,
@@ -82,7 +91,7 @@ export class ContentService {
     )
     switch (category) {
       // filter content that has been used in messages
-      case VaultCategory.MESSAGES:
+      case VaultCategoryEnum.MESSAGES:
         query = query
           .innerJoin(
             ContentMessageEntity.table,
@@ -92,31 +101,31 @@ export class ContentService {
           .select(['*', `${ContentEntity.table}.id`])
         break
       // filter content that has been used in posts
-      case VaultCategory.POSTS:
+      case VaultCategoryEnum.POSTS:
         query = query
           .innerJoin(
-            'content_post',
+            `${PostContentEntity.table}`,
             `${ContentEntity.table}.id`,
-            'content_post.content_entity_id',
+            `${PostContentEntity.table}.content_id`,
           )
           .select(['*', `${ContentEntity.table}.id`])
         break
-      case VaultCategory.UPLOADS:
+      case VaultCategoryEnum.UPLOADS: // TODO
         // filter content that has not been used anywhere (uploaded directly to vault)
-        query = query
-          .leftJoin(
-            ContentMessageEntity.table,
-            `${ContentEntity.table}.id`,
-            `${ContentMessageEntity.table}.content_id`,
-          )
-          .leftJoin(
-            'content_post',
-            `${ContentEntity.table}.id`,
-            'content_post.content_entity_id',
-          )
-          .andWhere(`${ContentMessageEntity.table}.content_id`, null)
-          .andWhere('content_post.content_entity_id', null)
-          .select(['*', `${ContentEntity.table}.id`])
+        // query = query
+        //   .leftJoin(
+        //     ContentMessageEntity.table,
+        //     `${ContentEntity.table}.id`,
+        //     `${ContentMessageEntity.table}.content_id`,
+        //   )
+        //   .leftJoin(
+        //     'content_post',
+        //     `${ContentEntity.table}.id`,
+        //     'content_post.content_entity_id',
+        //   )
+        //   .andWhere(`${ContentMessageEntity.table}.content_id`, null)
+        //   .andWhere('content_post.content_entity_id', null)
+        //   .select(['*', `${ContentEntity.table}.id`])
         break
 
       default:
@@ -126,6 +135,6 @@ export class ContentService {
       query = query.andWhere(
         ContentEntity.toDict<ContentEntity>({ contentType: type }),
       )
-    return (await query).map((content) => new ContentDto(content))
+    return (await query).map((content) => new ContentDto(content, '')) //TODO put in signed url
   }
 }

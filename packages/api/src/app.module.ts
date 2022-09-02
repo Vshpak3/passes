@@ -13,7 +13,6 @@ import { contextNames } from './database/mikro-orm.options'
 import { redisOptions } from './database/redis.options'
 import { AdminModule } from './modules/admin/admin.module'
 import { AuthModule } from './modules/auth/auth.module'
-import { CollectionModule } from './modules/collection/collection.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
 import { CreatorSettingsModule } from './modules/creator-settings/creator-settings.module'
@@ -62,7 +61,6 @@ import {
     WinstonModule.forRootAsync(loggingOptions),
     AdminModule,
     AuthModule,
-    CollectionModule,
     CommentModule,
     ContentModule,
     CreatorSettingsModule,

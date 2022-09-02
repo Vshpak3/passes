@@ -21,15 +21,21 @@ import {
     CreateChannelRequestDto,
     CreateChannelRequestDtoFromJSON,
     CreateChannelRequestDtoToJSON,
-    GetChannelStatResponseDto,
-    GetChannelStatResponseDtoFromJSON,
-    GetChannelStatResponseDtoToJSON,
+    GetChannelResponseDto,
+    GetChannelResponseDtoFromJSON,
+    GetChannelResponseDtoToJSON,
+    GetChannelSettingsResponseDto,
+    GetChannelSettingsResponseDtoFromJSON,
+    GetChannelSettingsResponseDtoToJSON,
     GetChannelStatsResponseDto,
     GetChannelStatsResponseDtoFromJSON,
     GetChannelStatsResponseDtoToJSON,
     GetMessagesResponseDto,
     GetMessagesResponseDtoFromJSON,
     GetMessagesResponseDtoToJSON,
+    PayinDataDto,
+    PayinDataDtoFromJSON,
+    PayinDataDtoToJSON,
     RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
@@ -39,10 +45,17 @@ import {
     TokenResponseDto,
     TokenResponseDtoFromJSON,
     TokenResponseDtoToJSON,
+    UpdateChannelSettingsRequestDto,
+    UpdateChannelSettingsRequestDtoFromJSON,
+    UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
 
 export interface MessagesCreateChannelRequest {
     createChannelRequestDto: CreateChannelRequestDto;
+}
+
+export interface MessagesGetChannelSettingsRequest {
+    channelId: string;
 }
 
 export interface MessagesMassSendRequest {
@@ -53,6 +66,15 @@ export interface MessagesSendRequest {
     sendMessageRequestDto: SendMessageRequestDto;
 }
 
+export interface MessagesSendMessageDataRequest {
+    sendMessageRequestDto: SendMessageRequestDto;
+}
+
+export interface MessagesUpdateChannelSettingsRequest {
+    channelId: string;
+    updateChannelSettingsRequestDto: UpdateChannelSettingsRequestDto;
+}
+
 /**
  * 
  */
@@ -61,7 +83,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Creates a channel
      */
-    async messagesCreateChannelRaw(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatResponseDto>> {
+    async messagesCreateChannelRaw(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
         if (requestParameters.createChannelRequestDto === null || requestParameters.createChannelRequestDto === undefined) {
             throw new runtime.RequiredError('createChannelRequestDto','Required parameter requestParameters.createChannelRequestDto was null or undefined when calling messagesCreateChannel.');
         }
@@ -80,14 +102,44 @@ export class MessagesApi extends runtime.BaseAPI {
             body: CreateChannelRequestDtoToJSON(requestParameters.createChannelRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelStatResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a channel
      */
-    async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatResponseDto> {
+    async messagesCreateChannel(requestParameters: MessagesCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelResponseDto> {
         const response = await this.messagesCreateChannelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get channels settings
+     */
+    async messagesGetChannelSettingsRaw(requestParameters: MessagesGetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelSettingsResponseDto>> {
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling messagesGetChannelSettings.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/messages/channel/settings/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelSettingsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get channels settings
+     */
+    async messagesGetChannelSettings(requestParameters: MessagesGetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelSettingsResponseDto> {
+        const response = await this.messagesGetChannelSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -258,6 +310,75 @@ export class MessagesApi extends runtime.BaseAPI {
     async messagesSend(requestParameters: MessagesSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.messagesSendRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Register sending message data
+     */
+    async messagesSendMessageDataRaw(requestParameters: MessagesSendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+        if (requestParameters.sendMessageRequestDto === null || requestParameters.sendMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('sendMessageRequestDto','Required parameter requestParameters.sendMessageRequestDto was null or undefined when calling messagesSendMessageData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/messages/data`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SendMessageRequestDtoToJSON(requestParameters.sendMessageRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register sending message data
+     */
+    async messagesSendMessageData(requestParameters: MessagesSendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+        const response = await this.messagesSendMessageDataRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * update channels settings
+     */
+    async messagesUpdateChannelSettingsRaw(requestParameters: MessagesUpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling messagesUpdateChannelSettings.');
+        }
+
+        if (requestParameters.updateChannelSettingsRequestDto === null || requestParameters.updateChannelSettingsRequestDto === undefined) {
+            throw new runtime.RequiredError('updateChannelSettingsRequestDto','Required parameter requestParameters.updateChannelSettingsRequestDto was null or undefined when calling messagesUpdateChannelSettings.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/messages/channel/settings/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateChannelSettingsRequestDtoToJSON(requestParameters.updateChannelSettingsRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * update channels settings
+     */
+    async messagesUpdateChannelSettings(requestParameters: MessagesUpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.messagesUpdateChannelSettingsRaw(requestParameters, initOverrides);
     }
 
 }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
+import { IsUUID, Min } from 'class-validator'
 
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
@@ -14,8 +14,9 @@ export class SendMessageRequestDto {
   @ApiProperty()
   channelId: string
 
-  @ApiPropertyOptional()
-  tipAmount?: number
+  @ApiProperty()
+  @Min(0)
+  tipAmount: number
 
   @ApiProperty()
   content: string[]

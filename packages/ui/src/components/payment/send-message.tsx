@@ -28,7 +28,7 @@ export const BuyPassButton = ({
         text,
         attachments,
         channelId,
-        tipAmount,
+        tipAmount: tipAmount ? tipAmount : 0,
         content,
         payinMethod
       }

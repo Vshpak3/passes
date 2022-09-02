@@ -39,10 +39,16 @@ export interface PassHolderDto {
     holderId: string;
     /**
      * 
+     * @type {object}
+     * @memberof PassHolderDto
+     */
+    messages?: object;
+    /**
+     * 
      * @type {number}
      * @memberof PassHolderDto
      */
-    expiresAt: number;
+    expiresAt?: number;
 }
 
 export function PassHolderDtoFromJSON(json: any): PassHolderDto {
@@ -58,7 +64,8 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'passId': json['passId'],
         'holderId': json['holderId'],
-        'expiresAt': json['expiresAt'],
+        'messages': !exists(json, 'messages') ? undefined : json['messages'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
     };
 }
 
@@ -74,6 +81,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'id': value.id,
         'passId': value.passId,
         'holderId': value.holderId,
+        'messages': value.messages,
         'expiresAt': value.expiresAt,
     };
 }

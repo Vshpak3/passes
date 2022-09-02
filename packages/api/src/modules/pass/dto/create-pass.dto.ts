@@ -37,4 +37,7 @@ export class CreatePassRequestDto {
 
   @ApiPropertyOptional()
   freetrial: boolean
+
+  @ApiPropertyOptional()
+  messages?: number | null
 }

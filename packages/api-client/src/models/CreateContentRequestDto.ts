@@ -30,8 +30,21 @@ export interface CreateContentRequestDto {
      * @type {string}
      * @memberof CreateContentRequestDto
      */
-    contentType: string;
+    contentType: CreateContentRequestDtoContentTypeEnum;
 }
+
+
+/**
+ * @export
+ */
+export const CreateContentRequestDtoContentTypeEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequestDtoContentTypeEnum[keyof typeof CreateContentRequestDtoContentTypeEnum];
+
 
 export function CreateContentRequestDtoFromJSON(json: any): CreateContentRequestDto {
     return CreateContentRequestDtoFromJSONTyped(json, false);

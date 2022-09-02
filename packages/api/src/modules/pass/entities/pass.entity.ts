@@ -47,4 +47,8 @@ export class PassEntity extends BaseEntity {
 
   @Property()
   pinnedAt?: Date
+
+  // null means unlimited
+  @Property({ default: 0 })
+  messages?: number
 }

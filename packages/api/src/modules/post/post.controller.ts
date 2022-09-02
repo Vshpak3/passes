@@ -29,15 +29,15 @@ export class PostController {
   @ApiOperation({ summary: 'Creates a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreatePostRequestDto,
+    type: undefined,
     description: 'A post was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
     @Body() createPostDto: CreatePostRequestDto,
-  ): Promise<CreatePostRequestDto> {
-    return await this.postService.create(req.user.id, createPostDto)
+  ): Promise<void> {
+    await this.postService.create(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })

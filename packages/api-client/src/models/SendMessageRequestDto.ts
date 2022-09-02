@@ -49,7 +49,7 @@ export interface SendMessageRequestDto {
      * @type {number}
      * @memberof SendMessageRequestDto
      */
-    tipAmount?: number;
+    tipAmount: number;
     /**
      * 
      * @type {Array<string>}
@@ -77,7 +77,7 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
-        'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
+        'tipAmount': json['tipAmount'],
         'content': json['content'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };

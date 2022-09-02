@@ -58,6 +58,7 @@ export class FeedService {
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${FollowEntity.table}.is_active`, true)
+      .andWhere('scheduled_at', '<=', formatDateTimeToDbDateTime(Date.now()))
       .orderBy('created_at', 'desc')
       .limit(FEED_LIMIT)
 
@@ -115,8 +116,8 @@ export class FeedService {
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${UserEntity.table}.username`, username)
+      .andWhere('scheduled_at', '<=', formatDateTimeToDbDateTime(Date.now()))
       .orderBy('created_at', 'desc')
-      .where('scheduled_at', '<=', formatDateTimeToDbDateTime(Date.now()))
 
     if (cursor) {
       query = query.andWhere('created_at', '<', cursor)

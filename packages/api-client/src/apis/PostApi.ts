@@ -83,7 +83,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Creates a post
      */
-    async postCreateRaw(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatePostRequestDto>> {
+    async postCreateRaw(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.createPostRequestDto === null || requestParameters.createPostRequestDto === undefined) {
             throw new runtime.RequiredError('createPostRequestDto','Required parameter requestParameters.createPostRequestDto was null or undefined when calling postCreate.');
         }
@@ -102,15 +102,14 @@ export class PostApi extends runtime.BaseAPI {
             body: CreatePostRequestDtoToJSON(requestParameters.createPostRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePostRequestDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Creates a post
      */
-    async postCreate(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatePostRequestDto> {
-        const response = await this.postCreateRaw(requestParameters, initOverrides);
-        return await response.value();
+    async postCreate(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.postCreateRaw(requestParameters, initOverrides);
     }
 
     /**

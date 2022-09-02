@@ -1,20 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class PassHolderDto {
-  @IsUUID()
   @ApiProperty()
   id: string
 
-  @IsUUID()
   @ApiProperty()
   passId: string
 
-  @IsUUID()
   @ApiProperty()
   holderId: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  messages?: number | null
+
+  @ApiPropertyOptional()
   expiresAt?: number
 
   constructor(passHolder) {

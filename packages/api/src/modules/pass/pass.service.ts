@@ -95,6 +95,7 @@ export class PassService {
       totalSupply: createPassDto.totalSupply,
       duration,
       freetrial: createPassDto.freetrial,
+      messages: createPassDto.messages,
     })
 
     await this.dbWriter(PassEntity.table).insert(data)
@@ -210,6 +211,7 @@ export class PassService {
       holder: userId,
       expiresAt: expiresAt,
       solNft: solNftDto.id,
+      messages: pass.messages,
     })
     await this.dbWriter(PassHolderEntity.table).insert(data)
 
@@ -246,6 +248,7 @@ export class PassService {
         `${PassHolderEntity.table}.id`,
         `${PassHolderEntity.table}.expires_at`,
         `${PassEntity.table}.duration`,
+        `${PassEntity.table}.messages as pass_messages`,
       ])
       .first()
 
@@ -253,18 +256,24 @@ export class PassService {
       throw new ForbiddenPassException("can't extend non subscription pass")
     }
 
-    if (passHolder.expires_at < Date.now()) {
-      await this.dbWriter(PassHolderEntity.table)
+    await this.dbWriter.transaction(async (trx) => {
+      if (passHolder.expires_at < Date.now()) {
+        await trx(PassHolderEntity.table)
+          .where('id', passHolder.id)
+          .increment('expires_at', passHolder.duration)
+      } else {
+        await trx(PassHolderEntity.table)
+          .where('id', passHolder.id)
+          .update(
+            'expires_at',
+            Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
+          )
+      }
+      await trx(PassHolderEntity.table)
         .where('id', passHolder.id)
-        .increment('expires_at', passHolder.duration)
-    } else {
-      await this.dbWriter(PassHolderEntity.table)
-        .where('id', passHolder.id)
-        .update(
-          'expires_at',
-          Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
-        )
-    }
+        .update('messages', passHolder.pass_messages)
+    })
+
     return (
       await this.dbReader(PassHolderEntity.table)
         .where('id', passHolder.id)

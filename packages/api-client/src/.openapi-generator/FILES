@@ -5,7 +5,6 @@ apis/AuthFacebookApi.ts
 apis/AuthGoogleApi.ts
 apis/AuthLocalApi.ts
 apis/AuthTwitterApi.ts
-apis/CollectionApi.ts
 apis/CommentApi.ts
 apis/ContentApi.ts
 apis/CreatorSettingsApi.ts
@@ -67,12 +66,12 @@ models/CreateSolNftRequestDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
-models/GetChannelStatResponseDto.ts
+models/GetChannelResponseDto.ts
+models/GetChannelSettingsResponseDto.ts
 models/GetChannelStatsResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts
-models/GetCollectionResponseDto.ts
 models/GetCommentsForPostResponseDto.ts
 models/GetContentResponseDto.ts
 models/GetContentsResponseDto.ts
@@ -142,7 +141,7 @@ models/SubmitInquiryRequestDto.ts
 models/SubscriptionDto.ts
 models/TipPostRequestDto.ts
 models/TokenResponseDto.ts
-models/UpdateCollectionRequestDto.ts
+models/UpdateChannelSettingsRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePostRequestDto.ts

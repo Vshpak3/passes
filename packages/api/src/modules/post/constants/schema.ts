@@ -1,1 +1,1 @@
-export const POST_CONTENT_LENGTH = 500
+export const POST_TEXT_LENGTH = 500

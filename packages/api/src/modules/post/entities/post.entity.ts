@@ -1,27 +1,16 @@
-import {
-  Collection,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  Property,
-  types,
-} from '@mikro-orm/core'
+import { Entity, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { ContentEntity } from '../../content/entities/content.entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
-import { POST_CONTENT_LENGTH } from '../constants/schema'
+import { POST_TEXT_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'post' })
 export class PostEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
 
-  @ManyToMany(() => ContentEntity, (content) => content.post)
-  content = new Collection<ContentEntity>(this)
-
-  @Property({ length: POST_CONTENT_LENGTH })
+  @Property({ length: POST_TEXT_LENGTH })
   text: string
 
   @Property({ default: 0 })

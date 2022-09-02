@@ -5,7 +5,7 @@ export class CreateBatchMessageRequestDto {
   text: string
 
   @ApiProperty()
-  list: string
+  listId: string
 
   @ApiProperty()
   content?: string[]

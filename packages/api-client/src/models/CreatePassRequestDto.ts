@@ -67,6 +67,12 @@ export interface CreatePassRequestDto {
      * @memberof CreatePassRequestDto
      */
     freetrial?: boolean;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreatePassRequestDto
+     */
+    messages?: object;
 }
 
 export function CreatePassRequestDtoFromJSON(json: any): CreatePassRequestDto {
@@ -87,6 +93,7 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'totalSupply': json['totalSupply'],
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'freetrial': !exists(json, 'freetrial') ? undefined : json['freetrial'],
+        'messages': !exists(json, 'messages') ? undefined : json['messages'],
     };
 }
 
@@ -107,6 +114,7 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         'totalSupply': value.totalSupply,
         'duration': value.duration,
         'freetrial': value.freetrial,
+        'messages': value.messages,
     };
 }
 

@@ -18,4 +18,8 @@ export class PassHolderEntity extends BaseEntity {
 
   @OneToOne()
   solNft: SolNftEntity
+
+  // null means unlimited
+  @Property({ default: 0 })
+  messages?: number
 }

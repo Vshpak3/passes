@@ -1,11 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsInt, Length } from 'class-validator'
 
-import { POST_CONTENT_LENGTH } from '../constants/schema'
+import { POST_TEXT_LENGTH } from '../constants/schema'
 
 export class CreatePostRequestDto {
   @ApiProperty()
-  @Length(1, POST_CONTENT_LENGTH)
+  @Length(1, POST_TEXT_LENGTH)
   text: string
 
   @ApiProperty()

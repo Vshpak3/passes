@@ -42,21 +42,21 @@ export class ListService {
 
     if (createListDto.users) {
       followResult = await this.dbReader(FollowEntity.table)
-        .innerJoin(UserEntity.table, 'users.id', 'follow.subscriber_id')
+        .innerJoin(UserEntity.table, 'users.id', 'follow.follower_id')
         .select(
-          'follow.subscriber_id',
+          'follow.follower_id',
           'users.id',
           'users.username',
           'users.display_name',
         )
         .where('follow.creator_id', userId)
-        .whereIn('follow.subscriber_id', createListDto.users)
+        .whereIn('follow.follower_id', createListDto.users)
 
       listMemberRecords = followResult.map(
-        (followResult: { subscriber_id: string }) => {
+        (followResult: { follower_id: string }) => {
           return ListMemberEntity.toDict<ListMemberEntity>({
             list: listId,
-            user: followResult.subscriber_id,
+            user: followResult.follower_id,
           })
         },
       )
@@ -170,15 +170,15 @@ export class ListService {
     }
 
     const followResult = await this.dbReader(FollowEntity.table)
-      .select('follow.subscriber_id')
+      .select('follow.follower_id')
       .where('follow.creator_id', userId)
-      .whereIn('follow.subscriber_id', addListMembersDto.users)
+      .whereIn('follow.follower_id', addListMembersDto.users)
 
     const records = followResult.map((followResult) => {
       return {
         id: uuid.v4(),
         list_id: listId,
-        user_id: followResult.subscriber_id,
+        user_id: followResult.follower_id,
       }
     })
 

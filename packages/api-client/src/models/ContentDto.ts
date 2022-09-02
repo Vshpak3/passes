@@ -27,22 +27,16 @@ export interface ContentDto {
     id: string;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof ContentDto
      */
-    createdAt: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ContentDto
-     */
-    updatedAt: Date;
+    userId: string;
     /**
      * 
      * @type {string}
      * @memberof ContentDto
      */
-    url: string;
+    signedUrl: string;
     /**
      * 
      * @type {string}
@@ -62,9 +56,8 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'id': json['id'],
-        'createdAt': (new Date(json['createdAt'])),
-        'updatedAt': (new Date(json['updatedAt'])),
-        'url': json['url'],
+        'userId': json['userId'],
+        'signedUrl': json['signedUrl'],
         'contentType': json['contentType'],
     };
 }
@@ -79,9 +72,8 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
     return {
         
         'id': value.id,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
-        'url': value.url,
+        'userId': value.userId,
+        'signedUrl': value.signedUrl,
         'contentType': value.contentType,
     };
 }

@@ -6,23 +6,21 @@ export class ContentDto {
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
-  createdAt: Date
+  userId: string
 
   @ApiProperty()
-  updatedAt: Date
-
-  @ApiProperty()
-  url: string
+  signedUrl: string
 
   @ApiProperty()
   contentType: string
 
-  constructor(content) {
+  constructor(content, signedUrl) {
     this.id = content.id
-    this.createdAt = content.created_at
-    this.updatedAt = content.updated_at
-    this.url = content.url
+    this.userId = content.user_id
+    this.signedUrl = content.url
     this.contentType = content.content_type
+    this.signedUrl = signedUrl
   }
 }

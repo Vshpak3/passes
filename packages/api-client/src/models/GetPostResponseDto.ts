@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    GetContentResponseDto,
-    GetContentResponseDtoFromJSON,
-    GetContentResponseDtoFromJSONTyped,
-    GetContentResponseDtoToJSON,
-} from './GetContentResponseDto';
+    ContentDto,
+    ContentDtoFromJSON,
+    ContentDtoFromJSONTyped,
+    ContentDtoToJSON,
+} from './ContentDto';
 
 /**
  * 
@@ -64,10 +64,10 @@ export interface GetPostResponseDto {
     text: string;
     /**
      * 
-     * @type {Array<GetContentResponseDto>}
+     * @type {Array<ContentDto>}
      * @memberof GetPostResponseDto
      */
-    content?: Array<GetContentResponseDto>;
+    content?: Array<ContentDto>;
     /**
      * 
      * @type {number}
@@ -146,7 +146,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'username': json['username'],
         'displayName': json['displayName'],
         'text': json['text'],
-        'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(GetContentResponseDtoFromJSON)),
+        'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
         'numPurchases': json['numPurchases'],
@@ -175,7 +175,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'username': value.username,
         'displayName': value.displayName,
         'text': value.text,
-        'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(GetContentResponseDtoToJSON)),
+        'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,
         'numPurchases': value.numPurchases,

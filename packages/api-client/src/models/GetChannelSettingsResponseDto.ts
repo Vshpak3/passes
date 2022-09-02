@@ -16,40 +16,40 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ChannelStatDto
+ * @interface GetChannelSettingsResponseDto
  */
-export interface ChannelStatDto {
+export interface GetChannelSettingsResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof ChannelStatDto
+     * @memberof GetChannelSettingsResponseDto
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof ChannelStatDto
+     * @memberof GetChannelSettingsResponseDto
      */
     channelId: string;
     /**
      * 
-     * @type {number}
-     * @memberof ChannelStatDto
+     * @type {string}
+     * @memberof GetChannelSettingsResponseDto
      */
-    totalTipAmount: number;
+    userId: string;
     /**
      * 
      * @type {boolean}
-     * @memberof ChannelStatDto
+     * @memberof GetChannelSettingsResponseDto
      */
-    blocked: boolean;
+    unlimitedMessages: boolean;
 }
 
-export function ChannelStatDtoFromJSON(json: any): ChannelStatDto {
-    return ChannelStatDtoFromJSONTyped(json, false);
+export function GetChannelSettingsResponseDtoFromJSON(json: any): GetChannelSettingsResponseDto {
+    return GetChannelSettingsResponseDtoFromJSONTyped(json, false);
 }
 
-export function ChannelStatDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ChannelStatDto {
+export function GetChannelSettingsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetChannelSettingsResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -57,12 +57,12 @@ export function ChannelStatDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'id': json['id'],
         'channelId': json['channelId'],
-        'totalTipAmount': json['totalTipAmount'],
-        'blocked': json['blocked'],
+        'userId': json['userId'],
+        'unlimitedMessages': json['unlimitedMessages'],
     };
 }
 
-export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
+export function GetChannelSettingsResponseDtoToJSON(value?: GetChannelSettingsResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -73,8 +73,8 @@ export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
         
         'id': value.id,
         'channelId': value.channelId,
-        'totalTipAmount': value.totalTipAmount,
-        'blocked': value.blocked,
+        'userId': value.userId,
+        'unlimitedMessages': value.unlimitedMessages,
     };
 }
 

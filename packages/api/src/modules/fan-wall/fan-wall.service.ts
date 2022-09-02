@@ -8,6 +8,8 @@ import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
+import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   FAN_WALL_COMMENT_NOT_EXIST,
@@ -43,6 +45,14 @@ export class FanWallService {
     }
 
     const id = v4()
+    const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+      .where(`${FollowBlockEntity.table}.follower_id`, userId)
+      .where(`${FollowBlockEntity.table}.creator_id`, creator.id)
+      .first()
+
+    if (followBlockResult) {
+      throw new BadRequestException(CREATOR_NOT_EXIST)
+    }
 
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
       id,
