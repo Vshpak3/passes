@@ -1,4 +1,4 @@
-import { PostApi } from "@passes/api-client"
+import { FanWallApi, PostApi } from "@passes/api-client"
 import React, { useState } from "react"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
@@ -6,7 +6,13 @@ import { useSWRConfig } from "swr"
 import NewsFeedNavigation from "./new-post/navigation"
 import NewsFeedContent from "./news-feed/news-feed-content"
 
-const MainContent = ({ profile, ownsProfile, posts, username }) => {
+const MainContent = ({
+  profile,
+  ownsProfile,
+  posts,
+  fanWallPosts,
+  username
+}) => {
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
   const createPost = async (values) => {
@@ -43,6 +49,29 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
       }
     )
   }
+  const writeToFanWall = async (values) => {
+    const api = wrapApi(FanWallApi)
+    mutate(
+      [`/fan-wall/creator/`, username],
+      async () =>
+        await api.fanWallCreate({
+          createFanWallCommentRequestDto: {
+            creatorUsername: username,
+            content: values.text
+          }
+        }),
+      {
+        populateCache: (fanWallPost, fanWallPreviousPosts) => {
+          return {
+            comments: !fanWallPosts
+              ? [fanWallPost]
+              : [fanWallPost, ...fanWallPreviousPosts.comments]
+          }
+        },
+        revalidate: false
+      }
+    )
+  }
 
   return (
     <>
@@ -54,7 +83,9 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
         activeTab={activeTab}
         ownsProfile={ownsProfile}
         posts={posts}
+        fanWallPosts={fanWallPosts}
         createPost={createPost}
+        writeToFanWall={writeToFanWall}
       />
     </>
   )

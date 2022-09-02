@@ -52,11 +52,19 @@ export const Post = ({ profile, post }) => {
 export const PostProfileAvatar = ({ profile, post }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-center space-x-4">
-      <img // eslint-disable-line @next/next/no-img-element
-        className="h-12 w-12 rounded-full object-cover"
-        src={profile.profileImageUrl}
-        alt={profile.fullName}
-      />
+      {profile.profileImageUrl ? (
+        <img // eslint-disable-line @next/next/no-img-element
+          className="h-12 w-12 rounded-full object-cover"
+          src={profile.profileImageUrl || ""}
+          alt={profile.fullName}
+        />
+      ) : (
+        <div className="h-12 w-12 rounded-full bg-passes-primary-color">
+          <div className="absolute flex h-12 w-12 items-center justify-center uppercase">
+            {profile.fullName && profile.fullName[0]}
+          </div>
+        </div>
+      )}
       <div className="space-y-1 font-medium dark:text-white">
         <div className="flex items-center gap-[6px]">
           <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">

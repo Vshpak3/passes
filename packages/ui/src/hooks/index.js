@@ -4,6 +4,7 @@ import useCreatorProfile from "./useCreatorProfile"
 import useCreatorSearch from "./useCreatorSearch"
 import useEventCallback from "./useEventCallback"
 import useEventListener from "./useEventListener"
+import useFanWall from "./useFanWall"
 import useFeed from "./useFeed"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
 import useLocalStorage from "./useLocalStorage"
@@ -23,6 +24,7 @@ export {
   useCreatorSearch,
   useEventCallback,
   useEventListener,
+  useFanWall,
   useFeed,
   useIsomorphicLayoutEffect,
   useLocalStorage,

@@ -13,7 +13,7 @@ import { EditProfile } from "src/components/pages/profile/profile-details/edit-p
 import getConnection from "src/helpers/demo"
 import { uploadFile } from "src/helpers/uploadFile"
 import { wrapApi } from "src/helpers/wrapApi"
-import { useCreatorProfile, usePasses, useUser } from "src/hooks"
+import { useCreatorProfile, useFanWall, usePasses, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const mockCreator = {
@@ -108,6 +108,35 @@ const mockCreator = {
   ]
 }
 
+const MOCKED_FANWALL_POSTS = {
+  comments: [
+    {
+      fanWallCommentId: "48781e59-2cc1-4586-9d01-ed366c9ff010",
+      commenterId: "a9009518-828f-4b50-a940-6a78d1f1de56",
+      content: "this is awesome",
+      commenterUsername: "@fan4",
+      commenterDisplayName: "Fan #4",
+      createdAt: "2022-09-02T21:52:07.000Z"
+    },
+    {
+      fanWallCommentId: "48781e59-2cc1-4586-9d01-ed366c9ff010",
+      commenterId: "a9009518-828f-4b50-a940-6a78d1f1de56",
+      content: "Hey!",
+      commenterUsername: "@drach",
+      commenterDisplayName: "Alex Drachnik Fan",
+      createdAt: "2022-09-02T21:52:07.000Z"
+    },
+    {
+      fanWallCommentId: "48781e59-2cc1-4586-9d01-ed366c9ff010",
+      commenterId: "a9009518-828f-4b50-a940-6a78d1f1de56",
+      content: "Peace",
+      commenterUsername: "@alexfan",
+      commenterDisplayName: "Fan Limani",
+      createdAt: "2022-09-02T21:52:07.000Z"
+    }
+  ]
+}
+
 const Username = (props: GetProfileResponseDto) => {
   const router = useRouter()
   const {
@@ -124,6 +153,7 @@ const Username = (props: GetProfileResponseDto) => {
   const { user: { username: loggedInUsername } = {} } = useUser()
   const ownsProfile = loggedInUsername === username
   const { posts = [] } = useCreatorProfile({ username })
+  const { fanWallPosts = [] } = useFanWall({ username })
 
   const onSubmit = async (values: Record<string, any>) => {
     const { profileImage, profileCoverImage, ...rest } = values
@@ -207,6 +237,9 @@ const Username = (props: GetProfileResponseDto) => {
               profile={profile}
               ownsProfile={ownsProfile}
               posts={!isTestProfile ? posts : mockCreator.posts}
+              fanWallPosts={
+                !isTestProfile ? fanWallPosts : MOCKED_FANWALL_POSTS
+              }
               username={username}
             />
           )}
