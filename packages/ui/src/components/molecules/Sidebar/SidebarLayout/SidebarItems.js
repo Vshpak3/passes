@@ -61,7 +61,7 @@ function SidebarDropdown({ active, item, setActive, router }) {
                   `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
                 )}
               >
-                <span className="flex">
+                <>
                   <item.icon
                     className={classNames(
                       isItemActive
@@ -72,15 +72,18 @@ function SidebarDropdown({ active, item, setActive, router }) {
                     aria-hidden="true"
                   />
                   {item.name}
-                  <ChevronDown
-                    className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
-                  />
-                </span>
+                </>
               </Link>
+              <ChevronDown
+                className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
+              />
             </span>
           </Disclosure.Button>
           {open && (
-            <Disclosure.Panel static className="hidden sidebar-collapse:block">
+            <Disclosure.Panel
+              static
+              className="hidden sidebar-collapse:block sidebar-collapse:pl-[67px]"
+            >
               {item.children.map((subItem) => {
                 const isActive = subItem.id === active
                 return (
