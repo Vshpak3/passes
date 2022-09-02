@@ -127,7 +127,7 @@ export class MessagesService {
 
     // check if either user is blocked
     const followReportResult = await this.dbReader(FollowRestrictEntity.table)
-      .whereIn(`${FollowRestrictEntity.table}.subscriber_id`, [
+      .whereIn(`${FollowRestrictEntity.table}.follower_id`, [
         userId,
         otherUser.id,
       ])
@@ -343,7 +343,7 @@ export class MessagesService {
 
     // check if either user is blocked
     const followReportResult = await this.dbReader(FollowRestrictEntity.table)
-      .whereIn(`${FollowRestrictEntity.table}.subscriber_id`, [
+      .whereIn(`${FollowRestrictEntity.table}.follower_id`, [
         userId,
         otherUserId as string,
       ])

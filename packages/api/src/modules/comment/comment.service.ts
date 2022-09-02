@@ -51,7 +51,7 @@ export class CommentService {
     }
 
     const followRestrictResult = await this.dbReader(FollowRestrictEntity.table)
-      .where(`${FollowRestrictEntity.table}.subscriber_id`, userId)
+      .where(`${FollowRestrictEntity.table}.follower_id`, userId)
       .where(`${FollowRestrictEntity.table}.creator_id`, post.user_id)
       .first()
 

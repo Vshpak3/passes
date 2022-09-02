@@ -79,7 +79,7 @@ export class ProfileService {
 
     if (userId) {
       const followBlockResult = await this.dbReader(FollowBlockEntity.table)
-        .where(`${FollowBlockEntity.table}.subscriber_id`, userId)
+        .where(`${FollowBlockEntity.table}.follower_id`, userId)
         .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
         .first()
 
@@ -112,7 +112,7 @@ export class ProfileService {
 
     if (userId) {
       const followBlockResult = await this.dbReader(FollowBlockEntity.table)
-        .where(`${FollowBlockEntity.table}.subscriber_id`, userId)
+        .where(`${FollowBlockEntity.table}.follower_id`, userId)
         .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
         .first()
 
