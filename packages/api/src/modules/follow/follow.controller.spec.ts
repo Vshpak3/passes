@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
+import { MessagesService } from '../messages/messages.service'
 import { FollowController } from './follow.controller'
 import { FollowService } from './follow.service'
 
@@ -10,7 +11,14 @@ describe('FollowController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FollowController],
-      providers: [FollowService, ...getBaseProviders()],
+      providers: [
+        FollowService,
+        ...getBaseProviders(),
+        {
+          provide: MessagesService,
+          useFactory: jest.fn(() => ({})),
+        },
+      ],
     }).compile()
 
     controller = module.get<FollowController>(FollowController)

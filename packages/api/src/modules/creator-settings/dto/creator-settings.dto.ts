@@ -8,4 +8,7 @@ export class CreatorSettingsDto {
 
   @ApiProperty({ enum: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
+
+  @ApiProperty()
+  welcomeMessage?: string
 }

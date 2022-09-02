@@ -31,6 +31,12 @@ export interface CreateCreatorSettingsRequestDto {
      * @memberof CreateCreatorSettingsRequestDto
      */
     payoutFrequency: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCreatorSettingsRequestDto
+     */
+    welcomeMessage: string;
 }
 
 
@@ -57,6 +63,7 @@ export function CreateCreatorSettingsRequestDtoFromJSONTyped(json: any, ignoreDi
         
         'minimumTipAmount': json['minimumTipAmount'],
         'payoutFrequency': json['payoutFrequency'],
+        'welcomeMessage': json['welcomeMessage'],
     };
 }
 
@@ -71,6 +78,7 @@ export function CreateCreatorSettingsRequestDtoToJSON(value?: CreateCreatorSetti
         
         'minimumTipAmount': value.minimumTipAmount,
         'payoutFrequency': value.payoutFrequency,
+        'welcomeMessage': value.welcomeMessage,
     };
 }
 

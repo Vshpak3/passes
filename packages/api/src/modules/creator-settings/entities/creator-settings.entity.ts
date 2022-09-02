@@ -13,6 +13,9 @@ export class CreatorSettingsEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   minimumTipAmount: number
 
+  @Property({ length: 255 })
+  welcomeMessage?: string
+
   @Enum({
     type: () => PayoutFrequencyEnum,
     default: PayoutFrequencyEnum.MANUAL,

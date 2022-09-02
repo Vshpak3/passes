@@ -12,7 +12,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { MessagesService } from '../messages/messages.service'
 import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
@@ -41,6 +43,8 @@ export class FollowService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+
+    private readonly messagesService: MessagesService,
   ) {}
 
   async checkFollow(userId: string, creatorId: string): Promise<boolean> {
@@ -57,9 +61,14 @@ export class FollowService {
   }
 
   async followCreator(userId: string, creatorId: string): Promise<FollowDto> {
-    const [follower, creator] = await Promise.all([
+    const [follower, creator, creatorSettings] = await Promise.all([
       this.dbReader(UserEntity.table).where({ id: userId }).first(),
       this.dbReader(UserEntity.table).where({ id: creatorId }).first(),
+      this.dbReader(CreatorSettingsEntity.table)
+        .where({
+          user_id: creatorId,
+        })
+        .first(),
     ])
     if (!follower) {
       throw new BadRequestException(FOLLOWER_NOT_EXIST)
@@ -71,6 +80,22 @@ export class FollowService {
 
     if (!creator.is_creator) {
       throw new BadRequestException(IS_NOT_CREATOR)
+    }
+
+    if (
+      creatorSettings?.welcomeMessage &&
+      creatorSettings.welcomeMessage != ''
+    ) {
+      const channel = await this.messagesService.createChannel(userId, {
+        text: '',
+        username: creator.username,
+      })
+      await this.messagesService.sendMessage(creator.id, {
+        text: creatorSettings.welcomeMessage,
+        attachments: [],
+        content: [],
+        channelId: channel.id,
+      })
     }
 
     const data = FollowEntity.toDict<FollowEntity>({
