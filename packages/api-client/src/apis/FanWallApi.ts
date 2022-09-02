@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CommentDto,
+    CommentDtoFromJSON,
+    CommentDtoToJSON,
     CreateFanWallCommentRequestDto,
     CreateFanWallCommentRequestDtoFromJSON,
     CreateFanWallCommentRequestDtoToJSON,
@@ -47,7 +50,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Creates a fan wall comment
      */
-    async fanWallCreateRaw(requestParameters: FanWallCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async fanWallCreateRaw(requestParameters: FanWallCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CommentDto>> {
         if (requestParameters.createFanWallCommentRequestDto === null || requestParameters.createFanWallCommentRequestDto === undefined) {
             throw new runtime.RequiredError('createFanWallCommentRequestDto','Required parameter requestParameters.createFanWallCommentRequestDto was null or undefined when calling fanWallCreate.');
         }
@@ -66,14 +69,15 @@ export class FanWallApi extends runtime.BaseAPI {
             body: CreateFanWallCommentRequestDtoToJSON(requestParameters.createFanWallCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CommentDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a fan wall comment
      */
-    async fanWallCreate(requestParameters: FanWallCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.fanWallCreateRaw(requestParameters, initOverrides);
+    async fanWallCreate(requestParameters: FanWallCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CommentDto> {
+        const response = await this.fanWallCreateRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

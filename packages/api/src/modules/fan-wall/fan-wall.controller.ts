@@ -12,6 +12,7 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { CommentDto } from './dto/comment.dto'
 import { CreateFanWallCommentRequestDto } from './dto/create-comment.dto'
 import { GetFanWallForCreatorResponseDto } from './dto/get-comments-for-post-dto'
 import { FanWallService } from './fan-wall.service'
@@ -24,7 +25,7 @@ export class FanWallController {
   @ApiOperation({ summary: 'Creates a fan wall comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: CommentDto,
     description: 'A fan wall comment was created',
   })
   @Post()

@@ -24,7 +24,13 @@ export interface ImpersonateUserRequestDto {
      * @type {string}
      * @memberof ImpersonateUserRequestDto
      */
-    userId: string;
+    userId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ImpersonateUserRequestDto
+     */
+    username?: string;
     /**
      * 
      * @type {string}
@@ -43,7 +49,8 @@ export function ImpersonateUserRequestDtoFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
-        'userId': json['userId'],
+        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'username': !exists(json, 'username') ? undefined : json['username'],
         'secret': json['secret'],
     };
 }
@@ -58,6 +65,7 @@ export function ImpersonateUserRequestDtoToJSON(value?: ImpersonateUserRequestDt
     return {
         
         'userId': value.userId,
+        'username': value.username,
         'secret': value.secret,
     };
 }

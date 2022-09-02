@@ -24,13 +24,13 @@ export interface CommentDto {
      * @type {string}
      * @memberof CommentDto
      */
-    commentId: string;
+    fanWallCommentId: string;
     /**
      * 
      * @type {string}
      * @memberof CommentDto
      */
-    postId: string;
+    creatorId: string;
     /**
      * 
      * @type {string}
@@ -51,6 +51,12 @@ export interface CommentDto {
     commenterUsername: string;
     /**
      * 
+     * @type {string}
+     * @memberof CommentDto
+     */
+    commenterDisplayName: string;
+    /**
+     * 
      * @type {Date}
      * @memberof CommentDto
      */
@@ -67,11 +73,12 @@ export function CommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'commentId': json['commentId'],
-        'postId': json['postId'],
+        'fanWallCommentId': json['fanWallCommentId'],
+        'creatorId': json['creatorId'],
         'commenterId': json['commenterId'],
         'content': json['content'],
         'commenterUsername': json['commenterUsername'],
+        'commenterDisplayName': json['commenterDisplayName'],
         'createdAt': (new Date(json['createdAt'])),
     };
 }
@@ -85,11 +92,12 @@ export function CommentDtoToJSON(value?: CommentDto | null): any {
     }
     return {
         
-        'commentId': value.commentId,
-        'postId': value.postId,
+        'fanWallCommentId': value.fanWallCommentId,
+        'creatorId': value.creatorId,
         'commenterId': value.commenterId,
         'content': value.content,
         'commenterUsername': value.commenterUsername,
+        'commenterDisplayName': value.commenterDisplayName,
         'createdAt': (value.createdAt.toISOString()),
     };
 }
