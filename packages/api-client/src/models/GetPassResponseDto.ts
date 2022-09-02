@@ -85,6 +85,12 @@ export interface GetPassResponseDto {
      * @memberof GetPassResponseDto
      */
     creatorDisplayName?: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassResponseDto
+     */
+    expiresAt?: Date;
 }
 
 export function GetPassResponseDtoFromJSON(json: any): GetPassResponseDto {
@@ -108,6 +114,7 @@ export function GetPassResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'totalSupply': json['totalSupply'],
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
 }
 
@@ -131,6 +138,7 @@ export function GetPassResponseDtoToJSON(value?: GetPassResponseDto | null): any
         'totalSupply': value.totalSupply,
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };
 }
 

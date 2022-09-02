@@ -142,6 +142,7 @@ export class PassService {
       .where('owner.id', userId)
       .select(
         `${PassEntity.table}.*`,
+        `passHolder.expires_at as pass_holder_expires_at`,
         `owner.username as creator_username`,
         `owner.display_name as creator_display_name`,
       )

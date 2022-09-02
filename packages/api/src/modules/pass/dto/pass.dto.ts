@@ -37,6 +37,9 @@ export class PassDto {
   @ApiPropertyOptional()
   creatorDisplayName?: string
 
+  @ApiPropertyOptional()
+  expiresAt?: Date
+
   constructor(pass) {
     this.id = pass.id
     this.creatorId = pass.owner_id
@@ -50,5 +53,7 @@ export class PassDto {
 
     this.creatorUsername = pass.creator_username
     this.creatorDisplayName = pass.creator_display_name
+
+    this.expiresAt = pass.pass_holder_expires_at
   }
 }

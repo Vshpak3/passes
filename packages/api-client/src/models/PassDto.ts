@@ -85,6 +85,12 @@ export interface PassDto {
      * @memberof PassDto
      */
     creatorDisplayName?: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PassDto
+     */
+    expiresAt?: Date;
 }
 
 export function PassDtoFromJSON(json: any): PassDto {
@@ -108,6 +114,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'totalSupply': json['totalSupply'],
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
 }
 
@@ -131,6 +138,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'totalSupply': value.totalSupply,
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };
 }
 
