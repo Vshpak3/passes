@@ -20,12 +20,13 @@ const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
   displayName: "Alex Drachnik",
+  fullName: "Alex Drachnik",
   coverTitle: "DRACHNIK (SASHA)",
   coverDescription:
     "I help brands & DJs go viral on TikTok 📲 | Creative Director @ BAM 💥 | TikTok; 2M+",
   isKYCVerified: false,
   description: "Viral Tiktok Marketer. 2M+ followers",
-  profileImageUrl: "/pages/profile/profile-photo.png",
+  profileImageUrl: "/pages/profile/profile-photo.jpeg",
   profileCoverImageUrl: "/pages/profile/profile-cover-photo.png",
   instagramUrl: "drachnik",
   tiktokUrl: "@drachnik",
@@ -75,8 +76,7 @@ const mockCreator = {
       price: 32,
       date: "2022-07-23T19:00:00.000Z",
       caption:
-        "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
-
+        "I'm so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
       content: [
         { url: "/pages/profile/profile-post-photo.png", type: "image/jpeg" }
       ]
@@ -120,6 +120,7 @@ const Username = (props: GetProfileResponseDto) => {
   const onEditProfile = () => {
     setEditProfile(true)
   }
+  const isTestProfile = username === "test"
   const { user: { username: loggedInUsername } = {} } = useUser()
   const ownsProfile = loggedInUsername === username
   const { posts = [] } = useCreatorProfile({ username })
@@ -190,8 +191,8 @@ const Username = (props: GetProfileResponseDto) => {
 
   return (
     <>
-      <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0  sidebar-collapse:w-[1000px]">
-        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+      <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+        <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.id && (
             <ProfileDetails
               profile={profile}
@@ -205,17 +206,17 @@ const Username = (props: GetProfileResponseDto) => {
             <MainContent
               profile={profile}
               ownsProfile={ownsProfile}
-              posts={posts}
+              posts={!isTestProfile ? posts : mockCreator.posts}
               username={username}
             />
           )}
         </div>
-        <div className="col-span-10 w-full pt-7 md:space-y-6 lg:col-span-3 lg:max-w-[280px]">
+        <div className="col-span-10 w-full md:space-y-6 md:pt-7 lg:col-span-3 lg:max-w-[280px]">
           {/* passes here */}
           {profile?.id && (
             <Passes
               creatorPasses={
-                username !== "test"
+                !isTestProfile
                   ? creatorPasses
                   : (mockCreator.passes as unknown as PassDto[])
               }

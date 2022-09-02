@@ -46,7 +46,7 @@ const MainContent = ({ profile, ownsProfile, posts, username }) => {
 
   return (
     <>
-      <div className="min-h-12 hidden sm:flex  ">
+      <div className="flex md:min-h-12">
         <NewsFeedNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
       <NewsFeedContent

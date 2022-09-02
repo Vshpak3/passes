@@ -206,9 +206,16 @@ export const HeaderChatButton = ({ name }: IGenericButton) => (
   </button>
 )
 
-export const RoundedIconButton = ({ children, onClick }: IButton) => (
+export const RoundedIconButton = ({
+  children,
+  onClick,
+  className = ""
+}: IButton) => (
   <button
-    className="flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-full bg-white p-4"
+    className={classNames(
+      "flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-full bg-white p-4",
+      className
+    )}
     onClick={onClick}
   >
     {children}

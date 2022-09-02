@@ -32,7 +32,9 @@ module.exports = {
           "purple-100": "#B53BEC",
           "pink-100": "#C943A8",
           "dark-100": "#28282C",
-          "dark-200": "#2C282D"
+          "dark-200": "#2C282D",
+          "gray-100": "#A09FA6",
+          "white-100": "#ffffff"
         }
       },
       fontFamily: {

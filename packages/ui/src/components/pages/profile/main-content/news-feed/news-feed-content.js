@@ -84,8 +84,8 @@ const NewsFeedContent = ({
               placeholder="What’s on your mind?"
             />
           )}
-          {posts?.posts?.length > 0 && (
-            <CreatorContentFeed profile={profile} existingPosts={posts.posts} />
+          {posts?.length > 0 && (
+            <CreatorContentFeed profile={profile} existingPosts={posts} />
           )}
         </>
       )

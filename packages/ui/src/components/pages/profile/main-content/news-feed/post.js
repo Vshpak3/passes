@@ -26,7 +26,7 @@ export const Post = ({ profile, post }) => {
   const [postPinned, setPostPinned] = useState(false)
   return (
     //this is the rounded container
-    <FormContainer className="!min-h-[10px]">
+    <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
       <PostProfileAvatar
         post={post}
         profile={profile}
@@ -35,7 +35,7 @@ export const Post = ({ profile, post }) => {
       />
       <PostTextContent post={post} />
       {post.fundraiser ? (
-        <FundraiserMedia images={post.images} />
+        <FundraiserMedia images={post.content} />
       ) : (
         <LockedMedia
           post={post}
@@ -59,7 +59,7 @@ export const PostProfileAvatar = ({ profile, post }) => (
       />
       <div className="space-y-1 font-medium dark:text-white">
         <div className="flex items-center gap-[6px]">
-          <span className="whitespace-nowrap font-semibold md:text-[20px] md:leading-[25px]">
+          <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
             {profile.fullName}
           </span>
           <span className="flex items-center">
@@ -72,7 +72,7 @@ export const PostProfileAvatar = ({ profile, post }) => (
       </div>
     </div>
     <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
-      <div className="leading=[22px] text-[12px] font-medium tracking-[1px] text-[#FFFFFF]/50">
+      <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
         <TimeAgo
           className="uppercase text-gray-300/60"
           date={post.createdAt ? post.createdAt : post.date}
@@ -104,11 +104,11 @@ export const PostProfileAvatar = ({ profile, post }) => (
 
 export const PostTextContent = ({ post }) => (
   <div className="flex flex-col items-start">
-    <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90 md:pl-[78px] md:pr-[30px]">
+    <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
       {post.caption ? post.caption : post.text}
     </p>
     {post.fundraiser && (
-      <div className="flex pt-3 md:pl-[78px]">
+      <div className="ml-auto flex pt-3">
         <div className="flex cursor-pointer items-center gap-[10px] rounded-md bg-[#ffff]/10 py-[7px] px-[10px] ">
           <span className="text-[12px] font-medium leading-[22px] text-[#ffff]">
             Fundraiser
@@ -141,8 +141,8 @@ export const LockedMedia = ({ postUnlocked, post }) => {
                 value={postUnlocked}
                 name={`Unlock Post For ${formatCurrency(post.price ?? 100)}`}
               />
-              <div className="flex items-center justify-center pt-4">
-                <span>UNLOCK 4 videos, 20 photos</span>
+              <div className="flex items-center justify-center pt-4 text-[#ffffff]">
+                <span>Unlock 4 videos, 20 photos</span>
               </div>
             </div>
           )}
@@ -208,13 +208,13 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
   return (
     <div className="flex w-full flex-col items-center justify-end">
       <div className="flex w-full items-center justify-between">
-        <div className="flex items-start gap-[45px] p-0">
+        <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
           <div
             onClick={likePost}
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >
             <HeartIcon fill={liked ? "#A09FA6" : "none"} />
-            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            <span className="text-[12px] leading-[15px] text-passes-gray-100">
               {compactNumberFormatter(numLikes)}
             </span>
           </div>
@@ -225,20 +225,20 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >
             <MessagesIcon />
-            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            <span className="text-[12px] leading-[15px] text-passes-gray-100">
               {compactNumberFormatter(numComments)}
             </span>
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
             <ShareIcon />
-            <span className="text-[12px] leading-[15px] text-[#A09FA6]">
+            <span className="text-[12px] leading-[15px] text-passes-gray-100">
               {compactNumberFormatter(post.sharesCount)}
             </span>
           </div>
         </div>
         <div
           onClick={() => setIsTipsModalOpen((prev) => !prev)}
-          className="flex items-center gap-2 pr-2"
+          className="flex items-center gap-2 pr-2 text-passes-gray-100"
         >
           <span className="text-[16px] leading-[25px]">{post.price}</span>
           <CostIcon />
@@ -398,7 +398,7 @@ export const FundraiserMedia = ({ images }) => {
     }
   }
   return (
-    <div className="relative w-full bg-transparent ">
+    <div className="relative bg-transparent">
       <div className="grid h-full grid-cols-12 gap-4">
         {images.length > 0 &&
           images.map((image, index) => (
@@ -407,7 +407,7 @@ export const FundraiserMedia = ({ images }) => {
               className={mediaGridLayout(images.length, index)}
             >
               <img // eslint-disable-line @next/next/no-img-element
-                src={image}
+                src={image.url}
                 alt={`media_${index}`}
                 className="rounded-[23px] object-cover"
               />
@@ -439,7 +439,7 @@ export const FundraiserTab = ({ post }) => {
   return (
     <div className="flex w-full flex-col items-start rounded-md bg-[#1b141d]/80 px-4 py-4 backdrop-blur-[10px]">
       <div className="flex w-full flex-wrap items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center text-[#ffffff]">
           <span className="pr-2">
             <FundraiserDollarIcon />
           </span>
@@ -450,7 +450,7 @@ export const FundraiserTab = ({ post }) => {
             USD raised of $100,000 goal
           </span>
         </div>
-        <div className="self-end text-xs tracking-[0.003em]">
+        <div className="self-end text-xs tracking-[0.003em] text-[#ffffff]/50">
           <span>{numberOfDonations}</span>
           <span> donations</span>
         </div>

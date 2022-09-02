@@ -25,16 +25,16 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
     }
   ]
   return (
-    <nav className="flex w-full items-start border-b border-passes-dark-200 p-0">
+    <nav className="align-items md:w-min-content mb-2 flex grid w-full grid-cols-3 items-center justify-center border-b border-passes-dark-200 p-0 md:grid-cols-7 md:items-start md:justify-start">
       {navigation.map((item, index) => (
         <span
           key={index}
           onClick={() => setActiveTab(item.id)}
           className={classNames(
             activeTab === item.id
-              ? "border-b-[3px] border-[#9C4DC1]"
-              : "border-[#9C4DC1]/60 hover:border-b-[3px] ",
-            "group mt-[7px] mr-8 box-border flex cursor-pointer items-start px-[10px] pb-3"
+              ? "border-b-[3px] border-passes-primary-color"
+              : "border-b-[3px] border-b-transparent hover:border-passes-primary-color",
+            "align-center group box-border flex w-full cursor-pointer justify-center py-[10px] md:mr-8 md:mt-[7px] md:w-[90px] md:pb-3"
           )}
         >
           <a
@@ -43,7 +43,7 @@ const NewsFeedNavigation = ({ setActiveTab, activeTab }) => {
               item.id === activeTab
                 ? "border-b-2 text-base font-bold opacity-100"
                 : "opacity-50 group-hover:opacity-80",
-              "inline-flex items-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-base font-bold text-[#ffffff]/90 "
+              "inline-flex items-center justify-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-center text-base font-bold text-[#ffffff]/90 "
             )}
           >
             {item.name}
