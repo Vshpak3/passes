@@ -42,7 +42,7 @@ export class FanWallController {
     description: 'A list of fan wall comments was retrieved',
   })
   @Get(':username')
-  async findCommentsForPost(
+  async getFanWallForCreator(
     @Param('username') username: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
     return this.fanWallService.findAllForCreator(username)

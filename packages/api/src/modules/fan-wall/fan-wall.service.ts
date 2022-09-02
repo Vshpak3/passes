@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common'
+import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -41,7 +42,10 @@ export class FanWallService {
       throw new BadRequestException(FAN_WALL_USER_IS_NOT_CREATOR)
     }
 
+    const id = v4()
+
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+      id,
       creator: creator.id,
       commenter: userId,
       content: content,
@@ -49,7 +53,19 @@ export class FanWallService {
 
     await this.dbWriter(FanWallCommentEntity.table).insert(data)
 
-    return new CommentDto(data)
+    const fanWallComment = await this.dbReader(FanWallCommentEntity.table)
+      .leftJoin(UserEntity.table, 'fan_wall_comment.commenter_id', 'users.id')
+      .where({
+        'fan_wall_comment.id': id,
+      })
+      .select(
+        'fan_wall_comment.*',
+        'users.username as commenter_username',
+        'users.display_name as commenter_display_name',
+      )
+      .first()
+
+    return new CommentDto(fanWallComment)
   }
 
   async findAllForCreator(
@@ -69,7 +85,11 @@ export class FanWallService {
         is_hidden: false,
         deleted_at: null,
       })
-      .select('fan_wall_comment.*', 'users.username as commenter_username')
+      .select(
+        'fan_wall_comment.*',
+        'users.username as commenter_username',
+        'users.display_name as commenter_display_name',
+      )
       .orderBy('created_at', 'desc')
 
     return new GetFanWallForCreatorResponseDto(comments)

@@ -31,7 +31,7 @@ export interface FanWallDeleteRequest {
     id: string;
 }
 
-export interface FanWallFindCommentsForPostRequest {
+export interface FanWallGetFanWallForCreatorRequest {
     username: string;
 }
 
@@ -108,9 +108,9 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Gets fan wall for a creator
      */
-    async fanWallFindCommentsForPostRaw(requestParameters: FanWallFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFanWallForCreatorResponseDto>> {
+    async fanWallGetFanWallForCreatorRaw(requestParameters: FanWallGetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFanWallForCreatorResponseDto>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling fanWallFindCommentsForPost.');
+            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling fanWallGetFanWallForCreator.');
         }
 
         const queryParameters: any = {};
@@ -130,8 +130,8 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Gets fan wall for a creator
      */
-    async fanWallFindCommentsForPost(requestParameters: FanWallFindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFanWallForCreatorResponseDto> {
-        const response = await this.fanWallFindCommentsForPostRaw(requestParameters, initOverrides);
+    async fanWallGetFanWallForCreator(requestParameters: FanWallGetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFanWallForCreatorResponseDto> {
+        const response = await this.fanWallGetFanWallForCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -21,6 +21,9 @@ export class CommentDto {
   commenterUsername: string
 
   @ApiProperty()
+  commenterDisplayName: string
+
+  @ApiProperty()
   createdAt: Date
 
   constructor(fanWallPost) {
@@ -29,6 +32,7 @@ export class CommentDto {
     this.commenterId = fanWallPost.commenter_id
     this.content = fanWallPost.content
     this.commenterUsername = fanWallPost.commenter_username
+    this.commenterDisplayName = fanWallPost.commenter_display_name
     this.createdAt = fanWallPost.created_at
   }
 }
