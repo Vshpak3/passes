@@ -15,7 +15,6 @@ export class MessageDto {
   @ApiProperty()
   content: string[]
 
-  @IsUUID()
   @ApiProperty()
   channelId: string
 
