@@ -26,6 +26,7 @@ export const navigation = [
   {
     id: "tools",
     name: "Creator Tools",
+    href: "",
     icon: CreatorToolsIcon,
     current: false,
     creatorOnly: true,
