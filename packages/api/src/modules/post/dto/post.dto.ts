@@ -16,6 +16,9 @@ export class PostDto {
   username: string
 
   @ApiProperty()
+  displayName: string
+
+  @ApiProperty()
   text: string
 
   @ApiPropertyOptional({ type: [GetContentResponseDto] })
@@ -67,6 +70,7 @@ export class PostDto {
       this.id = post.id
       this.userId = post.user_id
       this.username = post.username
+      this.displayName = post.display_name
       this.createdAt = post.created_at
       this.scheduledAt = post.scheduled_at
       this.paywall = paywall

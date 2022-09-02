@@ -140,12 +140,12 @@ export class PostService {
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.post_id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.id`, id)
-      .first()
 
     const postDtos = await this.getPostsFromQuery(userId, dbquery)
 

@@ -52,6 +52,7 @@ export class FeedService {
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.post_id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
@@ -108,6 +109,7 @@ export class FeedService {
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.post_id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
