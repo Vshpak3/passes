@@ -1,10 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { PayinCallbackInput } from '../callback.types'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class RegisterPayinResponseDto {
+  @IsUUID()
   @ApiProperty()
   payinId: string
 
@@ -16,6 +18,7 @@ export class RegisterPayinResponseDto {
 }
 
 export class RegisterPayinRequestDto {
+  @IsUUID()
   @ApiProperty()
   userId: string
 
@@ -36,11 +39,13 @@ export class RegisterPayinRequestDto {
   @ApiPropertyOptional()
   target?: string
 
+  @IsUUID()
   @ApiProperty()
   creatorId: string
 }
 
 export class CreatorShareDto {
+  @IsUUID()
   @ApiProperty()
   creatorId: string
 

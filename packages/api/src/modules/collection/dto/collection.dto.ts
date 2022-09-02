@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEnum } from 'class-validator'
+import { IsEnum, IsUUID } from 'class-validator'
 
 import { PassDto } from '../../pass/dto/pass.dto'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
 
 export class CollectionDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

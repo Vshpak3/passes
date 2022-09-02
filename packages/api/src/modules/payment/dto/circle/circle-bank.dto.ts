@@ -1,6 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class CircleBankDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

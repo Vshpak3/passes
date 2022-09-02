@@ -1,6 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class MessageDto {
+  @IsUUID()
   @ApiPropertyOptional()
   id?: string
 
@@ -13,6 +15,7 @@ export class MessageDto {
   @ApiProperty()
   content: string[]
 
+  @IsUUID()
   @ApiProperty()
   channelId: string
 

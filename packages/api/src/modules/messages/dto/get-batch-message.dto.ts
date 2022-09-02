@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class GetBatchMessageResponseDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

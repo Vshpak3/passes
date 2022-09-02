@@ -1,14 +1,17 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { GetContentResponseDto } from '../../content/dto/get-content.dto'
 
 export class PostDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
   @ApiProperty()
   paywall: boolean
 
+  @IsUUID()
   @ApiProperty()
   userId: string
 

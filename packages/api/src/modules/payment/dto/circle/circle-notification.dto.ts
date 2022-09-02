@@ -1,9 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { CirclePaymentDto } from './circle-payment.dto'
 import { CircleTransferDto } from './circle-transfer.dto'
 
 export class GenericCircleObjectWrapper {
+  @IsUUID()
   @ApiProperty()
   id: string
 
@@ -12,6 +14,7 @@ export class GenericCircleObjectWrapper {
 }
 
 export class CircleNotificationDto {
+  @IsUUID()
   @ApiProperty()
   clientId: string
 

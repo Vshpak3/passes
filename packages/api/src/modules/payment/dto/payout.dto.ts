@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { WalletDto } from '../../wallet/dto/wallet.dto'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
@@ -6,9 +7,11 @@ import { CircleBankDto } from './circle/circle-bank.dto'
 import { PayoutMethodDto } from './payout-method.dto'
 
 export class PayoutDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
   userId: string
 

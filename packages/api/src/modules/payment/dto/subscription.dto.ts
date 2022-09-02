@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { PassDto } from '../../pass/dto/pass.dto'
 import { PassHolderDto } from '../../pass/dto/pass-holder.dto'
@@ -7,9 +8,11 @@ import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscriptionDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
   userId: string
 

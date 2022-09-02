@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class PassHolderDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
   passId: string
 
+  @IsUUID()
   @ApiProperty()
   holderId: string
 

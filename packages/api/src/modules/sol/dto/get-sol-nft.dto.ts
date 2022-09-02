@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class GetSolNftResponseDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

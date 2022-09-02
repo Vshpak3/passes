@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class CommentDto {
+  @IsUUID()
   @ApiProperty()
   fanWallCommentId: string
 
+  @IsUUID()
   @ApiProperty()
   creatorId: string
 
+  @IsUUID()
   @ApiProperty()
   commenterId: string
 

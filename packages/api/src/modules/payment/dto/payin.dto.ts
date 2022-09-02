@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
@@ -6,9 +7,11 @@ import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class PayinDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
   userId: string
 

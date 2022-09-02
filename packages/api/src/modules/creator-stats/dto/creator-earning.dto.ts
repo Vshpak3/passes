@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class CreatorEarningDto {
+  @IsUUID()
   @ApiProperty()
   userId: string
 

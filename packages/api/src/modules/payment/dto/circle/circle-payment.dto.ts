@@ -1,9 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { CirclePaymentStatusEnum } from '../../enum/circle-payment.status.enum'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 
 export class CirclePaymentDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
@@ -19,9 +21,11 @@ export class CirclePaymentDto {
   @ApiProperty({ enum: CirclePaymentStatusEnum })
   status: CirclePaymentStatusEnum
 
+  @IsUUID()
   @ApiProperty()
   merchantId: string
 
+  @IsUUID()
   @ApiProperty()
   merchantWalletId: string
 

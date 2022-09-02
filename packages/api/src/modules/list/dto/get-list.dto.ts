@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { ListMemberDto } from './list-member.dto'
 
 export class GetListResponseDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

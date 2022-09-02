@@ -1,6 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class CircleCardDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

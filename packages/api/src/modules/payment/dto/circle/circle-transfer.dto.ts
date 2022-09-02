@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { CircleTransferStatusEnum } from '../../enum/circle-transfer.status.enum'
 import {
@@ -8,6 +9,7 @@ import {
 } from './circle-utils.dto'
 
 export class CircleTransferDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 

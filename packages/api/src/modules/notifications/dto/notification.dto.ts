@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { NotificationStatusEnum } from '../enum/notification.status.enum'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 
 export class NotificationDto {
+  @IsUUID()
   @ApiProperty()
   id: string
 
+  @IsUUID()
   @ApiProperty()
   userId: string
 

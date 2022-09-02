@@ -1,6 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class CreatorFeeDto {
+  @IsUUID()
   @ApiProperty()
   creatorId: string
 

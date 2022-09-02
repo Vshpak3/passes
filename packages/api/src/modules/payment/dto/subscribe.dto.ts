@@ -1,8 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscribeResponseDto {
+  @IsUUID()
   @ApiProperty()
   subscriptionId: string
 
@@ -11,6 +13,7 @@ export class SubscribeResponseDto {
 }
 
 export class SubscribeRequestDto {
+  @IsUUID()
   @ApiProperty()
   userId: string
 
@@ -20,6 +23,7 @@ export class SubscribeRequestDto {
   @ApiPropertyOptional()
   payinMethod?: PayinMethodDto
 
+  @IsUUID()
   @ApiProperty()
   passHolderId: string
 }

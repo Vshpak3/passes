@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length } from 'class-validator'
+import { IsUUID, Length } from 'class-validator'
 
 import { COMMENT_CONTENT_LENGTH } from '../constants/schema'
 
 export class CreateCommentRequestDto {
+  @IsUUID()
   @ApiProperty()
   postId: string
 

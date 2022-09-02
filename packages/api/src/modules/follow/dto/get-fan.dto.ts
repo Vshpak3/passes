@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-
+import { IsUUID } from 'class-validator'
 export class GetFanResponseDto {
+  @IsUUID()
   @ApiProperty()
   userId: string
 

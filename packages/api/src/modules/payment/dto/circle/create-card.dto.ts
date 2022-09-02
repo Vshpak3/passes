@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 import { BillingDetailsDto } from './billing-details.dto'
 import { CircleMetaDataDto } from './metadata.dto'
@@ -7,6 +8,7 @@ export class CircleCreateCardDto {
   @ApiProperty()
   idempotencyKey: string
 
+  @IsUUID()
   @ApiProperty()
   keyId: string
 
