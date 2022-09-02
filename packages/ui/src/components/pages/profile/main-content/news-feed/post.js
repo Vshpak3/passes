@@ -4,7 +4,6 @@ import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
-import PostOptionsIcon from "public/icons/post-options-icon.svg"
 // import PinnedActive from "public/icons/post-pinned-active.svg"
 // import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
@@ -20,9 +19,10 @@ import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 import { wrapApi } from "src/helpers/wrapApi"
 
 import TipsModal from "../../../../organisms/TipsModal"
+import { PostDropdown } from "./post-dropdown"
 
 export const Post = ({ profile, post }) => {
-  const [postUnlocked, setPostUnlocked] = useState(!post.locked)
+  const [postUnlocked, setPostUnlocked] = useState(!post?.locked)
   const [postPinned, setPostPinned] = useState(false)
   return (
     //this is the rounded container
@@ -95,7 +95,7 @@ export const PostProfileAvatar = ({ profile, post }) => (
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
         <div>
-          <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
+          <PostDropdown post={post} />
         </div>
       </div>
     </div>
