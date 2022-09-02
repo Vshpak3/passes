@@ -10,7 +10,6 @@ export class SendMessageRequestDto {
   @ApiProperty()
   attachments: any[]
 
-  @IsUUID()
   @ApiProperty()
   channelId: string
 
