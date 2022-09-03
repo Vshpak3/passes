@@ -17,7 +17,9 @@ export function getMikroOrmOptions(
   if (contextName === 'ReadWrite')
     migrations = {
       path: path.join(__dirname, 'migrations'),
-      emit: env === 'dev' ? 'ts' : 'js',
+      // Temporary since TS is broken
+      // emit: env === 'dev' ? 'ts' : 'js',
+      emit: 'js',
     }
 
   const hosts = configService.get('database.hosts')

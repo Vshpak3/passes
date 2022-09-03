@@ -113,12 +113,13 @@ To view OpenAPI endpoints, visit:
 ### Adding Dependencies
 
 ```bash
+# adds dependency
 yarn workspace @passes/api add <packageName>
-```
 
-The following script upgrades all dependencies:
+# lists unused dependency
+yarn workspace @passes/api depcheck
 
-```bash
+# upgrades all dependencies:
 ./bin/upgrade.sh
 ```
 
