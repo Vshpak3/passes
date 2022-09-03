@@ -66,7 +66,7 @@ export const ChannelInner = (props) => {
       setFiles([])
     } catch (err) {
       toast.error(err)
-      console.log(err)
+      console.error(err)
     }
   }
 

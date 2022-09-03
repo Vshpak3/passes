@@ -14,7 +14,6 @@ import RadioGroup from "./RadioGroup"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
 import VaultGallery from "./VaultGallery"
-import Welcome from "./Welcome"
 export {
   CreatePassForm,
   CreatorPassModal,
@@ -34,6 +33,5 @@ export {
   SelectPassType,
   SidebarDefault,
   SidebarMobile,
-  VaultGallery,
-  Welcome
+  VaultGallery
 }

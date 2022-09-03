@@ -38,7 +38,7 @@ IQuickPayModal) => {
           createPassHolderRequestDto: createPassHolderDto
         })
       } catch (error: any) {
-        console.log(error)
+        console.error(error)
         toast.error(error)
       } finally {
         // await getDefaultPayin(paymentApi)

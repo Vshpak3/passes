@@ -124,7 +124,7 @@ const Payouts = () => {
           }
         })
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
     [accessToken]

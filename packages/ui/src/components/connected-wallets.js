@@ -96,8 +96,8 @@ const WalletSettings = () => {
 
       return res.rawMessage
     } catch (err) {
-      console.log(err)
       toast.error(err)
+      console.error(err)
     }
   }
 

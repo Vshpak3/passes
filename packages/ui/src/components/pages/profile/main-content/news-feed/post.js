@@ -186,7 +186,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
       setNumComments(response.numComments)
       setLiked(response.hasLiked)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     }
   }
@@ -208,7 +208,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
 
       setTimeout(updateEngagement, 1000)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     }
   }
@@ -286,7 +286,7 @@ export const CommentSection = ({
 
       setComments(response.comments)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     } finally {
       setLoadingComments(false)
@@ -317,7 +317,7 @@ export const CommentSection = ({
       setValue("comment", "")
       setTimeout(updateEngagement, 1000)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     }
   }

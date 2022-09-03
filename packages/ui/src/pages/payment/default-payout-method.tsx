@@ -135,7 +135,7 @@ const DefaultPayoutMethod = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       await getWallets(walletApi)
       await getDefaultPayout(paymentApi)

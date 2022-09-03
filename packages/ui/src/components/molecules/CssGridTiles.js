@@ -1,6 +1,6 @@
 import { CssTile } from "../atoms"
 
-export const GridTile = () => {
+const CssGridTiles = () => {
   return (
     <div className="grid grid-cols-3 gap-[45px]">
       <CssTile fill={true} />
@@ -18,3 +18,5 @@ export const GridTile = () => {
     </div>
   )
 }
+
+export default CssGridTiles

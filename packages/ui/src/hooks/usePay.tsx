@@ -93,7 +93,7 @@ export const usePay = (
       account = await connectMetamask(metamaskProvider)
     } catch (error) {
       //display message to user
-      console.log("connection was refused")
+      console.error("connection was refused")
       toast.error("connection was refused")
       throw error
     }
@@ -120,7 +120,7 @@ export const usePay = (
       account = await connectMetamask(metamaskProvider)
     } catch (error) {
       //display message to user
-      console.log("connection was refused")
+      console.error("connection was refused")
       toast.error("connection was refused")
       throw error
     }

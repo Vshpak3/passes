@@ -249,7 +249,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   } catch (err: any) {
     toast.error(err)
-    console.log("Error found", err)
+    console.error("Error found", err)
     return { props: {} }
   }
 }

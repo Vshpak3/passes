@@ -18,8 +18,8 @@ const usePayinMethod = () => {
 
       setDefaultPayinMethod(response)
     } catch (error: any) {
+      console.error(error)
       toast.error(error)
-      console.log(error)
     } finally {
       setIsLoading(false)
     }
@@ -31,8 +31,8 @@ const usePayinMethod = () => {
       const response = await api.getCircleCards()
       setCards(response.cards)
     } catch (error: any) {
+      console.error(error)
       toast.error(error)
-      console.log(error)
     } finally {
       setIsLoading(false)
     }
@@ -47,8 +47,8 @@ const usePayinMethod = () => {
 
       getDefaultPayinMethod()
     } catch (error: any) {
+      console.error(error)
       toast.error(error)
-      console.log(error)
     } finally {
       setIsLoading(false)
     }
@@ -61,8 +61,8 @@ const usePayinMethod = () => {
         circleCardId: cardId
       })
     } catch (error: any) {
+      console.error(error)
       toast.error(error)
-      console.log(error)
     } finally {
       await getCards()
     }

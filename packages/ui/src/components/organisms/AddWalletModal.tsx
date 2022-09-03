@@ -50,8 +50,8 @@ IAddPayoutModal) => {
       })
       router.push("/payment/default-payout-method")
     } catch (error: any) {
-      console.log(error)
       toast.error(error)
+      console.error(error)
     }
   }
 
@@ -70,8 +70,8 @@ IAddPayoutModal) => {
       <form
         onSubmit={(e) => {
           handleSubmit(onSubmit)(e).catch((err) => {
-            console.log(`errors: ${err}`)
             toast.error(err)
+            console.error(err)
           })
         }}
       >

@@ -32,7 +32,7 @@ const F = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).send({})
       return
     }
-    console.log(errMsg)
+    console.error(errMsg)
     toast.error(errMsg)
     res.status(501).send({ error: errMsg })
   }

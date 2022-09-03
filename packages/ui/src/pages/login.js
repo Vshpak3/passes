@@ -13,7 +13,7 @@ import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
 
 import { RoundedIconButton } from "../components/atoms/Button"
-import { GridTile } from "../components/molecules/CssGridTiles"
+import { CssGridTiles } from "../components/molecules"
 import { wrapApi } from "../helpers/wrapApi"
 
 const LoginPage = () => {
@@ -95,7 +95,7 @@ const LoginPage = () => {
       />
       <div className="mt-10 flex md:mt-20 lg:my-auto">
         <div className="hidden flex-1 justify-center lg:flex">
-          <GridTile />
+          <CssGridTiles />
         </div>
 
         <div className="flex flex-1 flex-col items-center gap-y-5">
