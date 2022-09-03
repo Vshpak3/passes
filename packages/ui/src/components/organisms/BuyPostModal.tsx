@@ -21,7 +21,7 @@ const BuyPostModal = ({ isOpen = null, setOpen }: IBuyPostModal) => {
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         {}
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Buy post
+          Buy Post
         </span>
         <span className="text-white">${isOpen?.price?.toFixed(2) ?? 100}</span>
       </div>

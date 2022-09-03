@@ -8,13 +8,13 @@ const DEBOUNCE_DELAY = 300
 
 const useCreatorSearch = () => {
   const [searchValue, setSearchValue] = useState("")
-  const [creatorResults, setCreatorResults] = useState([])
+  const [creatorResults, setCreatorResults] = useState<string[]>([])
   const [resultsVisible, setResultsVisible] = useState(false)
   const searchRef = useRef(null)
 
   useOnClickOutside(searchRef, () => setResultsVisible(false))
 
-  const onChangeInput = (e) => {
+  const onChangeInput = (e: any) => {
     setResultsVisible(true)
     setSearchValue(e.target.value)
   }
@@ -27,7 +27,7 @@ const useCreatorSearch = () => {
     () =>
       debounce(async () => {
         const data = await api.userSearchCreatorByUsername({
-          searchUserRequestDto: { query: searchValue }
+          searchCreatorRequestDto: { query: searchValue }
         })
         setCreatorResults(data.creators)
       }, DEBOUNCE_DELAY),

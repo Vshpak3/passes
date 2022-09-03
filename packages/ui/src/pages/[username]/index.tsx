@@ -1,19 +1,14 @@
 import { GetProfileResponseDto, PassDto, ProfileApi } from "@passes/api-client"
-import { UserApi } from "@passes/api-client/apis"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
-import { useState } from "react"
 import { toast } from "react-toastify"
 import MainContent from "src/components/pages/profile/main-content"
 import Passes from "src/components/pages/profile/passes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import getConnection from "src/helpers/demo"
-import { uploadFile } from "src/helpers/uploadFile"
-import { wrapApi } from "src/helpers/wrapApi"
-import { useCreatorProfile, useFanWall, usePasses, useUser } from "src/hooks"
+import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const mockCreator = {
@@ -138,64 +133,21 @@ const MOCKED_FANWALL_POSTS = {
 }
 
 const Username = (props: GetProfileResponseDto) => {
-  const router = useRouter()
   const {
-    query: { username: _username }
-  } = router
-  const username = _username as string
-  const [editProfile, setEditProfile] = useState(false)
-  const [profile, setProfile] = useState(props)
-  const { creatorPasses } = usePasses(profile.userId)
-  const onEditProfile = () => {
-    setEditProfile(true)
-  }
-  const isTestProfile = username === "test"
-  const { user: { username: loggedInUsername } = {} } = useUser()
-  const ownsProfile = loggedInUsername === username
-  const { posts = [] } = useCreatorProfile({ username })
-  const { fanWallPosts = [] } = useFanWall({ username })
-
-  const onSubmit = async (values: Record<string, any>) => {
-    const { profileImage, profileCoverImage, ...rest } = values
-    const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
-      [profileImage, profileCoverImage].map((files) => {
-        if (!files?.length) return Promise.resolve(undefined)
-        const file = files[0]
-        return uploadFile(file, "profile")
-      })
-    )
-    const newValues = { ...rest }
-    newValues.fullName = values.firstName + " " + values.lastName
-    if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
-    if (profileCoverImageUrl)
-      newValues.profileCoverImageUrl = profileCoverImageUrl
-    setProfile(newValues as any)
-    const api = wrapApi(ProfileApi)
-    await api.profileUpdate({
-      id: props.id,
-      updateProfileRequestDto: {
-        ...rest,
-        profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
-        profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
-      }
-    })
-    setEditProfile(false)
-
-    if (rest.username !== username) await updateUsername(rest.username)
-  }
-
-  const updateUsername = async (username: string) => {
-    const api = wrapApi(UserApi)
-    await api.userSetUsername({
-      updateUsernameRequestDto: {
-        username
-      }
-    })
-    router.replace("/" + username, undefined, { shallow: true })
-  }
+    creatorPasses,
+    editProfile,
+    isTestProfile,
+    fanWallPosts,
+    onEditProfile,
+    onSubmitEditProfile,
+    ownsProfile,
+    posts,
+    profile,
+    username
+  } = useCreatorProfile(props)
 
   // when the profile not found
-  if (Object.keys(profile).length === 0) {
+  if (Object.keys(profile).length === 0 || !isTestProfile) {
     return (
       <div className="flex w-full items-center justify-center pt-[60px]">
         <div className="flex w-[500px] flex-col items-center justify-center gap-[15px] text-center">
@@ -231,7 +183,9 @@ const Username = (props: GetProfileResponseDto) => {
               ownsProfile={ownsProfile}
             />
           )}
-          {editProfile && <EditProfile profile={profile} onSubmit={onSubmit} />}
+          {editProfile && (
+            <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
+          )}
           {profile?.id && (
             <MainContent
               profile={profile}
@@ -249,9 +203,9 @@ const Username = (props: GetProfileResponseDto) => {
           {profile?.id && (
             <Passes
               creatorPasses={
-                !isTestProfile
-                  ? creatorPasses
-                  : (mockCreator.passes as unknown as PassDto[])
+                isTestProfile
+                  ? (mockCreator.passes as unknown as PassDto[])
+                  : creatorPasses
               }
             />
           )}

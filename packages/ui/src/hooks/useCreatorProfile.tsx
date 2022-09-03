@@ -1,14 +1,45 @@
-import { FeedApi } from "@passes/api-client"
+import {
+  FanWallApi,
+  FeedApi,
+  GetProfileResponseDto,
+  ProfileApi,
+  UserApi
+} from "@passes/api-client"
+import { useRouter } from "next/router"
+import { useState } from "react"
 import useSWR from "swr"
 
+import { uploadFile } from "../helpers/uploadFile"
 import { wrapApi } from "../helpers/wrapApi"
+import usePasses from "./usePasses"
+import useUser from "./useUser"
 
-interface UseCreatorProfileProps {
-  username: string
-}
+const useCreatorProfile = (props: GetProfileResponseDto) => {
+  const router = useRouter()
+  const { username: _username } = router.query
+  const username = _username as string
 
-// TODO: This should be extended to get other creator profile data
-const useCreatorProfile = ({ username }: UseCreatorProfileProps) => {
+  const [editProfile, setEditProfile] = useState<boolean>(false)
+  const [profile, setProfile] = useState<GetProfileResponseDto>(props)
+
+  const { creatorPasses } = usePasses(profile.userId)
+
+  const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
+    useSWR([`/fan-wall/creator/`, username], async () => {
+      const api = wrapApi(FanWallApi)
+      return await api.fanWallGetFanWallForCreator({ username })
+    })
+
+  const onEditProfile = () => setEditProfile(true)
+
+  // Disable test profile on production
+  const isTestProfile: boolean =
+    username === "test" && process.env.NEXT_PUBLIC_NODE_ENV !== "prod"
+
+  const { user: { username: loggedInUsername } = {} } = useUser()
+
+  const ownsProfile = loggedInUsername === username
+
   const { data: posts = [], isValidating: isLoadingPosts } = useSWR(
     [`/post/creator/`, username],
     async () => {
@@ -17,7 +48,64 @@ const useCreatorProfile = ({ username }: UseCreatorProfileProps) => {
     }
   )
 
-  return { posts, isLoadingPosts }
+  const onSubmitEditProfile = async (values: Record<string, any>) => {
+    const { profileImage, profileCoverImage, ...rest } = values
+    const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
+      [profileImage, profileCoverImage].map((files) => {
+        if (!files?.length) return Promise.resolve(undefined)
+        const file = files[0]
+        return uploadFile(file, "profile")
+      })
+    )
+
+    const newValues = { ...rest }
+
+    newValues.fullName = `${values.firstName} ${values.lastName}`
+
+    if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
+    if (profileCoverImageUrl)
+      newValues.profileCoverImageUrl = profileCoverImageUrl
+
+    setProfile(newValues as any)
+    const api = wrapApi(ProfileApi)
+    await api.profileUpdate({
+      id: props.id,
+      updateProfileRequestDto: {
+        ...rest,
+        profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
+        profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
+      }
+    })
+
+    setEditProfile(false)
+
+    if (rest.username !== username) await updateUsername(rest.username)
+  }
+
+  const updateUsername = async (username: string) => {
+    const api = wrapApi(UserApi)
+    await api.userSetUsername({
+      updateUsernameRequestDto: {
+        username
+      }
+    })
+    router.replace("/" + username, undefined, { shallow: true })
+  }
+
+  return {
+    creatorPasses,
+    editProfile,
+    isLoadingPosts,
+    isTestProfile,
+    onEditProfile,
+    onSubmitEditProfile,
+    ownsProfile,
+    fanWallPosts,
+    isLoadingFanWallPosts,
+    posts,
+    profile,
+    username
+  }
 }
 
 export default useCreatorProfile

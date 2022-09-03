@@ -46,11 +46,11 @@ export const BuyPostButton = ({
       onClick={() => {
         submit()
       }}
-      className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
+      className="mt-2 w-32 rounded-[50px] bg-passes-pink-100 p-2 text-white"
       type="submit"
       {...(blocked || submitting ? { disabled: true } : {})}
     >
-      {loading ? "loading" : `Pay ${amountUSD}`}
+      {loading ? "Buy Post" : `Pay ${amountUSD}`}
     </button>
   )
 }
