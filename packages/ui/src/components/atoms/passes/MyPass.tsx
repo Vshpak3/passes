@@ -1,0 +1,164 @@
+import { PassDto } from "@passes/api-client"
+import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
+import { useEffect, useState } from "react"
+
+import { classNames } from "../../../helpers"
+import { PassTypeEnum } from "../../../hooks/useCreatePass"
+
+interface IPassTileLabel {
+  expiryDate: Date
+  passType: string
+  willExpireSoon: boolean
+  onRenewal: () => void
+}
+interface IPassRenewalButton {
+  onRenewal: () => void
+}
+interface ISelectPassFilter {
+  setPassType: React.Dispatch<React.SetStateAction<string>>
+}
+
+function capitalizeFirstLetter(val: string) {
+  return val.charAt(0).toUpperCase() + val.slice(1)
+}
+
+const PASS_OPTIONS = [
+  {
+    value: PassTypeEnum.SUBSCRIPTION,
+    label: "Subscription Passes"
+  },
+  {
+    value: PassTypeEnum.LIFETIME,
+    label: "Lifetime Passes"
+  }
+]
+
+const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
+  <button
+    className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-passes-pink-100 py-[10px] text-base font-semibold text-white shadow-sm"
+    value="renew-pass"
+    onClick={onRenewal}
+  >
+    <UnlockLockIcon className="flex h-6 w-6" />
+    Renew
+  </button>
+)
+
+const SelectPassFilter = ({ setPassType }: ISelectPassFilter) => {
+  function composePassOptions(option: { value: string; label: string }) {
+    const key = typeof option === "string" ? option : option.value
+    const value = typeof option === "string" ? option : option.value
+    const label = typeof option === "string" ? option : option.label
+    return (
+      <option key={key} value={value}>
+        {label}
+      </option>
+    )
+  }
+
+  return (
+    <>
+      <select
+        onChange={(e) => setPassType(e.target.value)}
+        className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0 md:ml-4"
+      >
+        <option value="all" selected>
+          All Pass Types
+        </option>
+        {PASS_OPTIONS.map(composePassOptions)}
+      </select>
+    </>
+  )
+}
+
+const PassTileLabel = ({
+  willExpireSoon,
+  passType,
+  expiryDate,
+  onRenewal
+}: IPassTileLabel) => {
+  return willExpireSoon ? (
+    <div className="align-items mx-1 justify-between text-[14px] md:flex">
+      <div className="font-semibold text-[#767676]">
+        {`Expires on ${expiryDate.toDateString().slice(4)}`}
+      </div>
+      <div
+        className="cursor-pointer font-bold text-passes-pink-100"
+        onClick={onRenewal}
+      >
+        Renew
+      </div>
+    </div>
+  ) : (
+    <div className="mx-1 text-[14px] font-semibold text-[#767676]">
+      {capitalizeFirstLetter(passType)} Pass
+    </div>
+  )
+}
+
+interface IMyPassTile {
+  passData: PassDto
+  isExpired?: boolean
+}
+
+const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
+  const [hasMounted, setHasMounted] = useState(false)
+  const expiryInMilSeconds = Number(passData.expiresAt) * 1000
+  const expiryDate = new Date(expiryInMilSeconds)
+
+  const willExpireSoon = expiryInMilSeconds - Date.now() < 2629746000
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
+  if (!hasMounted) {
+    return null
+  }
+
+  return (
+    <div className="col-span-1">
+      <div
+        className={classNames(
+          willExpireSoon && !isExpired
+            ? "bg-gradient-to-r from-[#375e6f] to-[#a9c2dd]"
+            : "bg-gradient-to-r from-[#de6aec] to-[#3db9e5]",
+          isExpired ? "opacity-70" : "opacity-100",
+          "h-[200px] min-w-[140px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
+        )}
+      >
+        <div className="flex h-full flex-col items-start justify-between p-6 text-[#ffff]/90">
+          <div className="align-items items-start justify-start">
+            <div className="text-[18px] font-bold">{passData.totalSupply}</div>
+            <div className="text-[12px] leading-6">Subscriber</div>
+          </div>
+          <div className="mt-3 max-w-[176px]">
+            <span className="text-[28px] font-bold leading-9">
+              {passData.title}
+            </span>
+          </div>
+          <div className="mt-3">
+            <span className="text-[16px] font-bold">{passData.price}.00</span>
+            <span className="ml-2 text-[14px] font-light">/month</span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-[5px] md:mt-[10px]">
+        {isExpired ? (
+          <div className="align-items flex items-center justify-center">
+            <PassRenewalButton onRenewal={() => console.log("on renewal")} />
+          </div>
+        ) : (
+          <PassTileLabel
+            onRenewal={() => console.log("on renewal")}
+            expiryDate={expiryDate}
+            willExpireSoon={willExpireSoon}
+            passType={passData.type}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+export { MyPassTile, SelectPassFilter }

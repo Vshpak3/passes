@@ -2,6 +2,7 @@ import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
+import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import VaultIcon from "public/icons/sidebar-vault-icon.svg"
 
@@ -14,6 +15,14 @@ export const navigation = [
     icon: MessagesIcon,
     current: false,
     authOnly: true
+  },
+  {
+    id: "passes",
+    name: "My Passes",
+    href: "/passes",
+    icon: MyPassesIcon,
+    current: false,
+    creatorOnly: false
   },
   {
     id: "vault",
@@ -33,7 +42,7 @@ export const navigation = [
     children: [
       {
         id: "manage-passes",
-        name: "My Passes",
+        name: "Manage Passes",
         href: "/tools/manage-passes"
       },
       {

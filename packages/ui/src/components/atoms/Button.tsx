@@ -188,9 +188,17 @@ export const CoverButton = ({ name, onClick }: IGenericButton) => (
   </button>
 )
 
-export const PostUnlockButton = ({ name, onClick, value }: IGenericButton) => (
+export const PostUnlockButton = ({
+  name,
+  onClick,
+  value,
+  className = ""
+}: IGenericButton) => (
   <button
-    className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
+    className={classNames(
+      className,
+      "flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
+    )}
     value={value}
     onClick={onClick}
   >
