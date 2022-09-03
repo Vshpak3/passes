@@ -12,7 +12,7 @@ export class ExampleTask extends BatchTask {
     try {
       const profile = await this.app
         .get(ProfileService)
-        .findOneByUsername(username)
+        .findProfileByUsername(username)
       this.logger.info(
         `For '${username}' found profile ${JSON.stringify(profile)}`,
       )

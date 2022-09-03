@@ -17,7 +17,7 @@ export const BuyPostButton = ({
 }: IBuyPostButton) => {
   const api = wrapApi(PostApi)
   const register = async () => {
-    return await api.postRegisterPurchasePost({
+    return await api.registerPurchasePost({
       createPostAccessRequestDto: {
         postId,
         fromDM,
@@ -27,7 +27,7 @@ export const BuyPostButton = ({
   }
 
   const registerData = async () => {
-    return await api.postRegisterPurchasePostData({
+    return await api.registerPurchasePostData({
       createPostAccessRequestDto: {
         postId,
         fromDM,

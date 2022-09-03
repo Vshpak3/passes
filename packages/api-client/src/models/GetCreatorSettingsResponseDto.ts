@@ -16,25 +16,25 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateCreatorSettingsRequestDto
+ * @interface GetCreatorSettingsResponseDto
  */
-export interface CreateCreatorSettingsRequestDto {
+export interface GetCreatorSettingsResponseDto {
     /**
      * 
      * @type {number}
-     * @memberof CreateCreatorSettingsRequestDto
+     * @memberof GetCreatorSettingsResponseDto
      */
     minimumTipAmount: number;
     /**
      * 
      * @type {string}
-     * @memberof CreateCreatorSettingsRequestDto
+     * @memberof GetCreatorSettingsResponseDto
      */
-    payoutFrequency: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum;
+    payoutFrequency: GetCreatorSettingsResponseDtoPayoutFrequencyEnum;
     /**
      * 
      * @type {string}
-     * @memberof CreateCreatorSettingsRequestDto
+     * @memberof GetCreatorSettingsResponseDto
      */
     welcomeMessage: string;
 }
@@ -43,19 +43,19 @@ export interface CreateCreatorSettingsRequestDto {
 /**
  * @export
  */
-export const CreateCreatorSettingsRequestDtoPayoutFrequencyEnum = {
+export const GetCreatorSettingsResponseDtoPayoutFrequencyEnum = {
     Manual: 'manual',
     TwoWeeks: 'two weeks',
     OneWeek: 'one week'
 } as const;
-export type CreateCreatorSettingsRequestDtoPayoutFrequencyEnum = typeof CreateCreatorSettingsRequestDtoPayoutFrequencyEnum[keyof typeof CreateCreatorSettingsRequestDtoPayoutFrequencyEnum];
+export type GetCreatorSettingsResponseDtoPayoutFrequencyEnum = typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum[keyof typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum];
 
 
-export function CreateCreatorSettingsRequestDtoFromJSON(json: any): CreateCreatorSettingsRequestDto {
-    return CreateCreatorSettingsRequestDtoFromJSONTyped(json, false);
+export function GetCreatorSettingsResponseDtoFromJSON(json: any): GetCreatorSettingsResponseDto {
+    return GetCreatorSettingsResponseDtoFromJSONTyped(json, false);
 }
 
-export function CreateCreatorSettingsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateCreatorSettingsRequestDto {
+export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetCreatorSettingsResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -67,7 +67,7 @@ export function CreateCreatorSettingsRequestDtoFromJSONTyped(json: any, ignoreDi
     };
 }
 
-export function CreateCreatorSettingsRequestDtoToJSON(value?: CreateCreatorSettingsRequestDto | null): any {
+export function GetCreatorSettingsResponseDtoToJSON(value?: GetCreatorSettingsResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }

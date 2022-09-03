@@ -51,7 +51,6 @@ models/CreateBatchMessageRequestDto.ts
 models/CreateChannelRequestDto.ts
 models/CreateCommentRequestDto.ts
 models/CreateContentRequestDto.ts
-models/CreateCreatorSettingsRequestDto.ts
 models/CreateEthNftCollectionRequestDto.ts
 models/CreateFanWallCommentRequestDto.ts
 models/CreateListRequestDto.ts
@@ -80,6 +79,7 @@ models/GetContentsResponseDto.ts
 models/GetCreatorEarningResponseDto.ts
 models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
+models/GetCreatorSettingsResponseDto.ts
 models/GetEthNftCollectionResponseDto.ts
 models/GetFanResponseDto.ts
 models/GetFanWallForCreatorResponseDto.ts

@@ -29,16 +29,16 @@ import {
     GetSignedUrlResponseDtoToJSON,
 } from '../models';
 
-export interface ContentCreateRequest {
+export interface CreateRequest {
     createContentRequestDto: CreateContentRequestDto;
 }
 
-export interface ContentGetVaultContentRequest {
-    category?: ContentGetVaultContentCategoryEnum;
-    type?: ContentGetVaultContentTypeEnum;
+export interface GetVaultContentRequest {
+    category?: GetVaultContentCategoryEnum;
+    type?: GetVaultContentTypeEnum;
 }
 
-export interface ContentPreSignUrlRequest {
+export interface PreSignUrlRequest {
     path: string;
 }
 
@@ -50,9 +50,9 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async contentCreateRaw(requestParameters: ContentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
+    async createRaw(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
         if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
-            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling contentCreate.');
+            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling create.');
         }
 
         const queryParameters: any = {};
@@ -75,15 +75,15 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async contentCreate(requestParameters: ContentCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
-        const response = await this.contentCreateRaw(requestParameters, initOverrides);
+    async create(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
+        const response = await this.createRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets all content associated with the current authenticated user
      */
-    async contentGetVaultContentRaw(requestParameters: ContentGetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
+    async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
         const queryParameters: any = {};
 
         if (requestParameters.category !== undefined) {
@@ -109,17 +109,17 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Gets all content associated with the current authenticated user
      */
-    async contentGetVaultContent(requestParameters: ContentGetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentsResponseDto> {
-        const response = await this.contentGetVaultContentRaw(requestParameters, initOverrides);
+    async getVaultContent(requestParameters: GetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentsResponseDto> {
+        const response = await this.getVaultContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get signed url for specified path
      */
-    async contentPreSignUrlRaw(requestParameters: ContentPreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUrlRaw(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         if (requestParameters.path === null || requestParameters.path === undefined) {
-            throw new runtime.RequiredError('path','Required parameter requestParameters.path was null or undefined when calling contentPreSignUrl.');
+            throw new runtime.RequiredError('path','Required parameter requestParameters.path was null or undefined when calling preSignUrl.');
         }
 
         const queryParameters: any = {};
@@ -139,8 +139,8 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Get signed url for specified path
      */
-    async contentPreSignUrl(requestParameters: ContentPreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.contentPreSignUrlRaw(requestParameters, initOverrides);
+    async preSignUrl(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUrlRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -149,19 +149,19 @@ export class ContentApi extends runtime.BaseAPI {
 /**
  * @export
  */
-export const ContentGetVaultContentCategoryEnum = {
+export const GetVaultContentCategoryEnum = {
     Posts: 'posts',
     Messages: 'messages',
     Uploads: 'uploads'
 } as const;
-export type ContentGetVaultContentCategoryEnum = typeof ContentGetVaultContentCategoryEnum[keyof typeof ContentGetVaultContentCategoryEnum];
+export type GetVaultContentCategoryEnum = typeof GetVaultContentCategoryEnum[keyof typeof GetVaultContentCategoryEnum];
 /**
  * @export
  */
-export const ContentGetVaultContentTypeEnum = {
+export const GetVaultContentTypeEnum = {
     Image: 'image',
     Video: 'video',
     Gif: 'gif',
     Audio: 'audio'
 } as const;
-export type ContentGetVaultContentTypeEnum = typeof ContentGetVaultContentTypeEnum[keyof typeof ContentGetVaultContentTypeEnum];
+export type GetVaultContentTypeEnum = typeof GetVaultContentTypeEnum[keyof typeof GetVaultContentTypeEnum];

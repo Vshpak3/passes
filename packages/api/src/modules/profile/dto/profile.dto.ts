@@ -25,12 +25,6 @@ export class ProfileDto {
   description?: string
 
   @ApiPropertyOptional()
-  profileImageUrl?: string
-
-  @ApiPropertyOptional()
-  profileCoverImageUrl?: string
-
-  @ApiPropertyOptional()
   instagramUrl?: string
 
   @ApiPropertyOptional()
@@ -60,9 +54,6 @@ export class ProfileDto {
 
     this.coverTitle = profile.cover_title
     this.coverDescription = profile.cover_description
-
-    this.profileImageUrl = profile.profile_image_url
-    this.profileCoverImageUrl = profile.profile_cover_image_url
 
     this.instagramUrl = profile.instagram_url
     this.tiktokUrl = profile.tiktok_url

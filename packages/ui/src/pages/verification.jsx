@@ -3,6 +3,7 @@ import { useEffect } from "react"
 
 import { wrapApi } from "../helpers"
 
+//TODO: use canSubmit
 const VerificationPage = () => {
   useEffect(() => {
     // eslint-disable-next-line no-undef
@@ -13,7 +14,7 @@ const VerificationPage = () => {
       onComplete: ({ inquiryId, status }) => {
         const api = wrapApi(VerificationApi)
         if (status === "completed") {
-          api.verificationSubmitInquiry({
+          api.submitInquiry({
             submitInquiryRequestDto: {
               personaId: inquiryId,
               personaStatus: status

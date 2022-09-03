@@ -32,23 +32,23 @@ import {
     UpdateUsernameRequestDtoToJSON,
 } from '../models';
 
-export interface UserFindOneRequest {
-    id: string;
+export interface FindOneRequest {
+    userId: string;
 }
 
-export interface UserSearchCreatorByUsernameRequest {
+export interface SearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
 }
 
-export interface UserSetInitialInfoRequest {
+export interface SetInitialInfoRequest {
     setInitialUserInfoRequestDto: SetInitialUserInfoRequestDto;
 }
 
-export interface UserSetUsernameRequest {
+export interface SetUsernameRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
 
-export interface UserValidateUsernameRequest {
+export interface ValidateUsernameRequest {
     username: string;
 }
 
@@ -60,7 +60,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async userDeleteRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async _deleteRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -78,16 +78,16 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async userDelete(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.userDeleteRaw(initOverrides);
+    async _delete(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this._deleteRaw(initOverrides);
     }
 
     /**
      * Gets a user
      */
-    async userFindOneRaw(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling userFindOne.');
+    async findOneRaw(requestParameters: FindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling findOne.');
         }
 
         const queryParameters: any = {};
@@ -95,7 +95,7 @@ export class UserApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/user/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/user/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -107,15 +107,15 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Gets a user
      */
-    async userFindOne(requestParameters: UserFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
-        const response = await this.userFindOneRaw(requestParameters, initOverrides);
+    async findOne(requestParameters: FindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+        const response = await this.findOneRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Make yourself a creator
      */
-    async userMakeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async makeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -133,16 +133,16 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Make yourself a creator
      */
-    async userMakeCreator(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.userMakeCreatorRaw(initOverrides);
+    async makeCreator(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.makeCreatorRaw(initOverrides);
     }
 
     /**
      * Search for creators by query
      */
-    async userSearchCreatorByUsernameRaw(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
+    async searchCreatorByUsernameRaw(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
         if (requestParameters.searchCreatorRequestDto === null || requestParameters.searchCreatorRequestDto === undefined) {
-            throw new runtime.RequiredError('searchCreatorRequestDto','Required parameter requestParameters.searchCreatorRequestDto was null or undefined when calling userSearchCreatorByUsername.');
+            throw new runtime.RequiredError('searchCreatorRequestDto','Required parameter requestParameters.searchCreatorRequestDto was null or undefined when calling searchCreatorByUsername.');
         }
 
         const queryParameters: any = {};
@@ -165,17 +165,17 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Search for creators by query
      */
-    async userSearchCreatorByUsername(requestParameters: UserSearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
-        const response = await this.userSearchCreatorByUsernameRaw(requestParameters, initOverrides);
+    async searchCreatorByUsername(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
+        const response = await this.searchCreatorByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Sets initial user info
      */
-    async userSetInitialInfoRaw(requestParameters: UserSetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
         if (requestParameters.setInitialUserInfoRequestDto === null || requestParameters.setInitialUserInfoRequestDto === undefined) {
-            throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling userSetInitialInfo.');
+            throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling setInitialInfo.');
         }
 
         const queryParameters: any = {};
@@ -198,17 +198,17 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Sets initial user info
      */
-    async userSetInitialInfo(requestParameters: UserSetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
-        const response = await this.userSetInitialInfoRaw(requestParameters, initOverrides);
+    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+        const response = await this.setInitialInfoRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Set username for current user
      */
-    async userSetUsernameRaw(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setUsernameRaw(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.updateUsernameRequestDto === null || requestParameters.updateUsernameRequestDto === undefined) {
-            throw new runtime.RequiredError('updateUsernameRequestDto','Required parameter requestParameters.updateUsernameRequestDto was null or undefined when calling userSetUsername.');
+            throw new runtime.RequiredError('updateUsernameRequestDto','Required parameter requestParameters.updateUsernameRequestDto was null or undefined when calling setUsername.');
         }
 
         const queryParameters: any = {};
@@ -231,16 +231,16 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Set username for current user
      */
-    async userSetUsername(requestParameters: UserSetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.userSetUsernameRaw(requestParameters, initOverrides);
+    async setUsername(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setUsernameRaw(requestParameters, initOverrides);
     }
 
     /**
      * Validates whether a username is available
      */
-    async userValidateUsernameRaw(requestParameters: UserValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async validateUsernameRaw(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling userValidateUsername.');
+            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling validateUsername.');
         }
 
         const queryParameters: any = {};
@@ -260,8 +260,8 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Validates whether a username is available
      */
-    async userValidateUsername(requestParameters: UserValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.userValidateUsernameRaw(requestParameters, initOverrides);
+    async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.validateUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

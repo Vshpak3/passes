@@ -50,7 +50,7 @@ const SignupPage = () => {
       }
 
       const api = wrapApi(AuthLocalApi)
-      const res = await api.localAuthCreateEmailPasswordUser({
+      const res = await api.createEmailPasswordUser({
         createLocalUserRequestDto
       })
       const { accessToken, refreshToken } = res

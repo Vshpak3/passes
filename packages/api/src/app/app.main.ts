@@ -63,7 +63,10 @@ export class App {
       .setDescription('Get your pass')
       .setVersion('1.0')
       .build()
-    this.document = SwaggerModule.createDocument(this.app, swaggerConfig)
+    this.document = SwaggerModule.createDocument(this.app, swaggerConfig, {
+      operationIdFactory: (_controllerKey: string, methodKey: string) =>
+        methodKey,
+    })
     SwaggerModule.setup('api', this.app, this.document)
   }
 

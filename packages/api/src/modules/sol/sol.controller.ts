@@ -32,11 +32,11 @@ export class SolController {
     description: 'Sol NFT Collection was created',
   })
   @Post('nft_collection')
-  async createNftCollection(
+  async createSolNftCollection(
     @Req() req: RequestWithUser,
     @Body() createSolNftCollectionDto: CreateSolNftCollectionRequestDto,
   ): Promise<GetSolNftCollectionResponseDto> {
-    return await this.solService.createNftCollection(
+    return await this.solService.createSolNftCollection(
       req.user.id,
       createSolNftCollectionDto.name,
       createSolNftCollectionDto.symbol,

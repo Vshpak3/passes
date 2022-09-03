@@ -38,7 +38,7 @@ const WalletSettings = () => {
       }
 
       const api = wrapApi(WalletApi)
-      await api.walletCreate({ createWalletDto })
+      await api.createWallet({ createWalletDto })
       mutate()
     } catch (err) {
       toast.error(err.message)
@@ -80,7 +80,7 @@ const WalletSettings = () => {
       }
 
       const api = wrapApi(WalletApi)
-      await api.walletCreate({ createWalletDto })
+      await api.createWallet({ createWalletDto })
       mutate()
     } catch (err) {
       toast.error(err.message)
@@ -90,7 +90,7 @@ const WalletSettings = () => {
   const getMessageToSign = async (walletAddress, chain) => {
     try {
       const api = wrapApi(WalletApi)
-      const res = await api.walletAuth({
+      const res = await api.authMessage({
         authWalletRequestDto: { walletAddress, chain }
       })
 

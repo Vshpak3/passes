@@ -36,11 +36,11 @@ export class PostController {
     description: 'A post was created',
   })
   @Post()
-  async create(
+  async createPost(
     @Req() req: RequestWithUser,
     @Body() createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
-    return await this.postService.create(req.user.id, createPostDto)
+    return await this.postService.createPost(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })
@@ -49,12 +49,12 @@ export class PostController {
     type: GetPostResponseDto,
     description: 'A post was retrieved',
   })
-  @Get(':id')
-  async findOne(
+  @Get(':postId')
+  async findPost(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('postId') postId: string,
   ): Promise<GetPostResponseDto> {
-    return await this.postService.findOne(id, req.user.id)
+    return await this.postService.findPost(postId, req.user.id)
   }
 
   @ApiOperation({ summary: 'Updates a post' })
@@ -63,13 +63,13 @@ export class PostController {
     type: undefined,
     description: 'A post was updated',
   })
-  @Patch(':id')
-  async update(
+  @Patch(':postId')
+  async updatePost(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('postId') postId: string,
     @Body() updatePostDto: UpdatePostRequestDto,
   ) {
-    return await this.postService.update(req.user.id, id, updatePostDto)
+    return await this.postService.updatePost(req.user.id, postId, updatePostDto)
   }
 
   @ApiOperation({ summary: 'Deletes a post' })
@@ -78,12 +78,12 @@ export class PostController {
     type: undefined,
     description: 'A post was deleted',
   })
-  @Delete(':id')
-  async remove(
+  @Delete(':postId')
+  async removePost(
     @Req() req: RequestWithUser,
-    @Param('id') postId: string,
+    @Param('postId') postId: string,
   ): Promise<void> {
-    await this.postService.remove(req.user.id, postId)
+    await this.postService.removePost(req.user.id, postId)
   }
 
   @ApiOperation({ summary: 'Register purchase post payin' })

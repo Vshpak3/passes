@@ -20,7 +20,7 @@ const MainContent = ({
     mutate(
       [`/post/creator/`, username],
       async () =>
-        await api.postCreate({
+        await api.createPost({
           createPostRequestDto: {
             passes: [],
             content: values.content,
@@ -54,7 +54,7 @@ const MainContent = ({
     mutate(
       [`/fan-wall/creator/`, username],
       async () =>
-        await api.fanWallCreate({
+        await api.createFanWallComment({
           createFanWallCommentRequestDto: {
             creatorUsername: username,
             content: values.text

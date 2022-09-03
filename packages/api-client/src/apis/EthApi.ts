@@ -23,7 +23,7 @@ import {
     GetEthNftCollectionResponseDtoToJSON,
 } from '../models';
 
-export interface EthCreateNftCollectionRequest {
+export interface CreateEthNftCollectionRequest {
     createEthNftCollectionRequestDto: CreateEthNftCollectionRequestDto;
 }
 
@@ -35,9 +35,9 @@ export class EthApi extends runtime.BaseAPI {
     /**
      * Creates ETH NFT Collection
      */
-    async ethCreateNftCollectionRaw(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetEthNftCollectionResponseDto>> {
+    async createEthNftCollectionRaw(requestParameters: CreateEthNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetEthNftCollectionResponseDto>> {
         if (requestParameters.createEthNftCollectionRequestDto === null || requestParameters.createEthNftCollectionRequestDto === undefined) {
-            throw new runtime.RequiredError('createEthNftCollectionRequestDto','Required parameter requestParameters.createEthNftCollectionRequestDto was null or undefined when calling ethCreateNftCollection.');
+            throw new runtime.RequiredError('createEthNftCollectionRequestDto','Required parameter requestParameters.createEthNftCollectionRequestDto was null or undefined when calling createEthNftCollection.');
         }
 
         const queryParameters: any = {};
@@ -60,8 +60,8 @@ export class EthApi extends runtime.BaseAPI {
     /**
      * Creates ETH NFT Collection
      */
-    async ethCreateNftCollection(requestParameters: EthCreateNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetEthNftCollectionResponseDto> {
-        const response = await this.ethCreateNftCollectionRaw(requestParameters, initOverrides);
+    async createEthNftCollection(requestParameters: CreateEthNftCollectionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetEthNftCollectionResponseDto> {
+        const response = await this.createEthNftCollectionRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

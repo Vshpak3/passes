@@ -53,7 +53,7 @@ const LoginPage = () => {
       }
 
       const api = wrapApi(AuthLocalApi)
-      const res = await api.localAuthLoginWithEmailPassword({
+      const res = await api.loginWithEmailPassword({
         localUserLoginRequestDto
       })
 

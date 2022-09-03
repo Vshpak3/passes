@@ -36,12 +36,6 @@ export interface CreatePassRequestDto {
      * @type {string}
      * @memberof CreatePassRequestDto
      */
-    imageUrl: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePassRequestDto
-     */
     type: string;
     /**
      * 
@@ -87,7 +81,6 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'title': json['title'],
         'description': json['description'],
-        'imageUrl': json['imageUrl'],
         'type': json['type'],
         'price': json['price'],
         'totalSupply': json['totalSupply'],
@@ -108,7 +101,6 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         
         'title': value.title,
         'description': value.description,
-        'imageUrl': value.imageUrl,
         'type': value.type,
         'price': value.price,
         'totalSupply': value.totalSupply,

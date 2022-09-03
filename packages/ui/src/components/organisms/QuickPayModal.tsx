@@ -34,7 +34,7 @@ IQuickPayModal) => {
         payinMethod: defaultPayinMethod
       }
       try {
-        await passApi.passRegisterCreatePass({
+        await passApi.registerBuyPass({
           createPassHolderRequestDto: createPassHolderDto
         })
       } catch (error: any) {

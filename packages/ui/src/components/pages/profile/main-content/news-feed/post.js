@@ -178,7 +178,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
   async function updateEngagement() {
     try {
       const api = wrapApi(PostApi)
-      const response = await api.postFindOne({
+      const response = await api.findPost({
         id: post.id
       })
 
@@ -198,11 +198,11 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
       const api = wrapApi(LikeApi)
 
       if (!liked)
-        await api.likeLikePost({
+        await api.likePost({
           postId: post.id
         })
       else
-        await api.likeUnlikePost({
+        await api.unlikePost({
           postId: post.id
         })
 
@@ -280,7 +280,7 @@ export const CommentSection = ({
       setLoadingComments(true)
       const api = wrapApi(CommentApi)
 
-      const response = await api.commentFindCommentsForPost({
+      const response = await api.findCommentsForPost({
         id: postId
       })
 
@@ -306,7 +306,7 @@ export const CommentSection = ({
 
       const api = wrapApi(CommentApi)
 
-      const response = await api.commentCreate({
+      const response = await api.createComment({
         createCommentDto: {
           content,
           postId: postId

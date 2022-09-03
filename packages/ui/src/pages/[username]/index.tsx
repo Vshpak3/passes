@@ -237,7 +237,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     const api = new ProfileApi()
-    const profile = await api.profileFindOneByUsername({ username })
+    const profile = await api.findProfileByUsername({ username })
     // TODO: Hack to remove undefined from generated API typings
     const props = { ...JSON.parse(JSON.stringify(profile)), username }
     return {

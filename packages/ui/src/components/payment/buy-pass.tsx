@@ -12,7 +12,7 @@ interface IBuyPassButton {
 export const BuyPassButton = ({ passId, payinMethod }: IBuyPassButton) => {
   const api = wrapApi(PassApi)
   const register = async () => {
-    return await api.passRegisterCreatePass({
+    return await api.registerBuyPass({
       createPassHolderRequestDto: {
         passId,
         payinMethod
@@ -21,7 +21,7 @@ export const BuyPassButton = ({ passId, payinMethod }: IBuyPassButton) => {
   }
 
   const registerData = async () => {
-    return await api.passRegisterCreatePassData({
+    return await api.registerBuyPassData({
       createPassHolderRequestDto: {
         passId,
         payinMethod

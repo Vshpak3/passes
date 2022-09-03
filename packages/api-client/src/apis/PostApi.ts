@@ -41,40 +41,40 @@ import {
     UpdatePostRequestDtoToJSON,
 } from '../models';
 
-export interface PostCreateRequest {
+export interface CreatePostRequest {
     createPostRequestDto: CreatePostRequestDto;
 }
 
-export interface PostFindOneRequest {
-    id: string;
-}
-
-export interface PostPinPostRequest {
+export interface FindPostRequest {
     postId: string;
 }
 
-export interface PostRegisterPurchasePostRequest {
+export interface PinPostRequest {
+    postId: string;
+}
+
+export interface RegisterPurchasePostRequest {
     createPostAccessRequestDto: CreatePostAccessRequestDto;
 }
 
-export interface PostRegisterPurchasePostDataRequest {
+export interface RegisterPurchasePostDataRequest {
     createPostAccessRequestDto: CreatePostAccessRequestDto;
 }
 
-export interface PostRegisterTipPostRequest {
+export interface RegisterTipPostRequest {
     tipPostRequestDto: TipPostRequestDto;
 }
 
-export interface PostRemoveRequest {
-    id: string;
-}
-
-export interface PostUnpinPostRequest {
+export interface RemovePostRequest {
     postId: string;
 }
 
-export interface PostUpdateRequest {
-    id: string;
+export interface UnpinPostRequest {
+    postId: string;
+}
+
+export interface UpdatePostRequest {
+    postId: string;
     updatePostRequestDto: UpdatePostRequestDto;
 }
 
@@ -86,9 +86,9 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Creates a post
      */
-    async postCreateRaw(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatePostResponseDto>> {
+    async createPostRaw(requestParameters: CreatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CreatePostResponseDto>> {
         if (requestParameters.createPostRequestDto === null || requestParameters.createPostRequestDto === undefined) {
-            throw new runtime.RequiredError('createPostRequestDto','Required parameter requestParameters.createPostRequestDto was null or undefined when calling postCreate.');
+            throw new runtime.RequiredError('createPostRequestDto','Required parameter requestParameters.createPostRequestDto was null or undefined when calling createPost.');
         }
 
         const queryParameters: any = {};
@@ -111,17 +111,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Creates a post
      */
-    async postCreate(requestParameters: PostCreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatePostResponseDto> {
-        const response = await this.postCreateRaw(requestParameters, initOverrides);
+    async createPost(requestParameters: CreatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CreatePostResponseDto> {
+        const response = await this.createPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Gets a post
      */
-    async postFindOneRaw(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPostResponseDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postFindOne.');
+    async findPostRaw(requestParameters: FindPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPostResponseDto>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling findPost.');
         }
 
         const queryParameters: any = {};
@@ -129,7 +129,7 @@ export class PostApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/post/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -141,17 +141,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets a post
      */
-    async postFindOne(requestParameters: PostFindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostResponseDto> {
-        const response = await this.postFindOneRaw(requestParameters, initOverrides);
+    async findPost(requestParameters: FindPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostResponseDto> {
+        const response = await this.findPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Pin a post
      */
-    async postPinPostRaw(requestParameters: PostPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async pinPostRaw(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling postPinPost.');
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling pinPost.');
         }
 
         const queryParameters: any = {};
@@ -171,17 +171,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Pin a post
      */
-    async postPinPost(requestParameters: PostPinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.postPinPostRaw(requestParameters, initOverrides);
+    async pinPost(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.pinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Register purchase post payin
      */
-    async postRegisterPurchasePostRaw(requestParameters: PostRegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerPurchasePostRaw(requestParameters: RegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.createPostAccessRequestDto === null || requestParameters.createPostAccessRequestDto === undefined) {
-            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling postRegisterPurchasePost.');
+            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling registerPurchasePost.');
         }
 
         const queryParameters: any = {};
@@ -204,17 +204,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Register purchase post payin
      */
-    async postRegisterPurchasePost(requestParameters: PostRegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
-        const response = await this.postRegisterPurchasePostRaw(requestParameters, initOverrides);
+    async registerPurchasePost(requestParameters: RegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.registerPurchasePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get register purchase post data
      */
-    async postRegisterPurchasePostDataRaw(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async registerPurchasePostDataRaw(requestParameters: RegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.createPostAccessRequestDto === null || requestParameters.createPostAccessRequestDto === undefined) {
-            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling postRegisterPurchasePostData.');
+            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling registerPurchasePostData.');
         }
 
         const queryParameters: any = {};
@@ -237,17 +237,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Get register purchase post data
      */
-    async postRegisterPurchasePostData(requestParameters: PostRegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
-        const response = await this.postRegisterPurchasePostDataRaw(requestParameters, initOverrides);
+    async registerPurchasePostData(requestParameters: RegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+        const response = await this.registerPurchasePostDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Register tip post payin
      */
-    async postRegisterTipPostRaw(requestParameters: PostRegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerTipPostRaw(requestParameters: RegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.tipPostRequestDto === null || requestParameters.tipPostRequestDto === undefined) {
-            throw new runtime.RequiredError('tipPostRequestDto','Required parameter requestParameters.tipPostRequestDto was null or undefined when calling postRegisterTipPost.');
+            throw new runtime.RequiredError('tipPostRequestDto','Required parameter requestParameters.tipPostRequestDto was null or undefined when calling registerTipPost.');
         }
 
         const queryParameters: any = {};
@@ -270,17 +270,17 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Register tip post payin
      */
-    async postRegisterTipPost(requestParameters: PostRegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
-        const response = await this.postRegisterTipPostRaw(requestParameters, initOverrides);
+    async registerTipPost(requestParameters: RegisterTipPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.registerTipPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Deletes a post
      */
-    async postRemoveRaw(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postRemove.');
+    async removePostRaw(requestParameters: RemovePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling removePost.');
         }
 
         const queryParameters: any = {};
@@ -288,7 +288,7 @@ export class PostApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/post/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -300,16 +300,16 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Deletes a post
      */
-    async postRemove(requestParameters: PostRemoveRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.postRemoveRaw(requestParameters, initOverrides);
+    async removePost(requestParameters: RemovePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.removePostRaw(requestParameters, initOverrides);
     }
 
     /**
      * Unpin a post
      */
-    async postUnpinPostRaw(requestParameters: PostUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async unpinPostRaw(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling postUnpinPost.');
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling unpinPost.');
         }
 
         const queryParameters: any = {};
@@ -329,21 +329,21 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Unpin a post
      */
-    async postUnpinPost(requestParameters: PostUnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.postUnpinPostRaw(requestParameters, initOverrides);
+    async unpinPost(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.unpinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Updates a post
      */
-    async postUpdateRaw(requestParameters: PostUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling postUpdate.');
+    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling updatePost.');
         }
 
         if (requestParameters.updatePostRequestDto === null || requestParameters.updatePostRequestDto === undefined) {
-            throw new runtime.RequiredError('updatePostRequestDto','Required parameter requestParameters.updatePostRequestDto was null or undefined when calling postUpdate.');
+            throw new runtime.RequiredError('updatePostRequestDto','Required parameter requestParameters.updatePostRequestDto was null or undefined when calling updatePost.');
         }
 
         const queryParameters: any = {};
@@ -353,7 +353,7 @@ export class PostApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/post/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -366,8 +366,8 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Updates a post
      */
-    async postUpdate(requestParameters: PostUpdateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.postUpdateRaw(requestParameters, initOverrides);
+    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.updatePostRaw(requestParameters, initOverrides);
     }
 
 }

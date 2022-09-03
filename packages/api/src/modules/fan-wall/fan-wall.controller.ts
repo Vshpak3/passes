@@ -29,11 +29,14 @@ export class FanWallController {
     description: 'A fan wall comment was created',
   })
   @Post()
-  async create(
+  async createFanWallComment(
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateFanWallCommentRequestDto,
   ) {
-    return this.fanWallService.create(req.user.id, createCommentDto)
+    return this.fanWallService.createFanWallComment(
+      req.user.id,
+      createCommentDto,
+    )
   }
 
   @ApiOperation({ summary: 'Gets fan wall for a creator' })
@@ -46,7 +49,7 @@ export class FanWallController {
   async getFanWallForCreator(
     @Param('username') username: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
-    return this.fanWallService.findAllForCreator(username)
+    return this.fanWallService.getFanWallForCreator(username)
   }
 
   @ApiOperation({ summary: 'Hides a comment' })
@@ -56,8 +59,11 @@ export class FanWallController {
     description: 'A comment was hidden',
   })
   @Patch(':id')
-  async hide(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.fanWallService.hide(req.user.id, id)
+  async hideFanWallComment(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ) {
+    return this.fanWallService.hideFanWallCommment(req.user.id, id)
   }
 
   @ApiOperation({ summary: 'Deletes a comment' })
@@ -67,7 +73,10 @@ export class FanWallController {
     description: 'A comment was deleted',
   })
   @Delete(':id')
-  async delete(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.fanWallService.delete(req.user.id, id)
+  async deleteFanWallComment(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+  ) {
+    return this.fanWallService.deleteFanWallComment(req.user.id, id)
   }
 }

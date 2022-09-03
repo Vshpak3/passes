@@ -6,11 +6,11 @@ import { usePay } from "../../hooks/usePay"
 const PayPage = () => {
   const api = wrapApi(PaymentApi)
   const register = async () => {
-    return await api.paymentRegisterPayin()
+    return await api.registerPayin()
   }
 
   const registerData = async () => {
-    return await api.paymentRegisterPayinData()
+    return await api.registerPayinData()
   }
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(

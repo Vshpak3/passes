@@ -99,7 +99,7 @@ export const refreshAccessToken = async (
     const refreshAuthTokenRequestDto = {
       refreshToken
     }
-    const res = await authApi.authRefreshAccessToken({
+    const res = await authApi.refreshAccessToken({
       refreshAuthTokenRequestDto
     })
 

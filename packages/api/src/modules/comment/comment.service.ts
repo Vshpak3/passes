@@ -34,13 +34,14 @@ export class CommentService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(
+  async createComment(
     userId: string,
     createCommentDto: CreateCommentRequestDto,
   ): Promise<GetCommentResponseDto> {
     const { postId, content } = createCommentDto
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
+      .select(['deleted_at', 'user_id'])
       .first()
     if (!post) {
       throw new BadRequestException(POST_NOT_EXIST)
@@ -75,11 +76,18 @@ export class CommentService {
     return new GetCommentResponseDto(data)
   }
 
-  async findOne(id: string): Promise<GetCommentResponseDto> {
+  async findComment(commentId: string): Promise<GetCommentResponseDto> {
     const comment = await this.dbReader(CommentEntity.table)
-      .leftJoin(UserEntity.table, 'comment.commenter_id', 'users.id')
-      .where({ 'comment.id': id })
-      .select('comment.*', 'users.username as commenter_username')
+      .leftJoin(
+        UserEntity.table,
+        `${CommentEntity.table}.commenter_id`,
+        `${UserEntity.table}.id`,
+      )
+      .where(`${CommentEntity.table}.id`, commentId)
+      .select(
+        `${CommentEntity.table}.*`,
+        `${UserEntity.table}.username as commenter_username`,
+      )
       .first()
 
     if (!comment) {
@@ -93,7 +101,9 @@ export class CommentService {
     return new GetCommentResponseDto(comment)
   }
 
-  async findAllForPost(postId: string): Promise<GetCommentsForPostResponseDto> {
+  async findCommentsForPost(
+    postId: string,
+  ): Promise<GetCommentsForPostResponseDto> {
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
       .first()
@@ -107,21 +117,39 @@ export class CommentService {
     }
 
     const comments = await this.dbReader(CommentEntity.table)
-      .leftJoin(UserEntity.table, 'comment.commenter_id', 'users.id')
+      .leftJoin(
+        UserEntity.table,
+        `${CommentEntity.table}.commenter_id`,
+        `${UserEntity.table}.id`,
+      )
       .where({
         post_id: postId,
         is_hidden: false,
         deleted_at: null,
       })
-      .select('comment.*', 'users.username as commenter_username')
+      .select(
+        `${CommentEntity.table}.*`,
+        `${UserEntity.table}.username as commenter_username`,
+      )
 
     return new GetCommentsForPostResponseDto(postId, comments)
   }
 
-  async hide(userId: string, id: string) {
+  async hideComment(userId: string, commentId: string) {
     const comment = await this.dbReader(CommentEntity.table)
-      .where({ id })
-      .select(['id', 'is_hidden', 'deleted_at'])
+      .innerJoin(
+        PostEntity.table,
+        `${PostEntity.table}.id`,
+        `${CommentEntity.table}.post_id`,
+      )
+      .where(CommentEntity.toDict<CommentEntity>({ id: commentId }))
+      .select([
+        `${CommentEntity.table}.id`,
+        `${CommentEntity.table}.is_hidden`,
+        `${CommentEntity.table}.deleted_at`,
+        `${CommentEntity.table}.post_id`,
+        `${PostEntity.table}.user_id as creator_id`,
+      ])
       .first()
 
     if (!comment) {
@@ -132,19 +160,8 @@ export class CommentService {
       throw new BadRequestException(COMMENT_REMOVED)
     }
 
-    const post = await this.dbReader(PostEntity.table)
-      .where({ id: comment.post_id })
-      .first()
-    if (!post) {
-      throw new BadRequestException(POST_NOT_EXIST)
-    }
-
-    if (post.deleted_at !== null) {
-      throw new BadRequestException(POST_DELETED)
-    }
-
-    if (post.user_id !== userId) {
-      throw new ForbiddenException(POST_NOT_OWNED_BY_USER)
+    if (comment.creator_id !== userId) {
+      throw new BadRequestException(POST_NOT_OWNED_BY_USER)
     }
 
     const data = CommentEntity.toDict<CommentEntity>({
@@ -152,19 +169,27 @@ export class CommentService {
     })
 
     await this.dbWriter.transaction(async (trx) => {
-      if (!comment.is_hidden && !comment.deleted_at) {
+      const updated = await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            isHidden: false,
+            deletedAt: null,
+          }),
+        )
+      if (updated === 1) {
         await trx(PostEntity.table)
-          .where('id', post.id)
+          .where('id', comment.post_id)
           .decrement('num_comments', 1)
       }
-      await trx(CommentEntity.table).update(data).where({ id })
     })
   }
 
-  async delete(userId: string, id: string) {
+  async deleteComment(userId: string, commentId: string) {
     const comment = await this.dbReader(CommentEntity.table)
-      .where({ id })
-      .select(['id', 'is_hidden', 'deleted_at'])
+      .where({ id: commentId })
+      .select(['id', 'is_hidden', 'deleted_at', 'commenter_id'])
       .first()
 
     if (!comment) {
@@ -179,28 +204,25 @@ export class CommentService {
       throw new ConflictException(COMMENT_REMOVED)
     }
 
-    const post = await this.dbReader(PostEntity.table)
-      .where({ id: comment.post_id })
-      .first()
-    if (!post) {
-      throw new BadRequestException(POST_NOT_EXIST)
-    }
-
-    if (post.deleted_at !== null) {
-      throw new BadRequestException(POST_DELETED)
-    }
-
     const data = CommentEntity.toDict<CommentEntity>({
       deletedAt: this.dbWriter.fn.now(),
     })
 
     await this.dbWriter.transaction(async (trx) => {
-      if (!comment.is_hidden && !comment.deleted_at) {
+      const updated = await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            isHidden: false,
+            deletedAt: null,
+          }),
+        )
+      if (updated === 1) {
         await trx(PostEntity.table)
-          .where('id', post.id)
+          .where('id', comment.post_id)
           .decrement('num_comments', 1)
       }
-      await trx(CommentEntity.table).update(data).where({ id })
     })
   }
 }

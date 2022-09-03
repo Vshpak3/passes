@@ -41,7 +41,7 @@ const UserInfoPage = () => {
       }
 
       const api = wrapApi(UserApi)
-      const res = await api.userSetInitialInfo({
+      const res = await api.setInitialInfo({
         userSetInitialInfoRequestDto
       })
 

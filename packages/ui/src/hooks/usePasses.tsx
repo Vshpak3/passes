@@ -11,7 +11,7 @@ const usePasses = (creatorId = "") => {
       if (user) {
         const api = wrapApi(PassApi)
         return (
-          await api.passGetCreatorPasses({
+          await api.getCreatorPasses({
             creatorId
           })
         ).passes
@@ -24,7 +24,7 @@ const usePasses = (creatorId = "") => {
     async () => {
       const api = wrapApi(PassApi)
       return (
-        await api.passGetOwnedPasses({
+        await api.getOwnedPasses({
           creatorId: ""
         })
       ).passes

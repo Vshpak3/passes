@@ -28,11 +28,11 @@ export class CommentController {
     description: 'A comment was created',
   })
   @Post()
-  async create(
+  async createComment(
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentRequestDto,
   ): Promise<CreateCommentRequestDto> {
-    return this.commentService.create(req.user.id, createCommentDto)
+    return this.commentService.createComment(req.user.id, createCommentDto)
   }
 
   @ApiOperation({ summary: 'Gets all comments for a post' })
@@ -41,11 +41,11 @@ export class CommentController {
     type: GetCommentsForPostResponseDto,
     description: 'A list of comments was retrieved',
   })
-  @Get('post/:id')
+  @Get('post/:commentId')
   async findCommentsForPost(
-    @Param('id') id: string,
+    @Param('commentId') commentId: string,
   ): Promise<GetCommentsForPostResponseDto> {
-    return this.commentService.findAllForPost(id)
+    return this.commentService.findCommentsForPost(commentId)
   }
 
   @ApiOperation({ summary: 'Gets a comment' })
@@ -54,9 +54,11 @@ export class CommentController {
     type: CreateCommentRequestDto,
     description: 'A comment was retrieved',
   })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CreateCommentRequestDto> {
-    return this.commentService.findOne(id)
+  @Get('find/:commentId')
+  async findComment(
+    @Param('commentId') commentId: string,
+  ): Promise<CreateCommentRequestDto> {
+    return this.commentService.findComment(commentId)
   }
 
   @ApiOperation({ summary: 'Hides a comment' })
@@ -65,9 +67,12 @@ export class CommentController {
     type: undefined,
     description: 'A comment was hidden',
   })
-  @Patch(':id')
-  async hide(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.commentService.hide(req.user.id, id)
+  @Patch('hide/:commentId')
+  async hideComment(
+    @Req() req: RequestWithUser,
+    @Param('commentId') commentId: string,
+  ) {
+    return this.commentService.hideComment(req.user.id, commentId)
   }
 
   @ApiOperation({ summary: 'Deletes a comment' })
@@ -76,8 +81,11 @@ export class CommentController {
     type: undefined,
     description: 'A comment was deleted',
   })
-  @Delete(':id')
-  async delete(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.commentService.delete(req.user.id, id)
+  @Delete('delete/:commentId')
+  async deleteComment(
+    @Req() req: RequestWithUser,
+    @Param('commentId') commentId: string,
+  ) {
+    return this.commentService.deleteComment(req.user.id, commentId)
   }
 }

@@ -20,7 +20,7 @@ import {
     SubmitInquiryRequestDtoToJSON,
 } from '../models';
 
-export interface VerificationSubmitInquiryRequest {
+export interface SubmitInquiryRequest {
     submitInquiryRequestDto: SubmitInquiryRequestDto;
 }
 
@@ -32,7 +32,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Check if user can submit inquiry
      */
-    async verificationCanSubmitRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async canSubmitRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -50,17 +50,17 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Check if user can submit inquiry
      */
-    async verificationCanSubmit(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.verificationCanSubmitRaw(initOverrides);
+    async canSubmit(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.canSubmitRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Submit inquiry
      */
-    async verificationSubmitInquiryRaw(requestParameters: VerificationSubmitInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async submitInquiryRaw(requestParameters: SubmitInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.submitInquiryRequestDto === null || requestParameters.submitInquiryRequestDto === undefined) {
-            throw new runtime.RequiredError('submitInquiryRequestDto','Required parameter requestParameters.submitInquiryRequestDto was null or undefined when calling verificationSubmitInquiry.');
+            throw new runtime.RequiredError('submitInquiryRequestDto','Required parameter requestParameters.submitInquiryRequestDto was null or undefined when calling submitInquiry.');
         }
 
         const queryParameters: any = {};
@@ -83,8 +83,8 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Submit inquiry
      */
-    async verificationSubmitInquiry(requestParameters: VerificationSubmitInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.verificationSubmitInquiryRaw(requestParameters, initOverrides);
+    async submitInquiry(requestParameters: SubmitInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.submitInquiryRaw(requestParameters, initOverrides);
     }
 
 }

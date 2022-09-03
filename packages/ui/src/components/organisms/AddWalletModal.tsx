@@ -42,7 +42,7 @@ IAddPayoutModal) => {
     const walletApi = wrapApi(WalletApi)
     try {
       const walletValues: any = getValues()
-      await walletApi.walletCreateUnauthenticated({
+      await walletApi.createUnauthenticatedWallet({
         createUnauthenticatedWalletRequestDto: {
           walletAddress: walletValues["walletAddress"],
           chain: walletValues["chain"]

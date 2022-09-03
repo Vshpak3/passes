@@ -16,7 +16,7 @@ const useChat = (username: string) => {
         text: "",
         username: username
       }
-      const response = await api.messagesCreateChannel({
+      const response = await api.createChannel({
         createChannelRequestDto
       })
       return response.channelId
@@ -27,7 +27,7 @@ const useChat = (username: string) => {
     accessToken ? "/messages/token" : null,
     async () => {
       const api = wrapApi(MessagesApi)
-      const response = await api.messagesGetToken()
+      const response = await api.getToken()
       return response.token
     }
   )

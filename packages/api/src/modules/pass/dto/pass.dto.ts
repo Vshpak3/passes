@@ -20,9 +20,6 @@ export class PassDto {
   description: string
 
   @ApiProperty()
-  imageUrl: string
-
-  @ApiProperty()
   type: 'subscription' | 'lifetime'
 
   @ApiProperty()
@@ -46,7 +43,6 @@ export class PassDto {
     this.solNftCollectionId = pass.sol_nft_collection_id
     this.title = pass.title
     this.description = pass.description
-    this.imageUrl = pass.image_url
     this.type = pass.type
     this.price = pass.price
     this.totalSupply = pass.total_supply

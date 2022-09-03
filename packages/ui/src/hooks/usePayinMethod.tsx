@@ -14,7 +14,7 @@ const usePayinMethod = () => {
     try {
       setIsLoading(true)
 
-      const response = await api.paymentGetDefaultPayinMethod()
+      const response = await api.getDefaultPayinMethod()
 
       setDefaultPayinMethod(response)
     } catch (error: any) {
@@ -28,7 +28,7 @@ const usePayinMethod = () => {
   async function getCards() {
     try {
       setIsLoading(true)
-      const response = await api.paymentGetCircleCards()
+      const response = await api.getCircleCards()
       setCards(response.cards)
     } catch (error: any) {
       toast.error(error)
@@ -41,7 +41,7 @@ const usePayinMethod = () => {
   async function updateDefaultPayinMethod(dto: PayinMethodDto) {
     try {
       setIsLoading(true)
-      await api.paymentSetDefaultPayinMethod({
+      await api.setDefaultPayinMethod({
         setPayinMethodRequestDto: dto
       })
 
@@ -57,7 +57,7 @@ const usePayinMethod = () => {
   async function deleteCard(cardId: string) {
     try {
       setIsLoading(true)
-      await api.paymentDeleteCircleCard({
+      await api.deleteCircleCard({
         circleCardId: cardId
       })
     } catch (error: any) {

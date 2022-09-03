@@ -1,7 +1,7 @@
 import {
-  CreateCreatorSettingsRequestDtoPayoutFrequencyEnum,
   CreatorSettingsApi,
-  PaymentApi
+  PaymentApi,
+  UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react"
@@ -20,11 +20,11 @@ import AccountCard from "../payment/AccountCard"
 const payoutFrequencyOptions = [
   {
     label: "Weekly",
-    value: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.OneWeek
+    value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.OneWeek
   },
   {
     label: "Biweekly",
-    value: CreateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
+    value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
   }
 ]
 
@@ -50,7 +50,7 @@ const Payouts = () => {
   const onManualPayoutClick = async () => {
     const paymentApi = wrapApi(PaymentApi)
     try {
-      await paymentApi.paymentPayout()
+      await paymentApi.payout()
     } catch (error) {
       toast.error(error)
     }
@@ -61,7 +61,7 @@ const Payouts = () => {
       const creatorSettingsApi = wrapApi(CreatorSettingsApi)
       const payoutFrequency = getValues("payoutFrequency")
 
-      await creatorSettingsApi.creatorSettingsUpdate({
+      await creatorSettingsApi.createOrUpdateCreatorSettings({
         updateCreatorSettingsRequestDto: {
           payoutFrequency
         },
@@ -84,7 +84,7 @@ const Payouts = () => {
     async (api) => {
       try {
         setDefaultPayout(
-          await api.paymentGetDefaultPayoutMethod({
+          await api.getDefaultPayoutMethod({
             headers: {
               Authorization: "Bearer " + accessToken,
               "Content-Type": "application/json"
@@ -102,7 +102,7 @@ const Payouts = () => {
     async (paymentApi) => {
       setBanks(
         (
-          await paymentApi.paymentGetCircleBanks({
+          await paymentApi.getCircleBanks({
             headers: {
               Authorization: "Bearer " + accessToken,
               "Content-Type": "application/json"
@@ -117,7 +117,7 @@ const Payouts = () => {
   const getAutomaticPayoutSchedule = useCallback(
     async (creatorSettingsApi) => {
       try {
-        await creatorSettingsApi.creatorSettingsFind({
+        await creatorSettingsApi.getCreatorSettings({
           headers: {
             Authorization: "Bearer " + accessToken,
             "Content-Type": "application/json"

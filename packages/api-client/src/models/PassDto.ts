@@ -54,12 +54,6 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    imageUrl: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PassDto
-     */
     type: string;
     /**
      * 
@@ -108,7 +102,6 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'solNftCollectionId': json['solNftCollectionId'],
         'title': json['title'],
         'description': json['description'],
-        'imageUrl': json['imageUrl'],
         'type': json['type'],
         'price': json['price'],
         'totalSupply': json['totalSupply'],
@@ -132,7 +125,6 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'solNftCollectionId': value.solNftCollectionId,
         'title': value.title,
         'description': value.description,
-        'imageUrl': value.imageUrl,
         'type': value.type,
         'price': value.price,
         'totalSupply': value.totalSupply,

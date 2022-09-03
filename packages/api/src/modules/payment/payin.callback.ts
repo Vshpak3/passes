@@ -117,7 +117,7 @@ async function createNftPassSuccessCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<CreateNftPassPayinCallbackOutput> {
-  const newPassHolder = await payService.passService.createPass(
+  const newPassHolder = await payService.passService.createPassHolder(
     input.userId,
     input.passId,
   )

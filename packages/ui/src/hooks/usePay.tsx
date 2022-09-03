@@ -40,7 +40,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     paymentApi: PaymentApi
   ) => {
-    await paymentApi.paymentEntryCircleCard({
+    await paymentApi.entryCircleCard({
       circleCardPayinEntryRequestDto: {
         payinId: registerResponse.payinId,
         ip: "",
@@ -140,7 +140,7 @@ export const usePay = (
     try {
       const registerResponse = await registerPaymentFunc()
       const cancelPayinCallback = async () => {
-        await paymentApi.paymentCancelPayin({
+        await paymentApi.cancelPayin({
           payinId: registerResponse.payinId
         })
       }

@@ -43,7 +43,7 @@ export const ChannelInner = (props) => {
           let contentType = file.type
           if (file.type.startsWith("image/")) contentType = "image/jpeg"
           if (file.type.startsWith("video/")) contentType = "video/mp4"
-          const content = await api.contentCreate({
+          const content = await api.createContent({
             createContentRequestDto: {
               url,
               contentType
@@ -55,7 +55,7 @@ export const ChannelInner = (props) => {
     }
     try {
       const api = wrapApi(MessagesApi)
-      await api.messagesSend({
+      await api.sendMessage({
         sendMessageRequestDto: {
           text: messageToSend.text || "",
           attachments: [],

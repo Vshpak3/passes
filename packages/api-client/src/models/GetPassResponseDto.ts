@@ -54,12 +54,6 @@ export interface GetPassResponseDto {
      * @type {string}
      * @memberof GetPassResponseDto
      */
-    imageUrl: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassResponseDto
-     */
     type: string;
     /**
      * 
@@ -108,7 +102,6 @@ export function GetPassResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'solNftCollectionId': json['solNftCollectionId'],
         'title': json['title'],
         'description': json['description'],
-        'imageUrl': json['imageUrl'],
         'type': json['type'],
         'price': json['price'],
         'totalSupply': json['totalSupply'],
@@ -132,7 +125,6 @@ export function GetPassResponseDtoToJSON(value?: GetPassResponseDto | null): any
         'solNftCollectionId': value.solNftCollectionId,
         'title': value.title,
         'description': value.description,
-        'imageUrl': value.imageUrl,
         'type': value.type,
         'price': value.price,
         'totalSupply': value.totalSupply,

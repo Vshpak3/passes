@@ -38,9 +38,9 @@ export class UserController {
     type: GetUserResponseDto,
     description: 'A user was retrieved',
   })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetUserResponseDto> {
-    return new GetUserResponseDto(await this.userService.findOne(id))
+  @Get(':userId')
+  async findOne(@Param('userId') userId: string): Promise<GetUserResponseDto> {
+    return new GetUserResponseDto(await this.userService.findOne(userId))
   }
 
   @ApiOperation({ summary: 'Sets initial user info' })

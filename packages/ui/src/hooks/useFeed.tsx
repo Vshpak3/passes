@@ -22,7 +22,7 @@ const fetcher = async (key: string) => {
     : ""
 
   const api = wrapApi(FeedApi)
-  return await api.feedGetFeed({ cursor })
+  return await api.getFeed({ cursor })
 }
 
 const useFeed = () => {

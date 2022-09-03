@@ -81,11 +81,14 @@ export class WalletController {
     description: 'Wallet was created',
   })
   @Post()
-  async create(
+  async createWallet(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletRequestDto,
   ): Promise<WalletResponseDto> {
-    const wallet = await this.walletService.create(req.user.id, createWalletDto)
+    const wallet = await this.walletService.createWallet(
+      req.user.id,
+      createWalletDto,
+    )
     if (wallet.chain == ChainEnum.ETH) {
       return this.ethService.refreshNftsForWallet(req.user.id, wallet.id)
     }
@@ -97,12 +100,12 @@ export class WalletController {
     status: HttpStatus.OK,
     description: 'Wallet was deleted',
   })
-  @Delete(':id')
-  async remove(
+  @Delete(':walletId')
+  async removeWallet(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('walletId') walletId: string,
   ): Promise<boolean> {
-    return this.walletService.remove(req.user.id, id)
+    return this.walletService.removeWallet(req.user.id, walletId)
   }
 
   @ApiOperation({ summary: 'Creates wallet auth message to sign' })
@@ -112,11 +115,11 @@ export class WalletController {
     description: 'Wallet Auth Message created',
   })
   @Post('auth')
-  async auth(
+  async authMessage(
     @Req() req: RequestWithUser,
     @Body() authWalletRequestDto: AuthWalletRequestDto,
   ): Promise<AuthWalletResponseDto> {
-    return this.walletService.auth(req.user.id, authWalletRequestDto)
+    return this.walletService.authMessage(req.user.id, authWalletRequestDto)
   }
 
   @ApiOperation({ summary: 'Get wallets for user' })
@@ -126,7 +129,9 @@ export class WalletController {
     description: 'Wallets were retrieved',
   })
   @Get()
-  async findAll(@Req() req: RequestWithUser): Promise<GetWalletsResponseDto> {
+  async getWallets(
+    @Req() req: RequestWithUser,
+  ): Promise<GetWalletsResponseDto> {
     return new GetWalletsResponseDto(
       await this.walletService.getWalletsForUser(req.user.id),
     )
@@ -138,12 +143,12 @@ export class WalletController {
     type: WalletResponseDto,
     description: 'Wallet tokens were updated',
   })
-  @Post('refresh/:id')
-  async refresh(
+  @Post('/refresh/:walletId')
+  async refreshWallets(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('walletId') walletId: string,
   ): Promise<WalletResponseDto> {
-    return this.ethService.refreshNftsForWallet(req.user.id, id)
+    return this.ethService.refreshNftsForWallet(req.user.id, walletId)
   }
 
   @ApiOperation({ summary: 'Creates unchecked wallet for a user' })
@@ -152,13 +157,13 @@ export class WalletController {
     type: CreateWalletRequestDto,
     description: 'Unchecked wallet was created',
   })
-  @Post('unauthenticated')
-  async createUnauthenticated(
+  @Post('/unauthenticated')
+  async createUnauthenticatedWallet(
     @Req() req: RequestWithUser,
     @Body()
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
   ): Promise<void> {
-    await this.walletService.createUnauthenticated(
+    await this.walletService.createUnauthenticatedWallet(
       req.user.id,
       createUnauthenticatedWalletDto,
     )

@@ -26,7 +26,7 @@ const useCreatorSearch = () => {
   const searchCreators = useMemo(
     () =>
       debounce(async () => {
-        const data = await api.userSearchCreatorByUsername({
+        const data = await api.searchCreatorByUsername({
           searchCreatorRequestDto: { query: searchValue }
         })
         setCreatorResults(data.creators)

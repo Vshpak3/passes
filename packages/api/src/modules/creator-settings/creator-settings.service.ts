@@ -4,12 +4,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { CreateCreatorSettingsRequestDto } from './dto/create-creator-settings.dto'
+import { CreatorSettingsDto } from './dto/creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
-
-const CREATOR_SETTINGS_EXISTS = 'Creator Settings already exists'
 
 @Injectable()
 export class CreatorSettingsService {
@@ -23,7 +20,7 @@ export class CreatorSettingsService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async findByUser(userId: string): Promise<CreatorSettingsEntity> {
+  async findByUser(userId: string): Promise<CreatorSettingsDto> {
     const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
@@ -32,41 +29,31 @@ export class CreatorSettingsService {
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
     }
-    return creatorSettings
+    return new CreatorSettingsDto(creatorSettings)
   }
 
-  async update(
+  async createOrUpdateCreatorSettings(
     userId: string,
     updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
-  ): Promise<CreatorSettingsEntity> {
-    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
-      .where(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
-      )
-      .first()
-    if (!creatorSettings) {
-      throw new NotFoundException('CreatorSettings does not exist for user')
+  ): Promise<boolean> {
+    if (Object.keys(updateCreatorSettingsDto).length === 0) {
+      return false
     }
-
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
       updateCreatorSettingsDto,
     )
-    await this.dbWriter(CreatorSettingsEntity.table)
+    const updated = await this.dbWriter(CreatorSettingsEntity.table)
       .update(data)
-      .where({ id: creatorSettings.id })
-    return { ...creatorSettings, ...data }
-  }
-
-  async create(
-    userId: string,
-    createCreatorSettingsDto: CreateCreatorSettingsRequestDto,
-  ): Promise<CreatorSettingsEntity> {
-    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
-      user: userId,
-      ...createCreatorSettingsDto,
-    })
-    const query = () => this.dbWriter(CreatorSettingsEntity.table).insert(data)
-    await createOrThrowOnDuplicate(query, this.logger, CREATOR_SETTINGS_EXISTS)
-    return data as any
+      .where(
+        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
+      )
+      .onConflict(['user_id'])
+      .merge([
+        ...CreatorSettingsEntity.populate<CreatorSettingsEntity>([
+          'minimumTipAmount',
+          'payoutFrequency',
+        ]),
+      ])
+    return updated === 1
   }
 }

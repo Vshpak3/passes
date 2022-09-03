@@ -547,7 +547,7 @@ export class SolService {
     )
   }
 
-  async createNftCollection(
+  async createSolNftCollection(
     userId: string,
     name: string,
     symbol: string,

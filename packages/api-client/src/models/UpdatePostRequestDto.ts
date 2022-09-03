@@ -25,6 +25,30 @@ export interface UpdatePostRequestDto {
      * @memberof UpdatePostRequestDto
      */
     text: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UpdatePostRequestDto
+     */
+    passes: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdatePostRequestDto
+     */
+    price?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdatePostRequestDto
+     */
+    expiresAt?: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof UpdatePostRequestDto
+     */
+    scheduledAt?: Date;
 }
 
 export function UpdatePostRequestDtoFromJSON(json: any): UpdatePostRequestDto {
@@ -38,6 +62,10 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
+        'passes': json['passes'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
 
@@ -51,6 +79,10 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
     return {
         
         'text': value.text,
+        'passes': value.passes,
+        'price': value.price,
+        'expiresAt': value.expiresAt,
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

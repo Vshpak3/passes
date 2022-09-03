@@ -95,75 +95,75 @@ import {
     SetPayoutMethodRequestDtoToJSON,
 } from '../models';
 
-export interface PaymentCancelPayinRequest {
+export interface CancelPayinRequest {
     payinId: string;
 }
 
-export interface PaymentCancelSubscriptionRequest {
+export interface CancelSubscriptionRequest {
     subscriptionId: string;
 }
 
-export interface PaymentCreateCircleBankRequest {
+export interface CreateCircleBankRequest {
     circleCreateBankRequestDto: CircleCreateBankRequestDto;
 }
 
-export interface PaymentCreateCircleCardRequest {
+export interface CreateCircleCardRequest {
     circleCreateCardAndExtraRequestDto: CircleCreateCardAndExtraRequestDto;
 }
 
-export interface PaymentDeleteCircleBankRequest {
+export interface DeleteCircleBankRequest {
     circleBankId: string;
 }
 
-export interface PaymentDeleteCircleCardRequest {
+export interface DeleteCircleCardRequest {
     circleCardId: string;
 }
 
-export interface PaymentEntryCircleCardRequest {
+export interface EntryCircleCardRequest {
     circleCardPayinEntryRequestDto: CircleCardPayinEntryRequestDto;
 }
 
-export interface PaymentEntryMetamaskCircleETHRequest {
+export interface EntryMetamaskCircleETHRequest {
     metamaskCircleETHEntryRequestDto: MetamaskCircleETHEntryRequestDto;
 }
 
-export interface PaymentEntryMetamaskCircleUSDCRequest {
+export interface EntryMetamaskCircleUSDCRequest {
     metamaskCircleUSDCEntryRequestDto: MetamaskCircleUSDCEntryRequestDto;
 }
 
-export interface PaymentEntryPhantomCircleUSDCRequest {
+export interface EntryPhantomCircleUSDCRequest {
     phantomCircleUSDCEntryRequestDto: PhantomCircleUSDCEntryRequestDto;
 }
 
-export interface PaymentGetCircleCardRequest {
+export interface GetCircleCardRequest {
     cardId: string;
 }
 
-export interface PaymentGetPayinsRequest {
+export interface GetPayinsRequest {
     getPayinsRequestDto: GetPayinsRequestDto;
 }
 
-export interface PaymentGetPayoutsRequest {
+export interface GetPayoutsRequest {
     getPayoutsRequestDto: GetPayoutsRequestDto;
 }
 
-export interface PaymentRePayoutRequest {
+export interface RePayoutRequest {
     payoutId: string;
 }
 
-export interface PaymentRecieveNotificationsRequest {
+export interface RecieveNotificationsRequest {
     body: string;
 }
 
-export interface PaymentSetDefaultPayinMethodRequest {
+export interface SetDefaultPayinMethodRequest {
     setPayinMethodRequestDto: SetPayinMethodRequestDto;
 }
 
-export interface PaymentSetDefaultPayoutMethodRequest {
+export interface SetDefaultPayoutMethodRequest {
     setPayoutMethodRequestDto: SetPayoutMethodRequestDto;
 }
 
-export interface PaymentSetSubscriptionPayinMethodRequest {
+export interface SetSubscriptionPayinMethodRequest {
     subscriptionId: string;
     setPayinMethodRequestDto: SetPayinMethodRequestDto;
 }
@@ -176,9 +176,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Cancel a payin
      */
-    async paymentCancelPayinRaw(requestParameters: PaymentCancelPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async cancelPayinRaw(requestParameters: CancelPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.payinId === null || requestParameters.payinId === undefined) {
-            throw new runtime.RequiredError('payinId','Required parameter requestParameters.payinId was null or undefined when calling paymentCancelPayin.');
+            throw new runtime.RequiredError('payinId','Required parameter requestParameters.payinId was null or undefined when calling cancelPayin.');
         }
 
         const queryParameters: any = {};
@@ -198,16 +198,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Cancel a payin
      */
-    async paymentCancelPayin(requestParameters: PaymentCancelPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentCancelPayinRaw(requestParameters, initOverrides);
+    async cancelPayin(requestParameters: CancelPayinRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.cancelPayinRaw(requestParameters, initOverrides);
     }
 
     /**
      * Cancel subscription
      */
-    async paymentCancelSubscriptionRaw(requestParameters: PaymentCancelSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async cancelSubscriptionRaw(requestParameters: CancelSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.subscriptionId === null || requestParameters.subscriptionId === undefined) {
-            throw new runtime.RequiredError('subscriptionId','Required parameter requestParameters.subscriptionId was null or undefined when calling paymentCancelSubscription.');
+            throw new runtime.RequiredError('subscriptionId','Required parameter requestParameters.subscriptionId was null or undefined when calling cancelSubscription.');
         }
 
         const queryParameters: any = {};
@@ -227,16 +227,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Cancel subscription
      */
-    async paymentCancelSubscription(requestParameters: PaymentCancelSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentCancelSubscriptionRaw(requestParameters, initOverrides);
+    async cancelSubscription(requestParameters: CancelSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.cancelSubscriptionRaw(requestParameters, initOverrides);
     }
 
     /**
      * Create a wire bank account
      */
-    async paymentCreateCircleBankRaw(requestParameters: PaymentCreateCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusResponseDto>> {
+    async createCircleBankRaw(requestParameters: CreateCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusResponseDto>> {
         if (requestParameters.circleCreateBankRequestDto === null || requestParameters.circleCreateBankRequestDto === undefined) {
-            throw new runtime.RequiredError('circleCreateBankRequestDto','Required parameter requestParameters.circleCreateBankRequestDto was null or undefined when calling paymentCreateCircleBank.');
+            throw new runtime.RequiredError('circleCreateBankRequestDto','Required parameter requestParameters.circleCreateBankRequestDto was null or undefined when calling createCircleBank.');
         }
 
         const queryParameters: any = {};
@@ -259,17 +259,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Create a wire bank account
      */
-    async paymentCreateCircleBank(requestParameters: PaymentCreateCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusResponseDto> {
-        const response = await this.paymentCreateCircleBankRaw(requestParameters, initOverrides);
+    async createCircleBank(requestParameters: CreateCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusResponseDto> {
+        const response = await this.createCircleBankRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Creates a card
      */
-    async paymentCreateCircleCardRaw(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusResponseDto>> {
+    async createCircleCardRaw(requestParameters: CreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleStatusResponseDto>> {
         if (requestParameters.circleCreateCardAndExtraRequestDto === null || requestParameters.circleCreateCardAndExtraRequestDto === undefined) {
-            throw new runtime.RequiredError('circleCreateCardAndExtraRequestDto','Required parameter requestParameters.circleCreateCardAndExtraRequestDto was null or undefined when calling paymentCreateCircleCard.');
+            throw new runtime.RequiredError('circleCreateCardAndExtraRequestDto','Required parameter requestParameters.circleCreateCardAndExtraRequestDto was null or undefined when calling createCircleCard.');
         }
 
         const queryParameters: any = {};
@@ -292,17 +292,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Creates a card
      */
-    async paymentCreateCircleCard(requestParameters: PaymentCreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusResponseDto> {
-        const response = await this.paymentCreateCircleCardRaw(requestParameters, initOverrides);
+    async createCircleCard(requestParameters: CreateCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleStatusResponseDto> {
+        const response = await this.createCircleCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Delete a wire bank account
      */
-    async paymentDeleteCircleBankRaw(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteCircleBankRaw(requestParameters: DeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.circleBankId === null || requestParameters.circleBankId === undefined) {
-            throw new runtime.RequiredError('circleBankId','Required parameter requestParameters.circleBankId was null or undefined when calling paymentDeleteCircleBank.');
+            throw new runtime.RequiredError('circleBankId','Required parameter requestParameters.circleBankId was null or undefined when calling deleteCircleBank.');
         }
 
         const queryParameters: any = {};
@@ -322,16 +322,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Delete a wire bank account
      */
-    async paymentDeleteCircleBank(requestParameters: PaymentDeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentDeleteCircleBankRaw(requestParameters, initOverrides);
+    async deleteCircleBank(requestParameters: DeleteCircleBankRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.deleteCircleBankRaw(requestParameters, initOverrides);
     }
 
     /**
      * Delete a card
      */
-    async paymentDeleteCircleCardRaw(requestParameters: PaymentDeleteCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async deleteCircleCardRaw(requestParameters: DeleteCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.circleCardId === null || requestParameters.circleCardId === undefined) {
-            throw new runtime.RequiredError('circleCardId','Required parameter requestParameters.circleCardId was null or undefined when calling paymentDeleteCircleCard.');
+            throw new runtime.RequiredError('circleCardId','Required parameter requestParameters.circleCardId was null or undefined when calling deleteCircleCard.');
         }
 
         const queryParameters: any = {};
@@ -351,16 +351,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Delete a card
      */
-    async paymentDeleteCircleCard(requestParameters: PaymentDeleteCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentDeleteCircleCardRaw(requestParameters, initOverrides);
+    async deleteCircleCard(requestParameters: DeleteCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.deleteCircleCardRaw(requestParameters, initOverrides);
     }
 
     /**
      * Circlecard payin entrypoint
      */
-    async paymentEntryCircleCardRaw(requestParameters: PaymentEntryCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleCardPayinEntryResponseDto>> {
+    async entryCircleCardRaw(requestParameters: EntryCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleCardPayinEntryResponseDto>> {
         if (requestParameters.circleCardPayinEntryRequestDto === null || requestParameters.circleCardPayinEntryRequestDto === undefined) {
-            throw new runtime.RequiredError('circleCardPayinEntryRequestDto','Required parameter requestParameters.circleCardPayinEntryRequestDto was null or undefined when calling paymentEntryCircleCard.');
+            throw new runtime.RequiredError('circleCardPayinEntryRequestDto','Required parameter requestParameters.circleCardPayinEntryRequestDto was null or undefined when calling entryCircleCard.');
         }
 
         const queryParameters: any = {};
@@ -383,17 +383,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Circlecard payin entrypoint
      */
-    async paymentEntryCircleCard(requestParameters: PaymentEntryCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleCardPayinEntryResponseDto> {
-        const response = await this.paymentEntryCircleCardRaw(requestParameters, initOverrides);
+    async entryCircleCard(requestParameters: EntryCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleCardPayinEntryResponseDto> {
+        const response = await this.entryCircleCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Metamask ETH payin entrypoint
      */
-    async paymentEntryMetamaskCircleETHRaw(requestParameters: PaymentEntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleETHEntryResponseDto>> {
+    async entryMetamaskCircleETHRaw(requestParameters: EntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleETHEntryResponseDto>> {
         if (requestParameters.metamaskCircleETHEntryRequestDto === null || requestParameters.metamaskCircleETHEntryRequestDto === undefined) {
-            throw new runtime.RequiredError('metamaskCircleETHEntryRequestDto','Required parameter requestParameters.metamaskCircleETHEntryRequestDto was null or undefined when calling paymentEntryMetamaskCircleETH.');
+            throw new runtime.RequiredError('metamaskCircleETHEntryRequestDto','Required parameter requestParameters.metamaskCircleETHEntryRequestDto was null or undefined when calling entryMetamaskCircleETH.');
         }
 
         const queryParameters: any = {};
@@ -416,17 +416,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Metamask ETH payin entrypoint
      */
-    async paymentEntryMetamaskCircleETH(requestParameters: PaymentEntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleETHEntryResponseDto> {
-        const response = await this.paymentEntryMetamaskCircleETHRaw(requestParameters, initOverrides);
+    async entryMetamaskCircleETH(requestParameters: EntryMetamaskCircleETHRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleETHEntryResponseDto> {
+        const response = await this.entryMetamaskCircleETHRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Metamask USDC payin entrypoint
      */
-    async paymentEntryMetamaskCircleUSDCRaw(requestParameters: PaymentEntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleUSDCEntryResponseDto>> {
+    async entryMetamaskCircleUSDCRaw(requestParameters: EntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MetamaskCircleUSDCEntryResponseDto>> {
         if (requestParameters.metamaskCircleUSDCEntryRequestDto === null || requestParameters.metamaskCircleUSDCEntryRequestDto === undefined) {
-            throw new runtime.RequiredError('metamaskCircleUSDCEntryRequestDto','Required parameter requestParameters.metamaskCircleUSDCEntryRequestDto was null or undefined when calling paymentEntryMetamaskCircleUSDC.');
+            throw new runtime.RequiredError('metamaskCircleUSDCEntryRequestDto','Required parameter requestParameters.metamaskCircleUSDCEntryRequestDto was null or undefined when calling entryMetamaskCircleUSDC.');
         }
 
         const queryParameters: any = {};
@@ -449,17 +449,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Metamask USDC payin entrypoint
      */
-    async paymentEntryMetamaskCircleUSDC(requestParameters: PaymentEntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleUSDCEntryResponseDto> {
-        const response = await this.paymentEntryMetamaskCircleUSDCRaw(requestParameters, initOverrides);
+    async entryMetamaskCircleUSDC(requestParameters: EntryMetamaskCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MetamaskCircleUSDCEntryResponseDto> {
+        const response = await this.entryMetamaskCircleUSDCRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Phantom USDC payin entrypoint
      */
-    async paymentEntryPhantomCircleUSDCRaw(requestParameters: PaymentEntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PhantomCircleUSDCEntryResponseDto>> {
+    async entryPhantomCircleUSDCRaw(requestParameters: EntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PhantomCircleUSDCEntryResponseDto>> {
         if (requestParameters.phantomCircleUSDCEntryRequestDto === null || requestParameters.phantomCircleUSDCEntryRequestDto === undefined) {
-            throw new runtime.RequiredError('phantomCircleUSDCEntryRequestDto','Required parameter requestParameters.phantomCircleUSDCEntryRequestDto was null or undefined when calling paymentEntryPhantomCircleUSDC.');
+            throw new runtime.RequiredError('phantomCircleUSDCEntryRequestDto','Required parameter requestParameters.phantomCircleUSDCEntryRequestDto was null or undefined when calling entryPhantomCircleUSDC.');
         }
 
         const queryParameters: any = {};
@@ -482,15 +482,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Phantom USDC payin entrypoint
      */
-    async paymentEntryPhantomCircleUSDC(requestParameters: PaymentEntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PhantomCircleUSDCEntryResponseDto> {
-        const response = await this.paymentEntryPhantomCircleUSDCRaw(requestParameters, initOverrides);
+    async entryPhantomCircleUSDC(requestParameters: EntryPhantomCircleUSDCRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PhantomCircleUSDCEntryResponseDto> {
+        const response = await this.entryPhantomCircleUSDCRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get wire bank acccounts
      */
-    async paymentGetCircleBanksRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleBanksResponseDto>> {
+    async getCircleBanksRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleBanksResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -508,17 +508,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get wire bank acccounts
      */
-    async paymentGetCircleBanks(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleBanksResponseDto> {
-        const response = await this.paymentGetCircleBanksRaw(initOverrides);
+    async getCircleBanks(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleBanksResponseDto> {
+        const response = await this.getCircleBanksRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get card by id
      */
-    async paymentGetCircleCardRaw(requestParameters: PaymentGetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleCardResponseDto>> {
+    async getCircleCardRaw(requestParameters: GetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleCardResponseDto>> {
         if (requestParameters.cardId === null || requestParameters.cardId === undefined) {
-            throw new runtime.RequiredError('cardId','Required parameter requestParameters.cardId was null or undefined when calling paymentGetCircleCard.');
+            throw new runtime.RequiredError('cardId','Required parameter requestParameters.cardId was null or undefined when calling getCircleCard.');
         }
 
         const queryParameters: any = {};
@@ -538,15 +538,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get card by id
      */
-    async paymentGetCircleCard(requestParameters: PaymentGetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleCardResponseDto> {
-        const response = await this.paymentGetCircleCardRaw(requestParameters, initOverrides);
+    async getCircleCard(requestParameters: GetCircleCardRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleCardResponseDto> {
+        const response = await this.getCircleCardRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get cards
      */
-    async paymentGetCircleCardsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleCardsResponseDto>> {
+    async getCircleCardsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCircleCardsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -564,15 +564,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get cards
      */
-    async paymentGetCircleCards(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleCardsResponseDto> {
-        const response = await this.paymentGetCircleCardsRaw(initOverrides);
+    async getCircleCards(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCircleCardsResponseDto> {
+        const response = await this.getCircleCardsRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get circle encryption key
      */
-    async paymentGetCircleEncryptionKeyRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleEncryptionKeyResponseDto>> {
+    async getCircleEncryptionKeyRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CircleEncryptionKeyResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -590,15 +590,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get circle encryption key
      */
-    async paymentGetCircleEncryptionKey(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleEncryptionKeyResponseDto> {
-        const response = await this.paymentGetCircleEncryptionKeyRaw(initOverrides);
+    async getCircleEncryptionKey(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CircleEncryptionKeyResponseDto> {
+        const response = await this.getCircleEncryptionKeyRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get default payin method
      */
-    async paymentGetDefaultPayinMethodRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayinMethodResponseDto>> {
+    async getDefaultPayinMethodRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayinMethodResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -616,15 +616,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get default payin method
      */
-    async paymentGetDefaultPayinMethod(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayinMethodResponseDto> {
-        const response = await this.paymentGetDefaultPayinMethodRaw(initOverrides);
+    async getDefaultPayinMethod(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayinMethodResponseDto> {
+        const response = await this.getDefaultPayinMethodRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get default payout method
      */
-    async paymentGetDefaultPayoutMethodRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayoutMethodResponseDto>> {
+    async getDefaultPayoutMethodRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayoutMethodResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -642,17 +642,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get default payout method
      */
-    async paymentGetDefaultPayoutMethod(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayoutMethodResponseDto> {
-        const response = await this.paymentGetDefaultPayoutMethodRaw(initOverrides);
+    async getDefaultPayoutMethod(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayoutMethodResponseDto> {
+        const response = await this.getDefaultPayoutMethodRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get all payins
      */
-    async paymentGetPayinsRaw(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayinsResponseDto>> {
+    async getPayinsRaw(requestParameters: GetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayinsResponseDto>> {
         if (requestParameters.getPayinsRequestDto === null || requestParameters.getPayinsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPayinsRequestDto','Required parameter requestParameters.getPayinsRequestDto was null or undefined when calling paymentGetPayins.');
+            throw new runtime.RequiredError('getPayinsRequestDto','Required parameter requestParameters.getPayinsRequestDto was null or undefined when calling getPayins.');
         }
 
         const queryParameters: any = {};
@@ -675,17 +675,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get all payins
      */
-    async paymentGetPayins(requestParameters: PaymentGetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayinsResponseDto> {
-        const response = await this.paymentGetPayinsRaw(requestParameters, initOverrides);
+    async getPayins(requestParameters: GetPayinsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayinsResponseDto> {
+        const response = await this.getPayinsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get all payouts
      */
-    async paymentGetPayoutsRaw(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayoutsResponseDto>> {
+    async getPayoutsRaw(requestParameters: GetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPayoutsResponseDto>> {
         if (requestParameters.getPayoutsRequestDto === null || requestParameters.getPayoutsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPayoutsRequestDto','Required parameter requestParameters.getPayoutsRequestDto was null or undefined when calling paymentGetPayouts.');
+            throw new runtime.RequiredError('getPayoutsRequestDto','Required parameter requestParameters.getPayoutsRequestDto was null or undefined when calling getPayouts.');
         }
 
         const queryParameters: any = {};
@@ -708,15 +708,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get all payouts
      */
-    async paymentGetPayouts(requestParameters: PaymentGetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayoutsResponseDto> {
-        const response = await this.paymentGetPayoutsRaw(requestParameters, initOverrides);
+    async getPayouts(requestParameters: GetPayoutsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPayoutsResponseDto> {
+        const response = await this.getPayoutsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get subscriptions
      */
-    async paymentGetSubscriptionsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSubscriptionsResponseDto>> {
+    async getSubscriptionsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSubscriptionsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -734,15 +734,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get subscriptions
      */
-    async paymentGetSubscriptions(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSubscriptionsResponseDto> {
-        const response = await this.paymentGetSubscriptionsRaw(initOverrides);
+    async getSubscriptions(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSubscriptionsResponseDto> {
+        const response = await this.getSubscriptionsRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Payout manually
      */
-    async paymentPayoutRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async payoutRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -760,14 +760,14 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Payout manually
      */
-    async paymentPayout(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentPayoutRaw(initOverrides);
+    async payout(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.payoutRaw(initOverrides);
     }
 
     /**
      * Payout everyone
      */
-    async paymentPayoutAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async payoutAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -785,16 +785,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Payout everyone
      */
-    async paymentPayoutAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentPayoutAllRaw(initOverrides);
+    async payoutAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.payoutAllRaw(initOverrides);
     }
 
     /**
      * Rerun payout
      */
-    async paymentRePayoutRaw(requestParameters: PaymentRePayoutRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async rePayoutRaw(requestParameters: RePayoutRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.payoutId === null || requestParameters.payoutId === undefined) {
-            throw new runtime.RequiredError('payoutId','Required parameter requestParameters.payoutId was null or undefined when calling paymentRePayout.');
+            throw new runtime.RequiredError('payoutId','Required parameter requestParameters.payoutId was null or undefined when calling rePayout.');
         }
 
         const queryParameters: any = {};
@@ -814,16 +814,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Rerun payout
      */
-    async paymentRePayout(requestParameters: PaymentRePayoutRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentRePayoutRaw(requestParameters, initOverrides);
+    async rePayout(requestParameters: RePayoutRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.rePayoutRaw(requestParameters, initOverrides);
     }
 
     /**
      * Circle notifications
      */
-    async paymentRecieveNotificationsRaw(requestParameters: PaymentRecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async recieveNotificationsRaw(requestParameters: RecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling paymentRecieveNotifications.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling recieveNotifications.');
         }
 
         const queryParameters: any = {};
@@ -846,14 +846,14 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Circle notifications
      */
-    async paymentRecieveNotifications(requestParameters: PaymentRecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentRecieveNotificationsRaw(requestParameters, initOverrides);
+    async recieveNotifications(requestParameters: RecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.recieveNotificationsRaw(requestParameters, initOverrides);
     }
 
     /**
      * Circle notifications register
      */
-    async paymentRegisterNotificationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async registerNotificationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -871,15 +871,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Circle notifications register
      */
-    async paymentRegisterNotifications(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.paymentRegisterNotificationsRaw(initOverrides);
+    async registerNotifications(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.registerNotificationsRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Register payin
      */
-    async paymentRegisterPayinRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerPayinRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -897,15 +897,15 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Register payin
      */
-    async paymentRegisterPayin(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
-        const response = await this.paymentRegisterPayinRaw(initOverrides);
+    async registerPayin(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.registerPayinRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get register payin data
      */
-    async paymentRegisterPayinDataRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async registerPayinDataRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -923,17 +923,17 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Get register payin data
      */
-    async paymentRegisterPayinData(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
-        const response = await this.paymentRegisterPayinDataRaw(initOverrides);
+    async registerPayinData(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+        const response = await this.registerPayinDataRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Set default payin method
      */
-    async paymentSetDefaultPayinMethodRaw(requestParameters: PaymentSetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setDefaultPayinMethodRaw(requestParameters: SetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.setPayinMethodRequestDto === null || requestParameters.setPayinMethodRequestDto === undefined) {
-            throw new runtime.RequiredError('setPayinMethodRequestDto','Required parameter requestParameters.setPayinMethodRequestDto was null or undefined when calling paymentSetDefaultPayinMethod.');
+            throw new runtime.RequiredError('setPayinMethodRequestDto','Required parameter requestParameters.setPayinMethodRequestDto was null or undefined when calling setDefaultPayinMethod.');
         }
 
         const queryParameters: any = {};
@@ -956,16 +956,16 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set default payin method
      */
-    async paymentSetDefaultPayinMethod(requestParameters: PaymentSetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentSetDefaultPayinMethodRaw(requestParameters, initOverrides);
+    async setDefaultPayinMethod(requestParameters: SetDefaultPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setDefaultPayinMethodRaw(requestParameters, initOverrides);
     }
 
     /**
      * Set default payout method
      */
-    async paymentSetDefaultPayoutMethodRaw(requestParameters: PaymentSetDefaultPayoutMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setDefaultPayoutMethodRaw(requestParameters: SetDefaultPayoutMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.setPayoutMethodRequestDto === null || requestParameters.setPayoutMethodRequestDto === undefined) {
-            throw new runtime.RequiredError('setPayoutMethodRequestDto','Required parameter requestParameters.setPayoutMethodRequestDto was null or undefined when calling paymentSetDefaultPayoutMethod.');
+            throw new runtime.RequiredError('setPayoutMethodRequestDto','Required parameter requestParameters.setPayoutMethodRequestDto was null or undefined when calling setDefaultPayoutMethod.');
         }
 
         const queryParameters: any = {};
@@ -988,20 +988,20 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set default payout method
      */
-    async paymentSetDefaultPayoutMethod(requestParameters: PaymentSetDefaultPayoutMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentSetDefaultPayoutMethodRaw(requestParameters, initOverrides);
+    async setDefaultPayoutMethod(requestParameters: SetDefaultPayoutMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setDefaultPayoutMethodRaw(requestParameters, initOverrides);
     }
 
     /**
      * Set subscription payin method
      */
-    async paymentSetSubscriptionPayinMethodRaw(requestParameters: PaymentSetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setSubscriptionPayinMethodRaw(requestParameters: SetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.subscriptionId === null || requestParameters.subscriptionId === undefined) {
-            throw new runtime.RequiredError('subscriptionId','Required parameter requestParameters.subscriptionId was null or undefined when calling paymentSetSubscriptionPayinMethod.');
+            throw new runtime.RequiredError('subscriptionId','Required parameter requestParameters.subscriptionId was null or undefined when calling setSubscriptionPayinMethod.');
         }
 
         if (requestParameters.setPayinMethodRequestDto === null || requestParameters.setPayinMethodRequestDto === undefined) {
-            throw new runtime.RequiredError('setPayinMethodRequestDto','Required parameter requestParameters.setPayinMethodRequestDto was null or undefined when calling paymentSetSubscriptionPayinMethod.');
+            throw new runtime.RequiredError('setPayinMethodRequestDto','Required parameter requestParameters.setPayinMethodRequestDto was null or undefined when calling setSubscriptionPayinMethod.');
         }
 
         const queryParameters: any = {};
@@ -1024,8 +1024,8 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Set subscription payin method
      */
-    async paymentSetSubscriptionPayinMethod(requestParameters: PaymentSetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.paymentSetSubscriptionPayinMethodRaw(requestParameters, initOverrides);
+    async setSubscriptionPayinMethod(requestParameters: SetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setSubscriptionPayinMethodRaw(requestParameters, initOverrides);
     }
 
 }

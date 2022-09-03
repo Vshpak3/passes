@@ -63,7 +63,7 @@ const NewCard = () => {
 
       const paymentApi = new PaymentApi()
       //TODO: handle error on frontend (display some generic message)
-      await paymentApi.paymentCreateCircleBank(
+      await paymentApi.createCircleBank(
         { circleCreateBankRequestDto: payload },
         {
           headers: {

@@ -26,7 +26,7 @@ import {
     RefreshAuthTokenRequestDtoToJSON,
 } from '../models';
 
-export interface AuthRefreshAccessTokenRequest {
+export interface RefreshAccessTokenRequest {
     refreshAuthTokenRequestDto: RefreshAuthTokenRequestDto;
 }
 
@@ -38,7 +38,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Gets the current authenticated user
      */
-    async authGetCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+    async getCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -56,17 +56,17 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Gets the current authenticated user
      */
-    async authGetCurrentUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
-        const response = await this.authGetCurrentUserRaw(initOverrides);
+    async getCurrentUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+        const response = await this.getCurrentUserRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Refresh the access token
      */
-    async authRefreshAccessTokenRaw(requestParameters: AuthRefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async refreshAccessTokenRaw(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.refreshAuthTokenRequestDto === null || requestParameters.refreshAuthTokenRequestDto === undefined) {
-            throw new runtime.RequiredError('refreshAuthTokenRequestDto','Required parameter requestParameters.refreshAuthTokenRequestDto was null or undefined when calling authRefreshAccessToken.');
+            throw new runtime.RequiredError('refreshAuthTokenRequestDto','Required parameter requestParameters.refreshAuthTokenRequestDto was null or undefined when calling refreshAccessToken.');
         }
 
         const queryParameters: any = {};
@@ -89,8 +89,8 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Refresh the access token
      */
-    async authRefreshAccessToken(requestParameters: AuthRefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
-        const response = await this.authRefreshAccessTokenRaw(requestParameters, initOverrides);
+    async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+        const response = await this.refreshAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

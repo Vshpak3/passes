@@ -15,7 +15,7 @@ export const RenewPassButton = ({
 }: IRenewPassButton) => {
   const api = wrapApi(PassApi)
   const register = async () => {
-    return await api.passRegisterRenewPass({
+    return await api.registerRenewPass({
       renewPassHolderRequestDto: {
         passHolderId,
         payinMethod
@@ -24,7 +24,7 @@ export const RenewPassButton = ({
   }
 
   const registerData = async () => {
-    return await api.passRegisterRenewPassData({
+    return await api.registerRenewPassData({
       renewPassHolderRequestDto: {
         passHolderId,
         payinMethod

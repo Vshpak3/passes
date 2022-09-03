@@ -15,7 +15,7 @@ const useUser = () => {
     accessToken ? "/user" : null,
     async () => {
       const api = wrapApi(AuthApi)
-      return await api.authGetCurrentUser()
+      return await api.getCurrentUser()
     }
   )
 

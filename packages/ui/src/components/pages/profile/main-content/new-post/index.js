@@ -105,7 +105,7 @@ export const NewPost = ({
         let contentType = file.type
         if (file.type.startsWith("image/")) contentType = "image/jpeg"
         if (file.type.startsWith("video/")) contentType = "video/mp4"
-        const content = await api.contentCreate({
+        const content = await api.createContent({
           createContentDto: {
             url,
             contentType

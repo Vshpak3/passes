@@ -35,7 +35,7 @@ const AdditionalInfoBlock = () => {
       if (username.length < 1) return
 
       const userAPI = wrapApi(UserApi)
-      const resp = await userAPI.userValidateUsername({
+      const resp = await userAPI.validateUsername({
         username
       })
 

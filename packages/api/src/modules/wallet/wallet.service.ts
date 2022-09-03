@@ -185,7 +185,7 @@ export class WalletService {
       .merge(['wallet_id'])
   }
 
-  async auth(
+  async authMessage(
     userId: string,
     authWalletRequestDto: AuthWalletRequestDto,
   ): Promise<AuthWalletResponseDto> {
@@ -234,7 +234,7 @@ export class WalletService {
     ).map((wallet) => new WalletDto(wallet))
   }
 
-  async create(
+  async createWallet(
     userId: string,
     createWalletDto: CreateWalletRequestDto,
   ): Promise<WalletEntity> {
@@ -325,7 +325,7 @@ export class WalletService {
     }
   }
 
-  async createUnauthenticated(
+  async createUnauthenticatedWallet(
     userId: string,
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
   ): Promise<void> {
@@ -347,7 +347,7 @@ export class WalletService {
     )
   }
 
-  async remove(userId: string, walletId: string): Promise<boolean> {
+  async removeWallet(userId: string, walletId: string): Promise<boolean> {
     const knexResult = await this.dbWriter(WalletEntity.table)
       .update({ user_id: null })
       .where('id', walletId)

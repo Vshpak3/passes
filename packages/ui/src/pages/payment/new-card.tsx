@@ -73,7 +73,7 @@ const NewCard = () => {
 
       const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
-      await paymentApi.paymentCreateCircleCard(
+      await paymentApi.createCircleCard(
         { circleCreateCardAndExtraRequestDto: payload },
         {
           headers: {
@@ -100,7 +100,7 @@ const NewCard = () => {
     }
     const fetchData = async () => {
       const paymentApi = new PaymentApi()
-      setPublicKey(await paymentApi.paymentGetCircleEncryptionKey())
+      setPublicKey(await paymentApi.getCircleEncryptionKey())
     }
     fetchData()
   }, [router, user, loading])

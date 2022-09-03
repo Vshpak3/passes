@@ -13,7 +13,7 @@ const useUserConnectedWallets = () => {
     mutate
   } = useSWR(accessToken ? "/wallets" : null, async () => {
     const api = wrapApi(WalletApi)
-    return await api.walletFindAll()
+    return await api.getWallets()
   })
 
   return { wallets, loading, mutate }

@@ -66,18 +66,6 @@ export interface GetProfileResponseDto {
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    profileImageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetProfileResponseDto
-     */
-    profileCoverImageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetProfileResponseDto
-     */
     instagramUrl?: string;
     /**
      * 
@@ -134,8 +122,6 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
         'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'profileImageUrl': !exists(json, 'profileImageUrl') ? undefined : json['profileImageUrl'],
-        'profileCoverImageUrl': !exists(json, 'profileCoverImageUrl') ? undefined : json['profileCoverImageUrl'],
         'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
         'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
@@ -162,8 +148,6 @@ export function GetProfileResponseDtoToJSON(value?: GetProfileResponseDto | null
         'coverTitle': value.coverTitle,
         'coverDescription': value.coverDescription,
         'description': value.description,
-        'profileImageUrl': value.profileImageUrl,
-        'profileCoverImageUrl': value.profileCoverImageUrl,
         'instagramUrl': value.instagramUrl,
         'tiktokUrl': value.tiktokUrl,
         'youtubeUrl': value.youtubeUrl,

@@ -1,17 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Patch,
-  Post,
-  Req,
-} from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { CreatorSettingsService } from './creator-settings.service'
-import { CreateCreatorSettingsRequestDto } from './dto/create-creator-settings.dto'
+import { GetCreatorSettingsResponseDto } from './dto/get-creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
 
 @ApiTags('creator-settings')
@@ -24,47 +16,30 @@ export class CreatorSettingsController {
   @ApiOperation({ summary: 'Gets creator settings' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateCreatorSettingsRequestDto,
+    type: GetCreatorSettingsResponseDto,
     description: 'Creator Settings was retrieved',
   })
   @Get()
-  async find(
+  async getCreatorSettings(
     @Req() req: RequestWithUser,
-  ): Promise<CreateCreatorSettingsRequestDto> {
+  ): Promise<GetCreatorSettingsResponseDto> {
     return await this.creatorSettingsService.findByUser(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Updates creator settings' })
+  @ApiOperation({ summary: 'Updates or create creator settings' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateCreatorSettingsRequestDto,
-    description: 'Creator Settings was updated',
-  })
-  @Patch()
-  async update(
-    @Req() req: RequestWithUser,
-    @Body() updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
-  ): Promise<CreateCreatorSettingsRequestDto> {
-    return await this.creatorSettingsService.update(
-      req.user.id,
-      updateCreatorSettingsDto,
-    )
-  }
-
-  @ApiOperation({ summary: 'Creates creator settings' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: CreateCreatorSettingsRequestDto,
-    description: 'Creator Settings was created',
+    type: Boolean,
+    description: 'Creator Settings was updated or created',
   })
   @Post()
-  async create(
+  async createOrUpdateCreatorSettings(
     @Req() req: RequestWithUser,
-    @Body() createCreatorSettingsDto: CreateCreatorSettingsRequestDto,
-  ): Promise<CreateCreatorSettingsRequestDto> {
-    return await this.creatorSettingsService.create(
+    @Body() updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
+  ): Promise<boolean> {
+    return await this.creatorSettingsService.createOrUpdateCreatorSettings(
       req.user.id,
-      createCreatorSettingsDto,
+      updateCreatorSettingsDto,
     )
   }
 }

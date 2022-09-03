@@ -1,0 +1,2 @@
+export const PASS_TITLE_LENGTH = 100
+export const PASS_DESCRIPTION_LENGTH = 500

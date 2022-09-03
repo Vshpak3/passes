@@ -14,12 +14,6 @@ export class CreateProfileRequestDto {
   description?: string
 
   @ApiPropertyOptional()
-  profileImageUrl?: string
-
-  @ApiPropertyOptional()
-  profileCoverImageUrl?: string
-
-  @ApiPropertyOptional()
   instagramUrl?: string
 
   @ApiPropertyOptional()

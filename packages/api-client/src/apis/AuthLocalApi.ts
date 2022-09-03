@@ -26,11 +26,11 @@ import {
     LocalUserLoginRequestDtoToJSON,
 } from '../models';
 
-export interface LocalAuthCreateEmailPasswordUserRequest {
+export interface CreateEmailPasswordUserRequest {
     createLocalUserRequestDto: CreateLocalUserRequestDto;
 }
 
-export interface LocalAuthLoginWithEmailPasswordRequest {
+export interface LoginWithEmailPasswordRequest {
     localUserLoginRequestDto: LocalUserLoginRequestDto;
 }
 
@@ -42,9 +42,9 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Create a email and password user
      */
-    async localAuthCreateEmailPasswordUserRaw(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.createLocalUserRequestDto === null || requestParameters.createLocalUserRequestDto === undefined) {
-            throw new runtime.RequiredError('createLocalUserRequestDto','Required parameter requestParameters.createLocalUserRequestDto was null or undefined when calling localAuthCreateEmailPasswordUser.');
+            throw new runtime.RequiredError('createLocalUserRequestDto','Required parameter requestParameters.createLocalUserRequestDto was null or undefined when calling createEmailPasswordUser.');
         }
 
         const queryParameters: any = {};
@@ -67,17 +67,17 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Create a email and password user
      */
-    async localAuthCreateEmailPasswordUser(requestParameters: LocalAuthCreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
-        const response = await this.localAuthCreateEmailPasswordUserRaw(requestParameters, initOverrides);
+    async createEmailPasswordUser(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+        const response = await this.createEmailPasswordUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPasswordRaw(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
-            throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling localAuthLoginWithEmailPassword.');
+            throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling loginWithEmailPassword.');
         }
 
         const queryParameters: any = {};
@@ -100,8 +100,8 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Login with email and password
      */
-    async localAuthLoginWithEmailPassword(requestParameters: LocalAuthLoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
-        const response = await this.localAuthLoginWithEmailPasswordRaw(requestParameters, initOverrides);
+    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+        const response = await this.loginWithEmailPasswordRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

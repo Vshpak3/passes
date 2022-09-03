@@ -38,7 +38,7 @@ const Payin = (payin: PayinDto) => {
   }
   const cancel = async () => {
     const paymentApi = wrapApi(PaymentApi)
-    await paymentApi.paymentCancelPayin({ payinId: payin.id })
+    await paymentApi.cancelPayin({ payinId: payin.id })
     window.location.reload()
   }
   return (

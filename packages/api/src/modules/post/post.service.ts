@@ -60,7 +60,7 @@ export class PostService {
     private readonly payService: PaymentService,
   ) {}
 
-  async create(
+  async createPost(
     userId: string,
     createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
@@ -108,7 +108,7 @@ export class PostService {
     return { postId }
   }
 
-  async findOne(id: string, userId: string): Promise<PostDto> {
+  async findPost(postId: string, userId: string): Promise<PostDto> {
     const dbquery = this.dbReader(PostEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -137,7 +137,7 @@ export class PostService {
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${PostEntity.table}.id`, id)
+      .andWhere(`${PostEntity.table}.id`, postId)
 
     const postDtos = await this.getPostsFromQuery(userId, dbquery)
 
@@ -220,7 +220,7 @@ export class PostService {
     }, {})
   }
 
-  async update(
+  async updatePost(
     userId: string,
     postId: string,
     updatePostDto: UpdatePostRequestDto,
@@ -239,16 +239,14 @@ export class PostService {
       throw new NotFoundException(POST_DELETED)
     }
 
-    //TODO: actually update post here
-    this.logger.info(updatePostDto)
-
-    //TODO: actually update post here
-    this.logger.info(updatePostDto)
+    await this.dbWriter(PostEntity.table)
+      .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
+      .update(PostEntity.toDict<PostEntity>({ ...updatePostDto }))
 
     return new PostDto(postDbResult, [])
   }
 
-  async remove(userId: string, postId: string) {
+  async removePost(userId: string, postId: string) {
     //TODO: allow admins + managers to remove posts
     const post = await this.dbReader(PostEntity.table)
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))

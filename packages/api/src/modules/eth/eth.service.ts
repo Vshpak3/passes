@@ -53,7 +53,7 @@ export class EthService {
     this.alchemy = new Alchemy(settings)
   }
 
-  async createNftCollection(
+  async createEthNftCollection(
     userId: string,
     createEthNftCollectionDto: CreateEthNftCollectionRequestDto,
   ): Promise<EthNftCollectionDto> {

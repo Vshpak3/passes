@@ -48,18 +48,6 @@ export interface CreateProfileRequestDto {
      * @type {string}
      * @memberof CreateProfileRequestDto
      */
-    profileImageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateProfileRequestDto
-     */
-    profileCoverImageUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateProfileRequestDto
-     */
     instagramUrl?: string;
     /**
      * 
@@ -101,8 +89,6 @@ export function CreateProfileRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
         'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'profileImageUrl': !exists(json, 'profileImageUrl') ? undefined : json['profileImageUrl'],
-        'profileCoverImageUrl': !exists(json, 'profileCoverImageUrl') ? undefined : json['profileCoverImageUrl'],
         'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
         'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
@@ -124,8 +110,6 @@ export function CreateProfileRequestDtoToJSON(value?: CreateProfileRequestDto | 
         'coverTitle': value.coverTitle,
         'coverDescription': value.coverDescription,
         'description': value.description,
-        'profileImageUrl': value.profileImageUrl,
-        'profileCoverImageUrl': value.profileCoverImageUrl,
         'instagramUrl': value.instagramUrl,
         'tiktokUrl': value.tiktokUrl,
         'youtubeUrl': value.youtubeUrl,

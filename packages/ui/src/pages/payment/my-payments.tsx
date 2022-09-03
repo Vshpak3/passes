@@ -28,7 +28,7 @@ const MyPayments = () => {
     }
     const fetchData = async () => {
       const paymentApi = wrapApi(PaymentApi)
-      const payinsResponse = await paymentApi.paymentGetPayins({
+      const payinsResponse = await paymentApi.getPayins({
         getPayinsRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
       })
       setPayins(payinsResponse.payins)

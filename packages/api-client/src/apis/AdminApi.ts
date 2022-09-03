@@ -20,7 +20,7 @@ import {
     ImpersonateUserRequestDtoToJSON,
 } from '../models';
 
-export interface AdminImpersonateUserRequest {
+export interface ImpersonateUserRequest {
     impersonateUserRequestDto: ImpersonateUserRequestDto;
 }
 
@@ -32,9 +32,9 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async adminImpersonateUserRaw(requestParameters: AdminImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.impersonateUserRequestDto === null || requestParameters.impersonateUserRequestDto === undefined) {
-            throw new runtime.RequiredError('impersonateUserRequestDto','Required parameter requestParameters.impersonateUserRequestDto was null or undefined when calling adminImpersonateUser.');
+            throw new runtime.RequiredError('impersonateUserRequestDto','Required parameter requestParameters.impersonateUserRequestDto was null or undefined when calling impersonateUser.');
         }
 
         const queryParameters: any = {};
@@ -57,8 +57,8 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async adminImpersonateUser(requestParameters: AdminImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.adminImpersonateUserRaw(requestParameters, initOverrides);
+    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.impersonateUserRaw(requestParameters, initOverrides);
     }
 
 }

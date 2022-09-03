@@ -70,7 +70,7 @@ export const setUpPhantomProvider = (
   }
   provider.on("connect", async (publicKey: PublicKey) => {
     console.log(depositAddress)
-    const response = await paymentApi.paymentEntryPhantomCircleUSDC({
+    const response = await paymentApi.entryPhantomCircleUSDC({
       phantomCircleUSDCEntryRequestDto: {
         payinId
       }
@@ -109,7 +109,7 @@ export const executeMetamaskUSDCProvider = async (
   let depositAddress = ""
   let tokenAddress = ""
   let chainId = ""
-  const response = await paymentApi.paymentEntryMetamaskCircleUSDC({
+  const response = await paymentApi.entryMetamaskCircleUSDC({
     metamaskCircleUSDCEntryRequestDto: {
       payinId
     }
@@ -153,7 +153,7 @@ export const executeMetamaskEthProvider = async (
 ) => {
   let depositAddress = ""
   let chainId = ""
-  const response = await paymentApi.paymentEntryMetamaskCircleETH({
+  const response = await paymentApi.entryMetamaskCircleETH({
     metamaskCircleETHEntryRequestDto: {
       payinId
     }

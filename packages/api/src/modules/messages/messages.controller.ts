@@ -38,7 +38,7 @@ export class MessagesController {
     description: 'Sending message was registered',
   })
   @Post()
-  async send(
+  async sendMessage(
     @Req() req: RequestWithUser,
     @Body() sendMessageDto: SendMessageRequestDto,
   ): Promise<RegisterPayinResponseDto> {

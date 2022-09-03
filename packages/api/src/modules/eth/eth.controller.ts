@@ -18,11 +18,11 @@ export class EthController {
     description: 'ETH NFT Collection was created',
   })
   @Post('nftcollection')
-  async createNftCollection(
+  async createEthNftCollection(
     @Req() req: RequestWithUser,
     @Body() createEthNftCollectionDto: CreateEthNftCollectionRequestDto,
   ): Promise<GetEthNftCollectionResponseDto> {
-    return await this.ethService.createNftCollection(
+    return await this.ethService.createEthNftCollection(
       req.user.id,
       createEthNftCollectionDto,
     )

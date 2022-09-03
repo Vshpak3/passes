@@ -27,7 +27,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
     useSWR([`/fan-wall/creator/`, username], async () => {
       const api = wrapApi(FanWallApi)
-      return await api.fanWallGetFanWallForCreator({ username })
+      return await api.getFanWallForCreator({ username })
     })
 
   const onEditProfile = () => setEditProfile(true)
@@ -44,7 +44,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     [`/post/creator/`, username],
     async () => {
       const api = wrapApi(FeedApi)
-      return await api.feedGetPostsForCreator({ username, cursor: "" })
+      return await api.getPostsForCreator({ username, cursor: "" })
     }
   )
 
@@ -68,12 +68,12 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
     setProfile(newValues as any)
     const api = wrapApi(ProfileApi)
-    await api.profileUpdate({
-      id: props.id,
+    await api.updateProfile({
+      profileId: props.id,
       updateProfileRequestDto: {
-        ...rest,
-        profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
-        profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
+        ...rest
+        // profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
+        // profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
       }
     })
 
@@ -84,7 +84,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const updateUsername = async (username: string) => {
     const api = wrapApi(UserApi)
-    await api.userSetUsername({
+    await api.setUsername({
       updateUsernameRequestDto: {
         username
       }

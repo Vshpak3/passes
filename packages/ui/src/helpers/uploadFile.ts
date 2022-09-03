@@ -8,7 +8,7 @@ export const uploadFile = async (
   file: File,
   folder: "uploads" | "profile" | "nft" = "uploads"
 ) => {
-  let { url } = await api.contentPreSignUrl({
+  let { url } = await api.preSignUrl({
     path: `${folder}/${file.name}`
   })
 

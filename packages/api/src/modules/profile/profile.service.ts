@@ -39,7 +39,7 @@ export class ProfileService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(
+  async createProfile(
     userId: string,
     createProfileDto: CreateProfileRequestDto,
   ): Promise<ProfileDto> {
@@ -61,14 +61,14 @@ export class ProfileService {
     return new ProfileDto(data)
   }
 
-  async findOne(id: string, userId?: string): Promise<ProfileDto> {
+  async findProfile(profileId: string, userId?: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
         `${ProfileEntity.table}.user_id`,
         `${UserEntity.table}.id`,
       )
-      .where(`${ProfileEntity.table}.id`, id)
+      .where(`${ProfileEntity.table}.id`, profileId)
       .where(`${ProfileEntity.table}.is_active`, true)
       .where(`${UserEntity.table}.is_creator`, true)
       .first()
@@ -91,7 +91,7 @@ export class ProfileService {
     return new ProfileDto(profile)
   }
 
-  async findOneByUsername(
+  async findProfileByUsername(
     username: string,
     userId?: string,
   ): Promise<ProfileDto> {
@@ -124,13 +124,15 @@ export class ProfileService {
     return new ProfileDto(profile)
   }
 
-  async update(
+  async updateProfile(
     userId: string,
     profileId: string,
     updateProfileDto: UpdateProfileRequestDto,
   ): Promise<ProfileDto> {
     const profile = await this.dbWriter(ProfileEntity.table)
-      .where('id', profileId)
+      .where(
+        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
+      )
       .first()
 
     if (!profile) {
@@ -148,9 +150,11 @@ export class ProfileService {
     return new ProfileDto({ ...profile, ...data })
   }
 
-  async remove(userId: string, profileId: string): Promise<ProfileDto> {
+  async removeProfile(userId: string, profileId: string): Promise<ProfileDto> {
     const profile = await this.dbReader(ProfileEntity.table)
-      .where({ id: profileId })
+      .where(
+        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
+      )
       .first()
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)

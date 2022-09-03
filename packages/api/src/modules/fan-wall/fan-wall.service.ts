@@ -32,7 +32,7 @@ export class FanWallService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(
+  async createFanWallComment(
     userId: string,
     createCommentDto: CreateFanWallCommentRequestDto,
   ): Promise<CommentDto> {
@@ -78,7 +78,7 @@ export class FanWallService {
     return new CommentDto(fanWallComment)
   }
 
-  async findAllForCreator(
+  async getFanWallForCreator(
     creatorUsername: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
     const creator = await this.dbReader(UserEntity.table)
@@ -105,7 +105,7 @@ export class FanWallService {
     return new GetFanWallForCreatorResponseDto(comments)
   }
 
-  async hide(userId: string, id: string) {
+  async hideFanWallCommment(userId: string, id: string) {
     const comment = await this.dbReader(FanWallCommentEntity.table)
       .where({ id })
       .first()
@@ -129,7 +129,7 @@ export class FanWallService {
     await this.dbWriter(FanWallCommentEntity.table).update(data).where({ id })
   }
 
-  async delete(userId: string, id: string) {
+  async deleteFanWallComment(userId: string, id: string) {
     const comment = await this.dbReader(FanWallCommentEntity.table)
       .where({ id })
       .first()

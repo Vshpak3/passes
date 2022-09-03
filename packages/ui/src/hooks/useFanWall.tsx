@@ -11,7 +11,7 @@ const useCreatorProfile = ({ username }: UseCreatorProfileProps) => {
   const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
     useSWR([`/fan-wall/creator/`, username], async () => {
       const api = wrapApi(FanWallApi)
-      return await api.fanWallGetFanWallForCreator({ username })
+      return await api.getFanWallForCreator({ username })
     })
 
   return { fanWallPosts, isLoadingFanWallPosts }

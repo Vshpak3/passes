@@ -14,7 +14,7 @@ const Analytics: NextPage = () => {
   const [analyticsTab, setAnalyticsTab] = React.useState("earnings")
   const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
     const api = wrapApi(CreatorStatsApi)
-    return await api.creatorStatsGetBalance()
+    return await api.getBalance()
   })
   const handleAnalyticsTabClick = (value: string) => {
     setAnalyticsTab(value)

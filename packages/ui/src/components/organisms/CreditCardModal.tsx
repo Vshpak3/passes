@@ -83,7 +83,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
     }
     const paymentApi = wrapApi(PaymentApi)
 
-    const publicKey = await paymentApi.paymentGetCircleEncryptionKey()
+    const publicKey = await paymentApi.getCircleEncryptionKey()
 
     const encryptedData = await encrypt(cardDetails, publicKey)
 
@@ -93,7 +93,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
     payload.createCardDto.encryptedData = encryptedMessage
 
     //TODO: handle error on frontend (display some generic message)
-    const createdCard = await paymentApi.paymentCreateCircleCard(
+    const createdCard = await paymentApi.createCircleCard(
       { circleCreateCardAndExtraRequestDto: payload },
       {
         headers: {
@@ -104,7 +104,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
     )
 
     setTimeout(async () => {
-      const cardsResp = await paymentApi.paymentGetCircleCards({
+      const cardsResp = await paymentApi.getCircleCards({
         headers: {
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json"
@@ -114,7 +114,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
 
       if (card && card.status === "complete") {
         // set here paymentSetDefaultPayinMethod
-        await paymentApi.paymentSetDefaultPayinMethod(
+        await paymentApi.setDefaultPayinMethod(
           {
             setPayinMethodRequestDto: {
               method: PayinMethodDtoMethodEnum.CircleCard,

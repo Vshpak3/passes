@@ -21,7 +21,7 @@ export const TipPostButton = ({
 }: ITipPostButton) => {
   const api = wrapApi(PostApi)
   const register = async () => {
-    const response = await api.postRegisterTipPost({
+    const response = await api.registerTipPost({
       tipPostRequestDto: {
         postId,
         amount,

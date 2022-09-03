@@ -55,7 +55,7 @@ const EarningsGraph: React.FC<IEarningsGraph> = ({
   const api = wrapApi(CreatorStatsApi)
 
   const fetchEarnings = React.useCallback(async () => {
-    const data = await api.creatorStatsGetHistoricEarnings({
+    const data = await api.getHistoricEarnings({
       getCreatorEarningsHistoryRequestDto: {
         start: dateRange.startDate,
         end: dateRange.endDate,

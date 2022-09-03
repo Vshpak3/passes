@@ -10,8 +10,8 @@ const usePost = (postId: string) => {
       if (!postId) return null
       const api = wrapApi(PostApi)
 
-      return await api.postFindOne({
-        id: postId
+      return await api.findPost({
+        postId: postId
       })
     }
   )

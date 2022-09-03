@@ -1,4 +1,4 @@
-import { MessagesApi, PayinDataDto, PayinMethodDto } from "@passes/api-client"
+import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
 
 import { wrapApi } from "../../helpers"
@@ -23,7 +23,7 @@ export const BuyPassButton = ({
 }: ISendMessageButton) => {
   const api = wrapApi(MessagesApi)
   const register = async () => {
-    return await api.messagesSend({
+    return await api.sendMessage({
       sendMessageRequestDto: {
         text,
         attachments,
@@ -36,7 +36,16 @@ export const BuyPassButton = ({
   }
 
   const registerData = async () => {
-    return { blocked: false, amount: tipAmount } as PayinDataDto
+    return await api.sendMessageData({
+      sendMessageRequestDto: {
+        text,
+        attachments,
+        channelId,
+        tipAmount: tipAmount ? tipAmount : 0,
+        content,
+        payinMethod
+      }
+    })
   }
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(

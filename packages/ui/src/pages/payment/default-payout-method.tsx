@@ -35,7 +35,7 @@ const DefaultPayoutMethod = () => {
     async (api: PaymentApi) => {
       try {
         setDefaultPayout(
-          await api.paymentGetDefaultPayoutMethod({
+          await api.getDefaultPayoutMethod({
             headers: {
               Authorization: "Bearer " + accessToken,
               "Content-Type": "application/json"
@@ -54,7 +54,7 @@ const DefaultPayoutMethod = () => {
     async (paymentApi: PaymentApi) => {
       setBanks(
         (
-          await paymentApi.paymentGetCircleBanks({
+          await paymentApi.getCircleBanks({
             headers: {
               Authorization: "Bearer " + accessToken,
               "Content-Type": "application/json"
@@ -70,7 +70,7 @@ const DefaultPayoutMethod = () => {
     async (walletApi: WalletApi) => {
       setWallets(
         (
-          await walletApi.walletFindAll({
+          await walletApi.getWallets({
             headers: {
               Authorization: "Bearer " + accessToken,
               "Content-Type": "application/json"
@@ -85,7 +85,7 @@ const DefaultPayoutMethod = () => {
   const submit = async (dto: PayoutMethodDto) => {
     const paymentApi = new PaymentApi()
     try {
-      await paymentApi.paymentSetDefaultPayoutMethod(
+      await paymentApi.setDefaultPayoutMethod(
         { setPayoutMethodRequestDto: dto },
         {
           headers: {
@@ -104,7 +104,7 @@ const DefaultPayoutMethod = () => {
   const deleteBank = async (bankId: string) => {
     const paymentApi = new PaymentApi()
     try {
-      await paymentApi.paymentDeleteCircleBank(
+      await paymentApi.deleteCircleBank(
         { circleBankId: bankId },
         {
           headers: {
@@ -125,8 +125,8 @@ const DefaultPayoutMethod = () => {
     const walletApi = new WalletApi()
     const paymentApi = new PaymentApi()
     try {
-      await walletApi.walletRemove(
-        { id: walletId },
+      await walletApi.removeWallet(
+        { walletId: walletId },
         {
           headers: {
             Authorization: "Bearer " + accessToken,

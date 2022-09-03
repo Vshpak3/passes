@@ -34,11 +34,11 @@ export class PassController {
     description: 'A pass was created',
   })
   @Post()
-  async create(
+  async createPass(
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassRequestDto,
   ): Promise<GetPassResponseDto> {
-    return this.passService.create(req.user.id, createPassDto)
+    return this.passService.createPass(req.user.id, createPassDto)
   }
 
   @ApiOperation({ summary: 'Gets passes created by a creator' })
@@ -78,9 +78,9 @@ export class PassController {
     type: GetPassResponseDto,
     description: 'A pass was retrieved',
   })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<GetPassResponseDto> {
-    return this.passService.findOne(id)
+  @Get(':passId')
+  async findPass(@Param('passId') passId: string): Promise<GetPassResponseDto> {
+    return this.passService.findPass(passId)
   }
 
   @ApiOperation({ summary: 'Updates a pass' })
@@ -89,13 +89,13 @@ export class PassController {
     type: GetPassResponseDto,
     description: 'A pass was updated',
   })
-  @Patch(':id')
-  async update(
+  @Patch(':passId')
+  async updatePass(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('passId') passId: string,
     @Body() updatePassDto: UpdatePassRequestDto,
   ): Promise<GetPassResponseDto> {
-    return this.passService.update(req.user.id, id, updatePassDto)
+    return this.passService.updatePass(req.user.id, passId, updatePassDto)
   }
 
   @ApiOperation({ summary: 'Register create pass payin' })
@@ -105,11 +105,11 @@ export class PassController {
     description: 'Create pass payin was registered',
   })
   @Post('pay/create')
-  async registerCreatePass(
+  async registerBuyPass(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.passService.registerCreatePass(
+    return this.passService.registerBuyPass(
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.payinMethod,
@@ -123,11 +123,11 @@ export class PassController {
     description: 'Data for register create pass was returned',
   })
   @Post('pay/data/create')
-  async registerCreatePassData(
+  async registerBuyPassData(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<PayinDataDto> {
-    return this.passService.registerCreatePassData(
+    return this.passService.registerBuyPassData(
       req.user.id,
       createPassHolderDto.passId,
     )
@@ -189,7 +189,7 @@ export class PassController {
     description: 'A pass was pinned',
   })
   @Get('pin/:passId')
-  async pinPost(
+  async pinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
   ): Promise<boolean> {
@@ -203,7 +203,7 @@ export class PassController {
     description: 'A pass was unpinned',
   })
   @Get('unpin/:passId')
-  async unpinPost(
+  async unpinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
   ): Promise<boolean> {

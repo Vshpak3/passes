@@ -60,7 +60,7 @@ export class PassService {
     private readonly payService: PaymentService,
   ) {}
 
-  async create(
+  async createPass(
     userId: string,
     createPassDto: CreatePassRequestDto,
   ): Promise<PassDto> {
@@ -70,12 +70,12 @@ export class PassService {
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
-    const solNftCollectionDto = await this.solService.createNftCollection(
+    const solNftCollectionDto = await this.solService.createSolNftCollection(
       user.id,
       createPassDto.title,
       user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
       createPassDto.description,
-      createPassDto.imageUrl,
+      '', //TODO: get image url
     )
 
     const duration =
@@ -90,7 +90,6 @@ export class PassService {
       solNftCollection: solNftCollectionDto.id,
       title: createPassDto.title,
       description: createPassDto.description,
-      imageUrl: createPassDto.imageUrl,
       type: createPassDto.type,
       price: createPassDto.price,
       totalSupply: createPassDto.totalSupply,
@@ -104,7 +103,7 @@ export class PassService {
     return new PassDto(data)
   }
 
-  async findOne(id: string): Promise<PassDto> {
+  async findPass(id: string): Promise<PassDto> {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
         `${UserEntity.table} as creator`,
@@ -163,7 +162,7 @@ export class PassService {
     ).map((pass) => new PassDto(pass))
   }
 
-  async update(
+  async updatePass(
     userId: string,
     passId: string,
     updatePassDto: UpdatePassRequestDto,
@@ -186,7 +185,7 @@ export class PassService {
     return new PassDto(data)
   }
 
-  async createPass(userId: string, passId: string) {
+  async createPassHolder(userId: string, passId: string) {
     const id = v4()
 
     const pass = await this.dbReader(PassEntity.table)
@@ -290,7 +289,7 @@ export class PassService {
     passHolderId: string,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { amount, target, blocked } = await this.registerCreatePassData(
+    const { amount, target, blocked } = await this.registerBuyPassData(
       userId,
       passHolderId,
     )
@@ -375,12 +374,12 @@ export class PassService {
     return { amount: pass.price, target, blocked }
   }
 
-  async registerCreatePass(
+  async registerBuyPass(
     userId: string,
     passId: string,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { amount, target, blocked } = await this.registerCreatePassData(
+    const { amount, target, blocked } = await this.registerBuyPassData(
       userId,
       passId,
     )
@@ -417,7 +416,7 @@ export class PassService {
         pass.type === PassTypeEnum.SUBSCRIPTION &&
         (await passPurchaseQuery))
     ) {
-      await this.createPass(userId, passId)
+      await this.createPassHolder(userId, passId)
       return new RegisterPayinResponseDto()
     }
 
@@ -443,7 +442,7 @@ export class PassService {
     })
   }
 
-  async registerCreatePassData(
+  async registerBuyPassData(
     userId: string,
     passId: string,
   ): Promise<PayinDataDto> {
