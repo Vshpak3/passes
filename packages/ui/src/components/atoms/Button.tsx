@@ -239,17 +239,3 @@ export const TabButton = ({
     {children}
   </button>
 )
-
-// Button.displayName = "Button"
-// Button.propTypes = {
-//   bigger: PropTypes.bool,
-//   children: PropTypes.node,
-//   className: PropTypes.string,
-//   innerClassName: PropTypes.string,
-//   fontSize: PropTypes.number,
-//   href: PropTypes.string,
-//   onClick: PropTypes.func,
-//   style: PropTypes.object,
-//   tag: PropTypes.string,
-//   variant: PropTypes.string
-// }
