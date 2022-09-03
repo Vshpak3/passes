@@ -1,9 +1,10 @@
-import { Entity, ManyToOne, Property, types } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'tipped_message' })
+@Index({ properties: ['created_at'] })
 export class TippedMessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   sender: UserEntity

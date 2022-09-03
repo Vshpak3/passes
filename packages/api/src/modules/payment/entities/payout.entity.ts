@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -27,6 +27,7 @@ export class PayoutEntity extends BaseEntity {
   transactionHash?: string
 
   // transaction information
+  @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })
   amount?: number
 

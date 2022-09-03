@@ -1,10 +1,11 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { FAN_COMMENT_CONTENT_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'fan_wall_comment' })
+@Index({ properties: ['created_at'] })
 export class FanWallCommentEntity extends BaseEntity {
   @ManyToOne()
   creator: UserEntity

@@ -1,4 +1,11 @@
-import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  Property,
+  types,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -36,6 +43,7 @@ export class PayinEntity extends BaseEntity {
   transactionHash?: string
 
   // transaction information
+  @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 

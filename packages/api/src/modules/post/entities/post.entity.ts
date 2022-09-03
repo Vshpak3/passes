@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property, types } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
@@ -13,12 +13,15 @@ export class PostEntity extends BaseEntity {
   @Property({ length: POST_TEXT_LENGTH })
   text: string
 
+  @Index()
   @Property({ default: 0 })
   numLikes: number
 
+  @Index()
   @Property({ default: 0 })
   numComments: number
 
+  @Index()
   @Property({ default: 0 })
   numPurchases: number
 
@@ -37,6 +40,7 @@ export class PostEntity extends BaseEntity {
   @Property()
   pinnedAt?: Date
 
+  @Index()
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   totalTipAmount: number
 

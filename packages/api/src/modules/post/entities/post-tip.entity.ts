@@ -13,6 +13,7 @@ export class PostTipEntity extends BaseEntity {
   @ManyToOne()
   post: PostEntity
 
+  @Index()
   @Property({ type: types.float })
   amount: number
 }

@@ -1,6 +1,7 @@
 import {
   Entity,
   Enum,
+  Index,
   ManyToOne,
   OneToOne,
   Property,
@@ -14,6 +15,7 @@ import { ListTypeEnum } from '../enum/list.type.enum'
 
 @Entity({ tableName: 'list' })
 @Unique({ properties: ['name', 'type', 'pass'] })
+@Index({ properties: ['created_at'] })
 export class ListEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity

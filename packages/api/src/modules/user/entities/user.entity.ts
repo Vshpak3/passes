@@ -31,7 +31,6 @@ export class UserEntity extends BaseEntity<
   oauthProvider?: string
 
   @Property({ length: USER_USERNAME_LENGTH })
-  @Index()
   @Unique()
   username: string
 

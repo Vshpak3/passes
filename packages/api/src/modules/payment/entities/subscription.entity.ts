@@ -1,4 +1,11 @@
-import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { PassHolderEntity } from '../../pass/entities/pass-holder.entity'
@@ -31,6 +38,7 @@ export class SubscriptionEntity extends BaseEntity {
   @Property()
   chainId?: number
 
+  @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 

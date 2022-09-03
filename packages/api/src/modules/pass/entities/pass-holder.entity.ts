@@ -1,4 +1,11 @@
-import { Entity, ManyToOne, OneToOne, Property, types } from '@mikro-orm/core'
+import {
+  Entity,
+  Index,
+  ManyToOne,
+  OneToOne,
+  Property,
+  types,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { SolNftEntity } from '../../sol/entities/sol-nft.entity'
@@ -20,6 +27,7 @@ export class PassHolderEntity extends BaseEntity {
   solNft: SolNftEntity
 
   // null means unlimited
+  @Index()
   @Property({ default: 0 })
   messages?: number
 }
