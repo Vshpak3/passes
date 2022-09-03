@@ -51,6 +51,10 @@ export class UserEntity extends BaseEntity<
   @Property({ type: 'date' })
   birthday?: string
 
+  // For verification emails, not set by OAuth
+  @Property({ default: false })
+  isEmailVerified = false
+
   @Property({ default: false })
   isKYCVerified = false
 

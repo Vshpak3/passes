@@ -22,6 +22,7 @@ import {
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
 import { UpdateUsernameRequestDto } from './dto/update-username.dto'
+import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserService } from './user.service'
 
 @ApiTags('user')
@@ -76,6 +77,17 @@ export class UserController {
   @Delete()
   async delete(@Req() req: RequestWithUser): Promise<GetUserResponseDto> {
     return new GetUserResponseDto(await this.userService.remove(req.user.id))
+  }
+
+  @ApiOperation({ summary: 'Verify email for the current user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A email was verified',
+  })
+  @AllowUnauthorizedRequest()
+  @Post('verify-email')
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    await this.userService.verifyEmail(verifyEmailDto)
   }
 
   @ApiOperation({ summary: 'Set username for current user' })

@@ -30,6 +30,9 @@ import {
     UpdateUsernameRequestDto,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
+    VerifyEmailDto,
+    VerifyEmailDtoFromJSON,
+    VerifyEmailDtoToJSON,
 } from '../models';
 
 export interface FindOneRequest {
@@ -50,6 +53,10 @@ export interface SetUsernameRequest {
 
 export interface ValidateUsernameRequest {
     username: string;
+}
+
+export interface VerifyEmailRequest {
+    verifyEmailDto: VerifyEmailDto;
 }
 
 /**
@@ -263,6 +270,38 @@ export class UserApi extends runtime.BaseAPI {
     async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
         const response = await this.validateUsernameRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Verify email for the current user
+     */
+    async verifyEmailRaw(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.verifyEmailDto === null || requestParameters.verifyEmailDto === undefined) {
+            throw new runtime.RequiredError('verifyEmailDto','Required parameter requestParameters.verifyEmailDto was null or undefined when calling verifyEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/user/verify-email`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: VerifyEmailDtoToJSON(requestParameters.verifyEmailDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Verify email for the current user
+     */
+    async verifyEmail(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.verifyEmailRaw(requestParameters, initOverrides);
     }
 
 }

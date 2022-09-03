@@ -21,17 +21,17 @@ import {
     CreateLocalUserRequestDto,
     CreateLocalUserRequestDtoFromJSON,
     CreateLocalUserRequestDtoToJSON,
-    LocalUserLoginRequestDto,
-    LocalUserLoginRequestDtoFromJSON,
-    LocalUserLoginRequestDtoToJSON,
+    ResetPasswordRequestDto,
+    ResetPasswordRequestDtoFromJSON,
+    ResetPasswordRequestDtoToJSON,
 } from '../models';
 
 export interface CreateEmailPasswordUserRequest {
     createLocalUserRequestDto: CreateLocalUserRequestDto;
 }
 
-export interface LoginWithEmailPasswordRequest {
-    localUserLoginRequestDto: LocalUserLoginRequestDto;
+export interface InitPasswordResetRequest {
+    resetPasswordRequestDto: ResetPasswordRequestDto;
 }
 
 /**
@@ -73,11 +73,11 @@ export class AuthLocalApi extends runtime.BaseAPI {
     }
 
     /**
-     * Login with email and password
+     * Send reset password email to user
      */
-    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
-        if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
-            throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling loginWithEmailPassword.');
+    async initPasswordResetRaw(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.resetPasswordRequestDto === null || requestParameters.resetPasswordRequestDto === undefined) {
+            throw new runtime.RequiredError('resetPasswordRequestDto','Required parameter requestParameters.resetPasswordRequestDto was null or undefined when calling initPasswordReset.');
         }
 
         const queryParameters: any = {};
@@ -91,18 +91,17 @@ export class AuthLocalApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: LocalUserLoginRequestDtoToJSON(requestParameters.localUserLoginRequestDto),
+            body: ResetPasswordRequestDtoToJSON(requestParameters.resetPasswordRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Login with email and password
+     * Send reset password email to user
      */
-    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
-        const response = await this.loginWithEmailPasswordRaw(requestParameters, initOverrides);
-        return await response.value();
+    async initPasswordReset(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.initPasswordResetRaw(requestParameters, initOverrides);
     }
 
 }

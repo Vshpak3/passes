@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common'
 import bcrypt from 'bcrypt'
 import { generateFromEmail } from 'unique-username-generator'
 import { v4 } from 'uuid'
@@ -6,6 +10,8 @@ import { v4 } from 'uuid'
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
+import { EmailService } from '../../email/email.service'
+import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
@@ -14,6 +20,7 @@ import { BCRYPT_SALT_ROUNDS } from './local.constants'
 export class LocalAuthService {
   constructor(
     private readonly metrics: MetricsService,
+    private readonly emailService: EmailService,
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
@@ -30,12 +37,8 @@ export class LocalAuthService {
       throw new ConflictException('User already exists with this email')
     }
 
-    const passwordHash = await bcrypt.hash(
-      createLocalUserDto.password,
-      BCRYPT_SALT_ROUNDS,
-    )
-
     const id = v4()
+    const passwordHash = await this.hashPassword(createLocalUserDto.password)
 
     await this.dbWriter(UserEntity.table).insert(
       UserEntity.toDict<UserEntity>({
@@ -78,5 +81,47 @@ export class LocalAuthService {
 
     this.metrics.increment('login.success.local')
     return user
+  }
+
+  async resetEmailPassword(resetToken: string, newPassword: string) {
+    const request = await this.dbReader(ResetPasswordRequestEntity.table)
+      .where('id', resetToken)
+      .first()
+
+    if (!request) {
+      throw new BadRequestException('Reset password request does not exist')
+    }
+
+    if (Date.now() < request.expires_at) {
+      throw new BadRequestException('Reset password request has expired')
+    }
+
+    if (request.used_at !== null) {
+      throw new BadRequestException(
+        'Verify email request has already been used',
+      )
+    }
+
+    const data = ResetPasswordRequestEntity.toDict<ResetPasswordRequestEntity>({
+      usedAt: new Date(),
+    })
+
+    const hashedPassword = await this.hashPassword(newPassword)
+
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(ResetPasswordRequestEntity.table)
+        .update(data)
+        .where({ id: resetToken })
+
+      await trx(UserEntity.table)
+        .where('id', request.user_id)
+        .update('password_hash', hashedPassword)
+    })
+
+    await this.emailService.sendConfirmResetPasswordEmail(request.user_id)
+  }
+
+  private async hashPassword(password: string) {
+    return await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
   }
 }

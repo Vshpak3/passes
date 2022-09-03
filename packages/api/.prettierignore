@@ -1,5 +1,10 @@
 /coverage
 /dist
+
 /src/database/.orm-cache
 /src/database/migrations/*
+
+/src/modules/email/**/*.css
+/src/modules/email/**/*.html
+
 /**/*.json

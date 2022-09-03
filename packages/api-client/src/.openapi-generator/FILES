@@ -137,6 +137,7 @@ models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts
 models/RenewPassHolderRequestDto.ts
 models/ReportFanDto.ts
+models/ResetPasswordRequestDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SendMessageRequestDto.ts
@@ -153,6 +154,7 @@ models/UpdatePassRequestDto.ts
 models/UpdatePostRequestDto.ts
 models/UpdateProfileRequestDto.ts
 models/UpdateUsernameRequestDto.ts
+models/VerifyEmailDto.ts
 models/WalletDto.ts
 models/WalletResponseDto.ts
 models/index.ts

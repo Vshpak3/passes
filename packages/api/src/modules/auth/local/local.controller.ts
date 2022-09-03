@@ -10,10 +10,12 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { createTokens } from '../../../util/auth.util'
+import { EmailService } from '../../email/email.service'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { LocalUserLoginRequestDto } from '../dto/local-user-login'
+import { ResetPasswordRequestDto } from '../dto/reset-password'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { AuthTokenResponseDto } from './auth-token.dto'
@@ -27,6 +29,7 @@ export class LocalAuthController {
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly localAuthService: LocalAuthService,
     private readonly s3contentService: S3ContentService,
+    private readonly emailService: EmailService,
   ) {}
 
   @ApiOperation({ summary: 'Create a email and password user' })
@@ -84,5 +87,17 @@ export class LocalAuthController {
     )
 
     res.status(HttpStatus.OK).send(tokens)
+  }
+
+  @ApiOperation({ summary: 'Send reset password email to user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: undefined,
+    description: 'Send reset password email to user',
+  })
+  @AllowUnauthorizedRequest()
+  @Post()
+  async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
+    await this.emailService.sendInitResetPassword(resetPasswordDto.email)
   }
 }

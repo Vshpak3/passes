@@ -1,0 +1,8 @@
+img {
+  border: 0;
+  @apply max-w-full leading-full align-middle;
+}
+
+a {
+  @apply text-brand-600 [text-decoration:none];
+}

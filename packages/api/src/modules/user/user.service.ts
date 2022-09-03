@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { generateFromEmail } from 'unique-username-generator'
 import * as uuid from 'uuid'
@@ -9,11 +14,13 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { VerifyEmailRequestEntity } from '../email/entities/verify-email-request.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { USERNAME_TAKEN } from './constants/errors'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
+import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserEntity } from './entities/user.entity'
 
 @Injectable()
@@ -172,6 +179,40 @@ export class UserService {
         ])
         .onConflict(['name', 'type', 'pass_id'])
         .ignore()
+    })
+  }
+
+  async verifyEmail(verifyEmailDto: VerifyEmailDto) {
+    const request = await this.dbReader(VerifyEmailRequestEntity.table)
+      .where({ id: verifyEmailDto.verificationToken })
+      .first()
+
+    if (!request) {
+      throw new BadRequestException('Verify email request does not exist')
+    }
+
+    if (Date.now() < request.expires_at) {
+      throw new BadRequestException('Verify email request has already expired')
+    }
+
+    if (request.used_at !== null) {
+      throw new BadRequestException(
+        'Verify email request has already been used',
+      )
+    }
+
+    const data = VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
+      usedAt: new Date(),
+    })
+
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(VerifyEmailRequestEntity.table)
+        .update(data)
+        .where({ id: verifyEmailDto.verificationToken })
+
+      await trx(UserEntity.table)
+        .where('id', request.user_id)
+        .update('is_email_verified', true)
     })
   }
 }
