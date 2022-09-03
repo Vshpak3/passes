@@ -9,8 +9,12 @@ export class ListMemberDto {
   @ApiProperty()
   username: string
 
-  constructor(userId: string, username: string) {
-    this.userId = userId
-    this.username = username
+  @ApiProperty()
+  displayName: string
+
+  constructor(listMember) {
+    this.userId = listMember.user_id
+    this.username = listMember.username
+    this.displayName = listMember.display_name
   }
 }

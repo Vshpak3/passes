@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { GetListResponseDto } from './get-list.dto'
+import { ListDto } from './list.dto'
 
 export class GetListsResponseDto {
   @ApiProperty()
-  lists: GetListResponseDto[]
+  lists: ListDto[]
 
-  constructor(lists: GetListResponseDto[]) {
+  constructor(lists: ListDto[]) {
     this.lists = lists
   }
 }

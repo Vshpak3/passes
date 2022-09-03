@@ -15,7 +15,7 @@ export class CreatePostRequestDto {
   passes: string[]
 
   @ApiProperty()
-  private: boolean
+  isMessage: boolean
 
   @ApiPropertyOptional()
   price?: number
@@ -26,4 +26,9 @@ export class CreatePostRequestDto {
 
   @ApiPropertyOptional()
   scheduledAt?: Date
+}
+
+export class CreatePostResponseDto {
+  @ApiProperty()
+  postId: string
 }

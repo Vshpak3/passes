@@ -31,7 +31,10 @@ import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
-import { CreatePostRequestDto } from './dto/create-post.dto'
+import {
+  CreatePostRequestDto,
+  CreatePostResponseDto,
+} from './dto/create-post.dto'
 import { PostDto } from './dto/post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
@@ -60,10 +63,10 @@ export class PostService {
   async create(
     userId: string,
     createPostDto: CreatePostRequestDto,
-  ): Promise<void> {
+  ): Promise<CreatePostResponseDto> {
+    const postId = v4()
     await this.dbWriter
       .transaction(async (trx) => {
-        const postId = v4()
         const scheduledAt = createPostDto.scheduledAt
           ? formatDateTimeToDbDateTime(createPostDto.scheduledAt)
           : undefined
@@ -71,7 +74,7 @@ export class PostService {
           id: postId,
           user: userId,
           text: createPostDto.text,
-          private: createPostDto.private,
+          isMessage: createPostDto.isMessage,
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
           scheduledAt,
@@ -102,6 +105,7 @@ export class PostService {
         this.logger.error(err)
         throw err
       })
+    return { postId }
   }
 
   async findOne(id: string, userId: string): Promise<PostDto> {

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 

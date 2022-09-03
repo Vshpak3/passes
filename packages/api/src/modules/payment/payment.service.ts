@@ -196,6 +196,7 @@ export class PaymentService {
             idempotencyKey: createCardDto.idempotencyKey,
           }),
         )
+        .select('id')
         .first()
     ) {
       throw new CircleRequestError('reused idempotency key')
@@ -405,6 +406,7 @@ export class PaymentService {
             idempotencyKey: createBankDto.idempotencyKey,
           }),
         )
+        .select('id')
         .first()
     ) {
       throw new CircleRequestError('reused idempotency key')
@@ -429,6 +431,7 @@ export class PaymentService {
       fingerprint: response['fingerprint'],
       circleId: response['id'],
       idempotencyKey: createBankDto.idempotencyKey,
+      country: createBankDto.billingDetails.country,
     })
     await this.dbWriter(CircleBankEntity.table).insert(data)
 

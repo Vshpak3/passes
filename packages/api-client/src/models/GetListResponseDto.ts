@@ -24,7 +24,7 @@ export interface GetListResponseDto {
      * @type {string}
      * @memberof GetListResponseDto
      */
-    id: string;
+    listId: string;
     /**
      * 
      * @type {string}
@@ -33,17 +33,41 @@ export interface GetListResponseDto {
     name: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {string}
      * @memberof GetListResponseDto
      */
-    listMembers: Array<string>;
+    type: GetListResponseDtoTypeEnum;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof GetListResponseDto
      */
-    size: number;
+    count: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListResponseDto
+     */
+    passId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListResponseDto
+     */
+    passTitle?: string;
 }
+
+
+/**
+ * @export
+ */
+export const GetListResponseDtoTypeEnum = {
+    Normal: 'normal',
+    Followers: 'followers',
+    Following: 'following'
+} as const;
+export type GetListResponseDtoTypeEnum = typeof GetListResponseDtoTypeEnum[keyof typeof GetListResponseDtoTypeEnum];
+
 
 export function GetListResponseDtoFromJSON(json: any): GetListResponseDto {
     return GetListResponseDtoFromJSONTyped(json, false);
@@ -55,10 +79,12 @@ export function GetListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'id': json['id'],
+        'listId': json['listId'],
         'name': json['name'],
-        'listMembers': json['listMembers'],
-        'size': json['size'],
+        'type': json['type'],
+        'count': json['count'],
+        'passId': !exists(json, 'passId') ? undefined : json['passId'],
+        'passTitle': !exists(json, 'passTitle') ? undefined : json['passTitle'],
     };
 }
 
@@ -71,10 +97,12 @@ export function GetListResponseDtoToJSON(value?: GetListResponseDto | null): any
     }
     return {
         
-        'id': value.id,
+        'listId': value.listId,
         'name': value.name,
-        'listMembers': value.listMembers,
-        'size': value.size,
+        'type': value.type,
+        'count': value.count,
+        'passId': value.passId,
+        'passTitle': value.passTitle,
     };
 }
 

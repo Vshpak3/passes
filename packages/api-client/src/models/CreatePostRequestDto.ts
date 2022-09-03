@@ -42,7 +42,7 @@ export interface CreatePostRequestDto {
      * @type {boolean}
      * @memberof CreatePostRequestDto
      */
-    _private: boolean;
+    isMessage: boolean;
     /**
      * 
      * @type {number}
@@ -76,7 +76,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'text': json['text'],
         'content': json['content'],
         'passes': json['passes'],
-        '_private': json['private'],
+        'isMessage': json['isMessage'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
@@ -95,7 +95,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'text': value.text,
         'content': value.content,
         'passes': value.passes,
-        'private': value._private,
+        'isMessage': value.isMessage,
         'price': value.price,
         'expiresAt': value.expiresAt,
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),

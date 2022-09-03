@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AddListMembersRequestDto
+ * @interface GetListMembersRequestto
  */
-export interface AddListMembersRequestDto {
+export interface GetListMembersRequestto {
     /**
      * 
      * @type {string}
-     * @memberof AddListMembersRequestDto
+     * @memberof GetListMembersRequestto
      */
     listId: string;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof AddListMembersRequestDto
+     * @type {string}
+     * @memberof GetListMembersRequestto
      */
-    userIds: Array<string>;
+    cursor?: string;
 }
 
-export function AddListMembersRequestDtoFromJSON(json: any): AddListMembersRequestDto {
-    return AddListMembersRequestDtoFromJSONTyped(json, false);
+export function GetListMembersRequesttoFromJSON(json: any): GetListMembersRequestto {
+    return GetListMembersRequesttoFromJSONTyped(json, false);
 }
 
-export function AddListMembersRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddListMembersRequestDto {
+export function GetListMembersRequesttoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetListMembersRequestto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'listId': json['listId'],
-        'userIds': json['userIds'],
+        'cursor': !exists(json, 'cursor') ? undefined : json['cursor'],
     };
 }
 
-export function AddListMembersRequestDtoToJSON(value?: AddListMembersRequestDto | null): any {
+export function GetListMembersRequesttoToJSON(value?: GetListMembersRequestto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -58,7 +58,7 @@ export function AddListMembersRequestDtoToJSON(value?: AddListMembersRequestDto 
     return {
         
         'listId': value.listId,
-        'userIds': value.userIds,
+        'cursor': value.cursor,
     };
 }
 

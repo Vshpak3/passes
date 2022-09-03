@@ -21,6 +21,9 @@ import {
     CreatePassRequestDto,
     CreatePassRequestDtoFromJSON,
     CreatePassRequestDtoToJSON,
+    GetPassHoldersResponseDto,
+    GetPassHoldersResponseDtoFromJSON,
+    GetPassHoldersResponseDtoToJSON,
     GetPassResponseDto,
     GetPassResponseDtoFromJSON,
     GetPassResponseDtoToJSON,
@@ -59,6 +62,10 @@ export interface PassGetCreatorPassesRequest {
 
 export interface PassGetOwnedPassesRequest {
     creatorId: string;
+}
+
+export interface PassGetPassHoldersRequest {
+    passId: string;
 }
 
 export interface PassPinPostRequest {
@@ -248,6 +255,36 @@ export class PassApi extends runtime.BaseAPI {
      */
     async passGetOwnedPasses(requestParameters: PassGetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesResponseDto> {
         const response = await this.passGetOwnedPassesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get a passholders
+     */
+    async passGetPassHoldersRaw(requestParameters: PassGetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
+        if (requestParameters.passId === null || requestParameters.passId === undefined) {
+            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling passGetPassHolders.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/pass/passholders/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a passholders
+     */
+    async passGetPassHolders(requestParameters: PassGetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
+        const response = await this.passGetPassHoldersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

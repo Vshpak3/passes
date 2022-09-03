@@ -12,15 +12,11 @@ export class ChannelStatDto {
   @ApiProperty()
   totalTipAmount: number
 
-  @ApiProperty()
-  blocked: boolean
-
   constructor(channelStat) {
     if (channelStat) {
       this.id = channelStat.id
       this.channelId = channelStat.channel_id
       this.totalTipAmount = channelStat.total_tip_amount
-      this.blocked = channelStat.blocked
     }
   }
 }

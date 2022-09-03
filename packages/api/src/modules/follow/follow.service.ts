@@ -14,6 +14,8 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { ListTypeEnum } from '../list/enum/list.type.enum'
+import { ListService } from '../list/list.service'
 import { MessagesService } from '../messages/messages.service'
 import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
@@ -29,6 +31,7 @@ import { SearchFanRequestDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { FollowReportEntity } from './entities/follow-report.entity'
+import { WelcomeMessaged } from './entities/welcome-messaged.entity'
 
 // TODO: Use CASL to determine if user can access an entity
 // See https://docs.nestjs.com/security/authorization#integrating-casl
@@ -44,6 +47,7 @@ export class FollowService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly messagesService: MessagesService,
+    private readonly listService: ListService,
   ) {}
 
   async checkFollow(userId: string, creatorId: string): Promise<boolean> {
@@ -81,22 +85,6 @@ export class FollowService {
       throw new BadRequestException(IS_NOT_CREATOR)
     }
 
-    if (
-      creatorSettings?.welcomeMessage &&
-      creatorSettings.welcomeMessage != ''
-    ) {
-      const channel = await this.messagesService.createChannel(userId, {
-        text: '',
-        username: creator.username,
-      })
-      await this.messagesService.sendMessage(creator.id, {
-        text: creatorSettings.welcomeMessage,
-        attachments: [],
-        content: [],
-        channelId: channel.channelId,
-      })
-    }
-
     const data = FollowEntity.toDict<FollowEntity>({
       follower: userId,
       creator: creatorId,
@@ -122,7 +110,49 @@ export class FollowService {
           .where('user_id', userId)
           .increment('num_followers', 1)
       }
+
+      await this.listService.updateListByType(
+        userId,
+        creatorId,
+        ListTypeEnum.FOLLOWERS,
+        'add',
+        trx,
+      )
+      await this.listService.updateListByType(
+        creatorId,
+        userId,
+        ListTypeEnum.FOLLOWING,
+        'add',
+        trx,
+      )
     })
+
+    try {
+      if (
+        creatorSettings?.welcomeMessage &&
+        creatorSettings.welcomeMessage != ''
+      ) {
+        await this.dbWriter(WelcomeMessaged.table).insert(
+          WelcomeMessaged.toDict<WelcomeMessaged>({
+            follower: userId,
+            creator: creatorId,
+          }),
+        )
+        const channel = await this.messagesService.createChannel(userId, {
+          text: '',
+          username: creator.username,
+        })
+        await this.messagesService.sendMessage(creator.id, {
+          text: creatorSettings.welcomeMessage,
+          attachments: [],
+          content: [],
+          channelId: channel.channelId,
+        })
+      }
+    } catch (err) {
+      this.logger.error('failed to send welcome message', err)
+    }
+
     return new FollowDto(data)
   }
 
@@ -211,7 +241,7 @@ export class FollowService {
         follower: followerId,
       }),
     )
-    await this.unblockFollower(followerId, creatorId)
+    await this.unfollowCreator(followerId, creatorId)
   }
 
   async unblockFollower(creatorId: string, followerId: string): Promise<void> {
@@ -237,6 +267,20 @@ export class FollowService {
           .where('user_id', userId)
           .decrement('num_followers', 1)
       }
+      await this.listService.updateListByType(
+        userId,
+        creatorId,
+        ListTypeEnum.FOLLOWERS,
+        'remove',
+        trx,
+      )
+      await this.listService.updateListByType(
+        creatorId,
+        userId,
+        ListTypeEnum.FOLLOWING,
+        'remove',
+        trx,
+      )
     })
   }
 }

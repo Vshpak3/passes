@@ -6,19 +6,20 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
   Req,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { GetListResponseDto } from './dto/get-list.dto'
-import { GetListsResponseDto } from './dto/get-lists.dto'
 import {
-  AddListMembersRequestDto,
-  RemoveListMembersRequestDto,
-} from './dto/list-members.dto'
+  GetListMembersRequestto,
+  GetListMembersResponseDto,
+} from './dto/get-list-members.dto'
+import { GetListsResponseDto } from './dto/get-lists.dto'
+import { RemoveListMembersRequestDto } from './dto/remove-list-members.dto'
 import { ListService } from './list.service'
 
 @ApiTags('list')
@@ -29,15 +30,15 @@ export class ListController {
   @ApiOperation({ summary: 'Creates List for a user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetListResponseDto,
+    type: undefined,
     description: 'List was created',
   })
   @Post()
-  async create(
+  async createList(
     @Req() req: RequestWithUser,
     @Body() createListDto: CreateListRequestDto,
-  ): Promise<GetListResponseDto> {
-    return await this.listService.create(req.user.id, createListDto)
+  ): Promise<void> {
+    await this.listService.createList(req.user.id, createListDto)
   }
 
   @ApiOperation({ summary: 'Add ListMembers to a List' })
@@ -46,17 +47,12 @@ export class ListController {
     type: undefined,
     description: 'List Members added',
   })
-  @Post('member/:id')
+  @Post('members')
   async addListMembers(
     @Req() req: RequestWithUser,
-    @Param('id') listId: string,
     @Body() addListMembersDto: AddListMembersRequestDto,
   ): Promise<void> {
-    return this.listService.addListMembers(
-      req.user.id,
-      listId,
-      addListMembersDto,
-    )
+    return this.listService.addListMembers(req.user.id, addListMembersDto, true)
   }
 
   @ApiOperation({ summary: 'Remove ListMembers from a List' })
@@ -65,16 +61,15 @@ export class ListController {
     type: undefined,
     description: 'List Members removed',
   })
-  @Delete('/member/:id')
+  @Delete('members')
   async removeListMembers(
     @Req() req: RequestWithUser,
-    @Param('id') listId: string,
     @Body() removeListMembersDto: RemoveListMembersRequestDto,
   ): Promise<void> {
     return this.listService.removeListMembers(
       req.user.id,
-      listId,
       removeListMembersDto,
+      true,
     )
   }
 
@@ -84,13 +79,12 @@ export class ListController {
     type: GetListResponseDto,
     description: 'List was retrieved',
   })
-  @Get(':id')
-  async find(
+  @Get(':listId')
+  async getList(
     @Req() req: RequestWithUser,
-    @Param('id') listId: string,
-    @Query('cursor') cursor: string,
+    @Param('listId') listId: string,
   ): Promise<GetListResponseDto> {
-    return await this.listService.getList(req.user.id, listId, cursor)
+    return await this.listService.getList(req.user.id, listId)
   }
 
   @ApiOperation({ summary: 'Get all lists for user' })
@@ -100,11 +94,27 @@ export class ListController {
     description: 'Lists were retrieved',
   })
   @Get()
-  async findAll(
+  async getLists(@Req() req: RequestWithUser): Promise<GetListsResponseDto> {
+    return await this.listService.getListsForUser(req.user.id)
+  }
+
+  @ApiOperation({ summary: 'Get list members for user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetListMembersResponseDto,
+    description: 'List members was retrieved',
+  })
+  @Post('members/')
+  async getListMembers(
     @Req() req: RequestWithUser,
-    @Query('cursor') cursor: string,
-  ): Promise<GetListsResponseDto> {
-    return await this.listService.getListsForUser(req.user.id, cursor)
+    @Body() getListMembersRequestDto: GetListMembersRequestto,
+  ): Promise<GetListMembersResponseDto> {
+    return {
+      listMembers: await this.listService.getListMembers(
+        req.user.id,
+        getListMembersRequestDto,
+      ),
+    }
   }
 
   @ApiOperation({ summary: 'Delete list for user' })
@@ -113,11 +123,11 @@ export class ListController {
     type: Boolean,
     description: 'List was deleted',
   })
-  @Delete(':id')
-  async delete(
+  @Delete(':listId')
+  async deleteList(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('listId') listId: string,
   ): Promise<boolean> {
-    return await this.listService.deleteList(req.user.id, id)
+    return await this.listService.deleteList(req.user.id, listId)
   }
 }

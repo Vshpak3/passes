@@ -43,6 +43,12 @@ export interface CircleBankDto {
      * @memberof CircleBankDto
      */
     description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CircleBankDto
+     */
+    country: string;
 }
 
 export function CircleBankDtoFromJSON(json: any): CircleBankDto {
@@ -59,6 +65,7 @@ export function CircleBankDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'circleId': !exists(json, 'circleId') ? undefined : json['circleId'],
         'status': json['status'],
         'description': json['description'],
+        'country': json['country'],
     };
 }
 
@@ -75,6 +82,7 @@ export function CircleBankDtoToJSON(value?: CircleBankDto | null): any {
         'circleId': value.circleId,
         'status': value.status,
         'description': value.description,
+        'country': value.country,
     };
 }
 

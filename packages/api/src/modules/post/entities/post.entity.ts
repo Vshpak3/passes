@@ -26,7 +26,7 @@ export class PostEntity extends BaseEntity {
   deletedAt?: Date
 
   @Property()
-  private: boolean
+  isMessage: boolean
 
   @Property({ columnType: USD_AMOUNT_TYPE })
   price?: number

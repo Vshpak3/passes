@@ -14,7 +14,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { CreatePostRequestDto } from './dto/create-post.dto'
+import {
+  CreatePostRequestDto,
+  CreatePostResponseDto,
+} from './dto/create-post.dto'
 import { CreatePostAccessRequestDto } from './dto/create-post-access.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
@@ -29,15 +32,15 @@ export class PostController {
   @ApiOperation({ summary: 'Creates a post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: CreatePostResponseDto,
     description: 'A post was created',
   })
   @Post()
   async create(
     @Req() req: RequestWithUser,
     @Body() createPostDto: CreatePostRequestDto,
-  ): Promise<void> {
-    await this.postService.create(req.user.id, createPostDto)
+  ): Promise<CreatePostResponseDto> {
+    return await this.postService.create(req.user.id, createPostDto)
   }
 
   @ApiOperation({ summary: 'Gets a post' })

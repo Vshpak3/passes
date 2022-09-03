@@ -60,6 +60,7 @@ models/CreatePassHolderRequestDto.ts
 models/CreatePassRequestDto.ts
 models/CreatePostAccessRequestDto.ts
 models/CreatePostRequestDto.ts
+models/CreatePostResponseDto.ts
 models/CreateProfileRequestDto.ts
 models/CreateSolNftCollectionRequestDto.ts
 models/CreateSolNftRequestDto.ts
@@ -68,6 +69,7 @@ models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
 models/GetChannelResponseDto.ts
 models/GetChannelSettingsResponseDto.ts
+models/GetChannelStatsRequestDto.ts
 models/GetChannelStatsResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
@@ -84,11 +86,14 @@ models/GetFanWallForCreatorResponseDto.ts
 models/GetFansResponseDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowingResponseDto.ts
+models/GetListMembersRequestto.ts
+models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsResponseDto.ts
 models/GetMessagesResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
+models/GetPassHoldersResponseDto.ts
 models/GetPassResponseDto.ts
 models/GetPassesResponseDto.ts
 models/GetPayinMethodResponseDto.ts
@@ -108,6 +113,7 @@ models/GetUsernamesResponseDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts
+models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts

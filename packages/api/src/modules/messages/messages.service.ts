@@ -18,7 +18,6 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { ContentEntity } from '../content/entities/content.entity'
 import { ContentBatchMessageEntity } from '../content/entities/content-batch-message.entity'
-import { ContentMessageEntity } from '../content/entities/content-message.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { ListEntity } from '../list/entities/list.entity'
@@ -35,6 +34,7 @@ import { ChannelStatDto } from './dto/channel-stat.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
 import { CreateChannelRequestDto } from './dto/create-channel.dto'
 import { GetChannelResponseDto } from './dto/get-channel.dto'
+import { GetChannelStatsRequestDto } from './dto/get-channel-stat.dto'
 import { MessageDto } from './dto/message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
@@ -127,8 +127,6 @@ export class MessagesService {
         ChannelStatEntity.toDict<ChannelStatEntity>({
           channelId: createResponse.channel.id,
           totalTipAmount: 0,
-          user: userId,
-          otherUser: otherUser.id,
         }),
       )
       .onConflict('channel_id')
@@ -501,40 +499,6 @@ export class MessagesService {
       sendMessageDto.channelId,
     )
 
-    const otherUserId = await this.getOtherUserId(userId, channel)
-    if (await this.checkBlocked(userId, otherUserId)) {
-      throw new BadRequestException(`user is blocked`)
-    }
-
-    if (sendMessageDto.content.length > 0) {
-      const contentMessageResult = await this.dbReader(
-        ContentMessageEntity.table,
-      )
-        .select('content_message.id')
-        .whereIn('content_message.content_id', sendMessageDto.content)
-        .where('content_message.recipient_id', otherUserId)
-      if (contentMessageResult[0] != undefined) {
-        throw new BadRequestException(
-          'content has already been sent to recipient',
-        )
-      }
-
-      const messageId = v4()
-      const contentMessageRecords: Array<any> = []
-      for (let i = 0; i < sendMessageDto.content.length; i++) {
-        contentMessageRecords.push({
-          id: v4(),
-          content_id: sendMessageDto.content[i],
-          message_id: messageId,
-          recipient_id: otherUserId,
-          sender_id: userId,
-        })
-      }
-      await this.dbWriter(ContentMessageEntity.table).insert(
-        contentMessageRecords,
-      )
-    }
-
     const messageId = v4()
     const response = await channel.sendMessage({
       id: messageId,
@@ -629,11 +593,12 @@ export class MessagesService {
     )
   }
 
-  async getChannelsStats(userId: string): Promise<Array<ChannelStatDto>> {
+  async getChannelsStats(
+    getChannelStatsRequestDto: GetChannelStatsRequestDto,
+  ): Promise<Array<ChannelStatDto>> {
     return (
       await this.dbReader(ChannelStatEntity.table)
-        .where('user_id', userId)
-        .orWhere('other_user_id', userId)
+        .whereIn('channel_id', getChannelStatsRequestDto.channelIds)
         .select('*')
     ).map((channelStat) => new ChannelStatDto(channelStat))
   }

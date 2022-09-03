@@ -21,10 +21,16 @@ import { exists, mapValues } from '../runtime';
 export interface RemoveListMembersRequestDto {
     /**
      * 
+     * @type {string}
+     * @memberof RemoveListMembersRequestDto
+     */
+    listId: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof RemoveListMembersRequestDto
      */
-    users: Array<string>;
+    userIds: Array<string>;
 }
 
 export function RemoveListMembersRequestDtoFromJSON(json: any): RemoveListMembersRequestDto {
@@ -37,7 +43,8 @@ export function RemoveListMembersRequestDtoFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'users': json['users'],
+        'listId': json['listId'],
+        'userIds': json['userIds'],
     };
 }
 
@@ -50,7 +57,8 @@ export function RemoveListMembersRequestDtoToJSON(value?: RemoveListMembersReque
     }
     return {
         
-        'users': value.users,
+        'listId': value.listId,
+        'userIds': value.userIds,
     };
 }
 

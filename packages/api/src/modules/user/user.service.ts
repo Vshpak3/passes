@@ -9,6 +9,8 @@ import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { ListEntity } from '../list/entities/list.entity'
+import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { USERNAME_TAKEN } from './constants/errors'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import { SearchCreatorRequestDto } from './dto/search-creator.dto'
@@ -154,6 +156,21 @@ export class UserService {
       await trx(CreatorStatEntity.table)
         .insert(CreatorStatEntity.toDict<CreatorStatEntity>({ user: userId }))
         .onConflict('user_id')
+        .ignore()
+      await trx(ListEntity.table)
+        .insert([
+          ListEntity.toDict<ListEntity>({
+            user: userId,
+            name: 'Following',
+            type: ListTypeEnum.FOLLOWING,
+          }),
+          ListEntity.toDict<ListEntity>({
+            user: userId,
+            name: 'Followers',
+            type: ListTypeEnum.FOLLOWERS,
+          }),
+        ])
+        .onConflict(['name', 'type', 'pass_id'])
         .ignore()
     })
   }

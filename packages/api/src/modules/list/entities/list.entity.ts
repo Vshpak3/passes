@@ -1,16 +1,19 @@
 import {
-  Collection,
   Entity,
-  ManyToMany,
+  Enum,
   ManyToOne,
+  OneToOne,
   Property,
+  Unique,
 } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { ContentEntity } from '../../content/entities/content.entity'
+import { PassEntity } from '../../pass/entities/pass.entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import { ListTypeEnum } from '../enum/list.type.enum'
 
 @Entity({ tableName: 'list' })
+@Unique({ properties: ['name', 'type', 'pass'] })
 export class ListEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
@@ -18,6 +21,9 @@ export class ListEntity extends BaseEntity {
   @Property({ length: 255 })
   name: string
 
-  @ManyToMany(() => ContentEntity, (content) => content.list)
-  content = new Collection<ListEntity>(this)
+  @Enum({ type: () => ListTypeEnum, default: ListTypeEnum.NORMAL })
+  type: ListTypeEnum
+
+  @OneToOne()
+  pass?: PassEntity
 }

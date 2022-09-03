@@ -30,7 +30,7 @@ export interface CreateListRequestDto {
      * @type {Array<string>}
      * @memberof CreateListRequestDto
      */
-    users: Array<string>;
+    userIds: Array<string>;
 }
 
 export function CreateListRequestDtoFromJSON(json: any): CreateListRequestDto {
@@ -44,7 +44,7 @@ export function CreateListRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'name': json['name'],
-        'users': json['users'],
+        'userIds': json['userIds'],
     };
 }
 
@@ -58,7 +58,7 @@ export function CreateListRequestDtoToJSON(value?: CreateListRequestDto | null):
     return {
         
         'name': value.name,
-        'users': value.users,
+        'userIds': value.userIds,
     };
 }
 

@@ -15,12 +15,16 @@ export class CircleBankDto {
   @ApiProperty()
   description: string
 
+  @ApiProperty()
+  country: string
+
   constructor(bank) {
     if (bank) {
       this.id = bank.id
       this.circleId = bank.circle_id
       this.status = bank.status
       this.description = bank.description
+      this.country = bank.country
     }
   }
 }

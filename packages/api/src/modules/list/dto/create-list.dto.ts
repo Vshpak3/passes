@@ -5,5 +5,5 @@ export class CreateListRequestDto {
   name: string
 
   @ApiProperty()
-  users: string[]
+  userIds: string[]
 }

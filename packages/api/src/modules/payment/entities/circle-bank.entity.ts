@@ -4,6 +4,7 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import {
   CIRCLE_BANK_TRACKING_REF_LENGTH,
+  CIRCLE_COUNTRY_LENGTH,
   CIRCLE_DESCRIPTION_LENGTH,
   CIRCLE_FINGERPRINT_LENGTH,
   CIRCLE_ID_LENGTH,
@@ -23,6 +24,9 @@ export class CircleBankEntity extends BaseEntity {
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
   circleId?: string
+
+  @Property({ length: CIRCLE_COUNTRY_LENGTH })
+  country: string
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum

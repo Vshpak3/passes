@@ -4,3 +4,10 @@ export class ForbiddenPassException extends Error {
     Object.setPrototypeOf(this, ForbiddenPassException.prototype)
   }
 }
+
+export class NoPassError extends Error {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, NoPassError.prototype)
+  }
+}

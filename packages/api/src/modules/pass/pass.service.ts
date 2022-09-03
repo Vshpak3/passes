@@ -32,12 +32,13 @@ import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
 import { PassDto } from './dto/pass.dto'
+import { PassHolderDto } from './dto/pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { PassTypeEnum } from './enum/pass.enum'
-import { ForbiddenPassException } from './error/pass.error'
+import { ForbiddenPassException, NoPassError } from './error/pass.error'
 
 const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
 const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
@@ -64,7 +65,7 @@ export class PassService {
     createPassDto: CreatePassRequestDto,
   ): Promise<PassDto> {
     const user = await this.dbReader(UserEntity.table)
-      .where({ id: userId })
+      .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
       .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
@@ -99,6 +100,7 @@ export class PassService {
     })
 
     await this.dbWriter(PassEntity.table).insert(data)
+
     return new PassDto(data)
   }
 
@@ -168,6 +170,7 @@ export class PassService {
   ) {
     const currentPass = await this.dbReader(PassEntity.table)
       .where({ id: passId })
+      .select(['id', 'creator_id'])
       .first()
 
     if (!currentPass) {
@@ -533,5 +536,35 @@ export class PassService {
         .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
         .update(PassEntity.toDict<PassEntity>({ pinnedAt: null }))) === 1
     )
+  }
+
+  async getPassHolders(
+    userId: string,
+    passId: string,
+  ): Promise<Array<PassHolderDto>> {
+    await this.checkPass(userId, passId)
+    return (
+      await this.dbReader(PassHolderEntity.table)
+        .innerJoin(
+          UserEntity.table,
+          `${UserEntity.table}.id`,
+          `${PassHolderEntity.table}.holder_id`,
+        )
+        .where(`${PassHolderEntity.table}.pass_id`, passId)
+        .distinct(`${PassHolderEntity.table}.holder_id`)
+        .select([
+          `${UserEntity.table}.username`,
+          `${UserEntity.table}.display_name`,
+        ])
+    ).map((passHolder) => new PassHolderDto(passHolder))
+  }
+
+  async checkPass(userId: string, passId: string) {
+    if (
+      !(await this.dbReader(PassEntity.table)
+        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
+        .first())
+    )
+      throw new NoPassError('pass does not exist or unowned by user')
   }
 }

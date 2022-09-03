@@ -16,7 +16,10 @@ import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
 import { CreateChannelRequestDto } from './dto/create-channel.dto'
 import { GetChannelResponseDto } from './dto/get-channel.dto'
 import { GetChannelSettingsResponseDto } from './dto/get-channel-settings.dto'
-import { GetChannelStatsResponseDto } from './dto/get-channel-stat.dto'
+import {
+  GetChannelStatsRequestDto,
+  GetChannelStatsResponseDto,
+} from './dto/get-channel-stat.dto'
 import { GetMessagesResponseDto } from './dto/get-messages.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
@@ -144,12 +147,12 @@ export class MessagesController {
     type: GetChannelStatsResponseDto,
     description: 'Channel stats was returned ',
   })
-  @Get('channel/stats')
+  @Post('channel/stats')
   async getChannelsStats(
-    @Req() req: RequestWithUser,
+    @Body() getChannelStatsRequestDto: GetChannelStatsRequestDto,
   ): Promise<GetChannelStatsResponseDto> {
     return new GetChannelStatsResponseDto(
-      await this.messagesService.getChannelsStats(req.user.id),
+      await this.messagesService.getChannelsStats(getChannelStatsRequestDto),
     )
   }
 
@@ -167,7 +170,7 @@ export class MessagesController {
     return await this.messagesService.getChannelSettings(req.user.id, channelId)
   }
 
-  @ApiOperation({ summary: 'update channels settings' })
+  @ApiOperation({ summary: 'Update channels settings' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: undefined,

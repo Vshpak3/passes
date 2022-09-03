@@ -27,6 +27,9 @@ import {
     GetChannelSettingsResponseDto,
     GetChannelSettingsResponseDtoFromJSON,
     GetChannelSettingsResponseDtoToJSON,
+    GetChannelStatsRequestDto,
+    GetChannelStatsRequestDtoFromJSON,
+    GetChannelStatsRequestDtoToJSON,
     GetChannelStatsResponseDto,
     GetChannelStatsResponseDtoFromJSON,
     GetChannelStatsResponseDtoToJSON,
@@ -56,6 +59,10 @@ export interface MessagesCreateChannelRequest {
 
 export interface MessagesGetChannelSettingsRequest {
     channelId: string;
+}
+
+export interface MessagesGetChannelsStatsRequest {
+    getChannelStatsRequestDto: GetChannelStatsRequestDto;
 }
 
 export interface MessagesMassSendRequest {
@@ -146,16 +153,23 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels stats
      */
-    async messagesGetChannelsStatsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
+    async messagesGetChannelsStatsRaw(requestParameters: MessagesGetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
+        if (requestParameters.getChannelStatsRequestDto === null || requestParameters.getChannelStatsRequestDto === undefined) {
+            throw new runtime.RequiredError('getChannelStatsRequestDto','Required parameter requestParameters.getChannelStatsRequestDto was null or undefined when calling messagesGetChannelsStats.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
             path: `/api/messages/channel/stats`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetChannelStatsRequestDtoToJSON(requestParameters.getChannelStatsRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelStatsResponseDtoFromJSON(jsonValue));
@@ -164,8 +178,8 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels stats
      */
-    async messagesGetChannelsStats(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatsResponseDto> {
-        const response = await this.messagesGetChannelsStatsRaw(initOverrides);
+    async messagesGetChannelsStats(requestParameters: MessagesGetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatsResponseDto> {
+        const response = await this.messagesGetChannelsStatsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -346,7 +360,7 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * update channels settings
+     * Update channels settings
      */
     async messagesUpdateChannelSettingsRaw(requestParameters: MessagesUpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
@@ -375,7 +389,7 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * update channels settings
+     * Update channels settings
      */
     async messagesUpdateChannelSettings(requestParameters: MessagesUpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.messagesUpdateChannelSettingsRaw(requestParameters, initOverrides);
