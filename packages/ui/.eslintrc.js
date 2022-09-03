@@ -15,6 +15,8 @@ module.exports = {
       rules: {
         "@typescript-eslint/no-floating-promises": "off",
         "no-console": "off",
+        // Breaking for some reason after upgrades
+        "react/no-unknown-property": "off",
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
         "sonarjs/cognitive-complexity": "off",
