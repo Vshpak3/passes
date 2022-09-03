@@ -6,7 +6,7 @@ import { REASON_FOR_BLOCKING_LENGTH } from '../constants/schema'
 
 // Represents a creator reporting a follower
 @Entity({ tableName: 'follow_report' })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class FollowReportEntity extends BaseEntity {
   @ManyToOne()
   follower: UserEntity

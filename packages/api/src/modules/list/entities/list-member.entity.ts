@@ -6,7 +6,7 @@ import { ListEntity } from './list.entity'
 
 @Entity({ tableName: 'list_member' })
 @Unique({ properties: ['list', 'user'] })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class ListMemberEntity extends BaseEntity {
   @ManyToOne({ onDelete: 'cascade' })
   list: ListEntity

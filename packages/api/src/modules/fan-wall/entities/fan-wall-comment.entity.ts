@@ -5,7 +5,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { FAN_COMMENT_CONTENT_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'fan_wall_comment' })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class FanWallCommentEntity extends BaseEntity {
   @ManyToOne()
   creator: UserEntity

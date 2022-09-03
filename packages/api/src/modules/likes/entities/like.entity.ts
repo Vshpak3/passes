@@ -6,7 +6,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'post_like' })
 @Unique({ properties: ['post', 'liker'] })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class LikeEntity extends BaseEntity {
   @ManyToOne()
   post: PostEntity

@@ -6,7 +6,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 // Represents a user following a creator
 @Entity({ tableName: 'follow' })
 @Unique({ properties: ['follower', 'creator'] })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class FollowEntity extends BaseEntity {
   @ManyToOne()
   follower: UserEntity

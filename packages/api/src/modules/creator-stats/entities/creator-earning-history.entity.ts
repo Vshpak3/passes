@@ -6,7 +6,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 @Entity({ tableName: 'creator_earning_history' })
-@Index({ properties: ['created_at'] })
+@Index({ properties: ['createdAt'] })
 export class CreatorEarningHistoryEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   user: UserEntity
