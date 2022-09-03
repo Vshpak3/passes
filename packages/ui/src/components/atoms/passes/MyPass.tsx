@@ -17,6 +17,20 @@ interface IPassRenewalButton {
 interface ISelectPassFilter {
   setPassType: React.Dispatch<React.SetStateAction<string>>
 }
+interface IPassTileContent {
+  stat: number
+  title: string
+  price: number
+}
+interface IMyPassTile {
+  passData: PassDto
+  isExpired?: boolean
+}
+type TComposePassOptions = {
+  value: string
+  label: string
+  selected: boolean
+}
 
 function capitalizeFirstLetter(val: string) {
   return val.charAt(0).toUpperCase() + val.slice(1)
@@ -24,14 +38,22 @@ function capitalizeFirstLetter(val: string) {
 
 const PASS_OPTIONS = [
   {
+    value: "all",
+    label: "All Pass Types",
+    selected: true
+  },
+  {
     value: PassTypeEnum.SUBSCRIPTION,
-    label: "Subscription Passes"
+    label: "Subscription Passes",
+    selected: false
   },
   {
     value: PassTypeEnum.LIFETIME,
-    label: "Lifetime Passes"
+    label: "Lifetime Passes",
+    selected: false
   }
 ]
+const ONE_MONTH = 2629746 * 1000
 
 const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
   <button
@@ -45,29 +67,22 @@ const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
 )
 
 const SelectPassFilter = ({ setPassType }: ISelectPassFilter) => {
-  function composePassOptions(option: { value: string; label: string }) {
-    const key = typeof option === "string" ? option : option.value
-    const value = typeof option === "string" ? option : option.value
-    const label = typeof option === "string" ? option : option.label
+  function composePassOptions(option: TComposePassOptions) {
+    const { value, selected, label } = option
     return (
-      <option key={key} value={value}>
+      <option key={value} value={value} selected={selected}>
         {label}
       </option>
     )
   }
 
   return (
-    <>
-      <select
-        onChange={(e) => setPassType(e.target.value)}
-        className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0 md:ml-4"
-      >
-        <option value="all" selected>
-          All Pass Types
-        </option>
-        {PASS_OPTIONS.map(composePassOptions)}
-      </select>
-    </>
+    <select
+      onChange={(e) => setPassType(e.target.value)}
+      className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0 md:ml-4"
+    >
+      {PASS_OPTIONS.map(composePassOptions)}
+    </select>
   )
 }
 
@@ -96,9 +111,24 @@ const PassTileLabel = ({
   )
 }
 
-interface IMyPassTile {
-  passData: PassDto
-  isExpired?: boolean
+const PassTileContent = ({ stat, title, price }: IPassTileContent) => {
+  return (
+    <div className="flex h-full flex-col items-start justify-between p-4 text-[#ffff]/90 md:p-6">
+      <div className="align-items items-start justify-start">
+        <div className="text-[18px] font-bold">{stat}</div>
+        <div className="text-[12px] leading-6">Subscriber</div>
+      </div>
+      <div className="mt-2">
+        <span className="text-[24px] font-bold leading-9 line-clamp-2">
+          {title}
+        </span>
+      </div>
+      <div className="mt-2">
+        <span className="text-[16px] font-bold">{price}.00</span>
+        <span className="ml-2 text-[14px] font-light">/month</span>
+      </div>
+    </div>
+  )
 }
 
 const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
@@ -106,7 +136,7 @@ const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
   const expiryInMilSeconds = Number(passData.expiresAt) * 1000
   const expiryDate = new Date(expiryInMilSeconds)
 
-  const willExpireSoon = expiryInMilSeconds - Date.now() < 2629746000
+  const willExpireSoon = expiryInMilSeconds - Date.now() < ONE_MONTH
 
   useEffect(() => {
     setHasMounted(true)
@@ -117,31 +147,21 @@ const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
   }
 
   return (
-    <div className="col-span-1">
+    <div className="col-span-1  w-full">
       <div
         className={classNames(
           willExpireSoon && !isExpired
             ? "bg-gradient-to-r from-[#375e6f] to-[#a9c2dd]"
-            : "bg-gradient-to-r from-[#de6aec] to-[#3db9e5]",
+            : "bg-gradient-to-r from-[#ff3cb1] to-[#3db9e5]",
           isExpired ? "opacity-70" : "opacity-100",
-          "h-[200px] min-w-[140px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
+          "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
         )}
       >
-        <div className="flex h-full flex-col items-start justify-between p-6 text-[#ffff]/90">
-          <div className="align-items items-start justify-start">
-            <div className="text-[18px] font-bold">{passData.totalSupply}</div>
-            <div className="text-[12px] leading-6">Subscriber</div>
-          </div>
-          <div className="mt-3 max-w-[176px]">
-            <span className="text-[28px] font-bold leading-9">
-              {passData.title}
-            </span>
-          </div>
-          <div className="mt-3">
-            <span className="text-[16px] font-bold">{passData.price}.00</span>
-            <span className="ml-2 text-[14px] font-light">/month</span>
-          </div>
-        </div>
+        <PassTileContent
+          stat={passData.totalSupply}
+          title={passData.title}
+          price={passData.price}
+        />
       </div>
       <div className="mt-[5px] md:mt-[10px]">
         {isExpired ? (

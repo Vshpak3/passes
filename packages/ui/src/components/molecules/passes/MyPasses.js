@@ -26,7 +26,7 @@ const MyPassSearchBar = ({ onChange, passSearchTerm }) => (
 
 const MyPassSearchHeader = ({ onSearchPass, passSearchTerm }) => {
   return (
-    <div className="align-items mx-2 -mt-[180px] flex items-center justify-between md:mx-0 lg:px-0 sidebar-collapse:-mt-[150px] sidebar-collapse:w-[1100px]">
+    <div className="mx-auto mb-[70px] -mt-[180px] flex w-full items-center justify-center px-2 md:px-5 sidebar-collapse:-mt-[150px]">
       <div className="text-[24px] font-bold text-white">My Passes</div>
       <MyPassSearchBar onChange={onSearchPass} value={passSearchTerm} />
     </div>
@@ -34,7 +34,7 @@ const MyPassSearchHeader = ({ onSearchPass, passSearchTerm }) => {
 }
 
 const MyPassGridContainer = ({ children }) => (
-  <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+  <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 sidebar-collapse:grid-cols-4">
     {children}
   </div>
 )
@@ -48,7 +48,7 @@ const MyPassGrid = ({ activePasses, expiredPasses, setPassType }) => {
   ))
 
   return (
-    <div className="px-2 md:mt-6">
+    <div className="w-full px-2 md:mt-6">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center md:ml-0 md:mb-2 md:flex">
         <span className="text-[24px] font-bold text-[#ffff]/90">
           Active Subscriptions

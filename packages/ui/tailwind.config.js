@@ -64,5 +64,10 @@ module.exports = {
       }
     }
   },
-  plugins: [forms, require("daisyui"), require("@tailwindcss/aspect-ratio")]
+  plugins: [
+    forms,
+    require("daisyui"),
+    require("@tailwindcss/aspect-ratio"),
+    require("@tailwindcss/line-clamp")
+  ]
 }

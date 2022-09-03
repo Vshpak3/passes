@@ -29,7 +29,7 @@ const Passes = () => {
 
   return (
     <AuthOnlyWrapper isPage>
-      <div className="mb-[70px] grid w-full md:mx-auto md:justify-center lg:w-[900px] sidebar-collapse:w-[1100px]">
+      <div className="mx-auto mb-[70px] grid w-full bg-black px-2 md:px-5 sidebar-collapse:max-w-[1100px]">
         <MyPassSearchHeader
           onSearchPass={onSearchPass}
           passSearchTerm={passSearchTerm}

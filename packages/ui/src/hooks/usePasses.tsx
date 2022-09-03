@@ -9,7 +9,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
   {
     id: "1",
     price: 20,
-    title: "Kalia Troy Basic",
+    title: "Kalia Troy Basic Kalia Troy Basic Kalia Troy Basic",
     type: "subscription",
     expiresAt: 1659945535 as unknown as Date,
     creatorId: "test",
