@@ -1,7 +1,12 @@
 import NextLink from "next/link"
 import { classNames } from "src/helpers"
 
-const Wordmark = ({ className, height = 24, width = 124, whiteOnly }) => (
+const Wordmark = ({
+  className = "",
+  height = 24,
+  width = 124,
+  whiteOnly = false
+}) => (
   <NextLink href="/home">
     <a className={className}>
       <h1

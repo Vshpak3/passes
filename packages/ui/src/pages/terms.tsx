@@ -2,7 +2,7 @@ import { Wordmark } from "src/components/atoms"
 
 const TermsOfService = () => {
   return (
-    <div className="dark:bg-jacarta-900 bg-white dark:text-white text-black pt-10">
+    <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">
       <Wordmark height={28} width={122} />
       <div className="mx-10 mt-20 md:mx-20 lg:mx-40 xl:mx-52">
         <h1 className="text-[24px] font-bold">Passes Terms of Service</h1>
