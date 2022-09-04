@@ -13,8 +13,10 @@ import { RequestWithUser } from '../../types/request'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
-import { CreateChannelRequestDto } from './dto/create-channel.dto'
-import { GetChannelResponseDto } from './dto/get-channel.dto'
+import {
+  GetChannelRequestDto,
+  GetChannelResponseDto,
+} from './dto/get-channel.dto'
 import { GetChannelSettingsResponseDto } from './dto/get-channel-settings.dto'
 import {
   GetChannelStatsRequestDto,
@@ -131,13 +133,13 @@ export class MessagesController {
     description: 'Channel was created',
   })
   @Post('channel')
-  async createChannel(
+  async getChannel(
     @Req() req: RequestWithUser,
-    @Body() createChannelDto: CreateChannelRequestDto,
+    @Body() getChannelRequestDto: GetChannelRequestDto,
   ): Promise<GetChannelResponseDto> {
-    return await this.messagesService.createChannel(
+    return await this.messagesService.getChannel(
       req.user.id,
-      createChannelDto,
+      getChannelRequestDto,
     )
   }
 

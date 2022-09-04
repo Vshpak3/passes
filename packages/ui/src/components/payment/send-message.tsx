@@ -13,12 +13,11 @@ interface ISendMessageButton {
   payinMethod?: PayinMethodDto
 }
 
-export const BuyPassButton = ({
+export const SendMessageButton = ({
   text,
   attachments,
   channelId,
   tipAmount,
-  content,
   payinMethod
 }: ISendMessageButton) => {
   const api = wrapApi(MessagesApi)
@@ -29,7 +28,6 @@ export const BuyPassButton = ({
         attachments,
         channelId,
         tipAmount: tipAmount ? tipAmount : 0,
-        content,
         payinMethod
       }
     })
@@ -42,7 +40,6 @@ export const BuyPassButton = ({
         attachments,
         channelId,
         tipAmount: tipAmount ? tipAmount : 0,
-        content,
         payinMethod
       }
     })

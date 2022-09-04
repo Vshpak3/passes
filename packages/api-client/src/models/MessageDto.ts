@@ -39,12 +39,6 @@ export interface MessageDto {
     attachments: Array<string>;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof MessageDto
-     */
-    content: Array<string>;
-    /**
-     * 
      * @type {string}
      * @memberof MessageDto
      */
@@ -76,7 +70,6 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'id': !exists(json, 'id') ? undefined : json['id'],
         'text': json['text'],
         'attachments': json['attachments'],
-        'content': json['content'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'createdAt': !exists(json, 'created_at') ? undefined : json['created_at'],
@@ -95,7 +88,6 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'id': value.id,
         'text': value.text,
         'attachments': value.attachments,
-        'content': value.content,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'created_at': value.createdAt,

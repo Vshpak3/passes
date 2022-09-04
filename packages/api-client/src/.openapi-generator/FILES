@@ -48,7 +48,6 @@ models/CircleStatusResponseDto.ts
 models/CommentDto.ts
 models/ContentDto.ts
 models/CreateBatchMessageRequestDto.ts
-models/CreateChannelRequestDto.ts
 models/CreateCommentRequestDto.ts
 models/CreateContentRequestDto.ts
 models/CreateEthNftCollectionRequestDto.ts
@@ -66,6 +65,7 @@ models/CreateSolNftRequestDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
+models/GetChannelRequestDto.ts
 models/GetChannelResponseDto.ts
 models/GetChannelSettingsResponseDto.ts
 models/GetChannelStatsRequestDto.ts

@@ -1,4 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+
+export class GetChannelRequestDto {
+  @ApiProperty()
+  username: string
+
+  @ApiPropertyOptional()
+  userId?: string
+}
 
 export class GetChannelResponseDto {
   @ApiProperty()

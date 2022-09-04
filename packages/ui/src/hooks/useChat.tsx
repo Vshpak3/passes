@@ -12,12 +12,10 @@ const useChat = (username: string) => {
       if (!username) return null
       const api = wrapApi(MessagesApi)
 
-      const createChannelRequestDto = {
-        text: "",
-        username: username
-      }
-      const response = await api.createChannel({
-        createChannelRequestDto
+      const response = await api.getChannel({
+        getChannelRequestDto: {
+          username: username
+        }
       })
       return response.channelId
     }

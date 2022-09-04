@@ -56,7 +56,6 @@ export class FollowService {
         FollowEntity.toDict<FollowEntity>({
           follower: userId,
           creator: creatorId,
-          isActive: true,
         }),
       )
       .select('id')
@@ -88,29 +87,13 @@ export class FollowService {
     const data = FollowEntity.toDict<FollowEntity>({
       follower: userId,
       creator: creatorId,
-      isActive: false,
     })
 
     await this.dbWriter.transaction(async (trx) => {
-      await trx(FollowEntity.table)
-        .insert(data)
-        .onConflict(['follower_id', 'creator_id'])
-        .ignore()
-      const updated = await trx(FollowEntity.table)
-        .where(
-          FollowEntity.toDict<FollowEntity>({
-            follower: userId,
-            creator: creatorId,
-            isActive: false,
-          }),
-        )
-        .update('is_active', true)
-      if (updated === 1) {
-        await trx(CreatorStatEntity.table)
-          .where('user_id', userId)
-          .increment('num_followers', 1)
-      }
-
+      await trx(FollowEntity.table).insert(data)
+      await trx(CreatorStatEntity.table)
+        .where('user_id', userId)
+        .increment('num_followers', 1)
       await this.listService.updateListByType(
         userId,
         creatorId,
@@ -138,14 +121,13 @@ export class FollowService {
             creator: creatorId,
           }),
         )
-        const channel = await this.messagesService.createChannel(userId, {
-          text: '',
-          username: creator.username,
+        const channel = await this.messagesService.getChannel(userId, {
+          username: '',
+          userId: creatorId,
         })
         await this.messagesService.sendMessage(creator.id, {
           text: creatorSettings.welcomeMessage,
           attachments: [],
-          content: [],
           channelId: channel.channelId,
         })
       }
@@ -253,16 +235,15 @@ export class FollowService {
 
   async unfollowCreator(userId: string, creatorId: string): Promise<void> {
     await this.dbWriter.transaction(async (trx) => {
-      const updated = await trx(FollowEntity.table)
-        .update(FollowEntity.toDict<FollowEntity>({ isActive: false }))
+      const deleted = await trx(FollowEntity.table)
         .where(
           FollowEntity.toDict<FollowEntity>({
             follower: userId,
             creator: creatorId,
-            isActive: true,
           }),
         )
-      if (updated === 1) {
+        .delete()
+      if (deleted === 1) {
         await trx(CreatorStatEntity.table)
           .where('user_id', userId)
           .decrement('num_followers', 1)

@@ -90,8 +90,8 @@ export class VerificationService {
       inquiries.map(async (inquiry) => {
         try {
           await this.updateVerification(inquiry.id, inquiry.user_id)
-        } catch (e) {
-          this.logger.error(`Error updating inquiry ${inquiry.id}`, e)
+        } catch (err) {
+          this.logger.error(`Error updating inquiry ${inquiry.id}`, err)
         }
       }),
     )

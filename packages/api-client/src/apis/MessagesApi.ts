@@ -18,9 +18,9 @@ import {
     CreateBatchMessageRequestDto,
     CreateBatchMessageRequestDtoFromJSON,
     CreateBatchMessageRequestDtoToJSON,
-    CreateChannelRequestDto,
-    CreateChannelRequestDtoFromJSON,
-    CreateChannelRequestDtoToJSON,
+    GetChannelRequestDto,
+    GetChannelRequestDtoFromJSON,
+    GetChannelRequestDtoToJSON,
     GetChannelResponseDto,
     GetChannelResponseDtoFromJSON,
     GetChannelResponseDtoToJSON,
@@ -53,8 +53,8 @@ import {
     UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
 
-export interface CreateChannelRequest {
-    createChannelRequestDto: CreateChannelRequestDto;
+export interface GetChannelRequest {
+    getChannelRequestDto: GetChannelRequestDto;
 }
 
 export interface GetChannelSettingsRequest {
@@ -90,9 +90,9 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Creates a channel
      */
-    async createChannelRaw(requestParameters: CreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
-        if (requestParameters.createChannelRequestDto === null || requestParameters.createChannelRequestDto === undefined) {
-            throw new runtime.RequiredError('createChannelRequestDto','Required parameter requestParameters.createChannelRequestDto was null or undefined when calling createChannel.');
+    async getChannelRaw(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
+        if (requestParameters.getChannelRequestDto === null || requestParameters.getChannelRequestDto === undefined) {
+            throw new runtime.RequiredError('getChannelRequestDto','Required parameter requestParameters.getChannelRequestDto was null or undefined when calling getChannel.');
         }
 
         const queryParameters: any = {};
@@ -106,7 +106,7 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateChannelRequestDtoToJSON(requestParameters.createChannelRequestDto),
+            body: GetChannelRequestDtoToJSON(requestParameters.getChannelRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelResponseDtoFromJSON(jsonValue));
@@ -115,8 +115,8 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Creates a channel
      */
-    async createChannel(requestParameters: CreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelResponseDto> {
-        const response = await this.createChannelRaw(requestParameters, initOverrides);
+    async getChannel(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelResponseDto> {
+        const response = await this.getChannelRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

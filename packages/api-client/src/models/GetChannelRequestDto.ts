@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateChannelRequestDto
+ * @interface GetChannelRequestDto
  */
-export interface CreateChannelRequestDto {
+export interface GetChannelRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof CreateChannelRequestDto
-     */
-    text: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChannelRequestDto
+     * @memberof GetChannelRequestDto
      */
     username: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChannelRequestDto
+     */
+    userId?: string;
 }
 
-export function CreateChannelRequestDtoFromJSON(json: any): CreateChannelRequestDto {
-    return CreateChannelRequestDtoFromJSONTyped(json, false);
+export function GetChannelRequestDtoFromJSON(json: any): GetChannelRequestDto {
+    return GetChannelRequestDtoFromJSONTyped(json, false);
 }
 
-export function CreateChannelRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateChannelRequestDto {
+export function GetChannelRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetChannelRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'text': json['text'],
         'username': json['username'],
+        'userId': !exists(json, 'userId') ? undefined : json['userId'],
     };
 }
 
-export function CreateChannelRequestDtoToJSON(value?: CreateChannelRequestDto | null): any {
+export function GetChannelRequestDtoToJSON(value?: GetChannelRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +57,8 @@ export function CreateChannelRequestDtoToJSON(value?: CreateChannelRequestDto | 
     }
     return {
         
-        'text': value.text,
         'username': value.username,
+        'userId': value.userId,
     };
 }
 

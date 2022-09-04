@@ -13,9 +13,6 @@ export class MessageDto {
   attachments: any[]
 
   @ApiProperty()
-  content: string[]
-
-  @ApiProperty()
   channelId: string
 
   @ApiPropertyOptional()
@@ -28,14 +25,12 @@ export class MessageDto {
     text: string,
     attachments: any[],
     channelId: string,
-    content: string[],
     tipAmount?: number,
     created_at?: number,
     id?: string,
   ) {
     this.text = text
     this.attachments = attachments
-    this.content = content
     this.channelId = channelId
     this.tipAmount = tipAmount
     this.created_at = created_at

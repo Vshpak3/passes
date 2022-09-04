@@ -21,22 +21,22 @@ import { exists, mapValues } from '../runtime';
 export interface CreateBatchMessageRequestDto {
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
-    text: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateBatchMessageRequestDto
-     */
-    listId: string;
+    listIds: Array<string>;
     /**
      * 
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
-    content: Array<string>;
+    passIds: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    postId: string;
 }
 
 export function CreateBatchMessageRequestDtoFromJSON(json: any): CreateBatchMessageRequestDto {
@@ -49,9 +49,9 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'text': json['text'],
-        'listId': json['listId'],
-        'content': json['content'],
+        'listIds': json['listIds'],
+        'passIds': json['passIds'],
+        'postId': json['postId'],
     };
 }
 
@@ -64,9 +64,9 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
     }
     return {
         
-        'text': value.text,
-        'listId': value.listId,
-        'content': value.content,
+        'listIds': value.listIds,
+        'passIds': value.passIds,
+        'postId': value.postId,
     };
 }
 

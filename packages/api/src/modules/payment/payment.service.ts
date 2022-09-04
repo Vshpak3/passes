@@ -698,7 +698,7 @@ export class PaymentService {
           }),
         )
         .where({ id })
-    } catch (e) {
+    } catch (err) {
       await this.dbWriter(CircleNotificationEntity.table)
         .update(
           CircleNotificationEntity.toDict<CircleNotificationEntity>({
@@ -706,7 +706,7 @@ export class PaymentService {
           }),
         )
         .where({ id })
-      this.logger.error(`Error processing notification ${id}`, e)
+      this.logger.error(`Error processing notification ${id}`, err)
     }
   }
 
@@ -1032,9 +1032,9 @@ export class PaymentService {
       await this.dbWriter(PayinEntity.table)
         .update({ payin_status: PayinStatusEnum.CREATED })
         .where({ id: entryDto.payinId })
-    } catch (e) {
+    } catch (err) {
       await this.unregisterPayin(payinDto.id, userId)
-      throw e
+      throw err
     }
 
     await handleCreationCallback(payin, this, this.dbWriter)
@@ -1381,9 +1381,9 @@ export class PaymentService {
         payinMethod,
         data.id,
       )
-    } catch (e) {
+    } catch (err) {
       await this.unregisterPayin(data.id, request.userId)
-      throw e
+      throw err
     }
 
     return {
@@ -1712,8 +1712,8 @@ export class PaymentService {
       creators.map(async (creator) => {
         try {
           await this.payoutCreator(creator.id, creator.payout_frequency)
-        } catch (e) {
-          this.logger.error(`Error paying out ${creator.id}`, e)
+        } catch (err) {
+          this.logger.error(`Error paying out ${creator.id}`, err)
         }
       }),
     )
@@ -2080,17 +2080,17 @@ export class PaymentService {
                   sessionId: subscription.session_id,
                 } as CircleCardPayinEntryRequestDto)
               }
-            } catch (e) {
+            } catch (err) {
               this.logger.error(
                 `Error paying subscription for ${subscription.id}`,
-                e,
+                err,
               )
             }
           }
-        } catch (e) {
+        } catch (err) {
           this.logger.error(
             `Error updating subscription for ${subscription.id}`,
-            e,
+            err,
           )
         }
       }),

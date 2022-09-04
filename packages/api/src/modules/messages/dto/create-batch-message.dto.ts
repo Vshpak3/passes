@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsUUID } from 'class-validator'
 
 export class CreateBatchMessageRequestDto {
   @ApiProperty()
-  text: string
+  listIds: string[]
 
   @ApiProperty()
-  listId: string
+  passIds: string[]
 
+  @IsUUID()
   @ApiProperty()
-  content?: string[]
+  postId: string
 }

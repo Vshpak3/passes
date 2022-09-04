@@ -30,7 +30,7 @@ async function handleCallback(
           }),
         )
         .where('id', payin.id)
-  } catch (e) {
+  } catch (err) {
     await db
       .table(PayinEntity.table)
       .update(
@@ -40,7 +40,7 @@ async function handleCallback(
       )
       .where('id', payin.id)
 
-    throw e
+    throw err
   }
 }
 
