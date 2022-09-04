@@ -37,25 +37,19 @@ export class LocalAuthService {
       throw new ConflictException('User already exists with this email')
     }
 
-    const id = v4()
     const passwordHash = await this.hashPassword(createLocalUserDto.password)
 
-    await this.dbWriter(UserEntity.table).insert(
-      UserEntity.toDict<UserEntity>({
-        id,
-        email: createLocalUserDto.email,
-        passwordHash: passwordHash,
-        username: generateFromEmail(createLocalUserDto.email, 3),
-        isKYCVerified: false,
-        isCreator: false,
-        isDisabled: false,
-      }),
-    )
+    const user = new UserEntity().instantiate({
+      id: v4(),
+      email: createLocalUserDto.email,
+      passwordHash: passwordHash,
+      username: generateFromEmail(createLocalUserDto.email, 3),
+      isKYCVerified: false,
+      isCreator: false,
+      isDisabled: false,
+    })
 
-    // MySQL doesn't support insert and returning the record
-    const user: UserEntity = await this.dbReader(UserEntity.table)
-      .where('id', id)
-      .first()
+    await this.dbWriter(UserEntity.table).insert(UserEntity.toDict(user))
 
     return user
   }
