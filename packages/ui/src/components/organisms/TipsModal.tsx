@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
 import { FormInput } from "../atoms"
-import { PaymentModalInfo } from "../pages/profile/passes"
+import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
 import { TipPostButton } from "../payment/tip-post"
 import Modal from "./Modal"
 

@@ -7,7 +7,7 @@ import { usePayment, useUser } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
 import { PassesPinkButton } from "../atoms"
-import { PaymentModalInfo } from "../pages/profile/passes"
+import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
 import { BuyPassButton } from "../payment/buy-pass"
 import Modal from "./Modal"
 

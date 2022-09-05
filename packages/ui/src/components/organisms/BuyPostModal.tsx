@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react"
 import { usePayment } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
-import { PaymentModalInfo } from "../pages/profile/passes"
+import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
 import { BuyPostButton } from "../payment/buy-post"
 import Modal from "./Modal"
 

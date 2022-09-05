@@ -4,7 +4,7 @@ import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import { toast } from "react-toastify"
 import MainContent from "src/components/pages/profile/main-content"
-import Passes from "src/components/pages/profile/passes"
+import PassTypes from "src/components/pages/profile/passes/PassTypes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import { useCreatorProfile } from "src/hooks"
@@ -197,10 +197,10 @@ const Username = (props: GetProfileResponseDto) => {
             />
           )}
         </div>
-        <div className="col-span-10 w-full md:space-y-6 md:pt-7 lg:col-span-3 lg:max-w-[280px]">
-          {/* passes here */}
+        <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
+          {/* pass types here */}
           {profile?.id && (
-            <Passes
+            <PassTypes
               creatorPasses={
                 isTestProfile
                   ? (mockCreator.passes as unknown as PassDto[])

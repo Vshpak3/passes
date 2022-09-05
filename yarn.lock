@@ -5777,6 +5777,7 @@ __metadata:
     "@types/react-dom": 18.0.6
     "@types/react-input-mask": 3.0.1
     "@types/react-modal": 3.13.1
+    "@types/react-slick": 0.23.10
     "@types/uuid": 8.3.4
     "@typescript-eslint/eslint-plugin": 5.36.1
     "@typescript-eslint/parser": 5.36.1
@@ -7366,6 +7367,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: b0ad403e0051a2882e9086c6006cc342901b1c90caf760893b31717a5cbc04f86cc1ea7b5ce12a2c8350c9c09e9b344de3783404e70b7c7ea6a037d0ffd70e99
+  languageName: node
+  linkType: hard
+
+"@types/react-slick@npm:0.23.10":
+  version: 0.23.10
+  resolution: "@types/react-slick@npm:0.23.10"
+  dependencies:
+    "@types/react": "*"
+  checksum: 1e53fe8385e853881741a450d15c52d6433334b671fee4044939037f8e5b83968cb91fd9dbe7e6686e906882ebcf370b81bd55b6688f8e810020e23a968c0385
   languageName: node
   linkType: hard
 
