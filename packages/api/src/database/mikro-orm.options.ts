@@ -1,5 +1,3 @@
-import type { Options } from '@mikro-orm/core'
-import type { MySqlDriver } from '@mikro-orm/mysql'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { ConfigService } from '@nestjs/config'
@@ -11,15 +9,15 @@ export type ContextName = typeof contextNames[number]
 export function getMikroOrmOptions(
   configService: ConfigService,
   contextName: ContextName,
-): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
+): any {
+  // Temporary use any instead of this return due to bug in 5.3.1
+  // Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
   const env = configService.get('infra.env')
   let migrations: { path: string; emit?: 'ts' | 'js' } | undefined
   if (contextName === 'ReadWrite')
     migrations = {
       path: path.join(__dirname, 'migrations'),
-      // Temporary since TS is broken
-      // emit: env === 'dev' ? 'ts' : 'js',
-      emit: 'js',
+      emit: env === 'dev' ? 'ts' : 'js',
     }
 
   const hosts = configService.get('database.hosts')
