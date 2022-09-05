@@ -2,17 +2,17 @@ import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-// import useUser from "src/hooks/useUser"
-import { toast } from "react-toastify"
+import { toast, ToastContent } from "react-toastify"
 import CardCarousel from "src/components/molecules/CardCarousel"
 import LandingIcon from "src/icons/landingIcon"
 
 const HomePage = () => {
   const router = useRouter()
-  // const { user } = useUser()
   const [emailAddress, setEmailAddress] = useState("")
-  const [isSubmittingEmail, setIsSubmittingEmail] = useState("")
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false)
   const [emailFeedback, setEmailFeedback] = useState("")
+
+  const routeToLogin = () => router.push("/login")
 
   const handleSubmitEmail = async () => {
     if (isSubmittingEmail) {
@@ -30,7 +30,7 @@ const HomePage = () => {
       await axios.post("/api/email", { emailAddress })
       setEmailFeedback("Thank you for subscribing!")
     } catch (err) {
-      toast.error(err)
+      toast.error(err as ToastContent<unknown>)
       setEmailFeedback("An error occurred...")
     } finally {
       setIsSubmittingEmail(false)
@@ -104,6 +104,17 @@ const HomePage = () => {
           </h2>
           <CardCarousel />
         </div>
+        {process.env.NEXT_PUBLIC_NODE_ENV !== "prod" && (
+          <div className="align-items mx-auto flex justify-center">
+            <button
+              type="button"
+              onClick={routeToLogin}
+              className="shadow-accent-volume hover:bg-accent-dark mt-20 w-36 rounded-full border-none bg-accent py-3 px-8 text-center font-semibold text-white transition-all"
+            >
+              Login
+            </button>
+          </div>
+        )}
         <p className="text-jacarta-700 mx-auto mt-20 max-w-2xl text-center text-lg dark:text-white">
           Join our mailing list to stay in the loop
         </p>
