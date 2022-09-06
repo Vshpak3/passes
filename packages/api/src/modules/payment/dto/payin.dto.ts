@@ -39,10 +39,10 @@ export class PayinDto {
   @ApiPropertyOptional()
   address?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   callbackOutputJSON?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   target?: string
 
   constructor(payin) {

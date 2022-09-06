@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 export class GetFanResponseDto {
   @IsUUID()
@@ -8,7 +8,7 @@ export class GetFanResponseDto {
   @ApiProperty()
   username: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   displayName?: string
 
   constructor(fan) {

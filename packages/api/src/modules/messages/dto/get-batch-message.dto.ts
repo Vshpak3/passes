@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 export class GetBatchMessageResponseDto {
@@ -12,10 +12,10 @@ export class GetBatchMessageResponseDto {
   @ApiProperty()
   list: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   content?: string[]
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   lastProcessed?: string // listMemberEntity id
 
   constructor(

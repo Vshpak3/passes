@@ -36,7 +36,7 @@ export class PostDto {
   @ApiProperty()
   numPurchases: number
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   isLiked?: boolean
 
   @ApiProperty()
@@ -54,7 +54,7 @@ export class PostDto {
   @ApiPropertyOptional()
   price?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   totalTipAmount?: number
 
   constructor(post, paywall, content?: ContentDto[]) {

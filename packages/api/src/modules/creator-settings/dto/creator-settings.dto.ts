@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
@@ -9,7 +9,7 @@ export class CreatorSettingsDto {
   @ApiProperty({ enum: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   welcomeMessage?: string
 
   constructor(creatorSettings) {

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 import { EthNftEntity } from '../entities/eth-nft.entity'
@@ -10,7 +10,7 @@ export class EthNftDto {
   @ApiProperty()
   tokenId: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   tokenHash?: string
 
   @ApiProperty()

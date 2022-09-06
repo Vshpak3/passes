@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class SearchFanRequestDto {
   @ApiProperty()
   query: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   cursor?: string
 }

@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 import { ChainEnum } from '../enum/chain.enum'
 
 export class WalletDto {
-  @ApiProperty()
+  @ApiPropertyOptional()
   id?: string
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   userId?: string
 
   @ApiProperty()
