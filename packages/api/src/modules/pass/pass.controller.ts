@@ -12,6 +12,7 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
@@ -48,6 +49,7 @@ export class PassController {
     description: 'A list of passes was retrieved',
   })
   @Get('created/:creatorId')
+  @AllowUnauthorizedRequest()
   async getCreatorPasses(
     @Param('creatorId') creatorId: string,
   ): Promise<GetPassesResponseDto> {
