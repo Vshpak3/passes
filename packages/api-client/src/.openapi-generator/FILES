@@ -145,6 +145,7 @@ models/ReportFanDto.ts
 models/ResetPasswordRequestDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
+models/SearchFanRequestDto.ts
 models/SendMessageRequestDto.ts
 models/SetInitialUserInfoRequestDto.ts
 models/SetPayinMethodRequestDto.ts

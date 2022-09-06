@@ -24,6 +24,9 @@ import {
     ReportFanDto,
     ReportFanDtoFromJSON,
     ReportFanDtoToJSON,
+    SearchFanRequestDto,
+    SearchFanRequestDtoFromJSON,
+    SearchFanRequestDtoToJSON,
 } from '../models';
 
 export interface BlockFollowerRequest {
@@ -44,7 +47,7 @@ export interface ReportFollowerRequest {
 }
 
 export interface SearchFansRequest {
-    body: object;
+    searchFanRequestDto: SearchFanRequestDto;
 }
 
 export interface UnblockFollowerRequest {
@@ -189,8 +192,8 @@ export class FollowApi extends runtime.BaseAPI {
      * Search for followers by query
      */
     async searchFansRaw(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFansResponseDto>> {
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling searchFans.');
+        if (requestParameters.searchFanRequestDto === null || requestParameters.searchFanRequestDto === undefined) {
+            throw new runtime.RequiredError('searchFanRequestDto','Required parameter requestParameters.searchFanRequestDto was null or undefined when calling searchFans.');
         }
 
         const queryParameters: any = {};
@@ -204,7 +207,7 @@ export class FollowApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
+            body: SearchFanRequestDtoToJSON(requestParameters.searchFanRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetFansResponseDtoFromJSON(jsonValue));

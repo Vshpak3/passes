@@ -117,6 +117,7 @@ export * from './ReportFanDto';
 export * from './ResetPasswordRequestDto';
 export * from './SearchCreatorRequestDto';
 export * from './SearchCreatorResponseDto';
+export * from './SearchFanRequestDto';
 export * from './SendMessageRequestDto';
 export * from './SetInitialUserInfoRequestDto';
 export * from './SetPayinMethodRequestDto';

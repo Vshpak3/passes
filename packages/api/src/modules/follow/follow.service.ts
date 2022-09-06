@@ -142,9 +142,7 @@ export class FollowService {
     userId: string,
     searchFanDto: SearchFanRequestDto,
   ): Promise<GetFanResponseDto[]> {
-    const strippedQuery = searchFanDto.query.replace(/\W/g, '')
-    const likeClause = `%${strippedQuery}%`
-    const query = this.dbReader(FollowEntity.table)
+    let query = this.dbReader(FollowEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -160,14 +158,18 @@ export class FollowService {
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
       )
-      .where(async function () {
+      .andWhere(`${FollowEntity.table}.creator_id`, userId)
+
+    if (searchFanDto.query) {
+      const strippedQuery = searchFanDto.query.replace(/\W/g, '')
+      const likeClause = `%${strippedQuery}%`
+      query = query.where(async function () {
         await this.whereILike('user.username', likeClause).orWhereILike(
           'user.display_name',
           likeClause,
         )
       })
-      .andWhere(`${FollowEntity.table}.creator_id`, userId)
-
+    }
     if (searchFanDto.cursor) {
       await query.andWhere(
         this.dbReader.raw(`${UserEntity.table}.id > ${searchFanDto.cursor}`),
