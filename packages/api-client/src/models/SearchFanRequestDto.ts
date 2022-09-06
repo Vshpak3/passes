@@ -30,7 +30,7 @@ export interface SearchFanRequestDto {
      * @type {string}
      * @memberof SearchFanRequestDto
      */
-    cursor: string;
+    cursor?: string;
 }
 
 export function SearchFanRequestDtoFromJSON(json: any): SearchFanRequestDto {
@@ -44,7 +44,7 @@ export function SearchFanRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'query': json['query'],
-        'cursor': json['cursor'],
+        'cursor': !exists(json, 'cursor') ? undefined : json['cursor'],
     };
 }
 

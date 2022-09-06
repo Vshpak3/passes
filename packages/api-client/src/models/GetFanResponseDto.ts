@@ -36,7 +36,7 @@ export interface GetFanResponseDto {
      * @type {string}
      * @memberof GetFanResponseDto
      */
-    displayName: string;
+    displayName?: string;
 }
 
 export function GetFanResponseDtoFromJSON(json: any): GetFanResponseDto {
@@ -51,7 +51,7 @@ export function GetFanResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'userId': json['userId'],
         'username': json['username'],
-        'displayName': json['displayName'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
     };
 }
 

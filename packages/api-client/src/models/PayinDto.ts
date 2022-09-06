@@ -97,13 +97,13 @@ export interface PayinDto {
      * @type {string}
      * @memberof PayinDto
      */
-    callbackOutputJSON: string;
+    callbackOutputJSON?: string;
     /**
      * 
      * @type {string}
      * @memberof PayinDto
      */
-    target: string;
+    target?: string;
 }
 
 
@@ -161,8 +161,8 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
         'transactionHash': !exists(json, 'transactionHash') ? undefined : json['transactionHash'],
         'address': !exists(json, 'address') ? undefined : json['address'],
-        'callbackOutputJSON': json['callbackOutputJSON'],
-        'target': json['target'],
+        'callbackOutputJSON': !exists(json, 'callbackOutputJSON') ? undefined : json['callbackOutputJSON'],
+        'target': !exists(json, 'target') ? undefined : json['target'],
     };
 }
 

@@ -62,6 +62,7 @@ export class App {
       .setTitle('Passes Backend')
       .setDescription('Get your pass')
       .setVersion('1.0')
+      .addBearerAuth()
       .build()
     this.document = SwaggerModule.createDocument(this.app, swaggerConfig, {
       operationIdFactory: (_controllerKey: string, methodKey: string) =>

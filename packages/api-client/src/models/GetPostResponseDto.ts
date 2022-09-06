@@ -91,7 +91,7 @@ export interface GetPostResponseDto {
      * @type {boolean}
      * @memberof GetPostResponseDto
      */
-    isLiked: boolean;
+    isLiked?: boolean;
     /**
      * 
      * @type {Date}
@@ -127,7 +127,7 @@ export interface GetPostResponseDto {
      * @type {number}
      * @memberof GetPostResponseDto
      */
-    totalTipAmount: number;
+    totalTipAmount?: number;
 }
 
 export function GetPostResponseDtoFromJSON(json: any): GetPostResponseDto {
@@ -150,13 +150,13 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
         'numPurchases': json['numPurchases'],
-        'isLiked': json['isLiked'],
+        'isLiked': !exists(json, 'isLiked') ? undefined : json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : json['scheduledAt'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
-        'totalTipAmount': json['totalTipAmount'],
+        'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
     };
 }
 

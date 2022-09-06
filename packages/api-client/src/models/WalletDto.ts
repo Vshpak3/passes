@@ -24,13 +24,13 @@ export interface WalletDto {
      * @type {string}
      * @memberof WalletDto
      */
-    id: string;
+    id?: string;
     /**
      * 
      * @type {string}
      * @memberof WalletDto
      */
-    userId: string;
+    userId?: string;
     /**
      * 
      * @type {string}
@@ -67,8 +67,8 @@ export function WalletDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
-        'id': json['id'],
-        'userId': json['userId'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'userId': !exists(json, 'userId') ? undefined : json['userId'],
         'address': json['address'],
         'chain': json['chain'],
         'custodial': json['custodial'],

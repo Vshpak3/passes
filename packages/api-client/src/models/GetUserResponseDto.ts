@@ -42,37 +42,37 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    displayName: string;
+    displayName?: string;
     /**
      * 
      * @type {boolean}
      * @memberof GetUserResponseDto
      */
-    isCreator: boolean;
+    isCreator?: boolean;
     /**
      * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    legalFullName: string;
+    legalFullName?: string;
     /**
      * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    phoneNumber: string;
+    phoneNumber?: string;
     /**
      * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    birthday: string;
+    birthday?: string;
     /**
      * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    countryCode: string;
+    countryCode?: string;
 }
 
 export function GetUserResponseDtoFromJSON(json: any): GetUserResponseDto {
@@ -88,12 +88,12 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'id': json['id'],
         'email': json['email'],
         'username': json['username'],
-        'displayName': json['displayName'],
-        'isCreator': json['isCreator'],
-        'legalFullName': json['legalFullName'],
-        'phoneNumber': json['phoneNumber'],
-        'birthday': json['birthday'],
-        'countryCode': json['countryCode'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'isCreator': !exists(json, 'isCreator') ? undefined : json['isCreator'],
+        'legalFullName': !exists(json, 'legalFullName') ? undefined : json['legalFullName'],
+        'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
+        'birthday': !exists(json, 'birthday') ? undefined : json['birthday'],
+        'countryCode': !exists(json, 'countryCode') ? undefined : json['countryCode'],
     };
 }
 

@@ -36,7 +36,7 @@ export interface GetCreatorSettingsResponseDto {
      * @type {string}
      * @memberof GetCreatorSettingsResponseDto
      */
-    welcomeMessage: string;
+    welcomeMessage?: string;
 }
 
 
@@ -63,7 +63,7 @@ export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDisc
         
         'minimumTipAmount': json['minimumTipAmount'],
         'payoutFrequency': json['payoutFrequency'],
-        'welcomeMessage': json['welcomeMessage'],
+        'welcomeMessage': !exists(json, 'welcomeMessage') ? undefined : json['welcomeMessage'],
     };
 }
 
