@@ -35,13 +35,13 @@ export const TypingIndicator = () => {
           color: rgba(0, 0, 0, 0.9);
           opacity: 0.5;
         }
-        
+
         .messaging__typing-indicator .dots {
           position: relative;
           top: -2px;
           margin-right: 8px;
         }
-        
+
         .messaging__typing-indicator .dots .dot {
           display: inline-block;
           width: 4px;
@@ -51,25 +51,25 @@ export const TypingIndicator = () => {
           background: black;
           animation: wave2 1.1s linear infinite;
         }
-        
+
         .str-chat.dark .messaging__typing-indicator {
           color: rgba(255, 255, 255, 0.9);
         }
-        
+
         .str-chat.dark .messaging__typing-indicator .dots .dot {
           background: white;
         }
-        
+
         .messaging__typing-indicator .dots .dot:nth-child(2) {
           animation-delay: -0.9s;
           opacity: 0.5;
         }
-        
+
         .messaging__typing-indicator .dots .dot:nth-child(3) {
           animation-delay: -0.8s;
           opacity: 0.2;
         }
-        
+
         @keyframes wave2 {
           0%,
           60%,
@@ -80,7 +80,7 @@ export const TypingIndicator = () => {
             opacity: 0.5;
           }
         }
-        
+
         `}
       </style>
       <div className="messaging__typing-indicator">

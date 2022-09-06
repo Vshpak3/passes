@@ -27,37 +27,37 @@ const MessagingChannelList = ({ children, error = false, loading }) => {
     return (
       <div>
         <style>{`
-        
+
                 .messaging__channel-list {
                   padding: 10px 20px 10px 20px;
                   width: 100%;
                   height: 100%;
                   overflow-y: auto;
                 }
-                
+
                 @media screen and (max-width: 640px) {
                   .messaging__channel-list {
                     width: unset;
                   }
                 }
-                
+
                 .messaging__channel-list__header {
                   display: flex;
                   align-items: center;
                   padding: 20px 0 10px 20px;
                   margin-bottom: 20px;
                 }
-                
+
                 .messaging__channel-list__message {
                   margin-left: 30px;
                   margin-top: 30px;
                   color: #000;
                 }
-                
+
                 .str-chat.dark .messaging__channel-list__message {
                   color: #fff;
                 }
-                
+
                 .messaging__channel-list__header__name {
                   display: flex;
                   font-weight: bold;
@@ -65,11 +65,11 @@ const MessagingChannelList = ({ children, error = false, loading }) => {
                   line-height: 20px;
                   color: #000;
                 }
-                
+
                 .str-chat.dark .messaging__channel-list__header__name {
                   color: white;
                 }
-                
+
                 .messaging__channel-list__header__button {
                   width: 40px;
                   height: 40px;
@@ -84,24 +84,24 @@ const MessagingChannelList = ({ children, error = false, loading }) => {
                   margin-right: 20px;
                   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.06), 0px 2px 30px rgba(0, 0, 0, 0.1);
                 }
-                
+
                 .messaging__channel-list__header__button svg path {
                   fill: #005fff;
                 }
-                
+
                 .str-chat.dark .messaging__channel-list__header__button {
                   background: #3e3e41;
                   box-shadow: none;
                 }
-                
+
                 .str-chat.dark .messaging__channel-list__header__button svg path {
                   fill: #e9e9ea;
                 }
-                
+
                 .str-chat__load-more-button {
                   display: none;
                 }
-                
+
                 .messaging__channel-list__header__button:focus {
                   border: none;
                   outline: none;

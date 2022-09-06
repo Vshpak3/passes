@@ -69,7 +69,7 @@ const DefaultPayinMethod = () => {
                 </span>
                 <span>
                   Circle card account{" "}
-                  {/* this might need to be placed in BE 
+                  {/* this might need to be placed in BE
                   as a new field called "type" or something */}
                 </span>
                 {!card.active && (

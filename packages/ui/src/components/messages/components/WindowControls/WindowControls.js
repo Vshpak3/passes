@@ -29,7 +29,7 @@ const WindowControls = ({ theme, setTheme }) => {
           align-items: center;
           justify-content: center;
         }
-        
+
         .window-controls__button-wrapper {
           display: flex;
           align-items: center;
@@ -41,11 +41,11 @@ const WindowControls = ({ theme, setTheme }) => {
           border-radius: 15px;
           padding: 0 2px;
         }
-        
+
         .window-controls__button-wrapper.light {
           background: #303438;
         }
-        
+
         .window-controls__button {
           height: 26px;
           width: 90px;
@@ -65,26 +65,26 @@ const WindowControls = ({ theme, setTheme }) => {
           mix-blend-mode: normal;
           opacity: 0.2;
         }
-        
+
         .window-controls__button.selected {
           background: #ffffff;
           box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.2);
           color: #0a0a0a;
           opacity: 1;
         }
-        
+
         .window-controls__button.light {
           background: #303438;
           color: rgba(255, 255, 255, 0.4);
           opacity: 0.5;
         }
-        
+
         .window-controls__button.selected.light {
           background: #3d4247;
           color: #ffffff;
           opacity: 1;
         }
-        
+
         `}</style>
       <div className="window-controls__container">
         <div className={`window-controls__button-wrapper ${theme}`}>

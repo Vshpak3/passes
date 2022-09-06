@@ -52,7 +52,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     const { profileImage, profileCoverImage, ...rest } = values
 
     const [profileImageUrl, profileCoverImageUrl] =
-      await Content().uploadPublicContent(
+      await new Content().uploadPublicContent(
         [profileImage, profileCoverImage],
         "profile"
       )

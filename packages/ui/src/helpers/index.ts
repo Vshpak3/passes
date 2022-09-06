@@ -1,5 +1,5 @@
 import classNames from "./classNames"
-import { Content } from "./content"
+import Content from "./content"
 import debounce from "./debounce"
 import {
   compactNumberFormatter,

@@ -158,7 +158,7 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <div>Follow Creators to receive posts..</div>
+        <div>Follow creators to see posts!</div>
       )}
     </>
   )

@@ -5,7 +5,7 @@ export const SkeletonLoader = () => {
     <div style={{ position: "relative" }}>
       <style>
         {`
-        
+
 .skeleton-loader__list {
   position: absolute;
   width: 260px;

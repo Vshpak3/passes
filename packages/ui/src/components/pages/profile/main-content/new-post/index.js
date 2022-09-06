@@ -8,9 +8,8 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
-import { classNames } from "src/helpers"
+import { classNames, Content } from "src/helpers"
 
-import { Content } from "../../../../../helpers"
 import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
 import { NewFundraiserTab } from "./fundraiser-tab"
@@ -97,9 +96,8 @@ export const NewPost = ({
 
   const onSubmit = async () => {
     const values = getValues()
-    const content = await Content().uploadUserContent(files)
+    const content = await new Content().uploadUserContent(files)
     setExtended(false)
-
     createPost({ ...values, content })
     reset()
   }

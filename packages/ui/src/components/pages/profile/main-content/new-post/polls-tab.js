@@ -43,7 +43,7 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
             type="text"
             name={`pollOptions.${index}.value`}
             className="w-full rounded-md border-passes-dark-200 bg-[#100C11] py-[10px] text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 sm:pl-6"
-            placeholder="Type Option here.."
+            placeholder="Type option here."
           />
         </div>
       </Card>

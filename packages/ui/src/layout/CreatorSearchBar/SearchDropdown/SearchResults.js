@@ -14,8 +14,8 @@ const SearchResult = ({ fullName, username, onClick }) => {
       className=" grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 text-[#ffffff]/90 hover:bg-[#1b141d]/90"
     >
       <div className="align-items col-span-1 row-span-2 flex w-[75px] items-center justify-center">
-        {/* 
-          TODO: 
+        {/*
+          TODO:
           We need to be able to fetch user images.
           For now we can use the monogram if user
           does not exist.

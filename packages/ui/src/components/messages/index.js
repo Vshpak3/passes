@@ -161,70 +161,70 @@ const MessagesComponent = ({ username }) => {
             background: #120C14;
             box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.06), 0px 2px 30px rgba(0, 0, 0, 0.1);
           }
-          
+
           .dark.str-chat.str-chat-channel.messaging {
             background: #120C14;
             box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
           }
-          
+
           .str-chat.str-chat-channel-list.messaging {
             background: #120C14;
           }
-          
+
           .dark.str-chat.str-chat-channel-list.messaging {
             background: #120C14 !important;
           }
-  
-          
+
+
           .str-chat-channel.messaging .str-chat__main-panel {
             padding: 0 !important;
             min-width: 250px;
           }
-          
+
           .messaging.str-chat .str-chat__list .str-chat__reverse-infinite-scroll {
             padding-top: 0;
           }
-          
+
           .messaging.str-chat.dark .str-chat__list {
             padding: 0 20px 0;
             background: #000;
           }
-          
+
           .str-chat-channel.messaging .str-chat__main-panel {
             padding: 30px 30px 0 0px;
           }
-          
+
           .str-chat-channel.messaging .str-chat__main-panel:not(:last-child) {
             padding: 20px 0 0 0px;
           }
-          
+
           .str-chat-channel.messaging
             .str-chat__main-panel:not(:last-child)
             .messaging__channel-header {
             border-radius: 10px 0px 0px 0px;
           }
-          
+
           .str-chat__message-simple-status {
             display: none;
           }
-          
+
           .messaging.str-chat.dark .str-chat__message--system__date {
             color: rgba(255, 255, 255, 0.7);
           }
-          
+
           .messaging.str-chat.dark .str-chat__message--system__text p {
             color: rgba(255, 255, 255, 0.7);
           }
-          
+
           .messaging.str-chat.dark .str-chat__message--system__line {
             background: rgba(255, 255, 255, 0.1);
           }
-          
+
           .str-chat__message--system {
             padding: 20px;
           }
 
-          
+
           /* Mobile View */
           @media screen and (max-width: 640px) {
             /*
@@ -239,11 +239,11 @@ const MessagesComponent = ({ username }) => {
               height: calc(100vh - 64px) !important;
               justify-content: space-between;
             }
-          
+
             .str-chat-channel-list.messaging {
               float: unset;
             }
-          
+
             #mobile-channel-list {
               width: 100vw;
               height: 100vh;
@@ -253,7 +253,7 @@ const MessagesComponent = ({ username }) => {
               transform: translate3d(-100vw, 0, 0);
               transition: transform 0.3s cubic-bezier(0, 0.52, 0, 1);
             }
-          
+
             #mobile-channel-list.show {
               transform: translate3d(0vw, 0, 0);
               z-index: 1000;
@@ -270,7 +270,7 @@ const MessagesComponent = ({ username }) => {
             background: #1E1820;
             color: #ffff;
            }
-           
+
 
           .dark.str-chat .str-chat__message--me .str-chat__message-text-inner, .dark.str-chat .str-chat__message-simple--me .str-chat__message-text-inner {
             background: var(--black40);
@@ -291,10 +291,10 @@ const MessagesComponent = ({ username }) => {
             border:1px solid #363037;
             margin-left: 0;
             }
-          
+
           /* To fix inherited styles (as per Team and Customer Support apps */
           @media screen and (max-width: 960px) {
-      
+
             .str-chat-channel-list.messaging {
               position: unset;
               left: unset;
@@ -306,7 +306,7 @@ const MessagesComponent = ({ username }) => {
               transition: unset;
             }
           }
-          
+
         `}
       </style>
       <Chat client={chatClient} theme={`messaging dark`}>

@@ -38,7 +38,7 @@ const SelectPassType = ({ initialCreation = false }) => {
         colStyle="lg:col-[3_/_span_3]"
         icon={<SubscriptionImg />}
         title="Subscription"
-        subtitle="Subscription Passes are unlimited in quantity and can be paid for 
+        subtitle="Subscription Passes are unlimited in quantity and can be paid for
             by fans on a recurring basis before they expire."
         onGetStarted={redirectToCreatePass(PassTypeEnum.SUBSCRIPTION)}
       />

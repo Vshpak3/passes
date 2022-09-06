@@ -205,7 +205,7 @@ const MessagingChannelHeader = (props) => {
           border-top:1px solid rgba(255, 255, 255, 0.15);
           border-bottom:1px solid rgba(255, 255, 255, 0.15);
         }
-        
+
         .messaging__channel-header .channel-header__name {
           display:flex;
           font-weight: bold;
@@ -215,12 +215,12 @@ const MessagingChannelHeader = (props) => {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        
+
         .str-chat.dark .messaging__channel-header {
           background: rgba(27, 20, 29, 0.5);
           box-shadow: 0px 7px 9px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.03);
         }
-        
+
         .str-chat.dark .messaging__channel-header .channel-header__name {
           color: rgba(255, 255, 255,1);
           max-width:120px;
@@ -240,13 +240,13 @@ const MessagingChannelHeader = (props) => {
             display:none;
           }
         }
-        
+
         .messaging__channel-header__right {
           display: flex;
           align-items: center;
           margin-right: 16px;
         }
-        
+
         .messaging__channel-header__avatars {
           display: flex;
           align-items: center;
@@ -257,32 +257,32 @@ const MessagingChannelHeader = (props) => {
           overflow: hidden;
           margin-left:20px;
         }
-        
+
         .messaging__channel-header__avatars.two div:first-child {
           position: relative;
           right: 10px;
         }
-        
+
         .messaging__channel-header__avatars.two div:nth-child(2) {
           position: relative;
           right: 14px;
         }
-        
+
         .messaging__channel-header__avatars.two span {
           width: 20px;
           overflow: hidden;
         }
-        
+
         .messaging__channel-header__avatars.three span {
           width: 20px;
           overflow: hidden;
         }
-        
+
         .messaging__channel-header__avatars.four span:nth-child(2) {
           position: relative;
           right: 10px;
         }
-        
+
         .channel-header__edit-input {
           width: 100%;
           font-family: Helvetica Neue, sans-serif;
@@ -292,35 +292,35 @@ const MessagingChannelHeader = (props) => {
           border: none;
           padding: 0;
         }
-        
+
         .channel-header__edit-input::placeholder {
           opacity: 50%;
         }
-        
+
         .str-chat.dark .channel-header__edit-input::placeholder {
           color: #ffffff;
         }
-        
+
         .str-chat.dark .channel-header__edit-input {
           color: #ffffff;
         }
-        
+
         #mobile-nav-icon {
           display: none;
         }
-        
+
         @media screen and (max-width: 640px) {
           #mobile-nav-icon {
             display: block;
             padding-left: 5px;
           }
-        
+
           #mobile-nav-icon.light svg path {
             fill: darkslategrey;
             stroke: darkslategrey;
             fill-opacity: 60%;
           }
-        
+
           .messaging__channel-header__avatars {
             margin-left: 10px;
           }
@@ -400,7 +400,7 @@ const MessagingChannelHeader = (props) => {
                   type="text"
                   name="search"
                   className="w-full items-center  border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
-                  placeholder="Find.."
+                  placeholder="Find"
                   icon={<SearchIcon className="mt-[5px]" />}
                 />
               </div>
