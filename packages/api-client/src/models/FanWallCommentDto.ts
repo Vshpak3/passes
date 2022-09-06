@@ -16,65 +16,65 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CommentDto
+ * @interface FanWallCommentDto
  */
-export interface CommentDto {
+export interface FanWallCommentDto {
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
-    commentId: string;
+    fanWallCommentId: string;
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
-    postId: string;
+    creatorId: string;
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
     commenterId: string;
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
     text: string;
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
     commenterUsername: string;
     /**
      * 
      * @type {string}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
     commenterDisplayName: string;
     /**
      * 
      * @type {Date}
-     * @memberof CommentDto
+     * @memberof FanWallCommentDto
      */
     createdAt: Date;
 }
 
-export function CommentDtoFromJSON(json: any): CommentDto {
-    return CommentDtoFromJSONTyped(json, false);
+export function FanWallCommentDtoFromJSON(json: any): FanWallCommentDto {
+    return FanWallCommentDtoFromJSONTyped(json, false);
 }
 
-export function CommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CommentDto {
+export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): FanWallCommentDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'commentId': json['commentId'],
-        'postId': json['postId'],
+        'fanWallCommentId': json['fanWallCommentId'],
+        'creatorId': json['creatorId'],
         'commenterId': json['commenterId'],
         'text': json['text'],
         'commenterUsername': json['commenterUsername'],
@@ -83,7 +83,7 @@ export function CommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function CommentDtoToJSON(value?: CommentDto | null): any {
+export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -92,8 +92,8 @@ export function CommentDtoToJSON(value?: CommentDto | null): any {
     }
     return {
         
-        'commentId': value.commentId,
-        'postId': value.postId,
+        'fanWallCommentId': value.fanWallCommentId,
+        'creatorId': value.creatorId,
         'commenterId': value.commenterId,
         'text': value.text,
         'commenterUsername': value.commenterUsername,

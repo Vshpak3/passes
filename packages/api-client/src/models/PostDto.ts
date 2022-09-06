@@ -112,10 +112,10 @@ export interface PostDto {
     scheduledAt?: string;
     /**
      * 
-     * @type {number}
+     * @type {Date}
      * @memberof PostDto
      */
-    expiresAt?: number;
+    expiresAt?: Date;
     /**
      * 
      * @type {string}
@@ -154,7 +154,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : json['scheduledAt'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': json['totalTipAmount'],
     };
@@ -183,7 +183,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
         'scheduledAt': value.scheduledAt,
-        'expiresAt': value.expiresAt,
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
     };

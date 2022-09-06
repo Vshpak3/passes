@@ -28,7 +28,7 @@ export class FollowController {
     type: Boolean,
     description: 'A follow was checked',
   })
-  @Get('/check/:creatorId')
+  @Get('check/:creatorId')
   async checkFollow(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
@@ -68,7 +68,7 @@ export class FollowController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: GetFansResponseDto,
-    description: 'A list of followers was returned',
+    description: 'A list of followers was retrieved',
   })
   @Post('search')
   async searchFans(

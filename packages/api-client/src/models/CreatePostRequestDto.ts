@@ -30,13 +30,13 @@ export interface CreatePostRequestDto {
      * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
-    content: Array<string>;
+    contentIds: Array<string>;
     /**
      * 
      * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
-    passes: Array<string>;
+    passIds: Array<string>;
     /**
      * 
      * @type {boolean}
@@ -51,10 +51,10 @@ export interface CreatePostRequestDto {
     price?: number;
     /**
      * 
-     * @type {number}
+     * @type {Date}
      * @memberof CreatePostRequestDto
      */
-    expiresAt?: number;
+    expiresAt?: Date;
     /**
      * 
      * @type {Date}
@@ -74,11 +74,11 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
-        'content': json['content'],
-        'passes': json['passes'],
+        'contentIds': json['contentIds'],
+        'passIds': json['passIds'],
         'isMessage': json['isMessage'],
         'price': !exists(json, 'price') ? undefined : json['price'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
@@ -93,11 +93,11 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
     return {
         
         'text': value.text,
-        'content': value.content,
-        'passes': value.passes,
+        'contentIds': value.contentIds,
+        'passIds': value.passIds,
         'isMessage': value.isMessage,
         'price': value.price,
-        'expiresAt': value.expiresAt,
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }

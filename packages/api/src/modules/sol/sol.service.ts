@@ -41,20 +41,16 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
-import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { WalletService } from '../wallet/wallet.service'
 import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
-import { BatchSolNftRefreshEntity } from './entities/batch-sol-nft-refresh.entity'
 import { SolNftEntity } from './entities/sol-nft.entity'
 import { SolNftCollectionEntity } from './entities/sol-nft-collection.entity'
 import * as SolHelper from './sol-helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
-const BATCH_NFT_REFRESH_CHUNK_SIZE = 500
 export const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
   '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
 
@@ -102,7 +98,6 @@ type Creator = Readonly<{
 }>
 
 export class SolService {
-  connection: Connection
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -117,125 +112,107 @@ export class SolService {
     private readonly lambdaService: LambdaService,
     private readonly s3contentService: S3ContentService,
     private readonly walletService: WalletService,
-  ) {
-    this.connection = new Connection(
+  ) {}
+
+  async getConnection() {
+    return new Connection(
       (this.configService.get('alchemy.sol.https_endpoint') as string) +
         '/' +
         (this.configService.get('alchemy.sol.api_key') as string),
     )
   }
 
-  async getBatchSolNftRefresh() {
-    const batchSolNftRefresh = await this.dbReader(
-      BatchSolNftRefreshEntity.table,
-    )
-      .select(
-        'batch_sol_nft_refresh.id',
-        'batch_sol_nft_refresh.last_processed_id',
-      )
-      .where('batch_sol_nft_refresh.last_processed_id', null)
-      .orWhereNot(
-        'batch_sol_nft_refresh.last_processed_id',
-        'ffffffff-ffff-ffff-ffff-ffffffffffff',
-      )
-      .first()
-    if (batchSolNftRefresh) {
-      return batchSolNftRefresh
-    } else {
-      const batchId = uuid.v4()
-      await this.dbWriter(BatchSolNftRefreshEntity.table).insert(
-        BatchSolNftRefreshEntity.toDict<BatchSolNftRefreshEntity>({
-          id: batchId,
-          lastProcessedId: null,
-        }),
-      )
-      return {
-        id: batchId,
-        last_processed_id: null,
-      }
-    }
-  }
+  // async refreshSolWallets() {
+  //   const wallets = this.dbReader(WalletEntity.table)
+  //     .whereNotNull('user_id')
+  //     .andWhere(
+  //       WalletEntity.toDict<WalletEntity>({
+  //         chain: ChainEnum.SOL,
+  //       }),
+  //     )
+  //     .select('id')
+  //   await Promise.all(
+  // }
+  // async refreshSolWallet(walletId: string) {}
+  // async refreshSolWallets(
+  //   id: string,
+  //   lastProcessedId: string | null,
+  // ): Promise<void> {
+  //   const solNftsQuery = this.dbReader(SolNftEntity.table)
+  //     .leftJoin(PassHolderEntity.table, 'pass_holder.sol_nft_id', 'sol_nft.id')
+  //     .leftJoin(WalletEntity.table, 'wallet.id', 'sol_nft.wallet_id')
+  //     .select(
+  //       'sol_nft.id as sol_nft_id',
+  //       'sol_nft.mint_public_key',
+  //       'pass_holder.id as pass_holder_id',
+  //       'wallet.address as wallet_address',
+  //       'wallet.user_id as wallet_user_id',
+  //       'wallet.id as wallet_id',
+  //     )
+  //   if (lastProcessedId != null) {
+  //     await solNftsQuery.where('sol_nft.id', '>', lastProcessedId)
+  //   }
 
-  async processBatchSolNftRefreshChunk(
-    id: string,
-    lastProcessedId: string | null,
-  ): Promise<void> {
-    const solNftsQuery = this.dbReader(SolNftEntity.table)
-      .leftJoin(PassHolderEntity.table, 'pass_holder.sol_nft_id', 'sol_nft.id')
-      .leftJoin(WalletEntity.table, 'wallet.id', 'sol_nft.wallet_id')
-      .select(
-        'sol_nft.id as sol_nft_id',
-        'sol_nft.mint_public_key',
-        'pass_holder.id as pass_holder_id',
-        'wallet.address as wallet_address',
-        'wallet.user_id as wallet_user_id',
-        'wallet.id as wallet_id',
-      )
-    if (lastProcessedId != null) {
-      await solNftsQuery.where('sol_nft.id', '>', lastProcessedId)
-    }
-    const solNfts = await solNftsQuery.limit(BATCH_NFT_REFRESH_CHUNK_SIZE)
+  //   if (solNfts.length == 0) {
+  //     await this.dbWriter(BatchSolNftRefreshEntity.table)
+  //       .update(
+  //         'batch_sol_nft_refresh.last_processed_id',
+  //         'ffffffff-ffff-ffff-ffff-ffffffffffff',
+  //       )
+  //       .where('batch_sol_nft_refresh.id', id)
+  //     return
+  //   }
+  //   for (let i = 0; i < solNfts.length; i++) {
+  //     try {
+  //       await this.refreshNftOwnership(
+  //         solNfts[i].sol_nft_id,
+  //         solNfts[i].pass_holder_id,
+  //         solNfts[i].wallet_address,
+  //         solNfts[i].wallet_user_id,
+  //         solNfts[i].wallet_id,
+  //         solNfts[i].mint_public_key,
+  //       )
+  //       await this.dbWriter(BatchSolNftRefreshEntity.table)
+  //         .update('batch_sol_nft_refresh.last_processed_id', solNfts[i].id)
+  //         .where('batch_sol_nft_refresh.id', id)
+  //     } catch (err) {
+  //       this.logger.error(
+  //         `error refreshing solNft ${solNfts[i].id} as part of batch sol bft refresh ${id}`,
+  //         err,
+  //       )
+  //     }
+  //   }
+  // }
 
-    if (solNfts.length == 0) {
-      await this.dbWriter(BatchSolNftRefreshEntity.table)
-        .update(
-          'batch_sol_nft_refresh.last_processed_id',
-          'ffffffff-ffff-ffff-ffff-ffffffffffff',
-        )
-        .where('batch_sol_nft_refresh.id', id)
-      return
-    }
-    for (let i = 0; i < solNfts.length; i++) {
-      try {
-        await this.refreshNftOwnership(
-          solNfts[i].sol_nft_id,
-          solNfts[i].pass_holder_id,
-          solNfts[i].wallet_address,
-          solNfts[i].wallet_user_id,
-          solNfts[i].wallet_id,
-          solNfts[i].mint_public_key,
-        )
-        await this.dbWriter(BatchSolNftRefreshEntity.table)
-          .update('batch_sol_nft_refresh.last_processed_id', solNfts[i].id)
-          .where('batch_sol_nft_refresh.id', id)
-      } catch (err) {
-        this.logger.error(
-          `error refreshing solNft ${solNfts[i].id} as part of batch sol bft refresh ${id}`,
-          err,
-        )
-      }
-    }
-  }
+  // async refreshNftOwnership(
+  //   solNftId: string,
+  //   passHolderId: string | null,
+  //   walletAddress: string | null,
+  //   walletUserId: string | null,
+  //   walletId: string | null,
+  //   mintPublicKey: string,
+  // ): Promise<void> {
+  //   const owner = await this.getOwnerOfPass(
+  //     this.connection,
+  //     new PublicKey(mintPublicKey),
+  //   )
 
-  async refreshNftOwnership(
-    solNftId: string,
-    passHolderId: string | null,
-    walletAddress: string | null,
-    walletUserId: string | null,
-    walletId: string | null,
-    mintPublicKey: string,
-  ): Promise<void> {
-    const owner = await this.getOwnerOfPass(
-      this.connection,
-      new PublicKey(mintPublicKey),
-    )
+  //   // always try update incase of wallet transfer
+  //   if (passHolderId) {
+  //     await this.dbWriter(PassHolderEntity.table)
+  //       .update('pass_holder.holder_id', walletUserId)
+  //       .where('pass_holder.id', passHolderId)
+  //   }
 
-    // always try update incase of wallet transfer
-    if (passHolderId) {
-      await this.dbWriter(PassHolderEntity.table)
-        .update('pass_holder.holder_id', walletUserId)
-        .where('pass_holder.id', passHolderId)
-    }
+  //   // if unowned or same owner, skip this record
+  //   if (!owner || owner.toString() == walletAddress) {
+  //     return
+  //   }
 
-    // if unowned or same owner, skip this record
-    if (!owner || owner.toString() == walletAddress) {
-      return
-    }
-
-    await this.dbWriter(SolNftEntity.table)
-      .update('sol_nft.wallet_id', walletId)
-      .where('sol_nft.id', solNftId)
-  }
+  //   await this.dbWriter(SolNftEntity.table)
+  //     .update('sol_nft.wallet_id', walletId)
+  //     .where('sol_nft.id', solNftId)
+  // }
 
   /**
    * Retrieve the owner of a given pass using getProgramAccounts on the token program.
@@ -283,6 +260,7 @@ export class SolService {
     collectionId: string,
     owner: PublicKey,
   ): Promise<GetSolNftResponseDto> {
+    const connection = await this.getConnection()
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
@@ -369,7 +347,7 @@ export class SolService {
       mintPubKey,
       owner,
     )
-    const lamports = await this.connection.getMinimumBalanceForRentExemption(
+    const lamports = await connection.getMinimumBalanceForRentExemption(
       MINT_SIZE,
     )
 
@@ -463,7 +441,7 @@ export class SolService {
         collectionMasterEditionAccount: collectionMasterEditionPda,
       }),
     ]
-    const blockhash = await this.connection.getLatestBlockhash()
+    const blockhash = await connection.getLatestBlockhash()
     const transaction = new Transaction().add(
       ...mintInstructions,
       ...metaplexInstructions,
@@ -485,7 +463,7 @@ export class SolService {
     transaction.addSignature(mintPubKey, Buffer.from(mintSignature))
 
     const txSignature = await sendAndConfirmRawTransaction(
-      this.connection,
+      connection,
       transaction.serialize(),
     )
 
@@ -554,6 +532,7 @@ export class SolService {
     description: string,
     imageUrl: string,
   ): Promise<GetSolNftCollectionResponseDto> {
+    const connection = await this.getConnection()
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
@@ -653,7 +632,7 @@ export class SolService {
       collectionPubKey,
       walletPubKey,
     )
-    const lamports = await this.connection.getMinimumBalanceForRentExemption(
+    const lamports = await connection.getMinimumBalanceForRentExemption(
       MINT_SIZE,
     )
 
@@ -727,7 +706,7 @@ export class SolService {
         },
       ),
     ]
-    const blockhash = await this.connection.getLatestBlockhash()
+    const blockhash = await connection.getLatestBlockhash()
     const transaction = new Transaction().add(
       ...mintInstructions,
       ...metaplexInstructions,
@@ -737,11 +716,10 @@ export class SolService {
 
     let txSignature: undefined | TransactionSignature = undefined
     if (localMockedAwsDev()) {
-      txSignature = await sendAndConfirmTransaction(
-        this.connection,
-        transaction,
-        [wallet as Keypair, collection as Keypair],
-      )
+      txSignature = await sendAndConfirmTransaction(connection, transaction, [
+        wallet as Keypair,
+        collection as Keypair,
+      ])
     } else {
       const walletSignature =
         await this.lambdaService.blockchainSignSignMessage(
@@ -762,7 +740,7 @@ export class SolService {
       )
 
       txSignature = await sendAndConfirmRawTransaction(
-        this.connection,
+        connection,
         transaction.serialize(),
       )
     }

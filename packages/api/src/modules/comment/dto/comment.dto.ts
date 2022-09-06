@@ -15,10 +15,13 @@ export class CommentDto {
   commenterId: string
 
   @ApiProperty()
-  content: string
+  text: string
 
   @ApiProperty()
   commenterUsername: string
+
+  @ApiProperty()
+  commenterDisplayName: string
 
   @ApiProperty()
   createdAt: Date
@@ -27,8 +30,9 @@ export class CommentDto {
     this.commentId = comment.id
     this.postId = comment.post_id
     this.commenterId = comment.commenter_id
-    this.content = comment.content
+    this.text = comment.text
     this.commenterUsername = comment.commenter_username
+    this.commenterDisplayName = comment.commenter_display_name
     this.createdAt = comment.created_at
   }
 }

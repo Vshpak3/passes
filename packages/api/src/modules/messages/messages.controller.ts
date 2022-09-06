@@ -54,9 +54,9 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Sending message data was returned',
+    description: 'Sending message data was retrieved',
   })
-  @Post('/data')
+  @Post('data')
   async sendMessageData(
     @Req() req: RequestWithUser,
     @Body() sendMessageDto: SendMessageRequestDto,
@@ -71,9 +71,9 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetMessagesResponseDto,
-    description: 'Pending messages was returned',
+    description: 'Pending messages was retrieved',
   })
-  @Get('/pending')
+  @Get('pending')
   async getPending(
     @Req() req: RequestWithUser,
   ): Promise<GetMessagesResponseDto> {
@@ -86,7 +86,7 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetMessagesResponseDto,
-    description: 'Completed tipped messages returned',
+    description: 'Completed tipped messages retrieved',
   })
   @Post('completed-tipped')
   async getCompletedTippedMessages(
@@ -119,7 +119,7 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: TokenResponseDto,
-    description: 'Token returned',
+    description: 'Token was retrieved',
   })
   @Get('token')
   async getToken(@Req() req: RequestWithUser): Promise<TokenResponseDto> {
@@ -147,7 +147,7 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetChannelStatsResponseDto,
-    description: 'Channel stats was returned ',
+    description: 'Channel stats was retrieved ',
   })
   @Post('channel/stats')
   async getChannelsStats(
@@ -162,7 +162,7 @@ export class MessagesController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetChannelSettingsResponseDto,
-    description: 'Channel settings was returned ',
+    description: 'Channel settings was retrieved ',
   })
   @Get('channel/settings/:channelId')
   async getChannelSettings(

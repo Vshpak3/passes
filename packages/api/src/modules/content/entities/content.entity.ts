@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne } from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -11,4 +11,10 @@ export class ContentEntity extends BaseEntity {
 
   @Enum(() => ContentTypeEnum)
   contentType: ContentTypeEnum
+
+  @Property({ default: false })
+  inMessage: boolean
+
+  @Property({ default: false })
+  inPost: boolean
 }

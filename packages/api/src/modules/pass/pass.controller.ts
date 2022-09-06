@@ -120,7 +120,7 @@ export class PassController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Data for register create pass was returned',
+    description: 'Data for register create pass was retrieved',
   })
   @Post('pay/data/create')
   async registerBuyPassData(
@@ -155,7 +155,7 @@ export class PassController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Data for register renew pass was returned',
+    description: 'Data for register renew pass was retrieved',
   })
   @Post('pay/data/renew')
   async registerRenewPassData(

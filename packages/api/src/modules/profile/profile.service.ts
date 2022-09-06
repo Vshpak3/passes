@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -10,19 +9,12 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import {
-  PROFILE_NOT_EXIST,
-  PROFILE_NOT_OWNED_BY_USER,
-  USER_HAS_PROFILE,
-  USER_IS_NOT_CREATOR,
-} from './constants/errors'
-import { CreateProfileRequestDto } from './dto/create-profile.dto'
+import { PROFILE_NOT_EXIST } from './constants/errors'
+import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
 import { ProfileDto } from './dto/profile.dto'
-import { UpdateProfileRequestDto } from './dto/update-profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
 
 // TODO: Use CASL to determine if user can access an entity
@@ -39,26 +31,20 @@ export class ProfileService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async createProfile(
+  async createOrUpdateProfile(
     userId: string,
-    createProfileDto: CreateProfileRequestDto,
-  ): Promise<ProfileDto> {
-    const user = await this.dbReader(UserEntity.table)
-      .where({ id: userId })
-      .first()
-    if (!user || !user.is_creator) {
-      throw new BadRequestException(USER_IS_NOT_CREATOR)
-    }
-
+    createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto,
+  ): Promise<boolean> {
     const data = ProfileEntity.toDict<ProfileEntity>({
-      isActive: true,
       user: userId,
-      ...createProfileDto,
+      ...createOrUpdateProfileRequestDto,
     })
 
-    const query = () => this.dbWriter(ProfileEntity.table).insert(data)
-    await createOrThrowOnDuplicate(query, this.logger, USER_HAS_PROFILE)
-    return new ProfileDto(data)
+    await this.dbWriter(ProfileEntity.table)
+      .insert(data)
+      .onConflict('user_id')
+      .merge()
+    return true
   }
 
   async findProfile(profileId: string, userId?: string): Promise<ProfileDto> {
@@ -124,52 +110,14 @@ export class ProfileService {
     return new ProfileDto(profile)
   }
 
-  async updateProfile(
-    userId: string,
-    profileId: string,
-    updateProfileDto: UpdateProfileRequestDto,
-  ): Promise<ProfileDto> {
-    const profile = await this.dbWriter(ProfileEntity.table)
-      .where(
-        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
-      )
-      .first()
-
-    if (!profile) {
-      throw new NotFoundException(PROFILE_NOT_EXIST)
-    }
-
-    if (profile.user_id !== userId) {
-      throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
-    }
-
-    const data = ProfileEntity.toDict<ProfileEntity>(updateProfileDto)
-
-    await this.dbWriter(ProfileEntity.table).update(data).where('id', profileId)
-
-    return new ProfileDto({ ...profile, ...data })
-  }
-
-  async removeProfile(userId: string, profileId: string): Promise<ProfileDto> {
-    const profile = await this.dbReader(ProfileEntity.table)
-      .where(
-        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
-      )
-      .first()
-    if (!profile) {
-      throw new NotFoundException(PROFILE_NOT_EXIST)
-    }
-
-    if (profile.user_id !== userId) {
-      throw new ForbiddenException(PROFILE_NOT_OWNED_BY_USER)
-    }
-
+  async removeProfile(userId: string, profileId: string): Promise<boolean> {
     const data = ProfileEntity.toDict<ProfileEntity>({ isActive: false })
-
-    await this.dbWriter(ProfileEntity.table)
+    const updated = await this.dbWriter(ProfileEntity.table)
       .update(data)
-      .where({ id: profileId })
-    return new ProfileDto({ ...profile, ...data })
+      .where(
+        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
+      )
+    return updated === 1
   }
 
   async getAllUsernames(): Promise<GetUsernamesResponseDto> {

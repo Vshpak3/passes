@@ -49,7 +49,7 @@ export class PostDto {
   scheduledAt?: string
 
   @ApiPropertyOptional()
-  expiresAt?: number
+  expiresAt?: Date
 
   @ApiPropertyOptional()
   price?: string
@@ -68,8 +68,6 @@ export class PostDto {
       this.totalTipAmount = post.total_tip_amount
       this.updatedAt = post.updated_at
       this.expiresAt = post.expires_at
-        ? post.expires_at
-        : new Date(post.expires_at)
       this.id = post.id
       this.userId = post.user_id
       this.username = post.username

@@ -1,11 +1,4 @@
-import {
-  Entity,
-  Index,
-  ManyToOne,
-  OneToOne,
-  Property,
-  types,
-} from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, OneToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { SolNftEntity } from '../../sol/entities/sol-nft.entity'
@@ -20,8 +13,8 @@ export class PassHolderEntity extends BaseEntity {
   @ManyToOne()
   holder?: UserEntity
 
-  @Property({ type: types.bigint })
-  expiresAt?: number
+  @Property()
+  expiresAt?: Date
 
   @OneToOne()
   solNft: SolNftEntity

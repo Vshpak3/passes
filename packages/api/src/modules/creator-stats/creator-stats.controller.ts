@@ -18,7 +18,7 @@ export class CreatorStatsController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetCreatorEarningResponseDto,
-    description: 'Balance was returned',
+    description: 'Balance was retrieved',
   })
   @Get('balance')
   async getBalance(
@@ -31,7 +31,7 @@ export class CreatorStatsController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetCreatorEarningsResponseDto,
-    description: 'Historic earnings returned',
+    description: 'Historic earnings was retrieved',
   })
   @Post('earnings/historic')
   async getHistoricEarnings(

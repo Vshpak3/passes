@@ -16,28 +16,28 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface SubmitInquiryRequestDto
+ * @interface SubmitPersonaInquiryRequestDto
  */
-export interface SubmitInquiryRequestDto {
+export interface SubmitPersonaInquiryRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof SubmitInquiryRequestDto
+     * @memberof SubmitPersonaInquiryRequestDto
      */
     personaId: string;
     /**
      * 
      * @type {string}
-     * @memberof SubmitInquiryRequestDto
+     * @memberof SubmitPersonaInquiryRequestDto
      */
-    personaStatus: SubmitInquiryRequestDtoPersonaStatusEnum;
+    personaStatus: SubmitPersonaInquiryRequestDtoPersonaStatusEnum;
 }
 
 
 /**
  * @export
  */
-export const SubmitInquiryRequestDtoPersonaStatusEnum = {
+export const SubmitPersonaInquiryRequestDtoPersonaStatusEnum = {
     Created: 'created',
     Pending: 'pending',
     Completed: 'completed',
@@ -47,14 +47,14 @@ export const SubmitInquiryRequestDtoPersonaStatusEnum = {
     Approved: 'approved',
     Declined: 'declined'
 } as const;
-export type SubmitInquiryRequestDtoPersonaStatusEnum = typeof SubmitInquiryRequestDtoPersonaStatusEnum[keyof typeof SubmitInquiryRequestDtoPersonaStatusEnum];
+export type SubmitPersonaInquiryRequestDtoPersonaStatusEnum = typeof SubmitPersonaInquiryRequestDtoPersonaStatusEnum[keyof typeof SubmitPersonaInquiryRequestDtoPersonaStatusEnum];
 
 
-export function SubmitInquiryRequestDtoFromJSON(json: any): SubmitInquiryRequestDto {
-    return SubmitInquiryRequestDtoFromJSONTyped(json, false);
+export function SubmitPersonaInquiryRequestDtoFromJSON(json: any): SubmitPersonaInquiryRequestDto {
+    return SubmitPersonaInquiryRequestDtoFromJSONTyped(json, false);
 }
 
-export function SubmitInquiryRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SubmitInquiryRequestDto {
+export function SubmitPersonaInquiryRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SubmitPersonaInquiryRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -65,7 +65,7 @@ export function SubmitInquiryRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function SubmitInquiryRequestDtoToJSON(value?: SubmitInquiryRequestDto | null): any {
+export function SubmitPersonaInquiryRequestDtoToJSON(value?: SubmitPersonaInquiryRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

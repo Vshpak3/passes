@@ -195,7 +195,7 @@ export class PassService {
 
     const expiresAt =
       pass.type === PassTypeEnum.SUBSCRIPTION
-        ? Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS
+        ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
         : undefined
 
     const userCustodialWallet = await this.walletService.getDefaultWallet(
@@ -243,7 +243,7 @@ export class PassService {
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
-        `${PassHolderEntity}.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
       )
       .where(`${PassHolderEntity.table}.id`, passHolderId)
       .select([
@@ -258,30 +258,19 @@ export class PassService {
       throw new ForbiddenPassException("can't extend non subscription pass")
     }
 
-    await this.dbWriter.transaction(async (trx) => {
-      if (passHolder.expires_at < Date.now()) {
-        await trx(PassHolderEntity.table)
-          .where('id', passHolder.id)
-          .increment('expires_at', passHolder.duration)
-      } else {
-        await trx(PassHolderEntity.table)
-          .where('id', passHolder.id)
-          .update(
-            'expires_at',
-            Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
-          )
-      }
-      await trx(PassHolderEntity.table)
-        .where('id', passHolder.id)
-        .update('messages', passHolder.pass_messages)
-    })
+    const expiresAt = new Date(
+      Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
+    )
+    await this.dbWriter(PassHolderEntity.table)
+      .where('id', passHolder.id)
+      .update(
+        PassHolderEntity.toDict<PassHolderEntity>({
+          expiresAt,
+          messages: passHolder.pass_messages,
+        }),
+      )
 
-    return (
-      await this.dbReader(PassHolderEntity.table)
-        .where('id', passHolder.id)
-        .select(...PassHolderEntity.populate<PassHolderEntity>(['expiresAt']))
-        .first()
-    ).expires_at
+    return expiresAt
   }
 
   async registerRenewPass(
@@ -307,7 +296,7 @@ export class PassService {
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
-        `${PassHolderEntity}.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
       )
       .where(`${PassHolderEntity.table}.id`, passHolderId)
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
@@ -489,7 +478,7 @@ export class PassService {
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
-        `${PassHolderEntity}.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
       )
       .where(`${PassHolderEntity.table}.id`, passHolderId)
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)

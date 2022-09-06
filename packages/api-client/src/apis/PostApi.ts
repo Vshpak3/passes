@@ -24,6 +24,9 @@ import {
     CreatePostResponseDto,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
+    GetGalleryViewDto,
+    GetGalleryViewDtoFromJSON,
+    GetGalleryViewDtoToJSON,
     GetPostResponseDto,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
@@ -47,6 +50,10 @@ export interface CreatePostRequest {
 
 export interface FindPostRequest {
     postId: string;
+}
+
+export interface GetGalleryViewRequest {
+    channelId: string;
 }
 
 export interface PinPostRequest {
@@ -143,6 +150,36 @@ export class PostApi extends runtime.BaseAPI {
      */
     async findPost(requestParameters: FindPostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPostResponseDto> {
         const response = await this.findPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get gallery view
+     */
+    async getGalleryViewRaw(requestParameters: GetGalleryViewRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetGalleryViewDto>> {
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getGalleryView.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/post/gallery/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetGalleryViewDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get gallery view
+     */
+    async getGalleryView(requestParameters: GetGalleryViewRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetGalleryViewDto> {
+        const response = await this.getGalleryViewRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

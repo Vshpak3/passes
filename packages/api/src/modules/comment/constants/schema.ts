@@ -1,1 +1,1 @@
-export const COMMENT_CONTENT_LENGTH = 500
+export const COMMENT_TEXT_LENGTH = 500

@@ -1,26 +1,12 @@
-import {
-  BadRequestException,
-  ConflictException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common'
-import { v4 } from 'uuid'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import {
-  FAN_WALL_COMMENT_NOT_EXIST,
-  FAN_WALL_COMMENT_NOT_FOR_CREATOR,
-  FAN_WALL_COMMENT_NOT_OWNED_BY_USER,
-  FAN_WALL_COMMENT_REMOVED,
-  FAN_WALL_USER_IS_NOT_CREATOR,
-} from './constants/errors'
-import { CommentDto } from './dto/comment.dto'
-import { CreateFanWallCommentRequestDto } from './dto/create-comment.dto'
-import { GetFanWallForCreatorResponseDto } from './dto/get-comments-for-post-dto'
+import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
+import { GetFanWallForCreatorResponseDto } from './dto/get-fan-wall-comments-for-post-dto'
 import { FanWallCommentEntity } from './entities/fan-wall-comment.entity'
 
 @Injectable()
@@ -34,20 +20,13 @@ export class FanWallService {
 
   async createFanWallComment(
     userId: string,
-    createCommentDto: CreateFanWallCommentRequestDto,
-  ): Promise<CommentDto> {
-    const { creatorUsername, content } = createCommentDto
-    const creator = await this.dbReader(UserEntity.table)
-      .where({ username: creatorUsername })
-      .first()
-    if (!creator || !creator.is_creator || creator.is_disabled) {
-      throw new BadRequestException(FAN_WALL_USER_IS_NOT_CREATOR)
-    }
+    createFanWallCommentDto: CreateFanWallCommentRequestDto,
+  ): Promise<boolean> {
+    const { creatorId, text: content } = createFanWallCommentDto
 
-    const id = v4()
     const followBlockResult = await this.dbReader(FollowBlockEntity.table)
       .where(`${FollowBlockEntity.table}.follower_id`, userId)
-      .where(`${FollowBlockEntity.table}.creator_id`, creator.id)
+      .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
       .first()
 
     if (followBlockResult) {
@@ -55,101 +34,79 @@ export class FanWallService {
     }
 
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
-      id,
-      creator: creator.id,
+      creator: creatorId,
       commenter: userId,
-      content: content,
+      text: content,
     })
 
     await this.dbWriter(FanWallCommentEntity.table).insert(data)
 
-    const fanWallComment = await this.dbReader(FanWallCommentEntity.table)
-      .leftJoin(UserEntity.table, 'fan_wall_comment.commenter_id', 'users.id')
-      .where({
-        'fan_wall_comment.id': id,
-      })
-      .select(
-        'fan_wall_comment.*',
-        'users.username as commenter_username',
-        'users.display_name as commenter_display_name',
-      )
-      .first()
-
-    return new CommentDto(fanWallComment)
+    return true
   }
 
   async getFanWallForCreator(
-    creatorUsername: string,
+    creatorId: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
-    const creator = await this.dbReader(UserEntity.table)
-      .where({ username: creatorUsername })
-      .first()
-    if (!creator || !creator.is_creator || creator.is_disabled) {
-      return new GetFanWallForCreatorResponseDto([])
-    }
-
     const comments = await this.dbReader(FanWallCommentEntity.table)
-      .leftJoin(UserEntity.table, 'fan_wall_comment.commenter_id', 'users.id')
-      .where({
-        creator_id: creator.id,
-        is_hidden: false,
-        deleted_at: null,
-      })
+      .leftJoin(
+        UserEntity.table,
+        `${FanWallCommentEntity.table}.commenter_id`,
+        `${UserEntity.table}.id`,
+      )
+      .where(
+        FanWallCommentEntity.toDict<FanWallCommentEntity>({
+          creator: creatorId,
+          hiddenAt: null,
+          deletedAt: null,
+        }),
+      )
       .select(
-        'fan_wall_comment.*',
-        'users.username as commenter_username',
-        'users.display_name as commenter_display_name',
+        `${FanWallCommentEntity.table}.*`,
+        `${UserEntity.table}.username as commenter_username`,
+        `${UserEntity.table}.display_name as commenter_display_name`,
       )
       .orderBy('created_at', 'desc')
 
     return new GetFanWallForCreatorResponseDto(comments)
   }
 
-  async hideFanWallCommment(userId: string, id: string) {
-    const comment = await this.dbReader(FanWallCommentEntity.table)
-      .where({ id })
-      .first()
-
-    if (!comment) {
-      throw new BadRequestException(FAN_WALL_COMMENT_NOT_EXIST)
-    }
-
-    if (comment.is_hidden || comment.deleted_at !== null) {
-      throw new BadRequestException(FAN_WALL_COMMENT_REMOVED)
-    }
-
-    if (comment.creator_id !== userId) {
-      throw new ForbiddenException(FAN_WALL_COMMENT_NOT_FOR_CREATOR)
-    }
-
+  async hideFanWallCommment(
+    userId: string,
+    fanWallCommentId: string,
+  ): Promise<boolean> {
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
-      isHidden: true,
+      hiddenAt: this.dbWriter.fn.now(),
     })
-
-    await this.dbWriter(FanWallCommentEntity.table).update(data).where({ id })
+    const updated = await this.dbWriter(FanWallCommentEntity.table)
+      .update(data)
+      .where(
+        FanWallCommentEntity.toDict<FanWallCommentEntity>({
+          id: fanWallCommentId,
+          creator: userId,
+          hiddenAt: null,
+          deletedAt: null,
+        }),
+      )
+    return updated === 1
   }
 
-  async deleteFanWallComment(userId: string, id: string) {
-    const comment = await this.dbReader(FanWallCommentEntity.table)
-      .where({ id })
-      .first()
-
-    if (!comment) {
-      throw new BadRequestException(FAN_WALL_COMMENT_NOT_EXIST)
-    }
-
-    if (comment.commenter_id !== userId) {
-      throw new ForbiddenException(FAN_WALL_COMMENT_NOT_OWNED_BY_USER)
-    }
-
-    if (comment.deleted_at !== null) {
-      throw new ConflictException(FAN_WALL_COMMENT_REMOVED)
-    }
-
+  async deleteFanWallComment(
+    userId: string,
+    fanWallCommentId: string,
+  ): Promise<boolean> {
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
       deletedAt: this.dbWriter.fn.now(),
     })
-
-    await this.dbWriter(FanWallCommentEntity.table).update(data).where({ id })
+    const updated = await this.dbWriter(FanWallCommentEntity.table)
+      .update(data)
+      .where(
+        FanWallCommentEntity.toDict<FanWallCommentEntity>({
+          id: fanWallCommentId,
+          commenter: userId,
+          hiddenAt: null,
+          deletedAt: null,
+        }),
+      )
+    return updated === 1
   }
 }

@@ -14,7 +14,7 @@ export class PassHolderDto {
   messages?: number | null
 
   @ApiPropertyOptional()
-  expiresAt?: number
+  expiresAt?: Date
 
   @ApiPropertyOptional()
   holderUsername?: string

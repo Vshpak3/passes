@@ -15,22 +15,19 @@
 
 import * as runtime from '../runtime';
 import {
-    CreateProfileRequestDto,
-    CreateProfileRequestDtoFromJSON,
-    CreateProfileRequestDtoToJSON,
+    CreateOrUpdateProfileRequestDto,
+    CreateOrUpdateProfileRequestDtoFromJSON,
+    CreateOrUpdateProfileRequestDtoToJSON,
     GetProfileResponseDto,
     GetProfileResponseDtoFromJSON,
     GetProfileResponseDtoToJSON,
     GetUsernamesResponseDto,
     GetUsernamesResponseDtoFromJSON,
     GetUsernamesResponseDtoToJSON,
-    UpdateProfileRequestDto,
-    UpdateProfileRequestDtoFromJSON,
-    UpdateProfileRequestDtoToJSON,
 } from '../models';
 
-export interface CreateProfileRequest {
-    createProfileRequestDto: CreateProfileRequestDto;
+export interface CreateOrUpdateProfileRequest {
+    createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto;
 }
 
 export interface FindProfileRequest {
@@ -45,11 +42,6 @@ export interface RemoveProfileRequest {
     profileId: string;
 }
 
-export interface UpdateProfileRequest {
-    profileId: string;
-    updateProfileRequestDto: UpdateProfileRequestDto;
-}
-
 /**
  * 
  */
@@ -58,9 +50,9 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async createProfileRaw(requestParameters: CreateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
-        if (requestParameters.createProfileRequestDto === null || requestParameters.createProfileRequestDto === undefined) {
-            throw new runtime.RequiredError('createProfileRequestDto','Required parameter requestParameters.createProfileRequestDto was null or undefined when calling createProfile.');
+    async createOrUpdateProfileRaw(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.createOrUpdateProfileRequestDto === null || requestParameters.createOrUpdateProfileRequestDto === undefined) {
+            throw new runtime.RequiredError('createOrUpdateProfileRequestDto','Required parameter requestParameters.createOrUpdateProfileRequestDto was null or undefined when calling createOrUpdateProfile.');
         }
 
         const queryParameters: any = {};
@@ -74,17 +66,17 @@ export class ProfileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateProfileRequestDtoToJSON(requestParameters.createProfileRequestDto),
+            body: CreateOrUpdateProfileRequestDtoToJSON(requestParameters.createOrUpdateProfileRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileResponseDtoFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      * Creates a profile
      */
-    async createProfile(requestParameters: CreateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
-        const response = await this.createProfileRaw(requestParameters, initOverrides);
+    async createOrUpdateProfile(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.createOrUpdateProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -177,7 +169,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deletes a profile
      */
-    async removeProfileRaw(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
+    async removeProfileRaw(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.profileId === null || requestParameters.profileId === undefined) {
             throw new runtime.RequiredError('profileId','Required parameter requestParameters.profileId was null or undefined when calling removeProfile.');
         }
@@ -193,51 +185,14 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileResponseDtoFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      * Deletes a profile
      */
-    async removeProfile(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
+    async removeProfile(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
         const response = await this.removeProfileRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Updates a profile
-     */
-    async updateProfileRaw(requestParameters: UpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
-        if (requestParameters.profileId === null || requestParameters.profileId === undefined) {
-            throw new runtime.RequiredError('profileId','Required parameter requestParameters.profileId was null or undefined when calling updateProfile.');
-        }
-
-        if (requestParameters.updateProfileRequestDto === null || requestParameters.updateProfileRequestDto === undefined) {
-            throw new runtime.RequiredError('updateProfileRequestDto','Required parameter requestParameters.updateProfileRequestDto was null or undefined when calling updateProfile.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/profile/{profileId}`.replace(`{${"profileId"}}`, encodeURIComponent(String(requestParameters.profileId))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateProfileRequestDtoToJSON(requestParameters.updateProfileRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Updates a profile
-     */
-    async updateProfile(requestParameters: UpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
-        const response = await this.updateProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

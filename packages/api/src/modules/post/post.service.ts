@@ -12,10 +12,10 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
+import { MessagePostEntity } from '../messages/entities/message-post.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import {
   PurchasePostCallbackInput,
@@ -67,9 +67,6 @@ export class PostService {
     const postId = v4()
     await this.dbWriter
       .transaction(async (trx) => {
-        const scheduledAt = createPostDto.scheduledAt
-          ? formatDateTimeToDbDateTime(createPostDto.scheduledAt)
-          : undefined
         const post = PostEntity.toDict<PostEntity>({
           id: postId,
           user: userId,
@@ -77,26 +74,30 @@ export class PostService {
           isMessage: createPostDto.isMessage,
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
-          scheduledAt,
+          scheduledAt: createPostDto.scheduledAt,
         })
 
         await this.dbWriter(PostEntity.table).insert(post)
 
-        const postContent = createPostDto.content?.map((contentId) =>
+        const postContent = createPostDto.contentIds.map((contentId) =>
           PostContentEntity.toDict<PostContentEntity>({
             content: contentId,
             post: postId,
           }),
         )
 
-        if (postContent?.length)
+        if (postContent.length) {
           await trx(PostContentEntity.table).insert(postContent)
+        }
+        await trx(ContentEntity.table)
+          .update(createPostDto.isMessage ? 'in_message' : 'in_post', true)
+          .whereIn('id', createPostDto.contentIds)
 
-        for (let i = 0; i < createPostDto.passes.length; ++i) {
+        for (let i = 0; i < createPostDto.passIds.length; ++i) {
           const postPassAccess =
             PostPassAccessEntity.toDict<PostPassAccessEntity>({
               post: postId,
-              pass: createPostDto.passes[i],
+              pass: createPostDto.passIds[i],
             })
           await trx(PostPassAccessEntity.table).insert(postPassAccess)
         }
@@ -108,8 +109,48 @@ export class PostService {
     return { postId }
   }
 
+  async getGalleryMessages(userId: string, channelId: string) {
+    const query = this.dbReader(MessagePostEntity.table)
+      .innerJoin(
+        PostEntity.table,
+        `${MessagePostEntity.table}.post_id`,
+        `${PostEntity.table}.id`,
+      )
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${PostEntity.table}.user_id`,
+      )
+      .leftJoin(PostUserAccessEntity.table, function () {
+        this.on(
+          `${UserEntity.table}.id`,
+          `${PostUserAccessEntity.table}.user_id`,
+        ).andOn(
+          `${PostEntity.table}.id`,
+          `${PostUserAccessEntity.table}.post_id`,
+        )
+      })
+      .leftJoin(
+        LikeEntity.table,
+        `${LikeEntity.table}.post_id`,
+        `${PostEntity.table}.id`,
+      )
+      .select([
+        `${PostEntity.table}.*`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+        `${PostUserAccessEntity.table}.post_id as access`,
+        `${LikeEntity.table}.id as is_liked`,
+      ])
+      .where(`${PostEntity.table}.is_message`, true)
+      .andWhere(`${MessagePostEntity.table}.user_id`, userId)
+      .andWhere(`${MessagePostEntity.table}.channel_id`, channelId)
+      .orderBy('created_at', 'desc')
+    return await this.getPostsFromQuery(userId, query)
+  }
+
   async findPost(postId: string, userId: string): Promise<PostDto> {
-    const dbquery = this.dbReader(PostEntity.table)
+    const query = this.dbReader(PostEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -139,7 +180,7 @@ export class PostService {
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.id`, postId)
 
-    const postDtos = await this.getPostsFromQuery(userId, dbquery)
+    const postDtos = await this.getPostsFromQuery(userId, query)
 
     if (postDtos.length === 0) {
       throw new NotFoundException(POST_NOT_EXIST)
@@ -165,7 +206,11 @@ export class PostService {
         posts.map((post) => post.id),
       )
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
-      .andWhere(`${PassHolderEntity.table}.expires_at`, '>', Date.now())
+      .andWhere(
+        `${PassHolderEntity.table}.expires_at`,
+        '>',
+        this.dbWriter.fn.now(),
+      )
       .select('post_id')
     const postsFromPass = new Set(
       passAccesses.map((passAccess) => passAccess.post_id),

@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
@@ -34,8 +34,9 @@ export class PostEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE })
   price?: number
 
-  @Property({ type: types.bigint })
-  expiresAt?: number
+  @Index()
+  @Property()
+  expiresAt?: Date
 
   @Property()
   pinnedAt?: Date
@@ -44,6 +45,7 @@ export class PostEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   totalTipAmount: number
 
+  @Index()
   @Property()
   scheduledAt?: Date
 }

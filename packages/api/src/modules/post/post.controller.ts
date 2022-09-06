@@ -19,6 +19,7 @@ import {
   CreatePostResponseDto,
 } from './dto/create-post.dto'
 import { CreatePostAccessRequestDto } from './dto/create-post-access.dto'
+import { GetGalleryViewDto } from './dto/get-gallery-view.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -109,7 +110,7 @@ export class PostController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Data for register purchase post was returned',
+    description: 'Data for register purchase post was retrieved',
   })
   @Post('pay/data/purchase')
   async registerPurchasePostData(
@@ -167,5 +168,23 @@ export class PostController {
     @Param('postId') postId: string,
   ): Promise<boolean> {
     return await this.postService.unpinPost(req.user.id, postId)
+  }
+
+  // returns all post-messages, paid or unpaid
+  // filter in FE
+  @ApiOperation({ summary: 'Get gallery view' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: GetGalleryViewDto,
+    description: 'Gallery view was retrieved',
+  })
+  @Get('gallery/:channelId')
+  async getGalleryView(
+    @Req() req: RequestWithUser,
+    @Param('channelId') channelId: string,
+  ): Promise<GetGalleryViewDto> {
+    return new GetGalleryViewDto(
+      await this.postService.getGalleryMessages(req.user.id, channelId),
+    )
   }
 }

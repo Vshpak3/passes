@@ -1,1 +1,1 @@
-export const FAN_COMMENT_CONTENT_LENGTH = 500
+export const FAN_COMMENT_TEXT_LENGTH = 500

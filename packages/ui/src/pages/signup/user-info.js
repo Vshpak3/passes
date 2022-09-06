@@ -45,7 +45,7 @@ const UserInfoPage = () => {
         userSetInitialInfoRequestDto
       })
 
-      if (!res.id) {
+      if (!res) {
         alert("ERROR: Unexpected payload")
       }
 

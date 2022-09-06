@@ -8,8 +8,6 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { PostEntity } from '../post/entities/post.entity'
-import { PostContentEntity } from '../post/entities/post-content.entity'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
@@ -92,52 +90,29 @@ export class ContentService {
     switch (category) {
       // filter content that has been used in messages
       case VaultCategoryEnum.MESSAGES: //TOODO
-        query = query
-          .innerJoin(
-            `${PostContentEntity.table}`,
-            `${ContentEntity.table}.id`,
-            `${PostContentEntity.table}.content_id`,
-          )
-          .innerJoin(
-            `${PostEntity.table}`,
-            `${PostEntity.table}.id`,
-            `${PostContentEntity.table}.post_id`,
-          )
-          .where(`${PostEntity.table}.is_message`, true)
-          .select([`${ContentEntity.table}.*`])
+        query = query.andWhere(
+          ContentEntity.toDict<ContentEntity>({
+            inMessage: true,
+          }),
+        )
         break
       // filter content that has been used in posts
       case VaultCategoryEnum.POSTS:
-        query = query
-          .innerJoin(
-            `${PostContentEntity.table}`,
-            `${ContentEntity.table}.id`,
-            `${PostContentEntity.table}.content_id`,
-          )
-          .innerJoin(
-            `${PostEntity.table}`,
-            `${PostEntity.table}.id`,
-            `${PostContentEntity.table}.post_id`,
-          )
-          .where(`${PostEntity.table}.is_message`, false)
+        query = query.andWhere(
+          ContentEntity.toDict<ContentEntity>({
+            inPost: true,
+          }),
+        )
 
         break
-      case VaultCategoryEnum.UPLOADS: // TODO
+      case VaultCategoryEnum.UPLOADS:
         // filter content that has not been used anywhere (uploaded directly to vault)
-        // query = query
-        //   .leftJoin(
-        //     ContentMessageEntity.table,
-        //     `${ContentEntity.table}.id`,
-        //     `${ContentMessageEntity.table}.content_id`,
-        //   )
-        //   .leftJoin(
-        //     'content_post',
-        //     `${ContentEntity.table}.id`,
-        //     'content_post.content_entity_id',
-        //   )
-        //   .andWhere(`${ContentMessageEntity.table}.content_id`, null)
-        //   .andWhere('content_post.content_entity_id', null)
-        //   .select(['*', `${ContentEntity.table}.id`])
+        query = query.andWhere(
+          ContentEntity.toDict<ContentEntity>({
+            inMessage: false,
+            inPost: false,
+          }),
+        )
         break
 
       default:

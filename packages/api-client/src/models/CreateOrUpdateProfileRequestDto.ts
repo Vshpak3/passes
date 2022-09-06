@@ -16,70 +16,70 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface CreateProfileRequestDto
+ * @interface CreateOrUpdateProfileRequestDto
  */
-export interface CreateProfileRequestDto {
+export interface CreateOrUpdateProfileRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     displayName?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     coverTitle?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     coverDescription?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     instagramUrl?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     tiktokUrl?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     youtubeUrl?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     discordUrl?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateProfileRequestDto
+     * @memberof CreateOrUpdateProfileRequestDto
      */
     twitchUrl?: string;
 }
 
-export function CreateProfileRequestDtoFromJSON(json: any): CreateProfileRequestDto {
-    return CreateProfileRequestDtoFromJSONTyped(json, false);
+export function CreateOrUpdateProfileRequestDtoFromJSON(json: any): CreateOrUpdateProfileRequestDto {
+    return CreateOrUpdateProfileRequestDtoFromJSONTyped(json, false);
 }
 
-export function CreateProfileRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateProfileRequestDto {
+export function CreateOrUpdateProfileRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateOrUpdateProfileRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -97,7 +97,7 @@ export function CreateProfileRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function CreateProfileRequestDtoToJSON(value?: CreateProfileRequestDto | null): any {
+export function CreateOrUpdateProfileRequestDtoToJSON(value?: CreateOrUpdateProfileRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

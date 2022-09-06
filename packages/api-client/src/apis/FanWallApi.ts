@@ -15,9 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-    CommentDto,
-    CommentDtoFromJSON,
-    CommentDtoToJSON,
     CreateFanWallCommentRequestDto,
     CreateFanWallCommentRequestDtoFromJSON,
     CreateFanWallCommentRequestDtoToJSON,
@@ -31,15 +28,15 @@ export interface CreateFanWallCommentRequest {
 }
 
 export interface DeleteFanWallCommentRequest {
-    id: string;
+    fanWallCommentId: string;
 }
 
 export interface GetFanWallForCreatorRequest {
-    username: string;
+    userId: string;
 }
 
 export interface HideFanWallCommentRequest {
-    id: string;
+    fanWallCommentId: string;
 }
 
 /**
@@ -50,7 +47,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Creates a fan wall comment
      */
-    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<CommentDto>> {
+    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.createFanWallCommentRequestDto === null || requestParameters.createFanWallCommentRequestDto === undefined) {
             throw new runtime.RequiredError('createFanWallCommentRequestDto','Required parameter requestParameters.createFanWallCommentRequestDto was null or undefined when calling createFanWallComment.');
         }
@@ -69,23 +66,23 @@ export class FanWallApi extends runtime.BaseAPI {
             body: CreateFanWallCommentRequestDtoToJSON(requestParameters.createFanWallCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CommentDtoFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      * Creates a fan wall comment
      */
-    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<CommentDto> {
+    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
         const response = await this.createFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Deletes a comment
+     * Deletes a fan wall comment
      */
-    async deleteFanWallCommentRaw(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteFanWallComment.');
+    async deleteFanWallCommentRaw(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.fanWallCommentId === null || requestParameters.fanWallCommentId === undefined) {
+            throw new runtime.RequiredError('fanWallCommentId','Required parameter requestParameters.fanWallCommentId was null or undefined when calling deleteFanWallComment.');
         }
 
         const queryParameters: any = {};
@@ -93,28 +90,29 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/fan-wall/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/fan-wall/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
-     * Deletes a comment
+     * Deletes a fan wall comment
      */
-    async deleteFanWallComment(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.deleteFanWallCommentRaw(requestParameters, initOverrides);
+    async deleteFanWallComment(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.deleteFanWallCommentRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
      * Gets fan wall for a creator
      */
     async getFanWallForCreatorRaw(requestParameters: GetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFanWallForCreatorResponseDto>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling getFanWallForCreator.');
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling getFanWallForCreator.');
         }
 
         const queryParameters: any = {};
@@ -122,7 +120,7 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/fan-wall/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            path: `/api/fan-wall/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -140,11 +138,11 @@ export class FanWallApi extends runtime.BaseAPI {
     }
 
     /**
-     * Hides a comment
+     * Hides a fan wall comment
      */
-    async hideFanWallCommentRaw(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling hideFanWallComment.');
+    async hideFanWallCommentRaw(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.fanWallCommentId === null || requestParameters.fanWallCommentId === undefined) {
+            throw new runtime.RequiredError('fanWallCommentId','Required parameter requestParameters.fanWallCommentId was null or undefined when calling hideFanWallComment.');
         }
 
         const queryParameters: any = {};
@@ -152,20 +150,21 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/fan-wall/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/fan-wall/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
-     * Hides a comment
+     * Hides a fan wall comment
      */
-    async hideFanWallComment(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.hideFanWallCommentRaw(requestParameters, initOverrides);
+    async hideFanWallComment(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.hideFanWallCommentRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

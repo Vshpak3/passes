@@ -14,11 +14,11 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    CommentDto,
-    CommentDtoFromJSON,
-    CommentDtoFromJSONTyped,
-    CommentDtoToJSON,
-} from './CommentDto';
+    FanWallCommentDto,
+    FanWallCommentDtoFromJSON,
+    FanWallCommentDtoFromJSONTyped,
+    FanWallCommentDtoToJSON,
+} from './FanWallCommentDto';
 
 /**
  * 
@@ -28,10 +28,10 @@ import {
 export interface GetFanWallForCreatorResponseDto {
     /**
      * 
-     * @type {Array<CommentDto>}
+     * @type {Array<FanWallCommentDto>}
      * @memberof GetFanWallForCreatorResponseDto
      */
-    comments: Array<CommentDto>;
+    comments: Array<FanWallCommentDto>;
 }
 
 export function GetFanWallForCreatorResponseDtoFromJSON(json: any): GetFanWallForCreatorResponseDto {
@@ -44,7 +44,7 @@ export function GetFanWallForCreatorResponseDtoFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'comments': ((json['comments'] as Array<any>).map(CommentDtoFromJSON)),
+        'comments': ((json['comments'] as Array<any>).map(FanWallCommentDtoFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function GetFanWallForCreatorResponseDtoToJSON(value?: GetFanWallForCreat
     }
     return {
         
-        'comments': ((value.comments as Array<any>).map(CommentDtoToJSON)),
+        'comments': ((value.comments as Array<any>).map(FanWallCommentDtoToJSON)),
     };
 }
 

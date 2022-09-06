@@ -41,12 +41,12 @@ export class TippedMessagePayinCallbackOutput extends PayinCallbackOutput {
 
 export class CreateNftPassPayinCallbackOutput extends PayinCallbackOutput {
   passHolderId: string
-  expiresAt?: number
+  expiresAt?: Date
 }
 
 export class RenewNftPassPayinCallbackOutput extends PayinCallbackOutput {
   passHolderId: string
-  expiresAt?: number
+  expiresAt?: Date
 }
 
 export class PurchasePostCallbackOutput extends PayinCallbackOutput {

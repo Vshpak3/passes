@@ -2052,9 +2052,9 @@ export class PaymentService {
           }
 
           let status = SubscriptionStatusEnum.DISABLED
-          if (subscription.expires_at - EXPIRING_DURATION_MS > now) {
+          if (subscription.expires_at.valueOf() - EXPIRING_DURATION_MS > now) {
             status = SubscriptionStatusEnum.ACTIVE
-          } else if (subscription.expires_at > now) {
+          } else if (subscription.expires_at.valueOf() > now) {
             status = SubscriptionStatusEnum.EXPIRING
           }
 

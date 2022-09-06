@@ -27,7 +27,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
     useSWR([`/fan-wall/creator/`, username], async () => {
       const api = wrapApi(FanWallApi)
-      return await api.getFanWallForCreator({ username })
+      return await api.getFanWallForCreator({ userId: props.userId })
     })
 
   const onEditProfile = () => setEditProfile(true)
@@ -44,7 +44,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     [`/post/creator/`, username],
     async () => {
       const api = wrapApi(FeedApi)
-      return await api.getPostsForCreator({ username, cursor: "" })
+      return await api.getFeedForCreator({ userId: props.userId, cursor: "" })
     }
   )
 
@@ -68,9 +68,8 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
     setProfile(newValues as any)
     const api = wrapApi(ProfileApi)
-    await api.updateProfile({
-      profileId: props.id,
-      updateProfileRequestDto: {
+    await api.createOrUpdateProfile({
+      createOrUpdateProfileRequestDto: {
         ...rest
         // profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
         // profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl

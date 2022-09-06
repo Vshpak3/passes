@@ -2,10 +2,8 @@ import { Injectable } from '@nestjs/common'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { formatDateTimeToDbDateTime } from '../../util/formatter.util'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
-import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
@@ -57,28 +55,24 @@ export class FeedService {
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${FollowEntity.table}.is_active`, true)
-      .andWhere(
-        `${PostEntity.table}.scheduled_at`,
-        '<=',
-        formatDateTimeToDbDateTime(Date.now()),
-      )
       .andWhere(`${PostEntity.table}.is_message`, false)
+      .andWhere(`${FollowEntity.table}.is_active`, true)
+      .andWhere(function () {
+        return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
+          `${PostEntity.table}.expires_at`,
+          '>',
+          new Date(),
+        )
+      })
+      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())
+      .andWhere(`${LikeEntity.table}.liker_id`, userId)
       .orderBy('created_at', 'desc')
       .limit(FEED_LIMIT)
 
     if (cursor) {
       query = query.andWhere('created_at', '<', cursor)
     }
-    let postDtos = await this.postService.getPostsFromQuery(userId, query)
-
-    // filter out expired posts
-    postDtos = postDtos.reduce((arr, postDto) => {
-      if (!postDto.expiresAt || postDto.expiresAt < Date.now())
-        arr.push(postDto)
-      return arr
-    }, [] as Array<PostDto>)
-
+    const postDtos = await this.postService.getPostsFromQuery(userId, query)
     return new GetFeedResponseDto(
       postDtos,
       postDtos.length > 0
@@ -87,17 +81,12 @@ export class FeedService {
     )
   }
 
-  async getPostsByCreatorUsername(
-    username: string,
+  async getFeedByCreator(
+    creatorId: string,
     userId: string,
     cursor?: string,
   ): Promise<GetFeedResponseDto> {
     let query = this.dbReader(UserEntity.table)
-      .innerJoin(
-        PostEntity.table,
-        `${UserEntity.table}.id`,
-        `${PostEntity.table}.user_id`,
-      )
       .leftJoin(PostUserAccessEntity.table, function () {
         this.on(
           `${UserEntity.table}.id`,
@@ -119,22 +108,50 @@ export class FeedService {
         `${PostUserAccessEntity.table}.post_id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
+      .where(`${PostEntity.table}.user_id`, creatorId)
       .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${UserEntity.table}.username`, username)
-      .andWhere('scheduled_at', '<=', formatDateTimeToDbDateTime(Date.now()))
       .andWhere(`${PostEntity.table}.is_message`, false)
+      .andWhere(function () {
+        return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
+          `${PostEntity.table}.expires_at`,
+          '>',
+          Date.now(),
+        )
+      })
+      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', Date.now())
+      .andWhere(`${LikeEntity.table}.liker_id`, userId)
+      .orderBy('created_at', 'desc')
+      .limit(FEED_LIMIT)
+
+    if (cursor) {
+      query = query.andWhere('created_at', '<', cursor)
+    }
+    const postDtos = await this.postService.getPostsFromQuery(userId, query)
+    return new GetFeedResponseDto(
+      postDtos,
+      postDtos.length > 0
+        ? postDtos[postDtos.length - 1].createdAt.toISOString()
+        : '',
+    )
+  }
+
+  async getPostsForCreator(
+    userId: string,
+    isMessage: boolean,
+    cursor?: string,
+  ): Promise<GetFeedResponseDto> {
+    let query = this.dbReader(PostEntity.table)
+      .select([`${PostEntity.table}.*`])
+      .whereNull(`${PostEntity.table}.deleted_at`)
+      .andWhere(`${PostEntity.table}.user_id`, userId)
+      .andWhere(`${PostEntity.table}.is_message`, isMessage)
       .orderBy('created_at', 'desc')
 
     if (cursor) {
       query = query.andWhere('created_at', '<', cursor)
     }
-    let postDtos = await this.postService.getPostsFromQuery(userId, query)
+    const postDtos = await this.postService.getPostsFromQuery(userId, query)
     // filter out expired posts
-    postDtos = postDtos.reduce((arr, postDto) => {
-      if (!postDto.expiresAt || postDto.expiresAt < Date.now())
-        arr.push(postDto)
-      return arr
-    }, [] as Array<PostDto>)
     return new GetFeedResponseDto(
       postDtos,
       postDtos.length > 0

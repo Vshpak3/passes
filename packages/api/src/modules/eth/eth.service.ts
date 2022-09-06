@@ -15,13 +15,11 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { RedisLockService } from '../redisLock/redisLock.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletResponseDto } from '../wallet/dto/wallet-response.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
-import { ETH_NFT_COLLECTION_EXISTS } from './constants/errors'
 import { CreateEthNftCollectionRequestDto } from './dto/create-eth-nft-collection.dto'
 import { EthNftCollectionDto } from './dto/eth-nft-collection.dto'
 import { BatchEthWalletRefreshEntity } from './entities/batch-eth-wallet-refresh.entity'
@@ -68,14 +66,10 @@ export class EthService {
       ...createEthNftCollectionDto,
     })
 
-    const query = () => this.dbWriter(EthNftCollectionEntity.table).insert(data)
-
-    await createOrThrowOnDuplicate(
-      query,
-      this.logger,
-      ETH_NFT_COLLECTION_EXISTS,
-    )
-    // TODO: fix return type
+    await this.dbWriter(EthNftCollectionEntity.table)
+      .insert(data)
+      .onConflict('token_address')
+      .merge()
     return new EthNftCollectionDto(data)
   }
 

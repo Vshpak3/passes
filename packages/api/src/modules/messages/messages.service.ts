@@ -186,7 +186,7 @@ export class MessagesService {
         .andWhere(function () {
           return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
             `${PassHolderEntity.table}.expires_at`,
-            '<=',
+            '>',
             Date.now(),
           )
         })
@@ -318,7 +318,7 @@ export class MessagesService {
       .andWhere(function () {
         return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
           `${PassHolderEntity.table}.expires_at`,
-          '<=',
+          '>',
           Date.now(),
         )
       })
@@ -360,7 +360,7 @@ export class MessagesService {
       .andWhere(function () {
         return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
           `${PassHolderEntity.table}.expires_at`,
-          '<=',
+          '>',
           Date.now(),
         )
       })

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import { Keypair } from '@solana/web3.js'
 import base58 from 'bs58'
@@ -58,15 +54,12 @@ export class WalletService {
     ${nonce}`
   }
 
-  async findOne(id: string): Promise<WalletDto | undefined> {
+  async findWallet(walletId: string): Promise<WalletDto | undefined> {
     const wallet = await this.dbReader(WalletEntity.table)
+      .where(`id`, walletId)
       .select('*')
-      .where(`${WalletEntity.table}.id`, id)
       .first()
 
-    if (!wallet) {
-      return undefined
-    }
     return new WalletDto(wallet)
   }
 
@@ -185,10 +178,21 @@ export class WalletService {
       .merge(['wallet_id'])
   }
 
-  async authMessage(
-    userId: string,
-    authWalletRequestDto: AuthWalletRequestDto,
-  ): Promise<AuthWalletResponseDto> {
+  fixAddress(address: string, chain: ChainEnum): string {
+    if (
+      chain == ChainEnum.ETH ||
+      chain == ChainEnum.MATIC ||
+      chain == ChainEnum.AVAX
+    ) {
+      return address.toLowerCase()
+    }
+    return address
+  }
+  getUserWalletRedisKey(userId: string, address: string) {
+    return `walletservice.rawMessage.${userId},${address}}`
+  }
+
+  async checkWallets(userId: string) {
     const numWallets = (
       await this.dbReader(WalletEntity.table).where(
         WalletEntity.toDict<WalletEntity>({
@@ -201,11 +205,17 @@ export class WalletService {
         `${MAX_WALLETS_PER_USER} wallet limit reached!`,
       )
     }
-    let walletAddress = authWalletRequestDto.walletAddress
-    if (authWalletRequestDto.chain == ChainEnum.ETH) {
-      walletAddress = walletAddress.toLowerCase()
-    }
-    const userWalletRedisKey = `walletservice.rawMessage.${userId},${walletAddress}}`
+  }
+  async authMessage(
+    userId: string,
+    authWalletRequestDto: AuthWalletRequestDto,
+  ): Promise<AuthWalletResponseDto> {
+    await this.checkWallets(userId)
+    const walletAddress = this.fixAddress(
+      authWalletRequestDto.walletAddress,
+      authWalletRequestDto.chain,
+    )
+    const userWalletRedisKey = this.getUserWalletRedisKey(userId, walletAddress)
     let authMessage = await this.redisService.get(userWalletRedisKey)
     if (authMessage == null) {
       authMessage = this.getRawMessage(walletAddress, v4())
@@ -237,111 +247,71 @@ export class WalletService {
   async createWallet(
     userId: string,
     createWalletDto: CreateWalletRequestDto,
-  ): Promise<WalletEntity> {
-    const numWallets = (
-      await this.dbReader(WalletEntity.table).where(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-        }),
-      )
-    ).length
-    if (numWallets >= MAX_WALLETS_PER_USER) {
-      throw new BadRequestException(
-        `${MAX_WALLETS_PER_USER} wallet limit reached!`,
-      )
-    }
-    let walletAddress = createWalletDto.walletAddress
-    if (createWalletDto.chain == ChainEnum.ETH) {
-      walletAddress = walletAddress.toLowerCase()
-    }
-
-    const data = WalletEntity.toDict<WalletEntity>({
-      user: userId,
-    })
-    const userWalletRedisKey = `walletservice.rawMessage.${userId},${walletAddress}`
+  ): Promise<boolean> {
+    await this.checkWallets(userId)
+    const walletAddress = this.fixAddress(
+      createWalletDto.walletAddress,
+      createWalletDto.chain,
+    )
+    const userWalletRedisKey = this.getUserWalletRedisKey(userId, walletAddress)
 
     const rawMessage = await this.redisService.get(userWalletRedisKey)
-    if (rawMessage != createWalletDto.rawMessage) {
+    if (rawMessage !== createWalletDto.rawMessage) {
       throw new BadRequestException('invalid rawMessage supplied')
     }
-    if (createWalletDto.chain == ChainEnum.ETH) {
-      const address = this.web3.eth.accounts.recover(
-        createWalletDto.rawMessage,
-        createWalletDto.signedMessage,
-      )
-      if (address.toLowerCase() != walletAddress) {
-        throw new BadRequestException('recovered address does not match input')
-      }
-      data.address = walletAddress
-    } else if (createWalletDto.chain == ChainEnum.SOL) {
-      const signatureUint8 = base58.decode(createWalletDto.signedMessage)
-      const nonceUint8 = new TextEncoder().encode(createWalletDto.rawMessage)
-      const pubKeyUint8 = base58.decode(walletAddress)
-      const success = nacl.sign.detached.verify(
-        nonceUint8,
-        signatureUint8,
-        pubKeyUint8,
-      )
-      if (success) {
-        data.address = createWalletDto.walletAddress
-      } else {
-        throw new BadRequestException('invalid message signature for address')
-      }
-    } else {
-      throw new BadRequestException('invalid chain specified')
-    }
-    const existingWallet = (
-      await this.dbReader(WalletEntity.table)
-        .select('*')
-        .where('address', walletAddress)
-    )[0]
-    if (existingWallet == undefined) {
-      data.chain = createWalletDto.chain
-      await this.dbWriter(WalletEntity.table).insert(data)
-      // TODO: fix return type
-      return data as any
-    } else {
-      return this.updateExistingWalletUser(existingWallet, userId)
-    }
-  }
-
-  async updateExistingWalletUser(
-    existingWallet,
-    userId: string,
-  ): Promise<WalletEntity> {
-    if (existingWallet.user_id != null) {
-      throw new BadRequestException('invalid wallet address')
-    } else {
-      const knexResult = await this.dbWriter(WalletEntity.table)
-        .update({ user_id: userId })
-        .where('id', existingWallet.id)
-      if (knexResult != 1) {
-        throw new InternalServerErrorException(
-          'failed to update existing wallet',
+    switch (createWalletDto.chain) {
+      case ChainEnum.ETH:
+        if (
+          this.web3.eth.accounts
+            .recover(createWalletDto.rawMessage, createWalletDto.signedMessage)
+            .toLowerCase() !== walletAddress
+        ) {
+          throw new BadRequestException(
+            'recovered address does not match input',
+          )
+        }
+        break
+      case ChainEnum.SOL:
+        // eslint-disable-next-line no-case-declarations
+        const success = nacl.sign.detached.verify(
+          new TextEncoder().encode(createWalletDto.rawMessage),
+          base58.decode(createWalletDto.signedMessage),
+          base58.decode(walletAddress),
         )
-      } else {
-        return { ...existingWallet, user_id: userId }
-      }
+        if (!success) {
+          throw new BadRequestException('invalid message signature for address')
+        }
+        break
+      default:
+        throw new BadRequestException('invalid chain specified')
     }
+    const data = WalletEntity.toDict<WalletEntity>({
+      user: userId,
+      address: walletAddress,
+      chain: createWalletDto.chain,
+      authenticated: true,
+    })
+    await this.dbWriter(WalletEntity.table)
+      .insert(data)
+      .onConflict(['address', 'chain'])
+      .merge()
+    return true
   }
 
   async createUnauthenticatedWallet(
     userId: string,
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
   ): Promise<void> {
-    const numWallets = await this.dbReader(WalletEntity.table)
-      .where('user_id', userId)
-      .count('*')
-    if (numWallets[0]['count(*)'] >= MAX_WALLETS_PER_USER) {
-      throw new BadRequestException(
-        `${MAX_WALLETS_PER_USER} wallet limit reached!`,
-      )
-    }
+    await this.checkWallets(userId)
+    const walletAddress = this.fixAddress(
+      createUnauthenticatedWalletDto.walletAddress,
+      createUnauthenticatedWalletDto.chain,
+    )
     await this.dbWriter(WalletEntity.table).insert(
       WalletEntity.toDict<WalletEntity>({
         user: userId,
         authenticated: false,
-        address: createUnauthenticatedWalletDto.walletAddress,
+        address: walletAddress,
         chain: createUnauthenticatedWalletDto.chain,
       }),
     )

@@ -84,7 +84,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: CircleEncryptionKeyResponseDto,
-    description: 'Encryption key was returned',
+    description: 'Encryption key was retrieved',
   })
   @Get('key')
   @HttpCode(200)
@@ -132,7 +132,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetCircleCardsResponseDto,
-    description: 'Cards were returned',
+    description: 'Cards were retrieved',
   })
   @Get('cards')
   async getCircleCards(
@@ -147,7 +147,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetCircleCardResponseDto,
-    description: 'Card was returned',
+    description: 'Card was retrieved',
   })
   @Get('card/:cardId')
   async getCircleCard(
@@ -192,7 +192,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetCircleBanksResponseDto,
-    description: 'Wire bank accounts were returned',
+    description: 'Wire bank accounts were retrieved',
   })
   @Get('banks')
   async getCircleBanks(
@@ -356,7 +356,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetPayinMethodResponseDto,
-    description: 'Default payin method was returned',
+    description: 'Default payin method was retrieved',
   })
   @Get('payin/default')
   async getDefaultPayinMethod(
@@ -387,7 +387,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetPayoutMethodResponseDto,
-    description: 'Default payout method was returned',
+    description: 'Default payout method was retrieved',
   })
   @Get('payout/default')
   async getDefaultPayoutMethod(
@@ -421,7 +421,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetPayinsResponseDto,
-    description: 'Payins were returned',
+    description: 'Payins were retrieved',
   })
   @Post('payins')
   @HttpCode(200)
@@ -441,7 +441,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetPayoutsResponseDto,
-    description: 'Payouts were returned',
+    description: 'Payouts were retrieved',
   })
   @Post('payouts')
   @HttpCode(200)
@@ -506,7 +506,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetSubscriptionsResponseDto,
-    description: 'Subscriptions were returned',
+    description: 'Subscriptions were retrieved',
   })
   @Get('subscriptions')
   async getSubscriptions(
@@ -547,7 +547,7 @@ export class PaymentController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: PayinDataDto,
-    description: 'Register payin data returned',
+    description: 'Register payin data retrieved',
   })
   @Post('test/register/payin/data')
   @HttpCode(200)

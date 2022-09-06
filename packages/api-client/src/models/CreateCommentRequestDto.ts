@@ -30,7 +30,7 @@ export interface CreateCommentRequestDto {
      * @type {string}
      * @memberof CreateCommentRequestDto
      */
-    content: string;
+    text: string;
 }
 
 export function CreateCommentRequestDtoFromJSON(json: any): CreateCommentRequestDto {
@@ -44,7 +44,7 @@ export function CreateCommentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'postId': json['postId'],
-        'content': json['content'],
+        'text': json['text'],
     };
 }
 
@@ -58,7 +58,7 @@ export function CreateCommentRequestDtoToJSON(value?: CreateCommentRequestDto | 
     return {
         
         'postId': value.postId,
-        'content': value.content,
+        'text': value.text,
     };
 }
 

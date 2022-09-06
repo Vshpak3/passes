@@ -12,9 +12,8 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { CommentDto } from './dto/comment.dto'
-import { CreateFanWallCommentRequestDto } from './dto/create-comment.dto'
-import { GetFanWallForCreatorResponseDto } from './dto/get-comments-for-post-dto'
+import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
+import { GetFanWallForCreatorResponseDto } from './dto/get-fan-wall-comments-for-post-dto'
 import { FanWallService } from './fan-wall.service'
 
 @ApiTags('fan-wall')
@@ -25,17 +24,17 @@ export class FanWallController {
   @ApiOperation({ summary: 'Creates a fan wall comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CommentDto,
+    type: Boolean,
     description: 'A fan wall comment was created',
   })
   @Post()
   async createFanWallComment(
     @Req() req: RequestWithUser,
-    @Body() createCommentDto: CreateFanWallCommentRequestDto,
-  ) {
+    @Body() createFanWallCommentDto: CreateFanWallCommentRequestDto,
+  ): Promise<boolean> {
     return this.fanWallService.createFanWallComment(
       req.user.id,
-      createCommentDto,
+      createFanWallCommentDto,
     )
   }
 
@@ -45,38 +44,44 @@ export class FanWallController {
     type: GetFanWallForCreatorResponseDto,
     description: 'A list of fan wall comments was retrieved',
   })
-  @Get(':username')
+  @Get(':userId')
   async getFanWallForCreator(
-    @Param('username') username: string,
+    @Param('userId') userId: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
-    return this.fanWallService.getFanWallForCreator(username)
+    return this.fanWallService.getFanWallForCreator(userId)
   }
 
-  @ApiOperation({ summary: 'Hides a comment' })
+  @ApiOperation({ summary: 'Hides a fan wall comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
-    description: 'A comment was hidden',
+    type: Boolean,
+    description: 'A fan wall comment was hidden',
   })
-  @Patch(':id')
+  @Patch(':fanWallCommentId')
   async hideFanWallComment(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
-  ) {
-    return this.fanWallService.hideFanWallCommment(req.user.id, id)
+    @Param('fanWallCommentId') fanWallCommentId: string,
+  ): Promise<boolean> {
+    return this.fanWallService.hideFanWallCommment(
+      req.user.id,
+      fanWallCommentId,
+    )
   }
 
-  @ApiOperation({ summary: 'Deletes a comment' })
+  @ApiOperation({ summary: 'Deletes a fan wall comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
-    description: 'A comment was deleted',
+    type: Boolean,
+    description: 'A fan wall comment was deleted',
   })
-  @Delete(':id')
+  @Delete(':fanWallCommentId')
   async deleteFanWallComment(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
-  ) {
-    return this.fanWallService.deleteFanWallComment(req.user.id, id)
+    @Param('fanWallCommentId') fanWallCommentId: string,
+  ): Promise<boolean> {
+    return this.fanWallService.deleteFanWallComment(
+      req.user.id,
+      fanWallCommentId,
+    )
   }
 }

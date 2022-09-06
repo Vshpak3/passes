@@ -24,14 +24,14 @@ export class CommentController {
   @ApiOperation({ summary: 'Creates a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: CreateCommentRequestDto,
+    type: Boolean,
     description: 'A comment was created',
   })
   @Post()
   async createComment(
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentRequestDto,
-  ): Promise<CreateCommentRequestDto> {
+  ): Promise<boolean> {
     return this.commentService.createComment(req.user.id, createCommentDto)
   }
 
@@ -41,51 +41,41 @@ export class CommentController {
     type: GetCommentsForPostResponseDto,
     description: 'A list of comments was retrieved',
   })
-  @Get('post/:commentId')
+  @Get('post/:postId')
   async findCommentsForPost(
-    @Param('commentId') commentId: string,
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
   ): Promise<GetCommentsForPostResponseDto> {
-    return this.commentService.findCommentsForPost(commentId)
-  }
-
-  @ApiOperation({ summary: 'Gets a comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: CreateCommentRequestDto,
-    description: 'A comment was retrieved',
-  })
-  @Get('find/:commentId')
-  async findComment(
-    @Param('commentId') commentId: string,
-  ): Promise<CreateCommentRequestDto> {
-    return this.commentService.findComment(commentId)
+    return this.commentService.findCommentsForPost(req.user.id, postId)
   }
 
   @ApiOperation({ summary: 'Hides a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: Boolean,
     description: 'A comment was hidden',
   })
-  @Patch('hide/:commentId')
+  @Patch('hide/:postId/:commentId')
   async hideComment(
     @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
     @Param('commentId') commentId: string,
-  ) {
-    return this.commentService.hideComment(req.user.id, commentId)
+  ): Promise<boolean> {
+    return this.commentService.hideComment(req.user.id, postId, commentId)
   }
 
   @ApiOperation({ summary: 'Deletes a comment' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: undefined,
+    type: Boolean,
     description: 'A comment was deleted',
   })
-  @Delete('delete/:commentId')
+  @Delete('delete/:postId/:commentId')
   async deleteComment(
     @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
     @Param('commentId') commentId: string,
-  ) {
-    return this.commentService.deleteComment(req.user.id, commentId)
+  ): Promise<boolean> {
+    return this.commentService.deleteComment(req.user.id, postId, commentId)
   }
 }

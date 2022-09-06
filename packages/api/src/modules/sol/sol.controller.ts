@@ -56,7 +56,7 @@ export class SolController {
     @Req() req: RequestWithUser,
     @Body() createSolNftDto: CreateSolNftRequestDto,
   ): Promise<GetWalletResponseDto> {
-    const wallet = await this.walletService.findOne(createSolNftDto.walletId)
+    const wallet = await this.walletService.findWallet(createSolNftDto.walletId)
     if (!wallet) {
       throw new NotFoundException('wallet not found')
     }

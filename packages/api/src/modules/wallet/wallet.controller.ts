@@ -23,7 +23,6 @@ import {
   GetWalletsResponseDto,
 } from './dto/get-wallet.dto'
 import { WalletResponseDto } from './dto/wallet-response.dto'
-import { ChainEnum } from './enum/chain.enum'
 import { WalletService } from './wallet.service'
 
 @ApiTags('wallet')
@@ -38,9 +37,9 @@ export class WalletController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetWalletResponseDto,
-    description: 'User custodial wallet returned',
+    description: 'User custodial wallet retrieved',
   })
-  @Get('/custodial')
+  @Get('custodial')
   async getUserCustodialWallet(
     @Req() req: RequestWithUser,
   ): Promise<GetWalletResponseDto> {
@@ -51,9 +50,9 @@ export class WalletController {
   @ApiResponse({
     status: HttpStatus.OK,
     type: GetWalletResponseDto,
-    description: 'Default wallet returned',
+    description: 'Default wallet retrieved',
   })
-  @Get('/default')
+  @Get('default')
   async getDefaultWallet(
     @Req() req: RequestWithUser,
   ): Promise<GetWalletResponseDto> {
@@ -77,22 +76,15 @@ export class WalletController {
   @ApiOperation({ summary: 'Creates authenticated wallet for a user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: CreateWalletRequestDto,
+    type: Boolean,
     description: 'Wallet was created',
   })
   @Post()
   async createWallet(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletRequestDto,
-  ): Promise<WalletResponseDto> {
-    const wallet = await this.walletService.createWallet(
-      req.user.id,
-      createWalletDto,
-    )
-    if (wallet.chain == ChainEnum.ETH) {
-      return this.ethService.refreshNftsForWallet(req.user.id, wallet.id)
-    }
-    return new WalletResponseDto(wallet)
+  ): Promise<boolean> {
+    return await this.walletService.createWallet(req.user.id, createWalletDto)
   }
 
   @ApiOperation({ summary: 'Removes authenticated wallet for a user' })
@@ -143,7 +135,7 @@ export class WalletController {
     type: WalletResponseDto,
     description: 'Wallet tokens were updated',
   })
-  @Post('/refresh/:walletId')
+  @Post('refresh/:walletId')
   async refreshWallets(
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,
@@ -157,7 +149,7 @@ export class WalletController {
     type: CreateWalletRequestDto,
     description: 'Unchecked wallet was created',
   })
-  @Post('/unauthenticated')
+  @Post('unauthenticated')
   async createUnauthenticatedWallet(
     @Req() req: RequestWithUser,
     @Body()

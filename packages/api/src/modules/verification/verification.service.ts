@@ -6,14 +6,24 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import { SubmitInquiryRequestDto } from './dto/submit-inquiry.dto'
+import { UserService } from '../user/user.service'
+import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
+import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
+import { SubmitPersonaInquiryRequestDto } from './dto/submit-persona-inquiry.dto'
+import { CreatorVerificationEntity } from './entities/creator-verification.entity'
 import { PersonaInquiryEntity } from './entities/persona-inquiry.entity'
 import { PersonaVerificationEntity } from './entities/persona-verification.entity'
+import { CreatorVerificationStepEnum } from './enum/creator-verification.enum'
 import { KYCStatusEnum } from './enum/kyc.status.enum'
 import { PersonaInquiryStatusEnum } from './enum/persona-inquiry.status.enum'
 import { PersonaVerificationStatusEnum } from './enum/persona-verification.status.enum'
-import { VerificationError } from './error/verification.error'
+import {
+  IncorrectVerificationStepError,
+  PersonaVerificationError,
+  VerificationError,
+} from './error/verification.error'
 import { PersonaConnector } from './persona'
 
 const MAX_VERIFICATION_ATTEMPTS = 3
@@ -30,11 +40,13 @@ export class VerificationService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+
+    private readonly userService: UserService,
   ) {
     this.personaConnector = new PersonaConnector(this.configService)
   }
 
-  async canSubmit(userId: string) {
+  async canSubmitPersona(userId: string) {
     const count = await this.dbReader
       .table(PersonaInquiryEntity.table)
       .where('user_id', userId)
@@ -42,19 +54,21 @@ export class VerificationService {
     return parseInt(count[0]['count(*)']) < MAX_VERIFICATION_ATTEMPTS
   }
 
-  async submitInquiry(
+  async submitPersonaInquiry(
     userId: string,
-    submitInquiryRequest: SubmitInquiryRequestDto,
+    submitInquiryRequest: SubmitPersonaInquiryRequestDto,
   ) {
-    if (!(await this.canSubmit(userId))) {
-      throw new VerificationError('user has exceeded max verification attempts')
+    if (!(await this.canSubmitPersona(userId))) {
+      throw new PersonaVerificationError(
+        'user has exceeded max verification attempts',
+      )
     }
     // currently only deal with completed inquiries
     // if persona says that the inquiry is not completed, they have to go through the flow again
     if (
       submitInquiryRequest.personaStatus !== PersonaInquiryStatusEnum.COMPLETED
     ) {
-      throw new VerificationError('inquiry is not completed')
+      throw new PersonaVerificationError('inquiry is not completed')
     }
     const inquiryData = PersonaInquiryEntity.toDict<PersonaInquiryEntity>({
       id: v4(),
@@ -82,14 +96,19 @@ export class VerificationService {
     })
   }
 
-  async updateVerifications() {
-    const inquiries = await this.dbReader(PersonaInquiryEntity.table)
+  async refreshPersonaVerifications(userId?: string) {
+    let query = this.dbReader(PersonaInquiryEntity.table)
       .where('kyc_status', KYCStatusEnum.PENDING)
       .select(['id', 'user_id'])
+
+    if (userId) {
+      query = query.andWhere('user_id', userId)
+    }
+    const inquiries = await query
     await Promise.all(
       inquiries.map(async (inquiry) => {
         try {
-          await this.updateVerification(inquiry.id, inquiry.user_id)
+          await this.refreshPersonaVerification(inquiry.id, inquiry.user_id)
         } catch (err) {
           this.logger.error(`Error updating inquiry ${inquiry.id}`, err)
         }
@@ -97,7 +116,7 @@ export class VerificationService {
     )
   }
 
-  async updateVerification(inquiryId: string, userId: string) {
+  async refreshPersonaVerification(inquiryId: string, userId: string) {
     const verifications = await this.dbReader(PersonaVerificationEntity.table)
       .where('inquiry_id', inquiryId)
       .select('persona_id')
@@ -171,5 +190,96 @@ export class VerificationService {
         .update('is_kycverified', true)
         .where('id', userId)
     }
+  }
+
+  async submitCreatorVerificationStep(
+    userId: string,
+    submitCreatorVerificationStepRequestDto: SubmitCreatorVerificationStepRequestDto,
+  ): Promise<GetCreatorVerificationStepResponseDto> {
+    const creatorVerification = await this.dbReader(
+      CreatorVerificationEntity.table,
+    )
+      .where(
+        CreatorVerificationEntity.toDict<CreatorVerificationEntity>({
+          user: userId,
+          step: submitCreatorVerificationStepRequestDto.step,
+        }),
+      )
+      .select('id')
+      .first()
+    if (!creatorVerification) {
+      throw new IncorrectVerificationStepError(
+        `user ${userId} is not on step ${submitCreatorVerificationStepRequestDto.step}`,
+      )
+    }
+
+    const user = await this.dbReader(UserEntity.table)
+      .where('id', userId)
+      .select(['is_kycverified', 'is_creator'])
+      .first()
+    const profile = await this.dbReader(ProfileEntity.table)
+      .where('user_id', userId)
+      .select('*')
+      .first()
+    switch (submitCreatorVerificationStepRequestDto.step) {
+      case CreatorVerificationStepEnum.STEP_1_PROFILE:
+        // TODO: check that profile image and banner exist
+        if (
+          !profile.description ||
+          !(
+            profile.instagram_url ||
+            profile.youtube_url ||
+            profile.discord_url ||
+            profile.twitch_url
+          )
+        ) {
+          throw new VerificationError('user has not finished profile')
+        }
+        await this.dbWriter(CreatorVerificationEntity.table)
+          .where('id', creatorVerification.id)
+          .update('step', CreatorVerificationStepEnum.STEP_2_KYC)
+        return { step: CreatorVerificationStepEnum.STEP_2_KYC }
+      case CreatorVerificationStepEnum.STEP_2_KYC:
+        if (!user.is_kycverified) {
+          throw new VerificationError('user is not kyc verified yet')
+        }
+        await this.dbWriter(CreatorVerificationEntity.table)
+          .where('id', creatorVerification.id)
+          .update('step', CreatorVerificationStepEnum.STEP_3_PAYOUT)
+        return { step: CreatorVerificationStepEnum.STEP_3_PAYOUT }
+      case CreatorVerificationStepEnum.STEP_3_PAYOUT: // payment information not required
+      case CreatorVerificationStepEnum.STEP_4_DONE:
+        await this.dbWriter(CreatorVerificationEntity.table)
+          .where('id', creatorVerification.id)
+          .update('step', CreatorVerificationStepEnum.STEP_4_DONE)
+        if (!user.is_creator) {
+          await this.userService.makeCreator(userId)
+        }
+        return { step: CreatorVerificationStepEnum.STEP_4_DONE }
+      default:
+        throw new VerificationError('invalid verification step')
+    }
+  }
+
+  async getCreatorVerificationStep(
+    userId: string,
+  ): Promise<GetCreatorVerificationStepResponseDto> {
+    const creatorVerification = await this.dbReader(
+      CreatorVerificationEntity.table,
+    )
+      .where(
+        CreatorVerificationEntity.toDict<CreatorVerificationEntity>({
+          user: userId,
+        }),
+      )
+      .select('step')
+      .first()
+    if (!creatorVerification) {
+      await this.dbWriter(CreatorVerificationEntity.table).insert({
+        user: userId,
+      })
+      return { step: CreatorVerificationStepEnum.STEP_1_PROFILE }
+    }
+    return { step: creatorVerification.step }
   }
 }

@@ -24,13 +24,13 @@ export interface CreateFanWallCommentRequestDto {
      * @type {string}
      * @memberof CreateFanWallCommentRequestDto
      */
-    creatorUsername: string;
+    creatorId: string;
     /**
      * 
      * @type {string}
      * @memberof CreateFanWallCommentRequestDto
      */
-    content: string;
+    text: string;
 }
 
 export function CreateFanWallCommentRequestDtoFromJSON(json: any): CreateFanWallCommentRequestDto {
@@ -43,8 +43,8 @@ export function CreateFanWallCommentRequestDtoFromJSONTyped(json: any, ignoreDis
     }
     return {
         
-        'creatorUsername': json['creatorUsername'],
-        'content': json['content'],
+        'creatorId': json['creatorId'],
+        'text': json['text'],
     };
 }
 
@@ -57,8 +57,8 @@ export function CreateFanWallCommentRequestDtoToJSON(value?: CreateFanWallCommen
     }
     return {
         
-        'creatorUsername': value.creatorUsername,
-        'content': value.content,
+        'creatorId': value.creatorId,
+        'text': value.text,
     };
 }
 

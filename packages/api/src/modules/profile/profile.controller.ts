@@ -5,7 +5,6 @@ import {
   Get,
   HttpStatus,
   Param,
-  Patch,
   Post,
   Req,
 } from '@nestjs/common'
@@ -13,10 +12,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
-import { CreateProfileRequestDto } from './dto/create-profile.dto'
+import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import { GetProfileResponseDto } from './dto/get-profile.dto'
 import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
-import { UpdateProfileRequestDto } from './dto/update-profile.dto'
 import { ProfileService } from './profile.service'
 
 @ApiTags('profile')
@@ -27,15 +25,18 @@ export class ProfileController {
   @ApiOperation({ summary: 'Creates a profile' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: GetProfileResponseDto,
+    type: Boolean,
     description: 'A profile was created',
   })
   @Post()
-  async createProfile(
+  async createOrUpdateProfile(
     @Req() req: RequestWithUser,
-    @Body() createProfileDto: CreateProfileRequestDto,
-  ): Promise<GetProfileResponseDto> {
-    return this.profileService.createProfile(req.user.id, createProfileDto)
+    @Body() createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto,
+  ): Promise<boolean> {
+    return this.profileService.createOrUpdateProfile(
+      req.user.id,
+      createOrUpdateProfileRequestDto,
+    )
   }
 
   @ApiOperation({ summary: 'Gets all usernames' })
@@ -44,7 +45,7 @@ export class ProfileController {
     type: GetUsernamesResponseDto,
     description: 'Gets all usernames',
   })
-  @Get('/usernames')
+  @Get('usernames')
   async getAllUsernames(): Promise<GetUsernamesResponseDto> {
     return this.profileService.getAllUsernames()
   }
@@ -56,7 +57,7 @@ export class ProfileController {
     description: 'A profile was retrieved',
   })
   @AllowUnauthorizedRequest()
-  @Get('/usernames/:username')
+  @Get('usernames/:username')
   async findProfileByUsername(
     @Req() req: RequestWithUser,
     @Param('username') username: string,
@@ -80,36 +81,17 @@ export class ProfileController {
     return this.profileService.findProfile(profileId, req.user?.id)
   }
 
-  @ApiOperation({ summary: 'Updates a profile' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetProfileResponseDto,
-    description: 'A profile was updated',
-  })
-  @Patch(':profileId')
-  async updateProfile(
-    @Param('profileId') profileId: string,
-    @Req() req: RequestWithUser,
-    @Body() updateProfileDto: UpdateProfileRequestDto,
-  ): Promise<GetProfileResponseDto> {
-    return this.profileService.updateProfile(
-      req.user.id,
-      profileId,
-      updateProfileDto,
-    )
-  }
-
   @ApiOperation({ summary: 'Deletes a profile' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetProfileResponseDto,
+    type: Boolean,
     description: 'A profile was deleted',
   })
   @Delete(':profileId')
   async removeProfile(
-    @Param('profileId') profileId: string,
     @Req() req: RequestWithUser,
-  ): Promise<GetProfileResponseDto> {
+    @Param('profileId') profileId: string,
+  ): Promise<boolean> {
     return this.profileService.removeProfile(req.user.id, profileId)
   }
 }
