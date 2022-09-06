@@ -13,7 +13,7 @@ import {
   Window
 } from "stream-chat-react"
 
-import { Content } from "../../../../helpers"
+import { ContentService } from "../../../../helpers"
 import {
   MessagingChannelHeader,
   MessagingInput,
@@ -34,14 +34,14 @@ export const ChannelInner = (props) => {
 
   const { channelId } = useChat(members[0]?.user.name)
   const sendMessage = async (messageToSend) => {
-    const content = await new Content().uploadUserContent(files)
+    const content = await new ContentService().uploadUserContent(files)
     try {
       const api = wrapApi(MessagesApi)
       await api.sendMessage({
         sendMessageRequestDto: {
           text: messageToSend.text || "",
           attachments: [],
-          content,
+          content: content.map((c) => c.id),
           channelId
         }
       })

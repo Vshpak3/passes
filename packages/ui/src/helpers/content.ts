@@ -3,6 +3,16 @@ import { ContentApi } from "@passes/api-client"
 import { wrapApi } from "./wrapApi"
 
 class Content {
+  url!: string
+
+  id?: string
+
+  constructor(init?: Partial<Content>) {
+    Object.assign(this, init)
+  }
+}
+
+class ContentService {
   private readonly contentApi = wrapApi(ContentApi)
 
   static profileImage(userId: string, profileId: string): string {
@@ -24,7 +34,7 @@ class Content {
   private async uploadFile(
     file: File,
     folder: "profile" | "pass" | "usercontent"
-  ): Promise<string> {
+  ): Promise<Content> {
     let { url } = await this.contentApi.preSignUrl({
       path: `${folder}/${file.name}`
     })
@@ -42,6 +52,7 @@ class Content {
     }
     url = url.split("?")[0]
 
+    const id = "TODO"
     // TODO:
     // let contentType = file.type
     // if (file.type.startsWith("image/")) contentType = "image/jpeg"
@@ -50,20 +61,20 @@ class Content {
     //   createContentDto: { url, contentType }
     // })
 
-    return url
+    return new Content({ url, id })
   }
 
   async uploadPublicContent(
     files: File[],
     folder: "profile" | "pass"
-  ): Promise<string[]> {
+  ): Promise<Content[]> {
     if (!files.length) {
       return Promise.resolve([])
     }
     return Promise.all(files.map(async (f: File) => this.uploadFile(f, folder)))
   }
 
-  async uploadUserContent(files: File[]): Promise<string[]> {
+  async uploadUserContent(files: File[]): Promise<Content[]> {
     if (!files.length) {
       return Promise.resolve([])
     }
@@ -73,4 +84,4 @@ class Content {
   }
 }
 
-export default Content
+export default ContentService

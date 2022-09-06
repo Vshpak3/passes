@@ -9,7 +9,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
 
-import { Content } from "../helpers"
+import { ContentService } from "../helpers"
 import { wrapApi } from "../helpers/wrapApi"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
@@ -52,7 +52,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     const { profileImage, profileCoverImage, ...rest } = values
 
     const [profileImageUrl, profileCoverImageUrl] =
-      await new Content().uploadPublicContent(
+      await new ContentService().uploadPublicContent(
         [profileImage, profileCoverImage],
         "profile"
       )

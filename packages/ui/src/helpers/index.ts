@@ -1,5 +1,5 @@
 import classNames from "./classNames"
-import Content from "./content"
+import ContentService from "./content"
 import debounce from "./debounce"
 import {
   compactNumberFormatter,
@@ -12,7 +12,7 @@ import { wrapApi } from "./wrapApi"
 export {
   classNames,
   compactNumberFormatter,
-  Content,
+  ContentService,
   debounce,
   encrypt,
   formatCurrency,
