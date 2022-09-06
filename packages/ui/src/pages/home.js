@@ -120,17 +120,19 @@ const Home = () => {
   // }
   const { posts = [] } = useFeed()
   return (
-    <div className="w-full bg-black">
-      <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20  lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          {/* <NewPost
+    <>
+      {posts?.length > 0 ? (
+        <div className="w-full bg-black">
+          <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20  lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+            <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+              {/* <NewPost
             passes={profile?.passes}
             createPost={createPost}
             placeholder="What’s on your mind?"
           /> */}
-          {/* TODO: this will come on part 2 */}
+              {/* TODO: this will come on part 2 */}
 
-          {/* <div className="w-full border-b border-passes-dark-100 pt-4"></div>
+              {/* <div className="w-full border-b border-passes-dark-100 pt-4"></div>
           {expiredSubscriptions.length > 0 && (
             <ExpiredSubscriptions
               expiredSubscriptions={expiredSubscriptions}
@@ -139,23 +141,26 @@ const Home = () => {
               router={router}
             />
           )} */}
-          {/* TODO: this will come on part 2 */}
-          {posts?.length > 0 && (
-            <CreatorContentFeed
-              profile={profile}
-              existingPosts={posts[0]?.posts}
-            />
-          )}
-        </div>
-        {/* <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
+              {/* TODO: this will come on part 2 */}
+
+              <CreatorContentFeed
+                profile={profile}
+                existingPosts={posts[0]?.posts}
+              />
+            </div>
+            {/* <div className="col-span-10 w-full space-y-6 lg:col-span-3 lg:max-w-[680px]">
           <span className="text-[24px] leading-[25px] text-white font-bold">
             Suggestions
           </span>
           <div className="flex flex-col gap-4"></div>
         </div> */}
-        {/* TODO: this will come on part 2 */}
-      </div>
-    </div>
+            {/* TODO: this will come on part 2 */}
+          </div>
+        </div>
+      ) : (
+        <div>Follow Creators to receive posts..</div>
+      )}
+    </>
   )
 }
 
