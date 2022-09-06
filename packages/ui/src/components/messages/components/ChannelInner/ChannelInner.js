@@ -34,7 +34,7 @@ export const ChannelInner = (props) => {
 
   const { channelId } = useChat(members[0]?.user.name)
   const sendMessage = async (messageToSend) => {
-    const content = await new ContentService().uploadUserContent(files)
+    const content = await new ContentService().uploadContent(files)
     try {
       const api = wrapApi(MessagesApi)
       await api.sendMessage({

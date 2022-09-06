@@ -64,23 +64,14 @@ class ContentService {
     return new Content({ url, id })
   }
 
-  async uploadPublicContent(
+  async uploadContent(
     files: File[],
-    folder: "profile" | "pass"
+    folder: "profile" | "pass" | "usercontent"
   ): Promise<Content[]> {
     if (!files.length) {
       return Promise.resolve([])
     }
     return Promise.all(files.map(async (f: File) => this.uploadFile(f, folder)))
-  }
-
-  async uploadUserContent(files: File[]): Promise<Content[]> {
-    if (!files.length) {
-      return Promise.resolve([])
-    }
-    return Promise.all(
-      files.map(async (f: File) => this.uploadFile(f, "usercontent"))
-    )
   }
 }
 

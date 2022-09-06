@@ -96,7 +96,7 @@ export const NewPost = ({
 
   const onSubmit = async () => {
     const values = getValues()
-    const content = await new ContentService().uploadUserContent(files)
+    const content = await new ContentService().uploadContent(files)
     setExtended(false)
     createPost({ ...values, content: content.map((c) => c.id) })
     reset()
