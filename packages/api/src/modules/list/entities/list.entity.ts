@@ -11,6 +11,7 @@ import {
 import { BaseEntity } from '../../../database/base-entity'
 import { PassEntity } from '../../pass/entities/pass.entity'
 import { UserEntity } from '../../user/entities/user.entity'
+import { LIST_NAME_LENGTH } from '../constants/schema'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 @Entity({ tableName: 'list' })
@@ -20,7 +21,7 @@ export class ListEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
 
-  @Property({ length: 255 })
+  @Property({ length: LIST_NAME_LENGTH })
   name: string
 
   @Enum({ type: () => ListTypeEnum, default: ListTypeEnum.NORMAL })

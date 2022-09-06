@@ -37,6 +37,7 @@ export * from './CreateSolNftRequestDto';
 export * from './CreateUnauthenticatedWalletRequestDto';
 export * from './CreateWalletRequestDto';
 export * from './CreatorEarningDto';
+export * from './EditListNameRequestDto';
 export * from './FanWallCommentDto';
 export * from './GetChannelRequestDto';
 export * from './GetChannelResponseDto';

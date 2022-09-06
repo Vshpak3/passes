@@ -14,6 +14,7 @@ import { PassEntity } from '../pass/entities/pass.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
+import { EditListNameRequestDto } from './dto/edit-list-name.dto'
 import { GetListResponseDto } from './dto/get-list.dto'
 import { GetListMembersRequestto } from './dto/get-list-members.dto'
 import { GetListsResponseDto } from './dto/get-lists.dto'
@@ -237,6 +238,27 @@ export class ListService {
       .whereIn('user_id', removeListMembersDto.userIds)
       .delete()
     await this.updateCount(removeListMembersDto.listId)
+  }
+
+  async editListName(
+    userId: string,
+    editListNameRequestDto: EditListNameRequestDto,
+  ): Promise<boolean> {
+    const { listId, name } = editListNameRequestDto
+    const updated = await this.dbWriter(ListMemberEntity.table)
+      .where(
+        ListEntity.toDict<ListEntity>({
+          id: listId,
+          user: userId,
+          type: ListTypeEnum.NORMAL,
+        }),
+      )
+      .update(
+        ListEntity.toDict<ListEntity>({
+          name,
+        }),
+      )
+    return updated === 1
   }
 
   async updateListByType(

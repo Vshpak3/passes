@@ -13,6 +13,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
+import { EditListNameRequestDto } from './dto/edit-list-name.dto'
 import { GetListResponseDto } from './dto/get-list.dto'
 import {
   GetListMembersRequestto,
@@ -129,5 +130,22 @@ export class ListController {
     @Param('listId') listId: string,
   ): Promise<boolean> {
     return await this.listService.deleteList(req.user.id, listId)
+  }
+
+  @ApiOperation({ summary: 'Edit list name' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: Boolean,
+    description: 'List name was edited',
+  })
+  @Post('edit')
+  async editListName(
+    @Req() req: RequestWithUser,
+    @Body() editListNameRequestDto: EditListNameRequestDto,
+  ): Promise<boolean> {
+    return await this.listService.editListName(
+      req.user.id,
+      editListNameRequestDto,
+    )
   }
 }

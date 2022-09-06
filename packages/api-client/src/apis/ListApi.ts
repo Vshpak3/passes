@@ -18,6 +18,9 @@ import {
     CreateListRequestDto,
     CreateListRequestDtoFromJSON,
     CreateListRequestDtoToJSON,
+    EditListNameRequestDto,
+    EditListNameRequestDtoFromJSON,
+    EditListNameRequestDtoToJSON,
     GetListMembersRequestto,
     GetListMembersRequesttoFromJSON,
     GetListMembersRequesttoToJSON,
@@ -41,6 +44,10 @@ export interface CreateListRequest {
 
 export interface DeleteListRequest {
     listId: string;
+}
+
+export interface EditListNameRequest {
+    editListNameRequestDto: EditListNameRequestDto;
 }
 
 export interface GetListRequest {
@@ -119,6 +126,39 @@ export class ListApi extends runtime.BaseAPI {
      */
     async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
         const response = await this.deleteListRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Edit list name
+     */
+    async editListNameRaw(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.editListNameRequestDto === null || requestParameters.editListNameRequestDto === undefined) {
+            throw new runtime.RequiredError('editListNameRequestDto','Required parameter requestParameters.editListNameRequestDto was null or undefined when calling editListName.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/list/edit`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EditListNameRequestDtoToJSON(requestParameters.editListNameRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Edit list name
+     */
+    async editListName(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.editListNameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

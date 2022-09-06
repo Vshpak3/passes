@@ -65,6 +65,7 @@ models/CreateSolNftRequestDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
+models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetChannelRequestDto.ts
 models/GetChannelResponseDto.ts
