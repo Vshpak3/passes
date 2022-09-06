@@ -159,7 +159,6 @@ export class FollowService {
         `${UserEntity.table}.id`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${ProfileEntity.table}.profile_image_url`,
       )
       .where(async function () {
         await this.whereILike('user.username', likeClause).orWhereILike(
@@ -168,25 +167,20 @@ export class FollowService {
         )
       })
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
-      .andWhere(`${FollowEntity.table}.is_active`, true)
 
     if (searchFanDto.cursor) {
       await query.andWhere(
-        this.dbReader.raw(`user.id > ${searchFanDto.cursor}`),
+        this.dbReader.raw(`${UserEntity.table}.id > ${searchFanDto.cursor}`),
       )
     }
 
-    const followResult = await query
-      .orderBy('user.display_name', 'asc')
-      .limit(50)
+    const followResult = await query.orderBy(
+      `${UserEntity.table}.display_name`,
+      'asc',
+    )
 
     return followResult.map((follow) => {
-      return new GetFanResponseDto(
-        follow.id,
-        follow.username,
-        follow.display_name,
-        follow.profile_image_url,
-      )
+      return new GetFanResponseDto(follow)
     })
   }
 

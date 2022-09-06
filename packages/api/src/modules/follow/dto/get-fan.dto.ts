@@ -11,19 +11,12 @@ export class GetFanResponseDto {
   @ApiProperty()
   displayName?: string
 
-  @ApiProperty()
-  profileImageUrl?: string
-
-  constructor(
-    userId: string,
-    username: string,
-    displayName?: string,
-    profileImageUrl?: string,
-  ) {
-    this.userId = userId
-    this.username = username
-    this.displayName = displayName
-    this.profileImageUrl = profileImageUrl
+  constructor(fan) {
+    if (fan) {
+      this.userId = fan.user_id
+      this.username = fan.username
+      this.displayName = fan.display_name
+    }
   }
 }
 

@@ -24,7 +24,7 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    id: string;
+    passHolderId: string;
     /**
      * 
      * @type {string}
@@ -73,7 +73,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'id': json['id'],
+        'passHolderId': json['passHolderId'],
         'passId': json['passId'],
         'holderId': json['holderId'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
@@ -92,7 +92,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'passHolderId': value.passHolderId,
         'passId': value.passId,
         'holderId': value.holderId,
         'messages': value.messages,

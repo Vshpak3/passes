@@ -24,7 +24,14 @@ import {
     GetCreatorEarningsResponseDto,
     GetCreatorEarningsResponseDtoFromJSON,
     GetCreatorEarningsResponseDtoToJSON,
+    GetCreatorStatsResponseDto,
+    GetCreatorStatsResponseDtoFromJSON,
+    GetCreatorStatsResponseDtoToJSON,
 } from '../models';
+
+export interface GetCreatorStatsRequest {
+    creatorId: string;
+}
 
 export interface GetHistoricEarningsRequest {
     getCreatorEarningsHistoryRequestDto: GetCreatorEarningsHistoryRequestDto;
@@ -58,6 +65,36 @@ export class CreatorStatsApi extends runtime.BaseAPI {
      */
     async getBalance(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorEarningResponseDto> {
         const response = await this.getBalanceRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get current stats
+     */
+    async getCreatorStatsRaw(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorStatsResponseDto>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getCreatorStats.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/creator-stats/stats/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorStatsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get current stats
+     */
+    async getCreatorStats(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorStatsResponseDto> {
+        const response = await this.getCreatorStatsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

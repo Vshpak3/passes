@@ -54,6 +54,7 @@ export * from './GetCreatorEarningResponseDto';
 export * from './GetCreatorEarningsHistoryRequestDto';
 export * from './GetCreatorEarningsResponseDto';
 export * from './GetCreatorSettingsResponseDto';
+export * from './GetCreatorStatsResponseDto';
 export * from './GetCreatorVerificationStepResponseDto';
 export * from './GetEthNftCollectionResponseDto';
 export * from './GetFanResponseDto';

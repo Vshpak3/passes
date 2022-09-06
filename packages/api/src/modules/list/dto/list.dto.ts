@@ -15,7 +15,7 @@ export class ListDto {
   type: ListTypeEnum
 
   @ApiProperty()
-  count: string
+  count: number
 
   @ApiPropertyOptional()
   passId?: string

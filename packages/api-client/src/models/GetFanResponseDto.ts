@@ -37,12 +37,6 @@ export interface GetFanResponseDto {
      * @memberof GetFanResponseDto
      */
     displayName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetFanResponseDto
-     */
-    profileImageUrl: string;
 }
 
 export function GetFanResponseDtoFromJSON(json: any): GetFanResponseDto {
@@ -58,7 +52,6 @@ export function GetFanResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
-        'profileImageUrl': json['profileImageUrl'],
     };
 }
 
@@ -74,7 +67,6 @@ export function GetFanResponseDtoToJSON(value?: GetFanResponseDto | null): any {
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
-        'profileImageUrl': value.profileImageUrl,
     };
 }
 

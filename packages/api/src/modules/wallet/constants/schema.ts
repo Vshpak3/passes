@@ -1,1 +1,1 @@
-export const WALLET_ADDRESS_LENGTH = 64
+export const BLOCKCHAIN_ADDRESS_LENGTH = 64

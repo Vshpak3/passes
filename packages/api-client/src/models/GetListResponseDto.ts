@@ -39,10 +39,10 @@ export interface GetListResponseDto {
     type: GetListResponseDtoTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof GetListResponseDto
      */
-    count: string;
+    count: number;
     /**
      * 
      * @type {string}

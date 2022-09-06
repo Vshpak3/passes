@@ -82,6 +82,7 @@ models/GetCreatorEarningResponseDto.ts
 models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
 models/GetCreatorSettingsResponseDto.ts
+models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
 models/GetEthNftCollectionResponseDto.ts
 models/GetFanResponseDto.ts

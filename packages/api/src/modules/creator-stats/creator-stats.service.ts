@@ -6,8 +6,10 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
+import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
 import { CreatorEarningHistoryEntity } from './entities/creator-earning-history.entity'
+import { CreatorStatEntity } from './entities/creator-stat.entity'
 import { EarningTypeEnum } from './enum/earning.type.enum'
 import { EarningsTypeError } from './error/earnings.error'
 
@@ -139,5 +141,13 @@ export class CreatorStatsService {
         ]),
       )
       .insert(this.dbWriter(CreatorEarningEntity.table).select('*'))
+  }
+
+  async getCreatorStats(creatorId: string) {
+    return new CreatorStatDto(
+      await this.dbReader
+        .where(CreatorStatEntity.toDict<CreatorStatEntity>({ user: creatorId }))
+        .select('*'),
+    )
   }
 }

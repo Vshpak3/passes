@@ -9,7 +9,7 @@ import {
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { WALLET_ADDRESS_LENGTH } from '../../wallet/constants/schema'
+import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { PayinCallbackInput, PayinCallbackOutput } from '../callback.types'
 import {
   SHA256_LENGTH,
@@ -36,7 +36,7 @@ export class PayinEntity extends BaseEntity {
   @Property()
   chainId?: number
 
-  @Property({ length: WALLET_ADDRESS_LENGTH })
+  @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
   address?: string
 
   @Property({ length: TRANSACTION_HASH_LENGTH })
