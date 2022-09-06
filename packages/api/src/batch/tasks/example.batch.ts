@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common'
 
-import { BatchTask } from '../batch/batch.interface'
-import { ProfileService } from '../modules/profile/profile.service'
+import { BatchTask } from '../../batch/batch.interface'
+import { ProfileService } from '../../modules/profile/profile.service'
 
 /*
  * A simple example task for testing. Takes a single input, a username, and

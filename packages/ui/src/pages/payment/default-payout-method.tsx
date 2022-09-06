@@ -313,7 +313,7 @@ const DefaultPayoutMethod = () => {
               <button
                 onClick={() => {
                   submit({
-                    walletId: wallet.id.toString(),
+                    walletId: wallet.id?.toString(),
                     method: PayoutMethodDtoMethodEnum.CircleUsdc
                   })
                 }}

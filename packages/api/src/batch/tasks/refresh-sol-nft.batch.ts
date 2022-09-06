@@ -1,4 +1,4 @@
-import { BatchTask } from '../batch/batch.interface'
+import { BatchTask } from '../../batch/batch.interface'
 
 /*
  * Executes refreshNftsForWallet for chunks of ETH wallets

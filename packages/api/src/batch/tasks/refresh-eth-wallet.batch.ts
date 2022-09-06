@@ -1,6 +1,6 @@
-import { BatchTask } from '../batch/batch.interface'
-import { EthService } from '../modules/eth/eth.service'
-import { RedisLockService } from '../modules/redisLock/redisLock.service'
+import { BatchTask } from '../../batch/batch.interface'
+import { EthService } from '../../modules/eth/eth.service'
+import { RedisLockService } from '../../modules/redisLock/redisLock.service'
 
 /*
  * Executes refreshNftsForWallet for chunks of ETH wallets

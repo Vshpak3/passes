@@ -1,10 +1,10 @@
-import { ExampleTask } from '../util/example.batch'
-import { CreateEarningHistoryTask } from './create-earning-history.batch'
-import { PayoutCreatorsTask } from './payout-creators.batch'
-import { RefreshEthWalletTask } from './refresh-eth-wallet.batch'
-import { RefreshPersonasVerificationsTask } from './refresh-persona-verifications.batch'
-import { RefreshSolNftTask } from './refresh-sol-nft.batch'
-import { UpdateSubscriptionsTask } from './update-subscriptions.batch'
+import { CreateEarningHistoryTask } from './tasks/create-earning-history.batch'
+import { ExampleTask } from './tasks/example.batch'
+import { PayoutCreatorsTask } from './tasks/payout-creators.batch'
+import { RefreshEthWalletTask } from './tasks/refresh-eth-wallet.batch'
+import { RefreshPersonasVerificationsTask } from './tasks/refresh-persona-verifications.batch'
+import { RefreshSolNftTask } from './tasks/refresh-sol-nft.batch'
+import { UpdateSubscriptionsTask } from './tasks/update-subscriptions.batch'
 
 // Maps an identifier (to be specified in the job definition) to the batch task
 // class to run
