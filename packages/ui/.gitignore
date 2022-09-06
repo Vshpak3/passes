@@ -1,2 +1,5 @@
 # Ignore Next.js files
 .next/
+
+# Generated as part of build by scripts/generate-robots-txt.js
+public/robots.txt

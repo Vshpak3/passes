@@ -4,6 +4,7 @@
   "description": "Passes frontend UI package",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-robots-txt.js",
     "build": "next build",
     "dev": "next dev",
     "lint:check": "eslint . --max-warnings=0",
