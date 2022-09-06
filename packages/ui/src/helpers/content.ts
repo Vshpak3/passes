@@ -1,5 +1,4 @@
 class Content {
-
   static profileImage(userId: string, profileId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-${profileId}.jpg`
   }
