@@ -1,18 +1,18 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 
 @ApiTags('health')
 @Controller('health')
 export class HealthController {
-  @ApiOperation({ summary: 'Health check endpoint' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: String,
-    description: 'App is running',
+  @ApiEndpoint({
+    summary: 'Health check endpoint',
+    responseStatus: HttpStatus.OK,
+    responseType: String,
+    responseDesc: 'App is running',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Get()
   health() {
     return 'healthy'

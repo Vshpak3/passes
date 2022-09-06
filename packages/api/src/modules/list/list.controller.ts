@@ -8,9 +8,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
@@ -28,11 +29,11 @@ import { ListService } from './list.service'
 export class ListController {
   constructor(private readonly listService: ListService) {}
 
-  @ApiOperation({ summary: 'Creates List for a user' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'List was created',
+  @ApiEndpoint({
+    summary: 'Creates List for a user',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'List was created',
   })
   @Post()
   async createList(
@@ -42,11 +43,11 @@ export class ListController {
     await this.listService.createList(req.user.id, createListDto)
   }
 
-  @ApiOperation({ summary: 'Add ListMembers to a List' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'List Members added',
+  @ApiEndpoint({
+    summary: 'Add ListMembers to a List',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'List Members added',
   })
   @Post('members')
   async addListMembers(
@@ -56,11 +57,11 @@ export class ListController {
     return this.listService.addListMembers(req.user.id, addListMembersDto, true)
   }
 
-  @ApiOperation({ summary: 'Remove ListMembers from a List' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'List Members removed',
+  @ApiEndpoint({
+    summary: 'Remove ListMembers from a List',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'List Members removed',
   })
   @Delete('members')
   async removeListMembers(
@@ -74,11 +75,11 @@ export class ListController {
     )
   }
 
-  @ApiOperation({ summary: 'Get list for user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetListResponseDto,
-    description: 'List was retrieved',
+  @ApiEndpoint({
+    summary: 'Get list for user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetListResponseDto,
+    responseDesc: 'List was retrieved',
   })
   @Get(':listId')
   async getList(
@@ -88,22 +89,22 @@ export class ListController {
     return await this.listService.getList(req.user.id, listId)
   }
 
-  @ApiOperation({ summary: 'Get all lists for user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetListsResponseDto,
-    description: 'Lists were retrieved',
+  @ApiEndpoint({
+    summary: 'Get all lists for user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetListsResponseDto,
+    responseDesc: 'Lists were retrieved',
   })
   @Get()
   async getLists(@Req() req: RequestWithUser): Promise<GetListsResponseDto> {
     return await this.listService.getListsForUser(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Get list members for user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetListMembersResponseDto,
-    description: 'List members was retrieved',
+  @ApiEndpoint({
+    summary: 'Get list members for user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetListMembersResponseDto,
+    responseDesc: 'List members was retrieved',
   })
   @Post('members/')
   async getListMembers(
@@ -118,11 +119,11 @@ export class ListController {
     }
   }
 
-  @ApiOperation({ summary: 'Delete list for user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'List was deleted',
+  @ApiEndpoint({
+    summary: 'Delete list for user',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'List was deleted',
   })
   @Delete(':listId')
   async deleteList(
@@ -132,11 +133,11 @@ export class ListController {
     return await this.listService.deleteList(req.user.id, listId)
   }
 
-  @ApiOperation({ summary: 'Edit list name' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'List name was edited',
+  @ApiEndpoint({
+    summary: 'Edit list name',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'List name was edited',
   })
   @Post('edit')
   async editListName(

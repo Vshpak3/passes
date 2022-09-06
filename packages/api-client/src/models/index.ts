@@ -90,6 +90,7 @@ export * from './GetUsernamesResponseDto';
 export * from './GetWalletResponseDto';
 export * from './GetWalletsResponseDto';
 export * from './ImpersonateUserRequestDto';
+export * from './ImpersonateUserResponseDto';
 export * from './ListMemberDto';
 export * from './LocalUserLoginRequestDto';
 export * from './MessageDto';

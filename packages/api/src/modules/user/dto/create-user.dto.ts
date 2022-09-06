@@ -8,7 +8,7 @@ import {
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { USER_USERNAME_LENGTH } from '../constants/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 

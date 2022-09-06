@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'

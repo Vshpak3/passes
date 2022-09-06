@@ -7,13 +7,13 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { UserEntity } from '../../user/entities/user.entity'
-import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { TwitterOauthGuard } from './twitter-oauth.guard'
@@ -28,24 +28,26 @@ export class TwitterOauthController {
     private readonly s3contentService: S3ContentService,
   ) {}
 
-  @ApiOperation({ summary: 'Start the twitter oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Start the twitter oauth flow',
+  @ApiEndpoint({
+    summary: 'Start the twitter oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Start the twitter oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(TwitterOauthGuard)
   @Get()
   async twitterAuth() {
     // Guard redirects
   }
 
-  @ApiOperation({ summary: 'Redirect from twitter oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Redirect from twitter oauth flow',
+  @ApiEndpoint({
+    summary: 'Redirect from twitter oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Redirect from twitter oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(TwitterOauthGuard)
   @Get('redirect')
   async twitterAuthRedirect(@Req() req: Request, @Res() res: Response) {

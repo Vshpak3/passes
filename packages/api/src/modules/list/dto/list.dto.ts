@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 export class ListDto {

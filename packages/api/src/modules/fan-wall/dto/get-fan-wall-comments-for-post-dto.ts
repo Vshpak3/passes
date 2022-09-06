@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { FanWallCommentDto } from './fan-wall-comment.dto'
 
 export class GetFanWallForCreatorResponseDto {

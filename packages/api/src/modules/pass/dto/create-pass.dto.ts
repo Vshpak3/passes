@@ -1,6 +1,6 @@
 import { IsInt, IsOptional, Length, Min } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {

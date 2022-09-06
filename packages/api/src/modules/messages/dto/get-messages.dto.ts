@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { MessageDto } from './message.dto'
 
 export class GetMessagesResponseDto {

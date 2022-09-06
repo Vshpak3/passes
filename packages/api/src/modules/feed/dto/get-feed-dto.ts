@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PostDto } from '../../post/dto/post.dto'
 
 export class GetFeedResponseDto {

@@ -1,7 +1,27 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger'
-import { Expose } from 'class-transformer'
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-export function DtoProperty(options?: ApiPropertyOptions) {
-  return applyDecorators(Expose(), ApiProperty(options))
+import { AllowUnauthorizedRequest } from '../modules/auth/auth.metadata'
+
+export class ApiOptions {
+  summary: string
+  responseStatus: number
+  responseType: any
+  responseDesc: string
+  allowUnauthorizedRequest?: boolean
+}
+
+export function ApiEndpoint(options: ApiOptions) {
+  const auth = options.allowUnauthorizedRequest
+    ? AllowUnauthorizedRequest()
+    : ApiBearerAuth()
+  return applyDecorators(
+    ApiOperation({ summary: options.summary }),
+    ApiResponse({
+      status: options.responseStatus,
+      type: options.responseType,
+      description: options.responseDesc,
+    }),
+    auth,
+  )
 }

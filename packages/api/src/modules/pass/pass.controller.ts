@@ -9,10 +9,10 @@ import {
   Query,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
@@ -28,11 +28,11 @@ import { PassService } from './pass.service'
 export class PassController {
   constructor(private readonly passService: PassService) {}
 
-  @ApiOperation({ summary: 'Creates a pass' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassResponseDto,
-    description: 'A pass was created',
+  @ApiEndpoint({
+    summary: 'Creates a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassResponseDto,
+    responseDesc: 'A pass was created',
   })
   @Post()
   async createPass(
@@ -42,14 +42,14 @@ export class PassController {
     return this.passService.createPass(req.user.id, createPassDto)
   }
 
-  @ApiOperation({ summary: 'Gets passes created by a creator' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassesResponseDto,
-    description: 'A list of passes was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets passes created by a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassesResponseDto,
+    responseDesc: 'A list of passes was retrieved',
+    allowUnauthorizedRequest: true,
   })
   @Get('created/:creatorId')
-  @AllowUnauthorizedRequest()
   async getCreatorPasses(
     @Param('creatorId') creatorId: string,
   ): Promise<GetPassesResponseDto> {
@@ -58,11 +58,11 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Gets passes held by user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassesResponseDto,
-    description: 'A list of passes was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets passes held by user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassesResponseDto,
+    responseDesc: 'A list of passes was retrieved',
   })
   @Get('owned')
   async getOwnedPasses(
@@ -74,22 +74,22 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Gets a pass' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassResponseDto,
-    description: 'A pass was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassResponseDto,
+    responseDesc: 'A pass was retrieved',
   })
   @Get(':passId')
   async findPass(@Param('passId') passId: string): Promise<GetPassResponseDto> {
     return this.passService.findPass(passId)
   }
 
-  @ApiOperation({ summary: 'Updates a pass' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassResponseDto,
-    description: 'A pass was updated',
+  @ApiEndpoint({
+    summary: 'Updates a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassResponseDto,
+    responseDesc: 'A pass was updated',
   })
   @Patch(':passId')
   async updatePass(
@@ -100,11 +100,11 @@ export class PassController {
     return this.passService.updatePass(req.user.id, passId, updatePassDto)
   }
 
-  @ApiOperation({ summary: 'Register create pass payin' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: RegisterPayinResponseDto,
-    description: 'Create pass payin was registered',
+  @ApiEndpoint({
+    summary: 'Register create pass payin',
+    responseStatus: HttpStatus.CREATED,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Create pass payin was registered',
   })
   @Post('pay/create')
   async registerBuyPass(
@@ -118,11 +118,11 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Get register create pass data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PayinDataDto,
-    description: 'Data for register create pass was retrieved',
+  @ApiEndpoint({
+    summary: 'Get register create pass data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Data for register create pass was retrieved',
   })
   @Post('pay/data/create')
   async registerBuyPassData(
@@ -135,11 +135,11 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Register renew pass payin' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: RegisterPayinResponseDto,
-    description: 'Renew pass payin was registered',
+  @ApiEndpoint({
+    summary: 'Register renew pass payin',
+    responseStatus: HttpStatus.CREATED,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Renew pass payin was registered',
   })
   @Post('pay/renew')
   async registerRenewPass(
@@ -153,11 +153,11 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Get register renew pass data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PayinDataDto,
-    description: 'Data for register renew pass was retrieved',
+  @ApiEndpoint({
+    summary: 'Get register renew pass data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Data for register renew pass was retrieved',
   })
   @Post('pay/data/renew')
   async registerRenewPassData(
@@ -170,11 +170,11 @@ export class PassController {
     )
   }
 
-  @ApiOperation({ summary: 'Add pass subscription' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'Pass subscription was added',
+  @ApiEndpoint({
+    summary: 'Add pass subscription',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'Pass subscription was added',
   })
   @Post('subscription/add/:passHolderId')
   async addPassSubscription(
@@ -184,11 +184,11 @@ export class PassController {
     await this.passService.addPassSubscription(req.user.id, passHolderId)
   }
 
-  @ApiOperation({ summary: 'Pin a pass' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A pass was pinned',
+  @ApiEndpoint({
+    summary: 'Pin a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A pass was pinned',
   })
   @Get('pin/:passId')
   async pinPass(
@@ -198,11 +198,11 @@ export class PassController {
     return await this.passService.pinPass(req.user.id, passId)
   }
 
-  @ApiOperation({ summary: 'Unpin a pass' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A pass was unpinned',
+  @ApiEndpoint({
+    summary: 'Unpin a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A pass was unpinned',
   })
   @Get('unpin/:passId')
   async unpinPass(
@@ -212,11 +212,11 @@ export class PassController {
     return await this.passService.unpinPass(req.user.id, passId)
   }
 
-  @ApiOperation({ summary: 'Get a passholders' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPassHoldersResponseDto,
-    description: 'A pass was unpinned',
+  @ApiEndpoint({
+    summary: 'Get a passholders',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassHoldersResponseDto,
+    responseDesc: 'A pass was unpinned',
   })
   @Get('passholders/:passId')
   async getPassHolders(

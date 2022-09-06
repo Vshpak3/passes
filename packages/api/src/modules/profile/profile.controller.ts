@@ -8,10 +8,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import { GetProfileResponseDto } from './dto/get-profile.dto'
 import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
@@ -22,11 +22,11 @@ import { ProfileService } from './profile.service'
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @ApiOperation({ summary: 'Creates a profile' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: Boolean,
-    description: 'A profile was created',
+  @ApiEndpoint({
+    summary: 'Creates a profile',
+    responseStatus: HttpStatus.CREATED,
+    responseType: Boolean,
+    responseDesc: 'A profile was created',
   })
   @Post()
   async createOrUpdateProfile(
@@ -39,24 +39,24 @@ export class ProfileController {
     )
   }
 
-  @ApiOperation({ summary: 'Gets all usernames' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetUsernamesResponseDto,
-    description: 'Gets all usernames',
+  @ApiEndpoint({
+    summary: 'Gets all usernames',
+    responseStatus: HttpStatus.OK,
+    responseType: GetUsernamesResponseDto,
+    responseDesc: 'Gets all usernames',
   })
   @Get('usernames')
   async getAllUsernames(): Promise<GetUsernamesResponseDto> {
     return this.profileService.getAllUsernames()
   }
 
-  @ApiOperation({ summary: 'Gets a profile by username' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetProfileResponseDto,
-    description: 'A profile was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets a profile by username',
+    responseStatus: HttpStatus.OK,
+    responseType: GetProfileResponseDto,
+    responseDesc: 'A profile was retrieved',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Get('usernames/:username')
   async findProfileByUsername(
     @Req() req: RequestWithUser,
@@ -65,13 +65,13 @@ export class ProfileController {
     return this.profileService.findProfileByUsername(username, req.user?.id)
   }
 
-  @ApiOperation({ summary: 'Gets a profile' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetProfileResponseDto,
-    description: 'A profile was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets a profile',
+    responseStatus: HttpStatus.OK,
+    responseType: GetProfileResponseDto,
+    responseDesc: 'A profile was retrieved',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   // eslint-disable-next-line sonarjs/no-duplicate-string
   @Get(':profileId')
   async findProfile(
@@ -81,11 +81,11 @@ export class ProfileController {
     return this.profileService.findProfile(profileId, req.user?.id)
   }
 
-  @ApiOperation({ summary: 'Deletes a profile' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A profile was deleted',
+  @ApiEndpoint({
+    summary: 'Deletes a profile',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A profile was deleted',
   })
   @Delete(':profileId')
   async removeProfile(

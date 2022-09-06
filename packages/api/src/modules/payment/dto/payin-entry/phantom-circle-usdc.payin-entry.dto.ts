@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../../web/endpoint.web'
+import { DtoProperty } from '../../../../web/dto.web'
 import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
 export class PhantomCircleUSDCEntryRequestDto extends PayinEntryRequestDto {}

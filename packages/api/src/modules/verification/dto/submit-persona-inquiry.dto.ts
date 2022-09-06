@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PersonaInquiryStatusEnum } from '../enum/persona-inquiry.status.enum'
 
 export class SubmitPersonaInquiryRequestDto {

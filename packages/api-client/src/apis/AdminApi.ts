@@ -18,6 +18,9 @@ import {
     ImpersonateUserRequestDto,
     ImpersonateUserRequestDtoFromJSON,
     ImpersonateUserRequestDtoToJSON,
+    ImpersonateUserResponseDto,
+    ImpersonateUserResponseDtoFromJSON,
+    ImpersonateUserResponseDtoToJSON,
 } from '../models';
 
 export interface ImpersonateUserRequest {
@@ -32,7 +35,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<ImpersonateUserResponseDto>> {
         if (requestParameters.impersonateUserRequestDto === null || requestParameters.impersonateUserRequestDto === undefined) {
             throw new runtime.RequiredError('impersonateUserRequestDto','Required parameter requestParameters.impersonateUserRequestDto was null or undefined when calling impersonateUser.');
         }
@@ -43,6 +46,14 @@ export class AdminApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/admin/impersonate`,
             method: 'POST',
@@ -51,14 +62,15 @@ export class AdminApi extends runtime.BaseAPI {
             body: ImpersonateUserRequestDtoToJSON(requestParameters.impersonateUserRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => ImpersonateUserResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Impersonates a user
      */
-    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.impersonateUserRaw(requestParameters, initOverrides);
+    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<ImpersonateUserResponseDto> {
+        const response = await this.impersonateUserRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

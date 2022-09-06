@@ -7,9 +7,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { LikeService } from './like.service'
 
 @ApiTags('like')
@@ -17,11 +18,11 @@ import { LikeService } from './like.service'
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
-  @ApiOperation({ summary: 'Check if post is liked' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A like was created',
+  @ApiEndpoint({
+    summary: 'Check if post is liked',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A like was created',
   })
   @Get(':postId')
   async checkLike(
@@ -31,11 +32,11 @@ export class LikeController {
     return await this.likeService.checkLike(req.user.id, postId)
   }
 
-  @ApiOperation({ summary: 'Creates a like on a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A like was created',
+  @ApiEndpoint({
+    summary: 'Creates a like on a post',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A like was created',
   })
   @Post(':postId')
   async likePost(
@@ -45,11 +46,11 @@ export class LikeController {
     await this.likeService.likePost(req.user.id, postId)
   }
 
-  @ApiOperation({ summary: 'Removes a like on a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A like was deleted',
+  @ApiEndpoint({
+    summary: 'Removes a like on a post',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A like was deleted',
   })
   @Delete(':postId')
   async unlikePost(

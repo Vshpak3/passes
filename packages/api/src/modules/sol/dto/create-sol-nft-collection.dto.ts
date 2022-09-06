@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 
 // this is a debug endpoint used for testing
 export class CreateSolNftCollectionRequestDto {

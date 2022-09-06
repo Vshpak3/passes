@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PassDto } from '../../pass/dto/pass.dto'
 import { PassHolderDto } from '../../pass/dto/pass-holder.dto'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'

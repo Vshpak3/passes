@@ -7,10 +7,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreatorStatsService } from './creator-stats.service'
 import {
   GetCreatorEarningResponseDto,
@@ -24,11 +24,11 @@ import { GetCreatorStatsResponseDto } from './dto/get-creator-stats.dto'
 export class CreatorStatsController {
   constructor(private readonly creatorStatsService: CreatorStatsService) {}
 
-  @ApiOperation({ summary: 'Get balance' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCreatorEarningResponseDto,
-    description: 'Balance was retrieved',
+  @ApiEndpoint({
+    summary: 'Get balance',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCreatorEarningResponseDto,
+    responseDesc: 'Balance was retrieved',
   })
   @Get('balance')
   async getBalance(
@@ -37,11 +37,11 @@ export class CreatorStatsController {
     return await this.creatorStatsService.getBalance(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Get historic earnings' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCreatorEarningsResponseDto,
-    description: 'Historic earnings was retrieved',
+  @ApiEndpoint({
+    summary: 'Get historic earnings',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCreatorEarningsResponseDto,
+    responseDesc: 'Historic earnings was retrieved',
   })
   @Post('earnings/historic')
   async getHistoricEarnings(
@@ -58,13 +58,13 @@ export class CreatorStatsController {
     )
   }
 
-  @ApiOperation({ summary: 'Get current stats' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCreatorStatsResponseDto,
-    description: 'Current stats returned',
+  @ApiEndpoint({
+    summary: 'Get current stats',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCreatorStatsResponseDto,
+    responseDesc: 'Current stats returned',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Get('stats/:creatorId')
   async getCreatorStats(
     @Param('creatorId') creatorId: string,

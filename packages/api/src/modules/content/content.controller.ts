@@ -9,9 +9,10 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -31,11 +32,11 @@ export class ContentController {
     private readonly s3contentService: S3ContentService,
   ) {}
 
-  @ApiOperation({ summary: 'Create content' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: GetContentResponseDto,
-    description: 'Content was created',
+  @ApiEndpoint({
+    summary: 'Create content',
+    responseStatus: HttpStatus.CREATED,
+    responseType: GetContentResponseDto,
+    responseDesc: 'Content was created',
   })
   @Post()
   async create(
@@ -45,11 +46,11 @@ export class ContentController {
     return this.contentService.create(req.user.id, createContentRequestDto)
   }
 
-  @ApiOperation({ summary: 'Get signed url for specified path' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetSignedUrlResponseDto,
-    description: 'Url was signed',
+  @ApiEndpoint({
+    summary: 'Get signed url for specified path',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'Url was signed',
   })
   @UseGuards(JwtAuthGuard)
   @Get('sign/:path(*)')
@@ -62,13 +63,11 @@ export class ContentController {
     return { url }
   }
 
-  @ApiOperation({
+  @ApiEndpoint({
     summary: 'Gets all content associated with the current authenticated user',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetContentsResponseDto,
-    description: 'Creator vault was retrieved',
+    responseStatus: HttpStatus.OK,
+    responseType: GetContentsResponseDto,
+    responseDesc: 'Creator vault was retrieved',
   })
   @Get('vault')
   async getVaultContent(

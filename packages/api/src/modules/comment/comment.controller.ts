@@ -9,9 +9,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CommentService } from './comment.service'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
@@ -21,11 +22,11 @@ import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @ApiOperation({ summary: 'Creates a comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A comment was created',
+  @ApiEndpoint({
+    summary: 'Creates a comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A comment was created',
   })
   @Post()
   async createComment(
@@ -35,11 +36,11 @@ export class CommentController {
     return this.commentService.createComment(req.user.id, createCommentDto)
   }
 
-  @ApiOperation({ summary: 'Gets all comments for a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCommentsForPostResponseDto,
-    description: 'A list of comments was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets all comments for a post',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCommentsForPostResponseDto,
+    responseDesc: 'A list of comments was retrieved',
   })
   @Get('post/:postId')
   async findCommentsForPost(
@@ -49,11 +50,11 @@ export class CommentController {
     return this.commentService.findCommentsForPost(req.user.id, postId)
   }
 
-  @ApiOperation({ summary: 'Hides a comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A comment was hidden',
+  @ApiEndpoint({
+    summary: 'Hides a comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A comment was hidden',
   })
   @Patch('hide/:postId/:commentId')
   async hideComment(
@@ -64,11 +65,11 @@ export class CommentController {
     return this.commentService.hideComment(req.user.id, postId, commentId)
   }
 
-  @ApiOperation({ summary: 'Deletes a comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A comment was deleted',
+  @ApiEndpoint({
+    summary: 'Deletes a comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A comment was deleted',
   })
   @Delete('delete/:postId/:commentId')
   async deleteComment(

@@ -7,10 +7,11 @@ import {
   Req,
   Sse,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { EventEmitter } from 'events'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import {
   GetNotificationsRequestDto,
   GetNotificationsResponseDto,
@@ -23,11 +24,11 @@ export class NotificationsController {
   private readonly emitter: EventEmitter
   constructor(private readonly notificationsService: NotificationsService) {}
 
-  @ApiOperation({ summary: 'Gets notifications' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetNotificationsResponseDto,
-    description: 'Notifications were retrieved',
+  @ApiEndpoint({
+    summary: 'Gets notifications',
+    responseStatus: HttpStatus.OK,
+    responseType: GetNotificationsResponseDto,
+    responseDesc: 'Notifications were retrieved',
   })
   @Post('get')
   async get(
@@ -39,22 +40,22 @@ export class NotificationsController {
     )
   }
 
-  @ApiOperation({ summary: 'Subscribe to notification events' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Notification events were subscribed',
+  @ApiEndpoint({
+    summary: 'Subscribe to notification events',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Notification events were subscribed',
   })
   @Sse('subscribe')
   async subscribe(@Req() req: RequestWithUser) {
     return await this.notificationsService.subscribe(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Set status as read' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Status was set as read',
+  @ApiEndpoint({
+    summary: 'Set status as read',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Status was set as read',
   })
   @Post('read/:notificationId')
   async readNotification(

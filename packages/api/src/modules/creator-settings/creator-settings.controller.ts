@@ -1,7 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreatorSettingsService } from './creator-settings.service'
 import { GetCreatorSettingsResponseDto } from './dto/get-creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
@@ -13,11 +14,11 @@ export class CreatorSettingsController {
     private readonly creatorSettingsService: CreatorSettingsService,
   ) {}
 
-  @ApiOperation({ summary: 'Gets creator settings' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCreatorSettingsResponseDto,
-    description: 'Creator Settings was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets creator settings',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCreatorSettingsResponseDto,
+    responseDesc: 'Creator Settings was retrieved',
   })
   @Get()
   async getCreatorSettings(
@@ -26,11 +27,11 @@ export class CreatorSettingsController {
     return await this.creatorSettingsService.findByUser(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Updates or create creator settings' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'Creator Settings was updated or created',
+  @ApiEndpoint({
+    summary: 'Updates or create creator settings',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'Creator Settings was updated or created',
   })
   @Post()
   async createOrUpdateCreatorSettings(

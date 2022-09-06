@@ -6,13 +6,13 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { createTokens } from '../../../util/auth.util'
+import { ApiEndpoint } from '../../../web/endpoint.web'
 import { EmailService } from '../../email/email.service'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { LocalUserLoginRequestDto } from '../dto/local-user-login'
 import { ResetPasswordRequestDto } from '../dto/reset-password'
@@ -32,13 +32,13 @@ export class LocalAuthController {
     private readonly emailService: EmailService,
   ) {}
 
-  @ApiOperation({ summary: 'Create a email and password user' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: AuthTokenResponseDto,
-    description: 'Create a email and password user',
+  @ApiEndpoint({
+    summary: 'Create a email and password user',
+    responseStatus: HttpStatus.CREATED,
+    responseType: AuthTokenResponseDto,
+    responseDesc: 'Create a email and password user',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Post('signup')
   async createEmailPasswordUser(
     @Body() createLocalUserDto: CreateLocalUserRequestDto,
@@ -57,13 +57,13 @@ export class LocalAuthController {
     res.status(HttpStatus.CREATED).send(tokens)
   }
 
-  @ApiOperation({ summary: 'Login with email and password' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: AuthTokenResponseDto,
-    description: 'Login with email and password',
+  @ApiEndpoint({
+    summary: 'Login with email and password',
+    responseStatus: HttpStatus.OK,
+    responseType: AuthTokenResponseDto,
+    responseDesc: 'Login with email and password',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Post()
   async loginWithEmailPassword(
     @Body() loginDto: LocalUserLoginRequestDto,
@@ -89,13 +89,13 @@ export class LocalAuthController {
     res.status(HttpStatus.OK).send(tokens)
   }
 
-  @ApiOperation({ summary: 'Send reset password email to user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Send reset password email to user',
+  @ApiEndpoint({
+    summary: 'Send reset password email to user',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Send reset password email to user',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Post()
   async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
     await this.emailService.sendInitResetPassword(resetPasswordDto.email)

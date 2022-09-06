@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../../web/endpoint.web'
+import { DtoProperty } from '../../../../web/dto.web'
 import { CircleCardDto } from './circle-card.dto'
 
 export class GetCircleCardResponseDto extends CircleCardDto {}

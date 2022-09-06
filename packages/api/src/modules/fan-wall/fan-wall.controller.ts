@@ -9,9 +9,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
 import { GetFanWallForCreatorResponseDto } from './dto/get-fan-wall-comments-for-post-dto'
 import { FanWallService } from './fan-wall.service'
@@ -21,11 +22,11 @@ import { FanWallService } from './fan-wall.service'
 export class FanWallController {
   constructor(private readonly fanWallService: FanWallService) {}
 
-  @ApiOperation({ summary: 'Creates a fan wall comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A fan wall comment was created',
+  @ApiEndpoint({
+    summary: 'Creates a fan wall comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A fan wall comment was created',
   })
   @Post()
   async createFanWallComment(
@@ -38,11 +39,11 @@ export class FanWallController {
     )
   }
 
-  @ApiOperation({ summary: 'Gets fan wall for a creator' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetFanWallForCreatorResponseDto,
-    description: 'A list of fan wall comments was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets fan wall for a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: GetFanWallForCreatorResponseDto,
+    responseDesc: 'A list of fan wall comments was retrieved',
   })
   @Get(':userId')
   async getFanWallForCreator(
@@ -51,11 +52,11 @@ export class FanWallController {
     return this.fanWallService.getFanWallForCreator(userId)
   }
 
-  @ApiOperation({ summary: 'Hides a fan wall comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A fan wall comment was hidden',
+  @ApiEndpoint({
+    summary: 'Hides a fan wall comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A fan wall comment was hidden',
   })
   @Patch(':fanWallCommentId')
   async hideFanWallComment(
@@ -68,11 +69,11 @@ export class FanWallController {
     )
   }
 
-  @ApiOperation({ summary: 'Deletes a fan wall comment' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A fan wall comment was deleted',
+  @ApiEndpoint({
+    summary: 'Deletes a fan wall comment',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A fan wall comment was deleted',
   })
   @Delete(':fanWallCommentId')
   async deleteFanWallComment(

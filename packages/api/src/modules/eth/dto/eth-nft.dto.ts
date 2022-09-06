@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { EthNftEntity } from '../entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../entities/eth-nft-collection.entity'
 import { EthNftCollectionDto } from './eth-nft-collection.dto'

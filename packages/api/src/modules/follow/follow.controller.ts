@@ -8,9 +8,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetFansResponseDto } from './dto/get-fan.dto'
 import { GetFollowingResponseDto } from './dto/get-following.dto'
 import { ReportFanDto } from './dto/report-fan.dto'
@@ -22,11 +23,11 @@ import { FollowService } from './follow.service'
 export class FollowController {
   constructor(private readonly followService: FollowService) {}
 
-  @ApiOperation({ summary: 'Check if you follow a creator' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A follow was checked',
+  @ApiEndpoint({
+    summary: 'Check if you follow a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A follow was checked',
   })
   @Get('check/:creatorId')
   async checkFollow(
@@ -36,11 +37,11 @@ export class FollowController {
     return await this.followService.checkFollow(req.user.id, creatorId)
   }
 
-  @ApiOperation({ summary: 'Creates a follow' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: GetFollowingResponseDto,
-    description: 'A follow was created',
+  @ApiEndpoint({
+    summary: 'Creates a follow',
+    responseStatus: HttpStatus.CREATED,
+    responseType: GetFollowingResponseDto,
+    responseDesc: 'A follow was created',
   })
   @Post(':creatorId')
   async followCreator(
@@ -50,11 +51,11 @@ export class FollowController {
     return await this.followService.followCreator(req.user.id, creatorId)
   }
 
-  @ApiOperation({ summary: 'Deletes a following' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A following was deleted',
+  @ApiEndpoint({
+    summary: 'Deletes a following',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A following was deleted',
   })
   @Delete(':creatorId')
   async unfollowCreator(
@@ -64,11 +65,11 @@ export class FollowController {
     await this.followService.unfollowCreator(req.user.id, creatorId)
   }
 
-  @ApiOperation({ summary: 'Search for followers by query' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: GetFansResponseDto,
-    description: 'A list of followers was retrieved',
+  @ApiEndpoint({
+    summary: 'Search for followers by query',
+    responseStatus: HttpStatus.CREATED,
+    responseType: GetFansResponseDto,
+    responseDesc: 'A list of followers was retrieved',
   })
   @Post('search')
   async searchFans(
@@ -80,11 +81,11 @@ export class FollowController {
     )
   }
 
-  @ApiOperation({ summary: 'Reports a follower' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'A follower was reported',
+  @ApiEndpoint({
+    summary: 'Reports a follower',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'A follower was reported',
   })
   @Post('report/:followerId')
   async reportFollower(
@@ -99,11 +100,11 @@ export class FollowController {
     )
   }
 
-  @ApiOperation({ summary: 'Unblocks a follower' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A follower was unblocked',
+  @ApiEndpoint({
+    summary: 'Unblocks a follower',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A follower was unblocked',
   })
   @Post('unblock/:followerId')
   async unblockFollower(
@@ -113,11 +114,11 @@ export class FollowController {
     return this.followService.unblockFollower(req.user.id, followerId)
   }
 
-  @ApiOperation({ summary: 'Blocks a follower' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'A follower was blocked',
+  @ApiEndpoint({
+    summary: 'Blocks a follower',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'A follower was blocked',
   })
   @Post('block/:followerId')
   async blockFollower(

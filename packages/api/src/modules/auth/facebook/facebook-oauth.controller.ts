@@ -10,13 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { UserEntity } from '../../user/entities/user.entity'
-import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { FacebookDeletionConfirmationDto } from '../dto/fb-deletion-confirmation'
 import { RawFacebookDeletionRequestDto } from '../dto/raw-fb-deletion-request'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -35,24 +35,26 @@ export class FacebookOauthController {
     private readonly s3contentService: S3ContentService,
   ) {}
 
-  @ApiOperation({ summary: 'Start the facebook oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Start the facebook oauth flow',
+  @ApiEndpoint({
+    summary: 'Start the facebook oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Start the facebook oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(FacebookOauthGuard)
   @Get()
   async facebookAuth() {
     // Guard redirects
   }
 
-  @ApiOperation({ summary: 'Redirect from facebook oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Redirect from facebook oauth flow',
+  @ApiEndpoint({
+    summary: 'Redirect from facebook oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Redirect from facebook oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(FacebookOauthGuard)
   @Get('redirect')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
@@ -60,14 +62,13 @@ export class FacebookOauthController {
     return redirectAfterSuccessfulLogin.bind(this)(res, user)
   }
 
-  @ApiOperation({
+  @ApiEndpoint({
     summary: 'Initiate a deletion request for a Facebook OAuth user',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Initiate a deletion request for a Facebook OAuth user',
+    allowUnauthorizedRequest: true,
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Initiate a deletion request for a Facebook OAuth user',
-  })
-  @AllowUnauthorizedRequest()
   @Post('deletion_callback')
   async facebookInitiateDelete(
     @Body() body: RawFacebookDeletionRequestDto,
@@ -87,12 +88,13 @@ export class FacebookOauthController {
     res.send(`{ url: '${url}', confirmation_code: '${confirmationCode}' }`)
   }
 
-  @ApiOperation({ summary: 'Check if a deletion request has been fulfilled' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Check if a deletion request has been fulfilled',
+  @ApiEndpoint({
+    summary: 'Check if a deletion request has been fulfilled',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Check if a deletion request has been fulfilled',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Get('deletion_confirmation')
   async facebookDeletionConfirmation(
     @Query('confirmationCode') confirmationCode: string,

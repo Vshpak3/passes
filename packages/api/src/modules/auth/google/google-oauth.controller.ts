@@ -7,12 +7,12 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { AllowUnauthorizedRequest } from '../auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { UserEntity } from './../../user/entities/user.entity'
@@ -28,24 +28,26 @@ export class GoogleOauthController {
     private readonly s3contentService: S3ContentService,
   ) {}
 
-  @ApiOperation({ summary: 'Start the google oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Start the google oauth flow',
+  @ApiEndpoint({
+    summary: 'Start the google oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Start the google oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(GoogleOauthGuard)
   @Get()
   async googleAuth() {
     // Guard redirects
   }
 
-  @ApiOperation({ summary: 'Redirect from google oauth flow' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Redirect from google oauth flow',
+  @ApiEndpoint({
+    summary: 'Redirect from google oauth flow',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Redirect from google oauth flow',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(GoogleOauthGuard)
   @Get('redirect')
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {

@@ -1,6 +1,6 @@
 import { Length } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { POST_TEXT_LENGTH } from '../constants/schema'
 
 export class CreatePostRequestDto {

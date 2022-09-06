@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../../web/endpoint.web'
+import { DtoProperty } from '../../../../web/dto.web'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 

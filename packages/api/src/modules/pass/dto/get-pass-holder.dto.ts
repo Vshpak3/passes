@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PassHolderDto } from './pass-holder.dto'
 
 export class GetPassHolderResponseDto extends PassHolderDto {}

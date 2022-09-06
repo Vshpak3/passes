@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 
 export class RefreshAuthTokenRequestDto {
   @IsString()

@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../../web/endpoint.web'
+import { DtoProperty } from '../../../../web/dto.web'
 import { BillingDetailsDto } from './billing-details.dto'
 
 class CircleBankAddressDto {

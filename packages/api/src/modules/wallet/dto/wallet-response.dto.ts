@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { EthNftDto } from '../../eth/dto/eth-nft.dto'
 import { EthNftEntity } from '../../eth/entities/eth-nft.entity'
 import { WalletDto } from './wallet.dto'

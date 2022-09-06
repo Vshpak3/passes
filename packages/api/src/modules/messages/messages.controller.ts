@@ -7,9 +7,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
@@ -33,11 +34,11 @@ import { MessagesService } from './messages.service'
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @ApiOperation({ summary: 'Register sending message' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: RegisterPayinResponseDto,
-    description: 'Sending message was registered',
+  @ApiEndpoint({
+    summary: 'Register sending message',
+    responseStatus: HttpStatus.CREATED,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Sending message was registered',
   })
   @Post()
   async sendMessage(
@@ -50,11 +51,11 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Register sending message data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PayinDataDto,
-    description: 'Sending message data was retrieved',
+  @ApiEndpoint({
+    summary: 'Register sending message data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Sending message data was retrieved',
   })
   @Post('data')
   async sendMessageData(
@@ -67,11 +68,11 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Get pending messages' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetMessagesResponseDto,
-    description: 'Pending messages was retrieved',
+  @ApiEndpoint({
+    summary: 'Get pending messages',
+    responseStatus: HttpStatus.OK,
+    responseType: GetMessagesResponseDto,
+    responseDesc: 'Pending messages was retrieved',
   })
   @Get('pending')
   async getPending(
@@ -82,11 +83,11 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Get completed tipped messages' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetMessagesResponseDto,
-    description: 'Completed tipped messages retrieved',
+  @ApiEndpoint({
+    summary: 'Get completed tipped messages',
+    responseStatus: HttpStatus.OK,
+    responseType: GetMessagesResponseDto,
+    responseDesc: 'Completed tipped messages retrieved',
   })
   @Post('completed-tipped')
   async getCompletedTippedMessages(
@@ -98,11 +99,11 @@ export class MessagesController {
     return new GetMessagesResponseDto(messages)
   }
 
-  @ApiOperation({ summary: 'Batch message' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: undefined,
-    description: 'Batch Message was enqueued',
+  @ApiEndpoint({
+    summary: 'Batch message',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'Batch Message was enqueued',
   })
   @Post('batch')
   async massSend(
@@ -115,22 +116,22 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Gets token' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: TokenResponseDto,
-    description: 'Token was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets token',
+    responseStatus: HttpStatus.OK,
+    responseType: TokenResponseDto,
+    responseDesc: 'Token was retrieved',
   })
   @Get('token')
   async getToken(@Req() req: RequestWithUser): Promise<TokenResponseDto> {
     return await this.messagesService.getToken(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Creates a channel' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: GetChannelResponseDto,
-    description: 'Channel was created',
+  @ApiEndpoint({
+    summary: 'Creates a channel',
+    responseStatus: HttpStatus.CREATED,
+    responseType: GetChannelResponseDto,
+    responseDesc: 'Channel was created',
   })
   @Post('channel')
   async getChannel(
@@ -143,11 +144,11 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Get channels stats' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetChannelStatsResponseDto,
-    description: 'Channel stats was retrieved ',
+  @ApiEndpoint({
+    summary: 'Get channels stats',
+    responseStatus: HttpStatus.OK,
+    responseType: GetChannelStatsResponseDto,
+    responseDesc: 'Channel stats was retrieved ',
   })
   @Post('channel/stats')
   async getChannelsStats(
@@ -158,11 +159,11 @@ export class MessagesController {
     )
   }
 
-  @ApiOperation({ summary: 'Get channels settings' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetChannelSettingsResponseDto,
-    description: 'Channel settings was retrieved ',
+  @ApiEndpoint({
+    summary: 'Get channels settings',
+    responseStatus: HttpStatus.OK,
+    responseType: GetChannelSettingsResponseDto,
+    responseDesc: 'Channel settings was retrieved ',
   })
   @Get('channel/settings/:channelId')
   async getChannelSettings(
@@ -172,11 +173,11 @@ export class MessagesController {
     return await this.messagesService.getChannelSettings(req.user.id, channelId)
   }
 
-  @ApiOperation({ summary: 'Update channels settings' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Channel settings was updated ',
+  @ApiEndpoint({
+    summary: 'Update channels settings',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Channel settings was updated ',
   })
   @Post('channel/settings/:channelId')
   async updateChannelSettings(

@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { ChannelStatDto } from './channel-stat.dto'
 
 export class GetChannelStatsRequestDto {

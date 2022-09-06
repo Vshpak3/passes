@@ -8,9 +8,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { EthService } from '../eth/eth.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
@@ -33,11 +34,11 @@ export class WalletController {
     private readonly ethService: EthService,
   ) {}
 
-  @ApiOperation({ summary: 'Get user custodial wallet' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetWalletResponseDto,
-    description: 'User custodial wallet retrieved',
+  @ApiEndpoint({
+    summary: 'Get user custodial wallet',
+    responseStatus: HttpStatus.OK,
+    responseType: GetWalletResponseDto,
+    responseDesc: 'User custodial wallet retrieved',
   })
   @Get('custodial')
   async getUserCustodialWallet(
@@ -46,11 +47,11 @@ export class WalletController {
     return await this.walletService.getUserCustodialWallet(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Get default wallet' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetWalletResponseDto,
-    description: 'Default wallet retrieved',
+  @ApiEndpoint({
+    summary: 'Get default wallet',
+    responseStatus: HttpStatus.OK,
+    responseType: GetWalletResponseDto,
+    responseDesc: 'Default wallet retrieved',
   })
   @Get('default')
   async getDefaultWallet(
@@ -59,11 +60,11 @@ export class WalletController {
     return await this.walletService.getDefaultWallet(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Set default wallet' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Default wallet set',
+  @ApiEndpoint({
+    summary: 'Set default wallet',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Default wallet set',
   })
   @Post('default/:walletId')
   async setDefaultWallet(
@@ -73,11 +74,11 @@ export class WalletController {
     await this.walletService.setDefaultWallet(req.user.id, walletId)
   }
 
-  @ApiOperation({ summary: 'Creates authenticated wallet for a user' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: Boolean,
-    description: 'Wallet was created',
+  @ApiEndpoint({
+    summary: 'Creates authenticated wallet for a user',
+    responseStatus: HttpStatus.CREATED,
+    responseType: Boolean,
+    responseDesc: 'Wallet was created',
   })
   @Post()
   async createWallet(
@@ -87,10 +88,11 @@ export class WalletController {
     return await this.walletService.createWallet(req.user.id, createWalletDto)
   }
 
-  @ApiOperation({ summary: 'Removes authenticated wallet for a user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Wallet was deleted',
+  @ApiEndpoint({
+    summary: 'Removes authenticated wallet for a user',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Wallet was deleted',
   })
   @Delete(':walletId')
   async removeWallet(
@@ -100,11 +102,11 @@ export class WalletController {
     return this.walletService.removeWallet(req.user.id, walletId)
   }
 
-  @ApiOperation({ summary: 'Creates wallet auth message to sign' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: AuthWalletResponseDto,
-    description: 'Wallet Auth Message created',
+  @ApiEndpoint({
+    summary: 'Creates wallet auth message to sign',
+    responseStatus: HttpStatus.CREATED,
+    responseType: AuthWalletResponseDto,
+    responseDesc: 'Wallet Auth Message created',
   })
   @Post('auth')
   async authMessage(
@@ -114,11 +116,11 @@ export class WalletController {
     return this.walletService.authMessage(req.user.id, authWalletRequestDto)
   }
 
-  @ApiOperation({ summary: 'Get wallets for user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetWalletsResponseDto,
-    description: 'Wallets were retrieved',
+  @ApiEndpoint({
+    summary: 'Get wallets for user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetWalletsResponseDto,
+    responseDesc: 'Wallets were retrieved',
   })
   @Get()
   async getWallets(
@@ -129,11 +131,11 @@ export class WalletController {
     )
   }
 
-  @ApiOperation({ summary: 'Refresh tokens owned by a wallet' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: WalletResponseDto,
-    description: 'Wallet tokens were updated',
+  @ApiEndpoint({
+    summary: 'Refresh tokens owned by a wallet',
+    responseStatus: HttpStatus.OK,
+    responseType: WalletResponseDto,
+    responseDesc: 'Wallet tokens were updated',
   })
   @Post('refresh/:walletId')
   async refreshWallets(
@@ -143,11 +145,11 @@ export class WalletController {
     return this.ethService.refreshNftsForWallet(req.user.id, walletId)
   }
 
-  @ApiOperation({ summary: 'Creates unchecked wallet for a user' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: CreateWalletRequestDto,
-    description: 'Unchecked wallet was created',
+  @ApiEndpoint({
+    summary: 'Creates unchecked wallet for a user',
+    responseStatus: HttpStatus.CREATED,
+    responseType: CreateWalletRequestDto,
+    responseDesc: 'Unchecked wallet was created',
   })
   @Post('unauthenticated')
   async createUnauthenticatedWallet(

@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator'
 
-import { DtoProperty } from '../../../../web/endpoint.web'
+import { DtoProperty } from '../../../../web/dto.web'
 import { CirclePaymentDto } from './circle-payment.dto'
 import { CircleTransferDto } from './circle-transfer.dto'
 

@@ -8,12 +8,13 @@ import {
   Res,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { RequestWithUser } from '../../types/request'
 import { createTokens } from '../../util/auth.util'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -40,11 +41,11 @@ export class AdminController {
     this.secret = this.configService.get('admin.impersonate') as string
   }
 
-  @ApiOperation({ summary: 'Impersonates a user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Access token for impersonated user',
+  @ApiEndpoint({
+    summary: 'Impersonates a user',
+    responseStatus: HttpStatus.OK,
+    responseType: ImpersonateUserResponseDto,
+    responseDesc: 'Access token for impersonated user',
   })
   @Post('impersonate')
   async impersonateUser(

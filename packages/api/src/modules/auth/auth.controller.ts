@@ -8,15 +8,15 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { RequestWithUser } from '../../types/request'
 import { createTokens } from '../../util/auth.util'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { S3ContentService } from '../s3content/s3content.service'
 import { GetUserResponseDto } from '../user/dto/get-user.dto'
 import { UserService } from '../user/user.service'
-import { AllowUnauthorizedRequest } from './auth.metadata'
 import { RefreshAuthTokenRequestDto } from './dto/refresh-auth-token'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
@@ -33,11 +33,11 @@ export class AuthController {
     private readonly s3contentService: S3ContentService,
   ) {}
 
-  @ApiOperation({ summary: 'Gets the current authenticated user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetUserResponseDto,
-    description: 'Gets the current authenticated user',
+  @ApiEndpoint({
+    summary: 'Gets the current authenticated user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetUserResponseDto,
+    responseDesc: 'Gets the current authenticated user',
   })
   @Get('user')
   async getCurrentUser(@Req() req: RequestWithUser) {
@@ -47,13 +47,13 @@ export class AuthController {
     )
   }
 
-  @ApiOperation({ summary: 'Refresh the access token' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: AuthTokenResponseDto,
-    description: 'Refresh token token was created',
+  @ApiEndpoint({
+    summary: 'Refresh the access token',
+    responseStatus: HttpStatus.CREATED,
+    responseType: AuthTokenResponseDto,
+    responseDesc: 'Refresh token token was created',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refreshAccessToken(

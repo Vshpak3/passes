@@ -10,10 +10,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { GetUserResponseDto } from './dto/get-user.dto'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
@@ -33,22 +33,22 @@ export class UserController {
     private readonly jwtAuthService: JwtAuthService,
   ) {}
 
-  @ApiOperation({ summary: 'Gets a user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetUserResponseDto,
-    description: 'A user was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets a user',
+    responseStatus: HttpStatus.OK,
+    responseType: GetUserResponseDto,
+    responseDesc: 'A user was retrieved',
   })
   @Get(':userId')
   async findOne(@Param('userId') userId: string): Promise<GetUserResponseDto> {
     return new GetUserResponseDto(await this.userService.findOne(userId))
   }
 
-  @ApiOperation({ summary: 'Sets initial user info' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetUserResponseDto,
-    description: 'Sets initial user info',
+  @ApiEndpoint({
+    summary: 'Sets initial user info',
+    responseStatus: HttpStatus.OK,
+    responseType: GetUserResponseDto,
+    responseDesc: 'Sets initial user info',
   })
   @Patch()
   async setInitialInfo(
@@ -68,32 +68,34 @@ export class UserController {
     return { accessToken }
   }
 
-  @ApiOperation({ summary: 'Disables a user account' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A user account was disabled',
+  @ApiEndpoint({
+    summary: 'Disables a user account',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A user account was disabled',
   })
   @Delete()
   async delete(@Req() req: RequestWithUser): Promise<GetUserResponseDto> {
     return new GetUserResponseDto(await this.userService.remove(req.user.id))
   }
 
-  @ApiOperation({ summary: 'Verify email for the current user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'A email was verified',
+  @ApiEndpoint({
+    summary: 'Verify email for the current user',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A email was verified',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Post('verify-email')
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     await this.userService.verifyEmail(verifyEmailDto)
   }
 
-  @ApiOperation({ summary: 'Set username for current user' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'A username was set for the current user',
+  @ApiEndpoint({
+    summary: 'Set username for current user',
+    responseStatus: HttpStatus.CREATED,
+    responseType: undefined,
+    responseDesc: 'A username was set for the current user',
   })
   @Post('username')
   async setUsername(
@@ -107,25 +109,25 @@ export class UserController {
     return new GetUserResponseDto(updatedUser)
   }
 
-  @ApiOperation({ summary: 'Validates whether a username is available' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A username was checked for validity',
+  @ApiEndpoint({
+    summary: 'Validates whether a username is available',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A username was checked for validity',
+    allowUnauthorizedRequest: true,
   })
   @Get('/usernames/validate/:username')
-  @AllowUnauthorizedRequest()
   async validateUsername(
     @Param('username') username: string,
   ): Promise<boolean> {
     return this.userService.validateUsername(username)
   }
 
-  @ApiOperation({ summary: 'Search for creators by query' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: SearchCreatorResponseDto,
-    description: 'A list of creators was returned',
+  @ApiEndpoint({
+    summary: 'Search for creators by query',
+    responseStatus: HttpStatus.CREATED,
+    responseType: SearchCreatorResponseDto,
+    responseDesc: 'A list of creators was returned',
   })
   @Post('creator/search')
   async searchCreatorByUsername(
@@ -141,11 +143,11 @@ export class UserController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Make yourself a creator' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'You were made a creator',
+  @ApiEndpoint({
+    summary: 'Make yourself a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'You were made a creator',
   })
   @Get('make/creator')
   async makeCreator(@Req() req: RequestWithUser): Promise<void> {

@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { UserEntity } from '../entities/user.entity'
 import { GetUserResponseDto } from './get-user.dto'
 

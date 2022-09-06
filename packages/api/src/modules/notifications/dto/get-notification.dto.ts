@@ -1,6 +1,6 @@
 import { IsInt, Min } from 'class-validator'
 
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 import { NotificationDto } from './notification.dto'
 

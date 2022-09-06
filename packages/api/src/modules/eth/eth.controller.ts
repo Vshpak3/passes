@@ -1,7 +1,8 @@
 import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreateEthNftCollectionRequestDto } from './dto/create-eth-nft-collection.dto'
 import { GetEthNftCollectionResponseDto } from './dto/get-eth-nft-collection.dto'
 import { EthService } from './eth.service'
@@ -11,11 +12,11 @@ import { EthService } from './eth.service'
 export class EthController {
   constructor(private readonly ethService: EthService) {}
 
-  @ApiOperation({ summary: 'Creates ETH NFT Collection' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: GetEthNftCollectionResponseDto,
-    description: 'ETH NFT Collection was created',
+  @ApiEndpoint({
+    summary: 'Creates ETH NFT Collection',
+    responseStatus: HttpStatus.CREATED,
+    responseType: GetEthNftCollectionResponseDto,
+    responseDesc: 'ETH NFT Collection was created',
   })
   @Post('nftcollection')
   async createEthNftCollection(

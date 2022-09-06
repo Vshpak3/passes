@@ -9,9 +9,10 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import {
@@ -30,11 +31,11 @@ import { PostService } from './post.service'
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @ApiOperation({ summary: 'Creates a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: CreatePostResponseDto,
-    description: 'A post was created',
+  @ApiEndpoint({
+    summary: 'Creates a post',
+    responseStatus: HttpStatus.OK,
+    responseType: CreatePostResponseDto,
+    responseDesc: 'A post was created',
   })
   @Post()
   async createPost(
@@ -44,11 +45,11 @@ export class PostController {
     return await this.postService.createPost(req.user.id, createPostDto)
   }
 
-  @ApiOperation({ summary: 'Gets a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPostResponseDto,
-    description: 'A post was retrieved',
+  @ApiEndpoint({
+    summary: 'Gets a post',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPostResponseDto,
+    responseDesc: 'A post was retrieved',
   })
   @Get(':postId')
   async findPost(
@@ -58,11 +59,11 @@ export class PostController {
     return await this.postService.findPost(postId, req.user.id)
   }
 
-  @ApiOperation({ summary: 'Updates a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A post was updated',
+  @ApiEndpoint({
+    summary: 'Updates a post',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A post was updated',
   })
   @Patch(':postId')
   async updatePost(
@@ -73,11 +74,11 @@ export class PostController {
     return await this.postService.updatePost(req.user.id, postId, updatePostDto)
   }
 
-  @ApiOperation({ summary: 'Deletes a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A post was deleted',
+  @ApiEndpoint({
+    summary: 'Deletes a post',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A post was deleted',
   })
   @Delete(':postId')
   async removePost(
@@ -87,11 +88,11 @@ export class PostController {
     await this.postService.removePost(req.user.id, postId)
   }
 
-  @ApiOperation({ summary: 'Register purchase post payin' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: RegisterPayinResponseDto,
-    description: 'Purcuase post payin was registered',
+  @ApiEndpoint({
+    summary: 'Register purchase post payin',
+    responseStatus: HttpStatus.CREATED,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Purcuase post payin was registered',
   })
   @Post('pay/purchase')
   async registerPurchasePost(
@@ -106,11 +107,11 @@ export class PostController {
     )
   }
 
-  @ApiOperation({ summary: 'Get register purchase post data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PayinDataDto,
-    description: 'Data for register purchase post was retrieved',
+  @ApiEndpoint({
+    summary: 'Get register purchase post data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Data for register purchase post was retrieved',
   })
   @Post('pay/data/purchase')
   async registerPurchasePostData(
@@ -123,11 +124,11 @@ export class PostController {
     )
   }
 
-  @ApiOperation({ summary: 'Register tip post payin' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: RegisterPayinResponseDto,
-    description: 'Tip post payin was registered',
+  @ApiEndpoint({
+    summary: 'Register tip post payin',
+    responseStatus: HttpStatus.OK,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Tip post payin was registered',
   })
   @Post('pay/tip')
   async registerTipPost(
@@ -142,11 +143,11 @@ export class PostController {
     )
   }
 
-  @ApiOperation({ summary: 'Pin a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A post was pinned',
+  @ApiEndpoint({
+    summary: 'Pin a post',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A post was pinned',
   })
   @Get('pin/:postId')
   async pinPost(
@@ -156,11 +157,11 @@ export class PostController {
     return await this.postService.pinPost(req.user.id, postId)
   }
 
-  @ApiOperation({ summary: 'Unpin a post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'A post was unpinned',
+  @ApiEndpoint({
+    summary: 'Unpin a post',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A post was unpinned',
   })
   @Get('unpin/:postId')
   async unpinPost(
@@ -172,11 +173,11 @@ export class PostController {
 
   // returns all post-messages, paid or unpaid
   // filter in FE
-  @ApiOperation({ summary: 'Get gallery view' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetGalleryViewDto,
-    description: 'Gallery view was retrieved',
+  @ApiEndpoint({
+    summary: 'Get gallery view',
+    responseStatus: HttpStatus.OK,
+    responseType: GetGalleryViewDto,
+    responseDesc: 'Gallery view was retrieved',
   })
   @Get('gallery/:channelId')
   async getGalleryView(

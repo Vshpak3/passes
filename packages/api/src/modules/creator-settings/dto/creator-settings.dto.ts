@@ -1,4 +1,4 @@
-import { DtoProperty } from '../../../web/endpoint.web'
+import { DtoProperty } from '../../../web/dto.web'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
 export class CreatorSettingsDto {

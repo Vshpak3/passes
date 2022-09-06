@@ -4,19 +4,18 @@ import {
   Delete,
   Get,
   Head,
-  HttpCode,
   HttpStatus,
   Param,
   Post,
   Req,
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { get } from 'https'
 import { RealIP } from 'nestjs-real-ip'
 import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
+import { ApiEndpoint } from '../../web/endpoint.web'
 import { ExamplePayinCallbackInput } from './callback.types'
 import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardAndExtraRequestDto } from './dto/circle/create-card.dto'
@@ -80,24 +79,23 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Get circle encryption key' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: CircleEncryptionKeyResponseDto,
-    description: 'Encryption key was retrieved',
+  @ApiEndpoint({
+    summary: 'Get circle encryption key',
+    responseStatus: HttpStatus.OK,
+    responseType: CircleEncryptionKeyResponseDto,
+    responseDesc: 'Encryption key was retrieved',
+    allowUnauthorizedRequest: true,
   })
   @Get('key')
-  @HttpCode(200)
-  @AllowUnauthorizedRequest()
   async getCircleEncryptionKey(): Promise<CircleEncryptionKeyResponseDto> {
     return await this.paymentService.getCircleEncryptionKey()
   }
 
-  @ApiOperation({ summary: 'Creates a card' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: CircleStatusResponseDto,
-    description: 'A card was created',
+  @ApiEndpoint({
+    summary: 'Creates a card',
+    responseStatus: HttpStatus.CREATED,
+    responseType: CircleStatusResponseDto,
+    responseDesc: 'A card was created',
   })
   @Post('card/create')
   async createCircleCard(
@@ -113,14 +111,13 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Delete a card' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A card was deleted',
+  @ApiEndpoint({
+    summary: 'Delete a card',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A card was deleted',
   })
   @Delete('card/delete/:circleCardId')
-  @HttpCode(200)
   async deleteCircleCard(
     @Req() req: RequestWithUser,
     @Param('circleCardId') circleCardId: string,
@@ -128,11 +125,11 @@ export class PaymentController {
     await this.paymentService.deleteCircleCard(req.user.id, circleCardId)
   }
 
-  @ApiOperation({ summary: 'Get cards' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCircleCardsResponseDto,
-    description: 'Cards were retrieved',
+  @ApiEndpoint({
+    summary: 'Get cards',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCircleCardsResponseDto,
+    responseDesc: 'Cards were retrieved',
   })
   @Get('cards')
   async getCircleCards(
@@ -143,11 +140,11 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Get card by id' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCircleCardResponseDto,
-    description: 'Card was retrieved',
+  @ApiEndpoint({
+    summary: 'Get card by id',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCircleCardResponseDto,
+    responseDesc: 'Card was retrieved',
   })
   @Get('card/:cardId')
   async getCircleCard(
@@ -157,11 +154,11 @@ export class PaymentController {
     return await this.paymentService.getCircleCard(req.user.id, cardId)
   }
 
-  @ApiOperation({ summary: 'Create a wire bank account' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: CircleStatusResponseDto,
-    description: 'A wire bank account was created',
+  @ApiEndpoint({
+    summary: 'Create a wire bank account',
+    responseStatus: HttpStatus.CREATED,
+    responseType: CircleStatusResponseDto,
+    responseDesc: 'A wire bank account was created',
   })
   @Post('bank/create')
   async createCircleBank(
@@ -174,11 +171,11 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Delete a wire bank account' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A wire bank account was dleted',
+  @ApiEndpoint({
+    summary: 'Delete a wire bank account',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A wire bank account was dleted',
   })
   @Delete('bank/delete/:circleBankId')
   async deleteCircleBank(
@@ -188,11 +185,11 @@ export class PaymentController {
     await this.paymentService.deleteCircleBank(req.user.id, circleBankId)
   }
 
-  @ApiOperation({ summary: 'Get wire bank acccounts' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetCircleBanksResponseDto,
-    description: 'Wire bank accounts were retrieved',
+  @ApiEndpoint({
+    summary: 'Get wire bank acccounts',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCircleBanksResponseDto,
+    responseDesc: 'Wire bank accounts were retrieved',
   })
   @Get('banks')
   async getCircleBanks(
@@ -206,15 +203,14 @@ export class PaymentController {
   // endpoint only called by circle to give us notifications
   // (must register endpoint through circle API if it changes)
   // TODO: authenticate circle url
-  @ApiOperation({ summary: 'Circle notifications' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Update from circle was received',
+  @ApiEndpoint({
+    summary: 'Circle notifications',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Update from circle was received',
+    allowUnauthorizedRequest: true,
   })
   @Post('circle/notification')
-  @HttpCode(200)
-  @AllowUnauthorizedRequest()
   async recieveNotifications(@Body() body: string) {
     const envelope = JSON.parse(body)
     this.validator.validate(envelope, (err) => {
@@ -240,13 +236,13 @@ export class PaymentController {
     }
   }
 
-  @ApiOperation({ summary: 'Circle notifications register' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: Boolean,
-    description: 'Updates from circle was registered',
+  @ApiEndpoint({
+    summary: 'Circle notifications register',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'Updates from circle was registered',
+    allowUnauthorizedRequest: true,
   })
-  @AllowUnauthorizedRequest()
   @Head('circle/notification')
   async registerNotifications(): Promise<boolean> {
     return true
@@ -258,11 +254,11 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Circlecard payin entrypoint' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: CircleCardPayinEntryResponseDto,
-    description: 'Circecard payin was initiated',
+  @ApiEndpoint({
+    summary: 'Circlecard payin entrypoint',
+    responseStatus: HttpStatus.CREATED,
+    responseType: CircleCardPayinEntryResponseDto,
+    responseDesc: 'Circecard payin was initiated',
   })
   @Post('payin/entry/circle-card')
   async entryCircleCard(
@@ -277,11 +273,11 @@ export class PaymentController {
     )) as CircleCardPayinEntryResponseDto
   }
 
-  @ApiOperation({ summary: 'Phantom USDC payin entrypoint' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: PhantomCircleUSDCEntryResponseDto,
-    description: 'Phantom USDC payin was initiated',
+  @ApiEndpoint({
+    summary: 'Phantom USDC payin entrypoint',
+    responseStatus: HttpStatus.CREATED,
+    responseType: PhantomCircleUSDCEntryResponseDto,
+    responseDesc: 'Phantom USDC payin was initiated',
   })
   @Post('payin/entry/phantom-usdc')
   async entryPhantomCircleUSDC(
@@ -294,11 +290,11 @@ export class PaymentController {
     )) as PhantomCircleUSDCEntryResponseDto
   }
 
-  @ApiOperation({ summary: 'Metamask USDC payin entrypoint' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: MetamaskCircleUSDCEntryResponseDto,
-    description: 'Metamask USDC was initiated',
+  @ApiEndpoint({
+    summary: 'Metamask USDC payin entrypoint',
+    responseStatus: HttpStatus.CREATED,
+    responseType: MetamaskCircleUSDCEntryResponseDto,
+    responseDesc: 'Metamask USDC was initiated',
   })
   @Post('payin/entry/metamask-usdc')
   async entryMetamaskCircleUSDC(
@@ -311,11 +307,11 @@ export class PaymentController {
     )) as MetamaskCircleUSDCEntryResponseDto
   }
 
-  @ApiOperation({ summary: 'Metamask ETH payin entrypoint' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    type: MetamaskCircleETHEntryResponseDto,
-    description: 'Metamask ETH was initiated',
+  @ApiEndpoint({
+    summary: 'Metamask ETH payin entrypoint',
+    responseStatus: HttpStatus.CREATED,
+    responseType: MetamaskCircleETHEntryResponseDto,
+    responseDesc: 'Metamask ETH was initiated',
   })
   @Post('payin/entry/metamask-eth')
   async entryMetamaskCircleETH(
@@ -334,14 +330,13 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Set default payin method' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A payin method was set as default',
+  @ApiEndpoint({
+    summary: 'Set default payin method',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A payin method was set as default',
   })
   @Post('payin/default')
-  @HttpCode(200)
   async setDefaultPayinMethod(
     @Req() req: RequestWithUser,
     @Body() payinMethodDto: SetPayinMethodRequestDto,
@@ -352,11 +347,11 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Get default payin method' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPayinMethodResponseDto,
-    description: 'Default payin method was retrieved',
+  @ApiEndpoint({
+    summary: 'Get default payin method',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPayinMethodResponseDto,
+    responseDesc: 'Default payin method was retrieved',
   })
   @Get('payin/default')
   async getDefaultPayinMethod(
@@ -365,14 +360,13 @@ export class PaymentController {
     return await this.paymentService.getDefaultPayinMethod(req.user.id)
   }
 
-  @ApiOperation({ summary: 'Set default payout method' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'A payout method was set as default',
+  @ApiEndpoint({
+    summary: 'Set default payout method',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A payout method was set as default',
   })
   @Post('payout/default')
-  @HttpCode(200)
   async setDefaultPayoutMethod(
     @Req() req: RequestWithUser,
     @Body() payoutMethodDto: SetPayoutMethodRequestDto,
@@ -383,11 +377,11 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Get default payout method' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPayoutMethodResponseDto,
-    description: 'Default payout method was retrieved',
+  @ApiEndpoint({
+    summary: 'Get default payout method',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPayoutMethodResponseDto,
+    responseDesc: 'Default payout method was retrieved',
   })
   @Get('payout/default')
   async getDefaultPayoutMethod(
@@ -402,14 +396,13 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Cancel a payin' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Payin was cancelled',
+  @ApiEndpoint({
+    summary: 'Cancel a payin',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Payin was cancelled',
   })
   @Post('payin/cancel/:payinId')
-  @HttpCode(200)
   async cancelPayin(
     @Req() req: RequestWithUser,
     @Param('payinId') payinId: string,
@@ -417,14 +410,13 @@ export class PaymentController {
     await this.paymentService.userCancelPayin(payinId, req.user.id)
   }
 
-  @ApiOperation({ summary: 'Get all payins' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPayinsResponseDto,
-    description: 'Payins were retrieved',
+  @ApiEndpoint({
+    summary: 'Get all payins',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPayinsResponseDto,
+    responseDesc: 'Payins were retrieved',
   })
   @Post('payins')
-  @HttpCode(200)
   async getPayins(
     @Req() req: RequestWithUser,
     @Body() getPayinsRequest: GetPayinsRequestDto,
@@ -437,14 +429,13 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Get all payouts' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetPayoutsResponseDto,
-    description: 'Payouts were retrieved',
+  @ApiEndpoint({
+    summary: 'Get all payouts',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPayoutsResponseDto,
+    responseDesc: 'Payouts were retrieved',
   })
   @Post('payouts')
-  @HttpCode(200)
   async getPayouts(
     @Req() req: RequestWithUser,
     @Body() getPayoutsRequest: GetPayoutsRequestDto,
@@ -452,11 +443,11 @@ export class PaymentController {
     return await this.paymentService.getPayouts(req.user.id, getPayoutsRequest)
   }
 
-  @ApiOperation({ summary: 'Payout manually' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Payout was made',
+  @ApiEndpoint({
+    summary: 'Payout manually',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Payout was made',
   })
   @Post('payout')
   async payout(@Req() req: RequestWithUser): Promise<void> {
@@ -468,14 +459,13 @@ export class PaymentController {
   Subscriptions
   -------------------------------------------------------------------------------
   */
-  @ApiOperation({ summary: 'Set subscription payin method' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Subscription payin method was set',
+  @ApiEndpoint({
+    summary: 'Set subscription payin method',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Subscription payin method was set',
   })
   @Post('subscription/method/:subscriptionId')
-  @HttpCode(200)
   async setSubscriptionPayinMethod(
     @Req() req: RequestWithUser,
     @Param('subscriptionId') subscriptionId: string,
@@ -488,11 +478,11 @@ export class PaymentController {
     )
   }
 
-  @ApiOperation({ summary: 'Cancel subscription' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Subscription was cancelled',
+  @ApiEndpoint({
+    summary: 'Cancel subscription',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Subscription was cancelled',
   })
   @Delete('subscription/:subscriptionId')
   async cancelSubscription(
@@ -502,11 +492,11 @@ export class PaymentController {
     await this.paymentService.cancelSubscription(req.user.id, subscriptionId)
   }
 
-  @ApiOperation({ summary: 'Get subscriptions' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: GetSubscriptionsResponseDto,
-    description: 'Subscriptions were retrieved',
+  @ApiEndpoint({
+    summary: 'Get subscriptions',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSubscriptionsResponseDto,
+    responseDesc: 'Subscriptions were retrieved',
   })
   @Get('subscriptions')
   async getSubscriptions(
@@ -523,14 +513,13 @@ export class PaymentController {
   -------------------------------------------------------------------------------
   */
 
-  @ApiOperation({ summary: 'Register payin' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: RegisterPayinResponseDto,
-    description: 'Payin registered',
+  @ApiEndpoint({
+    summary: 'Register payin',
+    responseStatus: HttpStatus.OK,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Payin registered',
   })
   @Post('test/register/payin')
-  @HttpCode(200)
   async registerPayin(
     @Req() req: RequestWithUser,
   ): Promise<RegisterPayinResponseDto> {
@@ -543,38 +532,37 @@ export class PaymentController {
     })
   }
 
-  @ApiOperation({ summary: 'Get register payin data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PayinDataDto,
-    description: 'Register payin data retrieved',
+  @ApiEndpoint({
+    summary: 'Get register payin data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Register payin data retrieved',
   })
   @Post('test/register/payin/data')
-  @HttpCode(200)
   async registerPayinData(): Promise<PayinDataDto> {
     return { blocked: false, amount: 1000 }
   }
 
-  @ApiOperation({ summary: 'Payout everyone' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Everyone paid out',
+  @ApiEndpoint({
+    summary: 'Payout everyone',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Everyone paid out',
+    allowUnauthorizedRequest: true,
   })
   @Get('test/payout')
-  @AllowUnauthorizedRequest()
   async payoutAll(): Promise<void> {
     return await this.paymentService.payoutAll()
   }
 
-  @ApiOperation({ summary: 'Rerun payout' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: undefined,
-    description: 'Payout rerun',
+  @ApiEndpoint({
+    summary: 'Rerun payout',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Payout rerun',
+    allowUnauthorizedRequest: true,
   })
   @Get('test/payout/:payoutId')
-  @AllowUnauthorizedRequest()
   async rePayout(@Param('payoutId') payoutId: string): Promise<void> {
     return await this.paymentService.submitPayout(payoutId)
   }
