@@ -173,7 +173,7 @@ const LoginPage = () => {
                 errors={errors}
               />
               <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
-                <NextLink href="/home">Forgot Password</NextLink>
+                <NextLink href="/forgot-password">Forgot Password</NextLink>
               </Text>
             </div>
 
