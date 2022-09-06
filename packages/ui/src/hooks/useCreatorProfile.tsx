@@ -9,7 +9,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
 
-import { uploadFile } from "../helpers/uploadFile"
+import { Content } from "../helpers"
 import { wrapApi } from "../helpers/wrapApi"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
@@ -50,13 +50,12 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const onSubmitEditProfile = async (values: Record<string, any>) => {
     const { profileImage, profileCoverImage, ...rest } = values
-    const [profileImageUrl, profileCoverImageUrl] = await Promise.all(
-      [profileImage, profileCoverImage].map((files) => {
-        if (!files?.length) return Promise.resolve(undefined)
-        const file = files[0]
-        return uploadFile(file, "profile")
-      })
-    )
+
+    const [profileImageUrl, profileCoverImageUrl] =
+      await Content().uploadPublicContent(
+        [profileImage, profileCoverImage],
+        "profile"
+      )
 
     const newValues = { ...rest }
 

@@ -12,7 +12,6 @@ import {
 } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
-import { composeMediaGridLayout } from "src/helpers"
 
 const PassDirectMessage = ({ register }) => (
   <>
@@ -52,6 +51,23 @@ const PassFile = ({ onRemove, file, gridLayout }) => (
     <MediaFile onRemove={onRemove} file={file} />
   </div>
 )
+
+const composeMediaGridLayout = (length, index) => {
+  switch (length) {
+    case 1:
+      return "col-span-12"
+    case 2:
+      return "md:col-span-6"
+    case 4:
+      return "md:col-span-6"
+    case 3:
+      return "md:col-span-6"
+    case 5:
+      return index === 0 || index === 1 ? "md:col-span-6" : "md:col-span-4"
+    default:
+      return "md:col-span-4"
+  }
+}
 
 const PassFilePreview = ({ files, onRemove }) => {
   const renderFilePreview = files.map((file, index) => {

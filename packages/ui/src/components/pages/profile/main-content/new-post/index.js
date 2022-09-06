@@ -1,4 +1,3 @@
-import { ContentApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
@@ -9,9 +8,9 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
-import { classNames, wrapApi } from "src/helpers"
-import { uploadFile } from "src/helpers/uploadFile"
+import { classNames } from "src/helpers"
 
+import { Content } from "../../../../../helpers"
 import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
 import { NewFundraiserTab } from "./fundraiser-tab"
@@ -97,23 +96,8 @@ export const NewPost = ({
   }
 
   const onSubmit = async () => {
-    const api = wrapApi(ContentApi)
     const values = getValues()
-    const content = await Promise.all(
-      files.map(async (file) => {
-        const url = await uploadFile(file, "uploads")
-        let contentType = file.type
-        if (file.type.startsWith("image/")) contentType = "image/jpeg"
-        if (file.type.startsWith("video/")) contentType = "video/mp4"
-        const content = await api.createContent({
-          createContentDto: {
-            url,
-            contentType
-          }
-        })
-        return content.id
-      })
-    )
+    const content = await Content().uploadUserContent(files)
     setExtended(false)
 
     createPost({ ...values, content })

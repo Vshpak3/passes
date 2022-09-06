@@ -1,4 +1,5 @@
 import classNames from "./classNames"
+import { Content } from "./content"
 import debounce from "./debounce"
 import {
   compactNumberFormatter,
@@ -6,13 +7,12 @@ import {
   getFormattedDate
 } from "./formatters"
 import encrypt from "./openpgp"
-import { composeMediaGridLayout } from "./uploadFile"
 import { wrapApi } from "./wrapApi"
 
 export {
   classNames,
   compactNumberFormatter,
-  composeMediaGridLayout,
+  Content,
   debounce,
   encrypt,
   formatCurrency,

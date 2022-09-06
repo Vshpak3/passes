@@ -1,7 +1,6 @@
-import { ContentApi, MessagesApi } from "@passes/api-client/apis"
+import { MessagesApi } from "@passes/api-client/apis"
 import React, { useContext } from "react"
 import { toast } from "react-toastify"
-import { uploadFile } from "src/helpers/uploadFile"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useChat } from "src/hooks"
 import { logChatPromiseExecution } from "stream-chat"
@@ -14,6 +13,7 @@ import {
   Window
 } from "stream-chat-react"
 
+import { Content } from "../../../../helpers"
 import {
   MessagingChannelHeader,
   MessagingInput,
@@ -34,25 +34,7 @@ export const ChannelInner = (props) => {
 
   const { channelId } = useChat(members[0]?.user.name)
   const sendMessage = async (messageToSend) => {
-    let content = []
-    if (files.length > 0) {
-      const api = wrapApi(ContentApi)
-      content = await Promise.all(
-        files.map(async (file) => {
-          const url = await uploadFile(file, "uploads")
-          let contentType = file.type
-          if (file.type.startsWith("image/")) contentType = "image/jpeg"
-          if (file.type.startsWith("video/")) contentType = "video/mp4"
-          const content = await api.createContent({
-            createContentRequestDto: {
-              url,
-              contentType
-            }
-          })
-          return content.id
-        })
-      )
-    }
+    const content = await Content().uploadUserContent(files)
     try {
       const api = wrapApi(MessagesApi)
       await api.sendMessage({
