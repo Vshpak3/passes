@@ -1,12 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, IsString } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class LocalUserLoginRequestDto {
   @IsEmail()
-  @ApiProperty()
+  @DtoProperty()
   email: string
 
   @IsString()
-  @ApiProperty()
+  @DtoProperty()
   password: string
 }

@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PostDto } from '../../post/dto/post.dto'
 
 export class GetGalleryViewDto {
-  @ApiProperty({ type: [PostDto] })
+  @DtoProperty({ type: [PostDto] })
   paid: PostDto[]
 
-  @ApiProperty({ type: [PostDto] })
+  @DtoProperty({ type: [PostDto] })
   unpaid: PostDto[]
 
   constructor(posts: PostDto[]) {

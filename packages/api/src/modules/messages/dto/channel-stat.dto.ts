@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ChannelStatDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   channelId: string
 
-  @ApiProperty()
+  @DtoProperty()
   totalTipAmount: number
 
   constructor(channelStat) {

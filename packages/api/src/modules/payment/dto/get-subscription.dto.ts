@@ -1,9 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { SubscriptionDto } from './subscription.dto'
 
 export class GetSubscriptionsResponseDto {
-  @ApiProperty({ type: [SubscriptionDto] })
+  @DtoProperty({ type: [SubscriptionDto] })
   subscriptions: SubscriptionDto[]
 
   constructor(subscriptions: SubscriptionDto[]) {

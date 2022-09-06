@@ -1,28 +1,28 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsInt, Min } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 import { NotificationDto } from './notification.dto'
 
 export class GetNotificationResponseDto extends NotificationDto {}
 
 export class GetNotificationsRequestDto {
-  @ApiProperty({ enum: NotificationTypeEnum })
+  @DtoProperty({ enum: NotificationTypeEnum })
   type?: NotificationTypeEnum
 
   @IsInt()
   @Min(0)
-  @ApiProperty()
+  @DtoProperty()
   offset: number
 
   @IsInt()
   @Min(1)
-  @ApiProperty()
+  @DtoProperty()
   limit: number
 }
 
 export class GetNotificationsResponseDto {
-  @ApiProperty({ type: [NotificationDto] })
+  @DtoProperty({ type: [NotificationDto] })
   notifications: NotificationDto[]
 
   constructor(notifications: NotificationDto[]) {

@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ListMemberDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   username: string
 
-  @ApiProperty()
+  @DtoProperty()
   displayName: string
 
   constructor(listMember) {

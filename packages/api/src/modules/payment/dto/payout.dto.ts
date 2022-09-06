@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { WalletDto } from '../../wallet/dto/wallet.dto'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
 import { CircleBankDto } from './circle/circle-bank.dto'
@@ -8,32 +8,32 @@ import { PayoutMethodDto } from './payout-method.dto'
 
 export class PayoutDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   payoutMethod: PayoutMethodDto
 
-  @ApiProperty({ enum: PayoutStatusEnum })
+  @DtoProperty({ enum: PayoutStatusEnum })
   payoutStatus: PayoutStatusEnum
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   transactionHash?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   bank?: CircleBankDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   wallet?: WalletDto
 
   constructor(payout) {

@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ResetPasswordRequestDto {
   @IsEmail()
-  @ApiProperty()
+  @DtoProperty()
   email: string
 }

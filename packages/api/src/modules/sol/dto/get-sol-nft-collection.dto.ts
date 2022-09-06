@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class GetSolNftCollectionResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   collectionPublicKey: string
 
-  @ApiProperty()
+  @DtoProperty()
   signature: string
 
   constructor(id, pubKey, signature) {

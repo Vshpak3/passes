@@ -1,14 +1,15 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 export class GetFanResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   username: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   displayName?: string
 
   constructor(fan) {
@@ -21,7 +22,7 @@ export class GetFanResponseDto {
 }
 
 export class GetFansResponseDto {
-  @ApiProperty({ type: GetFanResponseDto })
+  @DtoProperty({ type: GetFanResponseDto })
   fans: GetFanResponseDto[]
 
   constructor(fans: GetFanResponseDto[]) {

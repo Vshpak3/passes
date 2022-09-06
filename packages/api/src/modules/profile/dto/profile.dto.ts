@@ -1,48 +1,49 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 export class ProfileDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   legalFullName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   displayName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   coverTitle?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   coverDescription?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   description?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   instagramUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   tiktokUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   youtubeUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   discordUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   twitchUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   isKYCVerified?: boolean
 
-  @ApiProperty()
+  @DtoProperty()
   isActive: boolean
 
   constructor(profile) {

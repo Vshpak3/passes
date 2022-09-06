@@ -1,19 +1,20 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 export class FollowDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   followerId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 
-  @ApiProperty()
+  @DtoProperty()
   isActive: boolean
 
   constructor(follow) {

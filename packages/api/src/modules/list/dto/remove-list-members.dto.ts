@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class RemoveListMembersRequestDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   listId: string
 
-  @ApiProperty()
+  @DtoProperty()
   userIds: string[]
 }

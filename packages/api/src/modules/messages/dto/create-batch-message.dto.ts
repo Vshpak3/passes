@@ -1,14 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
+
 export class CreateBatchMessageRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   listIds: string[]
 
-  @ApiProperty()
+  @DtoProperty()
   passIds: string[]
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   postId: string
 }

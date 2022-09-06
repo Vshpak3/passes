@@ -1,13 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 // this is a debug endpoint used for testing
 export class CreateSolNftRequestDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   collectionId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   walletId: string
 }

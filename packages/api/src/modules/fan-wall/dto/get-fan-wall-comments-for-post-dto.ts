@@ -1,9 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { FanWallCommentDto } from './fan-wall-comment.dto'
 
 export class GetFanWallForCreatorResponseDto {
-  @ApiProperty({ type: [FanWallCommentDto] })
+  @DtoProperty({ type: [FanWallCommentDto] })
   comments: FanWallCommentDto[]
 
   constructor(commentEntities) {

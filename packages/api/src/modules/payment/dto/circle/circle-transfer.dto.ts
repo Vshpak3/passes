@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { CircleTransferStatusEnum } from '../../enum/circle-transfer.status.enum'
 import {
   CircleAmountDto,
@@ -10,21 +10,21 @@ import {
 
 export class CircleTransferDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty({ enum: CircleTransferStatusEnum })
+  @DtoProperty({ enum: CircleTransferStatusEnum })
   status: CircleTransferStatusEnum
 
-  @ApiProperty()
+  @DtoProperty()
   source: CircleSourceDto
 
-  @ApiProperty()
+  @DtoProperty()
   destination: CircleDestinationDto
 
-  @ApiProperty()
+  @DtoProperty()
   amount: CircleAmountDto
 
-  @ApiProperty()
+  @DtoProperty()
   transactionHash: string
 }

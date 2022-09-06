@@ -46,7 +46,12 @@ export class App {
       logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
     })
     this.app.setGlobalPrefix('api', { exclude: [''] })
-    this.app.useGlobalPipes(new ValidationPipe())
+    this.app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { excludeExtraneousValues: true },
+      }),
+    )
     this.app.enableCors()
     this.app.use(cookieParser())
 

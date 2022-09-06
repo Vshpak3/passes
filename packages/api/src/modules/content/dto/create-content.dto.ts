@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
 export class CreateContentRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   url: string
 
-  @ApiProperty({ enum: ContentTypeEnum })
+  @DtoProperty({ enum: ContentTypeEnum })
   contentType: ContentTypeEnum
 }

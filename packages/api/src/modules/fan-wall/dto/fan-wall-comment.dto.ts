@@ -1,29 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class FanWallCommentDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   fanWallCommentId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   commenterId: string
 
-  @ApiProperty()
+  @DtoProperty()
   text: string
 
-  @ApiProperty()
+  @DtoProperty()
   commenterUsername: string
 
-  @ApiProperty()
+  @DtoProperty()
   commenterDisplayName: string
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
   constructor(fanWallPost) {

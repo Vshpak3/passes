@@ -1,12 +1,14 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger'
+import { PartialType } from '@nestjs/swagger'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 import { VaultCategoryEnum } from '../enums/vault-category.enum'
 
 class VaultQueryDto {
-  @ApiProperty({ enum: VaultCategoryEnum })
+  @DtoProperty({ enum: VaultCategoryEnum })
   category: VaultCategoryEnum
-  @ApiProperty({ enum: ContentTypeEnum })
+
+  @DtoProperty({ enum: ContentTypeEnum })
   type: ContentTypeEnum
 }
 

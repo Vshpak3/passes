@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { CreatorEarningDto } from './creator-earning.dto'
 
 export class GetCreatorEarningResponseDto extends CreatorEarningDto {}
 
 export class GetCreatorEarningsResponseDto {
-  @ApiProperty({ type: [CreatorEarningDto] })
+  @DtoProperty({ type: [CreatorEarningDto] })
   earnings: CreatorEarningDto[]
 
   constructor(earnings: CreatorEarningDto[]) {

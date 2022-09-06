@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { WalletDto } from './wallet.dto'
 
 export class GetWalletResponseDto extends WalletDto {}
 
 export class GetWalletsResponseDto {
-  @ApiProperty({ type: [WalletDto] })
+  @DtoProperty({ type: [WalletDto] })
   wallets: WalletDto[]
 
   constructor(wallets: WalletDto[]) {

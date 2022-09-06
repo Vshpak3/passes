@@ -1,19 +1,20 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ContentDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   signedUrl: string
 
-  @ApiProperty()
+  @DtoProperty()
   contentType: string
 
   constructor(content, signedUrl) {

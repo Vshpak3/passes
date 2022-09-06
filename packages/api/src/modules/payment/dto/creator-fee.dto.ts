@@ -1,21 +1,22 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class CreatorFeeDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   fiatRate?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   fiatFlat?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   cryptoRate?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   cryptoFlat?: number
 
   constructor(creatorFee) {

@@ -1,5 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../../web/endpoint.web'
 import {
   CircleAmountDto,
   CircleDestinationDto,
@@ -8,18 +7,18 @@ import {
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreatePayoutRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   idempotencyKey: string
 
-  @ApiProperty()
+  @DtoProperty()
   source: CircleSourceDto
 
-  @ApiProperty()
+  @DtoProperty()
   destination: CircleDestinationDto
 
-  @ApiProperty()
+  @DtoProperty()
   amount: CircleAmountDto
 
-  @ApiProperty()
+  @DtoProperty()
   metadata: CircleMetaDataDto
 }

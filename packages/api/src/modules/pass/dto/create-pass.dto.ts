@@ -1,39 +1,39 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsInt, IsOptional, Length, Min } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   @Length(1, 100)
   title: string
 
-  @ApiProperty()
+  @DtoProperty()
   @Length(1, 400)
   description: string
 
-  @ApiProperty()
+  @DtoProperty()
   type: PassTypeEnum
 
-  @ApiProperty()
+  @DtoProperty()
   @IsInt()
   @Min(0)
   price: number
 
-  @ApiProperty()
+  @DtoProperty()
   @IsInt()
   @Min(1)
   totalSupply: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   @IsOptional()
   @IsInt()
   @Min(1)
   duration?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   freetrial: boolean
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   messages?: number | null
 }

@@ -1,30 +1,30 @@
-import { ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class CreateOrUpdateProfileRequestDto {
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   displayName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   coverTitle?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   coverDescription?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   description?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   instagramUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   tiktokUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   youtubeUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   discordUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   twitchUrl?: string
 }

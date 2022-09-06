@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class EthNftCollectionDto {
-  @ApiProperty()
+  @DtoProperty()
   tokenAddress: string
 
-  @ApiProperty()
+  @DtoProperty()
   name: string
 
   constructor(ethNftCollection) {

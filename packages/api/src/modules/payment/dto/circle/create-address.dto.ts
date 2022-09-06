@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class CircleCreateAddressRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   idempotencyKey: string
 
-  @ApiProperty()
+  @DtoProperty()
   currency: string
 
-  @ApiProperty()
+  @DtoProperty()
   chain: string
 }

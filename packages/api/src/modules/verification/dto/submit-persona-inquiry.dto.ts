@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PersonaInquiryStatusEnum } from '../enum/persona-inquiry.status.enum'
 
 export class SubmitPersonaInquiryRequestDto {
   // Not a UUID
-  @ApiProperty()
+  @DtoProperty()
   personaId: string
 
-  @ApiProperty({ enum: PersonaInquiryStatusEnum })
+  @DtoProperty({ enum: PersonaInquiryStatusEnum })
   personaStatus: PersonaInquiryStatusEnum
 }

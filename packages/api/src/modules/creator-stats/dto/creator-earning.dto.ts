@@ -1,20 +1,20 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class CreatorEarningDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiProperty()
+  @DtoProperty()
   type: EarningTypeEnum
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
   constructor(creatorEarning) {

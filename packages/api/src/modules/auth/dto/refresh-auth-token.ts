@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsString } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class RefreshAuthTokenRequestDto {
   @IsString()
-  @ApiProperty()
+  @DtoProperty()
   refreshToken: string
 }

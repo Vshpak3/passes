@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class CircleEncryptionKeyResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   keyId: string
 
-  @ApiProperty()
+  @DtoProperty()
   publicKey: string
 }

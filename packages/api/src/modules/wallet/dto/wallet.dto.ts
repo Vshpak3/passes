@@ -1,24 +1,23 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class WalletDto {
-  @ApiPropertyOptional()
-  id?: string
+  @DtoProperty()
+  id: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   userId?: string
 
-  @ApiProperty()
+  @DtoProperty()
   address: string
 
-  @ApiProperty()
+  @DtoProperty()
   chain: ChainEnum
 
-  @ApiProperty()
+  @DtoProperty()
   custodial: boolean
 
-  @ApiProperty()
+  @DtoProperty()
   authenticated: boolean
 
   constructor(wallet) {

@@ -1,15 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PostDto } from '../../post/dto/post.dto'
 
 export class GetFeedResponseDto {
-  @ApiProperty({ type: [PostDto] })
+  @DtoProperty({ type: [PostDto] })
   posts: PostDto[]
 
-  @ApiProperty()
+  @DtoProperty()
   count: number
 
-  @ApiProperty()
+  @DtoProperty()
   cursor: string
 
   constructor(posts: PostDto[], cursor: string) {

@@ -1,25 +1,25 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class PassHolderDto {
-  @ApiProperty()
+  @DtoProperty()
   passHolderId: string
 
-  @ApiProperty()
+  @DtoProperty()
   passId: string
 
-  @ApiProperty()
+  @DtoProperty()
   holderId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   messages?: number | null
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   expiresAt?: Date
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   holderUsername?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   holderDisplayName?: string
 
   constructor(passHolder) {

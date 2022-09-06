@@ -1,19 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 
 export class PayinMethodDto {
-  @ApiProperty({ enum: PayinMethodEnum })
+  @DtoProperty({ enum: PayinMethodEnum })
   method: PayinMethodEnum = PayinMethodEnum.NONE
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   cardId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   chainId?: number
 
-  @ApiPropertyOptional({ enum: ChainEnum })
+  @DtoProperty({ enum: ChainEnum, required: false })
   chain?: ChainEnum
 
   constructor(payinMethod) {

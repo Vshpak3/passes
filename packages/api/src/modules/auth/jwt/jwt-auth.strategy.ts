@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
+import { DtoProperty } from '../../../web/endpoint.web'
+
 export class JwtPayload {
-  @ApiProperty()
+  @DtoProperty()
   sub: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   email?: string
 
-  @ApiProperty()
+  @DtoProperty()
   isVerified: boolean
 
-  @ApiProperty()
+  @DtoProperty()
   isCreator: boolean
 }
 

@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class GetSignedUrlResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   url: string
 }

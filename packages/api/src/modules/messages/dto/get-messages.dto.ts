@@ -1,9 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { MessageDto } from './message.dto'
 
 export class GetMessagesResponseDto {
-  @ApiProperty({ type: [MessageDto] })
+  @DtoProperty({ type: [MessageDto] })
   messages: MessageDto[]
 
   constructor(messages: MessageDto[]) {

@@ -1,18 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ChannelSettingsDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   channelId: string
 
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   unlimitedMessages: boolean
 
   constructor(channelSettings) {

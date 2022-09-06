@@ -1,43 +1,42 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { BillingDetailsDto } from './billing-details.dto'
 
 class CircleBankAddressDto {
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   bankName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   city?: string
 
-  @ApiProperty()
+  @DtoProperty()
   country: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   line1?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   line2?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   district?: string
 }
 
 export class CircleCreateBankRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   idempotencyKey: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   accountNumber?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   routingNumber?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   iban?: string
 
-  @ApiProperty()
+  @DtoProperty()
   billingDetails: BillingDetailsDto
 
-  @ApiProperty()
+  @DtoProperty()
   bankAddress: CircleBankAddressDto
 }

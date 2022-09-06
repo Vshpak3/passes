@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import {
   IsDateString,
   IsEmail,
@@ -9,16 +8,17 @@ import {
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
+import { DtoProperty } from '../../../web/endpoint.web'
 import { USER_USERNAME_LENGTH } from '../constants/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 
 export class CreateUserRequestDto {
   @IsEmail()
-  @ApiProperty()
+  @DtoProperty()
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @ApiProperty()
+  @DtoProperty()
   @Matches(USERNAME_REGEX, undefined, {
     message:
       'Username can only contain alphanumeric characters, and underscores.',
@@ -27,23 +27,23 @@ export class CreateUserRequestDto {
   username: string
 
   // TODO: add validation
-  @ApiProperty()
+  @DtoProperty()
   legalFullName: string
 
-  @ApiProperty()
+  @DtoProperty()
   @Validate(IsValidCountryCode)
   countryCode: string
 
   @IsDateString()
-  @ApiProperty()
+  @DtoProperty()
   birthday: string
 
   // @Length(1, USER_DISPLAY_NAME_LENGTH)
-  // @ApiProperty()
+  // @DtoProperty()
   // displayName?: string
 
   // @IsPhoneNumber()
   // @MaxLength(USER_PHONE_NUMBER_LENGTH)
-  // @ApiPropertyOptional()
+  // @DtoProperty({ required: false })
   // phoneNumber?: string
 }

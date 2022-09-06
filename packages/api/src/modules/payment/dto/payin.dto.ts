@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'
@@ -8,41 +8,41 @@ import { PayinMethodDto } from './payin-method.dto'
 
 export class PayinDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   payinMethod: PayinMethodDto
 
-  @ApiProperty({ enum: PayinStatusEnum })
+  @DtoProperty({ enum: PayinStatusEnum })
   payinStatus: PayinStatusEnum
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
-  @ApiProperty({ enum: PayinCallbackEnum })
+  @DtoProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   card?: CircleCardDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   transactionHash?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   address?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   callbackOutputJSON?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   target?: string
 
   constructor(payin) {

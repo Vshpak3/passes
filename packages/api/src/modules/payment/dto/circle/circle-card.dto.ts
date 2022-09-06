@@ -1,33 +1,34 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class CircleCardDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   circleId?: string
 
-  @ApiProperty()
+  @DtoProperty()
   status: string
 
-  @ApiProperty()
+  @DtoProperty()
   firstDigit: string
 
-  @ApiProperty()
+  @DtoProperty()
   fourDigits: string
 
-  @ApiProperty()
+  @DtoProperty()
   expMonth: number
 
-  @ApiProperty()
+  @DtoProperty()
   expYear: number
 
-  @ApiProperty()
+  @DtoProperty()
   name: string
 
-  @ApiProperty()
+  @DtoProperty()
   active: boolean
 
   constructor(card) {

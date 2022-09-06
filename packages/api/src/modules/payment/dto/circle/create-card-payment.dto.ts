@@ -1,44 +1,43 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreatePaymentRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   idempotencyKey: string
 
-  @ApiProperty()
+  @DtoProperty()
   amount: CircleAmountDto
 
-  @ApiProperty()
+  @DtoProperty()
   source: CircleSourceDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   description?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   channel?: string
 
-  @ApiProperty()
+  @DtoProperty()
   metadata: CircleMetaDataDto
 }
 
 export class CircleCreateCardPaymentRequestDto extends CircleCreatePaymentRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   verification = 'none'
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   autoCapture?: boolean
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   verificationSuccessUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   verificationFailureUrl?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   keyId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   encryptedData?: string
 }

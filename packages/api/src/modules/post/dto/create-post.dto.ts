@@ -1,33 +1,33 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Length } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { POST_TEXT_LENGTH } from '../constants/schema'
 
 export class CreatePostRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   @Length(1, POST_TEXT_LENGTH)
   text: string
 
-  @ApiProperty()
+  @DtoProperty()
   contentIds: string[]
 
-  @ApiProperty()
+  @DtoProperty()
   passIds: string[]
 
-  @ApiProperty()
+  @DtoProperty()
   isMessage: boolean
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   price?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   expiresAt?: Date
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   scheduledAt?: Date
 }
 
 export class CreatePostResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   postId: string
 }

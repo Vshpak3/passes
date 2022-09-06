@@ -1,21 +1,22 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class GetBatchMessageResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   text: string
 
-  @ApiProperty()
+  @DtoProperty()
   list: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   content?: string[]
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   lastProcessed?: string // listMemberEntity id
 
   constructor(

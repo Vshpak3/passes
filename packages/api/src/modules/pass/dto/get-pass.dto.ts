@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PassDto } from './pass.dto'
 
 export class GetPassResponseDto extends PassDto {}
 
 export class GetPassesResponseDto {
-  @ApiProperty({ type: [PassDto] })
+  @DtoProperty({ type: [PassDto] })
   passes: PassDto[]
 
   constructor(passes: PassDto[]) {

@@ -1,15 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { EthNftDto } from '../../eth/dto/eth-nft.dto'
 import { EthNftEntity } from '../../eth/entities/eth-nft.entity'
 import { WalletDto } from './wallet.dto'
 
 // TODO: refactor with new eth refresh
 export class WalletResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   wallet: WalletDto
 
-  @ApiProperty()
+  @DtoProperty()
   ethNfts: EthNftDto[]
 
   constructor(wallet: WalletDto, ethNfts: EthNftEntity[] = []) {

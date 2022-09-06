@@ -1,16 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ChannelStatDto } from './channel-stat.dto'
 
 export class GetChannelStatsRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   channelIds: string[]
 }
 
 export class GetChannelStatResponseDto extends ChannelStatDto {}
 
 export class GetChannelStatsResponseDto {
-  @ApiProperty({ type: [ChannelStatDto] })
+  @DtoProperty({ type: [ChannelStatDto] })
   channelStats: ChannelStatDto[]
 
   constructor(channelStats: ChannelStatDto[]) {

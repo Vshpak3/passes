@@ -1,34 +1,34 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { NotificationStatusEnum } from '../enum/notification.status.enum'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 
 export class NotificationDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   senderName: string
 
-  @ApiProperty()
+  @DtoProperty()
   senderUsername: string
 
-  @ApiProperty({ enum: NotificationStatusEnum })
+  @DtoProperty({ enum: NotificationStatusEnum })
   status: NotificationStatusEnum
 
-  @ApiProperty({ enum: NotificationTypeEnum })
+  @DtoProperty({ enum: NotificationTypeEnum })
   type: NotificationTypeEnum
 
-  @ApiProperty()
+  @DtoProperty()
   message: string
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
   constructor(notification) {

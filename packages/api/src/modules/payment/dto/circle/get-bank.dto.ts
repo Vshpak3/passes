@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { CircleBankDto } from './circle-bank.dto'
 
 export class GetCircleBankResponseDto extends CircleBankDto {}
 
 export class GetCircleBanksResponseDto {
-  @ApiProperty({ type: [CircleBankDto] })
+  @DtoProperty({ type: [CircleBankDto] })
   banks: CircleBankDto[]
 
   constructor(banks: CircleBankDto[]) {

@@ -1,37 +1,37 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { BillingDetailsDto } from './billing-details.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreateCardDto {
-  @ApiProperty()
+  @DtoProperty()
   idempotencyKey: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   keyId: string
 
-  @ApiProperty()
+  @DtoProperty()
   encryptedData: string
 
-  @ApiProperty()
+  @DtoProperty()
   billingDetails: BillingDetailsDto
 
-  @ApiProperty()
+  @DtoProperty()
   expMonth: number
 
-  @ApiProperty()
+  @DtoProperty()
   expYear: number
 
-  @ApiProperty()
+  @DtoProperty()
   metadata: CircleMetaDataDto
 }
 
 export class CircleCreateCardAndExtraRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   createCardDto: CircleCreateCardDto
 
-  @ApiProperty()
+  @DtoProperty()
   cardNumber: string
 }

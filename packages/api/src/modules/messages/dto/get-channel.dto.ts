@@ -1,17 +1,17 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class GetChannelRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   username: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   userId?: string
 }
 
 export class GetChannelResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   channelId: string
 
-  @ApiProperty()
+  @DtoProperty()
   blocked: boolean
 }

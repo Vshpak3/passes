@@ -1,24 +1,25 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class MessageDto {
   @IsUUID()
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   id?: string
 
-  @ApiProperty()
+  @DtoProperty()
   text: string
 
-  @ApiProperty()
+  @DtoProperty()
   attachments: any[]
 
-  @ApiProperty()
+  @DtoProperty()
   channelId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   tipAmount?: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   created_at?: number
 
   constructor(

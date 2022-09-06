@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ReportFanDto {
-  @ApiProperty()
+  @DtoProperty()
   reason: string
 }

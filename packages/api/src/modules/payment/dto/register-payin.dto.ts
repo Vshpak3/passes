@@ -1,54 +1,54 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayinCallbackInput } from '../callback.types'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class RegisterPayinResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   payinId: string
 
-  @ApiProperty()
+  @DtoProperty()
   payinMethod: PayinMethodDto
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 }
 
 export class RegisterPayinRequestDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payinMethod?: PayinMethodDto
 
   // callback
-  @ApiProperty({ enum: PayinCallbackEnum })
+  @DtoProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
-  @ApiProperty()
+  @DtoProperty()
   callbackInputJSON: PayinCallbackInput
 
   // target object
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   target?: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 }
 
 export class CreatorShareDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 }

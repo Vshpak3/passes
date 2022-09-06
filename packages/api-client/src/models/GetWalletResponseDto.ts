@@ -24,7 +24,7 @@ export interface GetWalletResponseDto {
      * @type {string}
      * @memberof GetWalletResponseDto
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
@@ -67,7 +67,7 @@ export function GetWalletResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
         'address': json['address'],
         'chain': json['chain'],

@@ -1,20 +1,21 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class ImpersonateUserRequestDto {
   @IsUUID()
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   userId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   username?: string
 
-  @ApiProperty()
+  @DtoProperty()
   secret: string
 }
 
 export class ImpersonateUserResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   accessToken: string
 
   public constructor(accessToken: string) {

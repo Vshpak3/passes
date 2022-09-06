@@ -1,19 +1,19 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { EthNftEntity } from '../entities/eth-nft.entity'
 import { EthNftCollectionEntity } from '../entities/eth-nft-collection.entity'
 import { EthNftCollectionDto } from './eth-nft-collection.dto'
 
 export class EthNftDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   tokenId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   tokenHash?: string
 
-  @ApiProperty()
+  @DtoProperty()
   ethNftCollection: EthNftCollectionDto
 
   constructor(

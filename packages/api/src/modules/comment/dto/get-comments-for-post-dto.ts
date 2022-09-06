@@ -1,14 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { CommentDto } from './comment.dto'
 
 export class GetCommentsForPostResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   postId: string
 
-  @ApiProperty({ type: [CommentDto] })
+  @DtoProperty({ type: [CommentDto] })
   comments: CommentDto[]
 
   constructor(postId, commentEntities) {

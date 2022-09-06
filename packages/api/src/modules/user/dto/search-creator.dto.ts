@@ -1,15 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { UserEntity } from '../entities/user.entity'
 import { GetUserResponseDto } from './get-user.dto'
 
 export class SearchCreatorRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   query: string
 }
 
 export class SearchCreatorResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   creators: GetUserResponseDto[]
 
   constructor(creators: UserEntity[]) {

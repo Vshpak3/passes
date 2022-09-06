@@ -1,64 +1,64 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { CirclePaymentDto } from './circle-payment.dto'
 import { CircleTransferDto } from './circle-transfer.dto'
 
 export class GenericCircleObjectWrapper {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   status: string
 }
 
 export class CircleNotificationDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   clientId: string
 
   //type is not enum since API could change and we receive unknown update
-  @ApiProperty()
+  @DtoProperty()
   notificationType: string
 
-  @ApiProperty()
+  @DtoProperty()
   version: number
 
   //payments flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payment?: CirclePaymentDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   reversal?: any
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   chargeback?: any
 
   //payouts flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payout?: any
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   return?: any
 
   //settlement flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   settlement?: any
 
   //card verification flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   card?: GenericCircleObjectWrapper
 
   //ach verification flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   ach?: any
 
   //bank account verification flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   wire?: GenericCircleObjectWrapper
 
   //transfer flow
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   transfer?: CircleTransferDto
 }

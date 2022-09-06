@@ -1,7 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class FacebookDeletionConfirmationDto {
-  @ApiProperty()
+  @DtoProperty()
   success: boolean
 
   constructor(success: boolean) {

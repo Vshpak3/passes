@@ -1,60 +1,60 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ContentDto } from '../../content/dto/content.dto'
 
 export class PostDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   paywall: boolean
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   username: string
 
-  @ApiProperty()
+  @DtoProperty()
   displayName: string
 
-  @ApiProperty()
+  @DtoProperty()
   text: string
 
-  @ApiPropertyOptional({ type: [ContentDto] })
+  @DtoProperty({ type: [ContentDto], required: false })
   content?: ContentDto[]
 
-  @ApiProperty()
+  @DtoProperty()
   numLikes: number
 
-  @ApiProperty()
+  @DtoProperty()
   numComments: number
 
-  @ApiProperty()
+  @DtoProperty()
   numPurchases: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   isLiked?: boolean
 
-  @ApiProperty()
+  @DtoProperty()
   createdAt: Date
 
-  @ApiProperty()
+  @DtoProperty()
   updatedAt: Date
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   scheduledAt?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   expiresAt?: Date
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   price?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   totalTipAmount?: number
 
   constructor(post, paywall, content?: ContentDto[]) {

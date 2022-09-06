@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class CircleStatusResponseDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   circleId: string
 
-  @ApiProperty()
+  @DtoProperty()
   status: string
 }

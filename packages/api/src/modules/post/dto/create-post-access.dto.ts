@@ -1,16 +1,16 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
 export class CreatePostAccessRequestDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   postId: string
 
-  @ApiProperty()
+  @DtoProperty()
   fromDM: boolean
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payinMethod?: PayinMethodDto
 }

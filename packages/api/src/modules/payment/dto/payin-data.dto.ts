@@ -1,12 +1,12 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class PayinDataDto {
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   target?: string
 
-  @ApiProperty()
+  @DtoProperty()
   blocked: boolean
 }

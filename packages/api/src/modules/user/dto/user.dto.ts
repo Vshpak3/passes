@@ -1,34 +1,35 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class UserDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   email: string
 
-  @ApiProperty()
+  @DtoProperty()
   username: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   displayName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   isCreator?: boolean
 
   // Sensitive fields (when viewing own profile)
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   legalFullName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   phoneNumber?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   birthday?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   countryCode?: string
 
   constructor(userEntity, includeSensitiveFields = false) {

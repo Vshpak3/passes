@@ -1,26 +1,26 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 export class ListDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   listId: string
 
-  @ApiProperty()
+  @DtoProperty()
   name: string
 
-  @ApiProperty({ enum: ListTypeEnum })
+  @DtoProperty({ enum: ListTypeEnum })
   type: ListTypeEnum
 
-  @ApiProperty()
+  @DtoProperty()
   count: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   passId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   passTitle?: string
 
   constructor(list) {

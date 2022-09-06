@@ -1,15 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
 export class CreatorSettingsDto {
-  @ApiProperty()
+  @DtoProperty()
   minimumTipAmount: number
 
-  @ApiProperty({ enum: PayoutFrequencyEnum })
+  @DtoProperty({ enum: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   welcomeMessage?: string
 
   constructor(creatorSettings) {

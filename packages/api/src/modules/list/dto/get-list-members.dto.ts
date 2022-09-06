@@ -1,18 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ListMemberDto } from './list-member.dto'
 
 export class GetListMembersRequestto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   listId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   cursor?: string
 }
 
 export class GetListMembersResponseDto {
-  @ApiProperty({ type: [ListMemberDto] })
+  @DtoProperty({ type: [ListMemberDto] })
   listMembers: ListMemberDto[]
 }

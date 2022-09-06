@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, Matches } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class CreateLocalUserRequestDto {
   @IsEmail()
-  @ApiProperty()
+  @DtoProperty()
   email: string
 
   // Minimum eight characters, at least one letter and one number
@@ -11,6 +12,6 @@ export class CreateLocalUserRequestDto {
     message:
       'Password must contain at least eight characters, one letter and one number',
   })
-  @ApiProperty()
+  @DtoProperty()
   password: string
 }

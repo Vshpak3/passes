@@ -1,18 +1,18 @@
-import { ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class CircleMetaDataDto {
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   email?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   phoneNumber?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   sessionId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   ipAddress?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   beneficiaryEmail?: string
 }

@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class CreatorStatDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   numFollowers: number
 
-  @ApiProperty()
+  @DtoProperty()
   numLikes: number
 
   constructor(creatorStat) {

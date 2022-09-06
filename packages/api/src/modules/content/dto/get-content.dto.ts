@@ -1,11 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ContentDto } from './content.dto'
 
 export class GetContentResponseDto extends ContentDto {}
 
 export class GetContentsResponseDto {
-  @ApiProperty({ type: [ContentDto] })
+  @DtoProperty({ type: [ContentDto] })
   contents: ContentDto[]
 
   constructor(contents: ContentDto[]) {

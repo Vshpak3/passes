@@ -1,8 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { JwtPayload } from '../jwt/jwt-auth.strategy'
 
 export class GetCurrentUserDto {
-  @ApiProperty()
+  @DtoProperty()
   user: JwtPayload
 }

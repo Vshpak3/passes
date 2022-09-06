@@ -1,15 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayoutMethodEnum } from '../enum/payout-method.enum'
 
 export class PayoutMethodDto {
-  @ApiProperty({ enum: PayoutMethodEnum })
+  @DtoProperty({ enum: PayoutMethodEnum })
   method: PayoutMethodEnum = PayoutMethodEnum.NONE
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   bankId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   walletId?: string
 
   constructor(payoutMethod) {

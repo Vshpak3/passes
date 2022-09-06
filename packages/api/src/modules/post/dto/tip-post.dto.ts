@@ -1,18 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID, Min } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 import { MINIMUM_POST_TIP_AMOUNT } from '../post.service'
 
 export class TipPostRequestDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   postId: string
 
   @Min(MINIMUM_POST_TIP_AMOUNT)
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payinMethod?: PayinMethodDto
 }

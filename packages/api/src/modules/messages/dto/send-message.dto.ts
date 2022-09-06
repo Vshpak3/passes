@@ -1,22 +1,22 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Min } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
 export class SendMessageRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   text: string
 
-  @ApiProperty()
+  @DtoProperty()
   attachments: any[]
 
-  @ApiProperty()
+  @DtoProperty()
   channelId: string
 
-  @ApiProperty()
+  @DtoProperty()
   @Min(0)
   tipAmount: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   payinMethod?: PayinMethodDto
 }

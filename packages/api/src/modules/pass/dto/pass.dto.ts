@@ -1,40 +1,41 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
+
+import { DtoProperty } from '../../../web/endpoint.web'
 export class PassDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   creatorId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   solNftCollectionId: string
 
-  @ApiProperty()
+  @DtoProperty()
   title: string
 
-  @ApiProperty()
+  @DtoProperty()
   description: string
 
-  @ApiProperty()
+  @DtoProperty()
   type: 'subscription' | 'lifetime'
 
-  @ApiProperty()
+  @DtoProperty()
   price: number
 
-  @ApiProperty()
+  @DtoProperty()
   totalSupply: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   creatorUsername?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   creatorDisplayName?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   expiresAt?: Date
 
   constructor(pass) {

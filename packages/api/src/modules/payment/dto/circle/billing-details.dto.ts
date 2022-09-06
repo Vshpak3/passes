@@ -1,24 +1,24 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { DtoProperty } from '../../../../web/endpoint.web'
 
 export class BillingDetailsDto {
-  @ApiProperty()
+  @DtoProperty()
   name: string
 
-  @ApiProperty()
+  @DtoProperty()
   city: string
 
-  @ApiProperty()
+  @DtoProperty()
   country: string
 
-  @ApiProperty()
+  @DtoProperty()
   line1: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   line2?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   district?: string
 
-  @ApiProperty()
+  @DtoProperty()
   postalCode: string
 }

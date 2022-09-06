@@ -1,14 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger'
-
+import { DtoProperty } from '../../../web/endpoint.web'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class AuthWalletResponseDto {
-  @ApiProperty()
+  @DtoProperty()
   rawMessage: string
 
-  @ApiProperty()
+  @DtoProperty()
   walletAddress: string
 
-  @ApiProperty()
+  @DtoProperty()
   chain: ChainEnum
 }

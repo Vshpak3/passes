@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { DtoProperty } from '../../../web/endpoint.web'
 
 export class CreateListRequestDto {
-  @ApiProperty()
+  @DtoProperty()
   name: string
 
-  @ApiProperty()
+  @DtoProperty()
   userIds: string[]
 }

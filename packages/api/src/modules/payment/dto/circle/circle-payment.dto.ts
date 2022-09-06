@@ -1,34 +1,34 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../../web/endpoint.web'
 import { CirclePaymentStatusEnum } from '../../enum/circle-payment.status.enum'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 
 export class CirclePaymentDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
-  @ApiProperty()
+  @DtoProperty()
   type: string
 
-  @ApiProperty()
+  @DtoProperty()
   amount: CircleAmountDto
 
-  @ApiProperty()
+  @DtoProperty()
   source: CircleSourceDto
 
-  @ApiProperty({ enum: CirclePaymentStatusEnum })
+  @DtoProperty({ enum: CirclePaymentStatusEnum })
   status: CirclePaymentStatusEnum
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   merchantId: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   merchantWalletId: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   description?: string
 }

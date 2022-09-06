@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
+import { DtoProperty } from '../../../web/endpoint.web'
 import { PassDto } from '../../pass/dto/pass.dto'
 import { PassHolderDto } from '../../pass/dto/pass-holder.dto'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
@@ -9,32 +9,32 @@ import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscriptionDto {
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   id: string
 
   @IsUUID()
-  @ApiProperty()
+  @DtoProperty()
   userId: string
 
-  @ApiProperty()
+  @DtoProperty()
   payinMethod: PayinMethodDto
 
-  @ApiProperty({ enum: SubscriptionStatusEnum })
+  @DtoProperty({ enum: SubscriptionStatusEnum })
   subscriptionStatus: SubscriptionStatusEnum
 
-  @ApiProperty()
+  @DtoProperty()
   amount: number
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   card?: CircleCardDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   passHolderId?: string
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   passHolder?: PassHolderDto
 
-  @ApiPropertyOptional()
+  @DtoProperty({ required: false })
   pass?: PassDto
 
   constructor(subscription) {
