@@ -4881,53 +4881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:^5.3.1":
-  version: 5.4.0
-  resolution: "@mikro-orm/core@npm:5.4.0"
-  dependencies:
-    acorn-loose: 8.3.0
-    acorn-walk: 8.2.0
-    dotenv: 16.0.2
-    fs-extra: 10.1.0
-    globby: 11.0.4
-    mikro-orm: ^5.3.1
-    reflect-metadata: 0.1.13
-  peerDependencies:
-    "@mikro-orm/better-sqlite": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/mariadb": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    "@mikro-orm/migrations-mongodb": ^5.0.0
-    "@mikro-orm/mongodb": ^5.0.0
-    "@mikro-orm/mysql": ^5.0.0
-    "@mikro-orm/postgresql": ^5.0.0
-    "@mikro-orm/seeder": ^5.0.0
-    "@mikro-orm/sqlite": ^5.0.0
-  peerDependenciesMeta:
-    "@mikro-orm/better-sqlite":
-      optional: true
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/mariadb":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    "@mikro-orm/migrations-mongodb":
-      optional: true
-    "@mikro-orm/mongodb":
-      optional: true
-    "@mikro-orm/mysql":
-      optional: true
-    "@mikro-orm/postgresql":
-      optional: true
-    "@mikro-orm/seeder":
-      optional: true
-    "@mikro-orm/sqlite":
-      optional: true
-  checksum: ae0973e5b93402ada162389e4e9023cf03dd606e9f3d4839d246ca05986ba9a800537b7ea1668dfb1e8284d83592427c506a3bc3a463c2936a107418133e70e7
-  languageName: node
-  linkType: hard
-
 "@mikro-orm/knex@npm:^5.3.1":
   version: 5.4.0
   resolution: "@mikro-orm/knex@npm:5.4.0"
@@ -8008,15 +7961,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-loose@npm:8.3.0":
-  version: 8.3.0
-  resolution: "acorn-loose@npm:8.3.0"
-  dependencies:
-    acorn: ^8.5.0
-  checksum: 3418a20bded1e74a20950dee8289fb87808c21a50d4065e4ec48230668ea77f4238be1dd1ee30b2116f469e496bcdaf937ccb86d469482e028052f8eec804c07
-  languageName: node
-  linkType: hard
-
 "acorn-node@npm:^1.8.2":
   version: 1.8.2
   resolution: "acorn-node@npm:1.8.2"
@@ -8028,17 +7972,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:8.2.0, acorn-walk@npm:^8.1.1":
-  version: 8.2.0
-  resolution: "acorn-walk@npm:8.2.0"
-  checksum: 1715e76c01dd7b2d4ca472f9c58968516a4899378a63ad5b6c2d668bba8da21a71976c14ec5f5b75f887b6317c4ae0b897ab141c831d741dc76024d8745f1ad1
-  languageName: node
-  linkType: hard
-
 "acorn-walk@npm:^7.0.0":
   version: 7.2.0
   resolution: "acorn-walk@npm:7.2.0"
   checksum: 9252158a79b9d92f1bc0dd6acc0fcfb87a67339e84bcc301bb33d6078936d27e35d606b4d35626d2962cd43c256d6f27717e70cbe15c04fff999ab0b2260b21f
+  languageName: node
+  linkType: hard
+
+"acorn-walk@npm:^8.1.1":
+  version: 8.2.0
+  resolution: "acorn-walk@npm:8.2.0"
+  checksum: 1715e76c01dd7b2d4ca472f9c58968516a4899378a63ad5b6c2d668bba8da21a71976c14ec5f5b75f887b6317c4ae0b897ab141c831d741dc76024d8745f1ad1
   languageName: node
   linkType: hard
 
@@ -11147,13 +11091,6 @@ __metadata:
   version: 16.0.1
   resolution: "dotenv@npm:16.0.1"
   checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:16.0.2":
-  version: 16.0.2
-  resolution: "dotenv@npm:16.0.2"
-  checksum: ca8f9ca2d67929c7771069f4c31b4e46b9932621009e658e5afd655dde2d69b77642bf36dbc9e72bc170523dfd908a9ee41c26f034c1fdc605ace3b1b4b10faf
   languageName: node
   linkType: hard
 
