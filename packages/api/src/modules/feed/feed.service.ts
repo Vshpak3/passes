@@ -65,11 +65,11 @@ export class FeedService {
       })
       .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())
       .andWhere(`${LikeEntity.table}.liker_id`, userId)
-      .orderBy('created_at', 'desc')
+      .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .limit(FEED_LIMIT)
 
     if (cursor) {
-      query = query.andWhere('created_at', '<', cursor)
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     return new GetFeedResponseDto(
@@ -119,11 +119,11 @@ export class FeedService {
       })
       .andWhere(`${PostEntity.table}.scheduled_at`, '<=', Date.now())
       .andWhere(`${LikeEntity.table}.liker_id`, userId)
-      .orderBy('created_at', 'desc')
+      .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .limit(FEED_LIMIT)
 
     if (cursor) {
-      query = query.andWhere('created_at', '<', cursor)
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     return new GetFeedResponseDto(
@@ -145,10 +145,10 @@ export class FeedService {
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
       .andWhere(`${PostEntity.table}.is_message`, isMessage)
-      .orderBy('created_at', 'desc')
+      .orderBy(`${PostEntity.table}.created_at`, 'desc')
 
     if (cursor) {
-      query = query.andWhere('created_at', '<', cursor)
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
     }
     if (scheduledOnly) {
       query = query.whereNotNull('scheduled_at')
