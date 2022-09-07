@@ -12,13 +12,17 @@ set -o pipefail
 
 readonly output_path=src/openapi/specs
 
+# Construct filenames
+readonly commit_hash=$(git rev-parse --short HEAD)
+readonly new_openapi_filename=openapi-${commit_hash}.json
+
 # Generate new OpenAPI spec
-# yarn install
-# yarn workspace @passes/api generate-openapi-spec openapi-new.json
+yarn install
+yarn workspace @passes/api generate-openapi-spec ${new_openapi_filename}
 echo -e '\n--------------------------------------------------------------------------------\n'
 
 # Compare new to old
-changes=$(yarn workspace @passes/api openapi-diff ${output_path}/openapi-new.json ${output_path}/openapi-new.json \
+changes=$(yarn workspace @passes/api openapi-diff ${output_path}/${new_openapi_filename} ${output_path}/${new_openapi_filename} \
           | tail -n +2 \
           || true)
 
