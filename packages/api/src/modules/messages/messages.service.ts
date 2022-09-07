@@ -15,8 +15,11 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
+import { ListEntity } from '../list/entities/list.entity'
 import { ListMemberEntity } from '../list/entities/list-member.entity'
+import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
@@ -175,12 +178,28 @@ export class MessagesService {
       )
     }
 
-    const listUserIds = (
-      await this.dbReader(ListMemberEntity.table)
-        .whereIn('list_id', createBatchMessageDto.listIds)
-        .distinct(`user_id`)
-    ).map((listMember) => listMember.user_id)
-    const passUserIds = (
+    const userIdsSet = new Set(
+      (
+        await this.dbReader(ListMemberEntity.table)
+          .whereIn('list_id', createBatchMessageDto.listIds)
+          .distinct(`user_id`)
+      ).map((listMember) => listMember.user_id),
+    )
+    const listTypes = new Set(
+      (
+        await this.dbReader(ListEntity.table)
+          .whereIn('id', createBatchMessageDto.listIds)
+          .select('type')
+      ).map((list) => list.type),
+    )
+    if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
+      ;(
+        await this.dbReader(FollowEntity.table)
+          .where(`creator_id`, userId)
+          .select('follower_id')
+      ).forEach((follow) => userIdsSet.add(follow.follower_id))
+    }
+    ;(
       await this.dbReader(PassHolderEntity.table)
         .whereIn('pass_id', createBatchMessageDto.passIds)
         .andWhere(function () {
@@ -191,8 +210,8 @@ export class MessagesService {
           )
         })
         .distinct(`holder_id`)
-    ).map((passHolder) => passHolder.holder_id)
-    const userIds = Array.from(new Set(listUserIds.concat(passUserIds)))
+    ).forEach((passHolder) => userIdsSet.add(passHolder.holder_id))
+    const userIds = Array.from(userIdsSet)
 
     const contentIds = (
       await this.dbReader(PostContentEntity.table)
@@ -208,16 +227,29 @@ export class MessagesService {
           .distinct('user_id')
       ).map((messageContent) => messageContent.user_id),
     )
+    removeUserIds.add(userId)
 
     const finalUserIds = userIds.filter((userId) => !removeUserIds.has(userId))
     await this.batchSendMessage(finalUserIds, createBatchMessageDto.postId)
   }
 
-  async batchSendMessage(userIds: string[], postId: string): Promise<void> {
+  async batchSendMessage(
+    userIds: string[],
+    postId: string,
+    creatorId?: string,
+  ): Promise<void> {
+    if (!creatorId) {
+      creatorId = (
+        await this.dbReader(PostEntity.table)
+          .where('id', postId)
+          .select('user_id')
+          .first()
+      ).user_id
+    }
     await Promise.all(
       userIds.map(async (userId) => {
         const channelId = (
-          await this.getChannel(userId, { username: '', userId: userId })
+          await this.getChannel(userId, { username: '', userId: creatorId })
         ).channelId
         try {
           await this.registerSendMessage(userId, {
