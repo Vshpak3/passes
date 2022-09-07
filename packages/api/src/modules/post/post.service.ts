@@ -96,13 +96,7 @@ export class PostService {
         // TODO: schedule access add
         const passAccesses = await this.dbReader(PassHolderEntity.table)
           .whereIn(`pass_id`, createPostDto.passIds)
-          .andWhere(function () {
-            return this.whereNull(`expires_at`).orWhere(
-              `expires_at`,
-              '>',
-              new Date(),
-            )
-          })
+          .andWhere(`expires_at`)
           .select('DISTINCT(holder_id)')
         for (let i = 0; i < passAccesses.length; ++i) {
           if (!passAccesses[i].holder_id) continue
@@ -117,7 +111,6 @@ export class PostService {
             .ignore()
         }
 
-        // only for display
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
           const postPassAccess =
             PostPassAccessEntity.toDict<PostPassAccessEntity>({

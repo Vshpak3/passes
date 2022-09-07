@@ -56,7 +56,6 @@ export class FeedService {
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.is_message`, false)
-      .andWhere(`${FollowEntity.table}.is_active`, true)
       .andWhere(function () {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
           `${PostEntity.table}.expires_at`,
