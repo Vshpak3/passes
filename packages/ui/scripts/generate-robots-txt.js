@@ -21,4 +21,6 @@ function generateRobotsTxt() {
   )
 }
 
+generateRobotsTxt()
+
 module.exports = generateRobotsTxt
