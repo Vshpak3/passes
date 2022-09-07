@@ -1,6 +1,13 @@
+import { NextPage, NextPageContext } from "next"
 import { Button, Text, Wordmark } from "src/components/atoms"
 
-const ErrorPage = ({ statusCode }) => (
+export interface ErrorPageProps {
+  statusCode?: number
+}
+
+const ErrorPage: NextPage<ErrorPageProps> = ({
+  statusCode
+}: ErrorPageProps) => (
   <div className="relative h-full w-full bg-gradient-to-b from-transparent to-purple-purple4 dark:to-purpleDark-purple2">
     <header className="mx-auto max-w-3xl pt-16 text-center">
       <div className="mx-auto w-fit">
@@ -28,7 +35,7 @@ const ErrorPage = ({ statusCode }) => (
   </div>
 )
 
-ErrorPage.getInitialProps = ({ res, err }) => {
+ErrorPage.getInitialProps = ({ res, err }: NextPageContext) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404
   return { statusCode }
 }

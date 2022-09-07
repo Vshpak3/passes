@@ -1,7 +1,13 @@
 import { useEffect } from "react"
 
-const useMessageToDevelopers = (messages) => {
+import { isDev, isStaging } from "../helpers/env"
+
+const useMessageToDevelopers = (messages: string[]) => {
   useEffect(() => {
+    if (isDev || isStaging) {
+      return
+    }
+
     console.group("Message to Developers")
     messages.forEach((message) => {
       console.log(message)

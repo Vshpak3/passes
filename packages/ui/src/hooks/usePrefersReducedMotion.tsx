@@ -17,7 +17,7 @@ const usePrefersReducedMotion = () => {
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(QUERY)
-    const listener = (event) => {
+    const listener = (event: MediaQueryListEvent) => {
       setPrefersReducedMotion(!event.matches)
     }
     if (mediaQueryList.addEventListener) {

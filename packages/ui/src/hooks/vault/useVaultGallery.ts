@@ -1,6 +1,16 @@
 import { useState } from "react"
 
-const MOCK_VAULT_DATA = [
+export interface MockVaultData {
+  id: string
+  source: string
+  url: any
+  type: string
+  date: string
+  totalLikes: number
+  totalTips: number
+}
+
+const MOCK_VAULT_DATA: MockVaultData[] = [
   {
     id: "1",
     source: "vault",
@@ -188,7 +198,7 @@ const useVaultGallery = () => {
   const [mediaContent] = useState(MOCK_VAULT_DATA)
 
   const [filteredItems, setFilteredItems] = useState(mediaContent)
-  const [selectedItems, setSelectedItems] = useState([])
+  const [selectedItems, setSelectedItems] = useState<MockVaultData[]>([])
 
   return {
     mediaContent,

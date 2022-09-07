@@ -1,6 +1,7 @@
 import { UserApi } from "@passes/api-client"
+import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { debounce, wrapApi } from "src/helpers"
+import { wrapApi } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 const api = wrapApi(UserApi)
@@ -25,13 +26,13 @@ const useCreatorSearch = () => {
 
   const searchCreators = useMemo(
     () =>
-      debounce(async () => {
+      debounce(async (searchValue) => {
         const data = await api.searchCreatorByUsername({
           searchCreatorRequestDto: { query: searchValue }
         })
         setCreatorResults(data.creators)
       }, DEBOUNCE_DELAY),
-    [searchValue]
+    []
   )
 
   useEffect(() => {

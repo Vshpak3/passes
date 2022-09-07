@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useRef } from "react"
 
 // Utility helper for random number generation
-const random = (min, max) => Math.floor(Math.random() * (max - min)) + min
+const random = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min)) + min
 
-const useRandomInterval = (callback, minDelay, maxDelay) => {
-  const timeoutId = useRef(null)
+const useRandomInterval = (
+  callback: () => void,
+  minDelay: number,
+  maxDelay: number
+) => {
+  const timeoutId = useRef<number | null>(null)
   const savedCallback = useRef(callback)
 
   useEffect(() => {
@@ -12,7 +17,8 @@ const useRandomInterval = (callback, minDelay, maxDelay) => {
   }, [callback])
 
   useEffect(() => {
-    let isEnabled = typeof minDelay === "number" && typeof maxDelay === "number"
+    const isEnabled = minDelay >= 0 && maxDelay >= 0
+
     if (isEnabled) {
       const handleTick = () => {
         const nextTickAt = random(minDelay, maxDelay)
@@ -24,11 +30,15 @@ const useRandomInterval = (callback, minDelay, maxDelay) => {
       handleTick()
     }
 
-    return () => window.clearTimeout(timeoutId.current)
+    return () => {
+      if (timeoutId?.current) {
+        window.clearTimeout(timeoutId.current)
+      }
+    }
   }, [minDelay, maxDelay])
 
   return useCallback(function () {
-    window.clearTimeout(timeoutId.current)
+    timeoutId?.current && window.clearTimeout(timeoutId.current)
   }, [])
 }
 

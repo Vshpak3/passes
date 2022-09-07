@@ -16,7 +16,6 @@ import {
   PassUnlockTier
 } from "./passes"
 import * as SidebarComponents from "./Sidebar"
-import Sparkles from "./Sparkles"
 import Tabs from "./Tabs"
 import TagsInput from "./TagsInput"
 import {
@@ -47,7 +46,6 @@ export {
   PassRenewal,
   PassUnlockTier,
   SidebarComponents,
-  Sparkles,
   Tabs,
   TagsInput,
   VaultAddToDropdown,

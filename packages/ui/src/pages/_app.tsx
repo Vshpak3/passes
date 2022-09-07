@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
+import { AppProps } from "next/app"
 import Router from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
@@ -26,7 +27,7 @@ Router.events.on("routeChangeError", () => {
   nprogress.done()
 })
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }: AppProps) => {
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
