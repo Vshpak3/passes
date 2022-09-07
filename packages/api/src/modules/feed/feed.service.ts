@@ -86,6 +86,11 @@ export class FeedService {
     cursor?: string,
   ): Promise<GetFeedResponseDto> {
     let query = this.dbReader(UserEntity.table)
+      .innerJoin(
+        PostEntity.table,
+        `${UserEntity.table}.id`,
+        `${PostEntity.table}.user_id`,
+      )
       .leftJoin(PostUserAccessEntity.table, function () {
         this.on(
           `${UserEntity.table}.id`,
