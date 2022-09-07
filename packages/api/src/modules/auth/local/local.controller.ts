@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
@@ -76,11 +68,6 @@ export class LocalAuthController {
       loginDto.email,
       loginDto.password,
     )
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials')
-    }
-
     const tokens = await createTokens(
       res,
       user,

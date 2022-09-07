@@ -1,25 +1,12 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-} from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { RequestWithUser } from '../../types/request'
-import { createTokens } from '../../util/auth.util'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
-import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
-import { S3ContentService } from '../s3content/s3content.service'
-import { UserEntity } from '../user/entities/user.entity'
-import { UserService } from '../user/user.service'
+import { AdminService } from './admin.service'
+import { AdminDto } from './dto/admin.dto'
 import {
   ImpersonateUserRequestDto,
   ImpersonateUserResponseDto,
@@ -28,18 +15,10 @@ import {
 @ApiTags('admin')
 @Controller('admin')
 export class AdminController {
-  private secret: string
-
   constructor(
-    private readonly userService: UserService,
-    private readonly configService: ConfigService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
-    private readonly s3contentService: S3ContentService,
+    private readonly adminService: AdminService,
     private readonly metrics: MetricsService,
-  ) {
-    this.secret = this.configService.get('admin.impersonate') as string
-  }
+  ) {}
 
   @ApiEndpoint({
     summary: 'Impersonates a user',
@@ -54,28 +33,26 @@ export class AdminController {
     @Body() body: ImpersonateUserRequestDto,
   ): Promise<ImpersonateUserResponseDto> {
     this.metrics.increment('admin.impersonate')
-
-    const reqUser = await this.userService.findOne(req.user.id)
-    if (!reqUser.email.endsWith('@passes.com') || body.secret !== this.secret) {
-      throw new BadRequestException('Invalid request')
-    }
-
-    let impersonateUser: UserEntity
-    if (body.userId) {
-      impersonateUser = await this.userService.findOne(body.userId)
-    } else if (body.username) {
-      impersonateUser = await this.userService.findOneByUsername(body.username)
-    } else {
-      throw new BadRequestException('Must provide either a userId or username')
-    }
-
-    const tokens = await createTokens(
+    await this.adminService.adminCheck(req.user.id, body.secret)
+    return await this.adminService.impersonateUser(
       res,
-      impersonateUser,
-      this.jwtAuthService,
-      this.jwtRefreshService,
-      this.s3contentService,
+      body.userId,
+      body.username,
     )
-    return new ImpersonateUserResponseDto(tokens.accessToken)
+  }
+
+  @ApiEndpoint({
+    summary: 'Flags user as adult',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'User was marked as adult',
+  })
+  @Post('adult')
+  async flagAsAdult(
+    @Req() req: RequestWithUser,
+    @Body() body: AdminDto,
+  ): Promise<void> {
+    await this.adminService.adminCheck(req.user.id, body.secret)
+    await this.adminService.makeAdult(body.userId, body.username)
   }
 }

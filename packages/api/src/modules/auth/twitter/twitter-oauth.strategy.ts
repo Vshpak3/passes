@@ -6,10 +6,17 @@ import { Profile, Strategy } from 'passport-twitter'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
-import { GetUserResponseDto } from '../../user/dto/get-user.dto'
+import { UserDto } from '../../user/dto/user.dto'
 import { UserService } from '../../user/user.service'
+import { validateUser } from '../helpers/oauth-strategy.helper'
+
+const TWITTER_OAUTH_PROVIDER = 'twitter'
+
 @Injectable()
-export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
+export class TwitterStrategy extends PassportStrategy(
+  Strategy,
+  TWITTER_OAUTH_PROVIDER,
+) {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -24,21 +31,11 @@ export class TwitterStrategy extends PassportStrategy(Strategy, 'twitter') {
     })
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    try {
-      const { id } = profile
-
-      let user = await this.usersService.findOneByOAuth(id, 'twitter')
-      if (!user) {
-        user = await this.usersService.createOAuthUser('', 'twitter', id)
-      }
-
-      this.metrics.increment('login.success.twitter')
-      return new GetUserResponseDto(user)
-    } catch (err) {
-      this.logger.error('Error occurred while validating:', err)
-      this.metrics.increment('login.failure.twitter')
-      return null
-    }
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ): Promise<UserDto> {
+    return validateUser.bind(this)(profile, TWITTER_OAUTH_PROVIDER)
   }
 }

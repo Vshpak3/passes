@@ -16,7 +16,10 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { GetUserResponseDto } from './dto/get-user.dto'
-import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
+import {
+  SetInitialUserInfoRequestDto,
+  SetInitialUserInfoResponseDto,
+} from './dto/init-user.dto'
 import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
@@ -41,13 +44,13 @@ export class UserController {
   })
   @Get(':userId')
   async findOne(@Param('userId') userId: string): Promise<GetUserResponseDto> {
-    return new GetUserResponseDto(await this.userService.findOne(userId))
+    return (await this.userService.findOne(userId)) as GetUserResponseDto
   }
 
   @ApiEndpoint({
     summary: 'Sets initial user info',
     responseStatus: HttpStatus.OK,
-    responseType: GetUserResponseDto,
+    responseType: SetInitialUserInfoResponseDto,
     responseDesc: 'Sets initial user info',
   })
   @Patch()
@@ -65,7 +68,7 @@ export class UserController {
     }
     const accessToken = this.jwtAuthService.createAccessToken(user)
 
-    return { accessToken }
+    return new SetInitialUserInfoResponseDto(accessToken)
   }
 
   @ApiEndpoint({
@@ -75,8 +78,8 @@ export class UserController {
     responseDesc: 'A user account was disabled',
   })
   @Delete()
-  async delete(@Req() req: RequestWithUser): Promise<GetUserResponseDto> {
-    return new GetUserResponseDto(await this.userService.remove(req.user.id))
+  async disableUser(@Req() req: RequestWithUser): Promise<void> {
+    await this.userService.disableUser(req.user.id)
   }
 
   @ApiEndpoint({
@@ -87,7 +90,7 @@ export class UserController {
     allowUnauthorizedRequest: true,
   })
   @Post('verify-email')
-  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto): Promise<void> {
     await this.userService.verifyEmail(verifyEmailDto)
   }
 
@@ -101,12 +104,8 @@ export class UserController {
   async setUsername(
     @Req() req: RequestWithUser,
     @Body() updateUsernameDto: UpdateUsernameRequestDto,
-  ): Promise<GetUserResponseDto> {
-    const updatedUser = await this.userService.setUsername(
-      req.user.id,
-      updateUsernameDto.username,
-    )
-    return new GetUserResponseDto(updatedUser)
+  ): Promise<void> {
+    await this.userService.setUsername(req.user.id, updateUsernameDto.username)
   }
 
   @ApiEndpoint({
@@ -133,8 +132,7 @@ export class UserController {
   async searchCreatorByUsername(
     @Body() searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<any> {
-    const creators = await this.userService.searchByQuery(searchCreatorDto)
-    return new SearchCreatorResponseDto(creators)
+    return await this.userService.searchByQuery(searchCreatorDto)
   }
 
   /*

@@ -3,11 +3,11 @@ import { Response } from 'express'
 import { JwtAuthService } from '../modules/auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../modules/auth/jwt/jwt-refresh.service'
 import { S3ContentService } from '../modules/s3content/s3content.service'
-import { UserEntity } from '../modules/user/entities/user.entity'
+import { UserDto } from '../modules/user/dto/user.dto'
 
 export async function createTokens(
   res: Response,
-  user: UserEntity,
+  user: UserDto,
   jwtAuthService: JwtAuthService,
   jwtRefreshService: JwtRefreshService,
   s3contentService: S3ContentService,
@@ -20,9 +20,15 @@ export async function createTokens(
   return { accessToken, refreshToken }
 }
 
+/**
+ * Handles redirect after successful OAuth login.
+ *
+ * Note: the type of the user is UserDto. This is the type returned
+ * from the *OauthStrategy.validate methods and is what is set for Request.user.
+ */
 export async function redirectAfterSuccessfulLogin(
   res: Response,
-  user: UserEntity,
+  user: UserDto,
 ) {
   const tokens = await createTokens(
     res,

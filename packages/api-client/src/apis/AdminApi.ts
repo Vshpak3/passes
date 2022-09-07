@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    AdminDto,
+    AdminDtoFromJSON,
+    AdminDtoToJSON,
     ImpersonateUserRequestDto,
     ImpersonateUserRequestDtoFromJSON,
     ImpersonateUserRequestDtoToJSON,
@@ -22,6 +25,10 @@ import {
     ImpersonateUserResponseDtoFromJSON,
     ImpersonateUserResponseDtoToJSON,
 } from '../models';
+
+export interface FlagAsAdultRequest {
+    adminDto: AdminDto;
+}
 
 export interface ImpersonateUserRequest {
     impersonateUserRequestDto: ImpersonateUserRequestDto;
@@ -31,6 +38,46 @@ export interface ImpersonateUserRequest {
  * 
  */
 export class AdminApi extends runtime.BaseAPI {
+
+    /**
+     * Flags user as adult
+     */
+    async flagAsAdultRaw(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling flagAsAdult.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/adult`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Flags user as adult
+     */
+    async flagAsAdult(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.flagAsAdultRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Impersonates a user

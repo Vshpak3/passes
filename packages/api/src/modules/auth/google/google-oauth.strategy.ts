@@ -6,11 +6,17 @@ import { Profile, Strategy } from 'passport-google-oauth20'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
-import { GetUserResponseDto } from '../../user/dto/get-user.dto'
+import { UserDto } from '../../user/dto/user.dto'
 import { UserService } from '../../user/user.service'
+import { validateUser } from '../helpers/oauth-strategy.helper'
+
+const GOOGLE_OAUTH_PROVIDER = 'google'
 
 @Injectable()
-export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleOauthStrategy extends PassportStrategy(
+  Strategy,
+  GOOGLE_OAUTH_PROVIDER,
+) {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -26,29 +32,11 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     })
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    try {
-      const { id, emails } = profile
-
-      if (!emails) {
-        this.logger.error('Failed to get emails from profile')
-        this.metrics.increment('login.failure.google')
-        return null
-      }
-
-      const email = emails[0].value
-
-      let user = await this.usersService.findOneByOAuth(id, 'google')
-      if (!user) {
-        user = await this.usersService.createOAuthUser(email, 'google', id)
-      }
-
-      this.metrics.increment('login.success.google')
-      return new GetUserResponseDto(user)
-    } catch (err) {
-      this.logger.error('Error occurred while validating:', err)
-      this.metrics.increment('login.failure.google')
-      return null
-    }
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ): Promise<UserDto> {
+    return validateUser.bind(this)(profile, GOOGLE_OAUTH_PROVIDER, true)
   }
 }

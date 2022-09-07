@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AddListMembersRequestDto';
+export * from './AdminDto';
 export * from './AuthTokenResponseDto';
 export * from './AuthWalletRequestDto';
 export * from './AuthWalletResponseDto';
@@ -114,6 +115,7 @@ export * from './SearchCreatorResponseDto';
 export * from './SearchFollowRequestDto';
 export * from './SendMessageRequestDto';
 export * from './SetInitialUserInfoRequestDto';
+export * from './SetInitialUserInfoResponseDto';
 export * from './SetPayinMethodRequestDto';
 export * from './SetPayoutMethodRequestDto';
 export * from './SubmitCreatorVerificationStepRequestDto';

@@ -16,7 +16,6 @@ import { Request, Response } from 'express'
 import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { UserEntity } from '../../user/entities/user.entity'
 import { FacebookDeletionConfirmationDto } from '../dto/fb-deletion-confirmation'
 import { RawFacebookDeletionRequestDto } from '../dto/raw-fb-deletion-request'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -28,11 +27,11 @@ import { FacebookOauthGuard } from './facebook-oauth.guard'
 @ApiTags('auth/facebook')
 export class FacebookOauthController {
   constructor(
+    private readonly configService: ConfigService,
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
-    private readonly configService: ConfigService,
-    private readonly fbComplianceService: FacebookComplianceService,
     private readonly s3contentService: S3ContentService,
+    private readonly fbComplianceService: FacebookComplianceService,
   ) {}
 
   @ApiEndpoint({
@@ -58,8 +57,7 @@ export class FacebookOauthController {
   @UseGuards(FacebookOauthGuard)
   @Get('redirect')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const user = req.user as UserEntity
-    return redirectAfterSuccessfulLogin.bind(this)(res, user)
+    return redirectAfterSuccessfulLogin.bind(this)(res, req.user)
   }
 
   @ApiEndpoint({

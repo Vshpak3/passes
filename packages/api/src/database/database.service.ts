@@ -1,6 +1,5 @@
 import { EntityManager, Knex, knex } from '@mikro-orm/mysql'
 import { Injectable, Scope } from '@nestjs/common'
-import { v4 } from 'uuid'
 
 import { getKnexOptions } from './database.options'
 
@@ -18,7 +17,7 @@ declare type ExcludeFunctions<
 type MetadataProp = {
   name: string
   fieldNames: string[]
-  reference: 'scalar' | '1:1' | 'm:1' | '1:m' // TODO: ManyToMany case
+  reference: 'scalar' | '1:1' | 'm:1' | '1:m'
   targetMeta: { props: MetadataProp[] }
   [key: string]: any
 }
@@ -30,12 +29,24 @@ const propsToObj = (props: MetadataProp[]): Record<string, MetadataProp> =>
   }, {})
 
 const mapEntityDataDBFields = <T>(
-  propObj: Record<string, MetadataProp>,
+  fieldToProp: Record<string, string>,
   data: EntityData<T>,
 ): Record<string, any> => {
-  return Object.keys(propObj).reduce((objMap, key) => {
+  return Object.keys(fieldToProp).reduce((objMap, key) => {
     if (data[key] !== undefined) {
-      objMap[propObj[key].fieldNames[0]] = data[key]
+      objMap[fieldToProp[key]] = data[key]
+    }
+    return objMap
+  }, {})
+}
+
+const mapFieldsToEntity = (
+  propToField: Record<string, string>,
+  data: Record<string, any>,
+): Record<string, any> => {
+  return Object.keys(propToField).reduce((objMap, key) => {
+    if (data[key] !== undefined) {
+      objMap[propToField[key]] = data[key]
     }
     return objMap
   }, {})
@@ -89,7 +100,6 @@ const mapPopulateFields = (
 export class DatabaseService {
   protected _entityManager: EntityManager
   knex: Knex
-  v4 = v4
 
   constructor(entityManager: EntityManager) {
     this._entityManager = entityManager
@@ -97,20 +107,33 @@ export class DatabaseService {
     this.knex = knex(getKnexOptions(this.knex))
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const { metadata } = this._entityManager
-    const entityMetadata = Object.values(metadata.getAll())
-    entityMetadata.forEach(({ class: entityClass, props, tableName }) => {
-      if (entityClass && !entityClass.isInitialized) {
-        entityClass.table = tableName
+    Object.values(this._entityManager.metadata.getAll()).forEach(
+      ({ class: entityClass, props, tableName }) => {
+        if (entityClass && !entityClass.isInitialized) {
+          const propObj = propsToObj(props)
+          const { fieldToProp, propToField } = Object.keys(propObj).reduce(
+            (objMap, key) => {
+              objMap.fieldToProp[propObj[key].fieldNames[0]] = key
+              objMap.propToField[key] = propObj[key].fieldNames[0]
+              return objMap
+            },
+            { fieldToProp: {}, propToField: {} },
+          )
 
-        entityClass.toDict = (data) =>
-          mapEntityDataDBFields(propsToObj(props), data)
+          entityClass.table = tableName
 
-        entityClass.populate = (fields) =>
-          mapPopulateFields(propsToObj(props), fields as string[])
+          entityClass.toDict = (data) =>
+            mapEntityDataDBFields(propToField, data)
 
-        entityClass.isInitialized = true
-      }
-    })
+          entityClass.populate = (fields) =>
+            mapPopulateFields(propObj, fields as string[])
+
+          entityClass.fromFields = (data) =>
+            new entityClass().instantiate(mapFieldsToEntity(fieldToProp, data))
+
+          entityClass.isInitialized = true
+        }
+      },
+    )
   }
 }

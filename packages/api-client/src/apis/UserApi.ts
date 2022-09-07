@@ -27,6 +27,9 @@ import {
     SetInitialUserInfoRequestDto,
     SetInitialUserInfoRequestDtoFromJSON,
     SetInitialUserInfoRequestDtoToJSON,
+    SetInitialUserInfoResponseDto,
+    SetInitialUserInfoResponseDtoFromJSON,
+    SetInitialUserInfoResponseDtoToJSON,
     UpdateUsernameRequestDto,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
@@ -67,7 +70,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async _deleteRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async disableUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -93,8 +96,8 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Disables a user account
      */
-    async _delete(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this._deleteRaw(initOverrides);
+    async disableUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.disableUserRaw(initOverrides);
     }
 
     /**
@@ -212,7 +215,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Sets initial user info
      */
-    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SetInitialUserInfoResponseDto>> {
         if (requestParameters.setInitialUserInfoRequestDto === null || requestParameters.setInitialUserInfoRequestDto === undefined) {
             throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling setInitialInfo.');
         }
@@ -239,13 +242,13 @@ export class UserApi extends runtime.BaseAPI {
             body: SetInitialUserInfoRequestDtoToJSON(requestParameters.setInitialUserInfoRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SetInitialUserInfoResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Sets initial user info
      */
-    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SetInitialUserInfoResponseDto> {
         const response = await this.setInitialInfoRaw(requestParameters, initOverrides);
         return await response.value();
     }

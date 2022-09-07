@@ -15,16 +15,15 @@ import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
-import { UserEntity } from './../../user/entities/user.entity'
 import { GoogleOauthGuard } from './google-oauth.guard'
 
 @Controller('auth/google')
 @ApiTags('auth/google')
 export class GoogleOauthController {
   constructor(
+    private readonly configService: ConfigService,
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
-    private readonly configService: ConfigService,
     private readonly s3contentService: S3ContentService,
   ) {}
 
@@ -51,7 +50,6 @@ export class GoogleOauthController {
   @UseGuards(GoogleOauthGuard)
   @Get('redirect')
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const user = req.user as UserEntity
-    return redirectAfterSuccessfulLogin.bind(this)(res, user)
+    return redirectAfterSuccessfulLogin.bind(this)(res, req.user)
   }
 }

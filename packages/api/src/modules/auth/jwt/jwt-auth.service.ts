@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { UserEntity } from '../../user/entities/user.entity'
+import { UserDto } from '../../user/dto/user.dto'
 import { BASE_CLAIMS } from './jwt.constants'
 import { JwtPayload } from './jwt-auth.strategy'
 
@@ -9,17 +9,17 @@ import { JwtPayload } from './jwt-auth.strategy'
 export class JwtAuthService {
   constructor(private jwtService: JwtService) {}
 
-  createAccessToken(user: UserEntity) {
+  createAccessToken(user: UserDto) {
     const payload: JwtPayload = {
       sub: user.id,
       isVerified: this.isVerified(user),
-      isCreator: user.isCreator,
+      isCreator: !!user.isCreator,
       ...BASE_CLAIMS,
     }
     return this.jwtService.sign(payload)
   }
 
-  public isVerified(user: UserEntity): boolean {
+  public isVerified(user: UserDto): boolean {
     return (
       !!user.email &&
       !!user.legalFullName &&

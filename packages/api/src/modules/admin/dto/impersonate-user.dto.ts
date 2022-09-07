@@ -1,18 +1,7 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
+import { AdminDto } from './admin.dto'
 
-export class ImpersonateUserRequestDto {
-  @IsUUID()
-  @DtoProperty({ required: false })
-  userId?: string
-
-  @DtoProperty({ required: false })
-  username?: string
-
-  @DtoProperty()
-  secret: string
-}
+export class ImpersonateUserRequestDto extends AdminDto {}
 
 export class ImpersonateUserResponseDto {
   @DtoProperty()

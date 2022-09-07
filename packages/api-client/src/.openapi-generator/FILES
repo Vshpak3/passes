@@ -27,6 +27,7 @@ apis/WalletApi.ts
 apis/index.ts
 index.ts
 models/AddListMembersRequestDto.ts
+models/AdminDto.ts
 models/AuthTokenResponseDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
@@ -140,6 +141,7 @@ models/SearchCreatorResponseDto.ts
 models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
 models/SetInitialUserInfoRequestDto.ts
+models/SetInitialUserInfoResponseDto.ts
 models/SetPayinMethodRequestDto.ts
 models/SetPayoutMethodRequestDto.ts
 models/SubmitCreatorVerificationStepRequestDto.ts

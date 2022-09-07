@@ -6,13 +6,16 @@ import { Profile, Strategy } from 'passport-facebook'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
-import { GetUserResponseDto } from '../../user/dto/get-user.dto'
+import { UserDto } from '../../user/dto/user.dto'
 import { UserService } from '../../user/user.service'
+import { validateUser } from '../helpers/oauth-strategy.helper'
+
+const FACEBOOK_OAUTH_PROVIDER = 'twitter'
 
 @Injectable()
 export class FacebookOauthStrategy extends PassportStrategy(
   Strategy,
-  'facebook',
+  FACEBOOK_OAUTH_PROVIDER,
 ) {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -29,22 +32,11 @@ export class FacebookOauthStrategy extends PassportStrategy(
     })
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    try {
-      const { id, emails } = profile
-      const email = emails && emails.length ? emails[0].value : ''
-
-      let user = await this.usersService.findOneByOAuth(id, 'facebook')
-      if (!user) {
-        user = await this.usersService.createOAuthUser(email, 'facebook', id)
-      }
-
-      this.metrics.increment('login.success.facebook')
-      return new GetUserResponseDto(user)
-    } catch (err) {
-      this.logger.error('Error occurred while validating:', err)
-      this.metrics.increment('login.failure.facebook')
-      return null
-    }
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ): Promise<UserDto> {
+    return validateUser.bind(this)(profile, FACEBOOK_OAUTH_PROVIDER)
   }
 }

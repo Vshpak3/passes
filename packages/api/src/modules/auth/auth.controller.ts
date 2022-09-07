@@ -41,10 +41,7 @@ export class AuthController {
   })
   @Get('user')
   async getCurrentUser(@Req() req: RequestWithUser) {
-    return new GetUserResponseDto(
-      await this.userService.findOne(req.user.id),
-      true,
-    )
+    return (await this.userService.findOne(req.user.id)) as GetUserResponseDto
   }
 
   @ApiEndpoint({

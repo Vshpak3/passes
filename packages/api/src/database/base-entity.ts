@@ -47,6 +47,8 @@ export class EntityDBHelpers {
   static toDict<T>(_data: EntityData<T>): Record<string, any> {}
   // @ts-ignore
   static populate<T>(fields: Array<keyof EntityData<T>>): string[] {}
+  // @ts-ignore
+  static fromFields<T>(_data: Record<string, any>): T {}
 
   static table: string
 

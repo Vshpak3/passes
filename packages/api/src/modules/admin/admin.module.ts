@@ -5,11 +5,12 @@ import { JwtRefreshModule } from '../auth/jwt/jwt-refresh.module'
 import { S3ContentModule } from '../s3content/s3content.module'
 import { UserModule } from '../user/user.module'
 import { AdminController } from './admin.controller'
+import { AdminService } from './admin.service'
 
 @Module({
   imports: [JwtAuthModule, JwtRefreshModule, S3ContentModule, UserModule],
   controllers: [AdminController],
-  providers: [],
-  exports: [],
+  providers: [AdminService],
+  exports: [AdminService],
 })
 export class AdminModule {}
