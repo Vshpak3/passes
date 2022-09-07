@@ -165,20 +165,33 @@ export class UserService {
         .onConflict('user_id')
         .ignore()
       await trx(ListEntity.table)
-        .insert([
+        .where(
           ListEntity.toDict<ListEntity>({
             user: userId,
-            name: 'Following',
             type: ListTypeEnum.FOLLOWING,
           }),
+        )
+        .delete()
+      await trx(ListEntity.table)
+        .where(
           ListEntity.toDict<ListEntity>({
             user: userId,
-            name: 'Fans',
             type: ListTypeEnum.FOLLOWERS,
           }),
-        ])
-        .onConflict(['name', 'type', 'pass_id'])
-        .ignore()
+        )
+        .delete()
+      await trx(ListEntity.table).insert([
+        ListEntity.toDict<ListEntity>({
+          user: userId,
+          name: 'Following',
+          type: ListTypeEnum.FOLLOWING,
+        }),
+        ListEntity.toDict<ListEntity>({
+          user: userId,
+          name: 'Fans',
+          type: ListTypeEnum.FOLLOWERS,
+        }),
+      ])
     })
   }
 
