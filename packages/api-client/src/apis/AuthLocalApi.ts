@@ -27,7 +27,14 @@ import {
     ResetPasswordRequestDto,
     ResetPasswordRequestDtoFromJSON,
     ResetPasswordRequestDtoToJSON,
+    UpdatePasswordRequestDto,
+    UpdatePasswordRequestDtoFromJSON,
+    UpdatePasswordRequestDtoToJSON,
 } from '../models';
+
+export interface ChangePasswordRequest {
+    updatePasswordRequestDto: UpdatePasswordRequestDto;
+}
 
 export interface CreateEmailPasswordUserRequest {
     createLocalUserRequestDto: CreateLocalUserRequestDto;
@@ -45,6 +52,46 @@ export interface LoginWithEmailPasswordRequest {
  * 
  */
 export class AuthLocalApi extends runtime.BaseAPI {
+
+    /**
+     * Change password for current user
+     */
+    async changePasswordRaw(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.updatePasswordRequestDto === null || requestParameters.updatePasswordRequestDto === undefined) {
+            throw new runtime.RequiredError('updatePasswordRequestDto','Required parameter requestParameters.updatePasswordRequestDto was null or undefined when calling changePassword.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/auth/local/change-password`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdatePasswordRequestDtoToJSON(requestParameters.updatePasswordRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Change password for current user
+     */
+    async changePassword(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.changePasswordRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Create a email and password user

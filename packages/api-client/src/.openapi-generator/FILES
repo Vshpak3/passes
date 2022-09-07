@@ -150,6 +150,7 @@ models/TokenResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
+models/UpdatePasswordRequestDto.ts
 models/UpdatePostRequestDto.ts
 models/UpdateUsernameRequestDto.ts
 models/VerifyEmailDto.ts

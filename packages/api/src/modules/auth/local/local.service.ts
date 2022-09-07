@@ -77,6 +77,34 @@ export class LocalAuthService {
     return user
   }
 
+  async updatePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const user = await this.dbReader(UserEntity.table)
+      .where('id', userId)
+      .where('oauth_provider', null)
+      .first()
+
+    if (!user) {
+      throw new BadRequestException('User is not a email and password user')
+    }
+
+    const doesPasswordMatch = await bcrypt.compare(
+      oldPassword,
+      user.password_hash,
+    )
+    if (!doesPasswordMatch) {
+      throw new BadRequestException('Current password is incorrect')
+    }
+
+    const passwordHash = await this.hashPassword(newPassword)
+    await this.dbWriter(UserEntity.table)
+      .update({ password_hash: passwordHash })
+      .where({ id: userId })
+  }
+
   async resetEmailPassword(resetToken: string, newPassword: string) {
     const request = await this.dbReader(ResetPasswordRequestEntity.table)
       .where('id', resetToken)

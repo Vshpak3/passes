@@ -124,6 +124,7 @@ export * from './TokenResponseDto';
 export * from './UpdateChannelSettingsRequestDto';
 export * from './UpdateCreatorSettingsRequestDto';
 export * from './UpdatePassRequestDto';
+export * from './UpdatePasswordRequestDto';
 export * from './UpdatePostRequestDto';
 export * from './UpdateUsernameRequestDto';
 export * from './VerifyEmailDto';

@@ -3,12 +3,14 @@ import {
   Controller,
   HttpStatus,
   Post,
+  Req,
   Res,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
+import { RequestWithUser } from '../../../types/request'
 import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { EmailService } from '../../email/email.service'
@@ -16,6 +18,7 @@ import { S3ContentService } from '../../s3content/s3content.service'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
 import { LocalUserLoginRequestDto } from '../dto/local-user-login'
 import { ResetPasswordRequestDto } from '../dto/reset-password'
+import { UpdatePasswordRequestDto } from '../dto/update-password'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { AuthTokenResponseDto } from './auth-token.dto'
@@ -99,5 +102,23 @@ export class LocalAuthController {
   @Post('reset-password')
   async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
     await this.emailService.sendInitResetPassword(resetPasswordDto.email)
+  }
+
+  @ApiEndpoint({
+    summary: 'Change password for current user',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Change password for current user',
+  })
+  @Post('change-password')
+  async changePassword(
+    @Req() req: RequestWithUser,
+    @Body() updatePasswordDto: UpdatePasswordRequestDto,
+  ) {
+    await this.localAuthService.updatePassword(
+      req.user.id,
+      updatePasswordDto.oldPassword,
+      updatePasswordDto.newPassword,
+    )
   }
 }
