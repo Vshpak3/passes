@@ -178,7 +178,7 @@ export class MessagesService {
     const listUserIds = (
       await this.dbReader(ListMemberEntity.table)
         .whereIn('list_id', createBatchMessageDto.listIds)
-        .distinct(`${ListMemberEntity.table}.user_id`)
+        .distinct(`user_id`)
     ).map((listMember) => listMember.user_id)
     const passUserIds = (
       await this.dbReader(PassHolderEntity.table)

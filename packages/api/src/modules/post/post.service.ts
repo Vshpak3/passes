@@ -77,7 +77,7 @@ export class PostService {
           scheduledAt: createPostDto.scheduledAt,
         })
 
-        await this.dbWriter(PostEntity.table).insert(post)
+        await trx(PostEntity.table).insert(post)
 
         const postContent = createPostDto.contentIds.map((contentId) =>
           PostContentEntity.toDict<PostContentEntity>({
@@ -94,9 +94,9 @@ export class PostService {
           .whereIn('id', createPostDto.contentIds)
 
         // TODO: schedule access add
-        const passAccesses = await this.dbReader(PassHolderEntity.table)
+        const passAccesses = await trx(PassHolderEntity.table)
           .whereIn(`pass_id`, createPostDto.passIds)
-          .andWhere(`expires_at`)
+          .whereNotNull(`expires_at`)
           .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
           if (!passAccesses[i].holder_id) continue
