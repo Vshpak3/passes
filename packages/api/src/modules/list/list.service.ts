@@ -1,6 +1,5 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable sonarjs/no-duplicate-string */
-import { Knex } from '@mikro-orm/mysql'
 import { Inject, Injectable } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
@@ -8,9 +7,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
-import { PassEntity } from '../pass/entities/pass.entity'
+import { FollowService } from '../follow/follow.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
@@ -42,6 +41,8 @@ export class ListService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+
+    private readonly followService: FollowService,
   ) {}
 
   async createList(
@@ -51,7 +52,7 @@ export class ListService {
     const count = await this.dbReader
       .table(ListEntity.table)
       .where('user_id', userId)
-      .count()
+      .count(['id'])
     if (count[0]['count(*)'] >= LIST_LIMIT)
       throw new ListLimitReachedError('list limit reached')
 
@@ -70,23 +71,22 @@ export class ListService {
       })
     })
 
-    await createOrThrowOnDuplicate(
-      () =>
-        this.dbWriter.transaction(async (trx) => {
-          await trx(ListEntity.table).insert(
-            ListEntity.toDict<ListEntity>({
-              id: listId,
-              user: userId,
-              name: createListDto.name,
-            }),
-          )
-          if (listMemberRecords.length != 0) {
-            await trx(ListMemberEntity.table).insert(listMemberRecords)
-          }
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(ListEntity.table).insert(
+        ListEntity.toDict<ListEntity>({
+          id: listId,
+          user: userId,
+          name: createListDto.name,
         }),
-      this.logger,
-      "can't use same list name and type",
-    )
+      )
+      if (listMemberRecords.length != 0) {
+        await trx(ListMemberEntity.table)
+          .insert(listMemberRecords)
+          .onConflict(['list_id', 'user_id'])
+          .ignore()
+      }
+    })
+    await this.updateCount(listId)
   }
 
   async deleteList(userId: string, id: string): Promise<boolean> {
@@ -102,48 +102,47 @@ export class ListService {
     return dbResult == 1
   }
 
+  async fillAutomatedLists(lists: any[]) {
+    await Promise.all(
+      lists.map(async (list) => {
+        switch (list.type) {
+          case ListTypeEnum.FOLLOWERS:
+            list.count = (
+              await this.dbReader(CreatorStatEntity.table)
+                .where('user_id', list.user_id)
+                .select('num_followers')
+                .first()
+            )?.num_followers
+            break
+          case ListTypeEnum.FOLLOWING:
+            list.count = (
+              await this.dbReader(UserEntity.table)
+                .where('id', list.user_id)
+                .select('num_following')
+                .first()
+            )?.num_following
+            break
+          default:
+            break
+        }
+      }),
+    )
+  }
+
   async getList(userId: string, listId: string): Promise<GetListResponseDto> {
     const list = this.dbReader(ListEntity.table)
-      .leftJoin(
-        PassEntity.table,
-        `${PassEntity.table}.id`,
-        `${ListEntity.table}.pass_id`,
-      )
       .where(ListEntity.toDict<ListEntity>({ id: listId, user: userId }))
-      .select(
-        `${ListEntity.table}.*`,
-        `${PassEntity.table}.title as pass_title`,
-      )
+      .select(`*`)
       .first()
-    const count = await this.dbReader
-      .table(ListMemberEntity.table)
-      .where('list_id', listId)
-      .count()
-    list.count = count[0]['count(*)']
+    await this.fillAutomatedLists([list])
     return new GetListResponseDto(list)
   }
 
   async getListsForUser(userId: string): Promise<GetListsResponseDto> {
     const lists = await this.dbReader(ListEntity.table)
-      .leftJoin(
-        PassEntity.table,
-        `${PassEntity.table}.id`,
-        `${ListEntity.table}.pass_id`,
-      )
       .where(ListEntity.toDict<ListEntity>({ user: userId }))
-      .select(
-        `${ListEntity.table}.*`,
-        `${PassEntity.table}.title as pass_title`,
-      )
-    await Promise.all(
-      lists.map(async (list) => {
-        const count = await this.dbReader
-          .table(ListMemberEntity.table)
-          .where('list_id', list.id)
-          .count()
-        list.count = count[0]['count(*)']
-      }),
-    )
+      .select(`*`)
+    await this.fillAutomatedLists(lists)
     return new GetListsResponseDto(lists.map((list) => new ListDto(list)))
   }
 
@@ -152,27 +151,52 @@ export class ListService {
     userId: string,
     getListMembersRequestDto: GetListMembersRequestto,
   ) {
-    await this.checkList(userId, getListMembersRequestDto.listId, false)
-    const listMembers = await this.dbReader(ListMemberEntity.table)
-      .leftJoin(
-        UserEntity.table,
-        `${ListMemberEntity.table}.user_id`,
-        `${UserEntity.table}.id`,
-      )
-      .select([
-        `${UserEntity.table}.id`,
-        `${UserEntity.table}.username`,
-        `${UserEntity.table}.display_name`,
-      ])
-      .where(
-        `${ListMemberEntity.table}.list_id`,
-        getListMembersRequestDto.listId,
-      )
-      .orderBy(`${ListMemberEntity.table}.user_id`, 'ASC')
-    return listMembers.map((listMember) => new ListMemberDto(listMember))
+    const type = await this.checkList(
+      userId,
+      getListMembersRequestDto.listId,
+      false,
+    )
+    switch (type) {
+      case ListTypeEnum.NORMAL:
+        return (
+          await this.dbReader(ListMemberEntity.table)
+            .leftJoin(
+              UserEntity.table,
+              `${ListMemberEntity.table}.user_id`,
+              `${UserEntity.table}.id`,
+            )
+            .leftJoin(
+              FollowEntity.table,
+              `${ListMemberEntity.table}.user_id`,
+              `${FollowEntity.table}.follower_id`,
+            )
+            .select([
+              `${UserEntity.table}.id`,
+              `${UserEntity.table}.username`,
+              `${UserEntity.table}.display_name`,
+              `${FollowEntity.table}.id as follow`,
+            ])
+            .where(
+              `${ListMemberEntity.table}.list_id`,
+              getListMembersRequestDto.listId,
+            )
+            .andWhere(`${FollowEntity.table}.creator_id`, userId)
+            .orderBy(`${ListMemberEntity.table}.user_id`, 'ASC')
+        ).map((listMember) => new ListMemberDto(listMember))
+      case ListTypeEnum.FOLLOWERS:
+        return await this.followService.searchFansByQuery(userId, {})
+      case ListTypeEnum.FOLLOWING:
+        return await this.followService.searchFollowingByQuery(userId, {})
+      default:
+        return []
+    }
   }
 
-  async checkList(userId: string, listId: string, manual: boolean) {
+  async checkList(
+    userId: string,
+    listId: string,
+    manual: boolean,
+  ): Promise<ListTypeEnum> {
     const list = await this.dbReader(ListEntity.table)
       .where(
         ListEntity.toDict<ListEntity>({
@@ -188,6 +212,7 @@ export class ListService {
     if (manual && list.type !== ListTypeEnum.NORMAL) {
       throw new IncorrectListTypeError('can not manually alter this list')
     }
+    return list.type
   }
 
   async updateCount(listId: string) {
@@ -259,46 +284,5 @@ export class ListService {
         }),
       )
     return updated === 1
-  }
-
-  async updateListByType(
-    userId: string,
-    creatorId: string,
-    type: ListTypeEnum,
-    action: 'add' | 'remove',
-    knex?: Knex<any, any[]>,
-  ) {
-    const listId = (
-      await this.dbReader(ListEntity.table)
-        .where(ListEntity.toDict<ListEntity>({ user: creatorId, type }))
-        .select('id')
-        .first()
-    )?.id
-    if (!listId) return
-
-    if (!knex) knex = this.dbWriter
-    switch (action) {
-      case 'add':
-        await knex(ListMemberEntity.table)
-          .insert(
-            ListMemberEntity.toDict<ListMemberEntity>({
-              list: listId,
-              user: userId,
-            }),
-          )
-          .onConflict(['list_id', 'user_id'])
-          .ignore()
-        break
-      case 'remove':
-        await knex(ListMemberEntity.table)
-          .where(
-            ListMemberEntity.toDict<ListMemberEntity>({
-              list: listId,
-              user: userId,
-            }),
-          )
-          .delete()
-        break
-    }
   }
 }

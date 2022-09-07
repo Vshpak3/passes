@@ -14,10 +14,8 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
-import { ListTypeEnum } from '../list/enum/list.type.enum'
-import { ListService } from '../list/list.service'
+import { ListMemberDto } from '../list/dto/list-member.dto'
 import { MessagesService } from '../messages/messages.service'
-import { ProfileEntity } from '../profile/entities/profile.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
@@ -26,8 +24,7 @@ import {
   IS_NOT_CREATOR,
 } from './constants/errors'
 import { FollowDto } from './dto/follow.dto'
-import { GetFanResponseDto } from './dto/get-fan.dto'
-import { SearchFanRequestDto } from './dto/search-fan.dto'
+import { SearchFollowRequestDto } from './dto/search-fan.dto'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { FollowReportEntity } from './entities/follow-report.entity'
@@ -47,7 +44,6 @@ export class FollowService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly messagesService: MessagesService,
-    private readonly listService: ListService,
   ) {}
 
   async checkFollow(userId: string, creatorId: string): Promise<boolean> {
@@ -92,22 +88,11 @@ export class FollowService {
     await this.dbWriter.transaction(async (trx) => {
       await trx(FollowEntity.table).insert(data)
       await trx(CreatorStatEntity.table)
-        .where('user_id', userId)
+        .where('user_id', creatorId)
         .increment('num_followers', 1)
-      await this.listService.updateListByType(
-        userId,
-        creatorId,
-        ListTypeEnum.FOLLOWERS,
-        'add',
-        trx,
-      )
-      await this.listService.updateListByType(
-        creatorId,
-        userId,
-        ListTypeEnum.FOLLOWING,
-        'add',
-        trx,
-      )
+      await trx(UserEntity.table)
+        .where('id', userId)
+        .increment('num_following', 1)
     })
 
     try {
@@ -138,25 +123,21 @@ export class FollowService {
     return new FollowDto(data)
   }
 
-  async searchByQuery(
+  async searchFansByQuery(
     userId: string,
-    searchFanDto: SearchFanRequestDto,
-  ): Promise<GetFanResponseDto[]> {
+    searchFanDto: SearchFollowRequestDto,
+  ): Promise<ListMemberDto[]> {
     let query = this.dbReader(FollowEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
         `${FollowEntity.table}.follower_id`,
       )
-      .leftJoin(
-        ProfileEntity.table,
-        `${ProfileEntity.table}.user_id`,
-        `${FollowEntity.table}.follower_id`,
-      )
       .select(
         `${UserEntity.table}.id`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
+        `${FollowEntity.table}.id as follow`,
       )
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
 
@@ -182,7 +163,52 @@ export class FollowService {
     )
 
     return followResult.map((follow) => {
-      return new GetFanResponseDto(follow)
+      return new ListMemberDto(follow)
+    })
+  }
+
+  async searchFollowingByQuery(
+    userId: string,
+    searchFollowingDto: SearchFollowRequestDto,
+  ): Promise<ListMemberDto[]> {
+    let query = this.dbReader(FollowEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${FollowEntity.table}.creator_id`,
+      )
+      .select(
+        `${UserEntity.table}.id`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+      )
+      .andWhere(`${FollowEntity.table}.follower_id`, userId)
+
+    if (searchFollowingDto.query) {
+      const strippedQuery = searchFollowingDto.query.replace(/\W/g, '')
+      const likeClause = `%${strippedQuery}%`
+      query = query.where(async function () {
+        await this.whereILike('user.username', likeClause).orWhereILike(
+          'user.display_name',
+          likeClause,
+        )
+      })
+    }
+    if (searchFollowingDto.cursor) {
+      await query.andWhere(
+        this.dbReader.raw(
+          `${UserEntity.table}.id > ${searchFollowingDto.cursor}`,
+        ),
+      )
+    }
+
+    const followResult = await query.orderBy(
+      `${UserEntity.table}.display_name`,
+      'asc',
+    )
+
+    return followResult.map((follow) => {
+      return new ListMemberDto(follow)
     })
   }
 
@@ -241,23 +267,12 @@ export class FollowService {
         .delete()
       if (deleted === 1) {
         await trx(CreatorStatEntity.table)
-          .where('user_id', userId)
+          .where('user_id', creatorId)
           .decrement('num_followers', 1)
+        await trx(UserEntity.table)
+          .where('id', userId)
+          .decrement('num_following', 1)
       }
-      await this.listService.updateListByType(
-        userId,
-        creatorId,
-        ListTypeEnum.FOLLOWERS,
-        'remove',
-        trx,
-      )
-      await this.listService.updateListByType(
-        creatorId,
-        userId,
-        ListTypeEnum.FOLLOWING,
-        'remove',
-        trx,
-      )
     })
   }
 }

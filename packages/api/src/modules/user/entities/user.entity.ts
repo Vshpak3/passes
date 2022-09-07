@@ -62,4 +62,7 @@ export class UserEntity extends BaseEntity<
 
   @Property({ default: false })
   isDisabled = false
+
+  @Property({ default: 0 })
+  numFollowing: number
 }

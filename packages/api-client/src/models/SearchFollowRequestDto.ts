@@ -16,39 +16,39 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface SearchFanRequestDto
+ * @interface SearchFollowRequestDto
  */
-export interface SearchFanRequestDto {
+export interface SearchFollowRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof SearchFanRequestDto
+     * @memberof SearchFollowRequestDto
      */
-    query: string;
+    query?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFanRequestDto
+     * @memberof SearchFollowRequestDto
      */
     cursor?: string;
 }
 
-export function SearchFanRequestDtoFromJSON(json: any): SearchFanRequestDto {
-    return SearchFanRequestDtoFromJSONTyped(json, false);
+export function SearchFollowRequestDtoFromJSON(json: any): SearchFollowRequestDto {
+    return SearchFollowRequestDtoFromJSONTyped(json, false);
 }
 
-export function SearchFanRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchFanRequestDto {
+export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchFollowRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'query': json['query'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
         'cursor': !exists(json, 'cursor') ? undefined : json['cursor'],
     };
 }
 
-export function SearchFanRequestDtoToJSON(value?: SearchFanRequestDto | null): any {
+export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

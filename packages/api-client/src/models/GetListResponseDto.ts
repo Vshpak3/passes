@@ -43,18 +43,6 @@ export interface GetListResponseDto {
      * @memberof GetListResponseDto
      */
     count: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetListResponseDto
-     */
-    passId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetListResponseDto
-     */
-    passTitle?: string;
 }
 
 
@@ -83,8 +71,6 @@ export function GetListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'name': json['name'],
         'type': json['type'],
         'count': json['count'],
-        'passId': !exists(json, 'passId') ? undefined : json['passId'],
-        'passTitle': !exists(json, 'passTitle') ? undefined : json['passTitle'],
     };
 }
 
@@ -101,8 +87,6 @@ export function GetListResponseDtoToJSON(value?: GetListResponseDto | null): any
         'name': value.name,
         'type': value.type,
         'count': value.count,
-        'passId': value.passId,
-        'passTitle': value.passTitle,
     };
 }
 

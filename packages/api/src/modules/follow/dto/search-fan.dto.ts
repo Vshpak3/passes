@@ -1,8 +1,8 @@
 import { DtoProperty } from '../../../web/dto.web'
 
-export class SearchFanRequestDto {
-  @DtoProperty()
-  query: string
+export class SearchFollowRequestDto {
+  @DtoProperty({ required: false })
+  query?: string
 
   @DtoProperty({ required: false })
   cursor?: string

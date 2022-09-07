@@ -16,34 +16,34 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetFollowingResponseDto
+ * @interface GetFollowResponseDto
  */
-export interface GetFollowingResponseDto {
+export interface GetFollowResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof GetFollowingResponseDto
+     * @memberof GetFollowResponseDto
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof GetFollowingResponseDto
+     * @memberof GetFollowResponseDto
      */
     followerId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetFollowingResponseDto
+     * @memberof GetFollowResponseDto
      */
     creatorId: string;
 }
 
-export function GetFollowingResponseDtoFromJSON(json: any): GetFollowingResponseDto {
-    return GetFollowingResponseDtoFromJSONTyped(json, false);
+export function GetFollowResponseDtoFromJSON(json: any): GetFollowResponseDto {
+    return GetFollowResponseDtoFromJSONTyped(json, false);
 }
 
-export function GetFollowingResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFollowingResponseDto {
+export function GetFollowResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFollowResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -55,7 +55,7 @@ export function GetFollowingResponseDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function GetFollowingResponseDtoToJSON(value?: GetFollowingResponseDto | null): any {
+export function GetFollowResponseDtoToJSON(value?: GetFollowResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }

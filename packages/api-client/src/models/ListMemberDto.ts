@@ -37,6 +37,12 @@ export interface ListMemberDto {
      * @memberof ListMemberDto
      */
     displayName: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ListMemberDto
+     */
+    isFollowing: boolean;
 }
 
 export function ListMemberDtoFromJSON(json: any): ListMemberDto {
@@ -52,6 +58,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
+        'isFollowing': json['isFollowing'],
     };
 }
 
@@ -67,6 +74,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
+        'isFollowing': value.isFollowing,
     };
 }
 

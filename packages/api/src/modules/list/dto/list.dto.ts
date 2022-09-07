@@ -17,21 +17,12 @@ export class ListDto {
   @DtoProperty()
   count: number
 
-  @DtoProperty({ required: false })
-  passId?: string
-
-  @DtoProperty({ required: false })
-  passTitle?: string
-
   constructor(list) {
     if (list) {
       this.listId = list.id
       this.name = list.name
       this.type = list.type
       this.count = list.count
-
-      this.passId = list.pass_id
-      this.passId = list.pass_title
     }
   }
 }

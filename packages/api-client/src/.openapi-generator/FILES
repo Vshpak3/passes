@@ -79,11 +79,9 @@ models/GetCreatorEarningsResponseDto.ts
 models/GetCreatorSettingsResponseDto.ts
 models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
-models/GetFanResponseDto.ts
 models/GetFanWallForCreatorResponseDto.ts
-models/GetFansResponseDto.ts
 models/GetFeedResponseDto.ts
-models/GetFollowingResponseDto.ts
+models/GetFollowResponseDto.ts
 models/GetGalleryViewDto.ts
 models/GetListMembersRequestto.ts
 models/GetListMembersResponseDto.ts
@@ -139,7 +137,7 @@ models/ReportFanDto.ts
 models/ResetPasswordRequestDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
-models/SearchFanRequestDto.ts
+models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
 models/SetInitialUserInfoRequestDto.ts
 models/SetPayinMethodRequestDto.ts

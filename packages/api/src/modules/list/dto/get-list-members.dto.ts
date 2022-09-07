@@ -15,4 +15,8 @@ export class GetListMembersRequestto {
 export class GetListMembersResponseDto {
   @DtoProperty({ type: [ListMemberDto] })
   listMembers: ListMemberDto[]
+
+  constructor(listMembers: ListMemberDto[]) {
+    this.listMembers = listMembers
+  }
 }
