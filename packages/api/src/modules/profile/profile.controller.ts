@@ -12,8 +12,12 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
-import { GetProfileResponseDto } from './dto/get-profile.dto'
+import {
+  GetProfileRequestDto,
+  GetProfileResponseDto,
+} from './dto/get-profile.dto'
 import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
 import { ProfileService } from './profile.service'
 
@@ -51,21 +55,6 @@ export class ProfileController {
   }
 
   @ApiEndpoint({
-    summary: 'Gets a profile by username',
-    responseStatus: HttpStatus.OK,
-    responseType: GetProfileResponseDto,
-    responseDesc: 'A profile was retrieved',
-    allowUnauthorizedRequest: true,
-  })
-  @Get('usernames/:username')
-  async findProfileByUsername(
-    @Req() req: RequestWithUser,
-    @Param('username') username: string,
-  ): Promise<GetProfileResponseDto> {
-    return this.profileService.findProfileByUsername(username, req.user?.id)
-  }
-
-  @ApiEndpoint({
     summary: 'Gets a profile',
     responseStatus: HttpStatus.OK,
     responseType: GetProfileResponseDto,
@@ -73,12 +62,13 @@ export class ProfileController {
     allowUnauthorizedRequest: true,
   })
   // eslint-disable-next-line sonarjs/no-duplicate-string
-  @Get(':profileId')
+  @Post('get')
+  @AllowUnauthorizedRequest()
   async findProfile(
     @Req() req: RequestWithUser,
-    @Param('profileId') profileId: string,
+    @Body() getProfileRequestDto: GetProfileRequestDto,
   ): Promise<GetProfileResponseDto> {
-    return this.profileService.findProfile(profileId, req.user?.id)
+    return this.profileService.findProfile(getProfileRequestDto, req.user?.id)
   }
 
   @ApiEndpoint({

@@ -255,7 +255,7 @@ export class PaymentService {
    * @param userid
    * @returns
    */
-  async getCircleCards(userId: string): Promise<Array<CircleCardDto>> {
+  async getCircleCards(userId: string): Promise<CircleCardDto[]> {
     return (
       await this.dbReader(CircleCardEntity.table)
         .select('*')
@@ -464,7 +464,7 @@ export class PaymentService {
    * @param userId
    * @returns
    */
-  async getCircleBanks(userId: string): Promise<Array<CircleBankDto>> {
+  async getCircleBanks(userId: string): Promise<CircleBankDto[]> {
     return (
       await this.dbReader(CircleBankEntity.table)
         .select('*')
@@ -2097,7 +2097,7 @@ export class PaymentService {
     )
   }
 
-  async getSubscriptions(userId: string): Promise<Array<SubscriptionDto>> {
+  async getSubscriptions(userId: string): Promise<SubscriptionDto[]> {
     const subscriptions = await this.dbReader
       .table(SubscriptionEntity.table)
       .where('user_id', userId)

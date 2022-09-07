@@ -41,7 +41,7 @@ export class NotificationsService {
   async get(
     userId: string,
     getNotificationsRequest: GetNotificationsRequestDto,
-  ): Promise<Array<NotificationDto>> {
+  ): Promise<NotificationDto[]> {
     let query = this.dbReader(NotificationEntity.table)
       .leftJoin(
         UserEntity.table,

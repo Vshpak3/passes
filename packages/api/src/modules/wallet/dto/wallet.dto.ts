@@ -3,7 +3,7 @@ import { ChainEnum } from '../enum/chain.enum'
 
 export class WalletDto {
   @DtoProperty()
-  id: string
+  walletId: string
 
   @DtoProperty({ required: false })
   userId?: string
@@ -22,7 +22,7 @@ export class WalletDto {
 
   constructor(wallet) {
     if (wallet) {
-      this.id = wallet.id
+      this.walletId = wallet.id
       this.userId = wallet.user_id
       this.address = wallet.address
       this.chain = wallet.chain

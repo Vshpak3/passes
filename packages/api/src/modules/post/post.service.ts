@@ -30,7 +30,7 @@ import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { POST_DELETED, POST_NOT_EXIST } from './constants/errors'
+import { POST_NOT_EXIST } from './constants/errors'
 import {
   CreatePostRequestDto,
   CreatePostResponseDto,
@@ -93,6 +93,31 @@ export class PostService {
           .update(createPostDto.isMessage ? 'in_message' : 'in_post', true)
           .whereIn('id', createPostDto.contentIds)
 
+        // TODO: schedule access add
+        const passAccesses = await this.dbReader(PassHolderEntity.table)
+          .whereIn(`pass_id`, createPostDto.passIds)
+          .andWhere(function () {
+            return this.whereNull(`expires_at`).orWhere(
+              `expires_at`,
+              '>',
+              new Date(),
+            )
+          })
+          .select('DISTINCT(holder_id)')
+        for (let i = 0; i < passAccesses.length; ++i) {
+          if (!passAccesses[i].holder_id) continue
+          const postUserAccess =
+            PostUserAccessEntity.toDict<PostUserAccessEntity>({
+              post: postId,
+              user: passAccesses[i].holder_id,
+            })
+          await trx(PostUserAccessEntity.table)
+            .insert(postUserAccess)
+            .onConflict(['post_id', 'user_id'])
+            .ignore()
+        }
+
+        // only for display
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
           const postPassAccess =
             PostPassAccessEntity.toDict<PostPassAccessEntity>({
@@ -192,34 +217,12 @@ export class PostService {
   async getPostsFromQuery(
     userId: string,
     query: Knex.QueryBuilder,
-  ): Promise<Array<PostDto>> {
+  ): Promise<PostDto[]> {
     const posts = await query
-
-    const passAccesses = await this.dbReader(PostPassAccessEntity.table)
-      .innerJoin(
-        PassHolderEntity.table,
-        `${PostPassAccessEntity.table}.pass_id`,
-        `${PassHolderEntity.table}.pass_id`,
-      )
-      .whereIn(
-        `${PostPassAccessEntity.table}.post_id`,
-        posts.map((post) => post.id),
-      )
-      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
-      .andWhere(
-        `${PassHolderEntity.table}.expires_at`,
-        '>',
-        this.dbWriter.fn.now(),
-      )
-      .select('post_id')
-    const postsFromPass = new Set(
-      passAccesses.map((passAccess) => passAccess.post_id),
-    )
 
     const accessiblePosts = posts.reduce((arr, post) => {
       if (
         post.access || // single post purchase
-        postsFromPass.has(post.id) || // owns pass that gives access
         post.user_id === userId || // user made post
         !post.price || // no price on post
         post.price === 0 // price of post is 0
@@ -246,7 +249,7 @@ export class PostService {
 
   private async getContentLookupForPosts(
     postIds: string[],
-  ): Promise<Map<string, Array<ContentDto>>> {
+  ): Promise<Map<string, ContentDto[]>> {
     const postContents = await this.dbReader(PostContentEntity.table)
       .innerJoin(
         ContentEntity.table,
@@ -270,36 +273,19 @@ export class PostService {
     postId: string,
     updatePostDto: UpdatePostRequestDto,
   ) {
-    const postDbResult = await this.dbReader(PostEntity.table)
-      .select('*')
-      .where('post.id', postId)
-      .where('post.user_id', userId)
-      .first()
-
-    if (!postDbResult) {
-      throw new NotFoundException(POST_NOT_EXIST)
-    }
-
-    if (postDbResult.deletedAt) {
-      throw new NotFoundException(POST_DELETED)
-    }
-
-    await this.dbWriter(PostEntity.table)
+    const updated = await this.dbWriter(PostEntity.table)
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
       .update(PostEntity.toDict<PostEntity>({ ...updatePostDto }))
 
-    return new PostDto(postDbResult, [])
+    return updated === 1
   }
 
   async removePost(userId: string, postId: string) {
     //TODO: allow admins + managers to remove posts
-    const post = await this.dbReader(PostEntity.table)
+    const updated = await this.dbWriter(PostEntity.table)
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
-      .first()
-    if (!post) {
-      throw new NotFoundException(POST_NOT_EXIST)
-    }
-    return true
+      .update('deleted_at', new Date())
+    return updated === 1
   }
 
   async purchasePost(userId: string, postId: string) {

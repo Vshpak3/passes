@@ -24,7 +24,7 @@ export interface GetWalletResponseDto {
      * @type {string}
      * @memberof GetWalletResponseDto
      */
-    id: string;
+    walletId: string;
     /**
      * 
      * @type {string}
@@ -67,7 +67,7 @@ export function GetWalletResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'id': json['id'],
+        'walletId': json['walletId'],
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
         'address': json['address'],
         'chain': json['chain'],
@@ -85,7 +85,7 @@ export function GetWalletResponseDtoToJSON(value?: GetWalletResponseDto | null):
     }
     return {
         
-        'id': value.id,
+        'walletId': value.walletId,
         'userId': value.userId,
         'address': value.address,
         'chain': value.chain,

@@ -8,7 +8,11 @@ import {
   UseMethod,
   Uses,
 } from '@metaplex-foundation/mpl-token-metadata'
-import { Inject, NotFoundException } from '@nestjs/common'
+import {
+  Inject,
+  NotFoundException,
+  ServiceUnavailableException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
   ACCOUNT_SIZE,
@@ -26,11 +30,9 @@ import {
   PublicKey,
   PublicKeyInitData,
   sendAndConfirmRawTransaction,
-  sendAndConfirmTransaction,
   SystemProgram,
   Transaction,
   TransactionInstruction,
-  TransactionSignature,
 } from '@solana/web3.js'
 import base58 from 'bs58'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -41,13 +43,15 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { RedisLockService } from '../redisLock/redisLock.service'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { WalletEntity } from '../wallet/entities/wallet.entity'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
-import { SolNftEntity } from './entities/sol-nft.entity'
-import { SolNftCollectionEntity } from './entities/sol-nft-collection.entity'
 import * as SolHelper from './sol-helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
@@ -97,6 +101,8 @@ type Creator = Readonly<{
   share: number
 }>
 
+const MAX_TIME_NFT_REFRESH = 1000 * 60 * 30 // 30 minutes
+
 export class SolService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -112,6 +118,8 @@ export class SolService {
     private readonly lambdaService: LambdaService,
     private readonly s3contentService: S3ContentService,
     private readonly walletService: WalletService,
+    @Inject(RedisLockService)
+    protected readonly lockService: RedisLockService,
   ) {}
 
   async getConnection() {
@@ -122,67 +130,81 @@ export class SolService {
     )
   }
 
-  // async refreshSolWallets() {
-  //   const wallets = this.dbReader(WalletEntity.table)
-  //     .whereNotNull('user_id')
-  //     .andWhere(
-  //       WalletEntity.toDict<WalletEntity>({
-  //         chain: ChainEnum.SOL,
-  //       }),
-  //     )
-  //     .select('id')
-  //   await Promise.all(
-  // }
-  // async refreshSolWallet(walletId: string) {}
-  // async refreshSolWallets(
-  //   id: string,
-  //   lastProcessedId: string | null,
-  // ): Promise<void> {
-  //   const solNftsQuery = this.dbReader(SolNftEntity.table)
-  //     .leftJoin(PassHolderEntity.table, 'pass_holder.sol_nft_id', 'sol_nft.id')
-  //     .leftJoin(WalletEntity.table, 'wallet.id', 'sol_nft.wallet_id')
-  //     .select(
-  //       'sol_nft.id as sol_nft_id',
-  //       'sol_nft.mint_public_key',
-  //       'pass_holder.id as pass_holder_id',
-  //       'wallet.address as wallet_address',
-  //       'wallet.user_id as wallet_user_id',
-  //       'wallet.id as wallet_id',
-  //     )
-  //   if (lastProcessedId != null) {
-  //     await solNftsQuery.where('sol_nft.id', '>', lastProcessedId)
-  //   }
-
-  //   if (solNfts.length == 0) {
-  //     await this.dbWriter(BatchSolNftRefreshEntity.table)
-  //       .update(
-  //         'batch_sol_nft_refresh.last_processed_id',
-  //         'ffffffff-ffff-ffff-ffff-ffffffffffff',
-  //       )
-  //       .where('batch_sol_nft_refresh.id', id)
-  //     return
-  //   }
-  //   for (let i = 0; i < solNfts.length; i++) {
-  //     try {
-  //       await this.refreshNftOwnership(
-  //         solNfts[i].sol_nft_id,
-  //         solNfts[i].pass_holder_id,
-  //         solNfts[i].wallet_address,
-  //         solNfts[i].wallet_user_id,
-  //         solNfts[i].wallet_id,
-  //         solNfts[i].mint_public_key,
-  //       )
-  //       await this.dbWriter(BatchSolNftRefreshEntity.table)
-  //         .update('batch_sol_nft_refresh.last_processed_id', solNfts[i].id)
-  //         .where('batch_sol_nft_refresh.id', id)
-  //     } catch (err) {
-  //       this.logger.error(
-  //         `error refreshing solNft ${solNfts[i].id} as part of batch sol bft refresh ${id}`,
-  //         err,
-  //       )
-  //     }
-  //   }
-  // }
+  async refreshSolNfts() {
+    const passholders = await this.dbReader(PassHolderEntity.table)
+      .where(
+        PassHolderEntity.toDict<PassHolderEntity>({
+          chain: ChainEnum.SOL,
+        }),
+      )
+      .select(['address', 'id'])
+    // run synchronously to avoid throttling
+    // its fine that its done slowly
+    const connection = await this.getConnection()
+    for (let i = 0; i < passholders.length; ++i) {
+      try {
+        await this.refreshSolNft(
+          passholders[i].id,
+          passholders[i].address,
+          true,
+          connection,
+        )
+      } catch (err) {
+        this.logger.error(`failed sol nft refresh ${passholders[i].id}`, err)
+      }
+    }
+  }
+  async refreshSolNft(
+    passHolderId: string,
+    address: string,
+    bypass: boolean,
+    connection?: Connection,
+  ): Promise<void> {
+    if (!bypass) {
+      const redisKey = `refreshSolNft:${passHolderId}`
+      const lockResult = await this.lockService.lockOnce(
+        redisKey,
+        MAX_TIME_NFT_REFRESH,
+      )
+      if (!lockResult) {
+        throw new ServiceUnavailableException(
+          `Please retry this operation after ${
+            (await this.lockService.getTTL(redisKey)) || 0
+          } seconds`,
+        )
+      }
+    }
+    if (!connection) connection = await this.getConnection()
+    const walletAddress = (
+      await this.getOwnerOfPass(connection, new PublicKey(address))
+    )?.toBase58()
+    if (walletAddress) {
+      const wallet = await this.dbReader(WalletEntity.table)
+        .where(
+          WalletEntity.toDict<WalletEntity>({
+            chain: ChainEnum.SOL,
+            address: walletAddress,
+            authenticated: true,
+          }),
+        )
+        .select(['id', 'user_id'])
+        .first()
+      if (wallet) {
+        await this.dbWriter(PassHolderEntity.table)
+          .where(
+            PassHolderEntity.toDict<PassHolderEntity>({
+              id: passHolderId,
+            }),
+          )
+          .update(
+            PassHolderEntity.toDict<PassHolderEntity>({
+              wallet: wallet.id,
+              holder: wallet.user_id,
+            }),
+          )
+      }
+    }
+  }
 
   // async refreshNftOwnership(
   //   solNftId: string,
@@ -256,9 +278,12 @@ export class SolService {
    */
   async createNftPass(
     userId: string,
-    walletId: string,
-    collectionId: string,
-    owner: PublicKey,
+    passId: string,
+    passHolderId: string,
+    name: string,
+    symbol: string,
+    description: string,
+    ownerAddress: string,
   ): Promise<GetSolNftResponseDto> {
     const connection = await this.getConnection()
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
@@ -267,8 +292,9 @@ export class SolService {
       .first()
     if (!user) throw new NotFoundException('User does not exist')
     if (localMockedAwsDev()) {
-      return this.createSampleNftPass(walletId, collectionId)
+      return { mintPubKey: uuid.v4(), transactionHash: '' }
     }
+    const owner = new PublicKey(ownerAddress)
     const solNftId = uuid.v4()
     const walletPubKey = new PublicKey(
       await this.lambdaService.blockchainSignGetPublicAddress(
@@ -281,27 +307,20 @@ export class SolService {
       remaining: uses,
       total: uses,
     }
-    const collection = (
-      await this.dbReader(SolNftCollectionEntity.table)
-        .select('*')
-        .where('id', collectionId)
-    )[0]
-
-    if (collection == undefined) {
-      throw 'bad request, invalid collectionId'
-    }
-    const collectionPubKey = new PublicKey(collection.public_key)
+    const passPubKey = new PublicKey(
+      await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
+    )
     const jsonMetadata = {
-      name: collection.name,
-      symbol: collection.symbol,
-      description: collection.description,
+      name: name,
+      symbol: symbol,
+      description: description,
       seller_fee_basis_points: 0,
-      image: collection.image_url,
+      image: '', // TODO, get url from passHolderId
       properties: {
         files: [
           {
             type: 'image/png',
-            uri: collection.image_url,
+            uri: '', // TODO, get url from passHolderId
           },
         ],
         category: 'image',
@@ -336,12 +355,14 @@ export class SolService {
 
     const collectionData = {
       verified: false,
-      key: collectionPubKey,
+      key: passPubKey,
     }
 
     // Minting logic
     const mintPubKey = new PublicKey(
-      await this.lambdaService.blockchainSignCreateAddress(`mint.${solNftId}`),
+      await this.lambdaService.blockchainSignCreateAddress(
+        `passholder.${passHolderId}`,
+      ),
     )
     const associatedTokenAccount = await getAssociatedTokenAddress(
       mintPubKey,
@@ -387,7 +408,7 @@ export class SolService {
       await SolHelper.findMasterEditionV2Pda(mintPubKey)
     )[0]
     const collectionMetadataPda = (
-      await SolHelper.findMetadataPda(collectionPubKey)
+      await SolHelper.findMetadataPda(passPubKey)
     )[0]
     const collectionMasterEditionPda = (
       await SolHelper.findMasterEditionV2Pda(mintPubKey)
@@ -436,7 +457,7 @@ export class SolService {
         metadata: metadataPda,
         collectionAuthority: walletPubKey,
         payer: walletPubKey,
-        collectionMint: collectionPubKey,
+        collectionMint: passPubKey,
         collection: collectionMetadataPda,
         collectionMasterEditionAccount: collectionMasterEditionPda,
       }),
@@ -462,84 +483,28 @@ export class SolService {
     transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
     transaction.addSignature(mintPubKey, Buffer.from(mintSignature))
 
-    const txSignature = await sendAndConfirmRawTransaction(
+    const transactionHash = await sendAndConfirmRawTransaction(
       connection,
       transaction.serialize(),
     )
 
-    await this.dbWriter(SolNftEntity.table).insert(
-      SolNftEntity.toDict<SolNftEntity>({
-        id: solNftId,
-        solNftCollection: collectionId,
-        mintPublicKey: mintPubKey.toString(),
-        metadataPublicKey: metadataPda.toString(),
-        name: collection.name,
-        symbol: collection.symbol,
-        uriMetadata: `https://cdn.passes-staging.com/nft/nft-${solNftId}`,
-        txSignature: txSignature,
-        wallet: walletId,
-      }),
-    )
-    return new GetSolNftResponseDto(
-      solNftId,
-      mintPubKey,
-      metadataPda,
-      txSignature,
-    )
-  }
-
-  async createSampleNftPass(
-    walletId: string,
-    collectionId: string,
-  ): Promise<GetSolNftResponseDto> {
-    const collection = (
-      await this.dbReader(SolNftCollectionEntity.table)
-        .select('*')
-        .where('sol_nft_collection.id', collectionId)
-    )[0]
-
-    const solNftId = uuid.v4()
-    const mintPubKey = uuid.v4()
-    const metadataPda = uuid.v4()
-    const txSignature = uuid.v4()
-
-    await this.dbWriter(SolNftEntity.table).insert(
-      SolNftEntity.toDict<SolNftEntity>({
-        id: solNftId,
-        solNftCollection: collectionId,
-        mintPublicKey: mintPubKey,
-        metadataPublicKey: metadataPda,
-        name: collection.name,
-        symbol: collection.symbol,
-        uriMetadata:
-          'https://cdn.passes-staging.com/nft/nft-51dac6fb-95b4-4e25-a6e9-f8ce3f527811',
-        txSignature: txSignature,
-        wallet: walletId,
-      }),
-    )
-    return new GetSolNftResponseDto(
-      solNftId,
-      mintPubKey,
-      metadataPda,
-      txSignature,
-    )
+    return { mintPubKey: mintPubKey.toBase58(), transactionHash }
   }
 
   async createSolNftCollection(
     userId: string,
+    passId: string,
     name: string,
     symbol: string,
     description: string,
-    imageUrl: string,
   ): Promise<GetSolNftCollectionResponseDto> {
     const connection = await this.getConnection()
     // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
-    const collectionId = uuid.v4()
     let walletPubKey: PublicKey | undefined = undefined
-    let collectionPubKey: PublicKey | undefined = undefined
+    let passPubKey: PublicKey | undefined = undefined
     let wallet: Keypair | undefined = undefined
     let collection: Keypair | undefined = undefined
     let metadata: DataV2 | undefined = undefined
@@ -550,7 +515,7 @@ export class SolService {
       )
       walletPubKey = wallet.publicKey
       collection = Keypair.generate()
-      collectionPubKey = collection.publicKey
+      passPubKey = collection.publicKey
       metadataUri =
         'https://rfdufzqpc6bb3lpa4y4teg23rq6ugjn343dc2vvryobmtaam.arweave.net/iUdC5_g8Xgh2t4OY5-MhtbjD1DJbvmxi1WscOCyYAMs'
       metadata = {
@@ -574,17 +539,15 @@ export class SolService {
           SOL_MASTER_WALLET_LAMBDA_KEY_ID,
         ),
       )
-      collectionPubKey = new PublicKey(
-        await this.lambdaService.blockchainSignCreateAddress(
-          `collection.${collectionId}`,
-        ),
+      passPubKey = new PublicKey(
+        await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
       )
 
       const metadataJson = {
         name: name,
         symbol: symbol,
         description: description,
-        image: imageUrl,
+        image: '', // TODO, get url from passId
         external_url: `https://www.passes.com/${user.username}`,
         seller_fee_basis_points: 0,
         properties: {
@@ -596,7 +559,7 @@ export class SolService {
           ],
           files: [
             {
-              uri: imageUrl,
+              uri: '', // TODO, get url from passId
               type: 'image/png',
             },
           ],
@@ -606,9 +569,9 @@ export class SolService {
       const s3Input = {
         Bucket: `passes-stage-nft`,
         Body: JSON.stringify(metadataJson),
-        Key: `nft/collection-${collectionId}`,
+        Key: `nft/collection-${passId}`,
       }
-      metadataUri = `https://cdn.passes-staging.com/nft/collection-${collectionId}`
+      metadataUri = `https://cdn.passes-staging.com/nft/collection-${passId}`
 
       metadata = {
         name: name,
@@ -629,7 +592,7 @@ export class SolService {
     }
     // Minting logic
     const associatedTokenAccount = await getAssociatedTokenAddress(
-      collectionPubKey,
+      passPubKey,
       walletPubKey,
     )
     const lamports = await connection.getMinimumBalanceForRentExemption(
@@ -640,13 +603,13 @@ export class SolService {
     const mintInstructions: TransactionInstruction[] = [
       SystemProgram.createAccount({
         fromPubkey: walletPubKey,
-        newAccountPubkey: collectionPubKey,
+        newAccountPubkey: passPubKey,
         lamports: lamports,
         space: MINT_SIZE,
         programId: TOKEN_PROGRAM_ID,
       }),
       createInitializeMintInstruction(
-        collectionPubKey,
+        passPubKey,
         0,
         walletPubKey,
         walletPubKey,
@@ -656,10 +619,10 @@ export class SolService {
         walletPubKey,
         associatedTokenAccount,
         walletPubKey,
-        collectionPubKey,
+        passPubKey,
       ),
       createMintToInstruction(
-        collectionPubKey,
+        passPubKey,
         associatedTokenAccount,
         walletPubKey,
         1,
@@ -668,17 +631,17 @@ export class SolService {
     // 2 - Calling metaplex instruction to initiate a new NFT
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [metadataPda, _metadataPdaBump] = await SolHelper.findMetadataPda(
-      collectionPubKey,
+      passPubKey,
     )
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [masterEditionPda, masterEditionPdaBump] =
-      await SolHelper.findMasterEditionV2Pda(collectionPubKey)
+      await SolHelper.findMasterEditionV2Pda(passPubKey)
 
     const metaplexInstructions: TransactionInstruction[] = [
       createCreateMetadataAccountV2Instruction(
         {
           metadata: metadataPda,
-          mint: collectionPubKey,
+          mint: passPubKey,
           mintAuthority: walletPubKey,
           payer: walletPubKey,
           updateAuthority: walletPubKey,
@@ -693,7 +656,7 @@ export class SolService {
       createCreateMasterEditionV3Instruction(
         {
           edition: masterEditionPda,
-          mint: collectionPubKey,
+          mint: passPubKey,
           updateAuthority: walletPubKey,
           mintAuthority: walletPubKey,
           payer: walletPubKey,
@@ -714,12 +677,8 @@ export class SolService {
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
 
-    let txSignature: undefined | TransactionSignature = undefined
     if (localMockedAwsDev()) {
-      txSignature = await sendAndConfirmTransaction(connection, transaction, [
-        wallet as Keypair,
-        collection as Keypair,
-      ])
+      return { passPubKey: passPubKey.toBase58(), transactionHash: '' }
     } else {
       const walletSignature =
         await this.lambdaService.blockchainSignSignMessage(
@@ -729,39 +688,19 @@ export class SolService {
 
       const collectionSignature =
         await this.lambdaService.blockchainSignSignMessage(
-          `collection.${collectionId}`,
+          `pass.${passId}`,
           Uint8Array.from(transaction.serializeMessage()),
         )
 
       transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
-      transaction.addSignature(
-        collectionPubKey,
-        Buffer.from(collectionSignature),
-      )
+      transaction.addSignature(passPubKey, Buffer.from(collectionSignature))
 
-      txSignature = await sendAndConfirmRawTransaction(
+      const transactionHash = await sendAndConfirmRawTransaction(
         connection,
         transaction.serialize(),
       )
+
+      return { passPubKey: passPubKey.toBase58(), transactionHash }
     }
-
-    await this.dbWriter(SolNftCollectionEntity.table).insert(
-      SolNftCollectionEntity.toDict<SolNftCollectionEntity>({
-        id: collectionId,
-        name: name,
-        symbol: symbol,
-        description: description,
-        uriMetadata: metadataUri,
-        imageUrl: imageUrl,
-        publicKey: collectionPubKey.toString(),
-        txSignature: txSignature,
-      }),
-    )
-
-    return new GetSolNftCollectionResponseDto(
-      collectionId,
-      collectionPubKey,
-      txSignature,
-    )
   }
 }

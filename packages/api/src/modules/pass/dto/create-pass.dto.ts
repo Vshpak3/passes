@@ -1,6 +1,7 @@
 import { IsInt, IsOptional, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {
@@ -36,4 +37,7 @@ export class CreatePassRequestDto {
 
   @DtoProperty({ required: false })
   messages?: number | null
+
+  @DtoProperty({ enum: ChainEnum })
+  chain: ChainEnum
 }

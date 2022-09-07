@@ -18,8 +18,8 @@ export class WalletEntity extends BaseEntity {
   chain: ChainEnum
 
   @Property({ default: false })
-  custodial = false
+  custodial: boolean
 
   @Property({ default: true })
-  authenticated = true
+  authenticated: boolean
 }

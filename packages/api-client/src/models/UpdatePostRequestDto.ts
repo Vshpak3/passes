@@ -37,12 +37,6 @@ export interface UpdatePostRequestDto {
      * @memberof UpdatePostRequestDto
      */
     expiresAt?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof UpdatePostRequestDto
-     */
-    scheduledAt?: Date;
 }
 
 export function UpdatePostRequestDtoFromJSON(json: any): UpdatePostRequestDto {
@@ -58,7 +52,6 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'text': json['text'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
-        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
 
@@ -74,7 +67,6 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
         'text': value.text,
         'price': value.price,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
-        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

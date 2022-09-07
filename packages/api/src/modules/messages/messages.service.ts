@@ -507,7 +507,7 @@ export class MessagesService {
     )
   }
 
-  async getPendingTippedMessages(userId: string): Promise<Array<MessageDto>> {
+  async getPendingTippedMessages(userId: string): Promise<MessageDto[]> {
     return (
       await this.dbReader(TippedMessageEntity.table).where(
         TippedMessageEntity.toDict<TippedMessageEntity>({
@@ -526,7 +526,7 @@ export class MessagesService {
     )
   }
 
-  async getCompletedTippedMessages(userId: string): Promise<Array<MessageDto>> {
+  async getCompletedTippedMessages(userId: string): Promise<MessageDto[]> {
     return (
       await this.dbReader(TippedMessageEntity.table).where(
         TippedMessageEntity.toDict<TippedMessageEntity>({
@@ -547,7 +547,7 @@ export class MessagesService {
 
   async getChannelsStats(
     getChannelStatsRequestDto: GetChannelStatsRequestDto,
-  ): Promise<Array<ChannelStatDto>> {
+  ): Promise<ChannelStatDto[]> {
     return (
       await this.dbReader(ChannelStatEntity.table)
         .whereIn('channel_id', getChannelStatsRequestDto.channelIds)

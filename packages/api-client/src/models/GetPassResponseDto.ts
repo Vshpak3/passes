@@ -36,12 +36,6 @@ export interface GetPassResponseDto {
      * @type {string}
      * @memberof GetPassResponseDto
      */
-    solNftCollectionId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassResponseDto
-     */
     title: string;
     /**
      * 
@@ -54,7 +48,7 @@ export interface GetPassResponseDto {
      * @type {string}
      * @memberof GetPassResponseDto
      */
-    type: string;
+    type: GetPassResponseDtoTypeEnum;
     /**
      * 
      * @type {number}
@@ -66,7 +60,37 @@ export interface GetPassResponseDto {
      * @type {number}
      * @memberof GetPassResponseDto
      */
+    duration?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPassResponseDto
+     */
     totalSupply: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPassResponseDto
+     */
+    remainingSupply: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPassResponseDto
+     */
+    freetrial: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassResponseDto
+     */
+    pinnedAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassResponseDto
+     */
+    expiresAt?: Date;
     /**
      * 
      * @type {string}
@@ -79,13 +103,19 @@ export interface GetPassResponseDto {
      * @memberof GetPassResponseDto
      */
     creatorDisplayName?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GetPassResponseDto
-     */
-    expiresAt?: Date;
 }
+
+
+/**
+ * @export
+ */
+export const GetPassResponseDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type GetPassResponseDtoTypeEnum = typeof GetPassResponseDtoTypeEnum[keyof typeof GetPassResponseDtoTypeEnum];
+
 
 export function GetPassResponseDtoFromJSON(json: any): GetPassResponseDto {
     return GetPassResponseDtoFromJSONTyped(json, false);
@@ -99,15 +129,18 @@ export function GetPassResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'id': json['id'],
         'creatorId': json['creatorId'],
-        'solNftCollectionId': json['solNftCollectionId'],
         'title': json['title'],
         'description': json['description'],
         'type': json['type'],
         'price': json['price'],
+        'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'totalSupply': json['totalSupply'],
+        'remainingSupply': json['remainingSupply'],
+        'freetrial': json['freetrial'],
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
 }
 
@@ -122,15 +155,18 @@ export function GetPassResponseDtoToJSON(value?: GetPassResponseDto | null): any
         
         'id': value.id,
         'creatorId': value.creatorId,
-        'solNftCollectionId': value.solNftCollectionId,
         'title': value.title,
         'description': value.description,
         'type': value.type,
         'price': value.price,
+        'duration': value.duration,
         'totalSupply': value.totalSupply,
+        'remainingSupply': value.remainingSupply,
+        'freetrial': value.freetrial,
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };
 }
 

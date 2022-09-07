@@ -11,3 +11,10 @@ export class NoPassError extends Error {
     Object.setPrototypeOf(this, NoPassError.prototype)
   }
 }
+
+export class UnsupportedChainPassError extends Error {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, UnsupportedChainPassError.prototype)
+  }
+}

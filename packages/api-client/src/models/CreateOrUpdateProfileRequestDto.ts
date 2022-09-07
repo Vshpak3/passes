@@ -24,12 +24,6 @@ export interface CreateOrUpdateProfileRequestDto {
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    displayName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateOrUpdateProfileRequestDto
-     */
     coverTitle?: string;
     /**
      * 
@@ -85,7 +79,6 @@ export function CreateOrUpdateProfileRequestDtoFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
         'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
@@ -106,7 +99,6 @@ export function CreateOrUpdateProfileRequestDtoToJSON(value?: CreateOrUpdateProf
     }
     return {
         
-        'displayName': value.displayName,
         'coverTitle': value.coverTitle,
         'coverDescription': value.coverDescription,
         'description': value.description,

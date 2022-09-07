@@ -11,6 +11,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY } from '../sol/sol.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
@@ -116,6 +117,7 @@ export class WalletService {
       address: address,
       chain: ChainEnum.SOL,
       custodial: true,
+      authenticated: true,
     })
     await this.dbWriter(WalletEntity.table).insert(data)
     return new WalletDto(data)
@@ -162,7 +164,7 @@ export class WalletService {
 
     // if no valid default exists, defer to custodial
     const custodialWallet = await this.getUserCustodialWallet(userId)
-    await this.setDefaultWallet(userId, custodialWallet.id as string)
+    await this.setDefaultWallet(userId, custodialWallet.walletId as string)
     return custodialWallet
   }
 
@@ -234,7 +236,7 @@ export class WalletService {
     }
   }
 
-  async getWalletsForUser(userId: string): Promise<Array<WalletDto>> {
+  async getWalletsForUser(userId: string): Promise<WalletDto[]> {
     return (
       await this.dbReader(WalletEntity.table).where(
         WalletEntity.toDict<WalletEntity>({
@@ -285,17 +287,35 @@ export class WalletService {
       default:
         throw new BadRequestException('invalid chain specified')
     }
-    const data = WalletEntity.toDict<WalletEntity>({
-      user: userId,
-      address: walletAddress,
-      chain: createWalletDto.chain,
-      authenticated: true,
-    })
+
     await this.dbWriter(WalletEntity.table)
-      .insert(data)
+      .insert(
+        WalletEntity.toDict<WalletEntity>({
+          user: userId,
+          address: walletAddress,
+          chain: createWalletDto.chain,
+          authenticated: true,
+        }),
+      )
       .onConflict(['address', 'chain'])
-      .merge()
-    return true
+      .ignore()
+    // authenticate if already exists
+    const updated = await this.dbWriter(WalletEntity.table)
+      .update(
+        WalletEntity.toDict<WalletEntity>({
+          authenticated: true,
+        }),
+      )
+      .where(
+        WalletEntity.toDict<WalletEntity>({
+          user: userId,
+          address: walletAddress,
+          chain: createWalletDto.chain,
+        }),
+      )
+    // insert if not exists
+    //  if wallet is held by someone else return false
+    return updated === 1
   }
 
   async createUnauthenticatedWallet(
@@ -322,6 +342,9 @@ export class WalletService {
       .update({ user_id: null })
       .where('id', walletId)
       .where('user_id', userId)
+    await this.dbWriter(PassHolderEntity.table)
+      .where('wallet_id', walletId)
+      .update('holder_id', null)
     return knexResult == 1
   }
 }

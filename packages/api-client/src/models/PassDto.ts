@@ -36,12 +36,6 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    solNftCollectionId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PassDto
-     */
     title: string;
     /**
      * 
@@ -54,7 +48,7 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    type: string;
+    type: PassDtoTypeEnum;
     /**
      * 
      * @type {number}
@@ -66,7 +60,37 @@ export interface PassDto {
      * @type {number}
      * @memberof PassDto
      */
+    duration?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PassDto
+     */
     totalSupply: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PassDto
+     */
+    remainingSupply: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PassDto
+     */
+    freetrial: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PassDto
+     */
+    pinnedAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof PassDto
+     */
+    expiresAt?: Date;
     /**
      * 
      * @type {string}
@@ -79,13 +103,19 @@ export interface PassDto {
      * @memberof PassDto
      */
     creatorDisplayName?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof PassDto
-     */
-    expiresAt?: Date;
 }
+
+
+/**
+ * @export
+ */
+export const PassDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type PassDtoTypeEnum = typeof PassDtoTypeEnum[keyof typeof PassDtoTypeEnum];
+
 
 export function PassDtoFromJSON(json: any): PassDto {
     return PassDtoFromJSONTyped(json, false);
@@ -99,15 +129,18 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         
         'id': json['id'],
         'creatorId': json['creatorId'],
-        'solNftCollectionId': json['solNftCollectionId'],
         'title': json['title'],
         'description': json['description'],
         'type': json['type'],
         'price': json['price'],
+        'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'totalSupply': json['totalSupply'],
+        'remainingSupply': json['remainingSupply'],
+        'freetrial': json['freetrial'],
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
 }
 
@@ -122,15 +155,18 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         
         'id': value.id,
         'creatorId': value.creatorId,
-        'solNftCollectionId': value.solNftCollectionId,
         'title': value.title,
         'description': value.description,
         'type': value.type,
         'price': value.price,
+        'duration': value.duration,
         'totalSupply': value.totalSupply,
+        'remainingSupply': value.remainingSupply,
+        'freetrial': value.freetrial,
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };
 }
 

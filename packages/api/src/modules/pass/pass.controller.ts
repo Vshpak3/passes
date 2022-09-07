@@ -31,14 +31,14 @@ export class PassController {
   @ApiEndpoint({
     summary: 'Creates a pass',
     responseStatus: HttpStatus.OK,
-    responseType: GetPassResponseDto,
+    responseType: Boolean,
     responseDesc: 'A pass was created',
   })
   @Post()
   async createPass(
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassRequestDto,
-  ): Promise<GetPassResponseDto> {
+  ): Promise<boolean> {
     return this.passService.createPass(req.user.id, createPassDto)
   }
 
@@ -61,16 +61,16 @@ export class PassController {
   @ApiEndpoint({
     summary: 'Gets passes held by user',
     responseStatus: HttpStatus.OK,
-    responseType: GetPassesResponseDto,
+    responseType: GetPassHoldersResponseDto,
     responseDesc: 'A list of passes was retrieved',
   })
-  @Get('owned')
-  async getOwnedPasses(
+  @Get('passholdings')
+  async getPassHoldings(
     @Req() req: RequestWithUser,
     @Query('creatorId') creatorId: string,
-  ): Promise<GetPassesResponseDto> {
-    return new GetPassesResponseDto(
-      await this.passService.findOwnedPasses(req.user.id, creatorId),
+  ): Promise<GetPassHoldersResponseDto> {
+    return new GetPassHoldersResponseDto(
+      await this.passService.findPassHoldings(req.user.id, creatorId),
     )
   }
 

@@ -5,29 +5,22 @@ import {
   Inject,
   Injectable,
   ServiceUnavailableException,
-  UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Alchemy, Network, OwnedNft } from 'alchemy-sdk'
+import { Alchemy, Network, Nft, OwnedNft } from 'alchemy-sdk'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import * as uuid from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { PassEntity } from '../pass/entities/pass.entity'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { RedisLockService } from '../redisLock/redisLock.service'
-import { UserEntity } from '../user/entities/user.entity'
-import { WalletResponseDto } from '../wallet/dto/wallet-response.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
-import { CreateEthNftCollectionRequestDto } from './dto/create-eth-nft-collection.dto'
-import { EthNftCollectionDto } from './dto/eth-nft-collection.dto'
-import { BatchEthWalletRefreshEntity } from './entities/batch-eth-wallet-refresh.entity'
-import { EthNftEntity } from './entities/eth-nft.entity'
-import { EthNftCollectionEntity } from './entities/eth-nft-collection.entity'
 
-const BATCH_WALLET_REFRESH_CHUNK_SIZE = 500
-
+const MAX_TIME_WALLET_REFRESH = 1000 * 60 * 30 // 30 minutes
+const MAX_TIME_PASS_REFRESH = 1000 * 60 * 60 * 7 // 1 week
 @Injectable()
 export class EthService {
   alchemy: Alchemy
@@ -51,116 +44,108 @@ export class EthService {
     this.alchemy = new Alchemy(settings)
   }
 
-  async createEthNftCollection(
-    userId: string,
-    createEthNftCollectionDto: CreateEthNftCollectionRequestDto,
-  ): Promise<EthNftCollectionDto> {
-    // TODO: find a better way to only allow admins to access this endpoint MNT-144
-    const user = await this.dbReader(UserEntity.table)
-      .where({ id: userId })
-      .first()
-    if (!user.email.endsWith('@passes.com')) {
-      throw new UnauthorizedException('this endpoint is not accessible')
+  async refreshEthNfts(): Promise<void> {
+    const passes = await this.dbReader(PassEntity.table)
+      .whereNotNull('eth_address')
+      .select(['id', 'eth_address'])
+    // run synchronously to avoid throttling
+    // its fine that its done slowly
+    for (let i = 0; i < passes.length; ++i) {
+      try {
+        await this.getNewEthNftsForPass(
+          passes[i].id,
+          passes[i].eth_address,
+          false,
+        )
+      } catch (err) {
+        this.logger.error(`failed eth nft-pass refresh ${passes[i].id}`, err)
+      }
     }
-    const data = EthNftCollectionEntity.toDict<EthNftCollectionEntity>({
-      ...createEthNftCollectionDto,
-    })
-
-    await this.dbWriter(EthNftCollectionEntity.table)
-      .insert(data)
-      .onConflict('token_address')
-      .merge()
-    return new EthNftCollectionDto(data)
+    const wallets = await this.dbReader(WalletEntity.table).where(
+      WalletEntity.toDict<WalletEntity>({
+        chain: ChainEnum.ETH,
+        authenticated: true,
+      }),
+    )
+    // run synchronously to avoid throttling
+    // its fine that its done slowly
+    for (let i = 0; i < wallets.length; ++i) {
+      try {
+        await this.refreshEthNftsForWallet(
+          wallets[i].user_id,
+          wallets[i].id,
+          true,
+        )
+      } catch (err) {
+        this.logger.error(`failed eth nft refresh ${wallets[i].id}`, err)
+      }
+    }
   }
 
-  async getBatchEthWalletRefresh(): Promise<{
-    id: string
-    last_processed_id: string | null
-  }> {
-    const batchEthWalletRefresh = await this.dbReader(
-      BatchEthWalletRefreshEntity.table,
-    )
-      .select(
-        'batch_eth_wallet_refresh.id',
-        'batch_eth_wallet_refresh.last_processed_id',
+  async getNewEthNftsForPass(
+    passId: string,
+    ethAddress: string,
+    bypass: boolean,
+  ) {
+    if (!bypass) {
+      const redisKey = `getNewNfts:${passId}`
+      const lockResult = await this.lockService.lockOnce(
+        redisKey,
+        MAX_TIME_PASS_REFRESH,
       )
-      .where('batch_eth_wallet_refresh.last_processed_id', null)
-      .orWhereNot(
-        'batch_eth_wallet_refresh.last_processed_id',
-        'ffffffff-ffff-ffff-ffff-ffffffffffff',
-      )
-      .first()
-    if (batchEthWalletRefresh) {
-      return batchEthWalletRefresh
-    } else {
-      const batchId = uuid.v4()
-      await this.dbWriter(BatchEthWalletRefreshEntity.table).insert(
-        BatchEthWalletRefreshEntity.toDict<BatchEthWalletRefreshEntity>({
-          id: batchId,
-          lastProcessedId: null,
+      if (!lockResult) {
+        // don't throw error
+        // should happen frequently
+        return
+      }
+    }
+    const nfts: Nft[] = []
+    let pageKey: string | undefined = undefined
+    do {
+      const response = await this.alchemy.nft.getNftsForContract(ethAddress, {
+        pageKey,
+      })
+      nfts.push(...response.nfts)
+      pageKey = response.pageKey
+    } while (pageKey)
+    await this.dbWriter(PassHolderEntity.table)
+      .insert(
+        nfts.map((nft) => {
+          return PassHolderEntity.toDict<PassHolderEntity>({
+            pass: passId,
+            address: ethAddress,
+            chain: ChainEnum.ETH,
+            tokenId: nft.tokenId,
+          })
         }),
       )
-      return {
-        id: batchId,
-        last_processed_id: null,
-      }
-    }
+      .onConflict(['address', 'chain', 'token_id'])
+      .ignore()
   }
 
-  async processBatchWalletRefreshChunk(
-    id: string,
-    lastProcessedId: string | null,
-  ): Promise<void> {
-    const walletsQuery = this.dbReader(WalletEntity.table)
-      .select('wallet.id', 'wallet.user_id')
-      .where('wallet.chain', ChainEnum.ETH)
-    if (lastProcessedId != null) {
-      await walletsQuery.where('wallet.id', '>', lastProcessedId)
-    }
-    const wallets = await walletsQuery.limit(BATCH_WALLET_REFRESH_CHUNK_SIZE)
-
-    if (wallets.length == 0) {
-      await this.dbWriter(BatchEthWalletRefreshEntity.table)
-        .update(
-          'batch_eth_wallet_refresh.last_processed_id',
-          'ffffffff-ffff-ffff-ffff-ffffffffffff',
-        )
-        .where('batch_eth_wallet_refresh.id', id)
-      return
-    }
-    for (let i = 0; i < wallets.length; i++) {
-      try {
-        await this.refreshNftsForWallet(wallets[i].user_id, wallets[i].id)
-        await this.dbWriter(BatchEthWalletRefreshEntity.table)
-          .update('batch_eth_wallet_refresh.last_processed_id', wallets[i].id)
-          .where('batch_eth_wallet_refresh.id', id)
-      } catch (err) {
-        this.logger.error(
-          `error refreshing wallet ${wallets[i].id} as part of batch eth wallet refresh ${id}`,
-          err,
-        )
-      }
-    }
-  }
-
-  // TODO: Refactor to new database setup
-  async refreshNftsForWallet(
-    userId: string,
+  async refreshEthNftsForWallet(
+    userId: string | null,
     walletId: string,
-  ): Promise<WalletResponseDto> {
-    const redisKey = `refreshNftsForWallet:${walletId}`
-    const lockResult = await this.lockService.lockOnce(redisKey, 300_000)
-    if (!lockResult) {
-      throw new ServiceUnavailableException(
-        `Please retry this operation after ${
-          (await this.lockService.getTTL(redisKey)) || 0
-        } seconds`,
+    bypass: boolean,
+  ): Promise<void> {
+    if (!bypass) {
+      const redisKey = `refreshEthNftsForWallet:${walletId}`
+      const lockResult = await this.lockService.lockOnce(
+        redisKey,
+        MAX_TIME_WALLET_REFRESH,
       )
+      if (!lockResult) {
+        throw new ServiceUnavailableException(
+          `Please retry this operation after ${
+            (await this.lockService.getTTL(redisKey)) || 0
+          } seconds`,
+        )
+      }
     }
     const wallet = await this.dbReader(WalletEntity.table)
-      .where({ id: walletId, user_id: userId })
+      .where(WalletEntity.toDict<WalletEntity>({ id: walletId, user: userId }))
+      .select(['address'])
       .first()
-
     if (
       !wallet.user ||
       wallet.user.id != userId ||
@@ -168,72 +153,40 @@ export class EthService {
     ) {
       throw new BadRequestException('invalid wallet id specified')
     }
-
-    const nftCollections = await this.dbReader(
-      EthNftCollectionEntity.table,
-    ).select('*')
-    const onChainTokenMap = new Map<string, OwnedNft>()
-    for (let i = 0; i < nftCollections.length; i++) {
-      const ownedNfts = (
-        await this.alchemy.nft.getNftsForOwner(wallet.address, {
-          contractAddresses: [nftCollections[i].tokenAddress],
-        })
-      ).ownedNfts
-      for (let j = 0; j < ownedNfts.length; j++) {
-        onChainTokenMap.set(
-          `${nftCollections[i].tokenAddress},${ownedNfts[j].tokenId}`,
-          ownedNfts[j],
-        )
-      }
-    }
-    const walletTokens = await this.dbReader(EthNftEntity.table)
-      .where({ id: walletId })
-      .first()
-
-    const ethNfts: Array<EthNftEntity> = []
-
-    // first, remove tokens from our db that have been removed from the user's wallet
-    walletTokens.forEach(async (walletToken) => {
-      if (
-        onChainTokenMap.has(
-          `${walletToken.ethNftCollection.tokenAddress},${walletToken.tokenId}`,
-        )
-      ) {
-        // this token already exists in the user's wallet in our db
-        onChainTokenMap.delete(
-          `${walletToken.ethNftCollection.tokenAddress},${walletToken.tokenId}`,
-        )
-        ethNfts.push(walletToken)
-      } else {
-        // this token has been removed from the user's wallet on-chain and should be removed from the db
-        await this.dbWriter(EthNftEntity.table)
-          .where({ id: walletToken.id })
-          .delete()
-      }
-    })
-
-    // now, add new tokens to our db that the user has gained since we last refreshed
-    const nftCollectionMap = new Map()
-    nftCollections.forEach((nftCollection) => {
-      nftCollectionMap.set(nftCollection.tokenAddress, nftCollection)
-    })
-    onChainTokenMap.forEach(async (_, key) => {
-      const tokenData = key.split(',')
-
-      const ethNft = new EthNftEntity().instantiate({
-        wallet: wallet,
-        ethNftCollection: nftCollectionMap.get(tokenData[0]),
-        tokenId: tokenData[1],
+    const nfts: OwnedNft[] = []
+    let pageKey: string | undefined = undefined
+    do {
+      const response = await this.alchemy.nft.getNftsForOwner(wallet.address, {
+        pageKey,
       })
-
-      ethNfts.push(ethNft)
-
-      // TODO: make this into a transaction
-      await this.dbWriter(EthNftEntity.table).insert(
-        EthNftEntity.toDict(ethNft),
+      nfts.push(...response.ownedNfts)
+      pageKey = response.pageKey
+    } while (pageKey)
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(PassHolderEntity.table)
+        .where('wallet_id', walletId)
+        .update(
+          PassHolderEntity.toDict<PassHolderEntity>({
+            wallet: null,
+            holder: null,
+          }),
+        )
+      let query = trx(PassHolderEntity.table).update(
+        PassHolderEntity.toDict<PassHolderEntity>({
+          wallet: walletId,
+          holder: userId,
+        }),
       )
+      nfts.forEach((nft) => {
+        query = query.orWhere(
+          PassHolderEntity.toDict<PassHolderEntity>({
+            address: nft.contract.address.toLowerCase(),
+            chain: ChainEnum.ETH,
+            tokenId: nft.tokenId,
+          }),
+        )
+      })
+      await query
     })
-
-    return new WalletResponseDto(wallet, ethNfts)
   }
 }

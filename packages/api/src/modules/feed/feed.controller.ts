@@ -49,9 +49,15 @@ export class FeedController {
   @Get('creator/posts')
   async getPostsForCreator(
     @Req() req: RequestWithUser,
+    @Param('scheduledOnly') scheduledOnly: boolean,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForCreator(req.user.id, false, cursor)
+    return this.feedService.getPostsForCreator(
+      req.user.id,
+      false,
+      scheduledOnly,
+      cursor,
+    )
   }
 
   @ApiEndpoint({
@@ -65,6 +71,6 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForCreator(req.user.id, true, cursor)
+    return this.feedService.getPostsForCreator(req.user.id, true, false, cursor)
   }
 }

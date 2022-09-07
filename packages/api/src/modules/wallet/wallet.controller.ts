@@ -23,7 +23,6 @@ import {
   GetWalletResponseDto,
   GetWalletsResponseDto,
 } from './dto/get-wallet.dto'
-import { WalletResponseDto } from './dto/wallet-response.dto'
 import { WalletService } from './wallet.service'
 
 @ApiTags('wallet')
@@ -134,15 +133,15 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Refresh tokens owned by a wallet',
     responseStatus: HttpStatus.OK,
-    responseType: WalletResponseDto,
+    responseType: undefined,
     responseDesc: 'Wallet tokens were updated',
   })
   @Post('refresh/:walletId')
   async refreshWallets(
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,
-  ): Promise<WalletResponseDto> {
-    return this.ethService.refreshNftsForWallet(req.user.id, walletId)
+  ): Promise<void> {
+    await this.ethService.refreshEthNftsForWallet(req.user.id, walletId, false)
   }
 
   @ApiEndpoint({

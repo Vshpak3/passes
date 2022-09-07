@@ -33,9 +33,6 @@ import {
     GetWalletsResponseDto,
     GetWalletsResponseDtoFromJSON,
     GetWalletsResponseDtoToJSON,
-    WalletResponseDto,
-    WalletResponseDtoFromJSON,
-    WalletResponseDtoToJSON,
 } from '../models';
 
 export interface AuthMessageRequest {
@@ -295,7 +292,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Refresh tokens owned by a wallet
      */
-    async refreshWalletsRaw(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<WalletResponseDto>> {
+    async refreshWalletsRaw(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.walletId === null || requestParameters.walletId === undefined) {
             throw new runtime.RequiredError('walletId','Required parameter requestParameters.walletId was null or undefined when calling refreshWallets.');
         }
@@ -319,15 +316,14 @@ export class WalletApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => WalletResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Refresh tokens owned by a wallet
      */
-    async refreshWallets(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<WalletResponseDto> {
-        const response = await this.refreshWalletsRaw(requestParameters, initOverrides);
-        return await response.value();
+    async refreshWallets(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.refreshWalletsRaw(requestParameters, initOverrides);
     }
 
     /**

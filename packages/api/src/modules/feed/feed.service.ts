@@ -138,6 +138,7 @@ export class FeedService {
   async getPostsForCreator(
     userId: string,
     isMessage: boolean,
+    scheduledOnly: boolean,
     cursor?: string,
   ): Promise<GetFeedResponseDto> {
     let query = this.dbReader(PostEntity.table)
@@ -149,6 +150,9 @@ export class FeedService {
 
     if (cursor) {
       query = query.andWhere('created_at', '<', cursor)
+    }
+    if (scheduledOnly) {
+      query = query.whereNotNull('scheduled_at')
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     // filter out expired posts

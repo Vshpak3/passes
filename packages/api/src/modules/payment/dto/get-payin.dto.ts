@@ -20,5 +20,5 @@ export class GetPayinsResponseDto {
   count: number
 
   @DtoProperty({ type: [PayinDto] })
-  payins: Array<PayinDto>
+  payins: PayinDto[]
 }

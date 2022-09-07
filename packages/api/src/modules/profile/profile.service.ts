@@ -13,6 +13,7 @@ import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { PROFILE_NOT_EXIST } from './constants/errors'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
+import { GetProfileRequestDto } from './dto/get-profile.dto'
 import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
 import { ProfileDto } from './dto/profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
@@ -37,6 +38,7 @@ export class ProfileService {
   ): Promise<boolean> {
     const data = ProfileEntity.toDict<ProfileEntity>({
       user: userId,
+      isActive: true,
       ...createOrUpdateProfileRequestDto,
     })
 
@@ -47,51 +49,35 @@ export class ProfileService {
     return true
   }
 
-  async findProfile(profileId: string, userId?: string): Promise<ProfileDto> {
-    const profile = await this.dbReader(ProfileEntity.table)
+  async findProfile(
+    getProfileRequestDto: GetProfileRequestDto,
+    userId?: string,
+  ): Promise<ProfileDto> {
+    const { creatorId, username, profileId } = getProfileRequestDto
+    if (!(creatorId || username || profileId)) {
+      throw new BadRequestException(PROFILE_NOT_EXIST)
+    }
+
+    let query = this.dbReader(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
         `${ProfileEntity.table}.user_id`,
         `${UserEntity.table}.id`,
       )
-      .where(`${ProfileEntity.table}.id`, profileId)
       .where(`${ProfileEntity.table}.is_active`, true)
       .where(`${UserEntity.table}.is_creator`, true)
       .first()
-
-    if (!profile) {
-      throw new NotFoundException(PROFILE_NOT_EXIST)
+    if (creatorId) {
+      query = query.andWhere(`${UserEntity.table}.id`, creatorId)
+    }
+    if (username) {
+      query = query.andWhere(`${UserEntity.table}.username`, username)
+    }
+    if (profileId) {
+      query = query.andWhere(`${ProfileEntity.table}.id`, profileId)
     }
 
-    if (userId) {
-      const followBlockResult = await this.dbReader(FollowBlockEntity.table)
-        .where(`${FollowBlockEntity.table}.follower_id`, userId)
-        .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
-        .first()
-
-      if (followBlockResult) {
-        throw new BadRequestException(PROFILE_NOT_EXIST)
-      }
-    }
-
-    return new ProfileDto(profile)
-  }
-
-  async findProfileByUsername(
-    username: string,
-    userId?: string,
-  ): Promise<ProfileDto> {
-    const profile = await this.dbReader(ProfileEntity.table)
-      .innerJoin(
-        `${UserEntity.table} as user`,
-        `${ProfileEntity.table}.user_id`,
-        `user.id`,
-      )
-      .where(`${ProfileEntity.table}.is_active`, true)
-      .where('user.username', username)
-      .where('user.is_creator', true)
-      .select(['*', `${ProfileEntity.table}.id as id`])
-      .first()
+    const profile = await query
     if (!profile) {
       throw new NotFoundException(PROFILE_NOT_EXIST)
     }

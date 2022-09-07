@@ -446,7 +446,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Updates a post
      */
-    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling updatePost.');
         }
@@ -477,14 +477,15 @@ export class PostApi extends runtime.BaseAPI {
             body: UpdatePostRequestDtoToJSON(requestParameters.updatePostRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      * Updates a post
      */
-    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.updatePostRaw(requestParameters, initOverrides);
+    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.updatePostRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

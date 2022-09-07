@@ -174,7 +174,7 @@ const Username = (props: GetProfileResponseDto) => {
     <>
       <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          {profile?.id && (
+          {profile?.profileId && (
             <ProfileDetails
               profile={profile}
               onEditProfile={onEditProfile}
@@ -185,7 +185,7 @@ const Username = (props: GetProfileResponseDto) => {
           {editProfile && (
             <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
           )}
-          {profile?.id && (
+          {profile?.profileId && (
             <MainContent
               profile={profile}
               ownsProfile={ownsProfile}
@@ -199,7 +199,7 @@ const Username = (props: GetProfileResponseDto) => {
         </div>
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
           {/* pass types here */}
-          {profile?.id && (
+          {profile?.profileId && (
             <PassTypes
               creatorPasses={
                 isTestProfile
@@ -230,7 +230,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   try {
     const api = new ProfileApi()
-    const profile = await api.findProfileByUsername({ username })
+    const profile = await api.findProfile({
+      getProfileRequestDto: { username }
+    })
     // TODO: Hack to remove undefined from generated API typings
     const props = { ...JSON.parse(JSON.stringify(profile)), username }
     return {

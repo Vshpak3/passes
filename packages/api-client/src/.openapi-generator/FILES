@@ -9,7 +9,6 @@ apis/CommentApi.ts
 apis/ContentApi.ts
 apis/CreatorSettingsApi.ts
 apis/CreatorStatsApi.ts
-apis/EthApi.ts
 apis/FanWallApi.ts
 apis/FeedApi.ts
 apis/FollowApi.ts
@@ -22,7 +21,6 @@ apis/PassApi.ts
 apis/PaymentApi.ts
 apis/PostApi.ts
 apis/ProfileApi.ts
-apis/SolApi.ts
 apis/UserApi.ts
 apis/VerificationApi.ts
 apis/WalletApi.ts
@@ -50,7 +48,6 @@ models/ContentDto.ts
 models/CreateBatchMessageRequestDto.ts
 models/CreateCommentRequestDto.ts
 models/CreateContentRequestDto.ts
-models/CreateEthNftCollectionRequestDto.ts
 models/CreateFanWallCommentRequestDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
@@ -60,8 +57,6 @@ models/CreatePassRequestDto.ts
 models/CreatePostAccessRequestDto.ts
 models/CreatePostRequestDto.ts
 models/CreatePostResponseDto.ts
-models/CreateSolNftCollectionRequestDto.ts
-models/CreateSolNftRequestDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
@@ -84,7 +79,6 @@ models/GetCreatorEarningsResponseDto.ts
 models/GetCreatorSettingsResponseDto.ts
 models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
-models/GetEthNftCollectionResponseDto.ts
 models/GetFanResponseDto.ts
 models/GetFanWallForCreatorResponseDto.ts
 models/GetFansResponseDto.ts
@@ -108,10 +102,9 @@ models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
 models/GetPostResponseDto.ts
+models/GetProfileRequestDto.ts
 models/GetProfileResponseDto.ts
 models/GetSignedUrlResponseDto.ts
-models/GetSolNftCollectionResponseDto.ts
-models/GetSolNftResponseDto.ts
 models/GetSubscriptionsResponseDto.ts
 models/GetUserResponseDto.ts
 models/GetUsernamesResponseDto.ts
@@ -163,6 +156,5 @@ models/UpdatePostRequestDto.ts
 models/UpdateUsernameRequestDto.ts
 models/VerifyEmailDto.ts
 models/WalletDto.ts
-models/WalletResponseDto.ts
 models/index.ts
 runtime.ts

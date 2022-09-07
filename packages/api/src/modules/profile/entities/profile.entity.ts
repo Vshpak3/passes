@@ -6,7 +6,6 @@ import {
   PROFILE_COVER_DESCRIPTION_LENGTH,
   PROFILE_COVER_TITLE_LENGTH,
   PROFILE_DESCRIPTION_LENGTH,
-  PROFILE_DISPLAY_NAME_LENGTH,
   PROFILE_EXTERNAL_URL_LENGTH,
 } from '../constants/schema'
 
@@ -14,9 +13,6 @@ import {
 export class ProfileEntity extends BaseEntity {
   @OneToOne()
   user: UserEntity
-
-  @Property({ length: PROFILE_DISPLAY_NAME_LENGTH })
-  displayName?: string
 
   @Property({ length: PROFILE_COVER_TITLE_LENGTH })
   coverTitle?: string

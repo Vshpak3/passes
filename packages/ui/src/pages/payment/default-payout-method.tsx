@@ -253,16 +253,19 @@ const DefaultPayoutMethod = () => {
           {/* List of walletes */}
           {wallets.map((wallet) => {
             return (
-              <div key={wallet.id} className="col-span-10 w-full md:space-y-6">
+              <div
+                key={wallet.walletId}
+                className="col-span-10 w-full md:space-y-6"
+              >
                 <AccountCard
                   wallet={wallet}
                   handleClick={() => {
                     submit({
-                      bankId: wallet.id.toString(),
+                      walletId: wallet.walletId,
                       method: PayoutMethodDtoMethodEnum.CircleUsdc
                     })
                   }}
-                  deleteWallet={() => deleteWallet(wallet.id)}
+                  deleteWallet={() => deleteWallet(wallet.walletId)}
                 />
               </div>
             )
@@ -313,7 +316,7 @@ const DefaultPayoutMethod = () => {
               <button
                 onClick={() => {
                   submit({
-                    walletId: wallet.id.toString(),
+                    walletId: wallet.walletId,
                     method: PayoutMethodDtoMethodEnum.CircleUsdc
                   })
                 }}

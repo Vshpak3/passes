@@ -24,7 +24,7 @@ export interface GetProfileResponseDto {
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    id: string;
+    profileId: string;
     /**
      * 
      * @type {string}
@@ -115,7 +115,7 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'id': json['id'],
+        'profileId': json['profileId'],
         'userId': json['userId'],
         'legalFullName': !exists(json, 'legalFullName') ? undefined : json['legalFullName'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -141,7 +141,7 @@ export function GetProfileResponseDtoToJSON(value?: GetProfileResponseDto | null
     }
     return {
         
-        'id': value.id,
+        'profileId': value.profileId,
         'userId': value.userId,
         'legalFullName': value.legalFullName,
         'displayName': value.displayName,

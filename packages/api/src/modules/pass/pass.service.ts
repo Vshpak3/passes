@@ -5,7 +5,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { PublicKey } from '@solana/web3.js'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -25,9 +24,9 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
-import { SolNftCollectionEntity } from '../sol/entities/sol-nft-collection.entity'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
@@ -38,7 +37,11 @@ import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { PassTypeEnum } from './enum/pass.enum'
-import { ForbiddenPassException, NoPassError } from './error/pass.error'
+import {
+  ForbiddenPassException,
+  NoPassError,
+  UnsupportedChainPassError,
+} from './error/pass.error'
 
 const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
 const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
@@ -63,63 +66,68 @@ export class PassService {
   async createPass(
     userId: string,
     createPassDto: CreatePassRequestDto,
-  ): Promise<PassDto> {
+  ): Promise<boolean> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
+      .select('id')
       .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
-    const solNftCollectionDto = await this.solService.createSolNftCollection(
-      user.id,
-      createPassDto.title,
-      user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
-      createPassDto.description,
-      '', //TODO: get image url
-    )
+    // TODO: check image exists exists
 
     const duration =
       createPassDto.duration === undefined &&
       createPassDto.type === PassTypeEnum.SUBSCRIPTION
         ? DEFAULT_PASS_DURATION_MS
         : createPassDto.duration
-
     const data = PassEntity.toDict<PassEntity>({
       id: v4(),
       creator: userId,
-      solNftCollection: solNftCollectionDto.id,
       title: createPassDto.title,
       description: createPassDto.description,
       type: createPassDto.type,
       price: createPassDto.price,
-      totalSupply: createPassDto.totalSupply,
       duration,
       freetrial: createPassDto.freetrial,
       messages: createPassDto.messages,
+      totalSupply: createPassDto.totalSupply,
+      remainingSupply: createPassDto.totalSupply,
     })
-
     await this.dbWriter(PassEntity.table).insert(data)
 
-    return new PassDto(data)
+    switch (createPassDto.chain) {
+      case ChainEnum.SOL:
+        await this.solService.createSolNftCollection(
+          user.id,
+          data.id,
+          createPassDto.title,
+          user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
+          createPassDto.description,
+        )
+        break
+      case ChainEnum.ETH: // TODO
+      default:
+        throw new UnsupportedChainPassError(
+          `can not create a pass on chain ${createPassDto.chain}`,
+        )
+    }
+    return true
   }
 
-  async findPass(id: string): Promise<PassDto> {
+  async findPass(passId: string): Promise<PassDto> {
     const pass = await this.dbReader(PassEntity.table)
       .innerJoin(
-        `${UserEntity.table} as creator`,
+        `${UserEntity.table}`,
         `${PassEntity.table}.creator_id`,
-        'creator.id',
-      )
-      .innerJoin(
-        `${SolNftCollectionEntity.table} as solNftCollection`,
-        `${PassEntity.table}.sol_nft_collection_id`,
-        'solNftCollection.id',
+        `${UserEntity.table}.id`,
       )
       .select([
-        '*',
-        ...PassEntity.populate<PassEntity>(['creator', 'solNftCollection']),
+        `${UserEntity.table}.username as creator_username`,
+        `${UserEntity.table}.display_name as creator_display_name`,
+        `${PassEntity.table}.*`,
       ])
-      .where(`${PassEntity.table}.id`, id)
+      .where(`${PassEntity.table}.id`, passId)
       .first()
 
     if (!pass) {
@@ -129,36 +137,63 @@ export class PassService {
     return new PassDto(pass)
   }
 
-  async findOwnedPasses(userId: string, creatorId?: string) {
-    let query = this.dbReader(PassEntity.table)
-      .rightJoin(
-        `${PassHolderEntity.table} as passHolder`,
+  async findPassHoldings(userId: string, creatorId?: string) {
+    let query = this.dbReader(PassHolderEntity.table)
+      .innerJoin(
+        PassEntity.table,
         `${PassEntity.table}.id`,
-        `passHolder.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
       )
       .innerJoin(
-        `${UserEntity.table} as owner`,
-        `passHolder.holder_id`,
-        'owner.id',
+        `${UserEntity.table}`,
+        `${PassEntity.table}.creator_id`,
+        `${UserEntity.table}.id`,
       )
-      .where('owner.id', userId)
+      .where(`${PassHolderEntity.table}.holder_id`, userId)
       .select(
-        `${PassEntity.table}.*`,
-        `passHolder.expires_at as pass_holder_expires_at`,
-        `owner.username as creator_username`,
-        `owner.display_name as creator_display_name`,
+        `${PassEntity.table}.type`,
+        `${PassEntity.table}.title`,
+        `${PassEntity.table}.description`,
+        `${PassEntity.table}.creator_id`,
+        `${PassHolderEntity.table}.*`,
+        `${UserEntity.table}.username as creator_username`,
+        `${UserEntity.table}.display_name as creator_display_name`,
       )
 
     if (creatorId) {
-      query = query.where('owner_id', creatorId)
+      query = query.andWhere(`${UserEntity.table}.id`, creatorId)
     }
 
-    return (await query).map((pass) => new PassDto(pass))
+    return (await query).map((pass) => new PassHolderDto(pass))
+  }
+
+  async getPassHolders(
+    userId: string,
+    passId: string,
+  ): Promise<PassHolderDto[]> {
+    await this.checkPass(userId, passId)
+    return (
+      await this.dbReader(PassHolderEntity.table)
+        .innerJoin(
+          UserEntity.table,
+          `${UserEntity.table}.id`,
+          `${PassHolderEntity.table}.holder_id`,
+        )
+        .where(`${PassHolderEntity.table}.pass_id`, passId)
+        .distinct(`${PassHolderEntity.table}.holder_id`)
+        .select([
+          `${PassHolderEntity.table}.*`,
+          `${UserEntity.table}.username as holder_username`,
+          `${UserEntity.table}.display_name as holder_display_name`,
+        ])
+    ).map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async findPassesByCreator(creatorId: string) {
     return (
-      await this.dbReader(PassEntity.table).where('creator_id', creatorId)
+      await this.dbReader(PassEntity.table)
+        .where('creator_id', creatorId)
+        .select('*')
     ).map((pass) => new PassDto(pass))
   }
 
@@ -201,21 +236,32 @@ export class PassService {
     const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
     )
+
     const solNftDto = await this.solService.createNftPass(
       userId,
-      userCustodialWallet.id as string,
-      pass.sol_nft_collection_id,
-      new PublicKey(userCustodialWallet.address),
+      pass.id,
+      id,
+      pass.title,
+      //TODO: figure out symbol
+      // user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
+      '',
+      pass.description,
+      userCustodialWallet.address,
     )
     const data = PassHolderEntity.toDict<PassHolderEntity>({
       id,
       pass: passId,
+      wallet: userCustodialWallet.walletId,
       holder: userId,
       expiresAt: expiresAt,
-      solNft: solNftDto.id,
       messages: pass.messages,
+      address: solNftDto.mintPubKey,
+      chain: ChainEnum.SOL,
     })
     await this.dbWriter(PassHolderEntity.table).insert(data)
+    await this.dbWriter(PassEntity.table)
+      .where('id', passId)
+      .decrement('remaining_supply')
 
     await this.passPurchased(userId, passId)
 
@@ -441,7 +487,7 @@ export class PassService {
 
     const pass = await this.dbReader(PassEntity.table)
       .where('id', passId)
-      .select('price')
+      .select(['price', 'remaining_supply'])
       .first()
 
     const checkPayin = await this.dbReader(PayinEntity.table)
@@ -461,7 +507,10 @@ export class PassService {
       )
       .select('id')
       .first()
-    const blocked = checkPayin !== undefined || checkHolder !== undefined
+    const blocked =
+      checkPayin !== undefined ||
+      checkHolder !== undefined ||
+      pass.remaining_supply > 0
 
     return { amount: pass.price, target, blocked }
   }
@@ -524,27 +573,6 @@ export class PassService {
         .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
         .update(PassEntity.toDict<PassEntity>({ pinnedAt: null }))) === 1
     )
-  }
-
-  async getPassHolders(
-    userId: string,
-    passId: string,
-  ): Promise<Array<PassHolderDto>> {
-    await this.checkPass(userId, passId)
-    return (
-      await this.dbReader(PassHolderEntity.table)
-        .innerJoin(
-          UserEntity.table,
-          `${UserEntity.table}.id`,
-          `${PassHolderEntity.table}.holder_id`,
-        )
-        .where(`${PassHolderEntity.table}.pass_id`, passId)
-        .distinct(`${PassHolderEntity.table}.holder_id`)
-        .select([
-          `${UserEntity.table}.username`,
-          `${UserEntity.table}.display_name`,
-        ])
-    ).map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async checkPass(userId: string, passId: string) {

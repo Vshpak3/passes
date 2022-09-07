@@ -13,9 +13,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1659945535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -24,9 +25,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -35,9 +37,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1663059535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -46,9 +49,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1663059535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -57,9 +61,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -68,9 +73,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -79,9 +85,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1663059535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "1",
@@ -90,9 +97,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1663059535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "2",
@@ -101,9 +109,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "lifetime",
     expiresAt: 1659945535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "3",
@@ -112,9 +121,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1663059535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "4",
@@ -123,9 +133,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "lifetime",
     expiresAt: 1659945535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "5",
@@ -134,9 +145,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "lifetime",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "6",
@@ -145,9 +157,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "subscription",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   },
   {
     id: "7",
@@ -156,9 +169,10 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     type: "lifetime",
     expiresAt: 1667159535 as unknown as Date,
     creatorId: "test",
-    solNftCollectionId: "test",
     description: "test",
-    totalSupply: 0
+    totalSupply: 0,
+    remainingSupply: 0,
+    freetrial: false
   }
 ]
 
@@ -202,10 +216,10 @@ const usePasses = (creatorId = "") => {
     async () => {
       const api = wrapApi(PassApi)
       return (
-        await api.getOwnedPasses({
+        await api.getPassHoldings({
           creatorId: ""
         })
-      ).passes
+      ).passHolders
     }
   )
 

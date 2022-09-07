@@ -67,7 +67,26 @@ export interface CreatePassRequestDto {
      * @memberof CreatePassRequestDto
      */
     messages?: object;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePassRequestDto
+     */
+    chain: CreatePassRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const CreatePassRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type CreatePassRequestDtoChainEnum = typeof CreatePassRequestDtoChainEnum[keyof typeof CreatePassRequestDtoChainEnum];
+
 
 export function CreatePassRequestDtoFromJSON(json: any): CreatePassRequestDto {
     return CreatePassRequestDtoFromJSONTyped(json, false);
@@ -87,6 +106,7 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'freetrial': !exists(json, 'freetrial') ? undefined : json['freetrial'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
+        'chain': json['chain'],
     };
 }
 
@@ -107,6 +127,7 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         'duration': value.duration,
         'freetrial': value.freetrial,
         'messages': value.messages,
+        'chain': value.chain,
     };
 }
 

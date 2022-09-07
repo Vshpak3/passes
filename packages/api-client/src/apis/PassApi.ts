@@ -60,12 +60,12 @@ export interface GetCreatorPassesRequest {
     creatorId: string;
 }
 
-export interface GetOwnedPassesRequest {
-    creatorId: string;
-}
-
 export interface GetPassHoldersRequest {
     passId: string;
+}
+
+export interface GetPassHoldingsRequest {
+    creatorId: string;
 }
 
 export interface PinPassRequest {
@@ -142,7 +142,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Creates a pass
      */
-    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
+    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.createPassRequestDto === null || requestParameters.createPassRequestDto === undefined) {
             throw new runtime.RequiredError('createPassRequestDto','Required parameter requestParameters.createPassRequestDto was null or undefined when calling createPass.');
         }
@@ -169,13 +169,13 @@ export class PassApi extends runtime.BaseAPI {
             body: CreatePassRequestDtoToJSON(requestParameters.createPassRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassResponseDtoFromJSON(jsonValue));
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
      * Creates a pass
      */
-    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassResponseDto> {
+    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
         const response = await this.createPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -249,48 +249,6 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets passes held by user
-     */
-    async getOwnedPassesRaw(requestParameters: GetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
-        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
-            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getOwnedPasses.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.creatorId !== undefined) {
-            queryParameters['creatorId'] = requestParameters.creatorId;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/pass/owned`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets passes held by user
-     */
-    async getOwnedPasses(requestParameters: GetOwnedPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesResponseDto> {
-        const response = await this.getOwnedPassesRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Get a passholders
      */
     async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
@@ -325,6 +283,48 @@ export class PassApi extends runtime.BaseAPI {
      */
     async getPassHolders(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
         const response = await this.getPassHoldersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets passes held by user
+     */
+    async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getPassHoldings.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.creatorId !== undefined) {
+            queryParameters['creatorId'] = requestParameters.creatorId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/pass/passholdings`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets passes held by user
+     */
+    async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
+        const response = await this.getPassHoldingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

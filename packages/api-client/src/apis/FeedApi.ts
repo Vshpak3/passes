@@ -34,6 +34,7 @@ export interface GetMessagesCreatorRequest {
 }
 
 export interface GetPostsForCreatorRequest {
+    scheduledOnly: boolean;
     cursor: string;
 }
 
@@ -176,6 +177,10 @@ export class FeedApi extends runtime.BaseAPI {
      * Gets my posts
      */
     async getPostsForCreatorRaw(requestParameters: GetPostsForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+        if (requestParameters.scheduledOnly === null || requestParameters.scheduledOnly === undefined) {
+            throw new runtime.RequiredError('scheduledOnly','Required parameter requestParameters.scheduledOnly was null or undefined when calling getPostsForCreator.');
+        }
+
         if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
             throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling getPostsForCreator.');
         }
@@ -197,7 +202,7 @@ export class FeedApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/feed/creator/posts`,
+            path: `/api/feed/creator/posts`.replace(`{${"scheduledOnly"}}`, encodeURIComponent(String(requestParameters.scheduledOnly))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

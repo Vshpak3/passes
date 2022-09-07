@@ -62,7 +62,7 @@ export class PostController {
   @ApiEndpoint({
     summary: 'Updates a post',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: Boolean,
     responseDesc: 'A post was updated',
   })
   @Patch(':postId')
@@ -70,7 +70,7 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
     @Body() updatePostDto: UpdatePostRequestDto,
-  ) {
+  ): Promise<boolean> {
     return await this.postService.updatePost(req.user.id, postId, updatePostDto)
   }
 

@@ -4,7 +4,7 @@ import { DtoProperty } from '../../../web/dto.web'
 export class ProfileDto {
   @IsUUID()
   @DtoProperty()
-  id: string
+  profileId: string
 
   @IsUUID()
   @DtoProperty()
@@ -47,11 +47,11 @@ export class ProfileDto {
   isActive: boolean
 
   constructor(profile) {
-    this.id = profile.id
+    this.profileId = profile.id
     this.userId = profile.user_id
     this.description = profile.description
-    this.legalFullName = profile.user_legal_full_name
-    this.displayName = profile.user_display_name
+    this.legalFullName = profile.legal_full_name
+    this.displayName = profile.display_name
 
     this.coverTitle = profile.cover_title
     this.coverDescription = profile.cover_description

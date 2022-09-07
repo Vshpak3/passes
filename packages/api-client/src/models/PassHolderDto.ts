@@ -61,7 +61,74 @@ export interface PassHolderDto {
      * @memberof PassHolderDto
      */
     holderDisplayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    address: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    chain: PassHolderDtoChainEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    tokenId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    type?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    creatorId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    creatorUsername?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    creatorDisplayName?: string;
 }
+
+
+/**
+ * @export
+ */
+export const PassHolderDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type PassHolderDtoChainEnum = typeof PassHolderDtoChainEnum[keyof typeof PassHolderDtoChainEnum];
+
 
 export function PassHolderDtoFromJSON(json: any): PassHolderDto {
     return PassHolderDtoFromJSONTyped(json, false);
@@ -80,6 +147,15 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'holderUsername': !exists(json, 'holderUsername') ? undefined : json['holderUsername'],
         'holderDisplayName': !exists(json, 'holderDisplayName') ? undefined : json['holderDisplayName'],
+        'address': json['address'],
+        'chain': json['chain'],
+        'tokenId': !exists(json, 'tokenId') ? undefined : json['tokenId'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'title': !exists(json, 'title') ? undefined : json['title'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
+        'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
 }
 
@@ -99,6 +175,15 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'holderUsername': value.holderUsername,
         'holderDisplayName': value.holderDisplayName,
+        'address': value.address,
+        'chain': value.chain,
+        'tokenId': value.tokenId,
+        'type': value.type,
+        'title': value.title,
+        'description': value.description,
+        'creatorId': value.creatorId,
+        'creatorUsername': value.creatorUsername,
+        'creatorDisplayName': value.creatorDisplayName,
     };
 }
 

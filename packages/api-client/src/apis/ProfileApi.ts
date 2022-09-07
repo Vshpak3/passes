@@ -18,6 +18,9 @@ import {
     CreateOrUpdateProfileRequestDto,
     CreateOrUpdateProfileRequestDtoFromJSON,
     CreateOrUpdateProfileRequestDtoToJSON,
+    GetProfileRequestDto,
+    GetProfileRequestDtoFromJSON,
+    GetProfileRequestDtoToJSON,
     GetProfileResponseDto,
     GetProfileResponseDtoFromJSON,
     GetProfileResponseDtoToJSON,
@@ -31,11 +34,7 @@ export interface CreateOrUpdateProfileRequest {
 }
 
 export interface FindProfileRequest {
-    profileId: string;
-}
-
-export interface FindProfileByUsernameRequest {
-    username: string;
+    getProfileRequestDto: GetProfileRequestDto;
 }
 
 export interface RemoveProfileRequest {
@@ -92,19 +91,22 @@ export class ProfileApi extends runtime.BaseAPI {
      * Gets a profile
      */
     async findProfileRaw(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
-        if (requestParameters.profileId === null || requestParameters.profileId === undefined) {
-            throw new runtime.RequiredError('profileId','Required parameter requestParameters.profileId was null or undefined when calling findProfile.');
+        if (requestParameters.getProfileRequestDto === null || requestParameters.getProfileRequestDto === undefined) {
+            throw new runtime.RequiredError('getProfileRequestDto','Required parameter requestParameters.getProfileRequestDto was null or undefined when calling findProfile.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
-            path: `/api/profile/{profileId}`.replace(`{${"profileId"}}`, encodeURIComponent(String(requestParameters.profileId))),
-            method: 'GET',
+            path: `/api/profile/get`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetProfileRequestDtoToJSON(requestParameters.getProfileRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileResponseDtoFromJSON(jsonValue));
@@ -115,36 +117,6 @@ export class ProfileApi extends runtime.BaseAPI {
      */
     async findProfile(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
         const response = await this.findProfileRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets a profile by username
-     */
-    async findProfileByUsernameRaw(requestParameters: FindProfileByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling findProfileByUsername.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/profile/usernames/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets a profile by username
-     */
-    async findProfileByUsername(requestParameters: FindProfileByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
-        const response = await this.findProfileByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

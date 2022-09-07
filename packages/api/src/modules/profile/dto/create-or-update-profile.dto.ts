@@ -2,9 +2,6 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class CreateOrUpdateProfileRequestDto {
   @DtoProperty({ required: false })
-  displayName?: string
-
-  @DtoProperty({ required: false })
   coverTitle?: string
 
   @DtoProperty({ required: false })

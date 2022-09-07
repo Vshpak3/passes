@@ -1,4 +1,4 @@
-import { PassDto } from "@passes/api-client"
+import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React from "react"
 import { Button } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
@@ -15,33 +15,29 @@ interface IPassItem {
 
 function getPassButton(pass: PassDto, setModalOpen: TOpenPassModal) {
   switch (pass.type) {
-    case "free":
-      return <Button variant="purple">Follow Free</Button>
-    case "subscription":
+    case PassDtoTypeEnum.Subscription:
       return (
         <Button variant="purple" onClick={() => setModalOpen(pass)}>
           Subscribe
         </Button>
       )
-    case "lifetime":
+    case PassDtoTypeEnum.Lifetime:
+      if (pass.price === 0) {
+        return <Button variant="purple">Follow Free</Button>
+      }
       return (
         <Button variant="purple" onClick={() => setModalOpen(pass)}>
           Lifetime
         </Button>
       )
+    case PassDtoTypeEnum.External: // TBD
     default:
       return null
   }
 }
 function getPassPrice(pass: PassDto) {
   switch (pass.type) {
-    case "free":
-      return (
-        <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
-          {pass.type}
-        </span>
-      )
-    case "subscription":
+    case PassDtoTypeEnum.Subscription:
       return (
         <span className="flex items-center">
           <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
@@ -52,7 +48,14 @@ function getPassPrice(pass: PassDto) {
           </span>
         </span>
       )
-    case "lifetime":
+    case PassDtoTypeEnum.Lifetime:
+      if (pass.price === 0) {
+        return (
+          <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
+            {pass.type}
+          </span>
+        )
+      }
       return (
         <span className="flex items-center">
           <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
