@@ -9,7 +9,7 @@ set -o pipefail
 readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
 readonly api_client_path=packages/api-client
-readonly spec_filename=openapi.json
+readonly spec_filename=packages/api/src/openapi/specs/openapi.json
 # Must use 6.0.0 until this issue is fixed: https://github.com/OpenAPITools/openapi-generator-cli/issues/655
 readonly openapi_gen_version=6.0.0
 
@@ -30,7 +30,7 @@ mkdir "${out_path}/src/"
 docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) \
   -v ${root}:/local \
   openapitools/openapi-generator-cli:v${openapi_gen_version} generate \
-  --input-spec "/local/packages/api/${spec_filename}" \
+  --input-spec "/local/${spec_filename}" \
   --output "/local/${api_client_path}/src" \
   --generator-name typescript-fetch
 echo

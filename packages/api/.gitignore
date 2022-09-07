@@ -2,5 +2,5 @@
 src/database/.orm-cache/
 src/database/migrations/
 
-# Ignore OpenAPI JSON file
-openapi.json
+# Ignore OpenAPI JSON files
+src/openapi/specs/*.json
