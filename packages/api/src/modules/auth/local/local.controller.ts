@@ -96,7 +96,7 @@ export class LocalAuthController {
     responseDesc: 'Send reset password email to user',
     allowUnauthorizedRequest: true,
   })
-  @Post()
+  @Post('reset-password')
   async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
     await this.emailService.sendInitResetPassword(resetPasswordDto.email)
   }

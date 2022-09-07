@@ -21,6 +21,9 @@ import {
     CreateLocalUserRequestDto,
     CreateLocalUserRequestDtoFromJSON,
     CreateLocalUserRequestDtoToJSON,
+    LocalUserLoginRequestDto,
+    LocalUserLoginRequestDtoFromJSON,
+    LocalUserLoginRequestDtoToJSON,
     ResetPasswordRequestDto,
     ResetPasswordRequestDtoFromJSON,
     ResetPasswordRequestDtoToJSON,
@@ -32,6 +35,10 @@ export interface CreateEmailPasswordUserRequest {
 
 export interface InitPasswordResetRequest {
     resetPasswordRequestDto: ResetPasswordRequestDto;
+}
+
+export interface LoginWithEmailPasswordRequest {
+    localUserLoginRequestDto: LocalUserLoginRequestDto;
 }
 
 /**
@@ -87,7 +94,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/auth/local`,
+            path: `/api/auth/local/reset-password`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -102,6 +109,39 @@ export class AuthLocalApi extends runtime.BaseAPI {
      */
     async initPasswordReset(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.initPasswordResetRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Login with email and password
+     */
+    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+        if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
+            throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling loginWithEmailPassword.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/auth/local`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: LocalUserLoginRequestDtoToJSON(requestParameters.localUserLoginRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Login with email and password
+     */
+    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+        const response = await this.loginWithEmailPasswordRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }
