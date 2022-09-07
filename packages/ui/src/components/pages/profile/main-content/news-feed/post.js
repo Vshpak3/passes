@@ -49,7 +49,7 @@ export const Post = ({ profile, post }) => {
   )
 }
 
-export const PostProfileAvatar = ({ profile, post }) => (
+export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => (
   <div className="flex w-full items-center justify-between">
     <div className="flex items-center space-x-4">
       {profile.profileImageUrl ? (
@@ -103,7 +103,7 @@ export const PostProfileAvatar = ({ profile, post }) => (
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
         <div>
-          <PostDropdown post={post} />
+          <PostDropdown post={post} items={dropdownItems} />
         </div>
       </div>
     </div>

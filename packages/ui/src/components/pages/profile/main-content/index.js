@@ -22,10 +22,11 @@ const MainContent = ({
       async () =>
         await api.createPost({
           createPostRequestDto: {
-            passes: [],
-            content: values.content,
             text: values.text,
-            _private: true
+            contentIds: [],
+            passIds: [],
+            isMessage: false,
+            price: 0
           }
         }),
       {
@@ -51,13 +52,14 @@ const MainContent = ({
   }
   const writeToFanWall = async (values) => {
     const api = wrapApi(FanWallApi)
+
     mutate(
       [`/fan-wall/creator/`, username],
       async () =>
         await api.createFanWallComment({
           createFanWallCommentRequestDto: {
-            creatorUsername: username,
-            content: values.text
+            creatorId: profile.userId,
+            text: values.text
           }
         }),
       {

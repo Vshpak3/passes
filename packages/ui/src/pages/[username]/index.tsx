@@ -146,7 +146,7 @@ const Username = (props: GetProfileResponseDto) => {
   } = useCreatorProfile(props)
 
   // when the profile not found
-  if (Object.keys(profile).length === 0 || !isTestProfile) {
+  if (Object.keys(profile).length === 0) {
     return (
       <div className="flex w-full items-center justify-center pt-[60px]">
         <div className="flex w-[500px] flex-col items-center justify-center gap-[15px] text-center">

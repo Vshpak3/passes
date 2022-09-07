@@ -8,11 +8,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
-export const PostDropdown = ({ post }) => {
+export const PostDropdown = ({ post, items = [] }) => {
   const copyToClipboard = () => {
     let baseRoute = ""
     if (typeof window !== "undefined") baseRoute = window.location.origin
-    let linkToCopy = baseRoute + "/" + post.username + "/" + post.id
+    const linkToCopy = baseRoute + "/" + post.username + "/" + post.id
     copy(linkToCopy)
 
     toast("Link to post has been copied to clipboard!", {
@@ -45,18 +45,32 @@ export const PostDropdown = ({ post }) => {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            <Menu.Item onClick={() => copyToClipboard()}>
+            <Menu.Item onClick={copyToClipboard}>
               {({ active }) => (
                 <span
                   className={classNames(
                     active ? "text-passes-primary-color" : "text-[#868487]",
-                    "block px-4 py-2 text-sm"
+                    "block cursor-pointer px-4 py-2 text-sm"
                   )}
                 >
                   Copy link to post
                 </span>
               )}
             </Menu.Item>
+            {items.map((item, index) => (
+              <Menu.Item key={index} onClick={item.onClick}>
+                {({ active }) => (
+                  <span
+                    className={classNames(
+                      active ? "text-passes-primary-color" : "text-[#868487]",
+                      "block cursor-pointer px-4 py-2 text-sm"
+                    )}
+                  >
+                    {item.text}
+                  </span>
+                )}
+              </Menu.Item>
+            ))}
           </div>
         </Menu.Items>
       </Transition>

@@ -42,7 +42,11 @@ const NewsFeedContent = ({
             onlyText
             createPost={writeToFanWall}
           />
-          <FanWallFeed fanWallPosts={fanWallPosts} />
+          <FanWallFeed
+            fanWallPosts={fanWallPosts}
+            ownsProfile={ownsProfile}
+            profile={profile}
+          />
         </>
       )
     case "events":
