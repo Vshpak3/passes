@@ -62,7 +62,7 @@ export class ProfileDto {
     this.discordUrl = profile.discord_url
     this.twitchUrl = profile.twitch_url
 
-    this.isKYCVerified = profile.user_is_kycverified
+    this.isKYCVerified = profile.is_kycverified
     this.isActive = profile.is_active
   }
 }

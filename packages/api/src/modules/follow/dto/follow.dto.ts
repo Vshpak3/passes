@@ -14,13 +14,9 @@ export class FollowDto {
   @DtoProperty()
   creatorId: string
 
-  @DtoProperty()
-  isActive: boolean
-
   constructor(follow) {
     this.id = follow.id
     this.followerId = follow.follower_id
     this.creatorId = follow.creator_id
-    this.isActive = follow.is_active
   }
 }

@@ -37,12 +37,6 @@ export interface GetFollowingResponseDto {
      * @memberof GetFollowingResponseDto
      */
     creatorId: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetFollowingResponseDto
-     */
-    isActive: boolean;
 }
 
 export function GetFollowingResponseDtoFromJSON(json: any): GetFollowingResponseDto {
@@ -58,7 +52,6 @@ export function GetFollowingResponseDtoFromJSONTyped(json: any, ignoreDiscrimina
         'id': json['id'],
         'followerId': json['followerId'],
         'creatorId': json['creatorId'],
-        'isActive': json['isActive'],
     };
 }
 
@@ -74,7 +67,6 @@ export function GetFollowingResponseDtoToJSON(value?: GetFollowingResponseDto | 
         'id': value.id,
         'followerId': value.followerId,
         'creatorId': value.creatorId,
-        'isActive': value.isActive,
     };
 }
 

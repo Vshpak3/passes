@@ -213,9 +213,27 @@ export class PostService {
   ): Promise<PostDto[]> {
     const posts = await query
 
+    const passAccesses = await this.dbReader(PostPassAccessEntity.table)
+      .innerJoin(
+        PassHolderEntity.table,
+        `${PostPassAccessEntity.table}.pass_id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .whereIn(
+        `${PostPassAccessEntity.table}.post_id`,
+        posts.map((post) => post.id),
+      )
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .whereNull(`${PassHolderEntity.table}.expires_at`)
+      .select('post_id')
+    const postsFromPass = new Set(
+      passAccesses.map((passAccess) => passAccess.post_id),
+    )
+
     const accessiblePosts = posts.reduce((arr, post) => {
       if (
         post.access || // single post purchase
+        postsFromPass.has(post.id) || // owns pass that gives access
         post.user_id === userId || // user made post
         !post.price || // no price on post
         post.price === 0 // price of post is 0
