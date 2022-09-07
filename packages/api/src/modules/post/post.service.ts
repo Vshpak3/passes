@@ -97,7 +97,7 @@ export class PostService {
         const passAccesses = await this.dbReader(PassHolderEntity.table)
           .whereIn(`pass_id`, createPostDto.passIds)
           .andWhere(`expires_at`)
-          .select('DISTINCT(holder_id)')
+          .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
           if (!passAccesses[i].holder_id) continue
           const postUserAccess =
