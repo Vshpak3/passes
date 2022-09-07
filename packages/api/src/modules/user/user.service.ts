@@ -173,7 +173,7 @@ export class UserService {
           }),
           ListEntity.toDict<ListEntity>({
             user: userId,
-            name: 'Followers',
+            name: 'Fans',
             type: ListTypeEnum.FOLLOWERS,
           }),
         ])

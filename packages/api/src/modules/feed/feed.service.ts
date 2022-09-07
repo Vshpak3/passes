@@ -117,7 +117,7 @@ export class FeedService {
           Date.now(),
         )
       })
-      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', Date.now())
+      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())
       .andWhere(`${LikeEntity.table}.liker_id`, userId)
       .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .limit(FEED_LIMIT)
