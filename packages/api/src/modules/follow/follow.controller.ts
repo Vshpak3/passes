@@ -43,7 +43,7 @@ export class FollowController {
     responseType: GetFollowingResponseDto,
     responseDesc: 'A follow was created',
   })
-  @Post(':creatorId')
+  @Post('follow/:creatorId')
   async followCreator(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,

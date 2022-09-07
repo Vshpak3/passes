@@ -159,7 +159,7 @@ export class FollowApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            path: `/api/follow/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
