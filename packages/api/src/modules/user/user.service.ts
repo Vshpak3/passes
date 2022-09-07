@@ -51,6 +51,7 @@ export class UserService {
       username: generateFromEmail(email, 3),
       oauthId: providerId,
       oauthProvider: provider,
+      isEmailVerified: !!email,
     })
     await this.dbWriter(UserEntity.table).insert(data)
     return new UserDto(data)
@@ -101,6 +102,17 @@ export class UserService {
       .where({ id: userId })
 
     return { ...user, ...setInitialUserInfoDto }
+  }
+
+  async setEmail(userId: string, email: string): Promise<void> {
+    await this.dbWriter(UserEntity.table)
+      .update(
+        UserEntity.toDict<UserEntity>({
+          email,
+          isEmailVerified: false,
+        }),
+      )
+      .where({ id: userId })
   }
 
   async setUsername(userId: string, username: string): Promise<void> {

@@ -7,6 +7,8 @@ import { FormInput } from "src/components/atoms"
 import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
 
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+
 enum BankTypeEnum {
   US,
   IBAN,
@@ -91,186 +93,188 @@ const NewCard = () => {
   }, [router, user, loading])
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          setBankType(BankTypeEnum.US)
-        }}
-      >
-        US (United States) Bank
-      </button>
-      <br />
-      <button
-        onClick={() => {
-          setBankType(BankTypeEnum.IBAN)
-        }}
-      >
-        Outside US Bank - IBAN
-      </button>
-      <br />
-      <button
-        onClick={() => {
-          setBankType(BankTypeEnum.NON_IBAN)
-        }}
-      >
-        Outside US Bank - no IBAN
-      </button>
-      <button></button>
-      <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
-        {(bankType === BankTypeEnum.US ||
-          bankType === BankTypeEnum.NON_IBAN) && (
-          <div>
+    <AuthOnlyWrapper isPage>
+      <div>
+        <button
+          onClick={() => {
+            setBankType(BankTypeEnum.US)
+          }}
+        >
+          US (United States) Bank
+        </button>
+        <br />
+        <button
+          onClick={() => {
+            setBankType(BankTypeEnum.IBAN)
+          }}
+        >
+          Outside US Bank - IBAN
+        </button>
+        <br />
+        <button
+          onClick={() => {
+            setBankType(BankTypeEnum.NON_IBAN)
+          }}
+        >
+          Outside US Bank - no IBAN
+        </button>
+        <button></button>
+        <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
+          {(bankType === BankTypeEnum.US ||
+            bankType === BankTypeEnum.NON_IBAN) && (
+            <div>
+              <FormInput
+                register={register}
+                type="text"
+                name="account-number"
+                placeholder="Account number"
+                options={{
+                  required: { message: "need account number", value: true },
+                  pattern: { message: "must be a month", value: /^\d*$/ }
+                }}
+                errors={errors}
+              />
+              <FormInput
+                register={register}
+                type="text"
+                name="routing-number"
+                placeholder="Routing number"
+                options={{
+                  required: { message: "need routing number", value: true },
+                  pattern: { message: "must be a month", value: /^\d*$/ }
+                }}
+                errors={errors}
+              />
+            </div>
+          )}
+          {bankType === BankTypeEnum.IBAN && (
             <FormInput
               register={register}
               type="text"
-              name="account-number"
-              placeholder="Account number"
+              name="iban"
+              placeholder="IBAN"
               options={{
-                required: { message: "need account number", value: true },
-                pattern: { message: "must be a month", value: /^\d*$/ }
+                required: { message: "need a month", value: true },
+                pattern: {
+                  message: "must be a month",
+                  value: /^[A-Z]{2}[A-Z\d]*$/
+                }
               }}
               errors={errors}
             />
-            <FormInput
-              register={register}
-              type="text"
-              name="routing-number"
-              placeholder="Routing number"
-              options={{
-                required: { message: "need routing number", value: true },
-                pattern: { message: "must be a month", value: /^\d*$/ }
-              }}
-              errors={errors}
-            />
-          </div>
-        )}
-        {bankType === BankTypeEnum.IBAN && (
+          )}
+          Bank Info:
           <FormInput
             register={register}
             type="text"
-            name="iban"
-            placeholder="IBAN"
+            name="bank-name"
+            placeholder="Bank Name"
             options={{
-              required: { message: "need a month", value: true },
+              required: { message: "need a a bank name", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="bank-city"
+            placeholder="Bank City"
+            options={{
+              required: { message: "need a bank city", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="bank-country"
+            placeholder="Bank Country (2 letters)"
+            options={{
+              required: { message: "need a bank country", value: true },
               pattern: {
-                message: "must be a month",
-                value: /^[A-Z]{2}[A-Z\d]*$/
+                message: "must be 2 letter country code",
+                value: /^[A-Z]{2}$/
               }
             }}
             errors={errors}
           />
-        )}
-        Bank Info:
-        <FormInput
-          register={register}
-          type="text"
-          name="bank-name"
-          placeholder="Bank Name"
-          options={{
-            required: { message: "need a a bank name", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="bank-city"
-          placeholder="Bank City"
-          options={{
-            required: { message: "need a bank city", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="bank-country"
-          placeholder="Bank Country (2 letters)"
-          options={{
-            required: { message: "need a bank country", value: true },
-            pattern: {
-              message: "must be 2 letter country code",
-              value: /^[A-Z]{2}$/
-            }
-          }}
-          errors={errors}
-        />
-        Billing Info:
-        <FormInput
-          register={register}
-          type="text"
-          name="bankowner-name"
-          placeholder="name of owner"
-          options={{
-            required: { message: "need a name", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="city"
-          placeholder="city"
-          options={{
-            required: { message: "need a city", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="address1"
-          placeholder="address line 1"
-          options={{
-            required: { message: "need an address", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="address2"
-          placeholder="address line 2"
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="postal-code"
-          placeholder="postal code"
-          options={{
-            required: { message: "need a postal code", value: true }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="country"
-          placeholder="country (2 letters)"
-          options={{
-            required: { message: "need a country", value: true },
-            pattern: {
-              message: "must be 2 letter country code",
-              value: /^[A-Z]{2}$/
-            }
-          }}
-          errors={errors}
-        />
-        <FormInput
-          register={register}
-          type="text"
-          name="district"
-          placeholder="district/state (2 letter code required for US or Canada)"
-          errors={errors}
-        />
-        <button
-          className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
-          type="submit"
-          {...(submitting ? { disabled: true } : {})}
-        />
-      </form>
-    </div>
+          Billing Info:
+          <FormInput
+            register={register}
+            type="text"
+            name="bankowner-name"
+            placeholder="name of owner"
+            options={{
+              required: { message: "need a name", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="city"
+            placeholder="city"
+            options={{
+              required: { message: "need a city", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="address1"
+            placeholder="address line 1"
+            options={{
+              required: { message: "need an address", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="address2"
+            placeholder="address line 2"
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="postal-code"
+            placeholder="postal code"
+            options={{
+              required: { message: "need a postal code", value: true }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="country"
+            placeholder="country (2 letters)"
+            options={{
+              required: { message: "need a country", value: true },
+              pattern: {
+                message: "must be 2 letter country code",
+                value: /^[A-Z]{2}$/
+              }
+            }}
+            errors={errors}
+          />
+          <FormInput
+            register={register}
+            type="text"
+            name="district"
+            placeholder="district/state (2 letter code required for US or Canada)"
+            errors={errors}
+          />
+          <button
+            className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
+            type="submit"
+            {...(submitting ? { disabled: true } : {})}
+          />
+        </form>
+      </div>
+    </AuthOnlyWrapper>
   )
 }
 export default NewCard

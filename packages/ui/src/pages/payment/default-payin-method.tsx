@@ -5,6 +5,8 @@ import { PassesPinkButton } from "src/components/atoms"
 import { CreditCardModal } from "src/components/organisms"
 import { usePayment, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
+
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 // const EVM_CHAINID = {
 //   1: "Ethereum($ETH)",
 //   5: "Ethereum($ETH)",
@@ -41,8 +43,9 @@ const DefaultPayinMethod = () => {
       router.push("/login")
     }
   }, [router, user, loading])
+
   return (
-    <>
+    <AuthOnlyWrapper isPage>
       <div className="mx-auto -mt-[160px] grid grid-cols-10 gap-5 px-4 text-[#ffff]/90 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
         <div className="col-span-12 w-full">
           <div className="mb-16 text-base font-medium leading-[19px]">
@@ -201,7 +204,7 @@ const DefaultPayinMethod = () => {
         setOpen={setModalOpen}
         defaultPayin={defaultPayin}
       />
-    </>
+    </AuthOnlyWrapper>
   )
 }
 export default withPageLayout(DefaultPayinMethod)

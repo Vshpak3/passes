@@ -10,18 +10,6 @@ import { wrapApi } from "src/helpers/wrapApi"
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { useUser } from "../../hooks"
 
-export async function getServerSideProps({ query }) {
-  if (!query.hash) {
-    return {
-      notFound: true
-    }
-  }
-
-  return {
-    props: {}
-  }
-}
-
 const UserInfoPage = () => {
   const { loading, user, refreshAccessToken } = useUser()
   const router = useRouter()

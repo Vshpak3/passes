@@ -23,8 +23,8 @@ export async function createTokens(
 /**
  * Handles redirect after successful OAuth login.
  *
- * Note: the type of the user is UserDto. This is the type returned
- * from the *OauthStrategy.validate methods and is what is set for Request.user.
+ * Note: the type of the user is UserDto. This is the type returned from the
+ * *OauthStrategy.validate methods and is what is set for Request.user.
  */
 export async function redirectAfterSuccessfulLogin(
   res: Response,

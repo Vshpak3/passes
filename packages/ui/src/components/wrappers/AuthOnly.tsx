@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { FC } from "react"
 
@@ -9,6 +10,9 @@ export interface AuthOnlyWrapperProps {
   // Otherwise, will conditionally render children
   isPage?: boolean
 
+  // allowUnverified will prevent the /user-email redirect if the user is email unverified
+  allowEmailUnverified?: boolean
+
   // allowUnverified will prevent the /user-info redirect if the user is unverified
   allowUnverified?: boolean
 }
@@ -16,9 +20,10 @@ export interface AuthOnlyWrapperProps {
 const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
   children,
   isPage,
+  allowEmailUnverified,
   allowUnverified
 }) => {
-  const { loading, user } = useUser()
+  const { loading, user, accessToken } = useUser()
   const router = useRouter()
 
   if (loading || !router.isReady) {
@@ -38,11 +43,17 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
     return null
   }
 
-  // TODO
-  const isVerified = true // jwtDecode(token) as any).isVerified
-  if (isPage && !isVerified && !allowUnverified) {
-    router.push(`/signup/user-info?email=${user.email}`)
-    return null
+  const decodedAuthToken = jwtDecode(accessToken) as any
+  if (isPage) {
+    if (!decodedAuthToken.isEmailVerified && !allowEmailUnverified) {
+      router.push("/signup/user-email")
+      return null
+    }
+
+    if (!decodedAuthToken.isVerified && !allowUnverified) {
+      router.push("/signup/user-info")
+      return null
+    }
   }
 
   return <>{children}</>

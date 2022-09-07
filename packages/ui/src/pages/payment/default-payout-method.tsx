@@ -15,6 +15,7 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 
 import AddBankingModal from "../../components/organisms/AddBankingModal"
 import AddWalletModal from "../../components/organisms/AddWalletModal"
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import BankIcon from "../../icons/bank-icon"
 import AccountCard from "./AccountCard"
 
@@ -161,7 +162,7 @@ const DefaultPayoutMethod = () => {
   }, [router, user, loading, getBanks, getWallets, getDefaultPayout])
 
   return (
-    <>
+    <AuthOnlyWrapper isPage>
       <div>
         <div className="mx-auto -mt-[195px] grid grid-cols-10 gap-5 px-4 text-[#ffff]/90 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
           <div className="col-span-12 w-full">
@@ -340,7 +341,7 @@ const DefaultPayoutMethod = () => {
         setOpen={setWalletModalOpen}
         defaultPayout={defaultPayout}
       />
-    </>
+    </AuthOnlyWrapper>
   )
 }
 

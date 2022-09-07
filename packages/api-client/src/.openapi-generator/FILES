@@ -140,6 +140,7 @@ models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
+models/SetEmailRequestDto.ts
 models/SetInitialUserInfoRequestDto.ts
 models/SetInitialUserInfoResponseDto.ts
 models/SetPayinMethodRequestDto.ts

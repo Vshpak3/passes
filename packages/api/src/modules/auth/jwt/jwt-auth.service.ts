@@ -14,6 +14,7 @@ export class JwtAuthService {
       sub: user.id,
       isVerified: this.isVerified(user),
       isCreator: !!user.isCreator,
+      isEmailVerified: !!user.isEmailVerified,
       ...BASE_CLAIMS,
     }
     return this.jwtService.sign(payload)

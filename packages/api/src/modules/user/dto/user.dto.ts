@@ -11,6 +11,9 @@ export class UserDto {
   email: string
 
   @DtoProperty()
+  isEmailVerified?: boolean
+
+  @DtoProperty()
   username: string
 
   @DtoProperty({ required: false })
@@ -35,6 +38,7 @@ export class UserDto {
   constructor(userEntity, includeSensitiveFields = false) {
     this.id = userEntity.id
     this.email = userEntity.email
+    this.isEmailVerified = userEntity.is_email_verified
     this.username = userEntity.username
     this.displayName = userEntity.display_name
     this.isCreator = userEntity.is_creator

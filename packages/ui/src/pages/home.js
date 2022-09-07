@@ -1,6 +1,8 @@
 import CreatorContentFeed from "src/components/pages/profile/main-content/news-feed/creator-content-feed"
 import { useFeed } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
+
+import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
 // import { useSWRConfig } from "swr"
 // import { wrapApi } from "../helpers"
 // import { PostApi } from "@passes/api-client"
@@ -120,7 +122,7 @@ const Home = () => {
   // }
   const { posts = [] } = useFeed()
   return (
-    <>
+    <AuthOnlyWrapper isPage>
       {posts?.length > 0 ? (
         <div className="w-full bg-black">
           <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20  lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
@@ -160,7 +162,7 @@ const Home = () => {
       ) : (
         <div>Follow creators to see posts!</div>
       )}
-    </>
+    </AuthOnlyWrapper>
   )
 }
 

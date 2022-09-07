@@ -4,7 +4,10 @@ import { JwtService } from '@nestjs/jwt'
 import { BASE_CLAIMS } from './jwt.constants'
 import { JwtPayload } from './jwt-auth.strategy'
 
-export type JwtRefreshPayload = Omit<JwtPayload, 'isVerified' | 'isCreator'>
+export type JwtRefreshPayload = Omit<
+  JwtPayload,
+  'isVerified' | 'isCreator' | 'isEmailVerified'
+>
 
 @Injectable()
 export class JwtRefreshService {

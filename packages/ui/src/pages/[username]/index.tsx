@@ -10,6 +10,8 @@ import { EditProfile } from "src/components/pages/profile/profile-details/edit-p
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+
 const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
@@ -171,7 +173,7 @@ const Username = (props: GetProfileResponseDto) => {
   }
 
   return (
-    <>
+    <AuthOnlyWrapper isPage allowUnverified>
       <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
         <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
           {profile?.profileId && (
@@ -210,7 +212,7 @@ const Username = (props: GetProfileResponseDto) => {
           )}
         </div>
       </div>
-    </>
+    </AuthOnlyWrapper>
   )
 }
 

@@ -1,5 +1,9 @@
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Notification = () => <div>Notification</div>
+import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
+
+const Notification = () => (
+  <AuthOnlyWrapper isPage>Notification</AuthOnlyWrapper>
+)
 
 export default withPageLayout(Notification)

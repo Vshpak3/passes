@@ -16,6 +16,9 @@ export class JwtPayload {
   isVerified: boolean
 
   @DtoProperty()
+  isEmailVerified: boolean
+
+  @DtoProperty()
   isCreator: boolean
 }
 

@@ -9,6 +9,7 @@ import encrypt from "src/helpers/openpgp"
 import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
 
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { wrapApi } from "../../helpers/wrapApi"
 
 const NewCard = () => {
@@ -106,135 +107,137 @@ const NewCard = () => {
   }, [router, user, loading])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
-      <FormInput
-        register={register}
-        type="text"
-        name="card-number"
-        placeholder="card number"
-        options={{
-          required: { message: "need card number", value: true },
-          pattern: { message: "must be card number", value: /\d{16}/ }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="cvv"
-        placeholder="cvv"
-        options={{
-          required: { message: "need card number", value: true },
-          pattern: { message: "must be card number", value: /\d{3}/ }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="exp-month"
-        placeholder="mm"
-        options={{
-          required: { message: "need a month", value: true },
-          pattern: { message: "must be a month", value: /\d{2}/ }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="exp-year"
-        placeholder="yyyy"
-        options={{
-          required: { message: "need a year", value: true },
-          pattern: { message: "must be a year", value: /\d{4}/ }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="cardholder-name"
-        placeholder="name on card"
-        options={{
-          required: { message: "need a name", value: true }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="city"
-        placeholder="city"
-        options={{
-          required: { message: "need a city", value: true }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="address1"
-        placeholder="address line 1"
-        options={{
-          required: { message: "need an address", value: true }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="address2"
-        placeholder="address line 2"
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="postal-code"
-        placeholder="postal code"
-        options={{
-          required: { message: "need a postal code", value: true }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="country"
-        placeholder="country (2 letters)"
-        options={{
-          required: { message: "need a country", value: true },
-          pattern: {
-            message: "must be 2 letter country code",
-            value: /[A-Z]{2}/
-          }
-        }}
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="district"
-        placeholder="district/state (2 letter code required for US or Canada)"
-        errors={errors}
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="phone-number"
-        placeholder="phone number"
-        options={{
-          required: { message: "need a postal code", value: true }
-        }}
-        errors={errors}
-      />
-      <button
-        className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
-        type="submit"
-        {...(submitting ? { disabled: true } : {})}
-      />
-    </form>
+    <AuthOnlyWrapper isPage>
+      <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
+        <FormInput
+          register={register}
+          type="text"
+          name="card-number"
+          placeholder="card number"
+          options={{
+            required: { message: "need card number", value: true },
+            pattern: { message: "must be card number", value: /\d{16}/ }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="cvv"
+          placeholder="cvv"
+          options={{
+            required: { message: "need card number", value: true },
+            pattern: { message: "must be card number", value: /\d{3}/ }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="exp-month"
+          placeholder="mm"
+          options={{
+            required: { message: "need a month", value: true },
+            pattern: { message: "must be a month", value: /\d{2}/ }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="exp-year"
+          placeholder="yyyy"
+          options={{
+            required: { message: "need a year", value: true },
+            pattern: { message: "must be a year", value: /\d{4}/ }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="cardholder-name"
+          placeholder="name on card"
+          options={{
+            required: { message: "need a name", value: true }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="city"
+          placeholder="city"
+          options={{
+            required: { message: "need a city", value: true }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="address1"
+          placeholder="address line 1"
+          options={{
+            required: { message: "need an address", value: true }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="address2"
+          placeholder="address line 2"
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="postal-code"
+          placeholder="postal code"
+          options={{
+            required: { message: "need a postal code", value: true }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="country"
+          placeholder="country (2 letters)"
+          options={{
+            required: { message: "need a country", value: true },
+            pattern: {
+              message: "must be 2 letter country code",
+              value: /[A-Z]{2}/
+            }
+          }}
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="district"
+          placeholder="district/state (2 letter code required for US or Canada)"
+          errors={errors}
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="phone-number"
+          placeholder="phone number"
+          options={{
+            required: { message: "need a postal code", value: true }
+          }}
+          errors={errors}
+        />
+        <button
+          className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
+          type="submit"
+          {...(submitting ? { disabled: true } : {})}
+        />
+      </form>
+    </AuthOnlyWrapper>
   )
 }
 export default NewCard

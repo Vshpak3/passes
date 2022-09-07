@@ -24,10 +24,17 @@ import {
     RefreshAuthTokenRequestDto,
     RefreshAuthTokenRequestDtoFromJSON,
     RefreshAuthTokenRequestDtoToJSON,
+    SetEmailRequestDto,
+    SetEmailRequestDtoFromJSON,
+    SetEmailRequestDtoToJSON,
 } from '../models';
 
 export interface RefreshAccessTokenRequest {
     refreshAuthTokenRequestDto: RefreshAuthTokenRequestDto;
+}
+
+export interface SetUserEmailRequest {
+    setEmailRequestDto: SetEmailRequestDto;
 }
 
 /**
@@ -100,6 +107,46 @@ export class AuthApi extends runtime.BaseAPI {
     async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.refreshAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Sets the user email
+     */
+    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.setEmailRequestDto === null || requestParameters.setEmailRequestDto === undefined) {
+            throw new runtime.RequiredError('setEmailRequestDto','Required parameter requestParameters.setEmailRequestDto was null or undefined when calling setUserEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/auth/set-email`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetEmailRequestDtoToJSON(requestParameters.setEmailRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Sets the user email
+     */
+    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setUserEmailRaw(requestParameters, initOverrides);
     }
 
 }

@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import { useLocalStorage, useUser } from "src/hooks"
 
+import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+
 const NewAddress = () => {
   const [submitting, setSubmitting] = useState(false)
 
@@ -61,7 +63,7 @@ const NewAddress = () => {
   }, [router, user, loading])
   //TODO: add address validation
   return (
-    <div>
+    <AuthOnlyWrapper isPage>
       <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
         <FormInput
           register={register}
@@ -87,7 +89,7 @@ const NewAddress = () => {
           {...(submitting ? { disabled: true } : {})}
         />
       </form>
-    </div>
+    </AuthOnlyWrapper>
   )
 }
 export default NewAddress

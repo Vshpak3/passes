@@ -30,10 +30,12 @@ const AuthSuccess = () => {
     }
 
     const decodedAuthToken = jwtDecode(token) as any
-    if (decodedAuthToken.isVerified) {
-      router.push("/home")
-    } else {
+    if (!decodedAuthToken.isEmailVerified) {
+      router.push("/signup/user-email")
+    } else if (!decodedAuthToken.isVerified) {
       router.push("/signup/user-info")
+    } else {
+      router.push("/home")
     }
   }, [router, setAccessToken, setRefreshToken])
 

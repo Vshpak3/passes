@@ -8,7 +8,7 @@ import Privacy from "./subNav/Privacy"
 
 export default function SettingsNav() {
   const [view, setView] = useState("settings")
-  const [toogleSubView, setToogleSubView] = useState(false)
+  const [toggleSubView, setToggleSubView] = useState(false)
   const settings = [
     { name: "Account Settings", value: "settings" },
     { name: "Chat Settings", value: "chat-settings" },
@@ -18,20 +18,20 @@ export default function SettingsNav() {
   ]
 
   const handleView = (elm) => {
-    setToogleSubView(false)
+    setToggleSubView(false)
 
     setView(elm)
   }
 
   const childView = () => {
-    setToogleSubView((prev) => !prev)
+    setToggleSubView((prev) => !prev)
     setView("settings")
   }
 
   const renderSwitch = () => {
     switch (view) {
       case "settings":
-        return <Account subView={toogleSubView} childView={childView} />
+        return <Account subView={toggleSubView} childView={childView} />
       case "chat-settings":
         return <ChatSettings />
       case "privacy":
