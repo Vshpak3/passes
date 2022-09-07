@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, Property } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
@@ -10,7 +10,7 @@ export class PostEntity extends BaseEntity {
   @ManyToOne()
   user: UserEntity
 
-  @Property({ length: POST_TEXT_LENGTH })
+  @Property({ type: types.text, length: POST_TEXT_LENGTH })
   text: string
 
   @Index()

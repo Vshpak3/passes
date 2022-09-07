@@ -10,7 +10,7 @@ export class TippedMessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
   sender: UserEntity
 
-  @Property({ length: MESSAGE_LENGTH })
+  @Property({ type: types.text, length: MESSAGE_LENGTH })
   text: string
 
   @Property({ type: types.json })
