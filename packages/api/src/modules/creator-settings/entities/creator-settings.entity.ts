@@ -11,8 +11,8 @@ export class CreatorSettingsEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
   user: UserEntity
 
-  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  minimumTipAmount: number
+  @Property({ columnType: USD_AMOUNT_TYPE })
+  minimumTipAmount?: number
 
   @Property({ length: WELCOME_MESSAGE_MAX_LENGTH })
   welcomeMessage?: string

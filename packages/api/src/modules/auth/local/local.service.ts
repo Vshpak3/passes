@@ -114,7 +114,7 @@ export class LocalAuthService {
       throw new BadRequestException('Reset password request does not exist')
     }
 
-    if (Date.now() < request.expires_at) {
+    if (new Date() < request.expires_at) {
       throw new BadRequestException('Reset password request has expired')
     }
 

@@ -204,7 +204,7 @@ export class UserService {
       throw new BadRequestException('Verify email request does not exist')
     }
 
-    if (Date.now() < request.expires_at) {
+    if (new Date() < request.expires_at) {
       throw new BadRequestException('Verify email request has already expired')
     }
 

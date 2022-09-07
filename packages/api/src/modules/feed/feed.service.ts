@@ -119,7 +119,7 @@ export class FeedService {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
           `${PostEntity.table}.expires_at`,
           '>',
-          Date.now(),
+          new Date(),
         )
       })
       .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())

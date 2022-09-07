@@ -7,7 +7,9 @@ import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsDto } from './dto/creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
+import { InvalidMessageTipMinimumError } from './error/creator-settings.error'
 
+const MINIMUM_MESSAGE_TIP_AMOUNT = 3.0
 @Injectable()
 export class CreatorSettingsService {
   constructor(
@@ -38,6 +40,12 @@ export class CreatorSettingsService {
   ): Promise<boolean> {
     if (Object.keys(updateCreatorSettingsDto).length === 0) {
       return false
+    }
+    if (
+      updateCreatorSettingsDto.minimumTipAmount &&
+      updateCreatorSettingsDto.minimumTipAmount < MINIMUM_MESSAGE_TIP_AMOUNT
+    ) {
+      throw new InvalidMessageTipMinimumError('minimum tp value too low')
     }
     const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
       updateCreatorSettingsDto,

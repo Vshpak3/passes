@@ -18,6 +18,7 @@ import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
 import { PostService } from '../post/post.service'
+import { RedisLockService } from '../redisLock/redisLock.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletDto } from '../wallet/dto/wallet.dto'
@@ -143,6 +144,9 @@ export class PaymentService {
 
     private readonly creatorStatsService: CreatorStatsService,
     private moduleRef: ModuleRef,
+
+    @Inject(RedisLockService)
+    protected readonly lockService: RedisLockService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -1724,27 +1728,23 @@ export class PaymentService {
     // only defined when payout is automatic from batch job
     payoutFrequency?: PayoutFrequencyEnum,
   ): Promise<void> {
-    const now = Date.now()
-    const checkPayout = await this.dbReader(PayoutEntity.table)
-      .select('created_at')
-      .orderBy('created_at', 'desc')
-      .limit(1)
-      .first()
-    if (
-      checkPayout &&
-      checkPayout.created_at > now - MAX_TIME_BETWEEN_PAYOUTS_MS
-    ) {
+    const redisKey = `payoutCreator:${userId}`
+    const lockResult = await this.lockService.lockOnce(
+      redisKey,
+      MAX_TIME_BETWEEN_PAYOUTS_MS,
+    )
+    if (!lockResult) {
       throw new PayoutFrequencyError(
         'Payout created for creator recently, try again later',
       )
     }
 
-    if (payoutFrequency && checkPayout) {
+    if (payoutFrequency) {
       switch (payoutFrequency) {
         case PayoutFrequencyEnum.ONE_WEEK:
           break
         case PayoutFrequencyEnum.TWO_WEEKS:
-          if (now % (ONE_WEEK_MS * 2) > ONE_WEEK_MS) {
+          if (Date.now() % (ONE_WEEK_MS * 2) > ONE_WEEK_MS) {
             // job is run every week
             // ensure that creators opting for biweekly don't get paid too often
             return
