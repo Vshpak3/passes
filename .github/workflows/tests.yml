@@ -16,11 +16,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: 16
       - run: yarn
       - run: yarn workspace @passes/api prettier:check
       - run: yarn workspace @passes/api lint:check
@@ -33,11 +33,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: 16
       - run: yarn
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
@@ -50,14 +50,27 @@ jobs:
     timeout-minutes: 2
     steps:
       - name: Checkout monorepo code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: monorepo
       - name: Checkout infra code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: getpasses/infra
           ref: main
           token: ${{ secrets.INFRA_REPO_ACCESS }}
           path: infra
       - run: ./monorepo/bin/config-check.sh
+
+  check-api-openapi:
+    name: Check @passes/api OpenAPI
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: ./bin/api-compatibility.sh
