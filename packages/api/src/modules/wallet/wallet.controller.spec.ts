@@ -4,7 +4,7 @@ import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import { getBaseProviders } from '../../util/providers.test'
 import { EthService } from '../eth/eth.service'
 import { LambdaService } from '../lambda/lambda.service'
-import { RedisLockService } from '../redisLock/redisLock.service'
+import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { WalletController } from './wallet.controller'
 import { WalletService } from './wallet.service'
 

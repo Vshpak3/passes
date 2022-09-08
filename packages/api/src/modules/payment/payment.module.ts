@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common'
 import { text } from 'body-parser'
 
 import { CreatorStatsModule } from '../creator-stats/creator-stats.module'
-import { RedisLockModule } from '../redisLock/redisLock.module'
+import { RedisLockModule } from '../redis-lock/redis-lock.module'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
 

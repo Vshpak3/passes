@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -24,29 +25,32 @@ export class FanWallService {
   ): Promise<boolean> {
     const { creatorId, text: content } = createFanWallCommentDto
 
-    const followBlockResult = await this.dbReader(FollowBlockEntity.table)
-      .where(`${FollowBlockEntity.table}.follower_id`, userId)
-      .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
-      .first()
-
-    if (followBlockResult) {
-      throw new BadRequestException(CREATOR_NOT_EXIST)
-    }
-
+    await this.checkBlock(userId, creatorId)
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+      id: v4(),
       creator: creatorId,
       commenter: userId,
       text: content,
     })
 
+    // post creation check incase user was blocked in between the checkPost and writing
+    try {
+      await this.checkBlock(userId, creatorId)
+    } catch (err) {
+      await this.dbWriter(FanWallCommentEntity.table)
+        .where('id', data.id)
+        .update('blocked', true)
+    }
     await this.dbWriter(FanWallCommentEntity.table).insert(data)
 
     return true
   }
 
   async getFanWallForCreator(
+    userId: string,
     creatorId: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
+    await this.checkBlock(userId, creatorId)
     const comments = await this.dbReader(FanWallCommentEntity.table)
       .leftJoin(
         UserEntity.table,
@@ -56,7 +60,9 @@ export class FanWallService {
       .where(
         FanWallCommentEntity.toDict<FanWallCommentEntity>({
           creator: creatorId,
-          hiddenAt: null,
+          hidden: false,
+          blocked: false,
+          deactivated: false,
           deletedAt: null,
         }),
       )
@@ -75,7 +81,7 @@ export class FanWallService {
     fanWallCommentId: string,
   ): Promise<boolean> {
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
-      hiddenAt: this.dbWriter.fn.now(),
+      hidden: true,
     })
     const updated = await this.dbWriter(FanWallCommentEntity.table)
       .update(data)
@@ -83,7 +89,27 @@ export class FanWallService {
         FanWallCommentEntity.toDict<FanWallCommentEntity>({
           id: fanWallCommentId,
           creator: userId,
-          hiddenAt: null,
+          hidden: false,
+          deletedAt: null,
+        }),
+      )
+    return updated === 1
+  }
+
+  async unhideFanWallCommment(
+    userId: string,
+    fanWallCommentId: string,
+  ): Promise<boolean> {
+    const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+      hidden: false,
+    })
+    const updated = await this.dbWriter(FanWallCommentEntity.table)
+      .update(data)
+      .where(
+        FanWallCommentEntity.toDict<FanWallCommentEntity>({
+          id: fanWallCommentId,
+          creator: userId,
+          hidden: true,
           deletedAt: null,
         }),
       )
@@ -103,10 +129,20 @@ export class FanWallService {
         FanWallCommentEntity.toDict<FanWallCommentEntity>({
           id: fanWallCommentId,
           commenter: userId,
-          hiddenAt: null,
           deletedAt: null,
         }),
       )
     return updated === 1
+  }
+
+  async checkBlock(userId: string, creatorId: string) {
+    const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+      .where(`${FollowBlockEntity.table}.follower_id`, userId)
+      .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
+      .first()
+
+    if (followBlockResult) {
+      throw new BadRequestException(CREATOR_NOT_EXIST)
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 
-import { RedisLockService } from './redisLock.service'
+import { RedisLockService } from './redis-lock.service'
 describe('RedisLockService', () => {
   let service: RedisLockService
 

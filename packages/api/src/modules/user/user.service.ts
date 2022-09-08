@@ -20,6 +20,7 @@ import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity
 import { VerifyEmailRequestEntity } from '../email/entities/verify-email-request.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
+import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { USERNAME_TAKEN } from './constants/errors'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import {
@@ -29,6 +30,9 @@ import {
 import { UserDto } from './dto/user.dto'
 import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserEntity } from './entities/user.entity'
+
+const MAX_USERNAME_RESET_IN_SPAN = 5
+const USERNAME_RESET_TIME_SPAN = 1000 * 60 * 60 * 24 // 1 day
 
 @Injectable()
 export class UserService {
@@ -43,6 +47,9 @@ export class UserService {
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
     private readonly jwtAuthService: JwtAuthService,
+
+    @Inject(RedisLockService)
+    protected readonly lockService: RedisLockService,
   ) {
     this.env = configService.get('infra.env') as string
   }
@@ -142,15 +149,40 @@ export class UserService {
   }
 
   async setUsername(userId: string, username: string): Promise<void> {
-    const query = () =>
-      this.dbWriter(UserEntity.table)
-        .update(
-          UserEntity.toDict<UserEntity>({
-            username,
-          }),
-        )
-        .where({ id: userId })
-    await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
+    const redisKeyBase = `setUsername:${userId}`
+    let redisKey = ''
+    try {
+      for (let i = 0; i < MAX_USERNAME_RESET_IN_SPAN; i++) {
+        redisKey = redisKeyBase + i.toString()
+        if (
+          await this.lockService.lockOnce(redisKey, USERNAME_RESET_TIME_SPAN)
+        ) {
+          const query = () =>
+            this.dbWriter(UserEntity.table)
+              .update(
+                UserEntity.toDict<UserEntity>({
+                  username,
+                }),
+              )
+              .where({ id: userId })
+          await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
+          break
+        }
+      }
+    } catch (err) {
+      await this.lockService.unlock(redisKey)
+      throw err
+    }
+  }
+
+  async setDisplayName(userId: string, displayName: string): Promise<void> {
+    await this.dbWriter(UserEntity.table)
+      .update(
+        UserEntity.toDict<UserEntity>({
+          displayName,
+        }),
+      )
+      .where({ id: userId })
   }
 
   async validateUsername(username: string): Promise<boolean> {

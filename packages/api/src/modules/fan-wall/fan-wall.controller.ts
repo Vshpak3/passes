@@ -47,9 +47,10 @@ export class FanWallController {
   })
   @Get(':userId')
   async getFanWallForCreator(
+    @Req() req: RequestWithUser,
     @Param('userId') userId: string,
   ): Promise<GetFanWallForCreatorResponseDto> {
-    return this.fanWallService.getFanWallForCreator(userId)
+    return this.fanWallService.getFanWallForCreator(req.user.id, userId)
   }
 
   @ApiEndpoint({

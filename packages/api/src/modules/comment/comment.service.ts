@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -26,8 +27,8 @@ export class CommentService {
   ): Promise<boolean> {
     const { postId, text } = createCommentDto
     await this.checkPost(userId, postId)
-
     const data = CommentEntity.toDict<CommentEntity>({
+      id: v4(),
       post: postId,
       commenter: userId,
       text: text,
@@ -40,6 +41,14 @@ export class CommentService {
         .increment('num_comments', 1)
     })
 
+    // post creation check incase user was blocked in between the checkPost and writing
+    try {
+      await this.checkPost(userId, postId)
+    } catch (err) {
+      await this.dbWriter(CommentEntity.table)
+        .where('id', data.id)
+        .update('blocked', true)
+    }
     return true
   }
 
@@ -58,7 +67,9 @@ export class CommentService {
       .where(
         CommentEntity.toDict<CommentEntity>({
           id: postId,
-          hiddenAt: null,
+          hidden: false,
+          blocked: false,
+          deactivated: false,
           deletedAt: null,
         }),
       )
@@ -79,7 +90,7 @@ export class CommentService {
     if (!post) throw new BadRequestException(POST_NOT_EXIST)
 
     const data = CommentEntity.toDict<CommentEntity>({
-      hiddenAt: this.dbWriter.fn.now(),
+      hidden: true,
     })
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
@@ -89,7 +100,19 @@ export class CommentService {
           CommentEntity.toDict<CommentEntity>({
             id: commentId,
             post: postId,
-            hiddenAt: null,
+            hidden: false,
+            blocked: false,
+            deactivated: false,
+            deletedAt: null,
+          }),
+        )
+      await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            commenter: userId,
+            post: postId,
             deletedAt: null,
           }),
         )
@@ -98,6 +121,49 @@ export class CommentService {
           .where('id', postId)
           .decrement('num_comments', 1)
       }
+    })
+    return updated === 1
+  }
+
+  async unhideComment(userId: string, postId: string, commentId: string) {
+    const post = await this.dbReader(PostEntity.table)
+      .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
+      .select('id')
+
+    if (!post) throw new BadRequestException(POST_NOT_EXIST)
+
+    const data = CommentEntity.toDict<CommentEntity>({
+      hidden: false,
+    })
+    let updated = 0
+    await this.dbWriter.transaction(async (trx) => {
+      updated = await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            post: postId,
+            hidden: false,
+            blocked: false,
+            deactivated: false,
+            deletedAt: null,
+          }),
+        )
+      if (updated === 1) {
+        await trx(PostEntity.table)
+          .where('id', postId)
+          .increment('num_comments', 1)
+      }
+      updated += await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            commenter: userId,
+            post: postId,
+            deletedAt: null,
+          }),
+        )
     })
     return updated === 1
   }
@@ -115,7 +181,9 @@ export class CommentService {
             id: commentId,
             commenter: userId,
             post: postId,
-            hiddenAt: null,
+            hidden: null,
+            blocked: false,
+            deactivated: false,
             deletedAt: null,
           }),
         )
@@ -124,6 +192,16 @@ export class CommentService {
           .where('id', postId)
           .decrement('num_comments', 1)
       }
+      updated += await trx(CommentEntity.table)
+        .update(data)
+        .where(
+          CommentEntity.toDict<CommentEntity>({
+            id: commentId,
+            commenter: userId,
+            post: postId,
+            deletedAt: null,
+          }),
+        )
     })
     return updated === 1
   }

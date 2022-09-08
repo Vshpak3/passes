@@ -68,6 +68,19 @@ export class FollowService {
         })
         .first(),
     ])
+    if (
+      await this.dbReader(FollowBlockEntity.table)
+        .where(
+          FollowBlockEntity.toDict<FollowBlockEntity>({
+            follower: userId,
+            creator: creatorId,
+          }),
+        )
+        .select('id')
+        .first()
+    ) {
+      throw new BadRequestException(CREATOR_NOT_EXIST)
+    }
     if (!follower) {
       throw new BadRequestException(FOLLOWER_NOT_EXIST)
     }

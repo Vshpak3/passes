@@ -27,6 +27,9 @@ import {
     SetInitialUserInfoResponseDto,
     SetInitialUserInfoResponseDtoFromJSON,
     SetInitialUserInfoResponseDtoToJSON,
+    UpdateDisplayNameRequestDto,
+    UpdateDisplayNameRequestDtoFromJSON,
+    UpdateDisplayNameRequestDtoToJSON,
     UpdateUsernameRequestDto,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
@@ -37,6 +40,10 @@ import {
 
 export interface SearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
+}
+
+export interface SetDisplayNameRequest {
+    updateDisplayNameRequestDto: UpdateDisplayNameRequestDto;
 }
 
 export interface SetInitialInfoRequest {
@@ -165,6 +172,46 @@ export class UserApi extends runtime.BaseAPI {
     async searchCreatorByUsername(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
         const response = await this.searchCreatorByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Set display name for current user
+     */
+    async setDisplayNameRaw(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.updateDisplayNameRequestDto === null || requestParameters.updateDisplayNameRequestDto === undefined) {
+            throw new runtime.RequiredError('updateDisplayNameRequestDto','Required parameter requestParameters.updateDisplayNameRequestDto was null or undefined when calling setDisplayName.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/user/set-display-name`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateDisplayNameRequestDtoToJSON(requestParameters.updateDisplayNameRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set display name for current user
+     */
+    async setDisplayName(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.setDisplayNameRaw(requestParameters, initOverrides);
     }
 
     /**

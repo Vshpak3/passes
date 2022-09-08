@@ -17,8 +17,14 @@ export class FanWallCommentEntity extends BaseEntity {
   text: string
 
   // Is Hidden by Post Owner (creator)
-  @Property()
-  hiddenAt?: Date
+  @Property({ default: false })
+  hidden: boolean
+
+  @Property({ default: false })
+  blocked: boolean
+
+  @Property({ default: false })
+  deactivated: boolean
 
   // Deleted by commenter
   @Property()

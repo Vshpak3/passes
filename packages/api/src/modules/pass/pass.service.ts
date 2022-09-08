@@ -74,7 +74,7 @@ export class PassService {
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
-    // TODO: check image exists exists
+    // TODO: check image exists
 
     const duration =
       createPassDto.duration === undefined &&

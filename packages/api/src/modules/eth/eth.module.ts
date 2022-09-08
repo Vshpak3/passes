@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 
-import { RedisLockModule } from '../redisLock/redisLock.module'
+import { RedisLockModule } from '../redis-lock/redis-lock.module'
 import { EthService } from './eth.service'
 
 @Module({

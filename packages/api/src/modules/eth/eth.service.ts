@@ -15,7 +15,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { RedisLockService } from '../redisLock/redisLock.service'
+import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 

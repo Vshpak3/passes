@@ -18,7 +18,7 @@ import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
 import { PostService } from '../post/post.service'
-import { RedisLockService } from '../redisLock/redisLock.service'
+import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletDto } from '../wallet/dto/wallet.dto'
@@ -578,14 +578,14 @@ export class PaymentService {
         identities: [
           {
             type: 'business',
-            name: 'Passes Inc',
+            name: 'Corefans Inc',
             addresses: [
               {
-                line1: '100 Money Street', // TODO: USE OUR REAL NEW MIAMI ADDRESS
-                city: 'Boston',
-                district: 'MA',
+                line1: '1 S.E. 3rd Avenue',
+                city: 'Miami',
+                district: 'FL',
                 country: 'US',
-                postalCode: '01234',
+                postalCode: '33131',
               },
             ],
           },

@@ -22,6 +22,7 @@ import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
+import { UpdateDisplayNameRequestDto } from './dto/update-display-name.dto'
 import { UpdateUsernameRequestDto } from './dto/update-username.dto'
 import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserService } from './user.service'
@@ -73,6 +74,23 @@ export class UserController {
     @Body() updateUsernameDto: UpdateUsernameRequestDto,
   ): Promise<void> {
     await this.userService.setUsername(req.user.id, updateUsernameDto.username)
+  }
+
+  @ApiEndpoint({
+    summary: 'Set display name for current user',
+    responseStatus: HttpStatus.OK,
+    responseType: null,
+    responseDesc: 'A display name was set for the current user',
+  })
+  @Patch('set-display-name')
+  async setDisplayName(
+    @Req() req: RequestWithUser,
+    @Body() updateDisplayNameRequestDto: UpdateDisplayNameRequestDto,
+  ): Promise<void> {
+    await this.userService.setDisplayName(
+      req.user.id,
+      updateDisplayNameRequestDto.displayName,
+    )
   }
 
   @ApiEndpoint({

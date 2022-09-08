@@ -127,6 +127,7 @@ export * from './TipPostRequestDto';
 export * from './TokenResponseDto';
 export * from './UpdateChannelSettingsRequestDto';
 export * from './UpdateCreatorSettingsRequestDto';
+export * from './UpdateDisplayNameRequestDto';
 export * from './UpdatePassRequestDto';
 export * from './UpdatePasswordRequestDto';
 export * from './UpdatePostRequestDto';

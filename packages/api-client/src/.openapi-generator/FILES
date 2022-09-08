@@ -153,6 +153,7 @@ models/TipPostRequestDto.ts
 models/TokenResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts
+models/UpdateDisplayNameRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePasswordRequestDto.ts
 models/UpdatePostRequestDto.ts

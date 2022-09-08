@@ -44,7 +44,7 @@ import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { RedisLockService } from '../redisLock/redisLock.service'
+import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
@@ -286,7 +286,6 @@ export class SolService {
     ownerAddress: string,
   ): Promise<GetSolNftResponseDto> {
     const connection = await this.getConnection()
-    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()

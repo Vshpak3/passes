@@ -29,7 +29,6 @@ export class TipPostCallbackInput extends PayinCallbackInput {
 }
 
 export class ExamplePayinCallbackInput extends PayinCallbackInput {
-  // TODO: figure out inputs
   example: string
 }
 
@@ -59,6 +58,5 @@ export class TipPostCallbackOutput extends PayinCallbackOutput {
 }
 
 export class ExamplePayinCallbackOutput extends PayinCallbackOutput {
-  // TODO: figure out inputs
   example: string
 }
