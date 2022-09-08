@@ -27,6 +27,9 @@ import {
     SetEmailRequestDto,
     SetEmailRequestDtoFromJSON,
     SetEmailRequestDtoToJSON,
+    SetEmailResponseDto,
+    SetEmailResponseDtoFromJSON,
+    SetEmailResponseDtoToJSON,
 } from '../models';
 
 export interface RefreshAccessTokenRequest {
@@ -112,7 +115,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Sets the user email
      */
-    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SetEmailResponseDto>> {
         if (requestParameters.setEmailRequestDto === null || requestParameters.setEmailRequestDto === undefined) {
             throw new runtime.RequiredError('setEmailRequestDto','Required parameter requestParameters.setEmailRequestDto was null or undefined when calling setUserEmail.');
         }
@@ -139,14 +142,15 @@ export class AuthApi extends runtime.BaseAPI {
             body: SetEmailRequestDtoToJSON(requestParameters.setEmailRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SetEmailResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Sets the user email
      */
-    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.setUserEmailRaw(requestParameters, initOverrides);
+    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SetEmailResponseDto> {
+        const response = await this.setUserEmailRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

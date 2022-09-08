@@ -7,38 +7,40 @@ import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import VaultIcon from "public/icons/sidebar-vault-icon.svg"
 
 export const navigation = [
-  { id: "home", name: "Home", href: "/home", icon: HomeIcon, current: true },
+  {
+    id: "home",
+    name: "Home",
+    href: "/home",
+    icon: HomeIcon,
+    current: true,
+    creatorOnly: false,
+    showWithoutAuth: true
+  },
   {
     id: "messages",
     name: "Messages",
     href: "/messages",
     icon: MessagesIcon,
-    current: false,
-    authOnly: true
+    creatorOnly: false
   },
   {
     id: "passes",
     name: "My Passes",
     href: "/passes",
     icon: MyPassesIcon,
-    current: false,
     creatorOnly: false
   },
   {
     id: "vault",
     name: "Vault",
     href: "/vault",
-    icon: VaultIcon,
-    current: false,
-    creatorOnly: true
+    icon: VaultIcon
   },
   {
     id: "tools",
     name: "Creator Tools",
     href: "",
     icon: CreatorToolsIcon,
-    current: false,
-    creatorOnly: true,
     children: [
       {
         id: "manage-passes",
@@ -77,16 +79,13 @@ export const navigation = [
     name: "Settings",
     href: "/settings",
     icon: SettingsIcon,
-    current: false,
-    authOnly: true
+    creatorOnly: false
   },
   {
     id: "profile",
     name: "Profile",
-    href: "/test",
-    icon: ProfileIcon,
-    current: false,
-    authOnly: true
+    href: "/test", // TODO update this
+    icon: ProfileIcon
   }
 ]
 

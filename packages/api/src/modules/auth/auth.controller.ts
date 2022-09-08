@@ -18,7 +18,7 @@ import { S3ContentService } from '../s3content/s3content.service'
 import { GetUserResponseDto } from '../user/dto/get-user.dto'
 import { UserService } from '../user/user.service'
 import { RefreshAuthTokenRequestDto } from './dto/refresh-auth-token'
-import { SetEmailRequestDto } from './dto/set-email'
+import { SetEmailRequestDto, SetEmailResponseDto } from './dto/set-email'
 import { JwtAuthGuard } from './jwt/jwt-auth.guard'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
@@ -77,7 +77,7 @@ export class AuthController {
   @ApiEndpoint({
     summary: 'Sets the user email',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: SetEmailResponseDto,
     responseDesc: 'Sets the user email',
   })
   @UseGuards(JwtAuthGuard)
@@ -86,6 +86,8 @@ export class AuthController {
     @Req() req: RequestWithUser,
     @Body() body: SetEmailRequestDto,
   ) {
-    await this.userService.setEmail(req.user.id, body.email)
+    const user = await this.userService.setEmail(req.user.id, body.email)
+    const accessToken = this.jwtAuthService.createAccessToken(user)
+    return new SetEmailResponseDto(accessToken)
   }
 }

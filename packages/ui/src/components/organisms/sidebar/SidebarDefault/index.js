@@ -37,11 +37,11 @@ const SidebarDefault = ({
     return (
       <ConditionalWrap
         key={`sidebar-${item.id}`}
-        if={item.creatorOnly}
+        if={item.creatorOnly !== false}
         wrapper={CreatorOnlyWrapper}
       >
         <ConditionalWrap
-          if={item.authOnly && !item.creatorOnly}
+          if={!item.showWithoutAuth && !item.creatorOnly}
           wrapper={AuthOnlyWrapper}
         >
           {child}

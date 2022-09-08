@@ -115,6 +115,7 @@ export * from './SearchCreatorResponseDto';
 export * from './SearchFollowRequestDto';
 export * from './SendMessageRequestDto';
 export * from './SetEmailRequestDto';
+export * from './SetEmailResponseDto';
 export * from './SetInitialUserInfoRequestDto';
 export * from './SetInitialUserInfoResponseDto';
 export * from './SetPayinMethodRequestDto';

@@ -26,34 +26,40 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
   const { loading, user, accessToken } = useUser()
   const router = useRouter()
 
+  const safePushUrl = (url: string) => {
+    if (router.pathname === url) {
+      return
+    }
+
+    router.push(url)
+  }
+
   if (loading || !router.isReady) {
     return null
   }
 
   if (!user) {
     if (isPage && typeof window !== "undefined") {
-      router.push("/login")
+      safePushUrl("/login")
     }
-
     return null
   }
 
-  if (isPage && !user.email) {
-    router.push(`/signup/user-email`)
+  if (isPage && !user.email && !allowEmailUnverified) {
+    safePushUrl("/signup/user-email")
     return null
   }
 
   const decodedAuthToken = jwtDecode(accessToken) as any
-  if (isPage) {
-    if (!decodedAuthToken.isEmailVerified && !allowEmailUnverified) {
-      router.push("/signup/user-email")
-      return null
-    }
 
-    if (!decodedAuthToken.isVerified && !allowUnverified) {
-      router.push("/signup/user-info")
-      return null
-    }
+  if (isPage && !decodedAuthToken.isEmailVerified && !allowEmailUnverified) {
+    safePushUrl("/signup/user-email")
+    return null
+  }
+
+  if (isPage && !decodedAuthToken.isVerified && !allowUnverified) {
+    safePushUrl("/signup/user-info")
+    return null
   }
 
   return <>{children}</>

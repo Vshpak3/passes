@@ -1,10 +1,4 @@
-import {
-  IsDateString,
-  IsEmail,
-  Length,
-  Matches,
-  Validate,
-} from 'class-validator'
+import { IsDate, IsEmail, Length, Matches, Validate } from 'class-validator'
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
@@ -34,7 +28,7 @@ export class CreateUserRequestDto {
   @Validate(IsValidCountryCode)
   countryCode: string
 
-  @IsDateString()
+  // @IsDate() TODO: fix this validation
   @DtoProperty()
   birthday: string
 

@@ -10,8 +10,6 @@ import { EditProfile } from "src/components/pages/profile/profile-details/edit-p
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-
 const mockCreator = {
   id: "@drachnik",
   userId: "@drachnik",
@@ -173,46 +171,42 @@ const Username = (props: GetProfileResponseDto) => {
   }
 
   return (
-    <AuthOnlyWrapper isPage allowUnverified>
-      <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-        <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          {profile?.profileId && (
-            <ProfileDetails
-              profile={profile}
-              onEditProfile={onEditProfile}
-              username={username}
-              ownsProfile={ownsProfile}
-            />
-          )}
-          {editProfile && (
-            <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
-          )}
-          {profile?.profileId && (
-            <MainContent
-              profile={profile}
-              ownsProfile={ownsProfile}
-              posts={!isTestProfile ? posts : mockCreator.posts}
-              fanWallPosts={
-                !isTestProfile ? fanWallPosts : MOCKED_FANWALL_POSTS
-              }
-              username={username}
-            />
-          )}
-        </div>
-        <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
-          {/* pass types here */}
-          {profile?.profileId && (
-            <PassTypes
-              creatorPasses={
-                isTestProfile
-                  ? (mockCreator.passes as unknown as PassDto[])
-                  : creatorPasses
-              }
-            />
-          )}
-        </div>
+    <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+      <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
+        {profile?.profileId && (
+          <ProfileDetails
+            profile={profile}
+            onEditProfile={onEditProfile}
+            username={username}
+            ownsProfile={ownsProfile}
+          />
+        )}
+        {editProfile && (
+          <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
+        )}
+        {profile?.profileId && (
+          <MainContent
+            profile={profile}
+            ownsProfile={ownsProfile}
+            posts={!isTestProfile ? posts : mockCreator.posts}
+            fanWallPosts={!isTestProfile ? fanWallPosts : MOCKED_FANWALL_POSTS}
+            username={username}
+          />
+        )}
       </div>
-    </AuthOnlyWrapper>
+      <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
+        {/* pass types here */}
+        {profile?.profileId && (
+          <PassTypes
+            creatorPasses={
+              isTestProfile
+                ? (mockCreator.passes as unknown as PassDto[])
+                : creatorPasses
+            }
+          />
+        )}
+      </div>
+    </div>
   )
 }
 

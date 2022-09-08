@@ -33,6 +33,12 @@ export interface GetUserResponseDto {
     email: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetUserResponseDto
+     */
+    isEmailVerified: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
@@ -87,6 +93,7 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'id': json['id'],
         'email': json['email'],
+        'isEmailVerified': json['isEmailVerified'],
         'username': json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'isCreator': !exists(json, 'isCreator') ? undefined : json['isCreator'],
@@ -108,6 +115,7 @@ export function GetUserResponseDtoToJSON(value?: GetUserResponseDto | null): any
         
         'id': value.id,
         'email': value.email,
+        'isEmailVerified': value.isEmailVerified,
         'username': value.username,
         'displayName': value.displayName,
         'isCreator': value.isCreator,

@@ -104,15 +104,19 @@ export class UserService {
     return { ...user, ...setInitialUserInfoDto }
   }
 
-  async setEmail(userId: string, email: string): Promise<void> {
+  async setEmail(userId: string, email: string): Promise<UserDto> {
+    const user = await this.findOne(userId)
+
+    const update = {
+      email, // TODO: Connect this to send an email, but not for local testing
+      isEmailVerified: true,
+    }
+
     await this.dbWriter(UserEntity.table)
-      .update(
-        UserEntity.toDict<UserEntity>({
-          email,
-          isEmailVerified: false,
-        }),
-      )
+      .update(UserEntity.toDict<UserEntity>(update))
       .where({ id: userId })
+
+    return { ...user, ...update }
   }
 
   async setUsername(userId: string, username: string): Promise<void> {

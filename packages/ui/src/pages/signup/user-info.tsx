@@ -1,96 +1,81 @@
 import { UserApi } from "@passes/api-client/apis"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { useUser } from "../../hooks"
 
+export type UserInfoFormValues = {
+  legalFullName: string
+  username: string
+  countryCode: string
+  birthday: string
+}
+
 const UserInfoPage = () => {
-  const { loading, user, refreshAccessToken } = useUser()
+  const { loading, user, userClaims, setAccessToken } = useUser()
   const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm<UserInfoFormValues>()
 
-  const onUserRegister = async (name, username, countryCode, birthday) => {
+  const onUserRegister = async (
+    name: string,
+    username: string,
+    countryCode: string,
+    birthday: string
+  ) => {
     try {
-      const userSetInitialInfoRequestDto = {
-        legalFullName: name,
-        username: username,
-        countryCode: countryCode,
-        birthday: birthday
-      }
-
       const api = wrapApi(UserApi)
       const res = await api.setInitialInfo({
-        userSetInitialInfoRequestDto
+        setInitialUserInfoRequestDto: {
+          legalFullName: name,
+          username: username,
+          countryCode: countryCode,
+          birthday: birthday
+        }
       })
 
       if (!res) {
         alert("ERROR: Unexpected payload")
       }
 
-      await refreshAccessToken()
+      setAccessToken(res.accessToken)
 
       router.push("/home")
-    } catch (err) {
-      toast.error(err)
+    } catch (err: unknown) {
+      alert(err)
     }
   }
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: Record<string, string>) => {
     onUserRegister(
-      data.name,
+      data.legalFullName,
       data.username,
       iso3311a2.getCode(data.countryCode),
       data.birthday
     )
   }
 
-  const timeConverter = (unixTimestamp) => {
-    const a = new Date(unixTimestamp)
-    const months = [
-      "01",
-      "02",
-      "03",
-      "04",
-      "05",
-      "06",
-      "07",
-      "08",
-      "09",
-      "10",
-      "11",
-      "12"
-    ]
-    const year = a.getFullYear()
-    const month = months[a.getMonth()]
-    const date = a.getDate()
-
-    return `${year}-${month}-${date}`
-  }
-
-  const isOver18 = () => {
-    let eighteenYearsAgo = new Date()
-    eighteenYearsAgo = eighteenYearsAgo.setFullYear(
-      eighteenYearsAgo.getFullYear() - 18
-    )
-
-    return timeConverter(eighteenYearsAgo)
-  }
+  // const isOver18 = (): string => {
+  //   const today = new Date()
+  //   const eighteenYearsAgo = today.setFullYear(today.getFullYear() - 18)
+  //   return new Date(eighteenYearsAgo).toISOString().split("T")[0]
+  // }
 
   if (loading || !user) {
     return null
   }
 
-  if (user.isVerified) {
+  if (userClaims?.isVerified) {
     router.push("/home")
     return null
   }
@@ -123,7 +108,7 @@ const UserInfoPage = () => {
                 </Text>
                 <FormInput
                   register={register}
-                  name="displayName"
+                  name="legalFullName"
                   className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   placeholder="Enter your name"
                   type="text"
@@ -132,9 +117,9 @@ const UserInfoPage = () => {
                     required: true
                   }}
                 />
-                {errors.displayName && (
+                {errors.legalFullName && (
                   <Text fontSize={12} className="mt-1 text-[red]">
-                    {errors.displayName.message}
+                    {errors.legalFullName.message}
                   </Text>
                 )}
               </div>
@@ -171,9 +156,6 @@ const UserInfoPage = () => {
                   className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   placeholder="Enter your birthday"
                   type="text"
-                  onFocus={(e) => (e.target.type = "date")}
-                  onBlur={(e) => (e.target.type = "text")}
-                  max={isOver18()}
                   errors={errors}
                   options={{
                     required: true

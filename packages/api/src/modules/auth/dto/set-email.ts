@@ -7,3 +7,12 @@ export class SetEmailRequestDto {
   @DtoProperty()
   email: string
 }
+
+export class SetEmailResponseDto {
+  @DtoProperty()
+  accessToken: string
+
+  public constructor(accessToken: string) {
+    this.accessToken = accessToken
+  }
+}
