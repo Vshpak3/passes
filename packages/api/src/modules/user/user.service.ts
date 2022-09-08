@@ -101,7 +101,7 @@ export class UserService {
   ): Promise<UserDto> {
     const user = new UserDto(await this.findOne(userId))
 
-    if (!this.jwtAuthService.isVerified(user)) {
+    if (this.jwtAuthService.isVerified(user)) {
       throw new BadRequestException('Already set initial info')
     }
 
@@ -150,8 +150,6 @@ export class UserService {
   }
 
   async setUsername(userId: string, username: string): Promise<void> {
-    // TODO: add a limit in redis so this can only happen so many times a day
-
     const query = () =>
       this.dbWriter(UserEntity.table)
         .update(
@@ -182,7 +180,6 @@ export class UserService {
       .where({ id: userId })
   }
 
-  // TODO: Sort by creators that the user follows, most interacted with first?
   async searchByQuery(
     searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {
