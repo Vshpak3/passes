@@ -5,6 +5,7 @@ import { Post } from "../../components/pages/profile/main-content/news-feed/post
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import usePost from "../../hooks/usePost"
 import { withPageLayout } from "../../layout/WithPageLayout"
+import { NotFoundPage } from "../404"
 
 const PostByUrl = () => {
   const router = useRouter()
@@ -20,6 +21,10 @@ const PostByUrl = () => {
 
   if (loading) {
     return null
+  }
+
+  if (!post) {
+    return <NotFoundPage />
   }
 
   return (

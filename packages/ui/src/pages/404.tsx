@@ -4,7 +4,7 @@ import { FC } from "react"
 
 import { withPageLayout } from "../layout/WithPageLayout"
 
-const NotfoundPage: FC = () => (
+export const NotFoundPage: FC = () => (
   <div className="flex w-full items-center justify-center pt-[60px]">
     <div className="flex w-[500px] flex-col items-center justify-center gap-[15px] text-center">
       <div className="h-[56px] w-[56px]">
@@ -26,4 +26,4 @@ const NotfoundPage: FC = () => (
   </div>
 )
 
-export default withPageLayout(NotfoundPage)
+export default withPageLayout(NotFoundPage)
