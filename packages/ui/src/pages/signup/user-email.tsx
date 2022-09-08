@@ -3,12 +3,12 @@ import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { useUser } from "../../hooks"
+import { JWTUserClaims } from "../../hooks/useUser"
 
 const UserEmailPage = () => {
   const {
@@ -25,7 +25,7 @@ const UserEmailPage = () => {
     formState: { errors }
   } = useForm()
 
-  const onUserRegister = async (email) => {
+  const onUserRegister = async (email: string) => {
     try {
       const setEmailRequestDto = {
         email
@@ -38,7 +38,7 @@ const UserEmailPage = () => {
 
       setAccessToken(res.accessToken)
 
-      const decodedClaims = jwtDecode(res.accessToken)
+      const decodedClaims = jwtDecode<JWTUserClaims>(res.accessToken)
       if (decodedClaims.isEmailVerified) {
         router.push("/signup/user-info")
       } else {
@@ -46,12 +46,12 @@ const UserEmailPage = () => {
       }
 
       refreshUser()
-    } catch (err) {
-      toast.error(err)
+    } catch (err: unknown) {
+      alert(err)
     }
   }
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: Record<string, string>) => {
     onUserRegister(data.email)
   }
 
@@ -59,7 +59,7 @@ const UserEmailPage = () => {
     return null
   }
 
-  if (user.email && userClaims.isEmailVerified) {
+  if (user.email && userClaims?.isEmailVerified) {
     if (userClaims.isVerified) {
       router.push("/")
     }
@@ -106,7 +106,7 @@ const UserEmailPage = () => {
                 />
                 {errors.emailAddress && (
                   <Text fontSize={12} className="mt-1 text-[red]">
-                    {errors.emailAddress.message}
+                    {errors.emailAddress.message?.toString()}
                   </Text>
                 )}
               </div>

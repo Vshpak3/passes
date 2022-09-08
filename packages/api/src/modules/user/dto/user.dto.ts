@@ -47,4 +47,9 @@ export class UserDto {
     this.birthday = userEntity.birthday
     this.countryCode = userEntity.country_code
   }
+
+  override(init?: Partial<UserDto>): this {
+    Object.assign(this, init)
+    return this
+  }
 }

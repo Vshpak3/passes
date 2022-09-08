@@ -3,6 +3,8 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useUser } from "src/hooks"
 
+import { JWTUserClaims } from "../../hooks/useUser"
+
 const AuthSuccess = () => {
   const router = useRouter()
   const { setAccessToken, setRefreshToken } = useUser()
@@ -29,7 +31,7 @@ const AuthSuccess = () => {
       setRefreshToken(refreshToken)
     }
 
-    const decodedAuthToken = jwtDecode(token) as any
+    const decodedAuthToken = jwtDecode<JWTUserClaims>(token)
     if (!decodedAuthToken.isEmailVerified) {
       router.push("/signup/user-email")
     } else if (!decodedAuthToken.isVerified) {

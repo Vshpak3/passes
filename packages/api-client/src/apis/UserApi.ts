@@ -15,9 +15,6 @@
 
 import * as runtime from '../runtime';
 import {
-    GetUserResponseDto,
-    GetUserResponseDtoFromJSON,
-    GetUserResponseDtoToJSON,
     SearchCreatorRequestDto,
     SearchCreatorRequestDtoFromJSON,
     SearchCreatorRequestDtoToJSON,
@@ -37,10 +34,6 @@ import {
     VerifyEmailDtoFromJSON,
     VerifyEmailDtoToJSON,
 } from '../models';
-
-export interface FindOneRequest {
-    userId: string;
-}
 
 export interface SearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
@@ -98,44 +91,6 @@ export class UserApi extends runtime.BaseAPI {
      */
     async disableUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.disableUserRaw(initOverrides);
-    }
-
-    /**
-     * Gets a user
-     */
-    async findOneRaw(requestParameters: FindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling findOne.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/user/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets a user
-     */
-    async findOne(requestParameters: FindOneRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
-        const response = await this.findOneRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
     /**

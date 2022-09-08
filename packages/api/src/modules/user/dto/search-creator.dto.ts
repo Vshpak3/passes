@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 import { UserEntity } from '../entities/user.entity'
-import { GetUserResponseDto } from './get-user.dto'
+import { CreatorInfoDto } from './creator-info.dto'
 
 export class SearchCreatorRequestDto {
   @DtoProperty()
@@ -9,9 +9,9 @@ export class SearchCreatorRequestDto {
 
 export class SearchCreatorResponseDto {
   @DtoProperty()
-  creators: GetUserResponseDto[]
+  creators: CreatorInfoDto[]
 
   constructor(creators: UserEntity[]) {
-    this.creators = creators.map((c) => new GetUserResponseDto(c))
+    this.creators = creators.map((c) => new CreatorInfoDto(c))
   }
 }

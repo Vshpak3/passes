@@ -19,7 +19,13 @@ export type UserInfoFormValues = {
 }
 
 const UserInfoPage = () => {
-  const { loading, user, userClaims, setAccessToken } = useUser()
+  const {
+    loading,
+    user,
+    userClaims,
+    setAccessToken,
+    mutate: refreshUser
+  } = useUser()
   const router = useRouter()
   const {
     register,
@@ -49,6 +55,8 @@ const UserInfoPage = () => {
       }
 
       setAccessToken(res.accessToken)
+
+      refreshUser()
 
       router.push("/home")
     } catch (err: unknown) {

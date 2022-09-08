@@ -36,7 +36,7 @@ const useCreatorSearch = () => {
   )
 
   useEffect(() => {
-    if (searchValue.length >= 2) {
+    if (searchValue.length) {
       searchCreators(searchValue)
     } else {
       setCreatorResults([])

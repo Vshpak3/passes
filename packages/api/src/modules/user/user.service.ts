@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { generateFromEmail } from 'unique-username-generator'
 import * as uuid from 'uuid'
@@ -30,15 +31,19 @@ import { UserEntity } from './entities/user.entity'
 
 @Injectable()
 export class UserService {
+  env: string
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-
+    private readonly configService: ConfigService,
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
-  ) {}
+  ) {
+    this.env = configService.get('infra.env') as string
+  }
 
   async createOAuthUser(
     email: string,
@@ -91,7 +96,7 @@ export class UserService {
     userId: string,
     setInitialUserInfoDto: SetInitialUserInfoRequestDto,
   ): Promise<UserDto> {
-    const user = await this.findOne(userId)
+    const user = new UserDto(await this.findOne(userId))
 
     await this.dbWriter(UserEntity.table)
       .update(
@@ -101,22 +106,27 @@ export class UserService {
       )
       .where({ id: userId })
 
-    return { ...user, ...setInitialUserInfoDto }
+    return user.override(setInitialUserInfoDto)
   }
 
   async setEmail(userId: string, email: string): Promise<UserDto> {
-    const user = await this.findOne(userId)
+    const user = new UserDto(await this.findOne(userId))
 
-    const update = {
-      email, // TODO: Connect this to send an email, but not for local testing
-      isEmailVerified: true,
+    // TODO: Connect this to send an email for staging and production
+    if (this.env === 'dev' || this.env === 'stage') {
+      const update = {
+        email,
+        isEmailVerified: true,
+      }
+
+      await this.dbWriter(UserEntity.table)
+        .update(UserEntity.toDict<UserEntity>(update))
+        .where({ id: userId })
+
+      return user.override(update)
     }
 
-    await this.dbWriter(UserEntity.table)
-      .update(UserEntity.toDict<UserEntity>(update))
-      .where({ id: userId })
-
-    return { ...user, ...update }
+    return user
   }
 
   async setUsername(userId: string, username: string): Promise<void> {

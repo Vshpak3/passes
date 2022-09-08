@@ -15,7 +15,6 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
-import { GetUserResponseDto } from './dto/get-user.dto'
 import {
   SetInitialUserInfoRequestDto,
   SetInitialUserInfoResponseDto,
@@ -35,18 +34,6 @@ export class UserController {
     private readonly userService: UserService,
     private readonly jwtAuthService: JwtAuthService,
   ) {}
-
-  @ApiEndpoint({
-    summary: 'Gets a user',
-    responseStatus: HttpStatus.OK,
-    responseType: GetUserResponseDto,
-    responseDesc: 'A user was retrieved',
-  })
-  @Get(':userId')
-  async findOne(@Param('userId') userId: string): Promise<GetUserResponseDto> {
-    return (await this.userService.findOne(userId)) as GetUserResponseDto
-  }
-
   @ApiEndpoint({
     summary: 'Sets initial user info',
     responseStatus: HttpStatus.OK,
@@ -57,7 +44,7 @@ export class UserController {
   async setInitialInfo(
     @Req() req: RequestWithUser,
     @Body() body: SetInitialUserInfoRequestDto,
-  ) {
+  ): Promise<SetInitialUserInfoResponseDto> {
     const user = await this.userService.setInitialUserInfo(req.user.id, body)
 
     // Issue a new access token since the user now is verified
@@ -72,20 +59,9 @@ export class UserController {
   }
 
   @ApiEndpoint({
-    summary: 'Disables a user account',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'A user account was disabled',
-  })
-  @Delete()
-  async disableUser(@Req() req: RequestWithUser): Promise<void> {
-    await this.userService.disableUser(req.user.id)
-  }
-
-  @ApiEndpoint({
     summary: 'Verify email for the current user',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: null,
     responseDesc: 'A email was verified',
     allowUnauthorizedRequest: true,
   })
@@ -97,7 +73,7 @@ export class UserController {
   @ApiEndpoint({
     summary: 'Set username for current user',
     responseStatus: HttpStatus.CREATED,
-    responseType: undefined,
+    responseType: null,
     responseDesc: 'A username was set for the current user',
   })
   @Post('username')
@@ -123,6 +99,17 @@ export class UserController {
   }
 
   @ApiEndpoint({
+    summary: 'Disables a user account',
+    responseStatus: HttpStatus.OK,
+    responseType: null,
+    responseDesc: 'A user account was disabled',
+  })
+  @Delete()
+  async disableUser(@Req() req: RequestWithUser): Promise<void> {
+    await this.userService.disableUser(req.user.id)
+  }
+
+  @ApiEndpoint({
     summary: 'Search for creators by query',
     responseStatus: HttpStatus.CREATED,
     responseType: SearchCreatorResponseDto,
@@ -131,7 +118,7 @@ export class UserController {
   @Post('creator/search')
   async searchCreatorByUsername(
     @Body() searchCreatorDto: SearchCreatorRequestDto,
-  ): Promise<any> {
+  ): Promise<SearchCreatorResponseDto> {
     return await this.userService.searchByQuery(searchCreatorDto)
   }
 
@@ -144,11 +131,11 @@ export class UserController {
   @ApiEndpoint({
     summary: 'Make yourself a creator',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: null,
     responseDesc: 'You were made a creator',
   })
   @Get('make/creator')
   async makeCreator(@Req() req: RequestWithUser): Promise<void> {
-    return await this.userService.makeCreator(req.user.id)
+    await this.userService.makeCreator(req.user.id)
   }
 }
