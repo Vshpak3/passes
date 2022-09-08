@@ -220,7 +220,7 @@ export class ListService {
       .table(ListMemberEntity.table)
       .where('list_id', listId)
       .count()
-    await this.dbWriter
+    await this.dbWriter(ListEntity.table)
       .where('id', listId)
       .update('count', count[0]['count(*)'])
   }
