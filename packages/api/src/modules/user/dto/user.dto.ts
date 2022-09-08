@@ -35,19 +35,16 @@ export class UserDto {
   @DtoProperty({ required: false })
   countryCode?: string
 
-  constructor(userEntity, includeSensitiveFields = false) {
+  constructor(userEntity) {
     this.id = userEntity.id
     this.email = userEntity.email
     this.isEmailVerified = userEntity.is_email_verified
     this.username = userEntity.username
     this.displayName = userEntity.display_name
     this.isCreator = userEntity.is_creator
-
-    if (includeSensitiveFields) {
-      this.legalFullName = userEntity.legal_full_name
-      this.phoneNumber = userEntity.phone_number
-      this.birthday = userEntity.birthday
-      this.countryCode = userEntity.country_code
-    }
+    this.legalFullName = userEntity.legal_full_name
+    this.phoneNumber = userEntity.phone_number
+    this.birthday = userEntity.birthday
+    this.countryCode = userEntity.country_code
   }
 }

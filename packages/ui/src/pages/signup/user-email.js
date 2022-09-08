@@ -11,7 +11,13 @@ import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { useUser } from "../../hooks"
 
 const UserEmailPage = () => {
-  const { setAccessToken } = useUser()
+  const {
+    loading,
+    user,
+    userClaims,
+    setAccessToken,
+    mutate: refreshUser
+  } = useUser()
   const router = useRouter()
   const {
     register,
@@ -38,6 +44,8 @@ const UserEmailPage = () => {
       } else {
         alert("TODO: You need to verify your email")
       }
+
+      refreshUser()
     } catch (err) {
       toast.error(err)
     }
@@ -45,6 +53,18 @@ const UserEmailPage = () => {
 
   const onSubmit = (data) => {
     onUserRegister(data.email)
+  }
+
+  if (loading || !user) {
+    return null
+  }
+
+  if (user.email && userClaims.isEmailVerified) {
+    if (userClaims.isVerified) {
+      router.push("/")
+    }
+
+    router.push("/signup/user-info")
   }
 
   return (

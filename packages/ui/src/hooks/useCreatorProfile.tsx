@@ -15,6 +15,8 @@ import usePasses from "./usePasses"
 import useUser from "./useUser"
 
 const useCreatorProfile = (props: GetProfileResponseDto) => {
+  const doesProfileExist = Object.keys(props).length > 0
+
   const router = useRouter()
   const { username: _username } = router.query
   const username = _username as string
@@ -25,10 +27,13 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const { creatorPasses } = usePasses(profile.userId)
 
   const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
-    useSWR([`/fan-wall/creator/`, username], async () => {
-      const api = wrapApi(FanWallApi)
-      return await api.getFanWallForCreator({ userId: props.userId })
-    })
+    useSWR(
+      doesProfileExist ? [`/fan-wall/creator/`, username] : null,
+      async () => {
+        const api = wrapApi(FanWallApi)
+        return await api.getFanWallForCreator({ userId: props.userId })
+      }
+    )
 
   const onEditProfile = () => setEditProfile(true)
 
@@ -41,7 +46,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const ownsProfile = loggedInUsername === username
 
   const { data: posts = [], isValidating: isLoadingPosts } = useSWR(
-    [`/post/creator/`, username],
+    doesProfileExist ? [`/post/creator/`, username] : null,
     async () => {
       const api = wrapApi(FeedApi)
       return await api.getFeedForCreator({ userId: props.userId, cursor: "" })

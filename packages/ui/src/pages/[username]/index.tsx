@@ -11,7 +11,7 @@ import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const mockCreator = {
-  id: "@drachnik",
+  profileId: "@drachnik",
   userId: "@drachnik",
   displayName: "Alex Drachnik",
   fullName: "Alex Drachnik",
