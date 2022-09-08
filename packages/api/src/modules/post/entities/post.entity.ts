@@ -42,6 +42,7 @@ export class PostEntity extends BaseEntity {
   @Property()
   expiresAt?: Date
 
+  @Index()
   @Property()
   pinnedAt?: Date
 

@@ -168,6 +168,7 @@ export class PostService {
   }
 
   async findPost(postId: string, userId: string): Promise<PostDto> {
+    const dbReader = this.dbReader
     const query = this.dbReader(PostEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -176,18 +177,19 @@ export class PostService {
       )
       .leftJoin(PostUserAccessEntity.table, function () {
         this.on(
-          `${UserEntity.table}.id`,
-          `${PostUserAccessEntity.table}.user_id`,
-        ).andOn(
-          `${PostEntity.table}.id`,
           `${PostUserAccessEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(
+          `${PostUserAccessEntity.table}.user_id`,
+          dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(
-        LikeEntity.table,
-        `${LikeEntity.table}.post_id`,
-        `${PostEntity.table}.id`,
-      )
+      .leftJoin(LikeEntity.table, function () {
+        this.on(`${PostEntity.table}.id`, `${LikeEntity.table}.post_id`).andOn(
+          `${LikeEntity.table}.liker_id`,
+          dbReader.raw('?', [userId]),
+        )
+      })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,

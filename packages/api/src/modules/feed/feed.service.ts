@@ -22,6 +22,7 @@ export class FeedService {
   ) {}
 
   async getFeed(userId: string, cursor?: string): Promise<GetFeedResponseDto> {
+    const dbReader = this.dbReader
     let query = this.dbReader(FollowEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -35,18 +36,19 @@ export class FeedService {
       )
       .leftJoin(PostUserAccessEntity.table, function () {
         this.on(
-          `${FollowEntity.table}.creator_id`,
-          `${PostUserAccessEntity.table}.user_id`,
-        ).andOn(
-          `${PostEntity.table}.id`,
           `${PostUserAccessEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(
+          `${PostUserAccessEntity.table}.user_id`,
+          dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(
-        LikeEntity.table,
-        `${LikeEntity.table}.post_id`,
-        `${PostEntity.table}.id`,
-      )
+      .leftJoin(LikeEntity.table, function () {
+        this.on(`${PostEntity.table}.id`, `${LikeEntity.table}.post_id`).andOn(
+          `${LikeEntity.table}.liker_id`,
+          dbReader.raw('?', [userId]),
+        )
+      })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
@@ -63,8 +65,13 @@ export class FeedService {
           new Date(),
         )
       })
-      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())
-      .andWhere(`${LikeEntity.table}.liker_id`, userId)
+      .andWhere(function () {
+        return this.whereNull(`${PostEntity.table}.scheduled_at`).orWhere(
+          `${PostEntity.table}.scheduled_at`,
+          '<=',
+          new Date(),
+        )
+      })
       .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .limit(FEED_LIMIT)
 
@@ -85,6 +92,7 @@ export class FeedService {
     userId: string,
     cursor?: string,
   ): Promise<GetFeedResponseDto> {
+    const dbReader = this.dbReader
     let query = this.dbReader(UserEntity.table)
       .innerJoin(
         PostEntity.table,
@@ -93,18 +101,19 @@ export class FeedService {
       )
       .leftJoin(PostUserAccessEntity.table, function () {
         this.on(
-          `${UserEntity.table}.id`,
-          `${PostUserAccessEntity.table}.user_id`,
-        ).andOn(
-          `${PostEntity.table}.id`,
           `${PostUserAccessEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(
+          `${PostUserAccessEntity.table}.user_id`,
+          dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(
-        LikeEntity.table,
-        `${LikeEntity.table}.post_id`,
-        `${PostEntity.table}.id`,
-      )
+      .leftJoin(LikeEntity.table, function () {
+        this.on(`${LikeEntity.table}.post_id`, `${PostEntity.table}.id`).andOn(
+          `${LikeEntity.table}.liker_id`,
+          dbReader.raw('?', [userId]),
+        )
+      })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
@@ -122,8 +131,13 @@ export class FeedService {
           new Date(),
         )
       })
-      .andWhere(`${PostEntity.table}.scheduled_at`, '<=', new Date())
-      .andWhere(`${LikeEntity.table}.liker_id`, userId)
+      .andWhere(function () {
+        return this.whereNull(`${PostEntity.table}.scheduled_at`).orWhere(
+          `${PostEntity.table}.scheduled_at`,
+          '<=',
+          new Date(),
+        )
+      })
       .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .limit(FEED_LIMIT)
 
