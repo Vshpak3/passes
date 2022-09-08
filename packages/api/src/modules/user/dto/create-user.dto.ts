@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, Length, Matches, Validate } from 'class-validator'
+import { IsEmail, Length, Matches, Validate } from 'class-validator'
 
 import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
 import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
