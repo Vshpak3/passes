@@ -10,7 +10,7 @@ import { UserDto } from '../../user/dto/user.dto'
 import { UserService } from '../../user/user.service'
 import { validateUser } from '../helpers/oauth-strategy.helper'
 
-const FACEBOOK_OAUTH_PROVIDER = 'twitter'
+const FACEBOOK_OAUTH_PROVIDER = 'facebook'
 
 @Injectable()
 export class FacebookOauthStrategy extends PassportStrategy(
