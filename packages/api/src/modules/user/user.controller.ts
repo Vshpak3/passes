@@ -39,7 +39,7 @@ export class UserController {
     responseType: SetInitialUserInfoResponseDto,
     responseDesc: 'Sets initial user info',
   })
-  @Patch()
+  @Patch('set-initial-info')
   async setInitialInfo(
     @Req() req: RequestWithUser,
     @Body() body: SetInitialUserInfoRequestDto,
@@ -56,18 +56,18 @@ export class UserController {
     responseDesc: 'A email was verified',
     allowUnauthorizedRequest: true,
   })
-  @Post('verify-email')
+  @Patch('verify-email')
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto): Promise<void> {
     await this.userService.verifyEmail(verifyEmailDto)
   }
 
   @ApiEndpoint({
     summary: 'Set username for current user',
-    responseStatus: HttpStatus.CREATED,
+    responseStatus: HttpStatus.OK,
     responseType: null,
     responseDesc: 'A username was set for the current user',
   })
-  @Post('username')
+  @Patch('set-username')
   async setUsername(
     @Req() req: RequestWithUser,
     @Body() updateUsernameDto: UpdateUsernameRequestDto,
@@ -82,7 +82,7 @@ export class UserController {
     responseDesc: 'A username was checked for validity',
     allowUnauthorizedRequest: true,
   })
-  @Get('/usernames/validate/:username')
+  @Get('/username/validate/:username')
   async validateUsername(
     @Param('username') username: string,
   ): Promise<boolean> {
@@ -102,7 +102,7 @@ export class UserController {
 
   @ApiEndpoint({
     summary: 'Search for creators by query',
-    responseStatus: HttpStatus.CREATED,
+    responseStatus: HttpStatus.OK,
     responseType: SearchCreatorResponseDto,
     responseDesc: 'A list of creators was returned',
   })

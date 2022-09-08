@@ -1,7 +1,8 @@
 import { IsEmail, Length, Matches, Validate } from 'class-validator'
 
-import { IsValidCountryCode } from '../../../validators/CountryCodeValidator'
-import { IsNotBlocklistedUsername } from '../../../validators/UsernameBlocklist'
+import { IsValidCountryCode } from '../../../validators/country-code.validator'
+import { IsOnlyDate } from '../../../validators/date.validator'
+import { IsNotBlocklistedUsername } from '../../../validators/username.validator'
 import { DtoProperty } from '../../../web/dto.web'
 import {
   USER_DISPLAY_NAME_LENGTH,
@@ -15,21 +16,22 @@ export class CreateUserDto {
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
   @Matches(USERNAME_REGEX, undefined, {
     message:
       'Username can only contain alphanumeric characters and underscores.',
   })
   @Validate(IsNotBlocklistedUsername)
+  @DtoProperty()
   username: string
 
   @DtoProperty()
   legalFullName: string
 
-  @DtoProperty()
   @Validate(IsValidCountryCode)
+  @DtoProperty()
   countryCode: string
 
+  @Validate(IsOnlyDate)
   @DtoProperty()
   birthday: string
 

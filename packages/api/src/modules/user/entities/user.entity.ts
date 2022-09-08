@@ -1,6 +1,7 @@
 import { Entity, Index, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { DateType } from '../../../database/database.types'
 import {
   USER_COUNTRY_CODE_LENGTH,
   USER_DISPLAY_NAME_LENGTH,
@@ -47,7 +48,7 @@ export class UserEntity extends BaseEntity<
   @Property({ length: USER_COUNTRY_CODE_LENGTH })
   countryCode?: string
 
-  @Property({ type: 'date' })
+  @Property({ type: new DateType() })
   birthday?: string
 
   // For verification emails, not set by OAuth

@@ -190,7 +190,7 @@ export class UserApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/user`,
+            path: `/api/user/set-initial-info`,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -231,8 +231,8 @@ export class UserApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/user/username`,
-            method: 'POST',
+            path: `/api/user/set-username`,
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateUsernameRequestDtoToJSON(requestParameters.updateUsernameRequestDto),
@@ -261,7 +261,7 @@ export class UserApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/user/usernames/validate/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            path: `/api/user/username/validate/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -294,7 +294,7 @@ export class UserApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/user/verify-email`,
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: VerifyEmailDtoToJSON(requestParameters.verifyEmailDto),

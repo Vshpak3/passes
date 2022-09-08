@@ -99,7 +99,7 @@ export class UserService {
     userId: string,
     setInitialUserInfoDto: SetInitialUserInfoRequestDto,
   ): Promise<UserDto> {
-    const user = new UserDto(await this.findOne(userId))
+    const user = await this.findOne(userId)
 
     if (this.jwtAuthService.isVerified(user)) {
       throw new BadRequestException('Already set initial info')
@@ -124,7 +124,7 @@ export class UserService {
   }
 
   async setEmail(userId: string, email: string): Promise<UserDto> {
-    const user = new UserDto(await this.findOne(userId))
+    const user = await this.findOne(userId)
 
     // Block endpoint if verified. Do not block if only the email is set
     // (since the user may have entered the wrong email)

@@ -2,13 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  BlobType,
-  OptionalProps,
-  PrimaryKey,
-  Property,
-  UuidType,
-} from '@mikro-orm/core'
+import { OptionalProps, PrimaryKey, Property, UuidType } from '@mikro-orm/core'
 import { Knex } from '@mikro-orm/mysql'
 
 // Entity Class properties for optional properties allow null

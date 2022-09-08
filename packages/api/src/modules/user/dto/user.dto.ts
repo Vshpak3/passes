@@ -36,6 +36,7 @@ export class UserDto {
   countryCode?: string
 
   constructor(userEntity) {
+    console.log(userEntity)
     this.id = userEntity.id
     this.email = userEntity.email
     this.isEmailVerified = userEntity.is_email_verified

@@ -6,7 +6,7 @@ import iso3311a2 from 'iso-3166-1-alpha-2'
 
 @ValidatorConstraint({ name: 'IsValidCountryCode', async: false })
 export class IsValidCountryCode implements ValidatorConstraintInterface {
-  validate(text: string) {
+  validate(text: string): boolean {
     return !!iso3311a2.getCountry(text)
   }
 
