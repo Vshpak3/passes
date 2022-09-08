@@ -22,10 +22,10 @@ export class JwtAuthService {
 
   public isVerified(user: UserDto): boolean {
     return (
-      !!user.email &&
-      !!user.legalFullName &&
       !!user.birthday &&
-      !!user.countryCode
+      !!user.countryCode &&
+      !!user.email &&
+      !!user.legalFullName
     )
   }
 }

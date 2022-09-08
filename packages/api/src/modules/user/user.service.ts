@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -112,13 +111,6 @@ export class UserService {
         }),
       )
       .where({ id: userId })
-
-    // Double check that the user is now verified
-    if (!this.jwtAuthService.isVerified(user)) {
-      throw new InternalServerErrorException(
-        'User is not verified but should be',
-      )
-    }
 
     return user.override(setInitialUserInfoDto)
   }
