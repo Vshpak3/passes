@@ -134,7 +134,7 @@ export class FollowService {
         `${FollowEntity.table}.follower_id`,
       )
       .select(
-        `${UserEntity.table}.id`,
+        `${UserEntity.table}.id as user_id`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${FollowEntity.table}.id as follow`,
@@ -178,7 +178,7 @@ export class FollowService {
         `${FollowEntity.table}.creator_id`,
       )
       .select(
-        `${UserEntity.table}.id`,
+        `${UserEntity.table}.id as user_id`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
       )
