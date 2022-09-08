@@ -31,7 +31,7 @@ export interface GetPostResponseDto {
      * @type {string}
      * @memberof GetPostResponseDto
      */
-    id: string;
+    postId: string;
     /**
      * 
      * @type {boolean}
@@ -88,6 +88,12 @@ export interface GetPostResponseDto {
     numPurchases: number;
     /**
      * 
+     * @type {number}
+     * @memberof GetPostResponseDto
+     */
+    earningsPurchases: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetPostResponseDto
      */
@@ -140,7 +146,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'id': json['id'],
+        'postId': json['postId'],
         'paywall': json['paywall'],
         'userId': json['userId'],
         'username': json['username'],
@@ -150,6 +156,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
         'numPurchases': json['numPurchases'],
+        'earningsPurchases': json['earningsPurchases'],
         'isLiked': !exists(json, 'isLiked') ? undefined : json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -169,7 +176,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
     }
     return {
         
-        'id': value.id,
+        'postId': value.postId,
         'paywall': value.paywall,
         'userId': value.userId,
         'username': value.username,
@@ -179,6 +186,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'numLikes': value.numLikes,
         'numComments': value.numComments,
         'numPurchases': value.numPurchases,
+        'earningsPurchases': value.earningsPurchases,
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

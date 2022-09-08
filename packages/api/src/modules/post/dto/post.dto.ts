@@ -6,7 +6,7 @@ import { ContentDto } from '../../content/dto/content.dto'
 export class PostDto {
   @IsUUID()
   @DtoProperty()
-  id: string
+  postId: string
 
   @DtoProperty()
   paywall: boolean
@@ -36,6 +36,9 @@ export class PostDto {
   @DtoProperty()
   numPurchases: number
 
+  @DtoProperty()
+  earningsPurchases: number
+
   @DtoProperty({ required: false })
   isLiked?: boolean
 
@@ -57,24 +60,27 @@ export class PostDto {
   @DtoProperty({ required: false })
   totalTipAmount?: number
 
-  constructor(post, paywall, content?: ContentDto[]) {
+  constructor(post, paywall, isCreator, content?: ContentDto[]) {
     if (post) {
       // only content gets paywalled
       this.text = post.text
       this.numLikes = post.num_likes
       this.numComments = post.num_comments
-      this.numPurchases = post.num_purchases
       this.isLiked = post.is_liked
-      this.totalTipAmount = post.total_tip_amount
       this.updatedAt = post.updated_at
       this.expiresAt = post.expires_at
-      this.id = post.id
+      this.postId = post.id
       this.userId = post.user_id
       this.username = post.username
       this.displayName = post.display_name
       this.createdAt = post.created_at
-      this.scheduledAt = post.scheduled_at
       this.paywall = paywall
+      if (isCreator) {
+        this.scheduledAt = post.scheduled_at
+        this.totalTipAmount = post.total_tip_amount
+        this.earningsPurchases = post.earnings_purchases
+        this.numPurchases = post.num_purchases
+      }
       if (content) {
         this.content = content
       }

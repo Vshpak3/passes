@@ -25,6 +25,10 @@ export class PostEntity extends BaseEntity {
   @Property({ default: 0 })
   numPurchases: number
 
+  @Index()
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
+  earningsPurchases: number
+
   @Property()
   deletedAt?: Date
 

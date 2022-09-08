@@ -402,7 +402,7 @@ export class MessagesService {
     if (passHoldings[passHoldings.length - 1].messages === null) return null
     else
       return passHoldings.reduce((sum, passHolding) => {
-        if (passHolding.messages) sum += passHolding.messages
+        if (passHolding.messages) return sum + passHolding.messages
       }, 0)
   }
 

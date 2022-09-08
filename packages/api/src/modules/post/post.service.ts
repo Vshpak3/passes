@@ -253,6 +253,7 @@ export class PostService {
         new PostDto(
           post,
           !accessiblePostIds.has(post.id) && contentLookup[post.id],
+          post.user_id === userId,
           accessiblePostIds.has(post.id) ? contentLookup[post.id] : undefined,
         ),
     )
@@ -276,6 +277,7 @@ export class PostService {
     return postContents.reduce((map, postContent) => {
       if (!map[postContent.post_id]) map[postContent.post_id] = []
       map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
+      return map
     }, {})
   }
 
@@ -299,7 +301,7 @@ export class PostService {
     return updated === 1
   }
 
-  async purchasePost(userId: string, postId: string) {
+  async purchasePost(userId: string, postId: string, earnings: number) {
     await this.dbWriter.transaction(async (trx) => {
       await createOrThrowOnDuplicate(
         () =>
@@ -316,6 +318,9 @@ export class PostService {
       await trx(PostEntity.table)
         .where('id', postId)
         .increment('num_purchases', 1)
+      await trx(PostEntity.table)
+        .where('id', postId)
+        .increment('earnings_purchases', earnings)
     })
   }
 

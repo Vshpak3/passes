@@ -1457,6 +1457,19 @@ export class PaymentService {
     )
   }
 
+  async getTotalEarnings(payinId: string): Promise<number> {
+    const shares = await this.dbReader(CreatorShareEntity.table)
+      .where(
+        CreatorShareEntity.toDict<CreatorShareEntity>({
+          payin: payinId,
+        }),
+      )
+      .select('amount')
+    return shares.reduce((sum, share) => {
+      return sum + share.amount
+    }, 0)
+  }
+
   async setCreatorFee(creatorFeeDto: CreatorFeeDto) {
     await this.dbWriter(CreatorFeeEntity.table)
       .insert(
@@ -1789,8 +1802,8 @@ export class PaymentService {
       )
 
     // check total payout amount
-    const totalSum = this.creatorShares.reduce((accumulator, creatorShare) => {
-      return accumulator + creatorShare.amount
+    const totalSum = this.creatorShares.reduce((sum, creatorShare) => {
+      return sum + creatorShare.amount
     }, 0)
     if (totalSum < MIN_PAYOUT_AMOUNT) {
       throw new PayoutAmountError(`${totalSum} is not enough to payout`)
