@@ -1,12 +1,14 @@
 import { PickType } from '@nestjs/swagger'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { CreateUserRequestDto } from './create-user.dto'
+import { CreateUserDto } from './create-user.dto'
 
-export class SetInitialUserInfoRequestDto extends PickType(
-  CreateUserRequestDto,
-  ['birthday', 'countryCode', 'legalFullName', 'username'],
-) {}
+export class SetInitialUserInfoRequestDto extends PickType(CreateUserDto, [
+  'birthday',
+  'countryCode',
+  'legalFullName',
+  'username',
+]) {}
 
 export class SetInitialUserInfoResponseDto {
   @DtoProperty()

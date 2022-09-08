@@ -1,7 +1,7 @@
 import { PickType } from '@nestjs/swagger'
 
-import { CreateUserRequestDto } from './create-user.dto'
+import { CreateUserDto } from './create-user.dto'
 
-export class UpdateUsernameRequestDto extends PickType(CreateUserRequestDto, [
+export class UpdateUsernameRequestDto extends PickType(CreateUserDto, [
   'username',
 ]) {}

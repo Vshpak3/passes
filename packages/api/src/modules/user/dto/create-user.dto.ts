@@ -6,7 +6,7 @@ import { DtoProperty } from '../../../web/dto.web'
 import { USER_USERNAME_LENGTH } from '../constants/schema'
 import { USERNAME_REGEX } from '../constants/validation'
 
-export class CreateUserRequestDto {
+export class CreateUserDto {
   @IsEmail()
   @DtoProperty()
   email: string
@@ -28,7 +28,8 @@ export class CreateUserRequestDto {
   @Validate(IsValidCountryCode)
   countryCode: string
 
-  // @IsDate() TODO: fix this validation
+  // TODO: fix this validation
+  // @IsDate()
   @DtoProperty()
   birthday: string
 

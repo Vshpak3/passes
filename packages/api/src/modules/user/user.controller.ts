@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpStatus,
-  InternalServerErrorException,
   Param,
   Patch,
   Post,
@@ -46,15 +45,7 @@ export class UserController {
     @Body() body: SetInitialUserInfoRequestDto,
   ): Promise<SetInitialUserInfoResponseDto> {
     const user = await this.userService.setInitialUserInfo(req.user.id, body)
-
-    // Issue a new access token since the user now is verified
-    if (!this.jwtAuthService.isVerified(user)) {
-      throw new InternalServerErrorException(
-        'User is not verified but should be',
-      )
-    }
     const accessToken = this.jwtAuthService.createAccessToken(user)
-
     return new SetInitialUserInfoResponseDto(accessToken)
   }
 

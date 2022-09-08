@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -14,6 +15,7 @@ import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { OAuthProvider } from '../auth/helpers/oauth-provider.type'
+import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { VerifyEmailRequestEntity } from '../email/entities/verify-email-request.entity'
@@ -41,6 +43,7 @@ export class UserService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+    private readonly jwtAuthService: JwtAuthService,
   ) {
     this.env = configService.get('infra.env') as string
   }
@@ -98,6 +101,10 @@ export class UserService {
   ): Promise<UserDto> {
     const user = new UserDto(await this.findOne(userId))
 
+    if (!this.jwtAuthService.isVerified(user)) {
+      throw new BadRequestException('Already set initial info')
+    }
+
     await this.dbWriter(UserEntity.table)
       .update(
         UserEntity.toDict<UserEntity>({
@@ -106,11 +113,24 @@ export class UserService {
       )
       .where({ id: userId })
 
+    // Double check that the user is now verified
+    if (!this.jwtAuthService.isVerified(user)) {
+      throw new InternalServerErrorException(
+        'User is not verified but should be',
+      )
+    }
+
     return user.override(setInitialUserInfoDto)
   }
 
   async setEmail(userId: string, email: string): Promise<UserDto> {
     const user = new UserDto(await this.findOne(userId))
+
+    // Block endpoint if verified. Do not block if only the email is set
+    // (since the user may have entered the wrong email)
+    if (user.isEmailVerified) {
+      throw new BadRequestException('Email already set')
+    }
 
     // TODO: Connect this to send an email for staging and production
     if (this.env === 'dev' || this.env === 'stage') {
@@ -130,6 +150,8 @@ export class UserService {
   }
 
   async setUsername(userId: string, username: string): Promise<void> {
+    // TODO: add a limit in redis so this can only happen so many times a day
+
     const query = () =>
       this.dbWriter(UserEntity.table)
         .update(
