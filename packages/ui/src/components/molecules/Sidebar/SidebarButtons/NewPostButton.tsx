@@ -11,7 +11,7 @@ const NewPostButton = () => (
     trigger={
       <>
         <span className="flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color sidebar-collapse:hidden">
-          <PlusSign className="h-4 w-4 " />
+          <PlusSign className="h-4 w-4" />
         </span>
         <div className="hidden sidebar-collapse:flex">
           <Button
@@ -24,7 +24,11 @@ const NewPostButton = () => (
       </>
     }
   >
-    <NewPost />
+    <NewPost
+      passes={[]}
+      createPost={() => null}
+      placeholder="What’s on your mind?"
+    />
   </NewPostDialog>
 )
 

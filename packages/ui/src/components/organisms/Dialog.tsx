@@ -6,7 +6,7 @@ type DialogProps = {
   triggerClassName?: string
   trigger?: JSX.Element
   open?: boolean
-  onClose?: (value: boolean) => void
+  onClose?: () => void
   title?: JSX.Element | string
   footer?: JSX.Element | string
   children?: ReactNode
@@ -26,6 +26,12 @@ const Dialog = ({
   children
 }: DialogProps) => {
   const [isOpen, setIsOpen] = useState(open)
+
+  const handleOnClose = () => {
+    setIsOpen(false)
+    onClose()
+  }
+
   return (
     <>
       <button className={triggerClassName} onClick={() => setIsOpen(true)}>
@@ -36,7 +42,7 @@ const Dialog = ({
           as="div"
           className="relative z-10"
           open={isOpen}
-          onClose={onClose}
+          onClose={handleOnClose}
         >
           <Transition.Child
             as={Fragment}
