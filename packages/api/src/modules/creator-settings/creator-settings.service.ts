@@ -9,7 +9,8 @@ import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.d
 import { CreatorSettingsEntity } from './entities/creator-settings.entity'
 import { InvalidMessageTipMinimumError } from './error/creator-settings.error'
 
-const MINIMUM_MESSAGE_TIP_AMOUNT = 3.0
+const MINIMUM_MESSAGE_TIP_AMOUNT = 5.0
+
 @Injectable()
 export class CreatorSettingsService {
   constructor(

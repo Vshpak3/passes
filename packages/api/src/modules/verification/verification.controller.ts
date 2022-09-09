@@ -19,7 +19,7 @@ export class VerificationController {
     responseType: undefined,
     responseDesc: 'Inquiry was submitted',
   })
-  @Post()
+  @Post('persona/inquiry')
   async submitPersonaInquiry(
     @Req() req: RequestWithUser,
     @Body() submitInquiryRequestDto: SubmitPersonaInquiryRequestDto,
@@ -36,7 +36,7 @@ export class VerificationController {
     responseType: Boolean,
     responseDesc: 'Check was retrieved',
   })
-  @Get('can')
+  @Get('persona/inquiry/check')
   async canSubmitPersona(@Req() req: RequestWithUser): Promise<boolean> {
     return await this.verificationService.canSubmitPersona(req.user.id)
   }
@@ -47,7 +47,7 @@ export class VerificationController {
     responseType: undefined,
     responseDesc: 'Persona KYC verifications for user were refreshed',
   })
-  @Post('refresh/persona')
+  @Post('persona/refresh')
   async refreshPersonaVerifications(
     @Req() req: RequestWithUser,
   ): Promise<void> {
@@ -60,7 +60,7 @@ export class VerificationController {
     responseType: GetCreatorVerificationStepResponseDto,
     responseDesc: 'Creator verification step was submitted',
   })
-  @Post('step')
+  @Post('creator-verification/step')
   async submitCreatorVerificationStep(
     @Req() req: RequestWithUser,
     @Body()
@@ -78,7 +78,7 @@ export class VerificationController {
     responseType: GetCreatorVerificationStepResponseDto,
     responseDesc: 'Current creator verification step was retrieved',
   })
-  @Get('step')
+  @Get('creator-verification/step')
   async getCreatorVerificationStep(
     @Req() req: RequestWithUser,
   ): Promise<GetCreatorVerificationStepResponseDto> {

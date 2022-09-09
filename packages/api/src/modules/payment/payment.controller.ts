@@ -449,7 +449,7 @@ export class PaymentController {
     responseType: undefined,
     responseDesc: 'Payout was made',
   })
-  @Post('payout')
+  @Get('payout')
   async payout(@Req() req: RequestWithUser): Promise<void> {
     await this.paymentService.payoutCreator(req.user.id)
   }
@@ -541,18 +541,6 @@ export class PaymentController {
   @Post('test/register/payin/data')
   async registerPayinData(): Promise<PayinDataDto> {
     return { blocked: false, amount: 1000 }
-  }
-
-  @ApiEndpoint({
-    summary: 'Payout everyone',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'Everyone paid out',
-    allowUnauthorizedRequest: true,
-  })
-  @Get('test/payout')
-  async payoutAll(): Promise<void> {
-    return await this.paymentService.payoutAll()
   }
 
   @ApiEndpoint({

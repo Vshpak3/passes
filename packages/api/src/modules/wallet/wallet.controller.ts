@@ -79,7 +79,7 @@ export class WalletController {
     responseType: Boolean,
     responseDesc: 'Wallet was created',
   })
-  @Post()
+  @Post('authenticated')
   async createWallet(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletRequestDto,
@@ -88,12 +88,12 @@ export class WalletController {
   }
 
   @ApiEndpoint({
-    summary: 'Removes authenticated wallet for a user',
+    summary: 'Removes wallet for a user',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Wallet was deleted',
   })
-  @Delete(':walletId')
+  @Delete('ownership/:walletId')
   async removeWallet(
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,
@@ -121,7 +121,7 @@ export class WalletController {
     responseType: GetWalletsResponseDto,
     responseDesc: 'Wallets were retrieved',
   })
-  @Get()
+  @Get('wallets')
   async getWallets(
     @Req() req: RequestWithUser,
   ): Promise<GetWalletsResponseDto> {

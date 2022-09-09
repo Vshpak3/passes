@@ -62,7 +62,7 @@ const BuyPostModal = ({ isOpen = null, setOpen }: IBuyPostModal) => {
         </div>
         {isOpen && (
           <BuyPostButton
-            postId={isOpen?.id as string}
+            postId={isOpen?.passId as string}
             fromDM={false}
             payinMethod={defaultPayinMethod}
           />

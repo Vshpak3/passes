@@ -135,7 +135,7 @@ export class ListService {
       .select(`*`)
       .first()
     await this.fillAutomatedLists([list])
-    return new GetListResponseDto(list)
+    return new GetListResponseDto([list])
   }
 
   async getListsForUser(userId: string): Promise<GetListsResponseDto> {
@@ -270,7 +270,7 @@ export class ListService {
     editListNameRequestDto: EditListNameRequestDto,
   ): Promise<boolean> {
     const { listId, name } = editListNameRequestDto
-    const updated = await this.dbWriter(ListMemberEntity.table)
+    const updated = await this.dbWriter(ListEntity.table)
       .where(
         ListEntity.toDict<ListEntity>({
           id: listId,

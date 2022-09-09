@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, HttpStatus, Post, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Patch,
+  Post,
+  Req,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -41,7 +49,7 @@ export class ProfileController {
     allowUnauthorizedRequest: true,
   })
   // eslint-disable-next-line sonarjs/no-duplicate-string
-  @Post('get')
+  @Post('search')
   @AllowUnauthorizedRequest()
   async findProfile(
     @Req() req: RequestWithUser,
@@ -67,7 +75,7 @@ export class ProfileController {
     responseType: Boolean,
     responseDesc: 'A profile was activated',
   })
-  @Delete('activate')
+  @Patch('activate')
   async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
     return this.profileService.activateProfile(req.user.id)
   }

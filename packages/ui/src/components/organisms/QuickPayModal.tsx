@@ -30,7 +30,7 @@ IQuickPayModal) => {
     const passApi = wrapApi(PassApi)
     if (user && isOpen) {
       const createPassHolderDto = {
-        passId: isOpen && isOpen.id,
+        passId: isOpen && isOpen.passId,
         payinMethod: defaultPayinMethod
       }
       try {
@@ -90,7 +90,7 @@ IQuickPayModal) => {
             Settings
           </span>
         </div>
-        <BuyPassButton passId={isOpen?.id as string} />
+        <BuyPassButton passId={isOpen?.passId as string} />
         <PassesPinkButton name="Confirm" onClick={handlePayment} />
       </div>
     </Modal>

@@ -17,7 +17,7 @@ interface IPassType {
 }
 
 export interface PaymentModalInfo {
-  id: string
+  passId: string
   price: number
   title: string
 }
