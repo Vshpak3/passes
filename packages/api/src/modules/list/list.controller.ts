@@ -5,6 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
 } from '@nestjs/common'
@@ -35,7 +36,7 @@ export class ListController {
     responseType: undefined,
     responseDesc: 'List was created',
   })
-  @Post()
+  @Post('list-info')
   async createList(
     @Req() req: RequestWithUser,
     @Body() createListDto: CreateListRequestDto,
@@ -81,7 +82,7 @@ export class ListController {
     responseType: GetListResponseDto,
     responseDesc: 'List was retrieved',
   })
-  @Get(':listId')
+  @Get('list-info')
   async getList(
     @Req() req: RequestWithUser,
     @Param('listId') listId: string,
@@ -95,7 +96,7 @@ export class ListController {
     responseType: GetListsResponseDto,
     responseDesc: 'Lists were retrieved',
   })
-  @Get()
+  @Get('lists-info')
   async getLists(@Req() req: RequestWithUser): Promise<GetListsResponseDto> {
     return await this.listService.getListsForUser(req.user.id)
   }
@@ -106,7 +107,7 @@ export class ListController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'List members was retrieved',
   })
-  @Post('members/')
+  @Get('members')
   async getListMembers(
     @Req() req: RequestWithUser,
     @Body() getListMembersRequestDto: GetListMembersRequestto,
@@ -125,7 +126,7 @@ export class ListController {
     responseType: Boolean,
     responseDesc: 'List was deleted',
   })
-  @Delete(':listId')
+  @Delete('list-info/:listId')
   async deleteList(
     @Req() req: RequestWithUser,
     @Param('listId') listId: string,
@@ -139,7 +140,7 @@ export class ListController {
     responseType: Boolean,
     responseDesc: 'List name was edited',
   })
-  @Post('edit')
+  @Patch('list-info')
   async editListName(
     @Req() req: RequestWithUser,
     @Body() editListNameRequestDto: EditListNameRequestDto,
