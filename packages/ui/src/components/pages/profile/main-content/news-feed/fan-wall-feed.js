@@ -1,6 +1,7 @@
 import { FanWallApi } from "@passes/api-client"
 import React, { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
+import { BlockModal, ReportModal } from "src/components/organisms"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
 
@@ -8,6 +9,8 @@ import { Comment } from "./comment"
 
 const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
   const [posts, setPosts] = useState(fanWallPosts.comments)
+  const [userBlockModal, setUserBlockModal] = useState(false)
+  const [userReportModal, setUserReportModal] = useState(false)
   const api = wrapApi(FanWallApi)
   const { mutate } = useSWRConfig()
 
@@ -47,6 +50,14 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
   }
   const getDropdownOptions = (post) => {
     return [
+      {
+        text: "Report",
+        onClick: () => setUserReportModal(true)
+      },
+      {
+        text: "Block",
+        onClick: () => setUserBlockModal(true)
+      },
       ...(post.commenterId === profile.userId
         ? [
             {
@@ -74,6 +85,16 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
 
   return (
     <div className="overflow-y-auto md:h-[1150px]">
+      <BlockModal
+        isOpen={userBlockModal}
+        setOpen={setUserBlockModal}
+        userId={profile.userId}
+      />
+      <ReportModal
+        isOpen={userReportModal}
+        setOpen={setUserReportModal}
+        userId={profile.userId}
+      />
       {posts?.length > 0 && (
         <InfiniteScroll dataLength={posts.length} loader={<h3> Loading...</h3>}>
           {posts.map((post, index) => (

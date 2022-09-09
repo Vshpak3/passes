@@ -1,3 +1,4 @@
+import BlockModal from "./BlockModal"
 import CreatorPassModal from "./CreatorPassModal"
 import CreditCardModal from "./CreditCardModal"
 import Dialog from "./Dialog"
@@ -8,10 +9,12 @@ import { PastTransactions } from "./payouts"
 import Popover from "./Popover"
 import ProfileNftPass from "./ProfileNftPass"
 import QuickPayModal from "./QuickPayModal"
+import ReportModal from "./ReportModal"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
 import { VaultMediaGrid, VaultNavigation } from "./VaultSections"
 export {
+  BlockModal,
   CreatePassForm,
   CreatorPassModal,
   CreatorPassTiles,
@@ -24,6 +27,7 @@ export {
   Popover,
   ProfileNftPass,
   QuickPayModal,
+  ReportModal,
   SelectPassType,
   SidebarDefault,
   SidebarMobile,

@@ -13,7 +13,11 @@ import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
 import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
-import { FormContainer } from "src/components/organisms"
+import {
+  BlockModal,
+  FormContainer,
+  ReportModal
+} from "src/components/organisms"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 import { wrapApi } from "src/helpers/wrapApi"
@@ -24,6 +28,20 @@ import { PostDropdown } from "./post-dropdown"
 export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post?.locked)
   const [postPinned, setPostPinned] = useState(false)
+  const [userBlockModal, setUserBlockModal] = useState(false)
+  const [userReportModal, setUserReportModal] = useState(false)
+
+  const getDropdownOptions = [
+    {
+      text: "Report",
+      onClick: () => setUserReportModal(true)
+    },
+    {
+      text: "Block",
+      onClick: () => setUserBlockModal(true)
+    }
+  ]
+
   return (
     //this is the rounded container
     <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
@@ -32,7 +50,19 @@ export const Post = ({ profile, post }) => {
         profile={profile}
         postPinned={postPinned}
         setPostPinned={setPostPinned}
+        dropdownItems={getDropdownOptions}
       />
+      <BlockModal
+        isOpen={userBlockModal}
+        setOpen={setUserBlockModal}
+        userId={profile.userId}
+      />
+      <ReportModal
+        isOpen={userReportModal}
+        setOpen={setUserReportModal}
+        userId={profile.userId}
+      />
+
       <PostTextContent post={post} />
       {post.fundraiser ? (
         <FundraiserMedia images={post.content} />
