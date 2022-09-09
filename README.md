@@ -1,7 +1,7 @@
 # Passes Monorepo
 
-
-## Setup
+Welcome to the Passes monorepo! This repo contains both our backend and frontend
+code. You must set up both to be able to run the application locally.
 
 System Requirements
 
@@ -9,41 +9,90 @@ System Requirements
 - Node: `brew install node`
 - Yarn: `npm install -g yarn@berry`
 
+## General
 
-## Backend
+### One-time Setup
 
-### Setup
-
+Run the following commands to setup the repository:
 ```bash
-# downloads all dependencies; this must be run whenever a new dependency is added/removed
+# downloads all dependencies for backend and frontend
 yarn install
 
-# spins up docker containers for testing
+# spins up docker containers for backend
 ./bin/reset-local-database.sh full
 ```
 
-### Local Testing
+### On Rebase / Pulling New Code
 
+After rebasing, you may have to run these commands for the application to run
+properly:
 ```bash
-# starts server
-yarn workspace @passes/api start:dev
+# handles dependency changes
+yarn install
+
+# handles database schema changes
+./bin/reset-local-database.sh
+```
+
+### Running Locally
+
+You can spin up the backend and frontend servers by running the following
+commands:
+```bash
+yarn workspace @passes/api dev
+yarn workspace @passes/ui dev
+```
+
+You can then access the site at `http://localhost:3000` and the backend OpenAPI
+docs at `http://localhost:3001/api`.
+
+You can also use the OpenAPI server to send API requests to the backend for
+testing. For this to work, you first need to log in to the application at
+`http://localhost:3000/login`. Then copy your access token and click on
+the "Authorize" button in the OpenAPI server to add it in. You can get the
+access token by running:
+```js
+JSON.parse(window.localStorage.getItem("access-token"))
 ```
 
 ### Unit Tests and Linting
 
+To run linting checks for the frontend and backend, run the following commands:
 ```bash
-# runs tests
-yarn workspace @passes/api test
-
-# runs prettier lint fixes
+# runs prettier lint fixes and checks
 yarn workspace @passes/api prettier:fix
+yarn workspace @passes/ui prettier:fix
 
-# runs eslint lint fixes
+# runs eslint lint fixes and checks
 yarn workspace @passes/api lint:fix
+yarn workspace @passes/ui lint:fix
+```
+
+The following commands run tests for only the backend:
+```bash
+# runs backend tests
+yarn workspace @passes/api test
 
 # ensures all config keys are defined in all environments (requires infra repo)
 ./bin/config-check.sh
 ```
+
+### Adding Dependencies
+
+```bash
+# adds dependency
+yarn workspace @passes/api add <packageName>
+yarn workspace @passes/ui add <packageName>
+
+# lists unused dependency
+yarn workspace @passes/api depcheck
+yarn workspace @passes/ui depcheck
+
+# upgrades all dependencies
+./bin/upgrade.sh
+```
+
+## Backend Specific
 
 ### Databases and Migrations
 
@@ -98,8 +147,7 @@ merging/deploying; otherwise the deploy will fail.
 
 ### OpenAPI
 
-This should be run whenever you update a controller:
-
+This must be run whenever you update a controller:
 ```bash
 # regenerates openapi client
 ./bin/generate-api-client.sh
@@ -109,44 +157,3 @@ To view OpenAPI endpoints, visit:
 
 - UI: http://localhost:3001/api
 - JSON: http://localhost:3001/api-json
-
-### Adding Dependencies
-
-```bash
-# adds dependency
-yarn workspace @passes/api add <packageName>
-
-# lists unused dependency
-yarn workspace @passes/api depcheck
-
-# upgrades all dependencies:
-./bin/upgrade.sh
-```
-
-
-## Frontend
-
-### Setup
-
-```bash
-# downloads all dependencies; this must be run whenever a new dependency is added/removed
-yarn install
-```
-
-### Local Testing
-
-```bash
-yarn workspace @passes/ui dev
-```
-
-### Test
-
-```bash
-# no tests yet
-```
-
-### Adding Dependencies
-
-```bash
-yarn workspace @passes/ui add <packageName>
-```
