@@ -25,6 +25,12 @@ export class PassHolderDto {
   holderDisplayName?: string
 
   @DtoProperty()
+  totalSupply: number
+
+  @DtoProperty()
+  remainingSupply: number
+
+  @DtoProperty()
   address: string
 
   @DtoProperty({ enum: ChainEnum })
@@ -33,14 +39,14 @@ export class PassHolderDto {
   @DtoProperty({ required: false })
   tokenId?: string
 
-  @DtoProperty({ required: false, enum: PassTypeEnum })
-  type?: PassTypeEnum
+  @DtoProperty({ enum: PassTypeEnum })
+  type: PassTypeEnum
 
-  @DtoProperty({ required: false })
-  title?: string
+  @DtoProperty()
+  title: string
 
-  @DtoProperty({ required: false })
-  description?: string
+  @DtoProperty()
+  description: string
 
   @DtoProperty({ required: false })
   creatorId?: string
@@ -64,6 +70,8 @@ export class PassHolderDto {
     this.type = passHolder.type
     this.title = passHolder.title
     this.description = passHolder.description
+    this.totalSupply = passHolder.total_supply
+    this.remainingSupply = passHolder.remainingSupply
     this.creatorId = passHolder.creator_id
     this.creatorUsername = passHolder.creator_username
     this.creatorDisplayName = passHolder.creator_display_name

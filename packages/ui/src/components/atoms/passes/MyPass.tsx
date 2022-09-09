@@ -20,7 +20,7 @@ interface ISelectPassFilter {
 interface IPassTileContent {
   stat: number
   title: string
-  price: number
+  price?: number
 }
 interface IMyPassTile {
   passData: PassHolderDto
@@ -124,7 +124,7 @@ const PassTileContent = ({ stat, title, price }: IPassTileContent) => {
         </span>
       </div>
       <div className="mt-2">
-        <span className="text-[16px] font-bold">{price}.00</span>
+        <span className="text-[16px] font-bold">{price?.toFixed(2)}</span>
         <span className="ml-2 text-[14px] font-light">/month</span>
       </div>
     </div>
@@ -157,11 +157,7 @@ const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
           "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
         )}
       >
-        <PassTileContent
-          stat={passData.totalSupply}
-          title={passData.title}
-          price={passData.price}
-        />
+        <PassTileContent stat={passData.totalSupply} title={passData.title} />
       </div>
       <div className="mt-[5px] md:mt-[10px]">
         {isExpired ? (
