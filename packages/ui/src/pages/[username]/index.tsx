@@ -148,7 +148,6 @@ const Username = (props: GetProfileResponseDto) => {
     profile,
     username
   } = useCreatorProfile(props)
-
   // when the profile not found
   if (Object.keys(profile).length === 0) {
     return (

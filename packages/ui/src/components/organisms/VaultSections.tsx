@@ -24,6 +24,8 @@ interface IVaultNavigation {
   fetchVaultCategory: (category: TVaultCategory) => void
   vaultType: TVaultType
   vaultCategory: TVaultCategory
+  newMessage: boolean
+  setNewMessage: any
 }
 interface IVaultMediaGrid {
   selectedItems: Array<string>
@@ -38,7 +40,9 @@ const VaultNavigation = ({
   fetchVaultType,
   fetchVaultCategory,
   vaultContent,
-  setSelectedItems
+  setSelectedItems,
+  newMessage,
+  setNewMessage
 }: IVaultNavigation) => {
   const selectAll = () =>
     setSelectedItems(vaultContent?.map((item) => item.id) ?? [])
@@ -66,7 +70,7 @@ const VaultNavigation = ({
               <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
               <VaultAddToDropdown
                 // TODO: connect with API to get selected items and add to new message
-                onAddToMessage={() => console.log("add to msg")}
+                onAddToMessage={() => setNewMessage(!newMessage)}
                 // TODO: connect with API to get selected items and add to new post
                 onAddToPost={() => console.log("add to post")}
               />

@@ -106,7 +106,7 @@ const MediaHeader = ({
               <FormInput
                 trigger={
                   <button
-                    // type={type}
+                    type="button"
                     className={classNames(
                       activeMediaHeader === name
                         ? " bg-[rgba(191,122,240,0.1)] "
