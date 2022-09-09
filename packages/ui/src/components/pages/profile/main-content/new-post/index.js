@@ -7,7 +7,7 @@ import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/organisms"
+import { CustomMentionEditor, Dialog } from "src/components/organisms"
 import { classNames, ContentService } from "src/helpers"
 
 import { NewPostDropdown } from "./audience-dropdown"
@@ -273,14 +273,9 @@ export const NewPost = ({
               "w-full"
             )}
           >
-            <FormInput
-              register={register}
-              type="text-area"
-              name="text"
-              className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
+            <CustomMentionEditor
               placeholder={placeholder}
-              rows={4}
-              cols={40}
+              onInputChange={(params) => setValue("text", params)}
             />
           </div>
           {!onlyText && extended && (

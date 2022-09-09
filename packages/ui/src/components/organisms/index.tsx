@@ -1,6 +1,7 @@
 import BlockModal from "./BlockModal"
 import CreatorPassModal from "./CreatorPassModal"
 import CreditCardModal from "./CreditCardModal"
+import CustomMentionEditor from "./CustomMentionEditor"
 import Dialog from "./Dialog"
 import FormContainer from "./FormContainer"
 import Modal from "./Modal"
@@ -19,6 +20,7 @@ export {
   CreatorPassModal,
   CreatorPassTiles,
   CreditCardModal,
+  CustomMentionEditor,
   Dialog,
   FormContainer,
   Modal,
