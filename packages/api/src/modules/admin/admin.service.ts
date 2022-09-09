@@ -45,7 +45,11 @@ export class AdminService {
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {
     const reqUser = await this.userService.findOne(id)
-    if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
+    if (
+      !reqUser.isEmailVerified ||
+      !reqUser.email.endsWith(ADMIN_EMAIL) ||
+      secret !== this.secret
+    ) {
       throw new BadRequestException('Invalid request')
     }
     return reqUser

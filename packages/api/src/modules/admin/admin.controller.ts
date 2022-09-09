@@ -38,7 +38,7 @@ export class AdminController {
   @Post('impersonate')
   async impersonateUser(
     @Req() req: RequestWithUser,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
     @Body() body: ImpersonateUserRequestDto,
   ): Promise<ImpersonateUserResponseDto> {
     this.metrics.increment('admin.impersonate')
