@@ -1,4 +1,4 @@
-import { PassDto } from "@passes/api-client"
+import { PassHolderDto } from "@passes/api-client"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { useEffect, useState } from "react"
 
@@ -23,7 +23,7 @@ interface IPassTileContent {
   price: number
 }
 interface IMyPassTile {
-  passData: PassDto
+  passData: PassHolderDto
   isExpired?: boolean
 }
 type TComposePassOptions = {

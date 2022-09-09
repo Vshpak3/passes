@@ -249,6 +249,32 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
+     * Gets external passes
+     */
+    async getExternalPassesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/pass/external`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets external passes
+     */
+    async getExternalPasses(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesResponseDto> {
+        const response = await this.getExternalPassesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get a passholders
      */
     async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {

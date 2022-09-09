@@ -13,6 +13,7 @@ import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
+import { NotificationSettingsEntity } from '../../notifications/entities/notification-settings.entity'
 import { UserDto } from '../../user/dto/user.dto'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CreateLocalUserRequestDto } from '../dto/create-local-user'
@@ -48,10 +49,16 @@ export class LocalAuthService {
       username: generateFromEmail(createLocalUserDto.email, 3),
       isKYCVerified: false,
       isCreator: false,
-      isDisabled: false,
     })
 
-    await this.dbWriter(UserEntity.table).insert(user)
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(UserEntity.table).insert(user)
+      await trx(NotificationSettingsEntity.table).insert(
+        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
+          user: user.id,
+        }),
+      )
+    })
 
     return new UserDto(user)
   }

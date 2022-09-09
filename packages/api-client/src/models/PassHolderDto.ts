@@ -84,7 +84,7 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    type?: string;
+    type?: PassHolderDtoTypeEnum;
     /**
      * 
      * @type {string}
@@ -128,6 +128,16 @@ export const PassHolderDtoChainEnum = {
     Matic: 'matic'
 } as const;
 export type PassHolderDtoChainEnum = typeof PassHolderDtoChainEnum[keyof typeof PassHolderDtoChainEnum];
+
+/**
+ * @export
+ */
+export const PassHolderDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type PassHolderDtoTypeEnum = typeof PassHolderDtoTypeEnum[keyof typeof PassHolderDtoTypeEnum];
 
 
 export function PassHolderDtoFromJSON(json: any): PassHolderDto {

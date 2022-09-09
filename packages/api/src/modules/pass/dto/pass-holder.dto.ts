@@ -1,5 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
+import { PassTypeEnum } from '../enum/pass.enum'
 
 export class PassHolderDto {
   @DtoProperty()
@@ -32,8 +33,8 @@ export class PassHolderDto {
   @DtoProperty({ required: false })
   tokenId?: string
 
-  @DtoProperty({ required: false })
-  type?: string
+  @DtoProperty({ required: false, enum: PassTypeEnum })
+  type?: PassTypeEnum
 
   @DtoProperty({ required: false })
   title?: string

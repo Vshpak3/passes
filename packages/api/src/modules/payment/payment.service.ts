@@ -1470,21 +1470,6 @@ export class PaymentService {
     }, 0)
   }
 
-  async setCreatorFee(creatorFeeDto: CreatorFeeDto) {
-    await this.dbWriter(CreatorFeeEntity.table)
-      .insert(
-        CreatorFeeEntity.toDict<CreatorFeeEntity>({
-          creator: creatorFeeDto.creatorId,
-          fiatRate: creatorFeeDto.fiatFlat,
-          fiatFlat: creatorFeeDto.fiatFlat,
-          cryptoRate: creatorFeeDto.cryptoRate,
-          cryptoFlat: creatorFeeDto.cryptoFlat,
-        }),
-      )
-      .onConflict('creator_id')
-      .merge(['fiat_rate', 'fiat_flat', 'crypto_rate', 'crypto_flat'])
-  }
-
   async getCreatorFee(creatorId: string) {
     return new CreatorFeeDto(
       await this.dbReader(CreatorFeeEntity.table)

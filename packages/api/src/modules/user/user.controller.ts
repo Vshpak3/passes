@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpStatus,
   Param,
@@ -108,14 +107,25 @@ export class UserController {
   }
 
   @ApiEndpoint({
-    summary: 'Disables a user account',
+    summary: 'Deactivate a user account',
     responseStatus: HttpStatus.OK,
-    responseType: null,
-    responseDesc: 'A user account was disabled',
+    responseType: Boolean,
+    responseDesc: 'A user account was deactivated',
   })
-  @Delete()
-  async disableUser(@Req() req: RequestWithUser): Promise<void> {
-    await this.userService.disableUser(req.user.id)
+  @Get('deactivate')
+  async deactivateUser(@Req() req: RequestWithUser): Promise<boolean> {
+    return await this.userService.deactivateUser(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Activate a user account',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A user account was activated',
+  })
+  @Get('activate')
+  async activateUser(@Req() req: RequestWithUser): Promise<boolean> {
+    return await this.userService.activateUser(req.user.id)
   }
 
   @ApiEndpoint({

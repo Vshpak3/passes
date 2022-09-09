@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { EventEmitter } from 'events'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { fromEvent } from 'rxjs'
@@ -10,7 +10,9 @@ import { DatabaseService } from '../../database/database.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetNotificationsRequestDto } from './dto/get-notification.dto'
 import { NotificationDto } from './dto/notification.dto'
+import { NotificationSettingsDto } from './dto/notification-settings.dto'
 import { NotificationEntity } from './entities/notification.entity'
+import { NotificationSettingsEntity } from './entities/notification-settings.entity'
 import { NotificationStatusEnum } from './enum/notification.status.enum'
 import { NotificationTypeEnum } from './enum/notification.type.enum'
 
@@ -118,5 +120,42 @@ export class NotificationsService {
           id: notificationId,
         }),
       )
+  }
+
+  async getNotificationSettings(
+    userId: string,
+  ): Promise<NotificationSettingsDto> {
+    const settings = await this.dbReader(NotificationSettingsEntity.table)
+      .where(
+        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
+          user: userId,
+        }),
+      )
+      .first()
+    if (!settings) {
+      throw new NotFoundException('CreatorSettings does not exist for user')
+    }
+    return new NotificationSettingsDto(settings)
+  }
+
+  async updateNotificationSettings(
+    userId: string,
+    updateSettingsDto: NotificationSettingsDto,
+  ): Promise<boolean> {
+    if (Object.keys(updateSettingsDto).length === 0) {
+      return false
+    }
+    const data =
+      NotificationSettingsEntity.toDict<NotificationSettingsEntity>(
+        updateSettingsDto,
+      )
+    const updated = await this.dbWriter(NotificationSettingsEntity.table)
+      .update(data)
+      .where(
+        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
+          user: userId,
+        }),
+      )
+    return updated === 1
   }
 }

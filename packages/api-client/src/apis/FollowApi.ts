@@ -177,6 +177,40 @@ export class FollowApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get blocked followers
+     */
+    async getBlockedRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/follow/blocked`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get blocked followers
+     */
+    async getBlocked(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListMembersResponseDto> {
+        const response = await this.getBlockedRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Reports a follower
      */
     async reportFollowerRaw(requestParameters: ReportFollowerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {

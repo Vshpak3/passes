@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-  Req,
-} from '@nestjs/common'
+import { Body, Controller, Delete, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -18,7 +9,6 @@ import {
   GetProfileRequestDto,
   GetProfileResponseDto,
 } from './dto/get-profile.dto'
-import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
 import { ProfileService } from './profile.service'
 
 @ApiTags('profile')
@@ -44,17 +34,6 @@ export class ProfileController {
   }
 
   @ApiEndpoint({
-    summary: 'Gets all usernames',
-    responseStatus: HttpStatus.OK,
-    responseType: GetUsernamesResponseDto,
-    responseDesc: 'Gets all usernames',
-  })
-  @Get('usernames')
-  async getAllUsernames(): Promise<GetUsernamesResponseDto> {
-    return this.profileService.getAllUsernames()
-  }
-
-  @ApiEndpoint({
     summary: 'Gets a profile',
     responseStatus: HttpStatus.OK,
     responseType: GetProfileResponseDto,
@@ -72,16 +51,24 @@ export class ProfileController {
   }
 
   @ApiEndpoint({
-    summary: 'Deletes a profile',
+    summary: 'Deactivate a profile',
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
-    responseDesc: 'A profile was deleted',
+    responseDesc: 'A profile was deactivated',
   })
-  @Delete(':profileId')
-  async removeProfile(
-    @Req() req: RequestWithUser,
-    @Param('profileId') profileId: string,
-  ): Promise<boolean> {
-    return this.profileService.removeProfile(req.user.id, profileId)
+  @Delete('deactivate')
+  async deactivateProfile(@Req() req: RequestWithUser): Promise<boolean> {
+    return this.profileService.deactivateProfile(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Activate a profile',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'A profile was activated',
+  })
+  @Delete('activate')
+  async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
+    return this.profileService.activateProfile(req.user.id)
   }
 }

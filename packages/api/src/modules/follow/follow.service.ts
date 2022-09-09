@@ -288,4 +288,28 @@ export class FollowService {
       }
     })
   }
+
+  async getBlocked(userId: string) {
+    const query = this.dbReader(FollowBlockEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${FollowBlockEntity.table}.follower_id`,
+      )
+      .select(
+        `${UserEntity.table}.id as user_id`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+      )
+      .andWhere(`${FollowBlockEntity.table}.creator_id`, userId)
+
+    const blockedResult = await query.orderBy(
+      `${UserEntity.table}.display_name`,
+      'asc',
+    )
+
+    return blockedResult.map((blocked) => {
+      return new ListMemberDto(blocked)
+    })
+  }
 }

@@ -15,29 +15,194 @@
 
 import * as runtime from '../runtime';
 import {
+    AddExternalPassAddressRequestDto,
+    AddExternalPassAddressRequestDtoFromJSON,
+    AddExternalPassAddressRequestDtoToJSON,
     AdminDto,
     AdminDtoFromJSON,
     AdminDtoToJSON,
+    DeleteExternalPassAddressRequestDto,
+    DeleteExternalPassAddressRequestDtoFromJSON,
+    DeleteExternalPassAddressRequestDtoToJSON,
+    GetCreatorFeeRequestDto,
+    GetCreatorFeeRequestDtoFromJSON,
+    GetCreatorFeeRequestDtoToJSON,
+    GetCreatorFeeResponseDto,
+    GetCreatorFeeResponseDtoFromJSON,
+    GetCreatorFeeResponseDtoToJSON,
     ImpersonateUserRequestDto,
     ImpersonateUserRequestDtoFromJSON,
     ImpersonateUserRequestDtoToJSON,
     ImpersonateUserResponseDto,
     ImpersonateUserResponseDtoFromJSON,
     ImpersonateUserResponseDtoToJSON,
+    SetCreatorFeeRequestDto,
+    SetCreatorFeeRequestDtoFromJSON,
+    SetCreatorFeeRequestDtoToJSON,
+    UpdateExternalPassRequestDto,
+    UpdateExternalPassRequestDtoFromJSON,
+    UpdateExternalPassRequestDtoToJSON,
 } from '../models';
+
+export interface AddExternalPassAddressRequest {
+    addExternalPassAddressRequestDto: AddExternalPassAddressRequestDto;
+}
+
+export interface DeleteExternalPassRequest {
+    updateExternalPassRequestDto: UpdateExternalPassRequestDto;
+}
+
+export interface DeleteExternalPassAddressRequest {
+    deleteExternalPassAddressRequestDto: DeleteExternalPassAddressRequestDto;
+}
 
 export interface FlagAsAdultRequest {
     adminDto: AdminDto;
+}
+
+export interface GetCreatorFeeRequest {
+    getCreatorFeeRequestDto: GetCreatorFeeRequestDto;
 }
 
 export interface ImpersonateUserRequest {
     impersonateUserRequestDto: ImpersonateUserRequestDto;
 }
 
+export interface SetCreatorFeeRequest {
+    setCreatorFeeRequestDto: SetCreatorFeeRequestDto;
+}
+
+export interface UpdateExternalPassRequest {
+    updateExternalPassRequestDto: UpdateExternalPassRequestDto;
+}
+
 /**
  * 
  */
 export class AdminApi extends runtime.BaseAPI {
+
+    /**
+     * Add external pass address
+     */
+    async addExternalPassAddressRaw(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.addExternalPassAddressRequestDto === null || requestParameters.addExternalPassAddressRequestDto === undefined) {
+            throw new runtime.RequiredError('addExternalPassAddressRequestDto','Required parameter requestParameters.addExternalPassAddressRequestDto was null or undefined when calling addExternalPassAddress.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/address/add`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AddExternalPassAddressRequestDtoToJSON(requestParameters.addExternalPassAddressRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Add external pass address
+     */
+    async addExternalPassAddress(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.addExternalPassAddressRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete external pass
+     */
+    async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
+            throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling deleteExternalPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/delete`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateExternalPassRequestDtoToJSON(requestParameters.updateExternalPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Delete external pass
+     */
+    async deleteExternalPass(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.deleteExternalPassRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete external pass address
+     */
+    async deleteExternalPassAddressRaw(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.deleteExternalPassAddressRequestDto === null || requestParameters.deleteExternalPassAddressRequestDto === undefined) {
+            throw new runtime.RequiredError('deleteExternalPassAddressRequestDto','Required parameter requestParameters.deleteExternalPassAddressRequestDto was null or undefined when calling deleteExternalPassAddress.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/address/delete`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteExternalPassAddressRequestDtoToJSON(requestParameters.deleteExternalPassAddressRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Delete external pass address
+     */
+    async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.deleteExternalPassAddressRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Flags user as adult
@@ -80,6 +245,47 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get creator fee
+     */
+    async getCreatorFeeRaw(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorFeeResponseDto>> {
+        if (requestParameters.getCreatorFeeRequestDto === null || requestParameters.getCreatorFeeRequestDto === undefined) {
+            throw new runtime.RequiredError('getCreatorFeeRequestDto','Required parameter requestParameters.getCreatorFeeRequestDto was null or undefined when calling getCreatorFee.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/creator-fee/get`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetCreatorFeeRequestDtoToJSON(requestParameters.getCreatorFeeRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorFeeResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get creator fee
+     */
+    async getCreatorFee(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorFeeResponseDto> {
+        const response = await this.getCreatorFeeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Impersonates a user
      */
     async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<ImpersonateUserResponseDto>> {
@@ -117,6 +323,88 @@ export class AdminApi extends runtime.BaseAPI {
      */
     async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<ImpersonateUserResponseDto> {
         const response = await this.impersonateUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Set creator fee
+     */
+    async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.setCreatorFeeRequestDto === null || requestParameters.setCreatorFeeRequestDto === undefined) {
+            throw new runtime.RequiredError('setCreatorFeeRequestDto','Required parameter requestParameters.setCreatorFeeRequestDto was null or undefined when calling setCreatorFee.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/creator-fee/set`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetCreatorFeeRequestDtoToJSON(requestParameters.setCreatorFeeRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Set creator fee
+     */
+    async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.setCreatorFeeRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update external pass
+     */
+    async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
+            throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling updateExternalPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/add`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateExternalPassRequestDtoToJSON(requestParameters.updateExternalPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Update external pass
+     */
+    async updateExternalPass(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.updateExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

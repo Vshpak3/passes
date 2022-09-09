@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { PostEntity } from '../post/entities/post.entity'
@@ -87,11 +88,18 @@ export class FeedService {
     )
   }
 
-  async getFeedByCreator(
+  async getFeedForCreator(
     creatorId: string,
     userId: string,
     cursor?: string,
   ): Promise<GetFeedResponseDto> {
+    const creator = await this.dbReader(UserEntity.table)
+      .where('id', creatorId)
+      .select(['is_active', 'is_creator'])
+      .first()
+    if (!creator || !creator.is_active || !creator.is_creator) {
+      throw new BadRequestException(CREATOR_NOT_EXIST)
+    }
     const dbReader = this.dbReader
     let query = this.dbReader(UserEntity.table)
       .innerJoin(
@@ -153,7 +161,7 @@ export class FeedService {
     )
   }
 
-  async getPostsForCreator(
+  async getPostsForOwner(
     userId: string,
     isMessage: boolean,
     scheduledOnly: boolean,

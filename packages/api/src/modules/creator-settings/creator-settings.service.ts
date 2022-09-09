@@ -34,7 +34,7 @@ export class CreatorSettingsService {
     return new CreatorSettingsDto(creatorSettings)
   }
 
-  async createOrUpdateCreatorSettings(
+  async updateCreatorSettings(
     userId: string,
     updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
   ): Promise<boolean> {
@@ -55,13 +55,6 @@ export class CreatorSettingsService {
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
       )
-      .onConflict(['user_id'])
-      .merge([
-        ...CreatorSettingsEntity.populate<CreatorSettingsEntity>([
-          'minimumTipAmount',
-          'payoutFrequency',
-        ]),
-      ])
     return updated === 1
   }
 }

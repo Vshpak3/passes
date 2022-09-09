@@ -37,7 +37,7 @@ export class FeedController {
     @Param('userId') userId: string,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeedByCreator(userId, req.user.id, cursor)
+    return this.feedService.getFeedForCreator(userId, req.user.id, cursor)
   }
 
   @ApiEndpoint({
@@ -46,13 +46,13 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A list of posts was retrieved',
   })
-  @Get('creator/posts')
-  async getPostsForCreator(
+  @Get('owner/posts')
+  async getPostsForOwner(
     @Req() req: RequestWithUser,
     @Param('scheduledOnly') scheduledOnly: boolean,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForCreator(
+    return this.feedService.getPostsForOwner(
       req.user.id,
       false,
       scheduledOnly,
@@ -66,11 +66,11 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A list of messages was retrieved',
   })
-  @Get('creator/messages')
-  async getMessagesCreator(
+  @Get('owner/messages')
+  async getMessagesForOwner(
     @Req() req: RequestWithUser,
     @Query('cursor') cursor: string,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForCreator(req.user.id, true, false, cursor)
+    return this.feedService.getPostsForOwner(req.user.id, true, false, cursor)
   }
 }

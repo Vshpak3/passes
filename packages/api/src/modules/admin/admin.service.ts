@@ -7,11 +7,21 @@ import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
+import { PassEntity } from '../pass/entities/pass.entity'
+import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { PassTypeEnum } from '../pass/enum/pass.enum'
+import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserDto } from '../user/dto/user.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
+import { ChainEnum } from '../wallet/enum/chain.enum'
+import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
+import { CreatorFeeDto } from './dto/creator-fee.dto'
+import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
+import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
 import { ImpersonateUserResponseDto } from './dto/impersonate-user.dto'
+import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 
 const ADMIN_EMAIL = '@passes.com'
 
@@ -21,6 +31,8 @@ export class AdminService {
 
   constructor(
     private readonly configService: ConfigService,
+    @Database('ReadOnly')
+    private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
     private readonly userService: UserService,
@@ -72,5 +84,132 @@ export class AdminService {
     await this.dbWriter(UserEntity.table)
       .update(UserEntity.toDict<UserEntity>({ isAdult: true }))
       .where({ id: userId })
+  }
+
+  async addExternalPass(
+    createPassDto: CreateExternalPassRequestDto,
+  ): Promise<boolean> {
+    await this.dbWriter(PassEntity.table).insert(
+      PassEntity.toDict<PassEntity>({
+        type: PassTypeEnum.EXTERNAL,
+        freetrial: false,
+        totalSupply: 0,
+        title: createPassDto.title,
+        description: createPassDto.description,
+      }),
+    )
+    return true
+  }
+
+  async updateExternalPass(
+    updatePassDto: UpdateExternalPassRequestDto,
+  ): Promise<boolean> {
+    const updated = await this.dbWriter(PassEntity.table)
+      .update(
+        PassEntity.toDict<PassEntity>({
+          title: updatePassDto.title,
+          description: updatePassDto.description,
+        }),
+      )
+      .where(
+        PassEntity.toDict<PassEntity>({
+          id: updatePassDto.passId,
+          type: PassTypeEnum.EXTERNAL,
+        }),
+      )
+    return updated === 1
+  }
+
+  async deleteExternalPass(passId: string): Promise<boolean> {
+    const updated = await this.dbWriter(PassEntity.table)
+      .where(
+        PassEntity.toDict<PassEntity>({
+          id: passId,
+          type: PassTypeEnum.EXTERNAL,
+        }),
+      )
+      .delete()
+    return updated === 1
+  }
+
+  async addExternalPassAddress(
+    addressRequestDto: ExternalPassAddressRequestDto,
+  ): Promise<boolean> {
+    switch (addressRequestDto.chain) {
+      case ChainEnum.ETH:
+        await this.dbWriter(PassEntity.table)
+          .where(
+            PassEntity.toDict<PassEntity>({
+              id: addressRequestDto.passId,
+              type: PassTypeEnum.EXTERNAL,
+            }),
+          )
+          .update('eth_address', addressRequestDto.address.toLowerCase())
+        break
+      case ChainEnum.SOL:
+        await this.dbWriter(PassHolderEntity.table).insert(
+          PassHolderEntity.toDict<PassHolderEntity>({
+            pass: addressRequestDto.passId,
+            address: addressRequestDto.address,
+            chain: ChainEnum.SOL,
+          }),
+        )
+        break
+    }
+    return true
+  }
+
+  async deleteExternalPassAddress(
+    addressRequestDto: ExternalPassAddressRequestDto,
+  ): Promise<boolean> {
+    switch (addressRequestDto.chain) {
+      case ChainEnum.ETH:
+        await this.dbWriter(PassEntity.table)
+          .where(
+            PassEntity.toDict<PassEntity>({
+              id: addressRequestDto.passId,
+              type: PassTypeEnum.EXTERNAL,
+              ethAddress: addressRequestDto.address.toLowerCase(),
+            }),
+          )
+          .update('eth_address', null)
+        break
+      case ChainEnum.SOL:
+        await this.dbWriter(PassHolderEntity.table)
+          .where(
+            PassHolderEntity.toDict<PassHolderEntity>({
+              pass: addressRequestDto.passId,
+              address: addressRequestDto.address,
+              chain: ChainEnum.SOL,
+            }),
+          )
+          .delete()
+        break
+    }
+    return true
+  }
+
+  async getCreatorFee(GetCreatorFeeRequestDto: GetCreatorFeeRequestDto) {
+    return new CreatorFeeDto(
+      await this.dbReader(CreatorFeeEntity.table)
+        .where('creator_id', GetCreatorFeeRequestDto.creatorId)
+        .select('*')
+        .first(),
+    )
+  }
+  async setCreatorFee(creatorFeeDto: CreatorFeeDto) {
+    await this.dbWriter(CreatorFeeEntity.table)
+      .insert(
+        CreatorFeeEntity.toDict<CreatorFeeEntity>({
+          creator: creatorFeeDto.creatorId,
+          fiatRate: creatorFeeDto.fiatFlat,
+          fiatFlat: creatorFeeDto.fiatFlat,
+          cryptoRate: creatorFeeDto.cryptoRate,
+          cryptoFlat: creatorFeeDto.cryptoFlat,
+        }),
+      )
+      .onConflict('creator_id')
+      .merge(['fiat_rate', 'fiat_flat', 'crypto_rate', 'crypto_flat'])
+    return true
   }
 }

@@ -20,6 +20,7 @@ import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity
 import { VerifyEmailRequestEntity } from '../email/entities/verify-email-request.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
+import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { USERNAME_TAKEN } from './constants/errors'
 import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
@@ -67,12 +68,22 @@ export class UserService {
       oauthProvider: provider,
       isEmailVerified: !!email,
     })
-    await this.dbWriter(UserEntity.table).insert(data)
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(UserEntity.table).insert(data)
+      await trx(NotificationSettingsEntity.table).insert(
+        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
+          user: data.id,
+        }),
+      )
+    })
     return new UserDto(data)
   }
 
   async findOne(id: string): Promise<UserDto> {
-    const user = await this.dbReader(UserEntity.table).where({ id }).first()
+    const user = await this.dbReader(UserEntity.table)
+      .where({ id })
+      .select('*')
+      .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
@@ -83,6 +94,7 @@ export class UserService {
   async findOneByUsername(username: string): Promise<UserDto> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ username }))
+      .select('*')
       .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
@@ -97,6 +109,7 @@ export class UserService {
   ): Promise<UserDto | undefined> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ oauthId, oauthProvider }))
+      .select('*')
       .first()
     return user ? new UserDto(user) : undefined
   }
@@ -194,14 +207,36 @@ export class UserService {
     }
   }
 
-  async disableUser(userId: string): Promise<void> {
-    await this.dbWriter(UserEntity.table)
+  async deactivateUser(userId: string): Promise<boolean> {
+    const updated = await this.dbWriter(UserEntity.table)
       .update(
         UserEntity.toDict<UserEntity>({
-          isDisabled: true,
+          isActive: true,
         }),
       )
-      .where({ id: userId })
+      .where(
+        UserEntity.toDict<UserEntity>({
+          id: userId,
+          isActive: false,
+        }),
+      )
+    return updated === 1
+  }
+
+  async activateUser(userId: string): Promise<boolean> {
+    const updated = await this.dbWriter(UserEntity.table)
+      .update(
+        UserEntity.toDict<UserEntity>({
+          isActive: false,
+        }),
+      )
+      .where(
+        UserEntity.toDict<UserEntity>({
+          id: userId,
+          isActive: true,
+        }),
+      )
+    return updated === 1
   }
 
   async searchByQuery(
@@ -220,7 +255,7 @@ export class UserService {
         .andWhere(
           UserEntity.toDict<UserEntity>({
             isCreator: true,
-            isDisabled: false,
+            isActive: true,
           }),
         )
         .limit(10),

@@ -37,6 +37,12 @@ export interface GetCreatorSettingsResponseDto {
      * @memberof GetCreatorSettingsResponseDto
      */
     welcomeMessage?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCreatorSettingsResponseDto
+     */
+    allowCommentsOnPosts?: boolean;
 }
 
 
@@ -64,6 +70,7 @@ export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDisc
         'minimumTipAmount': json['minimumTipAmount'],
         'payoutFrequency': json['payoutFrequency'],
         'welcomeMessage': !exists(json, 'welcomeMessage') ? undefined : json['welcomeMessage'],
+        'allowCommentsOnPosts': !exists(json, 'allowCommentsOnPosts') ? undefined : json['allowCommentsOnPosts'],
     };
 }
 
@@ -79,6 +86,7 @@ export function GetCreatorSettingsResponseDtoToJSON(value?: GetCreatorSettingsRe
         'minimumTipAmount': value.minimumTipAmount,
         'payoutFrequency': value.payoutFrequency,
         'welcomeMessage': value.welcomeMessage,
+        'allowCommentsOnPosts': value.allowCommentsOnPosts,
     };
 }
 

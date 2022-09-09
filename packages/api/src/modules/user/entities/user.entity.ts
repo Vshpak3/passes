@@ -61,8 +61,8 @@ export class UserEntity extends BaseEntity<
   @Property({ default: false })
   isCreator = false
 
-  @Property({ default: false })
-  isDisabled = false
+  @Property({ default: true })
+  isActive = true
 
   @Property({ default: false })
   isAdult = false

@@ -28,17 +28,17 @@ export class CreatorSettingsController {
   }
 
   @ApiEndpoint({
-    summary: 'Updates or create creator settings',
+    summary: 'Updates creator settings',
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
-    responseDesc: 'Creator Settings was updated or created',
+    responseDesc: 'Creator Settings was updated',
   })
   @Post()
-  async createOrUpdateCreatorSettings(
+  async updateCreatorSettings(
     @Req() req: RequestWithUser,
     @Body() updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
   ): Promise<boolean> {
-    return await this.creatorSettingsService.createOrUpdateCreatorSettings(
+    return await this.creatorSettingsService.updateCreatorSettings(
       req.user.id,
       updateCreatorSettingsDto,
     )

@@ -3,7 +3,9 @@ import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { FOLLOWER_BLOCKED } from '../follow/constants/errors'
+import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { CommentsBlockedError } from '../creator-settings/error/creator-settings.error'
+import { COMMNETS_DISABLED, FOLLOWER_BLOCKED } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
@@ -209,7 +211,7 @@ export class CommentService {
   async checkPost(userId: string, postId: string) {
     const post = await this.dbReader(PostEntity.table)
       .where({ id: postId })
-      .select(['deleted_at'])
+      .select(['deleted_at', 'user_id'])
       .first()
     if (!post) {
       throw new BadRequestException(POST_NOT_EXIST)
@@ -226,6 +228,14 @@ export class CommentService {
 
     if (followBlockResult) {
       throw new BadRequestException(FOLLOWER_BLOCKED)
+    }
+
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
+      .where('user_id', post.user_id)
+      .select('allow_comments_on_posts')
+      .first()
+    if (!creatorSettings.allow_comments_on_posts) {
+      throw new CommentsBlockedError(COMMNETS_DISABLED)
     }
   }
 }

@@ -15,12 +15,18 @@
 
 import * as runtime from '../runtime';
 import {
+    GetNotificationSettingsResponseDto,
+    GetNotificationSettingsResponseDtoFromJSON,
+    GetNotificationSettingsResponseDtoToJSON,
     GetNotificationsRequestDto,
     GetNotificationsRequestDtoFromJSON,
     GetNotificationsRequestDtoToJSON,
     GetNotificationsResponseDto,
     GetNotificationsResponseDtoFromJSON,
     GetNotificationsResponseDtoToJSON,
+    UpdateNotificationSettingsRequestDto,
+    UpdateNotificationSettingsRequestDtoFromJSON,
+    UpdateNotificationSettingsRequestDtoToJSON,
 } from '../models';
 
 export interface GetRequest {
@@ -29,6 +35,10 @@ export interface GetRequest {
 
 export interface ReadNotificationRequest {
     notificationId: string;
+}
+
+export interface UpdateNotificationSettingsRequest {
+    updateNotificationSettingsRequestDto: UpdateNotificationSettingsRequestDto;
 }
 
 /**
@@ -74,6 +84,40 @@ export class NotificationsApi extends runtime.BaseAPI {
      */
     async get(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetNotificationsResponseDto> {
         const response = await this.getRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets notification settings
+     */
+    async getNotificationSettingsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetNotificationSettingsResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/notifications/settings/get`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetNotificationSettingsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets notification settings
+     */
+    async getNotificationSettings(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetNotificationSettingsResponseDto> {
+        const response = await this.getNotificationSettingsRaw(initOverrides);
         return await response.value();
     }
 
@@ -145,6 +189,47 @@ export class NotificationsApi extends runtime.BaseAPI {
      */
     async subscribe(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.subscribeRaw(initOverrides);
+    }
+
+    /**
+     * Update notification settings
+     */
+    async updateNotificationSettingsRaw(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.updateNotificationSettingsRequestDto === null || requestParameters.updateNotificationSettingsRequestDto === undefined) {
+            throw new runtime.RequiredError('updateNotificationSettingsRequestDto','Required parameter requestParameters.updateNotificationSettingsRequestDto was null or undefined when calling updateNotificationSettings.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/notifications/settings/update`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateNotificationSettingsRequestDtoToJSON(requestParameters.updateNotificationSettingsRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Update notification settings
+     */
+    async updateNotificationSettings(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.updateNotificationSettingsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

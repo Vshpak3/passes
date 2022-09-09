@@ -38,7 +38,7 @@ export class EthService {
     protected readonly lockService: RedisLockService,
   ) {
     const settings = {
-      apiKey: this.configService.get('alchemy.sol.api_key') as string,
+      apiKey: this.configService.get('alchemy.eth.api_key') as string,
       network: Network.ETH_MAINNET,
     }
     this.alchemy = new Alchemy(settings)

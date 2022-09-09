@@ -33,6 +33,9 @@ import {
     GetChannelStatsResponseDto,
     GetChannelStatsResponseDtoFromJSON,
     GetChannelStatsResponseDtoToJSON,
+    GetFreeMesssagesResponseDto,
+    GetFreeMesssagesResponseDtoFromJSON,
+    GetFreeMesssagesResponseDtoToJSON,
     GetMessagesResponseDto,
     GetMessagesResponseDtoFromJSON,
     GetMessagesResponseDtoToJSON,
@@ -63,6 +66,11 @@ export interface GetChannelSettingsRequest {
 
 export interface GetChannelsStatsRequest {
     getChannelStatsRequestDto: GetChannelStatsRequestDto;
+}
+
+export interface GetFreeMessagesRequest {
+    creatorId: string;
+    channelId: string;
 }
 
 export interface MassSendRequest {
@@ -238,6 +246,48 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetMessagesResponseDto> {
         const response = await this.getCompletedTippedMessagesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get free chat messages
+     */
+    async getFreeMessagesRaw(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFreeMesssagesResponseDto>> {
+        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
+            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getFreeMessages.');
+        }
+
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getFreeMessages.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/free-messages/{creatorId}/{channelId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))).replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFreeMesssagesResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get free chat messages
+     */
+    async getFreeMessages(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFreeMesssagesResponseDto> {
+        const response = await this.getFreeMessagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

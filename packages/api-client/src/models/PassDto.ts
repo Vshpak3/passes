@@ -24,13 +24,13 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    id: string;
+    passId: string;
     /**
      * 
      * @type {string}
      * @memberof PassDto
      */
-    creatorId: string;
+    creatorId?: string;
     /**
      * 
      * @type {string}
@@ -87,12 +87,6 @@ export interface PassDto {
     pinnedAt?: Date;
     /**
      * 
-     * @type {Date}
-     * @memberof PassDto
-     */
-    expiresAt?: Date;
-    /**
-     * 
      * @type {string}
      * @memberof PassDto
      */
@@ -127,8 +121,8 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     }
     return {
         
-        'id': json['id'],
-        'creatorId': json['creatorId'],
+        'passId': json['passId'],
+        'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'title': json['title'],
         'description': json['description'],
         'type': json['type'],
@@ -138,7 +132,6 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
@@ -153,7 +146,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'passId': value.passId,
         'creatorId': value.creatorId,
         'title': value.title,
         'description': value.description,
@@ -164,7 +157,6 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
     };

@@ -146,4 +146,19 @@ export class FollowController {
   ): Promise<void> {
     return this.followService.blockFollower(req.user.id, followerId)
   }
+
+  @ApiEndpoint({
+    summary: 'Get blocked followers',
+    responseStatus: HttpStatus.OK,
+    responseType: GetListMembersResponseDto,
+    responseDesc: 'A list of blocked followers was retrieved',
+  })
+  @Post('blocked')
+  async getBlocked(
+    @Req() req: RequestWithUser,
+  ): Promise<GetListMembersResponseDto> {
+    return new GetListMembersResponseDto(
+      await this.followService.getBlocked(req.user.id),
+    )
+  }
 }

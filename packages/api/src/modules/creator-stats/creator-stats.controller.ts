@@ -67,8 +67,12 @@ export class CreatorStatsController {
   })
   @Get('stats/:creatorId')
   async getCreatorStats(
+    @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
   ): Promise<GetCreatorStatsResponseDto> {
-    return await this.creatorStatsService.getCreatorStats(creatorId)
+    return await this.creatorStatsService.getCreatorStats(
+      creatorId,
+      req.user?.id,
+    )
   }
 }

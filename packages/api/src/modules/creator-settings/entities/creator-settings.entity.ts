@@ -17,6 +17,9 @@ export class CreatorSettingsEntity extends BaseEntity {
   @Property({ length: WELCOME_MESSAGE_MAX_LENGTH })
   welcomeMessage?: string
 
+  @Property({ default: true })
+  allowCommentsOnPosts?: boolean
+
   @Enum({
     type: () => PayoutFrequencyEnum,
     default: PayoutFrequencyEnum.MANUAL,

@@ -339,6 +339,13 @@ export class MessagesService {
     ) {
       return
     }
+    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
+      .where('user_id', creatorId)
+      .select('minimum_tip_amount')
+      .first()
+    if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
+      return
+    }
     const passHoldings = await this.dbReader(PassHolderEntity.table)
       .innerJoin(
         PassHolderEntity.table,
@@ -421,15 +428,18 @@ export class MessagesService {
       )
       .select('minimum_tip_amount')
       .first()
-    if (!creatorSettings) return true
+    if (
+      !creatorSettings ||
+      !creatorSettings.minimum_tip_amount ||
+      tipAmount >= creatorSettings.minimum_tip_amount
+    )
+      return false
     const freeMessages = await this.checkFreeMessages(
       userId,
       otherUserId,
       channelId,
     )
-    if (freeMessages === null || (freeMessages > 0 && tipAmount === 0))
-      return true
-    return tipAmount >= creatorSettings?.minimum_tip_amount
+    return !(freeMessages === null || (freeMessages > 0 && tipAmount === 0))
   }
 
   async sendMessage(

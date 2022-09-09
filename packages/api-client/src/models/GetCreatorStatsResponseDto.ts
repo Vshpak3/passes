@@ -37,6 +37,12 @@ export interface GetCreatorStatsResponseDto {
      * @memberof GetCreatorStatsResponseDto
      */
     numLikes: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetCreatorStatsResponseDto
+     */
+    numMedia: number;
 }
 
 export function GetCreatorStatsResponseDtoFromJSON(json: any): GetCreatorStatsResponseDto {
@@ -52,6 +58,7 @@ export function GetCreatorStatsResponseDtoFromJSONTyped(json: any, ignoreDiscrim
         'userId': json['userId'],
         'numFollowers': json['numFollowers'],
         'numLikes': json['numLikes'],
+        'numMedia': json['numMedia'],
     };
 }
 
@@ -67,6 +74,7 @@ export function GetCreatorStatsResponseDtoToJSON(value?: GetCreatorStatsResponse
         'userId': value.userId,
         'numFollowers': value.numFollowers,
         'numLikes': value.numLikes,
+        'numMedia': value.numMedia,
     };
 }
 

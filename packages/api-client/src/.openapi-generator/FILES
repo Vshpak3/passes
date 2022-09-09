@@ -26,6 +26,7 @@ apis/VerificationApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AddExternalPassAddressRequestDto.ts
 models/AddListMembersRequestDto.ts
 models/AdminDto.ts
 models/AuthTokenResponseDto.ts
@@ -49,6 +50,7 @@ models/ContentDto.ts
 models/CreateBatchMessageRequestDto.ts
 models/CreateCommentRequestDto.ts
 models/CreateContentRequestDto.ts
+models/CreateExternalPassRequestDto.ts
 models/CreateFanWallCommentRequestDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
@@ -61,6 +63,7 @@ models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
+models/DeleteExternalPassAddressRequestDto.ts
 models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetChannelRequestDto.ts
@@ -77,18 +80,22 @@ models/GetContentsResponseDto.ts
 models/GetCreatorEarningResponseDto.ts
 models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
+models/GetCreatorFeeRequestDto.ts
+models/GetCreatorFeeResponseDto.ts
 models/GetCreatorSettingsResponseDto.ts
 models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
 models/GetFanWallForCreatorResponseDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
+models/GetFreeMesssagesResponseDto.ts
 models/GetGalleryViewDto.ts
 models/GetListMembersRequestto.ts
 models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsResponseDto.ts
 models/GetMessagesResponseDto.ts
+models/GetNotificationSettingsResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
 models/GetPassHoldersResponseDto.ts
@@ -106,7 +113,6 @@ models/GetProfileResponseDto.ts
 models/GetSignedUrlResponseDto.ts
 models/GetSubscriptionsResponseDto.ts
 models/GetUserResponseDto.ts
-models/GetUsernamesResponseDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts
@@ -140,6 +146,7 @@ models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
+models/SetCreatorFeeRequestDto.ts
 models/SetEmailRequestDto.ts
 models/SetEmailResponseDto.ts
 models/SetInitialUserInfoRequestDto.ts
@@ -154,6 +161,8 @@ models/TokenResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts
 models/UpdateDisplayNameRequestDto.ts
+models/UpdateExternalPassRequestDto.ts
+models/UpdateNotificationSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePasswordRequestDto.ts
 models/UpdatePostRequestDto.ts

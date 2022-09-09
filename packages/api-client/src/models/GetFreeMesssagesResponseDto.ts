@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetUsernamesResponseDto
+ * @interface GetFreeMesssagesResponseDto
  */
-export interface GetUsernamesResponseDto {
+export interface GetFreeMesssagesResponseDto {
     /**
      * 
-     * @type {Array<string>}
-     * @memberof GetUsernamesResponseDto
+     * @type {object}
+     * @memberof GetFreeMesssagesResponseDto
      */
-    usernames: Array<string>;
+    messages: object;
 }
 
-export function GetUsernamesResponseDtoFromJSON(json: any): GetUsernamesResponseDto {
-    return GetUsernamesResponseDtoFromJSONTyped(json, false);
+export function GetFreeMesssagesResponseDtoFromJSON(json: any): GetFreeMesssagesResponseDto {
+    return GetFreeMesssagesResponseDtoFromJSONTyped(json, false);
 }
 
-export function GetUsernamesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetUsernamesResponseDto {
+export function GetFreeMesssagesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFreeMesssagesResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'usernames': json['usernames'],
+        'messages': json['messages'],
     };
 }
 
-export function GetUsernamesResponseDtoToJSON(value?: GetUsernamesResponseDto | null): any {
+export function GetFreeMesssagesResponseDtoToJSON(value?: GetFreeMesssagesResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -50,7 +50,7 @@ export function GetUsernamesResponseDtoToJSON(value?: GetUsernamesResponseDto | 
     }
     return {
         
-        'usernames': value.usernames,
+        'messages': value.messages,
     };
 }
 

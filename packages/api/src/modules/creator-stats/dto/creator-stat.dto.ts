@@ -13,11 +13,17 @@ export class CreatorStatDto {
   @DtoProperty()
   numLikes: number
 
-  constructor(creatorStat) {
+  @DtoProperty()
+  numMedia: number
+
+  constructor(creatorStat, isCreator) {
     if (creatorStat) {
       this.userId = creatorStat.user_id
-      this.numFollowers = creatorStat.num_followers
+      if (isCreator || creatorStat.show_follower_count)
+        this.numFollowers = creatorStat.num_followers
       this.numLikes = creatorStat.num_likes
+      if (isCreator || creatorStat.show_media_count)
+        this.numMedia = creatorStat.num_media
     }
   }
 }

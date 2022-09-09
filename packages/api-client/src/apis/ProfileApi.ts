@@ -24,9 +24,6 @@ import {
     GetProfileResponseDto,
     GetProfileResponseDtoFromJSON,
     GetProfileResponseDtoToJSON,
-    GetUsernamesResponseDto,
-    GetUsernamesResponseDtoFromJSON,
-    GetUsernamesResponseDtoToJSON,
 } from '../models';
 
 export interface CreateOrUpdateProfileRequest {
@@ -37,14 +34,44 @@ export interface FindProfileRequest {
     getProfileRequestDto: GetProfileRequestDto;
 }
 
-export interface RemoveProfileRequest {
-    profileId: string;
-}
-
 /**
  * 
  */
 export class ProfileApi extends runtime.BaseAPI {
+
+    /**
+     * Activate a profile
+     */
+    async activateProfileRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/profile/activate`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Activate a profile
+     */
+    async activateProfile(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.activateProfileRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates a profile
@@ -88,6 +115,40 @@ export class ProfileApi extends runtime.BaseAPI {
     }
 
     /**
+     * Deactivate a profile
+     */
+    async deactivateProfileRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/profile/deactivate`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Deactivate a profile
+     */
+    async deactivateProfile(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.deactivateProfileRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Gets a profile
      */
     async findProfileRaw(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
@@ -117,78 +178,6 @@ export class ProfileApi extends runtime.BaseAPI {
      */
     async findProfile(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
         const response = await this.findProfileRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets all usernames
-     */
-    async getAllUsernamesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUsernamesResponseDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/profile/usernames`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetUsernamesResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets all usernames
-     */
-    async getAllUsernames(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUsernamesResponseDto> {
-        const response = await this.getAllUsernamesRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Deletes a profile
-     */
-    async removeProfileRaw(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.profileId === null || requestParameters.profileId === undefined) {
-            throw new runtime.RequiredError('profileId','Required parameter requestParameters.profileId was null or undefined when calling removeProfile.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/profile/{profileId}`.replace(`{${"profileId"}}`, encodeURIComponent(String(requestParameters.profileId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Deletes a profile
-     */
-    async removeProfile(requestParameters: RemoveProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.removeProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

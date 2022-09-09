@@ -61,7 +61,7 @@ const Payouts = () => {
       const creatorSettingsApi = wrapApi(CreatorSettingsApi)
       const payoutFrequency = getValues("payoutFrequency")
 
-      await creatorSettingsApi.createOrUpdateCreatorSettings({
+      await creatorSettingsApi.updateCreatorSettings({
         updateCreatorSettingsRequestDto: {
           payoutFrequency
         },

@@ -143,11 +143,12 @@ export class CreatorStatsService {
       .insert(this.dbWriter(CreatorEarningEntity.table).select('*'))
   }
 
-  async getCreatorStats(creatorId: string) {
+  async getCreatorStats(creatorId: string, userId?: string) {
     return new CreatorStatDto(
       await this.dbReader
         .where(CreatorStatEntity.toDict<CreatorStatEntity>({ user: creatorId }))
         .select('*'),
+      userId === creatorId,
     )
   }
 }

@@ -23,7 +23,7 @@ import {
     UpdateCreatorSettingsRequestDtoToJSON,
 } from '../models';
 
-export interface CreateOrUpdateCreatorSettingsRequest {
+export interface UpdateCreatorSettingsRequest {
     updateCreatorSettingsRequestDto: UpdateCreatorSettingsRequestDto;
 }
 
@@ -31,47 +31,6 @@ export interface CreateOrUpdateCreatorSettingsRequest {
  * 
  */
 export class CreatorSettingsApi extends runtime.BaseAPI {
-
-    /**
-     * Updates or create creator settings
-     */
-    async createOrUpdateCreatorSettingsRaw(requestParameters: CreateOrUpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.updateCreatorSettingsRequestDto === null || requestParameters.updateCreatorSettingsRequestDto === undefined) {
-            throw new runtime.RequiredError('updateCreatorSettingsRequestDto','Required parameter requestParameters.updateCreatorSettingsRequestDto was null or undefined when calling createOrUpdateCreatorSettings.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/creator-settings`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateCreatorSettingsRequestDtoToJSON(requestParameters.updateCreatorSettingsRequestDto),
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Updates or create creator settings
-     */
-    async createOrUpdateCreatorSettings(requestParameters: CreateOrUpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
-        const response = await this.createOrUpdateCreatorSettingsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Gets creator settings
@@ -104,6 +63,47 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
      */
     async getCreatorSettings(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorSettingsResponseDto> {
         const response = await this.getCreatorSettingsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates creator settings
+     */
+    async updateCreatorSettingsRaw(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.updateCreatorSettingsRequestDto === null || requestParameters.updateCreatorSettingsRequestDto === undefined) {
+            throw new runtime.RequiredError('updateCreatorSettingsRequestDto','Required parameter requestParameters.updateCreatorSettingsRequestDto was null or undefined when calling updateCreatorSettings.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/creator-settings`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateCreatorSettingsRequestDtoToJSON(requestParameters.updateCreatorSettingsRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Updates creator settings
+     */
+    async updateCreatorSettings(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.updateCreatorSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

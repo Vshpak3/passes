@@ -14,7 +14,6 @@ import { UserEntity } from '../user/entities/user.entity'
 import { PROFILE_NOT_EXIST } from './constants/errors'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import { GetProfileRequestDto } from './dto/get-profile.dto'
-import { GetUsernamesResponseDto } from './dto/get-usernames.dto'
 import { ProfileDto } from './dto/profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
 
@@ -66,6 +65,12 @@ export class ProfileService {
       )
       .where(`${ProfileEntity.table}.is_active`, true)
       .where(`${UserEntity.table}.is_creator`, true)
+      .where(`${UserEntity.table}.is_active`, true)
+      .select(
+        `${ProfileEntity.table}.*`,
+        `${UserEntity.table}.legal_full_name`,
+        `${UserEntity.table}.is_kycverified`,
+      )
       .first()
     if (creatorId) {
       query = query.andWhere(`${UserEntity.table}.id`, creatorId)
@@ -96,30 +101,23 @@ export class ProfileService {
     return new ProfileDto(profile)
   }
 
-  async removeProfile(userId: string, profileId: string): Promise<boolean> {
+  async deactivateProfile(userId: string): Promise<boolean> {
     const data = ProfileEntity.toDict<ProfileEntity>({ isActive: false })
     const updated = await this.dbWriter(ProfileEntity.table)
       .update(data)
       .where(
-        ProfileEntity.toDict<ProfileEntity>({ id: profileId, user: userId }),
+        ProfileEntity.toDict<ProfileEntity>({ user: userId, isActive: true }),
       )
     return updated === 1
   }
 
-  async getAllUsernames(): Promise<GetUsernamesResponseDto> {
-    const rawUsernames = await this.dbWriter(ProfileEntity.table)
-      .innerJoin(
-        `${UserEntity.table} as user`,
-        `${ProfileEntity.table}.user_id`,
-        'user.id',
+  async activateProfile(userId: string): Promise<boolean> {
+    const data = ProfileEntity.toDict<ProfileEntity>({ isActive: true })
+    const updated = await this.dbWriter(ProfileEntity.table)
+      .update(data)
+      .where(
+        ProfileEntity.toDict<ProfileEntity>({ user: userId, isActive: false }),
       )
-      .where('user.is_creator', true)
-      .select('user.username')
-
-    const usernames = rawUsernames.map((u) => u.username)
-
-    return {
-      usernames,
-    }
+    return updated === 1
   }
 }

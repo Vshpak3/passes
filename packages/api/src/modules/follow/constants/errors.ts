@@ -5,3 +5,4 @@ export const FOLLOWING_NOT_EXIST = 'Following does not exist'
 export const FOLLOWING_ALREADY_EXIST = 'Following already exists'
 
 export const FOLLOWER_BLOCKED = 'Follower is blocked'
+export const COMMNETS_DISABLED = 'Comments are disabled on this post'

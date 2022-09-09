@@ -68,9 +68,9 @@ export interface VerifyEmailRequest {
 export class UserApi extends runtime.BaseAPI {
 
     /**
-     * Disables a user account
+     * Activate a user account
      */
-    async disableUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async activateUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -84,20 +84,55 @@ export class UserApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/user`,
-            method: 'DELETE',
+            path: `/api/user/activate`,
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.TextApiResponse(response) as any;
     }
 
     /**
-     * Disables a user account
+     * Activate a user account
      */
-    async disableUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.disableUserRaw(initOverrides);
+    async activateUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.activateUserRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deactivate a user account
+     */
+    async deactivateUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/user/deactivate`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Deactivate a user account
+     */
+    async deactivateUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+        const response = await this.deactivateUserRaw(initOverrides);
+        return await response.value();
     }
 
     /**

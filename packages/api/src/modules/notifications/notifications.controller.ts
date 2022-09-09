@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Param,
   Post,
@@ -16,6 +17,8 @@ import {
   GetNotificationsRequestDto,
   GetNotificationsResponseDto,
 } from './dto/get-notification.dto'
+import { GetNotificationSettingsResponseDto } from './dto/get-notification-settings.dto'
+import { UpdateNotificationSettingsRequestDto } from './dto/update-notification-settings.dto'
 import { NotificationsService } from './notifications.service'
 
 @ApiTags('notifications')
@@ -65,6 +68,36 @@ export class NotificationsController {
     await this.notificationsService.readNotification(
       req.user.id,
       notificationId,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Gets notification settings',
+    responseStatus: HttpStatus.OK,
+    responseType: GetNotificationSettingsResponseDto,
+    responseDesc: 'Notification settings was retrieved',
+  })
+  @Get('settings/get')
+  async getNotificationSettings(
+    @Req() req: RequestWithUser,
+  ): Promise<GetNotificationSettingsResponseDto> {
+    return await this.notificationsService.getNotificationSettings(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Update notification settings',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'Notification settings was updated',
+  })
+  @Post('settings/update')
+  async updateNotificationSettings(
+    @Req() req: RequestWithUser,
+    @Body() updateNotificationSettingsDto: UpdateNotificationSettingsRequestDto,
+  ): Promise<boolean> {
+    return await this.notificationsService.updateNotificationSettings(
+      req.user.id,
+      updateNotificationSettingsDto,
     )
   }
 }

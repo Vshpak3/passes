@@ -206,36 +206,6 @@ export class SolService {
     }
   }
 
-  // async refreshNftOwnership(
-  //   solNftId: string,
-  //   passHolderId: string | null,
-  //   walletAddress: string | null,
-  //   walletUserId: string | null,
-  //   walletId: string | null,
-  //   mintPublicKey: string,
-  // ): Promise<void> {
-  //   const owner = await this.getOwnerOfPass(
-  //     this.connection,
-  //     new PublicKey(mintPublicKey),
-  //   )
-
-  //   // always try update incase of wallet transfer
-  //   if (passHolderId) {
-  //     await this.dbWriter(PassHolderEntity.table)
-  //       .update('pass_holder.holder_id', walletUserId)
-  //       .where('pass_holder.id', passHolderId)
-  //   }
-
-  //   // if unowned or same owner, skip this record
-  //   if (!owner || owner.toString() == walletAddress) {
-  //     return
-  //   }
-
-  //   await this.dbWriter(SolNftEntity.table)
-  //     .update('sol_nft.wallet_id', walletId)
-  //     .where('sol_nft.id', solNftId)
-  // }
-
   /**
    * Retrieve the owner of a given pass using getProgramAccounts on the token program.
    */

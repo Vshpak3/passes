@@ -46,7 +46,7 @@ export class PassController {
     summary: 'Gets passes created by a creator',
     responseStatus: HttpStatus.OK,
     responseType: GetPassesResponseDto,
-    responseDesc: 'A list of passes was retrieved',
+    responseDesc: 'A list of creator passes was retrieved',
     allowUnauthorizedRequest: true,
   })
   @Get('created/:creatorId')
@@ -59,10 +59,22 @@ export class PassController {
   }
 
   @ApiEndpoint({
+    summary: 'Gets external passes',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassesResponseDto,
+    responseDesc: 'A list of external passes was retrieved',
+    allowUnauthorizedRequest: true,
+  })
+  @Get('external')
+  async getExternalPasses(): Promise<GetPassesResponseDto> {
+    return new GetPassesResponseDto(await this.passService.getExternalPasses())
+  }
+
+  @ApiEndpoint({
     summary: 'Gets passes held by user',
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
-    responseDesc: 'A list of passes was retrieved',
+    responseDesc: 'A list of pass holdings was retrieved',
   })
   @Get('passholdings')
   async getPassHoldings(

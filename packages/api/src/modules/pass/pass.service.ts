@@ -197,6 +197,14 @@ export class PassService {
     ).map((pass) => new PassDto(pass))
   }
 
+  async getExternalPasses() {
+    return (
+      await this.dbReader(PassEntity.table)
+        .where('creator_id', null)
+        .select('*')
+    ).map((pass) => new PassDto(pass))
+  }
+
   async updatePass(
     userId: string,
     passId: string,
