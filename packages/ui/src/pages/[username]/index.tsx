@@ -69,6 +69,8 @@ const mockCreator = {
       locked: true,
       price: 32,
       date: "2022-07-23T19:00:00.000Z",
+      displayName: "Alex Drachnik",
+      username: "alexdrachnik",
       caption:
         "I'm so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
       content: [
@@ -84,6 +86,8 @@ const mockCreator = {
       donationTypes: [10, 25, 50],
       numberOfDonations: 456,
       date: "2022-07-23T19:00:00.000Z",
+      displayName: "Alex Drachnik",
+      username: "alexdrachnik",
       caption:
         "Tip $10 to get a video of me sharing my best tricks. Tip $25 to get a video and be able to ask a question that I’ll answer. Or tip $50 and I will make a custom video answering your question!",
       fundraiser: true,

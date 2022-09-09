@@ -75,7 +75,7 @@ export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => (
           </span>
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          {profile.userId}
+          {profile.username}
         </div>
       </div>
     </div>

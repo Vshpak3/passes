@@ -16,7 +16,6 @@ import { NewFundraiserTab } from "./fundraiser-tab"
 import MediaHeader from "./header"
 import { MediaFile } from "./media"
 import { PollsTab } from "./polls-tab"
-import { NewsQuizTab } from "./quiz-tab"
 
 const RecordView = dynamic(
   () =>
@@ -254,13 +253,6 @@ export const NewPost = ({
                   control={control}
                   register={register}
                   fundraiserTarget={fundraiserTarget}
-                  onCloseTab={onCloseTab}
-                />
-              )}
-              {activeMediaHeader === "Quiz" && (
-                <NewsQuizTab
-                  control={control}
-                  register={register}
                   onCloseTab={onCloseTab}
                 />
               )}

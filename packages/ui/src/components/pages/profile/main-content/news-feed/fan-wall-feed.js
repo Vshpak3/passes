@@ -81,7 +81,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
               <Comment
                 key={`post_${index}`}
                 profile={{
-                  userId: post.commenterUsername,
+                  username: post.commenterUsername,
                   profileImageUrl: "",
                   fullName: post.commenterDisplayName
                 }}

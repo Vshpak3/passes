@@ -42,13 +42,15 @@ export const ProfileStatsMobile = ({ posts, likes }) => (
 
 export const ProfilePhoto = ({ url }) => (
   <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border border-black bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
-    <Image
-      src={url}
-      className="object-cover drop-shadow-profile-photo"
-      layout="fill"
-      objectFit="fill"
-      alt="profile-image"
-    />
+    {url?.length > 0 && (
+      <Image
+        src={url}
+        className="object-cover drop-shadow-profile-photo"
+        layout="fill"
+        objectFit="fill"
+        alt="profile-image"
+      />
+    )}
   </div>
 )
 

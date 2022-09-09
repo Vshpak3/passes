@@ -10,6 +10,8 @@ const mockPost = {
   locked: true,
   price: 32,
   date: "2022-09-01T11:52:25.712Z",
+  displayName: "Alex Drachnik",
+  username: "alexdrachnik",
   caption:
     "I’m so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
   content: [
@@ -17,7 +19,7 @@ const mockPost = {
   ]
 }
 
-const CreatorContentFeed = ({ profile, existingPosts }) => {
+const CreatorContentFeed = ({ existingPosts }) => {
   const [posts, setPosts] = useState([...existingPosts])
   const [hasMore] = useState(true)
 
@@ -28,16 +30,7 @@ const CreatorContentFeed = ({ profile, existingPosts }) => {
 
   return (
     <Fragment>
-      {/*  Overwrites style library's outer div unaccessible component */}
-      <style>
-        {`
-          .infinite-scroll-component__outerdiv {
-            width: 100%;
-          }
-        `}
-      </style>
-
-      <div className="flex w-full overflow-y-auto md:h-[1150px]">
+      <div className="w-full overflow-y-auto md:h-[1150px]">
         <InfiniteScroll
           dataLength={posts.length}
           next={getMorePost}
@@ -49,7 +42,15 @@ const CreatorContentFeed = ({ profile, existingPosts }) => {
         >
           {posts.map((post, index) => (
             <div key={index} className="flex w-full py-3">
-              <Post key={`post_${index}`} profile={profile} post={post} />
+              <Post
+                key={`post_${index}`}
+                profile={{
+                  username: post.username,
+                  profileImageUrl: "",
+                  fullName: post.displayName
+                }}
+                post={post}
+              />
             </div>
           ))}
         </InfiniteScroll>

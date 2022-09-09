@@ -45,13 +45,11 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const ownsProfile = loggedInUsername === username
 
-  const { data: posts = [], isValidating: isLoadingPosts } = useSWR(
-    doesProfileExist ? [`/post/creator/`, username] : null,
-    async () => {
+  const { data: profilePosts = { posts: [] }, isValidating: isLoadingPosts } =
+    useSWR(doesProfileExist ? [`/post/creator/`, username] : null, async () => {
       const api = wrapApi(FeedApi)
       return await api.getFeedForCreator({ userId: props.userId, cursor: "" })
-    }
-  )
+    })
 
   const onSubmitEditProfile = async (values: Record<string, any>) => {
     const { profileImage, profileCoverImage, ...rest } = values
@@ -105,7 +103,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     ownsProfile,
     fanWallPosts,
     isLoadingFanWallPosts,
-    posts,
+    posts: profilePosts.posts,
     profile,
     username
   }

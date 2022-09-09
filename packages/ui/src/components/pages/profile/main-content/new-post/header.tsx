@@ -1,4 +1,3 @@
-import Quiz from "public/icons/media-quiz.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"
@@ -45,17 +44,6 @@ const mediaTypes = [
     type: "button"
   },
   {
-    name: "Video",
-    Icon: Recorder,
-    accept: [".mp4", ".mov", ".qt"],
-    type: "button"
-  },
-  {
-    name: "Quiz",
-    Icon: Quiz,
-    type: "button"
-  },
-  {
     name: "Schedule",
     Icon: Calendar,
     type: "button"
@@ -87,9 +75,10 @@ const MediaHeader = ({
       <div className="flex items-center ">
         {/* <span className="mr-2">Type</span> */}
         <div className="flex w-full flex-wrap justify-between gap-1">
-          {_mediaTypes.map(({ name, Icon, accept, type, multiple }) =>
+          {_mediaTypes.map(({ name, Icon, accept, type, multiple }, index) =>
             type === "button" ? (
               <button
+                key={`${name}-${index}`}
                 type={type}
                 className={classNames(
                   activeMediaHeader === name
