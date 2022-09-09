@@ -7,7 +7,7 @@ import { wrapApi } from "../helpers/wrapApi"
 
 const MOCKED_VIEWER_PASSES: PassDto[] = [
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "Kalia Troy Basic Kalia Troy Basic Kalia Troy Basic",
     type: "subscription",
@@ -19,7 +19,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "Testing Today",
     type: "subscription",
@@ -31,7 +31,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -43,7 +43,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -55,7 +55,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -67,7 +67,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -79,7 +79,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -91,7 +91,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "1",
+    passId: "1",
     price: 20,
     title: "My Pass 1",
     type: "subscription",
@@ -103,7 +103,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "2",
+    passId: "2",
     price: 20,
     title: "My Pass 2",
     type: "lifetime",
@@ -115,7 +115,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "3",
+    passId: "3",
     price: 20,
     title: "My Pass 3",
     type: "subscription",
@@ -127,7 +127,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "4",
+    passId: "4",
     price: 20,
     title: "My Pass 4",
     type: "lifetime",
@@ -139,7 +139,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "5",
+    passId: "5",
     price: 20,
     title: "My Pass 5",
     type: "lifetime",
@@ -151,7 +151,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "6",
+    passId: "6",
     price: 20,
     title: "My Pass 6",
     type: "subscription",
@@ -163,7 +163,7 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     freetrial: false
   },
   {
-    id: "7",
+    passId: "7",
     price: 20,
     title: "My Pass 7",
     type: "lifetime",
