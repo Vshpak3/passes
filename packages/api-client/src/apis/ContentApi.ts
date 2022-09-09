@@ -29,7 +29,7 @@ import {
     GetSignedUrlResponseDtoToJSON,
 } from '../models';
 
-export interface CreateRequest {
+export interface CreateContentRequest {
     createContentRequestDto: CreateContentRequestDto;
 }
 
@@ -50,9 +50,9 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async createRaw(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
+    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
         if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
-            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling create.');
+            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling createContent.');
         }
 
         const queryParameters: any = {};
@@ -83,8 +83,8 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async create(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
-        const response = await this.createRaw(requestParameters, initOverrides);
+    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
+        const response = await this.createContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

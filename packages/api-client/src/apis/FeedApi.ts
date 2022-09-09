@@ -114,7 +114,7 @@ export class FeedApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/feed/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/api/feed/profile/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

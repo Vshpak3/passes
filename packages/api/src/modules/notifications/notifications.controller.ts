@@ -77,7 +77,7 @@ export class NotificationsController {
     responseType: GetNotificationSettingsResponseDto,
     responseDesc: 'Notification settings was retrieved',
   })
-  @Get('settings/get')
+  @Get('settings')
   async getNotificationSettings(
     @Req() req: RequestWithUser,
   ): Promise<GetNotificationSettingsResponseDto> {
@@ -90,7 +90,7 @@ export class NotificationsController {
     responseType: Boolean,
     responseDesc: 'Notification settings was updated',
   })
-  @Post('settings/update')
+  @Post('settings')
   async updateNotificationSettings(
     @Req() req: RequestWithUser,
     @Body() updateNotificationSettingsDto: UpdateNotificationSettingsRequestDto,

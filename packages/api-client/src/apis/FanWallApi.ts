@@ -144,7 +144,7 @@ export class FanWallApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/fan-wall/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/api/fan-wall/profile/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

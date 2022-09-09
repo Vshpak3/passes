@@ -201,7 +201,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            path: `/api/pass/pass-info/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -275,7 +275,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a passholders
+     * Get passholders of a pass
      */
     async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
@@ -305,7 +305,7 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a passholders
+     * Get passholders of a pass
      */
     async getPassHolders(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
         const response = await this.getPassHoldersRaw(requestParameters, initOverrides);
@@ -415,7 +415,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/pay/create`,
+            path: `/api/pass/buy/create`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -456,7 +456,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/pay/data/create`,
+            path: `/api/pass/buy/create/data`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -497,7 +497,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/pay/renew`,
+            path: `/api/pass/buy/renew`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -538,7 +538,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/pay/data/renew`,
+            path: `/api/pass/buy/renew/data`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -621,7 +621,7 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            path: `/api/pass/pass-info/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

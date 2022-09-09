@@ -31,7 +31,7 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A feed was retrieved',
   })
-  @Get(':userId')
+  @Get('profile/:userId')
   async getFeedForCreator(
     @Req() req: RequestWithUser,
     @Param('userId') userId: string,

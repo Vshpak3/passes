@@ -92,7 +92,7 @@ export class PassController {
     responseType: GetPassResponseDto,
     responseDesc: 'A pass was retrieved',
   })
-  @Get(':passId')
+  @Get('pass-info/:passId')
   async findPass(@Param('passId') passId: string): Promise<GetPassResponseDto> {
     return this.passService.findPass(passId)
   }
@@ -103,7 +103,7 @@ export class PassController {
     responseType: GetPassResponseDto,
     responseDesc: 'A pass was updated',
   })
-  @Patch(':passId')
+  @Patch('pass-info/:passId')
   async updatePass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
@@ -118,7 +118,7 @@ export class PassController {
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Create pass payin was registered',
   })
-  @Post('pay/create')
+  @Post('buy/create')
   async registerBuyPass(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
@@ -136,7 +136,7 @@ export class PassController {
     responseType: PayinDataDto,
     responseDesc: 'Data for register create pass was retrieved',
   })
-  @Post('pay/data/create')
+  @Post('buy/create/data')
   async registerBuyPassData(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
@@ -153,7 +153,7 @@ export class PassController {
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Renew pass payin was registered',
   })
-  @Post('pay/renew')
+  @Post('buy/renew')
   async registerRenewPass(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,
@@ -171,7 +171,7 @@ export class PassController {
     responseType: PayinDataDto,
     responseDesc: 'Data for register renew pass was retrieved',
   })
-  @Post('pay/data/renew')
+  @Post('buy/renew/data')
   async registerRenewPassData(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,
@@ -225,7 +225,7 @@ export class PassController {
   }
 
   @ApiEndpoint({
-    summary: 'Get a passholders',
+    summary: 'Get passholders of a pass',
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
     responseDesc: 'A pass was unpinned',

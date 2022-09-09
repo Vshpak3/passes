@@ -27,7 +27,7 @@ export class ContentService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async create(
+  async createContent(
     userId: string,
     createContentDto: CreateContentRequestDto,
   ): Promise<GetContentResponseDto> {

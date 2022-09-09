@@ -419,7 +419,25 @@ export class MessagesService {
     channelId: string,
     tipAmount: number,
   ): Promise<boolean> {
+    // userId must be a creator or follow otherUserId
+    const user = await this.dbReader(UserEntity.table)
+      .where('id', userId)
+      .select('is_creator')
+      .first()
+    const follow = await this.dbReader(FollowEntity.table)
+      .where(
+        FollowEntity.toDict<FollowEntity>({
+          follower: userId,
+          creator: otherUserId,
+        }),
+      )
+      .select('id')
+      .first()
+    if (!user || (!user.is_creator && !follow)) return false
+
+    // neither user can be blocked
     if (await this.checkBlocked(userId, otherUserId)) return true
+
     const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
         CreatorSettingsEntity.toDict<CreatorSettingsEntity>({

@@ -169,7 +169,7 @@ export class WalletApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/wallet`,
+            path: `/api/wallet/authenticated`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -272,7 +272,7 @@ export class WalletApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/wallet`,
+            path: `/api/wallet/wallets`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -327,7 +327,7 @@ export class WalletApi extends runtime.BaseAPI {
     }
 
     /**
-     * Removes authenticated wallet for a user
+     * Removes wallet for a user
      */
     async removeWalletRaw(requestParameters: RemoveWalletRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.walletId === null || requestParameters.walletId === undefined) {
@@ -347,7 +347,7 @@ export class WalletApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/wallet/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
+            path: `/api/wallet/ownership/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -357,7 +357,7 @@ export class WalletApi extends runtime.BaseAPI {
     }
 
     /**
-     * Removes authenticated wallet for a user
+     * Removes wallet for a user
      */
     async removeWallet(requestParameters: RemoveWalletRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.removeWalletRaw(requestParameters, initOverrides);

@@ -56,7 +56,7 @@ export class VerificationApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/verification/can`,
+            path: `/api/verification/persona/inquiry/check`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -90,7 +90,7 @@ export class VerificationApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/verification/step`,
+            path: `/api/verification/creator-verification/step`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -124,7 +124,7 @@ export class VerificationApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/verification/refresh/persona`,
+            path: `/api/verification/persona/refresh`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -163,7 +163,7 @@ export class VerificationApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/verification/step`,
+            path: `/api/verification/creator-verification/step`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -204,7 +204,7 @@ export class VerificationApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/verification`,
+            path: `/api/verification/persona/inquiry`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

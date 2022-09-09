@@ -57,7 +57,7 @@ export class ProfileApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/profile/activate`,
-            method: 'DELETE',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -163,7 +163,7 @@ export class ProfileApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/profile/get`,
+            path: `/api/profile/search`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

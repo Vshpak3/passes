@@ -901,7 +901,7 @@ export class PaymentApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/payment/payout`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -914,31 +914,6 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async payout(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
         await this.payoutRaw(initOverrides);
-    }
-
-    /**
-     * Payout everyone
-     */
-    async payoutAllRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/payment/test/payout`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Payout everyone
-     */
-    async payoutAll(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
-        await this.payoutAllRaw(initOverrides);
     }
 
     /**

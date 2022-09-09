@@ -39,11 +39,14 @@ export class ContentController {
     responseDesc: 'Content was created',
   })
   @Post()
-  async create(
+  async createContent(
     @Req() req: RequestWithUser,
     @Body() createContentRequestDto: CreateContentRequestDto,
   ): Promise<GetContentResponseDto> {
-    return this.contentService.create(req.user.id, createContentRequestDto)
+    return this.contentService.createContent(
+      req.user.id,
+      createContentRequestDto,
+    )
   }
 
   @ApiEndpoint({

@@ -45,7 +45,7 @@ export class FanWallController {
     responseType: GetFanWallForCreatorResponseDto,
     responseDesc: 'A list of fan wall comments was retrieved',
   })
-  @Get(':userId')
+  @Get('profile/:userId')
   async getFanWallForCreator(
     @Req() req: RequestWithUser,
     @Param('userId') userId: string,

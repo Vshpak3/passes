@@ -46,6 +46,10 @@ export interface ReportFollowerRequest {
     reportFanDto: ReportFanDto;
 }
 
+export interface SearchFansRequest {
+    searchFollowRequestDto: SearchFollowRequestDto;
+}
+
 export interface SearchFollowingRequest {
     searchFollowRequestDto: SearchFollowRequestDto;
 }
@@ -159,7 +163,7 @@ export class FollowApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/follow/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            path: `/api/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -255,6 +259,47 @@ export class FollowApi extends runtime.BaseAPI {
     }
 
     /**
+     * Search for followers by query
+     */
+    async searchFansRaw(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+        if (requestParameters.searchFollowRequestDto === null || requestParameters.searchFollowRequestDto === undefined) {
+            throw new runtime.RequiredError('searchFollowRequestDto','Required parameter requestParameters.searchFollowRequestDto was null or undefined when calling searchFans.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/follow/followers/search`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SearchFollowRequestDtoToJSON(requestParameters.searchFollowRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Search for followers by query
+     */
+    async searchFans(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListMembersResponseDto> {
+        const response = await this.searchFansRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Search for following by query
      */
     async searchFollowingRaw(requestParameters: SearchFollowingRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
@@ -277,7 +322,7 @@ export class FollowApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/follow/search`,
+            path: `/api/follow/following/search`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

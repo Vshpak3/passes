@@ -43,7 +43,7 @@ export class FollowController {
     responseType: GetFollowResponseDto,
     responseDesc: 'A follow was created',
   })
-  @Post('follow/:creatorId')
+  @Post(':creatorId')
   async followCreator(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
@@ -71,7 +71,7 @@ export class FollowController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of followers was retrieved',
   })
-  @Post('search')
+  @Post('followers/search')
   async searchFans(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFollowRequestDto,
@@ -87,7 +87,7 @@ export class FollowController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of following was retrieved',
   })
-  @Post('search')
+  @Post('following/search')
   async searchFollowing(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFollowRequestDto,

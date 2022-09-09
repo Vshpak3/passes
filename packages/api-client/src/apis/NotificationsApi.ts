@@ -104,7 +104,7 @@ export class NotificationsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/notifications/settings/get`,
+            path: `/api/notifications/settings`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -214,7 +214,7 @@ export class NotificationsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/notifications/settings/update`,
+            path: `/api/notifications/settings`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
