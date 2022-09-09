@@ -1,27 +1,27 @@
-import React, { useEffect } from "react"
-import { useChatContext } from "stream-chat-react"
+import React from "react"
 
+// import { useChatContext } from "stream-chat-react"
 import { SkeletonLoader } from "./SkeletonLoader"
 
 const MessagingChannelList = ({ children, error = false, loading }) => {
-  const { client, setActiveChannel } = useChatContext()
+  // const { client, setActiveChannel } = useChatContext()
 
   // const { id, image = streamLogo, name = "Example User" } = client.user || {}
-  useEffect(() => {
-    const getDemoChannel = async (client) => {
-      const channel = client.channel("messaging", "first", {
-        name: "Social Demo",
-        demo: "social"
-      })
-      await channel.watch()
-      await channel.addMembers([client?.user.id])
-      setActiveChannel(channel)
-    }
+  // useEffect(() => {
+  //   const getDemoChannel = async (client) => {
+  //     const channel = client.channel("messaging", "first", {
+  //       name: "Social Demo",
+  //       demo: "social"
+  //     })
+  //     await channel.watch()
+  //     await channel.addMembers([client?.user.id])
+  //     setActiveChannel(channel)
+  //   }
 
-    if (!loading && !children?.props?.children?.length) {
-      getDemoChannel(client)
-    }
-  }, [loading, client, children, setActiveChannel])
+  //   if (!loading && !children?.props?.children?.length) {
+  //     getDemoChannel(client)
+  //   }
+  // }, [loading, client, children, setActiveChannel])
 
   const ListHeaderWrapper = ({ children }) => {
     return (

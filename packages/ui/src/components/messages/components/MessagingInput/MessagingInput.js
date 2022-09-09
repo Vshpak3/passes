@@ -135,7 +135,7 @@ const MessagingInput = () => {
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
           display: flex;
           align-items: start;
-          padding: 10px 20px;
+          padding: 10px 20px 0px 20px;
           position: relative;
           display:flex;
           flex-direction:column;
@@ -455,7 +455,7 @@ const MessagingInput = () => {
           <EmojiPicker />
         </div>
 
-        <div className="flex w-full items-center justify-between border-t border-passes-dark-200 py-3 pr-5">
+        <div className="flex w-full items-center justify-between border-t border-passes-dark-200 py-1 pr-5">
           <div>
             <MediaHeader
               messages={true}

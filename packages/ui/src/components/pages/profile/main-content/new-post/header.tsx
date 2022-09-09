@@ -71,7 +71,7 @@ const MediaHeader = ({
     _mediaTypes = messagesMediaTypes
   } else _mediaTypes = mediaTypes
   return (
-    <div className="relative flex h-full w-full items-center justify-between pb-4 text-[16px] font-normal">
+    <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
       <div className="flex items-center ">
         {/* <span className="mr-2">Type</span> */}
         <div className="flex w-full flex-wrap justify-between gap-1">
@@ -84,7 +84,7 @@ const MediaHeader = ({
                   activeMediaHeader === name
                     ? " bg-[rgba(191,122,240,0.1)] "
                     : "hover:bg-[rgba(191,122,240,0.1)]",
-                  "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                  "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
                 )}
                 onClick={() => onChange(name)}
               >

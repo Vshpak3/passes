@@ -1,10 +1,13 @@
+import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
 import SearchIcon from "public/icons/messages-search-icon.svg"
 import StarIcon from "public/icons/messages-star-icon.svg"
 import BellIcon from "public/icons/profile-bell-icon.svg"
-import React, { useEffect, useRef, useState } from "react"
+import PhotosIcon from "public/icons/profile-photos1-icon.svg"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { classNames } from "src/helpers"
 import {
   Avatar,
   useChannelStateContext,
@@ -12,7 +15,7 @@ import {
 } from "stream-chat-react"
 
 import { getCleanImage, HamburgerIcon } from "../../assets"
-
+import { GiphyContext } from "../../index"
 // import { TypingIndicator } from "../TypingIndicator/TypingIndicator"
 
 const getAvatarGroup = (members) => {
@@ -122,7 +125,6 @@ const getAvatarGroup = (members) => {
 const MessagingChannelHeader = (props) => {
   const { client } = useChatContext()
   const { channel } = useChannelStateContext()
-
   const [channelName, setChannelName] = useState(channel?.data.name || "")
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState("")
@@ -130,7 +132,8 @@ const MessagingChannelHeader = (props) => {
     defaultValues: {}
   })
   const inputRef = useRef()
-
+  const { gallery, setGallery, purchasedContent, setPurchasedContent } =
+    useContext(GiphyContext)
   const members = Object.values(channel.state?.members || {}).filter(
     (member) => member.user?.id !== client?.user?.id
   )
@@ -148,11 +151,11 @@ const MessagingChannelHeader = (props) => {
     setIsEditing(false)
   }
 
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [isEditing])
+  // useEffect(() => {
+  //   if (isEditing && inputRef.current) {
+  //     inputRef.current.focus()
+  //   }
+  // }, [isEditing])
 
   useEffect(() => {
     if (!channelName) {
@@ -201,6 +204,9 @@ const MessagingChannelHeader = (props) => {
           min-height: 60px;
           width:100%;
         }
+        .custom-border-second-header-gallery{
+          border-bottom:1px solid rgba(255, 255, 255, 0.15);
+        }
         .custom-border-second-header{
           border-top:1px solid rgba(255, 255, 255, 0.15);
           border-bottom:1px solid rgba(255, 255, 255, 0.15);
@@ -233,9 +239,6 @@ const MessagingChannelHeader = (props) => {
         }
 
         @media screen and (max-width: 1210px) {
-          .messaging__channel-header__left{
-            display:none;
-          }
           .spending-tips-buttons{
             display:none;
           }
@@ -327,95 +330,151 @@ const MessagingChannelHeader = (props) => {
         }
         `}
       </style>
-      <div className="messaging__channel-header gap-3">
-        <div
-          id="mobile-nav-icon"
-          className={`${props.theme}`}
-          onClick={() => props.toggleMobile()}
-        >
-          <HamburgerIcon />
-        </div>
-        {getAvatarGroup(members)}
-        {!isEditing ? (
-          <div className="channel-header__name">{channelName || title}</div>
-        ) : (
-          <EditHeader />
-        )}
-        <div className="messaging__channel-header__left py-4">
-          {props.isCreator ? (
+      {gallery ? (
+        <div className="messaging__channel-header gap-3  border-b border-[#ffffff]/10">
+          <div
+            id="mobile-nav-icon"
+            className={`${props.theme}`}
+            onClick={() => props.toggleMobile()}
+          >
+            <HamburgerIcon />
+          </div>
+          <div className="flex w-full items-center justify-start pl-2">
             <div className="flex items-center gap-3">
-              <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                  Vip Pass
-                </span>
-              </div>
-              <div className="via-neutral-100 flex h-[31px] w-[124px] items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                  Limited Pass
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 border-r border-passes-dark-200 pr-3">
-              <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10 ">
-                <BellIcon />
-              </span>
-              <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10">
-                <StarIcon />
-              </span>
-            </div>
-          )}
-          {props.isCreator ? (
-            <div className="flex items-center gap-8 pl-3">
-              <div className="flex flex-col items-start justify-center gap-[2px]">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                  $520
-                </span>
+              <BackIcon
+                className="h-4 w-4"
+                onClick={() => setGallery(!gallery)}
+              />
+              <div className="flex flex-col items-start justify-center gap-1">
+                {!purchasedContent ? (
+                  <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                    Not purchased content gallery
+                  </span>
+                ) : (
+                  <span className="flex cursor-pointer items-center justify-start">
+                    <span className="pr-1">
+                      <CurrencyIcon />
+                    </span>
+                    <span className="text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                      Purchased content gallery
+                    </span>
+                  </span>
+                )}
                 <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                  Total spent
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-center gap-[2px]">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                  $350
-                </span>
-                <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                  This month
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-center gap-[2px]">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                  Rank
-                </span>
-                <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-                  2/100
+                  with {channelName || title}
                 </span>
               </div>
             </div>
-          ) : (
-            <div className="flex w-full items-center justify-between">
-              <div>
-                <FormInput
-                  register={register}
-                  type="text"
-                  name="search"
-                  className="w-full items-center  border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
-                  placeholder="Find"
-                  icon={<SearchIcon className="mt-[5px]" />}
-                />
+          </div>
+          {/* <div className="channel-header__name">{channelName || title}</div> */}
+          <div className="messaging__channel-header__left justify-end  py-4 pr-10">
+            {purchasedContent ? (
+              <div
+                onClick={() => setPurchasedContent(!purchasedContent)}
+                className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
+              >
+                Show Not Purchased
               </div>
-              <div className="flex items-center justify-start pr-5">
-                <span className="pr-3">
-                  <CurrencyIcon />
-                </span>
-                <span className="text-[16px] font-medium leading-[24px] text-white">
-                  Purchased
-                </span>
+            ) : (
+              <div
+                onClick={() => setPurchasedContent(!purchasedContent)}
+                className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
+              >
+                Show Purchased
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className={classNames(
+            !props.isCreator ? "border-b border-[#ffffff]/10" : "",
+            "messaging__channel-header gap-3"
+          )}
+        >
+          <div
+            id="mobile-nav-icon"
+            className={`${props.theme}`}
+            onClick={() => props.toggleMobile()}
+          >
+            <HamburgerIcon />
+          </div>
+          {getAvatarGroup(members)}
+          {!isEditing ? (
+            <div className="channel-header__name">{channelName || title}</div>
+          ) : (
+            <EditHeader />
+          )}
+          <div className="messaging__channel-header__left py-4">
+            {props.isCreator ? (
+              <div className="hidden items-center gap-3  sm:flex">
+                <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color">
+                  <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                    Vip Pass
+                  </span>
+                </div>
+                <div className="via-neutral-100 flex h-[31px] w-[124px] items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500">
+                  <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
+                    Limited Pass
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="hidden items-center gap-3 border-r border-passes-dark-200 pr-3 sm:flex">
+                <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10 ">
+                  <BellIcon />
+                </span>
+                <span className="flex h-[45px] w-[45px] cursor-pointer items-center justify-center rounded-full border border-[#ffffff]/10 bg-[#1b141d]/10">
+                  <StarIcon />
+                </span>
+              </div>
+            )}
+            {props.isCreator ? (
+              <div className="flex items-center gap-8 pl-3">
+                <div
+                  onClick={() => setGallery(!gallery)}
+                  className="flex h-full cursor-pointer  items-center gap-1 pl-1 pr-2 opacity-80 hover:opacity-100 "
+                >
+                  <PhotosIcon className="flex flex-shrink-0" />
+                  <span className="text-sm text-passes-secondary-color">
+                    Gallery
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex w-full items-center justify-between">
+                <div
+                  onClick={() => setGallery(!gallery)}
+                  className="flex h-full cursor-pointer items-center gap-1 border-r border-passes-dark-200 pl-1 pr-2 opacity-80 hover:opacity-100 "
+                >
+                  <PhotosIcon className="flex flex-shrink-0" />
+                  <span className="text-sm text-passes-secondary-color">
+                    Gallery
+                  </span>
+                </div>
+                <div className="hidden items-center sm:flex">
+                  <FormInput
+                    register={register}
+                    type="text"
+                    name="search"
+                    className="w-full items-center  border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
+                    placeholder="Find.."
+                    icon={<SearchIcon className="mt-[5px]" />}
+                  />
+                </div>
+                <div className="hidden items-center justify-start pr-5 sm:flex">
+                  <span className="pr-3">
+                    <CurrencyIcon />
+                  </span>
+                  <span className="text-[16px] font-medium leading-[24px] text-white">
+                    Purchased
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

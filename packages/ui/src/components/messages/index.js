@@ -31,8 +31,10 @@ const MessagesComponent = ({ username }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [giphyState, setGiphyState] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+  const [purchasedContent, setPurchasedContent] = useState(false)
   const [isMobileNavVisible, setMobileNav] = useState(false)
   const [isCreator, setIsCreator] = useState(false)
+  const [gallery, setGallery] = useState(false)
   const [files, setFiles] = useState([])
   const [theme] = useState("dark")
   const { streamToken } = useChat(username)
@@ -89,7 +91,11 @@ const MessagesComponent = ({ username }) => {
     files,
     setFiles,
     isCreator,
-    setIsCreator
+    setIsCreator,
+    gallery,
+    setGallery,
+    purchasedContent,
+    setPurchasedContent
   }
   const options = { state: true, watch: true, presence: true, limit: 8 }
 
