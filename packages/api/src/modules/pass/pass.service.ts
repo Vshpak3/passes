@@ -179,10 +179,22 @@ export class PassService {
           `${UserEntity.table}.id`,
           `${PassHolderEntity.table}.holder_id`,
         )
+        .innerJoin(
+          PassEntity.table,
+          `${PassEntity.table}.id`,
+          `${PassHolderEntity.table}.pass_id`,
+        )
         .where(`${PassHolderEntity.table}.pass_id`, passId)
         .distinct(`${PassHolderEntity.table}.holder_id`)
         .select([
           `${PassHolderEntity.table}.*`,
+          `${PassEntity.table}.totalSupply`,
+          `${PassEntity.table}.remainingSupply`,
+          `${PassEntity.table}.price`,
+          `${PassEntity.table}.freetrial`,
+          `${PassEntity.table}.title`,
+          `${PassEntity.table}.description`,
+          `${PassEntity.table}.type`,
           `${UserEntity.table}.username as holder_username`,
           `${UserEntity.table}.display_name as holder_display_name`,
         ])

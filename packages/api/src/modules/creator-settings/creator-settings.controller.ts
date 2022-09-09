@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Patch, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -33,7 +33,7 @@ export class CreatorSettingsController {
     responseType: Boolean,
     responseDesc: 'Creator Settings was updated',
   })
-  @Post()
+  @Patch()
   async updateCreatorSettings(
     @Req() req: RequestWithUser,
     @Body() updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,

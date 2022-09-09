@@ -90,7 +90,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/creator-settings`,
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateCreatorSettingsRequestDtoToJSON(requestParameters.updateCreatorSettingsRequestDto),

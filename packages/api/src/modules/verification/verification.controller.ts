@@ -47,7 +47,7 @@ export class VerificationController {
     responseType: undefined,
     responseDesc: 'Persona KYC verifications for user were refreshed',
   })
-  @Post('persona/refresh')
+  @Get('persona/refresh')
   async refreshPersonaVerifications(
     @Req() req: RequestWithUser,
   ): Promise<void> {

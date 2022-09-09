@@ -125,7 +125,7 @@ export class VerificationApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/verification/persona/refresh`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);

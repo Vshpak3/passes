@@ -1,12 +1,13 @@
-import { PassApi, PassDto } from "@passes/api-client"
+import { PassApi, PassHolderDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { useUser } from "src/hooks"
 import useSWR from "swr"
 
 import { wrapApi } from "../helpers/wrapApi"
 
-const MOCKED_VIEWER_PASSES: PassDto[] = [
+const MOCKED_VIEWER_PASSES: PassHolderDto[] = [
   {
+    passHolderId: "1",
     passId: "1",
     price: 20,
     title: "Kalia Troy Basic Kalia Troy Basic Kalia Troy Basic",
@@ -16,168 +17,14 @@ const MOCKED_VIEWER_PASSES: PassDto[] = [
     description: "test",
     totalSupply: 0,
     remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "Testing Today",
-    type: "subscription",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1663059535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1663059535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1663059535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "1",
-    price: 20,
-    title: "My Pass 1",
-    type: "subscription",
-    expiresAt: 1663059535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "2",
-    price: 20,
-    title: "My Pass 2",
-    type: "lifetime",
-    expiresAt: 1659945535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "3",
-    price: 20,
-    title: "My Pass 3",
-    type: "subscription",
-    expiresAt: 1663059535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "4",
-    price: 20,
-    title: "My Pass 4",
-    type: "lifetime",
-    expiresAt: 1659945535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "5",
-    price: 20,
-    title: "My Pass 5",
-    type: "lifetime",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "6",
-    price: 20,
-    title: "My Pass 6",
-    type: "subscription",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
-  },
-  {
-    passId: "7",
-    price: 20,
-    title: "My Pass 7",
-    type: "lifetime",
-    expiresAt: 1667159535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false
+    freetrial: false,
+    address: "0",
+    chain: "sol"
   }
 ]
 
 function filterPasses(expired = true) {
-  return (pass: PassDto) => {
+  return (pass: PassHolderDto) => {
     const currentDate = Date.now()
     const expiryDate = Number(pass.expiresAt) * 1000
 
@@ -185,11 +32,11 @@ function filterPasses(expired = true) {
   }
 }
 function filterPassesByTitle(searchTerm: string) {
-  return (item: PassDto) =>
+  return (item: PassHolderDto) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
 }
 function filterPassesByType(type: string) {
-  return (item: PassDto | undefined) => {
+  return (item: PassHolderDto | undefined) => {
     if (type === "all") return true
     return item?.type.toLowerCase() === type.toLowerCase()
   }
@@ -238,7 +85,6 @@ const usePasses = (creatorId = "") => {
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredActive(filterActivePasses)
-
     const filterExpiredPasses = MOCKED_VIEWER_PASSES.filter(filterPasses(false))
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))

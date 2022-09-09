@@ -5,6 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
 } from '@nestjs/common'
@@ -130,13 +131,14 @@ export class WalletController {
     )
   }
 
+  // TODO: refresh sol?
   @ApiEndpoint({
     summary: 'Refresh tokens owned by a wallet',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Wallet tokens were updated',
   })
-  @Post('refresh/:walletId')
+  @Patch('refresh/:walletId')
   async refreshWallets(
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,

@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
   Sse,
@@ -60,7 +61,7 @@ export class NotificationsController {
     responseType: undefined,
     responseDesc: 'Status was set as read',
   })
-  @Post('read/:notificationId')
+  @Patch('read/:notificationId')
   async readNotification(
     @Req() req: RequestWithUser,
     @Param('notificationId') notificationId: string,
@@ -90,7 +91,7 @@ export class NotificationsController {
     responseType: Boolean,
     responseDesc: 'Notification settings was updated',
   })
-  @Post('settings')
+  @Patch('settings')
   async updateNotificationSettings(
     @Req() req: RequestWithUser,
     @Body() updateNotificationSettingsDto: UpdateNotificationSettingsRequestDto,

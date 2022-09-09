@@ -311,7 +311,7 @@ export class WalletApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/wallet/refresh/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);

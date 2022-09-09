@@ -96,7 +96,7 @@ export interface UpdateChannelSettingsRequest {
 export class MessagesApi extends runtime.BaseAPI {
 
     /**
-     * Creates a channel
+     * Gets a channel
      */
     async getChannelRaw(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
         if (requestParameters.getChannelRequestDto === null || requestParameters.getChannelRequestDto === undefined) {
@@ -129,7 +129,7 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a channel
+     * Gets a channel
      */
     async getChannel(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelResponseDto> {
         const response = await this.getChannelRaw(requestParameters, initOverrides);
@@ -233,7 +233,7 @@ export class MessagesApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/messages/completed-tipped`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -275,7 +275,7 @@ export class MessagesApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/messages/free-messages/{creatorId}/{channelId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))).replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -509,7 +509,7 @@ export class MessagesApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/messages/channel/settings/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateChannelSettingsRequestDtoToJSON(requestParameters.updateChannelSettingsRequestDto),

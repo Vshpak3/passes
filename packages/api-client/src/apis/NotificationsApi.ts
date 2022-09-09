@@ -143,7 +143,7 @@ export class NotificationsApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/notifications/read/{notificationId}`.replace(`{${"notificationId"}}`, encodeURIComponent(String(requestParameters.notificationId))),
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -215,7 +215,7 @@ export class NotificationsApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/notifications/settings`,
-            method: 'POST',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateNotificationSettingsRequestDtoToJSON(requestParameters.updateNotificationSettingsRequestDto),

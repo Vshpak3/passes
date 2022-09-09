@@ -1,16 +1,16 @@
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
-import { PassTypeEnum } from '../enum/pass.enum'
+import { PassDto } from './pass.dto'
 
-export class PassHolderDto {
+export class PassHolderDto extends PassDto {
   @DtoProperty()
   passHolderId: string
 
-  @DtoProperty()
-  passId: string
+  @DtoProperty({ required: false })
+  holderId?: string
 
-  @DtoProperty()
-  holderId: string
+  @DtoProperty({ required: false })
+  walletId?: string
 
   @DtoProperty({ required: false })
   messages?: number | null
@@ -25,12 +25,6 @@ export class PassHolderDto {
   holderDisplayName?: string
 
   @DtoProperty()
-  totalSupply: number
-
-  @DtoProperty()
-  remainingSupply: number
-
-  @DtoProperty()
   address: string
 
   @DtoProperty({ enum: ChainEnum })
@@ -39,41 +33,17 @@ export class PassHolderDto {
   @DtoProperty({ required: false })
   tokenId?: string
 
-  @DtoProperty({ enum: PassTypeEnum })
-  type: PassTypeEnum
-
-  @DtoProperty()
-  title: string
-
-  @DtoProperty()
-  description: string
-
-  @DtoProperty({ required: false })
-  creatorId?: string
-
-  @DtoProperty({ required: false })
-  creatorUsername?: string
-
-  @DtoProperty({ required: false })
-  creatorDisplayName?: string
-
   constructor(passHolder) {
-    this.passHolderId = passHolder.id
-    this.passId = passHolder.pass_id
-    this.holderId = passHolder.holder_id
-    this.expiresAt = passHolder.expires_at
-    this.messages = passHolder.messages
+    super(passHolder)
+    if (passHolder) {
+      this.passHolderId = passHolder.id
+      this.holderId = passHolder.holder_id
+      this.walletId = passHolder.wallet_id
+      this.expiresAt = passHolder.expires_at
+      this.messages = passHolder.messages
 
-    this.holderUsername = passHolder.holder_username
-    this.holderDisplayName = passHolder.holder_display_name
-
-    this.type = passHolder.type
-    this.title = passHolder.title
-    this.description = passHolder.description
-    this.totalSupply = passHolder.total_supply
-    this.remainingSupply = passHolder.remainingSupply
-    this.creatorId = passHolder.creator_id
-    this.creatorUsername = passHolder.creator_username
-    this.creatorDisplayName = passHolder.creator_display_name
+      this.holderUsername = passHolder.holder_username
+      this.holderDisplayName = passHolder.holder_display_name
+    }
   }
 }

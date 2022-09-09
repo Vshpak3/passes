@@ -198,7 +198,7 @@ export class FollowApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/follow/blocked`,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -362,7 +362,7 @@ export class FollowApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/follow/unblock/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
-            method: 'POST',
+            method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);

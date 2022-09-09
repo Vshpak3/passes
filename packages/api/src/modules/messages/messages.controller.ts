@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
 } from '@nestjs/common'
@@ -90,7 +91,7 @@ export class MessagesController {
     responseType: GetMessagesResponseDto,
     responseDesc: 'Completed tipped messages retrieved',
   })
-  @Post('completed-tipped')
+  @Get('completed-tipped')
   async getCompletedTippedMessages(
     @Req() req: RequestWithUser,
   ): Promise<GetMessagesResponseDto> {
@@ -129,10 +130,10 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Creates a channel',
-    responseStatus: HttpStatus.CREATED,
+    summary: 'Gets a channel',
+    responseStatus: HttpStatus.OK,
     responseType: GetChannelResponseDto,
-    responseDesc: 'Channel was created',
+    responseDesc: 'Channel was retrieved',
   })
   @Post('channel')
   async getChannel(
@@ -180,7 +181,7 @@ export class MessagesController {
     responseType: undefined,
     responseDesc: 'Channel settings was updated ',
   })
-  @Post('channel/settings/:channelId')
+  @Patch('channel/settings/:channelId')
   async updateChannelSettings(
     @Req() req: RequestWithUser,
     @Param('channelId') channelId: string,
@@ -199,7 +200,7 @@ export class MessagesController {
     responseType: GetFreeMesssagesResponseDto,
     responseDesc: 'Channel settings was updated ',
   })
-  @Post('free-messages/:creatorId/:channelId')
+  @Get('free-messages/:creatorId/:channelId')
   async getFreeMessages(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,

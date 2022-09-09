@@ -125,7 +125,7 @@ export class FollowController {
     responseType: undefined,
     responseDesc: 'A follower was unblocked',
   })
-  @Post('unblock/:followerId')
+  @Delete('unblock/:followerId')
   async unblockFollower(
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
@@ -153,7 +153,7 @@ export class FollowController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of blocked followers was retrieved',
   })
-  @Post('blocked')
+  @Get('blocked')
   async getBlocked(
     @Req() req: RequestWithUser,
   ): Promise<GetListMembersResponseDto> {
