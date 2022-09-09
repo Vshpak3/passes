@@ -1,9 +1,21 @@
+import { ContentDto } from "@passes/api-client"
 import Image from "next/image"
-import { VaultItemDate, VaultItemSelect } from "src/components/atoms"
+import { Dispatch, SetStateAction } from "react"
+import { VaultItemDate } from "src/components/atoms"
 import { classNames } from "src/helpers"
 import useVaultSelect from "src/hooks/vault/useVaultSelect"
 
-const VaultMediaItem = ({ itemData, selectedItems, setSelectedItems }) => {
+interface IVaultMediaItem {
+  itemData: ContentDto
+  selectedItems: Array<string>
+  setSelectedItems: Dispatch<SetStateAction<Array<string>>>
+}
+
+const VaultMediaItem = ({
+  itemData,
+  selectedItems,
+  setSelectedItems
+}: IVaultMediaItem) => {
   const { date, onSelectItem, opacityStyle, isSelected } = useVaultSelect({
     itemData,
     selectedItems,
@@ -20,15 +32,20 @@ const VaultMediaItem = ({ itemData, selectedItems, setSelectedItems }) => {
       >
         <Image
           alt={`vault-img-${itemData.id}`}
-          src={itemData.url}
+          src={itemData.signedUrl}
           layout="fill"
           objectFit="cover"
         />
         <div className="flex p-3">
           <VaultItemDate date={`${date.month} ${date.day}`} />
-          <VaultItemSelect
-            onSelectItem={onSelectItem}
-            isSelected={isSelected}
+          <div
+            className={classNames(
+              isSelected
+                ? "border-[#c943a8] bg-[#c943a8]"
+                : "border-white bg-transparent",
+              "hover:shadow-[0px_20px_20px_#1b141d]] h-[21px] w-[21px] rounded-full border-2 hover:shadow"
+            )}
+            onClick={onSelectItem}
           />
         </div>
       </div>

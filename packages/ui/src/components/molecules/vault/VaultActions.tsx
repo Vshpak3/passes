@@ -4,7 +4,33 @@ import FilterIcon from "public/icons/three-lines-icon.svg"
 import { Fragment } from "react"
 import { VaultAddToItem, VaultSortItem } from "src/components/atoms"
 
-const VaultAddToDropdown = ({ onAddToPost, onAddToMessage }) => {
+import { ISortOption } from "../../../hooks/vault/useVaultSort"
+
+interface IVaultAddToDropdown {
+  onAddToPost: () => void
+  onAddToMessage: () => void
+}
+interface IVaultSortDropdown {
+  sortOrder: any
+  sortKey: any
+  sortKeyOptions: any
+  sortByOrderOptions: any
+}
+interface IVaultDeleteDialog {
+  onDeleteVaultItems: any
+  toggleDeleteModal: any
+}
+interface IVaultDeleteModal {
+  onDeleteVaultItems: any
+  toggleDeleteModal: any
+  deleteModalActive: any
+  setDeleteModalActive: any
+}
+
+const VaultAddToDropdown = ({
+  onAddToPost,
+  onAddToMessage
+}: IVaultAddToDropdown) => {
   return (
     <Menu as="div" className="relative px-2 md:px-3">
       <div className="flex items-center justify-center gap-3">
@@ -42,7 +68,7 @@ const VaultSortDropdown = ({
   sortKey,
   sortKeyOptions,
   sortByOrderOptions
-}) => {
+}: IVaultSortDropdown) => {
   return (
     <Menu as="div" className="relative px-3">
       <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
@@ -60,21 +86,20 @@ const VaultSortDropdown = ({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 top-10 z-10 mt-2 box-border flex w-36 origin-top-right flex-col items-start justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
-          {sortKeyOptions.map((item) => (
+          {sortKeyOptions.map((item: ISortOption) => (
             <Menu.Item key={item.name}>
               <VaultSortItem
                 name={item.name}
                 label={item.name}
-                onClick={item.onClick}
+                // onClick={item.onClick}
                 sortedItem={sortKey}
               />
             </Menu.Item>
           ))}
           <hr />
-          {sortByOrderOptions.map((item) => (
+          {sortByOrderOptions.map((item: ISortOption) => (
             <Menu.Item key={item.name}>
               <VaultSortItem
-                key={item.name}
                 name={item.name}
                 label={item.label}
                 onClick={item.onClick}
@@ -88,7 +113,10 @@ const VaultSortDropdown = ({
   )
 }
 
-const VaultDeleteDialog = ({ onDeleteVaultItems, toggleDeleteModal }) => (
+const VaultDeleteDialog = ({
+  onDeleteVaultItems,
+  toggleDeleteModal
+}: IVaultDeleteDialog) => (
   <>
     <div className="sm:flex sm:items-start">
       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -129,7 +157,7 @@ const VaultDeleteModal = ({
   toggleDeleteModal,
   deleteModalActive,
   setDeleteModalActive
-}) => (
+}: IVaultDeleteModal) => (
   <Transition.Root show={deleteModalActive} as={Fragment}>
     <Dialog as="div" className="relative z-10" onClose={setDeleteModalActive}>
       <Transition.Child

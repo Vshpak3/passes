@@ -1,13 +1,20 @@
+import { ContentDto } from "@passes/api-client"
 import { useState } from "react"
 
-export const SortKeyEnum = {
-  RECENT: "Recent",
-  MOST_LIKED: "Most Liked",
-  HIGHEST_TIP: "Highest Tip"
+export enum SortKeyEnum {
+  RECENT = "Recent",
+  MOST_LIKED = "Most Liked",
+  HIGHEST_TIP = "Highest Tip"
 }
-export const SortOrderEnum = {
-  ASC: "ASC",
-  DESC: "DESC"
+export enum SortOrderEnum {
+  ASC = "ASC",
+  DESC = "DESC"
+}
+
+export interface ISortOption {
+  name: SortKeyEnum | SortOrderEnum
+  label?: string
+  onClick: () => void
 }
 
 const useVaultSort = () => {
@@ -25,12 +32,12 @@ const useVaultSort = () => {
   const toggleAsc = () => setSortOrder(SortOrderEnum.ASC)
   const toggleDesc = () => setSortOrder(SortOrderEnum.DESC)
 
-  const sortKeyOptions = [
+  const sortKeyOptions: ISortOption[] = [
     { name: SortKeyEnum.RECENT, onClick: toggleRecent },
     { name: SortKeyEnum.MOST_LIKED, onClick: toggleLiked },
     { name: SortKeyEnum.HIGHEST_TIP, onClick: toggleTips }
   ]
-  const sortByOrderOptions = [
+  const sortByOrderOptions: ISortOption[] = [
     { name: SortOrderEnum.ASC, label: "Ascending", onClick: toggleAsc },
     { name: SortOrderEnum.DESC, label: "Descending", onClick: toggleDesc }
   ]
@@ -46,22 +53,27 @@ const useVaultSort = () => {
   }
 }
 
-export function getSortKey(sortBy) {
+export function getSortKey(sortBy: SortKeyEnum) {
   switch (sortBy) {
     case SortKeyEnum.RECENT:
-      return "date"
+      // return "date"
+      return "id"
     case SortKeyEnum.MOST_LIKED:
-      return "totalLikes"
-    case SortKeyEnum.HIGHEST_TIP:
-      return "totalTips"
+      //   return "totalLikes"
+      return "userId"
+    // case SortKeyEnum.HIGHEST_TIP:
+    //   return "totalTips"
     default:
-      return "date"
+      return "contentType"
   }
 }
-export function composeSortKey(activeSort, sortOrder) {
+export function composeSortKey(
+  activeSort: SortKeyEnum,
+  sortOrder: SortOrderEnum
+) {
   const sortKey = getSortKey(activeSort)
 
-  return (a, b) => {
+  return (a: ContentDto, b: ContentDto) => {
     const isAsc = sortOrder === SortOrderEnum.ASC
     if (a[sortKey] > b[sortKey]) {
       return isAsc ? -1 : 1
@@ -70,12 +82,6 @@ export function composeSortKey(activeSort, sortOrder) {
       return isAsc ? 1 : -1
     }
     return 0
-  }
-}
-export function composeMediaFilter(activeFilter, key) {
-  return (item) => {
-    if (activeFilter === "All") return true
-    return item[key].toLowerCase() === activeFilter.toLowerCase()
   }
 }
 

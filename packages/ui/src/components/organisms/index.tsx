@@ -10,7 +10,7 @@ import ProfileNftPass from "./ProfileNftPass"
 import QuickPayModal from "./QuickPayModal"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
-import VaultGallery from "./VaultGallery"
+import { VaultMediaGrid, VaultNavigation } from "./VaultSections"
 export {
   CreatePassForm,
   CreatorPassModal,
@@ -27,5 +27,6 @@ export {
   SelectPassType,
   SidebarDefault,
   SidebarMobile,
-  VaultGallery
+  VaultMediaGrid,
+  VaultNavigation
 }

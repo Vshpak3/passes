@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react"
 import { VaultDeleteButton } from "src/components/atoms/vault"
 import {
   VaultAddToDropdown,
@@ -9,14 +10,38 @@ import {
 } from "src/components/molecules"
 import useVaultSort from "src/hooks/vault/useVaultSort"
 
+import {
+  TVaultCategory,
+  TVaultData,
+  TVaultType
+} from "../../hooks/vault/useVaultGallery"
+
+interface IVaultNavigation {
+  selectedItems: Array<string>
+  vaultContent: TVaultData
+  setSelectedItems: Dispatch<SetStateAction<Array<string>>>
+  fetchVaultType: (type: TVaultType) => void
+  fetchVaultCategory: (category: TVaultCategory) => void
+  vaultType: TVaultType
+  vaultCategory: TVaultCategory
+}
+interface IVaultMediaGrid {
+  selectedItems: Array<string>
+  vaultContent: TVaultData
+  setSelectedItems: Dispatch<SetStateAction<Array<string>>>
+}
+
 const VaultNavigation = ({
   selectedItems,
-  filteredItems,
-  mediaContent,
-  setFilteredItems,
+  vaultType,
+  vaultCategory,
+  fetchVaultType,
+  fetchVaultCategory,
+  vaultContent,
   setSelectedItems
-}) => {
-  const selectAll = () => setSelectedItems(filteredItems)
+}: IVaultNavigation) => {
+  const selectAll = () =>
+    setSelectedItems(vaultContent?.map((item) => item.id) ?? [])
   const deselectAll = () => setSelectedItems([])
 
   const {
@@ -30,13 +55,13 @@ const VaultNavigation = ({
   } = useVaultSort()
 
   return (
-    <div className="flex-col justify-between">
+    <div className="-mt-[180px] mb-[28px] flex w-full flex-col justify-between">
       <div className="align-items flex items-center justify-between">
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
         </div>
         <div className="align-center items-align flex justify-center">
-          {selectedItems.length > 0 && (
+          {selectedItems && selectedItems?.length > 0 && (
             <>
               <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
               <VaultAddToDropdown
@@ -61,11 +86,10 @@ const VaultNavigation = ({
         selectAll={selectAll}
       />
       <VaultFilterContainer
-        sortKey={sortKey}
-        sortOrder={sortOrder}
-        filteredItems={filteredItems}
-        mediaContent={mediaContent}
-        setFilteredItems={setFilteredItems}
+        vaultType={vaultType}
+        vaultCategory={vaultCategory}
+        fetchVaultType={fetchVaultType}
+        fetchVaultCategory={fetchVaultCategory}
       />
       <VaultDeleteModal
         toggleDeleteModal={toggleDeleteModal}
@@ -80,9 +104,13 @@ const VaultNavigation = ({
 const composeEmptyGrid = () => (
   <div key={Math.random()} className="col-span-1 w-[115px] md:w-[320px]" />
 )
-const VaultMediaGrid = ({ selectedItems, setSelectedItems, filteredItems }) => {
-  const emptyGrid = new Array(3).fill().map(composeEmptyGrid)
-  const mediaGrid = filteredItems?.map((item) => (
+const VaultMediaGrid = ({
+  selectedItems,
+  setSelectedItems,
+  vaultContent
+}: IVaultMediaGrid) => {
+  const emptyGrid = new Array(3).fill(0).map(composeEmptyGrid)
+  const mediaGrid = vaultContent?.map((item) => (
     <VaultMediaItem
       key={item.id}
       itemData={item}
@@ -92,9 +120,9 @@ const VaultMediaGrid = ({ selectedItems, setSelectedItems, filteredItems }) => {
   ))
 
   return (
-    <div className="mt-[30px] max-h-[530px] justify-center overflow-y-scroll md:max-h-[590px] sidebar-collapse:mt-[30px] sidebar-collapse:max-w-[1000px]">
+    <div className="max-h-[65vh] justify-center overflow-y-scroll">
       <div className="grid grid-cols-3 gap-2">
-        {filteredItems.length > 0 ? mediaGrid : emptyGrid}
+        {vaultContent && vaultContent.length > 0 ? mediaGrid : emptyGrid}
       </div>
     </div>
   )
