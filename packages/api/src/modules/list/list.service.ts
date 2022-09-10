@@ -135,7 +135,7 @@ export class ListService {
       .select(`*`)
       .first()
     await this.fillAutomatedLists([list])
-    return new GetListResponseDto([list])
+    return new GetListResponseDto(list)
   }
 
   async getListsForUser(userId: string): Promise<GetListsResponseDto> {
