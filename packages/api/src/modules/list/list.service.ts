@@ -129,13 +129,13 @@ export class ListService {
     )
   }
 
-  async getList(userId: string, listId: string): Promise<GetListResponseDto> {
+  async getList(userId: string, listId: string): Promise<ListDto> {
     const list = this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ id: listId, user: userId }))
       .select(`*`)
       .first()
     await this.fillAutomatedLists([list])
-    return list
+    return new ListDto(list)
   }
 
   async getListsForUser(userId: string): Promise<GetListsResponseDto> {
