@@ -633,13 +633,12 @@ export class MessagesService {
     channelId: string,
     updateChannelSettingsDto: UpdateChannelSettingsRequestDto,
   ) {
-    if (Object.keys(updateChannelSettingsDto).length === 0) return
+    const data = ChannelSettingsEntity.toDict<ChannelSettingsEntity>(
+      updateChannelSettingsDto,
+    )
+    if (Object.keys(data).length === 0) return
     await this.dbWriter(ChannelSettingsEntity.table)
-      .update(
-        ChannelSettingsEntity.toDict<ChannelSettingsEntity>(
-          updateChannelSettingsDto,
-        ),
-      )
+      .update(data)
       .where(
         ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
           user: userId,

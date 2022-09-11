@@ -39,7 +39,10 @@ export class CreatorSettingsService {
     userId: string,
     updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
   ): Promise<boolean> {
-    if (Object.keys(updateCreatorSettingsDto).length === 0) {
+    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
+      updateCreatorSettingsDto,
+    )
+    if (Object.keys(data).length === 0) {
       return false
     }
     if (
@@ -48,9 +51,6 @@ export class CreatorSettingsService {
     ) {
       throw new InvalidMessageTipMinimumError('minimum tp value too low')
     }
-    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
-      updateCreatorSettingsDto,
-    )
     const updated = await this.dbWriter(CreatorSettingsEntity.table)
       .update(data)
       .where(

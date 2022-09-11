@@ -142,13 +142,13 @@ export class NotificationsService {
     userId: string,
     updateSettingsDto: NotificationSettingsDto,
   ): Promise<boolean> {
-    if (Object.keys(updateSettingsDto).length === 0) {
-      return false
-    }
     const data =
       NotificationSettingsEntity.toDict<NotificationSettingsEntity>(
         updateSettingsDto,
       )
+    if (Object.keys(data).length === 0) {
+      return false
+    }
     const updated = await this.dbWriter(NotificationSettingsEntity.table)
       .update(data)
       .where(
