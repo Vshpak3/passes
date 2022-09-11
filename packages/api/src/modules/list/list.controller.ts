@@ -98,7 +98,9 @@ export class ListController {
   })
   @Get('lists-info')
   async getLists(@Req() req: RequestWithUser): Promise<GetListsResponseDto> {
-    return await this.listService.getListsForUser(req.user.id)
+    return new GetListsResponseDto(
+      await this.listService.getListsForUser(req.user.id),
+    )
   }
 
   @ApiEndpoint({

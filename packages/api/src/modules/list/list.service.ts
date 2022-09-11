@@ -14,9 +14,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
-import { GetListResponseDto } from './dto/get-list.dto'
 import { GetListMembersRequestto } from './dto/get-list-members.dto'
-import { GetListsResponseDto } from './dto/get-lists.dto'
 import { ListDto } from './dto/list.dto'
 import { ListMemberDto } from './dto/list-member.dto'
 import { RemoveListMembersRequestDto } from './dto/remove-list-members.dto'
@@ -130,7 +128,7 @@ export class ListService {
   }
 
   async getList(userId: string, listId: string): Promise<ListDto> {
-    const list = this.dbReader(ListEntity.table)
+    const list = await this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ id: listId, user: userId }))
       .select(`*`)
       .first()
@@ -138,12 +136,12 @@ export class ListService {
     return new ListDto(list)
   }
 
-  async getListsForUser(userId: string): Promise<GetListsResponseDto> {
+  async getListsForUser(userId: string): Promise<ListDto[]> {
     const lists = await this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ user: userId }))
       .select(`*`)
     await this.fillAutomatedLists(lists)
-    return new GetListsResponseDto(lists.map((list) => new ListDto(list)))
+    return lists.map((list) => new ListDto(list))
   }
 
   // TODO: put cursor pagination for names and created_at
