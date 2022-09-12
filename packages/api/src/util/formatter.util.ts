@@ -7,7 +7,7 @@ export const formatDateTimeToDbDateTime = (input: Date | string | number) => {
   if (!(date instanceof Date)) {
     date = new Date(input)
     // check if date is valid
-    if (isNaN(date.getTime())) throw new Error(`invalid date: ` + input)
+    if (isNaN(date.getTime())) throw new Error('invalid date: ' + input)
   }
   return date.toISOString().slice(0, 19).replace('T', ' ')
 }

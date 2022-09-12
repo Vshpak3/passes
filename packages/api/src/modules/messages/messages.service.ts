@@ -182,7 +182,7 @@ export class MessagesService {
       (
         await this.dbReader(ListMemberEntity.table)
           .whereIn('list_id', createBatchMessageDto.listIds)
-          .distinct(`user_id`)
+          .distinct('user_id')
       ).map((listMember) => listMember.user_id),
     )
     const listTypes = new Set(
@@ -195,7 +195,7 @@ export class MessagesService {
     if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
       ;(
         await this.dbReader(FollowEntity.table)
-          .where(`creator_id`, userId)
+          .where('creator_id', userId)
           .select('follower_id')
       ).forEach((follow) => userIdsSet.add(follow.follower_id))
     }
@@ -209,7 +209,7 @@ export class MessagesService {
             Date.now(),
           )
         })
-        .distinct(`holder_id`)
+        .distinct('holder_id')
     ).forEach((passHolder) => userIdsSet.add(passHolder.holder_id))
     const userIds = Array.from(userIdsSet)
 

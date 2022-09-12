@@ -1,5 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable sonarjs/no-duplicate-string */
+
 import { Inject, Injectable } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
@@ -130,7 +131,7 @@ export class ListService {
   async getList(userId: string, listId: string): Promise<ListDto> {
     const list = await this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ id: listId, user: userId }))
-      .select(`*`)
+      .select('*')
       .first()
     await this.fillAutomatedLists([list])
     return new ListDto(list)
@@ -139,7 +140,7 @@ export class ListService {
   async getListsForUser(userId: string): Promise<ListDto[]> {
     const lists = await this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ user: userId }))
-      .select(`*`)
+      .select('*')
     await this.fillAutomatedLists(lists)
     return lists.map((list) => new ListDto(list))
   }

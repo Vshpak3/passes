@@ -97,8 +97,8 @@ export class PostService {
 
         // TODO: schedule access add
         const passAccesses = await trx(PassHolderEntity.table)
-          .whereIn(`pass_id`, createPostDto.passIds)
-          .whereNotNull(`expires_at`)
+          .whereIn('pass_id', createPostDto.passIds)
+          .whereNotNull('expires_at')
           .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
           if (!passAccesses[i].holder_id) continue

@@ -536,7 +536,7 @@ export class SolService {
         },
       }
       const s3Input = {
-        Bucket: `passes-stage-nft`,
+        Bucket: 'passes-stage-nft',
         Body: JSON.stringify(metadataJson),
         Key: `nft/collection-${passId}`,
       }

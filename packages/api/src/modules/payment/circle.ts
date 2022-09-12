@@ -172,7 +172,7 @@ export class CircleConnector {
    * Create an address
    */
   createBank(payload: CircleCreateBankRequestDto) {
-    const url = `/v1/banks/wires`
+    const url = '/v1/banks/wires'
 
     return this.instance.post(url, payload)
   }

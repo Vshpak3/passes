@@ -25,12 +25,12 @@ export async function getSecretValue(secretId: string): Promise<string> {
         // eslint-disable-next-line promise/always-return
         if ('SecretString' in response) {
           resolve(
-            response.SecretString ?? throwExpression(`SecretString not set`),
+            response.SecretString ?? throwExpression('SecretString not set'),
           )
         } else {
           const buff = new Buffer(
             new TextDecoder().decode(
-              response.SecretBinary ?? throwExpression(`SecretBinary not set`),
+              response.SecretBinary ?? throwExpression('SecretBinary not set'),
             ),
             'base64',
           )

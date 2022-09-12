@@ -57,7 +57,7 @@ export class WalletService {
 
   async findWallet(walletId: string): Promise<WalletDto | undefined> {
     const wallet = await this.dbReader(WalletEntity.table)
-      .where(`id`, walletId)
+      .where('id', walletId)
       .select('*')
       .first()
 
