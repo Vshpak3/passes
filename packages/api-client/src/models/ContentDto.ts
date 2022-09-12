@@ -43,6 +43,12 @@ export interface ContentDto {
      * @memberof ContentDto
      */
     contentType: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentDto
+     */
+    order: string;
 }
 
 export function ContentDtoFromJSON(json: any): ContentDto {
@@ -59,6 +65,7 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'userId': json['userId'],
         'signedUrl': json['signedUrl'],
         'contentType': json['contentType'],
+        'order': json['order'],
     };
 }
 
@@ -75,6 +82,7 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'userId': value.userId,
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
+        'order': value.order,
     };
 }
 

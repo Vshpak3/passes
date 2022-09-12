@@ -41,19 +41,17 @@ export class LikeService {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
-    if (!post.deleted_at) {
+    if (post.deleted_at) {
       throw new BadRequestException(POST_DELETED)
     }
 
     await this.dbWriter.transaction(async (trx) => {
-      await trx(LikeEntity.table)
-        .insert(
-          LikeEntity.toDict<LikeEntity>({
-            post: postId,
-            liker: userId,
-          }),
-        )
-        .onConflict()
+      await trx(LikeEntity.table).insert(
+        LikeEntity.toDict<LikeEntity>({
+          post: postId,
+          liker: userId,
+        }),
+      )
       await trx(PostEntity.table).where('id', postId).increment('num_likes', 1)
       await trx(CreatorStatEntity.table)
         .where('user_id', userId)
@@ -71,7 +69,7 @@ export class LikeService {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
-    if (!post.deleted_at) {
+    if (post.deleted_at) {
       throw new BadRequestException(POST_DELETED)
     }
 

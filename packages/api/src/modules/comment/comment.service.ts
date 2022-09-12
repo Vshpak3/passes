@@ -217,7 +217,7 @@ export class CommentService {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
-    if (post.deleted_at !== null) {
+    if (post.deleted_at) {
       throw new BadRequestException(POST_DELETED)
     }
 

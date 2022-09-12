@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
 import { MessagesService } from '../messages/messages.service'
+import { PostService } from '../post/post.service'
 import { FollowService } from './follow.service'
 
 describe('FollowService', () => {
@@ -14,6 +15,10 @@ describe('FollowService', () => {
         ...getBaseProviders(),
         {
           provide: MessagesService,
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: PostService,
           useFactory: jest.fn(() => ({})),
         },
       ],

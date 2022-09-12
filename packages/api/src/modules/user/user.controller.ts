@@ -141,6 +141,17 @@ export class UserController {
     return await this.userService.searchByQuery(searchCreatorDto)
   }
 
+  @ApiEndpoint({
+    summary: 'Flags self as adult',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Self was marked as adult',
+  })
+  @Get('adult')
+  async makeAdult(@Req() req: RequestWithUser): Promise<void> {
+    await this.userService.makeAdult(req.user.id)
+  }
+
   /*
   -------------------------------------------------------------------------------
   TEST (to be removed)

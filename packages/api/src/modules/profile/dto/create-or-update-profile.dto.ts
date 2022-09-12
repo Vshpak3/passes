@@ -23,5 +23,8 @@ export class CreateOrUpdateProfileRequestDto {
   discordUrl?: string
 
   @DtoProperty({ required: false })
+  facebookUrl?: string
+
+  @DtoProperty({ required: false })
   twitchUrl?: string
 }

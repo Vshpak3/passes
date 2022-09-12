@@ -70,6 +70,7 @@ export class ProfileService {
         `${ProfileEntity.table}.*`,
         `${UserEntity.table}.legal_full_name`,
         `${UserEntity.table}.is_kycverified`,
+        `${UserEntity.table}.is_adult`,
       )
       .first()
     if (creatorId) {

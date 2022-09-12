@@ -43,6 +43,12 @@ export interface GetContentResponseDto {
      * @memberof GetContentResponseDto
      */
     contentType: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetContentResponseDto
+     */
+    order: string;
 }
 
 export function GetContentResponseDtoFromJSON(json: any): GetContentResponseDto {
@@ -59,6 +65,7 @@ export function GetContentResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'userId': json['userId'],
         'signedUrl': json['signedUrl'],
         'contentType': json['contentType'],
+        'order': json['order'],
     };
 }
 
@@ -75,6 +82,7 @@ export function GetContentResponseDtoToJSON(value?: GetContentResponseDto | null
         'userId': value.userId,
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
+        'order': value.order,
     };
 }
 

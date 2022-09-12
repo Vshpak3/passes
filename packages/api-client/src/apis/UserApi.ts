@@ -136,6 +136,39 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
+     * Flags self as adult
+     */
+    async makeAdultRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/user/adult`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Flags self as adult
+     */
+    async makeAdult(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+        await this.makeAdultRaw(initOverrides);
+    }
+
+    /**
      * Make yourself a creator
      */
     async makeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {

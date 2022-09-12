@@ -93,6 +93,12 @@ export interface GetProfileResponseDto {
     twitchUrl?: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetProfileResponseDto
+     */
+    facebookUrl?: string;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetProfileResponseDto
      */
@@ -103,6 +109,12 @@ export interface GetProfileResponseDto {
      * @memberof GetProfileResponseDto
      */
     isActive: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetProfileResponseDto
+     */
+    isAdult?: boolean;
 }
 
 export function GetProfileResponseDtoFromJSON(json: any): GetProfileResponseDto {
@@ -127,8 +139,10 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
         'discordUrl': !exists(json, 'discordUrl') ? undefined : json['discordUrl'],
         'twitchUrl': !exists(json, 'twitchUrl') ? undefined : json['twitchUrl'],
+        'facebookUrl': !exists(json, 'facebookUrl') ? undefined : json['facebookUrl'],
         'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
         'isActive': json['isActive'],
+        'isAdult': !exists(json, 'isAdult') ? undefined : json['isAdult'],
     };
 }
 
@@ -153,8 +167,10 @@ export function GetProfileResponseDtoToJSON(value?: GetProfileResponseDto | null
         'youtubeUrl': value.youtubeUrl,
         'discordUrl': value.discordUrl,
         'twitchUrl': value.twitchUrl,
+        'facebookUrl': value.facebookUrl,
         'isKYCVerified': value.isKYCVerified,
         'isActive': value.isActive,
+        'isAdult': value.isAdult,
     };
 }
 

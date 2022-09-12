@@ -262,6 +262,12 @@ export class UserService {
     )
   }
 
+  async makeAdult(userId: string): Promise<void> {
+    await this.dbWriter(UserEntity.table)
+      .update(UserEntity.toDict<UserEntity>({ isAdult: true }))
+      .where({ id: userId })
+  }
+
   async makeCreator(userId: string): Promise<void> {
     await this.dbWriter.transaction(async (trx) => {
       await trx(UserEntity.table).where('id', userId).update('is_creator', true)

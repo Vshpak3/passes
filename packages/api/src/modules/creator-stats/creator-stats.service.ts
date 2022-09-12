@@ -4,7 +4,10 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ContentEntity } from '../content/entities/content.entity'
+import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
+import { PostEntity } from '../post/entities/post.entity'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
 import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
@@ -150,5 +153,53 @@ export class CreatorStatsService {
         .select('*'),
       userId === creatorId,
     )
+  }
+
+  async refreshCreatorsStats() {
+    const creators = await this.dbReader(CreatorStatEntity.table).select(
+      'user_id',
+    )
+    await Promise.all(
+      creators.map(async (creator) => {
+        try {
+          await this.refreshCreatorStats(creator.user_id)
+        } catch (err) {
+          this.logger.error(
+            `Error updating stats for creator ${creator.id}`,
+            err,
+          )
+        }
+      }),
+    )
+  }
+
+  async refreshCreatorStats(creatorId: string) {
+    await this.dbWriter
+      .table(CreatorStatEntity.table)
+      .where('user_id', creatorId)
+      .update({
+        num_likes: this.dbWriter(PostEntity.table)
+          .where(
+            PostEntity.toDict<PostEntity>({
+              user: creatorId,
+            }),
+          )
+          .sum('num_likes'),
+        num_followers: this.dbWriter(FollowEntity.table)
+          .where(
+            FollowEntity.toDict<FollowEntity>({
+              creator: creatorId,
+            }),
+          )
+          .count(),
+        num_media: this.dbWriter(ContentEntity.table)
+          .where(
+            ContentEntity.toDict<ContentEntity>({
+              user: creatorId,
+              inPost: true,
+            }),
+          )
+          .count(),
+      })
   }
 }

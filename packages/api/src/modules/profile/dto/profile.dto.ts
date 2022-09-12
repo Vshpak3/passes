@@ -41,11 +41,16 @@ export class ProfileDto {
   twitchUrl?: string
 
   @DtoProperty({ required: false })
+  facebookUrl?: string
+
+  @DtoProperty({ required: false })
   isKYCVerified?: boolean
 
   @DtoProperty()
   isActive: boolean
 
+  @DtoProperty({ required: false })
+  isAdult?: boolean
   constructor(profile) {
     this.profileId = profile.id
     this.userId = profile.user_id
@@ -64,5 +69,6 @@ export class ProfileDto {
 
     this.isKYCVerified = profile.is_kycverified
     this.isActive = profile.is_active
+    this.isAdult = profile.is_adult
   }
 }

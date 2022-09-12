@@ -12,6 +12,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
@@ -79,10 +80,11 @@ export class PostService {
 
         await trx(PostEntity.table).insert(post)
 
-        const postContent = createPostDto.contentIds.map((contentId) =>
+        const postContent = createPostDto.contentIds.map((contentId, index) =>
           PostContentEntity.toDict<PostContentEntity>({
             content: contentId,
             post: postId,
+            index,
           }),
         )
 
@@ -275,12 +277,15 @@ export class PostService {
         `${PostContentEntity.table}.post_id`,
         `${ContentEntity.table}.*`,
       ])
-
-    return postContents.reduce((map, postContent) => {
+    const map = postContents.reduce((map, postContent) => {
       if (!map[postContent.post_id]) map[postContent.post_id] = []
       map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
       return map
     }, {})
+    map.forEach((contentArray) => {
+      contentArray.sort((a, b) => a.order - b.order)
+    })
+    return map
   }
 
   async updatePost(
@@ -461,5 +466,53 @@ export class PostService {
         .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
         .update(PostEntity.toDict<PostEntity>({ pinnedAt: null }))) === 1
     )
+  }
+
+  async refreshPostsCounts() {
+    const posts = await this.dbReader(PostEntity.table)
+      .whereNull('deleted_at')
+      .select('id')
+    await Promise.all(
+      posts.map(async (post) => {
+        try {
+          await this.refreshPostCounts(post.id)
+        } catch (err) {
+          this.logger.error(`Error updating post counts for ${post.id}`, err)
+        }
+      }),
+    )
+  }
+
+  async refreshPostCounts(postId: string) {
+    await this.dbWriter
+      .table(PostEntity.table)
+      .where('id', postId)
+      .update(
+        'num_comments',
+        this.dbWriter(CommentEntity.table)
+          .where(
+            CommentEntity.toDict<CommentEntity>({
+              post: postId,
+              blocked: false,
+              deactivated: false,
+              hidden: false,
+              deletedAt: null,
+            }),
+          )
+          .count(),
+      )
+    await this.dbWriter
+      .table(PostEntity.table)
+      .where('id', postId)
+      .update(
+        'num_likes',
+        this.dbWriter(LikeEntity.table)
+          .where(
+            LikeEntity.toDict<LikeEntity>({
+              post: postId,
+            }),
+          )
+          .count(),
+      )
   }
 }

@@ -12,10 +12,13 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
 import { MessagesService } from '../messages/messages.service'
+import { PostEntity } from '../post/entities/post.entity'
+import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
@@ -25,6 +28,7 @@ import {
 } from './constants/errors'
 import { FollowDto } from './dto/follow.dto'
 import { SearchFollowRequestDto } from './dto/search-fan.dto'
+import { BlockTaskEntity } from './entities/block-task.entity'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { FollowReportEntity } from './entities/follow-report.entity'
@@ -44,6 +48,7 @@ export class FollowService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly messagesService: MessagesService,
+    private readonly postService: PostService,
   ) {}
 
   async checkFollow(userId: string, creatorId: string): Promise<boolean> {
@@ -106,6 +111,15 @@ export class FollowService {
       await trx(UserEntity.table)
         .where('id', userId)
         .increment('num_following', 1)
+      await trx(UserEntity.table)
+        .where('id', userId)
+        .increment('num_following', 1)
+      await trx(BlockTaskEntity.table).insert(
+        BlockTaskEntity.toDict<BlockTaskEntity>({
+          follower: userId,
+          creator: creatorId,
+        }),
+      )
     })
 
     try {
@@ -258,6 +272,12 @@ export class FollowService {
         follower: followerId,
       }),
     )
+    await this.dbWriter(BlockTaskEntity.table).insert(
+      BlockTaskEntity.toDict<BlockTaskEntity>({
+        follower: followerId,
+        creator: creatorId,
+      }),
+    )
     await this.unfollowCreator(followerId, creatorId)
   }
 
@@ -266,6 +286,12 @@ export class FollowService {
       .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
       .where(`${FollowBlockEntity.table}.follower_id`, followerId)
       .delete()
+    await this.dbWriter(BlockTaskEntity.table).insert(
+      BlockTaskEntity.toDict<BlockTaskEntity>({
+        follower: followerId,
+        creator: creatorId,
+      }),
+    )
   }
 
   async unfollowCreator(userId: string, creatorId: string): Promise<void> {
@@ -311,5 +337,71 @@ export class FollowService {
     return blockedResult.map((blocked) => {
       return new ListMemberDto(blocked)
     })
+  }
+
+  async processBlocks() {
+    await this.dbWriter(FollowEntity.table)
+      .innerJoin(FollowBlockEntity.table, function () {
+        this.on(
+          `${FollowEntity.table}.follower_id`,
+          `${FollowBlockEntity.table}.follower_id`,
+        ).andOn(
+          `${FollowEntity.table}.creator_id`,
+          `${FollowBlockEntity.table}.creator_id`,
+        )
+      })
+      .delete()
+    const now = new Date()
+    const tasks = await this.dbWriter(BlockTaskEntity.table)
+      .leftJoin(FollowBlockEntity.table, function () {
+        this.on(
+          `${BlockTaskEntity.table}.follower_id`,
+          `${FollowBlockEntity.table}.follower_id`,
+        ).andOn(
+          `${BlockTaskEntity.table}.creator_id`,
+          `${FollowBlockEntity.table}.creator_id`,
+        )
+      })
+      .where(`${BlockTaskEntity.table}.created_at`, '<', now)
+      .distinct([
+        `${BlockTaskEntity.table}.follower_id`,
+        `${BlockTaskEntity.table}.creator_id`,
+      ])
+      .select(`${FollowBlockEntity.table}.id as blocked`)
+
+    const users = new Set<string>()
+    for (let i = 0; i < tasks.length; ++i) {
+      const blocked = tasks[i].blocked
+      users.add(tasks[i].follower_id)
+      await this.dbWriter(PostEntity.table)
+        .leftJoin(
+          CommentEntity.table,
+          `${CommentEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        )
+        .where(`${PostEntity.table}.user_id`, tasks[i].creator_id)
+        .andWhere(`${CommentEntity.table}.commentor_id`, tasks[i].follower_id)
+        .update('blocked', blocked)
+    }
+    const comments = await this.dbReader(CommentEntity.table)
+      .whereIn('commentor_id', Array.from(users))
+      .distinct('post_id')
+    await Promise.all(
+      comments.map(async (comment) => {
+        try {
+          await this.postService.refreshPostCounts(comment.post_id)
+        } catch (err) {
+          this.logger.error(
+            `Error updating post counts for ${comment.post_id}`,
+            err,
+          )
+        }
+      }),
+    )
+
+    // reset counts of all posts that any blocked or unblocked user has commented on
+    await this.dbWriter(BlockTaskEntity.table)
+      .where(`${BlockTaskEntity.table}.created_at`, '<', now)
+      .delete()
   }
 }
