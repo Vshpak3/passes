@@ -1,5 +1,6 @@
 import { Knex } from '@mikro-orm/mysql'
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -12,9 +13,11 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
+import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { MessagePostEntity } from '../messages/entities/message-post.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -38,6 +41,7 @@ import {
 } from './dto/create-post.dto'
 import { PostDto } from './dto/post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
+import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostContentEntity } from './entities/post-content.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
@@ -65,6 +69,7 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
+    verifyTaggedText(createPostDto.text, createPostDto.tags)
     const postId = v4()
     await this.dbWriter
       .transaction(async (trx) => {
@@ -72,6 +77,7 @@ export class PostService {
           id: postId,
           user: userId,
           text: createPostDto.text,
+          tags: JSON.stringify(createPostDto.tags),
           isMessage: createPostDto.isMessage,
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
@@ -125,6 +131,32 @@ export class PostService {
       .catch((err) => {
         this.logger.error(err)
         throw err
+      })
+    await this.dbWriter
+      .table(CreatorStatEntity.table)
+      .where('user_id', userId)
+      .update({
+        num_media: this.dbWriter(ContentEntity.table)
+          .where(
+            ContentEntity.toDict<ContentEntity>({
+              user: userId,
+              inPost: true,
+            }),
+          )
+          .count(),
+      })
+    await this.dbWriter
+      .table(CreatorStatEntity.table)
+      .where('user_id', userId)
+      .update({
+        num_media: this.dbWriter(ContentEntity.table)
+          .where(
+            ContentEntity.toDict<ContentEntity>({
+              user: userId,
+              inPost: true,
+            }),
+          )
+          .count(),
       })
     return { postId }
   }
@@ -293,11 +325,61 @@ export class PostService {
     postId: string,
     updatePostDto: UpdatePostRequestDto,
   ) {
+    if (
+      (updatePostDto.text && !updatePostDto.tags) ||
+      (!updatePostDto.text && updatePostDto.tags)
+    ) {
+      throw new BadRequestException('needs both text and tags')
+    }
+    if (updatePostDto.text && updatePostDto.tags) {
+      verifyTaggedText(updatePostDto.text, updatePostDto.tags)
+    }
     const updated = await this.dbWriter(PostEntity.table)
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
-      .update(PostEntity.toDict<PostEntity>({ ...updatePostDto }))
-
+      .update(
+        PostEntity.toDict<PostEntity>({
+          text: updatePostDto.text,
+          tags: JSON.stringify(updatePostDto.tags),
+          price: updatePostDto.price,
+          expiresAt: updatePostDto.expiresAt,
+        }),
+      )
     return updated === 1
+  }
+
+  async updatePostContent(
+    userId: string,
+    postId: string,
+    updatePostDto: UpdatePostContentRequestDto,
+  ) {
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(PostContentEntity.table).where('post_id', postId).delete()
+      const postContent = updatePostDto.contentIds.map((contentId, index) =>
+        PostContentEntity.toDict<PostContentEntity>({
+          content: contentId,
+          post: postId,
+          index,
+        }),
+      )
+
+      if (postContent.length) {
+        await trx(PostContentEntity.table).insert(postContent)
+      }
+    })
+    await this.dbWriter
+      .table(CreatorStatEntity.table)
+      .where('user_id', userId)
+      .update({
+        num_media: this.dbWriter(ContentEntity.table)
+          .where(
+            ContentEntity.toDict<ContentEntity>({
+              user: userId,
+              inPost: true,
+            }),
+          )
+          .count(),
+      })
+    return true
   }
 
   async removePost(userId: string, postId: string) {

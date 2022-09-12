@@ -11,13 +11,21 @@ export class ChannelStatDto {
   channelId: string
 
   @DtoProperty()
-  totalTipAmount: number
+  tipSent: number
+
+  @DtoProperty()
+  tipRecieved: number
+
+  @DtoProperty()
+  unreadTip: number
 
   constructor(channelStat) {
     if (channelStat) {
       this.id = channelStat.id
       this.channelId = channelStat.channel_id
-      this.totalTipAmount = channelStat.total_tip_amount
+      this.tipSent = channelStat.tip_sent
+      this.tipRecieved = channelStat.tip_received
+      this.unreadTip = channelStat.unread_tip
     }
   }
 }

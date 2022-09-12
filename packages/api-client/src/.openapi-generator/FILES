@@ -98,6 +98,7 @@ models/GetMessagesResponseDto.ts
 models/GetNotificationSettingsResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
+models/GetPassHoldersRequestDto.ts
 models/GetPassHoldersResponseDto.ts
 models/GetPassResponseDto.ts
 models/GetPassesResponseDto.ts

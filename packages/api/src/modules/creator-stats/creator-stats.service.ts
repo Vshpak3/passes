@@ -8,6 +8,7 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
+import { PostContentEntity } from '../post/entities/post-content.entity'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
 import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
@@ -156,6 +157,31 @@ export class CreatorStatsService {
   }
 
   async refreshCreatorsStats() {
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(ContentEntity.table).update(
+        ContentEntity.toDict<ContentEntity>({
+          inMessage: false,
+          inPost: false,
+        }),
+      )
+      await trx(ContentEntity.table)
+        .innerJoin(
+          PostContentEntity.table,
+          `${PostContentEntity.table}.content_id`,
+          `${ContentEntity.table}.id`,
+        )
+        .where(`${PostEntity.table}.is_message`, false)
+        .update(`${ContentEntity.table}.in_post`, true)
+      await trx(ContentEntity.table)
+        .innerJoin(
+          PostContentEntity.table,
+          `${PostContentEntity.table}.content_id`,
+          `${ContentEntity.table}.id`,
+        )
+        .where(`${PostEntity.table}.is_message`, true)
+        .update(`${ContentEntity.table}.in_message`, true)
+    })
+
     const creators = await this.dbReader(CreatorStatEntity.table).select(
       'user_id',
     )

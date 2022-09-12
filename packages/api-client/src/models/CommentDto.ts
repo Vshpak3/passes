@@ -45,6 +45,12 @@ export interface CommentDto {
     text: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof CommentDto
+     */
+    tags: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof CommentDto
      */
@@ -77,6 +83,7 @@ export function CommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'postId': json['postId'],
         'commenterId': json['commenterId'],
         'text': json['text'],
+        'tags': json['tags'],
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
         'createdAt': (new Date(json['createdAt'])),
@@ -96,6 +103,7 @@ export function CommentDtoToJSON(value?: CommentDto | null): any {
         'postId': value.postId,
         'commenterId': value.commenterId,
         'text': value.text,
+        'tags': value.tags,
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
         'createdAt': (value.createdAt.toISOString()),

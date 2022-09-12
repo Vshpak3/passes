@@ -64,6 +64,12 @@ export interface PostDto {
     text: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof PostDto
+     */
+    tags: Array<string>;
+    /**
+     * 
      * @type {Array<ContentDto>}
      * @memberof PostDto
      */
@@ -152,6 +158,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'username': json['username'],
         'displayName': json['displayName'],
         'text': json['text'],
+        'tags': json['tags'],
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
@@ -182,6 +189,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'username': value.username,
         'displayName': value.displayName,
         'text': value.text,
+        'tags': value.tags,
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,

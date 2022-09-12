@@ -1,5 +1,6 @@
 import { IsUUID } from 'class-validator'
 
+import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
 
@@ -23,6 +24,9 @@ export class PostDto {
 
   @DtoProperty()
   text: string
+
+  @DtoProperty()
+  tags: TagDto[]
 
   @DtoProperty({ type: [ContentDto], required: false })
   content?: ContentDto[]
@@ -75,6 +79,7 @@ export class PostDto {
       this.displayName = post.display_name
       this.createdAt = post.created_at
       this.paywall = paywall
+      this.tags = JSON.parse(post.tags)
       if (isCreator) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount

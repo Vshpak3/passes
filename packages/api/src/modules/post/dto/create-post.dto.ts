@@ -1,5 +1,6 @@
 import { Length } from 'class-validator'
 
+import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { POST_TEXT_LENGTH } from '../constants/schema'
 
@@ -7,6 +8,9 @@ export class CreatePostRequestDto {
   @DtoProperty()
   @Length(1, POST_TEXT_LENGTH)
   text: string
+
+  @DtoProperty()
+  tags: TagDto[]
 
   @DtoProperty()
   contentIds: string[]

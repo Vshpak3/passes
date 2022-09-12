@@ -8,7 +8,6 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
@@ -37,9 +36,6 @@ export class ContentService {
         ...createContentDto,
       })
       await this.dbWriter(ContentEntity.table).insert(data)
-      await this.dbWriter(CreatorStatEntity.table)
-        .where('user_id', userId)
-        .increment('num_media')
       return new GetContentResponseDto(data, '') //TODO: put in signed url
     } catch (error) {
       throw new InternalServerErrorException(error)

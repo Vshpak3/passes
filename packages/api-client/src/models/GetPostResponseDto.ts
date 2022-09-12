@@ -64,6 +64,12 @@ export interface GetPostResponseDto {
     text: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof GetPostResponseDto
+     */
+    tags: Array<string>;
+    /**
+     * 
      * @type {Array<ContentDto>}
      * @memberof GetPostResponseDto
      */
@@ -152,6 +158,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'username': json['username'],
         'displayName': json['displayName'],
         'text': json['text'],
+        'tags': json['tags'],
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
@@ -182,6 +189,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'username': value.username,
         'displayName': value.displayName,
         'text': value.text,
+        'tags': value.tags,
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
         'numLikes': value.numLikes,
         'numComments': value.numComments,

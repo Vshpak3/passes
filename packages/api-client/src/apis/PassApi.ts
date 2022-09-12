@@ -21,6 +21,9 @@ import {
     CreatePassRequestDto,
     CreatePassRequestDtoFromJSON,
     CreatePassRequestDtoToJSON,
+    GetPassHoldersRequestDto,
+    GetPassHoldersRequestDtoFromJSON,
+    GetPassHoldersRequestDtoToJSON,
     GetPassHoldersResponseDto,
     GetPassHoldersResponseDtoFromJSON,
     GetPassHoldersResponseDtoToJSON,
@@ -61,7 +64,7 @@ export interface GetCreatorPassesRequest {
 }
 
 export interface GetPassHoldersRequest {
-    passId: string;
+    getPassHoldersRequestDto: GetPassHoldersRequestDto;
 }
 
 export interface GetPassHoldingsRequest {
@@ -275,16 +278,18 @@ export class PassApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get passholders of a pass
+     * Get passholders of a pass or user
      */
     async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
-        if (requestParameters.passId === null || requestParameters.passId === undefined) {
-            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling getPassHolders.');
+        if (requestParameters.getPassHoldersRequestDto === null || requestParameters.getPassHoldersRequestDto === undefined) {
+            throw new runtime.RequiredError('getPassHoldersRequestDto','Required parameter requestParameters.getPassHoldersRequestDto was null or undefined when calling getPassHolders.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -295,17 +300,18 @@ export class PassApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/pass/passholders/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            path: `/api/pass/passholders`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
+            body: GetPassHoldersRequestDtoToJSON(requestParameters.getPassHoldersRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldersResponseDtoFromJSON(jsonValue));
     }
 
     /**
-     * Get passholders of a pass
+     * Get passholders of a pass or user
      */
     async getPassHolders(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
         const response = await this.getPassHoldersRaw(requestParameters, initOverrides);

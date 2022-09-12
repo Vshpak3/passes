@@ -72,6 +72,7 @@ export * from './GetMessagesResponseDto';
 export * from './GetNotificationSettingsResponseDto';
 export * from './GetNotificationsRequestDto';
 export * from './GetNotificationsResponseDto';
+export * from './GetPassHoldersRequestDto';
 export * from './GetPassHoldersResponseDto';
 export * from './GetPassResponseDto';
 export * from './GetPassesResponseDto';

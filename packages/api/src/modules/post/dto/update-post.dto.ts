@@ -4,6 +4,7 @@ import { CreatePostRequestDto } from './create-post.dto'
 
 export class UpdatePostRequestDto extends PickType(CreatePostRequestDto, [
   'text',
+  'tags',
   'price',
   'expiresAt',
 ] as const) {}

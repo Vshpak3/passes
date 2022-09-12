@@ -133,10 +133,19 @@ export class MessagesService {
       .insert(
         ChannelStatEntity.toDict<ChannelStatEntity>({
           channelId: createResponse.channel.id,
-          totalTipAmount: 0,
+          user: userId,
         }),
       )
-      .onConflict('channel_id')
+      .onConflict(['channel_id', 'user_id'])
+      .ignore()
+    await this.dbWriter(ChannelStatEntity.table)
+      .insert(
+        ChannelStatEntity.toDict<ChannelStatEntity>({
+          channelId: createResponse.channel.id,
+          user: otherUser.id,
+        }),
+      )
+      .onConflict(['channel_id', 'user_id'])
       .ignore()
 
     await this.dbWriter(ChannelSettingsEntity.table)
@@ -532,13 +541,29 @@ export class MessagesService {
         )
         .where('id', tippedMessageId)
       await this.dbWriter(ChannelStatEntity.table)
-        .join(
-          TippedMessageEntity.table,
-          `${TippedMessageEntity.table}.channel_id`,
-          `${ChannelStatEntity.table}.channel_id`,
+        .increment('tip_sent', sendMessageDto.tipAmount)
+        .where(
+          ChannelStatEntity.toDict<ChannelStatEntity>({
+            channelId: sendMessageDto.channelId,
+            user: userId,
+          }),
         )
-        .increment('total_tip_amount', sendMessageDto.tipAmount)
-        .where(`${TippedMessageEntity.table}.id`, tippedMessageId)
+      await this.dbWriter(ChannelStatEntity.table)
+        .increment('tip_received', sendMessageDto.tipAmount)
+        .where(
+          ChannelStatEntity.toDict<ChannelStatEntity>({
+            channelId: sendMessageDto.channelId,
+            user: otherUserId,
+          }),
+        )
+      await this.dbWriter(ChannelStatEntity.table)
+        .increment('unread_tip', sendMessageDto.tipAmount)
+        .where(
+          ChannelStatEntity.toDict<ChannelStatEntity>({
+            channelId: sendMessageDto.channelId,
+            user: otherUserId,
+          }),
+        )
     }
     return response
   }
@@ -606,11 +631,13 @@ export class MessagesService {
   }
 
   async getChannelsStats(
+    userId: string,
     getChannelStatsRequestDto: GetChannelStatsRequestDto,
   ): Promise<ChannelStatDto[]> {
     return (
       await this.dbReader(ChannelStatEntity.table)
         .whereIn('channel_id', getChannelStatsRequestDto.channelIds)
+        .andWhere('user_id', userId)
         .select('*')
     ).map((channelStat) => new ChannelStatDto(channelStat))
   }

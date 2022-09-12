@@ -1,5 +1,6 @@
 import { IsUUID } from 'class-validator'
 
+import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 
 export class CommentDto {
@@ -19,6 +20,9 @@ export class CommentDto {
   text: string
 
   @DtoProperty()
+  tags: TagDto[]
+
+  @DtoProperty()
   commenterUsername: string
 
   @DtoProperty()
@@ -35,5 +39,6 @@ export class CommentDto {
     this.commenterUsername = comment.commenter_username
     this.commenterDisplayName = comment.commenter_display_name
     this.createdAt = comment.created_at
+    this.tags = JSON.parse(comment.tags)
   }
 }

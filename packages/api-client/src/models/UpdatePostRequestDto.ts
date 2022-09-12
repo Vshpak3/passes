@@ -27,6 +27,12 @@ export interface UpdatePostRequestDto {
     text: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof UpdatePostRequestDto
+     */
+    tags: Array<string>;
+    /**
+     * 
      * @type {number}
      * @memberof UpdatePostRequestDto
      */
@@ -50,6 +56,7 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
+        'tags': json['tags'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
@@ -65,6 +72,7 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
     return {
         
         'text': value.text,
+        'tags': value.tags,
         'price': value.price,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };

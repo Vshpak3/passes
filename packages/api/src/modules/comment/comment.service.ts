@@ -3,6 +3,7 @@ import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CommentsBlockedError } from '../creator-settings/error/creator-settings.error'
 import { COMMNETS_DISABLED, FOLLOWER_BLOCKED } from '../follow/constants/errors'
@@ -27,13 +28,15 @@ export class CommentService {
     userId: string,
     createCommentDto: CreateCommentRequestDto,
   ): Promise<boolean> {
-    const { postId, text } = createCommentDto
+    const { postId, text, tags } = createCommentDto
+    verifyTaggedText(text, tags)
     await this.checkPost(userId, postId)
     const data = CommentEntity.toDict<CommentEntity>({
       id: v4(),
       post: postId,
       commenter: userId,
-      text: text,
+      text,
+      tags: JSON.stringify(tags),
     })
 
     await this.dbWriter.transaction(async (trx) => {

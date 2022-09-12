@@ -154,10 +154,14 @@ export class MessagesController {
   })
   @Post('channel/stats')
   async getChannelsStats(
+    @Req() req: RequestWithUser,
     @Body() getChannelStatsRequestDto: GetChannelStatsRequestDto,
   ): Promise<GetChannelStatsResponseDto> {
     return new GetChannelStatsResponseDto(
-      await this.messagesService.getChannelsStats(getChannelStatsRequestDto),
+      await this.messagesService.getChannelsStats(
+        req.user.id,
+        getChannelStatsRequestDto,
+      ),
     )
   }
 

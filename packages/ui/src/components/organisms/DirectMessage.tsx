@@ -282,6 +282,7 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
             price: targetAcquired ? postPrice : 0,
             contentIds: [],
             passIds: [],
+            tags: [],
             text: values.text
           }
         }),

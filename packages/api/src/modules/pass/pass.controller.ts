@@ -18,7 +18,10 @@ import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
 import { CreatePassHolderRequestDto } from './dto/create-pass-holder.dto'
 import { GetPassesResponseDto, GetPassResponseDto } from './dto/get-pass.dto'
-import { GetPassHoldersResponseDto } from './dto/get-pass-holder.dto'
+import {
+  GetPassHoldersRequestDto,
+  GetPassHoldersResponseDto,
+} from './dto/get-pass-holder.dto'
 import { RenewPassHolderRequestDto } from './dto/renew-pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
@@ -225,18 +228,18 @@ export class PassController {
   }
 
   @ApiEndpoint({
-    summary: 'Get passholders of a pass',
+    summary: 'Get passholders of a pass or user',
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
     responseDesc: 'A pass was unpinned',
   })
-  @Get('passholders/:passId')
+  @Get('passholders')
   async getPassHolders(
     @Req() req: RequestWithUser,
-    @Param('passId') passId: string,
+    @Body() getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<GetPassHoldersResponseDto> {
     return new GetPassHoldersResponseDto(
-      await this.passService.getPassHolders(req.user.id, passId),
+      await this.passService.getPassHolders(req.user.id, getPassHoldersRequest),
     )
   }
 }

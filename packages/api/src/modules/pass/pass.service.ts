@@ -30,6 +30,7 @@ import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
+import { GetPassHoldersRequestDto } from './dto/get-pass-holder.dto'
 import { PassDto } from './dto/pass.dto'
 import { PassHolderDto } from './dto/pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
@@ -169,36 +170,45 @@ export class PassService {
 
   async getPassHolders(
     userId: string,
-    passId: string,
+    getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
-    await this.checkPass(userId, passId)
-    return (
-      await this.dbReader(PassHolderEntity.table)
-        .innerJoin(
-          UserEntity.table,
-          `${UserEntity.table}.id`,
-          `${PassHolderEntity.table}.holder_id`,
-        )
-        .innerJoin(
-          PassEntity.table,
-          `${PassEntity.table}.id`,
-          `${PassHolderEntity.table}.pass_id`,
-        )
-        .where(`${PassHolderEntity.table}.pass_id`, passId)
-        .distinct(`${PassHolderEntity.table}.holder_id`)
-        .select([
-          `${PassHolderEntity.table}.*`,
-          `${PassEntity.table}.totalSupply`,
-          `${PassEntity.table}.remainingSupply`,
-          `${PassEntity.table}.price`,
-          `${PassEntity.table}.freetrial`,
-          `${PassEntity.table}.title`,
-          `${PassEntity.table}.description`,
-          `${PassEntity.table}.type`,
-          `${UserEntity.table}.username as holder_username`,
-          `${UserEntity.table}.display_name as holder_display_name`,
-        ])
-    ).map((passHolder) => new PassHolderDto(passHolder))
+    let query = this.dbReader(PassHolderEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${PassHolderEntity.table}.holder_id`,
+      )
+      .innerJoin(
+        PassEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .where(`${PassEntity.table}.creator`, userId)
+      .select([
+        `${PassHolderEntity.table}.*`,
+        `${PassEntity.table}.totalSupply`,
+        `${PassEntity.table}.remainingSupply`,
+        `${PassEntity.table}.price`,
+        `${PassEntity.table}.freetrial`,
+        `${PassEntity.table}.title`,
+        `${PassEntity.table}.description`,
+        `${PassEntity.table}.type`,
+        `${UserEntity.table}.username as holder_username`,
+        `${UserEntity.table}.display_name as holder_display_name`,
+      ])
+    if (getPassHoldersRequest.passId) {
+      query = query.andWhere(
+        `${PassEntity.table}.id`,
+        getPassHoldersRequest.passId,
+      )
+    }
+    if (getPassHoldersRequest.userId) {
+      query = query.andWhere(
+        `${PassHolderEntity.table}.holder_id`,
+        getPassHoldersRequest.userId,
+      )
+    }
+    return (await query).map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async findPassesByCreator(creatorId: string) {

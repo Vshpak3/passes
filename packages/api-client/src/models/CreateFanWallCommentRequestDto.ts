@@ -31,6 +31,12 @@ export interface CreateFanWallCommentRequestDto {
      * @memberof CreateFanWallCommentRequestDto
      */
     text: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateFanWallCommentRequestDto
+     */
+    tags: Array<string>;
 }
 
 export function CreateFanWallCommentRequestDtoFromJSON(json: any): CreateFanWallCommentRequestDto {
@@ -45,6 +51,7 @@ export function CreateFanWallCommentRequestDtoFromJSONTyped(json: any, ignoreDis
         
         'creatorId': json['creatorId'],
         'text': json['text'],
+        'tags': json['tags'],
     };
 }
 
@@ -59,6 +66,7 @@ export function CreateFanWallCommentRequestDtoToJSON(value?: CreateFanWallCommen
         
         'creatorId': value.creatorId,
         'text': value.text,
+        'tags': value.tags,
     };
 }
 

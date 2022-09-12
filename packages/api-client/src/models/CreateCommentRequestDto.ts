@@ -31,6 +31,12 @@ export interface CreateCommentRequestDto {
      * @memberof CreateCommentRequestDto
      */
     text: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateCommentRequestDto
+     */
+    tags: Array<string>;
 }
 
 export function CreateCommentRequestDtoFromJSON(json: any): CreateCommentRequestDto {
@@ -45,6 +51,7 @@ export function CreateCommentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'postId': json['postId'],
         'text': json['text'],
+        'tags': json['tags'],
     };
 }
 
@@ -59,6 +66,7 @@ export function CreateCommentRequestDtoToJSON(value?: CreateCommentRequestDto | 
         
         'postId': value.postId,
         'text': value.text,
+        'tags': value.tags,
     };
 }
 

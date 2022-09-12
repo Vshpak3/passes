@@ -1,1 +1,2 @@
 export const COMMENT_TEXT_LENGTH = 200
+export const COMMENT_TAGS_LENGTH = 200

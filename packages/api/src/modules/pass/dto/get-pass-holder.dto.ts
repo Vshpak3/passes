@@ -1,3 +1,5 @@
+import { IsUUID } from 'class-validator'
+
 import { DtoProperty } from '../../../web/dto.web'
 import { PassHolderDto } from './pass-holder.dto'
 
@@ -10,4 +12,14 @@ export class GetPassHoldersResponseDto {
   constructor(passHolders: PassHolderDto[]) {
     this.passHolders = passHolders
   }
+}
+
+export class GetPassHoldersRequestDto {
+  @IsUUID()
+  @DtoProperty()
+  userId: string
+
+  @IsUUID()
+  @DtoProperty()
+  passId: string
 }

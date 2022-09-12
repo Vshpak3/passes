@@ -36,7 +36,19 @@ export interface ChannelStatDto {
      * @type {number}
      * @memberof ChannelStatDto
      */
-    totalTipAmount: number;
+    tipSent: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChannelStatDto
+     */
+    tipRecieved: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChannelStatDto
+     */
+    unreadTip: number;
 }
 
 export function ChannelStatDtoFromJSON(json: any): ChannelStatDto {
@@ -51,7 +63,9 @@ export function ChannelStatDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'id': json['id'],
         'channelId': json['channelId'],
-        'totalTipAmount': json['totalTipAmount'],
+        'tipSent': json['tipSent'],
+        'tipRecieved': json['tipRecieved'],
+        'unreadTip': json['unreadTip'],
     };
 }
 
@@ -66,7 +80,9 @@ export function ChannelStatDtoToJSON(value?: ChannelStatDto | null): any {
         
         'id': value.id,
         'channelId': value.channelId,
-        'totalTipAmount': value.totalTipAmount,
+        'tipSent': value.tipSent,
+        'tipRecieved': value.tipRecieved,
+        'unreadTip': value.unreadTip,
     };
 }
 

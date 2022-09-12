@@ -30,6 +30,12 @@ export interface CreatePostRequestDto {
      * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
+    tags: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreatePostRequestDto
+     */
     contentIds: Array<string>;
     /**
      * 
@@ -74,6 +80,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
+        'tags': json['tags'],
         'contentIds': json['contentIds'],
         'passIds': json['passIds'],
         'isMessage': json['isMessage'],
@@ -93,6 +100,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
     return {
         
         'text': value.text,
+        'tags': value.tags,
         'contentIds': value.contentIds,
         'passIds': value.passIds,
         'isMessage': value.isMessage,

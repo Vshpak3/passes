@@ -3,6 +3,7 @@ import { v4 } from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { verifyTaggedText } from '../../util/text.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
@@ -23,14 +24,15 @@ export class FanWallService {
     userId: string,
     createFanWallCommentDto: CreateFanWallCommentRequestDto,
   ): Promise<boolean> {
-    const { creatorId, text: content } = createFanWallCommentDto
-
+    const { creatorId, text, tags } = createFanWallCommentDto
+    verifyTaggedText(text, tags)
     await this.checkBlock(userId, creatorId)
     const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
       id: v4(),
       creator: creatorId,
       commenter: userId,
-      text: content,
+      text,
+      tags: JSON.stringify(tags),
     })
 
     // post creation check incase user was blocked in between the checkPost and writing
