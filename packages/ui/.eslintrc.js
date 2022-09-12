@@ -13,8 +13,6 @@ module.exports = {
     {
       files: ["./src/**/*"],
       rules: {
-        "@typescript-eslint/no-floating-promises": "off",
-        "no-console": "off",
         // Breaking for some reason after upgrades
         "react/no-unknown-property": "off",
         "react/prop-types": "off",
