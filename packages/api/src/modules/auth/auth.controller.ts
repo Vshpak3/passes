@@ -19,7 +19,6 @@ import { GetUserResponseDto } from '../user/dto/get-user.dto'
 import { UserService } from '../user/user.service'
 import { RefreshAuthTokenRequestDto } from './dto/refresh-auth-token'
 import { SetEmailRequestDto, SetEmailResponseDto } from './dto/set-email'
-import { JwtAuthGuard } from './jwt/jwt-auth.guard'
 import { JwtAuthService } from './jwt/jwt-auth.service'
 import { JwtRefreshGuard } from './jwt/jwt-refresh.guard'
 import { JwtRefreshService } from './jwt/jwt-refresh.service'
@@ -80,7 +79,6 @@ export class AuthController {
     responseType: SetEmailResponseDto,
     responseDesc: 'Sets the user email',
   })
-  @UseGuards(JwtAuthGuard)
   @Post('set-email')
   async setUserEmail(
     @Req() req: RequestWithUser,

@@ -1,9 +1,18 @@
-import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  ExecutionContext,
+  HttpStatus,
+  Injectable,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
-import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
@@ -21,6 +30,26 @@ import {
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 
+/**
+ * All admin endpoints are protected via this guard. It is set on the Admin
+ * controller and will always be called after the main JWT authentication:
+ *   https://docs.nestjs.com/faq/request-lifecycle#summary
+ */
+@Injectable()
+class AdminGuard extends AuthGuard('jwt') {
+  constructor(private readonly adminService: AdminService) {
+    super()
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    // No need to call super, jwt auth is handled by global auth
+    const req = context.switchToHttp().getRequest()
+    await this.adminService.adminCheck(req.user.id, req.body['secret'])
+    return true
+  }
+}
+
+@UseGuards(AdminGuard)
 @ApiTags('admin')
 @Controller('admin')
 export class AdminController {
@@ -37,12 +66,10 @@ export class AdminController {
   })
   @Post('impersonate')
   async impersonateUser(
-    @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
     @Body() body: ImpersonateUserRequestDto,
   ): Promise<ImpersonateUserResponseDto> {
     this.metrics.increment('admin.impersonate')
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.impersonateUser(
       res,
       body.userId,
@@ -57,11 +84,7 @@ export class AdminController {
     responseDesc: 'User was marked as adult',
   })
   @Post('adult')
-  async flagAsAdult(
-    @Req() req: RequestWithUser,
-    @Body() body: AdminDto,
-  ): Promise<void> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
+  async flagAsAdult(@Body() body: AdminDto): Promise<void> {
     await this.adminService.makeAdult(body.userId, body.username)
   }
 
@@ -73,10 +96,8 @@ export class AdminController {
   })
   @Post('external-pass/add')
   async addExternalPass(
-    @Req() req: RequestWithUser,
     @Body() body: CreateExternalPassRequestDto,
   ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.addExternalPass(body)
   }
 
@@ -88,10 +109,8 @@ export class AdminController {
   })
   @Post('external-pass/add')
   async updateExternalPass(
-    @Req() req: RequestWithUser,
     @Body() body: UpdateExternalPassRequestDto,
   ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.updateExternalPass(body)
   }
 
@@ -103,10 +122,8 @@ export class AdminController {
   })
   @Post('external-pass/delete')
   async deleteExternalPass(
-    @Req() req: RequestWithUser,
     @Body() body: UpdateExternalPassRequestDto,
   ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.deleteExternalPass(body.passId)
   }
 
@@ -118,10 +135,8 @@ export class AdminController {
   })
   @Post('external-pass/address/add')
   async addExternalPassAddress(
-    @Req() req: RequestWithUser,
     @Body() body: AddExternalPassAddressRequestDto,
   ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.addExternalPassAddress(body)
   }
 
@@ -133,10 +148,8 @@ export class AdminController {
   })
   @Post('external-pass/address/delete')
   async deleteExternalPassAddress(
-    @Req() req: RequestWithUser,
     @Body() body: DeleteExternalPassAddressRequestDto,
   ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.deleteExternalPassAddress(body)
   }
 
@@ -147,11 +160,7 @@ export class AdminController {
     responseDesc: 'Creator fee was set',
   })
   @Post('creator-fee/set')
-  async setCreatorFee(
-    @Req() req: RequestWithUser,
-    @Body() body: SetCreatorFeeRequestDto,
-  ): Promise<boolean> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
+  async setCreatorFee(@Body() body: SetCreatorFeeRequestDto): Promise<boolean> {
     return await this.adminService.setCreatorFee(body)
   }
 
@@ -163,10 +172,8 @@ export class AdminController {
   })
   @Post('creator-fee/get')
   async getCreatorFee(
-    @Req() req: RequestWithUser,
     @Body() body: GetCreatorFeeRequestDto,
   ): Promise<GetCreatorFeeResponseDto> {
-    await this.adminService.adminCheck(req.user.id, body.secret)
     return await this.adminService.getCreatorFee(body)
   }
 }

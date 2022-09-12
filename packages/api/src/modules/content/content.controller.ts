@@ -7,13 +7,11 @@ import {
   Post,
   Query,
   Req,
-  UseGuards,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { S3ContentService } from '../s3content/s3content.service'
 import { ContentService } from './content.service'
@@ -55,7 +53,6 @@ export class ContentController {
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'Url was signed',
   })
-  @UseGuards(JwtAuthGuard)
   @Get('sign/:path(*)')
   async preSignUrl(
     @Req() req: RequestWithUser,

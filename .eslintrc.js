@@ -34,5 +34,5 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     '**/coverage/*',
-  ],
-};
+  ]
+}

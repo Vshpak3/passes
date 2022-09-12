@@ -13,7 +13,6 @@ import { PassTypeEnum } from '../pass/enum/pass.enum'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserDto } from '../user/dto/user.dto'
-import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
@@ -85,9 +84,7 @@ export class AdminService {
       userId = (await this.findUser(userId, username)).id
     }
 
-    await this.dbWriter(UserEntity.table)
-      .update(UserEntity.toDict<UserEntity>({ isAdult: true }))
-      .where({ id: userId })
+    await this.userService.makeAdult(userId)
   }
 
   async addExternalPass(

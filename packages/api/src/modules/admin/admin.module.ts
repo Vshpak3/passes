@@ -11,6 +11,6 @@ import { AdminService } from './admin.service'
   imports: [JwtAuthModule, JwtRefreshModule, S3ContentModule, UserModule],
   controllers: [AdminController],
   providers: [AdminService],
-  exports: [AdminService],
+  exports: [],
 })
 export class AdminModule {}

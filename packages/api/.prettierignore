@@ -8,3 +8,5 @@
 /src/modules/email/**/*.html
 
 /**/*.json
+
+.eslintrc.js
