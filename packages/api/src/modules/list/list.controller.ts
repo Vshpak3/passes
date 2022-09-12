@@ -36,7 +36,7 @@ export class ListController {
     responseType: undefined,
     responseDesc: 'List was created',
   })
-  @Post('list-info')
+  @Post('create')
   async createList(
     @Req() req: RequestWithUser,
     @Body() createListDto: CreateListRequestDto,

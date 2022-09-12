@@ -137,7 +137,7 @@ export class ListApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/list/list-info`,
+            path: `/api/list/create`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
