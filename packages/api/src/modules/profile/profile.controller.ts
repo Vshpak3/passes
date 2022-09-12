@@ -11,7 +11,6 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { AllowUnauthorizedRequest } from '../auth/auth.metadata'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import {
   GetProfileRequestDto,
@@ -48,9 +47,7 @@ export class ProfileController {
     responseDesc: 'A profile was retrieved',
     allowUnauthorizedRequest: true,
   })
-  // eslint-disable-next-line sonarjs/no-duplicate-string
   @Post('search')
-  @AllowUnauthorizedRequest()
   async findProfile(
     @Req() req: RequestWithUser,
     @Body() getProfileRequestDto: GetProfileRequestDto,
