@@ -50,7 +50,7 @@ const MyPassGrid = ({ activePasses, expiredPasses, setPassType }) => {
   return (
     <div className="w-full px-2 md:mt-6">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center md:ml-0 md:mb-2 md:flex">
-        <span className="text-[24px] font-bold text-[#ffff]/90">
+        <span className="text-[24px] font-bold text-[#ffff]/90 md:mr-4">
           Active Subscriptions
         </span>
         <SelectPassFilter setPassType={setPassType} />

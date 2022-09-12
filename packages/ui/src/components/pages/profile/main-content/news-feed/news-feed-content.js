@@ -52,7 +52,7 @@ const NewsFeedContent = ({
     case "events":
       return <EventsFeed />
     case "passes":
-      return <PassesFeed />
+      return <PassesFeed profile={profile} />
     default:
       return <></>
   }

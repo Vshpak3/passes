@@ -92,6 +92,7 @@ const usePasses = (creatorId = "") => {
   }, [passType, passSearchTerm])
 
   return {
+    passType,
     filteredActive,
     creatorPasses,
     filteredExpired,

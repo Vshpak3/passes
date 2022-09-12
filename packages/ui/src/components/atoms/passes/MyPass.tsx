@@ -43,13 +43,13 @@ const PASS_OPTIONS = [
     selected: true
   },
   {
-    value: PassTypeEnum.SUBSCRIPTION,
-    label: "Subscription Passes",
+    value: PassTypeEnum.LIFETIME,
+    label: "Lifetime Passes",
     selected: false
   },
   {
-    value: PassTypeEnum.LIFETIME,
-    label: "Lifetime Passes",
+    value: PassTypeEnum.SUBSCRIPTION,
+    label: "Subscription Passes",
     selected: false
   }
 ]
@@ -79,7 +79,7 @@ const SelectPassFilter = ({ setPassType }: ISelectPassFilter) => {
   return (
     <select
       onChange={(e) => setPassType(e.target.value)}
-      className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0 md:ml-4"
+      className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0"
     >
       {PASS_OPTIONS.map(composePassOptions)}
     </select>
