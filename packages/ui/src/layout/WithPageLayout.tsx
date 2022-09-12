@@ -14,10 +14,12 @@ export const withPageLayout = (
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen flex-1 bg-black">
       <Sidebar />
-      <main className="flex-shrink flex-grow bg-[#000]">
-        <div className="cover-image h-[300px]">
-          {options.header && <CreatorSearchBar />}
-        </div>
+      <main className="flex-shrink flex-grow overflow-x-hidden bg-[#000]">
+        {options.header && (
+          <div className="cover-image h-[300px] pr-10 pt-4">
+            <CreatorSearchBar />
+          </div>
+        )}
         <Page {...props} ref={ref} />
       </main>
     </div>

@@ -16,7 +16,7 @@ const SearchDropdown = ({ creatorResults = [] }) => {
   )
 
   return (
-    <div className=" hidden items-center justify-end gap-2 pr-10 md:flex">
+    <div className="absolute hidden items-center justify-end gap-2 pr-10 md:flex">
       <div className="relative flex items-center gap-3">
         <ul className="z-10 max-h-[165px] min-w-[360px] overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none">
           {renderResults}

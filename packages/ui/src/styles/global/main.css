@@ -37,6 +37,10 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  .text-label {
+    @apply text-base font-bold leading-6;
+  }
 }
 
 /* Global Reset */

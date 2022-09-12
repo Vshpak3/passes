@@ -33,8 +33,13 @@ module.exports = {
           "pink-100": "#C943A8",
           "dark-100": "#28282C",
           "dark-200": "#2C282D",
+          "dark-500": "#191919",
+          "dark-700": "#100C11",
           "gray-100": "#A09FA6",
-          "white-100": "#ffffff"
+          "gray-200": "#767676",
+          "white-100": "#ffffff",
+          green: "#71CB6F",
+          red: "#ED6B66"
         }
       },
       fontFamily: {
@@ -68,6 +73,10 @@ module.exports = {
     forms,
     require("daisyui"),
     require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/line-clamp")
+    require("@tailwindcss/line-clamp"),
+    function ({ addVariant }) {
+      addVariant("child", "& :first-child")
+      addVariant("child-hover", "& :first-child:hover")
+    }
   ]
 }
