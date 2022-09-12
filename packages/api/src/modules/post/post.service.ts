@@ -282,7 +282,7 @@ export class PostService {
       map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
       return map
     }, {})
-    for (var post in map) {
+    for (const post in map) {
       map[post].sort((a, b) => a.order - b.order)
     }
     return map
