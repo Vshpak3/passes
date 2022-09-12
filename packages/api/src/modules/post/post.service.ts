@@ -282,9 +282,9 @@ export class PostService {
       map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
       return map
     }, {})
-    map.forEach((contentArray) => {
-      contentArray.sort((a, b) => a.order - b.order)
-    })
+    for (var post in map) {
+      map[post].sort((a, b) => a.order - b.order)
+    }
     return map
   }
 
