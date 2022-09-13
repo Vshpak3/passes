@@ -75,7 +75,7 @@ const Input = ({
             autoComplete="off"
             type={type}
             placeholder={placeholder || label}
-            {...register(name)}
+            {...register(name, options)}
             {...rest}
             className={classNames(
               `block w-full appearance-none rounded-md border p-2 ${
@@ -95,7 +95,7 @@ const Input = ({
             autoComplete="off"
             type={type}
             placeholder={placeholder || label}
-            {...register(name)}
+            {...register(name, options)}
             {...rest}
             className={classNames(
               `block w-full appearance-none rounded-md border p-2 ${
@@ -108,7 +108,6 @@ const Input = ({
             )}
           />
         )}
-        <span className="text-[red]">{errors[name]?.message}</span>
       </div>
     </>
   )

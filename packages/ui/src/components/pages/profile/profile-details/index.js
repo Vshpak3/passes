@@ -15,7 +15,7 @@ const ProfileDetailsDesktop = ({
   username
 }) => {
   return (
-    <div className="hidden grid-cols-5 md:grid">
+    <div className="relative hidden grid-cols-5 md:grid">
       <ProfilePhoto url={profile.profileImageUrl} />
       {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
       <div className="col-span-4 flex flex-col px-5 pt-4">

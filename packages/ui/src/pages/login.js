@@ -22,7 +22,8 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm()
 
   useEffect(() => {
@@ -77,6 +78,10 @@ const LoginPage = () => {
         setRefreshToken(_refreshToken)
       }
     } catch (error) {
+      setError("submitError", {
+        type: "custom",
+        message: "Invalid credentials"
+      })
       toast.error(error)
     }
   }
@@ -150,10 +155,6 @@ const LoginPage = () => {
                   minLength: {
                     value: 8,
                     message: "Minimum eight characters"
-                  },
-                  pattern: {
-                    value: /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
-                    message: "Must include at least one letter and one number "
                   }
                 }}
               />
@@ -186,6 +187,9 @@ const LoginPage = () => {
               </Text>
               <EnterIcon />
             </button>
+            <div className="text-center text-red-500">
+              {errors.submitError && errors.submitError.message}
+            </div>
           </form>
 
           <div className="z-10 flex gap-[17px]">

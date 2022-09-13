@@ -1,7 +1,6 @@
 import Image from "next/image"
 import ChatIcon from "public/icons/mail-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
-import EditProfileIcon from "public/icons/profile-edit-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
 import Instagram from "public/icons/profile-instagram-icon.svg"
 import TikTok from "public/icons/profile-tiktok-icon.svg"
@@ -10,7 +9,7 @@ import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import React from "react"
 import { PassesPinkButton } from "src/components/atoms"
-import { RoundedIconButton } from "src/components/atoms/Button"
+import { CoverButton, RoundedIconButton } from "src/components/atoms/Button"
 import { compactNumberFormatter } from "src/helpers"
 
 export const Verified = ({ isVerified }) => (
@@ -139,13 +138,8 @@ export const ProfileInformation = ({
 )
 
 export const EditProfileAction = ({ onEditProfile }) => (
-  <div className="absolute ml-[100px] mt-[80px] items-center justify-between">
-    <div>
-      <EditProfileIcon
-        className="cursor-pointer stroke-passes-white-100 hover:stroke-passes-secondary-color"
-        onClick={onEditProfile}
-      />
-    </div>
+  <div className="absolute top-10 right-0 items-center justify-between">
+    <CoverButton className="px-4" name="Edit profile" onClick={onEditProfile} />
   </div>
 )
 
