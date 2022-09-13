@@ -16,6 +16,8 @@ export class GetPayinsRequestDto {
 }
 
 export class GetPayinsResponseDto {
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   count: number
 

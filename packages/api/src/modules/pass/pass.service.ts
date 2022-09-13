@@ -138,7 +138,10 @@ export class PassService {
     return new PassDto(pass)
   }
 
-  async findPassHoldings(userId: string, creatorId?: string) {
+  async findPassHoldings(
+    userId: string,
+    getPassHoldersRequestDto: GetPassHoldersRequestDto,
+  ) {
     let query = this.dbReader(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
@@ -161,8 +164,18 @@ export class PassService {
         `${UserEntity.table}.display_name as creator_display_name`,
       )
 
-    if (creatorId) {
-      query = query.andWhere(`${UserEntity.table}.id`, creatorId)
+    if (getPassHoldersRequestDto.userId) {
+      query = query.andWhere(
+        `${UserEntity.table}.id`,
+        getPassHoldersRequestDto.userId,
+      )
+    }
+
+    if (getPassHoldersRequestDto.passId) {
+      query = query.andWhere(
+        `${PassEntity.table}.id`,
+        getPassHoldersRequestDto.passId,
+      )
     }
 
     return (await query).map((pass) => new PassHolderDto(pass))

@@ -42,7 +42,7 @@ export interface WalletDto {
      * @type {string}
      * @memberof WalletDto
      */
-    chain: string;
+    chain: WalletDtoChainEnum;
     /**
      * 
      * @type {boolean}
@@ -56,6 +56,19 @@ export interface WalletDto {
      */
     authenticated: boolean;
 }
+
+
+/**
+ * @export
+ */
+export const WalletDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type WalletDtoChainEnum = typeof WalletDtoChainEnum[keyof typeof WalletDtoChainEnum];
+
 
 /**
  * Check if a given object implements the WalletDto interface.

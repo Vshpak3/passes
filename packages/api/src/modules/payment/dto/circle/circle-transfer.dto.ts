@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
 import { CircleTransferStatusEnum } from '../../enum/circle-transfer.status.enum'
@@ -13,6 +13,7 @@ export class CircleTransferDto {
   @DtoProperty()
   id: string
 
+  @IsEnum(CircleTransferStatusEnum)
   @DtoProperty({ enum: CircleTransferStatusEnum })
   status: CircleTransferStatusEnum
 

@@ -1,6 +1,8 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
+import { SHA256_LENGTH, TRANSACTION_HASH_LENGTH } from '../constants/schema'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
 import { CircleCardDto } from './circle/circle-card.dto'
@@ -18,30 +20,36 @@ export class PayinDto {
   @DtoProperty()
   payinMethod: PayinMethodDto
 
+  @IsEnum(PayinStatusEnum)
   @DtoProperty({ enum: PayinStatusEnum })
   payinStatus: PayinStatusEnum
 
+  @Min(0)
   @DtoProperty()
   amount: number
 
   @DtoProperty()
   createdAt: Date
 
+  @IsEnum(PayinCallbackEnum)
   @DtoProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
   @DtoProperty({ required: false })
   card?: CircleCardDto
 
+  @Length(1, TRANSACTION_HASH_LENGTH)
   @DtoProperty({ required: false })
   transactionHash?: string
 
+  @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
   @DtoProperty({ required: false })
   address?: string
 
   @DtoProperty({ required: false })
   callbackOutputJSON?: string
 
+  @Length(1, SHA256_LENGTH)
   @DtoProperty({ required: false })
   target?: string
 

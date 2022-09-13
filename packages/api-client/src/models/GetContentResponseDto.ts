@@ -42,14 +42,27 @@ export interface GetContentResponseDto {
      * @type {string}
      * @memberof GetContentResponseDto
      */
-    contentType: string;
+    contentType: GetContentResponseDtoContentTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof GetContentResponseDto
      */
-    order: string;
+    order: number;
 }
+
+
+/**
+ * @export
+ */
+export const GetContentResponseDtoContentTypeEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type GetContentResponseDtoContentTypeEnum = typeof GetContentResponseDtoContentTypeEnum[keyof typeof GetContentResponseDtoContentTypeEnum];
+
 
 /**
  * Check if a given object implements the GetContentResponseDto interface.

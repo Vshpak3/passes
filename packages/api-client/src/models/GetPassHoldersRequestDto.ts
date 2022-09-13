@@ -24,13 +24,13 @@ export interface GetPassHoldersRequestDto {
      * @type {string}
      * @memberof GetPassHoldersRequestDto
      */
-    userId: string;
+    userId?: string;
     /**
      * 
      * @type {string}
      * @memberof GetPassHoldersRequestDto
      */
-    passId: string;
+    passId?: string;
 }
 
 /**
@@ -38,8 +38,6 @@ export interface GetPassHoldersRequestDto {
  */
 export function instanceOfGetPassHoldersRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "userId" in value;
-    isInstance = isInstance && "passId" in value;
 
     return isInstance;
 }
@@ -54,8 +52,8 @@ export function GetPassHoldersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'userId': json['userId'],
-        'passId': json['passId'],
+        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'passId': !exists(json, 'passId') ? undefined : json['passId'],
     };
 }
 

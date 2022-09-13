@@ -1,7 +1,8 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinCallbackInput } from '../callback.types'
+import { SHA256_LENGTH } from '../constants/schema'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinMethodDto } from './payin-method.dto'
 
@@ -13,6 +14,7 @@ export class RegisterPayinResponseDto {
   @DtoProperty()
   payinMethod: PayinMethodDto
 
+  @Min(0)
   @DtoProperty()
   amount: number
 }
@@ -22,6 +24,7 @@ export class RegisterPayinRequestDto {
   @DtoProperty()
   userId: string
 
+  @Min(0)
   @DtoProperty()
   amount: number
 
@@ -29,6 +32,7 @@ export class RegisterPayinRequestDto {
   payinMethod?: PayinMethodDto
 
   // callback
+  @IsEnum(PayinCallbackEnum)
   @DtoProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
@@ -36,6 +40,7 @@ export class RegisterPayinRequestDto {
   callbackInputJSON: PayinCallbackInput
 
   // target object
+  @Length(1, SHA256_LENGTH)
   @DtoProperty({ required: false })
   target?: string
 
@@ -49,6 +54,7 @@ export class CreatorShareDto {
   @DtoProperty()
   creatorId: string
 
+  @Min(0)
   @DtoProperty()
   amount: number
 }

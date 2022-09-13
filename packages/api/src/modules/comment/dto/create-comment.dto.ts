@@ -9,8 +9,8 @@ export class CreateCommentRequestDto {
   @DtoProperty()
   postId: string
 
-  @DtoProperty()
   @Length(1, COMMENT_TEXT_LENGTH)
+  @DtoProperty()
   text: string
 
   @DtoProperty()

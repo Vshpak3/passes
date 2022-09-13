@@ -36,7 +36,7 @@ export interface NotificationDto {
      * @type {string}
      * @memberof NotificationDto
      */
-    senderName: string;
+    senderDisplayName: string;
     /**
      * 
      * @type {string}
@@ -99,7 +99,7 @@ export function instanceOfNotificationDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "userId" in value;
-    isInstance = isInstance && "senderName" in value;
+    isInstance = isInstance && "senderDisplayName" in value;
     isInstance = isInstance && "senderUsername" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "type" in value;
@@ -121,7 +121,7 @@ export function NotificationDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'id': json['id'],
         'userId': json['userId'],
-        'senderName': json['senderName'],
+        'senderDisplayName': json['senderDisplayName'],
         'senderUsername': json['senderUsername'],
         'status': json['status'],
         'type': json['type'],
@@ -141,7 +141,7 @@ export function NotificationDtoToJSON(value?: NotificationDto | null): any {
         
         'id': value.id,
         'userId': value.userId,
-        'senderName': value.senderName,
+        'senderDisplayName': value.senderDisplayName,
         'senderUsername': value.senderUsername,
         'status': value.status,
         'type': value.type,

@@ -1,24 +1,25 @@
-import { IsInt, IsOptional, Length, Min } from 'class-validator'
+import { IsEnum, IsInt, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
+import { PASS_DESCRIPTION_LENGTH, PASS_TITLE_LENGTH } from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {
+  @Length(1, PASS_TITLE_LENGTH)
   @DtoProperty()
-  @Length(1, 100)
   title: string
 
+  @Length(1, PASS_DESCRIPTION_LENGTH)
   @DtoProperty()
-  @Length(1, 400)
   description: string
 
   @DtoProperty()
   type: PassTypeEnum
 
-  @DtoProperty()
   @IsInt()
   @Min(0)
+  @DtoProperty()
   price: number
 
   @DtoProperty()
@@ -26,10 +27,9 @@ export class CreatePassRequestDto {
   @Min(1)
   totalSupply: number
 
-  @DtoProperty({ required: false })
-  @IsOptional()
   @IsInt()
   @Min(1)
+  @DtoProperty({ required: false })
   duration?: number
 
   @DtoProperty({ required: false })
@@ -38,6 +38,7 @@ export class CreatePassRequestDto {
   @DtoProperty({ required: false })
   messages?: number | null
 
+  @IsEnum(ChainEnum)
   @DtoProperty({ enum: ChainEnum })
   chain: ChainEnum
 }

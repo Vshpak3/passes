@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Req,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -82,10 +81,13 @@ export class PassController {
   @Get('passholdings')
   async getPassHoldings(
     @Req() req: RequestWithUser,
-    @Query('creatorId') creatorId: string,
+    @Body() getPassHoldersRequestDto: GetPassHoldersRequestDto,
   ): Promise<GetPassHoldersResponseDto> {
     return new GetPassHoldersResponseDto(
-      await this.passService.findPassHoldings(req.user.id, creatorId),
+      await this.passService.findPassHoldings(
+        req.user.id,
+        getPassHoldersRequestDto,
+      ),
     )
   }
 

@@ -57,7 +57,7 @@ export class NotificationsService {
         `${NotificationEntity.table}.type`,
         `${NotificationEntity.table}.message`,
         `${NotificationEntity.table}.created_at`,
-        `${UserEntity.table}.display_name as sender_name`,
+        `${UserEntity.table}.display_name as sender_display_name`,
         `${UserEntity.table}.username as sender_username`,
       ])
       .where('user_id', userId)
@@ -100,7 +100,7 @@ export class NotificationsService {
         `${NotificationEntity.table}.type`,
         `${NotificationEntity.table}.message`,
         `${NotificationEntity.table}.created_at`,
-        `${UserEntity.table}.display_name as sender_name`,
+        `${UserEntity.table}.display_name as sender_display_name`,
         `${UserEntity.table}.username as sender_username`,
       ])
       .where('id', data.id)

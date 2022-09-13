@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PassDto } from '../../pass/dto/pass.dto'
@@ -19,15 +19,18 @@ export class SubscriptionDto {
   @DtoProperty()
   payinMethod: PayinMethodDto
 
+  @IsEnum(SubscriptionStatusEnum)
   @DtoProperty({ enum: SubscriptionStatusEnum })
   subscriptionStatus: SubscriptionStatusEnum
 
+  @Min(0)
   @DtoProperty()
   amount: number
 
   @DtoProperty({ required: false })
   card?: CircleCardDto
 
+  @IsUUID()
   @DtoProperty({ required: false })
   passHolderId?: string
 

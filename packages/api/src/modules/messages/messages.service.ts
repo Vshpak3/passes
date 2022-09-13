@@ -600,15 +600,7 @@ export class MessagesService {
           pending: true,
         }),
       )
-    ).map(
-      (message) =>
-        new MessageDto(
-          message.text,
-          JSON.parse(message.attachments),
-          message.channel_id,
-          message.tip_amount,
-        ),
-    )
+    ).map((message) => new MessageDto(message))
   }
 
   async getCompletedTippedMessages(userId: string): Promise<MessageDto[]> {
@@ -619,15 +611,7 @@ export class MessagesService {
           pending: false,
         }),
       )
-    ).map(
-      (message) =>
-        new MessageDto(
-          message.text,
-          JSON.parse(message.attachments),
-          message.channel_id,
-          message.tip_amount,
-        ),
-    )
+    ).map((message) => new MessageDto(message))
   }
 
   async getChannelsStats(

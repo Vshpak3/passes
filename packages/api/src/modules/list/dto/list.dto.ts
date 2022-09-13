@@ -1,6 +1,7 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsInt, IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { LIST_NAME_LENGTH } from '../constants/schema'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 export class ListDto {
@@ -8,12 +9,16 @@ export class ListDto {
   @DtoProperty()
   listId: string
 
+  @Length(1, LIST_NAME_LENGTH)
   @DtoProperty()
   name: string
 
+  @IsEnum(ListTypeEnum)
   @DtoProperty({ enum: ListTypeEnum })
   type: ListTypeEnum
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   count: number
 

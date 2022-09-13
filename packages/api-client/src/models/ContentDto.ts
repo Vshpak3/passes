@@ -42,14 +42,27 @@ export interface ContentDto {
      * @type {string}
      * @memberof ContentDto
      */
-    contentType: string;
+    contentType: ContentDtoContentTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof ContentDto
      */
-    order: string;
+    order: number;
 }
+
+
+/**
+ * @export
+ */
+export const ContentDtoContentTypeEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type ContentDtoContentTypeEnum = typeof ContentDtoContentTypeEnum[keyof typeof ContentDtoContentTypeEnum];
+
 
 /**
  * Check if a given object implements the ContentDto interface.

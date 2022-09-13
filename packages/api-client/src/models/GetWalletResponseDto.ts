@@ -42,7 +42,7 @@ export interface GetWalletResponseDto {
      * @type {string}
      * @memberof GetWalletResponseDto
      */
-    chain: string;
+    chain: GetWalletResponseDtoChainEnum;
     /**
      * 
      * @type {boolean}
@@ -56,6 +56,19 @@ export interface GetWalletResponseDto {
      */
     authenticated: boolean;
 }
+
+
+/**
+ * @export
+ */
+export const GetWalletResponseDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type GetWalletResponseDtoChainEnum = typeof GetWalletResponseDtoChainEnum[keyof typeof GetWalletResponseDtoChainEnum];
+
 
 /**
  * Check if a given object implements the GetWalletResponseDto interface.

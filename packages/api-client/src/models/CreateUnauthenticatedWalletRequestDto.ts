@@ -30,8 +30,21 @@ export interface CreateUnauthenticatedWalletRequestDto {
      * @type {string}
      * @memberof CreateUnauthenticatedWalletRequestDto
      */
-    chain: string;
+    chain: CreateUnauthenticatedWalletRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const CreateUnauthenticatedWalletRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type CreateUnauthenticatedWalletRequestDtoChainEnum = typeof CreateUnauthenticatedWalletRequestDtoChainEnum[keyof typeof CreateUnauthenticatedWalletRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the CreateUnauthenticatedWalletRequestDto interface.

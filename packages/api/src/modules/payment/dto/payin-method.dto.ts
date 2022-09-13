@@ -1,17 +1,24 @@
+import { IsEnum, IsInt, IsUUID, Min } from 'class-validator'
+
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 
 export class PayinMethodDto {
+  @IsEnum(PayinMethodEnum)
   @DtoProperty({ enum: PayinMethodEnum })
   method: PayinMethodEnum = PayinMethodEnum.NONE
 
+  @IsUUID()
   @DtoProperty({ required: false })
   cardId?: string
 
+  @IsInt()
+  @Min(0)
   @DtoProperty({ required: false })
   chainId?: number
 
+  @IsEnum(ChainEnum)
   @DtoProperty({ enum: ChainEnum, required: false })
   chain?: ChainEnum
 

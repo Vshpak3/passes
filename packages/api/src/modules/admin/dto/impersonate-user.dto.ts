@@ -4,6 +4,7 @@ import { AdminDto } from './admin.dto'
 export class ImpersonateUserRequestDto extends AdminDto {}
 
 export class ImpersonateUserResponseDto {
+  //TODO: add length verification ?
   @DtoProperty()
   accessToken: string
 

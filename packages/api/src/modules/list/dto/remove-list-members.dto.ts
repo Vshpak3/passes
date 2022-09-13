@@ -7,6 +7,7 @@ export class RemoveListMembersRequestDto {
   @DtoProperty()
   listId: string
 
+  @IsUUID('all', { each: true })
   @DtoProperty()
   userIds: string[]
 }

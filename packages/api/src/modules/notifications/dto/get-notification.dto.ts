@@ -1,4 +1,4 @@
-import { IsInt, Min } from 'class-validator'
+import { IsEnum, IsInt, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
@@ -7,6 +7,7 @@ import { NotificationDto } from './notification.dto'
 export class GetNotificationResponseDto extends NotificationDto {}
 
 export class GetNotificationsRequestDto {
+  @IsEnum(NotificationTypeEnum)
   @DtoProperty({ enum: NotificationTypeEnum })
   type?: NotificationTypeEnum
 

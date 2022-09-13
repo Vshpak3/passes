@@ -114,6 +114,7 @@ models/GetProfileResponseDto.ts
 models/GetSignedUrlResponseDto.ts
 models/GetSubscriptionsResponseDto.ts
 models/GetUserResponseDto.ts
+models/GetVaultQueryRequestDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts

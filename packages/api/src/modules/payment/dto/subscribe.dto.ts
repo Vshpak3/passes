@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from './payin-method.dto'
@@ -17,6 +17,7 @@ export class SubscribeRequestDto {
   @DtoProperty()
   userId: string
 
+  @Min(0)
   @DtoProperty()
   amount: number
 

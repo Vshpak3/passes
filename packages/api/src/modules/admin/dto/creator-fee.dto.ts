@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { AdminDto } from './admin.dto'
@@ -8,15 +8,19 @@ export class CreatorFeeDto extends AdminDto {
   @DtoProperty()
   creatorId: string
 
+  @Min(0)
   @DtoProperty()
   fiatRate: number
 
+  @Min(0)
   @DtoProperty()
   fiatFlat: number
 
+  @Min(0)
   @DtoProperty()
   cryptoRate: number
 
+  @Min(0)
   @DtoProperty()
   cryptoFlat: number
 

@@ -1,6 +1,11 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsInt, IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import {
+  USER_DISPLAY_NAME_LENGTH,
+  USER_USERNAME_LENGTH,
+} from '../../user/constants/schema'
+import { PASS_DESCRIPTION_LENGTH, PASS_TITLE_LENGTH } from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 export class PassDto {
   @IsUUID()
@@ -11,24 +16,34 @@ export class PassDto {
   @DtoProperty({ required: false })
   creatorId?: string
 
+  @Length(1, PASS_TITLE_LENGTH)
   @DtoProperty()
   title: string
 
+  @Length(1, PASS_DESCRIPTION_LENGTH)
   @DtoProperty()
   description: string
 
+  @IsEnum(PassTypeEnum)
   @DtoProperty({ enum: PassTypeEnum })
   type: PassTypeEnum
 
+  @Min(0)
   @DtoProperty()
   price: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty({ required: false })
   duration?: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   totalSupply: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   remainingSupply: number
 
@@ -38,9 +53,11 @@ export class PassDto {
   @DtoProperty({ required: false })
   pinnedAt?: Date
 
+  @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ required: false })
   creatorUsername?: string
 
+  @Length(1, USER_DISPLAY_NAME_LENGTH)
   @DtoProperty({ required: false })
   creatorDisplayName?: string
 

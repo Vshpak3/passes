@@ -1,7 +1,8 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { WalletDto } from '../../wallet/dto/wallet.dto'
+import { TRANSACTION_HASH_LENGTH } from '../constants/schema'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
 import { CircleBankDto } from './circle/circle-bank.dto'
 import { PayoutMethodDto } from './payout-method.dto'
@@ -18,15 +19,18 @@ export class PayoutDto {
   @DtoProperty()
   payoutMethod: PayoutMethodDto
 
+  @IsEnum(PayoutStatusEnum)
   @DtoProperty({ enum: PayoutStatusEnum })
   payoutStatus: PayoutStatusEnum
 
+  @Min(0)
   @DtoProperty()
   amount: number
 
   @DtoProperty()
   createdAt: Date
 
+  @Length(1, TRANSACTION_HASH_LENGTH)
   @DtoProperty({ required: false })
   transactionHash?: string
 

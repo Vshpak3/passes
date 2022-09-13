@@ -36,7 +36,7 @@ export interface GetCircleCardResponseDto {
      * @type {string}
      * @memberof GetCircleCardResponseDto
      */
-    status: string;
+    status: GetCircleCardResponseDtoStatusEnum;
     /**
      * 
      * @type {string}
@@ -74,6 +74,18 @@ export interface GetCircleCardResponseDto {
      */
     active: boolean;
 }
+
+
+/**
+ * @export
+ */
+export const GetCircleCardResponseDtoStatusEnum = {
+    Pending: 'pending',
+    Complete: 'complete',
+    Failed: 'failed'
+} as const;
+export type GetCircleCardResponseDtoStatusEnum = typeof GetCircleCardResponseDtoStatusEnum[keyof typeof GetCircleCardResponseDtoStatusEnum];
+
 
 /**
  * Check if a given object implements the GetCircleCardResponseDto interface.

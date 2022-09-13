@@ -1,6 +1,10 @@
+import { Length } from 'class-validator'
+
 import { DtoProperty } from '../../../../web/dto.web'
+import { USER_LEGAL_FULL_NAME_LENGTH } from '../../../user/constants/schema'
 
 export class BillingDetailsDto {
+  @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
   @DtoProperty()
   name: string
 

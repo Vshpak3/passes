@@ -70,7 +70,7 @@ export interface GetPassHoldersRequest {
 }
 
 export interface GetPassHoldingsRequest {
-    creatorId: string;
+    getPassHoldersRequestDto: GetPassHoldersRequestDto;
 }
 
 export interface PinPassRequest {
@@ -324,17 +324,15 @@ export class PassApi extends runtime.BaseAPI {
      * Gets passes held by user
      */
     async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
-        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
-            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getPassHoldings.');
+        if (requestParameters.getPassHoldersRequestDto === null || requestParameters.getPassHoldersRequestDto === undefined) {
+            throw new runtime.RequiredError('getPassHoldersRequestDto','Required parameter requestParameters.getPassHoldersRequestDto was null or undefined when calling getPassHoldings.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.creatorId !== undefined) {
-            queryParameters['creatorId'] = requestParameters.creatorId;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -349,6 +347,7 @@ export class PassApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
+            body: GetPassHoldersRequestDtoToJSON(requestParameters.getPassHoldersRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldersResponseDtoFromJSON(jsonValue));

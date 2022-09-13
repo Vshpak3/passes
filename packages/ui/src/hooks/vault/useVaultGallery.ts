@@ -1,9 +1,9 @@
-import { ContentDto } from "@passes/api-client"
 import {
-  ContentApi,
-  GetVaultContentCategoryEnum,
-  GetVaultContentTypeEnum
-} from "@passes/api-client/apis"
+  ContentDto,
+  GetVaultQueryRequestDtoCategoryEnum,
+  GetVaultQueryRequestDtoTypeEnum
+} from "@passes/api-client"
+import { ContentApi } from "@passes/api-client/apis"
 import { useCallback, useEffect, useState } from "react"
 import { wrapApi } from "src/helpers"
 
@@ -11,8 +11,8 @@ const api = wrapApi(ContentApi)
 
 export type TVaultData = ContentDto[] | null
 export type TSelectedVaultData = ContentDto[]
-export type TVaultType = GetVaultContentTypeEnum | undefined
-export type TVaultCategory = GetVaultContentCategoryEnum | undefined
+export type TVaultType = GetVaultQueryRequestDtoTypeEnum | undefined
+export type TVaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
 
 interface IGetVaultData {
   type: TVaultType
@@ -21,8 +21,10 @@ interface IGetVaultData {
 
 async function fetchVaultData({ type, category }: IGetVaultData) {
   const data = await api.getVaultContent({
-    type,
-    category
+    getVaultQueryRequestDto: {
+      category,
+      type
+    }
   })
   /**
    * TODO: We are mapping the data to include mocked data that is not yet
@@ -50,11 +52,11 @@ const useVaultGallery = () => {
   const [vaultContent, setVaultContent] = useState<TVaultData>(null)
   const [selectedItems, setSelectedItems] = useState<Array<string>>([])
   const [vaultType, setVaultType] = useState<
-    GetVaultContentTypeEnum | undefined
+    GetVaultQueryRequestDtoTypeEnum | undefined
   >(undefined)
 
   const [vaultCategory, setVaultCategory] = useState<
-    GetVaultContentCategoryEnum | undefined
+    GetVaultQueryRequestDtoCategoryEnum | undefined
   >(undefined)
 
   const fetchVaultItems = useCallback(

@@ -1,8 +1,10 @@
-import { IsUUID } from 'class-validator'
+import { IsInt, IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../web/dto.web'
 
 export class TagDto {
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   index: number
 

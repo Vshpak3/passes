@@ -19,6 +19,7 @@ import type {
   GetContentResponseDto,
   GetContentsResponseDto,
   GetSignedUrlResponseDto,
+  GetVaultQueryRequestDto,
 } from '../models';
 import {
     CreateContentRequestDtoFromJSON,
@@ -29,6 +30,8 @@ import {
     GetContentsResponseDtoToJSON,
     GetSignedUrlResponseDtoFromJSON,
     GetSignedUrlResponseDtoToJSON,
+    GetVaultQueryRequestDtoFromJSON,
+    GetVaultQueryRequestDtoToJSON,
 } from '../models';
 
 export interface CreateContentRequest {
@@ -36,8 +39,7 @@ export interface CreateContentRequest {
 }
 
 export interface GetVaultContentRequest {
-    category?: GetVaultContentCategoryEnum;
-    type?: GetVaultContentTypeEnum;
+    getVaultQueryRequestDto: GetVaultQueryRequestDto;
 }
 
 export interface PreSignUrlRequest {
@@ -94,17 +96,15 @@ export class ContentApi extends runtime.BaseAPI {
      * Gets all content associated with the current authenticated user
      */
     async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
+        if (requestParameters.getVaultQueryRequestDto === null || requestParameters.getVaultQueryRequestDto === undefined) {
+            throw new runtime.RequiredError('getVaultQueryRequestDto','Required parameter requestParameters.getVaultQueryRequestDto was null or undefined when calling getVaultContent.');
+        }
+
         const queryParameters: any = {};
 
-        if (requestParameters.category !== undefined) {
-            queryParameters['category'] = requestParameters.category;
-        }
-
-        if (requestParameters.type !== undefined) {
-            queryParameters['type'] = requestParameters.type;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -116,9 +116,10 @@ export class ContentApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/content/vault`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetVaultQueryRequestDtoToJSON(requestParameters.getVaultQueryRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetContentsResponseDtoFromJSON(jsonValue));
@@ -127,7 +128,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Gets all content associated with the current authenticated user
      */
-    async getVaultContent(requestParameters: GetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentsResponseDto> {
+    async getVaultContent(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentsResponseDto> {
         const response = await this.getVaultContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -171,23 +172,3 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
 }
-
-/**
- * @export
- */
-export const GetVaultContentCategoryEnum = {
-    Posts: 'posts',
-    Messages: 'messages',
-    Uploads: 'uploads'
-} as const;
-export type GetVaultContentCategoryEnum = typeof GetVaultContentCategoryEnum[keyof typeof GetVaultContentCategoryEnum];
-/**
- * @export
- */
-export const GetVaultContentTypeEnum = {
-    Image: 'image',
-    Video: 'video',
-    Gif: 'gif',
-    Audio: 'audio'
-} as const;
-export type GetVaultContentTypeEnum = typeof GetVaultContentTypeEnum[keyof typeof GetVaultContentTypeEnum];

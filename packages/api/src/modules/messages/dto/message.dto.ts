@@ -1,40 +1,39 @@
-import { IsUUID } from 'class-validator'
+import { IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { CHANNEL_ID_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
 
 export class MessageDto {
   @IsUUID()
   @DtoProperty({ required: false })
-  id?: string
+  messageId?: string
 
+  @Length(1, MESSAGE_LENGTH)
   @DtoProperty()
   text: string
 
   @DtoProperty()
   attachments: any[]
 
+  @Length(1, CHANNEL_ID_LENGTH)
   @DtoProperty()
   channelId: string
 
+  @Min(0)
   @DtoProperty({ required: false })
   tipAmount?: number
 
   @DtoProperty({ required: false })
   created_at?: number
 
-  constructor(
-    text: string,
-    attachments: any[],
-    channelId: string,
-    tipAmount?: number,
-    created_at?: number,
-    id?: string,
-  ) {
-    this.text = text
-    this.attachments = attachments
-    this.channelId = channelId
-    this.tipAmount = tipAmount
-    this.created_at = created_at
-    this.id = id
+  constructor(message) {
+    if (message) {
+      this.text = message.text
+      this.attachments = JSON.parse(message.attachments)
+      this.channelId = message.channel_id
+      this.tipAmount = message.tip_amount
+      this.created_at = message.created_at
+      this.messageId = message.id
+    }
   }
 }

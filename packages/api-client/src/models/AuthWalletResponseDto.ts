@@ -36,8 +36,21 @@ export interface AuthWalletResponseDto {
      * @type {string}
      * @memberof AuthWalletResponseDto
      */
-    chain: string;
+    chain: AuthWalletResponseDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const AuthWalletResponseDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type AuthWalletResponseDtoChainEnum = typeof AuthWalletResponseDtoChainEnum[keyof typeof AuthWalletResponseDtoChainEnum];
+
 
 /**
  * Check if a given object implements the AuthWalletResponseDto interface.

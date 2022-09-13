@@ -42,8 +42,21 @@ export interface CreateWalletRequestDto {
      * @type {string}
      * @memberof CreateWalletRequestDto
      */
-    chain: string;
+    chain: CreateWalletRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const CreateWalletRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type CreateWalletRequestDtoChainEnum = typeof CreateWalletRequestDtoChainEnum[keyof typeof CreateWalletRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the CreateWalletRequestDto interface.

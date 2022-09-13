@@ -1,8 +1,13 @@
-import { IsUUID } from 'class-validator'
+import { IsInt, IsUUID, Length, Min } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
+import {
+  USER_DISPLAY_NAME_LENGTH,
+  USER_USERNAME_LENGTH,
+} from '../../user/constants/schema'
+import { POST_TEXT_LENGTH } from '../constants/schema'
 
 export class PostDto {
   @IsUUID()
@@ -16,12 +21,15 @@ export class PostDto {
   @DtoProperty()
   userId: string
 
+  @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty()
   username: string
 
+  @Length(1, USER_DISPLAY_NAME_LENGTH)
   @DtoProperty()
   displayName: string
 
+  @Length(1, POST_TEXT_LENGTH)
   @DtoProperty()
   text: string
 
@@ -31,15 +39,22 @@ export class PostDto {
   @DtoProperty({ type: [ContentDto], required: false })
   content?: ContentDto[]
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numLikes: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numComments: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numPurchases: number
 
+  @Min(0)
   @DtoProperty()
   earningsPurchases: number
 
@@ -58,9 +73,11 @@ export class PostDto {
   @DtoProperty({ required: false })
   expiresAt?: Date
 
+  @Min(0)
   @DtoProperty({ required: false })
   price?: string
 
+  @Min(0)
   @DtoProperty({ required: false })
   totalTipAmount?: number
 

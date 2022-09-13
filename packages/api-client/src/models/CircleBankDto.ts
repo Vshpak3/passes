@@ -36,7 +36,7 @@ export interface CircleBankDto {
      * @type {string}
      * @memberof CircleBankDto
      */
-    status: string;
+    status: CircleBankDtoStatusEnum;
     /**
      * 
      * @type {string}
@@ -50,6 +50,18 @@ export interface CircleBankDto {
      */
     country: string;
 }
+
+
+/**
+ * @export
+ */
+export const CircleBankDtoStatusEnum = {
+    Pending: 'pending',
+    Complete: 'complete',
+    Failed: 'failed'
+} as const;
+export type CircleBankDtoStatusEnum = typeof CircleBankDtoStatusEnum[keyof typeof CircleBankDtoStatusEnum];
+
 
 /**
  * Check if a given object implements the CircleBankDto interface.

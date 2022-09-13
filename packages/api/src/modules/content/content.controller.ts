@@ -5,7 +5,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
   Req,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
@@ -69,14 +68,18 @@ export class ContentController {
     responseType: GetContentsResponseDto,
     responseDesc: 'Creator vault was retrieved',
   })
-  @Get('vault')
+  @Post('vault')
   async getVaultContent(
     @Req() req: RequestWithUser,
-    @Query() { category, type }: GetVaultQueryRequestDto,
+    @Body() getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ): Promise<GetContentsResponseDto> {
     // TODO: add pagination
     return new GetContentsResponseDto(
-      await this.contentService.getVault(req.user.id, category, type),
+      await this.contentService.getVault(
+        req.user.id,
+        getVaultQueryRequestDto.category,
+        getVaultQueryRequestDto.type,
+      ),
     )
   }
 }

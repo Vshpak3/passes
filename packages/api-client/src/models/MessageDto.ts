@@ -24,7 +24,7 @@ export interface MessageDto {
      * @type {string}
      * @memberof MessageDto
      */
-    id?: string;
+    messageId?: string;
     /**
      * 
      * @type {string}
@@ -79,7 +79,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'messageId': !exists(json, 'messageId') ? undefined : json['messageId'],
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
@@ -97,7 +97,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'messageId': value.messageId,
         'text': value.text,
         'attachments': value.attachments,
         'channelId': value.channelId,

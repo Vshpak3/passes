@@ -11,7 +11,7 @@ Next, register this URL with Circle via
 ```
 curl -H 'Accept: application/json' \
   -H 'Content-type: application/json' \
-  -H "Authorization: Bearer {CIRCLE_API_KEY} \
+  -H "Authorization: Bearer {CIRCLE_API_KEY}" \
   -d "{\"endpoint\": \"{URL}/api/payment/circle/notification\"}" \
   -X POST --url https://api-sandbox.circle.com/v1/notifications/subscriptions
 ```

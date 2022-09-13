@@ -64,7 +64,9 @@ const usePasses = (creatorId = "") => {
       const api = wrapApi(PassApi)
       return (
         await api.getPassHoldings({
-          creatorId: ""
+          getPassHoldersRequestDto: {
+            userId: ""
+          }
         })
       ).passHolders
     }

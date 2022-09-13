@@ -1,4 +1,4 @@
-import { Length } from 'class-validator'
+import { IsUUID, Length, Min } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -12,15 +12,18 @@ export class CreatePostRequestDto {
   @DtoProperty()
   tags: TagDto[]
 
+  @IsUUID('all', { each: true })
   @DtoProperty()
   contentIds: string[]
 
+  @IsUUID('all', { each: true })
   @DtoProperty()
   passIds: string[]
 
   @DtoProperty()
   isMessage: boolean
 
+  @Min(0)
   @DtoProperty({ required: false })
   price?: number
 
@@ -32,6 +35,7 @@ export class CreatePostRequestDto {
 }
 
 export class CreatePostResponseDto {
+  @IsUUID()
   @DtoProperty()
   postId: string
 }

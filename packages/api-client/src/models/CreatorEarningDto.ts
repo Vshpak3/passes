@@ -36,7 +36,7 @@ export interface CreatorEarningDto {
      * @type {string}
      * @memberof CreatorEarningDto
      */
-    type: string;
+    type: CreatorEarningDtoTypeEnum;
     /**
      * 
      * @type {Date}
@@ -44,6 +44,23 @@ export interface CreatorEarningDto {
      */
     createdAt: Date;
 }
+
+
+/**
+ * @export
+ */
+export const CreatorEarningDtoTypeEnum = {
+    Balance: 'balance',
+    Total: 'total',
+    Subscription: 'subscription',
+    Tips: 'tips',
+    Posts: 'posts',
+    Messages: 'messages',
+    Lifetime: 'lifetime',
+    Other: 'other'
+} as const;
+export type CreatorEarningDtoTypeEnum = typeof CreatorEarningDtoTypeEnum[keyof typeof CreatorEarningDtoTypeEnum];
+
 
 /**
  * Check if a given object implements the CreatorEarningDto interface.

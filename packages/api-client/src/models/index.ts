@@ -88,6 +88,7 @@ export * from './GetProfileResponseDto';
 export * from './GetSignedUrlResponseDto';
 export * from './GetSubscriptionsResponseDto';
 export * from './GetUserResponseDto';
+export * from './GetVaultQueryRequestDto';
 export * from './GetWalletResponseDto';
 export * from './GetWalletsResponseDto';
 export * from './ImpersonateUserRequestDto';

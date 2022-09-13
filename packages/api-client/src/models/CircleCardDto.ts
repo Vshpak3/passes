@@ -36,7 +36,7 @@ export interface CircleCardDto {
      * @type {string}
      * @memberof CircleCardDto
      */
-    status: string;
+    status: CircleCardDtoStatusEnum;
     /**
      * 
      * @type {string}
@@ -74,6 +74,18 @@ export interface CircleCardDto {
      */
     active: boolean;
 }
+
+
+/**
+ * @export
+ */
+export const CircleCardDtoStatusEnum = {
+    Pending: 'pending',
+    Complete: 'complete',
+    Failed: 'failed'
+} as const;
+export type CircleCardDtoStatusEnum = typeof CircleCardDtoStatusEnum[keyof typeof CircleCardDtoStatusEnum];
+
 
 /**
  * Check if a given object implements the CircleCardDto interface.

@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 
@@ -7,15 +7,19 @@ export class CreatorFeeDto {
   @DtoProperty()
   creatorId: string
 
+  @Min(0)
   @DtoProperty({ required: false })
   fiatRate?: number
 
+  @Min(0)
   @DtoProperty({ required: false })
   fiatFlat?: number
 
+  @Min(0)
   @DtoProperty({ required: false })
   cryptoRate?: number
 
+  @Min(0)
   @DtoProperty({ required: false })
   cryptoFlat?: number
 

@@ -1,17 +1,20 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
+import { CircleAccountStatusEnum } from '../../enum/circle-account.status.enum'
 
 export class CircleBankDto {
   @IsUUID()
   @DtoProperty()
   id: string
 
+  @IsUUID()
   @DtoProperty({ required: false })
   circleId?: string
 
-  @DtoProperty()
-  status: string
+  @IsEnum(CircleAccountStatusEnum)
+  @DtoProperty({ enum: CircleAccountStatusEnum })
+  status: CircleAccountStatusEnum
 
   @DtoProperty()
   description: string

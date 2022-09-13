@@ -7,6 +7,7 @@ export class AddListMembersRequestDto {
   @DtoProperty()
   listId: string
 
+  @IsUUID('all', { each: true })
   @DtoProperty()
   userIds: string[]
 }

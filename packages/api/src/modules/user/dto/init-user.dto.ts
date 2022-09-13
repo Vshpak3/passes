@@ -11,6 +11,7 @@ export class SetInitialUserInfoRequestDto extends PickType(CreateUserDto, [
 ]) {}
 
 export class SetInitialUserInfoResponseDto {
+  //TODO: add length validation
   @DtoProperty()
   accessToken: string
 

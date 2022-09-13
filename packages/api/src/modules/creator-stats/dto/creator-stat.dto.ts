@@ -1,4 +1,4 @@
-import { IsUUID } from 'class-validator'
+import { IsInt, IsUUID, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 
@@ -7,12 +7,18 @@ export class CreatorStatDto {
   @DtoProperty()
   userId: string
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numFollowers: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numLikes: number
 
+  @IsInt()
+  @Min(0)
   @DtoProperty()
   numMedia: number
 
