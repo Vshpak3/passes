@@ -10,11 +10,21 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
+
 readonly output_path=src/openapi/specs
 
 # Construct filenames
 readonly commit_hash=$(git rev-parse --short HEAD)
 readonly new_openapi_filename=openapi-${commit_hash}.json
+
+# First check for conflicting routes
+all_endpoints=$(grep -r -E '^  @(Delete|Get|Head|Patch|Post)' packages/api | sort)
+conflicting_routes=$(comm -3 <(echo "${all_endpoints}") <(echo "${all_endpoints}" | sort -u))
+if [[ -n "${conflicting_routes}" ]] ; then
+  echo -e "Found conflicting routes:\n\n${conflicting_routes}"
+  exit 1
+fi
 
 # Generate new OpenAPI spec
 yarn install

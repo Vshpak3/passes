@@ -107,7 +107,7 @@ export class AdminController {
     responseType: Boolean,
     responseDesc: 'External pass was updated',
   })
-  @Post('external-pass/add')
+  @Post('external-pass/update')
   async updateExternalPass(
     @Body() body: UpdateExternalPassRequestDto,
   ): Promise<boolean> {
