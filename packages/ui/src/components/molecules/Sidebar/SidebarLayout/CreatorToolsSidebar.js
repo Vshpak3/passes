@@ -61,7 +61,7 @@ const CreatorToolsSidebar = ({
                               item.id === active
                                 ? "text-white"
                                 : "text-[#eeedef]/50 group-hover:text-white",
-                              `group flex cursor-pointer items-start text-base font-semibold tracking-[0.003em] text-white `
+                              "group flex cursor-pointer items-start text-base font-semibold tracking-[0.003em] text-white "
                             )}
                           >
                             {item.name}

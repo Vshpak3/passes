@@ -274,7 +274,7 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
   const createPost = async (values: any) => {
     const api = wrapApi(PostApi)
     const result = await mutate(
-      [`/post/creator/`, user?.username],
+      ["/post/creator/", user?.username],
       async () =>
         await api.createPost({
           createPostRequestDto: {

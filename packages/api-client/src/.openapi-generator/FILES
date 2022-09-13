@@ -90,7 +90,7 @@ models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
 models/GetFreeMesssagesResponseDto.ts
 models/GetGalleryViewDto.ts
-models/GetListMembersRequestto.ts
+models/GetListMembersRequestDto.ts
 models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsResponseDto.ts

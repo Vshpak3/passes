@@ -18,7 +18,7 @@ const MainContent = ({
   const createPost = async (values) => {
     const api = wrapApi(PostApi)
     mutate(
-      [`/post/creator/`, username],
+      ["/post/creator/", username],
       async () =>
         await api.createPost({
           createPostRequestDto: {
@@ -54,7 +54,7 @@ const MainContent = ({
     const api = wrapApi(FanWallApi)
 
     mutate(
-      [`/fan-wall/creator/`, username],
+      ["/fan-wall/creator/", username],
       async () =>
         await api.createFanWallComment({
           createFanWallCommentRequestDto: {

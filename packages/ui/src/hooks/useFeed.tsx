@@ -13,7 +13,7 @@ const getKey = (_pageIndex: number, previousPageData: any) => {
   }
 
   const cursor = previousPageData?.cursor ?? ""
-  return cursor ? `${withCursorPrefix}${cursor}` : `/post`
+  return cursor ? `${withCursorPrefix}${cursor}` : "/post"
 }
 
 const fetcher = async (key: string) => {

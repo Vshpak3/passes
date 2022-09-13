@@ -29,8 +29,8 @@ const VAULT_CATEGORY_OPTIONS: ICategoryFilterButton[] = [
 ]
 
 const filterStyles = {
-  media: `md:h-[28.8px] md:min-w-[61.4px] md:max-w-[76.8px]`,
-  button: `md:h-[36px] md:min-w-[76.8px] md:max-w-[96px]`
+  media: "md:h-[28.8px] md:min-w-[61.4px] md:max-w-[76.8px]",
+  button: "md:h-[36px] md:min-w-[76.8px] md:max-w-[96px]"
 }
 
 interface IVaultFilterContainer {

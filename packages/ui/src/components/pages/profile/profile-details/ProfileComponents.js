@@ -22,10 +22,10 @@ export const Verified = ({ isVerified }) => (
 
 const ProfileStatItemMobile = ({ stat, label }) => (
   <div className="grid grid-rows-2">
-    <span className="text-[14px] font-medium text-passes-white-100">
+    <span className="text-passes-white-100 text-[14px] font-medium">
       {stat}
     </span>
-    <span className="text-[12px] font-normal text-passes-white-100/60">
+    <span className="text-passes-white-100/60 text-[12px] font-normal">
       {label}
     </span>
   </div>
@@ -40,7 +40,7 @@ export const ProfileStatsMobile = ({ posts, likes }) => (
 )
 
 export const ProfilePhoto = ({ url }) => (
-  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border border-black bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
+  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
     {url?.length > 0 && (
       <Image
         src={url}
@@ -72,13 +72,13 @@ export const ProfileInformation = ({
 }) => (
   <div className="flex flex-col items-start gap-[6px]">
     <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
-      <span className="text-[32px] font-medium leading-9 text-passes-white-100">
+      <span className="text-passes-white-100 text-[32px] font-medium leading-9">
         {displayName}
       </span>
       {/* <Verified /> */}
     </div>
     <div className="flex w-full justify-between">
-      <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
+      <div className="bg-passes-white-100/[0.05] my-2 flex cursor-pointer items-center justify-center rounded-[50px] px-3 py-[6px]">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
           @{username}
         </span>
@@ -106,19 +106,19 @@ export const ProfileInformation = ({
     <div className="flex w-full flex-row items-center gap-[68px]">
       <div className="flex items-center">
         <div className="flex items-center justify-center">
-          <span className="mr-[6px] text-base font-medium text-passes-white-100">
+          <span className="text-passes-white-100 mr-[6px] text-base font-medium">
             {posts}
           </span>
-          <span className="text-sm font-normal text-passes-white-100/70">
+          <span className="text-passes-white-100/70 text-sm font-normal">
             POSTS
           </span>
         </div>
         <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
         <div className="flex items-center justify-center">
-          <span className="mr-[6px] text-base font-medium text-passes-white-100">
+          <span className="text-passes-white-100 mr-[6px] text-base font-medium">
             {compactNumberFormatter(likes)}
           </span>
-          <span className="text-sm font-normal text-passes-white-100/70">
+          <span className="text-passes-white-100/70 text-sm font-normal">
             LIKES
           </span>
         </div>
@@ -161,10 +161,10 @@ export const ProfileInformationMobile = ({
   likes
 }) => (
   <>
-    <span className="text-[18px] font-semibold text-passes-white-100">
+    <span className="text-passes-white-100 text-[18px] font-semibold">
       {displayName}
     </span>
-    <div className="align-items flex h-[23px] w-[62px] items-center justify-center rounded-xl bg-passes-white-100/5">
+    <div className="align-items bg-passes-white-100/5 flex h-[23px] w-[62px] items-center justify-center rounded-xl">
       <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
         @{username}
       </span>

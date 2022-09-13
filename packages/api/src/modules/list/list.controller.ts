@@ -18,7 +18,7 @@ import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
 import { GetListResponseDto } from './dto/get-list.dto'
 import {
-  GetListMembersRequestto,
+  GetListMembersRequestDto,
   GetListMembersResponseDto,
 } from './dto/get-list-members.dto'
 import { GetListsResponseDto } from './dto/get-lists.dto'
@@ -50,7 +50,7 @@ export class ListController {
     responseType: undefined,
     responseDesc: 'List Members added',
   })
-  @Post('members')
+  @Post('add-members')
   async addListMembers(
     @Req() req: RequestWithUser,
     @Body() addListMembersDto: AddListMembersRequestDto,
@@ -82,7 +82,7 @@ export class ListController {
     responseType: GetListResponseDto,
     responseDesc: 'List was retrieved',
   })
-  @Get('list-info')
+  @Get('list-info/:listId')
   async getList(
     @Req() req: RequestWithUser,
     @Param('listId') listId: string,
@@ -109,10 +109,10 @@ export class ListController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'List members was retrieved',
   })
-  @Get('members')
+  @Post('members')
   async getListMembers(
     @Req() req: RequestWithUser,
-    @Body() getListMembersRequestDto: GetListMembersRequestto,
+    @Body() getListMembersRequestDto: GetListMembersRequestDto,
   ): Promise<GetListMembersResponseDto> {
     return {
       listMembers: await this.listService.getListMembers(

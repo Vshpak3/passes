@@ -3,7 +3,7 @@ import React, { Fragment } from "react"
 
 const LogoutButton = ({ handleLogout }) => {
   return (
-    <Fragment key={`sidebar-logout`}>
+    <Fragment key={"sidebar-logout"}>
       <span
         onClick={handleLogout}
         className="group flex cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"

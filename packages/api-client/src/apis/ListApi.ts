@@ -18,7 +18,7 @@ import type {
   AddListMembersRequestDto,
   CreateListRequestDto,
   EditListNameRequestDto,
-  GetListMembersRequestto,
+  GetListMembersRequestDto,
   GetListMembersResponseDto,
   GetListResponseDto,
   GetListsResponseDto,
@@ -31,8 +31,8 @@ import {
     CreateListRequestDtoToJSON,
     EditListNameRequestDtoFromJSON,
     EditListNameRequestDtoToJSON,
-    GetListMembersRequesttoFromJSON,
-    GetListMembersRequesttoToJSON,
+    GetListMembersRequestDtoFromJSON,
+    GetListMembersRequestDtoToJSON,
     GetListMembersResponseDtoFromJSON,
     GetListMembersResponseDtoToJSON,
     GetListResponseDtoFromJSON,
@@ -64,7 +64,7 @@ export interface GetListRequest {
 }
 
 export interface GetListMembersRequest {
-    getListMembersRequestto: GetListMembersRequestto;
+    getListMembersRequestDto: GetListMembersRequestDto;
 }
 
 export interface RemoveListMembersRequest {
@@ -99,7 +99,7 @@ export class ListApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/list/members`,
+            path: `/api/list/add-members`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -256,7 +256,7 @@ export class ListApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/list/list-info`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
+            path: `/api/list/list-info/{listId}`.replace(`{${"listId"}}`, encodeURIComponent(String(requestParameters.listId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -277,8 +277,8 @@ export class ListApi extends runtime.BaseAPI {
      * Get list members for user
      */
     async getListMembersRaw(requestParameters: GetListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
-        if (requestParameters.getListMembersRequestto === null || requestParameters.getListMembersRequestto === undefined) {
-            throw new runtime.RequiredError('getListMembersRequestto','Required parameter requestParameters.getListMembersRequestto was null or undefined when calling getListMembers.');
+        if (requestParameters.getListMembersRequestDto === null || requestParameters.getListMembersRequestDto === undefined) {
+            throw new runtime.RequiredError('getListMembersRequestDto','Required parameter requestParameters.getListMembersRequestDto was null or undefined when calling getListMembers.');
         }
 
         const queryParameters: any = {};
@@ -297,10 +297,10 @@ export class ListApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/list/members`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetListMembersRequesttoToJSON(requestParameters.getListMembersRequestto),
+            body: GetListMembersRequestDtoToJSON(requestParameters.getListMembersRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));

@@ -64,7 +64,7 @@ export * from './GetFeedResponseDto';
 export * from './GetFollowResponseDto';
 export * from './GetFreeMesssagesResponseDto';
 export * from './GetGalleryViewDto';
-export * from './GetListMembersRequestto';
+export * from './GetListMembersRequestDto';
 export * from './GetListMembersResponseDto';
 export * from './GetListResponseDto';
 export * from './GetListsResponseDto';

@@ -57,7 +57,7 @@ const useCreatePass = ({ passType }) => {
     })
 
     if (maxFileSizeExceeded) {
-      setFileUploadError(`Maximum file size exceeded.`)
+      setFileUploadError("Maximum file size exceeded.")
       return
     }
     if (files.length + _files.length > MAX_FILES) {

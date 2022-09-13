@@ -315,7 +315,7 @@ const MessagesComponent = ({ username }) => {
 
         `}
       </style>
-      <Chat client={chatClient} theme={`messaging dark`}>
+      <Chat client={chatClient} theme={"messaging dark"}>
         <div id="mobile-channel-list" onClick={toggleMobile}>
           <ChannelList
             filters={filters}

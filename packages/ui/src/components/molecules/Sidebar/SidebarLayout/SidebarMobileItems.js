@@ -15,13 +15,13 @@ function SidebarMobileChildItem({ active, subItem, setActive }) {
         isActive
           ? "rounded-[56px] bg-[#FFFEFF]/10"
           : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        `group ml-5 flex cursor-pointer items-center py-[10px] px-[20px]`
+        "group ml-5 flex cursor-pointer items-center py-[10px] px-[20px]"
       )}
     >
       <span
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          `group  flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white`
+          "group  flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
         )}
       >
         {subItem.name}
@@ -45,7 +45,7 @@ function SidebarMobileDropdown({ setActive, item, active, router }) {
                 item.id === active
                   ? "rounded-[56px] bg-[#FFFEFF]/10"
                   : "hover:text-white",
-                `group flex cursor-pointer items-center py-[15px] px-[20px] pr-0`
+                "group flex cursor-pointer items-center py-[15px] px-[20px] pr-0"
               )}
             >
               <a
@@ -55,7 +55,7 @@ function SidebarMobileDropdown({ setActive, item, active, router }) {
                   item.id === active
                     ? "text-white"
                     : "text-[#eeedef]/50 group-hover:text-white",
-                  `group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white`
+                  "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
                 )}
               >
                 <item.icon
@@ -102,7 +102,7 @@ function SidebarMobileItem({ setActive, item, active }) {
         item.id === active
           ? "rounded-[56px] bg-[#FFFEFF]/10"
           : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        `group flex cursor-pointer items-center py-[10px] px-[20px]`
+        "group flex cursor-pointer items-center py-[10px] px-[20px]"
       )}
     >
       <a
@@ -112,7 +112,7 @@ function SidebarMobileItem({ setActive, item, active }) {
           item.id === active
             ? "text-white"
             : "text-[#eeedef]/50 group-hover:text-white",
-          `group flex cursor-pointer items-center text-[16px] text-base font-semibold tracking-[0.003em] text-white`
+          "group flex cursor-pointer items-center text-[16px] text-base font-semibold tracking-[0.003em] text-white"
         )}
       >
         <item.icon

@@ -15,7 +15,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
-import { GetListMembersRequestto } from './dto/get-list-members.dto'
+import { GetListMembersRequestDto } from './dto/get-list-members.dto'
 import { ListDto } from './dto/list.dto'
 import { ListMemberDto } from './dto/list-member.dto'
 import { RemoveListMembersRequestDto } from './dto/remove-list-members.dto'
@@ -148,7 +148,7 @@ export class ListService {
   // TODO: put cursor pagination for names and created_at
   async getListMembers(
     userId: string,
-    getListMembersRequestDto: GetListMembersRequestto,
+    getListMembersRequestDto: GetListMembersRequestDto,
   ) {
     const type = await this.checkList(
       userId,

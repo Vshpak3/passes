@@ -31,7 +31,9 @@ const Modal = ({ isOpen = null, setOpen, children }: IModal) => {
     >
       <div
         id="popup-modal"
-        className={`m-auto w-[500px] rounded bg-[#1b141d] p-4 md:border-[#ffffff]/10`}
+        className={
+          "m-auto w-[500px] rounded bg-[#1b141d] p-4 md:border-[#ffffff]/10"
+        }
       >
         <div className="text-right">
           <button

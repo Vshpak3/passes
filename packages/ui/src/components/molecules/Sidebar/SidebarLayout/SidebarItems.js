@@ -15,13 +15,13 @@ function SidebarChildItem({ subItem, isActive, setActive }) {
         isActive
           ? "rounded-[56px] bg-[#FFFEFF]/10"
           : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        `group ml-10 hidden cursor-pointer items-center py-[10px] px-[26px] sidebar-collapse:inline-block`
+        "group ml-10 hidden cursor-pointer items-center py-[10px] px-[26px] sidebar-collapse:inline-block"
       )}
     >
       <span
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
+          "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         {subItem.name}
@@ -47,7 +47,7 @@ function SidebarDropdown({ active, item, setActive, router }) {
                 isItemActive
                   ? "rounded-[56px] bg-[#FFFEFF]/10"
                   : "hover:text-white",
-                `group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex`
+                "group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex"
               )}
             >
               <Link
@@ -58,7 +58,7 @@ function SidebarDropdown({ active, item, setActive, router }) {
                   isItemActive
                     ? "text-white"
                     : "text-[#eeedef]/50 group-hover:text-white",
-                  `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
+                  "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
                 )}
               >
                 <>
@@ -148,7 +148,7 @@ function SidebarDesktopItem({ isActive, item, setActive }) {
         isActive
           ? "rounded-[56px] bg-[#FFFEFF]/10"
           : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        `group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex`
+        "group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex"
       )}
     >
       <Link
@@ -156,7 +156,7 @@ function SidebarDesktopItem({ isActive, item, setActive }) {
         as={item.href}
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          `group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex`
+          "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         <a className={classNames("flex flex-row")}>

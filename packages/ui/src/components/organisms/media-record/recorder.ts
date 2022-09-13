@@ -276,7 +276,7 @@ export function useReactMediaRecorder({
       !MediaRecorder.isTypeSupported(mediaRecorderOptions.mimeType)
     ) {
       console.error(
-        `The specified MIME type you supplied for MediaRecorder doesn't support this browser`
+        "The specified MIME type you supplied for MediaRecorder doesn't support this browser"
       )
     }
 

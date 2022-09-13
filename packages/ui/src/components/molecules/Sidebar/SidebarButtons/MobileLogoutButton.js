@@ -3,7 +3,7 @@ import React, { Fragment } from "react"
 
 const MobileLogoutButton = ({ handleLogout }) => {
   return (
-    <Fragment key={`sidebar-logout`}>
+    <Fragment key={"sidebar-logout"}>
       <span className="group flex cursor-pointer items-center py-[15px] px-[20px] pr-0 hover:text-white">
         <a
           onClick={handleLogout}

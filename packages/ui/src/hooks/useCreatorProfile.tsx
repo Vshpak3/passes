@@ -28,7 +28,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const { data: fanWallPosts = [], isValidating: isLoadingFanWallPosts } =
     useSWR(
-      doesProfileExist ? [`/fan-wall/creator/`, username] : null,
+      doesProfileExist ? ["/fan-wall/creator/", username] : null,
       async () => {
         const api = wrapApi(FanWallApi)
         return await api.getFanWallForCreator({ userId: props.userId })
@@ -46,7 +46,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const ownsProfile = loggedInUsername === username
 
   const { data: profilePosts = { posts: [] }, isValidating: isLoadingPosts } =
-    useSWR(doesProfileExist ? [`/post/creator/`, username] : null, async () => {
+    useSWR(doesProfileExist ? ["/post/creator/", username] : null, async () => {
       const api = wrapApi(FeedApi)
       return await api.getFeedForCreator({ userId: props.userId, cursor: "" })
     })
