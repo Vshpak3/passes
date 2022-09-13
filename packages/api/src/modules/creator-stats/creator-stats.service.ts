@@ -170,7 +170,8 @@ export class CreatorStatsService {
           `${PostContentEntity.table}.content_id`,
           `${ContentEntity.table}.id`,
         )
-        .where(`${PostEntity.table}.is_message`, false)
+        .whereNull(`${PostEntity.table}.deleted_at`)
+        .andWhere(`${PostEntity.table}.is_message`, false)
         .update(`${ContentEntity.table}.in_post`, true)
       await trx(ContentEntity.table)
         .innerJoin(
@@ -178,7 +179,8 @@ export class CreatorStatsService {
           `${PostContentEntity.table}.content_id`,
           `${ContentEntity.table}.id`,
         )
-        .where(`${PostEntity.table}.is_message`, true)
+        .whereNull(`${PostEntity.table}.deleted_at`)
+        .andWhere(`${PostEntity.table}.is_message`, true)
         .update(`${ContentEntity.table}.in_message`, true)
     })
 
