@@ -1,23 +1,10 @@
-import { MessagesApi } from "@passes/api-client/apis"
-import classNames from "classnames"
 import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import React, { useContext, useState } from "react"
-import { toast } from "react-toastify"
 import { PostUnlockButton } from "src/components/atoms"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
-import { ContentService, formatCurrency } from "src/helpers"
-import { wrapApi } from "src/helpers/wrapApi"
-import { useChat } from "src/hooks"
-import { logChatPromiseExecution } from "stream-chat"
-import {
-  ChatContext,
-  MessageInput,
-  MessageList,
-  Thread,
-  useChatContext,
-  Window
-} from "stream-chat-react"
+import { classNames, formatCurrency } from "src/helpers"
+import { MessageInput, MessageList, Thread, Window } from "stream-chat-react"
 
 import {
   MessagingChannelHeader,
@@ -115,76 +102,7 @@ export const ChannelInner = (props) => {
   let sumPending = pendingContent.reduce(function (prev, current) {
     return prev + +current.price
   }, 0)
-  const {
-    giphyState,
-    setGiphyState,
-    files,
-    setFiles,
-    isCreator,
-    gallery,
-    purchasedContent
-  } = useContext(GiphyContext)
-  const { channel: activeChannel, client } = useChatContext(ChatContext)
-
-  const members = Object.values(activeChannel?.state?.members).filter(
-    ({ user }) => user?.id !== client.userID
-  )
-
-  const { channelId } = useChat(members[0]?.user.name)
-  const sendMessage = async (messageToSend) => {
-    const content = await new ContentService().uploadContent(files)
-    try {
-      const api = wrapApi(MessagesApi)
-      await api.sendMessage({
-        sendMessageRequestDto: {
-          text: messageToSend.text || "",
-          attachments: [],
-          content: content.map((c) => c.id),
-          channelId
-        }
-      })
-      setFiles([])
-    } catch (err) {
-      toast.error(err)
-      console.error(err)
-    }
-  }
-
-  const overrideSubmitHandler = (message) => {
-    let updatedMessage
-
-    if (message.attachments?.length && message.text?.startsWith("/giphy")) {
-      const updatedText = message.text.replace("/giphy", "")
-      updatedMessage = { ...message, text: updatedText }
-    }
-
-    if (giphyState) {
-      const updatedText = `/giphy ${message.text}`
-      updatedMessage = { ...message, text: updatedText }
-    }
-
-    if (sendMessage) {
-      const newMessage = updatedMessage || message
-      const parentMessage = newMessage.parent
-
-      const messageToSend = {
-        ...newMessage,
-        parent: parentMessage
-          ? {
-              ...parentMessage,
-              created_at: parentMessage.created_at?.toString(),
-              pinned_at: parentMessage.pinned_at?.toString(),
-              updated_at: parentMessage.updated_at?.toString()
-            }
-          : undefined
-      }
-
-      const sendMessagePromise = sendMessage(messageToSend)
-      logChatPromiseExecution(sendMessagePromise, "send message")
-    }
-
-    setGiphyState(false)
-  }
+  const { isCreator, gallery, purchasedContent } = useContext(GiphyContext)
 
   const actions = ["delete", "edit", "flag", "mute", "react", "reply"]
 
@@ -252,7 +170,10 @@ export const ChannelInner = (props) => {
         )}
         {!gallery && <MessageList messageActions={actions} />}
         {!gallery && (
-          <MessageInput focus overrideSubmitHandler={overrideSubmitHandler} />
+          <MessageInput
+            focus
+            // overrideSubmitHandler={overrideSubmitHandler}
+          />
         )}
         {gallery && (
           <div className="flex h-full flex-wrap items-start justify-start gap-2 overflow-auto p-[10px]">

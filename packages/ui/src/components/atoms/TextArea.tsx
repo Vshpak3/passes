@@ -1,5 +1,5 @@
-import classNames from "classnames"
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { classNames } from "src/helpers"
 
 import {
   FormErrors,
@@ -34,17 +34,49 @@ const TextArea = ({
   placeholder,
   ...rest
 }: TextAreaProps) => {
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const [keyDownEvent, setKeyDownEvent] = useState<any>(null)
+  const { ref, ...reg } = register(name, {
+    ...options,
+    onChange: (event: any) => {
+      if (options.onChange) options.onChange(event, keyDownEvent)
+    }
+  })
+  useEffect(() => {
+    if (textAreaRef.current) {
+      const keyDownEvent = function (event: any) {
+        setKeyDownEvent(event)
+      }
+
+      const keyUpEvent = function () {
+        setKeyDownEvent(null)
+      }
+
+      textAreaRef.current.addEventListener("keydown", keyDownEvent)
+      textAreaRef.current.addEventListener("keyup", keyUpEvent)
+      return () => {
+        textAreaRef.current?.removeEventListener("keydown", keyDownEvent)
+        textAreaRef.current?.removeEventListener("keyup", keyUpEvent)
+      }
+    }
+  }, [textAreaRef])
+
   return (
     <>
       {label && (
         <Label name={name} label={label} errors={errors} options={options} />
       )}
       <textarea
+        id={name}
         placeholder={placeholder}
         name={name}
         rows={rows}
         cols={cols}
-        {...register(name, options)}
+        ref={(r) => {
+          ref(r)
+          textAreaRef.current = r
+        }}
+        {...reg}
         {...rest}
         className={classNames(
           errors[name] !== undefined ? "border-red-500" : "",

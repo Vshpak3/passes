@@ -6,7 +6,7 @@ import {
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-toastify"
 
 import { wrapApi } from "../helpers"
@@ -24,10 +24,11 @@ import useLocalStorage from "./useLocalStorage"
 export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
-  registerPaymentDataFunc: () => Promise<PayinDataDto>
+  registerPaymentDataFunc: () => Promise<PayinDataDto>,
+  callback?: (error?: Error) => void
 ) => {
   const [submitting, setSubmitting] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [blocked, setBlocked] = useState(false)
   const [amountUSD, setAmountUSD] = useState(0)
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
@@ -136,6 +137,7 @@ export const usePay = (
 
   const submit = async () => {
     setSubmitting(true)
+    setLoading(true)
     const paymentApi = wrapApi(PaymentApi)
     try {
       const registerResponse = await registerPaymentFunc()
@@ -144,10 +146,16 @@ export const usePay = (
           payinId: registerResponse.payinId
         })
       }
-      if (registerResponse.amount !== amountUSD) {
-        throw Error("sanity check: amounts don't matchup")
+      if (
+        registerResponse.amount !== undefined &&
+        registerResponse.amount !== amountUSD
+      ) {
+        const error = new Error("sanity check: amounts don't matchup")
+        if (callback) callback(error)
+
+        throw error
       }
-      switch (registerResponse.payinMethod.method) {
+      switch (registerResponse.payinMethod?.method) {
         case PayinMethodDtoMethodEnum.CircleCard:
           await handleCircleCard(registerResponse, paymentApi)
           break
@@ -160,13 +168,18 @@ export const usePay = (
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
           await handleMetamaskCircleEth(registerResponse, cancelPayinCallback)
           break
+        default:
+          break
       }
+      if (callback) callback()
     } finally {
       setSubmitting(false)
+      setLoading(false)
     }
   }
 
-  useEffect(() => {
+  const submitData = () => {
+    setLoading(true)
     if (phantomProvider === undefined) {
       const provider = getPhantomProvider()
       if (provider !== undefined) {
@@ -187,7 +200,10 @@ export const usePay = (
       setLoading(false)
     }
     fetchData()
-  }, [phantomProvider, metamaskProvider, registerPaymentDataFunc])
-
-  return { blocked, amountUSD, submitting, loading, submit }
+    if (amountUSD > 0) submit()
+    if (!blocked) submit()
+  }
+  // TODO: Patrick ; registerPaymentDataFunc() is called on every render and we
+  //  submit too many times the message, by removing registerPaymentDataFunc fixes for me but it may lead to other problems, please check this
+  return { blocked, amountUSD, submitting, loading, submit, submitData }
 }

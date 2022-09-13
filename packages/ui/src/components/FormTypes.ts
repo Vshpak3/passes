@@ -26,7 +26,7 @@ export type FormOptions = Partial<{
   pattern: ValidationRule<RegExp>
   readOnly: ValidationRule<boolean>
   validate: any
-  onChange?: (event: any) => void
+  onChange?: (event: any, keyDownEvent?: any) => void
   onBlur?: (event: any) => void
 }>
 export type FormRegister = any

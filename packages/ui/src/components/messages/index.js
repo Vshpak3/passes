@@ -95,7 +95,8 @@ const MessagesComponent = ({ username }) => {
     gallery,
     setGallery,
     purchasedContent,
-    setPurchasedContent
+    setPurchasedContent,
+    user
   }
   const options = { state: true, watch: true, presence: true, limit: 8 }
 

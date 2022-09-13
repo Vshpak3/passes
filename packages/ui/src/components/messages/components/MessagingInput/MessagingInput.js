@@ -1,49 +1,165 @@
-import classNames from "classnames"
+import { MessagesApi, PostApi } from "@passes/api-client/apis"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import React, { useCallback, useContext, useState } from "react"
+import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
-import { formatCurrency } from "src/helpers"
-import {
-  ChatAutoComplete,
-  EmojiPicker,
-  useMessageInputContext
-} from "stream-chat-react"
+import { SendMessageButton } from "src/components/payment/send-message"
+import { classNames, formatCurrency, wrapApi } from "src/helpers"
+import { useChat } from "src/hooks"
+import { usePay } from "src/hooks/usePay"
+import { ChatContext, useChatContext } from "stream-chat-react"
+import { useSWRConfig } from "swr"
 
-import { EmojiIcon, LightningBoltSmall } from "../../assets"
 import { GiphyContext } from "../../index.js"
-
-const GiphyIcon = () => (
-  <div className="giphy-icon__wrapper">
-    <LightningBoltSmall />
-    <p className="giphy-icon__text">GIPHY</p>
-  </div>
-)
 
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
 const MessagingInput = () => {
-  const { giphyState, setGiphyState, files, setFiles } =
-    useContext(GiphyContext)
-  const messageInput = useMessageInputContext()
+  const { isCreator, files, setFiles, user } = useContext(GiphyContext)
+  const { channel: activeChannel, client } = useChatContext(ChatContext)
+
+  const members = Object.values(activeChannel?.state?.members).filter(
+    ({ user }) => user?.id !== client.userID
+  )
+  const { channelId } = useChat(members[0]?.user.name)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
   const [hasPrice, setHasPrice] = useState(false)
+  const [attachments, setAttachments] = useState([])
   const [targetAcquired, setTargetAcquired] = useState(false)
+  const { mutate } = useSWRConfig()
+
   const {
     register,
     formState: { errors },
+    setValue,
+    getValues,
     watch
   } = useForm({
     defaultValues: {}
   })
   const postPrice = watch("postPrice")
+  const text = watch("text")
+
+  const payinMethod = undefined
+  const api = wrapApi(MessagesApi)
+
+  const onSubmit = async () => {
+    if (text?.length < 1) return null
+    if (files.length > 0) {
+      await onSubmitWithAttachment()
+      if (isCreator && files.length > 0) {
+        submitData()
+        setValue("text", "", { shouldValidate: true })
+      } else submit()
+    } else submit()
+  }
+
+  const onSubmitWithAttachment = async () => {
+    // const contentApi = wrapApi(ContentApi)
+    const values = getValues()
+    const content = await Promise.all(
+      files.map(async (file) => {
+        // const url = await uploadFile(file, "uploads")
+        // let contentType = file.type
+        // if (file.type.startsWith("image/")) contentType = "image/jpeg"
+        // if (file.type.startsWith("video/")) contentType = "video/mp4"
+        // const content = await contentApi.create({
+        //   CreateContentRequestDto: {
+        //     url,
+        //     contentType
+        //   }
+        // })
+        // return content.id
+        return file
+      })
+    )
+    const { postId } = await createPost({ ...values, content })
+    const uploadedAttachment = [postId]
+    setAttachments(uploadedAttachment)
+    setFiles([])
+    setValue("postPrice", "", { shouldValidate: true })
+    setTargetAcquired(!targetAcquired)
+    // reset()
+  }
+
+  const createPost = async (values) => {
+    console.log(values)
+    const api = wrapApi(PostApi)
+    const result = await mutate(
+      [`/post/creator/`, user?.username],
+      async () =>
+        await api.createPost({
+          createPostRequestDto: {
+            isMessage: true,
+            price: targetAcquired ? parseInt(postPrice) : 0,
+            contentIds: ["be06dd06-303f-11ed-ae7a-0242ac120002"],
+            passIds: [],
+            tags: [],
+            text
+          }
+        }),
+      {
+        populateCache: (post, previousPosts) => {
+          if (!previousPosts)
+            return {
+              count: 1,
+              cursor: user?.username,
+              posts: [post]
+            }
+          else
+            return {
+              count: previousPosts.count + 1,
+              cursor: previousPosts.cursor,
+              posts: [post, ...previousPosts.posts]
+            }
+        },
+        // Since the API already gives us the updated information,
+        // we don't need to revalidate here.
+        revalidate: false
+      }
+    )
+    return result.posts[0]
+  }
+
+  const registerMessage = async () => {
+    return await api.sendMessage({
+      sendMessageRequestDto: {
+        text,
+        attachments: [],
+        channelId,
+        tipAmount: 0,
+        payinMethod
+      }
+    })
+  }
+
+  const registerMessageData = async () => {
+    return await api.sendMessageData({
+      sendMessageRequestDto: {
+        text,
+        attachments,
+        channelId,
+        tipAmount: 0,
+        payinMethod
+      }
+    })
+  }
+
+  const onCallback = (error) => {
+    if (!error) {
+      setValue("text", "", { shouldValidate: true })
+    }
+  }
+
+  const { blocked, amountUSD, submitting, loading, submit, submitData } =
+    usePay(registerMessage, registerMessageData, onCallback)
 
   const onMediaHeaderChange = (event) => {
     if (typeof event !== "string") return onFileInputChange(event)
@@ -100,33 +216,15 @@ const MessagingInput = () => {
     if (files.length + _files.length > MAX_FILES) return // TODO: max file limit error message
     setFiles([...files, ..._files])
   }
+  const onTextChange = (_event, keyDownEvent) => {
+    if (keyDownEvent.code === "Enter" && !keyDownEvent.shiftKey) {
+      onSubmit()
+      setValue("text", "", { shouldValidate: true })
+    }
+  }
   const onRemove = (index) => {
     setFiles(files.filter((_, i) => i !== index))
   }
-
-  const onChange = useCallback(
-    (event) => {
-      const { value } = event.target
-      const deletePressed =
-        event.nativeEvent?.inputType === "deleteContentBackward"
-
-      if (messageInput.text.length === 1 && deletePressed) {
-        setGiphyState(false)
-      }
-
-      if (
-        !giphyState &&
-        messageInput.text.startsWith("/giphy") &&
-        !messageInput.numberOfUploads
-      ) {
-        event.target.value = value.replace("/giphy", "")
-        setGiphyState(true)
-      }
-
-      messageInput.handleChange(event)
-    },
-    [giphyState, messageInput, setGiphyState]
-  )
 
   return (
     <div>
@@ -432,7 +530,7 @@ const MessagingInput = () => {
         )}
         <div className="w-full">
           <div className="messaging-input__container">
-            <div
+            {/* <div
               className="messaging-input__button emoji-button"
               role="button"
               aria-roledescription="button"
@@ -442,18 +540,20 @@ const MessagingInput = () => {
               <div className="pt-[9px]">
                 <EmojiIcon />
               </div>
-            </div>
+            </div> */}
             <div className="messaging-input__input-wrapper">
-              {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
-
-              <ChatAutoComplete
-                onChange={onChange}
-                rows={3}
-                placeholder="Send a message"
+              <FormInput
+                register={register}
+                type="text-area"
+                name="text"
+                className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
+                placeholder="Send a message.."
+                rows={4}
+                cols={40}
+                options={{ onChange: onTextChange }}
               />
             </div>
           </div>
-          <EmojiPicker />
         </div>
 
         <div className="flex w-full items-center justify-between border-t border-passes-dark-200 py-1 pr-5">
@@ -467,16 +567,17 @@ const MessagingInput = () => {
             />
           </div>
           <div>
-            <div
-              className="messaging-input__button"
-              role="button"
-              aria-roledescription="button"
-              onClick={messageInput.handleSubmit}
-            >
-              <button className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white">
-                Send message
-              </button>
-            </div>
+            {channelId && (
+              <SendMessageButton
+                submit={onSubmit}
+                blocked={blocked}
+                submitting={submitting}
+                loading={loading}
+                amountUSD={amountUSD}
+                isCreator={isCreator}
+                blockSendMessage={text?.length < 1}
+              />
+            )}
           </div>
         </div>
       </div>

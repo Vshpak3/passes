@@ -628,14 +628,14 @@ export class MessagesService {
 
   async getChannelSettings(userId: string, channelId: string) {
     return new ChannelSettingsDto(
-      await this.dbReader(ChannelSettingsEntity.table)
-        .where(
-          ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
-            user: userId,
-            channelId: channelId,
-          }),
-        )
-        .orWhere('other_user', userId),
+      await this.dbReader(ChannelSettingsEntity.table).where(
+        ChannelSettingsEntity.toDict<ChannelSettingsEntity>({
+          user: userId,
+          channelId: channelId,
+        }),
+      ),
+      // TODO: this column does not exist on db
+      // .orWhere('other_user', userId),
     )
   }
 

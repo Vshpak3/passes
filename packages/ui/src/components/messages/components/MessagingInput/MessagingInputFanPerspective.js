@@ -1,51 +1,75 @@
-import classNames from "classnames"
-import React, { useCallback, useContext } from "react"
+import { MessagesApi } from "@passes/api-client/apis"
+import React from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { ChatAutoComplete, useMessageInputContext } from "stream-chat-react"
-
-import { LightningBoltSmall } from "../../assets"
-import { GiphyContext } from "../../index.js"
-
-const GiphyIcon = () => (
-  <div className="giphy-icon__wrapper">
-    <LightningBoltSmall />
-    <p className="giphy-icon__text">GIPHY</p>
-  </div>
-)
+import { SendMessageButton } from "src/components/payment/send-message"
+import { wrapApi } from "src/helpers"
+import { useChat } from "src/hooks"
+import { usePay } from "src/hooks/usePay"
+import { ChatContext, useChatContext } from "stream-chat-react"
 
 const MessagingInputFanPerspective = () => {
-  const { giphyState, setGiphyState } = useContext(GiphyContext)
-  const messageInput = useMessageInputContext()
-  const { register, watch } = useForm({
-    defaultValues: {}
-  })
-  const tip = watch("tipAmount")
+  const { channel: activeChannel, client } = useChatContext(ChatContext)
 
-  const onChange = useCallback(
-    (event) => {
-      const { value } = event.target
-      const deletePressed =
-        event.nativeEvent?.inputType === "deleteContentBackward"
-
-      if (messageInput.text.length === 1 && deletePressed) {
-        setGiphyState(false)
-      }
-
-      if (
-        !giphyState &&
-        messageInput.text.startsWith("/giphy") &&
-        !messageInput.numberOfUploads
-      ) {
-        event.target.value = value.replace("/giphy", "")
-        setGiphyState(true)
-      }
-
-      messageInput.handleChange(event)
-    },
-    [giphyState, messageInput, setGiphyState]
+  const members = Object.values(activeChannel?.state?.members).filter(
+    ({ user }) => user?.id !== client.userID
   )
+  const { channelId } = useChat(members[0]?.user.name)
+  const { register, setValue, watch } = useForm({
+    defaultValues: {
+      tipAmount: 0
+    }
+  })
+  const text = watch("text")
+  const tip = watch("tipAmount", 0)
+  const payinMethod = undefined
+  const api = wrapApi(MessagesApi)
 
+  const onSubmit = async () => {
+    if (tip > 0 && text?.length > 0) submitData()
+    else if (text?.length < 1) return null
+    else submit()
+  }
+
+  const registerMessage = async () => {
+    return await api.sendMessage({
+      sendMessageRequestDto: {
+        text,
+        attachments: [],
+        channelId,
+        tipAmount: 0,
+        // tipAmount: tip.length > 0 ? parseInt(tip) : 0,
+        // TODO: fix sending tip when payin method is solved. Meaning having cc registered
+        payinMethod
+      }
+    })
+  }
+
+  const registerMessageData = async () => {
+    return await api.sendMessageData({
+      sendMessageRequestDto: {
+        text,
+        attachments: [],
+        channelId,
+        tipAmount: parseInt(tip),
+        payinMethod
+      }
+    })
+  }
+
+  const onCallback = (error) => {
+    if (!error) {
+      setValue("text", "", { shouldValidate: true })
+    }
+  }
+  const { blocked, amountUSD, submitting, loading, submit, submitData } =
+    usePay(registerMessage, registerMessageData, onCallback)
+  const onTextChange = (_event, keyDownEvent) => {
+    if (keyDownEvent.code === "Enter" && !keyDownEvent.shiftKey) {
+      onSubmit()
+      setValue("text", "", { shouldValidate: true })
+    }
+  }
   return (
     <div>
       <style>{`
@@ -274,32 +298,20 @@ const MessagingInputFanPerspective = () => {
       <div className="str-chat__messaging-input flex flex-col-reverse sm:flex sm:flex-row">
         <div className="flex h-full w-full flex-col justify-between">
           <div className="messaging-input__container">
-            <div
-              className="messaging-input__button emoji-button"
-              role="button"
-              aria-roledescription="button"
-              onClick={messageInput.openEmojiPicker}
-              ref={messageInput.emojiPickerRef}
-            ></div>
-            <div className="messaging-input__input-wrapper">
-              {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
-
-              <ChatAutoComplete
-                onChange={onChange}
-                rows={3}
-                placeholder="Send a message"
-              />
+            <div className="messaging-input__container">
+              <div className="messaging-input__input-wrapper">
+                <FormInput
+                  register={register}
+                  type="text-area"
+                  name="text"
+                  className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
+                  placeholder="Send a message.."
+                  rows={4}
+                  cols={40}
+                  options={{ onChange: onTextChange }}
+                />
+              </div>
             </div>
-          </div>
-          <div
-            className="messaging-input__button"
-            role="button"
-            aria-roledescription="button"
-            onClick={messageInput.handleSubmit}
-          >
-            <button className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white">
-              Send message
-            </button>
           </div>
         </div>
         <div className="border-l-none flex flex-col justify-between border-t border-passes-dark-200 sm:max-w-[254px] sm:items-center sm:justify-center sm:border-t-0 sm:border-l">
@@ -308,22 +320,26 @@ const MessagingInputFanPerspective = () => {
               register={register}
               type="number"
               name="tipAmount"
-              placeholder="50"
+              placeholder="0"
+              min="0"
               className="w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0 sm:w-full"
             />
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
-              Minimum $5
+              minimum $5 tip
             </span>
           </div>
-          <button
-            disabled={tip < 4}
-            className={classNames(
-              tip < 4 ? "cursor-not-allowed opacity-50" : "",
-              "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
-            )}
-          >
-            Send Tip
-          </button>
+          {channelId && (
+            <SendMessageButton
+              submit={onSubmit}
+              blocked={blocked}
+              submitting={submitting}
+              loading={loading}
+              amountUSD={amountUSD}
+              isCreator={false}
+              blockSendMessage={text?.length < 1}
+              tip={tip}
+            />
+          )}
         </div>
       </div>
     </div>
