@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import UsersIcon from "public/icons/messages-users-icon.svg"
 import DeleteIcon from "public/icons/messages-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
@@ -6,7 +7,7 @@ import React, { Dispatch, SetStateAction } from "react"
 import { FormInput } from "src/components/atoms"
 import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
-import { classNames, formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers"
 
 import { List } from "../../organisms/DirectMessage"
 import { ListsDropdown } from "./messages-lists-dropdown"

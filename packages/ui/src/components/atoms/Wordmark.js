@@ -1,5 +1,5 @@
+import classNames from "classnames"
 import NextLink from "next/link"
-import { classNames } from "src/helpers"
 
 const Wordmark = ({
   className = "",

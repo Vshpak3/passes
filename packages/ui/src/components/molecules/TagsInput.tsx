@@ -1,6 +1,6 @@
+import classNames from "classnames"
 import PlusSignIcon from "public/icons/plus-sign.svg"
 import React, { useRef, useState } from "react"
-import { classNames } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 import {

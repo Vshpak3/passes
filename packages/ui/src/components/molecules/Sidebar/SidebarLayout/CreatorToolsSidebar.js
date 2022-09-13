@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react"
+import classNames from "classnames"
 import React, { Fragment } from "react"
-import { classNames } from "src/helpers"
 
 const CreatorToolsSidebar = ({
   active,

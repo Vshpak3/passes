@@ -1,5 +1,5 @@
+import classNames from "classnames"
 import { useEffect, useRef } from "react"
-import { classNames } from "src/helpers"
 
 import { useReactMediaRecorder } from "./recorder"
 

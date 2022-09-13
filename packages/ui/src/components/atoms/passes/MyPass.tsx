@@ -1,8 +1,8 @@
 import { PassHolderDto } from "@passes/api-client"
+import classNames from "classnames"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { useEffect, useState } from "react"
 
-import { classNames } from "../../../helpers"
 import { PassTypeEnum } from "../../../hooks/useCreatePass"
 
 interface IPassTileLabel {

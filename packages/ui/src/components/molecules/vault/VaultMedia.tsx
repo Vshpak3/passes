@@ -1,8 +1,8 @@
 import { ContentDto } from "@passes/api-client"
+import classNames from "classnames"
 import Image from "next/image"
 import { Dispatch, SetStateAction } from "react"
 import { VaultItemDate } from "src/components/atoms"
-import { classNames } from "src/helpers"
 import useVaultSelect from "src/hooks/vault/useVaultSelect"
 
 interface IVaultMediaItem {

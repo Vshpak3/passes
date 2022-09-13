@@ -1,7 +1,7 @@
+import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
 import { MdDelete } from "react-icons/md"
-import { classNames } from "src/helpers"
 
 const filterStyles = {
   button: "rounded-[56px] bg-[#FFFEFF]/10 hover:bg-[#EDEDED]",

@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react"
+import classNames from "classnames"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import React, { Fragment } from "react"
-import { classNames } from "src/helpers"
 
 function SidebarMobileChildItem({ active, subItem, setActive }) {
   const isActive = subItem.id === active

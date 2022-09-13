@@ -1,6 +1,6 @@
+import classNames from "classnames"
 import FilterLines from "public/icons/filter-lines.svg"
 import React, { useRef, useState } from "react"
-import { classNames } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 import { Filters } from "./types"

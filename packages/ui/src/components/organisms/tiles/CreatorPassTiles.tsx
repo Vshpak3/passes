@@ -1,6 +1,6 @@
 import { PassDto } from "@passes/api-client"
+import classNames from "classnames"
 import React, { useEffect, useState } from "react"
-import { classNames } from "src/helpers"
 
 import CreatorPassModal from "../CreatorPassModal"
 

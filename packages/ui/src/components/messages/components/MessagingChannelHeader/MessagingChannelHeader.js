@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
 import SearchIcon from "public/icons/messages-search-icon.svg"
@@ -7,7 +8,6 @@ import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { classNames } from "src/helpers"
 import {
   Avatar,
   useChannelStateContext,

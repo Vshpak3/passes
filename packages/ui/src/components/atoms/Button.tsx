@@ -1,9 +1,9 @@
+import classNames from "classnames"
 import clsx from "clsx"
 import HeaderChatIcon from "public/icons/header-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 
-import { classNames } from "../../helpers"
 import Text from "./Text"
 
 export enum ButtonTypeEnum {

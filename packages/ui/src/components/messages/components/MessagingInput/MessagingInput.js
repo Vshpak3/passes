@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useCallback, useContext, useState } from "react"
@@ -6,7 +7,7 @@ import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
 import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
-import { classNames, formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers"
 import {
   ChatAutoComplete,
   EmojiPicker,

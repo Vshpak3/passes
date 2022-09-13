@@ -1,6 +1,5 @@
+import classNames from "classnames"
 import React from "react"
-
-import { classNames } from "../../helpers"
 
 interface IFormContainer {
   children: React.ReactNode

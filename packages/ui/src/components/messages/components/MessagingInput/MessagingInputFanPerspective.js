@@ -1,7 +1,7 @@
+import classNames from "classnames"
 import React, { useCallback, useContext } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { classNames } from "src/helpers"
 import { ChatAutoComplete, useMessageInputContext } from "stream-chat-react"
 
 import { LightningBoltSmall } from "../../assets"

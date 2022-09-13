@@ -1,5 +1,5 @@
+import classNames from "classnames"
 import React, { Dispatch, SetStateAction } from "react"
-import { classNames } from "src/helpers"
 
 import { List } from "../../organisms/DirectMessage"
 import { MessagesSearchInput } from "./messages-search-input"

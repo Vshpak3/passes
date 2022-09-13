@@ -1,5 +1,5 @@
+import classNames from "classnames"
 import { VaultDeselectButton, VaultSelectLabel } from "src/components/atoms"
-import { classNames } from "src/helpers"
 
 interface IVaultSelectContainer {
   selectedItems: Array<string>

@@ -1,7 +1,7 @@
 import { Menu, Transition } from "@headlessui/react"
+import classNames from "classnames"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import React, { Dispatch, Fragment, SetStateAction } from "react"
-import { classNames } from "src/helpers"
 
 import { List } from "../../organisms/DirectMessage"
 

@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react"
+import classNames from "classnames"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import React from "react"
-import { classNames } from "src/helpers"
 
 const CreatorToolsItem = ({ active, openCollapsedAdditionalSidebar }) => {
   return (

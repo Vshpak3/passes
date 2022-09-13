@@ -1,10 +1,11 @@
 import { PaymentApi } from "@passes/api-client"
+import classNames from "classnames"
 import moment from "moment"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "src/components/atoms"
 import { Popover } from "src/components/organisms"
-import { classNames, wrapApi } from "src/helpers"
+import { wrapApi } from "src/helpers"
 import { useLocalStorage, useUser } from "src/hooks"
 
 const PAGE_SIZE = 5
