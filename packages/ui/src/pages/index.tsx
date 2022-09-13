@@ -172,7 +172,7 @@ const HomePage = () => {
               >
                 Terms of Service
               </a>{" "}
-              - All rights reserved by <a href="">Passes.</a>
+              - All rights reserved by Passes.
             </p>
           </span>
         </div>
