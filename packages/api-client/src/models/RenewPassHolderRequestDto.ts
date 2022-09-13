@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -38,6 +38,16 @@ export interface RenewPassHolderRequestDto {
      * @memberof RenewPassHolderRequestDto
      */
     payinMethod?: PayinMethodDto;
+}
+
+/**
+ * Check if a given object implements the RenewPassHolderRequestDto interface.
+ */
+export function instanceOfRenewPassHolderRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "passHolderId" in value;
+
+    return isInstance;
 }
 
 export function RenewPassHolderRequestDtoFromJSON(json: any): RenewPassHolderRequestDto {

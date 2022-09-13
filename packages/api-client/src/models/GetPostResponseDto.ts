@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ContentDto } from './ContentDto';
 import {
-    ContentDto,
     ContentDtoFromJSON,
     ContentDtoFromJSONTyped,
     ContentDtoToJSON,
@@ -140,6 +140,28 @@ export interface GetPostResponseDto {
      * @memberof GetPostResponseDto
      */
     totalTipAmount?: number;
+}
+
+/**
+ * Check if a given object implements the GetPostResponseDto interface.
+ */
+export function instanceOfGetPostResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "paywall" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "displayName" in value;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "numLikes" in value;
+    isInstance = isInstance && "numComments" in value;
+    isInstance = isInstance && "numPurchases" in value;
+    isInstance = isInstance && "earningsPurchases" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "updatedAt" in value;
+
+    return isInstance;
 }
 
 export function GetPostResponseDtoFromJSON(json: any): GetPostResponseDto {

@@ -57,6 +57,17 @@ export const GetCreatorSettingsResponseDtoPayoutFrequencyEnum = {
 export type GetCreatorSettingsResponseDtoPayoutFrequencyEnum = typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum[keyof typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum];
 
 
+/**
+ * Check if a given object implements the GetCreatorSettingsResponseDto interface.
+ */
+export function instanceOfGetCreatorSettingsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "minimumTipAmount" in value;
+    isInstance = isInstance && "payoutFrequency" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorSettingsResponseDtoFromJSON(json: any): GetCreatorSettingsResponseDto {
     return GetCreatorSettingsResponseDtoFromJSONTyped(json, false);
 }

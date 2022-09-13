@@ -14,8 +14,10 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  GetFeedResponseDto,
+} from '../models';
 import {
-    GetFeedResponseDto,
     GetFeedResponseDtoFromJSON,
     GetFeedResponseDtoToJSON,
 } from '../models';
@@ -46,7 +48,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a users feed
      */
-    async getFeedRaw(requestParameters: GetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+    async getFeedRaw(requestParameters: GetFeedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
             throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling getFeed.');
         }
@@ -80,7 +82,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a users feed
      */
-    async getFeed(requestParameters: GetFeedRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
+    async getFeed(requestParameters: GetFeedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
         const response = await this.getFeedRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -88,7 +90,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a feed for a given creator
      */
-    async getFeedForCreatorRaw(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+    async getFeedForCreatorRaw(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
             throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling getFeedForCreator.');
         }
@@ -126,7 +128,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a feed for a given creator
      */
-    async getFeedForCreator(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
+    async getFeedForCreator(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
         const response = await this.getFeedForCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -134,7 +136,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets my messages
      */
-    async getMessagesForOwnerRaw(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+    async getMessagesForOwnerRaw(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.cursor === null || requestParameters.cursor === undefined) {
             throw new runtime.RequiredError('cursor','Required parameter requestParameters.cursor was null or undefined when calling getMessagesForOwner.');
         }
@@ -168,7 +170,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets my messages
      */
-    async getMessagesForOwner(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
+    async getMessagesForOwner(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
         const response = await this.getMessagesForOwnerRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -176,7 +178,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets my posts
      */
-    async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+    async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
         if (requestParameters.scheduledOnly === null || requestParameters.scheduledOnly === undefined) {
             throw new runtime.RequiredError('scheduledOnly','Required parameter requestParameters.scheduledOnly was null or undefined when calling getPostsForOwner.');
         }
@@ -214,7 +216,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets my posts
      */
-    async getPostsForOwner(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFeedResponseDto> {
+    async getPostsForOwner(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
         const response = await this.getPostsForOwnerRaw(requestParameters, initOverrides);
         return await response.value();
     }

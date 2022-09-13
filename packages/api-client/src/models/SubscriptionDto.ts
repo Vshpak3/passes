@@ -13,26 +13,26 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleCardDto } from './CircleCardDto';
 import {
-    CircleCardDto,
     CircleCardDtoFromJSON,
     CircleCardDtoFromJSONTyped,
     CircleCardDtoToJSON,
 } from './CircleCardDto';
+import type { PassDto } from './PassDto';
 import {
-    PassDto,
     PassDtoFromJSON,
     PassDtoFromJSONTyped,
     PassDtoToJSON,
 } from './PassDto';
+import type { PassHolderDto } from './PassHolderDto';
 import {
-    PassHolderDto,
     PassHolderDtoFromJSON,
     PassHolderDtoFromJSONTyped,
     PassHolderDtoToJSON,
 } from './PassHolderDto';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -112,6 +112,20 @@ export const SubscriptionDtoSubscriptionStatusEnum = {
 } as const;
 export type SubscriptionDtoSubscriptionStatusEnum = typeof SubscriptionDtoSubscriptionStatusEnum[keyof typeof SubscriptionDtoSubscriptionStatusEnum];
 
+
+/**
+ * Check if a given object implements the SubscriptionDto interface.
+ */
+export function instanceOfSubscriptionDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "payinMethod" in value;
+    isInstance = isInstance && "subscriptionStatus" in value;
+    isInstance = isInstance && "amount" in value;
+
+    return isInstance;
+}
 
 export function SubscriptionDtoFromJSON(json: any): SubscriptionDto {
     return SubscriptionDtoFromJSONTyped(json, false);

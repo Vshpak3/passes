@@ -57,6 +57,15 @@ export interface UpdateNotificationSettingsRequestDto {
     mentionEmails?: boolean;
 }
 
+/**
+ * Check if a given object implements the UpdateNotificationSettingsRequestDto interface.
+ */
+export function instanceOfUpdateNotificationSettingsRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function UpdateNotificationSettingsRequestDtoFromJSON(json: any): UpdateNotificationSettingsRequestDto {
     return UpdateNotificationSettingsRequestDtoFromJSONTyped(json, false);
 }

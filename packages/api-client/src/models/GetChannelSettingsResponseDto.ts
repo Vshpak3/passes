@@ -45,6 +45,19 @@ export interface GetChannelSettingsResponseDto {
     unlimitedMessages: boolean;
 }
 
+/**
+ * Check if a given object implements the GetChannelSettingsResponseDto interface.
+ */
+export function instanceOfGetChannelSettingsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "unlimitedMessages" in value;
+
+    return isInstance;
+}
+
 export function GetChannelSettingsResponseDtoFromJSON(json: any): GetChannelSettingsResponseDto {
     return GetChannelSettingsResponseDtoFromJSONTyped(json, false);
 }

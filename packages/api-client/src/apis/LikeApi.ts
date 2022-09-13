@@ -35,7 +35,7 @@ export class LikeApi extends runtime.BaseAPI {
     /**
      * Check if post is liked
      */
-    async checkLikeRaw(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async checkLikeRaw(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling checkLike.');
         }
@@ -65,7 +65,7 @@ export class LikeApi extends runtime.BaseAPI {
     /**
      * Check if post is liked
      */
-    async checkLike(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async checkLike(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.checkLikeRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -73,7 +73,7 @@ export class LikeApi extends runtime.BaseAPI {
     /**
      * Creates a like on a post
      */
-    async likePostRaw(requestParameters: LikePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async likePostRaw(requestParameters: LikePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling likePost.');
         }
@@ -103,14 +103,14 @@ export class LikeApi extends runtime.BaseAPI {
     /**
      * Creates a like on a post
      */
-    async likePost(requestParameters: LikePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async likePost(requestParameters: LikePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.likePostRaw(requestParameters, initOverrides);
     }
 
     /**
      * Removes a like on a post
      */
-    async unlikePostRaw(requestParameters: UnlikePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async unlikePostRaw(requestParameters: UnlikePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling unlikePost.');
         }
@@ -140,7 +140,7 @@ export class LikeApi extends runtime.BaseAPI {
     /**
      * Removes a like on a post
      */
-    async unlikePost(requestParameters: UnlikePostRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async unlikePost(requestParameters: UnlikePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.unlikePostRaw(requestParameters, initOverrides);
     }
 

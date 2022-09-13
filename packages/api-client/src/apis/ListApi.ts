@@ -14,29 +14,31 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AddListMembersRequestDto,
+  CreateListRequestDto,
+  EditListNameRequestDto,
+  GetListMembersRequestto,
+  GetListMembersResponseDto,
+  GetListResponseDto,
+  GetListsResponseDto,
+  RemoveListMembersRequestDto,
+} from '../models';
 import {
-    AddListMembersRequestDto,
     AddListMembersRequestDtoFromJSON,
     AddListMembersRequestDtoToJSON,
-    CreateListRequestDto,
     CreateListRequestDtoFromJSON,
     CreateListRequestDtoToJSON,
-    EditListNameRequestDto,
     EditListNameRequestDtoFromJSON,
     EditListNameRequestDtoToJSON,
-    GetListMembersRequestto,
     GetListMembersRequesttoFromJSON,
     GetListMembersRequesttoToJSON,
-    GetListMembersResponseDto,
     GetListMembersResponseDtoFromJSON,
     GetListMembersResponseDtoToJSON,
-    GetListResponseDto,
     GetListResponseDtoFromJSON,
     GetListResponseDtoToJSON,
-    GetListsResponseDto,
     GetListsResponseDtoFromJSON,
     GetListsResponseDtoToJSON,
-    RemoveListMembersRequestDto,
     RemoveListMembersRequestDtoFromJSON,
     RemoveListMembersRequestDtoToJSON,
 } from '../models';
@@ -77,7 +79,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Add ListMembers to a List
      */
-    async addListMembersRaw(requestParameters: AddListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async addListMembersRaw(requestParameters: AddListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.addListMembersRequestDto === null || requestParameters.addListMembersRequestDto === undefined) {
             throw new runtime.RequiredError('addListMembersRequestDto','Required parameter requestParameters.addListMembersRequestDto was null or undefined when calling addListMembers.');
         }
@@ -110,14 +112,14 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Add ListMembers to a List
      */
-    async addListMembers(requestParameters: AddListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async addListMembers(requestParameters: AddListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.addListMembersRaw(requestParameters, initOverrides);
     }
 
     /**
      * Creates List for a user
      */
-    async createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.createListRequestDto === null || requestParameters.createListRequestDto === undefined) {
             throw new runtime.RequiredError('createListRequestDto','Required parameter requestParameters.createListRequestDto was null or undefined when calling createList.');
         }
@@ -150,14 +152,14 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Creates List for a user
      */
-    async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.createListRaw(requestParameters, initOverrides);
     }
 
     /**
      * Delete list for user
      */
-    async deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.listId === null || requestParameters.listId === undefined) {
             throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling deleteList.');
         }
@@ -187,7 +189,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Delete list for user
      */
-    async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deleteListRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -195,7 +197,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Edit list name
      */
-    async editListNameRaw(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async editListNameRaw(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.editListNameRequestDto === null || requestParameters.editListNameRequestDto === undefined) {
             throw new runtime.RequiredError('editListNameRequestDto','Required parameter requestParameters.editListNameRequestDto was null or undefined when calling editListName.');
         }
@@ -228,7 +230,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Edit list name
      */
-    async editListName(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async editListName(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.editListNameRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -236,7 +238,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get list for user
      */
-    async getListRaw(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListResponseDto>> {
+    async getListRaw(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListResponseDto>> {
         if (requestParameters.listId === null || requestParameters.listId === undefined) {
             throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling getList.');
         }
@@ -266,7 +268,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get list for user
      */
-    async getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListResponseDto> {
+    async getList(requestParameters: GetListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListResponseDto> {
         const response = await this.getListRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -274,7 +276,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get list members for user
      */
-    async getListMembersRaw(requestParameters: GetListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+    async getListMembersRaw(requestParameters: GetListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
         if (requestParameters.getListMembersRequestto === null || requestParameters.getListMembersRequestto === undefined) {
             throw new runtime.RequiredError('getListMembersRequestto','Required parameter requestParameters.getListMembersRequestto was null or undefined when calling getListMembers.');
         }
@@ -307,7 +309,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get list members for user
      */
-    async getListMembers(requestParameters: GetListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListMembersResponseDto> {
+    async getListMembers(requestParameters: GetListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
         const response = await this.getListMembersRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -315,7 +317,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async getListsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetListsResponseDto>> {
+    async getListsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -341,7 +343,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async getLists(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetListsResponseDto> {
+    async getLists(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListsResponseDto> {
         const response = await this.getListsRaw(initOverrides);
         return await response.value();
     }
@@ -349,7 +351,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Remove ListMembers from a List
      */
-    async removeListMembersRaw(requestParameters: RemoveListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async removeListMembersRaw(requestParameters: RemoveListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.removeListMembersRequestDto === null || requestParameters.removeListMembersRequestDto === undefined) {
             throw new runtime.RequiredError('removeListMembersRequestDto','Required parameter requestParameters.removeListMembersRequestDto was null or undefined when calling removeListMembers.');
         }
@@ -382,7 +384,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Remove ListMembers from a List
      */
-    async removeListMembers(requestParameters: RemoveListMembersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async removeListMembers(requestParameters: RemoveListMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.removeListMembersRaw(requestParameters, initOverrides);
     }
 

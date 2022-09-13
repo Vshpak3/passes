@@ -27,6 +27,16 @@ export interface PhantomCircleUSDCEntryRequestDto {
     payinId: string;
 }
 
+/**
+ * Check if a given object implements the PhantomCircleUSDCEntryRequestDto interface.
+ */
+export function instanceOfPhantomCircleUSDCEntryRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+
+    return isInstance;
+}
+
 export function PhantomCircleUSDCEntryRequestDtoFromJSON(json: any): PhantomCircleUSDCEntryRequestDto {
     return PhantomCircleUSDCEntryRequestDtoFromJSONTyped(json, false);
 }

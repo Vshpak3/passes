@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ListMemberDto } from './ListMemberDto';
 import {
-    ListMemberDto,
     ListMemberDtoFromJSON,
     ListMemberDtoFromJSONTyped,
     ListMemberDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetListMembersResponseDto {
      * @memberof GetListMembersResponseDto
      */
     listMembers: Array<ListMemberDto>;
+}
+
+/**
+ * Check if a given object implements the GetListMembersResponseDto interface.
+ */
+export function instanceOfGetListMembersResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listMembers" in value;
+
+    return isInstance;
 }
 
 export function GetListMembersResponseDtoFromJSON(json: any): GetListMembersResponseDto {

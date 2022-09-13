@@ -57,6 +57,16 @@ export interface CircleBankAddressDto {
     district?: string;
 }
 
+/**
+ * Check if a given object implements the CircleBankAddressDto interface.
+ */
+export function instanceOfCircleBankAddressDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "country" in value;
+
+    return isInstance;
+}
+
 export function CircleBankAddressDtoFromJSON(json: any): CircleBankAddressDto {
     return CircleBankAddressDtoFromJSONTyped(json, false);
 }

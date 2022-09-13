@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MessageDto } from './MessageDto';
 import {
-    MessageDto,
     MessageDtoFromJSON,
     MessageDtoFromJSONTyped,
     MessageDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetMessagesResponseDto {
      * @memberof GetMessagesResponseDto
      */
     messages: Array<MessageDto>;
+}
+
+/**
+ * Check if a given object implements the GetMessagesResponseDto interface.
+ */
+export function instanceOfGetMessagesResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "messages" in value;
+
+    return isInstance;
 }
 
 export function GetMessagesResponseDtoFromJSON(json: any): GetMessagesResponseDto {

@@ -51,6 +51,20 @@ export interface ContentDto {
     order: string;
 }
 
+/**
+ * Check if a given object implements the ContentDto interface.
+ */
+export function instanceOfContentDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "signedUrl" in value;
+    isInstance = isInstance && "contentType" in value;
+    isInstance = isInstance && "order" in value;
+
+    return isInstance;
+}
+
 export function ContentDtoFromJSON(json: any): ContentDto {
     return ContentDtoFromJSONTyped(json, false);
 }

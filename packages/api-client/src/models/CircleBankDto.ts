@@ -51,6 +51,19 @@ export interface CircleBankDto {
     country: string;
 }
 
+/**
+ * Check if a given object implements the CircleBankDto interface.
+ */
+export function instanceOfCircleBankDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "country" in value;
+
+    return isInstance;
+}
+
 export function CircleBankDtoFromJSON(json: any): CircleBankDto {
     return CircleBankDtoFromJSONTyped(json, false);
 }

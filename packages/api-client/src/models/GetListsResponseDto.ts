@@ -27,6 +27,16 @@ export interface GetListsResponseDto {
     lists: Array<string>;
 }
 
+/**
+ * Check if a given object implements the GetListsResponseDto interface.
+ */
+export function instanceOfGetListsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "lists" in value;
+
+    return isInstance;
+}
+
 export function GetListsResponseDtoFromJSON(json: any): GetListsResponseDto {
     return GetListsResponseDtoFromJSONTyped(json, false);
 }

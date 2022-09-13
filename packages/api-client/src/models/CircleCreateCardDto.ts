@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BillingDetailsDto } from './BillingDetailsDto';
 import {
-    BillingDetailsDto,
     BillingDetailsDtoFromJSON,
     BillingDetailsDtoFromJSONTyped,
     BillingDetailsDtoToJSON,
 } from './BillingDetailsDto';
+import type { CircleMetaDataDto } from './CircleMetaDataDto';
 import {
-    CircleMetaDataDto,
     CircleMetaDataDtoFromJSON,
     CircleMetaDataDtoFromJSONTyped,
     CircleMetaDataDtoToJSON,
@@ -74,6 +74,22 @@ export interface CircleCreateCardDto {
      * @memberof CircleCreateCardDto
      */
     metadata: CircleMetaDataDto;
+}
+
+/**
+ * Check if a given object implements the CircleCreateCardDto interface.
+ */
+export function instanceOfCircleCreateCardDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "idempotencyKey" in value;
+    isInstance = isInstance && "keyId" in value;
+    isInstance = isInstance && "encryptedData" in value;
+    isInstance = isInstance && "billingDetails" in value;
+    isInstance = isInstance && "expMonth" in value;
+    isInstance = isInstance && "expYear" in value;
+    isInstance = isInstance && "metadata" in value;
+
+    return isInstance;
 }
 
 export function CircleCreateCardDtoFromJSON(json: any): CircleCreateCardDto {

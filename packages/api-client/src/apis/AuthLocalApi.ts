@@ -14,20 +14,22 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AuthTokenResponseDto,
+  CreateLocalUserRequestDto,
+  LocalUserLoginRequestDto,
+  ResetPasswordRequestDto,
+  UpdatePasswordRequestDto,
+} from '../models';
 import {
-    AuthTokenResponseDto,
     AuthTokenResponseDtoFromJSON,
     AuthTokenResponseDtoToJSON,
-    CreateLocalUserRequestDto,
     CreateLocalUserRequestDtoFromJSON,
     CreateLocalUserRequestDtoToJSON,
-    LocalUserLoginRequestDto,
     LocalUserLoginRequestDtoFromJSON,
     LocalUserLoginRequestDtoToJSON,
-    ResetPasswordRequestDto,
     ResetPasswordRequestDtoFromJSON,
     ResetPasswordRequestDtoToJSON,
-    UpdatePasswordRequestDto,
     UpdatePasswordRequestDtoFromJSON,
     UpdatePasswordRequestDtoToJSON,
 } from '../models';
@@ -56,7 +58,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Change password for current user
      */
-    async changePasswordRaw(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async changePasswordRaw(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.updatePasswordRequestDto === null || requestParameters.updatePasswordRequestDto === undefined) {
             throw new runtime.RequiredError('updatePasswordRequestDto','Required parameter requestParameters.updatePasswordRequestDto was null or undefined when calling changePassword.');
         }
@@ -89,14 +91,14 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Change password for current user
      */
-    async changePassword(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async changePassword(requestParameters: ChangePasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.changePasswordRaw(requestParameters, initOverrides);
     }
 
     /**
      * Create a email and password user
      */
-    async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.createLocalUserRequestDto === null || requestParameters.createLocalUserRequestDto === undefined) {
             throw new runtime.RequiredError('createLocalUserRequestDto','Required parameter requestParameters.createLocalUserRequestDto was null or undefined when calling createEmailPasswordUser.');
         }
@@ -121,7 +123,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Create a email and password user
      */
-    async createEmailPasswordUser(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+    async createEmailPasswordUser(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.createEmailPasswordUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -129,7 +131,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Send reset password email to user
      */
-    async initPasswordResetRaw(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async initPasswordResetRaw(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.resetPasswordRequestDto === null || requestParameters.resetPasswordRequestDto === undefined) {
             throw new runtime.RequiredError('resetPasswordRequestDto','Required parameter requestParameters.resetPasswordRequestDto was null or undefined when calling initPasswordReset.');
         }
@@ -154,14 +156,14 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Send reset password email to user
      */
-    async initPasswordReset(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async initPasswordReset(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.initPasswordResetRaw(requestParameters, initOverrides);
     }
 
     /**
      * Login with email and password
      */
-    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
             throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling loginWithEmailPassword.');
         }
@@ -186,7 +188,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Login with email and password
      */
-    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.loginWithEmailPasswordRaw(requestParameters, initOverrides);
         return await response.value();
     }

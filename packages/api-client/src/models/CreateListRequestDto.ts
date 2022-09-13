@@ -33,6 +33,17 @@ export interface CreateListRequestDto {
     userIds: Array<string>;
 }
 
+/**
+ * Check if a given object implements the CreateListRequestDto interface.
+ */
+export function instanceOfCreateListRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "userIds" in value;
+
+    return isInstance;
+}
+
 export function CreateListRequestDtoFromJSON(json: any): CreateListRequestDto {
     return CreateListRequestDtoFromJSONTyped(json, false);
 }

@@ -33,6 +33,16 @@ export interface GetListMembersRequestto {
     cursor?: string;
 }
 
+/**
+ * Check if a given object implements the GetListMembersRequestto interface.
+ */
+export function instanceOfGetListMembersRequestto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listId" in value;
+
+    return isInstance;
+}
+
 export function GetListMembersRequesttoFromJSON(json: any): GetListMembersRequestto {
     return GetListMembersRequesttoFromJSONTyped(json, false);
 }

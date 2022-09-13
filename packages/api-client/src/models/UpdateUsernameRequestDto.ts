@@ -27,6 +27,16 @@ export interface UpdateUsernameRequestDto {
     username: string;
 }
 
+/**
+ * Check if a given object implements the UpdateUsernameRequestDto interface.
+ */
+export function instanceOfUpdateUsernameRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "username" in value;
+
+    return isInstance;
+}
+
 export function UpdateUsernameRequestDtoFromJSON(json: any): UpdateUsernameRequestDto {
     return UpdateUsernameRequestDtoFromJSONTyped(json, false);
 }

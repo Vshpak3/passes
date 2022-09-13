@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PassDto } from './PassDto';
 import {
-    PassDto,
     PassDtoFromJSON,
     PassDtoFromJSONTyped,
     PassDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetPassesResponseDto {
      * @memberof GetPassesResponseDto
      */
     passes: Array<PassDto>;
+}
+
+/**
+ * Check if a given object implements the GetPassesResponseDto interface.
+ */
+export function instanceOfGetPassesResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "passes" in value;
+
+    return isInstance;
 }
 
 export function GetPassesResponseDtoFromJSON(json: any): GetPassesResponseDto {

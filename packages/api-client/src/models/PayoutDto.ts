@@ -13,20 +13,20 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleBankDto } from './CircleBankDto';
 import {
-    CircleBankDto,
     CircleBankDtoFromJSON,
     CircleBankDtoFromJSONTyped,
     CircleBankDtoToJSON,
 } from './CircleBankDto';
+import type { PayoutMethodDto } from './PayoutMethodDto';
 import {
-    PayoutMethodDto,
     PayoutMethodDtoFromJSON,
     PayoutMethodDtoFromJSONTyped,
     PayoutMethodDtoToJSON,
 } from './PayoutMethodDto';
+import type { WalletDto } from './WalletDto';
 import {
-    WalletDto,
     WalletDtoFromJSON,
     WalletDtoFromJSONTyped,
     WalletDtoToJSON,
@@ -106,6 +106,21 @@ export const PayoutDtoPayoutStatusEnum = {
 } as const;
 export type PayoutDtoPayoutStatusEnum = typeof PayoutDtoPayoutStatusEnum[keyof typeof PayoutDtoPayoutStatusEnum];
 
+
+/**
+ * Check if a given object implements the PayoutDto interface.
+ */
+export function instanceOfPayoutDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "payoutMethod" in value;
+    isInstance = isInstance && "payoutStatus" in value;
+    isInstance = isInstance && "amount" in value;
+    isInstance = isInstance && "createdAt" in value;
+
+    return isInstance;
+}
 
 export function PayoutDtoFromJSON(json: any): PayoutDto {
     return PayoutDtoFromJSONTyped(json, false);

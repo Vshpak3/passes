@@ -45,6 +45,19 @@ export interface MetamaskCircleUSDCEntryResponseDto {
     chainId: number;
 }
 
+/**
+ * Check if a given object implements the MetamaskCircleUSDCEntryResponseDto interface.
+ */
+export function instanceOfMetamaskCircleUSDCEntryResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+    isInstance = isInstance && "tokenAddress" in value;
+    isInstance = isInstance && "depositAddress" in value;
+    isInstance = isInstance && "chainId" in value;
+
+    return isInstance;
+}
+
 export function MetamaskCircleUSDCEntryResponseDtoFromJSON(json: any): MetamaskCircleUSDCEntryResponseDto {
     return MetamaskCircleUSDCEntryResponseDtoFromJSONTyped(json, false);
 }

@@ -33,6 +33,17 @@ export interface UpdatePasswordRequestDto {
     newPassword: string;
 }
 
+/**
+ * Check if a given object implements the UpdatePasswordRequestDto interface.
+ */
+export function instanceOfUpdatePasswordRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "oldPassword" in value;
+    isInstance = isInstance && "newPassword" in value;
+
+    return isInstance;
+}
+
 export function UpdatePasswordRequestDtoFromJSON(json: any): UpdatePasswordRequestDto {
     return UpdatePasswordRequestDtoFromJSONTyped(json, false);
 }

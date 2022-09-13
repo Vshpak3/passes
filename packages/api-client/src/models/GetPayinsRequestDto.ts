@@ -33,6 +33,17 @@ export interface GetPayinsRequestDto {
     limit: number;
 }
 
+/**
+ * Check if a given object implements the GetPayinsRequestDto interface.
+ */
+export function instanceOfGetPayinsRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "offset" in value;
+    isInstance = isInstance && "limit" in value;
+
+    return isInstance;
+}
+
 export function GetPayinsRequestDtoFromJSON(json: any): GetPayinsRequestDto {
     return GetPayinsRequestDtoFromJSONTyped(json, false);
 }

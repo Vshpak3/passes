@@ -39,6 +39,16 @@ export interface ImpersonateUserRequestDto {
     secret: string;
 }
 
+/**
+ * Check if a given object implements the ImpersonateUserRequestDto interface.
+ */
+export function instanceOfImpersonateUserRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+
+    return isInstance;
+}
+
 export function ImpersonateUserRequestDtoFromJSON(json: any): ImpersonateUserRequestDto {
     return ImpersonateUserRequestDtoFromJSONTyped(json, false);
 }

@@ -14,35 +14,37 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  CreatePassHolderRequestDto,
+  CreatePassRequestDto,
+  GetPassHoldersRequestDto,
+  GetPassHoldersResponseDto,
+  GetPassResponseDto,
+  GetPassesResponseDto,
+  PayinDataDto,
+  RegisterPayinResponseDto,
+  RenewPassHolderRequestDto,
+  UpdatePassRequestDto,
+} from '../models';
 import {
-    CreatePassHolderRequestDto,
     CreatePassHolderRequestDtoFromJSON,
     CreatePassHolderRequestDtoToJSON,
-    CreatePassRequestDto,
     CreatePassRequestDtoFromJSON,
     CreatePassRequestDtoToJSON,
-    GetPassHoldersRequestDto,
     GetPassHoldersRequestDtoFromJSON,
     GetPassHoldersRequestDtoToJSON,
-    GetPassHoldersResponseDto,
     GetPassHoldersResponseDtoFromJSON,
     GetPassHoldersResponseDtoToJSON,
-    GetPassResponseDto,
     GetPassResponseDtoFromJSON,
     GetPassResponseDtoToJSON,
-    GetPassesResponseDto,
     GetPassesResponseDtoFromJSON,
     GetPassesResponseDtoToJSON,
-    PayinDataDto,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
-    RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
-    RenewPassHolderRequestDto,
     RenewPassHolderRequestDtoFromJSON,
     RenewPassHolderRequestDtoToJSON,
-    UpdatePassRequestDto,
     UpdatePassRequestDtoFromJSON,
     UpdatePassRequestDtoToJSON,
 } from '../models';
@@ -108,7 +110,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Add pass subscription
      */
-    async addPassSubscriptionRaw(requestParameters: AddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async addPassSubscriptionRaw(requestParameters: AddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.passHolderId === null || requestParameters.passHolderId === undefined) {
             throw new runtime.RequiredError('passHolderId','Required parameter requestParameters.passHolderId was null or undefined when calling addPassSubscription.');
         }
@@ -138,14 +140,14 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Add pass subscription
      */
-    async addPassSubscription(requestParameters: AddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async addPassSubscription(requestParameters: AddPassSubscriptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.addPassSubscriptionRaw(requestParameters, initOverrides);
     }
 
     /**
      * Creates a pass
      */
-    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.createPassRequestDto === null || requestParameters.createPassRequestDto === undefined) {
             throw new runtime.RequiredError('createPassRequestDto','Required parameter requestParameters.createPassRequestDto was null or undefined when calling createPass.');
         }
@@ -178,7 +180,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Creates a pass
      */
-    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.createPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -186,7 +188,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets a pass
      */
-    async findPassRaw(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
+    async findPassRaw(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling findPass.');
         }
@@ -216,7 +218,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets a pass
      */
-    async findPass(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassResponseDto> {
+    async findPass(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassResponseDto> {
         const response = await this.findPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -224,7 +226,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes created by a creator
      */
-    async getCreatorPassesRaw(requestParameters: GetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
+    async getCreatorPassesRaw(requestParameters: GetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getCreatorPasses.');
         }
@@ -246,7 +248,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes created by a creator
      */
-    async getCreatorPasses(requestParameters: GetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesResponseDto> {
+    async getCreatorPasses(requestParameters: GetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassesResponseDto> {
         const response = await this.getCreatorPassesRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -254,7 +256,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets external passes
      */
-    async getExternalPassesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
+    async getExternalPassesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -272,7 +274,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets external passes
      */
-    async getExternalPasses(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassesResponseDto> {
+    async getExternalPasses(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassesResponseDto> {
         const response = await this.getExternalPassesRaw(initOverrides);
         return await response.value();
     }
@@ -280,7 +282,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get passholders of a pass or user
      */
-    async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
+    async getPassHoldersRaw(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
         if (requestParameters.getPassHoldersRequestDto === null || requestParameters.getPassHoldersRequestDto === undefined) {
             throw new runtime.RequiredError('getPassHoldersRequestDto','Required parameter requestParameters.getPassHoldersRequestDto was null or undefined when calling getPassHolders.');
         }
@@ -313,7 +315,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get passholders of a pass or user
      */
-    async getPassHolders(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
+    async getPassHolders(requestParameters: GetPassHoldersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassHoldersResponseDto> {
         const response = await this.getPassHoldersRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -321,7 +323,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes held by user
      */
-    async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
+    async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getPassHoldings.');
         }
@@ -355,7 +357,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes held by user
      */
-    async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassHoldersResponseDto> {
+    async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassHoldersResponseDto> {
         const response = await this.getPassHoldingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -363,7 +365,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Pin a pass
      */
-    async pinPassRaw(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async pinPassRaw(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling pinPass.');
         }
@@ -393,7 +395,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Pin a pass
      */
-    async pinPass(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async pinPass(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.pinPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -401,7 +403,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register create pass payin
      */
-    async registerBuyPassRaw(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerBuyPassRaw(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.createPassHolderRequestDto === null || requestParameters.createPassHolderRequestDto === undefined) {
             throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerBuyPass.');
         }
@@ -434,7 +436,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register create pass payin
      */
-    async registerBuyPass(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+    async registerBuyPass(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.registerBuyPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -442,7 +444,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get register create pass data
      */
-    async registerBuyPassDataRaw(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async registerBuyPassDataRaw(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.createPassHolderRequestDto === null || requestParameters.createPassHolderRequestDto === undefined) {
             throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerBuyPassData.');
         }
@@ -475,7 +477,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get register create pass data
      */
-    async registerBuyPassData(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+    async registerBuyPassData(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
         const response = await this.registerBuyPassDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -483,7 +485,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register renew pass payin
      */
-    async registerRenewPassRaw(requestParameters: RegisterRenewPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerRenewPassRaw(requestParameters: RegisterRenewPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.renewPassHolderRequestDto === null || requestParameters.renewPassHolderRequestDto === undefined) {
             throw new runtime.RequiredError('renewPassHolderRequestDto','Required parameter requestParameters.renewPassHolderRequestDto was null or undefined when calling registerRenewPass.');
         }
@@ -516,7 +518,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register renew pass payin
      */
-    async registerRenewPass(requestParameters: RegisterRenewPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+    async registerRenewPass(requestParameters: RegisterRenewPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.registerRenewPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -524,7 +526,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get register renew pass data
      */
-    async registerRenewPassDataRaw(requestParameters: RegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async registerRenewPassDataRaw(requestParameters: RegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.renewPassHolderRequestDto === null || requestParameters.renewPassHolderRequestDto === undefined) {
             throw new runtime.RequiredError('renewPassHolderRequestDto','Required parameter requestParameters.renewPassHolderRequestDto was null or undefined when calling registerRenewPassData.');
         }
@@ -557,7 +559,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get register renew pass data
      */
-    async registerRenewPassData(requestParameters: RegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+    async registerRenewPassData(requestParameters: RegisterRenewPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
         const response = await this.registerRenewPassDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -565,7 +567,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Unpin a pass
      */
-    async unpinPassRaw(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async unpinPassRaw(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling unpinPass.');
         }
@@ -595,7 +597,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Unpin a pass
      */
-    async unpinPass(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async unpinPass(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.unpinPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -603,7 +605,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Updates a pass
      */
-    async updatePassRaw(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
+    async updatePassRaw(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling updatePass.');
         }
@@ -640,7 +642,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Updates a pass
      */
-    async updatePass(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetPassResponseDto> {
+    async updatePass(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassResponseDto> {
         const response = await this.updatePassRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -45,6 +45,19 @@ export interface GetCreatorStatsResponseDto {
     numMedia: number;
 }
 
+/**
+ * Check if a given object implements the GetCreatorStatsResponseDto interface.
+ */
+export function instanceOfGetCreatorStatsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "numFollowers" in value;
+    isInstance = isInstance && "numLikes" in value;
+    isInstance = isInstance && "numMedia" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorStatsResponseDtoFromJSON(json: any): GetCreatorStatsResponseDto {
     return GetCreatorStatsResponseDtoFromJSONTyped(json, false);
 }

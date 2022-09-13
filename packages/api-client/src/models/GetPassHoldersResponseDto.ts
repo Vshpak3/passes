@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PassHolderDto } from './PassHolderDto';
 import {
-    PassHolderDto,
     PassHolderDtoFromJSON,
     PassHolderDtoFromJSONTyped,
     PassHolderDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetPassHoldersResponseDto {
      * @memberof GetPassHoldersResponseDto
      */
     passHolders: Array<PassHolderDto>;
+}
+
+/**
+ * Check if a given object implements the GetPassHoldersResponseDto interface.
+ */
+export function instanceOfGetPassHoldersResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "passHolders" in value;
+
+    return isInstance;
 }
 
 export function GetPassHoldersResponseDtoFromJSON(json: any): GetPassHoldersResponseDto {

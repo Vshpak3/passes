@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleCardDto } from './CircleCardDto';
 import {
-    CircleCardDto,
     CircleCardDtoFromJSON,
     CircleCardDtoFromJSONTyped,
     CircleCardDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetCircleCardsResponseDto {
      * @memberof GetCircleCardsResponseDto
      */
     cards: Array<CircleCardDto>;
+}
+
+/**
+ * Check if a given object implements the GetCircleCardsResponseDto interface.
+ */
+export function instanceOfGetCircleCardsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "cards" in value;
+
+    return isInstance;
 }
 
 export function GetCircleCardsResponseDtoFromJSON(json: any): GetCircleCardsResponseDto {

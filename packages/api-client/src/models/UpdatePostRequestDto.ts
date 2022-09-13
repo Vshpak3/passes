@@ -45,6 +45,17 @@ export interface UpdatePostRequestDto {
     expiresAt?: Date;
 }
 
+/**
+ * Check if a given object implements the UpdatePostRequestDto interface.
+ */
+export function instanceOfUpdatePostRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+
+    return isInstance;
+}
+
 export function UpdatePostRequestDtoFromJSON(json: any): UpdatePostRequestDto {
     return UpdatePostRequestDtoFromJSONTyped(json, false);
 }

@@ -39,6 +39,18 @@ export interface AuthWalletResponseDto {
     chain: string;
 }
 
+/**
+ * Check if a given object implements the AuthWalletResponseDto interface.
+ */
+export function instanceOfAuthWalletResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "rawMessage" in value;
+    isInstance = isInstance && "walletAddress" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function AuthWalletResponseDtoFromJSON(json: any): AuthWalletResponseDto {
     return AuthWalletResponseDtoFromJSONTyped(json, false);
 }

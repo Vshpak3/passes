@@ -45,6 +45,19 @@ export interface PhantomCircleUSDCEntryResponseDto {
     networkUrl: string;
 }
 
+/**
+ * Check if a given object implements the PhantomCircleUSDCEntryResponseDto interface.
+ */
+export function instanceOfPhantomCircleUSDCEntryResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+    isInstance = isInstance && "tokenAddress" in value;
+    isInstance = isInstance && "depositAddress" in value;
+    isInstance = isInstance && "networkUrl" in value;
+
+    return isInstance;
+}
+
 export function PhantomCircleUSDCEntryResponseDtoFromJSON(json: any): PhantomCircleUSDCEntryResponseDto {
     return PhantomCircleUSDCEntryResponseDtoFromJSONTyped(json, false);
 }

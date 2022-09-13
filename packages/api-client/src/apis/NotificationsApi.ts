@@ -14,17 +14,19 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  GetNotificationSettingsResponseDto,
+  GetNotificationsRequestDto,
+  GetNotificationsResponseDto,
+  UpdateNotificationSettingsRequestDto,
+} from '../models';
 import {
-    GetNotificationSettingsResponseDto,
     GetNotificationSettingsResponseDtoFromJSON,
     GetNotificationSettingsResponseDtoToJSON,
-    GetNotificationsRequestDto,
     GetNotificationsRequestDtoFromJSON,
     GetNotificationsRequestDtoToJSON,
-    GetNotificationsResponseDto,
     GetNotificationsResponseDtoFromJSON,
     GetNotificationsResponseDtoToJSON,
-    UpdateNotificationSettingsRequestDto,
     UpdateNotificationSettingsRequestDtoFromJSON,
     UpdateNotificationSettingsRequestDtoToJSON,
 } from '../models';
@@ -49,7 +51,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Gets notifications
      */
-    async getRaw(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetNotificationsResponseDto>> {
+    async getRaw(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetNotificationsResponseDto>> {
         if (requestParameters.getNotificationsRequestDto === null || requestParameters.getNotificationsRequestDto === undefined) {
             throw new runtime.RequiredError('getNotificationsRequestDto','Required parameter requestParameters.getNotificationsRequestDto was null or undefined when calling get.');
         }
@@ -82,7 +84,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Gets notifications
      */
-    async get(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetNotificationsResponseDto> {
+    async get(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNotificationsResponseDto> {
         const response = await this.getRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -90,7 +92,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Gets notification settings
      */
-    async getNotificationSettingsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetNotificationSettingsResponseDto>> {
+    async getNotificationSettingsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetNotificationSettingsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -116,7 +118,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Gets notification settings
      */
-    async getNotificationSettings(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetNotificationSettingsResponseDto> {
+    async getNotificationSettings(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNotificationSettingsResponseDto> {
         const response = await this.getNotificationSettingsRaw(initOverrides);
         return await response.value();
     }
@@ -124,7 +126,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Set status as read
      */
-    async readNotificationRaw(requestParameters: ReadNotificationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async readNotificationRaw(requestParameters: ReadNotificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.notificationId === null || requestParameters.notificationId === undefined) {
             throw new runtime.RequiredError('notificationId','Required parameter requestParameters.notificationId was null or undefined when calling readNotification.');
         }
@@ -154,14 +156,14 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Set status as read
      */
-    async readNotification(requestParameters: ReadNotificationRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async readNotification(requestParameters: ReadNotificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.readNotificationRaw(requestParameters, initOverrides);
     }
 
     /**
      * Subscribe to notification events
      */
-    async subscribeRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async subscribeRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -187,14 +189,14 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Subscribe to notification events
      */
-    async subscribe(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async subscribe(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.subscribeRaw(initOverrides);
     }
 
     /**
      * Update notification settings
      */
-    async updateNotificationSettingsRaw(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateNotificationSettingsRaw(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.updateNotificationSettingsRequestDto === null || requestParameters.updateNotificationSettingsRequestDto === undefined) {
             throw new runtime.RequiredError('updateNotificationSettingsRequestDto','Required parameter requestParameters.updateNotificationSettingsRequestDto was null or undefined when calling updateNotificationSettings.');
         }
@@ -227,7 +229,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Update notification settings
      */
-    async updateNotificationSettings(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async updateNotificationSettings(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.updateNotificationSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -57,6 +57,19 @@ export const GetListResponseDtoTypeEnum = {
 export type GetListResponseDtoTypeEnum = typeof GetListResponseDtoTypeEnum[keyof typeof GetListResponseDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the GetListResponseDto interface.
+ */
+export function instanceOfGetListResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "count" in value;
+
+    return isInstance;
+}
+
 export function GetListResponseDtoFromJSON(json: any): GetListResponseDto {
     return GetListResponseDtoFromJSONTyped(json, false);
 }

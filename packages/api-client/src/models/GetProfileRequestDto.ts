@@ -39,6 +39,15 @@ export interface GetProfileRequestDto {
     profileId?: string;
 }
 
+/**
+ * Check if a given object implements the GetProfileRequestDto interface.
+ */
+export function instanceOfGetProfileRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function GetProfileRequestDtoFromJSON(json: any): GetProfileRequestDto {
     return GetProfileRequestDtoFromJSONTyped(json, false);
 }

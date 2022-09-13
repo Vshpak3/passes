@@ -39,6 +39,18 @@ export interface CircleCardPayinEntryRequestDto {
     sessionId: string;
 }
 
+/**
+ * Check if a given object implements the CircleCardPayinEntryRequestDto interface.
+ */
+export function instanceOfCircleCardPayinEntryRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+    isInstance = isInstance && "ip" in value;
+    isInstance = isInstance && "sessionId" in value;
+
+    return isInstance;
+}
+
 export function CircleCardPayinEntryRequestDtoFromJSON(json: any): CircleCardPayinEntryRequestDto {
     return CircleCardPayinEntryRequestDtoFromJSONTyped(json, false);
 }

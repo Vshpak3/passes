@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { NotificationDto } from './NotificationDto';
 import {
-    NotificationDto,
     NotificationDtoFromJSON,
     NotificationDtoFromJSONTyped,
     NotificationDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetNotificationsResponseDto {
      * @memberof GetNotificationsResponseDto
      */
     notifications: Array<NotificationDto>;
+}
+
+/**
+ * Check if a given object implements the GetNotificationsResponseDto interface.
+ */
+export function instanceOfGetNotificationsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "notifications" in value;
+
+    return isInstance;
 }
 
 export function GetNotificationsResponseDtoFromJSON(json: any): GetNotificationsResponseDto {

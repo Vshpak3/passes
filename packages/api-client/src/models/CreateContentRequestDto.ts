@@ -46,6 +46,17 @@ export const CreateContentRequestDtoContentTypeEnum = {
 export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequestDtoContentTypeEnum[keyof typeof CreateContentRequestDtoContentTypeEnum];
 
 
+/**
+ * Check if a given object implements the CreateContentRequestDto interface.
+ */
+export function instanceOfCreateContentRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+    isInstance = isInstance && "contentType" in value;
+
+    return isInstance;
+}
+
 export function CreateContentRequestDtoFromJSON(json: any): CreateContentRequestDto {
     return CreateContentRequestDtoFromJSONTyped(json, false);
 }

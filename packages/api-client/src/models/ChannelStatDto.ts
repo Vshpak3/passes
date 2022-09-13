@@ -51,6 +51,20 @@ export interface ChannelStatDto {
     unreadTip: number;
 }
 
+/**
+ * Check if a given object implements the ChannelStatDto interface.
+ */
+export function instanceOfChannelStatDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "tipSent" in value;
+    isInstance = isInstance && "tipRecieved" in value;
+    isInstance = isInstance && "unreadTip" in value;
+
+    return isInstance;
+}
+
 export function ChannelStatDtoFromJSON(json: any): ChannelStatDto {
     return ChannelStatDtoFromJSONTyped(json, false);
 }

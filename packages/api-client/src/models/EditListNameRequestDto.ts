@@ -33,6 +33,17 @@ export interface EditListNameRequestDto {
     name: string;
 }
 
+/**
+ * Check if a given object implements the EditListNameRequestDto interface.
+ */
+export function instanceOfEditListNameRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "name" in value;
+
+    return isInstance;
+}
+
 export function EditListNameRequestDtoFromJSON(json: any): EditListNameRequestDto {
     return EditListNameRequestDtoFromJSONTyped(json, false);
 }

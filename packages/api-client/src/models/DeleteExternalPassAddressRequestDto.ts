@@ -57,6 +57,19 @@ export interface DeleteExternalPassAddressRequestDto {
     chain: string;
 }
 
+/**
+ * Check if a given object implements the DeleteExternalPassAddressRequestDto interface.
+ */
+export function instanceOfDeleteExternalPassAddressRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+    isInstance = isInstance && "address" in value;
+    isInstance = isInstance && "passId" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function DeleteExternalPassAddressRequestDtoFromJSON(json: any): DeleteExternalPassAddressRequestDto {
     return DeleteExternalPassAddressRequestDtoFromJSONTyped(json, false);
 }

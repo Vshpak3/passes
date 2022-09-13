@@ -27,6 +27,16 @@ export interface MetamaskCircleUSDCEntryRequestDto {
     payinId: string;
 }
 
+/**
+ * Check if a given object implements the MetamaskCircleUSDCEntryRequestDto interface.
+ */
+export function instanceOfMetamaskCircleUSDCEntryRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+
+    return isInstance;
+}
+
 export function MetamaskCircleUSDCEntryRequestDtoFromJSON(json: any): MetamaskCircleUSDCEntryRequestDto {
     return MetamaskCircleUSDCEntryRequestDtoFromJSONTyped(json, false);
 }

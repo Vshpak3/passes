@@ -45,6 +45,19 @@ export interface ListMemberDto {
     isFollowing: boolean;
 }
 
+/**
+ * Check if a given object implements the ListMemberDto interface.
+ */
+export function instanceOfListMemberDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "displayName" in value;
+    isInstance = isInstance && "isFollowing" in value;
+
+    return isInstance;
+}
+
 export function ListMemberDtoFromJSON(json: any): ListMemberDto {
     return ListMemberDtoFromJSONTyped(json, false);
 }

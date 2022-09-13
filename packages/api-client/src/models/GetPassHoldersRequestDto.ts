@@ -33,6 +33,17 @@ export interface GetPassHoldersRequestDto {
     passId: string;
 }
 
+/**
+ * Check if a given object implements the GetPassHoldersRequestDto interface.
+ */
+export function instanceOfGetPassHoldersRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "passId" in value;
+
+    return isInstance;
+}
+
 export function GetPassHoldersRequestDtoFromJSON(json: any): GetPassHoldersRequestDto {
     return GetPassHoldersRequestDtoFromJSONTyped(json, false);
 }

@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PostDto } from './PostDto';
 import {
-    PostDto,
     PostDtoFromJSON,
     PostDtoFromJSONTyped,
     PostDtoToJSON,
@@ -44,6 +44,18 @@ export interface GetFeedResponseDto {
      * @memberof GetFeedResponseDto
      */
     cursor: string;
+}
+
+/**
+ * Check if a given object implements the GetFeedResponseDto interface.
+ */
+export function instanceOfGetFeedResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "posts" in value;
+    isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "cursor" in value;
+
+    return isInstance;
 }
 
 export function GetFeedResponseDtoFromJSON(json: any): GetFeedResponseDto {

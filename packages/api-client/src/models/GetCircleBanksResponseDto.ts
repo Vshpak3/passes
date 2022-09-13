@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleBankDto } from './CircleBankDto';
 import {
-    CircleBankDto,
     CircleBankDtoFromJSON,
     CircleBankDtoFromJSONTyped,
     CircleBankDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetCircleBanksResponseDto {
      * @memberof GetCircleBanksResponseDto
      */
     banks: Array<CircleBankDto>;
+}
+
+/**
+ * Check if a given object implements the GetCircleBanksResponseDto interface.
+ */
+export function instanceOfGetCircleBanksResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "banks" in value;
+
+    return isInstance;
 }
 
 export function GetCircleBanksResponseDtoFromJSON(json: any): GetCircleBanksResponseDto {

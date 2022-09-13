@@ -92,6 +92,23 @@ export const NotificationDtoTypeEnum = {
 export type NotificationDtoTypeEnum = typeof NotificationDtoTypeEnum[keyof typeof NotificationDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the NotificationDto interface.
+ */
+export function instanceOfNotificationDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "senderName" in value;
+    isInstance = isInstance && "senderUsername" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "message" in value;
+    isInstance = isInstance && "createdAt" in value;
+
+    return isInstance;
+}
+
 export function NotificationDtoFromJSON(json: any): NotificationDto {
     return NotificationDtoFromJSONTyped(json, false);
 }

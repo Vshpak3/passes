@@ -57,6 +57,19 @@ export interface AddExternalPassAddressRequestDto {
     chain: string;
 }
 
+/**
+ * Check if a given object implements the AddExternalPassAddressRequestDto interface.
+ */
+export function instanceOfAddExternalPassAddressRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+    isInstance = isInstance && "address" in value;
+    isInstance = isInstance && "passId" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function AddExternalPassAddressRequestDtoFromJSON(json: any): AddExternalPassAddressRequestDto {
     return AddExternalPassAddressRequestDtoFromJSONTyped(json, false);
 }

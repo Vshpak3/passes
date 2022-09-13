@@ -27,6 +27,16 @@ export interface GetChannelStatsRequestDto {
     channelIds: Array<string>;
 }
 
+/**
+ * Check if a given object implements the GetChannelStatsRequestDto interface.
+ */
+export function instanceOfGetChannelStatsRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "channelIds" in value;
+
+    return isInstance;
+}
+
 export function GetChannelStatsRequestDtoFromJSON(json: any): GetChannelStatsRequestDto {
     return GetChannelStatsRequestDtoFromJSONTyped(json, false);
 }

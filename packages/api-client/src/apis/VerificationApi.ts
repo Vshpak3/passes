@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  GetCreatorVerificationStepResponseDto,
+  SubmitCreatorVerificationStepRequestDto,
+  SubmitPersonaInquiryRequestDto,
+} from '../models';
 import {
-    GetCreatorVerificationStepResponseDto,
     GetCreatorVerificationStepResponseDtoFromJSON,
     GetCreatorVerificationStepResponseDtoToJSON,
-    SubmitCreatorVerificationStepRequestDto,
     SubmitCreatorVerificationStepRequestDtoFromJSON,
     SubmitCreatorVerificationStepRequestDtoToJSON,
-    SubmitPersonaInquiryRequestDto,
     SubmitPersonaInquiryRequestDtoFromJSON,
     SubmitPersonaInquiryRequestDtoToJSON,
 } from '../models';
@@ -42,7 +44,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Check if user can submit inquiry
      */
-    async canSubmitPersonaRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async canSubmitPersonaRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -68,7 +70,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Check if user can submit inquiry
      */
-    async canSubmitPersona(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async canSubmitPersona(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.canSubmitPersonaRaw(initOverrides);
         return await response.value();
     }
@@ -76,7 +78,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Get current creator verification step
      */
-    async getCreatorVerificationStepRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorVerificationStepResponseDto>> {
+    async getCreatorVerificationStepRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorVerificationStepResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -102,7 +104,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Get current creator verification step
      */
-    async getCreatorVerificationStep(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorVerificationStepResponseDto> {
+    async getCreatorVerificationStep(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorVerificationStepResponseDto> {
         const response = await this.getCreatorVerificationStepRaw(initOverrides);
         return await response.value();
     }
@@ -110,7 +112,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Refresh persona KYC verifications for user
      */
-    async refreshPersonaVerificationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async refreshPersonaVerificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -136,14 +138,14 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Refresh persona KYC verifications for user
      */
-    async refreshPersonaVerifications(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async refreshPersonaVerifications(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.refreshPersonaVerificationsRaw(initOverrides);
     }
 
     /**
      * Submit creator verification step
      */
-    async submitCreatorVerificationStepRaw(requestParameters: SubmitCreatorVerificationStepRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorVerificationStepResponseDto>> {
+    async submitCreatorVerificationStepRaw(requestParameters: SubmitCreatorVerificationStepRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorVerificationStepResponseDto>> {
         if (requestParameters.submitCreatorVerificationStepRequestDto === null || requestParameters.submitCreatorVerificationStepRequestDto === undefined) {
             throw new runtime.RequiredError('submitCreatorVerificationStepRequestDto','Required parameter requestParameters.submitCreatorVerificationStepRequestDto was null or undefined when calling submitCreatorVerificationStep.');
         }
@@ -176,7 +178,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Submit creator verification step
      */
-    async submitCreatorVerificationStep(requestParameters: SubmitCreatorVerificationStepRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorVerificationStepResponseDto> {
+    async submitCreatorVerificationStep(requestParameters: SubmitCreatorVerificationStepRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorVerificationStepResponseDto> {
         const response = await this.submitCreatorVerificationStepRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -184,7 +186,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Submit inquiry
      */
-    async submitPersonaInquiryRaw(requestParameters: SubmitPersonaInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async submitPersonaInquiryRaw(requestParameters: SubmitPersonaInquiryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.submitPersonaInquiryRequestDto === null || requestParameters.submitPersonaInquiryRequestDto === undefined) {
             throw new runtime.RequiredError('submitPersonaInquiryRequestDto','Required parameter requestParameters.submitPersonaInquiryRequestDto was null or undefined when calling submitPersonaInquiry.');
         }
@@ -217,7 +219,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Submit inquiry
      */
-    async submitPersonaInquiry(requestParameters: SubmitPersonaInquiryRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async submitPersonaInquiry(requestParameters: SubmitPersonaInquiryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.submitPersonaInquiryRaw(requestParameters, initOverrides);
     }
 

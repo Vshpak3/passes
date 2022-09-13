@@ -39,6 +39,17 @@ export interface PayinDataDto {
     blocked: boolean;
 }
 
+/**
+ * Check if a given object implements the PayinDataDto interface.
+ */
+export function instanceOfPayinDataDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "amount" in value;
+    isInstance = isInstance && "blocked" in value;
+
+    return isInstance;
+}
+
 export function PayinDataDtoFromJSON(json: any): PayinDataDto {
     return PayinDataDtoFromJSONTyped(json, false);
 }

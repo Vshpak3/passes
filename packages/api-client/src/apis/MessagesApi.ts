@@ -14,44 +14,46 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  CreateBatchMessageRequestDto,
+  GetChannelRequestDto,
+  GetChannelResponseDto,
+  GetChannelSettingsResponseDto,
+  GetChannelStatsRequestDto,
+  GetChannelStatsResponseDto,
+  GetFreeMesssagesResponseDto,
+  GetMessagesResponseDto,
+  PayinDataDto,
+  RegisterPayinResponseDto,
+  SendMessageRequestDto,
+  TokenResponseDto,
+  UpdateChannelSettingsRequestDto,
+} from '../models';
 import {
-    CreateBatchMessageRequestDto,
     CreateBatchMessageRequestDtoFromJSON,
     CreateBatchMessageRequestDtoToJSON,
-    GetChannelRequestDto,
     GetChannelRequestDtoFromJSON,
     GetChannelRequestDtoToJSON,
-    GetChannelResponseDto,
     GetChannelResponseDtoFromJSON,
     GetChannelResponseDtoToJSON,
-    GetChannelSettingsResponseDto,
     GetChannelSettingsResponseDtoFromJSON,
     GetChannelSettingsResponseDtoToJSON,
-    GetChannelStatsRequestDto,
     GetChannelStatsRequestDtoFromJSON,
     GetChannelStatsRequestDtoToJSON,
-    GetChannelStatsResponseDto,
     GetChannelStatsResponseDtoFromJSON,
     GetChannelStatsResponseDtoToJSON,
-    GetFreeMesssagesResponseDto,
     GetFreeMesssagesResponseDtoFromJSON,
     GetFreeMesssagesResponseDtoToJSON,
-    GetMessagesResponseDto,
     GetMessagesResponseDtoFromJSON,
     GetMessagesResponseDtoToJSON,
-    PayinDataDto,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
-    RegisterPayinResponseDto,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
-    SendMessageRequestDto,
     SendMessageRequestDtoFromJSON,
     SendMessageRequestDtoToJSON,
-    TokenResponseDto,
     TokenResponseDtoFromJSON,
     TokenResponseDtoToJSON,
-    UpdateChannelSettingsRequestDto,
     UpdateChannelSettingsRequestDtoFromJSON,
     UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
@@ -98,7 +100,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Gets a channel
      */
-    async getChannelRaw(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
+    async getChannelRaw(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
         if (requestParameters.getChannelRequestDto === null || requestParameters.getChannelRequestDto === undefined) {
             throw new runtime.RequiredError('getChannelRequestDto','Required parameter requestParameters.getChannelRequestDto was null or undefined when calling getChannel.');
         }
@@ -131,7 +133,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Gets a channel
      */
-    async getChannel(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelResponseDto> {
+    async getChannel(requestParameters: GetChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelResponseDto> {
         const response = await this.getChannelRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -139,7 +141,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels settings
      */
-    async getChannelSettingsRaw(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelSettingsResponseDto>> {
+    async getChannelSettingsRaw(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelSettingsResponseDto>> {
         if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
             throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getChannelSettings.');
         }
@@ -169,7 +171,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels settings
      */
-    async getChannelSettings(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelSettingsResponseDto> {
+    async getChannelSettings(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelSettingsResponseDto> {
         const response = await this.getChannelSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -177,7 +179,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels stats
      */
-    async getChannelsStatsRaw(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
+    async getChannelsStatsRaw(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
         if (requestParameters.getChannelStatsRequestDto === null || requestParameters.getChannelStatsRequestDto === undefined) {
             throw new runtime.RequiredError('getChannelStatsRequestDto','Required parameter requestParameters.getChannelStatsRequestDto was null or undefined when calling getChannelsStats.');
         }
@@ -210,7 +212,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get channels stats
      */
-    async getChannelsStats(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetChannelStatsResponseDto> {
+    async getChannelsStats(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelStatsResponseDto> {
         const response = await this.getChannelsStatsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -218,7 +220,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get completed tipped messages
      */
-    async getCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
+    async getCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -244,7 +246,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get completed tipped messages
      */
-    async getCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetMessagesResponseDto> {
+    async getCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessagesResponseDto> {
         const response = await this.getCompletedTippedMessagesRaw(initOverrides);
         return await response.value();
     }
@@ -252,7 +254,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get free chat messages
      */
-    async getFreeMessagesRaw(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetFreeMesssagesResponseDto>> {
+    async getFreeMessagesRaw(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFreeMesssagesResponseDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getFreeMessages.');
         }
@@ -286,7 +288,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get free chat messages
      */
-    async getFreeMessages(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetFreeMesssagesResponseDto> {
+    async getFreeMessages(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFreeMesssagesResponseDto> {
         const response = await this.getFreeMessagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -294,7 +296,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get pending messages
      */
-    async getPendingRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
+    async getPendingRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -320,7 +322,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get pending messages
      */
-    async getPending(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetMessagesResponseDto> {
+    async getPending(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessagesResponseDto> {
         const response = await this.getPendingRaw(initOverrides);
         return await response.value();
     }
@@ -328,7 +330,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Gets token
      */
-    async getTokenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<TokenResponseDto>> {
+    async getTokenRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -354,7 +356,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Gets token
      */
-    async getToken(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<TokenResponseDto> {
+    async getToken(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponseDto> {
         const response = await this.getTokenRaw(initOverrides);
         return await response.value();
     }
@@ -362,7 +364,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Batch message
      */
-    async massSendRaw(requestParameters: MassSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async massSendRaw(requestParameters: MassSendRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.createBatchMessageRequestDto === null || requestParameters.createBatchMessageRequestDto === undefined) {
             throw new runtime.RequiredError('createBatchMessageRequestDto','Required parameter requestParameters.createBatchMessageRequestDto was null or undefined when calling massSend.');
         }
@@ -395,14 +397,14 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Batch message
      */
-    async massSend(requestParameters: MassSendRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async massSend(requestParameters: MassSendRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.massSendRaw(requestParameters, initOverrides);
     }
 
     /**
      * Register sending message
      */
-    async sendMessageRaw(requestParameters: SendMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async sendMessageRaw(requestParameters: SendMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.sendMessageRequestDto === null || requestParameters.sendMessageRequestDto === undefined) {
             throw new runtime.RequiredError('sendMessageRequestDto','Required parameter requestParameters.sendMessageRequestDto was null or undefined when calling sendMessage.');
         }
@@ -435,7 +437,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Register sending message
      */
-    async sendMessage(requestParameters: SendMessageRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<RegisterPayinResponseDto> {
+    async sendMessage(requestParameters: SendMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
         const response = await this.sendMessageRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -443,7 +445,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Register sending message data
      */
-    async sendMessageDataRaw(requestParameters: SendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async sendMessageDataRaw(requestParameters: SendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.sendMessageRequestDto === null || requestParameters.sendMessageRequestDto === undefined) {
             throw new runtime.RequiredError('sendMessageRequestDto','Required parameter requestParameters.sendMessageRequestDto was null or undefined when calling sendMessageData.');
         }
@@ -476,7 +478,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Register sending message data
      */
-    async sendMessageData(requestParameters: SendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<PayinDataDto> {
+    async sendMessageData(requestParameters: SendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
         const response = await this.sendMessageDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -484,7 +486,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Update channels settings
      */
-    async updateChannelSettingsRaw(requestParameters: UpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async updateChannelSettingsRaw(requestParameters: UpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
             throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling updateChannelSettings.');
         }
@@ -521,7 +523,7 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Update channels settings
      */
-    async updateChannelSettings(requestParameters: UpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async updateChannelSettings(requestParameters: UpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.updateChannelSettingsRaw(requestParameters, initOverrides);
     }
 

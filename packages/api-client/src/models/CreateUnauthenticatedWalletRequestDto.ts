@@ -33,6 +33,17 @@ export interface CreateUnauthenticatedWalletRequestDto {
     chain: string;
 }
 
+/**
+ * Check if a given object implements the CreateUnauthenticatedWalletRequestDto interface.
+ */
+export function instanceOfCreateUnauthenticatedWalletRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "walletAddress" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function CreateUnauthenticatedWalletRequestDtoFromJSON(json: any): CreateUnauthenticatedWalletRequestDto {
     return CreateUnauthenticatedWalletRequestDtoFromJSONTyped(json, false);
 }

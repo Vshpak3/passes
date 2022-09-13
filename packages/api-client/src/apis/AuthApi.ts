@@ -14,20 +14,22 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AuthTokenResponseDto,
+  GetUserResponseDto,
+  RefreshAuthTokenRequestDto,
+  SetEmailRequestDto,
+  SetEmailResponseDto,
+} from '../models';
 import {
-    AuthTokenResponseDto,
     AuthTokenResponseDtoFromJSON,
     AuthTokenResponseDtoToJSON,
-    GetUserResponseDto,
     GetUserResponseDtoFromJSON,
     GetUserResponseDtoToJSON,
-    RefreshAuthTokenRequestDto,
     RefreshAuthTokenRequestDtoFromJSON,
     RefreshAuthTokenRequestDtoToJSON,
-    SetEmailRequestDto,
     SetEmailRequestDtoFromJSON,
     SetEmailRequestDtoToJSON,
-    SetEmailResponseDto,
     SetEmailResponseDtoFromJSON,
     SetEmailResponseDtoToJSON,
 } from '../models';
@@ -48,7 +50,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Gets the current authenticated user
      */
-    async getCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
+    async getCurrentUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetUserResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -74,7 +76,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Gets the current authenticated user
      */
-    async getCurrentUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetUserResponseDto> {
+    async getCurrentUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetUserResponseDto> {
         const response = await this.getCurrentUserRaw(initOverrides);
         return await response.value();
     }
@@ -82,7 +84,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Refresh the access token
      */
-    async refreshAccessTokenRaw(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async refreshAccessTokenRaw(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
         if (requestParameters.refreshAuthTokenRequestDto === null || requestParameters.refreshAuthTokenRequestDto === undefined) {
             throw new runtime.RequiredError('refreshAuthTokenRequestDto','Required parameter requestParameters.refreshAuthTokenRequestDto was null or undefined when calling refreshAccessToken.');
         }
@@ -107,7 +109,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Refresh the access token
      */
-    async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AuthTokenResponseDto> {
+    async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
         const response = await this.refreshAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -115,7 +117,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Sets the user email
      */
-    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SetEmailResponseDto>> {
+    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetEmailResponseDto>> {
         if (requestParameters.setEmailRequestDto === null || requestParameters.setEmailRequestDto === undefined) {
             throw new runtime.RequiredError('setEmailRequestDto','Required parameter requestParameters.setEmailRequestDto was null or undefined when calling setUserEmail.');
         }
@@ -148,7 +150,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Sets the user email
      */
-    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SetEmailResponseDto> {
+    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetEmailResponseDto> {
         const response = await this.setUserEmailRaw(requestParameters, initOverrides);
         return await response.value();
     }

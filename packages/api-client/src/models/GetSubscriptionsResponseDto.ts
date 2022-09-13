@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SubscriptionDto } from './SubscriptionDto';
 import {
-    SubscriptionDto,
     SubscriptionDtoFromJSON,
     SubscriptionDtoFromJSONTyped,
     SubscriptionDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetSubscriptionsResponseDto {
      * @memberof GetSubscriptionsResponseDto
      */
     subscriptions: Array<SubscriptionDto>;
+}
+
+/**
+ * Check if a given object implements the GetSubscriptionsResponseDto interface.
+ */
+export function instanceOfGetSubscriptionsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "subscriptions" in value;
+
+    return isInstance;
 }
 
 export function GetSubscriptionsResponseDtoFromJSON(json: any): GetSubscriptionsResponseDto {

@@ -69,6 +69,23 @@ export interface CommentDto {
     createdAt: Date;
 }
 
+/**
+ * Check if a given object implements the CommentDto interface.
+ */
+export function instanceOfCommentDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "commentId" in value;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "commenterId" in value;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "commenterUsername" in value;
+    isInstance = isInstance && "commenterDisplayName" in value;
+    isInstance = isInstance && "createdAt" in value;
+
+    return isInstance;
+}
+
 export function CommentDtoFromJSON(json: any): CommentDto {
     return CommentDtoFromJSONTyped(json, false);
 }

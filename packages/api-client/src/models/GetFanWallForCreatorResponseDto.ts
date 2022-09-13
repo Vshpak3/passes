@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FanWallCommentDto } from './FanWallCommentDto';
 import {
-    FanWallCommentDto,
     FanWallCommentDtoFromJSON,
     FanWallCommentDtoFromJSONTyped,
     FanWallCommentDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetFanWallForCreatorResponseDto {
      * @memberof GetFanWallForCreatorResponseDto
      */
     comments: Array<FanWallCommentDto>;
+}
+
+/**
+ * Check if a given object implements the GetFanWallForCreatorResponseDto interface.
+ */
+export function instanceOfGetFanWallForCreatorResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "comments" in value;
+
+    return isInstance;
 }
 
 export function GetFanWallForCreatorResponseDtoFromJSON(json: any): GetFanWallForCreatorResponseDto {

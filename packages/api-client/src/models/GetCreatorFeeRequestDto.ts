@@ -45,6 +45,17 @@ export interface GetCreatorFeeRequestDto {
     creatorId: string;
 }
 
+/**
+ * Check if a given object implements the GetCreatorFeeRequestDto interface.
+ */
+export function instanceOfGetCreatorFeeRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+    isInstance = isInstance && "creatorId" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorFeeRequestDtoFromJSON(json: any): GetCreatorFeeRequestDto {
     return GetCreatorFeeRequestDtoFromJSONTyped(json, false);
 }

@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -44,6 +44,17 @@ export interface TipPostRequestDto {
      * @memberof TipPostRequestDto
      */
     payinMethod?: PayinMethodDto;
+}
+
+/**
+ * Check if a given object implements the TipPostRequestDto interface.
+ */
+export function instanceOfTipPostRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "amount" in value;
+
+    return isInstance;
 }
 
 export function TipPostRequestDtoFromJSON(json: any): TipPostRequestDto {

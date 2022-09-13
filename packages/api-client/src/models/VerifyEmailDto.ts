@@ -27,6 +27,16 @@ export interface VerifyEmailDto {
     verificationToken: string;
 }
 
+/**
+ * Check if a given object implements the VerifyEmailDto interface.
+ */
+export function instanceOfVerifyEmailDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "verificationToken" in value;
+
+    return isInstance;
+}
+
 export function VerifyEmailDtoFromJSON(json: any): VerifyEmailDto {
     return VerifyEmailDtoFromJSONTyped(json, false);
 }

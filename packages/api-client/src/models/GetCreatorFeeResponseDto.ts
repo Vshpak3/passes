@@ -69,6 +69,21 @@ export interface GetCreatorFeeResponseDto {
     cryptoFlat: number;
 }
 
+/**
+ * Check if a given object implements the GetCreatorFeeResponseDto interface.
+ */
+export function instanceOfGetCreatorFeeResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "fiatRate" in value;
+    isInstance = isInstance && "fiatFlat" in value;
+    isInstance = isInstance && "cryptoRate" in value;
+    isInstance = isInstance && "cryptoFlat" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorFeeResponseDtoFromJSON(json: any): GetCreatorFeeResponseDto {
     return GetCreatorFeeResponseDtoFromJSONTyped(json, false);
 }

@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { BillingDetailsDto } from './BillingDetailsDto';
 import {
-    BillingDetailsDto,
     BillingDetailsDtoFromJSON,
     BillingDetailsDtoFromJSONTyped,
     BillingDetailsDtoToJSON,
 } from './BillingDetailsDto';
+import type { CircleBankAddressDto } from './CircleBankAddressDto';
 import {
-    CircleBankAddressDto,
     CircleBankAddressDtoFromJSON,
     CircleBankAddressDtoFromJSONTyped,
     CircleBankAddressDtoToJSON,
@@ -68,6 +68,18 @@ export interface CircleCreateBankRequestDto {
      * @memberof CircleCreateBankRequestDto
      */
     bankAddress: CircleBankAddressDto;
+}
+
+/**
+ * Check if a given object implements the CircleCreateBankRequestDto interface.
+ */
+export function instanceOfCircleCreateBankRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "idempotencyKey" in value;
+    isInstance = isInstance && "billingDetails" in value;
+    isInstance = isInstance && "bankAddress" in value;
+
+    return isInstance;
 }
 
 export function CircleCreateBankRequestDtoFromJSON(json: any): CircleCreateBankRequestDto {

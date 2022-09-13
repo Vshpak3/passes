@@ -45,6 +45,19 @@ export interface CreateWalletRequestDto {
     chain: string;
 }
 
+/**
+ * Check if a given object implements the CreateWalletRequestDto interface.
+ */
+export function instanceOfCreateWalletRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "signedMessage" in value;
+    isInstance = isInstance && "rawMessage" in value;
+    isInstance = isInstance && "walletAddress" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function CreateWalletRequestDtoFromJSON(json: any): CreateWalletRequestDto {
     return CreateWalletRequestDtoFromJSONTyped(json, false);
 }

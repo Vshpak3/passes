@@ -27,6 +27,16 @@ export interface CreatePostResponseDto {
     postId: string;
 }
 
+/**
+ * Check if a given object implements the CreatePostResponseDto interface.
+ */
+export function instanceOfCreatePostResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+
+    return isInstance;
+}
+
 export function CreatePostResponseDtoFromJSON(json: any): CreatePostResponseDto {
     return CreatePostResponseDtoFromJSONTyped(json, false);
 }

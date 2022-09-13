@@ -33,6 +33,17 @@ export interface AuthTokenResponseDto {
     refreshToken: string;
 }
 
+/**
+ * Check if a given object implements the AuthTokenResponseDto interface.
+ */
+export function instanceOfAuthTokenResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+    isInstance = isInstance && "refreshToken" in value;
+
+    return isInstance;
+}
+
 export function AuthTokenResponseDtoFromJSON(json: any): AuthTokenResponseDto {
     return AuthTokenResponseDtoFromJSONTyped(json, false);
 }

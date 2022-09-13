@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ContentDto } from './ContentDto';
 import {
-    ContentDto,
     ContentDtoFromJSON,
     ContentDtoFromJSONTyped,
     ContentDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetContentsResponseDto {
      * @memberof GetContentsResponseDto
      */
     contents: Array<ContentDto>;
+}
+
+/**
+ * Check if a given object implements the GetContentsResponseDto interface.
+ */
+export function instanceOfGetContentsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "contents" in value;
+
+    return isInstance;
 }
 
 export function GetContentsResponseDtoFromJSON(json: any): GetContentsResponseDto {

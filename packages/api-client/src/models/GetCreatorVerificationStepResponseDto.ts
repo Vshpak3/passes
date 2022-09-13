@@ -40,6 +40,16 @@ export const GetCreatorVerificationStepResponseDtoStepEnum = {
 export type GetCreatorVerificationStepResponseDtoStepEnum = typeof GetCreatorVerificationStepResponseDtoStepEnum[keyof typeof GetCreatorVerificationStepResponseDtoStepEnum];
 
 
+/**
+ * Check if a given object implements the GetCreatorVerificationStepResponseDto interface.
+ */
+export function instanceOfGetCreatorVerificationStepResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "step" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorVerificationStepResponseDtoFromJSON(json: any): GetCreatorVerificationStepResponseDto {
     return GetCreatorVerificationStepResponseDtoFromJSONTyped(json, false);
 }

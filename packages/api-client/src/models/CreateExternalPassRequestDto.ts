@@ -51,6 +51,18 @@ export interface CreateExternalPassRequestDto {
     description: string;
 }
 
+/**
+ * Check if a given object implements the CreateExternalPassRequestDto interface.
+ */
+export function instanceOfCreateExternalPassRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+    isInstance = isInstance && "title" in value;
+    isInstance = isInstance && "description" in value;
+
+    return isInstance;
+}
+
 export function CreateExternalPassRequestDtoFromJSON(json: any): CreateExternalPassRequestDto {
     return CreateExternalPassRequestDtoFromJSONTyped(json, false);
 }

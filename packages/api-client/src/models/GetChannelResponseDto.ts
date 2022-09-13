@@ -33,6 +33,17 @@ export interface GetChannelResponseDto {
     blocked: boolean;
 }
 
+/**
+ * Check if a given object implements the GetChannelResponseDto interface.
+ */
+export function instanceOfGetChannelResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "blocked" in value;
+
+    return isInstance;
+}
+
 export function GetChannelResponseDtoFromJSON(json: any): GetChannelResponseDto {
     return GetChannelResponseDtoFromJSONTyped(json, false);
 }

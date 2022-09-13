@@ -33,6 +33,17 @@ export interface CircleEncryptionKeyResponseDto {
     publicKey: string;
 }
 
+/**
+ * Check if a given object implements the CircleEncryptionKeyResponseDto interface.
+ */
+export function instanceOfCircleEncryptionKeyResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "keyId" in value;
+    isInstance = isInstance && "publicKey" in value;
+
+    return isInstance;
+}
+
 export function CircleEncryptionKeyResponseDtoFromJSON(json: any): CircleEncryptionKeyResponseDto {
     return CircleEncryptionKeyResponseDtoFromJSONTyped(json, false);
 }

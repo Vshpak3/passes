@@ -39,6 +39,18 @@ export interface CircleStatusResponseDto {
     status: string;
 }
 
+/**
+ * Check if a given object implements the CircleStatusResponseDto interface.
+ */
+export function instanceOfCircleStatusResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "circleId" in value;
+    isInstance = isInstance && "status" in value;
+
+    return isInstance;
+}
+
 export function CircleStatusResponseDtoFromJSON(json: any): CircleStatusResponseDto {
     return CircleStatusResponseDtoFromJSONTyped(json, false);
 }

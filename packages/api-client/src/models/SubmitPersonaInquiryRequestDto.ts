@@ -50,6 +50,17 @@ export const SubmitPersonaInquiryRequestDtoPersonaStatusEnum = {
 export type SubmitPersonaInquiryRequestDtoPersonaStatusEnum = typeof SubmitPersonaInquiryRequestDtoPersonaStatusEnum[keyof typeof SubmitPersonaInquiryRequestDtoPersonaStatusEnum];
 
 
+/**
+ * Check if a given object implements the SubmitPersonaInquiryRequestDto interface.
+ */
+export function instanceOfSubmitPersonaInquiryRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "personaId" in value;
+    isInstance = isInstance && "personaStatus" in value;
+
+    return isInstance;
+}
+
 export function SubmitPersonaInquiryRequestDtoFromJSON(json: any): SubmitPersonaInquiryRequestDto {
     return SubmitPersonaInquiryRequestDtoFromJSONTyped(json, false);
 }

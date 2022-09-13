@@ -27,6 +27,16 @@ export interface SetEmailResponseDto {
     accessToken: string;
 }
 
+/**
+ * Check if a given object implements the SetEmailResponseDto interface.
+ */
+export function instanceOfSetEmailResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+
+    return isInstance;
+}
+
 export function SetEmailResponseDtoFromJSON(json: any): SetEmailResponseDto {
     return SetEmailResponseDtoFromJSONTyped(json, false);
 }

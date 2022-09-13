@@ -117,6 +117,18 @@ export interface GetProfileResponseDto {
     isAdult?: boolean;
 }
 
+/**
+ * Check if a given object implements the GetProfileResponseDto interface.
+ */
+export function instanceOfGetProfileResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "profileId" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "isActive" in value;
+
+    return isInstance;
+}
+
 export function GetProfileResponseDtoFromJSON(json: any): GetProfileResponseDto {
     return GetProfileResponseDtoFromJSONTyped(json, false);
 }

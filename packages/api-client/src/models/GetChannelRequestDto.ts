@@ -33,6 +33,16 @@ export interface GetChannelRequestDto {
     userId?: string;
 }
 
+/**
+ * Check if a given object implements the GetChannelRequestDto interface.
+ */
+export function instanceOfGetChannelRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "username" in value;
+
+    return isInstance;
+}
+
 export function GetChannelRequestDtoFromJSON(json: any): GetChannelRequestDto {
     return GetChannelRequestDtoFromJSONTyped(json, false);
 }

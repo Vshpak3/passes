@@ -88,6 +88,21 @@ export const CreatePassRequestDtoChainEnum = {
 export type CreatePassRequestDtoChainEnum = typeof CreatePassRequestDtoChainEnum[keyof typeof CreatePassRequestDtoChainEnum];
 
 
+/**
+ * Check if a given object implements the CreatePassRequestDto interface.
+ */
+export function instanceOfCreatePassRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "title" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "price" in value;
+    isInstance = isInstance && "totalSupply" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function CreatePassRequestDtoFromJSON(json: any): CreatePassRequestDto {
     return CreatePassRequestDtoFromJSONTyped(json, false);
 }

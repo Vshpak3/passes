@@ -57,6 +57,15 @@ export interface GetNotificationSettingsResponseDto {
     mentionEmails?: boolean;
 }
 
+/**
+ * Check if a given object implements the GetNotificationSettingsResponseDto interface.
+ */
+export function instanceOfGetNotificationSettingsResponseDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function GetNotificationSettingsResponseDtoFromJSON(json: any): GetNotificationSettingsResponseDto {
     return GetNotificationSettingsResponseDtoFromJSONTyped(json, false);
 }

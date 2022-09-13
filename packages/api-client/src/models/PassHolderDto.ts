@@ -182,6 +182,26 @@ export const PassHolderDtoChainEnum = {
 export type PassHolderDtoChainEnum = typeof PassHolderDtoChainEnum[keyof typeof PassHolderDtoChainEnum];
 
 
+/**
+ * Check if a given object implements the PassHolderDto interface.
+ */
+export function instanceOfPassHolderDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "passId" in value;
+    isInstance = isInstance && "title" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "price" in value;
+    isInstance = isInstance && "totalSupply" in value;
+    isInstance = isInstance && "remainingSupply" in value;
+    isInstance = isInstance && "freetrial" in value;
+    isInstance = isInstance && "passHolderId" in value;
+    isInstance = isInstance && "address" in value;
+    isInstance = isInstance && "chain" in value;
+
+    return isInstance;
+}
+
 export function PassHolderDtoFromJSON(json: any): PassHolderDto {
     return PassHolderDtoFromJSONTyped(json, false);
 }

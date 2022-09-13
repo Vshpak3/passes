@@ -10,8 +10,7 @@ readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
 readonly api_client_path=packages/api-client
 readonly spec_filename=packages/api/src/openapi/specs/openapi.json
-# Must use 6.0.0 until this issue is fixed: https://github.com/OpenAPITools/openapi-generator-cli/issues/655
-readonly openapi_gen_version=6.0.0
+readonly openapi_gen_version=6.1.0
 
 readonly out_path="${root}/${api_client_path}"
 

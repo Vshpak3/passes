@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PayinDto } from './PayinDto';
 import {
-    PayinDto,
     PayinDtoFromJSON,
     PayinDtoFromJSONTyped,
     PayinDtoToJSON,
@@ -38,6 +38,17 @@ export interface GetPayinsResponseDto {
      * @memberof GetPayinsResponseDto
      */
     payins: Array<PayinDto>;
+}
+
+/**
+ * Check if a given object implements the GetPayinsResponseDto interface.
+ */
+export function instanceOfGetPayinsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "payins" in value;
+
+    return isInstance;
 }
 
 export function GetPayinsResponseDtoFromJSON(json: any): GetPayinsResponseDto {

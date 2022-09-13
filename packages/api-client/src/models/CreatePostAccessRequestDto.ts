@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -44,6 +44,17 @@ export interface CreatePostAccessRequestDto {
      * @memberof CreatePostAccessRequestDto
      */
     payinMethod?: PayinMethodDto;
+}
+
+/**
+ * Check if a given object implements the CreatePostAccessRequestDto interface.
+ */
+export function instanceOfCreatePostAccessRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "fromDM" in value;
+
+    return isInstance;
 }
 
 export function CreatePostAccessRequestDtoFromJSON(json: any): CreatePostAccessRequestDto {

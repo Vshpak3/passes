@@ -14,17 +14,19 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  GetCreatorEarningResponseDto,
+  GetCreatorEarningsHistoryRequestDto,
+  GetCreatorEarningsResponseDto,
+  GetCreatorStatsResponseDto,
+} from '../models';
 import {
-    GetCreatorEarningResponseDto,
     GetCreatorEarningResponseDtoFromJSON,
     GetCreatorEarningResponseDtoToJSON,
-    GetCreatorEarningsHistoryRequestDto,
     GetCreatorEarningsHistoryRequestDtoFromJSON,
     GetCreatorEarningsHistoryRequestDtoToJSON,
-    GetCreatorEarningsResponseDto,
     GetCreatorEarningsResponseDtoFromJSON,
     GetCreatorEarningsResponseDtoToJSON,
-    GetCreatorStatsResponseDto,
     GetCreatorStatsResponseDtoFromJSON,
     GetCreatorStatsResponseDtoToJSON,
 } from '../models';
@@ -45,7 +47,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get balance
      */
-    async getBalanceRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
+    async getBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -71,7 +73,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get balance
      */
-    async getBalance(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorEarningResponseDto> {
+    async getBalance(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningResponseDto> {
         const response = await this.getBalanceRaw(initOverrides);
         return await response.value();
     }
@@ -79,7 +81,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get current stats
      */
-    async getCreatorStatsRaw(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorStatsResponseDto>> {
+    async getCreatorStatsRaw(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorStatsResponseDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getCreatorStats.');
         }
@@ -101,7 +103,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get current stats
      */
-    async getCreatorStats(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorStatsResponseDto> {
+    async getCreatorStats(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorStatsResponseDto> {
         const response = await this.getCreatorStatsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -109,7 +111,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get historic earnings
      */
-    async getHistoricEarningsRaw(requestParameters: GetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorEarningsResponseDto>> {
+    async getHistoricEarningsRaw(requestParameters: GetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningsResponseDto>> {
         if (requestParameters.getCreatorEarningsHistoryRequestDto === null || requestParameters.getCreatorEarningsHistoryRequestDto === undefined) {
             throw new runtime.RequiredError('getCreatorEarningsHistoryRequestDto','Required parameter requestParameters.getCreatorEarningsHistoryRequestDto was null or undefined when calling getHistoricEarnings.');
         }
@@ -142,7 +144,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get historic earnings
      */
-    async getHistoricEarnings(requestParameters: GetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorEarningsResponseDto> {
+    async getHistoricEarnings(requestParameters: GetHistoricEarningsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningsResponseDto> {
         const response = await this.getHistoricEarningsRaw(requestParameters, initOverrides);
         return await response.value();
     }

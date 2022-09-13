@@ -14,32 +14,34 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  AddExternalPassAddressRequestDto,
+  AdminDto,
+  DeleteExternalPassAddressRequestDto,
+  GetCreatorFeeRequestDto,
+  GetCreatorFeeResponseDto,
+  ImpersonateUserRequestDto,
+  ImpersonateUserResponseDto,
+  SetCreatorFeeRequestDto,
+  UpdateExternalPassRequestDto,
+} from '../models';
 import {
-    AddExternalPassAddressRequestDto,
     AddExternalPassAddressRequestDtoFromJSON,
     AddExternalPassAddressRequestDtoToJSON,
-    AdminDto,
     AdminDtoFromJSON,
     AdminDtoToJSON,
-    DeleteExternalPassAddressRequestDto,
     DeleteExternalPassAddressRequestDtoFromJSON,
     DeleteExternalPassAddressRequestDtoToJSON,
-    GetCreatorFeeRequestDto,
     GetCreatorFeeRequestDtoFromJSON,
     GetCreatorFeeRequestDtoToJSON,
-    GetCreatorFeeResponseDto,
     GetCreatorFeeResponseDtoFromJSON,
     GetCreatorFeeResponseDtoToJSON,
-    ImpersonateUserRequestDto,
     ImpersonateUserRequestDtoFromJSON,
     ImpersonateUserRequestDtoToJSON,
-    ImpersonateUserResponseDto,
     ImpersonateUserResponseDtoFromJSON,
     ImpersonateUserResponseDtoToJSON,
-    SetCreatorFeeRequestDto,
     SetCreatorFeeRequestDtoFromJSON,
     SetCreatorFeeRequestDtoToJSON,
-    UpdateExternalPassRequestDto,
     UpdateExternalPassRequestDtoFromJSON,
     UpdateExternalPassRequestDtoToJSON,
 } from '../models';
@@ -84,7 +86,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Add external pass address
      */
-    async addExternalPassAddressRaw(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async addExternalPassAddressRaw(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.addExternalPassAddressRequestDto === null || requestParameters.addExternalPassAddressRequestDto === undefined) {
             throw new runtime.RequiredError('addExternalPassAddressRequestDto','Required parameter requestParameters.addExternalPassAddressRequestDto was null or undefined when calling addExternalPassAddress.');
         }
@@ -117,7 +119,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Add external pass address
      */
-    async addExternalPassAddress(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async addExternalPassAddress(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.addExternalPassAddressRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -125,7 +127,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass
      */
-    async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling deleteExternalPass.');
         }
@@ -158,7 +160,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass
      */
-    async deleteExternalPass(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async deleteExternalPass(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deleteExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -166,7 +168,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass address
      */
-    async deleteExternalPassAddressRaw(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteExternalPassAddressRaw(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.deleteExternalPassAddressRequestDto === null || requestParameters.deleteExternalPassAddressRequestDto === undefined) {
             throw new runtime.RequiredError('deleteExternalPassAddressRequestDto','Required parameter requestParameters.deleteExternalPassAddressRequestDto was null or undefined when calling deleteExternalPassAddress.');
         }
@@ -199,7 +201,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass address
      */
-    async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deleteExternalPassAddressRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -207,7 +209,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Flags user as adult
      */
-    async flagAsAdultRaw(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async flagAsAdultRaw(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
             throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling flagAsAdult.');
         }
@@ -240,14 +242,14 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Flags user as adult
      */
-    async flagAsAdult(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async flagAsAdult(requestParameters: FlagAsAdultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.flagAsAdultRaw(requestParameters, initOverrides);
     }
 
     /**
      * Get creator fee
      */
-    async getCreatorFeeRaw(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorFeeResponseDto>> {
+    async getCreatorFeeRaw(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorFeeResponseDto>> {
         if (requestParameters.getCreatorFeeRequestDto === null || requestParameters.getCreatorFeeRequestDto === undefined) {
             throw new runtime.RequiredError('getCreatorFeeRequestDto','Required parameter requestParameters.getCreatorFeeRequestDto was null or undefined when calling getCreatorFee.');
         }
@@ -280,7 +282,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Get creator fee
      */
-    async getCreatorFee(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorFeeResponseDto> {
+    async getCreatorFee(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorFeeResponseDto> {
         const response = await this.getCreatorFeeRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -288,7 +290,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<ImpersonateUserResponseDto>> {
+    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ImpersonateUserResponseDto>> {
         if (requestParameters.impersonateUserRequestDto === null || requestParameters.impersonateUserRequestDto === undefined) {
             throw new runtime.RequiredError('impersonateUserRequestDto','Required parameter requestParameters.impersonateUserRequestDto was null or undefined when calling impersonateUser.');
         }
@@ -321,7 +323,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<ImpersonateUserResponseDto> {
+    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ImpersonateUserResponseDto> {
         const response = await this.impersonateUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -329,7 +331,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Set creator fee
      */
-    async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.setCreatorFeeRequestDto === null || requestParameters.setCreatorFeeRequestDto === undefined) {
             throw new runtime.RequiredError('setCreatorFeeRequestDto','Required parameter requestParameters.setCreatorFeeRequestDto was null or undefined when calling setCreatorFee.');
         }
@@ -362,7 +364,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Set creator fee
      */
-    async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.setCreatorFeeRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -370,7 +372,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Update external pass
      */
-    async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling updateExternalPass.');
         }
@@ -403,7 +405,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Update external pass
      */
-    async updateExternalPass(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async updateExternalPass(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.updateExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -45,6 +45,15 @@ export interface UpdateChannelSettingsRequestDto {
     unlimitedMessages?: boolean;
 }
 
+/**
+ * Check if a given object implements the UpdateChannelSettingsRequestDto interface.
+ */
+export function instanceOfUpdateChannelSettingsRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function UpdateChannelSettingsRequestDtoFromJSON(json: any): UpdateChannelSettingsRequestDto {
     return UpdateChannelSettingsRequestDtoFromJSONTyped(json, false);
 }

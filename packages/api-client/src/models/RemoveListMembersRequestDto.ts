@@ -33,6 +33,17 @@ export interface RemoveListMembersRequestDto {
     userIds: Array<string>;
 }
 
+/**
+ * Check if a given object implements the RemoveListMembersRequestDto interface.
+ */
+export function instanceOfRemoveListMembersRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "userIds" in value;
+
+    return isInstance;
+}
+
 export function RemoveListMembersRequestDtoFromJSON(json: any): RemoveListMembersRequestDto {
     return RemoveListMembersRequestDtoFromJSONTyped(json, false);
 }

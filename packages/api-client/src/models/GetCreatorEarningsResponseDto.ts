@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CreatorEarningDto } from './CreatorEarningDto';
 import {
-    CreatorEarningDto,
     CreatorEarningDtoFromJSON,
     CreatorEarningDtoFromJSONTyped,
     CreatorEarningDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetCreatorEarningsResponseDto {
      * @memberof GetCreatorEarningsResponseDto
      */
     earnings: Array<CreatorEarningDto>;
+}
+
+/**
+ * Check if a given object implements the GetCreatorEarningsResponseDto interface.
+ */
+export function instanceOfGetCreatorEarningsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "earnings" in value;
+
+    return isInstance;
 }
 
 export function GetCreatorEarningsResponseDtoFromJSON(json: any): GetCreatorEarningsResponseDto {

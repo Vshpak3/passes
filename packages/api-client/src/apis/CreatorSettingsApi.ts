@@ -14,11 +14,13 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  GetCreatorSettingsResponseDto,
+  UpdateCreatorSettingsRequestDto,
+} from '../models';
 import {
-    GetCreatorSettingsResponseDto,
     GetCreatorSettingsResponseDtoFromJSON,
     GetCreatorSettingsResponseDtoToJSON,
-    UpdateCreatorSettingsRequestDto,
     UpdateCreatorSettingsRequestDtoFromJSON,
     UpdateCreatorSettingsRequestDtoToJSON,
 } from '../models';
@@ -35,7 +37,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     /**
      * Gets creator settings
      */
-    async getCreatorSettingsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetCreatorSettingsResponseDto>> {
+    async getCreatorSettingsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorSettingsResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -61,7 +63,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     /**
      * Gets creator settings
      */
-    async getCreatorSettings(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetCreatorSettingsResponseDto> {
+    async getCreatorSettings(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorSettingsResponseDto> {
         const response = await this.getCreatorSettingsRaw(initOverrides);
         return await response.value();
     }
@@ -69,7 +71,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     /**
      * Updates creator settings
      */
-    async updateCreatorSettingsRaw(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateCreatorSettingsRaw(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.updateCreatorSettingsRequestDto === null || requestParameters.updateCreatorSettingsRequestDto === undefined) {
             throw new runtime.RequiredError('updateCreatorSettingsRequestDto','Required parameter requestParameters.updateCreatorSettingsRequestDto was null or undefined when calling updateCreatorSettings.');
         }
@@ -102,7 +104,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     /**
      * Updates creator settings
      */
-    async updateCreatorSettings(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async updateCreatorSettings(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.updateCreatorSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }

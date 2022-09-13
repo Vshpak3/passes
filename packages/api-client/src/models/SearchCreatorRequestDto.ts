@@ -27,6 +27,16 @@ export interface SearchCreatorRequestDto {
     query: string;
 }
 
+/**
+ * Check if a given object implements the SearchCreatorRequestDto interface.
+ */
+export function instanceOfSearchCreatorRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "query" in value;
+
+    return isInstance;
+}
+
 export function SearchCreatorRequestDtoFromJSON(json: any): SearchCreatorRequestDto {
     return SearchCreatorRequestDtoFromJSONTyped(json, false);
 }

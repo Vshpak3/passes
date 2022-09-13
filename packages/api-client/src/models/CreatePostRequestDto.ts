@@ -69,6 +69,20 @@ export interface CreatePostRequestDto {
     scheduledAt?: Date;
 }
 
+/**
+ * Check if a given object implements the CreatePostRequestDto interface.
+ */
+export function instanceOfCreatePostRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "contentIds" in value;
+    isInstance = isInstance && "passIds" in value;
+    isInstance = isInstance && "isMessage" in value;
+
+    return isInstance;
+}
+
 export function CreatePostRequestDtoFromJSON(json: any): CreatePostRequestDto {
     return CreatePostRequestDtoFromJSONTyped(json, false);
 }

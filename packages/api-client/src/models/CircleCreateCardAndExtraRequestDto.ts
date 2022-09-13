@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleCreateCardDto } from './CircleCreateCardDto';
 import {
-    CircleCreateCardDto,
     CircleCreateCardDtoFromJSON,
     CircleCreateCardDtoFromJSONTyped,
     CircleCreateCardDtoToJSON,
@@ -38,6 +38,17 @@ export interface CircleCreateCardAndExtraRequestDto {
      * @memberof CircleCreateCardAndExtraRequestDto
      */
     cardNumber: string;
+}
+
+/**
+ * Check if a given object implements the CircleCreateCardAndExtraRequestDto interface.
+ */
+export function instanceOfCircleCreateCardAndExtraRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "createCardDto" in value;
+    isInstance = isInstance && "cardNumber" in value;
+
+    return isInstance;
 }
 
 export function CircleCreateCardAndExtraRequestDtoFromJSON(json: any): CircleCreateCardAndExtraRequestDto {

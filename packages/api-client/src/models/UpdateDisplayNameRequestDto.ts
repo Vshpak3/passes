@@ -27,6 +27,16 @@ export interface UpdateDisplayNameRequestDto {
     displayName: string;
 }
 
+/**
+ * Check if a given object implements the UpdateDisplayNameRequestDto interface.
+ */
+export function instanceOfUpdateDisplayNameRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "displayName" in value;
+
+    return isInstance;
+}
+
 export function UpdateDisplayNameRequestDtoFromJSON(json: any): UpdateDisplayNameRequestDto {
     return UpdateDisplayNameRequestDtoFromJSONTyped(json, false);
 }

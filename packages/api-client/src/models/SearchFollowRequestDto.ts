@@ -33,6 +33,15 @@ export interface SearchFollowRequestDto {
     cursor?: string;
 }
 
+/**
+ * Check if a given object implements the SearchFollowRequestDto interface.
+ */
+export function instanceOfSearchFollowRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function SearchFollowRequestDtoFromJSON(json: any): SearchFollowRequestDto {
     return SearchFollowRequestDtoFromJSONTyped(json, false);
 }

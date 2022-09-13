@@ -57,6 +57,20 @@ export interface GetWalletResponseDto {
     authenticated: boolean;
 }
 
+/**
+ * Check if a given object implements the GetWalletResponseDto interface.
+ */
+export function instanceOfGetWalletResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "walletId" in value;
+    isInstance = isInstance && "address" in value;
+    isInstance = isInstance && "chain" in value;
+    isInstance = isInstance && "custodial" in value;
+    isInstance = isInstance && "authenticated" in value;
+
+    return isInstance;
+}
+
 export function GetWalletResponseDtoFromJSON(json: any): GetWalletResponseDto {
     return GetWalletResponseDtoFromJSONTyped(json, false);
 }

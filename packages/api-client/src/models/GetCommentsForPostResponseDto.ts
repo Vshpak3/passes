@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CommentDto } from './CommentDto';
 import {
-    CommentDto,
     CommentDtoFromJSON,
     CommentDtoFromJSONTyped,
     CommentDtoToJSON,
@@ -38,6 +38,17 @@ export interface GetCommentsForPostResponseDto {
      * @memberof GetCommentsForPostResponseDto
      */
     comments: Array<CommentDto>;
+}
+
+/**
+ * Check if a given object implements the GetCommentsForPostResponseDto interface.
+ */
+export function instanceOfGetCommentsForPostResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "comments" in value;
+
+    return isInstance;
 }
 
 export function GetCommentsForPostResponseDtoFromJSON(json: any): GetCommentsForPostResponseDto {

@@ -70,6 +70,16 @@ export const GetPayinMethodResponseDtoChainEnum = {
 export type GetPayinMethodResponseDtoChainEnum = typeof GetPayinMethodResponseDtoChainEnum[keyof typeof GetPayinMethodResponseDtoChainEnum];
 
 
+/**
+ * Check if a given object implements the GetPayinMethodResponseDto interface.
+ */
+export function instanceOfGetPayinMethodResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "method" in value;
+
+    return isInstance;
+}
+
 export function GetPayinMethodResponseDtoFromJSON(json: any): GetPayinMethodResponseDto {
     return GetPayinMethodResponseDtoFromJSONTyped(json, false);
 }

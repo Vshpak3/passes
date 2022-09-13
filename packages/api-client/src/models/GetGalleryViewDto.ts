@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PostDto } from './PostDto';
 import {
-    PostDto,
     PostDtoFromJSON,
     PostDtoFromJSONTyped,
     PostDtoToJSON,
@@ -38,6 +38,17 @@ export interface GetGalleryViewDto {
      * @memberof GetGalleryViewDto
      */
     unpaid: Array<PostDto>;
+}
+
+/**
+ * Check if a given object implements the GetGalleryViewDto interface.
+ */
+export function instanceOfGetGalleryViewDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "paid" in value;
+    isInstance = isInstance && "unpaid" in value;
+
+    return isInstance;
 }
 
 export function GetGalleryViewDtoFromJSON(json: any): GetGalleryViewDto {

@@ -51,6 +51,15 @@ export interface CircleMetaDataDto {
     beneficiaryEmail?: string;
 }
 
+/**
+ * Check if a given object implements the CircleMetaDataDto interface.
+ */
+export function instanceOfCircleMetaDataDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function CircleMetaDataDtoFromJSON(json: any): CircleMetaDataDto {
     return CircleMetaDataDtoFromJSONTyped(json, false);
 }

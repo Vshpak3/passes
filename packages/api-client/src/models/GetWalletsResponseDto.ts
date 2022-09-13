@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { WalletDto } from './WalletDto';
 import {
-    WalletDto,
     WalletDtoFromJSON,
     WalletDtoFromJSONTyped,
     WalletDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetWalletsResponseDto {
      * @memberof GetWalletsResponseDto
      */
     wallets: Array<WalletDto>;
+}
+
+/**
+ * Check if a given object implements the GetWalletsResponseDto interface.
+ */
+export function instanceOfGetWalletsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "wallets" in value;
+
+    return isInstance;
 }
 
 export function GetWalletsResponseDtoFromJSON(json: any): GetWalletsResponseDto {

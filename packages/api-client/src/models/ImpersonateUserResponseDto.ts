@@ -27,6 +27,16 @@ export interface ImpersonateUserResponseDto {
     accessToken: string;
 }
 
+/**
+ * Check if a given object implements the ImpersonateUserResponseDto interface.
+ */
+export function instanceOfImpersonateUserResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+
+    return isInstance;
+}
+
 export function ImpersonateUserResponseDtoFromJSON(json: any): ImpersonateUserResponseDto {
     return ImpersonateUserResponseDtoFromJSONTyped(json, false);
 }

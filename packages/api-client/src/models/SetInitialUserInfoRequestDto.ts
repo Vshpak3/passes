@@ -45,6 +45,19 @@ export interface SetInitialUserInfoRequestDto {
     birthday: string;
 }
 
+/**
+ * Check if a given object implements the SetInitialUserInfoRequestDto interface.
+ */
+export function instanceOfSetInitialUserInfoRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "legalFullName" in value;
+    isInstance = isInstance && "countryCode" in value;
+    isInstance = isInstance && "birthday" in value;
+
+    return isInstance;
+}
+
 export function SetInitialUserInfoRequestDtoFromJSON(json: any): SetInitialUserInfoRequestDto {
     return SetInitialUserInfoRequestDtoFromJSONTyped(json, false);
 }

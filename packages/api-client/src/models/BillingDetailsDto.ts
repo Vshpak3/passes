@@ -63,6 +63,20 @@ export interface BillingDetailsDto {
     postalCode: string;
 }
 
+/**
+ * Check if a given object implements the BillingDetailsDto interface.
+ */
+export function instanceOfBillingDetailsDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "city" in value;
+    isInstance = isInstance && "country" in value;
+    isInstance = isInstance && "line1" in value;
+    isInstance = isInstance && "postalCode" in value;
+
+    return isInstance;
+}
+
 export function BillingDetailsDtoFromJSON(json: any): BillingDetailsDto {
     return BillingDetailsDtoFromJSONTyped(json, false);
 }

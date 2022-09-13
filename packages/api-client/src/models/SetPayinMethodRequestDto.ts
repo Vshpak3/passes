@@ -70,6 +70,16 @@ export const SetPayinMethodRequestDtoChainEnum = {
 export type SetPayinMethodRequestDtoChainEnum = typeof SetPayinMethodRequestDtoChainEnum[keyof typeof SetPayinMethodRequestDtoChainEnum];
 
 
+/**
+ * Check if a given object implements the SetPayinMethodRequestDto interface.
+ */
+export function instanceOfSetPayinMethodRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "method" in value;
+
+    return isInstance;
+}
+
 export function SetPayinMethodRequestDtoFromJSON(json: any): SetPayinMethodRequestDto {
     return SetPayinMethodRequestDtoFromJSONTyped(json, false);
 }

@@ -39,6 +39,18 @@ export interface CreateCommentRequestDto {
     tags: Array<string>;
 }
 
+/**
+ * Check if a given object implements the CreateCommentRequestDto interface.
+ */
+export function instanceOfCreateCommentRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+
+    return isInstance;
+}
+
 export function CreateCommentRequestDtoFromJSON(json: any): CreateCommentRequestDto {
     return CreateCommentRequestDtoFromJSONTyped(json, false);
 }

@@ -27,6 +27,16 @@ export interface ReportFanDto {
     reason: string;
 }
 
+/**
+ * Check if a given object implements the ReportFanDto interface.
+ */
+export function instanceOfReportFanDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "reason" in value;
+
+    return isInstance;
+}
+
 export function ReportFanDtoFromJSON(json: any): ReportFanDto {
     return ReportFanDtoFromJSONTyped(json, false);
 }

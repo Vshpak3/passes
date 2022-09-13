@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ChannelStatDto } from './ChannelStatDto';
 import {
-    ChannelStatDto,
     ChannelStatDtoFromJSON,
     ChannelStatDtoFromJSONTyped,
     ChannelStatDtoToJSON,
@@ -32,6 +32,16 @@ export interface GetChannelStatsResponseDto {
      * @memberof GetChannelStatsResponseDto
      */
     channelStats: Array<ChannelStatDto>;
+}
+
+/**
+ * Check if a given object implements the GetChannelStatsResponseDto interface.
+ */
+export function instanceOfGetChannelStatsResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "channelStats" in value;
+
+    return isInstance;
 }
 
 export function GetChannelStatsResponseDtoFromJSON(json: any): GetChannelStatsResponseDto {

@@ -33,6 +33,17 @@ export interface CreateLocalUserRequestDto {
     password: string;
 }
 
+/**
+ * Check if a given object implements the CreateLocalUserRequestDto interface.
+ */
+export function instanceOfCreateLocalUserRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "email" in value;
+    isInstance = isInstance && "password" in value;
+
+    return isInstance;
+}
+
 export function CreateLocalUserRequestDtoFromJSON(json: any): CreateLocalUserRequestDto {
     return CreateLocalUserRequestDtoFromJSONTyped(json, false);
 }

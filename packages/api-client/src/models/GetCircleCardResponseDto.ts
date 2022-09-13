@@ -75,6 +75,23 @@ export interface GetCircleCardResponseDto {
     active: boolean;
 }
 
+/**
+ * Check if a given object implements the GetCircleCardResponseDto interface.
+ */
+export function instanceOfGetCircleCardResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "firstDigit" in value;
+    isInstance = isInstance && "fourDigits" in value;
+    isInstance = isInstance && "expMonth" in value;
+    isInstance = isInstance && "expYear" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "active" in value;
+
+    return isInstance;
+}
+
 export function GetCircleCardResponseDtoFromJSON(json: any): GetCircleCardResponseDto {
     return GetCircleCardResponseDtoFromJSONTyped(json, false);
 }

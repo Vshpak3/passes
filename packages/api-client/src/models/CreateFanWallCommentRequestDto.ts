@@ -39,6 +39,18 @@ export interface CreateFanWallCommentRequestDto {
     tags: Array<string>;
 }
 
+/**
+ * Check if a given object implements the CreateFanWallCommentRequestDto interface.
+ */
+export function instanceOfCreateFanWallCommentRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "tags" in value;
+
+    return isInstance;
+}
+
 export function CreateFanWallCommentRequestDtoFromJSON(json: any): CreateFanWallCommentRequestDto {
     return CreateFanWallCommentRequestDtoFromJSONTyped(json, false);
 }

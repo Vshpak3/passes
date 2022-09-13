@@ -81,6 +81,19 @@ export interface GetUserResponseDto {
     countryCode?: string;
 }
 
+/**
+ * Check if a given object implements the GetUserResponseDto interface.
+ */
+export function instanceOfGetUserResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "email" in value;
+    isInstance = isInstance && "isEmailVerified" in value;
+    isInstance = isInstance && "username" in value;
+
+    return isInstance;
+}
+
 export function GetUserResponseDtoFromJSON(json: any): GetUserResponseDto {
     return GetUserResponseDtoFromJSONTyped(json, false);
 }

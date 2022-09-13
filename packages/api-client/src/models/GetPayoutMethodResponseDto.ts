@@ -51,6 +51,16 @@ export const GetPayoutMethodResponseDtoMethodEnum = {
 export type GetPayoutMethodResponseDtoMethodEnum = typeof GetPayoutMethodResponseDtoMethodEnum[keyof typeof GetPayoutMethodResponseDtoMethodEnum];
 
 
+/**
+ * Check if a given object implements the GetPayoutMethodResponseDto interface.
+ */
+export function instanceOfGetPayoutMethodResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "method" in value;
+
+    return isInstance;
+}
+
 export function GetPayoutMethodResponseDtoFromJSON(json: any): GetPayoutMethodResponseDto {
     return GetPayoutMethodResponseDtoFromJSONTyped(json, false);
 }

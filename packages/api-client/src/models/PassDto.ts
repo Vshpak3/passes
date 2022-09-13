@@ -111,6 +111,23 @@ export const PassDtoTypeEnum = {
 export type PassDtoTypeEnum = typeof PassDtoTypeEnum[keyof typeof PassDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the PassDto interface.
+ */
+export function instanceOfPassDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "passId" in value;
+    isInstance = isInstance && "title" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "price" in value;
+    isInstance = isInstance && "totalSupply" in value;
+    isInstance = isInstance && "remainingSupply" in value;
+    isInstance = isInstance && "freetrial" in value;
+
+    return isInstance;
+}
+
 export function PassDtoFromJSON(json: any): PassDto {
     return PassDtoFromJSONTyped(json, false);
 }

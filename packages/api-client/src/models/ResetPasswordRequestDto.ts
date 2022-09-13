@@ -27,6 +27,16 @@ export interface ResetPasswordRequestDto {
     email: string;
 }
 
+/**
+ * Check if a given object implements the ResetPasswordRequestDto interface.
+ */
+export function instanceOfResetPasswordRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "email" in value;
+
+    return isInstance;
+}
+
 export function ResetPasswordRequestDtoFromJSON(json: any): ResetPasswordRequestDto {
     return ResetPasswordRequestDtoFromJSONTyped(json, false);
 }

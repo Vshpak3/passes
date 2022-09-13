@@ -27,6 +27,16 @@ export interface SetEmailRequestDto {
     email: string;
 }
 
+/**
+ * Check if a given object implements the SetEmailRequestDto interface.
+ */
+export function instanceOfSetEmailRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "email" in value;
+
+    return isInstance;
+}
+
 export function SetEmailRequestDtoFromJSON(json: any): SetEmailRequestDto {
     return SetEmailRequestDtoFromJSONTyped(json, false);
 }

@@ -39,6 +39,16 @@ export interface AdminDto {
     secret: string;
 }
 
+/**
+ * Check if a given object implements the AdminDto interface.
+ */
+export function instanceOfAdminDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "secret" in value;
+
+    return isInstance;
+}
+
 export function AdminDtoFromJSON(json: any): AdminDto {
     return AdminDtoFromJSONTyped(json, false);
 }

@@ -39,6 +39,18 @@ export interface GetFollowResponseDto {
     creatorId: string;
 }
 
+/**
+ * Check if a given object implements the GetFollowResponseDto interface.
+ */
+export function instanceOfGetFollowResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "followerId" in value;
+    isInstance = isInstance && "creatorId" in value;
+
+    return isInstance;
+}
+
 export function GetFollowResponseDtoFromJSON(json: any): GetFollowResponseDto {
     return GetFollowResponseDtoFromJSONTyped(json, false);
 }

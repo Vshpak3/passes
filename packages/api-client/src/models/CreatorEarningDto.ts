@@ -45,6 +45,19 @@ export interface CreatorEarningDto {
     createdAt: Date;
 }
 
+/**
+ * Check if a given object implements the CreatorEarningDto interface.
+ */
+export function instanceOfCreatorEarningDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "amount" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "createdAt" in value;
+
+    return isInstance;
+}
+
 export function CreatorEarningDtoFromJSON(json: any): CreatorEarningDto {
     return CreatorEarningDtoFromJSONTyped(json, false);
 }

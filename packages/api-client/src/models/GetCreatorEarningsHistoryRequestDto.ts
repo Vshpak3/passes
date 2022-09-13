@@ -56,6 +56,18 @@ export const GetCreatorEarningsHistoryRequestDtoTypeEnum = {
 export type GetCreatorEarningsHistoryRequestDtoTypeEnum = typeof GetCreatorEarningsHistoryRequestDtoTypeEnum[keyof typeof GetCreatorEarningsHistoryRequestDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the GetCreatorEarningsHistoryRequestDto interface.
+ */
+export function instanceOfGetCreatorEarningsHistoryRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "start" in value;
+    isInstance = isInstance && "end" in value;
+    isInstance = isInstance && "type" in value;
+
+    return isInstance;
+}
+
 export function GetCreatorEarningsHistoryRequestDtoFromJSON(json: any): GetCreatorEarningsHistoryRequestDto {
     return GetCreatorEarningsHistoryRequestDtoFromJSONTyped(json, false);
 }

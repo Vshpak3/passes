@@ -14,26 +14,28 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  SearchCreatorRequestDto,
+  SearchCreatorResponseDto,
+  SetInitialUserInfoRequestDto,
+  SetInitialUserInfoResponseDto,
+  UpdateDisplayNameRequestDto,
+  UpdateUsernameRequestDto,
+  VerifyEmailDto,
+} from '../models';
 import {
-    SearchCreatorRequestDto,
     SearchCreatorRequestDtoFromJSON,
     SearchCreatorRequestDtoToJSON,
-    SearchCreatorResponseDto,
     SearchCreatorResponseDtoFromJSON,
     SearchCreatorResponseDtoToJSON,
-    SetInitialUserInfoRequestDto,
     SetInitialUserInfoRequestDtoFromJSON,
     SetInitialUserInfoRequestDtoToJSON,
-    SetInitialUserInfoResponseDto,
     SetInitialUserInfoResponseDtoFromJSON,
     SetInitialUserInfoResponseDtoToJSON,
-    UpdateDisplayNameRequestDto,
     UpdateDisplayNameRequestDtoFromJSON,
     UpdateDisplayNameRequestDtoToJSON,
-    UpdateUsernameRequestDto,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
-    VerifyEmailDto,
     VerifyEmailDtoFromJSON,
     VerifyEmailDtoToJSON,
 } from '../models';
@@ -70,7 +72,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Activate a user account
      */
-    async activateUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async activateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -96,7 +98,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Activate a user account
      */
-    async activateUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async activateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.activateUserRaw(initOverrides);
         return await response.value();
     }
@@ -104,7 +106,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Deactivate a user account
      */
-    async deactivateUserRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deactivateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -130,7 +132,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Deactivate a user account
      */
-    async deactivateUser(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async deactivateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deactivateUserRaw(initOverrides);
         return await response.value();
     }
@@ -138,7 +140,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Flags self as adult
      */
-    async makeAdultRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async makeAdultRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -164,14 +166,14 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Flags self as adult
      */
-    async makeAdult(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async makeAdult(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.makeAdultRaw(initOverrides);
     }
 
     /**
      * Make yourself a creator
      */
-    async makeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async makeCreatorRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -197,14 +199,14 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Make yourself a creator
      */
-    async makeCreator(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async makeCreator(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.makeCreatorRaw(initOverrides);
     }
 
     /**
      * Search for creators by query
      */
-    async searchCreatorByUsernameRaw(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
+    async searchCreatorByUsernameRaw(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
         if (requestParameters.searchCreatorRequestDto === null || requestParameters.searchCreatorRequestDto === undefined) {
             throw new runtime.RequiredError('searchCreatorRequestDto','Required parameter requestParameters.searchCreatorRequestDto was null or undefined when calling searchCreatorByUsername.');
         }
@@ -237,7 +239,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Search for creators by query
      */
-    async searchCreatorByUsername(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SearchCreatorResponseDto> {
+    async searchCreatorByUsername(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchCreatorResponseDto> {
         const response = await this.searchCreatorByUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -245,7 +247,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Set display name for current user
      */
-    async setDisplayNameRaw(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setDisplayNameRaw(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.updateDisplayNameRequestDto === null || requestParameters.updateDisplayNameRequestDto === undefined) {
             throw new runtime.RequiredError('updateDisplayNameRequestDto','Required parameter requestParameters.updateDisplayNameRequestDto was null or undefined when calling setDisplayName.');
         }
@@ -278,14 +280,14 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Set display name for current user
      */
-    async setDisplayName(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async setDisplayName(requestParameters: SetDisplayNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.setDisplayNameRaw(requestParameters, initOverrides);
     }
 
     /**
      * Sets initial user info
      */
-    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<SetInitialUserInfoResponseDto>> {
+    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetInitialUserInfoResponseDto>> {
         if (requestParameters.setInitialUserInfoRequestDto === null || requestParameters.setInitialUserInfoRequestDto === undefined) {
             throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling setInitialInfo.');
         }
@@ -318,7 +320,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Sets initial user info
      */
-    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<SetInitialUserInfoResponseDto> {
+    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetInitialUserInfoResponseDto> {
         const response = await this.setInitialInfoRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -326,7 +328,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Set username for current user
      */
-    async setUsernameRaw(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async setUsernameRaw(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.updateUsernameRequestDto === null || requestParameters.updateUsernameRequestDto === undefined) {
             throw new runtime.RequiredError('updateUsernameRequestDto','Required parameter requestParameters.updateUsernameRequestDto was null or undefined when calling setUsername.');
         }
@@ -359,14 +361,14 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Set username for current user
      */
-    async setUsername(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async setUsername(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.setUsernameRaw(requestParameters, initOverrides);
     }
 
     /**
      * Validates whether a username is available
      */
-    async validateUsernameRaw(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async validateUsernameRaw(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
             throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling validateUsername.');
         }
@@ -388,7 +390,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Validates whether a username is available
      */
-    async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.validateUsernameRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -396,7 +398,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Verify email for the current user
      */
-    async verifyEmailRaw(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async verifyEmailRaw(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.verifyEmailDto === null || requestParameters.verifyEmailDto === undefined) {
             throw new runtime.RequiredError('verifyEmailDto','Required parameter requestParameters.verifyEmailDto was null or undefined when calling verifyEmail.');
         }
@@ -421,7 +423,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Verify email for the current user
      */
-    async verifyEmail(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async verifyEmail(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.verifyEmailRaw(requestParameters, initOverrides);
     }
 

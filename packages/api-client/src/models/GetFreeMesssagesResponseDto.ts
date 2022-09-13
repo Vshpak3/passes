@@ -27,6 +27,16 @@ export interface GetFreeMesssagesResponseDto {
     messages: object;
 }
 
+/**
+ * Check if a given object implements the GetFreeMesssagesResponseDto interface.
+ */
+export function instanceOfGetFreeMesssagesResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "messages" in value;
+
+    return isInstance;
+}
+
 export function GetFreeMesssagesResponseDtoFromJSON(json: any): GetFreeMesssagesResponseDto {
     return GetFreeMesssagesResponseDtoFromJSONTyped(json, false);
 }

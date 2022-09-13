@@ -33,6 +33,17 @@ export interface AddListMembersRequestDto {
     userIds: Array<string>;
 }
 
+/**
+ * Check if a given object implements the AddListMembersRequestDto interface.
+ */
+export function instanceOfAddListMembersRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "userIds" in value;
+
+    return isInstance;
+}
+
 export function AddListMembersRequestDtoFromJSON(json: any): AddListMembersRequestDto {
     return AddListMembersRequestDtoFromJSONTyped(json, false);
 }

@@ -57,6 +57,15 @@ export const UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = {
 export type UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum[keyof typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum];
 
 
+/**
+ * Check if a given object implements the UpdateCreatorSettingsRequestDto interface.
+ */
+export function instanceOfUpdateCreatorSettingsRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function UpdateCreatorSettingsRequestDtoFromJSON(json: any): UpdateCreatorSettingsRequestDto {
     return UpdateCreatorSettingsRequestDtoFromJSONTyped(json, false);
 }

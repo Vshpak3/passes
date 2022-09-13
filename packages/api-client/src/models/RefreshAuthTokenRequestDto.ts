@@ -27,6 +27,16 @@ export interface RefreshAuthTokenRequestDto {
     refreshToken: string;
 }
 
+/**
+ * Check if a given object implements the RefreshAuthTokenRequestDto interface.
+ */
+export function instanceOfRefreshAuthTokenRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "refreshToken" in value;
+
+    return isInstance;
+}
+
 export function RefreshAuthTokenRequestDtoFromJSON(json: any): RefreshAuthTokenRequestDto {
     return RefreshAuthTokenRequestDtoFromJSONTyped(json, false);
 }

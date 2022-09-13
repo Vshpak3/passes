@@ -27,6 +27,16 @@ export interface SearchCreatorResponseDto {
     creators: Array<string>;
 }
 
+/**
+ * Check if a given object implements the SearchCreatorResponseDto interface.
+ */
+export function instanceOfSearchCreatorResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "creators" in value;
+
+    return isInstance;
+}
+
 export function SearchCreatorResponseDtoFromJSON(json: any): SearchCreatorResponseDto {
     return SearchCreatorResponseDtoFromJSONTyped(json, false);
 }

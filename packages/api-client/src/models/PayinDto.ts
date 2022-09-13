@@ -13,14 +13,14 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleCardDto } from './CircleCardDto';
 import {
-    CircleCardDto,
     CircleCardDtoFromJSON,
     CircleCardDtoFromJSONTyped,
     CircleCardDtoToJSON,
 } from './CircleCardDto';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -140,6 +140,22 @@ export const PayinDtoCallbackEnum = {
 } as const;
 export type PayinDtoCallbackEnum = typeof PayinDtoCallbackEnum[keyof typeof PayinDtoCallbackEnum];
 
+
+/**
+ * Check if a given object implements the PayinDto interface.
+ */
+export function instanceOfPayinDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "payinMethod" in value;
+    isInstance = isInstance && "payinStatus" in value;
+    isInstance = isInstance && "amount" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "callback" in value;
+
+    return isInstance;
+}
 
 export function PayinDtoFromJSON(json: any): PayinDto {
     return PayinDtoFromJSONTyped(json, false);

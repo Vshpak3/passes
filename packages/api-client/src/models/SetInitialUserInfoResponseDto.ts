@@ -27,6 +27,16 @@ export interface SetInitialUserInfoResponseDto {
     accessToken: string;
 }
 
+/**
+ * Check if a given object implements the SetInitialUserInfoResponseDto interface.
+ */
+export function instanceOfSetInitialUserInfoResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+
+    return isInstance;
+}
+
 export function SetInitialUserInfoResponseDtoFromJSON(json: any): SetInitialUserInfoResponseDto {
     return SetInitialUserInfoResponseDtoFromJSONTyped(json, false);
 }

@@ -23,7 +23,7 @@ export class AuthTwitterApi extends runtime.BaseAPI {
     /**
      * Start the twitter oauth flow
      */
-    async twitterAuthRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async twitterAuthRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -41,14 +41,14 @@ export class AuthTwitterApi extends runtime.BaseAPI {
     /**
      * Start the twitter oauth flow
      */
-    async twitterAuth(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async twitterAuth(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.twitterAuthRaw(initOverrides);
     }
 
     /**
      * Redirect from twitter oauth flow
      */
-    async twitterAuthRedirectRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<void>> {
+    async twitterAuthRedirectRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -66,7 +66,7 @@ export class AuthTwitterApi extends runtime.BaseAPI {
     /**
      * Redirect from twitter oauth flow
      */
-    async twitterAuthRedirect(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<void> {
+    async twitterAuthRedirect(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.twitterAuthRedirectRaw(initOverrides);
     }
 

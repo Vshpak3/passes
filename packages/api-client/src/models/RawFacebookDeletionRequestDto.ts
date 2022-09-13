@@ -27,6 +27,16 @@ export interface RawFacebookDeletionRequestDto {
     signedRequest: string;
 }
 
+/**
+ * Check if a given object implements the RawFacebookDeletionRequestDto interface.
+ */
+export function instanceOfRawFacebookDeletionRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "signedRequest" in value;
+
+    return isInstance;
+}
+
 export function RawFacebookDeletionRequestDtoFromJSON(json: any): RawFacebookDeletionRequestDto {
     return RawFacebookDeletionRequestDtoFromJSONTyped(json, false);
 }

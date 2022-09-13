@@ -40,6 +40,16 @@ export const SubmitCreatorVerificationStepRequestDtoStepEnum = {
 export type SubmitCreatorVerificationStepRequestDtoStepEnum = typeof SubmitCreatorVerificationStepRequestDtoStepEnum[keyof typeof SubmitCreatorVerificationStepRequestDtoStepEnum];
 
 
+/**
+ * Check if a given object implements the SubmitCreatorVerificationStepRequestDto interface.
+ */
+export function instanceOfSubmitCreatorVerificationStepRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "step" in value;
+
+    return isInstance;
+}
+
 export function SubmitCreatorVerificationStepRequestDtoFromJSON(json: any): SubmitCreatorVerificationStepRequestDto {
     return SubmitCreatorVerificationStepRequestDtoFromJSONTyped(json, false);
 }

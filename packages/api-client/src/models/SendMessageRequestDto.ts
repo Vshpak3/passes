@@ -13,8 +13,8 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PayinMethodDto } from './PayinMethodDto';
 import {
-    PayinMethodDto,
     PayinMethodDtoFromJSON,
     PayinMethodDtoFromJSONTyped,
     PayinMethodDtoToJSON,
@@ -56,6 +56,19 @@ export interface SendMessageRequestDto {
      * @memberof SendMessageRequestDto
      */
     payinMethod?: PayinMethodDto;
+}
+
+/**
+ * Check if a given object implements the SendMessageRequestDto interface.
+ */
+export function instanceOfSendMessageRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "attachments" in value;
+    isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "tipAmount" in value;
+
+    return isInstance;
 }
 
 export function SendMessageRequestDtoFromJSON(json: any): SendMessageRequestDto {

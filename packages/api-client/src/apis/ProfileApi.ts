@@ -14,14 +14,16 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  CreateOrUpdateProfileRequestDto,
+  GetProfileRequestDto,
+  GetProfileResponseDto,
+} from '../models';
 import {
-    CreateOrUpdateProfileRequestDto,
     CreateOrUpdateProfileRequestDtoFromJSON,
     CreateOrUpdateProfileRequestDtoToJSON,
-    GetProfileRequestDto,
     GetProfileRequestDtoFromJSON,
     GetProfileRequestDtoToJSON,
-    GetProfileResponseDto,
     GetProfileResponseDtoFromJSON,
     GetProfileResponseDtoToJSON,
 } from '../models';
@@ -42,7 +44,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Activate a profile
      */
-    async activateProfileRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async activateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -68,7 +70,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Activate a profile
      */
-    async activateProfile(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async activateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.activateProfileRaw(initOverrides);
         return await response.value();
     }
@@ -76,7 +78,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async createOrUpdateProfileRaw(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createOrUpdateProfileRaw(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         if (requestParameters.createOrUpdateProfileRequestDto === null || requestParameters.createOrUpdateProfileRequestDto === undefined) {
             throw new runtime.RequiredError('createOrUpdateProfileRequestDto','Required parameter requestParameters.createOrUpdateProfileRequestDto was null or undefined when calling createOrUpdateProfile.');
         }
@@ -109,7 +111,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async createOrUpdateProfile(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async createOrUpdateProfile(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.createOrUpdateProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -117,7 +119,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deactivate a profile
      */
-    async deactivateProfileRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deactivateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -143,7 +145,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deactivate a profile
      */
-    async deactivateProfile(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<boolean> {
+    async deactivateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deactivateProfileRaw(initOverrides);
         return await response.value();
     }
@@ -151,7 +153,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets a profile
      */
-    async findProfileRaw(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
+    async findProfileRaw(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetProfileResponseDto>> {
         if (requestParameters.getProfileRequestDto === null || requestParameters.getProfileRequestDto === undefined) {
             throw new runtime.RequiredError('getProfileRequestDto','Required parameter requestParameters.getProfileRequestDto was null or undefined when calling findProfile.');
         }
@@ -176,7 +178,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Gets a profile
      */
-    async findProfile(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetProfileResponseDto> {
+    async findProfile(requestParameters: FindProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetProfileResponseDto> {
         const response = await this.findProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }

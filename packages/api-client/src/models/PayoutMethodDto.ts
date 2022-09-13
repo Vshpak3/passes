@@ -51,6 +51,16 @@ export const PayoutMethodDtoMethodEnum = {
 export type PayoutMethodDtoMethodEnum = typeof PayoutMethodDtoMethodEnum[keyof typeof PayoutMethodDtoMethodEnum];
 
 
+/**
+ * Check if a given object implements the PayoutMethodDto interface.
+ */
+export function instanceOfPayoutMethodDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "method" in value;
+
+    return isInstance;
+}
+
 export function PayoutMethodDtoFromJSON(json: any): PayoutMethodDto {
     return PayoutMethodDtoFromJSONTyped(json, false);
 }

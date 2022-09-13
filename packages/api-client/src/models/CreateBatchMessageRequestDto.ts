@@ -39,6 +39,18 @@ export interface CreateBatchMessageRequestDto {
     postId: string;
 }
 
+/**
+ * Check if a given object implements the CreateBatchMessageRequestDto interface.
+ */
+export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "listIds" in value;
+    isInstance = isInstance && "passIds" in value;
+    isInstance = isInstance && "postId" in value;
+
+    return isInstance;
+}
+
 export function CreateBatchMessageRequestDtoFromJSON(json: any): CreateBatchMessageRequestDto {
     return CreateBatchMessageRequestDtoFromJSONTyped(json, false);
 }

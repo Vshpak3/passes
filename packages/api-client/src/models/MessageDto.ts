@@ -57,6 +57,18 @@ export interface MessageDto {
     createdAt?: number;
 }
 
+/**
+ * Check if a given object implements the MessageDto interface.
+ */
+export function instanceOfMessageDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "attachments" in value;
+    isInstance = isInstance && "channelId" in value;
+
+    return isInstance;
+}
+
 export function MessageDtoFromJSON(json: any): MessageDto {
     return MessageDtoFromJSONTyped(json, false);
 }

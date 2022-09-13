@@ -53,6 +53,18 @@ export const GetNotificationsRequestDtoTypeEnum = {
 export type GetNotificationsRequestDtoTypeEnum = typeof GetNotificationsRequestDtoTypeEnum[keyof typeof GetNotificationsRequestDtoTypeEnum];
 
 
+/**
+ * Check if a given object implements the GetNotificationsRequestDto interface.
+ */
+export function instanceOfGetNotificationsRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "offset" in value;
+    isInstance = isInstance && "limit" in value;
+
+    return isInstance;
+}
+
 export function GetNotificationsRequestDtoFromJSON(json: any): GetNotificationsRequestDto {
     return GetNotificationsRequestDtoFromJSONTyped(json, false);
 }

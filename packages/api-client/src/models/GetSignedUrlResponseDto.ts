@@ -27,6 +27,16 @@ export interface GetSignedUrlResponseDto {
     url: string;
 }
 
+/**
+ * Check if a given object implements the GetSignedUrlResponseDto interface.
+ */
+export function instanceOfGetSignedUrlResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
+}
+
 export function GetSignedUrlResponseDtoFromJSON(json: any): GetSignedUrlResponseDto {
     return GetSignedUrlResponseDtoFromJSONTyped(json, false);
 }

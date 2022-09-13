@@ -14,17 +14,19 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  CreateContentRequestDto,
+  GetContentResponseDto,
+  GetContentsResponseDto,
+  GetSignedUrlResponseDto,
+} from '../models';
 import {
-    CreateContentRequestDto,
     CreateContentRequestDtoFromJSON,
     CreateContentRequestDtoToJSON,
-    GetContentResponseDto,
     GetContentResponseDtoFromJSON,
     GetContentResponseDtoToJSON,
-    GetContentsResponseDto,
     GetContentsResponseDtoFromJSON,
     GetContentsResponseDtoToJSON,
-    GetSignedUrlResponseDto,
     GetSignedUrlResponseDtoFromJSON,
     GetSignedUrlResponseDtoToJSON,
 } from '../models';
@@ -50,7 +52,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
+    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
         if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
             throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling createContent.');
         }
@@ -83,7 +85,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentResponseDto> {
+    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentResponseDto> {
         const response = await this.createContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -91,7 +93,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Gets all content associated with the current authenticated user
      */
-    async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
+    async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
         const queryParameters: any = {};
 
         if (requestParameters.category !== undefined) {
@@ -125,7 +127,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Gets all content associated with the current authenticated user
      */
-    async getVaultContent(requestParameters: GetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetContentsResponseDto> {
+    async getVaultContent(requestParameters: GetVaultContentRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentsResponseDto> {
         const response = await this.getVaultContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -133,7 +135,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Get signed url for specified path
      */
-    async preSignUrlRaw(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUrlRaw(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         if (requestParameters.path === null || requestParameters.path === undefined) {
             throw new runtime.RequiredError('path','Required parameter requestParameters.path was null or undefined when calling preSignUrl.');
         }
@@ -163,7 +165,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Get signed url for specified path
      */
-    async preSignUrl(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<GetSignedUrlResponseDto> {
+    async preSignUrl(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
         const response = await this.preSignUrlRaw(requestParameters, initOverrides);
         return await response.value();
     }

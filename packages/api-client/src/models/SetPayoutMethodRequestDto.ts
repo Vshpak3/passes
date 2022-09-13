@@ -51,6 +51,16 @@ export const SetPayoutMethodRequestDtoMethodEnum = {
 export type SetPayoutMethodRequestDtoMethodEnum = typeof SetPayoutMethodRequestDtoMethodEnum[keyof typeof SetPayoutMethodRequestDtoMethodEnum];
 
 
+/**
+ * Check if a given object implements the SetPayoutMethodRequestDto interface.
+ */
+export function instanceOfSetPayoutMethodRequestDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "method" in value;
+
+    return isInstance;
+}
+
 export function SetPayoutMethodRequestDtoFromJSON(json: any): SetPayoutMethodRequestDto {
     return SetPayoutMethodRequestDtoFromJSONTyped(json, false);
 }

@@ -75,6 +75,15 @@ export interface CreateOrUpdateProfileRequestDto {
     twitchUrl?: string;
 }
 
+/**
+ * Check if a given object implements the CreateOrUpdateProfileRequestDto interface.
+ */
+export function instanceOfCreateOrUpdateProfileRequestDto(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
+}
+
 export function CreateOrUpdateProfileRequestDtoFromJSON(json: any): CreateOrUpdateProfileRequestDto {
     return CreateOrUpdateProfileRequestDtoFromJSONTyped(json, false);
 }

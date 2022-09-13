@@ -39,6 +39,18 @@ export interface MetamaskCircleETHEntryResponseDto {
     chainId: number;
 }
 
+/**
+ * Check if a given object implements the MetamaskCircleETHEntryResponseDto interface.
+ */
+export function instanceOfMetamaskCircleETHEntryResponseDto(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "payinId" in value;
+    isInstance = isInstance && "depositAddress" in value;
+    isInstance = isInstance && "chainId" in value;
+
+    return isInstance;
+}
+
 export function MetamaskCircleETHEntryResponseDtoFromJSON(json: any): MetamaskCircleETHEntryResponseDto {
     return MetamaskCircleETHEntryResponseDtoFromJSONTyped(json, false);
 }
