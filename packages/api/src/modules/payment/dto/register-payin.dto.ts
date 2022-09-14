@@ -28,7 +28,7 @@ export class RegisterPayinRequestDto {
   @DtoProperty()
   amount: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 
   // callback
@@ -41,7 +41,7 @@ export class RegisterPayinRequestDto {
 
   // target object
   @Length(1, SHA256_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   target?: string
 
   @IsUUID()

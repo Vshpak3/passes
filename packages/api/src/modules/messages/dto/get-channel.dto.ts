@@ -10,7 +10,7 @@ export class GetChannelRequestDto {
   username: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   userId?: string
 }
 

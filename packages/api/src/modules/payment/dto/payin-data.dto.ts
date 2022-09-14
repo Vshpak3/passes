@@ -9,7 +9,7 @@ export class PayinDataDto {
   amount: number
 
   @Length(1, SHA256_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   target?: string
 
   @DtoProperty()

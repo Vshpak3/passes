@@ -13,6 +13,6 @@ export class TipPostRequestDto {
   @DtoProperty()
   amount: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 }

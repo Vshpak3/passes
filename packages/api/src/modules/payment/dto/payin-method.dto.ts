@@ -10,12 +10,12 @@ export class PayinMethodDto {
   method: PayinMethodEnum = PayinMethodEnum.NONE
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   cardId?: string
 
   @IsInt()
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   chainId?: number
 
   @IsEnum(ChainEnum)

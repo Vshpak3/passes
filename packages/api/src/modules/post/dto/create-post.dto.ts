@@ -24,13 +24,13 @@ export class CreatePostRequestDto {
   isMessage: boolean
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   price?: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   expiresAt?: Date
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   scheduledAt?: Date
 }
 

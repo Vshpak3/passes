@@ -4,7 +4,7 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class CreateLocalUserRequestDto {
   @IsEmail()
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 
   // Minimum eight characters, at least one letter and one number

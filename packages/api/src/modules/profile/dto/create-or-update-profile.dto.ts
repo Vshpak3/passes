@@ -10,38 +10,38 @@ import {
 
 export class CreateOrUpdateProfileRequestDto {
   @Length(1, PROFILE_COVER_TITLE_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   coverTitle?: string
 
   @Length(1, PROFILE_COVER_DESCRIPTION_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   coverDescription?: string
 
   @Length(1, PROFILE_DESCRIPTION_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   description?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   instagramUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   tiktokUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   youtubeUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   discordUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   facebookUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   twitchUrl?: string
 }

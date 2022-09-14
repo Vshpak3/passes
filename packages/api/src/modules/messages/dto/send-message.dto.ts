@@ -20,6 +20,6 @@ export class SendMessageRequestDto {
   @DtoProperty()
   tipAmount: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 }

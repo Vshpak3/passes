@@ -35,22 +35,22 @@ export class PayinDto {
   @DtoProperty({ enum: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   card?: CircleCardDto
 
   @Length(1, TRANSACTION_HASH_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   transactionHash?: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   address?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   callbackOutputJSON?: string
 
   @Length(1, SHA256_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   target?: string
 
   constructor(payin) {

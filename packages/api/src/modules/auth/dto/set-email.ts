@@ -4,7 +4,7 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class SetEmailRequestDto {
   @IsEmail()
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 }
 

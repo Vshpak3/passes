@@ -1,22 +1,22 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class NotificationSettingsDto {
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   directMessageEmails?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   passesEmails?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   paymentEmails?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   postEmails?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   marketingEmails?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   mentionEmails?: boolean
 
   constructor(notificationSettings) {

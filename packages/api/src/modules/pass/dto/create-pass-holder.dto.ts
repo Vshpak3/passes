@@ -8,6 +8,6 @@ export class CreatePassHolderRequestDto {
   @DtoProperty()
   passId: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 }

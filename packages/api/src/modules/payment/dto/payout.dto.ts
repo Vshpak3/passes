@@ -31,13 +31,13 @@ export class PayoutDto {
   createdAt: Date
 
   @Length(1, TRANSACTION_HASH_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   transactionHash?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   bank?: CircleBankDto
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   wallet?: WalletDto
 
   constructor(payout) {

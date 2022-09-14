@@ -10,7 +10,7 @@ export class WalletDto {
   walletId: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   userId?: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)

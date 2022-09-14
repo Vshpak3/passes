@@ -14,10 +14,10 @@ export class CreatorSettingsDto {
   payoutFrequency: PayoutFrequencyEnum
 
   @Length(1, WELCOME_MESSAGE_MAX_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   welcomeMessage?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   allowCommentsOnPosts?: boolean
 
   constructor(creatorSettings) {

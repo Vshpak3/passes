@@ -12,10 +12,10 @@ export class CircleCreatePaymentRequestDto {
   @DtoProperty()
   source: CircleSourceDto
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   description?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   channel?: string
 
   @DtoProperty()
@@ -26,18 +26,18 @@ export class CircleCreateCardPaymentRequestDto extends CircleCreatePaymentReques
   @DtoProperty()
   verification = 'none'
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   autoCapture?: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   verificationSuccessUrl?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   verificationFailureUrl?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   keyId?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   encryptedData?: string
 }

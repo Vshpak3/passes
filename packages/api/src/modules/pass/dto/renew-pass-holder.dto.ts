@@ -8,6 +8,6 @@ export class RenewPassHolderRequestDto {
   @DtoProperty()
   passHolderId: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 }

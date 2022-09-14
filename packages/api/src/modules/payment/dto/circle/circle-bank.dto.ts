@@ -9,7 +9,7 @@ export class CircleBankDto {
   id: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   circleId?: string
 
   @IsEnum(CircleAccountStatusEnum)

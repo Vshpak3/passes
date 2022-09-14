@@ -8,14 +8,14 @@ export class GetProfileResponseDto extends ProfileDto {}
 
 export class GetProfileRequestDto {
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   creatorId?: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   username?: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   profileId?: string
 }

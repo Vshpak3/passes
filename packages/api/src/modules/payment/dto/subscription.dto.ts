@@ -27,17 +27,17 @@ export class SubscriptionDto {
   @DtoProperty()
   amount: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   card?: CircleCardDto
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   passHolderId?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   passHolder?: PassHolderDto
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   pass?: PassDto
 
   constructor(subscription) {

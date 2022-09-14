@@ -21,7 +21,7 @@ export class SubscribeRequestDto {
   @DtoProperty()
   amount: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 
   @IsUUID()

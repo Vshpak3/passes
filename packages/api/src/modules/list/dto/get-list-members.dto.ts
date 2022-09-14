@@ -8,7 +8,7 @@ export class GetListMembersRequestDto {
   @DtoProperty()
   listId: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   cursor?: string
 }
 

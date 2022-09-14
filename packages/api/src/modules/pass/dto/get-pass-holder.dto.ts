@@ -18,10 +18,10 @@ export class GetPassHoldersRequestDto {
   // this is holder id if creator query
   // this is creator id if holder query
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   userId?: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   passId?: string
 }

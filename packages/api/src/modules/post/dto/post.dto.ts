@@ -58,7 +58,7 @@ export class PostDto {
   @DtoProperty()
   earningsPurchases: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   isLiked?: boolean
 
   @DtoProperty()
@@ -67,18 +67,18 @@ export class PostDto {
   @DtoProperty()
   updatedAt: Date
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   scheduledAt?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   expiresAt?: Date
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   price?: string
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   totalTipAmount?: number
 
   constructor(post, paywall, isCreator, content?: ContentDto[]) {

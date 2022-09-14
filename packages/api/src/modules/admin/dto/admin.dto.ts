@@ -5,11 +5,11 @@ import { USER_USERNAME_LENGTH } from '../../user/constants/schema'
 
 export class AdminDto {
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   userId?: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   username?: string
 
   //TODO: length validation ?

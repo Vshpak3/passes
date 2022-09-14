@@ -17,10 +17,10 @@ export class BillingDetailsDto {
   @DtoProperty()
   line1: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   line2?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   district?: string
 
   @DtoProperty()

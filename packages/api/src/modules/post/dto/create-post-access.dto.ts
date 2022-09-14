@@ -11,6 +11,6 @@ export class CreatePostAccessRequestDto {
   @DtoProperty()
   fromDM: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payinMethod?: PayinMethodDto
 }

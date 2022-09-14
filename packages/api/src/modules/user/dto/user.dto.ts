@@ -17,38 +17,38 @@ export class UserDto {
 
   @IsEmail()
   @Length(1, USER_EMAIL_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 
   @DtoProperty()
   isEmailVerified?: boolean
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   username: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   displayName?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   isCreator?: boolean
 
   // Sensitive fields (when viewing own profile)
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true, forceLower: true })
   legalFullName?: string
 
   @Length(1, USER_PHONE_NUMBER_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   phoneNumber?: string
 
   // TODO: add validation, pretty sure this should be a Date
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   birthday?: string
 
   @Length(1, USER_COUNTRY_CODE_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   countryCode?: string
 
   constructor(userEntity) {

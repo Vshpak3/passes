@@ -2,22 +2,22 @@ import { DtoProperty } from '../../../../web/dto.web'
 import { BillingDetailsDto } from './billing-details.dto'
 
 class CircleBankAddressDto {
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   bankName?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   city?: string
 
   @DtoProperty()
   country: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   line1?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   line2?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   district?: string
 }
 
@@ -25,13 +25,13 @@ export class CircleCreateBankRequestDto {
   @DtoProperty()
   idempotencyKey: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   accountNumber?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   routingNumber?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   iban?: string
 
   @DtoProperty()

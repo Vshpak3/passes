@@ -1,9 +1,9 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class SearchFollowRequestDto {
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   query?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   cursor?: string
 }

@@ -13,7 +13,7 @@ export class PassDto {
   passId: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   creatorId?: string
 
   @Length(1, PASS_TITLE_LENGTH)
@@ -34,7 +34,7 @@ export class PassDto {
 
   @IsInt()
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   duration?: number
 
   @IsInt()
@@ -50,15 +50,15 @@ export class PassDto {
   @DtoProperty()
   freetrial: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   pinnedAt?: Date
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   creatorUsername?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   creatorDisplayName?: string
 
   constructor(pass) {

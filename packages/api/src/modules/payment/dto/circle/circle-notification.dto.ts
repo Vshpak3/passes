@@ -26,39 +26,39 @@ export class CircleNotificationDto {
   version: number
 
   //payments flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payment?: CirclePaymentDto
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   reversal?: any
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   chargeback?: any
 
   //payouts flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   payout?: any
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   return?: any
 
   //settlement flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   settlement?: any
 
   //card verification flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   card?: GenericCircleObjectWrapper
 
   //ach verification flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   ach?: any
 
   //bank account verification flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   wire?: GenericCircleObjectWrapper
 
   //transfer flow
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   transfer?: CircleTransferDto
 }

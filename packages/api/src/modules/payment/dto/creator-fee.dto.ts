@@ -8,19 +8,19 @@ export class CreatorFeeDto {
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   fiatRate?: number
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   fiatFlat?: number
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   cryptoRate?: number
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   cryptoFlat?: number
 
   constructor(creatorFee) {

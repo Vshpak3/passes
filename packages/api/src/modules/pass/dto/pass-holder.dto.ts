@@ -15,25 +15,25 @@ export class PassHolderDto extends PassDto {
   passHolderId: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   holderId?: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   walletId?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   messages?: number | null
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   expiresAt?: Date
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   holderUsername?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   holderDisplayName?: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
@@ -45,7 +45,7 @@ export class PassHolderDto extends PassDto {
   chain: ChainEnum
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   tokenId?: string
 
   constructor(passHolder) {

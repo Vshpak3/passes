@@ -9,11 +9,11 @@ export class PayoutMethodDto {
   method: PayoutMethodEnum = PayoutMethodEnum.NONE
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   bankId?: string
 
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   walletId?: string
 
   constructor(payoutMethod) {

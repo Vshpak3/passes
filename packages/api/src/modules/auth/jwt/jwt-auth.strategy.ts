@@ -9,7 +9,7 @@ export class JwtPayload {
   @DtoProperty()
   sub: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   email?: string
 
   @DtoProperty()

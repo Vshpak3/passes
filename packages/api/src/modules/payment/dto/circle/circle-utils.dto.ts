@@ -13,17 +13,17 @@ export class CircleSourceDto {
   type: string
 
   //for crypto payments
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   address?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   chain?: string
 
   //for all other payments
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   id?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   identities?: any
 }
 

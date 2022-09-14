@@ -1,18 +1,18 @@
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class CircleMetaDataDto {
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   email?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   phoneNumber?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   sessionId?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   ipAddress?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   beneficiaryEmail?: string
 }

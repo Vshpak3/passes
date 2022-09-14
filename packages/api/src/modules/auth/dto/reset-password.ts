@@ -4,6 +4,6 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class ResetPasswordRequestDto {
   @IsEmail()
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 }

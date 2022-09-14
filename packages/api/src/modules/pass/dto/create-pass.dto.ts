@@ -29,13 +29,13 @@ export class CreatePassRequestDto {
 
   @IsInt()
   @Min(1)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   duration?: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   freetrial: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   messages?: number | null
 
   @IsEnum(ChainEnum)

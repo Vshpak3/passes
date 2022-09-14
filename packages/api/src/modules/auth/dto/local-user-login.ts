@@ -4,7 +4,7 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class LocalUserLoginRequestDto {
   @IsEmail()
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 
   @IsString()

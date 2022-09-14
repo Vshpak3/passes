@@ -14,7 +14,7 @@ import { USERNAME_REGEX } from '../constants/validation'
 
 export class CreateUserDto {
   @IsEmail()
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
@@ -23,11 +23,11 @@ export class CreateUserDto {
       'Username can only contain alphanumeric characters and underscores.',
   })
   @Validate(IsNotBlocklistedUsername)
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   username: string
 
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ forceLower: true })
   legalFullName: string
 
   @Length(1, USER_COUNTRY_CODE_LENGTH)

@@ -30,6 +30,6 @@ export class CirclePaymentDto {
   @DtoProperty()
   merchantWalletId: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   description?: string
 }

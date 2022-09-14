@@ -5,7 +5,7 @@ import { CHANNEL_ID_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
 
 export class MessageDto {
   @IsUUID()
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   messageId?: string
 
   @Length(1, MESSAGE_LENGTH)
@@ -20,10 +20,10 @@ export class MessageDto {
   channelId: string
 
   @Min(0)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   tipAmount?: number
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   created_at?: number
 
   constructor(message) {

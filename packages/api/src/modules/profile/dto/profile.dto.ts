@@ -21,56 +21,56 @@ export class ProfileDto {
   userId: string
 
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   legalFullName?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   displayName?: string
 
   @Length(1, PROFILE_COVER_TITLE_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   coverTitle?: string
 
   @Length(1, PROFILE_COVER_DESCRIPTION_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   coverDescription?: string
 
   @Length(1, PROFILE_DESCRIPTION_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   description?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   instagramUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   tiktokUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   youtubeUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   discordUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   twitchUrl?: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   facebookUrl?: string
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   isKYCVerified?: boolean
 
   @DtoProperty()
   isActive: boolean
 
-  @DtoProperty({ required: false })
+  @DtoProperty({ optional: true })
   isAdult?: boolean
   constructor(profile) {
     this.profileId = profile.id
