@@ -37,6 +37,7 @@ services:
   # S3 Bucket
   s3:
     image: localstack/localstack:1.0.4
+    container_name: s3
     environment:
       - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
