@@ -4,6 +4,7 @@ import { Expose, Transform } from 'class-transformer'
 import { IsOptional } from 'class-validator'
 import _ from 'lodash'
 
+const internalDtoFields = ['optional', 'forceLower']
 interface InternalDtoOptions {
   optional?: boolean
   forceLower?: boolean
@@ -16,6 +17,7 @@ export function DtoProperty(options?: DtoOptions) {
 
   // Remove our custom options
   const apiProperty: ApiPropertyOptions = {}
+  _.assign(apiProperty, _.omit(options, internalDtoFields))
 
   // Check for the optional decorator
   if (options?.optional) {
@@ -28,7 +30,6 @@ export function DtoProperty(options?: DtoOptions) {
     decorators.push(Transform((s) => s.value?.toLowerCase()))
   }
 
-  _.assign(apiProperty, _.omit(options, ['forceLower', 'optional']))
   decorators.push(ApiProperty(apiProperty))
 
   return applyDecorators(...decorators)
