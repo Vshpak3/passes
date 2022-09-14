@@ -9,4 +9,4 @@ const Messages = () => (
   // </AuthOnlyWrapper>
 )
 
-export default withPageLayout(Messages)
+export default withPageLayout(Messages, { header: false })

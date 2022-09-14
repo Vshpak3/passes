@@ -119,7 +119,7 @@ const MessagesComponent = ({ username }) => {
   if (!chatClient) return null
 
   return (
-    <div className="-mt-56">
+    <div>
       <style>
         {`
         .str-chat{
