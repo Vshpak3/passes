@@ -8,6 +8,7 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { orderToSymbol } from '../../util/dto/page.dto'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowService } from '../follow/follow.service'
@@ -16,19 +17,24 @@ import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
 import { GetListMembersRequestDto } from './dto/get-list-members.dto'
+import { GetListsRequestsDto } from './dto/get-lists.dto'
 import { ListDto } from './dto/list.dto'
 import { ListMemberDto } from './dto/list-member.dto'
 import { RemoveListMembersRequestDto } from './dto/remove-list-members.dto'
 import { ListEntity } from './entities/list.entity'
 import { ListMemberEntity } from './entities/list-member.entity'
+import { ListOrderTypeEnum } from './enum/list.order.enum'
 import { ListTypeEnum } from './enum/list.type.enum'
 import {
   IncorrectListTypeError,
   ListLimitReachedError,
   NoListError,
 } from './error/list.error'
+import { createGetMemberQuery } from './list.util'
 
-const LIST_LIMIT = 1000
+export const USER_LIST_LIMIT = 1000
+export const MAX_LISTS_PER_REQUEST = 20
+export const MAX_LIST_MEMBERS_PER_REQUEST = 20
 
 @Injectable()
 export class ListService {
@@ -52,7 +58,7 @@ export class ListService {
       .table(ListEntity.table)
       .where('user_id', userId)
       .count(['id'])
-    if (count[0]['count(*)'] >= LIST_LIMIT)
+    if (count[0]['count(*)'] >= USER_LIST_LIMIT)
       throw new ListLimitReachedError('list limit reached')
 
     const listId = uuid.v4()
@@ -137,10 +143,71 @@ export class ListService {
     return new ListDto(list)
   }
 
-  async getListsForUser(userId: string): Promise<ListDto[]> {
-    const lists = await this.dbReader(ListEntity.table)
+  async getListsForUser(
+    userId: string,
+    getListsRequestsDto: GetListsRequestsDto,
+  ): Promise<ListDto[]> {
+    const { name, lastId, createdAt, updatedAt, order, orderType, search } =
+      getListsRequestsDto
+    let query = this.dbReader(ListEntity.table)
       .where(ListEntity.toDict<ListEntity>({ user: userId }))
       .select('*')
+
+    switch (orderType) {
+      case ListOrderTypeEnum.CREATED_AT:
+        query = query.orderBy([
+          { column: `${ListEntity.table}.created_at`, order },
+          { column: `${ListEntity.table}.id`, order },
+        ])
+        if (createdAt) {
+          query = query.andWhere(
+            `${ListEntity.table}.created_at`,
+            orderToSymbol[order],
+            createdAt,
+          )
+        }
+        break
+      case ListOrderTypeEnum.UPDATED_AT:
+        query = query.orderBy([
+          { column: `${ListEntity.table}.updated_at`, order },
+          { column: `${ListEntity.table}.id`, order },
+        ])
+        if (updatedAt) {
+          query = query.andWhere(
+            `${ListEntity.table}.updated_at`,
+            orderToSymbol[order],
+            updatedAt,
+          )
+        }
+        break
+      case ListOrderTypeEnum.NAME:
+        query = query.orderBy([
+          { column: `${ListEntity.table}.name`, order },
+          { column: `${ListEntity.table}.id`, order },
+        ])
+        if (name) {
+          query = query.andWhere(
+            `${ListEntity.table}.name`,
+            orderToSymbol[order],
+            name,
+          )
+        }
+        break
+    }
+    if (lastId) {
+      query = query.andWhere(
+        `${ListEntity.table}.id`,
+        orderToSymbol[order],
+        lastId,
+      )
+    }
+    if (search) {
+      // const strippedSearch = search.replace(/\W/g, '')
+      const likeClause = `%${search}%`
+      query = query.whereILike(`${ListEntity.table}.name`, likeClause)
+    }
+
+    const lists = await query.limit(MAX_LISTS_PER_REQUEST)
     await this.fillAutomatedLists(lists)
     return lists.map((list) => new ListDto(list))
   }
@@ -150,42 +217,47 @@ export class ListService {
     userId: string,
     getListMembersRequestDto: GetListMembersRequestDto,
   ) {
-    const type = await this.checkList(
-      userId,
-      getListMembersRequestDto.listId,
-      false,
-    )
+    const { listId } = getListMembersRequestDto
+    const type = await this.checkList(userId, listId, false)
     switch (type) {
       case ListTypeEnum.NORMAL:
         return (
-          await this.dbReader(ListMemberEntity.table)
-            .leftJoin(
-              UserEntity.table,
-              `${ListMemberEntity.table}.user_id`,
-              `${UserEntity.table}.id`,
-            )
-            .leftJoin(
-              FollowEntity.table,
-              `${ListMemberEntity.table}.user_id`,
-              `${FollowEntity.table}.follower_id`,
-            )
-            .select([
-              `${UserEntity.table}.id`,
-              `${UserEntity.table}.username`,
-              `${UserEntity.table}.display_name`,
-              `${FollowEntity.table}.id as follow`,
-            ])
-            .where(
-              `${ListMemberEntity.table}.list_id`,
-              getListMembersRequestDto.listId,
-            )
-            .andWhere(`${FollowEntity.table}.creator_id`, userId)
-            .orderBy(`${ListMemberEntity.table}.user_id`, 'ASC')
+          await createGetMemberQuery(
+            this.dbReader(ListMemberEntity.table)
+              .leftJoin(
+                UserEntity.table,
+                `${ListMemberEntity.table}.user_id`,
+                `${UserEntity.table}.id`,
+              )
+              .leftJoin(
+                FollowEntity.table,
+                `${ListMemberEntity.table}.user_id`,
+                `${FollowEntity.table}.follower_id`,
+              )
+              .select([
+                `${UserEntity.table}.id`,
+                `${UserEntity.table}.username`,
+                `${UserEntity.table}.display_name`,
+                `${FollowEntity.table}.id as follow`,
+              ])
+              .where(
+                `${ListMemberEntity.table}.list_id`,
+                getListMembersRequestDto.listId,
+              ),
+            getListMembersRequestDto,
+            ListMemberEntity.table,
+          ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
         ).map((listMember) => new ListMemberDto(listMember))
       case ListTypeEnum.FOLLOWERS:
-        return await this.followService.searchFansByQuery(userId, {})
+        return await this.followService.searchFansByQuery(
+          userId,
+          getListMembersRequestDto,
+        )
       case ListTypeEnum.FOLLOWING:
-        return await this.followService.searchFollowingByQuery(userId, {})
+        return await this.followService.searchFollowingByQuery(
+          userId,
+          getListMembersRequestDto,
+        )
       default:
         return []
     }

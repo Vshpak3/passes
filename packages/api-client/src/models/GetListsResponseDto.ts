@@ -21,10 +21,34 @@ import { exists, mapValues } from '../runtime';
 export interface GetListsResponseDto {
     /**
      * 
+     * @type {string}
+     * @memberof GetListsResponseDto
+     */
+    lastId: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListsResponseDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListsResponseDto
+     */
+    updatedAt?: Date;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof GetListsResponseDto
      */
     lists: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListsResponseDto
+     */
+    name?: string;
 }
 
 /**
@@ -32,6 +56,7 @@ export interface GetListsResponseDto {
  */
 export function instanceOfGetListsResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "lastId" in value;
     isInstance = isInstance && "lists" in value;
 
     return isInstance;
@@ -47,7 +72,11 @@ export function GetListsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'lastId': json['lastId'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'lists': json['lists'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
@@ -60,7 +89,11 @@ export function GetListsResponseDtoToJSON(value?: GetListsResponseDto | null): a
     }
     return {
         
+        'lastId': value.lastId,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'lists': value.lists,
+        'name': value.name,
     };
 }
 

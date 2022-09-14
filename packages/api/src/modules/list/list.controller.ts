@@ -21,7 +21,7 @@ import {
   GetListMembersRequestDto,
   GetListMembersResponseDto,
 } from './dto/get-list-members.dto'
-import { GetListsResponseDto } from './dto/get-lists.dto'
+import { GetListsRequestsDto, GetListsResponseDto } from './dto/get-lists.dto'
 import { RemoveListMembersRequestDto } from './dto/remove-list-members.dto'
 import { ListService } from './list.service'
 
@@ -96,10 +96,14 @@ export class ListController {
     responseType: GetListsResponseDto,
     responseDesc: 'Lists were retrieved',
   })
-  @Get('lists-info')
-  async getLists(@Req() req: RequestWithUser): Promise<GetListsResponseDto> {
+  @Post('lists-info')
+  async getLists(
+    @Req() req: RequestWithUser,
+    @Body() getListsRequestsDto: GetListsRequestsDto,
+  ): Promise<GetListsResponseDto> {
     return new GetListsResponseDto(
-      await this.listService.getListsForUser(req.user.id),
+      await this.listService.getListsForUser(req.user.id, getListsRequestsDto),
+      getListsRequestsDto.orderType,
     )
   }
 
@@ -114,12 +118,13 @@ export class ListController {
     @Req() req: RequestWithUser,
     @Body() getListMembersRequestDto: GetListMembersRequestDto,
   ): Promise<GetListMembersResponseDto> {
-    return {
-      listMembers: await this.listService.getListMembers(
+    return new GetListMembersResponseDto(
+      await this.listService.getListMembers(
         req.user.id,
         getListMembersRequestDto,
       ),
-    }
+      getListMembersRequestDto.orderType,
+    )
   }
 
   @ApiEndpoint({

@@ -9,6 +9,10 @@ import {
 export class ListMemberDto {
   @IsUUID()
   @DtoProperty()
+  listMemberId: string
+
+  @IsUUID()
+  @DtoProperty()
   userId: string
 
   @Length(1, USER_USERNAME_LENGTH)
@@ -19,14 +23,21 @@ export class ListMemberDto {
   @DtoProperty()
   displayName: string
 
+  @DtoProperty({ optional: true })
+  isFollowing?: boolean
+
   @DtoProperty()
-  isFollowing: boolean
+  createdAt: Date
 
   constructor(listMember) {
-    this.userId = listMember.user_id
-    this.username = listMember.username
-    this.displayName = listMember.display_name
+    if (listMember) {
+      this.listMemberId = listMember.id
+      this.userId = listMember.user_id
+      this.username = listMember.username
+      this.displayName = listMember.display_name
+      this.createdAt = listMember.created_at
 
-    this.isFollowing = !!listMember.follow
+      this.isFollowing = !!listMember.follow
+    }
   }
 }

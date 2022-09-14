@@ -28,6 +28,24 @@ import {
 export interface GetPassesResponseDto {
     /**
      * 
+     * @type {string}
+     * @memberof GetPassesResponseDto
+     */
+    lastId: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassesResponseDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassesResponseDto
+     */
+    updatedAt?: Date;
+    /**
+     * 
      * @type {Array<PassDto>}
      * @memberof GetPassesResponseDto
      */
@@ -39,6 +57,7 @@ export interface GetPassesResponseDto {
  */
 export function instanceOfGetPassesResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "lastId" in value;
     isInstance = isInstance && "passes" in value;
 
     return isInstance;
@@ -54,6 +73,9 @@ export function GetPassesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
+        'lastId': json['lastId'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'passes': ((json['passes'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
@@ -67,6 +89,9 @@ export function GetPassesResponseDtoToJSON(value?: GetPassesResponseDto | null):
     }
     return {
         
+        'lastId': value.lastId,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'passes': ((value.passes as Array<any>).map(PassDtoToJSON)),
     };
 }

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import {
   FollowApi,
+  GetListMembersRequestDtoOrderTypeEnum,
   GetListMembersResponseDto,
   GetListResponseDto,
   ListApi,
@@ -60,7 +61,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
             await listApi.getListMembers({
               getListMembersRequestDto: {
                 listId: id,
-                cursor: ""
+                order: "desc",
+                orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt
               }
             })
           setListAlreadyMember(listAlreadyMemberRes.listMembers)
@@ -69,7 +71,10 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         }
       }
       const followRes: GetListMembersResponseDto = await followApi.searchFans({
-        searchFollowRequestDto: { query: "", cursor: "" }
+        searchFollowRequestDto: {
+          order: "desc",
+          orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt
+        }
       })
       setFans(followRes.listMembers)
       setIsFetchingFanRequest(false)

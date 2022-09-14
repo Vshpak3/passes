@@ -36,7 +36,7 @@ export class PostDto {
   @DtoProperty()
   tags: TagDto[]
 
-  @DtoProperty({ type: [ContentDto], required: false })
+  @DtoProperty({ type: [ContentDto], optional: true })
   content?: ContentDto[]
 
   @IsInt()

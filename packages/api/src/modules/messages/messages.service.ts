@@ -634,8 +634,6 @@ export class MessagesService {
           channelId: channelId,
         }),
       ),
-      // TODO: this column does not exist on db
-      // .orWhere('other_user', userId),
     )
   }
 

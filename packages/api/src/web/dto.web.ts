@@ -16,18 +16,20 @@ export function DtoProperty(options?: DtoOptions) {
 
   // Remove our custom options
   const apiProperty: ApiPropertyOptions = {}
-  _.assign(apiProperty, _.pick(options, _.keys(apiProperty)))
-  decorators.push(ApiProperty(apiProperty))
 
   // Check for the optional decorator
   if (options?.optional) {
     decorators.push(IsOptional())
+    apiProperty.required = false
   }
 
   // Check for lower case option
   if (options?.forceLower) {
     decorators.push(Transform((s) => s.value?.toLowerCase()))
   }
+
+  _.assign(apiProperty, _.omit(options, ['forceLower', 'optional']))
+  decorators.push(ApiProperty(apiProperty))
 
   return applyDecorators(...decorators)
 }

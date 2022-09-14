@@ -16,6 +16,7 @@ import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
+import { createGetMemberQuery } from '../list/list.util'
 import { MessagesService } from '../messages/messages.service'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostService } from '../post/post.service'
@@ -27,12 +28,14 @@ import {
   IS_NOT_CREATOR,
 } from './constants/errors'
 import { FollowDto } from './dto/follow.dto'
-import { SearchFollowRequestDto } from './dto/search-fan.dto'
+import { SearchFollowRequestDto } from './dto/search-follow.dto'
 import { BlockTaskEntity } from './entities/block-task.entity'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { FollowReportEntity } from './entities/follow-report.entity'
 import { WelcomeMessaged } from './entities/welcome-messaged.entity'
+
+export const MAX_FOLLOWERS_PER_REQUEST = 20
 
 // TODO: Use CASL to determine if user can access an entity
 // See https://docs.nestjs.com/security/authorization#integrating-casl
@@ -168,26 +171,11 @@ export class FollowService {
       )
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
 
-    if (searchFanDto.query) {
-      const strippedQuery = searchFanDto.query.replace(/\W/g, '')
-      const likeClause = `%${strippedQuery}%`
-      query = query.where(async function () {
-        await this.whereILike('user.username', likeClause).orWhereILike(
-          'user.display_name',
-          likeClause,
-        )
-      })
-    }
-    if (searchFanDto.cursor) {
-      await query.andWhere(
-        this.dbReader.raw(`${UserEntity.table}.id > ${searchFanDto.cursor}`),
-      )
-    }
-
-    const followResult = await query.orderBy(
-      `${UserEntity.table}.display_name`,
-      'asc',
+    query = createGetMemberQuery(query, searchFanDto, FollowEntity.table).limit(
+      MAX_FOLLOWERS_PER_REQUEST,
     )
+
+    const followResult = await query
 
     return followResult.map((follow) => {
       return new ListMemberDto(follow)
@@ -211,28 +199,13 @@ export class FollowService {
       )
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
 
-    if (searchFollowingDto.query) {
-      const strippedQuery = searchFollowingDto.query.replace(/\W/g, '')
-      const likeClause = `%${strippedQuery}%`
-      query = query.where(async function () {
-        await this.whereILike('user.username', likeClause).orWhereILike(
-          'user.display_name',
-          likeClause,
-        )
-      })
-    }
-    if (searchFollowingDto.cursor) {
-      await query.andWhere(
-        this.dbReader.raw(
-          `${UserEntity.table}.id > ${searchFollowingDto.cursor}`,
-        ),
-      )
-    }
+    query = createGetMemberQuery(
+      query,
+      searchFollowingDto,
+      FollowEntity.table,
+    ).limit(MAX_FOLLOWERS_PER_REQUEST)
 
-    const followResult = await query.orderBy(
-      `${UserEntity.table}.display_name`,
-      'asc',
-    )
+    const followResult = await query
 
     return followResult.map((follow) => {
       return new ListMemberDto(follow)

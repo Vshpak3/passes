@@ -74,6 +74,7 @@ models/GetChannelStatsResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts
+models/GetCommentsForPostRequesteDto.ts
 models/GetCommentsForPostResponseDto.ts
 models/GetContentResponseDto.ts
 models/GetContentsResponseDto.ts
@@ -82,10 +83,14 @@ models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
 models/GetCreatorFeeRequestDto.ts
 models/GetCreatorFeeResponseDto.ts
+models/GetCreatorPassesRequestDto.ts
 models/GetCreatorSettingsResponseDto.ts
 models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
-models/GetFanWallForCreatorResponseDto.ts
+models/GetExternalPassesRequestDto.ts
+models/GetFanWallRequestDto.ts
+models/GetFanWallResponseDto.ts
+models/GetFeedRequesteDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
 models/GetFreeMesssagesResponseDto.ts
@@ -93,6 +98,7 @@ models/GetGalleryViewDto.ts
 models/GetListMembersRequestDto.ts
 models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
+models/GetListsRequestsDto.ts
 models/GetListsResponseDto.ts
 models/GetMessagesResponseDto.ts
 models/GetNotificationSettingsResponseDto.ts
@@ -100,6 +106,8 @@ models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
 models/GetPassHoldersRequestDto.ts
 models/GetPassHoldersResponseDto.ts
+models/GetPassHoldingsRequestDto.ts
+models/GetPassHoldingsResponseDto.ts
 models/GetPassResponseDto.ts
 models/GetPassesResponseDto.ts
 models/GetPayinMethodResponseDto.ts
@@ -109,6 +117,8 @@ models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
 models/GetPostResponseDto.ts
+models/GetPostsRequesteDto.ts
+models/GetProfileFeedRequesteDto.ts
 models/GetProfileRequestDto.ts
 models/GetProfileResponseDto.ts
 models/GetSignedUrlResponseDto.ts

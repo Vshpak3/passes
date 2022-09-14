@@ -9,7 +9,9 @@ import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetFeedRequesteDto, GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetPostsRequesteDto } from './dto/get-posts.dto'
+import { GetProfileFeedRequesteDto } from './dto/get-profile-feed.dto'
 
 export const FEED_LIMIT = 100
 
@@ -22,7 +24,11 @@ export class FeedService {
     private readonly postService: PostService,
   ) {}
 
-  async getFeed(userId: string, cursor?: string): Promise<GetFeedResponseDto> {
+  async getFeed(
+    userId: string,
+    getFeedRequesteDto: GetFeedRequesteDto,
+  ): Promise<GetFeedResponseDto> {
+    const { lastId, createdAt } = getFeedRequesteDto
     const dbReader = this.dbReader
     let query = this.dbReader(FollowEntity.table)
       .innerJoin(
@@ -73,26 +79,27 @@ export class FeedService {
           new Date(),
         )
       })
-      .orderBy(`${PostEntity.table}.created_at`, 'desc')
+      .orderBy([
+        { column: `${PostEntity.table}.created_at`, order: 'desc' },
+        { column: `${PostEntity.table}.id`, order: 'desc' },
+      ])
       .limit(FEED_LIMIT)
 
-    if (cursor) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
+    if (lastId) {
+      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(
-      postDtos,
-      postDtos.length > 0
-        ? postDtos[postDtos.length - 1].createdAt.toISOString()
-        : '',
-    )
+    return new GetFeedResponseDto(postDtos)
   }
 
   async getFeedForCreator(
-    creatorId: string,
     userId: string,
-    cursor?: string,
+    getProfileFeedRequesteDto: GetProfileFeedRequesteDto,
   ): Promise<GetFeedResponseDto> {
+    const { creatorId, lastId, createdAt: time } = getProfileFeedRequesteDto
     const creator = await this.dbReader(UserEntity.table)
       .where('id', creatorId)
       .select(['is_active', 'is_creator'])
@@ -146,47 +153,50 @@ export class FeedService {
           new Date(),
         )
       })
-      .orderBy(`${PostEntity.table}.created_at`, 'desc')
+      .orderBy([
+        { column: `${PostEntity.table}.created_at`, order: 'desc' },
+        { column: `${PostEntity.table}.id`, order: 'desc' },
+      ])
       .limit(FEED_LIMIT)
 
-    if (cursor) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
+    if (lastId) {
+      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
+    }
+    if (time) {
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', time)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(
-      postDtos,
-      postDtos.length > 0
-        ? postDtos[postDtos.length - 1].createdAt.toISOString()
-        : '',
-    )
+    return new GetFeedResponseDto(postDtos)
   }
 
   async getPostsForOwner(
     userId: string,
     isMessage: boolean,
-    scheduledOnly: boolean,
-    cursor?: string,
+    getPostsRequesteDto: GetPostsRequesteDto,
   ): Promise<GetFeedResponseDto> {
+    const { scheduledOnly, lastId, createdAt } = getPostsRequesteDto
     let query = this.dbReader(PostEntity.table)
       .select([`${PostEntity.table}.*`])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
       .andWhere(`${PostEntity.table}.is_message`, isMessage)
       .orderBy(`${PostEntity.table}.created_at`, 'desc')
+      .orderBy([
+        { column: `${PostEntity.table}.created_at`, order: 'desc' },
+        { column: `${PostEntity.table}.id`, order: 'desc' },
+      ])
 
-    if (cursor) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<', cursor)
+    if (lastId) {
+      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
     }
     if (scheduledOnly) {
       query = query.whereNotNull('scheduled_at')
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     // filter out expired posts
-    return new GetFeedResponseDto(
-      postDtos,
-      postDtos.length > 0
-        ? postDtos[postDtos.length - 1].createdAt.toISOString()
-        : '',
-    )
+    return new GetFeedResponseDto(postDtos)
   }
 }

@@ -22,12 +22,20 @@ export class ListDto {
   @DtoProperty()
   count: number
 
+  @DtoProperty()
+  createdAt: Date
+
+  @DtoProperty()
+  updatedAt: Date
+
   constructor(list) {
     if (list) {
       this.listId = list.id
       this.name = list.name
       this.type = list.type
       this.count = list.count
+      this.createdAt = list.created_at
+      this.updatedAt = list.updated_at
     }
   }
 }

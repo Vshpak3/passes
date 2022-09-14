@@ -87,6 +87,12 @@ export interface GetPassResponseDto {
     pinnedAt?: Date;
     /**
      * 
+     * @type {Date}
+     * @memberof GetPassResponseDto
+     */
+    createdAt?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof GetPassResponseDto
      */
@@ -149,6 +155,7 @@ export function GetPassResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
@@ -174,6 +181,7 @@ export function GetPassResponseDtoToJSON(value?: GetPassResponseDto | null): any
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
     };

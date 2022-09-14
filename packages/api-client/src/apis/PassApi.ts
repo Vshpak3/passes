@@ -17,8 +17,12 @@ import * as runtime from '../runtime';
 import type {
   CreatePassHolderRequestDto,
   CreatePassRequestDto,
+  GetCreatorPassesRequestDto,
+  GetExternalPassesRequestDto,
   GetPassHoldersRequestDto,
   GetPassHoldersResponseDto,
+  GetPassHoldingsRequestDto,
+  GetPassHoldingsResponseDto,
   GetPassResponseDto,
   GetPassesResponseDto,
   PayinDataDto,
@@ -31,10 +35,18 @@ import {
     CreatePassHolderRequestDtoToJSON,
     CreatePassRequestDtoFromJSON,
     CreatePassRequestDtoToJSON,
+    GetCreatorPassesRequestDtoFromJSON,
+    GetCreatorPassesRequestDtoToJSON,
+    GetExternalPassesRequestDtoFromJSON,
+    GetExternalPassesRequestDtoToJSON,
     GetPassHoldersRequestDtoFromJSON,
     GetPassHoldersRequestDtoToJSON,
     GetPassHoldersResponseDtoFromJSON,
     GetPassHoldersResponseDtoToJSON,
+    GetPassHoldingsRequestDtoFromJSON,
+    GetPassHoldingsRequestDtoToJSON,
+    GetPassHoldingsResponseDtoFromJSON,
+    GetPassHoldingsResponseDtoToJSON,
     GetPassResponseDtoFromJSON,
     GetPassResponseDtoToJSON,
     GetPassesResponseDtoFromJSON,
@@ -62,7 +74,11 @@ export interface FindPassRequest {
 }
 
 export interface GetCreatorPassesRequest {
-    creatorId: string;
+    getCreatorPassesRequestDto: GetCreatorPassesRequestDto;
+}
+
+export interface GetExternalPassesRequest {
+    getExternalPassesRequestDto: GetExternalPassesRequestDto;
 }
 
 export interface GetPassHoldersRequest {
@@ -70,7 +86,7 @@ export interface GetPassHoldersRequest {
 }
 
 export interface GetPassHoldingsRequest {
-    getPassHoldersRequestDto: GetPassHoldersRequestDto;
+    getPassHoldingsRequestDto: GetPassHoldingsRequestDto;
 }
 
 export interface PinPassRequest {
@@ -227,19 +243,22 @@ export class PassApi extends runtime.BaseAPI {
      * Gets passes created by a creator
      */
     async getCreatorPassesRaw(requestParameters: GetCreatorPassesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
-        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
-            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getCreatorPasses.');
+        if (requestParameters.getCreatorPassesRequestDto === null || requestParameters.getCreatorPassesRequestDto === undefined) {
+            throw new runtime.RequiredError('getCreatorPassesRequestDto','Required parameter requestParameters.getCreatorPassesRequestDto was null or undefined when calling getCreatorPasses.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
-            path: `/api/pass/created/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
-            method: 'GET',
+            path: `/api/pass/created`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetCreatorPassesRequestDtoToJSON(requestParameters.getCreatorPassesRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesResponseDtoFromJSON(jsonValue));
@@ -256,16 +275,23 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets external passes
      */
-    async getExternalPassesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
+    async getExternalPassesRaw(requestParameters: GetExternalPassesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassesResponseDto>> {
+        if (requestParameters.getExternalPassesRequestDto === null || requestParameters.getExternalPassesRequestDto === undefined) {
+            throw new runtime.RequiredError('getExternalPassesRequestDto','Required parameter requestParameters.getExternalPassesRequestDto was null or undefined when calling getExternalPasses.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
             path: `/api/pass/external`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetExternalPassesRequestDtoToJSON(requestParameters.getExternalPassesRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetPassesResponseDtoFromJSON(jsonValue));
@@ -274,8 +300,8 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets external passes
      */
-    async getExternalPasses(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassesResponseDto> {
-        const response = await this.getExternalPassesRaw(initOverrides);
+    async getExternalPasses(requestParameters: GetExternalPassesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassesResponseDto> {
+        const response = await this.getExternalPassesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -323,9 +349,9 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Gets passes held by user
      */
-    async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassHoldersResponseDto>> {
-        if (requestParameters.getPassHoldersRequestDto === null || requestParameters.getPassHoldersRequestDto === undefined) {
-            throw new runtime.RequiredError('getPassHoldersRequestDto','Required parameter requestParameters.getPassHoldersRequestDto was null or undefined when calling getPassHoldings.');
+    async getPassHoldingsRaw(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassHoldingsResponseDto>> {
+        if (requestParameters.getPassHoldingsRequestDto === null || requestParameters.getPassHoldingsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPassHoldingsRequestDto','Required parameter requestParameters.getPassHoldingsRequestDto was null or undefined when calling getPassHoldings.');
         }
 
         const queryParameters: any = {};
@@ -347,16 +373,16 @@ export class PassApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-            body: GetPassHoldersRequestDtoToJSON(requestParameters.getPassHoldersRequestDto),
+            body: GetPassHoldingsRequestDtoToJSON(requestParameters.getPassHoldingsRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldersResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassHoldingsResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets passes held by user
      */
-    async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassHoldersResponseDto> {
+    async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassHoldingsResponseDto> {
         const response = await this.getPassHoldingsRaw(requestParameters, initOverrides);
         return await response.value();
     }

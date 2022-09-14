@@ -21,23 +21,79 @@ import { exists, mapValues } from '../runtime';
 export interface GetPassHoldersRequestDto {
     /**
      * 
+     * @type {Date}
+     * @memberof GetPassHoldersRequestDto
+     */
+    createdAt?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof GetPassHoldersRequestDto
      */
-    userId?: string;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    order: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    holderId?: string;
     /**
      * 
      * @type {string}
      * @memberof GetPassHoldersRequestDto
      */
     passId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersRequestDto
+     */
+    orderType: GetPassHoldersRequestDtoOrderTypeEnum;
 }
+
+
+/**
+ * @export
+ */
+export const GetPassHoldersRequestDtoOrderTypeEnum = {
+    Username: 'username',
+    DisplayName: 'display name',
+    CreatedAt: 'created at'
+} as const;
+export type GetPassHoldersRequestDtoOrderTypeEnum = typeof GetPassHoldersRequestDtoOrderTypeEnum[keyof typeof GetPassHoldersRequestDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetPassHoldersRequestDto interface.
  */
 export function instanceOfGetPassHoldersRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "orderType" in value;
 
     return isInstance;
 }
@@ -52,8 +108,15 @@ export function GetPassHoldersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
+        'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
+        'username': !exists(json, 'username') ? undefined : json['username'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'orderType': json['orderType'],
     };
 }
 
@@ -66,8 +129,15 @@ export function GetPassHoldersRequestDtoToJSON(value?: GetPassHoldersRequestDto 
     }
     return {
         
-        'userId': value.userId,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'lastId': value.lastId,
+        'search': value.search,
+        'order': value.order,
+        'holderId': value.holderId,
         'passId': value.passId,
+        'username': value.username,
+        'displayName': value.displayName,
+        'orderType': value.orderType,
     };
 }
 

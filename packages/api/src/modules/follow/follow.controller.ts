@@ -15,7 +15,7 @@ import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetListMembersResponseDto } from '../list/dto/get-list-members.dto'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
 import { ReportFanDto } from './dto/report-fan.dto'
-import { SearchFollowRequestDto } from './dto/search-fan.dto'
+import { SearchFollowRequestDto } from './dto/search-follow.dto'
 import { FollowService } from './follow.service'
 
 @ApiTags('follow')
@@ -78,6 +78,7 @@ export class FollowController {
   ): Promise<GetListMembersResponseDto> {
     return new GetListMembersResponseDto(
       await this.followService.searchFansByQuery(req.user.id, searchFanDto),
+      searchFanDto.orderType,
     )
   }
 
@@ -97,6 +98,7 @@ export class FollowController {
         req.user.id,
         searchFanDto,
       ),
+      searchFanDto.orderType,
     )
   }
 
@@ -153,12 +155,14 @@ export class FollowController {
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of blocked followers was retrieved',
   })
-  @Get('blocked')
+  @Post('blocked')
   async getBlocked(
     @Req() req: RequestWithUser,
+    @Body() searchFanDto: SearchFollowRequestDto,
   ): Promise<GetListMembersResponseDto> {
     return new GetListMembersResponseDto(
       await this.followService.getBlocked(req.user.id),
+      searchFanDto.orderType,
     )
   }
 }

@@ -16,11 +16,20 @@ import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
 import { CreatePassHolderRequestDto } from './dto/create-pass-holder.dto'
-import { GetPassesResponseDto, GetPassResponseDto } from './dto/get-pass.dto'
+import {
+  GetCreatorPassesRequestDto,
+  GetExternalPassesRequestDto,
+  GetPassesResponseDto,
+  GetPassResponseDto,
+} from './dto/get-pass.dto'
 import {
   GetPassHoldersRequestDto,
   GetPassHoldersResponseDto,
-} from './dto/get-pass-holder.dto'
+} from './dto/get-pass-holders.dto'
+import {
+  GetPassHoldingsRequestDto,
+  GetPassHoldingsResponseDto,
+} from './dto/get-pass-holdings.dto'
 import { RenewPassHolderRequestDto } from './dto/renew-pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
@@ -51,12 +60,12 @@ export class PassController {
     responseDesc: 'A list of creator passes was retrieved',
     allowUnauthorizedRequest: true,
   })
-  @Get('created/:creatorId')
+  @Post('created')
   async getCreatorPasses(
-    @Param('creatorId') creatorId: string,
+    @Body() getPassesRequestDto: GetCreatorPassesRequestDto,
   ): Promise<GetPassesResponseDto> {
     return new GetPassesResponseDto(
-      await this.passService.findPassesByCreator(creatorId),
+      await this.passService.findPassesByCreator(getPassesRequestDto),
     )
   }
 
@@ -67,27 +76,32 @@ export class PassController {
     responseDesc: 'A list of external passes was retrieved',
     allowUnauthorizedRequest: true,
   })
-  @Get('external')
-  async getExternalPasses(): Promise<GetPassesResponseDto> {
-    return new GetPassesResponseDto(await this.passService.getExternalPasses())
+  @Post('external')
+  async getExternalPasses(
+    @Body() getPassesRequestDto: GetExternalPassesRequestDto,
+  ): Promise<GetPassesResponseDto> {
+    return new GetPassesResponseDto(
+      await this.passService.getExternalPasses(getPassesRequestDto),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Gets passes held by user',
     responseStatus: HttpStatus.OK,
-    responseType: GetPassHoldersResponseDto,
+    responseType: GetPassHoldingsResponseDto,
     responseDesc: 'A list of pass holdings was retrieved',
   })
   @Get('passholdings')
   async getPassHoldings(
     @Req() req: RequestWithUser,
-    @Body() getPassHoldersRequestDto: GetPassHoldersRequestDto,
-  ): Promise<GetPassHoldersResponseDto> {
-    return new GetPassHoldersResponseDto(
+    @Body() getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
+  ): Promise<GetPassHoldingsResponseDto> {
+    return new GetPassHoldingsResponseDto(
       await this.passService.findPassHoldings(
         req.user.id,
-        getPassHoldersRequestDto,
+        getPassHoldingsRequestDto,
       ),
+      getPassHoldingsRequestDto.orderType,
     )
   }
 
@@ -242,6 +256,7 @@ export class PassController {
   ): Promise<GetPassHoldersResponseDto> {
     return new GetPassHoldersResponseDto(
       await this.passService.getPassHolders(req.user.id, getPassHoldersRequest),
+      getPassHoldersRequest.orderType,
     )
   }
 }

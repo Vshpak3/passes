@@ -43,6 +43,18 @@ export interface GetListResponseDto {
      * @memberof GetListResponseDto
      */
     count: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListResponseDto
+     */
+    createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListResponseDto
+     */
+    updatedAt: Date;
 }
 
 
@@ -66,6 +78,8 @@ export function instanceOfGetListResponseDto(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "updatedAt" in value;
 
     return isInstance;
 }
@@ -84,6 +98,8 @@ export function GetListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'name': json['name'],
         'type': json['type'],
         'count': json['count'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
@@ -100,6 +116,8 @@ export function GetListResponseDtoToJSON(value?: GetListResponseDto | null): any
         'name': value.name,
         'type': value.type,
         'count': value.count,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
     };
 }
 

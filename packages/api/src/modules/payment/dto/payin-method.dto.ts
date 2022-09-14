@@ -19,7 +19,7 @@ export class PayinMethodDto {
   chainId?: number
 
   @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum, required: false })
+  @DtoProperty({ enum: ChainEnum, optional: true })
   chain?: ChainEnum
 
   constructor(payinMethod) {

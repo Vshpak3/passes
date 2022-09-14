@@ -24,6 +24,12 @@ export interface ListMemberDto {
      * @type {string}
      * @memberof ListMemberDto
      */
+    listMemberId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListMemberDto
+     */
     userId: string;
     /**
      * 
@@ -42,7 +48,13 @@ export interface ListMemberDto {
      * @type {boolean}
      * @memberof ListMemberDto
      */
-    isFollowing: boolean;
+    isFollowing?: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ListMemberDto
+     */
+    createdAt: Date;
 }
 
 /**
@@ -50,10 +62,11 @@ export interface ListMemberDto {
  */
 export function instanceOfListMemberDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "listMemberId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "displayName" in value;
-    isInstance = isInstance && "isFollowing" in value;
+    isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
 }
@@ -68,10 +81,12 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
+        'listMemberId': json['listMemberId'],
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
-        'isFollowing': json['isFollowing'],
+        'isFollowing': !exists(json, 'isFollowing') ? undefined : json['isFollowing'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -84,10 +99,12 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
     }
     return {
         
+        'listMemberId': value.listMemberId,
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
         'isFollowing': value.isFollowing,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

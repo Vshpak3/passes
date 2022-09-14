@@ -1,4 +1,8 @@
-import { PassApi, PassHolderDto } from "@passes/api-client"
+import {
+  GetPassHoldingsRequestDtoOrderTypeEnum,
+  PassApi,
+  PassHolderDto
+} from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { useUser } from "src/hooks"
 import useSWR from "swr"
@@ -51,7 +55,7 @@ const usePasses = (creatorId = "") => {
         const api = wrapApi(PassApi)
         return (
           await api.getCreatorPasses({
-            creatorId
+            getCreatorPassesRequestDto: { creatorId }
           })
         ).passes
       }
@@ -64,8 +68,9 @@ const usePasses = (creatorId = "") => {
       const api = wrapApi(PassApi)
       return (
         await api.getPassHoldings({
-          getPassHoldersRequestDto: {
-            userId: ""
+          getPassHoldingsRequestDto: {
+            order: "desc",
+            orderType: GetPassHoldingsRequestDtoOrderTypeEnum.CreatedAt
           }
         })
       ).passHolders

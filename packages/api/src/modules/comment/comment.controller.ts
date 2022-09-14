@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   HttpStatus,
   Param,
   Patch,
@@ -15,7 +14,10 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { CommentService } from './comment.service'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
-import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
+import {
+  GetCommentsForPostRequesteDto,
+  GetCommentsForPostResponseDto,
+} from './dto/get-comments-for-post-dto'
 
 @ApiTags('comment')
 @Controller('comment')
@@ -42,12 +44,15 @@ export class CommentController {
     responseType: GetCommentsForPostResponseDto,
     responseDesc: 'A list of comments was retrieved',
   })
-  @Get('post/:postId')
+  @Post('post')
   async findCommentsForPost(
     @Req() req: RequestWithUser,
-    @Param('postId') postId: string,
+    @Body() getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto,
   ): Promise<GetCommentsForPostResponseDto> {
-    return this.commentService.findCommentsForPost(req.user.id, postId)
+    return this.commentService.findCommentsForPost(
+      req.user.id,
+      getCommentsForPostRequesteDto,
+    )
   }
 
   @ApiEndpoint({

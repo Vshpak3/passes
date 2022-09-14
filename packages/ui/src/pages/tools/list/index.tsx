@@ -1,4 +1,8 @@
-import { GetListMembersResponseDto } from "@passes/api-client"
+import {
+  GetListMembersResponseDto,
+  GetListsRequestsDtoOrderTypeEnum,
+  SearchFollowRequestDtoOrderTypeEnum
+} from "@passes/api-client"
 import { FollowApi, ListApi } from "@passes/api-client/apis"
 import { NextPage } from "next"
 import Link from "next/link"
@@ -16,10 +20,18 @@ const FanLists: NextPage = () => {
 
   const fetchList = useCallback(async () => {
     try {
-      const allLists: any = await listApi.getLists()
+      const allLists: any = await listApi.getLists({
+        getListsRequestsDto: {
+          order: "desc",
+          orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt
+        }
+      })
       const followRes: GetListMembersResponseDto =
         await followApi.searchFollowing({
-          searchFollowRequestDto: { query: "", cursor: "0" }
+          searchFollowRequestDto: {
+            order: "desc",
+            orderType: SearchFollowRequestDtoOrderTypeEnum.CreatedAt
+          }
         })
       setList(allLists.lists)
       setFans(followRes.listMembers)

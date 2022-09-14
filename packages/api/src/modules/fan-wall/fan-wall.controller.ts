@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   HttpStatus,
   Param,
   Patch,
@@ -14,7 +13,10 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
-import { GetFanWallForCreatorResponseDto } from './dto/get-fan-wall-comments-for-post-dto'
+import {
+  GetFanWallRequestDto,
+  GetFanWallResponseDto,
+} from './dto/get-fan-wall-comments.dto'
 import { FanWallService } from './fan-wall.service'
 
 @ApiTags('fan-wall')
@@ -42,15 +44,19 @@ export class FanWallController {
   @ApiEndpoint({
     summary: 'Gets fan wall for a creator',
     responseStatus: HttpStatus.OK,
-    responseType: GetFanWallForCreatorResponseDto,
+    responseType: GetFanWallResponseDto,
     responseDesc: 'A list of fan wall comments was retrieved',
   })
-  @Get('profile/:userId')
+  @Post('profile')
   async getFanWallForCreator(
     @Req() req: RequestWithUser,
-    @Param('userId') userId: string,
-  ): Promise<GetFanWallForCreatorResponseDto> {
-    return this.fanWallService.getFanWallForCreator(req.user.id, userId)
+    @Body()
+    getFanWallRequesteDto: GetFanWallRequestDto,
+  ): Promise<GetFanWallResponseDto> {
+    return this.fanWallService.getFanWallForCreator(
+      req.user.id,
+      getFanWallRequesteDto,
+    )
   }
 
   @ApiEndpoint({

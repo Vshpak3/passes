@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   AddExternalPassAddressRequestDto,
   AdminDto,
+  CreateExternalPassRequestDto,
   DeleteExternalPassAddressRequestDto,
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
@@ -30,6 +31,8 @@ import {
     AddExternalPassAddressRequestDtoToJSON,
     AdminDtoFromJSON,
     AdminDtoToJSON,
+    CreateExternalPassRequestDtoFromJSON,
+    CreateExternalPassRequestDtoToJSON,
     DeleteExternalPassAddressRequestDtoFromJSON,
     DeleteExternalPassAddressRequestDtoToJSON,
     GetCreatorFeeRequestDtoFromJSON,
@@ -45,6 +48,10 @@ import {
     UpdateExternalPassRequestDtoFromJSON,
     UpdateExternalPassRequestDtoToJSON,
 } from '../models';
+
+export interface AddExternalPassRequest {
+    createExternalPassRequestDto: CreateExternalPassRequestDto;
+}
 
 export interface AddExternalPassAddressRequest {
     addExternalPassAddressRequestDto: AddExternalPassAddressRequestDto;
@@ -82,6 +89,47 @@ export interface UpdateExternalPassRequest {
  * 
  */
 export class AdminApi extends runtime.BaseAPI {
+
+    /**
+     * Add external pass
+     */
+    async addExternalPassRaw(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.createExternalPassRequestDto === null || requestParameters.createExternalPassRequestDto === undefined) {
+            throw new runtime.RequiredError('createExternalPassRequestDto','Required parameter requestParameters.createExternalPassRequestDto was null or undefined when calling addExternalPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/add`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateExternalPassRequestDtoToJSON(requestParameters.createExternalPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Add external pass
+     */
+    async addExternalPass(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.addExternalPassRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Add external pass address
@@ -392,7 +440,7 @@ export class AdminApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/admin/external-pass/add`,
+            path: `/api/admin/external-pass/update`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

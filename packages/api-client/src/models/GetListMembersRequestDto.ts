@@ -21,6 +21,30 @@ import { exists, mapValues } from '../runtime';
 export interface GetListMembersRequestDto {
     /**
      * 
+     * @type {Date}
+     * @memberof GetListMembersRequestDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersRequestDto
+     */
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersRequestDto
+     */
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersRequestDto
+     */
+    order: string;
+    /**
+     * 
      * @type {string}
      * @memberof GetListMembersRequestDto
      */
@@ -30,15 +54,41 @@ export interface GetListMembersRequestDto {
      * @type {string}
      * @memberof GetListMembersRequestDto
      */
-    cursor?: string;
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersRequestDto
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersRequestDto
+     */
+    orderType: GetListMembersRequestDtoOrderTypeEnum;
 }
+
+
+/**
+ * @export
+ */
+export const GetListMembersRequestDtoOrderTypeEnum = {
+    Username: 'username',
+    DisplayName: 'display name',
+    CreatedAt: 'created at'
+} as const;
+export type GetListMembersRequestDtoOrderTypeEnum = typeof GetListMembersRequestDtoOrderTypeEnum[keyof typeof GetListMembersRequestDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetListMembersRequestDto interface.
  */
 export function instanceOfGetListMembersRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
     isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "orderType" in value;
 
     return isInstance;
 }
@@ -53,8 +103,14 @@ export function GetListMembersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
         'listId': json['listId'],
-        'cursor': !exists(json, 'cursor') ? undefined : json['cursor'],
+        'username': !exists(json, 'username') ? undefined : json['username'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'orderType': json['orderType'],
     };
 }
 
@@ -67,8 +123,14 @@ export function GetListMembersRequestDtoToJSON(value?: GetListMembersRequestDto 
     }
     return {
         
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'lastId': value.lastId,
+        'search': value.search,
+        'order': value.order,
         'listId': value.listId,
-        'cursor': value.cursor,
+        'username': value.username,
+        'displayName': value.displayName,
+        'orderType': value.orderType,
     };
 }
 

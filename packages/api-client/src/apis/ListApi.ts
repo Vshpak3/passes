@@ -21,6 +21,7 @@ import type {
   GetListMembersRequestDto,
   GetListMembersResponseDto,
   GetListResponseDto,
+  GetListsRequestsDto,
   GetListsResponseDto,
   RemoveListMembersRequestDto,
 } from '../models';
@@ -37,6 +38,8 @@ import {
     GetListMembersResponseDtoToJSON,
     GetListResponseDtoFromJSON,
     GetListResponseDtoToJSON,
+    GetListsRequestsDtoFromJSON,
+    GetListsRequestsDtoToJSON,
     GetListsResponseDtoFromJSON,
     GetListsResponseDtoToJSON,
     RemoveListMembersRequestDtoFromJSON,
@@ -65,6 +68,10 @@ export interface GetListRequest {
 
 export interface GetListMembersRequest {
     getListMembersRequestDto: GetListMembersRequestDto;
+}
+
+export interface GetListsRequest {
+    getListsRequestsDto: GetListsRequestsDto;
 }
 
 export interface RemoveListMembersRequest {
@@ -317,10 +324,16 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async getListsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListsResponseDto>> {
+    async getListsRaw(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListsResponseDto>> {
+        if (requestParameters.getListsRequestsDto === null || requestParameters.getListsRequestsDto === undefined) {
+            throw new runtime.RequiredError('getListsRequestsDto','Required parameter requestParameters.getListsRequestsDto was null or undefined when calling getLists.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -332,9 +345,10 @@ export class ListApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/list/lists-info`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetListsRequestsDtoToJSON(requestParameters.getListsRequestsDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetListsResponseDtoFromJSON(jsonValue));
@@ -343,8 +357,8 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Get all lists for user
      */
-    async getLists(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListsResponseDto> {
-        const response = await this.getListsRaw(initOverrides);
+    async getLists(requestParameters: GetListsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListsResponseDto> {
+        const response = await this.getListsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

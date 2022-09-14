@@ -28,10 +28,40 @@ import {
 export interface GetListMembersResponseDto {
     /**
      * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    lastId: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListMembersResponseDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetListMembersResponseDto
+     */
+    updatedAt?: Date;
+    /**
+     * 
      * @type {Array<ListMemberDto>}
      * @memberof GetListMembersResponseDto
      */
     listMembers: Array<ListMemberDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    displayName?: string;
 }
 
 /**
@@ -39,6 +69,7 @@ export interface GetListMembersResponseDto {
  */
 export function instanceOfGetListMembersResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "lastId" in value;
     isInstance = isInstance && "listMembers" in value;
 
     return isInstance;
@@ -54,7 +85,12 @@ export function GetListMembersResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
+        'lastId': json['lastId'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'listMembers': ((json['listMembers'] as Array<any>).map(ListMemberDtoFromJSON)),
+        'username': !exists(json, 'username') ? undefined : json['username'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
     };
 }
 
@@ -67,7 +103,12 @@ export function GetListMembersResponseDtoToJSON(value?: GetListMembersResponseDt
     }
     return {
         
+        'lastId': value.lastId,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'listMembers': ((value.listMembers as Array<any>).map(ListMemberDtoToJSON)),
+        'username': value.username,
+        'displayName': value.displayName,
     };
 }
 

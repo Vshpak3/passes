@@ -16,20 +16,16 @@ const getKey = (_pageIndex: number, previousPageData: any) => {
   return cursor ? `${withCursorPrefix}${cursor}` : "/post"
 }
 
-const fetcher = async (key: string) => {
-  const cursor = key.startsWith(withCursorPrefix)
-    ? key.substring(withCursorPrefix.length)
-    : ""
-
+const fetcher = async () => {
   const api = wrapApi(FeedApi)
-  return await api.getFeed({ cursor })
+  return await api.getFeed({ getFeedRequesteDto: {} })
 }
 
 const useFeed = () => {
   const { accessToken } = useUser()
   const { data: posts, isValidating: isLoadingPosts } = useSWRInfinite(
     accessToken ? getKey : () => null,
-    (key) => fetcher(key)
+    () => fetcher()
   )
 
   return { posts, isLoadingPosts }

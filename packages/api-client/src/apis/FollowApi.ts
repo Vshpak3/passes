@@ -43,6 +43,10 @@ export interface FollowCreatorRequest {
     creatorId: string;
 }
 
+export interface GetBlockedRequest {
+    searchFollowRequestDto: SearchFollowRequestDto;
+}
+
 export interface ReportFollowerRequest {
     followerId: string;
     reportFanDto: ReportFanDto;
@@ -185,10 +189,16 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Get blocked followers
      */
-    async getBlockedRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+    async getBlockedRaw(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+        if (requestParameters.searchFollowRequestDto === null || requestParameters.searchFollowRequestDto === undefined) {
+            throw new runtime.RequiredError('searchFollowRequestDto','Required parameter requestParameters.searchFollowRequestDto was null or undefined when calling getBlocked.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -200,9 +210,10 @@ export class FollowApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/follow/blocked`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: SearchFollowRequestDtoToJSON(requestParameters.searchFollowRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
@@ -211,8 +222,8 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Get blocked followers
      */
-    async getBlocked(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
-        const response = await this.getBlockedRaw(initOverrides);
+    async getBlocked(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
+        const response = await this.getBlockedRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

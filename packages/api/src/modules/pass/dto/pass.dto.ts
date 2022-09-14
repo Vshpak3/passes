@@ -53,6 +53,9 @@ export class PassDto {
   @DtoProperty({ optional: true })
   pinnedAt?: Date
 
+  @DtoProperty({ optional: true })
+  createdAt?: Date
+
   @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
   creatorUsername?: string
@@ -74,6 +77,7 @@ export class PassDto {
     this.pinnedAt = pass.pinned_at
     this.price = pass.price
     this.totalSupply = pass.total_supply
+    this.createdAt = pass.created_at
 
     this.creatorUsername = pass.creator_username
     this.creatorDisplayName = pass.creator_display_name

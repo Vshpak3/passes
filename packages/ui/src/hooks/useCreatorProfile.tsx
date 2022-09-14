@@ -31,7 +31,9 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
       doesProfileExist ? ["/fan-wall/creator/", username] : null,
       async () => {
         const api = wrapApi(FanWallApi)
-        return await api.getFanWallForCreator({ userId: props.userId })
+        return await api.getFanWallForCreator({
+          getFanWallRequestDto: { creatorId: props.userId }
+        })
       }
     )
 
@@ -48,7 +50,9 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const { data: profilePosts = { posts: [] }, isValidating: isLoadingPosts } =
     useSWR(doesProfileExist ? ["/post/creator/", username] : null, async () => {
       const api = wrapApi(FeedApi)
-      return await api.getFeedForCreator({ userId: props.userId, cursor: "" })
+      return await api.getFeedForCreator({
+        getProfileFeedRequesteDto: { creatorId: props.userId }
+      })
     })
 
   const onSubmitEditProfile = async (values: Record<string, any>) => {

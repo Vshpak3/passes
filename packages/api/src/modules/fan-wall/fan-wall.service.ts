@@ -8,9 +8,14 @@ import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
-import { GetFanWallForCreatorResponseDto } from './dto/get-fan-wall-comments-for-post-dto'
+import { FanWallCommentDto } from './dto/fan-wall-comment.dto'
+import {
+  GetFanWallRequestDto,
+  GetFanWallResponseDto,
+} from './dto/get-fan-wall-comments.dto'
 import { FanWallCommentEntity } from './entities/fan-wall-comment.entity'
 
+export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 20
 @Injectable()
 export class FanWallService {
   constructor(
@@ -50,10 +55,11 @@ export class FanWallService {
 
   async getFanWallForCreator(
     userId: string,
-    creatorId: string,
-  ): Promise<GetFanWallForCreatorResponseDto> {
+    getFanWallRequesteDto: GetFanWallRequestDto,
+  ): Promise<GetFanWallResponseDto> {
+    const { creatorId, lastId, createdAt } = getFanWallRequesteDto
     await this.checkBlock(userId, creatorId)
-    const comments = await this.dbReader(FanWallCommentEntity.table)
+    let query = this.dbReader(FanWallCommentEntity.table)
       .leftJoin(
         UserEntity.table,
         `${FanWallCommentEntity.table}.commenter_id`,
@@ -73,9 +79,27 @@ export class FanWallService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
-      .orderBy('created_at', 'desc')
+      .orderBy([
+        { column: `${FanWallCommentEntity.table}.created_at`, order: 'desc' },
+        { column: `${FanWallCommentEntity.table}.id`, order: 'desc' },
+      ])
 
-    return new GetFanWallForCreatorResponseDto(comments)
+    if (lastId) {
+      query = query.andWhere(`${FanWallCommentEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(
+        `${FanWallCommentEntity.table}.created_at`,
+        '<=',
+        createdAt,
+      )
+    }
+
+    const comments = await query.limit(MAX_FAN_WALL_COMMENTS_PER_REQUEST)
+
+    return new GetFanWallResponseDto(
+      comments.map((comment) => new FanWallCommentDto(comment)),
+    )
   }
 
   async hideFanWallCommment(

@@ -16,13 +16,16 @@
 import * as runtime from '../runtime';
 import type {
   CreateFanWallCommentRequestDto,
-  GetFanWallForCreatorResponseDto,
+  GetFanWallRequestDto,
+  GetFanWallResponseDto,
 } from '../models';
 import {
     CreateFanWallCommentRequestDtoFromJSON,
     CreateFanWallCommentRequestDtoToJSON,
-    GetFanWallForCreatorResponseDtoFromJSON,
-    GetFanWallForCreatorResponseDtoToJSON,
+    GetFanWallRequestDtoFromJSON,
+    GetFanWallRequestDtoToJSON,
+    GetFanWallResponseDtoFromJSON,
+    GetFanWallResponseDtoToJSON,
 } from '../models';
 
 export interface CreateFanWallCommentRequest {
@@ -34,7 +37,7 @@ export interface DeleteFanWallCommentRequest {
 }
 
 export interface GetFanWallForCreatorRequest {
-    userId: string;
+    getFanWallRequestDto: GetFanWallRequestDto;
 }
 
 export interface HideFanWallCommentRequest {
@@ -128,14 +131,16 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Gets fan wall for a creator
      */
-    async getFanWallForCreatorRaw(requestParameters: GetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFanWallForCreatorResponseDto>> {
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling getFanWallForCreator.');
+    async getFanWallForCreatorRaw(requestParameters: GetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFanWallResponseDto>> {
+        if (requestParameters.getFanWallRequestDto === null || requestParameters.getFanWallRequestDto === undefined) {
+            throw new runtime.RequiredError('getFanWallRequestDto','Required parameter requestParameters.getFanWallRequestDto was null or undefined when calling getFanWallForCreator.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -146,19 +151,20 @@ export class FanWallApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/fan-wall/profile/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
-            method: 'GET',
+            path: `/api/fan-wall/profile`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetFanWallRequestDtoToJSON(requestParameters.getFanWallRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFanWallForCreatorResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetFanWallResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets fan wall for a creator
      */
-    async getFanWallForCreator(requestParameters: GetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFanWallForCreatorResponseDto> {
+    async getFanWallForCreator(requestParameters: GetFanWallForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFanWallResponseDto> {
         const response = await this.getFanWallForCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }

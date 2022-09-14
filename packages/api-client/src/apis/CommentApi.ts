@@ -16,11 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   CreateCommentRequestDto,
+  GetCommentsForPostRequesteDto,
   GetCommentsForPostResponseDto,
 } from '../models';
 import {
     CreateCommentRequestDtoFromJSON,
     CreateCommentRequestDtoToJSON,
+    GetCommentsForPostRequesteDtoFromJSON,
+    GetCommentsForPostRequesteDtoToJSON,
     GetCommentsForPostResponseDtoFromJSON,
     GetCommentsForPostResponseDtoToJSON,
 } from '../models';
@@ -35,7 +38,7 @@ export interface DeleteCommentRequest {
 }
 
 export interface FindCommentsForPostRequest {
-    postId: string;
+    getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto;
 }
 
 export interface HideCommentRequest {
@@ -135,13 +138,15 @@ export class CommentApi extends runtime.BaseAPI {
      * Gets all comments for a post
      */
     async findCommentsForPostRaw(requestParameters: FindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCommentsForPostResponseDto>> {
-        if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling findCommentsForPost.');
+        if (requestParameters.getCommentsForPostRequesteDto === null || requestParameters.getCommentsForPostRequesteDto === undefined) {
+            throw new runtime.RequiredError('getCommentsForPostRequesteDto','Required parameter requestParameters.getCommentsForPostRequesteDto was null or undefined when calling findCommentsForPost.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -152,10 +157,11 @@ export class CommentApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/comment/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
-            method: 'GET',
+            path: `/api/comment/post`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetCommentsForPostRequesteDtoToJSON(requestParameters.getCommentsForPostRequesteDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetCommentsForPostResponseDtoFromJSON(jsonValue));

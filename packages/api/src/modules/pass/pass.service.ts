@@ -30,7 +30,12 @@ import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
 import { CreatePassRequestDto } from './dto/create-pass.dto'
-import { GetPassHoldersRequestDto } from './dto/get-pass-holder.dto'
+import {
+  GetCreatorPassesRequestDto,
+  GetExternalPassesRequestDto,
+} from './dto/get-pass.dto'
+import { GetPassHoldersRequestDto } from './dto/get-pass-holders.dto'
+import { GetPassHoldingsRequestDto } from './dto/get-pass-holdings.dto'
 import { PassDto } from './dto/pass.dto'
 import { PassHolderDto } from './dto/pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
@@ -43,10 +48,12 @@ import {
   NoPassError,
   UnsupportedChainPassError,
 } from './error/pass.error'
-
+import { createPassHolderQuery } from './pass.util'
 const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
 const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
 
+export const MAX_PASSES_PER_REQUEST = 20
+export const MAX_PASSHOLDERS_PER_REQUEST = 20
 @Injectable()
 export class PassService {
   constructor(
@@ -140,7 +147,7 @@ export class PassService {
 
   async findPassHoldings(
     userId: string,
-    getPassHoldersRequestDto: GetPassHoldersRequestDto,
+    getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
     let query = this.dbReader(PassHolderEntity.table)
       .innerJoin(
@@ -164,20 +171,20 @@ export class PassService {
         `${UserEntity.table}.display_name as creator_display_name`,
       )
 
-    if (getPassHoldersRequestDto.userId) {
+    if (getPassHoldingsRequestDto.creatorId) {
       query = query.andWhere(
         `${UserEntity.table}.id`,
-        getPassHoldersRequestDto.userId,
+        getPassHoldingsRequestDto.creatorId,
       )
     }
 
-    if (getPassHoldersRequestDto.passId) {
+    if (getPassHoldingsRequestDto.passId) {
       query = query.andWhere(
         `${PassEntity.table}.id`,
-        getPassHoldersRequestDto.passId,
+        getPassHoldingsRequestDto.passId,
       )
     }
-
+    query = createPassHolderQuery(query, getPassHoldingsRequestDto)
     return (await query).map((pass) => new PassHolderDto(pass))
   }
 
@@ -215,29 +222,79 @@ export class PassService {
         getPassHoldersRequest.passId,
       )
     }
-    if (getPassHoldersRequest.userId) {
+    if (getPassHoldersRequest.holderId) {
       query = query.andWhere(
         `${PassHolderEntity.table}.holder_id`,
-        getPassHoldersRequest.userId,
+        getPassHoldersRequest.holderId,
       )
     }
+    query = createPassHolderQuery(query, getPassHoldersRequest)
     return (await query).map((passHolder) => new PassHolderDto(passHolder))
   }
 
-  async findPassesByCreator(creatorId: string) {
-    return (
-      await this.dbReader(PassEntity.table)
-        .where('creator_id', creatorId)
-        .select('*')
-    ).map((pass) => new PassDto(pass))
+  async findPassesByCreator(
+    getCreatorPassesRequestDto: GetCreatorPassesRequestDto,
+  ) {
+    const { lastId, createdAt, search, creatorId } = getCreatorPassesRequestDto
+    let query = this.dbReader(PassEntity.table)
+      .where('creator_id', creatorId)
+      .select('*')
+      .orderBy([
+        { column: `${PassEntity.table}.created_at`, order: 'desc' },
+        { column: `${PassEntity.table}.id`, order: 'desc' },
+      ])
+    if (lastId) {
+      query = query.andWhere(`${PassEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
+    }
+    if (search) {
+      // const strippedSearch = search.replace(/\W/g, '')
+      const likeClause = `%${search}%`
+      query = query.where(function () {
+        return this.whereILike(
+          `${PassEntity.table}.title`,
+          likeClause,
+        ).orWhereILike(`${PassEntity.table}.description`, likeClause)
+      })
+    }
+
+    return (await query.limit(MAX_PASSES_PER_REQUEST)).map(
+      (pass) => new PassDto(pass),
+    )
   }
 
-  async getExternalPasses() {
-    return (
-      await this.dbReader(PassEntity.table)
-        .where('creator_id', null)
-        .select('*')
-    ).map((pass) => new PassDto(pass))
+  async getExternalPasses(
+    getExternalPassesRequestDto: GetExternalPassesRequestDto,
+  ) {
+    const { lastId, createdAt, search } = getExternalPassesRequestDto
+    let query = this.dbReader(PassEntity.table)
+      .whereNull('creator_id')
+      .select('*')
+      .orderBy([
+        { column: `${PassEntity.table}.created_at`, order: 'desc' },
+        { column: `${PassEntity.table}.id`, order: 'desc' },
+      ])
+    if (lastId) {
+      query = query.andWhere(`${PassEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
+    }
+    if (search) {
+      // const strippedSearch = search.replace(/\W/g, '')
+      const likeClause = `%${search}%`
+      query = query.where(function () {
+        return this.whereILike(
+          `${PassEntity.table}.title`,
+          likeClause,
+        ).orWhereILike(`${PassEntity.table}.description`, likeClause)
+      })
+    }
+    return (await query.limit(MAX_PASSES_PER_REQUEST)).map(
+      (pass) => new PassDto(pass),
+    )
   }
 
   async updatePass(

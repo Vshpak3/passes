@@ -11,9 +11,15 @@ import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
 import { UserEntity } from '../user/entities/user.entity'
+import { CommentDto } from './dto/comment.dto'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
-import { GetCommentsForPostResponseDto } from './dto/get-comments-for-post-dto'
+import {
+  GetCommentsForPostRequesteDto,
+  GetCommentsForPostResponseDto,
+} from './dto/get-comments-for-post-dto'
 import { CommentEntity } from './entities/comment.entity'
+
+export const MAX_COMMENTS_PER_REQUEST = 20
 
 @Injectable()
 export class CommentService {
@@ -59,11 +65,12 @@ export class CommentService {
 
   async findCommentsForPost(
     userId: string,
-    postId: string,
+    getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto,
   ): Promise<GetCommentsForPostResponseDto> {
+    const { postId, lastId, createdAt } = getCommentsForPostRequesteDto
     await this.checkPost(userId, postId)
 
-    const comments = await this.dbReader(CommentEntity.table)
+    let query = this.dbReader(CommentEntity.table)
       .leftJoin(
         UserEntity.table,
         `${CommentEntity.table}.commenter_id`,
@@ -83,8 +90,26 @@ export class CommentService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
+      .orderBy([
+        { column: `${CommentEntity.table}.created_at`, order: 'desc' },
+        { column: `${CommentEntity.table}.id`, order: 'desc' },
+      ])
+    if (lastId) {
+      query = query.andWhere(`${CommentEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(
+        `${CommentEntity.table}.created_at`,
+        '<=',
+        createdAt,
+      )
+    }
 
-    return new GetCommentsForPostResponseDto(postId, comments)
+    const comments = await query.limit(MAX_COMMENTS_PER_REQUEST)
+
+    return new GetCommentsForPostResponseDto(
+      comments.map((c) => new CommentDto(c)),
+    )
   }
 
   async hideComment(userId: string, postId: string, commentId: string) {

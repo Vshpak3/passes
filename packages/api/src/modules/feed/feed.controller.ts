@@ -1,9 +1,11 @@
-import { Controller, Get, HttpStatus, Param, Query, Req } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetFeedRequesteDto, GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetPostsRequesteDto } from './dto/get-posts.dto'
+import { GetProfileFeedRequesteDto } from './dto/get-profile-feed.dto'
 import { FeedService } from './feed.service'
 
 @ApiTags('feed')
@@ -17,12 +19,12 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A feed of posts was retrieved',
   })
-  @Get()
+  @Post()
   async getFeed(
     @Req() req: RequestWithUser,
-    @Query('cursor') cursor: string,
+    @Body() getFeedRequesteDto: GetFeedRequesteDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeed(req.user.id, cursor)
+    return this.feedService.getFeed(req.user.id, getFeedRequesteDto)
   }
 
   @ApiEndpoint({
@@ -31,13 +33,15 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A feed was retrieved',
   })
-  @Get('profile/:userId')
+  @Post('profile')
   async getFeedForCreator(
     @Req() req: RequestWithUser,
-    @Param('userId') userId: string,
-    @Query('cursor') cursor: string,
+    @Body() getProfileFeedRequesteDto: GetProfileFeedRequesteDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeedForCreator(userId, req.user.id, cursor)
+    return this.feedService.getFeedForCreator(
+      req.user.id,
+      getProfileFeedRequesteDto,
+    )
   }
 
   @ApiEndpoint({
@@ -46,17 +50,15 @@ export class FeedController {
     responseType: GetFeedResponseDto,
     responseDesc: 'A list of posts was retrieved',
   })
-  @Get('owner/posts')
+  @Post('owner/posts')
   async getPostsForOwner(
     @Req() req: RequestWithUser,
-    @Param('scheduledOnly') scheduledOnly: boolean,
-    @Query('cursor') cursor: string,
+    @Body() getPostsRequesteDto: GetPostsRequesteDto,
   ): Promise<GetFeedResponseDto> {
     return this.feedService.getPostsForOwner(
       req.user.id,
       false,
-      scheduledOnly,
-      cursor,
+      getPostsRequesteDto,
     )
   }
 
@@ -69,8 +71,12 @@ export class FeedController {
   @Get('owner/messages')
   async getMessagesForOwner(
     @Req() req: RequestWithUser,
-    @Query('cursor') cursor: string,
+    @Body() getPostsRequesteDto: GetPostsRequesteDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForOwner(req.user.id, true, false, cursor)
+    return this.feedService.getPostsForOwner(
+      req.user.id,
+      true,
+      getPostsRequesteDto,
+    )
   }
 }

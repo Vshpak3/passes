@@ -28,18 +28,68 @@ import {
 export interface GetPassHoldersResponseDto {
     /**
      * 
+     * @type {string}
+     * @memberof GetPassHoldersResponseDto
+     */
+    lastId: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassHoldersResponseDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPassHoldersResponseDto
+     */
+    updatedAt?: Date;
+    /**
+     * 
      * @type {Array<PassHolderDto>}
      * @memberof GetPassHoldersResponseDto
      */
     passHolders: Array<PassHolderDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersResponseDto
+     */
+    orderType: GetPassHoldersResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersResponseDto
+     */
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldersResponseDto
+     */
+    displayName?: string;
 }
+
+
+/**
+ * @export
+ */
+export const GetPassHoldersResponseDtoOrderTypeEnum = {
+    Username: 'username',
+    DisplayName: 'display name',
+    CreatedAt: 'created at'
+} as const;
+export type GetPassHoldersResponseDtoOrderTypeEnum = typeof GetPassHoldersResponseDtoOrderTypeEnum[keyof typeof GetPassHoldersResponseDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetPassHoldersResponseDto interface.
  */
 export function instanceOfGetPassHoldersResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "lastId" in value;
     isInstance = isInstance && "passHolders" in value;
+    isInstance = isInstance && "orderType" in value;
 
     return isInstance;
 }
@@ -54,7 +104,13 @@ export function GetPassHoldersResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
+        'lastId': json['lastId'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'passHolders': ((json['passHolders'] as Array<any>).map(PassHolderDtoFromJSON)),
+        'orderType': json['orderType'],
+        'username': !exists(json, 'username') ? undefined : json['username'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
     };
 }
 
@@ -67,7 +123,13 @@ export function GetPassHoldersResponseDtoToJSON(value?: GetPassHoldersResponseDt
     }
     return {
         
+        'lastId': value.lastId,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'passHolders': ((value.passHolders as Array<any>).map(PassHolderDtoToJSON)),
+        'orderType': value.orderType,
+        'username': value.username,
+        'displayName': value.displayName,
     };
 }
 

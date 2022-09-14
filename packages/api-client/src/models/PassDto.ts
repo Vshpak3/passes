@@ -87,6 +87,12 @@ export interface PassDto {
     pinnedAt?: Date;
     /**
      * 
+     * @type {Date}
+     * @memberof PassDto
+     */
+    createdAt?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof PassDto
      */
@@ -149,6 +155,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
@@ -174,6 +181,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
     };
