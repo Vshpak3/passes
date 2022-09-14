@@ -17,7 +17,7 @@ export function DtoProperty(options?: DtoOptions) {
   // Remove our custom options
   const apiProperty: ApiPropertyOptions = {}
   _.assign(apiProperty, _.pick(options, _.keys(apiProperty)))
-  decorators.push(ApiProperty(options))
+  decorators.push(ApiProperty(apiProperty))
 
   // Check for the optional decorator
   if (options?.optional) {

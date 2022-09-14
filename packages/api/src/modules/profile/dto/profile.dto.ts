@@ -11,6 +11,7 @@ import {
   PROFILE_COVER_TITLE_LENGTH,
   PROFILE_DESCRIPTION_LENGTH,
 } from '../constants/schema'
+
 export class ProfileDto {
   @IsUUID()
   @DtoProperty()
