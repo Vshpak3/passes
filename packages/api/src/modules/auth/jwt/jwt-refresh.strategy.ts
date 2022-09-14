@@ -3,12 +3,13 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { JwtRefreshPayload } from './jwt-refresh.service'
+import { JWT_REFRESH_NAME } from './jwt-refresh.guard'
+import { JwtRefreshPayload } from './jwt-refresh.payload'
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh',
+  JWT_REFRESH_NAME,
 ) {
   constructor(private readonly configService: ConfigService) {
     super({

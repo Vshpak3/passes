@@ -79,7 +79,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       setFans(followRes.listMembers)
       setIsFetchingFanRequest(false)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       setIsFetchingFanRequest(false)
     }
   }, [followApi, listApi, id])
@@ -201,7 +201,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       })
       router.push("/tools/list")
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }, [fanSelectionList, listApi, listName, router])
 

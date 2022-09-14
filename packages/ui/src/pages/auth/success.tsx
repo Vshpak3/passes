@@ -3,6 +3,12 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useUser } from "src/hooks"
 
+import {
+  authRouter,
+  AuthStates,
+  authStateToRoute
+} from "../../helpers/authRouter"
+import { setTokens } from "../../helpers/setTokens"
 import { JWTUserClaims } from "../../hooks/useUser"
 
 const AuthSuccess = () => {
@@ -10,35 +16,34 @@ const AuthSuccess = () => {
   const { setAccessToken, setRefreshToken } = useUser()
 
   useEffect(() => {
-    if (!router.isReady) return
-
-    const accessToken = router.query.accessToken
-
-    if (!accessToken) {
-      router.push("/login")
+    if (!router.isReady) {
       return
     }
 
-    const token = Array.isArray(accessToken) ? accessToken[0] : accessToken
-    setAccessToken(token)
+    const { accessToken, refreshToken } = router.query
 
-    const _refreshToken = router.query.refreshToken
-    const refreshToken = Array.isArray(_refreshToken)
-      ? _refreshToken[0]
-      : _refreshToken
+    const _accessToken = Array.isArray(accessToken)
+      ? accessToken[0]
+      : accessToken
 
-    if (refreshToken) {
-      setRefreshToken(refreshToken)
+    const _refreshToken = Array.isArray(refreshToken)
+      ? refreshToken[0]
+      : refreshToken
+
+    const setRes = setTokens(
+      setAccessToken,
+      setRefreshToken,
+      _accessToken,
+      _refreshToken
+    )
+
+    if (!setRes) {
+      console.error("Unexpected missing access token after auth success")
+      router.push(authStateToRoute(AuthStates.LOGIN))
+      return
     }
 
-    const decodedAuthToken = jwtDecode<JWTUserClaims>(token)
-    if (!decodedAuthToken.isEmailVerified) {
-      router.push("/signup/user-email")
-    } else if (!decodedAuthToken.isVerified) {
-      router.push("/signup/user-info")
-    } else {
-      router.push("/home")
-    }
+    authRouter(router, jwtDecode<JWTUserClaims>(_accessToken as string))
   }, [router, setAccessToken, setRefreshToken])
 
   if (typeof window === "undefined") {

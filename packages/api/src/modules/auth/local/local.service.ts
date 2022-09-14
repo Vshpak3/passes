@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import bcrypt from 'bcrypt'
-import { generateFromEmail } from 'unique-username-generator'
 import { v4 } from 'uuid'
 
 import { Database } from '../../../database/database.decorator'
@@ -13,10 +12,9 @@ import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
-import { NotificationSettingsEntity } from '../../notifications/entities/notification-settings.entity'
-import { UserDto } from '../../user/dto/user.dto'
 import { UserEntity } from '../../user/entities/user.entity'
-import { CreateLocalUserRequestDto } from '../dto/create-local-user'
+import { AuthRecordDto } from '../dto/auth-record-dto'
+import { AuthEntity } from '../entities/auth.entity'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
 @Injectable()
@@ -31,57 +29,60 @@ export class LocalAuthService {
   ) {}
 
   async createLocalUser(
-    createLocalUserDto: CreateLocalUserRequestDto,
-  ): Promise<UserDto> {
-    const currentUser = await this.dbReader(UserEntity.table)
-      .where('email', createLocalUserDto.email)
-      .where('oauth_provider', null)
-      .first()
-
-    if (currentUser) {
-      throw new ConflictException('User already exists with this email')
-    }
-
-    const user = UserEntity.toDict<UserEntity>({
-      id: v4(),
-      email: createLocalUserDto.email,
-      passwordHash: await this.hashPassword(createLocalUserDto.password),
-      username: generateFromEmail(createLocalUserDto.email, 3),
-      isKYCVerified: false,
-      isCreator: false,
-    })
-
-    await this.dbWriter.transaction(async (trx) => {
-      await trx(UserEntity.table).insert(user)
-      await trx(NotificationSettingsEntity.table).insert(
-        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
-          user: user.id,
-        }),
-      )
-    })
-
-    return new UserDto(user)
-  }
-
-  async validateLocalUser(email: string, password: string): Promise<UserDto> {
-    const user = await this.dbReader(UserEntity.table)
+    email: string,
+    password: string,
+  ): Promise<AuthRecordDto> {
+    const currenAuthRecord = await this.dbReader(AuthEntity.table)
       .where('email', email)
       .where('oauth_provider', null)
       .first()
 
-    if (!user) {
+    if (currenAuthRecord) {
+      // TODO (aaronabf): we should avoid leaking account info
+      throw new ConflictException('User already exists with this email')
+    }
+
+    const id = v4()
+    await this.dbReader(AuthEntity.table).insert(
+      AuthEntity.toDict<AuthEntity>({
+        id,
+        email,
+        passwordHash: await this.hashPassword(password),
+      }),
+    )
+
+    return new AuthRecordDto({ id, isEmailVerified: false })
+  }
+
+  async validateLocalUser(
+    email: string,
+    password: string,
+  ): Promise<AuthRecordDto> {
+    const authRecord = await this.dbReader(AuthEntity.table)
+      .where('email', email)
+      .where('oauth_provider', null)
+      .select(['id', 'is_email_verified', 'password_hash'])
+      .first()
+
+    if (!authRecord) {
       this.metrics.increment('login.failure.local')
       throw new UnauthorizedException('Invalid credentials')
     }
 
-    const doesPasswordMatch = await bcrypt.compare(password, user.password_hash)
+    const doesPasswordMatch = await bcrypt.compare(
+      password,
+      authRecord.password_hash,
+    )
     if (!doesPasswordMatch) {
       this.metrics.increment('login.failure.local')
       throw new UnauthorizedException('Invalid credentials')
     }
 
     this.metrics.increment('login.success.local')
-    return new UserDto(user)
+    return new AuthRecordDto({
+      id: authRecord.id,
+      isEmailVerified: authRecord.is_email_verified,
+    })
   }
 
   async updatePassword(
@@ -89,7 +90,7 @@ export class LocalAuthService {
     oldPassword: string,
     newPassword: string,
   ): Promise<void> {
-    const user = await this.dbReader(UserEntity.table)
+    const user = await this.dbReader(AuthEntity.table)
       .where('id', userId)
       .where('oauth_provider', null)
       .first()
@@ -107,8 +108,8 @@ export class LocalAuthService {
     }
 
     const passwordHash = await this.hashPassword(newPassword)
-    await this.dbWriter(UserEntity.table)
-      .update({ password_hash: passwordHash })
+    await this.dbWriter(AuthEntity.table)
+      .update(AuthEntity.toDict<AuthEntity>({ passwordHash }))
       .where({ id: userId })
   }
 

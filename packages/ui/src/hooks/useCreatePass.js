@@ -2,7 +2,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 // import { PassApi } from "@passes/api-client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-// import useLocalStorage from "src/hooks/useLocalStorage"
 import * as yup from "yup"
 
 const MB = 1048576
@@ -25,7 +24,6 @@ export const PassTypeEnum = {
 const useCreatePass = ({ passType }) => {
   const [files, setFiles] = useState([])
   const [fileUploadError, setFileUploadError] = useState(null)
-  // const [accessToken] = useLocalStorage("access-token", "")
   const isLifetimePass = passType === PassTypeEnum.LIFETIME
   const isSubscriptionPass = passType === PassTypeEnum.SUBSCRIPTION
 
@@ -93,7 +91,7 @@ const useCreatePass = ({ passType }) => {
     // TODO: use data values to post to API
     console.log({ data })
 
-    // const passApi = new PassApi()
+    // const passApi = wrapApi(PassApi)
     // passApi.passCreate(
     //   {
     //     createPassDto: {
@@ -109,12 +107,6 @@ const useCreatePass = ({ passType }) => {
     //       price: parseInt(params.price),
     //       totalSupply: parseInt(params.totalSupply),
     //       duration: 2900000
-    //     }
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: "Bearer " + accessToken,
-    //       "Content-Type": "application/json"
     //     }
     //   }
     // )

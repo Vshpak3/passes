@@ -93,41 +93,22 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
     payload.createCardDto.encryptedData = encryptedMessage
 
     //TODO: handle error on frontend (display some generic message)
-    const createdCard = await paymentApi.createCircleCard(
-      { circleCreateCardAndExtraRequestDto: payload },
-      {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json"
-        }
-      }
-    )
+    const createdCard = await paymentApi.createCircleCard({
+      circleCreateCardAndExtraRequestDto: payload
+    })
 
     setTimeout(async () => {
-      const cardsResp = await paymentApi.getCircleCards({
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json"
-        }
-      })
+      const cardsResp = await paymentApi.getCircleCards({})
       const card = cardsResp.cards.find((item) => item.id === createdCard.id)
 
       if (card && card.status === "complete") {
         // set here paymentSetDefaultPayinMethod
-        await paymentApi.setDefaultPayinMethod(
-          {
-            setPayinMethodRequestDto: {
-              method: PayinMethodDtoMethodEnum.CircleCard,
-              cardId: createdCard.id
-            }
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
+        await paymentApi.setDefaultPayinMethod({
+          setPayinMethodRequestDto: {
+            method: PayinMethodDtoMethodEnum.CircleCard,
+            cardId: createdCard.id
           }
-        )
+        })
       }
     }, 1000)
   }
@@ -139,7 +120,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
       <form
         onSubmit={(e) => {
           handleSubmit(onSubmit)(e).catch((err) => {
-            console.log(`errors: ${err}`)
+            console.error(`errors: ${err}`)
             toast.error(err)
           })
         }}

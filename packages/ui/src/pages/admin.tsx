@@ -1,5 +1,6 @@
 import { AdminApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
@@ -16,6 +17,16 @@ const AdminPage = () => {
     handleSubmit,
     formState: { errors }
   } = useForm()
+
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      return
+    }
+
+    if (!user || !user.email.endsWith(ADMIN_EMAIL)) {
+      router.push("/home")
+    }
+  }, [loading, router, user])
 
   const impersonateUser = async (
     secret: string,
@@ -79,19 +90,6 @@ const AdminPage = () => {
         makeAdult(data.secret, data.userId, data.username)
         break
     }
-  }
-
-  if (loading || !user) {
-    return null
-  }
-
-  if (
-    !user.email ||
-    !user.isEmailVerified ||
-    !user.email.endsWith(ADMIN_EMAIL)
-  ) {
-    router.push("/home")
-    return null
   }
 
   return (

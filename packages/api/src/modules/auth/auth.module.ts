@@ -2,14 +2,12 @@ import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { PassportModule } from '@nestjs/passport'
 
-import { S3ContentModule } from '../s3content/s3content.module'
-import { UserModule } from './../user/user.module'
-import { AuthController } from './auth.controller'
+import { CoreAuthModule } from './core/core-auth.module'
 import { FacebookOauthModule } from './facebook/facebook-oauth-module'
 import { GoogleOauthModule } from './google/google-oauth-module'
 import { JwtAuthGuard } from './jwt/jwt-auth.guard'
-import { JwtAuthModule } from './jwt/jwt-auth.module'
 import { JwtRefreshModule } from './jwt/jwt-refresh.module'
+import { JwtUnverifiedModule } from './jwt/jwt-unverified.module'
 import { LocalAuthModule } from './local/local.module'
 import { TwitterOauthModule } from './twitter/twitter-oauth-module'
 
@@ -21,17 +19,16 @@ import { TwitterOauthModule } from './twitter/twitter-oauth-module'
     },
   ],
   imports: [
-    UserModule,
-    PassportModule,
-    GoogleOauthModule,
+    CoreAuthModule,
     FacebookOauthModule,
-    TwitterOauthModule,
-    LocalAuthModule,
-    JwtAuthModule,
+    GoogleOauthModule,
     JwtRefreshModule,
-    S3ContentModule,
+    JwtUnverifiedModule,
+    LocalAuthModule,
+    PassportModule,
+    TwitterOauthModule,
   ],
-  controllers: [AuthController],
+  controllers: [],
   exports: [],
 })
 export class AuthModule {}

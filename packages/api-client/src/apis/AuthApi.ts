@@ -15,24 +15,31 @@
 
 import * as runtime from '../runtime';
 import type {
-  AuthTokenResponseDto,
+  AccessTokensResponseDto,
+  CreateUserRequestDto,
   GetUserResponseDto,
   RefreshAuthTokenRequestDto,
   SetEmailRequestDto,
-  SetEmailResponseDto,
+  VerifyEmailDto,
 } from '../models';
 import {
-    AuthTokenResponseDtoFromJSON,
-    AuthTokenResponseDtoToJSON,
+    AccessTokensResponseDtoFromJSON,
+    AccessTokensResponseDtoToJSON,
+    CreateUserRequestDtoFromJSON,
+    CreateUserRequestDtoToJSON,
     GetUserResponseDtoFromJSON,
     GetUserResponseDtoToJSON,
     RefreshAuthTokenRequestDtoFromJSON,
     RefreshAuthTokenRequestDtoToJSON,
     SetEmailRequestDtoFromJSON,
     SetEmailRequestDtoToJSON,
-    SetEmailResponseDtoFromJSON,
-    SetEmailResponseDtoToJSON,
+    VerifyEmailDtoFromJSON,
+    VerifyEmailDtoToJSON,
 } from '../models';
+
+export interface CreateUserRequest {
+    createUserRequestDto: CreateUserRequestDto;
+}
 
 export interface RefreshAccessTokenRequest {
     refreshAuthTokenRequestDto: RefreshAuthTokenRequestDto;
@@ -42,10 +49,47 @@ export interface SetUserEmailRequest {
     setEmailRequestDto: SetEmailRequestDto;
 }
 
+export interface VerifyUserEmailRequest {
+    verifyEmailDto: VerifyEmailDto;
+}
+
 /**
  * 
  */
 export class AuthApi extends runtime.BaseAPI {
+
+    /**
+     * Creates a new user
+     */
+    async createUserRaw(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
+        if (requestParameters.createUserRequestDto === null || requestParameters.createUserRequestDto === undefined) {
+            throw new runtime.RequiredError('createUserRequestDto','Required parameter requestParameters.createUserRequestDto was null or undefined when calling createUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/auth/create`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateUserRequestDtoToJSON(requestParameters.createUserRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a new user
+     */
+    async createUser(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
+        const response = await this.createUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Gets the current authenticated user
@@ -84,7 +128,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Refresh the access token
      */
-    async refreshAccessTokenRaw(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async refreshAccessTokenRaw(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
         if (requestParameters.refreshAuthTokenRequestDto === null || requestParameters.refreshAuthTokenRequestDto === undefined) {
             throw new runtime.RequiredError('refreshAuthTokenRequestDto','Required parameter requestParameters.refreshAuthTokenRequestDto was null or undefined when calling refreshAccessToken.');
         }
@@ -103,13 +147,13 @@ export class AuthApi extends runtime.BaseAPI {
             body: RefreshAuthTokenRequestDtoToJSON(requestParameters.refreshAuthTokenRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Refresh the access token
      */
-    async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
+    async refreshAccessToken(requestParameters: RefreshAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
         const response = await this.refreshAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -117,7 +161,7 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Sets the user email
      */
-    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetEmailResponseDto>> {
+    async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.setEmailRequestDto === null || requestParameters.setEmailRequestDto === undefined) {
             throw new runtime.RequiredError('setEmailRequestDto','Required parameter requestParameters.setEmailRequestDto was null or undefined when calling setUserEmail.');
         }
@@ -128,14 +172,6 @@ export class AuthApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
         const response = await this.request({
             path: `/api/auth/set-email`,
             method: 'POST',
@@ -144,14 +180,46 @@ export class AuthApi extends runtime.BaseAPI {
             body: SetEmailRequestDtoToJSON(requestParameters.setEmailRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => SetEmailResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Sets the user email
      */
-    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetEmailResponseDto> {
-        const response = await this.setUserEmailRaw(requestParameters, initOverrides);
+    async setUserEmail(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.setUserEmailRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Verify email for the current user
+     */
+    async verifyUserEmailRaw(requestParameters: VerifyUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
+        if (requestParameters.verifyEmailDto === null || requestParameters.verifyEmailDto === undefined) {
+            throw new runtime.RequiredError('verifyEmailDto','Required parameter requestParameters.verifyEmailDto was null or undefined when calling verifyUserEmail.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/auth/verify-email`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: VerifyEmailDtoToJSON(requestParameters.verifyEmailDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Verify email for the current user
+     */
+    async verifyUserEmail(requestParameters: VerifyUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
+        const response = await this.verifyUserEmailRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

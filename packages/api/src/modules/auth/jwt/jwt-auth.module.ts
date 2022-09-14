@@ -4,8 +4,6 @@ import { JwtModule } from '@nestjs/jwt'
 
 import { JwtAuthService } from './jwt-auth.service'
 import { JwtAuthStrategy } from './jwt-auth.strategy'
-import { JwtRefreshStrategy } from './jwt-refresh.strategy'
-import { JwtVerifiedStrategy } from './jwt-verified.strategy'
 
 @Module({
   imports: [
@@ -22,12 +20,7 @@ import { JwtVerifiedStrategy } from './jwt-verified.strategy'
     }),
   ],
   controllers: [],
-  providers: [
-    JwtAuthService,
-    JwtAuthStrategy,
-    JwtRefreshStrategy,
-    JwtVerifiedStrategy,
-  ],
-  exports: [JwtModule, JwtAuthService],
+  providers: [JwtAuthService, JwtAuthStrategy],
+  exports: [JwtAuthService],
 })
 export class JwtAuthModule {}

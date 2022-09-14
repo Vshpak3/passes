@@ -26,10 +26,10 @@ apis/VerificationApi.ts
 apis/WalletApi.ts
 apis/index.ts
 index.ts
+models/AccessTokensResponseDto.ts
 models/AddExternalPassAddressRequestDto.ts
 models/AddListMembersRequestDto.ts
 models/AdminDto.ts
-models/AuthTokenResponseDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BillingDetailsDto.ts
@@ -61,6 +61,7 @@ models/CreatePostAccessRequestDto.ts
 models/CreatePostRequestDto.ts
 models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
+models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
@@ -128,7 +129,6 @@ models/GetVaultQueryRequestDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts
-models/ImpersonateUserResponseDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts
@@ -160,9 +160,6 @@ models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
 models/SetCreatorFeeRequestDto.ts
 models/SetEmailRequestDto.ts
-models/SetEmailResponseDto.ts
-models/SetInitialUserInfoRequestDto.ts
-models/SetInitialUserInfoResponseDto.ts
 models/SetPayinMethodRequestDto.ts
 models/SetPayoutMethodRequestDto.ts
 models/SubmitCreatorVerificationStepRequestDto.ts

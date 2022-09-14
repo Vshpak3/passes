@@ -18,13 +18,17 @@ export interface JWTUserClaims {
 
 const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage("access-token", "")
-  const [refreshToken, setRefreshToken] = useLocalStorage("refresh-token", "")
+  const [, setRefreshToken] = useLocalStorage("refresh-token", "")
 
   const {
     data: user,
     isValidating: loading,
     mutate
   } = useSWR(accessToken ? "/user" : null, async () => {
+    // When this flag is false there is not yet a user to retrieve
+    if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+      return
+    }
     const api = wrapApi(AuthApi)
     return await api.getCurrentUser()
   })
@@ -41,7 +45,6 @@ const useUser = () => {
     userClaims: accessToken ? jwtDecode<JWTUserClaims>(accessToken) : null,
     accessToken,
     setAccessToken,
-    refreshToken,
     setRefreshToken,
     logout
   }

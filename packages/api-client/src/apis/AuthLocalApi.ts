@@ -15,15 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
-  AuthTokenResponseDto,
+  AccessTokensResponseDto,
   CreateLocalUserRequestDto,
   LocalUserLoginRequestDto,
   ResetPasswordRequestDto,
   UpdatePasswordRequestDto,
 } from '../models';
 import {
-    AuthTokenResponseDtoFromJSON,
-    AuthTokenResponseDtoToJSON,
+    AccessTokensResponseDtoFromJSON,
+    AccessTokensResponseDtoToJSON,
     CreateLocalUserRequestDtoFromJSON,
     CreateLocalUserRequestDtoToJSON,
     LocalUserLoginRequestDtoFromJSON,
@@ -98,7 +98,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Create a email and password user
      */
-    async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
         if (requestParameters.createLocalUserRequestDto === null || requestParameters.createLocalUserRequestDto === undefined) {
             throw new runtime.RequiredError('createLocalUserRequestDto','Required parameter requestParameters.createLocalUserRequestDto was null or undefined when calling createEmailPasswordUser.');
         }
@@ -117,13 +117,13 @@ export class AuthLocalApi extends runtime.BaseAPI {
             body: CreateLocalUserRequestDtoToJSON(requestParameters.createLocalUserRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Create a email and password user
      */
-    async createEmailPasswordUser(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
+    async createEmailPasswordUser(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
         const response = await this.createEmailPasswordUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -163,7 +163,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Login with email and password
      */
-    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuthTokenResponseDto>> {
+    async loginWithEmailPasswordRaw(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
         if (requestParameters.localUserLoginRequestDto === null || requestParameters.localUserLoginRequestDto === undefined) {
             throw new runtime.RequiredError('localUserLoginRequestDto','Required parameter requestParameters.localUserLoginRequestDto was null or undefined when calling loginWithEmailPassword.');
         }
@@ -182,13 +182,13 @@ export class AuthLocalApi extends runtime.BaseAPI {
             body: LocalUserLoginRequestDtoToJSON(requestParameters.localUserLoginRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AuthTokenResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Login with email and password
      */
-    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AuthTokenResponseDto> {
+    async loginWithEmailPassword(requestParameters: LoginWithEmailPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
         const response = await this.loginWithEmailPasswordRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -25,7 +25,7 @@ const BlockModal = ({ isOpen = false, setOpen, userId }: BlockModalProps) => {
       await api.blockFollower(followBlockRequest)
       setOpen(false)
     } catch (error: any) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     }
   }

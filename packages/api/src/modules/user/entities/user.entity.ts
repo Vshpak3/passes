@@ -7,36 +7,30 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_EMAIL_LENGTH,
   USER_LEGAL_FULL_NAME_LENGTH,
-  USER_OAUTH_ID_LENGTH,
-  USER_OAUTH_PROVIDER_LENGTH,
-  USER_PASSWORD_HASH_LENGTH,
   USER_PHONE_NUMBER_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../constants/schema'
 
-@Entity({ tableName: 'users' }) // not a good idea to have a table named "user" in mysql
-@Index({ properties: ['oauthId', 'oauthProvider'] })
+@Entity({ tableName: 'users' }) // pural because it not a good idea to have a table named "user" in mysql
 export class UserEntity extends BaseEntity<
   'isKYCVerified' | 'isCreator' | 'isDisabled'
 > {
   @Property({ length: USER_EMAIL_LENGTH })
+  @Unique()
   email: string
-
-  @Property({ length: USER_PASSWORD_HASH_LENGTH })
-  passwordHash?: string
-
-  @Property({ length: USER_OAUTH_ID_LENGTH })
-  oauthId?: string
-
-  @Property({ length: USER_OAUTH_PROVIDER_LENGTH })
-  oauthProvider?: string
 
   @Property({ length: USER_USERNAME_LENGTH })
   @Unique()
   username: string
 
   @Property({ length: USER_LEGAL_FULL_NAME_LENGTH })
-  legalFullName?: string
+  legalFullName: string
+
+  @Property({ length: USER_COUNTRY_CODE_LENGTH })
+  countryCode: string
+
+  @Property({ type: new DateType() })
+  birthday: string
 
   @Property({ length: USER_DISPLAY_NAME_LENGTH })
   @Index()
@@ -44,16 +38,6 @@ export class UserEntity extends BaseEntity<
 
   @Property({ length: USER_PHONE_NUMBER_LENGTH })
   phoneNumber?: string
-
-  @Property({ length: USER_COUNTRY_CODE_LENGTH })
-  countryCode?: string
-
-  @Property({ type: new DateType() })
-  birthday?: string
-
-  // For verification emails, not set by OAuth
-  @Property({ default: false })
-  isEmailVerified = false
 
   @Property({ default: false })
   isKYCVerified = false

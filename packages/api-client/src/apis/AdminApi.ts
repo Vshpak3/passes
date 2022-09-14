@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  AccessTokensResponseDto,
   AddExternalPassAddressRequestDto,
   AdminDto,
   CreateExternalPassRequestDto,
@@ -22,12 +23,13 @@ import type {
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
   ImpersonateUserRequestDto,
-  ImpersonateUserResponseDto,
   SetCreatorFeeRequestDto,
   UpdateExternalPassRequestDto,
   UserExternalPassRequestDto,
 } from '../models';
 import {
+    AccessTokensResponseDtoFromJSON,
+    AccessTokensResponseDtoToJSON,
     AddExternalPassAddressRequestDtoFromJSON,
     AddExternalPassAddressRequestDtoToJSON,
     AdminDtoFromJSON,
@@ -42,8 +44,6 @@ import {
     GetCreatorFeeResponseDtoToJSON,
     ImpersonateUserRequestDtoFromJSON,
     ImpersonateUserRequestDtoToJSON,
-    ImpersonateUserResponseDtoFromJSON,
-    ImpersonateUserResponseDtoToJSON,
     SetCreatorFeeRequestDtoFromJSON,
     SetCreatorFeeRequestDtoToJSON,
     UpdateExternalPassRequestDtoFromJSON,
@@ -431,7 +431,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Impersonates a user
      */
-    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ImpersonateUserResponseDto>> {
+    async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
         if (requestParameters.impersonateUserRequestDto === null || requestParameters.impersonateUserRequestDto === undefined) {
             throw new runtime.RequiredError('impersonateUserRequestDto','Required parameter requestParameters.impersonateUserRequestDto was null or undefined when calling impersonateUser.');
         }
@@ -458,13 +458,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: ImpersonateUserRequestDtoToJSON(requestParameters.impersonateUserRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ImpersonateUserResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Impersonates a user
      */
-    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ImpersonateUserResponseDto> {
+    async impersonateUser(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
         const response = await this.impersonateUserRaw(requestParameters, initOverrides);
         return await response.value();
     }

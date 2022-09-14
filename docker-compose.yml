@@ -13,6 +13,7 @@ services:
   # Should match AWS Aurora MySQL version:
   # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraMySQLReleaseNotes/AuroraMySQL.Updates.3020.html
   mysql:
+    container_name: passes-mysql
     image: mysql:8.0.23
     platform: linux/x86_64  # needed for M1 macs
     ports:
@@ -27,6 +28,7 @@ services:
   # Should match the AWS Redis version:
   # https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/supported-engine-versions.html
   redis:
+    container_name: passes-redis
     image: redis:6.2.7-alpine
     command: redis-server
     ports:
@@ -36,8 +38,8 @@ services:
 
   # S3 Bucket
   s3:
+    container_name: passes-s3
     image: localstack/localstack:1.0.4
-    container_name: s3
     environment:
       - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566

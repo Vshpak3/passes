@@ -17,27 +17,18 @@ import * as runtime from '../runtime';
 import type {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
-  SetInitialUserInfoRequestDto,
-  SetInitialUserInfoResponseDto,
   UpdateDisplayNameRequestDto,
   UpdateUsernameRequestDto,
-  VerifyEmailDto,
 } from '../models';
 import {
     SearchCreatorRequestDtoFromJSON,
     SearchCreatorRequestDtoToJSON,
     SearchCreatorResponseDtoFromJSON,
     SearchCreatorResponseDtoToJSON,
-    SetInitialUserInfoRequestDtoFromJSON,
-    SetInitialUserInfoRequestDtoToJSON,
-    SetInitialUserInfoResponseDtoFromJSON,
-    SetInitialUserInfoResponseDtoToJSON,
     UpdateDisplayNameRequestDtoFromJSON,
     UpdateDisplayNameRequestDtoToJSON,
     UpdateUsernameRequestDtoFromJSON,
     UpdateUsernameRequestDtoToJSON,
-    VerifyEmailDtoFromJSON,
-    VerifyEmailDtoToJSON,
 } from '../models';
 
 export interface SearchCreatorByUsernameRequest {
@@ -48,20 +39,12 @@ export interface SetDisplayNameRequest {
     updateDisplayNameRequestDto: UpdateDisplayNameRequestDto;
 }
 
-export interface SetInitialInfoRequest {
-    setInitialUserInfoRequestDto: SetInitialUserInfoRequestDto;
-}
-
 export interface SetUsernameRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
 
 export interface ValidateUsernameRequest {
     username: string;
-}
-
-export interface VerifyEmailRequest {
-    verifyEmailDto: VerifyEmailDto;
 }
 
 /**
@@ -285,47 +268,6 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
-     * Sets initial user info
-     */
-    async setInitialInfoRaw(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SetInitialUserInfoResponseDto>> {
-        if (requestParameters.setInitialUserInfoRequestDto === null || requestParameters.setInitialUserInfoRequestDto === undefined) {
-            throw new runtime.RequiredError('setInitialUserInfoRequestDto','Required parameter requestParameters.setInitialUserInfoRequestDto was null or undefined when calling setInitialInfo.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/user/set-initial-info`,
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: SetInitialUserInfoRequestDtoToJSON(requestParameters.setInitialUserInfoRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SetInitialUserInfoResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Sets initial user info
-     */
-    async setInitialInfo(requestParameters: SetInitialInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SetInitialUserInfoResponseDto> {
-        const response = await this.setInitialInfoRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Set username for current user
      */
     async setUsernameRaw(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -393,38 +335,6 @@ export class UserApi extends runtime.BaseAPI {
     async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.validateUsernameRaw(requestParameters, initOverrides);
         return await response.value();
-    }
-
-    /**
-     * Verify email for the current user
-     */
-    async verifyEmailRaw(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.verifyEmailDto === null || requestParameters.verifyEmailDto === undefined) {
-            throw new runtime.RequiredError('verifyEmailDto','Required parameter requestParameters.verifyEmailDto was null or undefined when calling verifyEmail.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/api/user/verify-email`,
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: VerifyEmailDtoToJSON(requestParameters.verifyEmailDto),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Verify email for the current user
-     */
-    async verifyEmail(requestParameters: VerifyEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.verifyEmailRaw(requestParameters, initOverrides);
     }
 
 }

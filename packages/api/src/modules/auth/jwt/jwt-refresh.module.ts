@@ -21,6 +21,6 @@ import { JwtRefreshStrategy } from './jwt-refresh.strategy'
   ],
   controllers: [],
   providers: [JwtRefreshStrategy, JwtRefreshService],
-  exports: [JwtModule, JwtRefreshService],
+  exports: [JwtRefreshService],
 })
 export class JwtRefreshModule {}

@@ -5,6 +5,8 @@ import { Response } from 'express'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
+import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
+import { AuthRecordDto } from '../auth/dto/auth-record-dto'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { PassEntity } from '../pass/entities/pass.entity'
@@ -21,7 +23,6 @@ import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
 import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
-import { ImpersonateUserResponseDto } from './dto/impersonate-user.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
@@ -47,11 +48,7 @@ export class AdminService {
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {
     const reqUser = await this.userService.findOne(id)
-    if (
-      !reqUser.isEmailVerified ||
-      !reqUser.email.endsWith(ADMIN_EMAIL) ||
-      secret !== this.secret
-    ) {
+    if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
       throw new BadRequestException('Invalid request')
     }
     return reqUser
@@ -71,15 +68,14 @@ export class AdminService {
     res: Response,
     userId?: string,
     username?: string,
-  ): Promise<ImpersonateUserResponseDto> {
-    const tokens = await createTokens(
+  ): Promise<AccessTokensResponseDto> {
+    return await createTokens(
       res,
-      await this.findUser(userId, username),
+      AuthRecordDto.fromUserDto(await this.findUser(userId, username)),
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,
     )
-    return new ImpersonateUserResponseDto(tokens.accessToken)
   }
 
   async makeAdult(userId?: string, username?: string): Promise<void> {

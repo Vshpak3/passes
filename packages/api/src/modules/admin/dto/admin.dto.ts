@@ -2,6 +2,7 @@ import { IsUUID, Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { USER_USERNAME_LENGTH } from '../../user/constants/schema'
+import { ADMIN_SECRET_LENGTH } from '../constants/schema'
 
 export class AdminDto {
   @IsUUID()
@@ -12,7 +13,7 @@ export class AdminDto {
   @DtoProperty({ optional: true, forceLower: true })
   username?: string
 
-  //TODO: length validation ?
+  @Length(1, ADMIN_SECRET_LENGTH)
   @DtoProperty()
   secret: string
 }

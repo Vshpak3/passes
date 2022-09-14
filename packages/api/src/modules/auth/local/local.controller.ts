@@ -7,13 +7,13 @@ import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { EmailService } from '../../email/email.service'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { CreateLocalUserRequestDto } from '../dto/create-local-user'
-import { LocalUserLoginRequestDto } from '../dto/local-user-login'
-import { ResetPasswordRequestDto } from '../dto/reset-password'
-import { UpdatePasswordRequestDto } from '../dto/update-password'
+import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
+import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
+import { LocalUserLoginRequestDto } from '../dto/local/local-user-login.dto'
+import { ResetPasswordRequestDto } from '../dto/local/reset-password.dto'
+import { UpdatePasswordRequestDto } from '../dto/local/update-password.dto'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
-import { AuthTokenResponseDto } from './auth-token.dto'
 import { LocalAuthService } from './local.service'
 
 @Controller('auth/local')
@@ -30,53 +30,52 @@ export class LocalAuthController {
   @ApiEndpoint({
     summary: 'Create a email and password user',
     responseStatus: HttpStatus.CREATED,
-    responseType: AuthTokenResponseDto,
+    responseType: AccessTokensResponseDto,
     responseDesc: 'Create a email and password user',
     allowUnauthorizedRequest: true,
   })
   @Post('signup')
   async createEmailPasswordUser(
     @Body() createLocalUserDto: CreateLocalUserRequestDto,
-    @Res() res: Response,
-  ) {
-    const user = await this.localAuthService.createLocalUser(createLocalUserDto)
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AccessTokensResponseDto> {
+    const authRecord = await this.localAuthService.createLocalUser(
+      createLocalUserDto.email,
+      createLocalUserDto.password,
+    )
 
-    const tokens = await createTokens(
+    return await createTokens(
       res,
-      user,
+      authRecord,
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,
     )
-
-    res.status(HttpStatus.CREATED).send(tokens)
   }
 
   @ApiEndpoint({
     summary: 'Login with email and password',
     responseStatus: HttpStatus.OK,
-    responseType: AuthTokenResponseDto,
+    responseType: AccessTokensResponseDto,
     responseDesc: 'Login with email and password',
     allowUnauthorizedRequest: true,
   })
   @Post()
   async loginWithEmailPassword(
     @Body() loginDto: LocalUserLoginRequestDto,
-    @Res() res: Response,
-  ) {
-    const user = await this.localAuthService.validateLocalUser(
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AccessTokensResponseDto> {
+    const authRecord = await this.localAuthService.validateLocalUser(
       loginDto.email,
       loginDto.password,
     )
-    const tokens = await createTokens(
+    return await createTokens(
       res,
-      user,
+      authRecord,
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,
     )
-
-    res.status(HttpStatus.OK).send(tokens)
   }
 
   @ApiEndpoint({

@@ -1,31 +1,30 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { UserDto } from '../../user/dto/user.dto'
+import { AuthRecordDto } from '../dto/auth-record-dto'
 import { BASE_CLAIMS } from './jwt.constants'
-import { JwtPayload } from './jwt-auth.strategy'
+import { JwtAuthPayload } from './jwt-auth.payload'
 
 @Injectable()
 export class JwtAuthService {
   constructor(private jwtService: JwtService) {}
 
-  createAccessToken(user: UserDto) {
-    const payload: JwtPayload = {
-      sub: user.id,
-      isVerified: this.isVerified(user),
-      isCreator: !!user.isCreator,
-      isEmailVerified: !!user.isEmailVerified,
+  createAccessToken(authRecord: AuthRecordDto) {
+    const payload: JwtAuthPayload = {
+      sub: authRecord.id,
+      isVerified: this.isVerified(authRecord),
+      isCreator: !!authRecord.isCreator,
+      isEmailVerified: !!authRecord.isEmailVerified,
       ...BASE_CLAIMS,
     }
     return this.jwtService.sign(payload)
   }
 
-  public isVerified(user: UserDto): boolean {
+  isVerified(authRecord: AuthRecordDto): boolean {
     return (
-      !!user.birthday &&
-      !!user.countryCode &&
-      !!user.email &&
-      !!user.legalFullName
+      !!authRecord.birthday &&
+      !!authRecord.countryCode &&
+      !!authRecord.legalFullName
     )
   }
 }

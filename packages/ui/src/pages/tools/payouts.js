@@ -11,7 +11,7 @@ import { Button, FormInput, PassesPinkButton } from "src/components/atoms"
 import { PastTransactions } from "src/components/organisms"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { wrapApi } from "src/helpers"
-import { useLocalStorage, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 import BankIcon from "../../icons/bank-icon"
@@ -41,7 +41,6 @@ const Payouts = () => {
   } = useForm({})
 
   const [defaultPayout, setDefaultPayout] = useState()
-  const [accessToken] = useLocalStorage("access-token", "")
 
   const filteredDefaultPayout = banks.find(
     (bank) => bank.id === defaultPayout?.bankId
@@ -64,10 +63,6 @@ const Payouts = () => {
       await creatorSettingsApi.updateCreatorSettings({
         updateCreatorSettingsRequestDto: {
           payoutFrequency
-        },
-        headers: {
-          Authorization: "Bearer " + accessToken
-          // "Content-Type": "application/json"
         }
       })
     } catch (error) {
@@ -80,55 +75,25 @@ const Payouts = () => {
     }
   }
 
-  const getDefaultPayout = useCallback(
-    async (api) => {
-      try {
-        setDefaultPayout(
-          await api.getDefaultPayoutMethod({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        )
-      } catch (error) {
-        toast.error(error)
-        setDefaultPayout(undefined)
-      }
-    },
-    [accessToken]
-  )
-  const getBanks = useCallback(
-    async (paymentApi) => {
-      setBanks(
-        (
-          await paymentApi.getCircleBanks({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        ).banks
-      )
-    },
-    [accessToken]
-  )
+  const getDefaultPayout = useCallback(async (api) => {
+    try {
+      setDefaultPayout(await api.getDefaultPayoutMethod({}))
+    } catch (error) {
+      toast.error(error)
+      setDefaultPayout(undefined)
+    }
+  }, [])
+  const getBanks = useCallback(async (paymentApi) => {
+    setBanks((await paymentApi.getCircleBanks({})).banks)
+  }, [])
 
-  const getAutomaticPayoutSchedule = useCallback(
-    async (creatorSettingsApi) => {
-      try {
-        await creatorSettingsApi.getCreatorSettings({
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        })
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    [accessToken]
-  )
+  const getAutomaticPayoutSchedule = useCallback(async (creatorSettingsApi) => {
+    try {
+      await creatorSettingsApi.getCreatorSettings({})
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
   useEffect(() => {
     if (!router.isReady || loading) {
       console.log("r2")
@@ -138,8 +103,8 @@ const Payouts = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = new PaymentApi()
-      const creatorSettingsApi = new CreatorSettingsApi()
+      const paymentApi = wrapApi(PaymentApi)
+      const creatorSettingsApi = wrapApi(CreatorSettingsApi)
       await getBanks(paymentApi)
       await getDefaultPayout(paymentApi)
       await getAutomaticPayoutSchedule(creatorSettingsApi)

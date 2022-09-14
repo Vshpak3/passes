@@ -12,59 +12,23 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
-import {
-  SetInitialUserInfoRequestDto,
-  SetInitialUserInfoResponseDto,
-} from './dto/init-user.dto'
 import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
 import { UpdateDisplayNameRequestDto } from './dto/update-display-name.dto'
 import { UpdateUsernameRequestDto } from './dto/update-username.dto'
-import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserService } from './user.service'
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly jwtAuthService: JwtAuthService,
-  ) {}
-  @ApiEndpoint({
-    summary: 'Sets initial user info',
-    responseStatus: HttpStatus.OK,
-    responseType: SetInitialUserInfoResponseDto,
-    responseDesc: 'Sets initial user info',
-  })
-  @Patch('set-initial-info')
-  async setInitialInfo(
-    @Req() req: RequestWithUser,
-    @Body() body: SetInitialUserInfoRequestDto,
-  ): Promise<SetInitialUserInfoResponseDto> {
-    const user = await this.userService.setInitialUserInfo(req.user.id, body)
-    const accessToken = this.jwtAuthService.createAccessToken(user)
-    return new SetInitialUserInfoResponseDto(accessToken)
-  }
-
-  @ApiEndpoint({
-    summary: 'Verify email for the current user',
-    responseStatus: HttpStatus.OK,
-    responseType: null,
-    responseDesc: 'A email was verified',
-    allowUnauthorizedRequest: true,
-  })
-  @Patch('verify-email')
-  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto): Promise<void> {
-    await this.userService.verifyEmail(verifyEmailDto)
-  }
+  constructor(private readonly userService: UserService) {}
 
   @ApiEndpoint({
     summary: 'Set username for current user',
     responseStatus: HttpStatus.OK,
-    responseType: null,
+    responseType: undefined,
     responseDesc: 'A username was set for the current user',
   })
   @Patch('set-username')
@@ -78,7 +42,7 @@ export class UserController {
   @ApiEndpoint({
     summary: 'Set display name for current user',
     responseStatus: HttpStatus.OK,
-    responseType: null,
+    responseType: undefined,
     responseDesc: 'A display name was set for the current user',
   })
   @Patch('set-display-name')
@@ -161,7 +125,7 @@ export class UserController {
   @ApiEndpoint({
     summary: 'Make yourself a creator',
     responseStatus: HttpStatus.OK,
-    responseType: null,
+    responseType: undefined,
     responseDesc: 'You were made a creator',
   })
   @Get('make/creator')

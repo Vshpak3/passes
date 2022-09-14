@@ -7,15 +7,16 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useRouter } from "next/router"
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms"
-import { useLocalStorage, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 import AddBankingModal from "../../components/organisms/AddBankingModal"
 import AddWalletModal from "../../components/organisms/AddWalletModal"
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import { wrapApi } from "../../helpers"
 import BankIcon from "../../icons/bank-icon"
 import AccountCard from "./AccountCard"
 
@@ -31,70 +32,29 @@ const DefaultPayoutMethod = () => {
   )
   const { user, loading } = useUser()
   const router = useRouter()
-  const [accessToken] = useLocalStorage("access-token", "")
-  const getDefaultPayout = useCallback(
-    async (api: PaymentApi) => {
-      try {
-        setDefaultPayout(
-          await api.getDefaultPayoutMethod({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        )
-      } catch (error: any) {
-        toast.error(error)
-        setDefaultPayout(undefined)
-      }
-    },
-    [accessToken]
-  )
+  const getDefaultPayout = useCallback(async (api: PaymentApi) => {
+    try {
+      setDefaultPayout(await api.getDefaultPayoutMethod())
+    } catch (error: any) {
+      toast.error(error)
+      setDefaultPayout(undefined)
+    }
+  }, [])
 
-  const getBanks = useCallback(
-    async (paymentApi: PaymentApi) => {
-      setBanks(
-        (
-          await paymentApi.getCircleBanks({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        ).banks
-      )
-    },
-    [accessToken]
-  )
+  const getBanks = useCallback(async (paymentApi: PaymentApi) => {
+    setBanks((await paymentApi.getCircleBanks()).banks)
+  }, [])
 
-  const getWallets = useCallback(
-    async (walletApi: WalletApi) => {
-      setWallets(
-        (
-          await walletApi.getWallets({
-            headers: {
-              Authorization: "Bearer " + accessToken,
-              "Content-Type": "application/json"
-            }
-          })
-        ).wallets
-      )
-    },
-    [accessToken]
-  )
+  const getWallets = useCallback(async (walletApi: WalletApi) => {
+    setWallets((await walletApi.getWallets()).wallets)
+  }, [])
 
   const submit = async (dto: PayoutMethodDto) => {
-    const paymentApi = new PaymentApi()
+    const paymentApi = wrapApi(PaymentApi)
     try {
-      await paymentApi.setDefaultPayoutMethod(
-        { setPayoutMethodRequestDto: dto },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.setDefaultPayoutMethod({
+        setPayoutMethodRequestDto: dto
+      })
     } catch (error: any) {
       toast.error(error)
     } finally {
@@ -103,17 +63,9 @@ const DefaultPayoutMethod = () => {
   }
 
   const deleteBank = async (bankId: string) => {
-    const paymentApi = new PaymentApi()
+    const paymentApi = wrapApi(PaymentApi)
     try {
-      await paymentApi.deleteCircleBank(
-        { circleBankId: bankId },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.deleteCircleBank({ circleBankId: bankId })
     } catch (error: any) {
       toast.error(error)
     } finally {
@@ -123,18 +75,10 @@ const DefaultPayoutMethod = () => {
   }
 
   const deleteWallet = async (walletId: string) => {
-    const walletApi = new WalletApi()
-    const paymentApi = new PaymentApi()
+    const walletApi = wrapApi(WalletApi)
+    const paymentApi = wrapApi(PaymentApi)
     try {
-      await walletApi.removeWallet(
-        { walletId: walletId },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await walletApi.removeWallet({ walletId: walletId })
     } catch (error) {
       console.error(error)
     } finally {
@@ -152,8 +96,8 @@ const DefaultPayoutMethod = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = new PaymentApi()
-      const walletApi = new WalletApi()
+      const paymentApi = wrapApi(PaymentApi)
+      const walletApi = wrapApi(WalletApi)
       await getBanks(paymentApi)
       await getWallets(walletApi)
       await getDefaultPayout(paymentApi)

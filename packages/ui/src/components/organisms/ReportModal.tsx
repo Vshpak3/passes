@@ -26,7 +26,7 @@ const ReportModal = ({ isOpen = false, setOpen, userId }: ReportModalProps) => {
       await api.reportFollower(followReportRequest)
       setOpen(false)
     } catch (error: any) {
-      console.log(error)
+      console.error(error)
       toast.error(error)
     }
   }

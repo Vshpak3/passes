@@ -14,6 +14,7 @@ import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
 import { AdminDto } from './dto/admin.dto'
@@ -23,10 +24,7 @@ import {
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
 } from './dto/get-creator-fee.dto'
-import {
-  ImpersonateUserRequestDto,
-  ImpersonateUserResponseDto,
-} from './dto/impersonate-user.dto'
+import { ImpersonateUserRequestDto } from './dto/impersonate-user.dto'
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
@@ -62,14 +60,14 @@ export class AdminController {
   @ApiEndpoint({
     summary: 'Impersonates a user',
     responseStatus: HttpStatus.OK,
-    responseType: ImpersonateUserResponseDto,
+    responseType: AccessTokensResponseDto,
     responseDesc: 'Access token for impersonated user',
   })
   @Post('impersonate')
   async impersonateUser(
     @Res({ passthrough: true }) res: Response,
     @Body() body: ImpersonateUserRequestDto,
-  ): Promise<ImpersonateUserResponseDto> {
+  ): Promise<AccessTokensResponseDto> {
     this.metrics.increment('admin.impersonate')
     return await this.adminService.impersonateUser(
       res,

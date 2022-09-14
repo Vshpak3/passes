@@ -1,18 +1,18 @@
 import { UnauthorizedException } from '@nestjs/common'
 import { Profile } from 'passport-google-oauth20'
 
-import { UserDto } from '../../user/dto/user.dto'
+import { AuthRecordDto } from '../dto/auth-record-dto'
 import { OAuthProvider } from './oauth-provider.type'
 
 export async function validateUser(
   profile: Profile,
   oauthProvider: OAuthProvider,
   emailRequired = false,
-): Promise<UserDto> {
+): Promise<AuthRecordDto> {
   try {
     const { id, emails } = profile
 
-    let email = ''
+    let email: string | null = null
     if (emails !== undefined) {
       email = emails[0].value
     }
@@ -23,13 +23,13 @@ export async function validateUser(
       throw new UnauthorizedException()
     }
 
-    let user = await this.usersService.findOneByOAuth(id, oauthProvider)
-    if (!user) {
-      user = await this.usersService.createOAuthUser(email, oauthProvider, id)
-    }
-
+    const authRecord = await this.authService.findOrCreateOAuthRecord(
+      oauthProvider,
+      id,
+      email,
+    )
     this.metrics.increment(`login.success.${oauthProvider}`)
-    return user
+    return authRecord
   } catch (err) {
     this.logger.error('Error occurred while validating:', err)
     this.metrics.increment(`login.failure.${oauthProvider}`)

@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
-import { redirectAfterSuccessfulLogin } from '../../../util/auth.util'
+import { redirectAfterOAuthLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -50,6 +50,6 @@ export class TwitterOauthController {
   @UseGuards(TwitterOauthGuard)
   @Get('redirect')
   async twitterAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    return redirectAfterSuccessfulLogin.bind(this)(res, req.user)
+    return redirectAfterOAuthLogin.bind(this)(res, req.user)
   }
 }

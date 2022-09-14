@@ -33,16 +33,28 @@ export interface GetUserResponseDto {
     email: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof GetUserResponseDto
      */
-    isEmailVerified: boolean;
+    username: string;
     /**
      * 
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    username: string;
+    legalFullName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUserResponseDto
+     */
+    countryCode: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUserResponseDto
+     */
+    birthday: string;
     /**
      * 
      * @type {string}
@@ -60,25 +72,7 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    legalFullName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserResponseDto
-     */
     phoneNumber?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserResponseDto
-     */
-    birthday?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserResponseDto
-     */
-    countryCode?: string;
 }
 
 /**
@@ -88,8 +82,10 @@ export function instanceOfGetUserResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "isEmailVerified" in value;
     isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "legalFullName" in value;
+    isInstance = isInstance && "countryCode" in value;
+    isInstance = isInstance && "birthday" in value;
 
     return isInstance;
 }
@@ -106,14 +102,13 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'id': json['id'],
         'email': json['email'],
-        'isEmailVerified': json['isEmailVerified'],
         'username': json['username'],
+        'legalFullName': json['legalFullName'],
+        'countryCode': json['countryCode'],
+        'birthday': json['birthday'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'isCreator': !exists(json, 'isCreator') ? undefined : json['isCreator'],
-        'legalFullName': !exists(json, 'legalFullName') ? undefined : json['legalFullName'],
         'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
-        'birthday': !exists(json, 'birthday') ? undefined : json['birthday'],
-        'countryCode': !exists(json, 'countryCode') ? undefined : json['countryCode'],
     };
 }
 
@@ -128,14 +123,13 @@ export function GetUserResponseDtoToJSON(value?: GetUserResponseDto | null): any
         
         'id': value.id,
         'email': value.email,
-        'isEmailVerified': value.isEmailVerified,
         'username': value.username,
+        'legalFullName': value.legalFullName,
+        'countryCode': value.countryCode,
+        'birthday': value.birthday,
         'displayName': value.displayName,
         'isCreator': value.isCreator,
-        'legalFullName': value.legalFullName,
         'phoneNumber': value.phoneNumber,
-        'birthday': value.birthday,
-        'countryCode': value.countryCode,
     };
 }
 

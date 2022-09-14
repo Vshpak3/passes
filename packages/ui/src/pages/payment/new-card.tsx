@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import encrypt from "src/helpers/openpgp"
-import { useLocalStorage, useUser } from "src/hooks"
 import { v4 } from "uuid"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import { wrapApi } from "../../helpers/wrapApi"
+import { useUser } from "../../hooks"
 
 const NewCard = () => {
   const [submitting, setSubmitting] = useState(false)
@@ -26,8 +26,7 @@ const NewCard = () => {
     defaultValues: {}
   })
 
-  const [accessToken] = useLocalStorage("access-token", "")
-  const { user, loading } = useUser()
+  const { user, loading, accessToken } = useUser()
   const router = useRouter()
 
   const onSubmit = async () => {
@@ -74,15 +73,9 @@ const NewCard = () => {
 
       const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
-      await paymentApi.createCircleCard(
-        { circleCreateCardAndExtraRequestDto: payload },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.createCircleCard({
+        circleCreateCardAndExtraRequestDto: payload
+      })
       router.push("/payment/default-payin-method")
     } catch (error: any) {
       toast.error(error)
@@ -100,7 +93,7 @@ const NewCard = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = new PaymentApi()
+      const paymentApi = wrapApi(PaymentApi)
       setPublicKey(await paymentApi.getCircleEncryptionKey())
     }
     fetchData()

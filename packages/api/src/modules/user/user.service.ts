@@ -1,35 +1,26 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { generateFromEmail } from 'unique-username-generator'
-import * as uuid from 'uuid'
+import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
-import { OAuthProvider } from '../auth/helpers/oauth-provider.type'
-import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
+import { CreateUserRequestDto } from '../auth/dto/create-user.dto'
+import { AuthEntity } from '../auth/entities/auth.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
-import { VerifyEmailRequestEntity } from '../email/entities/verify-email-request.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { USERNAME_TAKEN } from './constants/errors'
-import { SetInitialUserInfoRequestDto } from './dto/init-user.dto'
 import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
 import { UserDto } from './dto/user.dto'
-import { VerifyEmailDto } from './dto/verify-email.dto'
 import { UserEntity } from './entities/user.entity'
 
 const MAX_USERNAME_RESET_IN_SPAN = 5
@@ -37,8 +28,6 @@ const USERNAME_RESET_TIME_SPAN = 1000 * 60 * 60 * 24 // 1 day
 
 @Injectable()
 export class UserService {
-  env: string
-
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -47,36 +36,34 @@ export class UserService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
-    private readonly jwtAuthService: JwtAuthService,
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-  ) {
-    this.env = configService.get('infra.env') as string
-  }
+  ) {}
 
-  async createOAuthUser(
+  async createUser(
     email: string,
-    provider: OAuthProvider,
-    providerId: string,
+    createUserRequestDto: CreateUserRequestDto,
   ): Promise<UserDto> {
-    const data = UserEntity.toDict<UserEntity>({
-      id: uuid.v4(),
+    const user = UserEntity.toDict<UserEntity>({
+      id: v4(),
       email,
-      username: generateFromEmail(email, 3),
-      oauthId: providerId,
-      oauthProvider: provider,
-      isEmailVerified: !!email,
+      ...createUserRequestDto,
     })
+
     await this.dbWriter.transaction(async (trx) => {
-      await trx(UserEntity.table).insert(data)
+      await trx(UserEntity.table).insert(user)
+      await trx(AuthEntity.table).insert(
+        AuthEntity.toDict<AuthEntity>({ user: user.id }),
+      )
       await trx(NotificationSettingsEntity.table).insert(
         NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
-          user: data.id,
+          user: user.id,
         }),
       )
     })
-    return new UserDto(data)
+
+    return new UserDto(user)
   }
 
   async findOne(id: string): Promise<UserDto> {
@@ -101,64 +88,6 @@ export class UserService {
     }
 
     return new UserDto(user)
-  }
-
-  async findOneByOAuth(
-    oauthId: string,
-    oauthProvider: OAuthProvider,
-  ): Promise<UserDto | undefined> {
-    const user = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ oauthId, oauthProvider }))
-      .select('*')
-      .first()
-    return user ? new UserDto(user) : undefined
-  }
-
-  async setInitialUserInfo(
-    userId: string,
-    setInitialUserInfoDto: SetInitialUserInfoRequestDto,
-  ): Promise<UserDto> {
-    const user = await this.findOne(userId)
-
-    if (this.jwtAuthService.isVerified(user)) {
-      throw new BadRequestException('Already set initial info')
-    }
-
-    await this.dbWriter(UserEntity.table)
-      .update(
-        UserEntity.toDict<UserEntity>({
-          ...setInitialUserInfoDto,
-        }),
-      )
-      .where({ id: userId })
-
-    return user.override(setInitialUserInfoDto)
-  }
-
-  async setEmail(userId: string, email: string): Promise<UserDto> {
-    const user = await this.findOne(userId)
-
-    // Block endpoint if verified. Do not block if only the email is set
-    // (since the user may have entered the wrong email)
-    if (user.isEmailVerified) {
-      throw new BadRequestException('Email already set')
-    }
-
-    // TODO: Connect this to send an email for staging and production
-    if (this.env === 'dev' || this.env === 'stage') {
-      const update = {
-        email,
-        isEmailVerified: true,
-      }
-
-      await this.dbWriter(UserEntity.table)
-        .update(UserEntity.toDict<UserEntity>(update))
-        .where({ id: userId })
-
-      return user.override(update)
-    }
-
-    return user
   }
 
   async setUsername(userId: string, username: string): Promise<void> {
@@ -309,40 +238,6 @@ export class UserService {
           type: ListTypeEnum.FOLLOWERS,
         }),
       ])
-    })
-  }
-
-  async verifyEmail(verifyEmailDto: VerifyEmailDto): Promise<void> {
-    const request = await this.dbReader(VerifyEmailRequestEntity.table)
-      .where({ id: verifyEmailDto.verificationToken })
-      .first()
-
-    if (!request) {
-      throw new BadRequestException('Verify email request does not exist')
-    }
-
-    if (new Date() < request.expires_at) {
-      throw new BadRequestException('Verify email request has already expired')
-    }
-
-    if (request.used_at !== null) {
-      throw new BadRequestException(
-        'Verify email request has already been used',
-      )
-    }
-
-    const data = VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
-      usedAt: new Date(),
-    })
-
-    await this.dbWriter.transaction(async (trx) => {
-      await trx(VerifyEmailRequestEntity.table)
-        .update(data)
-        .where({ id: verifyEmailDto.verificationToken })
-
-      await trx(UserEntity.table)
-        .where('id', request.user_id)
-        .update('is_email_verified', true)
     })
   }
 }

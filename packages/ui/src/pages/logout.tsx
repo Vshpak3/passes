@@ -1,17 +1,26 @@
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 
 import { useUser } from "../hooks"
 
 const Logout = () => {
-  const { loading, user, logout } = useUser()
   const router = useRouter()
+  const { user, logout } = useUser()
 
-  if (loading || !user) {
+  useEffect(() => {
+    if (!router.isReady || user) {
+      return
+    }
+
+    logout()
+    router.push("/login")
+  }, [router, user, logout])
+
+  if (typeof window === "undefined") {
     return null
   }
 
-  logout()
-  router.push("/login")
+  return null
 }
 
 export default Logout

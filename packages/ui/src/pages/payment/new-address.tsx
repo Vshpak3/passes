@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
-import { useLocalStorage, useUser } from "src/hooks"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import { wrapApi } from "../../helpers"
+import { useUser } from "../../hooks"
 
 const NewAddress = () => {
   const [submitting, setSubmitting] = useState(false)
@@ -20,7 +21,6 @@ const NewAddress = () => {
     defaultValues: {}
   })
 
-  const [accessToken] = useLocalStorage("access-token", "")
   const { user, loading } = useUser()
   const router = useRouter()
 
@@ -28,22 +28,14 @@ const NewAddress = () => {
     setSubmitting(true)
     try {
       const values: any = getValues()
-      const walletApi = new WalletApi()
+      const walletApi = wrapApi(WalletApi)
       //TODO: handle error on frontend (display some generic message)
-      await walletApi.createUnauthenticatedWallet(
-        {
-          createUnauthenticatedWalletRequestDto: {
-            walletAddress: values["address"],
-            chain: values["chain"]
-          }
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
+      await walletApi.createUnauthenticatedWallet({
+        createUnauthenticatedWalletRequestDto: {
+          walletAddress: values["address"],
+          chain: values["chain"]
         }
-      )
+      })
       router.push("/payment/default-payout-method")
     } catch (error: any) {
       toast.error(error)

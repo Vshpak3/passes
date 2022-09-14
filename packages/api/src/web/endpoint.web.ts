@@ -1,9 +1,9 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-import { AllowUnauthorizedRequest } from '../modules/auth/auth.metadata'
+import { AllowUnauthorizedRequest } from '../modules/auth/core/auth.metadata'
 
-export class ApiOptions {
+class ApiOptions {
   summary: string
   responseStatus: number
   responseType: any
@@ -15,6 +15,7 @@ export function ApiEndpoint(options: ApiOptions) {
   const auth = options.allowUnauthorizedRequest
     ? AllowUnauthorizedRequest()
     : ApiBearerAuth()
+
   return applyDecorators(
     ApiOperation({ summary: options.summary }),
     ApiResponse({

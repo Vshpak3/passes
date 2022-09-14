@@ -5,7 +5,7 @@ import {
   PayoutMethodDto
 } from "@passes/api-client"
 import { useRouter } from "next/router"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import {
@@ -15,9 +15,10 @@ import {
   PassesPinkButton
 } from "src/components/atoms"
 import { bankingSchema } from "src/helpers/validation"
-import { useLocalStorage, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
+import { wrapApi } from "../../helpers"
 import Modal from "./Modal"
 
 enum BankTypeEnum {
@@ -39,7 +40,6 @@ const AddPayoutModal = ({
 IAddPayoutModal) => {
   const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
-  const [accessToken] = useLocalStorage("access-token", "")
 
   const {
     register,
@@ -84,17 +84,9 @@ IAddPayoutModal) => {
         }
       }
 
-      const paymentApi = new PaymentApi()
+      const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
-      await paymentApi.createCircleBank(
-        { circleCreateBankRequestDto: payload },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       router.push("/payment/default-payout-method")
     } catch (error: any) {
       toast.error(error)

@@ -23,7 +23,7 @@ interface IButton {
   onClick?: () => void
   style?: React.CSSProperties
   tag?: keyof JSX.IntrinsicElements
-  variant: string | "tab"
+  variant?: string | "tab"
   active?: boolean
   type?: ButtonTypeEnum
 }

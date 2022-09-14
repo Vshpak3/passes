@@ -2,10 +2,12 @@ import { ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 
-import { ALLOW_UNAUTHORIZED_REQUEST } from '../auth.metadata'
+import { ALLOW_UNAUTHORIZED_REQUEST } from '../core/auth.metadata'
+
+export const JWT_AUTH_NAME = 'jwt-auth'
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard(JWT_AUTH_NAME) {
   constructor(private reflector: Reflector) {
     super()
   }
@@ -15,6 +17,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       ALLOW_UNAUTHORIZED_REQUEST,
       context.getHandler(),
     )
+
     return allowUnauthorizedRequest || super.canActivate(context)
   }
 }

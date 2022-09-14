@@ -6,11 +6,11 @@ import { Profile, Strategy } from 'passport-twitter'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
-import { UserDto } from '../../user/dto/user.dto'
-import { UserService } from '../../user/user.service'
+import { AuthService } from '../core/auth.service'
+import { AuthRecordDto } from '../dto/auth-record-dto'
 import { validateUser } from '../helpers/oauth-strategy.helper'
 
-const TWITTER_OAUTH_PROVIDER = 'twitter'
+export const TWITTER_OAUTH_PROVIDER = 'twitter'
 
 @Injectable()
 export class TwitterStrategy extends PassportStrategy(
@@ -22,7 +22,7 @@ export class TwitterStrategy extends PassportStrategy(
     private readonly logger: Logger,
     private readonly metrics: MetricsService,
     private readonly configService: ConfigService,
-    private readonly usersService: UserService,
+    private readonly authService: AuthService,
   ) {
     super({
       consumerKey: configService.get('oauth.twitter.consumerKey'),
@@ -35,7 +35,7 @@ export class TwitterStrategy extends PassportStrategy(
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
-  ): Promise<UserDto> {
+  ): Promise<AuthRecordDto> {
     return validateUser.bind(this)(profile, TWITTER_OAUTH_PROVIDER)
   }
 }

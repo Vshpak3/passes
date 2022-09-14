@@ -1,29 +1,13 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { DtoProperty } from '../../../web/dto.web'
-
-export class JwtPayload {
-  @DtoProperty()
-  sub: string
-
-  @DtoProperty({ optional: true })
-  email?: string
-
-  @DtoProperty()
-  isVerified: boolean
-
-  @DtoProperty()
-  isEmailVerified: boolean
-
-  @DtoProperty()
-  isCreator: boolean
-}
+import { JWT_AUTH_NAME } from './jwt-auth.guard'
+import { JwtAuthPayload } from './jwt-auth.payload'
 
 @Injectable()
-export class JwtAuthStrategy extends PassportStrategy(Strategy) {
+export class JwtAuthStrategy extends PassportStrategy(Strategy, JWT_AUTH_NAME) {
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -32,7 +16,10 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtAuthPayload) {
+    if (!payload.isVerified) {
+      throw new UnauthorizedException('Not verified')
+    }
     return { id: payload.sub }
   }
 }

@@ -33,7 +33,6 @@ export const usePay = (
   const [amountUSD, setAmountUSD] = useState(0)
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
   const [metamaskProvider, setMetamaskProvider] = useState<EthereumProvider>()
-  const [paymentApi] = useState<PaymentApi>(new PaymentApi())
 
   const [accessToken] = useLocalStorage("access-token", "")
 
@@ -54,6 +53,8 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
+    const paymentApi = wrapApi(PaymentApi)
+
     if (phantomProvider == undefined) {
       //display message to user
       throw new Error("no provider exists")
@@ -85,6 +86,8 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
+    const paymentApi = wrapApi(PaymentApi)
+
     if (metamaskProvider == undefined) {
       //display message to user
       throw new Error("no provider exists")
@@ -112,6 +115,8 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
+    const paymentApi = wrapApi(PaymentApi)
+
     if (metamaskProvider == undefined) {
       //display message to user
       throw new Error("no provider exists")

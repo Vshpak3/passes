@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
-import { useLocalStorage, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import { wrapApi } from "../../helpers"
 
 enum BankTypeEnum {
   US,
@@ -28,7 +29,6 @@ const NewCard = () => {
     defaultValues: {}
   })
 
-  const [accessToken] = useLocalStorage("access-token", "")
   const { user, loading } = useUser()
   const router = useRouter()
 
@@ -63,17 +63,9 @@ const NewCard = () => {
         }
       }
 
-      const paymentApi = new PaymentApi()
+      const paymentApi = wrapApi(PaymentApi)
       //TODO: handle error on frontend (display some generic message)
-      await paymentApi.createCircleBank(
-        { circleCreateBankRequestDto: payload },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-            "Content-Type": "application/json"
-          }
-        }
-      )
+      await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       router.push("/payment/default-payout-method")
     } catch (error: any) {
       toast.error(error)

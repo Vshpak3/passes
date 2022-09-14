@@ -6,11 +6,11 @@ import { Profile, Strategy } from 'passport-facebook'
 import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
-import { UserDto } from '../../user/dto/user.dto'
-import { UserService } from '../../user/user.service'
+import { AuthService } from '../core/auth.service'
+import { AuthRecordDto } from '../dto/auth-record-dto'
 import { validateUser } from '../helpers/oauth-strategy.helper'
 
-const FACEBOOK_OAUTH_PROVIDER = 'facebook'
+export const FACEBOOK_OAUTH_PROVIDER = 'facebook'
 
 @Injectable()
 export class FacebookOauthStrategy extends PassportStrategy(
@@ -22,7 +22,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
     private readonly logger: Logger,
     private readonly metrics: MetricsService,
     private readonly configService: ConfigService,
-    private readonly usersService: UserService,
+    private readonly authService: AuthService,
   ) {
     super({
       clientID: configService.get('oauth.facebook.id'),
@@ -36,7 +36,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
-  ): Promise<UserDto> {
+  ): Promise<AuthRecordDto> {
     return validateUser.bind(this)(profile, FACEBOOK_OAUTH_PROVIDER)
   }
 }

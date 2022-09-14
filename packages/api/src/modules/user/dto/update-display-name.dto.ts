@@ -1,7 +1,11 @@
-import { PickType } from '@nestjs/swagger'
+import { Length } from 'class-validator'
 
-import { CreateUserDto } from './create-user.dto'
+import { DtoProperty } from '../../../web/dto.web'
+import { USER_DISPLAY_NAME_LENGTH } from '../constants/schema'
 
-export class UpdateDisplayNameRequestDto extends PickType(CreateUserDto, [
-  'displayName',
-]) {}
+// TODO: "PickType(UserDto, ['displayName'])" does not work since this must be required; figure out a better way around this
+export class UpdateDisplayNameRequestDto {
+  @Length(1, USER_DISPLAY_NAME_LENGTH)
+  @DtoProperty({ optional: true })
+  displayName: string
+}

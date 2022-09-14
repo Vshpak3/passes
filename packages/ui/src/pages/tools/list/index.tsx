@@ -36,7 +36,7 @@ const FanLists: NextPage = () => {
       setList(allLists.lists)
       setFans(followRes.listMembers)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }, [listApi, followApi])
 
