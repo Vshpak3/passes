@@ -5,7 +5,11 @@ import { DtoProperty } from '../../../web/dto.web'
 export class CreateBatchMessageRequestDto {
   @IsUUID('all', { each: true })
   @DtoProperty()
-  listIds: string[]
+  includeListIds: string[]
+
+  @IsUUID('all', { each: true })
+  @DtoProperty()
+  exlcudeListIds: string[]
 
   @IsUUID('all', { each: true })
   @DtoProperty()

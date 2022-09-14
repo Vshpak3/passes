@@ -66,13 +66,13 @@ export interface CreateOrUpdateProfileRequestDto {
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    facebookUrl?: string;
+    twitchUrl?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    twitchUrl?: string;
+    facebookUrl?: string;
 }
 
 /**
@@ -101,8 +101,8 @@ export function CreateOrUpdateProfileRequestDtoFromJSONTyped(json: any, ignoreDi
         'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
         'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
         'discordUrl': !exists(json, 'discordUrl') ? undefined : json['discordUrl'],
-        'facebookUrl': !exists(json, 'facebookUrl') ? undefined : json['facebookUrl'],
         'twitchUrl': !exists(json, 'twitchUrl') ? undefined : json['twitchUrl'],
+        'facebookUrl': !exists(json, 'facebookUrl') ? undefined : json['facebookUrl'],
     };
 }
 
@@ -122,8 +122,8 @@ export function CreateOrUpdateProfileRequestDtoToJSON(value?: CreateOrUpdateProf
         'tiktokUrl': value.tiktokUrl,
         'youtubeUrl': value.youtubeUrl,
         'discordUrl': value.discordUrl,
-        'facebookUrl': value.facebookUrl,
         'twitchUrl': value.twitchUrl,
+        'facebookUrl': value.facebookUrl,
     };
 }
 

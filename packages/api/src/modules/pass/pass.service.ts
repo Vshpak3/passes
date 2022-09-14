@@ -42,6 +42,7 @@ import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassPurchaseEntity } from './entities/pass-purchase.entity'
+import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { PassTypeEnum } from './enum/pass.enum'
 import {
   ForbiddenPassException,
@@ -268,7 +269,7 @@ export class PassService {
   async getExternalPasses(
     getExternalPassesRequestDto: GetExternalPassesRequestDto,
   ) {
-    const { lastId, createdAt, search } = getExternalPassesRequestDto
+    const { lastId, createdAt, search, creatorId } = getExternalPassesRequestDto
     let query = this.dbReader(PassEntity.table)
       .whereNull('creator_id')
       .select('*')
@@ -281,6 +282,17 @@ export class PassService {
     }
     if (createdAt) {
       query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
+    }
+    if (creatorId) {
+      const userExternalPasses = await this.dbReader(
+        UserExternalPassEntity.table,
+      )
+        .where('user_id', creatorId)
+        .select('pass_id')
+      query = query.whereIn(
+        `${PassEntity.table}.id`,
+        userExternalPasses.map((externalPass) => externalPass.pass_id),
+      )
     }
     if (search) {
       // const strippedSearch = search.replace(/\W/g, '')

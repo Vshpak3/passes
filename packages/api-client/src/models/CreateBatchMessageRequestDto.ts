@@ -24,7 +24,13 @@ export interface CreateBatchMessageRequestDto {
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
-    listIds: Array<string>;
+    includeListIds: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    exlcudeListIds: Array<string>;
     /**
      * 
      * @type {Array<string>}
@@ -44,7 +50,8 @@ export interface CreateBatchMessageRequestDto {
  */
 export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "listIds" in value;
+    isInstance = isInstance && "includeListIds" in value;
+    isInstance = isInstance && "exlcudeListIds" in value;
     isInstance = isInstance && "passIds" in value;
     isInstance = isInstance && "postId" in value;
 
@@ -61,7 +68,8 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'listIds': json['listIds'],
+        'includeListIds': json['includeListIds'],
+        'exlcudeListIds': json['exlcudeListIds'],
         'passIds': json['passIds'],
         'postId': json['postId'],
     };
@@ -76,7 +84,8 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
     }
     return {
         
-        'listIds': value.listIds,
+        'includeListIds': value.includeListIds,
+        'exlcudeListIds': value.exlcudeListIds,
         'passIds': value.passIds,
         'postId': value.postId,
     };

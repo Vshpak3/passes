@@ -20,7 +20,9 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { MessagePostEntity } from '../messages/entities/message-post.entity'
+import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import {
   PurchasePostCallbackInput,
   TipPostCallbackInput,
@@ -69,24 +71,34 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
-    verifyTaggedText(createPostDto.text, createPostDto.tags)
+    const {
+      text,
+      tags,
+      contentIds,
+      passIds,
+      isMessage,
+      price,
+      expiresAt,
+      scheduledAt,
+    } = createPostDto
+    verifyTaggedText(text, tags)
     const postId = v4()
     await this.dbWriter
       .transaction(async (trx) => {
         const post = PostEntity.toDict<PostEntity>({
           id: postId,
           user: userId,
-          text: createPostDto.text,
-          tags: JSON.stringify(createPostDto.tags),
-          isMessage: createPostDto.isMessage,
-          price: createPostDto.price,
-          expiresAt: createPostDto.expiresAt,
-          scheduledAt: createPostDto.scheduledAt,
+          text: text,
+          tags: JSON.stringify(tags),
+          isMessage: isMessage,
+          price: price,
+          expiresAt: expiresAt,
+          scheduledAt: scheduledAt,
         })
 
         await trx(PostEntity.table).insert(post)
 
-        const postContent = createPostDto.contentIds.map((contentId, index) =>
+        const postContent = contentIds.map((contentId, index) =>
           PostContentEntity.toDict<PostContentEntity>({
             content: contentId,
             post: postId,
@@ -98,16 +110,31 @@ export class PostService {
           await trx(PostContentEntity.table).insert(postContent)
         }
         await trx(ContentEntity.table)
-          .update(createPostDto.isMessage ? 'in_message' : 'in_post', true)
+          .update(isMessage ? 'in_message' : 'in_post', true)
           .whereIn('id', createPostDto.contentIds)
 
+        const filteredPasses = await this.dbReader(PassEntity.table)
+          .leftJoin(
+            UserExternalPassEntity.table,
+            `${UserExternalPassEntity.table}.pass_id`,
+            `${PassEntity.table}.id`,
+          )
+          .whereIn('id', passIds)
+          .andWhere(function () {
+            return this.where(
+              `${UserExternalPassEntity.table}.user_id`,
+              userId,
+            ).orWhere(`${PassEntity.table}.creator_id`, userId)
+          })
+          .select('id')
+        const filteredPassIds = filteredPasses.map((pass) => pass.id)
         // TODO: schedule access add
         const passAccesses = await trx(PassHolderEntity.table)
-          .whereIn('pass_id', createPostDto.passIds)
-          .whereNotNull('expires_at')
+          .whereIn('pass_id', filteredPassIds)
+          .whereNotNull('holder_id')
+          .andWhere('expires_at', '>', new Date())
           .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
-          if (!passAccesses[i].holder_id) continue
           const postUserAccess =
             PostUserAccessEntity.toDict<PostUserAccessEntity>({
               post: postId,
@@ -131,19 +158,6 @@ export class PostService {
       .catch((err) => {
         this.logger.error(err)
         throw err
-      })
-    await this.dbWriter
-      .table(CreatorStatEntity.table)
-      .where('user_id', userId)
-      .update({
-        num_media: this.dbWriter(ContentEntity.table)
-          .where(
-            ContentEntity.toDict<ContentEntity>({
-              user: userId,
-              inPost: true,
-            }),
-          )
-          .count(),
       })
     await this.dbWriter
       .table(CreatorStatEntity.table)

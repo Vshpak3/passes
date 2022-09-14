@@ -9,10 +9,12 @@ import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { PassTypeEnum } from '../pass/enum/pass.enum'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserDto } from '../user/dto/user.dto'
+import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
@@ -21,6 +23,7 @@ import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
 import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
 import { ImpersonateUserResponseDto } from './dto/impersonate-user.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
+import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
 const ADMIN_EMAIL = '@passes.com'
 
@@ -190,10 +193,10 @@ export class AdminService {
     return true
   }
 
-  async getCreatorFee(GetCreatorFeeRequestDto: GetCreatorFeeRequestDto) {
+  async getCreatorFee(getCreatorFeeRequestDto: GetCreatorFeeRequestDto) {
     return new CreatorFeeDto(
       await this.dbReader(CreatorFeeEntity.table)
-        .where('creator_id', GetCreatorFeeRequestDto.creatorId)
+        .where('creator_id', getCreatorFeeRequestDto.creatorId)
         .select('*')
         .first(),
     )
@@ -212,5 +215,44 @@ export class AdminService {
       .onConflict('creator_id')
       .merge(['fiat_rate', 'fiat_flat', 'crypto_rate', 'crypto_flat'])
     return true
+  }
+
+  async addUserExternalPass(
+    userExternalPassRequestDto: UserExternalPassRequestDto,
+  ) {
+    const { userId, passId } = userExternalPassRequestDto
+    const user = await this.dbReader(UserEntity.table)
+      .where('id', userId)
+      .select('is_creator')
+      .first()
+    const pass = await this.dbReader(PassEntity.table)
+      .where('id', passId)
+      .select('creator_id')
+      .first()
+    if (!user || !pass || !user.is_creator || pass.creator_id) {
+      return false
+    }
+    await this.dbWriter(UserExternalPassEntity.table).insert(
+      UserExternalPassEntity.toDict<UserExternalPassEntity>({
+        user: userId,
+        pass: passId,
+      }),
+    )
+    return true
+  }
+
+  async deleteUserExternalPass(
+    userExternalPassRequestDto: UserExternalPassRequestDto,
+  ) {
+    const { userId, passId } = userExternalPassRequestDto
+    const updated = await this.dbWriter(UserExternalPassEntity.table)
+      .where(
+        UserExternalPassEntity.toDict<UserExternalPassEntity>({
+          user: userId,
+          pass: passId,
+        }),
+      )
+      .delete()
+    return updated === 1
   }
 }

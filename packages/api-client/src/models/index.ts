@@ -153,5 +153,6 @@ export * from './UpdatePassRequestDto';
 export * from './UpdatePasswordRequestDto';
 export * from './UpdatePostRequestDto';
 export * from './UpdateUsernameRequestDto';
+export * from './UserExternalPassRequestDto';
 export * from './VerifyEmailDto';
 export * from './WalletDto';

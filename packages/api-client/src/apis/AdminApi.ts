@@ -25,6 +25,7 @@ import type {
   ImpersonateUserResponseDto,
   SetCreatorFeeRequestDto,
   UpdateExternalPassRequestDto,
+  UserExternalPassRequestDto,
 } from '../models';
 import {
     AddExternalPassAddressRequestDtoFromJSON,
@@ -47,6 +48,8 @@ import {
     SetCreatorFeeRequestDtoToJSON,
     UpdateExternalPassRequestDtoFromJSON,
     UpdateExternalPassRequestDtoToJSON,
+    UserExternalPassRequestDtoFromJSON,
+    UserExternalPassRequestDtoToJSON,
 } from '../models';
 
 export interface AddExternalPassRequest {
@@ -57,12 +60,20 @@ export interface AddExternalPassAddressRequest {
     addExternalPassAddressRequestDto: AddExternalPassAddressRequestDto;
 }
 
+export interface AddUserExternalPassRequest {
+    userExternalPassRequestDto: UserExternalPassRequestDto;
+}
+
 export interface DeleteExternalPassRequest {
     updateExternalPassRequestDto: UpdateExternalPassRequestDto;
 }
 
 export interface DeleteExternalPassAddressRequest {
     deleteExternalPassAddressRequestDto: DeleteExternalPassAddressRequestDto;
+}
+
+export interface DeleteUserExternalPassRequest {
+    userExternalPassRequestDto: UserExternalPassRequestDto;
 }
 
 export interface FlagAsAdultRequest {
@@ -173,6 +184,47 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Add external pass for user
+     */
+    async addUserExternalPassRaw(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.userExternalPassRequestDto === null || requestParameters.userExternalPassRequestDto === undefined) {
+            throw new runtime.RequiredError('userExternalPassRequestDto','Required parameter requestParameters.userExternalPassRequestDto was null or undefined when calling addUserExternalPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/user/add`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UserExternalPassRequestDtoToJSON(requestParameters.userExternalPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Add external pass for user
+     */
+    async addUserExternalPass(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.addUserExternalPassRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Delete external pass
      */
     async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
@@ -251,6 +303,47 @@ export class AdminApi extends runtime.BaseAPI {
      */
     async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deleteExternalPassAddressRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete external pass for user
+     */
+    async deleteUserExternalPassRaw(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.userExternalPassRequestDto === null || requestParameters.userExternalPassRequestDto === undefined) {
+            throw new runtime.RequiredError('userExternalPassRequestDto','Required parameter requestParameters.userExternalPassRequestDto was null or undefined when calling deleteUserExternalPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/external-pass/user/delete`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UserExternalPassRequestDtoToJSON(requestParameters.userExternalPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Delete external pass for user
+     */
+    async deleteUserExternalPass(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.deleteUserExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

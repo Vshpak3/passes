@@ -29,6 +29,7 @@ import {
 } from './dto/impersonate-user.dto'
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
+import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
 /**
  * All admin endpoints are protected via this guard. It is set on the Admin
@@ -151,6 +152,32 @@ export class AdminController {
     @Body() body: DeleteExternalPassAddressRequestDto,
   ): Promise<boolean> {
     return await this.adminService.deleteExternalPassAddress(body)
+  }
+
+  @ApiEndpoint({
+    summary: 'Add external pass for user',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'External pass for user was added',
+  })
+  @Post('external-pass/user/add')
+  async addUserExternalPass(
+    @Body() body: UserExternalPassRequestDto,
+  ): Promise<boolean> {
+    return await this.adminService.addUserExternalPass(body)
+  }
+
+  @ApiEndpoint({
+    summary: 'Delete external pass for user',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'External pass for user deleted',
+  })
+  @Post('external-pass/user/delete')
+  async deleteUserExternalPass(
+    @Body() body: UserExternalPassRequestDto,
+  ): Promise<boolean> {
+    return await this.adminService.deleteUserExternalPass(body)
   }
 
   @ApiEndpoint({

@@ -22,6 +22,7 @@ import { ListMemberEntity } from '../list/entities/list-member.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
@@ -168,36 +169,18 @@ export class MessagesService {
     }
   }
 
-  async createBatchMessage(
-    userId: string,
-    createBatchMessageDto: CreateBatchMessageRequestDto,
-  ): Promise<void> {
-    const post = this.dbReader(PostEntity.table)
-      .where(
-        PostEntity.toDict<PostEntity>({
-          user: userId,
-          id: createBatchMessageDto.postId,
-        }),
-      )
-      .select('id')
-      .first()
-    if (!post) {
-      throw new MessageSendError(
-        "can't send a post that doesn't exist or that you don't own",
-      )
-    }
-
+  async getAllListMembers(userId: string, listIds: string[]) {
     const userIdsSet = new Set(
       (
         await this.dbReader(ListMemberEntity.table)
-          .whereIn('list_id', createBatchMessageDto.listIds)
+          .whereIn('list_id', listIds)
           .distinct('user_id')
       ).map((listMember) => listMember.user_id),
     )
     const listTypes = new Set(
       (
         await this.dbReader(ListEntity.table)
-          .whereIn('id', createBatchMessageDto.listIds)
+          .whereIn('id', listIds)
           .select('type')
       ).map((list) => list.type),
     )
@@ -208,9 +191,50 @@ export class MessagesService {
           .select('follower_id')
       ).forEach((follow) => userIdsSet.add(follow.follower_id))
     }
+    return userIdsSet
+  }
+
+  async createBatchMessage(
+    userId: string,
+    createBatchMessageDto: CreateBatchMessageRequestDto,
+  ): Promise<void> {
+    const { postId, includeListIds, exlcudeListIds, passIds } =
+      createBatchMessageDto
+    const post = this.dbReader(PostEntity.table)
+      .where(
+        PostEntity.toDict<PostEntity>({
+          user: userId,
+          id: postId,
+        }),
+      )
+      .select('id')
+      .first()
+    if (!post) {
+      throw new MessageSendError(
+        "can't send a post that doesn't exist or that you don't own",
+      )
+    }
+
+    const filteredPasses = await this.dbReader(PassEntity.table)
+      .leftJoin(
+        UserExternalPassEntity.table,
+        `${UserExternalPassEntity.table}.pass_id`,
+        `${PassEntity.table}.id`,
+      )
+      .whereIn('id', passIds)
+      .andWhere(function () {
+        return this.where(
+          `${UserExternalPassEntity.table}.user_id`,
+          userId,
+        ).orWhere(`${PassEntity.table}.creator_id`, userId)
+      })
+      .select('id')
+    const filteredPassIds = filteredPasses.map((pass) => pass.id)
+
+    const include = await this.getAllListMembers(userId, includeListIds)
     ;(
       await this.dbReader(PassHolderEntity.table)
-        .whereIn('pass_id', createBatchMessageDto.passIds)
+        .whereIn('pass_id', filteredPassIds)
         .andWhere(function () {
           return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
             `${PassHolderEntity.table}.expires_at`,
@@ -219,12 +243,14 @@ export class MessagesService {
           )
         })
         .distinct('holder_id')
-    ).forEach((passHolder) => userIdsSet.add(passHolder.holder_id))
-    const userIds = Array.from(userIdsSet)
+    ).forEach((passHolder) => include.add(passHolder.holder_id))
 
+    const exclude = await this.getAllListMembers(userId, exlcudeListIds)
+
+    const userIds = Array.from(include)
     const contentIds = (
       await this.dbReader(PostContentEntity.table)
-        .where('post_id', createBatchMessageDto.postId)
+        .where('post_id', postId)
         .select('content_id')
     ).map((content) => content.id)
 
@@ -238,8 +264,10 @@ export class MessagesService {
     )
     removeUserIds.add(userId)
 
-    const finalUserIds = userIds.filter((userId) => !removeUserIds.has(userId))
-    await this.batchSendMessage(finalUserIds, createBatchMessageDto.postId)
+    const finalUserIds = userIds.filter(
+      (userId) => !removeUserIds.has(userId) && !exclude.has(userId),
+    )
+    await this.batchSendMessage(finalUserIds, postId)
   }
 
   async batchSendMessage(
