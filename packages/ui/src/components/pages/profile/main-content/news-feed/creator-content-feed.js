@@ -30,7 +30,7 @@ const CreatorContentFeed = ({ existingPosts }) => {
 
   return (
     <Fragment>
-      <div className="w-full overflow-y-auto md:h-[1150px]">
+      <div className="w-full">
         <InfiniteScroll
           dataLength={posts.length}
           next={getMorePost}

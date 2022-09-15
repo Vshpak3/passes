@@ -160,8 +160,13 @@ export const PostTextContent = ({ post }) => (
   </div>
 )
 
-export const LockedMedia = ({ postUnlocked, post }) => {
+export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState(null)
+
+  const onMockedSuccess = () => {
+    setPostUnlocked(true)
+    setOpenBuyPostModal(null)
+  }
 
   return (
     <>
@@ -193,7 +198,7 @@ export const LockedMedia = ({ postUnlocked, post }) => {
           />
         )}
       </div>
-      <BuyPostModal isOpen={openBuyPostModal} setOpen={setOpenBuyPostModal} />
+      <BuyPostModal isOpen={openBuyPostModal} setOpen={onMockedSuccess} />
     </>
   )
 }

@@ -8,12 +8,14 @@ interface IBuyPostButton {
   postId: string
   fromDM: boolean
   payinMethod?: PayinMethodDto
+  onSuccess: () => void
 }
 
 export const BuyPostButton = ({
   postId,
   fromDM,
-  payinMethod
+  payinMethod,
+  onSuccess
 }: IBuyPostButton) => {
   const api = wrapApi(PostApi)
   const register = async () => {
@@ -25,7 +27,6 @@ export const BuyPostButton = ({
       }
     })
   }
-
   const registerData = async () => {
     return await api.registerPurchasePostData({
       createPostAccessRequestDto: {
@@ -38,19 +39,20 @@ export const BuyPostButton = ({
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(
     register,
-    registerData
+    registerData,
+    onSuccess
   )
+
+  const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Buy post"
 
   return (
     <button
-      onClick={() => {
-        submit()
-      }}
+      onClick={submit}
       className="mt-2 w-32 rounded-[50px] bg-passes-pink-100 p-2 text-white"
       type="submit"
       {...(blocked || submitting ? { disabled: true } : {})}
     >
-      {loading ? "Buy Post" : `Pay ${amountUSD}`}
+      {loading ? "Loading" : buttonText}
     </button>
   )
 }

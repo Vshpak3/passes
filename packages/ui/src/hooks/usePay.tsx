@@ -177,6 +177,11 @@ export const usePay = (
           break
       }
       if (callback) callback()
+    } catch (error) {
+      setSubmitting(false)
+      setLoading(false)
+
+      if (callback) callback()
     } finally {
       setSubmitting(false)
       setLoading(false)

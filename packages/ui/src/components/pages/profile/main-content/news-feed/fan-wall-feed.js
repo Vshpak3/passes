@@ -84,7 +84,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
   }, [fanWallPosts])
 
   return (
-    <div className="overflow-y-auto md:h-[1150px]">
+    <div>
       <BlockModal
         isOpen={userBlockModal}
         setOpen={setUserBlockModal}
