@@ -1787,7 +1787,7 @@ export class PaymentService {
       )
 
     // check total payout amount
-    const totalSum = this.creatorShares.reduce((sum, creatorShare) => {
+    const totalSum = creatorShares.reduce((sum, creatorShare) => {
       return sum + creatorShare.amount
     }, 0)
     if (totalSum < MIN_PAYOUT_AMOUNT) {
@@ -1847,7 +1847,7 @@ export class PaymentService {
       .offset(getPayoutsRequest.offset)
       .limit(getPayoutsRequest.limit)
     const count = await this.dbReader
-      .table(PayinEntity.table)
+      .table(PayoutEntity.table)
       .where('user_id', userId)
       .count()
 
