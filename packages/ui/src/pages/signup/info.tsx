@@ -14,6 +14,7 @@ import {
   AuthStates,
   authStateToRoute
 } from "../../helpers/authRouter"
+import { COUNTRIES } from "../../helpers/countries"
 import { setTokens } from "../../helpers/setTokens"
 import { useUser } from "../../hooks"
 
@@ -192,7 +193,7 @@ const UserInfoPage = () => {
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Enter your country"
                 type="select"
-                selectOptions={iso3311a2.getCountries()}
+                selectOptions={COUNTRIES}
                 errors={errors}
                 options={{
                   required: true
