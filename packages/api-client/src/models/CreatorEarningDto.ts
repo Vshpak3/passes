@@ -51,13 +51,15 @@ export interface CreatorEarningDto {
  */
 export const CreatorEarningDtoTypeEnum = {
     Balance: 'balance',
+    AvailableBalance: 'available_balance',
     Total: 'total',
     Subscription: 'subscription',
     Tips: 'tips',
     Posts: 'posts',
     Messages: 'messages',
     Lifetime: 'lifetime',
-    Other: 'other'
+    Other: 'other',
+    Chargebacks: 'chargebacks'
 } as const;
 export type CreatorEarningDtoTypeEnum = typeof CreatorEarningDtoTypeEnum[keyof typeof CreatorEarningDtoTypeEnum];
 

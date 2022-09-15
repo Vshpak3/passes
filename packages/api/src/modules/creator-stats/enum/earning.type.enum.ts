@@ -1,6 +1,7 @@
 export enum EarningTypeEnum {
   // current balance
   BALANCE = 'balance',
+  AVAILABLE_BALANCE = 'available_balance',
 
   // total earnings for all types
   TOTAL = 'total',
@@ -10,4 +11,6 @@ export enum EarningTypeEnum {
   MESSAGES = 'messages',
   LIFETIME = 'lifetime',
   OTHER = 'other',
+
+  CHARGEBACKS = 'chargebacks',
 }

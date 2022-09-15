@@ -63,6 +63,20 @@ export class CreatorStatsService {
     )
   }
 
+  async getAvailableBalance(userId: string) {
+    return new CreatorEarningDto(
+      await this.dbReader(CreatorEarningEntity.table)
+        .where(
+          CreatorEarningEntity.toDict<CreatorEarningEntity>({
+            user: userId,
+            type: EarningTypeEnum.AVAILABLE_BALANCE,
+          }),
+        )
+        .select('*')
+        .first(),
+    )
+  }
+
   async getHistoricEarnings(
     userId: string,
     start: Date,
@@ -85,41 +99,43 @@ export class CreatorStatsService {
     earningType: EarningTypeEnum,
     amount: number,
   ) {
-    if (amount < 0 && earningType !== EarningTypeEnum.BALANCE) {
+    if (
+      amount < 0 &&
+      earningType !== EarningTypeEnum.BALANCE &&
+      earningType !== EarningTypeEnum.AVAILABLE_BALANCE
+    ) {
       throw new EarningsTypeError('can not decrement non-balance type earning')
     }
     await this.dbWriter.transaction(async (trx) => {
-      const earning = await trx(CreatorEarningEntity.table)
-        .where(
-          CreatorEarningEntity.toDict<CreatorEarningEntity>({
-            user: userId,
-            type: earningType,
-          }),
-        )
-        .select('*')
-        .first()
-      if (!earning) {
-        await trx(CreatorEarningEntity.table).insert(
+      await trx(CreatorEarningEntity.table)
+        .insert(
           CreatorEarningEntity.toDict<CreatorEarningEntity>({
             amount,
             user: userId,
             type: earningType,
           }),
         )
-      } else {
-        await trx(CreatorEarningEntity.table)
-          .increment('amount', amount)
-          .where('id', earning.id)
-      }
+        .onConflict()
+        .ignore()
+      await trx(CreatorEarningEntity.table)
+        .where(
+          CreatorEarningEntity.toDict<CreatorEarningEntity>({
+            amount,
+            user: userId,
+            type: earningType,
+          }),
+        )
+        .increment('amount', amount)
     })
   }
 
-  async handlePayin(
+  async handlePayinSuccess(
     userId: string,
     payinCallbackEnum: PayinCallbackEnum,
     amount: number,
   ) {
     await this.updateEarning(userId, EarningTypeEnum.BALANCE, amount)
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amount)
     await this.updateEarning(userId, EarningTypeEnum.TOTAL, amount)
     await this.updateEarning(
       userId,
@@ -128,8 +144,22 @@ export class CreatorStatsService {
     )
   }
 
-  async handlePayout(userId: string, amount: number) {
+  async handleChargebackSuccess(userId: string, amount: number) {
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
     await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
+    await this.updateEarning(userId, EarningTypeEnum.CHARGEBACKS, amount)
+  }
+
+  async handlePayout(userId: string, amount: number) {
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
+  }
+
+  async handlePayoutSuccess(userId: string, amount: number) {
+    await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
+  }
+
+  async handlePayoutFail(userId: string, amount: number) {
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
   }
 
   async createEarningHistory() {

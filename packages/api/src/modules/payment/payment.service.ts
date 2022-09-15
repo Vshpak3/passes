@@ -10,6 +10,7 @@ import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
+import { EmailService } from '../email/email.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { MessagesService } from '../messages/messages.service'
 import { PassDto } from '../pass/dto/pass.dto'
@@ -27,6 +28,7 @@ import { ChainEnum } from '../wallet/enum/chain.enum'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
+import { CircleChargebackDto } from './dto/circle/circle-chargeback.dto'
 import {
   CircleNotificationDto,
   GenericCircleObjectWrapper,
@@ -69,6 +71,7 @@ import { SubscribeRequestDto, SubscribeResponseDto } from './dto/subscribe.dto'
 import { SubscriptionDto } from './dto/subscription.dto'
 import { CircleBankEntity } from './entities/circle-bank.entity'
 import { CircleCardEntity } from './entities/circle-card.entity'
+import { CircleChargebackEntity } from './entities/circle-chargeback.entity'
 import { CircleNotificationEntity } from './entities/circle-notification.entity'
 import { CirclePaymentEntity } from './entities/circle-payment.entity'
 import { CirclePayoutEntity } from './entities/circle-payout.entity'
@@ -82,6 +85,7 @@ import { PayoutEntity } from './entities/payout.entity'
 import { SubscriptionEntity } from './entities/subscription.entity'
 import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
+import { CircleChargebackTypeEnum } from './enum/circle-chargeback.type.enum'
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
 import { CircleTransferStatusEnum } from './enum/circle-transfer.status.enum'
@@ -124,6 +128,9 @@ const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 const MIN_PAYOUT_AMOUNT = 25.0
 
+const MAX_CHARGEBACKS = 3
+const MAX_CHARGEBACK_AMOUNT = 300
+
 @Injectable()
 export class PaymentService {
   circleConnector: CircleConnector
@@ -142,6 +149,7 @@ export class PaymentService {
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
 
+    private readonly emailService: EmailService,
     private readonly creatorStatsService: CreatorStatsService,
     private moduleRef: ModuleRef,
 
@@ -690,6 +698,11 @@ export class PaymentService {
             update.transfer as CircleTransferDto,
           )
           break
+        case CircleNotificationTypeEnum.CHARGEBACKS:
+          await this.processCircleChargebackUpdate(
+            update.chargeback as CircleChargebackDto,
+          )
+          break
         default:
           throw new CircleResponseError(
             "notification type unrecognized: API might've updated",
@@ -712,6 +725,84 @@ export class PaymentService {
         .where({ id })
       this.logger.error(`Error processing notification ${id}`, err)
     }
+  }
+
+  /**
+   * process updates for wire bank status
+   * @param wire
+   */
+  async processCircleChargebackUpdate(
+    chargebackDto: CircleChargebackDto,
+  ): Promise<void> {
+    const paymentId = chargebackDto.paymentId
+    for (let i = 0; i < chargebackDto.history.length; ++i) {
+      const settlement = chargebackDto.history[i]
+      if (settlement.type === CircleChargebackTypeEnum.CHARGEBACK_SETTLEMENT) {
+        const amount = parseInt(settlement.chargebackAmount.amount)
+        if (amount === 0) return
+
+        const circlePaymentShares = await this.dbReader(
+          CirclePaymentEntity.table,
+        )
+          .leftJoin(
+            CircleCardEntity.table,
+            `${CirclePaymentEntity.table}.card_id`,
+            `${CircleCardEntity.table}.id`,
+          )
+          .leftJoin(
+            CreatorShareEntity.table,
+            `${CirclePaymentEntity.table}.payin_id`,
+            `${CreatorShareEntity.table}.payin_id`,
+          )
+          .where(`${CirclePaymentEntity.table}.circle_id`, paymentId)
+          .select([
+            `${CircleCardEntity.table}.user_id`,
+            `${CirclePaymentEntity.table}.id`,
+            `${CreatorShareEntity.table}.creator_id`,
+            `${CreatorShareEntity.table}.amount`,
+          ])
+
+        if (circlePaymentShares.length === 0) return
+        const userId = circlePaymentShares[0].user_id
+        await this.dbWriter(CircleChargebackEntity.table).insert(
+          CircleChargebackEntity.toDict<CircleChargebackEntity>({
+            circleId: chargebackDto.id,
+            circlePayment: circlePaymentShares[0].id,
+            amount,
+            user: userId,
+          }),
+        )
+        await Promise.all(
+          circlePaymentShares.map(async (share) => {
+            await this.creatorStatsService.handleChargebackSuccess(
+              share.creator_id,
+              share.amount,
+            )
+          }),
+        )
+        const count = await this.dbReader
+          .table(CircleChargebackEntity.table)
+          .where(
+            CircleChargebackEntity.toDict<CircleChargebackEntity>({
+              user: circlePaymentShares[0].user_id,
+            }),
+          )
+          .andWhere('amount', '>', 0)
+          .count()
+        if (
+          parseInt(count[0]['count(*)']) > MAX_CHARGEBACKS ||
+          amount > MAX_CHARGEBACK_AMOUNT
+        ) {
+          await this.dbWriter(UserEntity.table)
+            .update('payment_blocked', true)
+            .where('id', circlePaymentShares[0].user_id)
+        }
+      }
+    }
+    await this.emailService.sendOperationsEmail(
+      JSON.stringify(chargebackDto),
+      'chargeback notification',
+    )
   }
 
   /**
@@ -1347,10 +1438,22 @@ export class PaymentService {
   ): Promise<RegisterPayinResponseDto> {
     // create and save a payin with REGISTERED status
 
+    const paymentBlocked = (
+      await this.dbReader(UserEntity.table)
+        .where('id', request.userId)
+        .select('payment_blocked')
+        .first()
+    ).payment_blocked
+
+    if (paymentBlocked) {
+      throw new InvalidPayinRequestError(
+        `User ${request.userId} is blocked from paying`,
+      )
+    }
     // validating request information
     if (request.amount <= 0 || (request.amount * 100) % 1 !== 0) {
       throw new InvalidPayinRequestError(
-        'invalid amount value ' + request.amount,
+        `invalid amount value ${request.amount}`,
       )
     }
 
@@ -1578,7 +1681,7 @@ export class PaymentService {
       await Promise.all(
         creatorShares.map(
           async (creatorShare) =>
-            await this.creatorStatsService.handlePayin(
+            await this.creatorStatsService.handlePayinSuccess(
               creatorShare.creator_id,
               payin.callback,
               creatorShare.amount,
@@ -1668,12 +1771,13 @@ export class PaymentService {
       )
     // check for completed update
     if (rows == 1) {
-      await this.dbWriter
-        .table(CreatorShareEntity.table)
-        .where('payout_id', payoutId)
-        .update(
-          CreatorShareEntity.toDict<CreatorShareEntity>({ payout: undefined }),
-        )
+      const amount = (
+        await this.dbReader(PayoutEntity.table)
+          .where('id', payoutId)
+          .select('amount')
+          .first()
+      ).amount
+      await this.creatorStatsService.handlePayoutFail(userId, amount)
     }
   }
 
@@ -1692,12 +1796,13 @@ export class PaymentService {
         }),
       )
     if (rows == 1) {
-      const payout = await this.dbReader(PayoutEntity.table)
-        .where('id', payoutId)
-        .andWhere('user_id', userId)
-        .select(...PayoutEntity.populate<PayoutEntity>(['id', 'amount']))
-        .first()
-      await this.creatorStatsService.handlePayout(userId, payout.amount)
+      const amount = (
+        await this.dbReader(PayoutEntity.table)
+          .where('id', payoutId)
+          .select('amount')
+          .first()
+      ).amount
+      await this.creatorStatsService.handlePayoutSuccess(userId, amount)
     }
   }
 
@@ -1760,53 +1865,32 @@ export class PaymentService {
     }
     const defaultPayoutMethod = await this.getDefaultPayoutMethod(userId)
 
-    const data = {
-      id: v4(),
-      user_id: userId,
-      bank_id: defaultPayoutMethod.bankId,
-      wallet_id: defaultPayoutMethod.walletId,
-      payout_method: defaultPayoutMethod.method,
-      payout_status: PayoutStatusEnum.CREATED,
-      amount: 0,
+    const availableBalance = (
+      await this.creatorStatsService.getAvailableBalance(userId)
+    ).amount
+    try {
+      await this.creatorStatsService.handlePayout(userId, availableBalance)
+
+      const data = {
+        id: v4(),
+        user_id: userId,
+        bank_id: defaultPayoutMethod.bankId,
+        wallet_id: defaultPayoutMethod.walletId,
+        payout_method: defaultPayoutMethod.method,
+        payout_status: PayoutStatusEnum.CREATED,
+        amount: availableBalance,
+      }
+      await this.dbWriter(PayoutEntity.table).insert(data)
+
+      if (availableBalance < MIN_PAYOUT_AMOUNT) {
+        throw new PayoutAmountError(
+          `${availableBalance} is not enough to payout`,
+        )
+      }
+      await this.submitPayout(data.id)
+    } catch (err) {
+      await this.creatorStatsService.handlePayoutFail(userId, availableBalance)
     }
-    await this.dbWriter(PayoutEntity.table).insert(data)
-
-    const creatorShares = await this.dbReader(CreatorShareEntity.table)
-      .join(
-        PayinEntity.table,
-        CreatorShareEntity.table + '.payin_id',
-        PayinEntity.table + '.id',
-      )
-      .whereNull('payout_id')
-      .andWhere('payin_status', PayinStatusEnum.SUCCESSFUL)
-      .andWhere('creator_id', userId)
-      .select(
-        CreatorShareEntity.table + '.id',
-        'creator_id',
-        CreatorShareEntity.table + '.amount',
-      )
-
-    // check total payout amount
-    const totalSum = creatorShares.reduce((sum, creatorShare) => {
-      return sum + creatorShare.amount
-    }, 0)
-    if (totalSum < MIN_PAYOUT_AMOUNT) {
-      throw new PayoutAmountError(`${totalSum} is not enough to payout`)
-    }
-
-    await this.dbWriter.transaction(async (trx) => {
-      await Promise.all(
-        creatorShares.map(async (creatorShare) => {
-          await trx(PayoutEntity.table)
-            .increment('amount', creatorShare.amount)
-            .where('id', data.id)
-          await trx(CreatorShareEntity.table)
-            .update('payout_id', data.id)
-            .where('id', creatorShare.id)
-        }),
-      )
-    })
-    await this.submitPayout(data.id)
   }
 
   /**

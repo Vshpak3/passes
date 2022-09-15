@@ -53,4 +53,7 @@ export class UserEntity extends BaseEntity<
 
   @Property({ default: 0 })
   numFollowing: number
+
+  @Property({ default: false })
+  paymentBlocked: boolean
 }

@@ -65,6 +65,10 @@ export class EmailService {
     await this.sesClient.send(command)
   }
 
+  async sendOperationsEmail(messageHtml: string, subject: string) {
+    await this.sendEmail('operations@passes.com', messageHtml, subject)
+  }
+
   async sendVerifyEmail(userId: string) {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })

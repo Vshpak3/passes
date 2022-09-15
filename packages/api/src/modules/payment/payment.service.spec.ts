@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
+import { EmailService } from '../email/email.service'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { PaymentService } from './payment.service'
 
@@ -19,6 +20,10 @@ describe('PaymentService', () => {
         },
         {
           provide: RedisLockService,
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: EmailService,
           useFactory: jest.fn(() => ({})),
         },
       ],

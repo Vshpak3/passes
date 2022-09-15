@@ -6,4 +6,5 @@ export enum CircleNotificationTypeEnum {
   ACH = 'ach',
   WIRE = 'wire',
   TRANSFERS = 'transfers',
+  CHARGEBACKS = 'chargebacks',
 }

@@ -1,6 +1,7 @@
 import { IsUUID } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
+import { CircleChargebackDto } from './circle-chargeback.dto'
 import { CirclePaymentDto } from './circle-payment.dto'
 import { CircleTransferDto } from './circle-transfer.dto'
 
@@ -33,7 +34,7 @@ export class CircleNotificationDto {
   reversal?: any
 
   @DtoProperty({ optional: true })
-  chargeback?: any
+  chargeback?: CircleChargebackDto
 
   //payouts flow
   @DtoProperty({ optional: true })

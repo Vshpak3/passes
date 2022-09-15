@@ -16,6 +16,9 @@ export class PostEntity extends BaseEntity {
   @Property({ length: POST_TAGS_LENGTH })
   tags: string
 
+  @Property()
+  contentLength: number
+
   @Index()
   @Property({ default: 0 })
   numLikes: number

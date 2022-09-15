@@ -45,13 +45,15 @@ export interface GetCreatorEarningsHistoryRequestDto {
  */
 export const GetCreatorEarningsHistoryRequestDtoTypeEnum = {
     Balance: 'balance',
+    AvailableBalance: 'available_balance',
     Total: 'total',
     Subscription: 'subscription',
     Tips: 'tips',
     Posts: 'posts',
     Messages: 'messages',
     Lifetime: 'lifetime',
-    Other: 'other'
+    Other: 'other',
+    Chargebacks: 'chargebacks'
 } as const;
 export type GetCreatorEarningsHistoryRequestDtoTypeEnum = typeof GetCreatorEarningsHistoryRequestDtoTypeEnum[keyof typeof GetCreatorEarningsHistoryRequestDtoTypeEnum];
 

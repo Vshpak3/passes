@@ -51,13 +51,15 @@ export interface GetCreatorEarningResponseDto {
  */
 export const GetCreatorEarningResponseDtoTypeEnum = {
     Balance: 'balance',
+    AvailableBalance: 'available_balance',
     Total: 'total',
     Subscription: 'subscription',
     Tips: 'tips',
     Posts: 'posts',
     Messages: 'messages',
     Lifetime: 'lifetime',
-    Other: 'other'
+    Other: 'other',
+    Chargebacks: 'chargebacks'
 } as const;
 export type GetCreatorEarningResponseDtoTypeEnum = typeof GetCreatorEarningResponseDtoTypeEnum[keyof typeof GetCreatorEarningResponseDtoTypeEnum];
 

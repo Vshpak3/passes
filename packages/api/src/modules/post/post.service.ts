@@ -6,6 +6,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -20,9 +21,7 @@ import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { MessagePostEntity } from '../messages/entities/message-post.entity'
-import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import {
   PurchasePostCallbackInput,
   TipPostCallbackInput,
@@ -35,6 +34,7 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { POST_NOT_EXIST } from './constants/errors'
 import {
@@ -54,9 +54,11 @@ export const MINIMUM_POST_TIP_AMOUNT = 5.0
 
 @Injectable()
 export class PostService {
+  cloudfrontUrl
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly configService: ConfigService,
 
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
@@ -65,40 +67,33 @@ export class PostService {
 
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
-  ) {}
+    private readonly s3ContentService: S3ContentService,
+  ) {
+    this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
+  }
 
   async createPost(
     userId: string,
     createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
-    const {
-      text,
-      tags,
-      contentIds,
-      passIds,
-      isMessage,
-      price,
-      expiresAt,
-      scheduledAt,
-    } = createPostDto
-    verifyTaggedText(text, tags)
+    verifyTaggedText(createPostDto.text, createPostDto.tags)
     const postId = v4()
     await this.dbWriter
       .transaction(async (trx) => {
         const post = PostEntity.toDict<PostEntity>({
           id: postId,
           user: userId,
-          text: text,
-          tags: JSON.stringify(tags),
-          isMessage: isMessage,
-          price: price,
-          expiresAt: expiresAt,
-          scheduledAt: scheduledAt,
+          text: createPostDto.text,
+          tags: JSON.stringify(createPostDto.tags),
+          isMessage: createPostDto.isMessage,
+          price: createPostDto.price,
+          expiresAt: createPostDto.expiresAt,
+          scheduledAt: createPostDto.scheduledAt,
         })
 
         await trx(PostEntity.table).insert(post)
 
-        const postContent = contentIds.map((contentId, index) =>
+        const postContent = createPostDto.contentIds.map((contentId, index) =>
           PostContentEntity.toDict<PostContentEntity>({
             content: contentId,
             post: postId,
@@ -110,31 +105,16 @@ export class PostService {
           await trx(PostContentEntity.table).insert(postContent)
         }
         await trx(ContentEntity.table)
-          .update(isMessage ? 'in_message' : 'in_post', true)
+          .update(createPostDto.isMessage ? 'in_message' : 'in_post', true)
           .whereIn('id', createPostDto.contentIds)
 
-        const filteredPasses = await this.dbReader(PassEntity.table)
-          .leftJoin(
-            UserExternalPassEntity.table,
-            `${UserExternalPassEntity.table}.pass_id`,
-            `${PassEntity.table}.id`,
-          )
-          .whereIn('id', passIds)
-          .andWhere(function () {
-            return this.where(
-              `${UserExternalPassEntity.table}.user_id`,
-              userId,
-            ).orWhere(`${PassEntity.table}.creator_id`, userId)
-          })
-          .select('id')
-        const filteredPassIds = filteredPasses.map((pass) => pass.id)
         // TODO: schedule access add
         const passAccesses = await trx(PassHolderEntity.table)
-          .whereIn('pass_id', filteredPassIds)
-          .whereNotNull('holder_id')
-          .andWhere('expires_at', '>', new Date())
+          .whereIn('pass_id', createPostDto.passIds)
+          .whereNotNull('expires_at')
           .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
+          if (!passAccesses[i].holder_id) continue
           const postUserAccess =
             PostUserAccessEntity.toDict<PostUserAccessEntity>({
               post: postId,
@@ -158,6 +138,19 @@ export class PostService {
       .catch((err) => {
         this.logger.error(err)
         throw err
+      })
+    await this.dbWriter
+      .table(CreatorStatEntity.table)
+      .where('user_id', userId)
+      .update({
+        num_media: this.dbWriter(ContentEntity.table)
+          .where(
+            ContentEntity.toDict<ContentEntity>({
+              user: userId,
+              inPost: true,
+            }),
+          )
+          .count(),
       })
     await this.dbWriter
       .table(CreatorStatEntity.table)
@@ -292,11 +285,12 @@ export class PostService {
       return arr
     }, [])
 
+    const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
+
     const contentLookup = await this.getContentLookupForPosts(
       posts.map((post) => post.id),
+      accessiblePostIds as Set<string>,
     )
-
-    const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
 
     return posts.map(
       (post) =>
@@ -304,13 +298,14 @@ export class PostService {
           post,
           !accessiblePostIds.has(post.id) && contentLookup[post.id],
           post.user_id === userId,
-          accessiblePostIds.has(post.id) ? contentLookup[post.id] : undefined,
+          contentLookup[post.id],
         ),
     )
   }
 
   private async getContentLookupForPosts(
     postIds: string[],
+    accessiblePostIds: Set<string>,
   ): Promise<Map<string, ContentDto[]>> {
     const postContents = await this.dbReader(PostContentEntity.table)
       .innerJoin(
@@ -323,9 +318,20 @@ export class PostService {
         `${PostContentEntity.table}.post_id`,
         `${ContentEntity.table}.*`,
       ])
-    const map = postContents.reduce((map, postContent) => {
+    const map = postContents.reduce(async (map, postContent) => {
+      map = await map
+
       if (!map[postContent.post_id]) map[postContent.post_id] = []
-      map[postContent.post_id].append(new ContentDto(postContent, '')) //TODO get signed URL
+      map[postContent.post_id].append(
+        new ContentDto(
+          postContent,
+          accessiblePostIds.has(postContent.post_id)
+            ? await this.s3ContentService.signUrl(
+                `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.user_id}`,
+              )
+            : undefined,
+        ),
+      ) //TODO get signed URL
       return map
     }, {})
     for (const post in map) {
