@@ -69,17 +69,23 @@ const nextConfig = {
         permanent: true
       }
     ]
+  },
+  async headers() {
+    if (
+      process.env.NEXT_PUBLIC_NODE_ENV === "prod" ||
+      process.env.NEXT_PUBLIC_NODE_ENV === "stage"
+    ) {
+      return [
+        {
+          // Apply these headers to all routes in your application.
+          source: "/:path*",
+          headers: securityHeaders
+        }
+      ]
+    }
+
+    return []
   }
-  // TODO: following headers break js/css, temporary commented as a quick fix
-  // async headers() {
-  //   return [
-  //     {
-  //       // Apply these headers to all routes in your application.
-  //       source: "/:path*",
-  //       headers: securityHeaders
-  //     }
-  //   ]
-  // }
 }
 
 module.exports = nextConfig
