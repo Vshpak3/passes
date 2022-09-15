@@ -1,14 +1,18 @@
-import { WalletApi } from "@passes/api-client"
+import { GetWalletsResponseDto, WalletApi } from "@passes/api-client"
+import { wrapApi } from "src/helpers/wrapApi"
 import useSWR from "swr"
 
-import { wrapApi } from "../helpers/wrapApi"
 import useLocalStorage from "./useLocalStorage"
+
+interface WalletsResponse {
+  wallets: GetWalletsResponseDto | unknown[]
+}
 
 const useUserConnectedWallets = () => {
   const [accessToken] = useLocalStorage("access-token", "")
 
   const {
-    data: wallets = [],
+    data: wallets = {} as WalletsResponse,
     isValidating: loading,
     mutate
   } = useSWR(accessToken ? "/wallets" : null, async () => {

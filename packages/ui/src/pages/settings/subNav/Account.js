@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 export default function Account({ subView, childView }) {
-  const [view, setView] = useState("account")
+  const [view, setView] = useState(null)
 
   const settings = [
     {
@@ -34,14 +34,14 @@ export default function Account({ subView, childView }) {
     },
     { name: "Additional resources", subText: "", value: "resources" }
   ]
-  const handleView = (elm) => {
-    childView()
-    setView(elm)
+  const handleView = (value) => {
+    setView(value)
+    childView("settings")
   }
   const renderSwitch = () => {
     return (
       <div>
-        <button onClick={childView}>BACK</button> {view.name}
+        <button onClick={() => childView("settings")}>BACK</button> {view}
       </div>
     )
     // switch (view) {
@@ -63,31 +63,34 @@ export default function Account({ subView, childView }) {
     //     return <Account />
     // }
   }
-  if (!subView) {
-    return (
-      <div>
-        <div className="border-b border-[#2C282D] pb-10">
-          <h2>Your Account</h2>
-          <p>
-            See information about your account, download an archive of your
-            data, or learn about your account deactivation options
-          </p>
+
+  return (
+    <>
+      {subView ? (
+        <div>{renderSwitch()}</div>
+      ) : (
+        <div>
+          <div className="border-b border-[#2C282D] pb-10">
+            <h2>Your Account</h2>
+            <p>
+              See information about your account, download an archive of your
+              data, or learn about your account deactivation options
+            </p>
+          </div>
+          {settings.map(({ value, name, subText }) => (
+            <li
+              className="cursor-pointer"
+              onClick={() => handleView(value)}
+              key={value}
+            >
+              <h3>{name}</h3>
+              <span className="font-normal leading-[17px] text-[#ffffff]/60">
+                {subText}
+              </span>
+            </li>
+          ))}
         </div>
-        {settings.map((elm) => (
-          <li
-            className="cursor-pointer"
-            onClick={() => handleView(elm)}
-            key={elm.value}
-          >
-            <h3>{elm.name}</h3>
-            <span className="font-normal leading-[17px] text-[#ffffff]/60">
-              {elm.subText}
-            </span>
-          </li>
-        ))}
-      </div>
-    )
-  } else {
-    return <div>{renderSwitch()}</div>
-  }
+      )}
+    </>
+  )
 }

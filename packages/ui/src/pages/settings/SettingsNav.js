@@ -4,6 +4,7 @@ import Account from "./subNav/Account"
 import ChatSettings from "./subNav/ChatSettings"
 import Notifications from "./subNav/Notifications"
 import Payment from "./subNav/Payment"
+import PaymentAndWalletSettings from "./subNav/PaymentAndWalletSettings"
 import Privacy from "./subNav/Privacy"
 
 export default function SettingsNav() {
@@ -14,7 +15,8 @@ export default function SettingsNav() {
     { name: "Chat Settings", value: "chat-settings" },
     { name: "Privacy & Safety Settings", value: "privacy" },
     { name: "Notification Settings", value: "notifications" },
-    { name: "Payment Settings", value: "payment" }
+    { name: "Payment Settings", value: "payment" },
+    { name: "Payment & Wallet Settings", value: "wallet" }
   ]
 
   const handleView = (elm) => {
@@ -40,6 +42,13 @@ export default function SettingsNav() {
         return <Notifications />
       case "payment":
         return <Payment />
+      case "wallet":
+        return (
+          <PaymentAndWalletSettings
+            subView={toggleSubView}
+            childView={childView}
+          />
+        )
     }
   }
 
@@ -51,15 +60,15 @@ export default function SettingsNav() {
         </h1>
         <div className="w-fill ml-8 flex max-h-96 flex-col items-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 px-4 pt-3 pb-10 backdrop-blur-[100px]">
           <ul className="p-4 text-base font-bold	leading-loose text-white">
-            {settings.map((elm) => (
+            {settings.map(({ name, value }) => (
               <li
                 className={`cursor-pointer whitespace-nowrap rounded-[6px] p-2 ${
-                  view === elm.value ? "bg-[#9C4DC1]/[0.25]" : ""
+                  view === value ? "bg-[#9C4DC1]/[0.25]" : ""
                 }`}
-                onClick={() => handleView(elm.value)}
-                key={elm.value}
+                onClick={() => handleView(value)}
+                key={value}
               >
-                {elm.name}
+                {name}
               </li>
             ))}
           </ul>

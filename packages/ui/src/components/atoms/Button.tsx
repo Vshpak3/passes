@@ -92,6 +92,10 @@ export const Button = ({
       variantClassName =
         "text-blue-blue10 transition-colors hover:text-[hsl(208,_100%,_52%)] active:text-[hsl(208,_100%,_45%)] p-1"
       break
+    case "link-purple":
+      variantClassName =
+        "text-pink-pink10 transition-colors hover:text-[#C943A8] active:text-[#C943A8] p-1"
+      break
     default:
       variantClassName = ""
       variantInnerClassName = ""
