@@ -4,7 +4,7 @@ import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { PostDto } from '../../post/dto/post.dto'
 
-export class GetFeedRequesteDto extends PickType(PageRequestDto, [
+export class GetFeedRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
 ]) {}

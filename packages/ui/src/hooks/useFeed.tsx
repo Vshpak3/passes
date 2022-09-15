@@ -18,7 +18,7 @@ const getKey = (_pageIndex: number, previousPageData: any) => {
 
 const fetcher = async () => {
   const api = wrapApi(FeedApi)
-  return await api.getFeed({ getFeedRequesteDto: {} })
+  return await api.getFeed({ getFeedRequestDto: {} })
 }
 
 const useFeed = () => {

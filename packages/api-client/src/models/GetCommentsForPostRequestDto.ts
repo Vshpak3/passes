@@ -16,37 +16,44 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetFeedRequesteDto
+ * @interface GetCommentsForPostRequestDto
  */
-export interface GetFeedRequesteDto {
+export interface GetCommentsForPostRequestDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetFeedRequesteDto
+     * @memberof GetCommentsForPostRequestDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetFeedRequesteDto
+     * @memberof GetCommentsForPostRequestDto
      */
     lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetCommentsForPostRequestDto
+     */
+    postId: string;
 }
 
 /**
- * Check if a given object implements the GetFeedRequesteDto interface.
+ * Check if a given object implements the GetCommentsForPostRequestDto interface.
  */
-export function instanceOfGetFeedRequesteDto(value: object): boolean {
+export function instanceOfGetCommentsForPostRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "postId" in value;
 
     return isInstance;
 }
 
-export function GetFeedRequesteDtoFromJSON(json: any): GetFeedRequesteDto {
-    return GetFeedRequesteDtoFromJSONTyped(json, false);
+export function GetCommentsForPostRequestDtoFromJSON(json: any): GetCommentsForPostRequestDto {
+    return GetCommentsForPostRequestDtoFromJSONTyped(json, false);
 }
 
-export function GetFeedRequesteDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetFeedRequesteDto {
+export function GetCommentsForPostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetCommentsForPostRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -54,10 +61,11 @@ export function GetFeedRequesteDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'postId': json['postId'],
     };
 }
 
-export function GetFeedRequesteDtoToJSON(value?: GetFeedRequesteDto | null): any {
+export function GetCommentsForPostRequestDtoToJSON(value?: GetCommentsForPostRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,6 +76,7 @@ export function GetFeedRequesteDtoToJSON(value?: GetFeedRequesteDto | null): any
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'postId': value.postId,
     };
 }
 

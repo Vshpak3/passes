@@ -75,7 +75,7 @@ models/GetChannelStatsResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts
-models/GetCommentsForPostRequesteDto.ts
+models/GetCommentsForPostRequestDto.ts
 models/GetCommentsForPostResponseDto.ts
 models/GetContentResponseDto.ts
 models/GetContentsResponseDto.ts
@@ -91,7 +91,7 @@ models/GetCreatorVerificationStepResponseDto.ts
 models/GetExternalPassesRequestDto.ts
 models/GetFanWallRequestDto.ts
 models/GetFanWallResponseDto.ts
-models/GetFeedRequesteDto.ts
+models/GetFeedRequestDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
 models/GetFreeMesssagesResponseDto.ts
@@ -118,8 +118,8 @@ models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
 models/GetPostResponseDto.ts
-models/GetPostsRequesteDto.ts
-models/GetProfileFeedRequesteDto.ts
+models/GetPostsRequestDto.ts
+models/GetProfileFeedRequestDto.ts
 models/GetProfileRequestDto.ts
 models/GetProfileResponseDto.ts
 models/GetSignedUrlResponseDto.ts

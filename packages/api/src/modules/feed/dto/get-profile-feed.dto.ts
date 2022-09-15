@@ -4,7 +4,7 @@ import { IsUUID } from 'class-validator'
 import { PageRequestDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
 
-export class GetProfileFeedRequesteDto extends PickType(PageRequestDto, [
+export class GetProfileFeedRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
 ]) {

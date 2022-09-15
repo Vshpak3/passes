@@ -15,7 +15,7 @@ import { ApiEndpoint } from '../../web/endpoint.web'
 import { CommentService } from './comment.service'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import {
-  GetCommentsForPostRequesteDto,
+  GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
 } from './dto/get-comments-for-post-dto'
 
@@ -47,11 +47,11 @@ export class CommentController {
   @Post('post')
   async findCommentsForPost(
     @Req() req: RequestWithUser,
-    @Body() getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto,
+    @Body() getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
   ): Promise<GetCommentsForPostResponseDto> {
     return this.commentService.findCommentsForPost(
       req.user.id,
-      getCommentsForPostRequesteDto,
+      getCommentsForPostRequestDto,
     )
   }
 

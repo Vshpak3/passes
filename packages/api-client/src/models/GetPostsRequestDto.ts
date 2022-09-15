@@ -16,44 +16,44 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetProfileFeedRequesteDto
+ * @interface GetPostsRequestDto
  */
-export interface GetProfileFeedRequesteDto {
+export interface GetPostsRequestDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetProfileFeedRequesteDto
+     * @memberof GetPostsRequestDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetProfileFeedRequesteDto
+     * @memberof GetPostsRequestDto
      */
     lastId?: string;
     /**
      * 
-     * @type {string}
-     * @memberof GetProfileFeedRequesteDto
+     * @type {boolean}
+     * @memberof GetPostsRequestDto
      */
-    creatorId: string;
+    scheduledOnly: boolean;
 }
 
 /**
- * Check if a given object implements the GetProfileFeedRequesteDto interface.
+ * Check if a given object implements the GetPostsRequestDto interface.
  */
-export function instanceOfGetProfileFeedRequesteDto(value: object): boolean {
+export function instanceOfGetPostsRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "scheduledOnly" in value;
 
     return isInstance;
 }
 
-export function GetProfileFeedRequesteDtoFromJSON(json: any): GetProfileFeedRequesteDto {
-    return GetProfileFeedRequesteDtoFromJSONTyped(json, false);
+export function GetPostsRequestDtoFromJSON(json: any): GetPostsRequestDto {
+    return GetPostsRequestDtoFromJSONTyped(json, false);
 }
 
-export function GetProfileFeedRequesteDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetProfileFeedRequesteDto {
+export function GetPostsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPostsRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -61,11 +61,11 @@ export function GetProfileFeedRequesteDtoFromJSONTyped(json: any, ignoreDiscrimi
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
-        'creatorId': json['creatorId'],
+        'scheduledOnly': json['scheduledOnly'],
     };
 }
 
-export function GetProfileFeedRequesteDtoToJSON(value?: GetProfileFeedRequesteDto | null): any {
+export function GetPostsRequestDtoToJSON(value?: GetPostsRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -76,7 +76,7 @@ export function GetProfileFeedRequesteDtoToJSON(value?: GetProfileFeedRequesteDt
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
-        'creatorId': value.creatorId,
+        'scheduledOnly': value.scheduledOnly,
     };
 }
 

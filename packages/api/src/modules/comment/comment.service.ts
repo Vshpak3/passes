@@ -14,7 +14,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { CommentDto } from './dto/comment.dto'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import {
-  GetCommentsForPostRequesteDto,
+  GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
 } from './dto/get-comments-for-post-dto'
 import { CommentEntity } from './entities/comment.entity'
@@ -65,9 +65,9 @@ export class CommentService {
 
   async findCommentsForPost(
     userId: string,
-    getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto,
+    getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
   ): Promise<GetCommentsForPostResponseDto> {
-    const { postId, lastId, createdAt } = getCommentsForPostRequesteDto
+    const { postId, lastId, createdAt } = getCommentsForPostRequestDto
     await this.checkPost(userId, postId)
 
     let query = this.dbReader(CommentEntity.table)

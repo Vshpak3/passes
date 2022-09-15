@@ -15,36 +15,36 @@
 
 import * as runtime from '../runtime';
 import type {
-  GetFeedRequesteDto,
+  GetFeedRequestDto,
   GetFeedResponseDto,
-  GetPostsRequesteDto,
-  GetProfileFeedRequesteDto,
+  GetPostsRequestDto,
+  GetProfileFeedRequestDto,
 } from '../models';
 import {
-    GetFeedRequesteDtoFromJSON,
-    GetFeedRequesteDtoToJSON,
+    GetFeedRequestDtoFromJSON,
+    GetFeedRequestDtoToJSON,
     GetFeedResponseDtoFromJSON,
     GetFeedResponseDtoToJSON,
-    GetPostsRequesteDtoFromJSON,
-    GetPostsRequesteDtoToJSON,
-    GetProfileFeedRequesteDtoFromJSON,
-    GetProfileFeedRequesteDtoToJSON,
+    GetPostsRequestDtoFromJSON,
+    GetPostsRequestDtoToJSON,
+    GetProfileFeedRequestDtoFromJSON,
+    GetProfileFeedRequestDtoToJSON,
 } from '../models';
 
 export interface GetFeedRequest {
-    getFeedRequesteDto: GetFeedRequesteDto;
+    getFeedRequestDto: GetFeedRequestDto;
 }
 
 export interface GetFeedForCreatorRequest {
-    getProfileFeedRequesteDto: GetProfileFeedRequesteDto;
+    getProfileFeedRequestDto: GetProfileFeedRequestDto;
 }
 
 export interface GetMessagesForOwnerRequest {
-    getPostsRequesteDto: GetPostsRequesteDto;
+    getPostsRequestDto: GetPostsRequestDto;
 }
 
 export interface GetPostsForOwnerRequest {
-    getPostsRequesteDto: GetPostsRequesteDto;
+    getPostsRequestDto: GetPostsRequestDto;
 }
 
 /**
@@ -56,8 +56,8 @@ export class FeedApi extends runtime.BaseAPI {
      * Gets a users feed
      */
     async getFeedRaw(requestParameters: GetFeedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getFeedRequesteDto === null || requestParameters.getFeedRequesteDto === undefined) {
-            throw new runtime.RequiredError('getFeedRequesteDto','Required parameter requestParameters.getFeedRequesteDto was null or undefined when calling getFeed.');
+        if (requestParameters.getFeedRequestDto === null || requestParameters.getFeedRequestDto === undefined) {
+            throw new runtime.RequiredError('getFeedRequestDto','Required parameter requestParameters.getFeedRequestDto was null or undefined when calling getFeed.');
         }
 
         const queryParameters: any = {};
@@ -79,7 +79,7 @@ export class FeedApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetFeedRequesteDtoToJSON(requestParameters.getFeedRequesteDto),
+            body: GetFeedRequestDtoToJSON(requestParameters.getFeedRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
@@ -97,8 +97,8 @@ export class FeedApi extends runtime.BaseAPI {
      * Gets a feed for a given creator
      */
     async getFeedForCreatorRaw(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getProfileFeedRequesteDto === null || requestParameters.getProfileFeedRequesteDto === undefined) {
-            throw new runtime.RequiredError('getProfileFeedRequesteDto','Required parameter requestParameters.getProfileFeedRequesteDto was null or undefined when calling getFeedForCreator.');
+        if (requestParameters.getProfileFeedRequestDto === null || requestParameters.getProfileFeedRequestDto === undefined) {
+            throw new runtime.RequiredError('getProfileFeedRequestDto','Required parameter requestParameters.getProfileFeedRequestDto was null or undefined when calling getFeedForCreator.');
         }
 
         const queryParameters: any = {};
@@ -120,7 +120,7 @@ export class FeedApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetProfileFeedRequesteDtoToJSON(requestParameters.getProfileFeedRequesteDto),
+            body: GetProfileFeedRequestDtoToJSON(requestParameters.getProfileFeedRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
@@ -138,8 +138,8 @@ export class FeedApi extends runtime.BaseAPI {
      * Gets my messages
      */
     async getMessagesForOwnerRaw(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getPostsRequesteDto === null || requestParameters.getPostsRequesteDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequesteDto','Required parameter requestParameters.getPostsRequesteDto was null or undefined when calling getMessagesForOwner.');
+        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getMessagesForOwner.');
         }
 
         const queryParameters: any = {};
@@ -161,7 +161,7 @@ export class FeedApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-            body: GetPostsRequesteDtoToJSON(requestParameters.getPostsRequesteDto),
+            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
@@ -179,8 +179,8 @@ export class FeedApi extends runtime.BaseAPI {
      * Gets my posts
      */
     async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getPostsRequesteDto === null || requestParameters.getPostsRequesteDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequesteDto','Required parameter requestParameters.getPostsRequesteDto was null or undefined when calling getPostsForOwner.');
+        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPostsForOwner.');
         }
 
         const queryParameters: any = {};
@@ -202,7 +202,7 @@ export class FeedApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetPostsRequesteDtoToJSON(requestParameters.getPostsRequesteDto),
+            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));

@@ -16,44 +16,44 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetCommentsForPostRequesteDto
+ * @interface GetProfileFeedRequestDto
  */
-export interface GetCommentsForPostRequesteDto {
+export interface GetProfileFeedRequestDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetCommentsForPostRequesteDto
+     * @memberof GetProfileFeedRequestDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetCommentsForPostRequesteDto
+     * @memberof GetProfileFeedRequestDto
      */
     lastId?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetCommentsForPostRequesteDto
+     * @memberof GetProfileFeedRequestDto
      */
-    postId: string;
+    creatorId: string;
 }
 
 /**
- * Check if a given object implements the GetCommentsForPostRequesteDto interface.
+ * Check if a given object implements the GetProfileFeedRequestDto interface.
  */
-export function instanceOfGetCommentsForPostRequesteDto(value: object): boolean {
+export function instanceOfGetProfileFeedRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "creatorId" in value;
 
     return isInstance;
 }
 
-export function GetCommentsForPostRequesteDtoFromJSON(json: any): GetCommentsForPostRequesteDto {
-    return GetCommentsForPostRequesteDtoFromJSONTyped(json, false);
+export function GetProfileFeedRequestDtoFromJSON(json: any): GetProfileFeedRequestDto {
+    return GetProfileFeedRequestDtoFromJSONTyped(json, false);
 }
 
-export function GetCommentsForPostRequesteDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetCommentsForPostRequesteDto {
+export function GetProfileFeedRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetProfileFeedRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -61,11 +61,11 @@ export function GetCommentsForPostRequesteDtoFromJSONTyped(json: any, ignoreDisc
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
-        'postId': json['postId'],
+        'creatorId': json['creatorId'],
     };
 }
 
-export function GetCommentsForPostRequesteDtoToJSON(value?: GetCommentsForPostRequesteDto | null): any {
+export function GetProfileFeedRequestDtoToJSON(value?: GetProfileFeedRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -76,7 +76,7 @@ export function GetCommentsForPostRequesteDtoToJSON(value?: GetCommentsForPostRe
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
-        'postId': value.postId,
+        'creatorId': value.creatorId,
     };
 }
 

@@ -51,11 +51,11 @@ export class FanWallController {
   async getFanWallForCreator(
     @Req() req: RequestWithUser,
     @Body()
-    getFanWallRequesteDto: GetFanWallRequestDto,
+    getFanWallRequestDto: GetFanWallRequestDto,
   ): Promise<GetFanWallResponseDto> {
     return this.fanWallService.getFanWallForCreator(
       req.user.id,
-      getFanWallRequesteDto,
+      getFanWallRequestDto,
     )
   }
 

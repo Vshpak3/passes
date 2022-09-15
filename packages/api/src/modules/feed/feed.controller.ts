@@ -3,9 +3,9 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { GetFeedRequesteDto, GetFeedResponseDto } from './dto/get-feed-dto'
-import { GetPostsRequesteDto } from './dto/get-posts.dto'
-import { GetProfileFeedRequesteDto } from './dto/get-profile-feed.dto'
+import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetPostsRequestDto } from './dto/get-posts.dto'
+import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 import { FeedService } from './feed.service'
 
 @ApiTags('feed')
@@ -22,9 +22,9 @@ export class FeedController {
   @Post()
   async getFeed(
     @Req() req: RequestWithUser,
-    @Body() getFeedRequesteDto: GetFeedRequesteDto,
+    @Body() getFeedRequestDto: GetFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeed(req.user.id, getFeedRequesteDto)
+    return this.feedService.getFeed(req.user.id, getFeedRequestDto)
   }
 
   @ApiEndpoint({
@@ -36,11 +36,11 @@ export class FeedController {
   @Post('profile')
   async getFeedForCreator(
     @Req() req: RequestWithUser,
-    @Body() getProfileFeedRequesteDto: GetProfileFeedRequesteDto,
+    @Body() getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
     return this.feedService.getFeedForCreator(
       req.user.id,
-      getProfileFeedRequesteDto,
+      getProfileFeedRequestDto,
     )
   }
 
@@ -53,12 +53,12 @@ export class FeedController {
   @Post('owner/posts')
   async getPostsForOwner(
     @Req() req: RequestWithUser,
-    @Body() getPostsRequesteDto: GetPostsRequesteDto,
+    @Body() getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
     return this.feedService.getPostsForOwner(
       req.user.id,
       false,
-      getPostsRequesteDto,
+      getPostsRequestDto,
     )
   }
 
@@ -71,12 +71,12 @@ export class FeedController {
   @Get('owner/messages')
   async getMessagesForOwner(
     @Req() req: RequestWithUser,
-    @Body() getPostsRequesteDto: GetPostsRequesteDto,
+    @Body() getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
     return this.feedService.getPostsForOwner(
       req.user.id,
       true,
-      getPostsRequesteDto,
+      getPostsRequestDto,
     )
   }
 }

@@ -9,9 +9,9 @@ import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { GetFeedRequesteDto, GetFeedResponseDto } from './dto/get-feed-dto'
-import { GetPostsRequesteDto } from './dto/get-posts.dto'
-import { GetProfileFeedRequesteDto } from './dto/get-profile-feed.dto'
+import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetPostsRequestDto } from './dto/get-posts.dto'
+import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 
 export const FEED_LIMIT = 100
 
@@ -26,9 +26,9 @@ export class FeedService {
 
   async getFeed(
     userId: string,
-    getFeedRequesteDto: GetFeedRequesteDto,
+    getFeedRequestDto: GetFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    const { lastId, createdAt } = getFeedRequesteDto
+    const { lastId, createdAt } = getFeedRequestDto
     const dbReader = this.dbReader
     let query = this.dbReader(FollowEntity.table)
       .innerJoin(
@@ -97,9 +97,9 @@ export class FeedService {
 
   async getFeedForCreator(
     userId: string,
-    getProfileFeedRequesteDto: GetProfileFeedRequesteDto,
+    getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    const { creatorId, lastId, createdAt: time } = getProfileFeedRequesteDto
+    const { creatorId, lastId, createdAt: time } = getProfileFeedRequestDto
     const creator = await this.dbReader(UserEntity.table)
       .where('id', creatorId)
       .select(['is_active', 'is_creator'])
@@ -172,9 +172,9 @@ export class FeedService {
   async getPostsForOwner(
     userId: string,
     isMessage: boolean,
-    getPostsRequesteDto: GetPostsRequesteDto,
+    getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
-    const { scheduledOnly, lastId, createdAt } = getPostsRequesteDto
+    const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
     let query = this.dbReader(PostEntity.table)
       .select([`${PostEntity.table}.*`])
       .whereNull(`${PostEntity.table}.deleted_at`)

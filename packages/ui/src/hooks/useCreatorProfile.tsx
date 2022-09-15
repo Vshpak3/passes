@@ -51,7 +51,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     useSWR(doesProfileExist ? ["/post/creator/", username] : null, async () => {
       const api = wrapApi(FeedApi)
       return await api.getFeedForCreator({
-        getProfileFeedRequesteDto: { creatorId: props.userId }
+        getProfileFeedRequestDto: { creatorId: props.userId }
       })
     })
 

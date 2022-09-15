@@ -16,14 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   CreateCommentRequestDto,
-  GetCommentsForPostRequesteDto,
+  GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
 } from '../models';
 import {
     CreateCommentRequestDtoFromJSON,
     CreateCommentRequestDtoToJSON,
-    GetCommentsForPostRequesteDtoFromJSON,
-    GetCommentsForPostRequesteDtoToJSON,
+    GetCommentsForPostRequestDtoFromJSON,
+    GetCommentsForPostRequestDtoToJSON,
     GetCommentsForPostResponseDtoFromJSON,
     GetCommentsForPostResponseDtoToJSON,
 } from '../models';
@@ -38,7 +38,7 @@ export interface DeleteCommentRequest {
 }
 
 export interface FindCommentsForPostRequest {
-    getCommentsForPostRequesteDto: GetCommentsForPostRequesteDto;
+    getCommentsForPostRequestDto: GetCommentsForPostRequestDto;
 }
 
 export interface HideCommentRequest {
@@ -138,8 +138,8 @@ export class CommentApi extends runtime.BaseAPI {
      * Gets all comments for a post
      */
     async findCommentsForPostRaw(requestParameters: FindCommentsForPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCommentsForPostResponseDto>> {
-        if (requestParameters.getCommentsForPostRequesteDto === null || requestParameters.getCommentsForPostRequesteDto === undefined) {
-            throw new runtime.RequiredError('getCommentsForPostRequesteDto','Required parameter requestParameters.getCommentsForPostRequesteDto was null or undefined when calling findCommentsForPost.');
+        if (requestParameters.getCommentsForPostRequestDto === null || requestParameters.getCommentsForPostRequestDto === undefined) {
+            throw new runtime.RequiredError('getCommentsForPostRequestDto','Required parameter requestParameters.getCommentsForPostRequestDto was null or undefined when calling findCommentsForPost.');
         }
 
         const queryParameters: any = {};
@@ -161,7 +161,7 @@ export class CommentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetCommentsForPostRequesteDtoToJSON(requestParameters.getCommentsForPostRequesteDto),
+            body: GetCommentsForPostRequestDtoToJSON(requestParameters.getCommentsForPostRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetCommentsForPostResponseDtoFromJSON(jsonValue));
