@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface IdCardProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const IdCard = ({ width = 15, height = 15, ...restOfProps }) => (
+const IdCard = ({ width = 15, height = 15, ...restOfProps }: IdCardProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const IdCard = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-IdCard.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default IdCard

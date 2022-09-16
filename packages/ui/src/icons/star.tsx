@@ -1,8 +1,18 @@
+import { SVGProps } from "react"
+
+export interface StarProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant?: "filled" | "outlined"
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Star = ({ width = 15, height = 15, variant, ...restOfProps }) => (
+const Star = ({
+  width = 15,
+  height = 15,
+  variant,
+  ...restOfProps
+}: StarProps) => (
   <svg
     width={width}
     height={height}
@@ -23,11 +33,5 @@ const Star = ({ width = 15, height = 15, variant, ...restOfProps }) => (
     />
   </svg>
 )
-
-Star.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string
-}
 
 export default Star

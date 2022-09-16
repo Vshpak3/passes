@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface ExitProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Exit = ({ width = 15, height = 15, ...restOfProps }) => (
+const Exit = ({ width = 15, height = 15, ...restOfProps }: ExitProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const Exit = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-Exit.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Exit

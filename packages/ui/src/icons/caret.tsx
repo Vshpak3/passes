@@ -1,6 +1,12 @@
-import PropTypes from "prop-types"
+import { SVGProps } from "react"
 
-const Caret = ({ width = 15, height = 15, ...restOfProps }) => (
+export interface CaretProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
+// Adapted from: https://icons.modulz.app
+const Caret = ({ width = 15, height = 15, ...restOfProps }: CaretProps) => (
   <svg
     width={width}
     height={height}
@@ -18,10 +24,5 @@ const Caret = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-Caret.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Caret

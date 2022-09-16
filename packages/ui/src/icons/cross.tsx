@@ -1,13 +1,19 @@
 // Adapted from: https://icons.modulz.app
 
-import PropTypes from "prop-types"
+import { SVGProps } from "react"
+
+export interface CrossProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  alternate?: boolean
+}
 
 const Cross = ({
   alternate = false,
   width = 15,
   height = 15,
   ...restOfProps
-}) => (
+}: CrossProps) => (
   <svg
     width={width}
     height={height}
@@ -33,11 +39,5 @@ const Cross = ({
     )}
   </svg>
 )
-
-Cross.propTypes = {
-  alternate: PropTypes.bool,
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Cross

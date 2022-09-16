@@ -1,8 +1,18 @@
+import { SVGProps } from "react"
+
+export interface HeartProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant?: "filled" | "solid"
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Heart = ({ height = 15, width = 15, variant, ...restOfProps }) => (
+const Heart = ({
+  height = 15,
+  width = 15,
+  variant,
+  ...restOfProps
+}: HeartProps) => (
   <svg
     className="pushable click-target-helper"
     height={height}
@@ -30,11 +40,5 @@ const Heart = ({ height = 15, width = 15, variant, ...restOfProps }) => (
     )}
   </svg>
 )
-
-Heart.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string
-}
 
 export default Heart

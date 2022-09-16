@@ -1,9 +1,16 @@
+import { SVGProps } from "react"
+
+export interface ChatBubbleProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ChatBubble = ({ height = 15, width = 15, variant, ...restOfProps }) => (
+const ChatBubble = ({
+  height = 15,
+  width = 15,
+  ...restOfProps
+}: ChatBubbleProps) => (
   <svg
     className="pushable click-target-helper"
     height={height}
@@ -20,11 +27,5 @@ const ChatBubble = ({ height = 15, width = 15, variant, ...restOfProps }) => (
     />
   </svg>
 )
-
-ChatBubble.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string
-}
 
 export default ChatBubble

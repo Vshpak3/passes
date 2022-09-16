@@ -1,8 +1,15 @@
 import * as RadixSeparator from "@radix-ui/react-separator"
-import PropTypes from "prop-types"
 import styles from "src/styles/modules/separator.module.css"
 
-const Separator = ({ className = "", orientation = "horizontal" }) => (
+export interface SeparatorProps {
+  className?: string
+  orientation?: "horizontal" | "vertical"
+}
+
+const Separator = ({
+  className = "",
+  orientation = "horizontal"
+}: SeparatorProps) => (
   <RadixSeparator.Root
     className={
       "self-stretch" +
@@ -15,10 +22,5 @@ const Separator = ({ className = "", orientation = "horizontal" }) => (
     orientation={orientation}
   />
 )
-
-Separator.propTypes = {
-  className: PropTypes.string,
-  orientation: PropTypes.string
-}
 
 export default Separator

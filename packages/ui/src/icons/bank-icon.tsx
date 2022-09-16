@@ -1,8 +1,16 @@
+import { SVGProps } from "react"
+
+export interface BankIconProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const BankIcon = ({ width = 15, height = 15, ...restOfProps }) => (
+const BankIcon = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: BankIconProps) => (
   <svg
     width={width}
     height={height}
@@ -35,10 +43,5 @@ const BankIcon = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-BankIcon.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default BankIcon

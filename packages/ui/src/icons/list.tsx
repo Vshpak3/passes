@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface ListProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const List = ({ width = 15, height = 15, ...restOfProps }) => (
+const List = ({ width = 15, height = 15, ...restOfProps }: ListProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const List = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-List.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default List

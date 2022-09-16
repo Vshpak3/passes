@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface LockProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Lock = ({ width = 15, height = 15, ...restOfProps }) => (
+const Lock = ({ width = 15, height = 15, ...restOfProps }: LockProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const Lock = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-Lock.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Lock

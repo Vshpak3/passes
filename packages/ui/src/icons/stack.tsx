@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface StackProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Stack = ({ width = 15, height = 15, ...restOfProps }) => (
+const Stack = ({ width = 15, height = 15, ...restOfProps }: StackProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const Stack = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-Stack.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Stack

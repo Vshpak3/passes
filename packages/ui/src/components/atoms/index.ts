@@ -35,7 +35,6 @@ import {
   VaultDeselectButton,
   VaultFilterOption,
   VaultItemDate,
-  VaultItemSelect,
   VaultSelectLabel,
   VaultSortItem
 } from "./vault"
@@ -74,7 +73,6 @@ export {
   VaultDeselectButton,
   VaultFilterOption,
   VaultItemDate,
-  VaultItemSelect,
   VaultSelectLabel,
   VaultSortItem,
   Wordmark

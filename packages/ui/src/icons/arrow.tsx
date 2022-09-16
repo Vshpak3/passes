@@ -1,8 +1,18 @@
+import { SVGProps } from "react"
+
+export interface ArrowProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant?: "left" | "right"
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Arrow = ({ width = 15, height = 15, variant, ...restOfProps }) => (
+const Arrow = ({
+  width = 15,
+  height = 15,
+  variant,
+  ...restOfProps
+}: ArrowProps) => (
   <svg
     width={width}
     height={height}
@@ -25,11 +35,5 @@ const Arrow = ({ width = 15, height = 15, variant, ...restOfProps }) => (
     />
   </svg>
 )
-
-Arrow.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string.isRequired
-}
 
 export default Arrow

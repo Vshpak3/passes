@@ -1,8 +1,16 @@
+import { SVGProps } from "react"
+
+export interface CardStackProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const CardStack = ({ width = 15, height = 15, ...restOfProps }) => (
+const CardStack = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: CardStackProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +27,5 @@ const CardStack = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-CardStack.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default CardStack

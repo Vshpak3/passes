@@ -1,6 +1,12 @@
-import PropTypes from "prop-types"
+import { SVGProps } from "react"
 
-const Money = ({ width = 15, height = 15, ...restOfProps }) => (
+export interface MoneyProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
+// Adapted from: https://icons.modulz.app
+const Money = ({ width = 15, height = 15, ...restOfProps }: MoneyProps) => (
   <svg
     width={width}
     height={height}
@@ -15,10 +21,5 @@ const Money = ({ width = 15, height = 15, ...restOfProps }) => (
     </g>
   </svg>
 )
-
-Money.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Money

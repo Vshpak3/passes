@@ -1,8 +1,16 @@
+import { SVGProps } from "react"
+
+export interface ViewGridProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const ViewGrid = ({ width = 15, height = 15, ...restOfProps }) => (
+const ViewGrid = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: ViewGridProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +27,5 @@ const ViewGrid = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-ViewGrid.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default ViewGrid

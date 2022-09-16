@@ -1,7 +1,21 @@
-// Adapted from: https://icons.modulz.app
+import { SVGProps } from "react"
 
-const Social = ({ width = 15, height = 15, variant, fill = "white" }) => {
+export interface SocialProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant: "Discord" | "Google" | "Instagram" | "Twitch" | "Tiktok" | "YouTube"
+  fill?: string
+}
+
+// Adapted from: https://icons.modulz.app
+const Social = ({
+  width = 15,
+  height = 15,
+  variant,
+  fill = "white"
+}: SocialProps) => {
   const fillColor = fill || "currentColor"
+
   return (
     <svg
       width={width}

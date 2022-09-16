@@ -1,9 +1,12 @@
+import { SVGProps } from "react"
+
+export interface RowProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Rows = ({ width = 15, height = 15, variant, ...restOfProps }) => (
+const Rows = ({ width = 15, height = 15, ...restOfProps }: RowProps) => (
   <svg
     width={width}
     height={height}
@@ -20,11 +23,5 @@ const Rows = ({ width = 15, height = 15, variant, ...restOfProps }) => (
     />
   </svg>
 )
-
-Rows.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string.isRequired
-}
 
 export default Rows

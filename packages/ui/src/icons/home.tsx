@@ -1,8 +1,12 @@
+import { SVGProps } from "react"
+
+export interface HomeProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Home = ({ width = 15, height = 15, ...restOfProps }) => (
+const Home = ({ width = 15, height = 15, ...restOfProps }: HomeProps) => (
   <svg
     width={width}
     height={height}
@@ -19,10 +23,5 @@ const Home = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-Home.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default Home

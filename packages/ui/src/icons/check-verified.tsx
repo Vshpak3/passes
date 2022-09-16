@@ -1,8 +1,16 @@
+import { SVGProps } from "react"
+
+export interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+}
+
 // Adapted from: https://help.twitter.com/en/managing-your-account/about-twitter-verified-accounts
-
-import PropTypes from "prop-types"
-
-const CheckVerified = ({ width = 15, height = 15, ...restOfProps }) => (
+const CheckVerified = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: CheckVerifiedProps) => (
   <svg
     width={width}
     height={height}
@@ -30,10 +38,5 @@ const CheckVerified = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-CheckVerified.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default CheckVerified

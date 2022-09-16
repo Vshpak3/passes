@@ -1,8 +1,18 @@
+import { SVGProps } from "react"
+
+export interface GearProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant?: "filled" | "outline"
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Gear = ({ width = 15, height = 15, variant, ...restOfProps }) => (
+const Gear = ({
+  width = 15,
+  height = 15,
+  variant,
+  ...restOfProps
+}: GearProps) => (
   <svg
     width={width}
     height={height}
@@ -28,11 +38,5 @@ const Gear = ({ width = 15, height = 15, variant, ...restOfProps }) => (
     )}
   </svg>
 )
-
-Gear.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string
-}
 
 export default Gear

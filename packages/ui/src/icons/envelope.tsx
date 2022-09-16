@@ -1,8 +1,18 @@
+import { SVGProps } from "react"
+
+export interface EnvelopeProps extends SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
+  variant?: "gradient" | "solid"
+}
+
 // Adapted from: https://icons.modulz.app
-
-import PropTypes from "prop-types"
-
-const Envelope = ({ width = 15, height = 15, variant, ...restOfProps }) => (
+const Envelope = ({
+  width = 15,
+  height = 15,
+  variant,
+  ...restOfProps
+}: EnvelopeProps) => (
   <svg
     width={width}
     height={height}
@@ -42,11 +52,5 @@ const Envelope = ({ width = 15, height = 15, variant, ...restOfProps }) => (
     )}
   </svg>
 )
-
-Envelope.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number,
-  variant: PropTypes.string
-}
 
 export default Envelope
