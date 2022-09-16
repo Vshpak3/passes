@@ -58,11 +58,16 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const onSubmitEditProfile = async (values: Record<string, any>) => {
     const { profileImage, profileCoverImage, ...rest } = values
 
-    const [profileImageUrl, profileCoverImageUrl] =
-      await new ContentService().uploadContent(
-        [profileImage, profileCoverImage],
-        "profile"
-      )
+    const contentService = new ContentService()
+
+    const [profileImageUrl, profileCoverImageUrl] = await Promise.all([
+      profileImage?.length
+        ? contentService.uploadProfileImage(profileImage[0])
+        : undefined,
+      profileCoverImage?.length
+        ? contentService.uploadProfileBanner(profileCoverImage[0])
+        : undefined
+    ])
 
     const newValues = { ...rest }
 

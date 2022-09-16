@@ -42,8 +42,12 @@ export interface GetVaultContentRequest {
     getVaultQueryRequestDto: GetVaultQueryRequestDto;
 }
 
-export interface PreSignUrlRequest {
-    path: string;
+export interface PreSignContentRequest {
+    contentType: PreSignContentContentTypeEnum;
+}
+
+export interface PreSignPassRequest {
+    passId: string;
 }
 
 /**
@@ -134,11 +138,11 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get signed url for specified path
+     * Get signed url for content
      */
-    async preSignUrlRaw(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
-        if (requestParameters.path === null || requestParameters.path === undefined) {
-            throw new runtime.RequiredError('path','Required parameter requestParameters.path was null or undefined when calling preSignUrl.');
+    async preSignContentRaw(requestParameters: PreSignContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+        if (requestParameters.contentType === null || requestParameters.contentType === undefined) {
+            throw new runtime.RequiredError('contentType','Required parameter requestParameters.contentType was null or undefined when calling preSignContent.');
         }
 
         const queryParameters: any = {};
@@ -154,7 +158,7 @@ export class ContentApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/content/sign/{path}`.replace(`{${"path"}}`, encodeURIComponent(String(requestParameters.path))),
+            path: `/api/content/sign/content/{contentType}`.replace(`{${"contentType"}}`, encodeURIComponent(String(requestParameters.contentType))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -164,11 +168,128 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get signed url for specified path
+     * Get signed url for content
      */
-    async preSignUrl(requestParameters: PreSignUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignUrlRaw(requestParameters, initOverrides);
+    async preSignContent(requestParameters: PreSignContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignContentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get pre signed url for pass image
+     */
+    async preSignPassRaw(requestParameters: PreSignPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+        if (requestParameters.passId === null || requestParameters.passId === undefined) {
+            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling preSignPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/content/sign/pass/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get pre signed url for pass image
+     */
+    async preSignPass(requestParameters: PreSignPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignPassRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get pre signed url for profile banner
+     */
+    async preSignProfileBannerRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/content/sign/profile/banner`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get pre signed url for profile banner
+     */
+    async preSignProfileBanner(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignProfileBannerRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get pre signed url for profile image
+     */
+    async preSignProfileImageRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/content/sign/profile/image`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get pre signed url for profile image
+     */
+    async preSignProfileImage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignProfileImageRaw(initOverrides);
         return await response.value();
     }
 
 }
+
+/**
+ * @export
+ */
+export const PreSignContentContentTypeEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type PreSignContentContentTypeEnum = typeof PreSignContentContentTypeEnum[keyof typeof PreSignContentContentTypeEnum];

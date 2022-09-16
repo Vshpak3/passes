@@ -24,12 +24,6 @@ export interface CreateContentRequestDto {
      * @type {string}
      * @memberof CreateContentRequestDto
      */
-    url: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateContentRequestDto
-     */
     contentType: CreateContentRequestDtoContentTypeEnum;
 }
 
@@ -51,7 +45,6 @@ export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequest
  */
 export function instanceOfCreateContentRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "url" in value;
     isInstance = isInstance && "contentType" in value;
 
     return isInstance;
@@ -67,7 +60,6 @@ export function CreateContentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'url': json['url'],
         'contentType': json['contentType'],
     };
 }
@@ -81,7 +73,6 @@ export function CreateContentRequestDtoToJSON(value?: CreateContentRequestDto | 
     }
     return {
         
-        'url': value.url,
         'contentType': value.contentType,
     };
 }

@@ -10,6 +10,8 @@ import { EditProfile } from "src/components/pages/profile/profile-details/edit-p
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
+import { ContentService } from "../../helpers"
+
 const mockCreator = {
   profileId: "@drachnik",
   userId: "@drachnik",
@@ -234,7 +236,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       getProfileRequestDto: { username }
     })
     // TODO: Hack to remove undefined from generated API typings
-    const props = { ...JSON.parse(JSON.stringify(profile)), username }
+    const props = {
+      ...JSON.parse(
+        JSON.stringify({
+          ...profile,
+          profileImageUrl: ContentService.profileImage(profile.userId),
+          profileCoverImageUrl: ContentService.profileBanner(profile.userId)
+        })
+      ),
+      username
+    }
     return {
       props,
       // Next.js will attempt to re-generate the page:

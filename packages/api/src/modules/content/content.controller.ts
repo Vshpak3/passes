@@ -47,18 +47,69 @@ export class ContentController {
   }
 
   @ApiEndpoint({
-    summary: 'Get signed url for specified path',
+    summary: 'Get pre signed url for profile image',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
-    responseDesc: 'Url was signed',
+    responseDesc: 'Profile image was signed',
   })
-  @Get('sign/:path(*)')
-  async preSignUrl(
+  @Get('sign/profile/image')
+  async preSignProfileImage(
     @Req() req: RequestWithUser,
-    @Param('path') path: string,
   ): Promise<GetSignedUrlResponseDto> {
-    // TODO: validate path
-    const url = await this.s3contentService.preSignUrl(path, req.user.id)
+    const url = await this.contentService.preSignProfileImage(
+      req.user.id,
+      'profile',
+    )
+    return { url }
+  }
+
+  @ApiEndpoint({
+    summary: 'Get pre signed url for profile banner',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'Profile banner was signed',
+  })
+  @Get('sign/profile/banner')
+  async preSignProfileBanner(
+    @Req() req: RequestWithUser,
+  ): Promise<GetSignedUrlResponseDto> {
+    const url = await this.contentService.preSignProfileImage(
+      req.user.id,
+      'banner',
+    )
+    return { url }
+  }
+
+  @ApiEndpoint({
+    summary: 'Get pre signed url for pass image',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'Pass image was signed',
+  })
+  @Get('sign/pass/:passId')
+  async preSignPass(
+    @Req() req: RequestWithUser,
+    @Param('passId') passId: string,
+  ): Promise<GetSignedUrlResponseDto> {
+    const url = await this.contentService.preSignPass(req.user.id, passId)
+    return { url }
+  }
+
+  @ApiEndpoint({
+    summary: 'Get signed url for content',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'Content url was signed',
+  })
+  @Get('sign/content/:contentType')
+  async preSignContent(
+    @Req() req: RequestWithUser,
+    @Param() params: CreateContentRequestDto,
+  ): Promise<GetSignedUrlResponseDto> {
+    const url = await this.contentService.preSignContent(
+      req.user.id,
+      params.contentType,
+    )
     return { url }
   }
 

@@ -36,13 +36,16 @@ const securityHeaders = [
   }
 ]
 
+const domains = [
+  "cdn.passes.com",
+  "cdn.passes-staging.com",
+  "upload.wikimedia.org"
+]
+if (process.env.NODE_ENV === "development") domains.push("localhost")
+
 const nextConfig = {
   images: {
-    domains: [
-      "cdn.passes.com",
-      "cdn.passes-staging.com",
-      "upload.wikimedia.org"
-    ]
+    domains
   },
   reactStrictMode: false,
   i18n: {

@@ -30,17 +30,15 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
 
 async function getCroppedImg(
   imageSrc: string,
-  croppedArea: CroppedArea,
-  width: number,
-  height: number
+  croppedArea: CroppedArea
 ): Promise<File> {
   const image = await createImage(imageSrc)
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D
 
   // set canvas width to final desired crop size
-  canvas.width = width
-  canvas.height = height
+  canvas.width = croppedArea.width
+  canvas.height = croppedArea.height
 
   ctx.drawImage(
     image,
@@ -54,8 +52,8 @@ async function getCroppedImg(
     0,
     0,
     // scale the result to given width and height, aspect ratio will always be the same
-    width,
-    height
+    croppedArea.width,
+    croppedArea.height
   )
 
   // As a file
@@ -96,13 +94,13 @@ export const ImageCropDialog = ({
 
   const showCroppedImage = useCallback(async () => {
     try {
-      const croppedImage = await getCroppedImg(src, croppedArea, width, height)
+      const croppedImage = await getCroppedImg(src, croppedArea)
       onCrop(croppedImage)
     } catch (e: any) {
       console.error(e)
       toast.error(e)
     }
-  }, [croppedArea, src, height, width, onCrop])
+  }, [croppedArea, src, onCrop])
 
   return (
     <Dialog

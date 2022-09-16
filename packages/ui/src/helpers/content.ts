@@ -1,4 +1,4 @@
-import { ContentApi } from "@passes/api-client"
+import { ContentApi, ContentDtoContentTypeEnum } from "@passes/api-client"
 
 import { wrapApi } from "./wrapApi"
 
@@ -15,63 +15,128 @@ class Content {
 class ContentService {
   private readonly contentApi = wrapApi(ContentApi)
 
-  static profileImage(userId: string, profileId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-${profileId}.jpg`
+  static profileImage(userId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-image.jpeg`
   }
 
-  static profileBanner(userId: string, profileId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner-${profileId}.jpg`
+  static profileBanner(userId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
   }
 
   static passImage(userId: string, passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.jpg`
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.jpeg`
   }
 
   static nftJson(collectionId: string, nftId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${nftId}.json`
   }
 
-  private async uploadFile(
-    file: File,
-    folder: "profile" | "pass" | "usercontent"
-  ): Promise<Content> {
-    let { url } = await this.contentApi.preSignUrl({
-      path: `${folder}/${file.name}`
-    })
+  /**
+   * Get content type from file type.
+   * @returns ContentTypeEnum (image|video|audio)
+   */
+  private getFileContentType(file: File) {
+    const match = file.type.match(/^(image|video|audio)\//)
+    if (!match) return null
+    return match[1] as ContentDtoContentTypeEnum
+  }
 
+  /**
+   *
+   * @param url content url. As follows `cdn_url/upload|media/user_id/content_id.extension`
+   * @returns parsed content url
+   */
+  private parseContentUrl(url: string) {
+    /*
+      Group 1 (id):
+      [^\/]+ match one of more non-slash character after last slash
+      Group 2 (file extension):
+      \w+ match one of more word characters after the dot
+    */
+    const match = url.match(/\/([^/]+)\.(\w+)$/) as RegExpMatchArray
+    const { 1: id, 2: fileExtension } = match
+    return {
+      url,
+      id,
+      fileExtension
+    }
+  }
+
+  private async preSignUrl(
+    type: "profile" | "banner" | "pass" | "content",
+    params?: any
+  ) {
+    switch (type) {
+      case "profile": {
+        const { url } = await this.contentApi.preSignProfileImage()
+        return url
+      }
+      case "banner": {
+        const { url } = await this.contentApi.preSignProfileBanner()
+        return url
+      }
+      case "pass": {
+        const { url } = await this.contentApi.preSignPass(params)
+        return url
+      }
+      case "content": {
+        const { url } = await this.contentApi.preSignContent(params)
+        return url
+      }
+    }
+  }
+
+  private async uploadFile(url: string, file: File): Promise<string> {
     await fetch(url, {
       method: "PUT",
       credentials:
+        // omit cookies in dev
         process.env.NEXT_PUBLIC_NODE_ENV !== "dev" ? "include" : undefined,
       body: file
     })
 
-    // Replace usercontent upstream folder name with downstream one
-    if (folder === "usercontent") {
-      url = url.replace(`/${folder}/`, "/media/")
-    }
-    url = url.split("?")[0]
-
-    const id = "TODO"
-    // TODO:
-    // let contentType = file.type
-    // if (file.type.startsWith("image/")) contentType = "image/jpeg"
-    // if (file.type.startsWith("video/")) contentType = "video/mp4"
-    // const content = await this.contentApi.createContent({
-    //   createContentDto: { url, contentType }
-    // })
-
-    return new Content({ url, id })
+    // remove signatures from uploaded file
+    return url.split("?")[0]
   }
 
+  async uploadProfileImage(file: File) {
+    const url = await this.preSignUrl("profile")
+    return this.uploadFile(url, file)
+  }
+
+  async uploadProfileBanner(file: File) {
+    const url = await this.preSignUrl("banner")
+    return this.uploadFile(url, file)
+  }
+
+  async uploadPassImage(file: File, passId: string) {
+    const url = await this.preSignUrl("pass", passId)
+    return this.uploadFile(url, file)
+  }
+
+  /**
+   *
+   * @param files list of files to upload
+   * @param contentType optional parameter to override default file type (useful for gifs since they are video/mp4 files)
+   * @returns Content array
+   */
   async uploadContent(
     files: File[],
-    folder: "profile" | "pass" | "usercontent"
+    contentType?: ContentDtoContentTypeEnum
   ): Promise<Content[]> {
     if (!files.length) {
       return Promise.resolve([])
     }
-    return Promise.all(files.map(async (f: File) => this.uploadFile(f, folder)))
+    return Promise.all(
+      files.map(async (file: File) => {
+        const _contentType = contentType ?? this.getFileContentType(file)
+        if (!_contentType) throw new Error("invalid file type")
+        const url = await this.preSignUrl("content", _contentType)
+        const result = await this.uploadFile(url, file)
+        const content = this.parseContentUrl(result)
+        return new Content(content)
+      })
+    )
   }
 }
 

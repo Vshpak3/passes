@@ -1,6 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable sonarjs/no-duplicate-string */
 import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -8,14 +9,19 @@ import {
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
+import { PassService } from '../pass/pass.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { UpdateContentRequestDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
+import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
+import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
 @Injectable()
 export class ContentService {
@@ -24,6 +30,8 @@ export class ContentService {
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
+    private readonly s3contentService: S3ContentService,
+    private readonly passService: PassService,
   ) {}
 
   async createContent(
@@ -124,5 +132,28 @@ export class ContentService {
     return (await query.select([`${ContentEntity.table}.*`])).map(
       (content) => new ContentDto(content, ''),
     ) //TODO put in signed url
+  }
+
+  async preSignContent(userId: string, contentType: ContentTypeEnum) {
+    const content = await this.createContent(userId, { contentType })
+    return this.s3contentService.preSignUrl(
+      `upload/${userId}/${content.id}.${getContentTypeFormat(contentType)}`,
+    )
+  }
+
+  async preSignProfileImage(userId: string, type: 'profile' | 'banner') {
+    return this.s3contentService.preSignUrl(
+      `profile/upload/${userId}/${type}.${ContentFormatEnum.IMAGE}`,
+    )
+  }
+
+  async preSignPass(userId: string, passId: string) {
+    const pass = await this.passService.findPass(passId)
+    if (pass.creatorId !== userId)
+      throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
+
+    return this.s3contentService.preSignUrl(
+      `pass/upload/${userId}/${pass.passId}.${ContentFormatEnum.IMAGE}`,
+    )
   }
 }
