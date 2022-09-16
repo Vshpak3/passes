@@ -79,7 +79,7 @@ export const Button = ({
       break
     case "purple":
       variantClassName =
-        "text-white dark:text-white border-passes-secondary-color bg-passes-secondary-color dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
+        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
       break
     case "white":
       variantClassName =
