@@ -1,7 +1,9 @@
 import "@stream-io/stream-chat-css/dist/css/index.css"
 
+import { MessagesApi } from "@passes/api-client/apis"
 import ThreeLines from "public/icons/three-lines-icon.svg"
 import React, { useEffect, useState } from "react"
+import { wrapApi } from "src/helpers"
 import { useChat, useUser } from "src/hooks"
 import { StreamChat } from "stream-chat"
 import { Channel, ChannelList, Chat } from "stream-chat-react"
@@ -37,6 +39,7 @@ const MessagesComponent = ({ username }) => {
   const [gallery, setGallery] = useState(false)
   const [files, setFiles] = useState([])
   const [theme] = useState("dark")
+  const [messagesStats, setMessagesStats] = useState([])
   const { streamToken } = useChat(username)
   const { user } = useUser()
 
@@ -78,6 +81,37 @@ const MessagesComponent = ({ username }) => {
     connect()
   }, [user, streamToken, chatClient])
 
+  // const getMessageStats = async (channelIds) => {
+  //   const { channelStats } = await api.getChannelsStats({
+  //     getChannelStatsRequestDto: {
+  //       channelIds
+  //     }
+  //   })
+  //   setMessagesStats(channelStats)
+  // }
+
+  useEffect(() => {
+    const api = wrapApi(MessagesApi)
+
+    const getMessageStats = async (channelIds) => {
+      const { channelStats } = await api.getChannelsStats({
+        getChannelStatsRequestDto: {
+          channelIds
+        }
+      })
+      setMessagesStats(channelStats)
+    }
+    if (
+      chatClient?.activeChannels &&
+      Object.keys(chatClient.activeChannels).length > 0
+    ) {
+      const channelIds = Object.values(chatClient.activeChannels).map(
+        (channel) => channel.id
+      )
+      getMessageStats(channelIds)
+    }
+  }, [chatClient.user, chatClient.activeChannels])
+
   if (isLoading || !user?.id || !streamToken) {
     return null
   }
@@ -101,8 +135,7 @@ const MessagesComponent = ({ username }) => {
   const options = { state: true, watch: true, presence: true, limit: 8 }
 
   const sort = {
-    last_message_at: -1,
-    updated_at: -1
+    last_message_at: -1
   }
   const DropDown = (props) => <CustomDropdown {...props} />
   const SearchResult = (props) => <CustomResultItem {...props} />
@@ -335,7 +368,7 @@ const MessagesComponent = ({ username }) => {
                     </div>
                   </div>
                 </div>
-                <div className="order-3 pt-5 ">
+                <div className="order-3 pt-5">
                   <MessagingChannelList
                     {...props}
                     onCreateChannel={() => setIsCreating(!isCreating)}
@@ -344,7 +377,12 @@ const MessagesComponent = ({ username }) => {
               </>
             )}
             Preview={(props) => (
-              <MessagingChannelPreview {...props} {...{ setIsCreating }} />
+              <MessagingChannelPreview
+                messagesStats={messagesStats}
+                isCreator={isCreator}
+                {...props}
+                {...{ setIsCreating }}
+              />
             )}
           />
         </div>
@@ -358,7 +396,11 @@ const MessagesComponent = ({ username }) => {
             TypingIndicator={() => null}
           >
             <GiphyContext.Provider value={giphyContextValue}>
-              <ChannelInner theme={theme} toggleMobile={toggleMobile} />
+              <ChannelInner
+                theme={theme}
+                toggleMobile={toggleMobile}
+                messagesStats={messagesStats}
+              />
             </GiphyContext.Provider>
           </Channel>
         </div>

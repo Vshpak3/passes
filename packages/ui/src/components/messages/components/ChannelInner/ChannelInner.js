@@ -4,7 +4,14 @@ import React, { useContext, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, formatCurrency } from "src/helpers"
-import { MessageInput, MessageList, Thread, Window } from "stream-chat-react"
+import {
+  ChatContext,
+  MessageInput,
+  MessageList,
+  Thread,
+  useChatContext,
+  Window
+} from "stream-chat-react"
 
 import {
   MessagingChannelHeader,
@@ -94,7 +101,18 @@ const paidContent = [
   }
 ]
 
+const getChannelUnreadTip = (messagesStats, channel) => {
+  const mapChannelId = messagesStats.reduce((map, stat) => {
+    map[stat.channelId] = stat
+    return map
+  }, {})
+  if (!mapChannelId[channel.data.id]) return 0
+  return mapChannelId[channel.data.id].tipRecieved
+}
+
 export const ChannelInner = (props) => {
+  const { channel: activeChannel } = useChatContext(ChatContext)
+  const tip = getChannelUnreadTip(props.messagesStats, activeChannel)
   const { theme, toggleMobile } = props
   let sumPaid = paidContent.reduce(function (prev, current) {
     return prev + +current.price
@@ -141,14 +159,14 @@ export const ChannelInner = (props) => {
             ) : (
               <div className="flex items-center justify-start gap-[10px]">
                 <div className="m-0 flex cursor-pointer items-center p-0">
-                  <span className="flex h-[36px] w-[87px] items-center justify-center rounded-l-[40px] bg-[#E58230] text-[16px] font-medium leading-[16px] text-[#ffff]">
-                    Today 👑
+                  <span className="flex h-[36px] w-[100px] items-center justify-center rounded-l-[40px] bg-[#E58230] text-[16px] font-medium leading-[16px] text-[#ffff]">
+                    Total Tips 👑
                   </span>
-                  <span className="flex h-[36px] w-[60px] items-center justify-center rounded-r-[40px] bg-[#D55C26] text-[16px] font-medium leading-[16px] text-[#ffff] ">
-                    $200
+                  <span className="flex h-[36px] w-[65px] items-center justify-center rounded-r-[40px] bg-[#D55C26] text-[16px] font-medium leading-[16px] text-[#ffff] ">
+                    {tip > 0 ? formatCurrency(tip) : "$0.00"}
                   </span>
                 </div>
-                <div className="m-0 flex cursor-pointer items-center p-0">
+                {/* <div className="m-0 flex cursor-pointer items-center p-0">
                   <span className="flex h-[36px] w-[125px] items-center justify-center rounded-l-[40px] bg-[#499B8E] text-[16px] font-medium leading-[16px] text-[#ffff]">
                     4 days ago 👏🏻
                   </span>
@@ -163,7 +181,7 @@ export const ChannelInner = (props) => {
                   <span className="flex h-[36px] w-[40px] items-center justify-center rounded-r-[40px] bg-[#488243] text-[16px] font-medium leading-[16px] text-[#ffff] ">
                     $5
                   </span>
-                </div>
+                </div> */}
               </div>
             )}
           </div>

@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { formatCurrency } from "src/helpers"
 import { ChatContext } from "stream-chat-react"
 
 import { getCleanImage } from "../../assets"
@@ -105,6 +106,17 @@ const getAvatarGroup = (members) => {
   return null
 }
 
+const getChannelUnreadTip = (messagesStats, channel) => {
+  const mapChannelId = messagesStats.reduce((map, stat) => {
+    map[stat.channelId] = stat
+    return map
+  }, {})
+  if (!mapChannelId[channel.data.id]) return 0
+  return mapChannelId[channel.data.id].unreadTip
+  // if (channelStats[0]?.unreadTip) return channelStats[0]?.unreadTip
+  // else return null
+}
+
 const getTimeStamp = (channel) => {
   let lastHours = channel.state.last_message_at?.getHours()
   let lastMinutes = channel.state.last_message_at?.getMinutes()
@@ -142,13 +154,22 @@ const getChannelName = (members) => {
 }
 
 const MessagingChannelPreview = (props) => {
-  const { channel, latestMessage, setActiveChannel, setIsCreating } = props
+  const {
+    channel,
+    latestMessage,
+    setActiveChannel,
+    setIsCreating,
+    messagesStats,
+    isCreator
+  } = props
 
   const { channel: activeChannel, client } = useContext(ChatContext)
 
   const members = Object.values(channel.state.members).filter(
     ({ user }) => user?.id !== client?.userID
   )
+
+  const tip = getChannelUnreadTip(messagesStats, channel)
 
   return (
     <div>
@@ -163,7 +184,6 @@ const MessagingChannelPreview = (props) => {
           justify-content: space-between;
           align-items: center;
           padding-left: 15px;
-          padding-right: 15px;
 
         }
 
@@ -301,16 +321,25 @@ const MessagingChannelPreview = (props) => {
                 {latestMessage || "Send a message"}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center pt-2">
-              <div className="flex h-[20px] w-[60px] items-center justify-center gap-4 rounded-[30px] bg-passes-secondary-color">
-                <span className="cursor-pointer text-[10px] font-medium leading-[16px] text-[#FFF]">
-                  Tip: $250
-                </span>
+            {tip > 0 && isCreator ? (
+              <div className="flex flex-col items-center justify-center pt-2">
+                <div className="flex h-[20px] w-[60px] items-center justify-center gap-4 rounded-[30px] bg-passes-secondary-color">
+                  <span className="cursor-pointer text-[10px] font-medium leading-[16px] text-[#FFF]">
+                    Tip: {formatCurrency(tip)}
+                  </span>
+                </div>
+
+                <p className="channel-preview__content-time ">
+                  {getTimeStamp(channel)}
+                </p>
               </div>
-              <p className="channel-preview__content-time ">
-                {getTimeStamp(channel)}
-              </p>
-            </div>
+            ) : (
+              <div className="flex w-[60px] justify-center self-start text-center">
+                <p className="channel-preview__content-time ">
+                  {getTimeStamp(channel)}
+                </p>
+              </div>
+            )}
           </div>
           {/* <div className="channel-preview__content-top">
             <p className="channel-preview__content-name">
