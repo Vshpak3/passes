@@ -129,6 +129,7 @@ models/GetVaultQueryRequestDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts
+models/IsFollowingDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts

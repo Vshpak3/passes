@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   GetFollowResponseDto,
   GetListMembersResponseDto,
+  IsFollowingDto,
   ReportFanDto,
   SearchFollowRequestDto,
 } from '../models';
@@ -25,6 +26,8 @@ import {
     GetFollowResponseDtoToJSON,
     GetListMembersResponseDtoFromJSON,
     GetListMembersResponseDtoToJSON,
+    IsFollowingDtoFromJSON,
+    IsFollowingDtoToJSON,
     ReportFanDtoFromJSON,
     ReportFanDtoToJSON,
     SearchFollowRequestDtoFromJSON,
@@ -113,7 +116,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Check if you follow a creator
      */
-    async checkFollowRaw(requestParameters: CheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async checkFollowRaw(requestParameters: CheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<IsFollowingDto>> {
         if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
             throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling checkFollow.');
         }
@@ -137,13 +140,13 @@ export class FollowApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => IsFollowingDtoFromJSON(jsonValue));
     }
 
     /**
      * Check if you follow a creator
      */
-    async checkFollow(requestParameters: CheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async checkFollow(requestParameters: CheckFollowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<IsFollowingDto> {
         const response = await this.checkFollowRaw(requestParameters, initOverrides);
         return await response.value();
     }

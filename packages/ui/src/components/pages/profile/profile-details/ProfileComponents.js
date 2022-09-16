@@ -11,6 +11,7 @@ import React from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import { CoverButton, RoundedIconButton } from "src/components/atoms/Button"
 import { compactNumberFormatter } from "src/helpers"
+import { useFollow } from "src/hooks"
 
 export const Verified = ({ isVerified }) => (
   <div className="align-items flex items-center justify-self-start p-4 text-passes-gray-100">
@@ -59,6 +60,7 @@ export const ProfileInformation = ({
   quote,
   posts,
   likes,
+  creatorId,
   instagramUrl,
   tiktokUrl,
   youtubeUrl,
@@ -67,75 +69,78 @@ export const ProfileInformation = ({
   twitchUrl,
   facebookUrl,
   twitterUrl,
-  onChat,
-  onFollow
-}) => (
-  <div className="flex flex-col items-start gap-[6px]">
-    <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
-      <span className="text-passes-white-100 text-[32px] font-medium leading-9">
-        {displayName}
-      </span>
-      {/* <Verified /> */}
-    </div>
-    <div className="flex w-full justify-between">
-      <div className="bg-passes-white-100/[0.05] my-2 flex cursor-pointer items-center justify-center rounded-[50px] px-3 py-[6px]">
-        <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
-          @{username}
-        </span>
-      </div>
-      {!ownsProfile && (
-        <div className="align-center flex items-center space-x-3">
-          <RoundedIconButton
-            className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-            onClick={onChat}
-          >
-            <ChatIcon />
-          </RoundedIconButton>
-          <PassesPinkButton
-            name="Follow"
-            type="button"
-            onClick={onFollow}
-            className="h-[36px] w-[115px]"
-          />
-        </div>
-      )}
-    </div>
-    <span className="text-md my-3 font-semibold leading-[22px] text-white">
-      {quote}
-    </span>
-    <div className="flex w-full flex-row items-center gap-[68px]">
-      <div className="flex items-center">
-        <div className="flex items-center justify-center">
-          <span className="text-passes-white-100 mr-[6px] text-base font-medium">
-            {posts}
-          </span>
-          <span className="text-passes-white-100/70 text-sm font-normal">
-            POSTS
-          </span>
-        </div>
-        <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
-        <div className="flex items-center justify-center">
-          <span className="text-passes-white-100 mr-[6px] text-base font-medium">
-            {compactNumberFormatter(likes)}
-          </span>
-          <span className="text-passes-white-100/70 text-sm font-normal">
-            LIKES
-          </span>
-        </div>
-      </div>
+  onChat
+}) => {
+  const { follow, unfollow, isFollowing } = useFollow(creatorId)
 
-      <ProfileSocialMedia
-        instagramUrl={instagramUrl}
-        tiktokUrl={tiktokUrl}
-        youtubeUrl={youtubeUrl}
-        discordUrl={discordUrl}
-        twitchUrl={twitchUrl}
-        facebookUrl={facebookUrl}
-        twitterUrl={twitterUrl}
-      />
+  return (
+    <div className="flex flex-col items-start gap-[6px]">
+      <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
+        <span className="text-passes-white-100 text-[32px] font-medium leading-9">
+          {displayName}
+        </span>
+        {/* <Verified /> */}
+      </div>
+      <div className="flex w-full justify-between">
+        <div className="bg-passes-white-100/[0.05] my-2 flex cursor-pointer items-center justify-center rounded-[50px] px-3 py-[6px]">
+          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
+            @{username}
+          </span>
+        </div>
+        {!ownsProfile && (
+          <div className="align-center flex items-center space-x-3">
+            <RoundedIconButton
+              className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
+              onClick={onChat}
+            >
+              <ChatIcon />
+            </RoundedIconButton>
+            <PassesPinkButton
+              name={isFollowing ? "Unfollow" : "Follow"}
+              type="button"
+              onClick={isFollowing ? unfollow : follow}
+              className="h-[36px] w-[115px]"
+            />
+          </div>
+        )}
+      </div>
+      <span className="text-md my-3 font-semibold leading-[22px] text-white">
+        {quote}
+      </span>
+      <div className="flex w-full flex-row items-center gap-[68px]">
+        <div className="flex items-center">
+          <div className="flex items-center justify-center">
+            <span className="text-passes-white-100 mr-[6px] text-base font-medium">
+              {posts}
+            </span>
+            <span className="text-passes-white-100/70 text-sm font-normal">
+              POSTS
+            </span>
+          </div>
+          <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
+          <div className="flex items-center justify-center">
+            <span className="text-passes-white-100 mr-[6px] text-base font-medium">
+              {compactNumberFormatter(likes)}
+            </span>
+            <span className="text-passes-white-100/70 text-sm font-normal">
+              LIKES
+            </span>
+          </div>
+        </div>
+
+        <ProfileSocialMedia
+          instagramUrl={instagramUrl}
+          tiktokUrl={tiktokUrl}
+          youtubeUrl={youtubeUrl}
+          discordUrl={discordUrl}
+          twitchUrl={twitchUrl}
+          facebookUrl={facebookUrl}
+          twitterUrl={twitterUrl}
+        />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const EditProfileAction = ({ onEditProfile }) => (
   <div className="absolute top-10 right-0 items-center justify-between">

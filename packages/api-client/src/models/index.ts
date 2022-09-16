@@ -103,6 +103,7 @@ export * from './GetVaultQueryRequestDto';
 export * from './GetWalletResponseDto';
 export * from './GetWalletsResponseDto';
 export * from './ImpersonateUserRequestDto';
+export * from './IsFollowingDto';
 export * from './ListMemberDto';
 export * from './LocalUserLoginRequestDto';
 export * from './MessageDto';

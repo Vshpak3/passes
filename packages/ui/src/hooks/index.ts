@@ -6,6 +6,7 @@ import useEventCallback from "./useEventCallback"
 import useEventListener from "./useEventListener"
 import useFanWall from "./useFanWall"
 import useFeed from "./useFeed"
+import useFollow from "./useFollow"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
 import useLocalStorage from "./useLocalStorage"
 import useMessageToDevelopers from "./useMessageToDevelopers"
@@ -27,6 +28,7 @@ export {
   useEventListener,
   useFanWall,
   useFeed,
+  useFollow,
   useIsomorphicLayoutEffect,
   useLocalStorage,
   useMessageToDevelopers,

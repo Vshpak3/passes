@@ -25,6 +25,7 @@ const ProfileDetailsDesktop = ({
           quote={profile.coverDescription}
           posts={profile.postsCount}
           likes={profile.likes}
+          creatorId={profile.userId}
           instagramUrl={profile.instagramUrl}
           tiktokUrl={profile.tiktokUrl}
           youtubeUrl={profile.youtubeUrl}
@@ -32,8 +33,6 @@ const ProfileDetailsDesktop = ({
           twitchUrl={profile.twitchUrl}
           facebookUrl={profile.facebookUrl}
           twitterUrl={profile.twitterUrl}
-          onChat={() => console.log("chat")}
-          onFollow={() => console.log("follow")}
           ownsProfile={ownsProfile}
         />
       </div>
@@ -49,11 +48,10 @@ const ProfileDetailsMobile = ({ profile, username, ownsProfile }) => {
       </div> */}
       <ProfilePhoto url={profile.profileImageUrl} />
       <ProfileInformationMobile
-        onChat={() => console.log("chat")}
-        onFollow={() => console.log("follow")}
         displayName={profile.displayName}
         username={username}
         description={profile.coverDescription}
+        creatorId={profile.userId}
         instagramUrl={profile.instagramUrl}
         tiktokUrl={profile.tiktokUrl}
         youtubeUrl={profile.youtubeUrl}
@@ -69,20 +67,22 @@ const ProfileDetailsMobile = ({ profile, username, ownsProfile }) => {
   )
 }
 
-const ProfileDetails = ({ profile, onEditProfile, username, ownsProfile }) => (
-  <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
-    <ProfileDetailsDesktop
-      ownsProfile={ownsProfile}
-      onEditProfile={onEditProfile}
-      profile={profile}
-      username={username}
-    />
-    <ProfileDetailsMobile
-      ownsProfile={ownsProfile}
-      profile={profile}
-      username={username}
-    />
-  </div>
-)
+const ProfileDetails = ({ profile, onEditProfile, username, ownsProfile }) => {
+  return (
+    <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
+      <ProfileDetailsDesktop
+        ownsProfile={ownsProfile}
+        onEditProfile={onEditProfile}
+        profile={profile}
+        username={username}
+      />
+      <ProfileDetailsMobile
+        ownsProfile={ownsProfile}
+        profile={profile}
+        username={username}
+      />
+    </div>
+  )
+}
 
 export default ProfileDetails
