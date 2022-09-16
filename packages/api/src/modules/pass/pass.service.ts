@@ -387,20 +387,32 @@ export class PassService {
 
     const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
-      pass.chain,
+      pass.default_chain,
     )
 
-    const solNftDto = await this.solService.createNftPass(
-      userId,
-      pass.id,
-      id,
-      pass.title,
-      //TODO: figure out symbol
-      // user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
-      '',
-      pass.description,
-      userCustodialWallet.address,
-    )
+    let address = ''
+    const tokenId = undefined
+    switch (pass.default_chain) {
+      case ChainEnum.SOL:
+        address = (
+          await this.solService.createNftPass(
+            userId,
+            pass.id,
+            id,
+            pass.title,
+            pass.symbol,
+            pass.description,
+            userCustodialWallet.address,
+          )
+        ).mintPubKey
+        break
+      case ChainEnum.ETH:
+        break
+      default:
+        throw new UnsupportedChainPassError(
+          `can not create a pass on chain ${pass.chain}`,
+        )
+    }
     const data = PassHolderEntity.toDict<PassHolderEntity>({
       id,
       pass: passId,
@@ -408,8 +420,9 @@ export class PassService {
       holder: userId,
       expiresAt: expiresAt,
       messages: pass.messages,
-      address: solNftDto.mintPubKey,
-      chain: ChainEnum.SOL,
+      address,
+      tokenId,
+      chain: pass.default_chain,
     })
     await this.dbWriter(PassHolderEntity.table).insert(data)
     await this.dbWriter(PassEntity.table)
