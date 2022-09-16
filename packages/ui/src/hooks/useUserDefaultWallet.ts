@@ -1,4 +1,7 @@
-import { WalletApi } from "@passes/api-client"
+import {
+  GetDefaultWalletRequestDtoChainEnum,
+  WalletApi
+} from "@passes/api-client"
 import useSWR from "swr"
 
 import { wrapApi } from "../helpers"
@@ -13,7 +16,11 @@ const useUserDefaultWallet = () => {
     mutate
   } = useSWR(accessToken ? "/payin/default" : null, async () => {
     const api = wrapApi(WalletApi)
-    return await api.getDefaultWallet()
+    return await api.getDefaultWallet({
+      getDefaultWalletRequestDto: {
+        chain: GetDefaultWalletRequestDtoChainEnum.Sol
+      }
+    })
   })
 
   return { wallet, loading, mutate }

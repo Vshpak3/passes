@@ -39,14 +39,14 @@ const useVaultSelect = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [date, setDate] = useState(INITIAL_DATE)
 
-  const isSelected = selectedItems.includes(itemData.id)
+  const isSelected = selectedItems.includes(itemData.contentId)
 
   const handleSelectItem = () => {
-    setSelectedItems([...selectedItems, itemData.id])
+    setSelectedItems([...selectedItems, itemData.contentId])
   }
   const handleRemoveItem = () => {
     const itemsArr = selectedItems.slice()
-    itemsArr.splice(itemsArr.indexOf(itemData.id), 1)
+    itemsArr.splice(itemsArr.indexOf(itemData.contentId), 1)
     setSelectedItems(itemsArr)
   }
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem

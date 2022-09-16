@@ -31,7 +31,7 @@ const VaultMediaItem = ({
         )}
       >
         <Image
-          alt={`vault-img-${itemData.id}`}
+          alt={`vault-img-${itemData.contentId}`}
           src={itemData.signedUrl}
           layout="fill"
           objectFit="cover"

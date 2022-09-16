@@ -29,13 +29,17 @@ import { UserEntity } from '../user/entities/user.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
-import { CreatePassRequestDto } from './dto/create-pass.dto'
+import {
+  CreatePassRequestDto,
+  CreatePassResponseDto,
+} from './dto/create-pass.dto'
 import {
   GetCreatorPassesRequestDto,
   GetExternalPassesRequestDto,
 } from './dto/get-pass.dto'
 import { GetPassHoldersRequestDto } from './dto/get-pass-holders.dto'
 import { GetPassHoldingsRequestDto } from './dto/get-pass-holdings.dto'
+import { MintPassRequestDto, MintPassResponseDto } from './dto/mint-pass.dto'
 import { PassDto } from './dto/pass.dto'
 import { PassHolderDto } from './dto/pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
@@ -52,7 +56,7 @@ import {
 import { createPassHolderQuery } from './pass.util'
 const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
 const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
-
+const DEFAULT_PASS_SYMBOL = 'PASS'
 export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 @Injectable()
@@ -75,10 +79,10 @@ export class PassService {
   async createPass(
     userId: string,
     createPassDto: CreatePassRequestDto,
-  ): Promise<boolean> {
+  ): Promise<CreatePassResponseDto> {
     const user = await this.dbReader(UserEntity.table)
       .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
-      .select('id')
+      .select(['id', 'username'])
       .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
@@ -102,26 +106,62 @@ export class PassService {
       messages: createPassDto.messages,
       totalSupply: createPassDto.totalSupply,
       remainingSupply: createPassDto.totalSupply,
+      defaultChain: createPassDto.chain,
+      symbol: DEFAULT_PASS_SYMBOL,
     })
+    if (
+      createPassDto.chain !== ChainEnum.SOL &&
+      createPassDto.chain !== ChainEnum.ETH
+    ) {
+      throw new UnsupportedChainPassError(
+        `can not create a pass on chain ${createPassDto.chain}`,
+      )
+    }
     await this.dbWriter(PassEntity.table).insert(data)
 
-    switch (createPassDto.chain) {
+    return new CreatePassResponseDto(data.id)
+  }
+
+  async mintPass(
+    userId: string,
+    mintPassDto: MintPassRequestDto,
+  ): Promise<MintPassResponseDto> {
+    const user = await this.dbReader(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
+      .select(['id', 'username'])
+      .first()
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
+    const pass = await this.dbReader(PassEntity.table)
+      .where(
+        PassEntity.toDict<PassEntity>({
+          creator: userId,
+          id: mintPassDto.passId,
+        }),
+      )
+      .select('*')
+      .first()
+    if (!pass || pass.minted) {
+      throw new NotFoundException('Pass can not be minted')
+    }
+    switch (pass.chain) {
       case ChainEnum.SOL:
         await this.solService.createSolNftCollection(
           user.id,
-          data.id,
-          createPassDto.title,
-          user.username.replace(/[^a-zA-Z]/g, '').substring(0, 10),
-          createPassDto.description,
+          pass.id,
+          pass.title,
+          'PASS',
+          pass.description,
         )
         break
       case ChainEnum.ETH: // TODO
       default:
         throw new UnsupportedChainPassError(
-          `can not create a pass on chain ${createPassDto.chain}`,
+          `can not create a pass on chain ${pass.chain}`,
         )
     }
-    return true
+    return new MintPassResponseDto(true)
   }
 
   async findPass(passId: string): Promise<PassDto> {
@@ -347,6 +387,7 @@ export class PassService {
 
     const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
+      pass.chain,
     )
 
     const solNftDto = await this.solService.createNftPass(

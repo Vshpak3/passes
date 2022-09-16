@@ -57,6 +57,7 @@ models/CreateLocalUserRequestDto.ts
 models/CreateOrUpdateProfileRequestDto.ts
 models/CreatePassHolderRequestDto.ts
 models/CreatePassRequestDto.ts
+models/CreatePassResponseDto.ts
 models/CreatePostAccessRequestDto.ts
 models/CreatePostRequestDto.ts
 models/CreatePostResponseDto.ts
@@ -88,6 +89,8 @@ models/GetCreatorPassesRequestDto.ts
 models/GetCreatorSettingsResponseDto.ts
 models/GetCreatorStatsResponseDto.ts
 models/GetCreatorVerificationStepResponseDto.ts
+models/GetCustodialWalletRequestDto.ts
+models/GetDefaultWalletRequestDto.ts
 models/GetExternalPassesRequestDto.ts
 models/GetFanWallRequestDto.ts
 models/GetFanWallResponseDto.ts
@@ -137,6 +140,8 @@ models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts
 models/MetamaskCircleUSDCEntryRequestDto.ts
 models/MetamaskCircleUSDCEntryResponseDto.ts
+models/MintPassRequestDto.ts
+models/MintPassResponseDto.ts
 models/NotificationDto.ts
 models/PassDto.ts
 models/PassHolderDto.ts
@@ -160,6 +165,7 @@ models/SearchCreatorResponseDto.ts
 models/SearchFollowRequestDto.ts
 models/SendMessageRequestDto.ts
 models/SetCreatorFeeRequestDto.ts
+models/SetDefaultWalletRequestDto.ts
 models/SetEmailRequestDto.ts
 models/SetPayinMethodRequestDto.ts
 models/SetPayoutMethodRequestDto.ts

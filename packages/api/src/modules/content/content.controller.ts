@@ -19,7 +19,10 @@ import {
   GetContentResponseDto,
   GetContentsResponseDto,
 } from './dto/get-content.dto'
-import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
+import {
+  GetVaultQueryRequestDto,
+  GetVaultQueryResponseDto,
+} from './dto/get-vault-query-dto'
 
 @ApiTags('content')
 @Controller('content')
@@ -124,13 +127,8 @@ export class ContentController {
     @Req() req: RequestWithUser,
     @Body() getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ): Promise<GetContentsResponseDto> {
-    // TODO: add pagination
-    return new GetContentsResponseDto(
-      await this.contentService.getVault(
-        req.user.id,
-        getVaultQueryRequestDto.category,
-        getVaultQueryRequestDto.type,
-      ),
+    return new GetVaultQueryResponseDto(
+      await this.contentService.getVault(req.user.id, getVaultQueryRequestDto),
     )
   }
 }

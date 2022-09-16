@@ -24,7 +24,7 @@ export interface GetContentResponseDto {
      * @type {string}
      * @memberof GetContentResponseDto
      */
-    id: string;
+    contentId: string;
     /**
      * 
      * @type {string}
@@ -49,6 +49,12 @@ export interface GetContentResponseDto {
      * @memberof GetContentResponseDto
      */
     order: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetContentResponseDto
+     */
+    createdAt: Date;
 }
 
 
@@ -69,11 +75,12 @@ export type GetContentResponseDtoContentTypeEnum = typeof GetContentResponseDtoC
  */
 export function instanceOfGetContentResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "contentId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "signedUrl" in value;
     isInstance = isInstance && "contentType" in value;
     isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
 }
@@ -88,11 +95,12 @@ export function GetContentResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'id': json['id'],
+        'contentId': json['contentId'],
         'userId': json['userId'],
         'signedUrl': json['signedUrl'],
         'contentType': json['contentType'],
         'order': json['order'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -105,11 +113,12 @@ export function GetContentResponseDtoToJSON(value?: GetContentResponseDto | null
     }
     return {
         
-        'id': value.id,
+        'contentId': value.contentId,
         'userId': value.userId,
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
         'order': value.order,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

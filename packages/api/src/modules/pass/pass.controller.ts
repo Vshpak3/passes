@@ -14,7 +14,10 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { CreatePassRequestDto } from './dto/create-pass.dto'
+import {
+  CreatePassRequestDto,
+  CreatePassResponseDto,
+} from './dto/create-pass.dto'
 import { CreatePassHolderRequestDto } from './dto/create-pass-holder.dto'
 import {
   GetCreatorPassesRequestDto,
@@ -30,6 +33,7 @@ import {
   GetPassHoldingsRequestDto,
   GetPassHoldingsResponseDto,
 } from './dto/get-pass-holdings.dto'
+import { MintPassRequestDto, MintPassResponseDto } from './dto/mint-pass.dto'
 import { RenewPassHolderRequestDto } from './dto/renew-pass-holder.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassService } from './pass.service'
@@ -42,15 +46,29 @@ export class PassController {
   @ApiEndpoint({
     summary: 'Creates a pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: CreatePassResponseDto,
     responseDesc: 'A pass was created',
   })
   @Post()
   async createPass(
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassRequestDto,
-  ): Promise<boolean> {
+  ): Promise<CreatePassResponseDto> {
     return this.passService.createPass(req.user.id, createPassDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Mints a pass',
+    responseStatus: HttpStatus.OK,
+    responseType: MintPassResponseDto,
+    responseDesc: 'A pass was minted',
+  })
+  @Post('mint')
+  async mintPass(
+    @Req() req: RequestWithUser,
+    @Body() mintPassDto: MintPassRequestDto,
+  ): Promise<MintPassResponseDto> {
+    return this.passService.mintPass(req.user.id, mintPassDto)
   }
 
   @ApiEndpoint({

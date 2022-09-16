@@ -6,7 +6,9 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { ProfileEntity } from '../profile/entities/profile.entity'
+import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
@@ -42,6 +44,7 @@ export class VerificationService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly userService: UserService,
+    private readonly s3ContentService: S3ContentService,
   ) {
     this.personaConnector = new PersonaConnector(this.configService)
   }
@@ -223,7 +226,6 @@ export class VerificationService {
       .first()
     switch (submitCreatorVerificationStepRequestDto.step) {
       case CreatorVerificationStepEnum.STEP_1_PROFILE:
-        // TODO: check that profile image and banner exist
         if (
           !profile.description ||
           !(
@@ -231,7 +233,13 @@ export class VerificationService {
             profile.youtube_url ||
             profile.discord_url ||
             profile.twitch_url
-          )
+          ) ||
+          !(await this.s3ContentService.doesObjectExist(
+            `profile/upload/${userId}/profile.${ContentFormatEnum.IMAGE}`,
+          )) ||
+          !(await this.s3ContentService.doesObjectExist(
+            `profile/upload/${userId}/banner.${ContentFormatEnum.IMAGE}`,
+          ))
         ) {
           throw new VerificationError('user has not finished profile')
         }

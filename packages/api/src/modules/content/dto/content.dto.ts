@@ -6,7 +6,7 @@ import { ContentTypeEnum } from '../enums/content-type.enum'
 export class ContentDto {
   @IsUUID()
   @DtoProperty()
-  id: string
+  contentId: string
 
   @IsUUID()
   @DtoProperty()
@@ -25,14 +25,18 @@ export class ContentDto {
   @DtoProperty()
   order: number
 
+  @DtoProperty()
+  createdAt: Date
+
   constructor(content, signedUrl) {
     if (content) {
-      this.id = content.id
+      this.contentId = content.id
       this.userId = content.user_id
       this.signedUrl = content.url
       this.contentType = content.content_type
       this.signedUrl = signedUrl
       this.order = content.order
+      this.createdAt = content.created_at
     }
   }
 }

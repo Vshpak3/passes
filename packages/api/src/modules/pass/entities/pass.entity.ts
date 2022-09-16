@@ -4,7 +4,12 @@ import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
-import { PASS_DESCRIPTION_LENGTH, PASS_TITLE_LENGTH } from '../constants/schema'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
+import {
+  PASS_DESCRIPTION_LENGTH,
+  PASS_SYMBOL_LENGTH,
+  PASS_TITLE_LENGTH,
+} from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 @Entity({ tableName: 'pass' })
@@ -17,6 +22,9 @@ export class PassEntity extends BaseEntity {
 
   @Property({ length: PASS_DESCRIPTION_LENGTH })
   description: string
+
+  @Property({ length: PASS_SYMBOL_LENGTH })
+  symbol: string
 
   @Enum(() => PassTypeEnum)
   type: PassTypeEnum
@@ -45,4 +53,10 @@ export class PassEntity extends BaseEntity {
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
   ethAddress?: string
+
+  @Property({ default: false })
+  minted: boolean
+
+  @Enum(() => ChainEnum)
+  defaultChain?: ChainEnum
 }

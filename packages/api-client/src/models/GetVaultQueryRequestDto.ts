@@ -21,6 +21,18 @@ import { exists, mapValues } from '../runtime';
 export interface GetVaultQueryRequestDto {
     /**
      * 
+     * @type {Date}
+     * @memberof GetVaultQueryRequestDto
+     */
+    createdAt?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetVaultQueryRequestDto
+     */
+    lastId?: string;
+    /**
+     * 
      * @type {string}
      * @memberof GetVaultQueryRequestDto
      */
@@ -75,6 +87,8 @@ export function GetVaultQueryRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'category': !exists(json, 'category') ? undefined : json['category'],
         'type': !exists(json, 'type') ? undefined : json['type'],
     };
@@ -89,6 +103,8 @@ export function GetVaultQueryRequestDtoToJSON(value?: GetVaultQueryRequestDto | 
     }
     return {
         
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'lastId': value.lastId,
         'category': value.category,
         'type': value.type,
     };

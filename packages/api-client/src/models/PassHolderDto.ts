@@ -48,6 +48,12 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
+    symbol: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
     type: PassHolderDtoTypeEnum;
     /**
      * 
@@ -196,6 +202,7 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "passId" in value;
     isInstance = isInstance && "title" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "symbol" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
@@ -222,6 +229,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'title': json['title'],
         'description': json['description'],
+        'symbol': json['symbol'],
         'type': json['type'],
         'price': json['price'],
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
@@ -258,6 +266,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'creatorId': value.creatorId,
         'title': value.title,
         'description': value.description,
+        'symbol': value.symbol,
         'type': value.type,
         'price': value.price,
         'duration': value.duration,

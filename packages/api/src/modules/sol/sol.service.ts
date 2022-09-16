@@ -42,6 +42,7 @@ import { Logger } from 'winston'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
+import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
@@ -104,6 +105,7 @@ type Creator = Readonly<{
 const MAX_TIME_NFT_REFRESH = 1000 * 60 * 30 // 30 minutes
 
 export class SolService {
+  cloudfrontUrl: string
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -120,7 +122,9 @@ export class SolService {
     private readonly walletService: WalletService,
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
-  ) {}
+  ) {
+    this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
+  }
 
   async getConnection() {
     return new Connection(
@@ -279,17 +283,19 @@ export class SolService {
     const passPubKey = new PublicKey(
       await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
     )
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+
     const jsonMetadata = {
       name: name,
       symbol: symbol,
       description: description,
       seller_fee_basis_points: 0,
-      image: '', // TODO, get url from passHolderId
+      image: imageUrl,
       properties: {
         files: [
           {
             type: 'image/png',
-            uri: '', // TODO, get url from passHolderId
+            uri: imageUrl,
           },
         ],
         category: 'image',
@@ -512,12 +518,14 @@ export class SolService {
         await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
       )
 
+      const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+
       const metadataJson = {
         name: name,
         symbol: symbol,
         description: description,
-        image: '', // TODO, get url from passId
-        external_url: `https://www.passes.com/${user.username}`,
+        image: imageUrl,
+        external_url: `https://www.passes.com/${user.username}`, //TODO: (pz129) fix
         seller_fee_basis_points: 0,
         properties: {
           creators: [
@@ -528,7 +536,7 @@ export class SolService {
           ],
           files: [
             {
-              uri: '', // TODO, get url from passId
+              uri: imageUrl,
               type: 'image/png',
             },
           ],
@@ -540,7 +548,7 @@ export class SolService {
         Body: JSON.stringify(metadataJson),
         Key: `nft/collection-${passId}`,
       }
-      metadataUri = `https://cdn.passes-staging.com/nft/collection-${passId}`
+      metadataUri = `${this.cloudfrontUrl}/nft/collection-${passId}`
 
       metadata = {
         name: name,

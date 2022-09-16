@@ -57,7 +57,7 @@ export function getSortKey(sortBy: SortKeyEnum) {
   switch (sortBy) {
     case SortKeyEnum.RECENT:
       // return "date"
-      return "id"
+      return "contentId"
     case SortKeyEnum.MOST_LIKED:
       //   return "totalLikes"
       return "userId"

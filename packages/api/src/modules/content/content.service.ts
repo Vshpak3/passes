@@ -16,12 +16,15 @@ import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
+import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 import { UpdateContentRequestDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
+
+export const MAX_CONTENT_PER_REQUeST = 10
 
 @Injectable()
 export class ContentService {
@@ -50,7 +53,7 @@ export class ContentService {
     }
   }
 
-  async findOne(id: string): Promise<GetContentResponseDto> {
+  async findContent(id: string): Promise<GetContentResponseDto> {
     const content = await this.dbReader(ContentEntity.table)
       .where('id', id)
       .select('*')
@@ -62,7 +65,7 @@ export class ContentService {
     return new GetContentResponseDto(content, '') //TODO: put in signed url
   }
 
-  async update(
+  async updateContent(
     contentId: string,
     updateContentDto: UpdateContentRequestDto,
   ): Promise<GetContentResponseDto> {
@@ -86,9 +89,9 @@ export class ContentService {
 
   async getVault(
     userId: string,
-    category?: VaultCategoryEnum,
-    type?: ContentTypeEnum,
+    getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ) {
+    const { category, type, lastId, createdAt } = getVaultQueryRequestDto
     let query = this.dbReader(ContentEntity.table).where(
       ContentEntity.toDict<ContentEntity>({
         user: userId,
@@ -129,15 +132,30 @@ export class ContentService {
       query = query.andWhere(
         ContentEntity.toDict<ContentEntity>({ contentType: type }),
       )
-    return (await query.select([`${ContentEntity.table}.*`])).map(
-      (content) => new ContentDto(content, ''),
-    ) //TODO put in signed url
+    if (lastId) {
+      query = query.andWhere(`${ContentEntity.table}.id`, '<', lastId)
+    }
+    if (createdAt) {
+      query = query.andWhere(
+        `${ContentEntity.table}.created_at`,
+        '<=',
+        createdAt,
+      )
+    }
+    return (
+      await query.select([`${ContentEntity.table}.*`]).orderBy([
+        { column: `${ContentEntity.table}.created_at`, order: 'desc' },
+        { column: `${ContentEntity.table}.id`, order: 'desc' },
+      ])
+    ).map((content) => new ContentDto(content, ''))
   }
 
   async preSignContent(userId: string, contentType: ContentTypeEnum) {
     const content = await this.createContent(userId, { contentType })
     return this.s3contentService.preSignUrl(
-      `upload/${userId}/${content.id}.${getContentTypeFormat(contentType)}`,
+      `upload/${userId}/${content.contentId}.${getContentTypeFormat(
+        contentType,
+      )}`,
     )
   }
 

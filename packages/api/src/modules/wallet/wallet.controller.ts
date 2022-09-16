@@ -20,10 +20,13 @@ import {
   CreateUnauthenticatedWalletRequestDto,
   CreateWalletRequestDto,
 } from './dto/create-wallet.dto'
+import { GetCustodialWalletRequestDto } from './dto/get-custodial-wallet.dto'
+import { GetDefaultWalletRequestDto } from './dto/get-default-wallet.dto'
 import {
   GetWalletResponseDto,
   GetWalletsResponseDto,
 } from './dto/get-wallet.dto'
+import { SetDefaultWalletRequestDto } from './dto/set-default-wallet.dto'
 import { WalletService } from './wallet.service'
 
 @ApiTags('wallet')
@@ -40,11 +43,15 @@ export class WalletController {
     responseType: GetWalletResponseDto,
     responseDesc: 'User custodial wallet retrieved',
   })
-  @Get('custodial')
+  @Post('custodial')
   async getUserCustodialWallet(
     @Req() req: RequestWithUser,
+    @Body() getCustodialWalletRequestDto: GetCustodialWalletRequestDto,
   ): Promise<GetWalletResponseDto> {
-    return await this.walletService.getUserCustodialWallet(req.user.id)
+    return await this.walletService.getUserCustodialWallet(
+      req.user.id,
+      getCustodialWalletRequestDto.chain,
+    )
   }
 
   @ApiEndpoint({
@@ -53,11 +60,15 @@ export class WalletController {
     responseType: GetWalletResponseDto,
     responseDesc: 'Default wallet retrieved',
   })
-  @Get('default')
+  @Post('find-default')
   async getDefaultWallet(
     @Req() req: RequestWithUser,
+    @Body() getDefaultWalletRequestDto: GetDefaultWalletRequestDto,
   ): Promise<GetWalletResponseDto> {
-    return await this.walletService.getDefaultWallet(req.user.id)
+    return await this.walletService.getDefaultWallet(
+      req.user.id,
+      getDefaultWalletRequestDto.chain,
+    )
   }
 
   @ApiEndpoint({
@@ -66,12 +77,16 @@ export class WalletController {
     responseType: undefined,
     responseDesc: 'Default wallet set',
   })
-  @Post('default/:walletId')
+  @Post('set-default')
   async setDefaultWallet(
     @Req() req: RequestWithUser,
-    @Param('walletId') walletId: string,
+    @Body() setDefaultWalletRequestDto: SetDefaultWalletRequestDto,
   ): Promise<void> {
-    await this.walletService.setDefaultWallet(req.user.id, walletId)
+    await this.walletService.setDefaultWallet(
+      req.user.id,
+      setDefaultWalletRequestDto.walletId,
+      setDefaultWalletRequestDto.chain,
+    )
   }
 
   @ApiEndpoint({

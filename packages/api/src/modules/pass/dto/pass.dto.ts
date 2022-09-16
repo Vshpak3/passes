@@ -5,7 +5,12 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { PASS_DESCRIPTION_LENGTH, PASS_TITLE_LENGTH } from '../constants/schema'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
+import {
+  PASS_DESCRIPTION_LENGTH,
+  PASS_SYMBOL_LENGTH,
+  PASS_TITLE_LENGTH,
+} from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 export class PassDto {
   @IsUUID()
@@ -23,6 +28,10 @@ export class PassDto {
   @Length(1, PASS_DESCRIPTION_LENGTH)
   @DtoProperty()
   description: string
+
+  @Length(1, PASS_SYMBOL_LENGTH)
+  @DtoProperty()
+  symbol: string
 
   @IsEnum(PassTypeEnum)
   @DtoProperty({ enum: PassTypeEnum })
@@ -47,6 +56,9 @@ export class PassDto {
   @DtoProperty()
   remainingSupply: number
 
+  @IsEnum(ChainEnum)
+  defaultChain: ChainEnum
+
   @DtoProperty()
   freetrial: boolean
 
@@ -69,6 +81,7 @@ export class PassDto {
     this.creatorId = pass.creator_id
     this.title = pass.title
     this.description = pass.description
+    this.symbol = pass.symbol
     this.type = pass.type
     this.duration = pass.duration
     this.totalSupply = pass.total_supply
@@ -78,6 +91,7 @@ export class PassDto {
     this.price = pass.price
     this.totalSupply = pass.total_supply
     this.createdAt = pass.created_at
+    this.defaultChain = pass.default_chain
 
     this.creatorUsername = pass.creator_username
     this.creatorDisplayName = pass.creator_display_name

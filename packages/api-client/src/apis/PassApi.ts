@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   CreatePassHolderRequestDto,
   CreatePassRequestDto,
+  CreatePassResponseDto,
   GetCreatorPassesRequestDto,
   GetExternalPassesRequestDto,
   GetPassHoldersRequestDto,
@@ -25,6 +26,8 @@ import type {
   GetPassHoldingsResponseDto,
   GetPassResponseDto,
   GetPassesResponseDto,
+  MintPassRequestDto,
+  MintPassResponseDto,
   PayinDataDto,
   RegisterPayinResponseDto,
   RenewPassHolderRequestDto,
@@ -35,6 +38,8 @@ import {
     CreatePassHolderRequestDtoToJSON,
     CreatePassRequestDtoFromJSON,
     CreatePassRequestDtoToJSON,
+    CreatePassResponseDtoFromJSON,
+    CreatePassResponseDtoToJSON,
     GetCreatorPassesRequestDtoFromJSON,
     GetCreatorPassesRequestDtoToJSON,
     GetExternalPassesRequestDtoFromJSON,
@@ -51,6 +56,10 @@ import {
     GetPassResponseDtoToJSON,
     GetPassesResponseDtoFromJSON,
     GetPassesResponseDtoToJSON,
+    MintPassRequestDtoFromJSON,
+    MintPassRequestDtoToJSON,
+    MintPassResponseDtoFromJSON,
+    MintPassResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
@@ -87,6 +96,10 @@ export interface GetPassHoldersRequest {
 
 export interface GetPassHoldingsRequest {
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto;
+}
+
+export interface MintPassRequest {
+    mintPassRequestDto: MintPassRequestDto;
 }
 
 export interface PinPassRequest {
@@ -163,7 +176,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Creates a pass
      */
-    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createPassRaw(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePassResponseDto>> {
         if (requestParameters.createPassRequestDto === null || requestParameters.createPassRequestDto === undefined) {
             throw new runtime.RequiredError('createPassRequestDto','Required parameter requestParameters.createPassRequestDto was null or undefined when calling createPass.');
         }
@@ -190,13 +203,13 @@ export class PassApi extends runtime.BaseAPI {
             body: CreatePassRequestDtoToJSON(requestParameters.createPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePassResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a pass
      */
-    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePassResponseDto> {
         const response = await this.createPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -384,6 +397,47 @@ export class PassApi extends runtime.BaseAPI {
      */
     async getPassHoldings(requestParameters: GetPassHoldingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassHoldingsResponseDto> {
         const response = await this.getPassHoldingsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Mints a pass
+     */
+    async mintPassRaw(requestParameters: MintPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MintPassResponseDto>> {
+        if (requestParameters.mintPassRequestDto === null || requestParameters.mintPassRequestDto === undefined) {
+            throw new runtime.RequiredError('mintPassRequestDto','Required parameter requestParameters.mintPassRequestDto was null or undefined when calling mintPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/pass/mint`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MintPassRequestDtoToJSON(requestParameters.mintPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MintPassResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Mints a pass
+     */
+    async mintPass(requestParameters: MintPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MintPassResponseDto> {
+        const response = await this.mintPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

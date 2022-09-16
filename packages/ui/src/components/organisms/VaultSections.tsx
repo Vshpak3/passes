@@ -45,7 +45,7 @@ const VaultNavigation = ({
   setNewMessage
 }: IVaultNavigation) => {
   const selectAll = () =>
-    setSelectedItems(vaultContent?.map((item) => item.id) ?? [])
+    setSelectedItems(vaultContent?.map((item) => item.contentId) ?? [])
   const deselectAll = () => setSelectedItems([])
 
   const {
@@ -116,7 +116,7 @@ const VaultMediaGrid = ({
   const emptyGrid = new Array(3).fill(0).map(composeEmptyGrid)
   const mediaGrid = vaultContent?.map((item) => (
     <VaultMediaItem
-      key={item.id}
+      key={item.contentId}
       itemData={item}
       selectedItems={selectedItems}
       setSelectedItems={setSelectedItems}

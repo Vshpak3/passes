@@ -19,8 +19,11 @@ import type {
   AuthWalletResponseDto,
   CreateUnauthenticatedWalletRequestDto,
   CreateWalletRequestDto,
+  GetCustodialWalletRequestDto,
+  GetDefaultWalletRequestDto,
   GetWalletResponseDto,
   GetWalletsResponseDto,
+  SetDefaultWalletRequestDto,
 } from '../models';
 import {
     AuthWalletRequestDtoFromJSON,
@@ -31,10 +34,16 @@ import {
     CreateUnauthenticatedWalletRequestDtoToJSON,
     CreateWalletRequestDtoFromJSON,
     CreateWalletRequestDtoToJSON,
+    GetCustodialWalletRequestDtoFromJSON,
+    GetCustodialWalletRequestDtoToJSON,
+    GetDefaultWalletRequestDtoFromJSON,
+    GetDefaultWalletRequestDtoToJSON,
     GetWalletResponseDtoFromJSON,
     GetWalletResponseDtoToJSON,
     GetWalletsResponseDtoFromJSON,
     GetWalletsResponseDtoToJSON,
+    SetDefaultWalletRequestDtoFromJSON,
+    SetDefaultWalletRequestDtoToJSON,
 } from '../models';
 
 export interface AuthMessageRequest {
@@ -49,6 +58,14 @@ export interface CreateWalletRequest {
     createWalletRequestDto: CreateWalletRequestDto;
 }
 
+export interface GetDefaultWalletRequest {
+    getDefaultWalletRequestDto: GetDefaultWalletRequestDto;
+}
+
+export interface GetUserCustodialWalletRequest {
+    getCustodialWalletRequestDto: GetCustodialWalletRequestDto;
+}
+
 export interface RefreshWalletsRequest {
     walletId: string;
 }
@@ -58,7 +75,7 @@ export interface RemoveWalletRequest {
 }
 
 export interface SetDefaultWalletRequest {
-    walletId: string;
+    setDefaultWalletRequestDto: SetDefaultWalletRequestDto;
 }
 
 /**
@@ -192,10 +209,16 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Get default wallet
      */
-    async getDefaultWalletRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWalletResponseDto>> {
+    async getDefaultWalletRaw(requestParameters: GetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWalletResponseDto>> {
+        if (requestParameters.getDefaultWalletRequestDto === null || requestParameters.getDefaultWalletRequestDto === undefined) {
+            throw new runtime.RequiredError('getDefaultWalletRequestDto','Required parameter requestParameters.getDefaultWalletRequestDto was null or undefined when calling getDefaultWallet.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -206,10 +229,11 @@ export class WalletApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/wallet/default`,
-            method: 'GET',
+            path: `/api/wallet/find-default`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetDefaultWalletRequestDtoToJSON(requestParameters.getDefaultWalletRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetWalletResponseDtoFromJSON(jsonValue));
@@ -218,18 +242,24 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Get default wallet
      */
-    async getDefaultWallet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletResponseDto> {
-        const response = await this.getDefaultWalletRaw(initOverrides);
+    async getDefaultWallet(requestParameters: GetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletResponseDto> {
+        const response = await this.getDefaultWalletRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get user custodial wallet
      */
-    async getUserCustodialWalletRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWalletResponseDto>> {
+    async getUserCustodialWalletRaw(requestParameters: GetUserCustodialWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWalletResponseDto>> {
+        if (requestParameters.getCustodialWalletRequestDto === null || requestParameters.getCustodialWalletRequestDto === undefined) {
+            throw new runtime.RequiredError('getCustodialWalletRequestDto','Required parameter requestParameters.getCustodialWalletRequestDto was null or undefined when calling getUserCustodialWallet.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -241,9 +271,10 @@ export class WalletApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/wallet/custodial`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetCustodialWalletRequestDtoToJSON(requestParameters.getCustodialWalletRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetWalletResponseDtoFromJSON(jsonValue));
@@ -252,8 +283,8 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Get user custodial wallet
      */
-    async getUserCustodialWallet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletResponseDto> {
-        const response = await this.getUserCustodialWalletRaw(initOverrides);
+    async getUserCustodialWallet(requestParameters: GetUserCustodialWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletResponseDto> {
+        const response = await this.getUserCustodialWalletRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -369,13 +400,15 @@ export class WalletApi extends runtime.BaseAPI {
      * Set default wallet
      */
     async setDefaultWalletRaw(requestParameters: SetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.walletId === null || requestParameters.walletId === undefined) {
-            throw new runtime.RequiredError('walletId','Required parameter requestParameters.walletId was null or undefined when calling setDefaultWallet.');
+        if (requestParameters.setDefaultWalletRequestDto === null || requestParameters.setDefaultWalletRequestDto === undefined) {
+            throw new runtime.RequiredError('setDefaultWalletRequestDto','Required parameter requestParameters.setDefaultWalletRequestDto was null or undefined when calling setDefaultWallet.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -386,10 +419,11 @@ export class WalletApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/wallet/default/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
+            path: `/api/wallet/set-default`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: SetDefaultWalletRequestDtoToJSON(requestParameters.setDefaultWalletRequestDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

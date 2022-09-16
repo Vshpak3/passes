@@ -23,6 +23,7 @@ import { WalletDto } from './dto/wallet.dto'
 import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { ChainEnum } from './enum/chain.enum'
+import { UnsupportedDefaultWallet } from './error/wallet.error'
 
 const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
 const MAX_WALLETS_PER_USER = 10
@@ -85,12 +86,21 @@ export class WalletService {
    * @param userId
    */
 
-  async getUserCustodialWallet(userId: string): Promise<WalletDto> {
+  async getUserCustodialWallet(
+    userId: string,
+    chain: ChainEnum,
+  ): Promise<WalletDto> {
+    if (chain !== ChainEnum.SOL && chain !== ChainEnum.ETH) {
+      throw new UnsupportedDefaultWallet(
+        `can not have a deafult wallet on chain ${chain}`,
+      )
+    }
     const wallet = await this.dbReader(WalletEntity.table)
       .where(
         WalletEntity.toDict<WalletEntity>({
           user: userId,
           custodial: true,
+          chain,
         }),
       )
       .first()
@@ -115,7 +125,7 @@ export class WalletService {
       id,
       user: userId,
       address: address,
-      chain: ChainEnum.SOL,
+      chain,
       custodial: true,
       authenticated: true,
     })
@@ -130,7 +140,7 @@ export class WalletService {
    * @param userId
    * @returns
    */
-  async getDefaultWallet(userId: string): Promise<WalletDto> {
+  async getDefaultWallet(userId: string, chain: ChainEnum): Promise<WalletDto> {
     const wallet = await this.dbReader(WalletEntity.table)
       .join(
         DefaultWalletEntity.table,
@@ -144,40 +154,52 @@ export class WalletService {
       .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
       .andWhere(
         WalletEntity.toDict<WalletEntity>({
-          chain: ChainEnum.SOL,
+          chain: chain,
         }),
       )
-      .select([
-        `${WalletEntity.table}.id`,
-        `${WalletEntity.table}.user_id`,
-        ...WalletEntity.populate<WalletEntity>([
-          'address',
-          'chain',
-          'custodial',
-          'authenticated',
-        ]),
-      ])
+      .select([`${WalletEntity.table}.*`])
       .first()
     if (wallet) {
       return new WalletDto(wallet)
     }
 
     // if no valid default exists, defer to custodial
-    const custodialWallet = await this.getUserCustodialWallet(userId)
-    await this.setDefaultWallet(userId, custodialWallet.walletId as string)
+    const custodialWallet = await this.getUserCustodialWallet(userId, chain)
+    await this.setDefaultWallet(
+      userId,
+      custodialWallet.walletId as string,
+      chain,
+    )
     return custodialWallet
   }
 
-  async setDefaultWallet(userId: string, walletId: string): Promise<void> {
+  async setDefaultWallet(
+    userId: string,
+    walletId: string,
+    chain: ChainEnum,
+  ): Promise<void> {
     await this.dbWriter(DefaultWalletEntity.table)
       .insert(
         DefaultWalletEntity.toDict<DefaultWalletEntity>({
           user: userId,
           wallet: walletId,
+          chain,
         }),
       )
-      .onConflict('user_id')
-      .merge(['wallet_id'])
+      .onConflict(['user_id', 'chain'])
+      .ignore()
+    await this.dbWriter(DefaultWalletEntity.table)
+      .update(
+        DefaultWalletEntity.toDict<DefaultWalletEntity>({
+          wallet: walletId,
+        }),
+      )
+      .where(
+        DefaultWalletEntity.toDict<DefaultWalletEntity>({
+          user: userId,
+          chain,
+        }),
+      )
   }
 
   fixAddress(address: string, chain: ChainEnum): string {
