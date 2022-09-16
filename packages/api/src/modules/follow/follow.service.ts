@@ -28,6 +28,7 @@ import {
   IS_NOT_CREATOR,
 } from './constants/errors'
 import { FollowDto } from './dto/follow.dto'
+import { IsFollowingDto } from './dto/is-following.dto'
 import { SearchFollowRequestDto } from './dto/search-follow.dto'
 import { BlockTaskEntity } from './entities/block-task.entity'
 import { FollowEntity } from './entities/follow.entity'
@@ -54,8 +55,11 @@ export class FollowService {
     private readonly postService: PostService,
   ) {}
 
-  async checkFollow(userId: string, creatorId: string): Promise<boolean> {
-    return !!(await this.dbReader(FollowEntity.table)
+  async checkFollow(
+    userId: string,
+    creatorId: string,
+  ): Promise<IsFollowingDto> {
+    const isFollowing = !!(await this.dbReader(FollowEntity.table)
       .where(
         FollowEntity.toDict<FollowEntity>({
           follower: userId,
@@ -64,6 +68,8 @@ export class FollowService {
       )
       .select('id')
       .first())
+
+    return new IsFollowingDto(isFollowing)
   }
 
   async followCreator(userId: string, creatorId: string): Promise<FollowDto> {

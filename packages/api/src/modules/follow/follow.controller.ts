@@ -14,6 +14,7 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetListMembersResponseDto } from '../list/dto/get-list-members.dto'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
+import { IsFollowingDto } from './dto/is-following.dto'
 import { ReportFanDto } from './dto/report-fan.dto'
 import { SearchFollowRequestDto } from './dto/search-follow.dto'
 import { FollowService } from './follow.service'
@@ -26,14 +27,14 @@ export class FollowController {
   @ApiEndpoint({
     summary: 'Check if you follow a creator',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: IsFollowingDto,
     responseDesc: 'A follow was checked',
   })
   @Get('check/:creatorId')
   async checkFollow(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
-  ): Promise<boolean> {
+  ): Promise<IsFollowingDto> {
     return await this.followService.checkFollow(req.user.id, creatorId)
   }
 
