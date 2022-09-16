@@ -48,6 +48,11 @@ export const navigation = [
         href: "/tools/manage-passes"
       },
       {
+        id: "my-passes",
+        name: "My Passes",
+        href: "/tools/manage-passes"
+      },
+      {
         id: "list",
         name: "List",
         href: "/tools/list"

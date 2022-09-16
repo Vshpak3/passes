@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { usePasses } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
-
 import {
   MyPassGrid,
   MyPassSearchHeader
-} from "../../components/molecules/passes/MyPasses"
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+} from "src/components/molecules/passes/MyPasses"
+import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
+import { usePasses } from "src/hooks"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Passes = () => {
   const [hasMounted, setHasMounted] = useState(false)
@@ -16,7 +15,8 @@ const Passes = () => {
     passSearchTerm,
     filteredExpired,
     onSearchPass,
-    setPassType
+    setPassType,
+    passType
   } = usePasses()
 
   useEffect(() => {
@@ -29,7 +29,17 @@ const Passes = () => {
 
   return (
     <AuthOnlyWrapper isPage>
-      <div className="mx-auto mb-[70px] grid w-full bg-black px-2 md:px-5 sidebar-collapse:max-w-[1100px]">
+      <div
+        className="
+          mx-auto
+           mb-[70px]
+           grid
+           w-full
+           bg-black
+           px-2
+           md:px-5
+           sidebar-collapse:max-w-[1100px]"
+      >
         <MyPassSearchHeader
           onSearchPass={onSearchPass}
           passSearchTerm={passSearchTerm}
@@ -38,6 +48,7 @@ const Passes = () => {
           activePasses={filteredActive}
           expiredPasses={filteredExpired}
           setPassType={setPassType}
+          passType={passType}
         />
       </div>
     </AuthOnlyWrapper>

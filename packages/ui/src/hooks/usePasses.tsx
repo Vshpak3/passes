@@ -4,10 +4,9 @@ import {
   PassHolderDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
+import { wrapApi } from "src/helpers/wrapApi"
 import { useUser } from "src/hooks"
 import useSWR from "swr"
-
-import { wrapApi } from "../helpers/wrapApi"
 
 const MOCKED_VIEWER_PASSES: PassHolderDto[] = [
   {
@@ -79,6 +78,8 @@ const usePasses = (creatorId = "") => {
 
   const [filteredActive, setFilteredActive] = useState(MOCKED_VIEWER_PASSES)
   const [filteredExpired, setFilteredExpired] = useState(MOCKED_VIEWER_PASSES)
+  const [filteredCreatorPassesList, setFilteredCreatorPassesList] =
+    useState(MOCKED_VIEWER_PASSES)
 
   const [passType, setPassType] = useState("all")
   const [passSearchTerm, setPassSearchTerm] = useState("")
@@ -96,11 +97,18 @@ const usePasses = (creatorId = "") => {
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredExpired(filterExpiredPasses)
+    const filteredCreatorPasses = MOCKED_VIEWER_PASSES.filter(
+      filterPasses(false)
+    )
+      .filter(filterPassesByTitle(passSearchTerm))
+      .filter(filterPassesByType(passType))
+    setFilteredCreatorPassesList(filteredCreatorPasses)
   }, [passType, passSearchTerm])
 
   return {
     passType,
     filteredActive,
+    filteredCreatorPassesList,
     creatorPasses,
     filteredExpired,
     fanPasses,

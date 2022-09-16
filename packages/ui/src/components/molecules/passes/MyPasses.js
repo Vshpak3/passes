@@ -1,5 +1,7 @@
+import AddNewPassIcon from "public/icons/add-new-pass.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React from "react"
+import { Button } from "src/components/atoms"
 import {
   MyPassTile,
   SelectPassFilter
@@ -24,10 +26,14 @@ const MyPassSearchBar = ({ onChange, passSearchTerm }) => (
   </div>
 )
 
-const MyPassSearchHeader = ({ onSearchPass, passSearchTerm }) => {
+const MyPassSearchHeader = ({
+  onSearchPass,
+  passSearchTerm,
+  headerTitle = "My Passes"
+}) => {
   return (
     <div className="mx-auto mb-[70px] -mt-[180px] flex w-full items-center justify-center px-2 md:px-5 sidebar-collapse:-mt-[150px]">
-      <div className="text-[24px] font-bold text-white">My Passes</div>
+      <div className="text-[24px] font-bold text-white">{headerTitle}</div>
       <MyPassSearchBar onChange={onSearchPass} value={passSearchTerm} />
     </div>
   )
@@ -39,31 +45,71 @@ const MyPassGridContainer = ({ children }) => (
   </div>
 )
 
-const MyPassGrid = ({ activePasses, expiredPasses, setPassType }) => {
+const MyPassGrid = ({
+  activePasses,
+  expiredPasses,
+  setPassType,
+  passType,
+  creatorPasses = [],
+  modalToggle = null,
+  onEditPassHandler = {},
+  handleCreateNewPass = {},
+  isCreator = false
+}) => {
   const renderActivePasses = activePasses?.map((pass, index) => (
     <MyPassTile key={index} passData={pass} />
   ))
   const renderExpiredPasses = expiredPasses?.map((pass, index) => (
     <MyPassTile key={index} isExpired passData={pass} />
   ))
+  const renderCreatorPasses = creatorPasses?.map((pass, index) => (
+    <MyPassTile
+      key={index}
+      passData={pass}
+      passOnEditHandler={onEditPassHandler}
+      isEdit
+      modalToggle={modalToggle}
+    />
+  ))
 
   return (
     <div className="w-full px-2 md:mt-6">
-      <div className="md:align-items ml-1 mt-6 mb-2 items-center md:ml-0 md:mb-2 md:flex">
-        <span className="text-[24px] font-bold text-[#ffff]/90 md:mr-4">
-          Active Subscriptions
-        </span>
-        <SelectPassFilter setPassType={setPassType} />
+      <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
+        <div className="flex w-full items-center">
+          <span className="min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
+            {isCreator ? "Created Passes" : "Active Subscriptions"}
+          </span>
+          <SelectPassFilter setPassType={setPassType} passType={passType} />
+          {isCreator && (
+            <div className="ml-[76px] mr-[34px] h-[1px] w-full border border-[#2C282D]" />
+          )}
+        </div>
+        {isCreator && (
+          <div className="flex items-center justify-between">
+            <Button onClick={handleCreateNewPass} variant="purple">
+              <div className="flex w-[197px] items-center justify-center text-[16px]">
+                <AddNewPassIcon className="mr-[13px]" />
+                Create New Pass
+              </div>
+            </Button>
+          </div>
+        )}
         <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
       </div>
-      <MyPassGridContainer>{renderActivePasses}</MyPassGridContainer>
-      <div className="mt-10 ml-1 mb-2 flex md:ml-0">
-        <span className="text-[24px] font-bold text-[#ffff]/90">
-          Expired Subscriptions
-        </span>
-        <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
-      </div>
-      <MyPassGridContainer>{renderExpiredPasses}</MyPassGridContainer>
+      {isCreator ? (
+        <MyPassGridContainer>{renderCreatorPasses}</MyPassGridContainer>
+      ) : (
+        <>
+          <MyPassGridContainer>{renderActivePasses}</MyPassGridContainer>
+          <div className="mt-10 ml-1 mb-2 flex md:ml-0">
+            <span className="text-[24px] font-bold text-[#ffff]/90">
+              Expired Subscriptions
+            </span>
+            <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
+          </div>
+          <MyPassGridContainer>{renderExpiredPasses}</MyPassGridContainer>
+        </>
+      )}
     </div>
   )
 }

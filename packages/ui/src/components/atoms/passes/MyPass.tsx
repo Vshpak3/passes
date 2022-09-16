@@ -1,9 +1,10 @@
 import { PassHolderDto } from "@passes/api-client"
-import classNames from "classnames"
+import EditIcon from "public/icons/edit-pass.svg"
+import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { useEffect, useState } from "react"
-
-import { PassTypeEnum } from "../../../hooks/useCreatePass"
+import { classNames } from "src/helpers"
+import { PassTypeEnum } from "src/hooks/useCreatePass"
 
 interface IPassTileLabel {
   expiryDate: Date
@@ -16,6 +17,7 @@ interface IPassRenewalButton {
 }
 interface ISelectPassFilter {
   setPassType: React.Dispatch<React.SetStateAction<string>>
+  passType: string
 }
 interface IPassTileContent {
   stat: number
@@ -25,11 +27,12 @@ interface IPassTileContent {
 interface IMyPassTile {
   passData: PassHolderDto
   isExpired?: boolean
+  isEdit?: boolean
+  passOnEditHandler?: (value: PassHolderDto) => void
 }
 type TComposePassOptions = {
   value: string
   label: string
-  selected: boolean
 }
 
 function capitalizeFirstLetter(val: string) {
@@ -39,18 +42,15 @@ function capitalizeFirstLetter(val: string) {
 const PASS_OPTIONS = [
   {
     value: "all",
-    label: "All Pass Types",
-    selected: true
+    label: "All Pass Types"
   },
   {
     value: PassTypeEnum.LIFETIME,
-    label: "Lifetime Passes",
-    selected: false
+    label: "Lifetime Passes"
   },
   {
     value: PassTypeEnum.SUBSCRIPTION,
-    label: "Subscription Passes",
-    selected: false
+    label: "Subscription Passes"
   }
 ]
 const ONE_MONTH = 2629746 * 1000
@@ -66,23 +66,101 @@ const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
   </button>
 )
 
-const SelectPassFilter = ({ setPassType }: ISelectPassFilter) => {
-  function composePassOptions(option: TComposePassOptions) {
-    const { value, selected, label } = option
-    return (
-      <option key={value} value={value} selected={selected}>
-        {label}
-      </option>
-    )
-  }
+const SelectPassFilter = ({ setPassType, passType }: ISelectPassFilter) => {
+  const [isSelectOpen, setIsSelectOpen] = useState(false)
+  const [selectedValue, setSelectedValue] =
+    useState<TComposePassOptions | null>(null)
+  const filteredOptions = PASS_OPTIONS.filter(
+    ({ label }) => label !== selectedValue?.label
+  )
+
+  const isSelectOpenToggle = () => setIsSelectOpen((prevState) => !prevState)
+
+  useEffect(() => {
+    const [label] = PASS_OPTIONS.filter(({ value }) => value === passType)
+    setSelectedValue(label)
+    setIsSelectOpen(false)
+  }, [passType])
 
   return (
-    <select
-      onChange={(e) => setPassType(e.target.value)}
-      className="mt-5 block w-[190px] appearance-none rounded-md border border-passes-gray-100 bg-black p-2 px-3 py-2 text-[24px] text-base text-sm font-bold text-white md:mt-0"
+    <div
+      className="relative text-[24px]
+        text-base
+        text-sm
+        font-bold
+        text-white"
     >
-      {PASS_OPTIONS.map(composePassOptions)}
-    </select>
+      <input
+        value={selectedValue?.label}
+        onClick={isSelectOpenToggle}
+        readOnly
+        className="
+          relative
+          block
+          h-[45px]
+          w-[207px]
+          cursor-pointer
+          rounded-md
+          border
+          border-passes-gray-100
+          bg-black
+          p-[10px]
+          text-[16px]
+          outline-none
+          md:mt-0"
+      />
+      <div
+        className="
+          absolute
+          top-[50%]
+          right-[16px]
+          translate-y-[-50%]
+          cursor-pointer"
+      >
+        <ArrowDown />
+      </div>
+      {isSelectOpen && (
+        <div
+          className="
+          absolute
+          top-[100%]
+          right-0
+          z-[1]
+          mt-[10px]
+          box-border
+          w-full
+          rounded-[6px]
+          border
+          border-[#34343A60]
+          bg-[#100C11]
+          px-[25px]
+          pt-[6px]"
+        >
+          {filteredOptions.map(({ value, label }) => (
+            <div
+              className="
+                block
+                flex
+                cursor-pointer
+                justify-between
+                pt-[10px]
+                text-left
+                text-[16px]
+                last:border-t
+                last:border-passes-gray-100"
+              key={value}
+            >
+              <div
+                onClick={() => setPassType(value)}
+                className="flex w-full items-center pb-[10px]"
+              >
+                {label}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -91,52 +169,59 @@ const PassTileLabel = ({
   passType,
   expiryDate,
   onRenewal
-}: IPassTileLabel) => {
-  return willExpireSoon ? (
-    <div className="align-items mx-1 justify-between text-[14px] md:flex">
-      <div className="font-semibold text-[#767676]">
-        {`Expires on ${expiryDate.toDateString().slice(4)}`}
+}: IPassTileLabel) => (
+  <>
+    {willExpireSoon ? (
+      <div className="align-items mx-1 justify-between text-[14px] md:flex">
+        <div className="font-semibold text-[#767676]">
+          {`Expires on ${expiryDate.toDateString().slice(4)}`}
+        </div>
+        <div
+          className="cursor-pointer font-bold text-passes-pink-100"
+          onClick={onRenewal}
+        >
+          Renew
+        </div>
       </div>
-      <div
-        className="cursor-pointer font-bold text-passes-pink-100"
-        onClick={onRenewal}
-      >
-        Renew
+    ) : (
+      <div className="mx-1 text-[14px] font-semibold text-[#767676]">
+        {capitalizeFirstLetter(passType)} Pass
       </div>
-    </div>
-  ) : (
-    <div className="mx-1 text-[14px] font-semibold text-[#767676]">
-      {capitalizeFirstLetter(passType)} Pass
-    </div>
-  )
-}
+    )}
+  </>
+)
 
-const PassTileContent = ({ stat, title, price }: IPassTileContent) => {
-  return (
-    <div className="flex h-full flex-col items-start justify-between p-4 text-[#ffff]/90 md:p-6">
-      <div className="align-items items-start justify-start">
-        <div className="text-[18px] font-bold">{stat}</div>
-        <div className="text-[12px] leading-6">Subscriber</div>
-      </div>
-      <div className="mt-2">
-        <span className="text-[24px] font-bold leading-9 line-clamp-2">
-          {title}
-        </span>
-      </div>
-      <div className="mt-2">
-        <span className="text-[16px] font-bold">{price?.toFixed(2)}</span>
-        <span className="ml-2 text-[14px] font-light">/month</span>
-      </div>
+const PassTileContent = ({ stat, title, price }: IPassTileContent) => (
+  <div className="flex h-full flex-col items-start justify-between p-4 text-[#ffff]/90 md:p-6">
+    <div className="align-items items-start justify-start">
+      <div className="text-[18px] font-bold">{stat}</div>
+      <div className="text-[12px] leading-6">Subscriber</div>
     </div>
-  )
-}
+    <div className="mt-2">
+      <span className="w-[180px] text-[24px] font-bold leading-9 line-clamp-2">
+        {title}
+      </span>
+    </div>
+    <div className="mt-2">
+      <span className="text-[16px] font-bold">{price?.toFixed(2)}</span>
+      <span className="ml-2 text-[14px] font-light">/month</span>
+    </div>
+  </div>
+)
 
-const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
+const MyPassTile = ({
+  passData,
+  isExpired = false,
+  isEdit = false,
+  passOnEditHandler
+}: IMyPassTile) => {
   const [hasMounted, setHasMounted] = useState(false)
-  const expiryInMilSeconds = Number(passData.expiresAt) * 1000
+  const expiryInMilSeconds = Number(passData.expiresAt)
   const expiryDate = new Date(expiryInMilSeconds)
+  const dateNow = Date.now()
 
-  const willExpireSoon = expiryInMilSeconds - Date.now() < ONE_MONTH
+  const willExpireSoon =
+    expiryInMilSeconds - dateNow < ONE_MONTH && expiryInMilSeconds > dateNow
 
   useEffect(() => {
     setHasMounted(true)
@@ -148,31 +233,67 @@ const MyPassTile = ({ passData, isExpired = false }: IMyPassTile) => {
 
   return (
     <div className="col-span-1  w-full">
-      <div
-        className={classNames(
-          willExpireSoon && !isExpired
-            ? "bg-gradient-to-r from-[#375e6f] to-[#a9c2dd]"
-            : "bg-gradient-to-r from-[#ff3cb1] to-[#3db9e5]",
-          isExpired ? "opacity-70" : "opacity-100",
-          "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
-        )}
-      >
-        <PassTileContent stat={passData.totalSupply} title={passData.title} />
-      </div>
-      <div className="mt-[5px] md:mt-[10px]">
-        {isExpired ? (
-          <div className="align-items flex items-center justify-center">
-            <PassRenewalButton onRenewal={() => console.log("on renewal")} />
-          </div>
-        ) : (
-          <PassTileLabel
-            onRenewal={() => console.log("on renewal")}
-            expiryDate={expiryDate}
-            willExpireSoon={willExpireSoon}
-            passType={passData.type}
+      {isEdit ? (
+        <div
+          className={classNames(
+            "bg-pass-gradient bg-cover",
+            "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
+          )}
+        >
+          <PassTileContent
+            stat={passData.totalSupply}
+            title={passData.title}
+            price={passData.price}
           />
-        )}
-      </div>
+          <div className="mt-[6px] flex justify-end">
+            {passOnEditHandler && (
+              <button
+                onClick={() => passOnEditHandler(passData)}
+                className="flex items-center"
+              >
+                <EditIcon />
+                <span className="ml-[6px] inline text-[#C943A8]">
+                  Edit Pass
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          <div
+            className={classNames(
+              willExpireSoon && !isExpired
+                ? "bg-gradient-to-r from-[#375e6f] to-[#a9c2dd]"
+                : "bg-gradient-to-r from-[#ff3cb1] to-[#3db9e5]",
+              isExpired ? "opacity-70" : "opacity-100",
+              "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
+            )}
+          >
+            <PassTileContent
+              stat={passData.totalSupply}
+              title={passData.title}
+              price={passData.price}
+            />
+          </div>
+          <div className="mt-[5px] md:mt-[10px]">
+            {isExpired ? (
+              <div className="align-items flex items-center justify-center">
+                <PassRenewalButton
+                  onRenewal={() => console.log("on renewal")}
+                />
+              </div>
+            ) : (
+              <PassTileLabel
+                onRenewal={() => console.log("on renewal")}
+                expiryDate={expiryDate}
+                willExpireSoon={willExpireSoon}
+                passType={passData.type}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   )
 }
