@@ -25,11 +25,13 @@ export class CreatorStatDto {
   constructor(creatorStat, isCreator) {
     if (creatorStat) {
       this.userId = creatorStat.user_id
-      if (isCreator || creatorStat.show_follower_count)
+      if (isCreator || creatorStat.show_follower_count) {
         this.numFollowers = creatorStat.num_followers
+      }
       this.numLikes = creatorStat.num_likes
-      if (isCreator || creatorStat.show_media_count)
+      if (isCreator || creatorStat.show_media_count) {
         this.numMedia = creatorStat.num_media
+      }
     }
   }
 }

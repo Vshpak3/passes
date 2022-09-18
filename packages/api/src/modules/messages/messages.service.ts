@@ -319,7 +319,9 @@ export class MessagesService {
       sendMessageDto,
       otherUserId,
     )
-    if (blocked) throw new MessageTipError('insufficient tip for message')
+    if (blocked) {
+      throw new MessageTipError('insufficient tip for message')
+    }
     if (amount !== 0) {
       const callbackInput: MessagePayinCallbackInput = {
         userId,
@@ -406,8 +408,9 @@ export class MessagesService {
     if (
       passHoldings.length === 0 ||
       passHoldings[passHoldings.length - 1].messages === null
-    )
+    ) {
       return
+    }
     await this.dbWriter(PassHolderEntity.table)
       .where('id', passHoldings[0].id)
       .andWhere('messages', '>', 0)
@@ -442,12 +445,18 @@ export class MessagesService {
       })
       .select(`${PassHolderEntity.table}.messages`)
       .orderBy('messages', 'desc')
-    if (passHoldings.length === 0) return 0
-    if (passHoldings[passHoldings.length - 1].messages === null) return null
-    else
+    if (passHoldings.length === 0) {
+      return 0
+    }
+    if (passHoldings[passHoldings.length - 1].messages === null) {
+      return null
+    } else {
       return passHoldings.reduce((sum, passHolding) => {
-        if (passHolding.messages) return sum + passHolding.messages
+        if (passHolding.messages) {
+          return sum + passHolding.messages
+        }
       }, 0)
+    }
   }
 
   async checkMessageBlocked(
@@ -470,10 +479,14 @@ export class MessagesService {
       )
       .select('id')
       .first()
-    if (!user || (!user.is_creator && !follow)) return false
+    if (!user || (!user.is_creator && !follow)) {
+      return false
+    }
 
     // neither user can be blocked
-    if (await this.checkBlocked(userId, otherUserId)) return true
+    if (await this.checkBlocked(userId, otherUserId)) {
+      return true
+    }
 
     const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
       .where(
@@ -487,8 +500,9 @@ export class MessagesService {
       !creatorSettings ||
       !creatorSettings.minimum_tip_amount ||
       tipAmount >= creatorSettings.minimum_tip_amount
-    )
+    ) {
       return false
+    }
     const freeMessages = await this.checkFreeMessages(
       userId,
       otherUserId,
@@ -673,7 +687,9 @@ export class MessagesService {
     const data = ChannelSettingsEntity.toDict<ChannelSettingsEntity>(
       updateChannelSettingsDto,
     )
-    if (Object.keys(data).length === 0) return
+    if (Object.keys(data).length === 0) {
+      return
+    }
     await this.dbWriter(ChannelSettingsEntity.table)
       .update(data)
       .where(
@@ -697,8 +713,9 @@ export class MessagesService {
     const userIds = (await channel.queryMembers({})).members.map(
       (member) => member.user_id,
     )
-    if (userIds.indexOf(userId) < 0)
+    if (userIds.indexOf(userId) < 0) {
       throw new ChannelMissingMembersError(`${userId} is not in this channel`)
+    }
     for (const id in userIds) {
       if (id && id != userId) {
         return id as string

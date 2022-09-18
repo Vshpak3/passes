@@ -58,8 +58,9 @@ export class ListService {
       .table(ListEntity.table)
       .where('user_id', userId)
       .count(['id'])
-    if (count[0]['count(*)'] >= USER_LIST_LIMIT)
+    if (count[0]['count(*)'] >= USER_LIST_LIMIT) {
       throw new ListLimitReachedError('list limit reached')
+    }
 
     const listId = uuid.v4()
     let listMemberRecords: any[] = []

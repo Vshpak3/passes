@@ -117,7 +117,9 @@ export class CommentService {
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
       .select('id')
 
-    if (!post) throw new BadRequestException(POST_NOT_EXIST)
+    if (!post) {
+      throw new BadRequestException(POST_NOT_EXIST)
+    }
 
     const data = CommentEntity.toDict<CommentEntity>({
       hidden: true,
@@ -160,7 +162,9 @@ export class CommentService {
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
       .select('id')
 
-    if (!post) throw new BadRequestException(POST_NOT_EXIST)
+    if (!post) {
+      throw new BadRequestException(POST_NOT_EXIST)
+    }
 
     const data = CommentEntity.toDict<CommentEntity>({
       hidden: false,

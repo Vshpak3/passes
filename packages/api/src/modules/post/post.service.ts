@@ -114,7 +114,9 @@ export class PostService {
           .whereNotNull('expires_at')
           .distinct('holder_id')
         for (let i = 0; i < passAccesses.length; ++i) {
-          if (!passAccesses[i].holder_id) continue
+          if (!passAccesses[i].holder_id) {
+            continue
+          }
           const postUserAccess =
             PostUserAccessEntity.toDict<PostUserAccessEntity>({
               post: postId,
@@ -280,8 +282,9 @@ export class PostService {
         post.user_id === userId || // user made post
         !post.price || // no price on post
         post.price === 0 // price of post is 0
-      )
+      ) {
         arr.push(post)
+      }
       return arr
     }, [])
 
@@ -321,7 +324,9 @@ export class PostService {
     const map = postContents.reduce(async (map, postContent) => {
       map = await map
 
-      if (!map[postContent.post_id]) map[postContent.post_id] = []
+      if (!map[postContent.post_id]) {
+        map[postContent.post_id] = []
+      }
       map[postContent.post_id].append(
         new ContentDto(
           postContent,

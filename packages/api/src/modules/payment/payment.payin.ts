@@ -21,7 +21,7 @@ async function handleCallback(
       payService,
       db,
     )
-    if (output)
+    if (output) {
       await db
         .table(PayinEntity.table)
         .update(
@@ -30,6 +30,7 @@ async function handleCallback(
           }),
         )
         .where('id', payin.id)
+    }
   } catch (err) {
     await db
       .table(PayinEntity.table)

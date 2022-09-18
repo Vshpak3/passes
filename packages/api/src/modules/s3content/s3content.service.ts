@@ -60,7 +60,9 @@ export class S3ContentService {
     const { 1: _folder } = path.match(folderPathRegexp) || []
     const folder = _folder as keyof typeof FOLDER_BUCKET_MAP
 
-    if (!folder) throw new BadRequestException('invalid path')
+    if (!folder) {
+      throw new BadRequestException('invalid path')
+    }
 
     return folder
   }
@@ -76,7 +78,7 @@ export class S3ContentService {
     rest: string,
   ) => {
     // upload files directly to the downstream directory in dev
-    if (this.env === 'dev')
+    if (this.env === 'dev') {
       switch (folder) {
         case 'upload':
           return `media/${rest}`
@@ -87,6 +89,7 @@ export class S3ContentService {
         default:
           return `${folder}/${rest.replace('upload/', '')}`
       }
+    }
     return `${folder}/${rest}`
   }
 
@@ -96,7 +99,9 @@ export class S3ContentService {
    * @param path path to give access to
    */
   async signCookies(res: Response, path = '') {
-    if (this.env === 'dev') return
+    if (this.env === 'dev') {
+      return
+    }
 
     const expirationTime = new Date(
       Date.now() + this.signedCookieExpirationTime,
@@ -137,10 +142,11 @@ export class S3ContentService {
   async signUrl(path: string) {
     const url = this.cloudfrontUrl + '/' + path
 
-    if (this.env === 'dev')
+    if (this.env === 'dev') {
       return {
         url,
       }
+    }
 
     const expirationTime = new Date(
       Date.now() + this.signedUrlExpirationTime,
@@ -192,7 +198,9 @@ export class S3ContentService {
       await this.s3Client.send(new HeadObjectCommand({ Bucket, Key: path }))
       return true
     } catch (error) {
-      if (error?.$metadata?.httpStatusCode === 404) return false
+      if (error?.$metadata?.httpStatusCode === 404) {
+        return false
+      }
       throw error
     }
   }

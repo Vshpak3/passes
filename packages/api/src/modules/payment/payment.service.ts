@@ -739,7 +739,9 @@ export class PaymentService {
       const settlement = chargebackDto.history[i]
       if (settlement.type === CircleChargebackTypeEnum.CHARGEBACK_SETTLEMENT) {
         const amount = parseInt(settlement.chargebackAmount.amount)
-        if (amount === 0) return
+        if (amount === 0) {
+          return
+        }
 
         const circlePaymentShares = await this.dbReader(
           CirclePaymentEntity.table,
@@ -762,7 +764,9 @@ export class PaymentService {
             `${CreatorShareEntity.table}.amount`,
           ])
 
-        if (circlePaymentShares.length === 0) return
+        if (circlePaymentShares.length === 0) {
+          return
+        }
         const userId = circlePaymentShares[0].user_id
         await this.dbWriter(CircleChargebackEntity.table).insert(
           CircleChargebackEntity.toDict<CircleChargebackEntity>({

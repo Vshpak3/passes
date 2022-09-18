@@ -128,10 +128,11 @@ export class ContentService {
       default:
         break
     }
-    if (type)
+    if (type) {
       query = query.andWhere(
         ContentEntity.toDict<ContentEntity>({ contentType: type }),
       )
+    }
     if (lastId) {
       query = query.andWhere(`${ContentEntity.table}.id`, '<', lastId)
     }
@@ -167,8 +168,9 @@ export class ContentService {
 
   async preSignPass(userId: string, passId: string) {
     const pass = await this.passService.findPass(passId)
-    if (pass.creatorId !== userId)
+    if (pass.creatorId !== userId) {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
+    }
 
     return this.s3contentService.preSignUrl(
       `pass/upload/${userId}/${pass.passId}.${ContentFormatEnum.IMAGE}`,

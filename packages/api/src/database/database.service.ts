@@ -63,8 +63,9 @@ const mapPopulateFields = (
       switch (propObj[field].reference) {
         case 'scalar': {
           let newField = propObj[field].fieldNames[0]
-          if (subEntity)
+          if (subEntity) {
             newField = `${subEntity}.${newField} as ${subEntity}_${newField}`
+          }
           resultArray = [...resultArray, newField]
           break
         }

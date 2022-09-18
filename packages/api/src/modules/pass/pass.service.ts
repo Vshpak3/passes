@@ -746,7 +746,8 @@ export class PassService {
       !(await this.dbReader(PassEntity.table)
         .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
         .first())
-    )
+    ) {
       throw new NoPassError('pass does not exist or unowned by user')
+    }
   }
 }

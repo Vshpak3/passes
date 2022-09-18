@@ -178,7 +178,9 @@ export class SolService {
         )
       }
     }
-    if (!connection) connection = await this.getConnection()
+    if (!connection) {
+      connection = await this.getConnection()
+    }
     const walletAddress = (
       await this.getOwnerOfPass(connection, new PublicKey(address))
     )?.toBase58()
@@ -240,7 +242,9 @@ export class SolService {
       ],
     })
 
-    if (accounts.length === 0) return null
+    if (accounts.length === 0) {
+      return null
+    }
     const tokenAccount = AccountLayout.decode(accounts[0].account.data)
 
     return tokenAccount.owner
@@ -263,7 +267,9 @@ export class SolService {
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
-    if (!user) throw new NotFoundException('User does not exist')
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
     if (localMockedAwsDev()) {
       return { mintPubKey: uuid.v4(), transactionHash: '' }
     }
@@ -307,13 +313,15 @@ export class SolService {
         ],
       },
     }
-    if (!jsonMetadata.properties)
+    if (!jsonMetadata.properties) {
       throw 'The metadata has to contain the properties object'
+    }
     if (
       !jsonMetadata.properties.creators ||
       jsonMetadata.properties.creators.length === 0
-    )
+    ) {
       throw 'The metadata has to contain the creators array.'
+    }
 
     const s3Input = {
       Bucket: this.configService.get('s3_bucket.nft'),

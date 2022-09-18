@@ -65,8 +65,9 @@ export class NotificationsService {
       .offset(getNotificationsRequest.offset)
       .limit(getNotificationsRequest.limit)
 
-    if (getNotificationsRequest.type)
+    if (getNotificationsRequest.type) {
       query = query.andWhere('type', getNotificationsRequest.type)
+    }
     const notifications = await query
     return notifications.map(
       (notification) => new NotificationDto(notification),

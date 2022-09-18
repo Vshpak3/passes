@@ -14,11 +14,12 @@ export function getMikroOrmOptions(
   // ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
   const env = configService.get('infra.env')
   let migrations: { path: string; emit?: 'ts' | 'js' } | undefined
-  if (contextName === 'ReadWrite')
+  if (contextName === 'ReadWrite') {
     migrations = {
       path: path.join(__dirname, 'migrations'),
       emit: env === 'dev' ? 'ts' : 'js',
     }
+  }
 
   const hosts = configService.get('database.hosts')
   return {
