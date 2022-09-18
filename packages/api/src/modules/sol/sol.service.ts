@@ -262,6 +262,7 @@ export class SolService {
     symbol: string,
     description: string,
     ownerAddress: string,
+    royalties: number,
   ): Promise<GetSolNftResponseDto> {
     const connection = await this.getConnection()
     const user = await this.dbReader(UserEntity.table)
@@ -299,7 +300,7 @@ export class SolService {
       name: name,
       symbol: symbol,
       description: description,
-      seller_fee_basis_points: 0,
+      seller_fee_basis_points: royalties,
       image: imageUrl,
       properties: {
         files: [

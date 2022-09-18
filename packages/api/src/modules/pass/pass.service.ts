@@ -403,6 +403,7 @@ export class PassService {
             pass.symbol,
             pass.description,
             userCustodialWallet.address,
+            pass.royalties,
           )
         ).mintPubKey
         break
