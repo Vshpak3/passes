@@ -73,6 +73,12 @@ export interface CreatePassRequestDto {
      * @memberof CreatePassRequestDto
      */
     chain: CreatePassRequestDtoChainEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreatePassRequestDto
+     */
+    royalties: number;
 }
 
 
@@ -99,6 +105,7 @@ export function instanceOfCreatePassRequestDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "chain" in value;
+    isInstance = isInstance && "royalties" in value;
 
     return isInstance;
 }
@@ -122,6 +129,7 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'freetrial': !exists(json, 'freetrial') ? undefined : json['freetrial'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
         'chain': json['chain'],
+        'royalties': json['royalties'],
     };
 }
 
@@ -143,6 +151,7 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         'freetrial': value.freetrial,
         'messages': value.messages,
         'chain': value.chain,
+        'royalties': value.royalties,
     };
 }
 

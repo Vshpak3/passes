@@ -59,4 +59,7 @@ export class PassEntity extends BaseEntity {
 
   @Enum(() => ChainEnum)
   defaultChain?: ChainEnum
+
+  @Property({ default: 0 })
+  royalties: number
 }

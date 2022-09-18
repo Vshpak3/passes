@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, IsUUID, Length, Min } from 'class-validator'
+import { IsEnum, IsInt, IsUUID, Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
@@ -41,6 +41,11 @@ export class CreatePassRequestDto {
   @IsEnum(ChainEnum)
   @DtoProperty({ enum: ChainEnum })
   chain: ChainEnum
+
+  @Min(0)
+  @Max(10000)
+  @DtoProperty()
+  royalties: number
 }
 
 export class CreatePassResponseDto {

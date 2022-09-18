@@ -5,8 +5,10 @@ import {
 } from '@aws-sdk/client-lambda'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { ethers } from 'ethers'
 
 import { getAwsConfig } from '../../util/aws.util'
+import { ChainEnum } from '../wallet/enum/chain.enum'
 import {
   LambdaFunctionError,
   LambdaResponseStatusError,
@@ -41,10 +43,15 @@ export class LambdaService {
    * @param keyId
    * @return public address
    */
-  async blockchainSignCreateAddress(keyId: string): Promise<string> {
+  async blockchainSignCreateAddress(
+    keyId: string,
+    chain: ChainEnum,
+  ): Promise<string> {
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-create-address',
-      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}}`),
+      Payload: new TextEncoder().encode(
+        `{"body":{"keyId":"${keyId}", "chain":"${chain}"}}`,
+      ),
     }
 
     const command = new InvokeCommand(input)
@@ -61,10 +68,15 @@ export class LambdaService {
    * @param keyId
    * @return public address
    */
-  async blockchainSignGetPublicAddress(keyId: string): Promise<string> {
+  async blockchainSignGetPublicAddress(
+    keyId: string,
+    chain: ChainEnum,
+  ): Promise<string> {
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-get-public-address',
-      Payload: new TextEncoder().encode(`{"body":{"keyId":"${keyId}"}}`),
+      Payload: new TextEncoder().encode(
+        `{"body":{"keyId":"${keyId}", "chain":"${chain}"}}`,
+      ),
     }
 
     const command = new InvokeCommand(input)
@@ -83,12 +95,17 @@ export class LambdaService {
    */
   async blockchainSignSignMessage(
     keyId: string,
+    chain: ChainEnum,
     message: Uint8Array,
   ): Promise<Uint8Array> {
+    const messageStr =
+      chain === ChainEnum.SOL
+        ? message.toString()
+        : ethers.utils.hexlify(message)
     const input: InvokeCommandInput = {
       FunctionName: this.prefix + '-lambda-blockchain-sign-message',
       Payload: new TextEncoder().encode(
-        `{"body":{"keyId":"${keyId}","message":"${message.toString()}"}}`,
+        `{"body":{"keyId":"${keyId}", "chain":"${chain}","message":"${messageStr}"}}`,
       ),
     }
 

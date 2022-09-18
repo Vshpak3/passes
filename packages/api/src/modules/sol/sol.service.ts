@@ -278,6 +278,7 @@ export class SolService {
     const walletPubKey = new PublicKey(
       await this.lambdaService.blockchainSignGetPublicAddress(
         SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+        ChainEnum.SOL,
       ),
     )
     const uses = 0
@@ -287,7 +288,10 @@ export class SolService {
       total: uses,
     }
     const passPubKey = new PublicKey(
-      await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
+      await this.lambdaService.blockchainSignCreateAddress(
+        `pass.${passId}`,
+        ChainEnum.SOL,
+      ),
     )
     const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
 
@@ -345,6 +349,7 @@ export class SolService {
     const mintPubKey = new PublicKey(
       await this.lambdaService.blockchainSignCreateAddress(
         `passholder.${passHolderId}`,
+        ChainEnum.SOL,
       ),
     )
     const associatedTokenAccount = await getAssociatedTokenAddress(
@@ -455,11 +460,13 @@ export class SolService {
 
     const walletSignature = await this.lambdaService.blockchainSignSignMessage(
       SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+      ChainEnum.SOL,
       Uint8Array.from(transaction.serializeMessage()),
     )
 
     const mintSignature = await this.lambdaService.blockchainSignSignMessage(
       `mint.${solNftId}`,
+      ChainEnum.SOL,
       Uint8Array.from(transaction.serializeMessage()),
     )
 
@@ -520,10 +527,14 @@ export class SolService {
       walletPubKey = new PublicKey(
         await this.lambdaService.blockchainSignGetPublicAddress(
           SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+          ChainEnum.SOL,
         ),
       )
       passPubKey = new PublicKey(
-        await this.lambdaService.blockchainSignCreateAddress(`pass.${passId}`),
+        await this.lambdaService.blockchainSignCreateAddress(
+          `pass.${passId}`,
+          ChainEnum.SOL,
+        ),
       )
 
       const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
@@ -668,12 +679,14 @@ export class SolService {
       const walletSignature =
         await this.lambdaService.blockchainSignSignMessage(
           SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+          ChainEnum.SOL,
           Uint8Array.from(transaction.serializeMessage()),
         )
 
       const collectionSignature =
         await this.lambdaService.blockchainSignSignMessage(
           `pass.${passId}`,
+          ChainEnum.SOL,
           Uint8Array.from(transaction.serializeMessage()),
         )
 

@@ -119,6 +119,7 @@ export class WalletService {
     } else {
       address = await this.lambdaService.blockchainSignCreateAddress(
         'user-' + id,
+        chain,
       )
     }
     const data = WalletEntity.toDict<WalletEntity>({
