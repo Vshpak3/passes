@@ -103,7 +103,6 @@ i {
 }
 @import "src/styles/global/toggle.css";
 @import "src/styles/pages/profile/profile.css";
-@import url("../components/Calendar.css");
 
 .font-display {
   font-family: CalSans-SemiBold, sans-serif;

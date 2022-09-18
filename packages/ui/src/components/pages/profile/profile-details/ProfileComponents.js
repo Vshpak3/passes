@@ -159,52 +159,56 @@ export const ProfileInformationMobile = ({
   twitchUrl,
   facebookUrl,
   onChat,
-  onFollow,
+  creatorId,
   twitterUrl,
   ownsProfile,
   posts,
   likes
-}) => (
-  <>
-    <span className="text-passes-white-100 text-[18px] font-semibold">
-      {displayName}
-    </span>
-    <div className="align-items bg-passes-white-100/5 flex h-[23px] w-[62px] items-center justify-center rounded-xl">
-      <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
-        @{username}
+}) => {
+  const { follow, unfollow, isFollowing } = useFollow(creatorId)
+
+  return (
+    <>
+      <span className="text-passes-white-100 text-[18px] font-semibold">
+        {displayName}
       </span>
-    </div>
-    <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
-      {description}
-    </span>
-    <ProfileSocialMedia
-      instagramUrl={instagramUrl}
-      tiktokUrl={tiktokUrl}
-      youtubeUrl={youtubeUrl}
-      discordUrl={discordUrl}
-      twitchUrl={twitchUrl}
-      facebookUrl={facebookUrl}
-      twitterUrl={twitterUrl}
-    />
-    <ProfileStatsMobile posts={posts} likes={likes} />
-    {!ownsProfile && (
-      <div className="flex space-x-3">
-        <RoundedIconButton
-          className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-          onClick={onChat}
-        >
-          <ChatIcon />
-        </RoundedIconButton>
-        <PassesPinkButton
-          name="Follow"
-          type="button"
-          onClick={onFollow}
-          className="h-[36px] w-[115px]"
-        />
+      <div className="align-items bg-passes-white-100/5 flex h-[23px] w-[62px] items-center justify-center rounded-xl">
+        <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
+          @{username}
+        </span>
       </div>
-    )}
-  </>
-)
+      <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
+        {description}
+      </span>
+      <ProfileSocialMedia
+        instagramUrl={instagramUrl}
+        tiktokUrl={tiktokUrl}
+        youtubeUrl={youtubeUrl}
+        discordUrl={discordUrl}
+        twitchUrl={twitchUrl}
+        facebookUrl={facebookUrl}
+        twitterUrl={twitterUrl}
+      />
+      <ProfileStatsMobile posts={posts} likes={likes} />
+      {!ownsProfile && (
+        <div className="flex space-x-3">
+          <RoundedIconButton
+            className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
+            onClick={onChat}
+          >
+            <ChatIcon />
+          </RoundedIconButton>
+          <PassesPinkButton
+            name={isFollowing ? "Unfollow" : "Follow"}
+            type="button"
+            onClick={isFollowing ? unfollow : follow}
+            className="h-[36px] w-[115px]"
+          />
+        </div>
+      )}
+    </>
+  )
+}
 
 export const ProfileSocialMedia = ({
   instagramUrl,
