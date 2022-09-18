@@ -488,104 +488,78 @@ export class SolService {
     symbol: string,
     description: string,
   ): Promise<GetSolNftCollectionResponseDto> {
+    if (localMockedAwsDev()) {
+      return {
+        passPubKey: new Keypair().publicKey.toBase58(),
+        transactionHash: '',
+      }
+    }
     const connection = await this.getConnection()
-    // TODO: find a better way to only allow admins to access this endpoint MNT-144
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
-    let walletPubKey: PublicKey | undefined = undefined
-    let passPubKey: PublicKey | undefined = undefined
-    let wallet: Keypair | undefined = undefined
-    let collection: Keypair | undefined = undefined
-    let metadata: DataV2 | undefined = undefined
-    let metadataUri: string | undefined = undefined
-    if (localMockedAwsDev()) {
-      wallet = Keypair.fromSecretKey(
-        base58.decode(SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY),
-      )
-      walletPubKey = wallet.publicKey
-      collection = Keypair.generate()
-      passPubKey = collection.publicKey
-      metadataUri =
-        'https://rfdufzqpc6bb3lpa4y4teg23rq6ugjn343dc2vvryobmtaam.arweave.net/iUdC5_g8Xgh2t4OY5-MhtbjD1DJbvmxi1WscOCyYAMs'
-      metadata = {
-        name: name,
-        symbol: symbol,
-        sellerFeeBasisPoints: 0,
-        uri: metadataUri,
+
+    const walletPubKey = new PublicKey(
+      await this.lambdaService.blockchainSignGetPublicAddress(
+        SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+        ChainEnum.SOL,
+      ),
+    )
+    const passPubKey = new PublicKey(
+      await this.lambdaService.blockchainSignCreateAddress(
+        `pass.${passId}`,
+        ChainEnum.SOL,
+      ),
+    )
+
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+    const metadataJson = {
+      name: name,
+      symbol: symbol,
+      description: description,
+      image: imageUrl,
+      external_url: `https://www.passes.com/${user.username}`, //TODO: (pz129) fix
+      seller_fee_basis_points: 0,
+      properties: {
         creators: [
           {
-            address: walletPubKey,
+            address: walletPubKey.toBase58(),
             share: 100,
-            verified: true,
           },
         ],
-        uses: null,
-        collection: null,
-      }
-    } else {
-      walletPubKey = new PublicKey(
-        await this.lambdaService.blockchainSignGetPublicAddress(
-          SOL_MASTER_WALLET_LAMBDA_KEY_ID,
-          ChainEnum.SOL,
-        ),
-      )
-      passPubKey = new PublicKey(
-        await this.lambdaService.blockchainSignCreateAddress(
-          `pass.${passId}`,
-          ChainEnum.SOL,
-        ),
-      )
-
-      const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
-
-      const metadataJson = {
-        name: name,
-        symbol: symbol,
-        description: description,
-        image: imageUrl,
-        external_url: `https://www.passes.com/${user.username}`, //TODO: (pz129) fix
-        seller_fee_basis_points: 0,
-        properties: {
-          creators: [
-            {
-              address: walletPubKey.toBase58(),
-              share: 100,
-            },
-          ],
-          files: [
-            {
-              uri: imageUrl,
-              type: 'image/png',
-            },
-          ],
-          category: 'image',
-        },
-      }
-      const s3Input = {
-        Bucket: 'passes-stage-nft',
-        Body: JSON.stringify(metadataJson),
-        Key: `nft/collection-${passId}`,
-      }
-      metadataUri = `${this.cloudfrontUrl}/nft/collection-${passId}`
-
-      metadata = {
-        name: name,
-        symbol: symbol,
-        sellerFeeBasisPoints: 0,
-        uri: metadataUri,
-        creators: [
+        files: [
           {
-            address: walletPubKey,
-            share: 100,
-            verified: true,
+            uri: imageUrl,
+            type: 'image/png',
           },
         ],
-        uses: null,
-        collection: null,
-      }
-      await this.s3contentService.putObject(s3Input)
+        category: 'image',
+      },
     }
+    const key = `nft/collection-${passId}`
+    const s3Input = {
+      Bucket: 'passes-stage-nft',
+      Body: JSON.stringify(metadataJson),
+      Key: key,
+    }
+    const metadataUri = this.configService.get('cloudfront.baseUrl') + '/' + key
+
+    const metadata: DataV2 = {
+      name: name,
+      symbol: symbol,
+      sellerFeeBasisPoints: 0,
+      uri: metadataUri,
+      creators: [
+        {
+          address: walletPubKey,
+          share: 100,
+          verified: true,
+        },
+      ],
+      uses: null,
+      collection: null,
+    }
+    await this.s3contentService.putObject(s3Input)
     // Minting logic
     const associatedTokenAccount = await getAssociatedTokenAddress(
       passPubKey,
@@ -673,32 +647,27 @@ export class SolService {
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
 
-    if (localMockedAwsDev()) {
-      return { passPubKey: passPubKey.toBase58(), transactionHash: '' }
-    } else {
-      const walletSignature =
-        await this.lambdaService.blockchainSignSignMessage(
-          SOL_MASTER_WALLET_LAMBDA_KEY_ID,
-          ChainEnum.SOL,
-          Uint8Array.from(transaction.serializeMessage()),
-        )
+    const walletSignature = await this.lambdaService.blockchainSignSignMessage(
+      SOL_MASTER_WALLET_LAMBDA_KEY_ID,
+      ChainEnum.SOL,
+      Uint8Array.from(transaction.serializeMessage()),
+    )
 
-      const collectionSignature =
-        await this.lambdaService.blockchainSignSignMessage(
-          `pass.${passId}`,
-          ChainEnum.SOL,
-          Uint8Array.from(transaction.serializeMessage()),
-        )
-
-      transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
-      transaction.addSignature(passPubKey, Buffer.from(collectionSignature))
-
-      const transactionHash = await sendAndConfirmRawTransaction(
-        connection,
-        transaction.serialize(),
+    const collectionSignature =
+      await this.lambdaService.blockchainSignSignMessage(
+        `pass.${passId}`,
+        ChainEnum.SOL,
+        Uint8Array.from(transaction.serializeMessage()),
       )
 
-      return { passPubKey: passPubKey.toBase58(), transactionHash }
-    }
+    transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
+    transaction.addSignature(passPubKey, Buffer.from(collectionSignature))
+
+    const transactionHash = await sendAndConfirmRawTransaction(
+      connection,
+      transaction.serialize(),
+    )
+
+    return { passPubKey: passPubKey.toBase58(), transactionHash }
   }
 }
