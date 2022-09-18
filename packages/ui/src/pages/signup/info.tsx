@@ -23,6 +23,7 @@ export type UserInfoFormValues = {
   username: string
   countryCode: string
   birthday: string
+  submitError: string
 }
 
 const UserInfoPage = () => {
@@ -36,7 +37,8 @@ const UserInfoPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm<UserInfoFormValues>()
 
   useEffect(() => {
@@ -71,14 +73,20 @@ const UserInfoPage = () => {
         res.refreshToken
       )
       if (!setRes) {
-        alert("ERROR: Received no access token")
+        setError("submitError", {
+          type: "custom",
+          message: "ERROR: Received no access token"
+        })
       }
 
       refreshUser()
 
       router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: unknown) {
-      alert(err)
+      setError("submitError", {
+        type: "custom",
+        message: String(err)
+      })
     }
   }
 
@@ -131,7 +139,10 @@ const UserInfoPage = () => {
                 type="text"
                 errors={errors}
                 options={{
-                  required: true
+                  required: {
+                    value: true,
+                    message: "Full name is required"
+                  }
                 }}
               />
               {errors.legalFullName && (
@@ -153,7 +164,10 @@ const UserInfoPage = () => {
                 type="text"
                 errors={errors}
                 options={{
-                  required: true
+                  required: {
+                    value: true,
+                    message: "Username is required"
+                  }
                 }}
               />
               {errors.username && (
@@ -175,7 +189,10 @@ const UserInfoPage = () => {
                 type="text"
                 errors={errors}
                 options={{
-                  required: true
+                  required: {
+                    value: true,
+                    message: "Birthday is required"
+                  }
                 }}
               />
               {errors.birthday && (
@@ -196,7 +213,10 @@ const UserInfoPage = () => {
                 selectOptions={COUNTRIES}
                 errors={errors}
                 options={{
-                  required: true
+                  required: {
+                    value: true,
+                    message: "Country is required"
+                  }
                 }}
               />
               {errors.countryCode && (
@@ -215,6 +235,11 @@ const UserInfoPage = () => {
               </Text>
               <EnterIcon />
             </button>
+            {errors.submitError && (
+              <Text fontSize={12} className="mt-1 text-[red]">
+                {errors.submitError.message}
+              </Text>
+            )}
           </form>
         </div>
       </div>

@@ -66,7 +66,10 @@ const LoginPage = () => {
         res.refreshToken
       )
       if (!setRes) {
-        alert("ERROR: Received no access token")
+        setError("submitError", {
+          type: "custom",
+          message: "ERROR: Received no access token"
+        })
         return
       }
 
