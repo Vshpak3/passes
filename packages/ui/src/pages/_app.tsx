@@ -13,6 +13,27 @@ import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms"
 import { useMessageToDevelopers } from "src/hooks"
 import Providers from "src/providers"
+import { SWRConfig, SWRConfiguration } from "swr"
+
+const swrConfig: SWRConfiguration = {
+  // enable or disable automatic revalidation when component is mounted
+  revalidateOnMount: true,
+
+  // automatically revalidate when window gets focused
+  revalidateOnFocus: true,
+
+  // only revalidate once during a time span in milliseconds
+  focusThrottleInterval: 10000,
+
+  // polling when the window is invisible
+  refreshWhenHidden: false,
+
+  // polling when the browser is offline
+  refreshWhenOffline: false,
+
+  // automatically revalidate when the browser regains a network connection
+  revalidateOnReconnect: false
+}
 
 // Only show nprogress after 500ms (slow loading)
 const start = debounce(nprogress.start, 500)
@@ -46,22 +67,24 @@ const App = ({ Component, pageProps }: AppProps) => {
         dangerouslySetInnerHTML={{ __html: loadSegment() }}
         id="segmentScript"
       />
-      <DndProvider backend={HTML5Backend}>
-        <Component {...pageProps} />
-        <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover
-          limit={3}
-          theme="colored"
-        />
-      </DndProvider>
+      <SWRConfig value={swrConfig}>
+        <DndProvider backend={HTML5Backend}>
+          <Component {...pageProps} />
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable={false}
+            pauseOnHover
+            limit={3}
+            theme="colored"
+          />
+        </DndProvider>{" "}
+      </SWRConfig>
     </Providers>
   )
 }
