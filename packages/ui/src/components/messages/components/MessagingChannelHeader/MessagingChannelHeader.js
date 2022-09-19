@@ -202,6 +202,7 @@ const MessagingChannelHeader = (props) => {
           align-items: center;
           justify-content: flex-start;
           min-height: 60px;
+          max-height:80px;
           width:100%;
         }
         .custom-border-second-header-gallery{

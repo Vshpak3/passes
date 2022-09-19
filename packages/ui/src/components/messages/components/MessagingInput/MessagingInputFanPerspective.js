@@ -1,15 +1,20 @@
 import { MessagesApi } from "@passes/api-client/apis"
-import React from "react"
+import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
+import { FormInput, PostUnlockButton } from "src/components/atoms"
+import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
 import { SendMessageButton } from "src/components/payment/send-message"
 import { wrapApi } from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
 
+import { GiphyContext } from "../.."
+
 const MessagingInputFanPerspective = () => {
+  const { freeMessages, setFreeMessages } = useContext(GiphyContext)
   const { channel: activeChannel, client } = useChatContext(ChatContext)
+  const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
 
   const members = Object.values(activeChannel?.state?.members).filter(
     ({ user }) => user?.id !== client.userID
@@ -60,6 +65,7 @@ const MessagingInputFanPerspective = () => {
   const onCallback = (error) => {
     if (!error) {
       setValue("text", "", { shouldValidate: true })
+      setFreeMessages(freeMessages > 0 ? freeMessages - 1 : 0)
     }
   }
   const { blocked, amountUSD, submitting, loading, submit, submitData } =
@@ -296,24 +302,54 @@ const MessagingInputFanPerspective = () => {
         }
         `}</style>
       <div className="str-chat__messaging-input flex flex-col-reverse sm:flex sm:flex-row">
-        <div className="flex h-full w-full flex-col justify-between">
-          <div className="messaging-input__container">
+        {freeMessages > 0 || tip > 4 ? (
+          <div className="flex h-full w-full flex-col justify-between">
             <div className="messaging-input__container">
-              <div className="messaging-input__input-wrapper">
-                <FormInput
-                  register={register}
-                  type="text-area"
-                  name="text"
-                  className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
-                  placeholder="Send a message.."
-                  rows={4}
-                  cols={40}
-                  options={{ onChange: onTextChange }}
-                />
+              <div className="messaging-input__container">
+                <div className="messaging-input__input-wrapper">
+                  <FormInput
+                    register={register}
+                    type="text-area"
+                    name="text"
+                    className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
+                    placeholder="Send a message.."
+                    rows={4}
+                    cols={40}
+                    options={{ onChange: onTextChange }}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className=" flex h-full w-full flex-col justify-center gap-5 bg-[#5f2c2f]/50  px-[10px] backdrop-blur-[25px]">
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-sm font-medium text-[#FBFBFB]">
+                You have
+              </span>
+              <span className="text-base font-medium text-[#C943A8] ">
+                {freeMessages} free
+              </span>
+              <span className="text-sm font-medium text-[#FBFBFB]">
+                messages left.
+              </span>
+            </div>
+            <span className="flex items-center justify-center">
+              <PostUnlockButton
+                onClick={() => setOpenBuyMessagesModal(!openBuyMessagesModal)}
+                value={openBuyMessagesModal}
+                name="unlock more messages"
+                className="w-fit gap-[6px] rounded-[50px] bg-[#C943A8] py-[6px] px-[12px] text-sm"
+              />
+            </span>
+            <BuyMessagesModal
+              isOpen={openBuyMessagesModal}
+              setOpen={setOpenBuyMessagesModal}
+              freeMessages={freeMessages}
+              setFreeMessages={setFreeMessages}
+            />
+          </div>
+        )}
         <div className="border-l-none flex flex-col justify-between border-t border-passes-dark-200 sm:max-w-[254px] sm:items-center sm:justify-center sm:border-t-0 sm:border-l">
           <div className="flex flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4 ">
             <FormInput

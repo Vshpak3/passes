@@ -36,13 +36,13 @@ const MessagesComponent = ({ username }) => {
   const [purchasedContent, setPurchasedContent] = useState(false)
   const [isMobileNavVisible, setMobileNav] = useState(false)
   const [isCreator, setIsCreator] = useState(false)
+  const [freeMessages, setFreeMessages] = useState(5)
   const [gallery, setGallery] = useState(false)
   const [files, setFiles] = useState([])
   const [theme] = useState("dark")
   const [messagesStats, setMessagesStats] = useState([])
   const { streamToken } = useChat(username)
   const { user } = useUser()
-
   useEffect(() => {
     const mobileChannelList = document.querySelector("#mobile-channel-list")
     if (isMobileNavVisible && mobileChannelList) {
@@ -128,6 +128,8 @@ const MessagesComponent = ({ username }) => {
     setIsCreator,
     gallery,
     setGallery,
+    freeMessages,
+    setFreeMessages,
     purchasedContent,
     setPurchasedContent,
     user
@@ -400,6 +402,8 @@ const MessagesComponent = ({ username }) => {
                 theme={theme}
                 toggleMobile={toggleMobile}
                 messagesStats={messagesStats}
+                freeMessages={freeMessages}
+                setFreeMessages={setFreeMessages}
               />
             </GiphyContext.Provider>
           </Channel>

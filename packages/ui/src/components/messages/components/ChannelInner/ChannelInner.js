@@ -2,6 +2,7 @@ import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import React, { useContext, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
+import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, formatCurrency } from "src/helpers"
 import {
@@ -111,9 +112,11 @@ const getChannelUnreadTip = (messagesStats, channel) => {
 }
 
 export const ChannelInner = (props) => {
+  const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
+
   const { channel: activeChannel } = useChatContext(ChatContext)
   const tip = getChannelUnreadTip(props.messagesStats, activeChannel)
-  const { theme, toggleMobile } = props
+  const { theme, toggleMobile, freeMessages, setFreeMessages } = props
   let sumPaid = paidContent.reduce(function (prev, current) {
     return prev + +current.price
   }, 0)
@@ -132,7 +135,7 @@ export const ChannelInner = (props) => {
           toggleMobile={toggleMobile}
           isCreator={isCreator}
         />
-        {isCreator && (
+        {isCreator ? (
           <div
             className={classNames(
               gallery
@@ -166,24 +169,36 @@ export const ChannelInner = (props) => {
                     {tip > 0 ? formatCurrency(tip) : "$0.00"}
                   </span>
                 </div>
-                {/* <div className="m-0 flex cursor-pointer items-center p-0">
-                  <span className="flex h-[36px] w-[125px] items-center justify-center rounded-l-[40px] bg-[#499B8E] text-[16px] font-medium leading-[16px] text-[#ffff]">
-                    4 days ago 👏🏻
-                  </span>
-                  <span className="flex h-[36px] w-[58px] items-center justify-center rounded-r-[40px] bg-[#3B867A] text-[16px] font-medium leading-[16px] text-[#ffff] ">
-                    $150
-                  </span>
-                </div>
-                <div className="m-0 flex cursor-pointer items-center p-0">
-                  <span className="flex h-[36px] w-[89px] items-center justify-center rounded-l-[40px] bg-[#589752] text-[16px] font-medium leading-[16px] text-[#ffff]">
-                    March 👍
-                  </span>
-                  <span className="flex h-[36px] w-[40px] items-center justify-center rounded-r-[40px] bg-[#488243] text-[16px] font-medium leading-[16px] text-[#ffff] ">
-                    $5
-                  </span>
-                </div> */}
               </div>
             )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-[10px] border-b border-[#FFFF]/10 bg-[#5f2c2f]/50 py-[10px] px-4 backdrop-blur-[25px] ">
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-medium text-[#FBFBFB]">
+                You have
+              </span>
+              <span className="text-base font-medium text-[#C943A8] ">
+                {freeMessages} free
+              </span>
+              <span className="text-sm font-medium text-[#FBFBFB]">
+                messages left.
+              </span>
+            </div>
+            <span>
+              <PostUnlockButton
+                onClick={() => setOpenBuyMessagesModal(!openBuyMessagesModal)}
+                value={openBuyMessagesModal}
+                name="unlock more messages"
+                className="gap-[6px] rounded-[50px] bg-[#C943A8] py-[6px] px-[12px] text-sm"
+              />
+            </span>
+            <BuyMessagesModal
+              isOpen={openBuyMessagesModal}
+              setOpen={setOpenBuyMessagesModal}
+              freeMessages={freeMessages}
+              setFreeMessages={setFreeMessages}
+            />
           </div>
         )}
         {!gallery && <MessageList messageActions={actions} />}
@@ -226,6 +241,7 @@ export const ChannelInner = (props) => {
 
 export const GalleryMedia = ({ media, purchasedContent, isCreator }) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState(false)
+
   return (
     <div className="flex w-full flex-col items-start gap-3 rounded-[20px] border border-[#ffff]/20 bg-[#1b141d]/50 p-4 sm:max-w-[235px]">
       <div className="flex w-full items-center justify-between">

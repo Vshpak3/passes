@@ -55,18 +55,6 @@ export const SendMessageButton = ({
               ? " Send Message with Tip"
               : ` Send Message`}
           </button>
-          {/* <button
-            onClick={() => {
-              submit()
-            }}
-            className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white"
-            type="submit"
-            {...(blocked || submitting ? { disabled: true } : {})}
-          >
-            {loading
-              ? "Sending.."
-              : `Send message ${amountUSD > 0 ? amountUSD : ""}`}
-          </button> */}
         </div>
       )}
     </>
