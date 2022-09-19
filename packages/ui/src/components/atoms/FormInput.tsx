@@ -22,7 +22,7 @@ type FormInputProps = {
   type: FormType
   placeholder?: FormPlaceholder
   options?: FormOptions
-  register: FormRegister
+  register?: FormRegister
   errors?: FormErrors
   selectOptions?: FormSelectOptions
   trigger?: JSX.Element
@@ -39,6 +39,7 @@ type FormInputProps = {
   value?: string
   mask?: string
 }
+
 const FormInput = ({
   textPosition,
   label,
