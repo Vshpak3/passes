@@ -67,7 +67,7 @@ export class UserController {
   async validateUsername(
     @Param('username') username: string,
   ): Promise<boolean> {
-    return !this.userService.isUsernameTaken(username)
+    return !(await this.userService.isUsernameTaken(username))
   }
 
   @ApiEndpoint({
