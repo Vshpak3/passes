@@ -115,7 +115,7 @@ export class FollowController {
     @Param('followerId') followerId: string,
     @Body() reportFanDto: ReportFanDto,
   ): Promise<void> {
-    return this.followService.reportFollower(
+    return await this.followService.reportFollower(
       req.user.id,
       followerId,
       reportFanDto.reason,
@@ -133,7 +133,7 @@ export class FollowController {
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.unblockFollower(req.user.id, followerId)
+    return await this.followService.unblockFollower(req.user.id, followerId)
   }
 
   @ApiEndpoint({
@@ -147,7 +147,7 @@ export class FollowController {
     @Req() req: RequestWithUser,
     @Param('followerId') followerId: string,
   ): Promise<void> {
-    return this.followService.blockFollower(req.user.id, followerId)
+    return await this.followService.blockFollower(req.user.id, followerId)
   }
 
   @ApiEndpoint({

@@ -43,7 +43,7 @@ export class ContentController {
     @Req() req: RequestWithUser,
     @Body() createContentRequestDto: CreateContentRequestDto,
   ): Promise<GetContentResponseDto> {
-    return this.contentService.createContent(
+    return await this.contentService.createContent(
       req.user.id,
       createContentRequestDto,
     )

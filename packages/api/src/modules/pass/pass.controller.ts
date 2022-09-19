@@ -68,7 +68,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() mintPassDto: MintPassRequestDto,
   ): Promise<MintPassResponseDto> {
-    return this.passService.mintPass(req.user.id, mintPassDto)
+    return await this.passService.mintPass(req.user.id, mintPassDto)
   }
 
   @ApiEndpoint({
@@ -131,7 +131,7 @@ export class PassController {
   })
   @Get('pass-info/:passId')
   async findPass(@Param('passId') passId: string): Promise<GetPassResponseDto> {
-    return this.passService.findPass(passId)
+    return await this.passService.findPass(passId)
   }
 
   @ApiEndpoint({
@@ -146,7 +146,7 @@ export class PassController {
     @Param('passId') passId: string,
     @Body() updatePassDto: UpdatePassRequestDto,
   ): Promise<GetPassResponseDto> {
-    return this.passService.updatePass(req.user.id, passId, updatePassDto)
+    return await this.passService.updatePass(req.user.id, passId, updatePassDto)
   }
 
   @ApiEndpoint({
@@ -160,7 +160,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.passService.registerBuyPass(
+    return await this.passService.registerBuyPass(
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.payinMethod,
@@ -178,7 +178,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<PayinDataDto> {
-    return this.passService.registerBuyPassData(
+    return await this.passService.registerBuyPassData(
       req.user.id,
       createPassHolderDto.passId,
     )
@@ -195,7 +195,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return this.passService.registerRenewPass(
+    return await this.passService.registerRenewPass(
       req.user.id,
       renewPassHolderDto.passHolderId,
       renewPassHolderDto.payinMethod,
@@ -213,7 +213,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,
   ): Promise<PayinDataDto> {
-    return this.passService.registerRenewPassData(
+    return await this.passService.registerRenewPassData(
       req.user.id,
       renewPassHolderDto.passHolderId,
     )

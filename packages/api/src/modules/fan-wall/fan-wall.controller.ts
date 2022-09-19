@@ -35,7 +35,7 @@ export class FanWallController {
     @Req() req: RequestWithUser,
     @Body() createFanWallCommentDto: CreateFanWallCommentRequestDto,
   ): Promise<boolean> {
-    return this.fanWallService.createFanWallComment(
+    return await this.fanWallService.createFanWallComment(
       req.user.id,
       createFanWallCommentDto,
     )
@@ -53,7 +53,7 @@ export class FanWallController {
     @Body()
     getFanWallRequestDto: GetFanWallRequestDto,
   ): Promise<GetFanWallResponseDto> {
-    return this.fanWallService.getFanWallForCreator(
+    return await this.fanWallService.getFanWallForCreator(
       req.user.id,
       getFanWallRequestDto,
     )
@@ -70,7 +70,7 @@ export class FanWallController {
     @Req() req: RequestWithUser,
     @Param('fanWallCommentId') fanWallCommentId: string,
   ): Promise<boolean> {
-    return this.fanWallService.hideFanWallCommment(
+    return await this.fanWallService.hideFanWallCommment(
       req.user.id,
       fanWallCommentId,
     )
@@ -87,7 +87,7 @@ export class FanWallController {
     @Req() req: RequestWithUser,
     @Param('fanWallCommentId') fanWallCommentId: string,
   ): Promise<boolean> {
-    return this.fanWallService.deleteFanWallComment(
+    return await this.fanWallService.deleteFanWallComment(
       req.user.id,
       fanWallCommentId,
     )

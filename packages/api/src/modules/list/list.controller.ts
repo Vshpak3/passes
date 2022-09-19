@@ -55,7 +55,11 @@ export class ListController {
     @Req() req: RequestWithUser,
     @Body() addListMembersDto: AddListMembersRequestDto,
   ): Promise<void> {
-    return this.listService.addListMembers(req.user.id, addListMembersDto, true)
+    return await this.listService.addListMembers(
+      req.user.id,
+      addListMembersDto,
+      true,
+    )
   }
 
   @ApiEndpoint({
@@ -69,7 +73,7 @@ export class ListController {
     @Req() req: RequestWithUser,
     @Body() removeListMembersDto: RemoveListMembersRequestDto,
   ): Promise<void> {
-    return this.listService.removeListMembers(
+    return await this.listService.removeListMembers(
       req.user.id,
       removeListMembersDto,
       true,

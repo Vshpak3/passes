@@ -34,7 +34,7 @@ export class ProfileController {
     @Req() req: RequestWithUser,
     @Body() createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto,
   ): Promise<boolean> {
-    return this.profileService.createOrUpdateProfile(
+    return await this.profileService.createOrUpdateProfile(
       req.user.id,
       createOrUpdateProfileRequestDto,
     )
@@ -52,7 +52,10 @@ export class ProfileController {
     @Req() req: RequestWithUser,
     @Body() getProfileRequestDto: GetProfileRequestDto,
   ): Promise<GetProfileResponseDto> {
-    return this.profileService.findProfile(getProfileRequestDto, req.user?.id)
+    return await this.profileService.findProfile(
+      getProfileRequestDto,
+      req.user?.id,
+    )
   }
 
   @ApiEndpoint({
@@ -63,7 +66,7 @@ export class ProfileController {
   })
   @Delete('deactivate')
   async deactivateProfile(@Req() req: RequestWithUser): Promise<boolean> {
-    return this.profileService.deactivateProfile(req.user.id)
+    return await this.profileService.deactivateProfile(req.user.id)
   }
 
   @ApiEndpoint({
@@ -74,6 +77,6 @@ export class ProfileController {
   })
   @Patch('activate')
   async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
-    return this.profileService.activateProfile(req.user.id)
+    return await this.profileService.activateProfile(req.user.id)
   }
 }

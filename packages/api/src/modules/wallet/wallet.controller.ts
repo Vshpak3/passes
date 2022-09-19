@@ -114,7 +114,7 @@ export class WalletController {
     @Req() req: RequestWithUser,
     @Param('walletId') walletId: string,
   ): Promise<boolean> {
-    return this.walletService.removeWallet(req.user.id, walletId)
+    return await this.walletService.removeWallet(req.user.id, walletId)
   }
 
   @ApiEndpoint({
@@ -128,7 +128,10 @@ export class WalletController {
     @Req() req: RequestWithUser,
     @Body() authWalletRequestDto: AuthWalletRequestDto,
   ): Promise<AuthWalletResponseDto> {
-    return this.walletService.authMessage(req.user.id, authWalletRequestDto)
+    return await this.walletService.authMessage(
+      req.user.id,
+      authWalletRequestDto,
+    )
   }
 
   @ApiEndpoint({

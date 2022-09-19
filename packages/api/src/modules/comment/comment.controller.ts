@@ -35,7 +35,10 @@ export class CommentController {
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentRequestDto,
   ): Promise<boolean> {
-    return this.commentService.createComment(req.user.id, createCommentDto)
+    return await this.commentService.createComment(
+      req.user.id,
+      createCommentDto,
+    )
   }
 
   @ApiEndpoint({
@@ -49,7 +52,7 @@ export class CommentController {
     @Req() req: RequestWithUser,
     @Body() getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
   ): Promise<GetCommentsForPostResponseDto> {
-    return this.commentService.findCommentsForPost(
+    return await this.commentService.findCommentsForPost(
       req.user.id,
       getCommentsForPostRequestDto,
     )
@@ -67,7 +70,7 @@ export class CommentController {
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<boolean> {
-    return this.commentService.hideComment(req.user.id, postId, commentId)
+    return await this.commentService.hideComment(req.user.id, postId, commentId)
   }
 
   @ApiEndpoint({
@@ -82,6 +85,10 @@ export class CommentController {
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<boolean> {
-    return this.commentService.deleteComment(req.user.id, postId, commentId)
+    return await this.commentService.deleteComment(
+      req.user.id,
+      postId,
+      commentId,
+    )
   }
 }

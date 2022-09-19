@@ -24,7 +24,7 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Body() getFeedRequestDto: GetFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeed(req.user.id, getFeedRequestDto)
+    return await this.feedService.getFeed(req.user.id, getFeedRequestDto)
   }
 
   @ApiEndpoint({
@@ -38,7 +38,7 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Body() getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getFeedForCreator(
+    return await this.feedService.getFeedForCreator(
       req.user.id,
       getProfileFeedRequestDto,
     )
@@ -55,7 +55,7 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Body() getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForOwner(
+    return await this.feedService.getPostsForOwner(
       req.user.id,
       false,
       getPostsRequestDto,
@@ -73,7 +73,7 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Body() getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return this.feedService.getPostsForOwner(
+    return await this.feedService.getPostsForOwner(
       req.user.id,
       true,
       getPostsRequestDto,
