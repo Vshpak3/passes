@@ -96,6 +96,7 @@ export class AdminService {
         totalSupply: 0,
         title: createPassDto.title,
         description: createPassDto.description,
+        chain: createPassDto.chain,
       }),
     )
     return true
@@ -144,7 +145,7 @@ export class AdminService {
               type: PassTypeEnum.EXTERNAL,
             }),
           )
-          .update('eth_address', addressRequestDto.address.toLowerCase())
+          .update('address', addressRequestDto.address.toLowerCase())
         break
       case ChainEnum.SOL:
         await this.dbWriter(PassHolderEntity.table).insert(
@@ -169,10 +170,11 @@ export class AdminService {
             PassEntity.toDict<PassEntity>({
               id: addressRequestDto.passId,
               type: PassTypeEnum.EXTERNAL,
-              ethAddress: addressRequestDto.address.toLowerCase(),
+              address: addressRequestDto.address.toLowerCase(),
+              chain: addressRequestDto.chain,
             }),
           )
-          .update('eth_address', null)
+          .update('address', null)
         break
       case ChainEnum.SOL:
         await this.dbWriter(PassHolderEntity.table)

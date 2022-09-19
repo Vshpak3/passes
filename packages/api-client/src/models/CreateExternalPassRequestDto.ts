@@ -49,7 +49,26 @@ export interface CreateExternalPassRequestDto {
      * @memberof CreateExternalPassRequestDto
      */
     description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExternalPassRequestDto
+     */
+    chain: CreateExternalPassRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const CreateExternalPassRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type CreateExternalPassRequestDtoChainEnum = typeof CreateExternalPassRequestDtoChainEnum[keyof typeof CreateExternalPassRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the CreateExternalPassRequestDto interface.
@@ -59,6 +78,7 @@ export function instanceOfCreateExternalPassRequestDto(value: object): boolean {
     isInstance = isInstance && "secret" in value;
     isInstance = isInstance && "title" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "chain" in value;
 
     return isInstance;
 }
@@ -78,6 +98,7 @@ export function CreateExternalPassRequestDtoFromJSONTyped(json: any, ignoreDiscr
         'secret': json['secret'],
         'title': json['title'],
         'description': json['description'],
+        'chain': json['chain'],
     };
 }
 
@@ -95,6 +116,7 @@ export function CreateExternalPassRequestDtoToJSON(value?: CreateExternalPassReq
         'secret': value.secret,
         'title': value.title,
         'description': value.description,
+        'chain': value.chain,
     };
 }
 

@@ -20,7 +20,7 @@ export class LambdaService {
   prefix: string
   constructor(private readonly configService: ConfigService) {
     this.client = new LambdaClient(getAwsConfig(this.configService))
-    this.prefix = 'passes-' + configService.get('infra.env')
+    this.prefix = 'passes-' + 'stage' //configService.get('infra.env')
   }
 
   async invoke(command: InvokeCommand): Promise<string> {

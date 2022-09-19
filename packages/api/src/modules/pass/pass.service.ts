@@ -12,6 +12,7 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import {
   CreateNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackInput,
@@ -24,6 +25,7 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
@@ -74,6 +76,7 @@ export class PassService {
     private readonly walletService: WalletService,
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
+    private readonly s3ContentService: S3ContentService,
   ) {}
 
   async createPass(
@@ -106,7 +109,7 @@ export class PassService {
       messages: createPassDto.messages,
       totalSupply: createPassDto.totalSupply,
       remainingSupply: createPassDto.totalSupply,
-      defaultChain: createPassDto.chain,
+      chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
     })
     if (
@@ -142,18 +145,29 @@ export class PassService {
       )
       .select('*')
       .first()
+
+    if (
+      !(await this.s3ContentService.doesObjectExist(
+        `nft/${pass.id}/image.${ContentFormatEnum.IMAGE}`,
+      ))
+    ) {
+      throw new NotFoundException('Image is not uploaded')
+    }
     if (!pass || pass.minted) {
       throw new NotFoundException('Pass can not be minted')
     }
+    let address: string | undefined = undefined
     switch (pass.chain) {
       case ChainEnum.SOL:
-        await this.solService.createSolNftCollection(
-          user.id,
-          pass.id,
-          pass.title,
-          'PASS',
-          pass.description,
-        )
+        address = (
+          await this.solService.createSolNftCollection(
+            user.id,
+            pass.id,
+            pass.title,
+            'PASS',
+            pass.description,
+          )
+        ).passPubKey
         break
       case ChainEnum.ETH: // TODO
       default:
@@ -161,6 +175,9 @@ export class PassService {
           `can not create a pass on chain ${pass.chain}`,
         )
     }
+    await this.dbWriter(PassEntity.table)
+      .update(PassEntity.toDict<PassEntity>({ minted: true, address }))
+      .where('id', pass.id)
     return new MintPassResponseDto(true)
   }
 
@@ -281,6 +298,7 @@ export class PassService {
       .where('creator_id', creatorId)
       .select('*')
       .orderBy([
+        { column: `${PassEntity.table}.pinned_at`, order: 'desc' },
         { column: `${PassEntity.table}.created_at`, order: 'desc' },
         { column: `${PassEntity.table}.id`, order: 'desc' },
       ])
@@ -387,12 +405,12 @@ export class PassService {
 
     const userCustodialWallet = await this.walletService.getDefaultWallet(
       userId,
-      pass.default_chain,
+      pass.chain,
     )
 
     let address = ''
     const tokenId = undefined
-    switch (pass.default_chain) {
+    switch (pass.chain) {
       case ChainEnum.SOL:
         address = (
           await this.solService.createNftPass(
@@ -423,7 +441,7 @@ export class PassService {
       messages: pass.messages,
       address,
       tokenId,
-      chain: pass.default_chain,
+      chain: pass.chain,
     })
     await this.dbWriter(PassHolderEntity.table).insert(data)
     await this.dbWriter(PassEntity.table)

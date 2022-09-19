@@ -54,8 +54,21 @@ export interface DeleteExternalPassAddressRequestDto {
      * @type {string}
      * @memberof DeleteExternalPassAddressRequestDto
      */
-    chain: string;
+    chain: DeleteExternalPassAddressRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const DeleteExternalPassAddressRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type DeleteExternalPassAddressRequestDtoChainEnum = typeof DeleteExternalPassAddressRequestDtoChainEnum[keyof typeof DeleteExternalPassAddressRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the DeleteExternalPassAddressRequestDto interface.

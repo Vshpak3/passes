@@ -57,7 +57,7 @@ export class PassDto {
   remainingSupply: number
 
   @IsEnum(ChainEnum)
-  defaultChain: ChainEnum
+  chain: ChainEnum
 
   @DtoProperty()
   freetrial: boolean
@@ -91,7 +91,7 @@ export class PassDto {
     this.price = pass.price
     this.totalSupply = pass.total_supply
     this.createdAt = pass.created_at
-    this.defaultChain = pass.default_chain
+    this.chain = pass.chain
 
     this.creatorUsername = pass.creator_username
     this.creatorDisplayName = pass.creator_display_name

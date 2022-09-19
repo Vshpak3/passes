@@ -80,6 +80,7 @@ export class FeedService {
         )
       })
       .orderBy([
+        { column: `${PostEntity.table}.pinned_at`, order: 'desc' },
         { column: `${PostEntity.table}.created_at`, order: 'desc' },
         { column: `${PostEntity.table}.id`, order: 'desc' },
       ])

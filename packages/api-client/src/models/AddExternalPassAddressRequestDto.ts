@@ -54,8 +54,21 @@ export interface AddExternalPassAddressRequestDto {
      * @type {string}
      * @memberof AddExternalPassAddressRequestDto
      */
-    chain: string;
+    chain: AddExternalPassAddressRequestDtoChainEnum;
 }
+
+
+/**
+ * @export
+ */
+export const AddExternalPassAddressRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type AddExternalPassAddressRequestDtoChainEnum = typeof AddExternalPassAddressRequestDtoChainEnum[keyof typeof AddExternalPassAddressRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the AddExternalPassAddressRequestDto interface.

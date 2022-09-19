@@ -54,8 +54,27 @@ export interface UpdateExternalPassRequestDto {
      * @type {string}
      * @memberof UpdateExternalPassRequestDto
      */
+    chain: UpdateExternalPassRequestDtoChainEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExternalPassRequestDto
+     */
     passId: string;
 }
+
+
+/**
+ * @export
+ */
+export const UpdateExternalPassRequestDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type UpdateExternalPassRequestDtoChainEnum = typeof UpdateExternalPassRequestDtoChainEnum[keyof typeof UpdateExternalPassRequestDtoChainEnum];
+
 
 /**
  * Check if a given object implements the UpdateExternalPassRequestDto interface.
@@ -65,6 +84,7 @@ export function instanceOfUpdateExternalPassRequestDto(value: object): boolean {
     isInstance = isInstance && "secret" in value;
     isInstance = isInstance && "title" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "passId" in value;
 
     return isInstance;
@@ -85,6 +105,7 @@ export function UpdateExternalPassRequestDtoFromJSONTyped(json: any, ignoreDiscr
         'secret': json['secret'],
         'title': json['title'],
         'description': json['description'],
+        'chain': json['chain'],
         'passId': json['passId'],
     };
 }
@@ -103,6 +124,7 @@ export function UpdateExternalPassRequestDtoToJSON(value?: UpdateExternalPassReq
         'secret': value.secret,
         'title': value.title,
         'description': value.description,
+        'chain': value.chain,
         'passId': value.passId,
     };
 }

@@ -294,7 +294,7 @@ export class SolService {
         ChainEnum.SOL,
       ),
     )
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
 
     const jsonMetadata = {
       name: name,
@@ -331,7 +331,7 @@ export class SolService {
     const s3Input = {
       Bucket: this.configService.get('s3_bucket.nft'),
       Body: JSON.stringify(jsonMetadata),
-      Key: `nft/nft-${solNftId}`,
+      Key: `nft/${passId}/${passHolderId}/metadata.json`,
     }
     await this.s3contentService.putObject(s3Input)
 
@@ -513,7 +513,7 @@ export class SolService {
       ),
     )
 
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/collection.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
     const metadataJson = {
       name: name,
       symbol: symbol,
@@ -537,9 +537,9 @@ export class SolService {
         category: 'image',
       },
     }
-    const key = `nft/collection-${passId}`
+    const key = `nft/${passId}/metadata.json`
     const s3Input = {
-      Bucket: 'passes-stage-nft',
+      Bucket: this.configService.get('s3_bucket.nft'),
       Body: JSON.stringify(metadataJson),
       Key: key,
     }

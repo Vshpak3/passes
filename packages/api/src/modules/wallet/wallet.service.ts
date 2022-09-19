@@ -118,7 +118,7 @@ export class WalletService {
       address = keypair.publicKey.toString()
     } else {
       address = await this.lambdaService.blockchainSignCreateAddress(
-        'user-' + id,
+        'user.' + id,
         chain,
       )
     }
@@ -153,11 +153,8 @@ export class WalletService {
         `${WalletEntity.table}.user_id`,
       )
       .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
-      .andWhere(
-        WalletEntity.toDict<WalletEntity>({
-          chain: chain,
-        }),
-      )
+      .andWhere(`${WalletEntity.table}.chain`, chain)
+      .andWhere(`${DefaultWalletEntity.table}.chain`, chain)
       .select([`${WalletEntity.table}.*`])
       .first()
     if (wallet) {

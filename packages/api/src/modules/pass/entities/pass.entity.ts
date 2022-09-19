@@ -52,13 +52,13 @@ export class PassEntity extends BaseEntity {
   messages?: number
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
-  ethAddress?: string
+  address?: string
 
   @Property({ default: false })
   minted: boolean
 
   @Enum(() => ChainEnum)
-  defaultChain?: ChainEnum
+  chain: ChainEnum
 
   @Property({ default: 0 })
   royalties: number
