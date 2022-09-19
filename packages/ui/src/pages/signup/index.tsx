@@ -67,7 +67,10 @@ const SignupPage = () => {
       }
 
       // In local development (dev) we auto-verify the email
-      if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
+      if (
+        process.env.NEXT_PUBLIC_NODE_ENV === "dev" ||
+        process.env.NEXT_PUBLIC_NODE_ENV === "stage"
+      ) {
         const res = await wrapApi(AuthApi).verifyUserEmail({
           verifyEmailDto: {
             verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
