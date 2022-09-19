@@ -235,7 +235,7 @@ const UserInfoPage = () => {
                 moment().diff(moment(watch("birthday")), "years") <
                   MIN_AGE_IN_YEARS && (
                   <Text fontSize={12} className="mt-1 text-[red]">
-                    You must be at least 18 to sign up to Moment.
+                    You must be at least {MIN_AGE_IN_YEARS} to sign up.
                   </Text>
                 )}
             </div>

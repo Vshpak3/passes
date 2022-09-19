@@ -47,7 +47,7 @@ export class LocalAuthService {
       .first()
 
     if (currenAuthRecord) {
-      // TODO (aaronabf): we should avoid leaking account info
+      // TODO: we should avoid leaking account info
       throw new ConflictException('User already exists with this email')
     }
 
@@ -143,7 +143,7 @@ export class LocalAuthService {
 
     if (request.used_at) {
       throw new BadRequestException(
-        'Verify email request has already been used',
+        'Reset password request has already been used',
       )
     }
 
