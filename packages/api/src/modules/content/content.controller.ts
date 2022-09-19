@@ -12,7 +12,6 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
-import { S3ContentService } from '../s3content/s3content.service'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import {
@@ -27,10 +26,7 @@ import {
 @ApiTags('content')
 @Controller('content')
 export class ContentController {
-  constructor(
-    private readonly contentService: ContentService,
-    private readonly s3contentService: S3ContentService,
-  ) {}
+  constructor(private readonly contentService: ContentService) {}
 
   @ApiEndpoint({
     summary: 'Create content',
@@ -113,6 +109,20 @@ export class ContentController {
       req.user.id,
       params.contentType,
     )
+    return { url }
+  }
+
+  @ApiEndpoint({
+    summary: 'Get signed url for W-9 form',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'W-9 url was signed',
+  })
+  @Get('sign/w9')
+  async preSignW9(
+    @Req() req: RequestWithUser,
+  ): Promise<GetSignedUrlResponseDto> {
+    const url = await this.contentService.preSignW9(req.user.id)
     return { url }
   }
 

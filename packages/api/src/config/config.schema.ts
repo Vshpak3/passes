@@ -30,6 +30,7 @@ export const configValidationSchema = Joi.object({
   S3_BUCKET_NFT: Joi.string().required(),
   S3_BUCKET_PUBLIC: Joi.string().required(),
   S3_BUCKET_USERCONTENT: Joi.string().required(),
+  S3_BUCKET_W9: Joi.string().required(),
 
   SES_SENDER_EMAIL: Joi.string().required(),
 
@@ -120,6 +121,7 @@ export const configConfiguration = async function (): Promise<
       nft: getConfigValue('S3_BUCKET_NFT'),
       public: getConfigValue('S3_BUCKET_PUBLIC'),
       usercontent: getConfigValue('S3_BUCKET_USERCONTENT'),
+      w9: getConfigValue('S3_BUCKET_W9'),
     },
     ses: {
       senderEmail: getConfigValue('SES_SENDER_EMAIL'),

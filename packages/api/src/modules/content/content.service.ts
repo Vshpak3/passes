@@ -176,4 +176,8 @@ export class ContentService {
       `pass/upload/${userId}/${pass.passId}.${ContentFormatEnum.IMAGE}`,
     )
   }
+
+  async preSignW9(userId: string) {
+    return this.s3contentService.preSignUrl(`w9/${userId}/upload.pdf`)
+  }
 }

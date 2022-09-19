@@ -31,6 +31,10 @@ class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${nftId}.json`
   }
 
+  static w9Pdf(userId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/w9/${userId}/upload.pdf`
+  }
+
   /**
    * Get content type from file type.
    * @returns ContentTypeEnum (image|video|audio)
@@ -63,7 +67,7 @@ class ContentService {
   }
 
   private async preSignUrl(
-    type: "profile" | "banner" | "pass" | "content",
+    type: "profile" | "banner" | "pass" | "content" | "w9",
     params?: any
   ) {
     switch (type) {
@@ -81,6 +85,10 @@ class ContentService {
       }
       case "content": {
         const { url } = await this.contentApi.preSignContent(params)
+        return url
+      }
+      case "w9": {
+        const { url } = await this.contentApi.preSignW9()
         return url
       }
     }
@@ -111,6 +119,11 @@ class ContentService {
 
   async uploadPassImage(file: File, passId: string) {
     const url = await this.preSignUrl("pass", passId)
+    return this.uploadFile(url, file)
+  }
+
+  async uploadW9(file: File) {
+    const url = await this.preSignUrl("w9")
     return this.uploadFile(url, file)
   }
 

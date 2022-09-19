@@ -281,6 +281,40 @@ export class ContentApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Get signed url for W-9 form
+     */
+    async preSignW9Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/content/sign/w9`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get signed url for W-9 form
+     */
+    async preSignW9(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignW9Raw(initOverrides);
+        return await response.value();
+    }
+
 }
 
 /**

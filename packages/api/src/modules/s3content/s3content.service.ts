@@ -18,6 +18,7 @@ const FOLDER_BUCKET_MAP = {
   nft: 'nft',
   upload: 'usercontent',
   media: 'usercontent',
+  w9: 'w9',
 } as const
 type S3Bucket = typeof FOLDER_BUCKET_MAP[keyof typeof FOLDER_BUCKET_MAP]
 
