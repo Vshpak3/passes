@@ -1,9 +1,1 @@
-<svg
-  width="1"
-  height="42"
-  viewBox="0 0 1 42"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
-<rect width="1" height="42" fill="#2C282D" />
-</svg>
+<svg width="1" height="42" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#2C282D" d="M0 0h1v42H0z"/></svg>

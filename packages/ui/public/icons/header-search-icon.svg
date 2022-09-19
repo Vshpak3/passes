@@ -1,13 +1,1 @@
-<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="34" height="33.9986" rx="16.9993" fill="url(#paint0_linear_297_1555)" />
-  <path opacity="0.4" d="M24 23.9986L19.3335 19.332" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M15.4444 20.8888C18.4512 20.8888 20.8888 18.4512 20.8888 15.4444C20.8888 12.4375 18.4512 10 15.4444 10C12.4375 10 10 12.4375 10 15.4444C10 18.4512 12.4375 20.8888 15.4444 20.8888Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <defs>
-    <linearGradient id="paint0_linear_297_1555" x1="-0.807855" y1="-0.809492" x2="34.8098" y2="33.1889" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#D6409F" />
-      <stop offset="0.510417" stop-color="#AB4ABA" />
-      <stop offset="1" stop-color="#8E4EC6" />
-    </linearGradient>
-  </defs>
-</svg>
-  
+<svg width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="34" height="33.999" rx="16.999" fill="url(#a)"/><path opacity=".4" d="m24 23.999-4.666-4.667" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.444 20.889a5.444 5.444 0 1 0 0-10.89 5.444 5.444 0 0 0 0 10.89Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="a" x1="-.808" y1="-.809" x2="34.81" y2="33.189" gradientUnits="userSpaceOnUse"><stop stop-color="#D6409F"/><stop offset=".51" stop-color="#AB4ABA"/><stop offset="1" stop-color="#8E4EC6"/></linearGradient></defs></svg>
