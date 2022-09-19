@@ -27,13 +27,14 @@ const securityHeaders = [
   {
     key: "X-Frame-Options",
     value: "SAMEORIGIN"
-  },
+  }
 
   // Prevent cross-site scripting (XSS), clickjacking and other code injection attacks.
-  {
-    key: "Content-Security-Policy",
-    value: ContentSecurityPolicy.replace(/\s{2,}/g, " ").trim()
-  }
+  // https://buildmoment.atlassian.net/browse/PASS-604
+  // {
+  //   key: "Content-Security-Policy",
+  //   value: ContentSecurityPolicy.replace(/\s{2,}/g, " ").trim()
+  // }
 ]
 
 const domains = [
