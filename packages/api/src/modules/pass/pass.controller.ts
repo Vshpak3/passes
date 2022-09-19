@@ -54,7 +54,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassRequestDto,
   ): Promise<CreatePassResponseDto> {
-    return this.passService.createPass(req.user.id, createPassDto)
+    return await this.passService.createPass(req.user.id, createPassDto)
   }
 
   @ApiEndpoint({
