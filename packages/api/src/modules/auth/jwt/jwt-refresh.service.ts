@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { AuthRecordDto } from '../dto/auth-record-dto'
+import { AuthRecord } from '../core/auth-record'
 import { BASE_CLAIMS } from './jwt.constants'
 import { JwtRefreshPayload } from './jwt-refresh.payload'
 
@@ -9,7 +9,7 @@ import { JwtRefreshPayload } from './jwt-refresh.payload'
 export class JwtRefreshService {
   constructor(private jwtService: JwtService) {}
 
-  createRefreshToken(authRecord: AuthRecordDto) {
+  createRefreshToken(authRecord: AuthRecord) {
     const payload: JwtRefreshPayload = { sub: authRecord.id, ...BASE_CLAIMS }
     return this.jwtService.sign(payload)
   }

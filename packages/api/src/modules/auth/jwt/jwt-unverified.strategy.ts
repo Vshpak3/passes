@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { JwtAuthPayload } from './jwt-auth.payload'
-import { JWT_UNVERIFIED_NAME } from './jwt-unverified.guard'
+import { JWT_UNVERIFIED_NAME } from './jwt.constants'
+import { JwtAuthPayload } from './jwt.payload'
 
 @Injectable()
 export class JwtUnverifiedStrategy extends PassportStrategy(

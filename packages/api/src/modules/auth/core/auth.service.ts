@@ -5,138 +5,210 @@ import { v4 } from 'uuid'
 import { Database } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { OAuthProvider } from '../../auth/helpers/oauth-provider.type'
+import { EmailService } from '../../email/email.service'
 import { VerifyEmailRequestEntity } from '../../email/entities/verify-email-request.entity'
+import { CONFIRM_EMAIL_TEMPLATE } from '../../email/templates/confirm-email'
+import { UserDto } from '../../user/dto/user.dto'
+import { UserEntity } from '../../user/entities/user.entity'
 import { UserService } from '../../user/user.service'
-import { AuthRecordDto } from '../dto/auth-record-dto'
+import {
+  VERIFY_EMAIL_LIFETIME_MS,
+  VERIFY_EMAIL_SUBJECT,
+} from '../constants/email'
 import { CreateUserRequestDto } from '../dto/create-user.dto'
 import { VerifyEmailDto } from '../dto/verify-email.dto'
 import { AuthEntity } from '../entities/auth.entity'
+import { AuthRecord } from './auth-record'
 
 @Injectable()
 export class AuthService {
-  env: string
+  private env: string
 
   constructor(
+    private readonly configService: ConfigService,
     @Database('ReadOnly')
     private readonly dbReader: DatabaseService['knex'],
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
-    private readonly configService: ConfigService,
     private readonly userService: UserService,
+    private readonly emailService: EmailService,
   ) {
     this.env = this.configService.get('infra.env') as string
   }
 
-  async setEmail(authRecordId: string, email: string): Promise<void> {
+  async setEmail(authId: string, email: string): Promise<void> {
+    // TODO: rate limit this endpoint since it effectively allows someone
+    // to send an email from our server
+
     const authRecord = await this.dbReader(AuthEntity.table)
-      .where({ id: authRecordId })
+      .where({ id: authId })
       .select('is_email_verified')
       .first()
 
     // Block endpoint if verified. Do not block if only the email is set
     // (since the user may have entered the wrong email)
-    if (authRecord?.is_email_verified) {
+    if (authRecord.is_email_verified) {
       throw new BadRequestException('Email already verified')
     }
 
     await this.dbWriter(AuthEntity.table)
       .update(AuthEntity.toDict<AuthEntity>({ email: email }))
-      .where({ id: authRecordId })
+      .where({ id: authId })
+
+    await this.sendVerifyEmailForUserSignin(authId, email)
   }
 
-  async verifyEmail(
-    authRecordId: string,
-    verifyEmailDto: VerifyEmailDto,
-  ): Promise<AuthRecordDto> {
-    // TODO (aaronabf): add in dedup support
+  async sendVerifyEmailForUserSignin(authId: string, email: string) {
+    const id = v4()
 
-    // Verify all emails automatically in dev
-    // TODO (aaronabf): remove staging
+    await this.dbWriter(VerifyEmailRequestEntity.table).insert(
+      VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
+        id,
+        auth: authId,
+        email,
+      }),
+    )
+
+    // Skip sending verifications emails in local development
     if (this.env === 'dev' || this.env === 'stage') {
-      await this.dbWriter(AuthEntity.table)
-        .update(AuthEntity.toDict<AuthEntity>({ isEmailVerified: true }))
-        .where({ id: authRecordId })
-      return new AuthRecordDto({ isEmailVerified: true })
+      return
     }
 
-    const request = await this.dbReader(VerifyEmailRequestEntity.table)
+    const verificationLink = `${this.configService.get(
+      'clientUrl',
+    )}/email/verify?id=${id}`
+
+    await this.emailService.sendRenderedEmail(
+      email,
+      VERIFY_EMAIL_SUBJECT,
+      CONFIRM_EMAIL_TEMPLATE,
+      { email, verifyEmailUrl: verificationLink },
+    )
+  }
+
+  async verifyEmailForUserSignin(
+    authId: string,
+    verifyEmailDto: VerifyEmailDto,
+  ): Promise<AuthRecord> {
+    let request = await this.dbReader(VerifyEmailRequestEntity.table)
       .where({ id: verifyEmailDto.verificationToken })
+      .select('*')
       .first()
+
+    // In local development we don't send a verification email so we cannot
+    // easily retrive the verification id, so we just grab the last created
+    // entry
+    if (this.env === 'dev') {
+      request = await this.dbReader(VerifyEmailRequestEntity.table)
+        .select('*')
+        .orderBy('created_at', 'desc')
+        .limit(1)
+        .first()
+    }
 
     if (!request) {
       throw new BadRequestException('Verify email request does not exist')
     }
 
-    if (new Date() < request.expires_at) {
-      throw new BadRequestException('Verify email request has already expired')
+    if (
+      new Date().getTime() - new Date(request.created_at).getTime() >
+      VERIFY_EMAIL_LIFETIME_MS
+    ) {
+      throw new BadRequestException('Verify email request has expired')
     }
 
-    if (request.used_at !== null) {
+    if (request.used_at) {
       throw new BadRequestException(
         'Verify email request has already been used',
       )
     }
 
-    const data = VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
-      usedAt: new Date(),
-    })
+    // Handles deduplicating users based on email
+    const user = await this.dbReader(UserEntity.table)
+      .where(UserEntity.toDict<UserEntity>({ email: request.email }))
+      .select('*')
+      .first()
+
+    const authRecordUpdate = { isEmailVerified: true }
+    if (user) {
+      authRecordUpdate['user'] = user.id
+    }
 
     await this.dbWriter.transaction(async (trx) => {
       await trx(VerifyEmailRequestEntity.table)
-        .update(data)
-        .where({ id: verifyEmailDto.verificationToken })
+        .update(
+          VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
+            usedAt: new Date(),
+          }),
+        )
+        .where({ id: request.id })
 
       await trx(AuthEntity.table)
-        .update(AuthEntity.toDict<AuthEntity>({ isEmailVerified: true }))
-        .where({ id: authRecordId })
+        .update(AuthEntity.toDict<AuthEntity>(authRecordUpdate))
+        .where({ id: authId })
     })
 
-    return new AuthRecordDto({ isEmailVerified: true })
+    if (user) {
+      return AuthRecord.fromUserDto(new UserDto(user))
+    } else {
+      return new AuthRecord({ id: authId, isEmailVerified: true })
+    }
   }
 
   async createUser(
-    authRecordId: string,
+    authId: string,
     createUserRequestDto: CreateUserRequestDto,
-  ): Promise<AuthRecordDto> {
-    // TODO (aaronabf): check for duplicate calls
-
+  ): Promise<AuthRecord> {
     const authRecord = await this.dbReader(AuthEntity.table)
-      .where({ id: authRecordId })
-      .select('email')
+      .where({ id: authId })
+      .select(['user_id', 'is_email_verified', 'email'])
       .first()
 
+    if (authRecord.user_id) {
+      throw new BadRequestException('Auth is already associated with a user')
+    }
+
+    if (!authRecord.is_email_verified) {
+      throw new BadRequestException('Email is not verified')
+    }
+
     const user = await this.userService.createUser(
+      authId,
       authRecord.email,
       createUserRequestDto,
     )
 
-    return AuthRecordDto.fromUserDto(user)
+    return AuthRecord.fromUserDto(user)
+  }
+
+  async getAuthRecordFromAuthOrUser(authEntity: any): Promise<AuthRecord> {
+    // Auth table has user ID and therefore we have a fully verified user
+    if (authEntity.user_id) {
+      return AuthRecord.fromUserDto(
+        await this.userService.findOne(authEntity.user_id),
+      )
+    }
+    // No user ID and therefore no user entity exists yet
+    else {
+      return new AuthRecord({
+        id: authEntity.id,
+        isEmailVerified: authEntity.is_email_verified,
+      })
+    }
   }
 
   async findOrCreateOAuthRecord(
     oauthProvider: OAuthProvider,
     oauthId: string,
     email?: string,
-  ): Promise<AuthRecordDto> {
-    const auth = await this.dbReader(AuthEntity.table)
+  ): Promise<AuthRecord> {
+    const authRecord = await this.dbReader(AuthEntity.table)
       .where(AuthEntity.toDict<AuthEntity>({ oauthId, oauthProvider }))
-      .select('*')
+      .select(['id', 'user_id', 'is_email_verified'])
       .first()
 
-    if (auth) {
-      // Auth table has user ID and therefore we have a fully verified user
-      if (auth.user_id) {
-        return AuthRecordDto.fromUserDto(
-          await this.userService.findOne(auth.user_id),
-        )
-      }
-      // No user ID and therefore no user entity exists yet
-      else {
-        return new AuthRecordDto({
-          id: auth.id,
-          isEmailVerified: auth.is_email_verified,
-        })
-      }
+    if (authRecord) {
+      return this.getAuthRecordFromAuthOrUser(authRecord)
     }
 
     const id = v4()
@@ -151,6 +223,6 @@ export class AuthService {
       }),
     )
 
-    return new AuthRecordDto({ id: id, isEmailVerified: !!email })
+    return new AuthRecord({ id: id, isEmailVerified: !!email })
   }
 }

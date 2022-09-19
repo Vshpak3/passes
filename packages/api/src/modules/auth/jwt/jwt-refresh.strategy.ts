@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { JWT_REFRESH_NAME } from './jwt-refresh.guard'
+import { JWT_REFRESH_NAME } from './jwt.constants'
 import { JwtRefreshPayload } from './jwt-refresh.payload'
 
 @Injectable()

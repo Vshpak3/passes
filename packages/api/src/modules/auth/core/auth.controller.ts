@@ -18,7 +18,6 @@ import { S3ContentService } from '../../s3content/s3content.service'
 import { GetUserResponseDto } from '../../user/dto/get-user.dto'
 import { UserService } from '../../user/user.service'
 import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
-import { AuthRecordDto } from '../dto/auth-record-dto'
 import { CreateUserRequestDto } from '../dto/create-user.dto'
 import { RefreshAuthTokenRequestDto } from '../dto/refresh-auth-token.dto'
 import { SetEmailRequestDto } from '../dto/set-email.dto'
@@ -28,6 +27,7 @@ import { JwtRefreshGuard } from '../jwt/jwt-refresh.guard'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { JwtUnverifiedGuard } from '../jwt/jwt-unverified.guard'
 import { AuthService } from './auth.service'
+import { AuthRecord } from './auth-record'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -76,7 +76,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: VerifyEmailRequestDto,
   ): Promise<AccessTokensResponseDto> {
-    const authRecord = await this.authService.verifyEmail(req.user.id, body)
+    const authRecord = await this.authService.verifyEmailForUserSignin(
+      req.user.id,
+      body,
+    )
     return await createTokens(
       res,
       authRecord,
@@ -97,7 +100,7 @@ export class AuthController {
     allowUnauthorizedRequest: true,
   })
   @UseGuards(JwtUnverifiedGuard)
-  @Post('create')
+  @Post('create-user')
   async createUser(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
@@ -150,7 +153,7 @@ export class AuthController {
   ): Promise<AccessTokensResponseDto> {
     const tokens = await createTokens(
       res,
-      AuthRecordDto.fromUserDto(await this.userService.findOne(req.user.id)),
+      AuthRecord.fromUserDto(await this.userService.findOne(req.user.id)),
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,

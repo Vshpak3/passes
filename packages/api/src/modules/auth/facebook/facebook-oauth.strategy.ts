@@ -7,7 +7,7 @@ import { Logger } from 'winston'
 
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { AuthService } from '../core/auth.service'
-import { AuthRecordDto } from '../dto/auth-record-dto'
+import { AuthRecord } from '../core/auth-record'
 import { validateUser } from '../helpers/oauth-strategy.helper'
 
 export const FACEBOOK_OAUTH_PROVIDER = 'facebook'
@@ -36,7 +36,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
     _accessToken: string,
     _refreshToken: string,
     profile: Profile,
-  ): Promise<AuthRecordDto> {
+  ): Promise<AuthRecord> {
     return validateUser.bind(this)(profile, FACEBOOK_OAUTH_PROVIDER)
   }
 }

@@ -1,4 +1,4 @@
-import { AuthLocalApi } from "@passes/api-client"
+import { AuthApi, AuthLocalApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
@@ -64,6 +64,26 @@ const SignupPage = () => {
       if (!setRes) {
         alert("ERROR: Received no access token")
         return
+      }
+
+      // In local development (dev) we auto-verify the email
+      if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
+        const res = await wrapApi(AuthApi).verifyUserEmail({
+          verifyEmailDto: {
+            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          }
+        })
+
+        const setRes = setTokens(
+          setAccessToken,
+          setRefreshToken,
+          res.accessToken,
+          res.refreshToken
+        )
+
+        if (!setRes) {
+          alert("ERROR: Received no access token")
+        }
       }
 
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))

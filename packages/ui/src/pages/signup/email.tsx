@@ -40,13 +40,14 @@ const UserEmailPage = () => {
       })
 
       // In local development (dev) we auto-verify the email
-      // TODO (aaronabf): remove stage
       if (
         process.env.NEXT_PUBLIC_NODE_ENV === "dev" ||
         process.env.NEXT_PUBLIC_NODE_ENV === "stage"
       ) {
         const res = await api.verifyUserEmail({
-          verifyEmailDto: { verificationToken: "dev" }
+          verifyEmailDto: {
+            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          }
         })
 
         const setRes = setTokens(

@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsPhoneNumber,
   IsUUID,
@@ -58,6 +59,7 @@ export class UserDto {
   @DtoProperty({ optional: true })
   displayName?: string
 
+  @IsBoolean()
   @DtoProperty({ optional: true })
   isCreator?: boolean
 

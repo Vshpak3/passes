@@ -1,6 +1,3 @@
-import { JwtAuthPayload } from './jwt-auth.payload'
+import { JwtBasePayload } from './jwt.payload'
 
-export type JwtRefreshPayload = Omit<
-  JwtAuthPayload,
-  'isVerified' | 'isCreator' | 'isEmailVerified'
->
+export type JwtRefreshPayload = JwtBasePayload

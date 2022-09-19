@@ -175,7 +175,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/auth/local`,
+            path: `/api/auth/local/login`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

@@ -5,8 +5,8 @@ import { Response } from 'express'
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
+import { AuthRecord } from '../auth/core/auth-record'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
-import { AuthRecordDto } from '../auth/dto/auth-record-dto'
 import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { PassEntity } from '../pass/entities/pass.entity'
@@ -71,7 +71,7 @@ export class AdminService {
   ): Promise<AccessTokensResponseDto> {
     return await createTokens(
       res,
-      AuthRecordDto.fromUserDto(await this.findUser(userId, username)),
+      AuthRecord.fromUserDto(await this.findUser(userId, username)),
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,

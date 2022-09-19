@@ -9,8 +9,5 @@ export class ResetPasswordRequestEntity extends BaseEntity {
   user: UserEntity
 
   @Property()
-  expiresAt: Date
-
-  @Property()
   usedAt?: Date
 }

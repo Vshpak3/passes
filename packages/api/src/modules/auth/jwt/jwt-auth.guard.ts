@@ -3,8 +3,7 @@ import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 
 import { ALLOW_UNAUTHORIZED_REQUEST } from '../core/auth.metadata'
-
-export const JWT_AUTH_NAME = 'jwt-auth'
+import { JWT_AUTH_NAME } from './jwt.constants'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(JWT_AUTH_NAME) {

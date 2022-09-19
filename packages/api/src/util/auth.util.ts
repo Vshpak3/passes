@@ -1,22 +1,22 @@
 import { Response } from 'express'
 import * as querystring from 'node:querystring'
 
+import { AuthRecord } from '../modules/auth/core/auth-record'
 import { AccessTokensResponseDto } from '../modules/auth/dto/access-tokens-dto'
-import { AuthRecordDto } from '../modules/auth/dto/auth-record-dto'
 import { JwtAuthService } from '../modules/auth/jwt/jwt-auth.service'
 import { JwtRefreshService } from '../modules/auth/jwt/jwt-refresh.service'
 import { S3ContentService } from '../modules/s3content/s3content.service'
 
 export async function createTokens(
   res: Response,
-  authRecord: AuthRecordDto,
+  authRecord: AuthRecord,
   jwtAuthService: JwtAuthService,
   jwtRefreshService: JwtRefreshService,
   s3contentService: S3ContentService,
 ): Promise<AccessTokensResponseDto> {
   const accessToken = jwtAuthService.createAccessToken(authRecord)
   let refreshToken: string | undefined = undefined
-  if (jwtAuthService.isVerified(authRecord)) {
+  if (authRecord.isVerified) {
     refreshToken = jwtRefreshService.createRefreshToken(authRecord)
   }
   if (authRecord.isCreator) {
@@ -33,7 +33,7 @@ export async function createTokens(
  */
 export async function redirectAfterOAuthLogin(
   res: Response,
-  authRecord: AuthRecordDto,
+  authRecord: AuthRecord,
 ) {
   const tokens = await createTokens(
     res,

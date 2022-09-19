@@ -1,14 +1,14 @@
 import { UnauthorizedException } from '@nestjs/common'
 import { Profile } from 'passport-google-oauth20'
 
-import { AuthRecordDto } from '../dto/auth-record-dto'
+import { AuthRecord } from '../core/auth-record'
 import { OAuthProvider } from './oauth-provider.type'
 
 export async function validateUser(
   profile: Profile,
   oauthProvider: OAuthProvider,
   emailRequired = false,
-): Promise<AuthRecordDto> {
+): Promise<AuthRecord> {
   try {
     const { id, emails } = profile
 

@@ -803,7 +803,8 @@ export class PaymentService {
         }
       }
     }
-    await this.emailService.sendOperationsEmail(
+    await this.emailService.sendEmail(
+      'operations@passes.com',
       JSON.stringify(chargebackDto),
       'chargeback notification',
     )

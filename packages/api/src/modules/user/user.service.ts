@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -42,9 +47,14 @@ export class UserService {
   ) {}
 
   async createUser(
+    authId: string,
     email: string,
     createUserRequestDto: CreateUserRequestDto,
   ): Promise<UserDto> {
+    if (await this.isUsernameTaken(createUserRequestDto.username)) {
+      throw new ConflictException(USERNAME_TAKEN)
+    }
+
     const user = UserEntity.toDict<UserEntity>({
       id: v4(),
       email,
@@ -53,9 +63,9 @@ export class UserService {
 
     await this.dbWriter.transaction(async (trx) => {
       await trx(UserEntity.table).insert(user)
-      await trx(AuthEntity.table).insert(
-        AuthEntity.toDict<AuthEntity>({ user: user.id }),
-      )
+      await trx(AuthEntity.table)
+        .update(AuthEntity.toDict<AuthEntity>({ user: user.id }))
+        .where({ id: authId })
       await trx(NotificationSettingsEntity.table).insert(
         NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
           user: user.id,
@@ -127,7 +137,7 @@ export class UserService {
       .where({ id: userId })
   }
 
-  async validateUsername(username: string): Promise<boolean> {
+  async isUsernameTaken(username: string): Promise<boolean> {
     try {
       await this.findOneByUsername(username)
       return true

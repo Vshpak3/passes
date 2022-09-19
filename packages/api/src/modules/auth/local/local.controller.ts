@@ -5,7 +5,6 @@ import { Response } from 'express'
 import { RequestWithUser } from '../../../types/request'
 import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
-import { EmailService } from '../../email/email.service'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
 import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
@@ -24,7 +23,6 @@ export class LocalAuthController {
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly localAuthService: LocalAuthService,
     private readonly s3contentService: S3ContentService,
-    private readonly emailService: EmailService,
   ) {}
 
   @ApiEndpoint({
@@ -60,7 +58,7 @@ export class LocalAuthController {
     responseDesc: 'Login with email and password',
     allowUnauthorizedRequest: true,
   })
-  @Post()
+  @Post('login')
   async loginWithEmailPassword(
     @Body() loginDto: LocalUserLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
@@ -87,7 +85,7 @@ export class LocalAuthController {
   })
   @Post('reset-password')
   async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
-    await this.emailService.sendInitResetPassword(resetPasswordDto.email)
+    await this.localAuthService.sendInitResetPassword(resetPasswordDto.email)
   }
 
   @ApiEndpoint({
