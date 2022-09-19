@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Inject,
   Injectable,
@@ -22,14 +23,15 @@ import { NotificationSettingsEntity } from '../notifications/entities/notificati
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { USERNAME_TAKEN } from './constants/errors'
 import {
+  MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
+  USERNAME_RESET_TIME_SPAN_MS as USERNAME_RESET_TIMEFRAME_MS,
+} from './constants/username'
+import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
 import { UserDto } from './dto/user.dto'
 import { UserEntity } from './entities/user.entity'
-
-const MAX_USERNAME_RESET_IN_SPAN = 5
-const USERNAME_RESET_TIME_SPAN = 1000 * 60 * 60 * 24 // 1 day
 
 @Injectable()
 export class UserService {
@@ -100,31 +102,43 @@ export class UserService {
     return new UserDto(user)
   }
 
-  async setUsername(userId: string, username: string): Promise<void> {
-    const redisKeyBase = `setUsername:${userId}`
+  private async runAtMostXTimesInTimeframe(
+    timeframe: number,
+    maxCount: number,
+    key: string,
+    fn: () => void,
+  ) {
     let redisKey = ''
     try {
-      for (let i = 0; i < MAX_USERNAME_RESET_IN_SPAN; i++) {
-        redisKey = redisKeyBase + i.toString()
-        if (
-          await this.lockService.lockOnce(redisKey, USERNAME_RESET_TIME_SPAN)
-        ) {
-          const query = () =>
-            this.dbWriter(UserEntity.table)
-              .update(
-                UserEntity.toDict<UserEntity>({
-                  username,
-                }),
-              )
-              .where({ id: userId })
-          await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
-          break
+      for (let i = 0; i < maxCount; i++) {
+        redisKey = `${key}:${i.toString()}`
+        if (await this.lockService.lockOnce(redisKey, timeframe)) {
+          fn.bind(this)()
+          return
         }
       }
     } catch (err) {
-      await this.lockService.unlock(redisKey)
+      if (redisKey) {
+        await this.lockService.unlock(redisKey)
+      }
       throw err
     }
+    throw new BadRequestException('Maximum username reset limit hit')
+  }
+
+  async setUsername(userId: string, username: string): Promise<void> {
+    await this.runAtMostXTimesInTimeframe(
+      USERNAME_RESET_TIMEFRAME_MS,
+      MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
+      `setUsername:${userId}`,
+      async function () {
+        const query = () =>
+          this.dbWriter(UserEntity.table)
+            .update(UserEntity.toDict<UserEntity>({ username }))
+            .where({ id: userId })
+        await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
+      },
+    )
   }
 
   async setDisplayName(userId: string, displayName: string): Promise<void> {

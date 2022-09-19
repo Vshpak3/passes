@@ -20,7 +20,7 @@ import {
   USER_PHONE_NUMBER_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../constants/schema'
-import { USERNAME_REGEX } from '../constants/validation'
+import { VALID_USERNAME_REGEX } from '../constants/username'
 
 export class UserDto {
   @IsUUID()
@@ -33,7 +33,7 @@ export class UserDto {
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @Matches(USERNAME_REGEX, undefined, {
+  @Matches(VALID_USERNAME_REGEX, undefined, {
     message:
       'Username can only contain alphanumeric characters and underscores.',
   })

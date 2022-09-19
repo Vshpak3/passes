@@ -43,7 +43,7 @@ export class LocalAuthService {
   async createLocalUser(email: string, password: string): Promise<AuthRecord> {
     const currenAuthRecord = await this.dbReader(AuthEntity.table)
       .where('email', email)
-      .where('oauth_provider', null)
+      .andWhere('oauth_provider', null)
       .first()
 
     if (currenAuthRecord) {
@@ -52,7 +52,7 @@ export class LocalAuthService {
     }
 
     const id = v4()
-    await this.dbReader(AuthEntity.table).insert(
+    await this.dbWriter(AuthEntity.table).insert(
       AuthEntity.toDict<AuthEntity>({
         id,
         email,
