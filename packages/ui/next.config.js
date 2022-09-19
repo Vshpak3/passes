@@ -7,9 +7,9 @@
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self';
-  child-src ${process.env.NEXT_PUBLIC_UI_URL};
-  style-src 'self' ${process.env.NEXT_PUBLIC_UI_URL};
-  font-src 'self';  
+  child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+  style-src 'self' ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+  font-src 'self';
 `
 
 // https://nextjs.org/docs/advanced-features/security-headers

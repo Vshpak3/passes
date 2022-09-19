@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'no-trailing-spaces': 'error',
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',
   },
