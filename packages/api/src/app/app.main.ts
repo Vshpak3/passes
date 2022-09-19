@@ -48,6 +48,7 @@ export class App {
     this.app.setGlobalPrefix('api', { exclude: [''] })
     this.app.useGlobalPipes(
       new ValidationPipe({
+        forbidUnknownValues: true,
         transform: true,
         transformOptions: { excludeExtraneousValues: true },
       }),

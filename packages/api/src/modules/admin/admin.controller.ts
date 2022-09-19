@@ -1,20 +1,18 @@
 import {
   Body,
   Controller,
-  ExecutionContext,
   HttpStatus,
-  Injectable,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
+import { AdminGuard } from './admin.guard'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
 import { AdminDto } from './dto/admin.dto'
@@ -28,25 +26,6 @@ import { ImpersonateUserRequestDto } from './dto/impersonate-user.dto'
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
-
-/**
- * All admin endpoints are protected via this guard. It is set on the Admin
- * controller and will always be called after the main JWT authentication:
- *   https://docs.nestjs.com/faq/request-lifecycle#summary
- */
-@Injectable()
-class AdminGuard extends AuthGuard('jwt') {
-  constructor(private readonly adminService: AdminService) {
-    super()
-  }
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    // No need to call super, jwt auth is handled by global auth
-    const req = context.switchToHttp().getRequest()
-    await this.adminService.adminCheck(req.user.id, req.body['secret'])
-    return true
-  }
-}
 
 @UseGuards(AdminGuard)
 @ApiTags('admin')
