@@ -17,10 +17,6 @@ preheader: You have successfully reset your password
                   </a>
                 </div>
 
-                <p class="m-0 text-[21px] leading-7 text-gray-900">
-                  Hi {{ page.display_name }},
-                </p>
-
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
                   This is a confirmation email that your password for your account has just been changed.
                 </p>

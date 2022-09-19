@@ -21,7 +21,8 @@ export class AuthEntity extends BaseEntity {
   @Property({ length: AUTH_OAUTH_ID_LENGTH })
   oauthId?: string
 
-  // Duplicate of user email field until the user entity is created
+  // Duplicate of user email field; only used for auth purposes
+  @Index()
   @Property({ length: USER_EMAIL_LENGTH })
   email?: string
 

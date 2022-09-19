@@ -13,22 +13,28 @@ import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
-import { VerifyEmailRequestEntity } from '../../email/entities/verify-email-request.entity'
 import { CONFIRM_EMAIL_TEMPLATE } from '../../email/templates/confirm-email'
 import { CONFIRM_PASSWORD_RESET_EMAIL } from '../../email/templates/confirm-password-reset'
-import { UserEntity } from '../../user/entities/user.entity'
 import {
-  RESET_EMAIL_SUBJECT,
-  RESET_EMAIL_SUCCESS_SUBJECT,
+  RESET_PASSWORD_EMAIL_INIT_SUBJECT,
   RESET_PASSWORD_EMAIL_LIFETIME_MS,
+  RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
 } from '../constants/email'
 import { AuthService } from '../core/auth.service'
 import { AuthRecord } from '../core/auth-record'
+import { ConfirmResetPasswordRequestDto } from '../dto/local/confirm-reset-password.dto'
+import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
+import { InitResetPasswordRequestDto } from '../dto/local/init-reset-password.dto'
+import { LocalUserLoginRequestDto } from '../dto/local/local-user-login.dto'
+import { UpdatePasswordRequestDto } from '../dto/local/update-password.dto'
 import { AuthEntity } from '../entities/auth.entity'
 import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
 @Injectable()
 export class LocalAuthService {
+  private env: string
+  private clientUrl: string
+
   constructor(
     private readonly configService: ConfigService,
     private readonly metrics: MetricsService,
@@ -38,12 +44,19 @@ export class LocalAuthService {
     private readonly dbWriter: DatabaseService['knex'],
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
-  ) {}
+  ) {
+    this.env = this.configService.get('infra.env') as string
+    this.clientUrl = this.configService.get('clientUrl') as string
+  }
 
-  async createLocalUser(email: string, password: string): Promise<AuthRecord> {
+  async createLocalUser(
+    createLocalUserDto: CreateLocalUserRequestDto,
+  ): Promise<AuthRecord> {
+    const email = createLocalUserDto.email
+
     const currenAuthRecord = await this.dbReader(AuthEntity.table)
       .where('email', email)
-      .andWhere('oauth_provider', null)
+      .whereNull('oauth_provider')
       .first()
 
     if (currenAuthRecord) {
@@ -56,7 +69,7 @@ export class LocalAuthService {
       AuthEntity.toDict<AuthEntity>({
         id,
         email,
-        passwordHash: await this.hashPassword(password),
+        passwordHash: await this.hashPassword(createLocalUserDto.password),
       }),
     )
 
@@ -66,12 +79,11 @@ export class LocalAuthService {
   }
 
   async validateLocalUser(
-    email: string,
-    password: string,
+    userLoginDto: LocalUserLoginRequestDto,
   ): Promise<AuthRecord> {
     const authRecord = await this.dbReader(AuthEntity.table)
-      .where('email', email)
-      .where('oauth_provider', null)
+      .where('email', userLoginDto.email)
+      .whereNull('oauth_provider')
       .select(['id', 'user_id', 'is_email_verified', 'password_hash'])
       .first()
 
@@ -81,7 +93,7 @@ export class LocalAuthService {
     }
 
     const doesPasswordMatch = await bcrypt.compare(
-      password,
+      userLoginDto.password,
       authRecord.password_hash,
     )
     if (!doesPasswordMatch) {
@@ -93,42 +105,62 @@ export class LocalAuthService {
     return this.authService.getAuthRecordFromAuthOrUser(authRecord)
   }
 
-  async updatePassword(
-    userId: string,
-    oldPassword: string,
-    newPassword: string,
+  async sendInitResetPasswordEmail(
+    initResetPasswordRequestDto: InitResetPasswordRequestDto,
   ): Promise<void> {
-    const user = await this.dbReader(AuthEntity.table)
-      .where('id', userId)
-      .where('oauth_provider', null)
+    const email = initResetPasswordRequestDto.email
+
+    // This endpoint is unauthed so we must check for the a record
+    const authRecord = await this.dbReader(AuthEntity.table)
+      .where(AuthEntity.toDict<AuthEntity>({ email }))
+      .whereNull('oauth_provider')
       .first()
 
-    if (!user) {
-      throw new BadRequestException('User is not an email and password user')
+    if (!authRecord) {
+      throw new BadRequestException('User is not configued with password login')
     }
 
-    const doesPasswordMatch = await bcrypt.compare(
-      oldPassword,
-      user.password_hash,
+    const id = v4()
+    await this.dbWriter(ResetPasswordRequestEntity.table).insert(
+      ResetPasswordRequestEntity.toDict<ResetPasswordRequestEntity>({
+        id,
+        auth: authRecord.id,
+        email,
+      }),
     )
-    if (!doesPasswordMatch) {
-      throw new BadRequestException('Current password is incorrect')
+
+    // Skip sending password reset emails in local development
+    if (this.env === 'dev') {
+      return
     }
 
-    const passwordHash = await this.hashPassword(newPassword)
-    await this.dbWriter(AuthEntity.table)
-      .update(AuthEntity.toDict<AuthEntity>({ passwordHash }))
-      .where({ id: userId })
+    const passwordResetLink = `${this.clientUrl}/password-reset?token=${id}`
+    await this.emailService.sendRenderedEmail(
+      email,
+      RESET_PASSWORD_EMAIL_INIT_SUBJECT,
+      CONFIRM_EMAIL_TEMPLATE,
+      { email, passwordResetLink },
+    )
   }
 
-  async resetEmailPassword(
-    resetToken: string,
-    newPassword: string,
-  ): Promise<void> {
-    const request = await this.dbReader(ResetPasswordRequestEntity.table)
-      .where('id', resetToken)
+  async confirmResetPassword(
+    confirmResetPasswordRequestDto: ConfirmResetPasswordRequestDto,
+  ): Promise<AuthRecord> {
+    let request = await this.dbReader(ResetPasswordRequestEntity.table)
+      .where('id', confirmResetPasswordRequestDto.verificationToken)
       .select('*')
       .first()
+
+    // In local development we don't send reset password emails and we cannot
+    // easily retrive the reset id, so we just grab the last created
+    // entry
+    if (this.env === 'dev') {
+      request = await this.dbReader(ResetPasswordRequestEntity.table)
+        .select('*')
+        .orderBy('created_at', 'desc')
+        .limit(1)
+        .first()
+    }
 
     if (!request) {
       throw new BadRequestException('Reset password request does not exist')
@@ -147,73 +179,65 @@ export class LocalAuthService {
       )
     }
 
-    const data = ResetPasswordRequestEntity.toDict<ResetPasswordRequestEntity>({
-      usedAt: new Date(),
-    })
-
-    const hashedPassword = await this.hashPassword(newPassword)
+    const email = request.email
+    const hashedPassword = await this.hashPassword(
+      confirmResetPasswordRequestDto.password,
+    )
 
     await this.dbWriter.transaction(async (trx) => {
       await trx(ResetPasswordRequestEntity.table)
-        .update(data)
-        .where({ id: resetToken })
+        .update(
+          ResetPasswordRequestEntity.toDict<ResetPasswordRequestEntity>({
+            usedAt: new Date(),
+          }),
+        )
+        .where({ id: request.id })
 
-      await trx(UserEntity.table)
+      await trx(AuthEntity.table)
         .where('id', request.user_id)
-        .update('password_hash', hashedPassword)
+        .update(AuthEntity.toDict<AuthEntity>({ passwordHash: hashedPassword }))
     })
-
-    await this.sendConfirmResetPasswordEmail(request.user_id)
-  }
-
-  async sendInitResetPassword(email: string) {
-    // const user = await this.dbReader(UserEntity.table).where({ email }).first()
-
-    // if (!user || user.oauth_provider !== null) {
-    //   throw new BadRequestException(USER_NOT_EMAIL)
-    // }
-
-    // if (user.is_email_verified) {
-    //   throw new BadRequestException(EMAIL_ALREADY_VERIFIED)
-    // }
-
-    const id = v4()
-    await this.dbWriter(VerifyEmailRequestEntity.table).insert(
-      VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
-        id,
-        email,
-        auth: 'TODO',
-      }),
-      '*',
-    )
-
-    const passwordResetLink = `${this.configService.get(
-      'clientUrl',
-    )}/password-reset?token=${id}`
 
     await this.emailService.sendRenderedEmail(
       email,
-      RESET_EMAIL_SUBJECT,
-      CONFIRM_EMAIL_TEMPLATE,
-      { email, passwordResetLink },
+      RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
+      CONFIRM_PASSWORD_RESET_EMAIL,
+      { email },
     )
-  }
 
-  async sendConfirmResetPasswordEmail(userId: string) {
-    const user = await this.dbReader(UserEntity.table)
-      .where({ id: userId })
+    const authRecord = await this.dbReader(AuthEntity.table)
+      .where(AuthEntity.toDict<AuthEntity>({ email }))
+      .whereNull('oauth_provider')
       .first()
 
-    // if (!user || user.oauth_provider !== null) {
-    //   throw new BadRequestException(USER_NOT_EMAIL)
-    // }
+    return this.authService.getAuthRecordFromAuthOrUser(authRecord)
+  }
 
-    await this.emailService.sendRenderedEmail(
-      user.email,
-      RESET_EMAIL_SUCCESS_SUBJECT,
-      CONFIRM_PASSWORD_RESET_EMAIL,
-      { email: user.email, display_name: user.display_name },
+  async updatePassword(
+    userId: string,
+    updatePasswordDto: UpdatePasswordRequestDto,
+  ): Promise<void> {
+    const user = await this.dbReader(AuthEntity.table)
+      .where('id', userId)
+      .whereNull('oauth_provider')
+      .first()
+
+    if (!user) {
+      throw new BadRequestException('User is not an email and password user')
+    }
+
+    const doesPasswordMatch = await bcrypt.compare(
+      updatePasswordDto.oldPassword,
+      user.password_hash,
     )
+    if (!doesPasswordMatch) {
+      throw new BadRequestException('Current password is incorrect')
+    }
+
+    const passwordHash = await this.hashPassword(updatePasswordDto.newPassword)
+    await this.dbWriter(AuthEntity.table)
+      .update(AuthEntity.toDict<AuthEntity>({ passwordHash }))
+      .where({ id: userId })
   }
 
   private async hashPassword(password: string) {

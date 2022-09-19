@@ -23,6 +23,7 @@ import { AuthRecord } from './auth-record'
 @Injectable()
 export class AuthService {
   private env: string
+  private clientUrl: string
 
   constructor(
     private readonly configService: ConfigService,
@@ -34,6 +35,7 @@ export class AuthService {
     private readonly emailService: EmailService,
   ) {
     this.env = this.configService.get('infra.env') as string
+    this.clientUrl = this.configService.get('clientUrl') as string
   }
 
   async setEmail(authId: string, email: string): Promise<void> {
@@ -74,10 +76,7 @@ export class AuthService {
       return
     }
 
-    const verificationLink = `${this.configService.get(
-      'clientUrl',
-    )}/email/verify?id=${id}`
-
+    const verificationLink = `${this.clientUrl}/email/verify?id=${id}`
     await this.emailService.sendRenderedEmail(
       email,
       VERIFY_EMAIL_SUBJECT,
@@ -95,7 +94,7 @@ export class AuthService {
       .select('*')
       .first()
 
-    // In local development we don't send a verification email so we cannot
+    // In local development we don't send verification emails and we cannot
     // easily retrive the verification id, so we just grab the last created
     // entry
     if (this.env === 'dev') {

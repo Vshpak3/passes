@@ -7,9 +7,10 @@ import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
 import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
+import { ConfirmResetPasswordRequestDto } from '../dto/local/confirm-reset-password.dto'
 import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
+import { InitResetPasswordRequestDto } from '../dto/local/init-reset-password.dto'
 import { LocalUserLoginRequestDto } from '../dto/local/local-user-login.dto'
-import { ResetPasswordRequestDto } from '../dto/local/reset-password.dto'
 import { UpdatePasswordRequestDto } from '../dto/local/update-password.dto'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
@@ -29,7 +30,7 @@ export class LocalAuthController {
     summary: 'Create a email and password user',
     responseStatus: HttpStatus.CREATED,
     responseType: AccessTokensResponseDto,
-    responseDesc: 'Create a email and password user',
+    responseDesc: 'Access tokens for new account',
     allowUnauthorizedRequest: true,
   })
   @Post('signup')
@@ -38,10 +39,8 @@ export class LocalAuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<AccessTokensResponseDto> {
     const authRecord = await this.localAuthService.createLocalUser(
-      createLocalUserDto.email,
-      createLocalUserDto.password,
+      createLocalUserDto,
     )
-
     return await createTokens(
       res,
       authRecord,
@@ -55,17 +54,16 @@ export class LocalAuthController {
     summary: 'Login with email and password',
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
-    responseDesc: 'Login with email and password',
+    responseDesc: 'Access tokens for login',
     allowUnauthorizedRequest: true,
   })
   @Post('login')
   async loginWithEmailPassword(
-    @Body() loginDto: LocalUserLoginRequestDto,
+    @Body() userLoginDto: LocalUserLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<AccessTokensResponseDto> {
     const authRecord = await this.localAuthService.validateLocalUser(
-      loginDto.email,
-      loginDto.password,
+      userLoginDto,
     )
     return await createTokens(
       res,
@@ -80,12 +78,40 @@ export class LocalAuthController {
     summary: 'Send reset password email to user',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
-    responseDesc: 'Send reset password email to user',
+    responseDesc: 'Sent email',
     allowUnauthorizedRequest: true,
   })
-  @Post('reset-password')
-  async initPasswordReset(@Body() resetPasswordDto: ResetPasswordRequestDto) {
-    await this.localAuthService.sendInitResetPassword(resetPasswordDto.email)
+  @Post('init-reset-password')
+  async initPasswordReset(
+    @Body() initResetPasswordRequestDto: InitResetPasswordRequestDto,
+  ) {
+    await this.localAuthService.sendInitResetPasswordEmail(
+      initResetPasswordRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Confirms reset password',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Access tokens for password reset',
+    allowUnauthorizedRequest: true,
+  })
+  @Post('confirm-reset-password')
+  async confirmPasswordReset(
+    @Body() confirmResetPasswordRequestDto: ConfirmResetPasswordRequestDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const authRecord = await this.localAuthService.confirmResetPassword(
+      confirmResetPasswordRequestDto,
+    )
+    return await createTokens(
+      res,
+      authRecord,
+      this.jwtAuthService,
+      this.jwtRefreshService,
+      this.s3contentService,
+    )
   }
 
   @ApiEndpoint({
@@ -99,10 +125,6 @@ export class LocalAuthController {
     @Req() req: RequestWithUser,
     @Body() updatePasswordDto: UpdatePasswordRequestDto,
   ) {
-    await this.localAuthService.updatePassword(
-      req.user.id,
-      updatePasswordDto.oldPassword,
-      updatePasswordDto.newPassword,
-    )
+    await this.localAuthService.updatePassword(req.user.id, updatePasswordDto)
   }
 }
