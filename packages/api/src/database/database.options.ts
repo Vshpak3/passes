@@ -13,6 +13,7 @@ export function getKnexOptions(oldKnex: Knex): Knex.Config<any> {
       supportBigNumbers: true,
       bigNumberStrings: false,
       decimalNumbers: true,
+      timezone: '+00:00',
     },
   }
 }
