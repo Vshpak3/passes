@@ -27,10 +27,6 @@ class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.jpeg`
   }
 
-  static nftJson(collectionId: string, nftId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${nftId}.json`
-  }
-
   static w9Pdf(userId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/w9/${userId}/upload.pdf`
   }

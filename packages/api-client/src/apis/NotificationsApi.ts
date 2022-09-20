@@ -31,7 +31,7 @@ import {
     UpdateNotificationSettingsRequestDtoToJSON,
 } from '../models';
 
-export interface GetRequest {
+export interface GetNotificationsRequest {
     getNotificationsRequestDto: GetNotificationsRequestDto;
 }
 
@@ -47,47 +47,6 @@ export interface UpdateNotificationSettingsRequest {
  * 
  */
 export class NotificationsApi extends runtime.BaseAPI {
-
-    /**
-     * Gets notifications
-     */
-    async getRaw(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetNotificationsResponseDto>> {
-        if (requestParameters.getNotificationsRequestDto === null || requestParameters.getNotificationsRequestDto === undefined) {
-            throw new runtime.RequiredError('getNotificationsRequestDto','Required parameter requestParameters.getNotificationsRequestDto was null or undefined when calling get.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/notifications/get`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GetNotificationsRequestDtoToJSON(requestParameters.getNotificationsRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetNotificationsResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets notifications
-     */
-    async get(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNotificationsResponseDto> {
-        const response = await this.getRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Gets notification settings
@@ -120,6 +79,47 @@ export class NotificationsApi extends runtime.BaseAPI {
      */
     async getNotificationSettings(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNotificationSettingsResponseDto> {
         const response = await this.getNotificationSettingsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets notifications
+     */
+    async getNotificationsRaw(requestParameters: GetNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetNotificationsResponseDto>> {
+        if (requestParameters.getNotificationsRequestDto === null || requestParameters.getNotificationsRequestDto === undefined) {
+            throw new runtime.RequiredError('getNotificationsRequestDto','Required parameter requestParameters.getNotificationsRequestDto was null or undefined when calling getNotifications.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/notifications/get`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetNotificationsRequestDtoToJSON(requestParameters.getNotificationsRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetNotificationsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets notifications
+     */
+    async getNotifications(requestParameters: GetNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetNotificationsResponseDto> {
+        const response = await this.getNotificationsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -163,7 +163,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Subscribe to notification events
      */
-    async subscribeRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async subscribeNotificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -189,8 +189,8 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Subscribe to notification events
      */
-    async subscribe(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.subscribeRaw(initOverrides);
+    async subscribeNotifications(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.subscribeNotificationsRaw(initOverrides);
     }
 
     /**

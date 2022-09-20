@@ -35,7 +35,7 @@ export class NotificationsController {
     responseDesc: 'Notifications were retrieved',
   })
   @Post('get')
-  async get(
+  async getNotifications(
     @Req() req: RequestWithUser,
     @Body() getNotificationsRequest: GetNotificationsRequestDto,
   ): Promise<GetNotificationsResponseDto> {
@@ -51,7 +51,7 @@ export class NotificationsController {
     responseDesc: 'Notification events were subscribed',
   })
   @Sse('subscribe')
-  async subscribe(@Req() req: RequestWithUser) {
+  async subscribeNotifications(@Req() req: RequestWithUser) {
     return await this.notificationsService.subscribe(req.user.id)
   }
 
