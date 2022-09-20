@@ -2,10 +2,10 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
 import { AuthApi } from "@passes/api-client/apis"
+import { differenceInYears, format } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
-import moment from "moment"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
@@ -24,6 +24,7 @@ import { setTokens } from "../../helpers/setTokens"
 import { useUser } from "../../hooks"
 
 const MIN_AGE_IN_YEARS = 18
+const DATE_FORMAT = "yyyy-MM-dd"
 
 export type UserInfoFormValues = {
   legalFullName: string
@@ -49,7 +50,7 @@ const UserInfoPage = () => {
     setValue,
     watch
   } = useForm<UserInfoFormValues>({
-    defaultValues: { birthday: moment().format("YYYY-MM-DD") }
+    defaultValues: { birthday: format(new Date(), DATE_FORMAT) }
   })
 
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
@@ -215,7 +216,7 @@ const UserInfoPage = () => {
                   <Calendar
                     date={new Date(watch("birthday"))}
                     onChange={(e) => {
-                      setValue("birthday", moment(e).format("YYYY-MM-DD"))
+                      setValue("birthday", format(e, DATE_FORMAT))
                     }}
                   />
                   <button
@@ -232,7 +233,7 @@ const UserInfoPage = () => {
                 </Text>
               )}
               {hasTouchedCalendar &&
-                moment().diff(moment(watch("birthday")), "years") <
+                differenceInYears(new Date(), new Date(watch("birthday"))) <
                   MIN_AGE_IN_YEARS && (
                   <Text fontSize={12} className="mt-1 text-[red]">
                     You must be at least {MIN_AGE_IN_YEARS} to sign up.
