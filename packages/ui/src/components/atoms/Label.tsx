@@ -23,7 +23,7 @@ const Label = ({
       htmlFor={name}
       className={classNames(
         "block text-sm font-medium",
-        errors[name] !== undefined ? "text-red-500" : "text-white",
+        errors[name] ? "text-red-500" : "text-white",
         className ?? ""
       )}
     >

@@ -295,3 +295,12 @@ i {
 .hide-scroll::-webkit-scrollbar {
   display: none;
 }
+
+.bg-creator-flow-violet {
+  background: linear-gradient(
+    133.67deg,
+    #d6409f -2.38%,
+    #ab4aba 49.91%,
+    #8e4ec6 100.06%
+  );
+}

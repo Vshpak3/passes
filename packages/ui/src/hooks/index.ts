@@ -1,3 +1,4 @@
+import useBecomeCreator from "./useBecomeCreator"
 import useChat from "./useChat"
 import useCreatePass from "./useCreatePass"
 import useCreatorProfile from "./useCreatorProfile"
@@ -21,6 +22,7 @@ import useUserConnectedWallets from "./useUserConnectedWallets"
 import useUserDefaultPayoutWallet from "./useUserDefaultPayoutWallet"
 
 export {
+  useBecomeCreator,
   useChat,
   useCreatePass,
   useCreatorProfile,

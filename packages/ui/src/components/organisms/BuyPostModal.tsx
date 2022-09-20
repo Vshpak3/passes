@@ -1,11 +1,11 @@
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
+import Modal from "src/components/organisms/Modal"
 import { usePayment } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
 import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
 import { BuyPostButton } from "../payment/buy-post"
-import Modal from "./Modal"
 
 interface IBuyPostModal {
   isOpen: PaymentModalInfo | null

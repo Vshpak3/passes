@@ -6,9 +6,16 @@ interface IModal {
   isOpen: any
   setOpen: Dispatch<SetStateAction<any>>
   children: React.ReactNode
+  closable?: boolean
+  modalContainerClassname?: string
 }
 
-const Modal = ({ isOpen = null, setOpen, children }: IModal) => {
+const Modal = ({
+  isOpen = null,
+  setOpen,
+  children,
+  closable = true
+}: IModal) => {
   useEffect(() => {
     ReactModal.setAppElement("body")
   }, [])
@@ -16,6 +23,7 @@ const Modal = ({ isOpen = null, setOpen, children }: IModal) => {
     <ReactModal
       isOpen={!!isOpen}
       onRequestClose={() => setOpen(null)}
+      shouldCloseOnOverlayClick={true}
       style={{
         content: {
           background: "transparent",
@@ -35,22 +43,24 @@ const Modal = ({ isOpen = null, setOpen, children }: IModal) => {
           "m-auto w-[500px] rounded bg-[#1b141d] p-4 md:border-[#ffffff]/10"
         }
       >
-        <div className="text-right">
-          <button
-            type="button"
-            className="top-3 right-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
-            data-modal-toggle="popup-modal"
-            onClick={() => setOpen(null)}
-          >
-            <Image
-              src="/icons/exit-icon.svg"
-              alt="Close button"
-              width={20}
-              height={20}
-            />
-            <span className="sr-only">Close modal</span>
-          </button>
-        </div>
+        {closable && (
+          <div className="text-right">
+            <button
+              type="button"
+              className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+              data-modal-toggle="popup-modal"
+              onClick={() => setOpen(null)}
+            >
+              <Image
+                src="/icons/exit-icon.svg"
+                alt="Close button"
+                width={20}
+                height={20}
+              />
+              <span className="sr-only">Close modal</span>
+            </button>
+          </div>
+        )}
         <div className="p-3 pt-0">{children}</div>
       </div>
     </ReactModal>

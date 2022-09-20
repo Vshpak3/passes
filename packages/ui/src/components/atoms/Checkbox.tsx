@@ -20,6 +20,7 @@ type CheckBoxProps = {
   options?: FormOptions
   errors?: FormErrors
   className?: string
+  labelClassName?: string
 }
 
 const Checkbox = ({
@@ -27,10 +28,11 @@ const Checkbox = ({
   type,
   label,
   register,
-  errors = {},
-  options = {},
-  className = "",
   textPosition,
+  options = {},
+  errors = {},
+  className = "",
+  labelClassName = "",
   ...rest
 }: CheckBoxProps) => (
   <div>
@@ -39,6 +41,7 @@ const Checkbox = ({
         <div className="mr-3 text-sm">
           {label && (
             <Label
+              className={labelClassName}
               name={`${name}-${type}`}
               label={label}
               errors={errors}
@@ -79,6 +82,7 @@ const Checkbox = ({
         <div className="ml-3 text-sm">
           {label && (
             <Label
+              className={labelClassName}
               name={`${name}-${type}`}
               label={label}
               errors={errors}

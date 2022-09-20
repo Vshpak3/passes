@@ -46,7 +46,7 @@ const Select = ({
         {...register(name, options)}
         {...customChange()}
         className={classNames(
-          errors[name] !== undefined ? "border-red-500" : "border-gray-300",
+          errors[name] ? "border-red-500" : "border-gray-300",
           "block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-base text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
           className
         )}

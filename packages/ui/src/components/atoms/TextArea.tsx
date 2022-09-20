@@ -79,7 +79,7 @@ const TextArea = ({
         {...reg}
         {...rest}
         className={classNames(
-          errors[name] !== undefined ? "border-red-500" : "",
+          errors[name] ? "border-red-500" : "",
           "block w-full appearance-none placeholder-[#FFFFFF]/50",
           className || ""
         )}

@@ -29,6 +29,7 @@ type FormInputProps = {
   multiple?: boolean
   accept?: FileAccept
   className?: string
+  labelClassName?: string
   rows?: number
   cols?: number
   icon?: React.ReactNode
@@ -51,6 +52,7 @@ const FormInput = ({
   errors,
   selectOptions,
   className,
+  labelClassName,
   multiple,
   accept,
   icon,
@@ -142,6 +144,7 @@ const FormInput = ({
         className={className}
         errors={errors}
         register={register}
+        labelClassName={labelClassName}
         {...rest}
       />
     ),
