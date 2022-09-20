@@ -39,6 +39,7 @@ async function fetchVaultData({ type, category }: IGetVaultData) {
    */
   const MOCKED: ContentDto[] = data.contents.map((data) => ({
     ...data,
+    // move this placeholder image in-house
     signedUrl:
       "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
   }))

@@ -4,6 +4,7 @@
 # Ignore Yarn and Node dependency directories
 .yarn/*
 !.yarn/releases/
+!.yarn/plugins/
 node_modules/
 
 # Ignore Typescript files

@@ -5,13 +5,13 @@
 #
 
 function proceed() {
-    echo "✅ - Build can proceed"
-    exit 1
+  echo "✅ - Build can proceed"
+  exit 1
 }
 
 function cancel() {
-    echo "🛑 - Build cancelled"
-    exit 0
+  echo "🛑 - Build cancelled"
+  exit 0
 }
 
 
@@ -35,14 +35,7 @@ EOT
 
 # Checks if the UI directory was modified
 if ! git diff HEAD^ HEAD --quiet -- . ; then
-    proceed
+  proceed
 else
-    cancel
+  cancel
 fi
-
-# Optional checks to restrict to certain branches
-# if [[ "${VERCEL_GIT_COMMIT_REF}" == "preview" ]] ; then
-#     proceed
-# else
-#     cancel
-# fi

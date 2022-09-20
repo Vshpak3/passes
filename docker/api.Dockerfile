@@ -23,7 +23,6 @@ COPY bin/run-database-migrations.sh bin/run-database-migrations.sh
 # We need to install all dev dependencies so that we can run tsc and have access
 # to all necessary types
 RUN yarn set version berry
-RUN yarn plugin import workspace-tools@3.1.3
 RUN yarn workspaces focus @passes/api
 RUN yarn config set enableNetwork false
 

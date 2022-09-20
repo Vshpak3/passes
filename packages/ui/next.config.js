@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+const env = process.env.NEXT_PUBLIC_NODE_ENV
+
 // Prevent cross-site scripting (XSS), clickjacking and other code injection
 // attacks. Content Security Policy (CSP) can specify allowed origins for
 // content including scripts, stylesheets, images, fonts, objects, media
@@ -37,16 +39,9 @@ const securityHeaders = [
   // }
 ]
 
-const domains = [
-  "cdn.passes.com",
-  "cdn.passes-staging.com",
-  "upload.wikimedia.org"
-]
-if (process.env.NODE_ENV === "development") domains.push("localhost")
-
 const nextConfig = {
   images: {
-    domains
+    domains: [process.env.NEXT_PUBLIC_CDN_URL]
   },
   reactStrictMode: false,
   i18n: {
@@ -75,13 +70,10 @@ const nextConfig = {
     ]
   },
   async headers() {
-    if (
-      process.env.NEXT_PUBLIC_NODE_ENV === "prod" ||
-      process.env.NEXT_PUBLIC_NODE_ENV === "stage"
-    ) {
+    if (env === "prod" || env === "stage") {
       return [
         {
-          // Apply these headers to all routes in your application.
+          // Apply the security headers to all routes in the application
           source: "/:path*",
           headers: securityHeaders
         }
@@ -92,4 +84,8 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true"
+})
+
+module.exports = withBundleAnalyzer(nextConfig)

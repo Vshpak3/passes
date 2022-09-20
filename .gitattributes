@@ -1,5 +1,6 @@
-# Mark yarn releases as binary to prevent them from showing up in PRs
+# Mark yarn releases & plugins as binary to prevent them from showing up in PRs
 /.yarn/releases/* binary
+/.yarn/plugins/* binary
 
 # Mark the api-client package as generated to prevent it from showing up in PRs
 /packages/api-client/** linguist-generated=true
