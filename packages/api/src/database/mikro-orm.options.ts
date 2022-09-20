@@ -13,11 +13,14 @@ export function getMikroOrmOptions(
   // Temporary until we upgrade to 5.4.0
   // ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
   const env = configService.get('infra.env')
-  let migrations: { path: string; emit?: 'ts' | 'js' } | undefined
+  let migrations:
+    | { path: string; emit?: 'ts' | 'js'; safe: boolean }
+    | undefined
   if (contextName === 'ReadWrite') {
     migrations = {
       path: path.join(__dirname, 'migrations'),
       emit: env === 'dev' ? 'ts' : 'js',
+      safe: true, // prevents dropping tables and columns
     }
   }
 
@@ -34,7 +37,6 @@ export function getMikroOrmOptions(
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),
-    safe: true, // prevents dropping tables and columns
     migrations,
     cache: {
       pretty: true,
