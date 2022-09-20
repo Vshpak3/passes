@@ -21,21 +21,20 @@ export function getMikroOrmOptions(
     }
   }
 
-  const hosts = configService.get('database.hosts')
   return {
     metadataProvider: TsMorphMetadataProvider,
     highlighter: new SqlHighlighter(),
     type: 'mysql',
     entities: [path.join(__dirname, '..', '/**/entities/*.js')],
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
-    dbName: configService.get('database.dbname'),
     contextName,
     registerRequestContext: false,
-    host: hosts[contextName],
+    dbName: configService.get('database.dbname'),
+    host: configService.get('database.hosts')[contextName],
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),
-    // safe: false, // prevents dropping tables and columns <-- TODO: turn on soon
+    safe: true, // prevents dropping tables and columns
     migrations,
     cache: {
       pretty: true,
@@ -43,6 +42,5 @@ export function getMikroOrmOptions(
         cacheDir: path.join(__dirname, '.orm-cache'),
       },
     },
-    debug: env === 'dev',
   }
 }
