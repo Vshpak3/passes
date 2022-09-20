@@ -6,7 +6,7 @@ import { contextNames } from './mikro-orm.options'
 
 export type MockType<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  [P in keyof T]?: jest.Mock<{}>
+  [P in keyof T]?: jest.Mock<() => void>
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -13,9 +13,7 @@ export class MikroOrmConfigService implements MikroOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
   createMikroOrmOptions(
     contextName: ContextName,
-  ):
-    | MikroOrmModuleOptions<IDatabaseDriver<Connection>>
-    | Promise<MikroOrmModuleOptions<IDatabaseDriver<Connection>>> {
+  ): MikroOrmModuleOptions<IDatabaseDriver<Connection>> {
     return getMikroOrmOptions(this.configService, contextName)
   }
 }

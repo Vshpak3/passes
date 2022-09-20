@@ -1,5 +1,6 @@
-import { Response } from 'express'
 import * as querystring from 'node:querystring'
+
+import { Response } from 'express'
 
 import { AuthRecord } from '../modules/auth/core/auth-record'
 import { AccessTokensResponseDto } from '../modules/auth/dto/access-tokens-dto'

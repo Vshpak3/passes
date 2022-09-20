@@ -25,9 +25,10 @@ function upgrade_package() {
   yarn set version latest
 
   # Run `yarn up` on each dependency
-  # `yarn up` without a package argument won't always update package.json. I think
-  # this happens if the yarn.lock file already contains the updated version?
-  # Regardless, `yarn up` does not reliably update package.json but this does.
+  # `yarn up` without a package argument won't always update package.json. I
+  # think this happens if the yarn.lock file already contains the updated
+  # version? Regardless, `yarn up` does not reliably update package.json but
+  # running it on each package does.
   log 'Updating each dependency'
   deps=(
     $(jq -r '.dependencies | keys[]' package.json)

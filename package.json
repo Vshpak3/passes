@@ -11,11 +11,10 @@
     "packages/*"
   ],
   "engines": {
-    "node": "16.16.0"
+    "node": "16.17.0"
   },
-  "packageManager": "yarn@3.2.2",
+  "packageManager": "yarn@3.2.3",
   "resolutions": {
-    "@types/react": "18.0.18",
-    "@mikro-orm/core": "5.3.1"
+    "@types/react": "18.0.20"
   }
 }
