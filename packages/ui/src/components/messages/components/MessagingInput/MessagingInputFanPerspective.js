@@ -1,8 +1,7 @@
 import { MessagesApi } from "@passes/api-client/apis"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, PostUnlockButton } from "src/components/atoms"
-import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
+import { FormInput } from "src/components/atoms"
 import { SendMessageButton } from "src/components/payment/send-message"
 import { wrapApi } from "src/helpers"
 import { useChat } from "src/hooks"
@@ -14,26 +13,27 @@ import { GiphyContext } from "../.."
 const MessagingInputFanPerspective = () => {
   const { freeMessages, setFreeMessages } = useContext(GiphyContext)
   const { channel: activeChannel, client } = useChatContext(ChatContext)
-  const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
+  // const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
 
   const members = Object.values(activeChannel?.state?.members).filter(
     ({ user }) => user?.id !== client.userID
   )
   const { channelId } = useChat(members[0]?.user.name)
-  const { register, setValue, watch } = useForm({
-    defaultValues: {
-      tipAmount: 0
-    }
-  })
+  const { register, setValue, watch } = useForm()
   const text = watch("text")
-  const tip = watch("tipAmount", 0)
+  const tip = watch("tipAmount")
   const payinMethod = undefined
   const api = wrapApi(MessagesApi)
 
   const onSubmit = async () => {
-    if (tip > 0 && text?.length > 0) submitData()
-    else if (text?.length < 1) return null
-    else submit()
+    if (tip > 0 && text?.length > 0 && freeMessages !== 0) {
+      submitData()
+      setValue("text", "", { shouldValidate: true })
+    } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) return null
+    else {
+      submit()
+      setValue("text", "", { shouldValidate: true })
+    }
   }
 
   const registerMessage = async () => {
@@ -56,7 +56,7 @@ const MessagingInputFanPerspective = () => {
         text,
         attachments: [],
         channelId,
-        tipAmount: parseInt(tip),
+        tipAmount: parseInt(tip ?? 0),
         payinMethod
       }
     })
@@ -73,7 +73,6 @@ const MessagingInputFanPerspective = () => {
   const onTextChange = (_event, keyDownEvent) => {
     if (keyDownEvent.code === "Enter" && !keyDownEvent.shiftKey) {
       onSubmit()
-      setValue("text", "", { shouldValidate: true })
     }
   }
   return (
@@ -165,10 +164,9 @@ const MessagingInputFanPerspective = () => {
         }
 
         .messaging-input__button {
-          opacity: 0.8;
+          opacity: 1;
           cursor: pointer;
           padding: 0 4px;
-          transition: opacity 0.2s ease-in-out;
           display:flex;
           justify-content:flex-end;
           padding-bottom:10px;
@@ -179,9 +177,6 @@ const MessagingInputFanPerspective = () => {
           fill: black;
         }
 
-        .messaging-input__button:hover {
-          opacity: 1;
-        }
 
         .messaging-input__button:hover svg path {
           fill: #BF7AF0 !important;
@@ -302,61 +297,31 @@ const MessagingInputFanPerspective = () => {
         }
         `}</style>
       <div className="str-chat__messaging-input flex flex-col-reverse sm:flex sm:flex-row">
-        {freeMessages > 0 || tip > 4 ? (
-          <div className="flex h-full w-full flex-col justify-between">
+        <div className="flex h-full w-full flex-col justify-between">
+          <div className="messaging-input__container">
             <div className="messaging-input__container">
-              <div className="messaging-input__container">
-                <div className="messaging-input__input-wrapper">
-                  <FormInput
-                    register={register}
-                    type="text-area"
-                    name="text"
-                    className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
-                    placeholder="Send a message.."
-                    rows={4}
-                    cols={40}
-                    options={{ onChange: onTextChange }}
-                  />
-                </div>
+              <div className="messaging-input__input-wrapper">
+                <FormInput
+                  register={register}
+                  type="text-area"
+                  name="text"
+                  className="w-full resize-none border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:ring-0 md:m-0 md:p-0"
+                  placeholder="Send a message.."
+                  rows={4}
+                  cols={40}
+                  options={{ onChange: onTextChange }}
+                />
               </div>
             </div>
           </div>
-        ) : (
-          <div className=" flex h-full w-full flex-col justify-center gap-5 bg-[#5f2c2f]/50  px-[10px] backdrop-blur-[25px]">
-            <div className="flex items-center justify-center gap-1">
-              <span className="text-sm font-medium text-[#FBFBFB]">
-                You have
-              </span>
-              <span className="text-base font-medium text-[#C943A8] ">
-                {freeMessages} free
-              </span>
-              <span className="text-sm font-medium text-[#FBFBFB]">
-                messages left.
-              </span>
-            </div>
-            <span className="flex items-center justify-center">
-              <PostUnlockButton
-                onClick={() => setOpenBuyMessagesModal(!openBuyMessagesModal)}
-                value={openBuyMessagesModal}
-                name="unlock more messages"
-                className="w-fit gap-[6px] rounded-[50px] bg-[#C943A8] py-[6px] px-[12px] text-sm"
-              />
-            </span>
-            <BuyMessagesModal
-              isOpen={openBuyMessagesModal}
-              setOpen={setOpenBuyMessagesModal}
-              freeMessages={freeMessages}
-              setFreeMessages={setFreeMessages}
-            />
-          </div>
-        )}
+        </div>
         <div className="border-l-none flex flex-col justify-between border-t border-passes-dark-200 sm:max-w-[254px] sm:items-center sm:justify-center sm:border-t-0 sm:border-l">
           <div className="flex flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4 ">
             <FormInput
               register={register}
               type="number"
               name="tipAmount"
-              placeholder="0"
+              placeholder=""
               min="0"
               className="w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0 sm:w-full"
             />
@@ -366,13 +331,15 @@ const MessagingInputFanPerspective = () => {
           </div>
           {channelId && (
             <SendMessageButton
+              blockSendMessage={
+                (freeMessages === 0 && tip < 5) || text?.length < 1
+              }
               submit={onSubmit}
               blocked={blocked}
               submitting={submitting}
               loading={loading}
               amountUSD={amountUSD}
               isCreator={false}
-              blockSendMessage={text?.length < 1}
               tip={tip}
             />
           )}

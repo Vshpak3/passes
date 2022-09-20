@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import React from "react"
 
 interface ISendMessageButton {
@@ -44,10 +45,14 @@ export const SendMessageButton = ({
           aria-roledescription="button"
         >
           <button
+            disabled={blockSendMessage}
             onClick={() => {
               submit()
             }}
-            className="w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
+            className={classNames(
+              blockSendMessage ? " cursor-not-allowed opacity-50" : "",
+              "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
+            )}
           >
             {loading
               ? "Sending..."

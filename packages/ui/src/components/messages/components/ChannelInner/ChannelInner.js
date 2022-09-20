@@ -2,7 +2,7 @@ import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import React, { useContext, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
-import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
+// import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, formatCurrency } from "src/helpers"
 import {
@@ -112,11 +112,11 @@ const getChannelUnreadTip = (messagesStats, channel) => {
 }
 
 export const ChannelInner = (props) => {
-  const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
+  // const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
 
   const { channel: activeChannel } = useChatContext(ChatContext)
   const tip = getChannelUnreadTip(props.messagesStats, activeChannel)
-  const { theme, toggleMobile, freeMessages, setFreeMessages } = props
+  const { theme, toggleMobile, freeMessages } = props
   let sumPaid = paidContent.reduce(function (prev, current) {
     return prev + +current.price
   }, 0)
@@ -185,20 +185,21 @@ export const ChannelInner = (props) => {
                 messages left.
               </span>
             </div>
-            <span>
+            {/* TODO: this features will be added after backend is ready */}
+            {/* <span>
               <PostUnlockButton
                 onClick={() => setOpenBuyMessagesModal(!openBuyMessagesModal)}
                 value={openBuyMessagesModal}
                 name="unlock more messages"
                 className="gap-[6px] rounded-[50px] bg-[#C943A8] py-[6px] px-[12px] text-sm"
               />
-            </span>
-            <BuyMessagesModal
+            </span> */}
+            {/* <BuyMessagesModal
               isOpen={openBuyMessagesModal}
               setOpen={setOpenBuyMessagesModal}
               freeMessages={freeMessages}
               setFreeMessages={setFreeMessages}
-            />
+            /> */}
           </div>
         )}
         {!gallery && <MessageList messageActions={actions} />}
