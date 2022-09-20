@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ResetPasswordRequestDto
+ * @interface InitResetPasswordRequestDto
  */
-export interface ResetPasswordRequestDto {
+export interface InitResetPasswordRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof ResetPasswordRequestDto
+     * @memberof InitResetPasswordRequestDto
      */
     email: string;
 }
 
 /**
- * Check if a given object implements the ResetPasswordRequestDto interface.
+ * Check if a given object implements the InitResetPasswordRequestDto interface.
  */
-export function instanceOfResetPasswordRequestDto(value: object): boolean {
+export function instanceOfInitResetPasswordRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "email" in value;
 
     return isInstance;
 }
 
-export function ResetPasswordRequestDtoFromJSON(json: any): ResetPasswordRequestDto {
-    return ResetPasswordRequestDtoFromJSONTyped(json, false);
+export function InitResetPasswordRequestDtoFromJSON(json: any): InitResetPasswordRequestDto {
+    return InitResetPasswordRequestDtoFromJSONTyped(json, false);
 }
 
-export function ResetPasswordRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResetPasswordRequestDto {
+export function InitResetPasswordRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): InitResetPasswordRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -51,7 +51,7 @@ export function ResetPasswordRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function ResetPasswordRequestDtoToJSON(value?: ResetPasswordRequestDto | null): any {
+export function InitResetPasswordRequestDtoToJSON(value?: InitResetPasswordRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

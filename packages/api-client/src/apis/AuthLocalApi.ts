@@ -16,20 +16,23 @@
 import * as runtime from '../runtime';
 import type {
   AccessTokensResponseDto,
+  ConfirmResetPasswordRequestDto,
   CreateLocalUserRequestDto,
+  InitResetPasswordRequestDto,
   LocalUserLoginRequestDto,
-  ResetPasswordRequestDto,
   UpdatePasswordRequestDto,
 } from '../models';
 import {
     AccessTokensResponseDtoFromJSON,
     AccessTokensResponseDtoToJSON,
+    ConfirmResetPasswordRequestDtoFromJSON,
+    ConfirmResetPasswordRequestDtoToJSON,
     CreateLocalUserRequestDtoFromJSON,
     CreateLocalUserRequestDtoToJSON,
+    InitResetPasswordRequestDtoFromJSON,
+    InitResetPasswordRequestDtoToJSON,
     LocalUserLoginRequestDtoFromJSON,
     LocalUserLoginRequestDtoToJSON,
-    ResetPasswordRequestDtoFromJSON,
-    ResetPasswordRequestDtoToJSON,
     UpdatePasswordRequestDtoFromJSON,
     UpdatePasswordRequestDtoToJSON,
 } from '../models';
@@ -38,12 +41,16 @@ export interface ChangePasswordRequest {
     updatePasswordRequestDto: UpdatePasswordRequestDto;
 }
 
+export interface ConfirmPasswordResetRequest {
+    confirmResetPasswordRequestDto: ConfirmResetPasswordRequestDto;
+}
+
 export interface CreateEmailPasswordUserRequest {
     createLocalUserRequestDto: CreateLocalUserRequestDto;
 }
 
 export interface InitPasswordResetRequest {
-    resetPasswordRequestDto: ResetPasswordRequestDto;
+    initResetPasswordRequestDto: InitResetPasswordRequestDto;
 }
 
 export interface LoginWithEmailPasswordRequest {
@@ -96,6 +103,38 @@ export class AuthLocalApi extends runtime.BaseAPI {
     }
 
     /**
+     * Confirms reset password
+     */
+    async confirmPasswordResetRaw(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.confirmResetPasswordRequestDto === null || requestParameters.confirmResetPasswordRequestDto === undefined) {
+            throw new runtime.RequiredError('confirmResetPasswordRequestDto','Required parameter requestParameters.confirmResetPasswordRequestDto was null or undefined when calling confirmPasswordReset.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/auth/local/confirm-reset-password`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConfirmResetPasswordRequestDtoToJSON(requestParameters.confirmResetPasswordRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Confirms reset password
+     */
+    async confirmPasswordReset(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.confirmPasswordResetRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Create a email and password user
      */
     async createEmailPasswordUserRaw(requestParameters: CreateEmailPasswordUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
@@ -132,8 +171,8 @@ export class AuthLocalApi extends runtime.BaseAPI {
      * Send reset password email to user
      */
     async initPasswordResetRaw(requestParameters: InitPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.resetPasswordRequestDto === null || requestParameters.resetPasswordRequestDto === undefined) {
-            throw new runtime.RequiredError('resetPasswordRequestDto','Required parameter requestParameters.resetPasswordRequestDto was null or undefined when calling initPasswordReset.');
+        if (requestParameters.initResetPasswordRequestDto === null || requestParameters.initResetPasswordRequestDto === undefined) {
+            throw new runtime.RequiredError('initResetPasswordRequestDto','Required parameter requestParameters.initResetPasswordRequestDto was null or undefined when calling initPasswordReset.');
         }
 
         const queryParameters: any = {};
@@ -143,11 +182,11 @@ export class AuthLocalApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/auth/local/reset-password`,
+            path: `/api/auth/local/init-reset-password`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ResetPasswordRequestDtoToJSON(requestParameters.resetPasswordRequestDto),
+            body: InitResetPasswordRequestDtoToJSON(requestParameters.initResetPasswordRequestDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
