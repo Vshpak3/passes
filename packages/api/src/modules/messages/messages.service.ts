@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
   forwardRef,
@@ -17,15 +15,14 @@ import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
-import { ListEntity } from '../list/entities/list.entity'
-import { ListMemberEntity } from '../list/entities/list-member.entity'
-import { ListTypeEnum } from '../list/enum/list.type.enum'
+import { ListService } from '../list/list.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
+import { PassService } from '../pass/pass.service'
 import { MessagePayinCallbackInput } from '../payment/callback.types'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
+import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PaymentService } from '../payment/payment.service'
 import { PostEntity } from '../post/entities/post.entity'
@@ -49,7 +46,7 @@ import { MessageContentEntity } from './entities/message-content.entity'
 import { MessagePostEntity } from './entities/message-post.entity'
 import { TippedMessageEntity } from './entities/tipped-message.entity'
 import { ChannelMissingMembersError } from './error/channel.error'
-import { MessageSendError, MessageTipError } from './error/message.error'
+import { MessageSendError } from './error/message.error'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
 
@@ -68,6 +65,8 @@ export class MessagesService {
 
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
+    private readonly passService: PassService,
+    private readonly listService: ListService,
   ) {
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
@@ -169,31 +168,6 @@ export class MessagesService {
     }
   }
 
-  async getAllListMembers(userId: string, listIds: string[]) {
-    const userIdsSet = new Set(
-      (
-        await this.dbReader(ListMemberEntity.table)
-          .whereIn('list_id', listIds)
-          .distinct('user_id')
-      ).map((listMember) => listMember.user_id),
-    )
-    const listTypes = new Set(
-      (
-        await this.dbReader(ListEntity.table)
-          .whereIn('id', listIds)
-          .select('type')
-      ).map((list) => list.type),
-    )
-    if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
-      ;(
-        await this.dbReader(FollowEntity.table)
-          .where('creator_id', userId)
-          .select('follower_id')
-      ).forEach((follow) => userIdsSet.add(follow.follower_id))
-    }
-    return userIdsSet
-  }
-
   async createBatchMessage(
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
@@ -215,26 +189,15 @@ export class MessagesService {
       )
     }
 
-    const filteredPasses = await this.dbReader(PassEntity.table)
-      .leftJoin(
-        UserExternalPassEntity.table,
-        `${UserExternalPassEntity.table}.pass_id`,
-        `${PassEntity.table}.id`,
-      )
-      .whereIn('id', passIds)
-      .andWhere(function () {
-        return this.where(
-          `${UserExternalPassEntity.table}.user_id`,
-          userId,
-        ).orWhere(`${PassEntity.table}.creator_id`, userId)
-      })
-      .select('id')
-    const filteredPassIds = filteredPasses.map((pass) => pass.id)
+    await this.passService.validatePassIds(userId, passIds)
 
-    const include = await this.getAllListMembers(userId, includeListIds)
+    const include = await this.listService.getAllListMembers(
+      userId,
+      includeListIds,
+    )
     ;(
       await this.dbReader(PassHolderEntity.table)
-        .whereIn('pass_id', filteredPassIds)
+        .whereIn('pass_id', passIds)
         .andWhere(function () {
           return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
             `${PassHolderEntity.table}.expires_at`,
@@ -245,7 +208,10 @@ export class MessagesService {
         .distinct('holder_id')
     ).forEach((passHolder) => include.add(passHolder.holder_id))
 
-    const exclude = await this.getAllListMembers(userId, exlcudeListIds)
+    const exclude = await this.listService.getAllListMembers(
+      userId,
+      exlcudeListIds,
+    )
 
     const userIds = Array.from(include)
     const contentIds = (
@@ -320,7 +286,7 @@ export class MessagesService {
       otherUserId,
     )
     if (blocked) {
-      throw new MessageTipError('insufficient tip for message')
+      throw new MessageSendError(blocked)
     }
     if (amount !== 0) {
       const callbackInput: MessagePayinCallbackInput = {
@@ -358,12 +324,15 @@ export class MessagesService {
 
       otherUserId = await this.getOtherUserId(userId, channel)
     }
-    const blocked = await this.checkMessageBlocked(
+    let blocked = await this.checkMessageBlocked(
       userId,
       otherUserId,
       sendMessageDto.channelId,
       sendMessageDto.tipAmount,
     )
+    if (await this.payService.checkPayinBlocked(userId)) {
+      blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+    }
 
     return { blocked, amount: sendMessageDto.tipAmount }
   }
@@ -464,7 +433,7 @@ export class MessagesService {
     otherUserId: string,
     channelId: string,
     tipAmount: number,
-  ): Promise<boolean> {
+  ): Promise<BlockedReasonEnum | undefined> {
     // userId must be a creator or follow otherUserId
     const user = await this.dbReader(UserEntity.table)
       .where('id', userId)
@@ -479,13 +448,13 @@ export class MessagesService {
       )
       .select('id')
       .first()
-    if (!user || (!user.is_creator && !follow)) {
-      return false
+    if (!user.is_creator && !follow) {
+      return undefined
     }
 
     // neither user can be blocked
     if (await this.checkBlocked(userId, otherUserId)) {
-      return true
+      return BlockedReasonEnum.USER_BLOCKED
     }
 
     const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
@@ -501,14 +470,17 @@ export class MessagesService {
       !creatorSettings.minimum_tip_amount ||
       tipAmount >= creatorSettings.minimum_tip_amount
     ) {
-      return false
+      return BlockedReasonEnum.INSUFFICIENT_TIP
     }
     const freeMessages = await this.checkFreeMessages(
       userId,
       otherUserId,
       channelId,
     )
-    return !(freeMessages === null || (freeMessages > 0 && tipAmount === 0))
+    if (!(freeMessages === null || (freeMessages > 0 && tipAmount === 0))) {
+      return BlockedReasonEnum.INSUFFICIENT_TIP
+    }
+    return undefined
   }
 
   async sendMessage(

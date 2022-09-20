@@ -540,7 +540,7 @@ export class PaymentController {
   })
   @Post('test/register/payin/data')
   async registerPayinData(): Promise<PayinDataDto> {
-    return { blocked: false, amount: 1000 }
+    return { blocked: undefined, amount: 1000 }
   }
 
   @ApiEndpoint({

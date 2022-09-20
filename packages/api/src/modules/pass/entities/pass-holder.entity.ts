@@ -38,7 +38,7 @@ export class PassHolderEntity extends BaseEntity {
   messages?: number
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
-  address: string
+  address?: string
 
   @Enum(() => ChainEnum)
   chain: ChainEnum

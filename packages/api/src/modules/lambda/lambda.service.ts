@@ -36,6 +36,14 @@ export class LambdaService {
     return new TextDecoder().decode(res.Payload)
   }
 
+  async getOrCreateBlockchainAddress(keyId: string, chain: ChainEnum) {
+    try {
+      return await this.blockchainSignGetPublicAddress(keyId, chain)
+    } catch (err) {
+      return await this.blockchainSignCreateAddress(keyId, chain)
+    }
+  }
+
   /**
    * creates a new custodial wallet on Solana given a unique keyId (i.e. user id)
    * throws an error if keyId is in use already

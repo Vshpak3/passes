@@ -23,7 +23,8 @@ const MOCKED_VIEWER_PASSES: PassHolderDto[] = [
     freetrial: false,
     address: "0",
     chain: "sol",
-    symbol: "PASS"
+    symbol: "PASS",
+    collectionAddress: ""
   }
 ]
 

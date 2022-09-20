@@ -158,6 +158,7 @@ async function purchasePostSuccessfulCallback(
   await payService.postService.purchasePost(
     input.userId,
     input.postId,
+    payin.id,
     await payService.getTotalEarnings(payin.id),
   )
   return { postId: input.postId }

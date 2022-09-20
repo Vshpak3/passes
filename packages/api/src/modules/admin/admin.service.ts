@@ -170,7 +170,7 @@ export class AdminService {
             PassEntity.toDict<PassEntity>({
               id: addressRequestDto.passId,
               type: PassTypeEnum.EXTERNAL,
-              address: addressRequestDto.address.toLowerCase(),
+              collectionAddress: addressRequestDto.address.toLowerCase(),
               chain: addressRequestDto.chain,
             }),
           )

@@ -13,15 +13,16 @@ import { Logger } from 'winston'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
+import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { MessagePostEntity } from '../messages/entities/message-post.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { PassService } from '../pass/pass.service'
 import {
   PurchasePostCallbackInput,
   TipPostCallbackInput,
@@ -30,6 +31,7 @@ import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinEntity } from '../payment/entities/payin.entity'
+import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
@@ -68,6 +70,8 @@ export class PostService {
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
+    private readonly passService: PassService,
+    private readonly contentService: ContentService,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
   }
@@ -78,6 +82,11 @@ export class PostService {
   ): Promise<CreatePostResponseDto> {
     verifyTaggedText(createPostDto.text, createPostDto.tags)
     const postId = v4()
+    await this.passService.validatePassIds(userId, createPostDto.passIds)
+    await this.contentService.validateContentIds(
+      userId,
+      createPostDto.contentIds,
+    )
     await this.dbWriter
       .transaction(async (trx) => {
         const post = PostEntity.toDict<PostEntity>({
@@ -109,23 +118,27 @@ export class PostService {
           .whereIn('id', createPostDto.contentIds)
 
         // TODO: schedule access add
-        const passAccesses = await trx(PassHolderEntity.table)
+        const passHolders = await trx(PassHolderEntity.table)
           .whereIn('pass_id', createPostDto.passIds)
           .whereNotNull('expires_at')
-          .distinct('holder_id')
-        for (let i = 0; i < passAccesses.length; ++i) {
-          if (!passAccesses[i].holder_id) {
-            continue
+          .whereNotNull('holder_id')
+          .andWhere('expires_at', '>', new Date())
+          .select(['holder_id', 'id'])
+        const userToPassHolders = passHolders.reduce((map, passHolder) => {
+          if (!map[passHolder.holder_id]) {
+            map[passHolder.holder_id] = []
           }
+          map[passHolder.holder_id].push(passHolder.id)
+          return map
+        }, {})
+        for (const userId in userToPassHolders) {
           const postUserAccess =
             PostUserAccessEntity.toDict<PostUserAccessEntity>({
               post: postId,
-              user: passAccesses[i].holder_id,
+              user: userId,
+              passHolderIds: JSON.stringify(userToPassHolders[userId]),
             })
-          await trx(PostUserAccessEntity.table)
-            .insert(postUserAccess)
-            .onConflict(['post_id', 'user_id'])
-            .ignore()
+          await trx(PostUserAccessEntity.table).insert(postUserAccess)
         }
 
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
@@ -415,20 +428,23 @@ export class PostService {
     return updated === 1
   }
 
-  async purchasePost(userId: string, postId: string, earnings: number) {
+  async purchasePost(
+    userId: string,
+    postId: string,
+    payinId: string,
+    earnings: number,
+  ) {
     await this.dbWriter.transaction(async (trx) => {
-      await createOrThrowOnDuplicate(
-        () =>
-          trx(PostUserAccessEntity.table).insert(
-            PostUserAccessEntity.toDict<PostUserAccessEntity>({
-              id: v4(),
-              user: userId,
-              post: postId,
-            }),
-          ),
-        this.logger,
-        `user ${userId} already has access to post ${postId}`,
-      )
+      await trx(PostUserAccessEntity.table)
+        .insert(
+          PostUserAccessEntity.toDict<PostUserAccessEntity>({
+            user: userId,
+            post: postId,
+            payin: payinId,
+          }),
+        )
+        .onConflict(['post_id', 'user_id'])
+        .merge(['payin_id'])
       await trx(PostEntity.table)
         .where('id', postId)
         .increment('num_purchases', 1)
@@ -551,8 +567,17 @@ export class PostService {
       )
       .select('id')
       .first()
-    const blocked = post.price !== undefined || post.price === 0
-    checkPayin === undefined || checkAccess !== undefined
+
+    let blocked: BlockedReasonEnum | undefined = undefined
+    if (await this.payService.checkPayinBlocked(userId)) {
+      blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+    } else if (post.price === undefined || post.price === 0) {
+      blocked = BlockedReasonEnum.NO_PRICE
+    } else if (checkPayin !== undefined) {
+      blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
+    } else if (checkAccess !== undefined) {
+      blocked = BlockedReasonEnum.ALREADY_HAS_ACCESS
+    }
 
     return { amount: post.price, target, blocked }
   }

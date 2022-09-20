@@ -2,6 +2,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
+  forwardRef,
   Inject,
   Injectable,
   NotFoundException,
@@ -51,6 +52,7 @@ export class FollowService {
     @Database('ReadWrite')
     private readonly dbWriter: DatabaseService['knex'],
 
+    @Inject(forwardRef(() => MessagesService))
     private readonly messagesService: MessagesService,
     private readonly postService: PostService,
   ) {}

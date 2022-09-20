@@ -33,11 +33,29 @@ export interface PayinDataDto {
     target?: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof PayinDataDto
      */
-    blocked: boolean;
+    blocked?: PayinDataDtoBlockedEnum;
 }
+
+
+/**
+ * @export
+ */
+export const PayinDataDtoBlockedEnum = {
+    PaymentsDeactivated: 'payments deactivated',
+    NoPrice: 'no price',
+    PurchaseInProgress: 'purchase in progress',
+    AlreadyHasAccess: 'already has access',
+    IsNotPassholder: 'is not passholder',
+    AlreadyOwnsPass: 'already owns pass',
+    UserBlocked: 'user blocked',
+    InsufficientTip: 'insufficient tip',
+    InsufficientSupply: 'insufficient supply'
+} as const;
+export type PayinDataDtoBlockedEnum = typeof PayinDataDtoBlockedEnum[keyof typeof PayinDataDtoBlockedEnum];
+
 
 /**
  * Check if a given object implements the PayinDataDto interface.
@@ -45,7 +63,6 @@ export interface PayinDataDto {
 export function instanceOfPayinDataDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "amount" in value;
-    isInstance = isInstance && "blocked" in value;
 
     return isInstance;
 }
@@ -62,7 +79,7 @@ export function PayinDataDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'amount': json['amount'],
         'target': !exists(json, 'target') ? undefined : json['target'],
-        'blocked': json['blocked'],
+        'blocked': !exists(json, 'blocked') ? undefined : json['blocked'],
     };
 }
 

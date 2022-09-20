@@ -26,6 +26,7 @@ export class NotificationSettingsDto {
       this.paymentEmails = notificationSettings.payment_emails
       this.postEmails = notificationSettings.post_emails
       this.marketingEmails = notificationSettings.marketing_emails
+      this.mentionEmails = notificationSettings.mention_emails
     }
   }
 }

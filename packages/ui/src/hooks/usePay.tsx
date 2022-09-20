@@ -1,6 +1,7 @@
 import detectEthereumProvider from "@metamask/detect-provider"
 import {
   PayinDataDto,
+  PayinDataDtoBlockedEnum,
   PayinMethodDtoMethodEnum,
   PaymentApi,
   RegisterPayinResponseDto
@@ -29,7 +30,9 @@ export const usePay = (
 ) => {
   const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [blocked, setBlocked] = useState(false)
+  const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
+    undefined
+  )
   const [amountUSD, setAmountUSD] = useState(0)
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
   const [metamaskProvider, setMetamaskProvider] = useState<EthereumProvider>()

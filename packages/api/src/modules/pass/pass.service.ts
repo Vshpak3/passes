@@ -21,6 +21,7 @@ import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { PayinEntity } from '../payment/entities/payin.entity'
+import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
@@ -56,11 +57,13 @@ import {
   UnsupportedChainPassError,
 } from './error/pass.error'
 import { createPassHolderQuery } from './pass.util'
-const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
-const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
-const DEFAULT_PASS_SYMBOL = 'PASS'
+
+export const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
+export const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
+export const DEFAULT_PASS_SYMBOL = 'PASS'
 export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
+
 @Injectable()
 export class PassService {
   constructor(
@@ -153,13 +156,13 @@ export class PassService {
     ) {
       throw new NotFoundException('Image is not uploaded')
     }
-    if (!pass || pass.minted) {
+    if (!pass || pass.collection_address) {
       throw new NotFoundException('Pass can not be minted')
     }
-    let address: string | undefined = undefined
+    let collectionAddress: string | undefined = undefined
     switch (pass.chain) {
       case ChainEnum.SOL:
-        address = (
+        collectionAddress = (
           await this.solService.createSolNftCollection(
             user.id,
             pass.id,
@@ -176,7 +179,7 @@ export class PassService {
         )
     }
     await this.dbWriter(PassEntity.table)
-      .update(PassEntity.toDict<PassEntity>({ minted: true, address }))
+      .update(PassEntity.toDict<PassEntity>({ collectionAddress }))
       .where('id', pass.id)
     return new MintPassResponseDto(true)
   }
@@ -224,6 +227,7 @@ export class PassService {
         `${PassEntity.table}.title`,
         `${PassEntity.table}.description`,
         `${PassEntity.table}.creator_id`,
+        `${PassEntity.table}.collection_address`,
         `${PassHolderEntity.table}.*`,
         `${UserEntity.table}.username as creator_username`,
         `${UserEntity.table}.display_name as creator_display_name`,
@@ -295,7 +299,8 @@ export class PassService {
   ) {
     const { lastId, createdAt, search, creatorId } = getCreatorPassesRequestDto
     let query = this.dbReader(PassEntity.table)
-      .where('creator_id', creatorId)
+      .whereNotNull('collection_address')
+      .andWhere('creator_id', creatorId)
       .select('*')
       .orderBy([
         { column: `${PassEntity.table}.pinned_at`, order: 'desc' },
@@ -395,7 +400,8 @@ export class PassService {
 
     const pass = await this.dbReader(PassEntity.table)
       .select('*')
-      .where('id', passId)
+      .whereNotNull('collection_address')
+      .andWhere('id', passId)
       .first()
 
     const expiresAt =
@@ -403,10 +409,21 @@ export class PassService {
         ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
         : undefined
 
-    const userCustodialWallet = await this.walletService.getDefaultWallet(
+    const userWallet = await this.walletService.getDefaultWallet(
       userId,
       pass.chain,
     )
+
+    const data = PassHolderEntity.toDict<PassHolderEntity>({
+      id,
+      pass: passId,
+      wallet: userWallet.walletId,
+      holder: userId,
+      expiresAt: expiresAt,
+      messages: pass.messages,
+      chain: pass.chain,
+    })
+    await this.dbWriter(PassHolderEntity.table).insert(data)
 
     let address = ''
     const tokenId = undefined
@@ -420,7 +437,7 @@ export class PassService {
             pass.title,
             pass.symbol,
             pass.description,
-            userCustodialWallet.address,
+            userWallet.address,
             pass.royalties,
           )
         ).mintPubKey
@@ -432,18 +449,13 @@ export class PassService {
           `can not create a pass on chain ${pass.chain}`,
         )
     }
-    const data = PassHolderEntity.toDict<PassHolderEntity>({
-      id,
-      pass: passId,
-      wallet: userCustodialWallet.walletId,
-      holder: userId,
-      expiresAt: expiresAt,
-      messages: pass.messages,
+    const updateData = PassHolderEntity.toDict<PassHolderEntity>({
       address,
       tokenId,
-      chain: pass.chain,
     })
-    await this.dbWriter(PassHolderEntity.table).insert(data)
+    await this.dbWriter(PassHolderEntity.table)
+      .where('id', id)
+      .update(updateData)
     await this.dbWriter(PassEntity.table)
       .where('id', passId)
       .decrement('remaining_supply')
@@ -514,7 +526,7 @@ export class PassService {
       passHolderId,
     )
     if (blocked) {
-      throw new InvalidPayinRequestError('invalid nft pass renewal')
+      throw new InvalidPayinRequestError(blocked)
     }
 
     // free pass
@@ -575,6 +587,7 @@ export class PassService {
           holder: userId,
         }),
       )
+      .whereNotNull('address')
       .select(
         ...PassHolderEntity.populate<PassHolderEntity>([
           'id',
@@ -584,7 +597,14 @@ export class PassService {
       )
       .first()
 
-    const blocked = checkPayin !== undefined || checkHolder.holder_id !== userId
+    let blocked: BlockedReasonEnum | undefined = undefined
+    if (await this.payService.checkPayinBlocked(userId)) {
+      blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+    } else if (checkPayin !== undefined) {
+      blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
+    } else if (checkHolder.holder_id !== userId) {
+      blocked = BlockedReasonEnum.IS_NOT_PASSHOLDER
+    }
 
     const pass = await this.dbReader(PassEntity.table)
       .where('id', checkHolder.pass_id)
@@ -604,7 +624,7 @@ export class PassService {
       passId,
     )
     if (blocked) {
-      throw new InvalidPayinRequestError('invalid nft pass creation')
+      throw new InvalidPayinRequestError(blocked)
     }
 
     // free pass or free trial
@@ -692,10 +712,17 @@ export class PassService {
       )
       .select('id')
       .first()
-    const blocked =
-      checkPayin !== undefined ||
-      checkHolder !== undefined ||
-      pass.remaining_supply > 0
+
+    let blocked: BlockedReasonEnum | undefined = undefined
+    if (await this.payService.checkPayinBlocked(userId)) {
+      blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+    } else if (checkPayin !== undefined) {
+      blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
+    } else if (checkHolder !== undefined) {
+      blocked = BlockedReasonEnum.ALREADY_OWNS_PASS
+    } else if (pass.remaining_supply === 0) {
+      blocked = BlockedReasonEnum.INSUFFICIENT_SUPPLY
+    }
 
     return { amount: pass.price, target, blocked }
   }
@@ -767,6 +794,29 @@ export class PassService {
         .first())
     ) {
       throw new NoPassError('pass does not exist or unowned by user')
+    }
+  }
+
+  async validatePassIds(userId: string, passIds: string[]): Promise<void> {
+    const filteredPasses = await this.dbReader(PassEntity.table)
+      .leftJoin(
+        UserExternalPassEntity.table,
+        `${UserExternalPassEntity.table}.pass_id`,
+        `${PassEntity.table}.id`,
+      )
+      .whereIn('id', passIds)
+      .andWhere(function () {
+        return this.where(
+          `${UserExternalPassEntity.table}.user_id`,
+          userId,
+        ).orWhere(`${PassEntity.table}.creator_id`, userId)
+      })
+      .select(`${PassEntity.table}.id`)
+    const filteredPassIds = new Set(filteredPasses.map((pass) => pass.id))
+    for (const passId in passIds) {
+      if (!filteredPassIds.has(passId)) {
+        throw new NoPassError('cant find pass for user')
+      }
     }
   }
 }

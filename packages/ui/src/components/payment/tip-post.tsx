@@ -35,7 +35,7 @@ export const TipPostButton = ({
   }
 
   const registerData = async () => {
-    return { blocked: false, amount } as PayinDataDto
+    return { blocked: undefined, amount } as PayinDataDto
   }
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(

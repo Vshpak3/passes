@@ -256,6 +256,17 @@ export class VerificationService {
           .update('step', CreatorVerificationStepEnum.STEP_3_PAYOUT)
         return { step: CreatorVerificationStepEnum.STEP_3_PAYOUT }
       case CreatorVerificationStepEnum.STEP_3_PAYOUT: // payment information not required
+        if (
+          !(await this.s3ContentService.doesObjectExist(
+            `w9/${userId}/upload.pdf`,
+          ))
+        ) {
+          throw new VerificationError('user has not submitted w9')
+        }
+        await this.dbWriter(CreatorVerificationEntity.table)
+          .where('id', creatorVerification.id)
+          .update('step', CreatorVerificationStepEnum.STEP_4_DONE)
+        return { step: CreatorVerificationStepEnum.STEP_4_DONE }
       case CreatorVerificationStepEnum.STEP_4_DONE:
         await this.dbWriter(CreatorVerificationEntity.table)
           .where('id', creatorVerification.id)

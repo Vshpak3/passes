@@ -312,7 +312,7 @@ export class SolService {
         category: 'image',
         creators: [
           {
-            address: walletPubKey.toString(),
+            address: passPubKey.toString(),
             share: 100,
           },
         ],

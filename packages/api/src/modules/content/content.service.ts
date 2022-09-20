@@ -22,6 +22,7 @@ import { ContentEntity } from './entities/content.entity'
 import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
+import { NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
 export const MAX_CONTENT_PER_REQUeST = 10
@@ -179,5 +180,21 @@ export class ContentService {
 
   async preSignW9(userId: string) {
     return this.s3contentService.preSignUrl(`w9/${userId}/upload.pdf`)
+  }
+
+  async validateContentIds(userId: string, contentIds: string[]) {
+    const filteredContent = await this.dbReader(ContentEntity.table)
+      .whereIn('id', contentIds)
+      .andWhere('user_id', userId)
+      .select('id')
+
+    const filteredContentIds = new Set(
+      filteredContent.map((content) => content.id),
+    )
+    for (const contentId in contentIds) {
+      if (!filteredContentIds.has(contentId)) {
+        throw new NoContentError('cant find content for user')
+      }
+    }
   }
 }

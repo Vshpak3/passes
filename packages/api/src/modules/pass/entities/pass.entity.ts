@@ -52,7 +52,7 @@ export class PassEntity extends BaseEntity {
   messages?: number
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
-  address?: string
+  collectionAddress?: string
 
   @Property({ default: false })
   minted: boolean

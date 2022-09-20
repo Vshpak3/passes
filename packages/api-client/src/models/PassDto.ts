@@ -87,6 +87,12 @@ export interface PassDto {
     freetrial: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof PassDto
+     */
+    collectionAddress: string;
+    /**
+     * 
      * @type {Date}
      * @memberof PassDto
      */
@@ -137,6 +143,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "remainingSupply" in value;
     isInstance = isInstance && "freetrial" in value;
+    isInstance = isInstance && "collectionAddress" in value;
 
     return isInstance;
 }
@@ -162,6 +169,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'totalSupply': json['totalSupply'],
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
+        'collectionAddress': json['collectionAddress'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
@@ -189,6 +197,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'totalSupply': value.totalSupply,
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
+        'collectionAddress': value.collectionAddress,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,

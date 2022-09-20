@@ -5,6 +5,7 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
+import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
 import {
   PASS_DESCRIPTION_LENGTH,
@@ -62,6 +63,10 @@ export class PassDto {
   @DtoProperty()
   freetrial: boolean
 
+  @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
+  @DtoProperty()
+  collectionAddress: string
+
   @DtoProperty({ optional: true })
   pinnedAt?: Date
 
@@ -92,6 +97,7 @@ export class PassDto {
     this.totalSupply = pass.total_supply
     this.createdAt = pass.created_at
     this.chain = pass.chain
+    this.collectionAddress = pass.collection_address
 
     this.creatorUsername = pass.creator_username
     this.creatorDisplayName = pass.creator_display_name

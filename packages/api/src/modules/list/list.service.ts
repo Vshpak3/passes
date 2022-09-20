@@ -357,4 +357,43 @@ export class ListService {
       )
     return updated === 1
   }
+
+  async validateListIds(userId: string, listIds: string[]) {
+    const filteredLists = await this.dbReader(ListEntity.table)
+      .whereIn('id', listIds)
+      .andWhere('user_id', userId)
+      .select('id')
+
+    const filteredListsIds = new Set(filteredLists.map((list) => list.id))
+    for (const listId in listIds) {
+      if (!filteredListsIds.has(listId)) {
+        throw new NoListError('cant find list for user')
+      }
+    }
+  }
+  async getAllListMembers(userId: string, listIds: string[]) {
+    await this.validateListIds(userId, listIds)
+    const userIdsSet = new Set(
+      (
+        await this.dbReader(ListMemberEntity.table)
+          .whereIn('list_id', listIds)
+          .distinct('user_id')
+      ).map((listMember) => listMember.user_id),
+    )
+    const listTypes = new Set(
+      (
+        await this.dbReader(ListEntity.table)
+          .whereIn('id', listIds)
+          .select('type')
+      ).map((list) => list.type),
+    )
+    if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
+      ;(
+        await this.dbReader(FollowEntity.table)
+          .where('creator_id', userId)
+          .select('follower_id')
+      ).forEach((follow) => userIdsSet.add(follow.follower_id))
+    }
+    return userIdsSet
+  }
 }

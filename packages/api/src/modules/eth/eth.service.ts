@@ -46,15 +46,16 @@ export class EthService {
 
   async refreshEthNfts(): Promise<void> {
     const passes = await this.dbReader(PassEntity.table)
-      .whereNotNull('eth_address')
-      .select(['id', 'eth_address'])
+      .whereNotNull('collection_address')
+      .andWhere('chain', ChainEnum.ETH)
+      .select(['id', 'collection_address'])
     // run synchronously to avoid throttling
     // its fine that its done slowly
     for (let i = 0; i < passes.length; ++i) {
       try {
         await this.getNewEthNftsForPass(
           passes[i].id,
-          passes[i].eth_address,
+          passes[i].collection_address,
           false,
         )
       } catch (err) {

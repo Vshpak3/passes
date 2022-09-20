@@ -87,6 +87,12 @@ export interface PassHolderDto {
     freetrial: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    collectionAddress: string;
+    /**
+     * 
      * @type {Date}
      * @memberof PassHolderDto
      */
@@ -208,6 +214,7 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "remainingSupply" in value;
     isInstance = isInstance && "freetrial" in value;
+    isInstance = isInstance && "collectionAddress" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
     isInstance = isInstance && "chain" in value;
@@ -236,6 +243,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'totalSupply': json['totalSupply'],
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
+        'collectionAddress': json['collectionAddress'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
@@ -273,6 +281,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'totalSupply': value.totalSupply,
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
+        'collectionAddress': value.collectionAddress,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,

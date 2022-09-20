@@ -3,7 +3,11 @@ import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
-import { POST_TAGS_LENGTH, POST_TEXT_LENGTH } from '../constants/schema'
+import {
+  PASS_IDS_LENGTH,
+  POST_TAGS_LENGTH,
+  POST_TEXT_LENGTH,
+} from '../constants/schema'
 
 @Entity({ tableName: 'post' })
 export class PostEntity extends BaseEntity {
@@ -59,4 +63,7 @@ export class PostEntity extends BaseEntity {
   @Index()
   @Property()
   scheduledAt?: Date
+
+  @Property({ length: PASS_IDS_LENGTH })
+  passIds?: string
 }

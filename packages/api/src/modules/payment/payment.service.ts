@@ -1431,6 +1431,14 @@ export class PaymentService {
   -------------------------------------------------------------------------------
   */
 
+  async checkPayinBlocked(userId: string): Promise<boolean> {
+    return (
+      await this.dbReader(UserEntity.table)
+        .where('id', userId)
+        .select('payment_blocked')
+        .first()
+    ).payment_blocked
+  }
   /**
    * Step 1 of payin process
    * Called INTERNALLY from other services
@@ -1443,14 +1451,7 @@ export class PaymentService {
   ): Promise<RegisterPayinResponseDto> {
     // create and save a payin with REGISTERED status
 
-    const paymentBlocked = (
-      await this.dbReader(UserEntity.table)
-        .where('id', request.userId)
-        .select('payment_blocked')
-        .first()
-    ).payment_blocked
-
-    if (paymentBlocked) {
+    if (await this.checkPayinBlocked(request.userId)) {
       throw new InvalidPayinRequestError(
         `User ${request.userId} is blocked from paying`,
       )
