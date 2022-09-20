@@ -15,6 +15,7 @@ import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
 import { CONFIRM_EMAIL_TEMPLATE } from '../../email/templates/confirm-email'
 import { CONFIRM_PASSWORD_RESET_EMAIL } from '../../email/templates/confirm-password-reset'
+import { UserEntity } from '../../user/entities/user.entity'
 import {
   RESET_PASSWORD_EMAIL_INIT_SUBJECT,
   RESET_PASSWORD_EMAIL_LIFETIME_MS,
@@ -184,6 +185,11 @@ export class LocalAuthService {
       confirmResetPasswordRequestDto.password,
     )
 
+    const authRecord = await this.dbReader(AuthEntity.table)
+      .where(AuthEntity.toDict<AuthEntity>({ email }))
+      .whereNull('oauth_provider')
+      .first()
+
     await this.dbWriter.transaction(async (trx) => {
       await trx(ResetPasswordRequestEntity.table)
         .update(
@@ -194,7 +200,7 @@ export class LocalAuthService {
         .where({ id: request.id })
 
       await trx(AuthEntity.table)
-        .where('id', request.user_id)
+        .where('id', authRecord.id)
         .update(AuthEntity.toDict<AuthEntity>({ passwordHash: hashedPassword }))
     })
 
@@ -205,11 +211,6 @@ export class LocalAuthService {
       { email },
     )
 
-    const authRecord = await this.dbReader(AuthEntity.table)
-      .where(AuthEntity.toDict<AuthEntity>({ email }))
-      .whereNull('oauth_provider')
-      .first()
-
     return this.authService.getAuthRecordFromAuthOrUser(authRecord)
   }
 
@@ -217,18 +218,25 @@ export class LocalAuthService {
     userId: string,
     updatePasswordDto: UpdatePasswordRequestDto,
   ): Promise<void> {
-    const user = await this.dbReader(AuthEntity.table)
+    const user = await this.dbReader(UserEntity.table)
       .where('id', userId)
-      .whereNull('oauth_provider')
+      .select('email')
       .first()
 
-    if (!user) {
+    // We don't currently index on user_id so look up by email instead
+    const authRecord = await this.dbReader(AuthEntity.table)
+      .where('email', user.email)
+      .whereNull('oauth_provider')
+      .select(['id', 'password_hash'])
+      .first()
+
+    if (!authRecord) {
       throw new BadRequestException('User is not an email and password user')
     }
 
     const doesPasswordMatch = await bcrypt.compare(
       updatePasswordDto.oldPassword,
-      user.password_hash,
+      authRecord.password_hash,
     )
     if (!doesPasswordMatch) {
       throw new BadRequestException('Current password is incorrect')
@@ -237,7 +245,7 @@ export class LocalAuthService {
     const passwordHash = await this.hashPassword(updatePasswordDto.newPassword)
     await this.dbWriter(AuthEntity.table)
       .update(AuthEntity.toDict<AuthEntity>({ passwordHash }))
-      .where({ id: userId })
+      .where({ id: authRecord.id })
   }
 
   private async hashPassword(password: string) {
