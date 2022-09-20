@@ -294,9 +294,11 @@ export class VerificationService {
       .select('step')
       .first()
     if (!creatorVerification) {
-      await this.dbWriter(CreatorVerificationEntity.table).insert({
-        user: userId,
-      })
+      await this.dbWriter(CreatorVerificationEntity.table).insert(
+        CreatorVerificationEntity.toDict<CreatorVerificationEntity>({
+          user: userId,
+        }),
+      )
       return { step: CreatorVerificationStepEnum.STEP_1_PROFILE }
     }
     return { step: creatorVerification.step }
