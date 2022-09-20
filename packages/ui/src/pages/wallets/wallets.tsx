@@ -1,6 +1,7 @@
 import {
   CreateWalletRequestDto,
   GetWalletsResponseDto,
+  PaymentApi,
   WalletApi
 } from "@passes/api-client"
 import { ethers } from "ethers"
@@ -9,34 +10,25 @@ import Arrow from "public/icons/arrow-back.svg"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import Wallet from "public/icons/wallet-manage.svg"
-import React, { FocusEvent, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button } from "src/components/atoms"
+import { Button, ButtonTypeEnum, Input } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
 import { wrapApi } from "src/helpers"
+import { useUser } from "src/hooks"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
-import useUserDefaultWallet from "src/hooks/useUserDefaultWallet"
 import { KeyedMutator } from "swr"
 
 import WalletsList from "./WalletsList/WalletsList"
 
-interface DefaultWallet {
-  address: string
-  authenticated: number
-  chain: string
-  custodial: number
-  id: string
-  userId: string
-}
-
 interface Wallet {
   walletId: string
-  userId?: string
   address: string
   chain: string
-  custodial: boolean
-  authenticated: boolean
+  custodial: number
+  authenticated: number
+  userId?: string
 }
 
 interface ConnectedWallets {
@@ -49,16 +41,30 @@ interface WalletsResponse {
   wallets: GetWalletsResponseDto | unknown[]
 }
 
+interface DefaultPayoutMiningAddress {
+  payoutWalletId?: string
+  miningSolanaWalletId?: string
+  miningEthereumWalletId?: string
+}
+
 const Wallets = () => {
+  const { user } = useUser()
   const [walletsList, setWalletsList] = useState<Wallet[]>([])
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
+  const [defaultAddress, setDefaultAddress] =
+    useState<DefaultPayoutMiningAddress>({} as DefaultPayoutMiningAddress)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const router = useRouter()
-  const { register } = useForm()
+  const {
+    register,
+    getValues,
+    setValue,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+  const { miningSolanaWalletId, miningEthereumWalletId, payoutWalletId } =
+    defaultAddress
   const { wallets, loading, mutate }: ConnectedWallets =
     useUserConnectedWallets()
-  const { wallet: defaultWallet } = useUserDefaultWallet()
-  const { address } = defaultWallet as DefaultWallet
 
   const handleOnETHWalletConnect = async () => {
     setIsModalOpen(false)
@@ -159,11 +165,22 @@ const Wallets = () => {
     }
   }
 
-  const historyBack = () => router.back()
-
-  const selectWalletHandler = (value: string) => {
-    setSelectedAddress(value)
+  const confirmNewPayoutAddressOnSubmit = async () => {
+    const walletAddress = getValues("payoutAddress")
+    const api = wrapApi(WalletApi)
+    await api
+      .createUnauthenticatedWallet({
+        createUnauthenticatedWalletRequestDto: {
+          walletAddress,
+          chain: "eth"
+        }
+      })
+      .catch(({ message }) => toast(message))
+    setValue("payoutAddress", "")
+    mutate().catch(({ message }) => toast(message))
   }
+
+  const historyBack = () => router.back()
 
   const deleteWalletHandler = async (id: string) => {
     const api = wrapApi(WalletApi)
@@ -176,14 +193,36 @@ const Wallets = () => {
     })
   }
 
-  const closeOnOutsideClick = (event: FocusEvent<HTMLInputElement>) => {
-    if (!event.currentTarget.contains(event.relatedTarget as Node))
-      setSelectedAddress(null)
-  }
-
   useEffect(() => {
     setWalletsList(wallets.wallets as Wallet[])
   }, [wallets, loading])
+
+  useEffect(() => {
+    const walletApi = wrapApi(WalletApi)
+    const payoutApi = wrapApi(PaymentApi)
+
+    Promise.all([
+      payoutApi.getDefaultPayoutMethod(),
+      walletApi.getDefaultWallet({
+        getDefaultWalletRequestDto: {
+          chain: "eth"
+        }
+      }),
+      walletApi.getDefaultWallet({
+        getDefaultWalletRequestDto: {
+          chain: "sol"
+        }
+      })
+    ])
+      .then((response) => {
+        return setDefaultAddress({
+          payoutWalletId: response[0].walletId,
+          miningEthereumWalletId: response[1].walletId,
+          miningSolanaWalletId: response[2].walletId
+        })
+      })
+      .catch(({ message }) => toast(message))
+  }, [])
 
   return (
     <div>
@@ -215,32 +254,63 @@ const Wallets = () => {
         <Arrow className="mr-[21px]" />
         <div className="text-[24px] font-bold text-white">Wallet</div>
       </div>
-      <div className="mt-[150px] flex items-center">
-        <Phantom className="ml-[37px] h-[50px] w-[50px]" />
-        <Metamask className="ml-[30px] h-[50px] w-[50px]" />
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className='
-            "flex shadow-sm"
-            ml-[25px]
-            cursor-pointer
-            items-center
-            justify-center
-            gap-[10px]
-            rounded-[50px]
-            border-none
-            bg-[#9C4DC1]
-            py-[12px]
-            px-[15px]
-            text-base
-            font-medium
-            text-white'
-        >
-          <div className="flex items-center justify-center">
-            <Wallet className="block h-[24px] w-[24px]" />
-            <span className="ml-[10px] block">Connect New Wallet</span>
-          </div>
-        </button>
+      <div className="mt-[150px] flex items-center justify-start">
+        <div className="flex items-center">
+          <Phantom className="ml-[37px] h-[50px] w-[50px]" />
+          <Metamask className="ml-[30px] mr-[25px] h-[50px] w-[50px]" />
+          <Button variant="purple" onClick={() => setIsModalOpen(true)}>
+            <div className="flex items-center justify-center">
+              <Wallet className="block h-[24px] w-[24px]" />
+              <span className="ml-[10px] block">Connect New Wallet</span>
+            </div>
+          </Button>
+        </div>
+        {!!user?.isCreator && (
+          <form
+            onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
+            className="ml-[25px] flex w-fit items-center"
+          >
+            <span className="block text-[16px] font-bold">or</span>
+            <Input
+              className="
+                mt-5
+                block
+                h-[36px]
+                w-[215px]
+                cursor-pointer
+                rounded-[6px]
+                border
+                border-passes-gray-100
+                bg-black
+                pl-[45px]
+                text-[12px]
+                text-base
+                font-bold
+                text-white
+                outline-none
+                md:mt-0
+                md:ml-4"
+              icon={<Wallet />}
+              type="text"
+              name="payoutAddress"
+              register={register}
+              placeholder="Insert Your Payout Address"
+              iconMargin="15"
+              errors={errors}
+              options={{
+                required: { message: "need payout address", value: true }
+              }}
+            />
+            <Button
+              type={ButtonTypeEnum.SUBMIT}
+              className="ml-[25px] h-[36px] min-w-[100px] text-[14px]"
+              variant="pink"
+              tag="button"
+            >
+              Confirm
+            </Button>
+          </form>
+        )}
       </div>
       <div
         className="
@@ -264,38 +334,12 @@ const Wallets = () => {
       </div>
       <WalletsList
         walletsList={walletsList}
-        closeOnOutsideClick={closeOnOutsideClick}
-        selectedAddress={selectedAddress}
-        register={register}
         deleteWalletHandler={deleteWalletHandler}
-        selectWalletHandler={selectWalletHandler}
+        isCreator={user?.isCreator}
+        defaultPayoutWalletId={payoutWalletId}
+        miningSolanaWalletId={miningSolanaWalletId}
+        miningEthereumWalletId={miningEthereumWalletId}
       />
-      {address && (
-        <div
-          className="
-            m-[55px]
-            flex
-            w-[657px]
-            rounded-[20px]
-            border
-            border-[#34343A60]"
-        >
-          <div className="relative flex w-[175px] items-center">
-            <Button variant="pink">Custodial Address</Button>
-            <Wallet className="absolute right-[-50px]" />
-          </div>
-          <input
-            className="
-              ml-[57px]
-              w-full
-              bg-transparent
-              text-[14px]
-              text-[#ffffffeb]"
-            readOnly
-            value={address}
-          />
-        </div>
-      )}
     </div>
   )
 }

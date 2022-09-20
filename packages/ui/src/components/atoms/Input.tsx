@@ -20,15 +20,16 @@ export enum EIcon {
 }
 
 type InputProps = {
-  label?: FormLabel
   name: FormName
   type: FormType
-  options?: FormOptions
   register: FormRegister
+  label?: FormLabel
+  options?: FormOptions
   errors?: FormErrors
   placeholder?: FormPlaceholder
   className?: string
   icon?: React.ReactNode
+  iconMargin?: string
   iconAlign?: EIcon
   textPosition?: string
   mask?: string
@@ -47,6 +48,7 @@ const Input = ({
   iconAlign,
   textPosition,
   mask,
+  iconMargin = "0",
   ...rest
 }: InputProps) => {
   return (
@@ -61,7 +63,7 @@ const Input = ({
             <span
               className={`absolute inset-y-0 ${toLower(
                 iconAlign
-              )}-0 flex pl-2 pt-3 sm:px-4 sm:pr-3`}
+              )}-0 ml-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`}
             >
               {icon}
             </span>
@@ -84,7 +86,7 @@ const Input = ({
                 icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
               }`,
               className,
-              errors[name] !== undefined ? "border-red-500" : "border-gray-300"
+              errors[name] ? "border-red-500" : "border-gray-300"
             )}
           >
             {(inputProps: any) => <input {...inputProps} />}
@@ -104,7 +106,7 @@ const Input = ({
                 icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
               }`,
               className,
-              errors[name] !== undefined ? "border-red-500" : "border-gray-300"
+              errors[name] ? "border-red-500" : "border-gray-300"
             )}
           />
         )}

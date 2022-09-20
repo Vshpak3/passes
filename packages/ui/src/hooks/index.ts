@@ -18,6 +18,7 @@ import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
 import useUser from "./useUser"
 import useUserConnectedWallets from "./useUserConnectedWallets"
+import useUserDefaultPayoutWallet from "./useUserDefaultPayoutWallet"
 
 export {
   useChat,
@@ -39,5 +40,6 @@ export {
   usePrefersReducedMotion,
   useRandomInterval,
   useUser,
-  useUserConnectedWallets
+  useUserConnectedWallets,
+  useUserDefaultPayoutWallet
 }
