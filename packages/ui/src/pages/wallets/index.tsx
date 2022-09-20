@@ -1,7 +1,6 @@
+import Wallets from "src/components/organisms/wallets/wallets"
 import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import Wallets from "./wallets"
 
 const Settings = () => {
   return (

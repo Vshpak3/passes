@@ -1,7 +1,6 @@
+import SettingsNav from "src/components/organisms/settings/SettingsNav"
 import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import SettingsNav from "./SettingsNav"
 
 const Settings = () => {
   return (

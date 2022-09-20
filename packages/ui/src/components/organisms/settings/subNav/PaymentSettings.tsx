@@ -13,8 +13,8 @@ import { DateRangePicker } from "react-date-range"
 import { getFormattedDate } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
-import BankIcon from "../../../icons/bank-icon"
-import ChevronDown from "../../../icons/chevron-down"
+import BankIcon from "../../../../icons/bank-icon"
+import ChevronDown from "../../../../icons/chevron-down"
 import { PaymentAndWalletSettingsEnum } from "./PaymentAndWalletSettings"
 
 interface PaymentSettingsProps {

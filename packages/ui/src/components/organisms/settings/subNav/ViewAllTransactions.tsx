@@ -9,7 +9,7 @@ import { DateRangePicker } from "react-date-range"
 import { getFormattedDate } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
-import ChevronDown from "../../../icons/chevron-down"
+import ChevronDown from "../../../../icons/chevron-down"
 import { PaymentAndWalletSettingsEnum } from "./PaymentAndWalletSettings"
 
 interface PaymentSettingsProps {

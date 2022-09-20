@@ -1,6 +1,6 @@
 import React from "react"
 
-import WalletListItem from "../WalletListItem/WalletListItem"
+import WalletListItem from "./WalletListItem"
 
 interface WalletsListProps {
   walletsList: Wallet[]

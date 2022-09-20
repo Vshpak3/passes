@@ -10,15 +10,14 @@ import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms"
+import AccountCard from "src/components/organisms/AccountCard"
+import AddBankingModal from "src/components/organisms/AddBankingModal"
+import AddWalletModal from "src/components/organisms/AddWalletModal"
+import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
+import { wrapApi } from "src/helpers"
 import { useUser } from "src/hooks"
+import BankIcon from "src/icons/bank-icon"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import AddBankingModal from "../../components/organisms/AddBankingModal"
-import AddWalletModal from "../../components/organisms/AddWalletModal"
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers"
-import BankIcon from "../../icons/bank-icon"
-import AccountCard from "./AccountCard"
 
 const DefaultPayoutMethod = () => {
   const [banks, setBanks] = useState<CircleBankDto[]>([])

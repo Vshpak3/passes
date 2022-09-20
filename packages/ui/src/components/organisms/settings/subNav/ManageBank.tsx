@@ -4,7 +4,7 @@ import "react-date-range/dist/theme/default.css"
 import BackArrowIcon from "public/icons/back-arrow.svg"
 import { Dispatch, SetStateAction } from "react"
 
-import BankIcon from "../../../icons/bank-icon"
+import BankIcon from "../../../../icons/bank-icon"
 import { PaymentAndWalletSettingsEnum } from "./PaymentAndWalletSettings"
 
 interface PaymentSettingsProps {

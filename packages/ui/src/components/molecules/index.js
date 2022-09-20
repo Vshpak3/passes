@@ -22,9 +22,7 @@ import {
   VaultAddToDropdown,
   VaultDeleteModal,
   VaultFilterContainer,
-  VaultMediaGrid,
   VaultMediaItem,
-  VaultNavigation,
   VaultSelectContainer,
   VaultSortDropdown
 } from "./vault"
@@ -51,9 +49,7 @@ export {
   VaultAddToDropdown,
   VaultDeleteModal,
   VaultFilterContainer,
-  VaultMediaGrid,
   VaultMediaItem,
-  VaultNavigation,
   VaultSelectContainer,
   VaultSortDropdown
 }
