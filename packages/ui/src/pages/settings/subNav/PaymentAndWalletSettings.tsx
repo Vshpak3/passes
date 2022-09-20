@@ -1,33 +1,83 @@
-import Link from "next/link"
-import React from "react"
+import CardIcon from "public/icons/bank-card.svg"
+import WalletIcon from "public/icons/wallet-manage.svg"
+import React, { Dispatch, SetStateAction, useState } from "react"
 
-const PAYMENT_SETTINGS = [
-  {
-    name: "Manage Wallets",
-    value: "wallets-manage",
-    path: "/wallets"
-  }
-]
+import AddBank from "./AddBank"
+import AddCard from "./AddCard"
+import ManageBank from "./ManageBank"
+import ManageCard from "./ManageCard"
+import PaymentSettings from "./PaymentSettings"
+import ViewAllTransactions from "./ViewAllTransactions"
 
-interface PaymentSettings {
-  name: string
-  value: string
-  path: string
+interface PaymentSettingsProps {
+  setSettingsNav: Dispatch<SetStateAction<string>>
 }
 
-const PaymentAndWalletSettings = () => (
+export const PaymentAndWalletSettingsEnum = {
+  PAYMENT: "payment",
+  VIEW_ALL_TRANSACTIONS: "viewAllTransactions",
+  MANAGE_BANK: "manageBank",
+  ADD_BANK: "addBank",
+  MANAGE_CARD: "manageCard",
+  ADD_CARD: "addCard"
+}
+
+const PaymentAndWalletNav = ({ setSettingsNav }: PaymentSettingsProps) => (
   <>
-    <div>
-      <div className="border-b border-[#2C282D] pb-5">
-        <h2>Managing Wallets, Payout & Payment Methods</h2>
+    <div className="mb-5 flex flex-col border-b border-[#2C282D] pb-5">
+      <span className="text-[20px] font-[700]">Payment & Wallet Settings</span>
+      <span className="text-[16px] font-[500] opacity-50">
+        Manage wallets and payment methods.
+      </span>
+    </div>
+    <div
+      onClick={() => setSettingsNav(PaymentAndWalletSettingsEnum.PAYMENT)}
+      className="mb-5 flex cursor-pointer flex-row items-center gap-4"
+    >
+      <CardIcon />
+      <div className="flex flex-col">
+        <span className="text-[16px] font-[700]">Payments Settings</span>
+        <span className="text-[16px] font-[500] opacity-50">
+          Add and manage payment methods.
+        </span>
       </div>
-      {PAYMENT_SETTINGS.map(({ value, name, path }: PaymentSettings) => (
-        <Link href={path} key={value}>
-          <h3 className="cursor-pointer">{name}</h3>
-        </Link>
-      ))}
+    </div>
+    <div
+      onClick={console.log}
+      className="flex cursor-pointer flex-row items-center gap-4"
+    >
+      <WalletIcon />
+      <div className="flex flex-col">
+        <span className="text-[16px] font-[700]">
+          Wallet Management & Settings
+        </span>
+        <span className="text-[16px] font-[500] opacity-50">
+          Connect and manage wallets and wallet addresses.
+        </span>
+      </div>
     </div>
   </>
 )
+
+const PaymentAndWalletSettings = () => {
+  const [settingNav, setSettingsNav] = useState("")
+
+  switch (settingNav) {
+    case PaymentAndWalletSettingsEnum.PAYMENT:
+      return <PaymentSettings setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.VIEW_ALL_TRANSACTIONS:
+      return <ViewAllTransactions setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.MANAGE_BANK:
+      return <ManageBank setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.ADD_BANK:
+      return <AddBank setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.MANAGE_CARD:
+      return <ManageCard setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.ADD_CARD:
+      return <AddCard setSettingsNav={setSettingsNav} />
+    default:
+      return <PaymentAndWalletNav setSettingsNav={setSettingsNav} />
+  }
+}
 
 export default PaymentAndWalletSettings

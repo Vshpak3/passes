@@ -73,8 +73,8 @@ export default function SettingsNav() {
             ))}
           </ul>
         </div>
-        <div className="basis-1/2">
-          <div className="min-h-12  ml-4 flex flex-col items-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 px-4 pt-3 pb-10 backdrop-blur-[100px]">
+        <div className="basis-auto">
+          <div className="min-h-12  ml-4 flex flex-col rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/30 px-4 pt-3 pb-10 backdrop-blur-[100px]">
             <ul className="p-8 text-base font-bold	leading-loose text-white">
               {renderSwitch()}
             </ul>
