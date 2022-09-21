@@ -198,6 +198,9 @@ export class S3ContentService {
    * @returns true if object exists. false if status code is 404
    */
   async doesObjectExist(path: string) {
+    if (this.env === 'dev') {
+      return true
+    }
     const folder = this.getFolderFromPath(path)
     const Bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
     try {
