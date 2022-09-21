@@ -14,8 +14,6 @@
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
-    "@emotion/react": "11.10.4",
-    "@emotion/styled": "11.10.4",
     "@headlessui/react": "1.7.2",
     "@hookform/resolvers": "2.9.8",
     "@mailchimp/mailchimp_marketing": "3.0.78",
@@ -23,7 +21,6 @@
     "@mui/material": "5.10.5",
     "@mui/x-date-pickers": "5.0.1",
     "@passes/api-client": "workspace:*",
-    "@popperjs/core": "2.11.6",
     "@radix-ui/colors": "0.1.8",
     "@radix-ui/react-avatar": "1.0.0",
     "@radix-ui/react-popover": "1.0.0",
