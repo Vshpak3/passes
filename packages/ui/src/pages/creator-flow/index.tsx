@@ -1,6 +1,5 @@
 import { VerificationApi } from "@passes/api-client"
 import { identity } from "lodash"
-import { useRouter } from "next/router"
 import CheckIcon from "public/icons/check.svg"
 import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
 import SubscriptionIcon from "public/icons/subscription-pass.svg"
@@ -8,12 +7,12 @@ import VerificationLoading from "public/pages/profile/creator-verification-loadi
 import { MouseEventHandler, useEffect, useState } from "react"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import Modal from "src/components/organisms/Modal"
+import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
+import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/contants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 import { wrapApi } from "../../helpers"
-import CustomizePageForm from "./CustomizePageForm"
-import PaymentForm from "./PaymentForm"
 
 type BulletItemProps = {
   isSelected: boolean
@@ -153,6 +152,8 @@ function WelcomeToPasses() {
   )
 }
 
+const api = wrapApi(VerificationApi)
+
 const CreatorFlow = () => {
   const [stepsDone, setStepsDone] = useState<string[]>([])
   const [selectedStep, setSelectedStep] = useState<string>(
@@ -162,22 +163,28 @@ const CreatorFlow = () => {
     useState<boolean>(false)
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false)
   const { width } = useWindowSize()
-  const router = useRouter()
 
   useEffect(() => {
     const step3Handler = async () => {
-      const step = router.query.step
-      // const api = wrapApi(VerificationApi)
-      // const result = await api.getCreatorVerificationStep()
-      // if (result.step === "step 3 payout") {
-      if (step === "3") {
+      const result = await api.getCreatorVerificationStep()
+      const step = result.step
+
+      if (step === "step 2 KYC") {
+        window.location.assign("/verification")
+      }
+
+      if (step === "step 3 payout") {
         setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
         setSelectedStep(CREATOR_STEPS.PAYMENT)
       }
+
+      if (step === "step 4 done") {
+        finishFormHandler()
+      }
     }
 
-    if (router.query) step3Handler()
-  }, [router.query])
+    step3Handler()
+  }, [])
 
   const onCustomizePageFinish = async () => {
     // Show modal
@@ -185,7 +192,12 @@ const CreatorFlow = () => {
     setStepsDone((prev) => [...prev, CREATOR_STEPS.CUSTOMIZE])
     setSelectedStep(CREATOR_STEPS.VERIFICATION)
 
-    const api = wrapApi(VerificationApi)
+    await api.submitCreatorVerificationStep({
+      submitCreatorVerificationStepRequestDto: {
+        step: "step 1 profile"
+      }
+    })
+
     const result = await api.canSubmitPersona()
 
     if (result) {
@@ -194,16 +206,19 @@ const CreatorFlow = () => {
     }
   }
 
-  const onPaymentFormPageFinish = async () => {
+  const finishFormHandler = () => {
     setIsWelcomeModalOpen(true)
+    setStepsDone((prev) => [...prev, CREATOR_STEPS.PAYMENT])
+    setSelectedStep(CREATOR_STEPS.PAYMENT)
+  }
 
-    // Make this async function for redirecting to verification screen
-    return setTimeout(() => {
-      setStepsDone((prev) => [...prev, CREATOR_STEPS.PAYMENT])
-      setSelectedStep(CREATOR_STEPS.PAYMENT)
-      // setIsWelcomeModalOpen(false)
-      // Redirect
-    }, 1000)
+  const onPaymentFormPageFinish = async () => {
+    await api.submitCreatorVerificationStep({
+      submitCreatorVerificationStepRequestDto: {
+        step: "step 3 payout"
+      }
+    })
+    finishFormHandler()
   }
 
   return (

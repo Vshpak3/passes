@@ -1,5 +1,4 @@
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
-import { useRouter } from "next/router"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
 import CoinbaseIcon from "public/icons/coinbase-icon.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
@@ -19,7 +18,7 @@ import { wrapApi } from "src/helpers"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
-  onPaymentFormPageFinish?: () => void
+  onPaymentFormPageFinish: () => void
 }
 
 enum BankTypeEnum {
@@ -28,7 +27,9 @@ enum BankTypeEnum {
   NON_IBAN
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = () => {
+const PaymentForm: React.FC<PaymentFormProps> = ({
+  onPaymentFormPageFinish
+}) => {
   const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
 
@@ -41,8 +42,6 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
   } = useForm({
     // resolver: yupResolver(bankingSchema)
   })
-
-  const router = useRouter()
 
   console.log(watch())
 
@@ -79,7 +78,7 @@ const PaymentForm: React.FC<PaymentFormProps> = () => {
 
       const paymentApi = wrapApi(PaymentApi)
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
-      router.push("/payment/default-payout-method")
+      onPaymentFormPageFinish()
     } catch (error: any) {
       toast.error(error)
       console.error(error)

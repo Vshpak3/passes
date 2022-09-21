@@ -6,16 +6,22 @@ import ProfileInstagramIcon from "public/icons/profile-instagram-icon.svg"
 import ProfileTiktokIcon from "public/icons/profile-tiktok-icon.svg"
 import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
 import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
-import { useBecomeCreator } from "src/hooks"
+import { useBecomeCreator, useUser } from "src/hooks"
 
 interface IFormData {
   displayName: string
   bio: string
   "free-dm-month-checkbox": boolean
+  facebookUrl: string
+  instagramUrl: string
+  twitterUrl: string
+  discordUrl: string
+  tiktokUrl: string
+  twitchUrl: string
 }
 
 interface IConnectedAccounts {
@@ -23,6 +29,8 @@ interface IConnectedAccounts {
   instagram: boolean
   twitter: boolean
   discord: boolean
+  tiktok: boolean
+  twitch: boolean
 }
 
 type CustomizePageFormProps = {
@@ -32,19 +40,46 @@ type CustomizePageFormProps = {
 const CustomizePageForm = ({
   onCustomizePageFinish = identity
 }: CustomizePageFormProps) => {
-  const { makeCreator } = useBecomeCreator()
+  const { makeCreatorProfile } = useBecomeCreator()
   const [connectedAccounts] = useState<IConnectedAccounts>({
     facebook: false,
     instagram: false,
     twitter: false,
-    discord: false
+    discord: false,
+    tiktok: false,
+    twitch: false
   })
+  const { user } = useUser()
 
   const {
     register,
     getValues,
+    setValue,
     formState: { errors }
-  } = useForm<IFormData>()
+  } = useForm<IFormData>({
+    defaultValues: { displayName: user?.displayName || "" }
+  })
+
+  const saveProfileHandler = () => {
+    const {
+      displayName,
+      bio: description,
+      "free-dm-month-checkbox": isAdult,
+      ...socialAccounts
+    } = getValues()
+    if (!displayName || !description) return
+
+    makeCreatorProfile({
+      displayName,
+      isAdult,
+      profile: { description, ...socialAccounts }
+    })
+    onCustomizePageFinish()
+  }
+
+  useEffect(() => {
+    if (user?.displayName) setValue("displayName", user.displayName)
+  }, [user?.displayName, setValue])
 
   return (
     <div className="flex justify-center pb-20 text-white">
@@ -111,76 +146,114 @@ const CustomizePageForm = ({
               Social Media Links* (connect minimum 1)
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
-              <ProfileFacebookIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.facebook
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.facebook ? "@fbusername" : "Connect"}
-              </div>
+              <ProfileFacebookIcon className="h-[17px] w-[17px] flex-shrink-0" />
+              {connectedAccounts.facebook ? (
+                <span>@fbusername</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="facebookUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileInstagramIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.instagram
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.instagram ? "@instaname" : "Connect"}
-              </div>
+              {connectedAccounts.instagram ? (
+                <span>@instaname</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="instagramUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTwitterIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.twitter
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.twitter ? "@twtername" : "Connect"}
-              </div>
+              {connectedAccounts.twitter ? (
+                <span>@twtername</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="twitterUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileDiscordIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.discord
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.discord ? "@discordnam" : "Connect"}
-              </div>
+
+              {connectedAccounts.discord ? (
+                <span>@discordnam</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="discordUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTiktokIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.discord
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.discord ? "@discordnam" : "Connect"}
-              </div>
+
+              {connectedAccounts.tiktok ? (
+                <span>@tiktoknam</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="tiktokUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTwitchIcon className="h-[17px] w-[17px]" />
-              <div
-                className={
-                  connectedAccounts.discord
-                    ? ""
-                    : "text-[#b3bee7] opacity-[0.6]"
-                }
-              >
-                {connectedAccounts.discord ? "@discordnam" : "Connect"}
-              </div>
+              {connectedAccounts.twitch ? (
+                <span>@twitchnam</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="twitchUrl"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter Url"
+                  type="text"
+                  errors={errors}
+                  options={{
+                    required: true
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -202,17 +275,7 @@ const CustomizePageForm = ({
 
         <div className="mb-6 flex flex-col px-12 sm:px-20">
           <PassesPinkButton
-            onClick={async () => {
-              const {
-                displayName,
-                bio: description,
-                "free-dm-month-checkbox": isAdult
-              } = getValues()
-              if (!displayName || !description) return
-
-              makeCreator({ displayName, description, isAdult })
-              onCustomizePageFinish()
-            }}
+            onClick={saveProfileHandler}
             name="Continue"
             type={ButtonTypeEnum.BUTTON}
             className="rounded-xl font-normal"

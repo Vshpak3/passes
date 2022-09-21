@@ -23,13 +23,13 @@ const VerificationPage = () => {
             }
           })
 
-          // await api.submitCreatorVerificationStep({
-          //   submitCreatorVerificationStepRequestDto: {
-          //     step: "step 3 payout"
-          //   }
-          // })
+          await api.submitCreatorVerificationStep({
+            submitCreatorVerificationStepRequestDto: {
+              step: "step 2 KYC"
+            }
+          })
 
-          router.push("/creator-flow?step=3")
+          router.push("/creator-flow")
         }
       }
     })

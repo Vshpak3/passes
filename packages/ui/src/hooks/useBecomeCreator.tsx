@@ -1,9 +1,13 @@
-import { ProfileApi, UserApi } from "@passes/api-client"
+import {
+  CreateOrUpdateProfileRequestDto,
+  ProfileApi,
+  UserApi
+} from "@passes/api-client"
 import { wrapApi } from "src/helpers"
 
 interface IMakeCreator {
+  profile: CreateOrUpdateProfileRequestDto
   displayName: string
-  description: string
   isAdult: boolean
 }
 
@@ -11,8 +15,8 @@ const useBecomeCreator = () => {
   const userApi = wrapApi(UserApi)
   const profileApi = wrapApi(ProfileApi)
 
-  const makeCreator = async ({
-    description,
+  const makeCreatorProfile = async ({
+    profile,
     displayName,
     isAdult
   }: IMakeCreator) => {
@@ -21,14 +25,14 @@ const useBecomeCreator = () => {
     })
 
     await profileApi.createOrUpdateProfile({
-      createOrUpdateProfileRequestDto: { description }
+      createOrUpdateProfileRequestDto: profile
     })
 
     if (isAdult) await userApi.makeAdult()
   }
 
   return {
-    makeCreator
+    makeCreatorProfile
   }
 }
 
