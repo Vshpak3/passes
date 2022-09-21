@@ -25,6 +25,7 @@ const MainContent = ({
             text: values.text,
             contentIds: values.contentIds,
             passIds: [],
+            tags: [],
             isMessage: false,
             price: 0
           }
@@ -59,7 +60,8 @@ const MainContent = ({
         await api.createFanWallComment({
           createFanWallCommentRequestDto: {
             creatorId: profile.userId,
-            text: values.text
+            text: values.text,
+            tags: []
           }
         }),
       {
