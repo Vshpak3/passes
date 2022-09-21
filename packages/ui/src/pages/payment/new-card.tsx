@@ -13,10 +13,10 @@ import { wrapApi } from "../../helpers/wrapApi"
 import { useUser } from "../../hooks"
 
 const NewCard = () => {
+  const [hasMounted, setHasMounted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
-
   const {
     handleSubmit,
     register,
@@ -28,6 +28,10 @@ const NewCard = () => {
 
   const { user, loading, accessToken } = useUser()
   const router = useRouter()
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   const onSubmit = async () => {
     setSubmitting(true)
@@ -99,6 +103,9 @@ const NewCard = () => {
     fetchData()
   }, [router, user, loading])
 
+  if (!hasMounted) {
+    return null
+  }
   return (
     <AuthOnlyWrapper isPage>
       <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
