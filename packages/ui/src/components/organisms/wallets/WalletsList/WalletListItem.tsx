@@ -79,14 +79,7 @@ const WalletListItem = ({
     "Unauthenticated Wallet: can only be used for Payouts."
   const customSelect = useRef(null)
 
-  const { handleSubmit, getValues, register } = useForm({
-    defaultValues: {
-      payouts: defaultPayoutWalletId === walletId,
-      solanaMinting: miningSolanaWalletId === walletId,
-      ethereumMinting: miningEthereumWalletId === walletId
-    }
-  })
-
+  const { handleSubmit, getValues, register, setValue } = useForm()
   useOnClickOutside(customSelect, () => setSelectedAddress(null))
 
   const walletTypeIcon = (value: string, isAuthWallet: boolean) => {
@@ -187,6 +180,10 @@ const WalletListItem = ({
     ) {
       setSelectedValue("NFT Minting...")
     }
+    setValue("payouts", defaultPayoutWalletId === walletId)
+    setValue("solanaMinting", miningSolanaWalletId === walletId)
+    setValue("ethereumMinting", miningEthereumWalletId === walletId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     defaultPayoutWalletId,
     walletId,
@@ -223,8 +220,8 @@ const WalletListItem = ({
               />
             )}
           </div>
-          <div className="absolute right-[-30px] top-[50%] translate-y-[-50%]">
-            {!authenticated && (
+          <div className="absolute right-[15px] top-[50%] translate-y-[-50%]">
+            {!authenticated && isCreator && (
               <IconTooltip
                 Icon={TooltipStar}
                 position="top"
@@ -232,14 +229,14 @@ const WalletListItem = ({
               />
             )}
           </div>
-          <div className="flex w-[135px] items-center">
+          <div className="mr-[30px] flex w-[135px] items-center">
             <div>{walletTypeIcon(chain, !!authenticated)}</div>
-            <span className="ml-[12px] text-[14px] font-bold">
+            <span className="ml-[12px] text-[12px] font-bold">
               {walletTypeName(chain)}
             </span>
           </div>
         </div>
-        <div className='text-[#ffffffeb]" w-[350px] text-left text-[14px]'>
+        <div className='text-[#ffffffeb]" w-[350px] text-left text-[12px]'>
           {address}
         </div>
         <form
@@ -257,7 +254,7 @@ const WalletListItem = ({
               mt-5
               block
               h-[45px]
-              w-[207px]
+              w-[125px]
               cursor-pointer
               rounded-md
               border
@@ -331,7 +328,7 @@ const WalletListItem = ({
           onClick={() => deleteWalletHandler(walletId)}
           variant="link-purple"
         >
-          Delete
+          <span className="ml-[59px]">Delete</span>
         </Button>
       </div>
     </>

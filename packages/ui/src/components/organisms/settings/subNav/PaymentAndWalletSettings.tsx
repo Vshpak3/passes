@@ -8,6 +8,7 @@ import ManageBank from "./ManageBank"
 import ManageCard from "./ManageCard"
 import PaymentSettings from "./PaymentSettings"
 import ViewAllTransactions from "./ViewAllTransactions"
+import WalletManagement from "./WalletManagement"
 
 interface PaymentSettingsProps {
   setSettingsNav: Dispatch<SetStateAction<string>>
@@ -19,6 +20,7 @@ export const PaymentAndWalletSettingsEnum = {
   MANAGE_BANK: "manageBank",
   ADD_BANK: "addBank",
   MANAGE_CARD: "manageCard",
+  MANAGE_WALLETS: "manageWallets",
   ADD_CARD: "addCard"
 }
 
@@ -43,7 +45,9 @@ const PaymentAndWalletNav = ({ setSettingsNav }: PaymentSettingsProps) => (
       </div>
     </div>
     <div
-      onClick={console.log}
+      onClick={() =>
+        setSettingsNav(PaymentAndWalletSettingsEnum.MANAGE_WALLETS)
+      }
       className="flex cursor-pointer flex-row items-center gap-4"
     >
       <WalletIcon />
@@ -73,6 +77,8 @@ const PaymentAndWalletSettings = () => {
       return <AddBank setSettingsNav={setSettingsNav} />
     case PaymentAndWalletSettingsEnum.MANAGE_CARD:
       return <ManageCard setSettingsNav={setSettingsNav} />
+    case PaymentAndWalletSettingsEnum.MANAGE_WALLETS:
+      return <WalletManagement setSettingsNav={setSettingsNav} />
     case PaymentAndWalletSettingsEnum.ADD_CARD:
       return <AddCard setSettingsNav={setSettingsNav} />
     default:

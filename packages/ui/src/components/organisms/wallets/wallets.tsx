@@ -5,8 +5,6 @@ import {
   WalletApi
 } from "@passes/api-client"
 import { ethers } from "ethers"
-import { useRouter } from "next/router"
-import Arrow from "public/icons/arrow-back.svg"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import Wallet from "public/icons/wallet-manage.svg"
@@ -53,7 +51,6 @@ const Wallets = () => {
   const [defaultAddress, setDefaultAddress] =
     useState<DefaultPayoutMiningAddress>({} as DefaultPayoutMiningAddress)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const router = useRouter()
   const {
     register,
     getValues,
@@ -180,8 +177,6 @@ const Wallets = () => {
     mutate().catch(({ message }) => toast(message))
   }
 
-  const historyBack = () => router.back()
-
   const deleteWalletHandler = async (id: string) => {
     const api = wrapApi(WalletApi)
     setWalletsList((prevState) =>
@@ -238,23 +233,7 @@ const Wallets = () => {
           />
         </div>
       </Modal>
-      <div
-        onClick={historyBack}
-        className="
-          -mt-[180px]
-          ml-[64px]
-          flex
-          cursor-pointer
-          items-center
-          justify-start
-          px-2
-          md:px-5
-          sidebar-collapse:-mt-[150px]"
-      >
-        <Arrow className="mr-[21px]" />
-        <div className="text-[24px] font-bold text-white">Wallet</div>
-      </div>
-      <div className="mt-[150px] flex items-center justify-start">
+      <div className="mt-[50px] flex items-center justify-start">
         <div className="flex items-center">
           <Phantom className="ml-[37px] h-[50px] w-[50px]" />
           <Metamask className="ml-[30px] mr-[25px] h-[50px] w-[50px]" />
@@ -328,7 +307,7 @@ const Wallets = () => {
           text-[#ffffffeb]"
       >
         <span>Wallet Type</span>
-        <span className="mr-[80px]">Address</span>
+        <span className="mr-[80px] ml-[80px]">Address</span>
         <span className="ml-[80px]">Default For</span>
         <span>Delete</span>
       </div>
