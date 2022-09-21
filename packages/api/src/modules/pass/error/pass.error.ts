@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common'
+
 export class ForbiddenPassException extends Error {
   constructor(msg: string) {
     super(msg)
@@ -5,14 +7,14 @@ export class ForbiddenPassException extends Error {
   }
 }
 
-export class NoPassError extends Error {
+export class NoPassError extends BadRequestException {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, NoPassError.prototype)
   }
 }
 
-export class UnsupportedChainPassError extends Error {
+export class UnsupportedChainPassError extends BadRequestException {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, UnsupportedChainPassError.prototype)

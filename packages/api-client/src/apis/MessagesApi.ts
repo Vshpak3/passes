@@ -177,6 +177,39 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get channels
+     */
+    async getChannelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/channels`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Get channels
+     */
+    async getChannels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getChannelsRaw(initOverrides);
+    }
+
+    /**
      * Get channels stats
      */
     async getChannelsStatsRaw(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
@@ -547,6 +580,39 @@ export class MessagesApi extends runtime.BaseAPI {
     async sendMessageData(requestParameters: SendMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
         const response = await this.sendMessageDataRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Subscribe to receive new messages
+     */
+    async subscribeMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/subscribe-messages`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Subscribe to receive new messages
+     */
+    async subscribeMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.subscribeMessagesRaw(initOverrides);
     }
 
     /**

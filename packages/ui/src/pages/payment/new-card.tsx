@@ -60,8 +60,7 @@ const NewCard = () => {
           metadata: {
             sessionId: SHA256(accessToken).toString().substr(0, 50),
             ipAddress: "",
-            phoneNumber: values["phone-number"],
-            email: "bangbang@gmail.com"
+            phoneNumber: values["phone-number"]
           }
         },
         cardNumber: values["card-number"]

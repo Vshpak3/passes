@@ -240,4 +240,26 @@ export class MessagesController {
   async getMessages(): Promise<void> {
     return
   }
+
+  @ApiEndpoint({
+    summary: 'Subscribe to receive new messages',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Subscription to messages was made',
+  })
+  @Post('subscribe-messages')
+  async subscribeMessages(): Promise<void> {
+    return
+  }
+
+  @ApiEndpoint({
+    summary: 'Get channels',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Channels were retrieved',
+  })
+  @Post('channels')
+  async getChannels(): Promise<void> {
+    return
+  }
 }
