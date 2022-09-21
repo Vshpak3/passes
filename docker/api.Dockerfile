@@ -12,6 +12,7 @@ RUN apk add --update --no-cache \
 
 # Copy in all non-code files
 COPY .yarn/releases .yarn/releases
+COPY .yarn/plugins .yarn/plugins
 COPY .yarnrc.yml .
 COPY package.json .
 COPY packages/api/package.json packages/api/package.json
