@@ -35,7 +35,7 @@ const MOCK_DATA_LISTS = [
         userId: "drachnik"
       },
       {
-        selected: true,
+        selected: false,
         id: 2,
         displayName: "Zoya Ramzanli",
         avatarUrl: "",
@@ -49,7 +49,7 @@ const MOCK_DATA_LISTS = [
         userId: "berat28"
       },
       {
-        selected: true,
+        selected: false,
         id: 4,
         displayName: "John Wick",
         avatarUrl: "",
@@ -214,8 +214,13 @@ const MAX_FILES = 9
 interface IDirectMessages {
   newMessage: boolean
   setNewMessage: Dispatch<SetStateAction<any>>
+  contentIds: string[]
 }
-const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
+const DirectMessage = ({
+  newMessage,
+  setNewMessage,
+  contentIds
+}: IDirectMessages) => {
   const [activeList, setActiveList] = useState<List>(MOCK_DATA_LISTS[0])
   const [selectedLists, setSelectedLists] = useState<List[]>([])
   const [hasPrice, setHasPrice] = useState(false)
@@ -339,13 +344,6 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
     onMediaChange(files)
     event.target.value = ""
   }
-  const onDragDropChange = (event: any) => {
-    if (event?.target?.files) return onFileInputChange(event)
-    const files = [...event.target.files]
-
-    onMediaChange(files)
-    event.target.value = ""
-  }
 
   const onMediaChange = (filesProp: any) => {
     let maxFileSizeExceeded = false
@@ -395,12 +393,9 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
     setActiveList(updatedList)
   }
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="-mt-56 mb-5 w-full bg-black"
-    >
-      <div className="flex justify-start px-8 pt-5">
-        <div className="flex w-full rounded-l-[20px] rounded-r-[20px] border border-[#FFFF]/10 bg-[#1b141d]/50 ">
+    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full bg-black">
+      <div className="flex h-full justify-start">
+        <div className="flex w-full border border-[#FFFF]/10 bg-[#120C14] ">
           <MessagesChannelList
             lists={MOCK_DATA_LISTS}
             activeList={activeList}
@@ -415,8 +410,8 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
             onDeleteList={onDeleteList}
             newMessage={newMessage}
             files={files}
+            contentIds={contentIds}
             register={register}
-            onDragDropChange={onDragDropChange}
             onFileInputChange={onFileInputChange}
             onRemove={onRemove}
             errors={errors}
@@ -426,6 +421,7 @@ const DirectMessage = ({ newMessage, setNewMessage }: IDirectMessages) => {
             targetAcquired={targetAcquired}
             postPrice={postPrice}
             setNewMessage={setNewMessage}
+            user={user}
           />
         </div>
       </div>

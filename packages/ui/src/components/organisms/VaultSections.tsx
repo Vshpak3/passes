@@ -24,8 +24,8 @@ interface IVaultNavigation {
   fetchVaultCategory: (category: TVaultCategory) => void
   vaultType: TVaultType
   vaultCategory: TVaultCategory
-  newMessage: boolean
-  setNewMessage: any
+  pushToMessages: () => void
+  fromMessages?: boolean
 }
 interface IVaultMediaGrid {
   selectedItems: Array<string>
@@ -41,8 +41,8 @@ const VaultNavigation = ({
   fetchVaultCategory,
   vaultContent,
   setSelectedItems,
-  newMessage,
-  setNewMessage
+  pushToMessages,
+  fromMessages = false
 }: IVaultNavigation) => {
   const selectAll = () =>
     setSelectedItems(vaultContent?.map((item) => item.contentId) ?? [])
@@ -64,25 +64,27 @@ const VaultNavigation = ({
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
         </div>
-        <div className="align-center items-align flex justify-center">
-          {selectedItems && selectedItems?.length > 0 && (
-            <>
-              <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
-              <VaultAddToDropdown
-                // TODO: connect with API to get selected items and add to new message
-                onAddToMessage={() => setNewMessage(!newMessage)}
-                // TODO: connect with API to get selected items and add to new post
-                onAddToPost={() => console.log("add to post")}
-              />
-            </>
-          )}
-          <VaultSortDropdown
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-            sortByOrderOptions={sortByOrderOptions}
-            sortKeyOptions={sortKeyOptions}
-          />
-        </div>
+        {fromMessages && (
+          <div className="align-center items-align flex justify-center">
+            {selectedItems && selectedItems?.length > 0 && (
+              <>
+                <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
+                <VaultAddToDropdown
+                  // TODO: connect with API to get selected items and add to new message
+                  onAddToMessage={() => pushToMessages()}
+                  // TODO: connect with API to get selected items and add to new post
+                  onAddToPost={() => console.log("add to post")}
+                />
+              </>
+            )}
+            <VaultSortDropdown
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+              sortByOrderOptions={sortByOrderOptions}
+              sortKeyOptions={sortKeyOptions}
+            />
+          </div>
+        )}
       </div>
       <VaultSelectContainer
         selectedItems={selectedItems}

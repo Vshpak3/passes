@@ -1,12 +1,23 @@
+import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import Image from "next/image"
 import React from "react"
 import Cross from "src/icons/cross"
+
 type MediaFileProp = {
   file: File
   className?: string
   onRemove?: any
   onSelect?: any
   preview?: boolean
+}
+
+type MediaProp = {
+  className?: string
+  onRemove?: any
+  onSelect?: any
+  preview?: boolean
+  src: string
+  type: ContentDtoContentTypeEnum
 }
 
 export const MediaFile = ({
@@ -16,13 +27,38 @@ export const MediaFile = ({
   onSelect,
   preview
 }: MediaFileProp) => {
-  if (file.type.startsWith("video/"))
-    return (
+  const src = URL.createObjectURL(file)
+  let type!: ContentDtoContentTypeEnum
+  if (file.type.startsWith("image/")) type = "image"
+  if (file.type.startsWith("video/")) type = "video"
+  if (file.type.startsWith("audio/")) type = "audio"
+  return (
+    <Media
+      src={src}
+      type={type}
+      className={className}
+      onRemove={onRemove}
+      onSelect={onSelect}
+      preview={preview}
+    />
+  )
+}
+
+export const Media = ({
+  src,
+  type,
+  className,
+  onRemove,
+  onSelect,
+  preview
+}: MediaProp) => {
+  const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
+    video: (
       <>
         <video
           className={className}
           onClick={onSelect}
-          src={URL.createObjectURL(file)}
+          src={src}
           width="0px"
           height="0px"
           controls
@@ -30,15 +66,14 @@ export const MediaFile = ({
         {!preview && (
           <div
             onClick={onRemove}
-            className="absolute top-1 left-1 z-[1] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
+            className="absolute top-1 left-0 z-[1] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
           >
             <Cross className="h-full w-full" />
           </div>
         )}
       </>
-    )
-  if (file.type.startsWith("image/"))
-    return (
+    ),
+    image: (
       <>
         {!preview && (
           <div
@@ -54,17 +89,15 @@ export const MediaFile = ({
           layout="fixed"
           width="300px"
           height="300px"
-          src={URL.createObjectURL(file)}
+          src={src}
           objectFit="contain"
         />
       </>
-    )
-
-  if (file.type.startsWith("audio/"))
-    return (
+    ),
+    audio: (
       <>
         <audio
-          src={URL.createObjectURL(file)}
+          src={src}
           className={className}
           onClick={onSelect}
           preload="auto"
@@ -80,5 +113,6 @@ export const MediaFile = ({
         )}
       </>
     )
-  return null
+  }
+  return media[type] ?? null
 }

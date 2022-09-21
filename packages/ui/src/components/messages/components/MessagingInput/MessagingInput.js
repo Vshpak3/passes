@@ -4,9 +4,13 @@ import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog.tsx"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
-import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
+import {
+  Media,
+  MediaFile
+} from "src/components/pages/profile/main-content/new-post/media"
 import { SendMessageButton } from "src/components/payment/send-message"
 import { classNames, formatCurrency, wrapApi } from "src/helpers"
 import { useChat } from "src/hooks"
@@ -23,7 +27,7 @@ const MAX_FILES = 9
 const MessagingInput = () => {
   const { isCreator, files, setFiles, user } = useContext(GiphyContext)
   const { channel: activeChannel, client } = useChatContext(ChatContext)
-
+  const [contentIds, setContentIds] = useState([])
   const members = Object.values(activeChannel?.state?.members).filter(
     ({ user }) => user?.id !== client.userID
   )
@@ -188,14 +192,6 @@ const MessagingInput = () => {
 
   const onFileInputChange = (event) => {
     const files = [...event.target.files]
-    onMediaChange(files)
-    event.target.value = ""
-  }
-
-  const onDragDropChange = (event) => {
-    if (event?.target?.files) return onFileInputChange(event)
-    const files = [...event.target.files]
-
     onMediaChange(files)
     event.target.value = ""
   }
@@ -463,44 +459,48 @@ const MessagingInput = () => {
             <DeleteIcon className="" onClick={() => onDeletePostPrice()} />
           </div>
         )}
-        {files.length > 0 && (
+        {(files.length > 0 || contentIds.length > 0) && (
           <div className="h-full w-full items-center overflow-y-auto pt-1">
-            {files.length === 0 ? (
-              <FormInput
-                className="h-[170px]"
-                register={register}
-                name={"drag-drop"}
-                type="drag-drop-file"
-                multiple={true}
-                accept={["image", "video"]}
-                options={{ onChange: onDragDropChange }}
-                errors={errors}
-              />
-            ) : (
-              <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1">
-                <div className="flex items-center justify-start gap-6">
-                  <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto md:max-w-[550px]">
-                    {files.map((file, index) => (
-                      <div
-                        key={index}
-                        className="relative flex h-[66px] w-[79px] flex-shrink-0 items-center justify-center rounded-[6px]"
-                      >
-                        <MediaFile
-                          onRemove={() => onRemove(index)}
-                          file={file}
-                          className={classNames(
-                            file.type.startsWith("image/")
-                              ? "cursor-pointer rounded-[6px] object-contain"
-                              : file.type.startsWith("video/")
-                              ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : file.type.startsWith("aduio/")
-                              ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : null
-                          )}
-                        />
-                      </div>
-                    ))}
-                  </div>
+            <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1">
+              <div className="flex items-center justify-start gap-6">
+                <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto md:max-w-[550px]">
+                  {contentIds.map((contentId, index) => (
+                    <div
+                      key={index}
+                      className="relative flex h-[66px] w-[79px] flex-shrink-0 items-center justify-center rounded-[6px]"
+                    >
+                      <Media
+                        onRemove={() => onRemove(index)}
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${user?.id}/${contentId}.jpeg`}
+                        // className="cursor-pointer rounded-[6px] object-contain"
+                        type="image"
+                        // TODO:this logic should be done on backend
+                      />
+                    </div>
+                  ))}
+                  {files.map((file, index) => (
+                    <div
+                      key={index}
+                      className="relative flex h-[66px] w-[79px] flex-shrink-0 items-center justify-center rounded-[6px]"
+                    >
+                      <MediaFile
+                        onRemove={() => onRemove(index)}
+                        file={file}
+                        className={classNames(
+                          file.type.startsWith("image/")
+                            ? "cursor-pointer rounded-[6px] object-contain"
+                            : file.type.startsWith("video/")
+                            ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : file.type.startsWith("aduio/")
+                            ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : null
+                        )}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {(files.length > 0 || contentIds.length > 0) && (
                   <FormInput
                     register={register}
                     name="drag-drop"
@@ -523,9 +523,9 @@ const MessagingInput = () => {
                     ]}
                     errors={errors}
                   />
-                </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         )}
         <div className="w-full">
@@ -605,7 +605,7 @@ const MessagingInput = () => {
                       <button
                         className="rounded-full bg-passes-secondary-color py-2 px-6"
                         type="button"
-                        onClick={() => setHasPrice(false)}
+                        onClick={() => setContentIds(false)}
                       >
                         Cancel
                       </button>
@@ -626,36 +626,12 @@ const MessagingInput = () => {
             }
           ></Dialog>
         )}
-      </>
-      <>
         {hasVault && (
-          <Dialog
-            className="flex w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"
-            open={true}
-            title={
-              <div className="relative h-full">
-                <div className="flex flex-col items-start justify-start gap-3">
-                  <div>Vault Items come here</div>
-                  <div className="flex w-full items-end justify-end gap-3">
-                    <button
-                      className="rounded-full bg-passes-secondary-color py-2 px-6"
-                      type="button"
-                      onClick={() => setHasVault(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="rounded-full bg-passes-secondary-color py-2 px-6"
-                      type="button"
-                      onClick={() => setHasVault(false)}
-                    >
-                      Use selected media
-                    </button>
-                  </div>
-                </div>
-              </div>
-            }
-          ></Dialog>
+          <MessagesVaultDialog
+            hasVault={hasVault}
+            setHasVault={setHasVault}
+            setContentIds={setContentIds}
+          />
         )}
       </>
     </div>

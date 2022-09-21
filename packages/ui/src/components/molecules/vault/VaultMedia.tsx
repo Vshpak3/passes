@@ -21,7 +21,6 @@ const VaultMediaItem = ({
     selectedItems,
     setSelectedItems
   })
-
   return (
     <div className="group">
       <div

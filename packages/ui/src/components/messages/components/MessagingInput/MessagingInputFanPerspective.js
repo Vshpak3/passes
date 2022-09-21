@@ -321,7 +321,7 @@ const MessagingInputFanPerspective = () => {
               register={register}
               type="number"
               name="tipAmount"
-              placeholder=""
+              placeholder="$"
               min="0"
               className="w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0 sm:w-full"
             />

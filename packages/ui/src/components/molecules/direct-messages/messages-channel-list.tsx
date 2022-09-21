@@ -17,11 +17,11 @@ export const MessagesChannelList = ({
   onToggleUser
 }: IMessagingChannelList) => {
   return (
-    <div className="flex min-w-[420px] max-w-[400px] flex-col border-r border-[#FFFF]/10 p-[30px]">
+    <div className="flex min-w-[370px] max-w-[370px] flex-col border-r border-[#FFFF]/10 p-[30px]">
       <span className="text-[16px] font-medium leading-[24px] text-white">
         Most recent lists
       </span>
-      <div className="flex w-full min-w-[388px] items-center gap-[5px] overflow-x-auto overflow-y-hidden py-8 ">
+      <div className="flex min-w-[335px] max-w-[335px] items-center gap-[5px] overflow-x-auto overflow-y-hidden py-8 ">
         {lists.map((list, index) => (
           <span
             key={index}
@@ -37,14 +37,14 @@ export const MessagesChannelList = ({
           </span>
         ))}
       </div>
-      <MessagesSearchInput />
+      <MessagesSearchInput placeholder="Find people or lists" />
       <div className="py-6">
         <div className="w-full border-t border-[#FFFF]/10" />
       </div>
       <div className="pb-3">
         <span>Exclude people</span>
       </div>
-      <MessagesSearchInput />
+      <MessagesSearchInput placeholder="Exclude people" />
       <div className="flex h-full w-full flex-col  overflow-auto pt-5">
         {activeList.members.map((member, index) => (
           <div
@@ -75,22 +75,6 @@ export const MessagesChannelList = ({
               <span>{member.displayName}</span>
               <span>{member.userId}</span>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="py-6">
-        <div className="w-full border-t border-[#FFFF]/10" />
-      </div>
-      <div className="flex items-center gap-1">
-        {activeList.members.map((member, index) => (
-          <div key={index} className="item-center flex ">
-            <img // eslint-disable-line @next/next/no-img-element
-              width="50px"
-              height="50px"
-              className="rounded-full"
-              src={`https://www.w3schools.com/w3images/avatar${member.id}.png`}
-              alt="ProfilePhoto"
-            />
           </div>
         ))}
       </div>
