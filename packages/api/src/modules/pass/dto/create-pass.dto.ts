@@ -14,7 +14,8 @@ export class CreatePassRequestDto {
   @DtoProperty()
   description: string
 
-  @DtoProperty()
+  @IsEnum(PassTypeEnum)
+  @DtoProperty({ enum: PassTypeEnum })
   type: PassTypeEnum
 
   @IsInt()
@@ -36,12 +37,14 @@ export class CreatePassRequestDto {
   freetrial: boolean
 
   @DtoProperty({ optional: true })
+  @IsInt()
   messages?: number | null
 
   @IsEnum(ChainEnum)
   @DtoProperty({ enum: ChainEnum })
   chain: ChainEnum
 
+  @IsInt()
   @Min(0)
   @Max(10000)
   @DtoProperty()
