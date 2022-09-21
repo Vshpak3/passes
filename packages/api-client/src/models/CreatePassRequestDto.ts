@@ -36,7 +36,7 @@ export interface CreatePassRequestDto {
      * @type {string}
      * @memberof CreatePassRequestDto
      */
-    type: string;
+    type: CreatePassRequestDtoTypeEnum;
     /**
      * 
      * @type {number}
@@ -81,6 +81,16 @@ export interface CreatePassRequestDto {
     royalties: number;
 }
 
+
+/**
+ * @export
+ */
+export const CreatePassRequestDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type CreatePassRequestDtoTypeEnum = typeof CreatePassRequestDtoTypeEnum[keyof typeof CreatePassRequestDtoTypeEnum];
 
 /**
  * @export

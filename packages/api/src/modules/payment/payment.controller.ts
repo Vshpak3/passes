@@ -211,7 +211,7 @@ export class PaymentController {
     allowUnauthorizedRequest: true,
   })
   @Post('circle/notification')
-  async recieveNotifications(@Body() body: string) {
+  async receiveNotifications(@Body() body: string) {
     const envelope = JSON.parse(body)
     this.validator.validate(envelope, (err) => {
       if (err) {

@@ -14,8 +14,13 @@ readonly openapi_gen_version=6.1.0
 
 readonly out_path="${root}/${api_client_path}"
 
-# Generate openapi.json file
+
+### Generate OpenAPI JSON File
+
 yarn workspace @passes/api generate-openapi-spec
+
+
+### Generate OpenAPI Javascript client
 
 # Clean previously generated API client
 [[ -d "${out_path}/src/" ]] && rm -r "${out_path}/src/"
@@ -55,6 +60,45 @@ export const passesConfig: ConfigurationParameters = {
     basePath: process.env.NEXT_PUBLIC_API_BASE_URL
 }
 EOT
+
+
+### Generate secured endpoint file
+
+python3 <<EOT
+import json
+import os
+
+with open('${spec_filename}') as f:
+    spec = json.load(f)
+
+yes_auth = []
+no_auth = []
+for method in spec['paths'].values():
+    for operation in method.values():
+        if operation.get('security') != [{'bearer': []}]:
+            no_auth.append(operation['operationId'])
+        else:
+            yes_auth.append(operation['operationId'])
+
+yes_auth.sort()
+no_auth.sort()
+
+security_info_file = os.path.join('${api_client_path}', 'SecurityInfo.ts')
+
+security_info_content = f"""
+export const SecurityInfo = new Set<string>([
+{f"{os.linesep}".join([f'    "{op}",' for op in yes_auth])}
+])
+"""
+
+with open(security_info_file, 'w') as f:
+    f.write(security_info_content)
+
+print(f'No full authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth)}')
+EOT
+echo
+
+### Finishing Touches
 
 # Removed for now to prevent merge conflicts:
 # Takes the openapi json spec and adds it as a constant

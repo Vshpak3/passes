@@ -153,7 +153,7 @@ export interface RePayoutRequest {
     payoutId: string;
 }
 
-export interface RecieveNotificationsRequest {
+export interface ReceiveNotificationsRequest {
     body: string;
 }
 
@@ -950,9 +950,9 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Circle notifications
      */
-    async recieveNotificationsRaw(requestParameters: RecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async receiveNotificationsRaw(requestParameters: ReceiveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling recieveNotifications.');
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling receiveNotifications.');
         }
 
         const queryParameters: any = {};
@@ -975,8 +975,8 @@ export class PaymentApi extends runtime.BaseAPI {
     /**
      * Circle notifications
      */
-    async recieveNotifications(requestParameters: RecieveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.recieveNotificationsRaw(requestParameters, initOverrides);
+    async receiveNotifications(requestParameters: ReceiveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.receiveNotificationsRaw(requestParameters, initOverrides);
     }
 
     /**
