@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import * as uuid from 'uuid'
 
 import { Database } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
@@ -43,7 +44,9 @@ export class ContentService {
     createContentDto: CreateContentRequestDto,
   ): Promise<GetContentResponseDto> {
     try {
+      const id = uuid.v4()
       const data = ContentEntity.toDict<ContentEntity>({
+        id,
         user: userId,
         ...createContentDto,
       })

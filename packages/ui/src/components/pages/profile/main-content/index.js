@@ -23,7 +23,7 @@ const MainContent = ({
         await api.createPost({
           createPostRequestDto: {
             text: values.text,
-            contentIds: [],
+            contentIds: values.contentIds,
             passIds: [],
             isMessage: false,
             price: 0

@@ -97,7 +97,7 @@ export const NewPost = ({
     const values = getValues()
     const content = await new ContentService().uploadContent(files)
     setExtended(false)
-    createPost({ ...values, content: content.map((c) => c.id) })
+    createPost({ ...values, contentIds: content.map((c) => c.id) })
     reset()
   }
 

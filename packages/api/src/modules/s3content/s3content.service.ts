@@ -179,6 +179,11 @@ export class S3ContentService {
     const Key = this.generateS3Key(folder, rest)
     const command = new PutObjectCommand({ Bucket, Key })
 
+    // skip in dev, getPresignedUrl throws credentials errors
+    if (this.env === 'dev') {
+      return this.cloudfrontUrl + '/' + Key
+    }
+
     let url = await getPresignedUrl(this.s3Client, command, {
       expiresIn: this.signedUrlExpirationTime / 1000, // convert to seconds
     })

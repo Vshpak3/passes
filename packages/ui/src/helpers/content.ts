@@ -114,7 +114,7 @@ class ContentService {
   }
 
   async uploadPassImage(file: File, passId: string) {
-    const url = await this.preSignUrl("pass", passId)
+    const url = await this.preSignUrl("pass", { passId })
     return this.uploadFile(url, file)
   }
 
@@ -140,7 +140,7 @@ class ContentService {
       files.map(async (file: File) => {
         const _contentType = contentType ?? this.getFileContentType(file)
         if (!_contentType) throw new Error("invalid file type")
-        const url = await this.preSignUrl("content", _contentType)
+        const url = await this.preSignUrl("content", { content: _contentType })
         const result = await this.uploadFile(url, file)
         const content = this.parseContentUrl(result)
         return new Content(content)
