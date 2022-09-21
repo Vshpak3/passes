@@ -10,7 +10,7 @@ const Messages = () => {
   const router = useRouter()
 
   const { contentIds: _contentIds } = router.query
-  let contentIds
+  let contentIds = [""]
   if (_contentIds) {
     if (typeof _contentIds === "string") contentIds = [_contentIds]
     else contentIds = _contentIds
@@ -27,7 +27,7 @@ const Messages = () => {
           contentIds={contentIds}
         />
       ) : (
-        <MessagesComponent />
+        <MessagesComponent username="" />
       )}
     </>
 

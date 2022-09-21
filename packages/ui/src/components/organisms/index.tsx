@@ -5,6 +5,7 @@ import CustomMentionEditor from "./CustomMentionEditor"
 import Dialog from "./Dialog"
 import DirectMessage from "./DirectMessage"
 import FormContainer from "./FormContainer"
+import MessagesV2 from "./MessagesV2"
 import Modal from "./Modal"
 import { CreatePassForm, PassesListSection, SelectPassType } from "./passes"
 import {
@@ -30,6 +31,7 @@ export {
   Dialog,
   DirectMessage,
   FormContainer,
+  MessagesV2,
   Modal,
   PassesListSection,
   PastTransactions,
