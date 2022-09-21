@@ -5,7 +5,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -76,7 +75,6 @@ export class PassService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-    private readonly configService: ConfigService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -88,9 +86,7 @@ export class PassService {
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
-  ) {
-    this.env = this.configService.get('infra.env') as string
-  }
+  ) {}
 
   async createPass(
     userId: string,
@@ -160,7 +156,6 @@ export class PassService {
       .first()
 
     if (
-      this.env !== 'dev' &&
       !(await this.s3ContentService.doesObjectExist(
         `nft/${pass.id}/image.${ContentFormatEnum.IMAGE}`,
       ))
