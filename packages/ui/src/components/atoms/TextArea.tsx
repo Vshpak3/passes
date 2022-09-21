@@ -7,7 +7,7 @@ import {
   FormName,
   FormOptions,
   FormRegister
-} from "../FormTypes"
+} from "../types/FormTypes"
 import Label from "./Label"
 
 type TextAreaProps = {

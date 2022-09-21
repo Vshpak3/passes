@@ -9,7 +9,7 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "../FormTypes"
+} from "../types/FormTypes"
 
 const dummyRecentTags = ["Jett", "Yoru"]
 const dummyAllTags = ["Jett", "Yoru", "Cipher", "Reyna", "Sova", "Viper"]

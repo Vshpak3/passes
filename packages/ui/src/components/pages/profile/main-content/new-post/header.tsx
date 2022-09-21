@@ -5,7 +5,11 @@ import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { useContext } from "react"
 import { FormInput } from "src/components/atoms"
-import { FormErrors, FormOptions, FormRegister } from "src/components/FormTypes"
+import {
+  FormErrors,
+  FormOptions,
+  FormRegister
+} from "src/components/types/FormTypes"
 import { classNames } from "src/helpers"
 
 import { MainContext } from "../../../../../context/MainContext"

@@ -11,7 +11,7 @@ import {
   FormPlaceholder,
   FormRegister,
   FormType
-} from "../FormTypes"
+} from "../types/FormTypes"
 import Label from "./Label"
 
 export enum EIcon {

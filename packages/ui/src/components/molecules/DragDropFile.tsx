@@ -8,7 +8,7 @@ import {
   FormName,
   FormOptions,
   FormRegister
-} from "../FormTypes"
+} from "../types/FormTypes"
 
 type DragDropFileProps = {
   name: FormName

@@ -6,13 +6,7 @@ const radixColors = require("@radix-ui/colors")
 module.exports = {
   darkMode: "class",
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{html,js,ts,tsx,jsx}",
-    "./**/*.{html,js,ts,tsx,jsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
-    "./src/containers/**/*.{js,ts,jsx,tsx}",
-    "./src/icons/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{ts,tsx,js,jsx}",
   ],
   theme: {
     extend: {

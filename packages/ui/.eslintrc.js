@@ -3,11 +3,13 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json"
   },
+  // plugins: ["tailwind"]
   extends: [
     "next/core-web-vitals",
     // 'plugin:jsx-a11y/recommended',
     "plugin:react-hooks/recommended",
     "plugin:react/recommended"
+    // 'plugin:tailwindcss/recommended',
   ],
   rules: {
     // Breaking for some reason after upgrades

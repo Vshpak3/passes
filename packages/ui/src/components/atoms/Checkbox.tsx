@@ -8,7 +8,7 @@ import {
   FormOptions,
   FormRegister,
   FormType
-} from "../FormTypes"
+} from "../types/FormTypes"
 import Label from "./Label"
 
 type CheckBoxProps = {

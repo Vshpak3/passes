@@ -9,7 +9,7 @@ import {
   FormPlaceholder,
   FormRegister,
   FormSelectOptions
-} from "../FormTypes"
+} from "../types/FormTypes"
 import Label from "./Label"
 
 type SelectProps = {

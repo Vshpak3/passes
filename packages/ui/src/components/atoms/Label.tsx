@@ -1,7 +1,12 @@
 import classNames from "classnames"
 import React from "react"
 
-import { FormErrors, FormLabel, FormName, FormOptions } from "../FormTypes"
+import {
+  FormErrors,
+  FormLabel,
+  FormName,
+  FormOptions
+} from "../types/FormTypes"
 
 type LabelProps = {
   label?: FormLabel

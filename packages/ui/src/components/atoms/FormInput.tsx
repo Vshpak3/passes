@@ -14,7 +14,7 @@ import {
   FormRegister,
   FormSelectOptions,
   FormType
-} from "../FormTypes"
+} from "../types/FormTypes"
 
 type FormInputProps = {
   label?: FormLabel

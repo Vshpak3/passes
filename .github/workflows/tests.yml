@@ -38,6 +38,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: ./packages/ui/bin/lint.sh
       - run: yarn
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check

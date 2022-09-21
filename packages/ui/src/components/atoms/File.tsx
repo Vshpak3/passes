@@ -8,7 +8,7 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "../FormTypes"
+} from "../types/FormTypes"
 import Label from "./Label"
 
 type InputProps = {
