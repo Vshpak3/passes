@@ -65,36 +65,34 @@ EOT
 ### Generate secured endpoint file
 
 python3 <<EOT
+import collections
 import json
 import os
 
 with open('${spec_filename}') as f:
     spec = json.load(f)
 
-yes_auth = []
-no_auth = []
-for method in spec['paths'].values():
+yes_auth = collections.defaultdict(list)
+no_auth = collections.defaultdict(list)
+for path, method in spec['paths'].items():
+    api_name = ''.join(map(str.capitalize, path.split('/')[2].split('-')))
     for operation in method.values():
         if operation.get('security') != [{'bearer': []}]:
-            no_auth.append(operation['operationId'])
+            no_auth[api_name].append(operation['operationId'])
         else:
-            yes_auth.append(operation['operationId'])
+            yes_auth[api_name].append(operation['operationId'])
 
-yes_auth.sort()
-no_auth.sort()
-
-security_info_file = os.path.join('${api_client_path}', 'SecurityInfo.ts')
-
-security_info_content = f"""
-export const SecurityInfo = new Set<string>([
-{f"{os.linesep}".join([f'    "{op}",' for op in yes_auth])}
+for api, ops in yes_auth.items():
+    security_info_content = f"""
+export const {api}SecurityInfo = new Set<string>([
+{f"{os.linesep}".join([f'    "{op}",' for op in sorted(ops)])}
 ])
 """
+    with open(os.path.join('packages/api-client', f'src/apis/{api}Api.ts'), 'a') as f:
+        f.write(security_info_content)
 
-with open(security_info_file, 'w') as f:
-    f.write(security_info_content)
-
-print(f'No full authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth)}')
+no_auth_print_str = sorted(f'{api}.{op}' for api, ops in no_auth.items() for op in ops)
+print(f'No full authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth_print_str)}')
 EOT
 echo
 

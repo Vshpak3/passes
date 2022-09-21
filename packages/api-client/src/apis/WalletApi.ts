@@ -396,3 +396,14 @@ export class WalletApi extends runtime.BaseAPI {
     }
 
 }
+
+export const WalletSecurityInfo = new Set<string>([
+    "authMessage",
+    "createUnauthenticatedWallet",
+    "createWallet",
+    "getDefaultWallet",
+    "getUserCustodialWallet",
+    "getWallets",
+    "removeWallet",
+    "setDefaultWallet",
+])

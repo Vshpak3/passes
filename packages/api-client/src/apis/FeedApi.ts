@@ -217,3 +217,10 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
 }
+
+export const FeedSecurityInfo = new Set<string>([
+    "getFeed",
+    "getFeedForCreator",
+    "getMessagesForOwner",
+    "getPostsForOwner",
+])

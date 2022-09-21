@@ -224,3 +224,11 @@ export class VerificationApi extends runtime.BaseAPI {
     }
 
 }
+
+export const VerificationSecurityInfo = new Set<string>([
+    "canSubmitPersona",
+    "getCreatorVerificationStep",
+    "refreshPersonaVerifications",
+    "submitCreatorVerificationStep",
+    "submitPersonaInquiry",
+])

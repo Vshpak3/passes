@@ -184,3 +184,9 @@ export class ProfileApi extends runtime.BaseAPI {
     }
 
 }
+
+export const ProfileSecurityInfo = new Set<string>([
+    "activateProfile",
+    "createOrUpdateProfile",
+    "deactivateProfile",
+])

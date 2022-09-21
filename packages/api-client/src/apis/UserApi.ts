@@ -338,3 +338,13 @@ export class UserApi extends runtime.BaseAPI {
     }
 
 }
+
+export const UserSecurityInfo = new Set<string>([
+    "activateUser",
+    "deactivateUser",
+    "makeAdult",
+    "makeCreator",
+    "searchCreatorByUsername",
+    "setDisplayName",
+    "setUsername",
+])

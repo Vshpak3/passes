@@ -403,3 +403,14 @@ export class ListApi extends runtime.BaseAPI {
     }
 
 }
+
+export const ListSecurityInfo = new Set<string>([
+    "addListMembers",
+    "createList",
+    "deleteList",
+    "editListName",
+    "getList",
+    "getListMembers",
+    "getLists",
+    "removeListMembers",
+])

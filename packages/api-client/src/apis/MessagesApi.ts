@@ -660,3 +660,19 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
 }
+
+export const MessagesSecurityInfo = new Set<string>([
+    "getChannel",
+    "getChannelSettings",
+    "getChannelsStats",
+    "getCompletedTippedMessages",
+    "getFreeMessages",
+    "getMessages",
+    "getPending",
+    "getToken",
+    "massSend",
+    "readMessages",
+    "sendMessage",
+    "sendMessageData",
+    "updateChannelSettings",
+])

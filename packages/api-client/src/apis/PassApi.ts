@@ -685,3 +685,18 @@ export class PassApi extends runtime.BaseAPI {
     }
 
 }
+
+export const PassSecurityInfo = new Set<string>([
+    "addPassSubscription",
+    "createPass",
+    "getPassHolders",
+    "getPassHoldings",
+    "mintPass",
+    "pinPass",
+    "registerBuyPass",
+    "registerBuyPassData",
+    "registerRenewPass",
+    "registerRenewPassData",
+    "unpinPass",
+    "updatePass",
+])

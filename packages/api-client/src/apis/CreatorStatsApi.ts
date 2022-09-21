@@ -150,3 +150,8 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     }
 
 }
+
+export const CreatorStatsSecurityInfo = new Set<string>([
+    "getBalance",
+    "getHistoricEarnings",
+])
