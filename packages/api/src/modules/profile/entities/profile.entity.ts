@@ -38,6 +38,9 @@ export class ProfileEntity extends BaseEntity {
   @Property({ length: EXTERNAL_URL_LENGTH })
   twitchUrl?: string
 
+  @Property({ length: EXTERNAL_URL_LENGTH })
+  facebookUrl?: string
+
   @Property({ default: true })
   isActive: boolean
 }

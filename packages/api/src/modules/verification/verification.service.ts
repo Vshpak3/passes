@@ -232,7 +232,9 @@ export class VerificationService {
         if (
           !profile.description ||
           !(
+            profile.facebook_url ||
             profile.instagram_url ||
+            profile.tiktok_url ||
             profile.youtube_url ||
             profile.discord_url ||
             profile.twitch_url

@@ -664,6 +664,7 @@ export class MessagesApi extends runtime.BaseAPI {
 export const MessagesSecurityInfo = new Set<string>([
     "getChannel",
     "getChannelSettings",
+    "getChannels",
     "getChannelsStats",
     "getCompletedTippedMessages",
     "getFreeMessages",
@@ -674,5 +675,6 @@ export const MessagesSecurityInfo = new Set<string>([
     "readMessages",
     "sendMessage",
     "sendMessageData",
+    "subscribeMessages",
     "updateChannelSettings",
 ])
