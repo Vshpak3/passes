@@ -33,7 +33,7 @@ const MessagesComponent = ({ username }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [giphyState, setGiphyState] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
-  const [purchasedContent, setPurchasedContent] = useState(false)
+  const [activeContent, setActiveContent] = useState("All")
   const [isMobileNavVisible, setMobileNav] = useState(false)
   const [isCreator, setIsCreator] = useState(false)
   const [freeMessages, setFreeMessages] = useState(5)
@@ -43,6 +43,7 @@ const MessagesComponent = ({ username }) => {
   const [messagesStats, setMessagesStats] = useState([])
   const { streamToken } = useChat(username)
   const { user } = useUser()
+
   useEffect(() => {
     const mobileChannelList = document.querySelector("#mobile-channel-list")
     if (isMobileNavVisible && mobileChannelList) {
@@ -130,8 +131,8 @@ const MessagesComponent = ({ username }) => {
     setGallery,
     freeMessages,
     setFreeMessages,
-    purchasedContent,
-    setPurchasedContent,
+    activeContent,
+    setActiveContent,
     user
   }
   const options = { state: true, watch: true, presence: true, limit: 8 }

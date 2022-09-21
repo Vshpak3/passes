@@ -132,7 +132,7 @@ const MessagingChannelHeader = (props) => {
     defaultValues: {}
   })
   const inputRef = useRef()
-  const { gallery, setGallery, purchasedContent, setPurchasedContent } =
+  const { gallery, setGallery, activeContent, setActiveContent } =
     useContext(GiphyContext)
   const members = Object.values(channel.state?.members || {}).filter(
     (member) => member.user?.id !== client?.user?.id
@@ -332,7 +332,7 @@ const MessagingChannelHeader = (props) => {
         `}
       </style>
       {gallery ? (
-        <div className="messaging__channel-header gap-3  border-b border-[#ffffff]/10">
+        <div className="messaging__channel-header mt-16  gap-3 border-b border-[#ffffff]/10 sm:mt-0">
           <div
             id="mobile-nav-icon"
             className={`${props.theme}`}
@@ -347,11 +347,11 @@ const MessagingChannelHeader = (props) => {
                 onClick={() => setGallery(!gallery)}
               />
               <div className="flex flex-col items-start justify-center gap-1">
-                {!purchasedContent ? (
+                {activeContent === "All" ? (
                   <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
-                    Not purchased content gallery
+                    Content gallery
                   </span>
-                ) : (
+                ) : activeContent === "Purchased" ? (
                   <span className="flex cursor-pointer items-center justify-start">
                     <span className="pr-1">
                       <CurrencyIcon />
@@ -360,37 +360,45 @@ const MessagingChannelHeader = (props) => {
                       Purchased content gallery
                     </span>
                   </span>
-                )}
+                ) : activeContent === "Not Purchased" ? (
+                  <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                    Not purchased content gallery
+                  </span>
+                ) : null}
                 <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
                   with {channelName || title}
                 </span>
               </div>
             </div>
           </div>
-          {/* <div className="channel-header__name">{channelName || title}</div> */}
           <div className="messaging__channel-header__left justify-end  py-4 pr-10">
-            {purchasedContent ? (
-              <div
-                onClick={() => setPurchasedContent(!purchasedContent)}
-                className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
-              >
-                Show Not Purchased
-              </div>
-            ) : (
-              <div
-                onClick={() => setPurchasedContent(!purchasedContent)}
-                className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
-              >
-                Show Purchased
-              </div>
-            )}
+            <div
+              onClick={() => setActiveContent("All")}
+              className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
+            >
+              All
+            </div>
+            <span className="px-3 text-passes-pink-100">|</span>
+            <div
+              onClick={() => setActiveContent("Not Purchased")}
+              className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
+            >
+              Show Not Purchased
+            </div>
+            <span className="px-3 text-passes-pink-100">|</span>
+            <div
+              onClick={() => setActiveContent("Purchased")}
+              className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
+            >
+              Show Purchased
+            </div>
           </div>
         </div>
       ) : (
         <div
           className={classNames(
             !props.isCreator ? "border-b border-[#ffffff]/10" : "",
-            "messaging__channel-header gap-3"
+            "messaging__channel-header mt-16  gap-3 sm:mt-0"
           )}
         >
           <div

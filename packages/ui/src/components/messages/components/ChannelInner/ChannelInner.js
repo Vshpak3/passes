@@ -21,7 +21,7 @@ import {
 } from "../../components"
 import { GiphyContext } from "../../index"
 
-const pendingContent = [
+const content = [
   {
     price: 32,
     locked: true,
@@ -31,7 +31,7 @@ const pendingContent = [
   },
   {
     price: 12,
-    locked: true,
+    locked: false,
     date: "2 March",
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
@@ -42,60 +42,66 @@ const pendingContent = [
     date: "31 June",
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
-  }
-]
-
-const paidContent = [
+  },
   {
     price: 32,
     date: "14 July",
+    locked: false,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 12,
     date: "2 March",
+    locked: true,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 138,
     date: "31 June",
+    locked: false,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 500,
     date: "9 Oct",
+    locked: true,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 500,
     date: "10 Dec",
+    locked: true,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 250,
     date: "14 July",
+    locked: false,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 500,
     date: "14 July",
+    locked: true,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 500,
     date: "14 July",
+    locked: true,
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
   },
   {
     price: 250,
+    locked: false,
     date: "14 July",
     text: "Lorem ispum ispum lorem Lorem ispum ispum lorem Lorem ispum ispum lorem",
     imageUrl: ""
@@ -113,17 +119,22 @@ const getChannelUnreadTip = (messagesStats, channel) => {
 
 export const ChannelInner = (props) => {
   // const [openBuyMessagesModal, setOpenBuyMessagesModal] = useState(false)
+  const purchasedContent = content.filter((media) => !media.locked)
+  const pendingContent = content.filter((media) => media.locked)
 
   const { channel: activeChannel } = useChatContext(ChatContext)
   const tip = getChannelUnreadTip(props.messagesStats, activeChannel)
   const { theme, toggleMobile, freeMessages } = props
-  let sumPaid = paidContent.reduce(function (prev, current) {
-    return prev + +current.price
-  }, 0)
-  let sumPending = pendingContent.reduce(function (prev, current) {
-    return prev + +current.price
-  }, 0)
-  const { isCreator, gallery, purchasedContent } = useContext(GiphyContext)
+  const { sumPaid, sumPending } = content.reduce(
+    function (prev, current) {
+      if (!current.locked) prev.sumPending += current.price
+      else prev.sumPaid += current.price
+      return prev
+    },
+    { sumPaid: 0, sumPending: 0 }
+  )
+
+  const { isCreator, gallery, activeContent } = useContext(GiphyContext)
 
   const actions = ["delete", "edit", "flag", "mute", "react", "reply"]
 
@@ -144,20 +155,25 @@ export const ChannelInner = (props) => {
               " spending-tips-buttons flex min-h-[54px] items-center justify-start gap-[18px] bg-[#1b141d]/50 pl-5 "
             )}
           >
+            {!gallery && <span>Tips spent</span>}
             {gallery ? (
-              <span>
-                {purchasedContent ? "Earnings:" : " Pending Payments:"}
-              </span>
-            ) : (
-              <span>Tips spent</span>
-            )}
-            {gallery ? (
-              <div className="flex h-full items-center justify-center">
-                <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-passes-secondary-color">
-                  {purchasedContent
-                    ? formatCurrency(sumPaid)
-                    : formatCurrency(sumPending)}
-                </span>
+              <div className="flex h-full items-center justify-center gap-5">
+                <div className="flex cursor-pointer gap-1 text-[16px] font-medium leading-[16px]">
+                  <span className="flex cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                    Earnings:
+                  </span>
+                  <span className="text-passes-secondary-color">
+                    {formatCurrency(sumPaid)}
+                  </span>
+                </div>
+                <div className="flex cursor-pointer gap-1 text-[16px] font-medium leading-[16px]">
+                  <span className="flex cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                    Pending:
+                  </span>
+                  <span className="text-passes-secondary-color">
+                    {formatCurrency(sumPending)}
+                  </span>
+                </div>
               </div>
             ) : (
               <div className="flex items-center justify-start gap-[10px]">
@@ -172,7 +188,7 @@ export const ChannelInner = (props) => {
               </div>
             )}
           </div>
-        ) : (
+        ) : !isCreator && !gallery ? (
           <div className="flex items-center justify-between gap-[10px] border-b border-[#FFFF]/10 bg-[#5f2c2f]/50 py-[10px] px-4 backdrop-blur-[25px] ">
             <div className="flex items-center gap-1">
               <span className="text-sm font-medium text-[#FBFBFB]">
@@ -201,7 +217,7 @@ export const ChannelInner = (props) => {
               setFreeMessages={setFreeMessages}
             /> */}
           </div>
-        )}
+        ) : null}
         {!gallery && <MessageList messageActions={actions} />}
         {!gallery && (
           <MessageInput
@@ -211,25 +227,37 @@ export const ChannelInner = (props) => {
         )}
         {gallery && (
           <div className="flex h-full flex-wrap items-start justify-start gap-2 overflow-auto p-[10px]">
-            {purchasedContent
-              ? paidContent.map((media, index) => (
+            {activeContent === "All" ? (
+              <>
+                {content.map((media, index) => (
                   <GalleryMedia
                     key={index}
                     media={media}
-                    purchasedContent={purchasedContent}
-                    pendingContent={pendingContent}
-                    isCreator={isCreator}
-                  />
-                ))
-              : pendingContent.map((media, index) => (
-                  <GalleryMedia
-                    key={index}
-                    media={media}
-                    purchasedContent={purchasedContent}
-                    pendingContent={pendingContent}
                     isCreator={isCreator}
                   />
                 ))}
+              </>
+            ) : activeContent === "Purchased" ? (
+              <>
+                {purchasedContent.map((media, index) => (
+                  <GalleryMedia
+                    key={index}
+                    media={media}
+                    isCreator={isCreator}
+                  />
+                ))}
+              </>
+            ) : activeContent === "Not Purchased" ? (
+              <>
+                {pendingContent.map((media, index) => (
+                  <GalleryMedia
+                    key={index}
+                    media={media}
+                    isCreator={isCreator}
+                  />
+                ))}
+              </>
+            ) : null}
           </div>
         )}
       </Window>
@@ -240,7 +268,7 @@ export const ChannelInner = (props) => {
   )
 }
 
-export const GalleryMedia = ({ media, purchasedContent, isCreator }) => {
+export const GalleryMedia = ({ media, isCreator }) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState(false)
 
   return (
@@ -248,7 +276,7 @@ export const GalleryMedia = ({ media, purchasedContent, isCreator }) => {
       <div className="flex w-full items-center justify-between">
         <div className="flex cursor-pointer items-center justify-start gap-[6px]">
           <span className="text-[16px] font-medium leading-[22px] text-white ">
-            {purchasedContent ? "Purchased" : "Pending"}
+            {!media.locked ? "Purchased" : "Pending"}
           </span>
           <div className="flex items-center gap-1">
             <span>
@@ -278,7 +306,7 @@ export const GalleryMedia = ({ media, purchasedContent, isCreator }) => {
             alt="photo"
             // TODO: use crop images when images come from our db
           />
-          {!purchasedContent && (
+          {!media.locked && (
             <div className="absolute top-0 flex h-full w-full items-center justify-center rounded-[20px] backdrop-blur-[100px]">
               <ImageIcon />
             </div>
