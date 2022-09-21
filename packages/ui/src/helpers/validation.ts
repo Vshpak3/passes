@@ -1,4 +1,4 @@
-import { object, SchemaOf, string } from "yup"
+import { boolean, mixed, number, object, ref, SchemaOf, string } from "yup"
 
 // eslint-disable-next-line regexp/optimal-lookaround-quantifier
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/
@@ -15,6 +15,35 @@ export interface SignInSchema {
   email: string
   password: string
 }
+
+const changePasswordSchema = object({
+  currentPassword: string().required("Please enter your current password"),
+  password: string()
+    .required("Please enter a new password")
+    .matches(
+      passwordRegex,
+      "Your password must include:\n* At least 8 characters\n* A number\n* An uppercase and a lowercase character\n* A special character (!, @, #, $, etc.)"
+    ),
+  confirmPassword: string().oneOf(
+    [ref("password"), null],
+    "Passwords must match"
+  )
+})
+
+const chatSettingsSchema = object({
+  withoutTip: boolean(),
+  showWelcomeMessageInput: boolean(),
+  tipAmount: mixed().when("withoutTip", {
+    is: false,
+    then: number()
+      .min(5, "minimum tip amount is $5")
+      .required("Please enter tip amount")
+  }),
+  welcomeMessage: string().when("showWelcomeMessageInput", {
+    is: true,
+    then: string().required("Please enter welcome message")
+  })
+})
 
 const signInSchema: SchemaOf<SignInSchema> = object({
   email: string()
@@ -92,7 +121,7 @@ export interface BankingSchema {
 }
 
 const bankingSchema: SchemaOf<BankingSchema> = object({
-  accountNumber: string().max(19).required("Enter a card number"),
+  accountNumber: string().min(5).max(19).required("Enter a card number"),
   routingNumber: string().max(19).required("Enter a card number"),
   beneficiaryName: string().required(),
   city: string(),
@@ -126,6 +155,8 @@ const walletSchema: SchemaOf<WalletSchema> = object({
 
 export {
   bankingSchema,
+  changePasswordSchema,
+  chatSettingsSchema,
   creditCardSchema,
   digitsOnly,
   passwordRegex,

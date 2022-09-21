@@ -1,3 +1,4 @@
+import Alert from "./Alert"
 import {
   Button,
   ButtonTypeEnum,
@@ -41,6 +42,7 @@ import {
 import Wordmark from "./Wordmark"
 
 export {
+  Alert,
   Button,
   ButtonTypeEnum,
   Checkbox,

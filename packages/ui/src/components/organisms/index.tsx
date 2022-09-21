@@ -1,4 +1,5 @@
 import BlockModal from "./BlockModal"
+import ConfirmationDialog from "./ConfirmationDialog"
 import CreatorPassModal from "./CreatorPassModal"
 import CreditCardModal from "./CreditCardModal"
 import CustomMentionEditor from "./CustomMentionEditor"
@@ -17,11 +18,15 @@ import Popover from "./Popover"
 import ProfileNftPass from "./ProfileNftPass"
 import QuickPayModal from "./QuickPayModal"
 import ReportModal from "./ReportModal"
+import AddBankForm from "./settings/AddBankForm"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
 import { VaultMediaGrid, VaultNavigation } from "./VaultSections"
+
 export {
+  AddBankForm,
   BlockModal,
+  ConfirmationDialog,
   CreatePassForm,
   CreatorPassModal,
   CreatorPassTiles,

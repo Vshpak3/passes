@@ -26,6 +26,7 @@ interface IButton {
   variant?: string | "tab"
   active?: boolean
   type?: ButtonTypeEnum
+  disabledClass?: string
 }
 
 interface IGenericButton {
@@ -50,6 +51,7 @@ export const Button = ({
   variant,
   disabled,
   type,
+  disabledClass,
   ...restOfProps
 }: IButton) => {
   let variantClassName
@@ -81,6 +83,10 @@ export const Button = ({
       variantClassName =
         "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
       break
+    case "purple-light":
+      variantClassName =
+        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-passes-primary-color  dark:border-passes-primary-color border"
+      break
     case "white":
       variantClassName =
         "bg-mauveDark-mauve12 text-black max-h-[49px] border border-mauveDark-mauve10 hover:bg-transparent hover:border-white hover:text-white"
@@ -95,6 +101,10 @@ export const Button = ({
     case "link-purple":
       variantClassName =
         "text-pink-pink10 transition-colors hover:text-[#C943A8] active:text-[#C943A8] p-1"
+      break
+    case "gray":
+      variantClassName =
+        "text-white dark:text-white bg-white/[0.15] py-1.5 px-6 rounded-[56px]"
       break
     default:
       variantClassName = ""
@@ -113,8 +123,8 @@ export const Button = ({
         "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors xs:px-3 xs:py-2" +
         (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
-        (className && ` ${className}`) +
-        (disabled && " border-[#3333]/80 bg-[#3333]/80 ")
+        (className && ` ${className} `) +
+        (disabled && `${disabledClass ?? " border-[#3333]/80 bg-[#3333]/80 "}`)
       }
       role={tag === "a" ? "button" : undefined}
       tabIndex={tag === "a" ? 0 : undefined}
@@ -188,7 +198,7 @@ export const CoverButton = ({
   <button
     className={classNames(
       className,
-      "flex w-full items-center justify-center rounded-full border border-solid border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
+      "flex w-full items-center justify-center rounded-full border border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
     )}
     onClick={onClick}
   >

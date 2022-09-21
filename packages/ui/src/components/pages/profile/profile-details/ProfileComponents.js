@@ -23,10 +23,10 @@ export const Verified = ({ isVerified }) => (
 
 const ProfileStatItemMobile = ({ stat, label }) => (
   <div className="grid grid-rows-2">
-    <span className="text-passes-white-100 text-[14px] font-medium">
+    <span className="text-[14px] font-medium text-passes-white-100">
       {stat}
     </span>
-    <span className="text-passes-white-100/60 text-[12px] font-normal">
+    <span className="text-[12px] font-normal text-passes-white-100/60">
       {label}
     </span>
   </div>
@@ -76,13 +76,13 @@ export const ProfileInformation = ({
   return (
     <div className="flex flex-col items-start gap-[6px]">
       <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
-        <span className="text-passes-white-100 text-[32px] font-medium leading-9">
+        <span className="text-[32px] font-medium leading-9 text-passes-white-100">
           {displayName}
         </span>
         {/* <Verified /> */}
       </div>
       <div className="flex w-full justify-between">
-        <div className="bg-passes-white-100/[0.05] my-2 flex cursor-pointer items-center justify-center rounded-[50px] px-3 py-[6px]">
+        <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
           <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
             @{username}
           </span>
@@ -110,19 +110,19 @@ export const ProfileInformation = ({
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
           <div className="flex items-center justify-center">
-            <span className="text-passes-white-100 mr-[6px] text-base font-medium">
+            <span className="mr-[6px] text-base font-medium text-passes-white-100">
               {posts}
             </span>
-            <span className="text-passes-white-100/70 text-sm font-normal">
+            <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
             </span>
           </div>
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
-            <span className="text-passes-white-100 mr-[6px] text-base font-medium">
+            <span className="mr-[6px] text-base font-medium text-passes-white-100">
               {compactNumberFormatter(likes)}
             </span>
-            <span className="text-passes-white-100/70 text-sm font-normal">
+            <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
             </span>
           </div>
@@ -169,10 +169,10 @@ export const ProfileInformationMobile = ({
 
   return (
     <>
-      <span className="text-passes-white-100 text-[18px] font-semibold">
+      <span className="text-[18px] font-semibold text-passes-white-100">
         {displayName}
       </span>
-      <div className="align-items bg-passes-white-100/5 flex h-[23px] w-[62px] items-center justify-center rounded-xl">
+      <div className="align-items flex h-[23px] w-[62px] items-center justify-center rounded-xl bg-passes-white-100/5">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
           @{username}
         </span>

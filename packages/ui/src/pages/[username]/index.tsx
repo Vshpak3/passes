@@ -141,7 +141,6 @@ const MOCKED_FANWALL_POSTS = {
 const Username = (props: GetProfileResponseDto) => {
   const {
     creatorPasses,
-    editProfile,
     isTestProfile,
     fanWallPosts,
     onEditProfile,
@@ -187,9 +186,9 @@ const Username = (props: GetProfileResponseDto) => {
             ownsProfile={ownsProfile}
           />
         )}
-        {editProfile && (
-          <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
-        )}
+        {/* {editProfile && ( */}
+        <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
+        {/* )} */}
         {profile?.profileId && (
           <MainContent
             profile={profile}

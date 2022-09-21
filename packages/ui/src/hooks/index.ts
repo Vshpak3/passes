@@ -1,3 +1,5 @@
+import { useAccountSettings } from "./settings/useAccountSettings"
+import { useNotificationSettings } from "./settings/useNotificationSettings"
 import useBecomeCreator from "./useBecomeCreator"
 import useChat from "./useChat"
 import useCreatePass from "./useCreatePass"
@@ -22,6 +24,7 @@ import useUserConnectedWallets from "./useUserConnectedWallets"
 import useUserDefaultPayoutWallet from "./useUserDefaultPayoutWallet"
 
 export {
+  useAccountSettings,
   useBecomeCreator,
   useChat,
   useCreatePass,
@@ -36,6 +39,7 @@ export {
   useLocalStorage,
   useMessageToDevelopers,
   useMounted,
+  useNotificationSettings,
   useOnClickOutside,
   usePasses,
   usePayinMethod as usePayment,

@@ -41,6 +41,10 @@
   .text-label {
     @apply text-base font-bold leading-6;
   }
+
+  .text-label-lg {
+    @apply text-xl font-bold leading-6;
+  }
 }
 
 /* Global Reset */

@@ -22,6 +22,7 @@ type SelectProps = {
   selectOptions: FormSelectOptions
   className?: string
   onChange?: (e: Event) => void
+  placeholderClass?: string
 }
 const Select = ({
   name,
@@ -46,14 +47,15 @@ const Select = ({
         {...register(name, options)}
         {...customChange()}
         className={classNames(
-          errors[name] ? "border-red-500" : "border-gray-300",
-          "block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-base text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
+          errors[name] !== undefined ? "border-red-500" : "",
+          "block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
           className
         )}
+        defaultValue=""
         {...rest}
       >
         {placeholder && (
-          <option key={placeholder} value="" selected>
+          <option key={placeholder} value="" disabled>
             {placeholder}
           </option>
         )}

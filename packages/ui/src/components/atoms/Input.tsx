@@ -86,7 +86,7 @@ const Input = ({
                 icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
               }`,
               className,
-              errors[name] ? "border-red-500" : "border-gray-300"
+              errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
             )}
           >
             {(inputProps: any) => <input {...inputProps} />}
@@ -106,7 +106,7 @@ const Input = ({
                 icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
               }`,
               className,
-              errors[name] ? "border-red-500" : "border-gray-300"
+              errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
             )}
           />
         )}

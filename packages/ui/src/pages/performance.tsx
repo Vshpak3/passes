@@ -8,16 +8,15 @@ import ArrowDownRight from "public/icons/arrow-down-right.svg"
 import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import ChevronLeft from "public/icons/chevron-left-bold-icon.svg"
 import React, { useEffect, useState } from "react"
+import { TabButton } from "src/components/atoms/Button"
 import Balance from "src/components/atoms/performance/Balance"
-import FilterByDays from "src/components/atoms/performance/FilterByDays"
 import Chart from "src/components/molecules/performance/Chart"
+import FilterByDays from "src/components/molecules/performance/FilterByDays"
 import Header from "src/components/molecules/performance/Header"
 import Table from "src/components/molecules/performance/Table"
+import { wrapApi } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
-
-import { TabButton } from "../components/atoms/Button"
-import { wrapApi } from "../helpers"
 
 const PERFORMANCE_OPTIONS = [
   {
