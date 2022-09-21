@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  HttpException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
@@ -32,15 +33,12 @@ const ignoredExceptions = [
 ]
 export const sentryInterceptorOptions = {
   filters: [
-    // returning true suppresses sentry logs
-    ...ignoredExceptions.map((type) => ({ type, filter: () => true })),
     {
-      // catch remaining exceptions
-      type: Error,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      filter: (exception) => {
-        // custom filter code goes here
-        return false
+      type: HttpException,
+      filter: (exception: any) => {
+        // if thrown exception extends any of the ignored exception types return true
+        // returning true suppresses sentry logs
+        return !!ignoredExceptions.some((type) => exception instanceof type)
       },
     },
   ],
