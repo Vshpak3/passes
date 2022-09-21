@@ -65,7 +65,7 @@ const inputSx = {
   }
 }
 
-export const SchedulerDateAndTimePicker = () => {
+const SchedulerDateAndTimePicker = () => {
   const [postTime, setPostTime] = useState(dayjs().add(1, "day"))
   const handleChange = (newValue: any) => {
     setPostTime(newValue)
@@ -92,3 +92,5 @@ export const SchedulerDateAndTimePicker = () => {
     </>
   )
 }
+
+export default SchedulerDateAndTimePicker

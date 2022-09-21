@@ -36,7 +36,7 @@ interface SchedulerHeaderProps {
   availableFrom: { month: number; year: number }
 }
 
-export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
+const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   onChangeTime,
   availableFrom
 }) => {
@@ -163,3 +163,5 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     </div>
   )
 }
+
+export default SchedulerHeader

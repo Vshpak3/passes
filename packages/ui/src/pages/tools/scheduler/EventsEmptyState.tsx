@@ -1,6 +1,6 @@
 import { CalendarDays } from "lucide-react"
 
-export const EventsEmptyState = () => {
+const EventsEmptyState = () => {
   return (
     <div className="bg-[rgba(27, 20, 29, 0.5)] backdrop-blur[100px] flex h-[290px] items-center justify-center rounded-[20px] border border-[#ffffff26] p-[20px]">
       <div>
@@ -14,3 +14,5 @@ export const EventsEmptyState = () => {
     </div>
   )
 }
+
+export default EventsEmptyState

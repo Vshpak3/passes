@@ -2,8 +2,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme")
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require("@radix-ui/colors")
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const forms = require("@tailwindcss/forms")
 
 module.exports = {
   darkMode: "class",
@@ -75,8 +73,8 @@ module.exports = {
     }
   },
   plugins: [
-    forms,
     require("daisyui"),
+    require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/line-clamp"),
     function ({ addVariant }) {

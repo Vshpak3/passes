@@ -1,14 +1,14 @@
 import { useCallback, useState } from "react"
 
-import { Calendar } from "./Calendar"
+import Calendar from "./Calendar"
 // import { DeletePostModal } from "./DeletePostModal"
 // import { ModalOverlay } from "./ModalOverlay"
 // import { ScheduledEvents } from "./ScheduledEvents"
-import { SchedulerHeader } from "./SchedulerHeader"
+import SchedulerHeader from "./SchedulerHeader"
 
 const today = new Date()
 
-export const SchedulerPage = () => {
+const SchedulerPage = () => {
   // const [showDeletePostModal, setShowDeletePostModal] = useState(false)
   const [month, setMonth] = useState<number>(today.getMonth())
   const [year, setYear] = useState<number>(today.getFullYear())
@@ -34,3 +34,5 @@ export const SchedulerPage = () => {
     </div>
   )
 }
+
+export default SchedulerPage

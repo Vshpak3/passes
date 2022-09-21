@@ -4,7 +4,7 @@ type PropsType = {
   setShowDeletePostModal: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const DeletePostModal = ({ setShowDeletePostModal }: PropsType) => {
+const DeletePostModal = ({ setShowDeletePostModal }: PropsType) => {
   return (
     <div className="m-[10px] w-[500px] rounded-[20px] border border-[#ffffff26] bg-black p-[20px] text-base font-medium">
       <div className="mb-[50px]">This will delete the post, are you sure ?</div>
@@ -22,3 +22,5 @@ export const DeletePostModal = ({ setShowDeletePostModal }: PropsType) => {
     </div>
   )
 }
+
+export default DeletePostModal

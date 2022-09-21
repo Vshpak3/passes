@@ -1,8 +1,8 @@
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 
-import { SchedulerDateAndTimePicker } from "./SchedulerDateAndTimePicker"
+import SchedulerDateAndTimePicker from "./SchedulerDateAndTimePicker"
 
-export const CreateScheduleModal = ({ setShowCreateScheduleModal }: any) => {
+const CreateScheduleModal = ({ setShowCreateScheduleModal }: any) => {
   return (
     <ClickAwayListener onClickAway={() => setShowCreateScheduleModal(false)}>
       <div className="bg-[rgba(27, 20, 29, 0.5)] absolute right-[30px] top-[110px] z-50 w-10/12 rounded-[20px] border border-[#ffffff26] py-[25px] px-[30px] backdrop-blur-[100px] sm:w-[460px]">
@@ -28,3 +28,5 @@ export const CreateScheduleModal = ({ setShowCreateScheduleModal }: any) => {
     </ClickAwayListener>
   )
 }
+
+export default CreateScheduleModal

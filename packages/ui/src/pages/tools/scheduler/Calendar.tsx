@@ -10,7 +10,7 @@ type CalendarProps = {
 
 const calendarDates = new CalendarDates()
 
-export const Calendar: FC<CalendarProps> = ({ month, year }) => {
+const Calendar: FC<CalendarProps> = ({ month, year }) => {
   const [matrixDate, setMatrixDate] = useState([])
 
   useEffect(() => {
@@ -97,3 +97,5 @@ export const Calendar: FC<CalendarProps> = ({ month, year }) => {
     </div>
   )
 }
+
+export default Calendar

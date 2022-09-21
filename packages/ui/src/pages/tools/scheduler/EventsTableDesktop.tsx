@@ -7,7 +7,7 @@ type PropsType = {
   setShowDeletePostModal: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const EventsTableDesktop = ({ setShowDeletePostModal }: PropsType) => {
+const EventsTableDesktop = ({ setShowDeletePostModal }: PropsType) => {
   return (
     <div className="mb-[100px] min-h-[190px] rounded-[20px] border border-[#ffffff26] p-[20px]">
       <div className="mb-[25px] flex text-base font-medium text-[#ffffff80]">
@@ -66,3 +66,5 @@ export const EventsTableDesktop = ({ setShowDeletePostModal }: PropsType) => {
     </div>
   )
 }
+
+export default EventsTableDesktop

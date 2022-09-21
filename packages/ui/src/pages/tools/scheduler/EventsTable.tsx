@@ -1,13 +1,13 @@
 import { SetStateAction } from "react"
 
-import { EventsTableDesktop } from "./EventsTableDesktop"
-import { EventsTableMobile } from "./EventsTableMobile"
+import EventsTableDesktop from "./EventsTableDesktop"
+import EventsTableMobile from "./EventsTableMobile"
 
 type PropsType = {
   setShowDeletePostModal: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const EventsTable = ({ setShowDeletePostModal }: PropsType) => {
+const EventsTable = ({ setShowDeletePostModal }: PropsType) => {
   return (
     <>
       <div className="hidden md:block">
@@ -19,3 +19,5 @@ export const EventsTable = ({ setShowDeletePostModal }: PropsType) => {
     </>
   )
 }
+
+export default EventsTable
