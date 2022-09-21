@@ -93,7 +93,13 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     }
   }, [month, year, onChangeTime])
 
-  const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
+  // TODO: this was breaking builds
+  // const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
+  console.log(availableFrom)
+  const { month: availableMonthFrom, year: availableYearFrom } = {
+    month: 1,
+    year: 2022
+  }
 
   return (
     <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
