@@ -88,5 +88,4 @@ const App = ({ Component, pageProps }: AppProps) => {
     </Providers>
   )
 }
-
 export default App

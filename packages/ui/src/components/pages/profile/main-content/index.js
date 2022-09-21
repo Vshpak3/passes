@@ -1,5 +1,6 @@
 import { FanWallApi, PostApi } from "@passes/api-client"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
+import { MainContext } from "src/context/MainContext"
 import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
 
@@ -13,6 +14,7 @@ const MainContent = ({
   fanWallPosts,
   username
 }) => {
+  const { postTime } = useContext(MainContext)
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
   const createPost = async (values) => {
@@ -27,7 +29,8 @@ const MainContent = ({
             passIds: [],
             tags: [],
             isMessage: false,
-            price: 0
+            price: 0,
+            scheduledAt: postTime?.$d
           }
         }),
       {
