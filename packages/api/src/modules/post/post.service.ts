@@ -158,8 +158,7 @@ export class PostService {
         this.logger.error(err)
         throw err
       })
-    await this.dbWriter
-      .table(CreatorStatEntity.table)
+    await this.dbWriter(CreatorStatEntity.table)
       .where('user_id', userId)
       .update({
         num_media: this.dbWriter(ContentEntity.table)
@@ -171,8 +170,7 @@ export class PostService {
           )
           .count(),
       })
-    await this.dbWriter
-      .table(CreatorStatEntity.table)
+    await this.dbWriter(CreatorStatEntity.table)
       .where('user_id', userId)
       .update({
         num_media: this.dbWriter(ContentEntity.table)
@@ -408,8 +406,7 @@ export class PostService {
         await trx(PostContentEntity.table).insert(postContent)
       }
     })
-    await this.dbWriter
-      .table(CreatorStatEntity.table)
+    await this.dbWriter(CreatorStatEntity.table)
       .where('user_id', userId)
       .update({
         num_media: this.dbWriter(ContentEntity.table)
@@ -458,9 +455,45 @@ export class PostService {
     })
   }
 
-  async createTip(userId: string, postId: string, amount: number) {
+  async revertPostPurchase(postId: string, payinId: string, earnings: number) {
+    await this.dbWriter.transaction(async (trx) => {
+      await trx(PostUserAccessEntity.table)
+        .update(
+          PostUserAccessEntity.toDict<PostUserAccessEntity>({
+            payin: null,
+          }),
+        )
+        .where(
+          PostUserAccessEntity.toDict<PostUserAccessEntity>({
+            payin: payinId,
+          }),
+        )
+      await trx(PostEntity.table)
+        .where('id', postId)
+        .decrement('num_purchases', 1)
+      await trx(PostEntity.table)
+        .where('id', postId)
+        .decrement('earnings_purchases', earnings)
+      await trx(PostEntity.table)
+        .where(
+          PostUserAccessEntity.toDict<PostUserAccessEntity>({
+            payin: null,
+            passHolderIds: null,
+          }),
+        )
+        .delete()
+    })
+  }
+
+  async createTip(
+    payinId: string,
+    userId: string,
+    postId: string,
+    amount: number,
+  ) {
     await this.dbWriter(PostTipEntity.table).insert(
       PostTipEntity.toDict<PostTipEntity>({
+        payin: payinId,
         user: userId,
         post: postId,
         amount,
@@ -469,6 +502,19 @@ export class PostService {
     await this.dbWriter(PostEntity.table)
       .increment('total_tip_amount', amount)
       .where('id', postId)
+  }
+
+  async deleteTip(payinId: string, postId: string, amount: number) {
+    await this.dbWriter(PostEntity.table)
+      .increment('total_tip_amount', amount)
+      .where('id', postId)
+    await this.dbWriter(PostTipEntity.table)
+      .where(
+        PostTipEntity.toDict<PostTipEntity>({
+          payin: payinId,
+        }),
+      )
+      .delete()
   }
 
   async registerTipPost(
@@ -620,8 +666,7 @@ export class PostService {
   }
 
   async refreshPostCounts(postId: string) {
-    await this.dbWriter
-      .table(PostEntity.table)
+    await this.dbWriter(PostEntity.table)
       .where('id', postId)
       .update(
         'num_comments',
@@ -637,8 +682,7 @@ export class PostService {
           )
           .count(),
       )
-    await this.dbWriter
-      .table(PostEntity.table)
+    await this.dbWriter(PostEntity.table)
       .where('id', postId)
       .update(
         'num_likes',

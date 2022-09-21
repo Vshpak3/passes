@@ -18,6 +18,7 @@ import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { PassTypeEnum } from '../pass/enum/pass.enum'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
+import { PaymentService } from '../payment/payment.service'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserDto } from '../user/dto/user.dto'
 import { UserEntity } from '../user/entities/user.entity'
@@ -46,6 +47,7 @@ export class AdminService {
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly s3contentService: S3ContentService,
+    private readonly paymentService: PaymentService,
   ) {
     this.secret = this.configService.get('admin.secret') as string
   }

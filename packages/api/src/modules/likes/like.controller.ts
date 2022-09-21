@@ -1,7 +1,6 @@
 import {
   Controller,
   Delete,
-  Get,
   HttpStatus,
   Param,
   Post,
@@ -17,20 +16,6 @@ import { LikeService } from './like.service'
 @Controller('like')
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
-
-  @ApiEndpoint({
-    summary: 'Check if post is liked',
-    responseStatus: HttpStatus.OK,
-    responseType: Boolean,
-    responseDesc: 'A like was created',
-  })
-  @Get(':postId')
-  async checkLike(
-    @Req() req: RequestWithUser,
-    @Param('postId') postId: string,
-  ): Promise<boolean> {
-    return await this.likeService.checkLike(req.user.id, postId)
-  }
 
   @ApiEndpoint({
     summary: 'Creates a like on a post',

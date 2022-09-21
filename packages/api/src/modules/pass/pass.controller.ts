@@ -124,17 +124,6 @@ export class PassController {
   }
 
   @ApiEndpoint({
-    summary: 'Gets a pass',
-    responseStatus: HttpStatus.OK,
-    responseType: GetPassResponseDto,
-    responseDesc: 'A pass was retrieved',
-  })
-  @Get('pass-info/:passId')
-  async findPass(@Param('passId') passId: string): Promise<GetPassResponseDto> {
-    return await this.passService.findPass(passId)
-  }
-
-  @ApiEndpoint({
     summary: 'Updates a pass',
     responseStatus: HttpStatus.OK,
     responseType: GetPassResponseDto,

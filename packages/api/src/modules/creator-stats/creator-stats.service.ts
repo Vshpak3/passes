@@ -236,8 +236,7 @@ export class CreatorStatsService {
   }
 
   async refreshCreatorStats(creatorId: string) {
-    await this.dbWriter
-      .table(CreatorStatEntity.table)
+    await this.dbWriter(CreatorStatEntity.table)
       .where('user_id', creatorId)
       .update({
         num_likes: this.dbWriter(PostEntity.table)

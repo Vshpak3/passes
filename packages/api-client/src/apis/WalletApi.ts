@@ -66,10 +66,6 @@ export interface GetUserCustodialWalletRequest {
     getCustodialWalletRequestDto: GetCustodialWalletRequestDto;
 }
 
-export interface RefreshWalletsRequest {
-    walletId: string;
-}
-
 export interface RemoveWalletRequest {
     walletId: string;
 }
@@ -320,43 +316,6 @@ export class WalletApi extends runtime.BaseAPI {
     async getWallets(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletsResponseDto> {
         const response = await this.getWalletsRaw(initOverrides);
         return await response.value();
-    }
-
-    /**
-     * Refresh tokens owned by a wallet
-     */
-    async refreshWalletsRaw(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.walletId === null || requestParameters.walletId === undefined) {
-            throw new runtime.RequiredError('walletId','Required parameter requestParameters.walletId was null or undefined when calling refreshWallets.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/wallet/refresh/{walletId}`.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters.walletId))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Refresh tokens owned by a wallet
-     */
-    async refreshWallets(requestParameters: RefreshWalletsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.refreshWalletsRaw(requestParameters, initOverrides);
     }
 
     /**

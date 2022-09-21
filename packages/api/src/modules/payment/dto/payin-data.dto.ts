@@ -14,6 +14,6 @@ export class PayinDataDto {
   target?: string
 
   @IsEnum(BlockedReasonEnum)
-  @DtoProperty({ enum: BlockedReasonEnum, required: false })
+  @DtoProperty({ enum: BlockedReasonEnum, optional: true })
   blocked?: BlockedReasonEnum
 }

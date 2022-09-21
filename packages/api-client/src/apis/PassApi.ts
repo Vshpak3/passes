@@ -78,10 +78,6 @@ export interface CreatePassRequest {
     createPassRequestDto: CreatePassRequestDto;
 }
 
-export interface FindPassRequest {
-    passId: string;
-}
-
 export interface GetCreatorPassesRequest {
     getCreatorPassesRequestDto: GetCreatorPassesRequestDto;
 }
@@ -211,44 +207,6 @@ export class PassApi extends runtime.BaseAPI {
      */
     async createPass(requestParameters: CreatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePassResponseDto> {
         const response = await this.createPassRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets a pass
-     */
-    async findPassRaw(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
-        if (requestParameters.passId === null || requestParameters.passId === undefined) {
-            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling findPass.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/pass/pass-info/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets a pass
-     */
-    async findPass(requestParameters: FindPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassResponseDto> {
-        const response = await this.findPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -218,4 +218,26 @@ export class MessagesController {
       ),
     )
   }
+
+  @ApiEndpoint({
+    summary: 'Set status as read',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Status was set as read',
+  })
+  @Post('read')
+  async readMessages(): Promise<void> {
+    return
+  }
+
+  @ApiEndpoint({
+    summary: 'Get status as read',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Status was set as read',
+  })
+  @Post('messages')
+  async getMessages(): Promise<void> {
+    return
+  }
 }

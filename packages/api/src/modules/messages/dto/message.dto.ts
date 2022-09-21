@@ -24,16 +24,20 @@ export class MessageDto {
   tipAmount?: number
 
   @DtoProperty({ optional: true })
+  reverted?: boolean
+
+  @DtoProperty({ optional: true })
   created_at?: number
 
   constructor(message) {
     if (message) {
       this.text = message.text
-      this.attachments = JSON.parse(message.attachments)
+      this.attachments = JSON.parse(message.attachments_json)
       this.channelId = message.channel_id
       this.tipAmount = message.tip_amount
       this.created_at = message.created_at
       this.messageId = message.id
+      this.reverted = message.reverted
     }
   }
 }

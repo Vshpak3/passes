@@ -15,10 +15,6 @@
 
 import * as runtime from '../runtime';
 
-export interface CheckLikeRequest {
-    postId: string;
-}
-
 export interface LikePostRequest {
     postId: string;
 }
@@ -31,44 +27,6 @@ export interface UnlikePostRequest {
  * 
  */
 export class LikeApi extends runtime.BaseAPI {
-
-    /**
-     * Check if post is liked
-     */
-    async checkLikeRaw(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling checkLike.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/like/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Check if post is liked
-     */
-    async checkLike(requestParameters: CheckLikeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
-        const response = await this.checkLikeRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Creates a like on a post

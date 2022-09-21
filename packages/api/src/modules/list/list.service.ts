@@ -58,10 +58,9 @@ export class ListService {
     userId: string,
     createListDto: CreateListRequestDto,
   ): Promise<void> {
-    const count = await this.dbReader
-      .table(ListEntity.table)
+    const count = await this.dbReader(ListEntity.table)
       .where('user_id', userId)
-      .count(['id'])
+      .count()
     if (count[0]['count(*)'] >= USER_LIST_LIMIT) {
       throw new ListLimitReachedError('list limit reached')
     }
@@ -292,8 +291,7 @@ export class ListService {
   }
 
   async updateCount(listId: string) {
-    const count = await this.dbReader
-      .table(ListMemberEntity.table)
+    const count = await this.dbReader(ListMemberEntity.table)
       .where('list_id', listId)
       .count()
     await this.dbWriter(ListEntity.table)

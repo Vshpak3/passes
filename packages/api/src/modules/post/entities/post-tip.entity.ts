@@ -1,6 +1,8 @@
-import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, OneToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
+import { PayinEntity } from '../../payment/entities/payin.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PostEntity } from './post.entity'
 
@@ -13,7 +15,10 @@ export class PostTipEntity extends BaseEntity {
   @ManyToOne()
   post: PostEntity
 
+  @OneToOne()
+  payin: PayinEntity
+
   @Index()
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 }

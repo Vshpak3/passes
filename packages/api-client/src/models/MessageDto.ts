@@ -51,6 +51,12 @@ export interface MessageDto {
     tipAmount?: number;
     /**
      * 
+     * @type {boolean}
+     * @memberof MessageDto
+     */
+    reverted?: boolean;
+    /**
+     * 
      * @type {number}
      * @memberof MessageDto
      */
@@ -84,6 +90,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'attachments': json['attachments'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
+        'reverted': !exists(json, 'reverted') ? undefined : json['reverted'],
         'createdAt': !exists(json, 'created_at') ? undefined : json['created_at'],
     };
 }
@@ -102,6 +109,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'attachments': value.attachments,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
+        'reverted': value.reverted,
         'created_at': value.createdAt,
     };
 }

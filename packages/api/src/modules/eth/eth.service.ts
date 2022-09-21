@@ -176,22 +176,24 @@ export class EthService {
             holder: null,
           }),
         )
-      let query = trx(PassHolderEntity.table).update(
-        PassHolderEntity.toDict<PassHolderEntity>({
-          wallet: walletId,
-          holder: userId,
+      await Promise.all(
+        nfts.map(async (nft) => {
+          await trx(PassHolderEntity.table)
+            .update(
+              PassHolderEntity.toDict<PassHolderEntity>({
+                wallet: walletId,
+                holder: userId,
+              }),
+            )
+            .where(
+              PassHolderEntity.toDict<PassHolderEntity>({
+                address: nft.contract.address.toLowerCase(),
+                chain: ChainEnum.ETH,
+                tokenId: nft.tokenId,
+              }),
+            )
         }),
       )
-      nfts.forEach((nft) => {
-        query = query.orWhere(
-          PassHolderEntity.toDict<PassHolderEntity>({
-            address: nft.contract.address.toLowerCase(),
-            chain: ChainEnum.ETH,
-            tokenId: nft.tokenId,
-          }),
-        )
-      })
-      await query
     })
   }
 }

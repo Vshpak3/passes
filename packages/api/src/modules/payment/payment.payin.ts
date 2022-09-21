@@ -22,8 +22,7 @@ async function handleCallback(
       db,
     )
     if (output) {
-      await db
-        .table(PayinEntity.table)
+      await db(PayinEntity.table)
         .update(
           PayinEntity.toDict<PayinEntity>({
             callbackOutputJSON: JSON.stringify(output),
@@ -32,8 +31,7 @@ async function handleCallback(
         .where('id', payin.id)
     }
   } catch (err) {
-    await db
-      .table(PayinEntity.table)
+    await db(PayinEntity.table)
       .update(
         PayinEntity.toDict<PayinEntity>({
           payinStatus: failedCallbackStatus,

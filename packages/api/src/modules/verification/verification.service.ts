@@ -54,11 +54,10 @@ export class VerificationService {
   }
 
   async canSubmitPersona(userId: string) {
-    const count = await this.dbReader
-      .table(PersonaInquiryEntity.table)
+    const count = await this.dbReader(PersonaInquiryEntity.table)
       .where('user_id', userId)
       .count()
-    return parseInt(count[0]['count(*)']) < MAX_VERIFICATION_ATTEMPTS
+    return count[0]['count(*)'] < MAX_VERIFICATION_ATTEMPTS
   }
 
   async submitPersonaInquiry(

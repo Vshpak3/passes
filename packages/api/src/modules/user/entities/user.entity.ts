@@ -56,4 +56,7 @@ export class UserEntity extends BaseEntity<
 
   @Property({ default: false })
   paymentBlocked: boolean
+
+  @Property({ default: 0 })
+  chargebackCount: number
 }

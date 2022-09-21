@@ -294,6 +294,39 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get status as read
+     */
+    async getMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/messages`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Get status as read
+     */
+    async getMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getMessagesRaw(initOverrides);
+    }
+
+    /**
      * Get pending messages
      */
     async getPendingRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
@@ -399,6 +432,39 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async massSend(requestParameters: MassSendRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.massSendRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Set status as read
+     */
+    async readMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/read`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set status as read
+     */
+    async readMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.readMessagesRaw(initOverrides);
     }
 
     /**

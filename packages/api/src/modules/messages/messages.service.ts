@@ -610,6 +610,38 @@ export class MessagesService {
     )
   }
 
+  async revertTippedMessage(tippedMessageId: string): Promise<void> {
+    const tippedMessage = await this.dbReader(TippedMessageEntity.table)
+      .where('id', tippedMessageId)
+      .select('*')
+      .first()
+    await this.dbWriter(ChannelStatEntity.table)
+      .where(
+        ChannelStatEntity.toDict<ChannelStatEntity>({
+          user: tippedMessage.sender_id,
+          channelId: tippedMessage.channel_id,
+        }),
+      )
+      .decrement('tip_sent', tippedMessage.tip_amount)
+    await this.dbWriter(ChannelStatEntity.table)
+      .where(
+        ChannelStatEntity.toDict<ChannelStatEntity>({
+          channelId: tippedMessage.channel_id,
+        }),
+      )
+      .andWhereNot(
+        ChannelStatEntity.toDict<ChannelStatEntity>({
+          user: tippedMessage.sender_id,
+        }),
+      )
+      .decrement('tip_received', tippedMessage.tip_amount)
+    await this.dbWriter(TippedMessageEntity.table)
+      .where('id', tippedMessageId)
+      .update(
+        TippedMessageEntity.toDict<TippedMessageEntity>({ reverted: true }),
+      )
+  }
+
   async getPendingTippedMessages(userId: string): Promise<MessageDto[]> {
     return (
       await this.dbReader(TippedMessageEntity.table).where(

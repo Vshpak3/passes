@@ -27,4 +27,7 @@ export class TippedMessageEntity extends BaseEntity {
 
   @Property()
   messageId?: string
+
+  @Property({ default: false })
+  reverted: boolean
 }

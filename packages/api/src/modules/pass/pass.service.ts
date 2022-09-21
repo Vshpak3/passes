@@ -277,6 +277,13 @@ export class PassService {
         `${PassHolderEntity.table}.pass_id`,
       )
       .where(`${PassEntity.table}.creator`, userId)
+      .andWhere(function () {
+        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+          `${PassHolderEntity.table}.expires_at`,
+          '>',
+          Date.now(),
+        )
+      })
       .select([
         `${PassHolderEntity.table}.*`,
         `${PassEntity.table}.totalSupply`,
@@ -481,17 +488,6 @@ export class PassService {
     }
   }
 
-  async doesUserHoldPass(userId: string, passId: string) {
-    const data = PassHolderEntity.toDict<PassHolderEntity>({
-      holder: userId,
-      pass: passId,
-    })
-    const holder = await this.dbReader(PassHolderEntity.table)
-      .where(data)
-      .first()
-    return !!holder
-  }
-
   async renewPass(passHolderId: string) {
     const passHolder = await this.dbReader(PassHolderEntity.table)
       .join(
@@ -527,12 +523,46 @@ export class PassService {
     return expiresAt
   }
 
+  async revertPass(passHolderId: string) {
+    const passHolder = await this.dbReader(PassHolderEntity.table)
+      .join(
+        PassEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .where(`${PassHolderEntity.table}.id`, passHolderId)
+      .select([
+        `${PassHolderEntity.table}.id`,
+        `${PassHolderEntity.table}.expires_at`,
+        `${PassEntity.table}.type`,
+        `${PassEntity.table}.duration`,
+      ])
+      .first()
+
+    if (!passHolder) {
+      throw new ForbiddenPassException("can't extend non subscription pass")
+    }
+
+    if (passHolder.type === PassTypeEnum.LIFETIME) {
+      await this.dbWriter(PassHolderEntity.table)
+        .update('expires_at', new Date(0))
+        .where('id', passHolderId)
+    } else if (passHolder.type === PassTypeEnum.SUBSCRIPTION) {
+      await this.dbWriter(PassHolderEntity.table)
+        .update(
+          'expires_at',
+          new Date(passHolder.expires_at.valueOf() - passHolder.duration),
+        )
+        .where('id', passHolderId)
+    }
+  }
+
   async registerRenewPass(
     userId: string,
     passHolderId: string,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { amount, target, blocked } = await this.registerBuyPassData(
+    const { amount, target, blocked } = await this.registerRenewPassData(
       userId,
       passHolderId,
     )
@@ -754,11 +784,15 @@ export class PassService {
       )
       .where(`${PassHolderEntity.table}.id`, passHolderId)
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
-      .select(`${PassEntity.table}.price`)
+      .select(`${PassEntity.table}.price`, `${PassEntity.table}.type`)
       .first()
 
     if (!passHolder) {
       throw new ForbiddenPassException('user does not own pass')
+    }
+
+    if (passHolder.type !== PassTypeEnum.SUBSCRIPTION) {
+      throw new ForbiddenPassException('pass is not a subscription')
     }
 
     await this.payService.subscribe({

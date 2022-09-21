@@ -46,4 +46,7 @@ export class PassHolderEntity extends BaseEntity {
   // for eth
   @Property({ length: TOKEN_ID_LENGTH })
   tokenId?: string
+
+  @Property({ default: false })
+  ignored: boolean
 }
