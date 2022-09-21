@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals'
 
+import { contextNames } from './database.decorator'
 import { getDatabaseProviderToken } from './database.provider'
 import { DatabaseService } from './database.service'
-import { contextNames } from './mikro-orm.options'
 
 export type MockType<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types

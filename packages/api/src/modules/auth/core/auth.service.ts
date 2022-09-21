@@ -2,7 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { v4 } from 'uuid'
 
-import { Database } from '../../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { OAuthProvider } from '../../auth/helpers/oauth-provider.type'
 import { EmailService } from '../../email/email.service'
@@ -27,9 +31,9 @@ export class AuthService {
 
   constructor(
     private readonly configService: ConfigService,
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly userService: UserService,
     private readonly emailService: EmailService,

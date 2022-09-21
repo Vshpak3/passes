@@ -3,8 +3,7 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { ConfigService } from '@nestjs/config'
 import path from 'path'
 
-export const contextNames = ['ReadWrite', 'ReadOnly'] as const
-export type ContextName = typeof contextNames[number]
+import { ContextName, DB_WRITER } from './database.decorator'
 
 export function getMikroOrmOptions(
   configService: ConfigService,
@@ -16,7 +15,7 @@ export function getMikroOrmOptions(
   let migrations:
     | { path: string; emit?: 'ts' | 'js'; safe: boolean }
     | undefined
-  if (contextName === 'ReadWrite') {
+  if (contextName === DB_WRITER) {
     migrations = {
       path: path.join(__dirname, 'migrations'),
       emit: env === 'dev' ? 'ts' : 'js',
@@ -33,7 +32,7 @@ export function getMikroOrmOptions(
     contextName,
     registerRequestContext: false,
     dbName: configService.get('database.dbname'),
-    host: configService.get('database.hosts')[contextName],
+    host: configService.get(`database.host${contextName}`),
     port: configService.get('database.port'),
     user: configService.get('database.user'),
     password: configService.get('database.password'),

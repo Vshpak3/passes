@@ -14,7 +14,8 @@ export const configValidationSchema = Joi.object({
 
   // -----------------------------------------------------------
 
-  DATABASE_HOSTS: Joi.string().required(),
+  DATABASE_HOST_RO: Joi.string().required(),
+  DATABASE_HOST_RW: Joi.string().required(),
   DATABASE_PORT: Joi.number().required(),
   DATABASE_USER: Joi.string().required(),
   DATABASE_PASSWORD: Joi.string().required(),
@@ -38,15 +39,12 @@ export const configValidationSchema = Joi.object({
 
   OAUTH_GOOGLE_ID: Joi.string().required(),
   OAUTH_GOOGLE_SECRET: Joi.string().required(),
-  OAUTH_GOOGLE_REDIRECT_URL: Joi.string().uri().required(),
 
   OAUTH_FACEBOOK_CLIENT_ID: Joi.string().required(),
   OAUTH_FACEBOOK_CLIENT_SECRET: Joi.string().required(),
-  OAUTH_FACEBOOK_REDIRECT_URL: Joi.string().uri().required(),
 
   OAUTH_TWITTER_CONSUMER_KEY: Joi.string().required(),
   OAUTH_TWITTER_CONSUMER_SECRET: Joi.string().required(),
-  OAUTH_TWITTER_REDIRECT_URL: Joi.string().uri().required(),
 
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN: Joi.string().required(),
@@ -56,7 +54,7 @@ export const configValidationSchema = Joi.object({
 
   OAUTH_TWITTER_COOKIE_SECRET: Joi.string().required(),
 
-  ADMIN_IMPERSONATE_SECRET: Joi.string().required(),
+  ADMIN_SECRET: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -71,9 +69,6 @@ export const configValidationSchema = Joi.object({
   CIRCLE_API_KEY: Joi.string().required(),
   CIRCLE_MASTER_WALLET_ID: Joi.string().required(),
 
-  MORALIS_API_KEY: Joi.string().required(),
-  MORALIS_API_HOST: Joi.string().required(),
-
   STREAM_API_KEY: Joi.string().required(),
   STREAM_API_SECRET: Joi.string().required(),
 
@@ -83,6 +78,8 @@ export const configValidationSchema = Joi.object({
   ALCHEMY_ETH_HTTPS_ENDPOINT: Joi.string().uri().required(),
 
   PERSONA_API_KEY: Joi.string().required(),
+
+  COINMARKETCAP_API_KEY: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -102,7 +99,8 @@ export const configConfiguration = async function (): Promise<
     clientUrl: getConfigValue('CLIENT_URL'),
     apiBaseUrl: getConfigValue('API_URL'),
     database: {
-      hosts: getConfigValue('DATABASE_HOSTS', JSON.parse),
+      hostReadWrite: getConfigValue('DATABASE_HOST_RO'),
+      hostReadOnly: getConfigValue('DATABASE_HOST_RW'),
       port: getConfigValue('DATABASE_PORT', parseInt),
       user: getConfigValue('DATABASE_USER'),
       password: getConfigValue('DATABASE_PASSWORD'),
@@ -113,8 +111,8 @@ export const configConfiguration = async function (): Promise<
       port: getConfigValue('REDIS_PORT', parseInt),
     },
     monitoring: {
-      sentry_dsn: getConfigValue('MONITORING_SENTRY_DSN'),
-      sentry_enabled:
+      sentryDsn: getConfigValue('MONITORING_SENTRY_DSN'),
+      sentryEnabled:
         (await getConfigValue('MONITORING_SENTRY_DSN')) != 'disable',
     },
     s3_bucket: {
@@ -130,17 +128,14 @@ export const configConfiguration = async function (): Promise<
       google: {
         id: getConfigValue('OAUTH_GOOGLE_ID'),
         secret: getConfigValue('OAUTH_GOOGLE_SECRET'),
-        redirect_url: getConfigValue('OAUTH_GOOGLE_REDIRECT_URL'),
       },
       facebook: {
         id: getConfigValue('OAUTH_FACEBOOK_CLIENT_ID'),
         secret: getConfigValue('OAUTH_FACEBOOK_CLIENT_SECRET'),
-        redirect_url: getConfigValue('OAUTH_FACEBOOK_REDIRECT_URL'),
       },
       twitter: {
         consumerKey: getConfigValue('OAUTH_TWITTER_CONSUMER_KEY'),
         consumerSecret: getConfigValue('OAUTH_TWITTER_CONSUMER_SECRET'),
-        redirect_url: getConfigValue('OAUTH_TWITTER_REDIRECT_URL'),
         cookieSecret: getConfigValue('OAUTH_TWITTER_COOKIE_SECRET'),
       },
     },
@@ -151,7 +146,7 @@ export const configConfiguration = async function (): Promise<
       refreshExpiresIn: getConfigValue('JWT_REFRESH_EXPIRES_IN'),
     },
     admin: {
-      impersonate: getConfigValue('ADMIN_IMPERSONATE_SECRET'),
+      secret: getConfigValue('ADMIN_SECRET'),
     },
     cloudfront: {
       baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),
@@ -166,10 +161,6 @@ export const configConfiguration = async function (): Promise<
         sameSite: 'none',
         secure: true,
       },
-    },
-    moralis: {
-      api_key: getConfigValue('MORALIS_API_KEY'),
-      api_host: getConfigValue('MORALIS_API_HOST'),
     },
     circle: {
       api_endpoint: getConfigValue('CIRCLE_API_ENDPOINT'),
@@ -192,6 +183,9 @@ export const configConfiguration = async function (): Promise<
     },
     persona: {
       api_key: getConfigValue('PERSONA_API_KEY'),
+    },
+    coinmarketcap: {
+      api_key: getConfigValue('COINMARKETCAP_API_KEY'),
     },
     blockchain: {
       networks: getConfigValue('BLOCKCHAIN_NETWORKS'),

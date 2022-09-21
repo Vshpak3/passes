@@ -1,7 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { v4 } from 'uuid'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
@@ -24,9 +28,9 @@ export const MAX_COMMENTS_PER_REQUEST = 20
 @Injectable()
 export class CommentService {
   constructor(
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 

@@ -13,8 +13,8 @@ export const sentryOptions = {
   useFactory: async (
     configService: ConfigService,
   ): Promise<SentryModuleOptions> => ({
-    dsn: configService.get('monitoring.sentry_enabled')
-      ? configService.get('monitoring.sentry_dsn')
+    dsn: configService.get('monitoring.sentryEnabled')
+      ? configService.get('monitoring.sentryDsn')
       : undefined,
     environment: configService.get('infra.env'),
     tracesSampleRate: 1.0,

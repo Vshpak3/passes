@@ -1,7 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { v4 } from 'uuid'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { verifyTaggedText } from '../../util/text.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
@@ -19,9 +23,9 @@ export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 20
 @Injectable()
 export class FanWallService {
   constructor(
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 

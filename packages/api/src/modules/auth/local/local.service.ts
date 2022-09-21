@@ -8,7 +8,11 @@ import { ConfigService } from '@nestjs/config'
 import bcrypt from 'bcrypt'
 import { v4 } from 'uuid'
 
-import { Database } from '../../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
@@ -39,9 +43,9 @@ export class LocalAuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly metrics: MetricsService,
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly authService: AuthService,
     private readonly emailService: EmailService,

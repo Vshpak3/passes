@@ -7,7 +7,11 @@ import nacl from 'tweetnacl'
 import { v4 } from 'uuid'
 import Web3 from 'web3'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
@@ -33,9 +37,9 @@ export class WalletService {
   web3: Web3
   constructor(
     private readonly lambdaService: LambdaService,
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     @InjectRedis() private readonly redisService: Redis,
   ) {

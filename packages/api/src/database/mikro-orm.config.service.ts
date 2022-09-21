@@ -6,7 +6,8 @@ import {
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
-import { ContextName, getMikroOrmOptions } from './mikro-orm.options'
+import { ContextName } from './database.decorator'
+import { getMikroOrmOptions } from './mikro-orm.options'
 
 @Injectable()
 export class MikroOrmConfigService implements MikroOrmOptionsFactory {

@@ -2,7 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Response } from 'express'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
 import { AuthRecord } from '../auth/core/auth-record'
@@ -34,16 +38,16 @@ export class AdminService {
 
   constructor(
     private readonly configService: ConfigService,
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly userService: UserService,
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly s3contentService: S3ContentService,
   ) {
-    this.secret = this.configService.get('admin.impersonate') as string
+    this.secret = this.configService.get('admin.secret') as string
   }
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {

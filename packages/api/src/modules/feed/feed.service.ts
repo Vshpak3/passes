@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 
-import { Database } from '../../database/database.decorator'
+import { Database, DB_READER } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -18,7 +18,7 @@ export const FEED_LIMIT = 100
 @Injectable()
 export class FeedService {
   constructor(
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
 
     private readonly postService: PostService,

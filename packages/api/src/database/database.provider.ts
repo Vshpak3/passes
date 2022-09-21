@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/mysql'
 
+import { ContextName } from './database.decorator'
 import { DatabaseService } from './database.service'
-import { ContextName } from './mikro-orm.options'
 
 export const getDatabaseProviderToken = (contextName: ContextName) =>
   `DatabaseConnectionProvider${contextName}`

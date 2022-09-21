@@ -10,7 +10,11 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
 
-import { Database } from '../../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { UserEntity } from '../../user/entities/user.entity'
 import { FacebookDeletionRequestDto } from '../dto/fb/fb-deletion-request.dto'
@@ -23,9 +27,9 @@ export class FacebookComplianceService {
     private readonly logger: Logger,
     private readonly configService: ConfigService,
 
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 

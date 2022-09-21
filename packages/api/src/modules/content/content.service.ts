@@ -8,7 +8,11 @@ import {
 } from '@nestjs/common'
 import * as uuid from 'uuid'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassService } from '../pass/pass.service'
@@ -31,9 +35,9 @@ export const MAX_CONTENT_PER_REQUeST = 10
 @Injectable()
 export class ContentService {
   constructor(
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly s3contentService: S3ContentService,
     private readonly passService: PassService,

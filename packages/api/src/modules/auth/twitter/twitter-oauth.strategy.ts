@@ -27,7 +27,8 @@ export class TwitterStrategy extends PassportStrategy(
     super({
       consumerKey: configService.get('oauth.twitter.consumerKey'),
       consumerSecret: configService.get('oauth.twitter.consumerSecret'),
-      callbackURL: configService.get('oauth.twitter.redirect_url'),
+      callbackURL:
+        configService.get('apiBaseUrl') + '/api/auth/twitter/redirect',
     })
   }
 

@@ -8,9 +8,9 @@ import { getRedisConnectionToken } from '@nestjs-modules/ioredis'
 import request from 'supertest'
 
 import { AppModule } from '../app.module'
+import { contextNames } from '../database/database.decorator'
 import { DatabaseModule } from '../database/database.module'
 import { getDatabaseProviderToken } from '../database/database.provider'
-import { contextNames } from '../database/mikro-orm.options'
 
 describe('App e2e', () => {
   let app: INestApplication

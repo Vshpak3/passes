@@ -1,9 +1,8 @@
 import { Global, Module, OnModuleInit } from '@nestjs/common'
 
-import { Database } from './database.decorator'
+import { contextNames, Database, DB_WRITER } from './database.decorator'
 import { createDatabaseProvider } from './database.provider'
 import { DatabaseService } from './database.service'
-import { contextNames } from './mikro-orm.options'
 
 const databaseProviders = contextNames.map(createDatabaseProvider)
 
@@ -16,7 +15,7 @@ const databaseProviders = contextNames.map(createDatabaseProvider)
 })
 export class DatabaseModule implements OnModuleInit {
   constructor(
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly db: DatabaseService['knex'],
   ) {}
 

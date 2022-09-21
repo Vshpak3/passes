@@ -2,7 +2,11 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Logger } from 'winston'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
@@ -15,9 +19,9 @@ export class LikeService {
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
 
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 

@@ -10,7 +10,11 @@ import { Channel, StreamChat } from 'stream-chat'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
-import { Database } from '../../database/database.decorator'
+import {
+  Database,
+  DB_READER,
+  DB_WRITER,
+} from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -58,9 +62,9 @@ export class MessagesService {
     private readonly logger: Logger,
     private readonly configService: ConfigService,
 
-    @Database('ReadOnly')
+    @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
-    @Database('ReadWrite')
+    @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
 
     @Inject(forwardRef(() => PaymentService))
