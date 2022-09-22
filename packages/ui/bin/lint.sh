@@ -35,10 +35,10 @@ report_problem_file "${files_in_component}" \
 
 # Detect pages that are uppercase. This often will catch components defined in
 # the pages directory that should not be there.
-# uppercase_pages=$(find src/pages -type f | grep -E '[A-Z]')
-# report_problem_file "${uppercase_pages}" \
-#   "The following files are components defined in the pages directory:" \
-#   "To fix, please move them to the components directory."
+uppercase_pages=$(find src/pages -type f | grep -E '[A-Z]')
+report_problem_file "${uppercase_pages}" \
+  "The following files are components defined in the pages directory:" \
+  "To fix, please move them to the components directory."
 
 # Detect any newly added JavaScript files.
 current_js_files="src/components/atoms/Link.js
