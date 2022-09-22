@@ -24,7 +24,7 @@ preheader: You have successfully reset your password
                 </p>
 
                 <p class="m-0 text-base leading-5.5 text-gray-500">
-                  If this is your account but you didn't request a password change, please, <a href="{{ page.websiteUrl }}" class="hover:text-brand-700 hover:underline">contact Support team</a>  immediately.
+                  If this is your account but you did not request a password change, please, <a href="support@passes.com" class="hover:text-brand-700 hover:underline">contact the support team</a> immediately.
                 </p>
 
                 <component src="${path.join(

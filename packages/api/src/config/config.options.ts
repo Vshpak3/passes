@@ -16,7 +16,7 @@ console.log(`Set by infra:
 export const configOptions = {
   envFilePath: path
     .join(__dirname, `.env.${infra_config_node_env}`)
-    .replace('dist/', infra_config_node_env !== 'dev' ? 'dist/' : ''),
+    .replace('dist/', infra_config_node_env === 'dev' ? '' : 'dist/'),
   load: [configConfiguration],
   validationSchema: configValidationSchema,
   isGlobal: true,

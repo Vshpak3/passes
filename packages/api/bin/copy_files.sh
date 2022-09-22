@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Copies non-code files from /src to /dist/src so they are available for builds.
+# Copies non-TS files from /src to /dist/src so they are available for builds.
 # This script is specified in the backend Dockerfile.
 #
 set -o errexit
@@ -16,6 +16,10 @@ function copy {
     -exec sh -c 'mkdir -p dist/$(dirname {}) && cp {} $(echo {} | sed "s~src/~dist/src/~")' \;
 }
 
+# Configs
 copy src/config '.env.*'
-copy src/modules/email '*.html'
+
+# Email files
 copy src/modules/email '*.css'
+copy src/modules/email '*.html'
+copy src/modules/email '*.js'
