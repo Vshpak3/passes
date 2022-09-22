@@ -45,6 +45,12 @@ export interface MessageDto {
     channelId: string;
     /**
      * 
+     * @type {string}
+     * @memberof MessageDto
+     */
+    otherUserId: string;
+    /**
+     * 
      * @type {number}
      * @memberof MessageDto
      */
@@ -71,6 +77,7 @@ export function instanceOfMessageDto(value: object): boolean {
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "attachments" in value;
     isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "otherUserId" in value;
 
     return isInstance;
 }
@@ -89,6 +96,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
+        'otherUserId': json['otherUserId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'reverted': !exists(json, 'reverted') ? undefined : json['reverted'],
         'createdAt': !exists(json, 'created_at') ? undefined : json['created_at'],
@@ -108,6 +116,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'text': value.text,
         'attachments': value.attachments,
         'channelId': value.channelId,
+        'otherUserId': value.otherUserId,
         'tipAmount': value.tipAmount,
         'reverted': value.reverted,
         'created_at': value.createdAt,

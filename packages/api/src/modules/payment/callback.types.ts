@@ -1,10 +1,10 @@
-import { MessageDto } from '../messages/dto/message.dto'
+import { SendMessageRequestDto } from '../messages/dto/send-message.dto'
 
 export class PayinCallbackInput {}
 
 export class MessagePayinCallbackInput extends PayinCallbackInput {
   userId: string
-  sendMessageDto: MessageDto
+  sendMessageDto: SendMessageRequestDto
   tippedMessageId?: string
 }
 

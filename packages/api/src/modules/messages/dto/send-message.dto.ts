@@ -1,4 +1,4 @@
-import { Length, Min } from 'class-validator'
+import { IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
@@ -15,6 +15,10 @@ export class SendMessageRequestDto {
   @Length(1, CHANNEL_ID_LENGTH)
   @DtoProperty()
   channelId: string
+
+  @IsUUID()
+  @DtoProperty()
+  otherUserId: string
 
   @Min(0)
   @DtoProperty()

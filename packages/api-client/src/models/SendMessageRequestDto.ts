@@ -46,6 +46,12 @@ export interface SendMessageRequestDto {
     channelId: string;
     /**
      * 
+     * @type {string}
+     * @memberof SendMessageRequestDto
+     */
+    otherUserId: string;
+    /**
+     * 
      * @type {number}
      * @memberof SendMessageRequestDto
      */
@@ -66,6 +72,7 @@ export function instanceOfSendMessageRequestDto(value: object): boolean {
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "attachments" in value;
     isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "otherUserId" in value;
     isInstance = isInstance && "tipAmount" in value;
 
     return isInstance;
@@ -84,6 +91,7 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'text': json['text'],
         'attachments': json['attachments'],
         'channelId': json['channelId'],
+        'otherUserId': json['otherUserId'],
         'tipAmount': json['tipAmount'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
@@ -101,6 +109,7 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
         'text': value.text,
         'attachments': value.attachments,
         'channelId': value.channelId,
+        'otherUserId': value.otherUserId,
         'tipAmount': value.tipAmount,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };

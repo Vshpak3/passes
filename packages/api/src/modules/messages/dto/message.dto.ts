@@ -19,6 +19,10 @@ export class MessageDto {
   @DtoProperty()
   channelId: string
 
+  @IsUUID()
+  @DtoProperty()
+  otherUserId: string
+
   @Min(0)
   @DtoProperty({ optional: true })
   tipAmount?: number

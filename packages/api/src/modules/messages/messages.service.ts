@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { Channel, StreamChat } from 'stream-chat'
+import { StreamChat } from 'stream-chat'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
@@ -49,7 +49,6 @@ import { ChannelStatEntity } from './entities/channel-stat.entity'
 import { MessageContentEntity } from './entities/message-content.entity'
 import { MessagePostEntity } from './entities/message-post.entity'
 import { TippedMessageEntity } from './entities/tipped-message.entity'
-import { ChannelMissingMembersError } from './error/channel.error'
 import { MessageSendError } from './error/message.error'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
@@ -259,10 +258,11 @@ export class MessagesService {
           await this.getChannel(userId, { username: '', userId: creatorId })
         ).channelId
         try {
-          await this.registerSendMessage(userId, {
+          await this.registerSendMessage(creatorId as string, {
             text: '',
             attachments: [postId],
             channelId,
+            otherUserId: userId,
             tipAmount: 0,
           })
         } catch (err) {
@@ -279,15 +279,9 @@ export class MessagesService {
     userId: string,
     sendMessageDto: SendMessageRequestDto,
   ) {
-    const channel = this.streamClient.channel(
-      MESSAGING_CHAT_TYPE,
-      sendMessageDto.channelId,
-    )
-    const otherUserId = await this.getOtherUserId(userId, channel)
     const { blocked, amount } = await this.registerSendMessageData(
       userId,
       sendMessageDto,
-      otherUserId,
     )
     if (blocked) {
       throw new MessageSendError(blocked)
@@ -302,13 +296,13 @@ export class MessagesService {
         amount: sendMessageDto.tipAmount,
         callback: PayinCallbackEnum.TIPPED_MESSAGE,
         callbackInputJSON: callbackInput,
-        creatorId: otherUserId,
+        creatorId: sendMessageDto.otherUserId,
       })
     } else {
       await this.sendMessage(userId, sendMessageDto)
       await this.removeFreeMessage(
         userId,
-        otherUserId,
+        sendMessageDto.otherUserId,
         sendMessageDto.channelId,
       )
       return new RegisterPayinResponseDto()
@@ -318,19 +312,10 @@ export class MessagesService {
   async registerSendMessageData(
     userId: string,
     sendMessageDto: SendMessageRequestDto,
-    otherUserId?: string,
   ): Promise<PayinDataDto> {
-    if (!otherUserId) {
-      const channel = this.streamClient.channel(
-        MESSAGING_CHAT_TYPE,
-        sendMessageDto.channelId,
-      )
-
-      otherUserId = await this.getOtherUserId(userId, channel)
-    }
     let blocked = await this.checkMessageBlocked(
       userId,
-      otherUserId,
+      sendMessageDto.otherUserId,
       sendMessageDto.channelId,
       sendMessageDto.tipAmount,
     )
@@ -488,14 +473,14 @@ export class MessagesService {
 
   async sendMessage(
     userId: string,
-    sendMessageDto: MessageDto,
+    sendMessageDto: SendMessageRequestDto,
     tippedMessageId?: string,
   ) {
     const channel = this.streamClient.channel(
       MESSAGING_CHAT_TYPE,
       sendMessageDto.channelId,
     )
-    const otherUserId = await this.getOtherUserId(userId, channel)
+    const otherUserId = sendMessageDto.otherUserId
     const messageId = v4()
     const response = await channel.sendMessage({
       id: messageId,
@@ -708,28 +693,21 @@ export class MessagesService {
   }
 
   async checkBlocked(userId: string, otherUserId: string): Promise<boolean> {
-    const followReportResult = await this.dbReader(FollowBlockEntity.table)
-      .whereIn(`${FollowBlockEntity.table}.follower_id`, [userId, otherUserId])
-      .whereIn(`${FollowBlockEntity.table}.creator_id`, [userId, otherUserId])
+    const blockedResult = await this.dbReader(FollowBlockEntity.table)
+      .where(
+        FollowBlockEntity.toDict<FollowBlockEntity>({
+          follower: userId,
+          creator: otherUserId,
+        }),
+      )
+      .orWhere(
+        FollowBlockEntity.toDict<FollowBlockEntity>({
+          follower: otherUserId,
+          creator: userId,
+        }),
+      )
       .select(`${FollowBlockEntity.table}.id`)
       .first()
-    return !!followReportResult
-  }
-
-  async getOtherUserId(userId: string, channel: Channel): Promise<string> {
-    const userIds = (await channel.queryMembers({})).members.map(
-      (member) => member.user_id,
-    )
-    if (userIds.indexOf(userId) < 0) {
-      throw new ChannelMissingMembersError(`${userId} is not in this channel`)
-    }
-    for (const id in userIds) {
-      if (id && id != userId) {
-        return id as string
-      }
-    }
-    throw new ChannelMissingMembersError(
-      `channel with ${userId} is missing another member`,
-    )
+    return !!blockedResult
   }
 }

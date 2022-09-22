@@ -156,6 +156,8 @@ export class FollowService {
           text: creatorSettings.welcomeMessage,
           attachments: [],
           channelId: channel.channelId,
+          otherUserId: userId,
+          tipAmount: 0,
         })
       }
     } catch (err) {
