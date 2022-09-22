@@ -60,7 +60,7 @@ export class AuthController {
   }
 
   /**
-   * Can only be hit with an unverified access token.
+   * Can be hit with NO access token (allows verify link to be opened anywhere).
    */
   @ApiEndpoint({
     summary: 'Verify email for the current user',
@@ -69,7 +69,6 @@ export class AuthController {
     responseDesc: 'A email was verified',
     allowUnauthorizedRequest: true,
   })
-  @UseGuards(JwtUnverifiedGuard)
   @Post('verify-email')
   async verifyUserEmail(
     @Req() req: RequestWithUser,
