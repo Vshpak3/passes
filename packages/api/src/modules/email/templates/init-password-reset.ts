@@ -1,9 +1,11 @@
+import path from 'path'
+
 export const INIT_PASSWORD_RESET_EMAIL_TEMPLATE = `---
 title: Reset your password
 preheader: Reset your password
 ---
 
-<extends src="src/modules/email/layouts/main.html">
+<extends src="${path.join(__dirname, '..', '/layouts/main.html')}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>

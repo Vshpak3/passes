@@ -1,9 +1,11 @@
+import path from 'path'
+
 export const CONFIRM_PASSWORD_RESET_EMAIL = `---
 title: You have successfully reset your password
 preheader: You have successfully reset your password
 ---
 
-<extends src="src/modules/email/layouts/main.html">
+<extends src="${path.join(__dirname, '..', '/layouts/main.html')}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>
@@ -25,7 +27,11 @@ preheader: You have successfully reset your password
                   If this is your account but you didn't request a password change, please, <a href="{{ page.websiteUrl }}" class="hover:text-brand-700 hover:underline">contact Support team</a>  immediately.
                 </p>
 
-                <component src="src/modules/email/components/footer.html"></component>
+                <component src="${path.join(
+                  __dirname,
+                  '..',
+                  '/components/footer.html',
+                )}"></component>
               </td>
             </tr>
           </table>
