@@ -55,6 +55,7 @@ const UserInfoPage = () => {
 
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [hasTouchedCalendar, setHasTouchedCalendar] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -70,7 +71,13 @@ const UserInfoPage = () => {
     countryCode: string,
     birthday: string
   ) => {
+    if (isSubmitting) {
+      return
+    }
+
     try {
+      setIsSubmitting(true)
+
       const api = wrapApi(AuthApi)
       const res = await api.createUser({
         createUserRequestDto: {
@@ -102,6 +109,8 @@ const UserInfoPage = () => {
         type: "custom",
         message: String(err)
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -268,6 +277,7 @@ const UserInfoPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
               type="submit"
+              disabled={isSubmitting}
             >
               <Text fontSize={16} className="font-medium">
                 Register account

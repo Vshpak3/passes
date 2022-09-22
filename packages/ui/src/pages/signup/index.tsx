@@ -7,7 +7,7 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
@@ -22,6 +22,7 @@ import { JWTUserClaims } from "../../hooks/useUser"
 const SignupPage = () => {
   const router = useRouter()
   const { user, setAccessToken, setRefreshToken } = useUser()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
     register,
@@ -46,7 +47,13 @@ const SignupPage = () => {
   }, [router, user, getValues])
 
   const onUserRegister = async (email: string, password: string) => {
+    if (isSubmitting) {
+      return
+    }
+
     try {
+      setIsSubmitting(true)
+
       const api = wrapApi(AuthLocalApi)
       const res = await api.createEmailPasswordUser({
         createLocalUserRequestDto: {
@@ -92,6 +99,8 @@ const SignupPage = () => {
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
     } catch (err) {
       alert(err)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -228,6 +237,7 @@ const SignupPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
               type="submit"
+              disabled={isSubmitting}
             >
               <Text fontSize={16} className="font-medium">
                 Register account

@@ -1,6 +1,6 @@
-export const CONFIRM_PASSWORD_RESET_EMAIL = `---
-title: You have successfully reset your password
-preheader: You have successfully reset your password
+export const INIT_PASSWORD_RESET_EMAIL_TEMPLATE = `---
+title: Reset your password
+preheader: Reset your password
 ---
 
 <extends src="src/modules/email/layouts/main.html">
@@ -17,15 +17,30 @@ preheader: You have successfully reset your password
                   </a>
                 </div>
 
-                <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  This is a confirmation email that your password for your account has just been changed.
+                <p class="m-0 text-[21px] leading-7 text-gray-900">
+                  Hi 👋,
                 </p>
+
+                <p class="m-0 text-[21px] leading-7 text-gray-900">
+                  We received a request to reset your password. You can reset is at this link below:
+                </p>
+
+                <div class="leading-4" role="separator">&zwnj;</div>
+
+                <a
+                  href="{{ page.passwordResetLink }}"
+                  class="inline-block sm:block py-4 px-8 rounded shadow text-base text-center leading-4 font-bold [text-decoration:none] text-white bg-[#0052E2] hover:bg-brand-600"
+                >
+                  <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%; mso-text-raise:30px;">&#8202;</i><![endif]-->
+                  <span style="mso-text-raise: 16px;">Reset Password</span>
+                  <!--[if mso]><i style="letter-spacing: 32px; mso-font-width: -100%;">&#8202;</i><![endif]-->
+                </a>
+
+                <div class="leading-4" role="separator">&zwnj;</div>
 
                 <p class="m-0 text-base leading-5.5 text-gray-500">
-                  If this is your account but you didn't request a password change, please, <a href="{{ page.websiteUrl }}" class="hover:text-brand-700 hover:underline">contact Support team</a>  immediately.
+                  If you did not request to reset your password, ignore this email and the link will expire in an hour automatically.
                 </p>
-
-                <component src="src/modules/email/components/footer.html"></component>
               </td>
             </tr>
           </table>

@@ -17,8 +17,8 @@ import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
-import { CONFIRM_EMAIL_TEMPLATE } from '../../email/templates/confirm-email'
 import { CONFIRM_PASSWORD_RESET_EMAIL } from '../../email/templates/confirm-password-reset'
+import { INIT_PASSWORD_RESET_EMAIL_TEMPLATE } from '../../email/templates/init-password-reset'
 import { UserEntity } from '../../user/entities/user.entity'
 import {
   RESET_PASSWORD_EMAIL_INIT_SUBJECT,
@@ -139,11 +139,11 @@ export class LocalAuthService {
       return
     }
 
-    const passwordResetLink = `${this.clientUrl}/password-reset?token=${id}`
+    const passwordResetLink = `${this.clientUrl}/reset-password?token=${id}`
     await this.emailService.sendRenderedEmail(
       email,
       RESET_PASSWORD_EMAIL_INIT_SUBJECT,
-      CONFIRM_EMAIL_TEMPLATE,
+      INIT_PASSWORD_RESET_EMAIL_TEMPLATE,
       { email, passwordResetLink },
     )
   }

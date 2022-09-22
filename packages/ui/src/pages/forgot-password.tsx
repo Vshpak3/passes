@@ -1,22 +1,48 @@
+import { AuthLocalApi } from "@passes/api-client"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 
-interface ForgotPasswordFormProps {
+import { wrapApi } from "../helpers"
+
+export interface ForgotPasswordFormProps {
   email: string
 }
+
 const ForgotPassword = () => {
   const [emailSent, setEmailSent] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<ForgotPasswordFormProps>()
 
-  const onSubmit = (data: object) => {
-    console.log("DATA", data)
-    setEmailSent(true)
+  const onSubmit = async (data: ForgotPasswordFormProps) => {
+    if (isLoading) {
+      return
+    }
+
+    try {
+      setIsLoading(true)
+
+      const api = wrapApi(AuthLocalApi)
+      await api.initPasswordReset({
+        initResetPasswordRequestDto: {
+          email: data.email
+        }
+      })
+
+      setEmailSent(true)
+    } catch (err: any) {
+      console.log(err)
+      toast.error(err?.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -80,6 +106,7 @@ const ForgotPassword = () => {
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                 type="submit"
+                disabled={isLoading}
               >
                 <Text fontSize={16} className="font-medium">
                   Reset Password
