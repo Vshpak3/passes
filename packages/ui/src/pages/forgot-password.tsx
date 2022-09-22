@@ -1,17 +1,24 @@
 import { AuthLocalApi } from "@passes/api-client"
+import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 
 import { wrapApi } from "../helpers"
+import { authRouter } from "../helpers/authRouter"
+import { isDev } from "../helpers/env"
+import { useUser } from "../hooks"
 
 export interface ForgotPasswordFormProps {
   email: string
 }
 
 const ForgotPassword = () => {
+  const router = useRouter()
+  const { userClaims } = useUser()
+
   const [emailSent, setEmailSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -20,6 +27,14 @@ const ForgotPassword = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<ForgotPasswordFormProps>()
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
+
+    authRouter(router, userClaims, true)
+  }, [router, userClaims])
 
   const onSubmit = async (data: ForgotPasswordFormProps) => {
     if (isLoading) {
@@ -37,8 +52,16 @@ const ForgotPassword = () => {
       })
 
       setEmailSent(true)
+
+      // In local development we auto-verify the email
+      if (isDev) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)) // sleep for a second
+        router.push(
+          "/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+        )
+      }
     } catch (err: any) {
-      console.log(err)
+      console.error(err)
       toast.error(err?.message)
     } finally {
       setIsLoading(false)

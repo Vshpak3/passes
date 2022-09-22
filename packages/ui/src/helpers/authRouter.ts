@@ -34,14 +34,26 @@ export function authStateToRoute(state: AuthStates) {
   }
 }
 
-export function authRouter(router: NextRouter, jwt?: JWTUserClaims | null) {
-  const url = authStateToRoute(authStateMachine(jwt))
+export function authRouter(
+  router: NextRouter,
+  jwt?: JWTUserClaims | null,
+  routeOnlyIfAuth = false
+): boolean {
+  const state = authStateMachine(jwt)
+
+  if (routeOnlyIfAuth && state === AuthStates.LOGIN) {
+    return false
+  }
+
+  const url = authStateToRoute(state)
 
   if (router.pathname === url) {
-    return
+    return false
   }
 
   router.push(url)
+
+  return true
 }
 
 export default authRouter

@@ -93,7 +93,7 @@ export class LocalAuthController {
   @ApiEndpoint({
     summary: 'Confirms reset password',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: AccessTokensResponseDto,
     responseDesc: 'Access tokens for password reset',
     allowUnauthorizedRequest: true,
   })

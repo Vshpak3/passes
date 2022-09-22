@@ -12,21 +12,23 @@ import {
   AuthStates,
   authStateToRoute
 } from "../../helpers/authRouter"
+import { isDev } from "../../helpers/env"
 import { setTokens } from "../../helpers/setTokens"
 import { useUser } from "../../hooks"
 
-const UserEmailPage = () => {
-  // TODO: Designs for "confirm email state", https://buildmoment.atlassian.net/browse/PASS-654
-  const [hasSentEmail, setHasSentEmail] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+// TODO: Designs for "confirm email state", https://buildmoment.atlassian.net/browse/PASS-654
 
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+const UserEmailPage = () => {
   const router = useRouter()
+  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm()
+  const [hasSentEmail, setHasSentEmail] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -45,29 +47,17 @@ const UserEmailPage = () => {
       setIsSubmitting(true)
 
       const api = wrapApi(AuthApi)
-
-      await api.setUserEmail({
-        setEmailRequestDto: { email }
-      })
+      await api.setUserEmail({ setEmailRequestDto: { email } })
 
       // In local development (dev) we auto-verify the email
-      if (
-        process.env.NEXT_PUBLIC_NODE_ENV === "dev" ||
-        process.env.NEXT_PUBLIC_NODE_ENV === "stage"
-      ) {
+      if (isDev) {
         const res = await api.verifyUserEmail({
           verifyEmailDto: {
             verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
           }
         })
 
-        const setRes = setTokens(
-          setAccessToken,
-          setRefreshToken,
-          res.accessToken,
-          res.refreshToken
-        )
-
+        const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
           alert("ERROR: Received no access token")
         }
@@ -77,6 +67,7 @@ const UserEmailPage = () => {
 
       setHasSentEmail(true)
     } catch (err: any) {
+      console.error(err)
       toast.error(err?.message)
     } finally {
       setIsSubmitting(false)

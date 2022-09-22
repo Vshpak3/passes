@@ -1,12 +1,17 @@
 import { AuthLocalApi } from "@passes/api-client"
+import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 
 import { wrapApi } from "../helpers"
+import { authRouter } from "../helpers/authRouter"
+import { setTokens } from "../helpers/setTokens"
+import { useUser } from "../hooks"
+import { JWTUserClaims } from "../hooks/useUser"
 
 export interface NewPasswordFormProps {
   password: string
@@ -15,8 +20,9 @@ export interface NewPasswordFormProps {
 
 const NewPassword = () => {
   const router = useRouter()
+  const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
-  const [emailSent, setEmailSent] = useState(false)
+  const [passwordReset, setPasswordReset] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const {
     register,
@@ -24,6 +30,21 @@ const NewPassword = () => {
     watch,
     formState: { errors }
   } = useForm<NewPasswordFormProps>()
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
+
+    const authRedirect = authRouter(router, userClaims, true)
+
+    if (!authRedirect && !router.query.token) {
+      router.push("/login")
+    }
+    // We cannot add userClaims here since then this would trigger during the
+    // update and we won't have time to show the confirmation screen
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
 
   const onSubmit = async (data: NewPasswordFormProps) => {
     if (isLoading) {
@@ -36,16 +57,27 @@ const NewPassword = () => {
       const verificationToken = router.query.token as string
 
       const api = wrapApi(AuthLocalApi)
-      await api.confirmPasswordReset({
+      const res = await api.confirmPasswordReset({
         confirmResetPasswordRequestDto: {
           password: data.password,
           verificationToken
         }
       })
 
-      setEmailSent(true)
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
+      if (!setRes) {
+        alert("ERROR: Received no access token")
+        return
+      }
+
+      setPasswordReset(true)
+
+      // sleep for 1.5 seconds so the confirmation screen is visible before we redirect
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
     } catch (err: any) {
-      console.log(err)
+      console.error(err)
       toast.error(err?.message)
     } finally {
       setIsLoading(false)
@@ -80,10 +112,14 @@ const NewPassword = () => {
           >
             Password Reset
           </Text>
-          {emailSent ? (
+          {passwordReset ? (
             <>
-              <Text className="-mt-8 flex flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
-                Success! Your password has been changed
+              <Text className="-mt-6 flex flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+                Success! Your password has been changed.
+              </Text>
+              <Text className="flex flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+                We will automatically log you in. Alternatively, click here to
+                log in.
               </Text>
               <button
                 onClick={() => router.push("/login")}
@@ -100,7 +136,7 @@ const NewPassword = () => {
               Please enter your new password and confirm it.
             </Text>
           )}
-          {!emailSent && (
+          {!passwordReset && (
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-y-5"

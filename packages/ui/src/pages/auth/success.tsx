@@ -20,21 +20,20 @@ const AuthSuccess = () => {
       return
     }
 
-    const { accessToken, refreshToken } = router.query
+    let { accessToken, refreshToken } = router.query
 
-    const _accessToken = Array.isArray(accessToken)
+    accessToken = Array.isArray(accessToken)
       ? accessToken[0]
-      : accessToken
+      : (accessToken as string)
 
-    const _refreshToken = Array.isArray(refreshToken)
+    refreshToken = Array.isArray(refreshToken)
       ? refreshToken[0]
-      : refreshToken
+      : (refreshToken as string)
 
     const setRes = setTokens(
+      { accessToken, refreshToken },
       setAccessToken,
-      setRefreshToken,
-      _accessToken,
-      _refreshToken
+      setRefreshToken
     )
 
     if (!setRes) {
@@ -43,7 +42,7 @@ const AuthSuccess = () => {
       return
     }
 
-    authRouter(router, jwtDecode<JWTUserClaims>(_accessToken as string))
+    authRouter(router, jwtDecode<JWTUserClaims>(accessToken))
   }, [router, setAccessToken, setRefreshToken])
 
   if (typeof window === "undefined") {

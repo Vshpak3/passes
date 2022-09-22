@@ -105,7 +105,7 @@ export class AuthLocalApi extends runtime.BaseAPI {
     /**
      * Confirms reset password
      */
-    async confirmPasswordResetRaw(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async confirmPasswordResetRaw(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
         if (requestParameters.confirmResetPasswordRequestDto === null || requestParameters.confirmResetPasswordRequestDto === undefined) {
             throw new runtime.RequiredError('confirmResetPasswordRequestDto','Required parameter requestParameters.confirmResetPasswordRequestDto was null or undefined when calling confirmPasswordReset.');
         }
@@ -124,14 +124,15 @@ export class AuthLocalApi extends runtime.BaseAPI {
             body: ConfirmResetPasswordRequestDtoToJSON(requestParameters.confirmResetPasswordRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Confirms reset password
      */
-    async confirmPasswordReset(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.confirmPasswordResetRaw(requestParameters, initOverrides);
+    async confirmPasswordReset(requestParameters: ConfirmPasswordResetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
+        const response = await this.confirmPasswordResetRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

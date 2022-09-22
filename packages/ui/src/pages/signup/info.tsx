@@ -35,13 +35,14 @@ export type UserInfoFormValues = {
 }
 
 const UserInfoPage = () => {
+  const router = useRouter()
   const {
     userClaims,
     setAccessToken,
     setRefreshToken,
     mutate: refreshUser
   } = useUser()
-  const router = useRouter()
+
   const {
     register,
     handleSubmit,
@@ -88,12 +89,7 @@ const UserInfoPage = () => {
         }
       })
 
-      const setRes = setTokens(
-        setAccessToken,
-        setRefreshToken,
-        res.accessToken,
-        res.refreshToken
-      )
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
         setError("submitError", {
           type: "custom",

@@ -76,7 +76,7 @@ export class AuthService {
     )
 
     // Skip sending verifications emails in local development
-    if (this.env === 'dev' || this.env === 'stage') {
+    if (this.env === 'dev') {
       return
     }
 

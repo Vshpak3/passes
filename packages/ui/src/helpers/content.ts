@@ -1,5 +1,6 @@
 import { ContentApi, ContentDtoContentTypeEnum } from "@passes/api-client"
 
+import { isDev } from "./env"
 import { wrapApi } from "./wrapApi"
 
 class Content {
@@ -93,9 +94,8 @@ class ContentService {
   private async uploadFile(url: string, file: File): Promise<string> {
     await fetch(url, {
       method: "PUT",
-      credentials:
-        // omit cookies in dev
-        process.env.NEXT_PUBLIC_NODE_ENV !== "dev" ? "include" : undefined,
+      // omit cookies in dev
+      credentials: !isDev ? "include" : undefined,
       body: file
     })
 

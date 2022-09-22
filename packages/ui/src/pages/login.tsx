@@ -53,18 +53,10 @@ const LoginPage = () => {
     try {
       const api = wrapApi(AuthLocalApi)
       const res = await api.loginWithEmailPassword({
-        localUserLoginRequestDto: {
-          email: email,
-          password: password
-        }
+        localUserLoginRequestDto: { email, password }
       })
 
-      const setRes = setTokens(
-        setAccessToken,
-        setRefreshToken,
-        res.accessToken,
-        res.refreshToken
-      )
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
         setError("submitError", {
           type: "custom",

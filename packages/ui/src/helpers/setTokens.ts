@@ -1,15 +1,17 @@
+import { AccessTokensResponseDto } from "@passes/api-client"
+
 export function setTokens(
+  tokens: AccessTokensResponseDto,
   setAccessToken: (value: string) => void,
-  setRefreshToken: (value: string) => void,
-  accessToken?: string,
-  refreshToken?: string
+  setRefreshToken: (value: string) => void
 ): boolean {
-  if (!accessToken) {
+  if (!tokens.accessToken) {
     return false
   }
-  setAccessToken(accessToken)
-  if (refreshToken) {
-    setRefreshToken(refreshToken)
+  setAccessToken(tokens.accessToken)
+
+  if (tokens.refreshToken) {
+    setRefreshToken(tokens.refreshToken)
   }
   return true
 }

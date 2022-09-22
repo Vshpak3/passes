@@ -15,36 +15,31 @@ import { useUser } from "src/hooks"
 import { RoundedIconButton } from "../../components/atoms/Button"
 import { CssGridTiles } from "../../components/molecules"
 import { authRouter } from "../../helpers/authRouter"
+import { isDev } from "../../helpers/env"
 import { setTokens } from "../../helpers/setTokens"
 import { wrapApi } from "../../helpers/wrapApi"
 import { JWTUserClaims } from "../../hooks/useUser"
 
 const SignupPage = () => {
   const router = useRouter()
-  const { user, setAccessToken, setRefreshToken } = useUser()
+  const { setAccessToken, setRefreshToken, userClaims } = useUser()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
     register,
     handleSubmit,
     watch,
-    getValues,
     formState: { errors }
   } = useForm()
 
   useEffect(() => {
-    if (!router.isReady || !user?.id) {
+    if (!router.isReady) {
       return
     }
 
-    router.push(
-      {
-        pathname: "signup/user-info",
-        query: { email: getValues().email }
-      },
-      "signup/user-info"
-    )
-  }, [router, user, getValues])
+    authRouter(router, userClaims, true)
+  }, [router, userClaims])
 
   const onUserRegister = async (email: string, password: string) => {
     if (isSubmitting) {
@@ -56,44 +51,21 @@ const SignupPage = () => {
 
       const api = wrapApi(AuthLocalApi)
       const res = await api.createEmailPasswordUser({
-        createLocalUserRequestDto: {
-          email: email,
-          password: password
-        }
+        createLocalUserRequestDto: { email, password }
       })
-
-      const setRes = setTokens(
-        setAccessToken,
-        setRefreshToken,
-        res.accessToken,
-        res.refreshToken
-      )
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
         alert("ERROR: Received no access token")
-        return
       }
 
-      // In local development (dev) we auto-verify the email
-      if (
-        process.env.NEXT_PUBLIC_NODE_ENV === "dev" ||
-        process.env.NEXT_PUBLIC_NODE_ENV === "stage"
-      ) {
+      // In local development we auto-verify the email
+      if (isDev) {
         const res = await wrapApi(AuthApi).verifyUserEmail({
           verifyEmailDto: {
             verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
           }
         })
-
-        const setRes = setTokens(
-          setAccessToken,
-          setRefreshToken,
-          res.accessToken,
-          res.refreshToken
-        )
-
-        if (!setRes) {
-          alert("ERROR: Received no access token")
-        }
+        setTokens(res, setAccessToken, setRefreshToken)
       }
 
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))

@@ -10,6 +10,7 @@ import { useState } from "react"
 import useSWR from "swr"
 
 import { ContentService } from "../helpers"
+import { isProd } from "../helpers/env"
 import { wrapApi } from "../helpers/wrapApi"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
@@ -40,8 +41,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   const onEditProfile = () => setEditProfile(true)
 
   // Disable test profile on production
-  const isTestProfile: boolean =
-    username === "test" && process.env.NEXT_PUBLIC_NODE_ENV !== "prod"
+  const isTestProfile: boolean = username === "test" && !isProd
 
   const { user: { username: loggedInUsername } = {} } = useUser()
 

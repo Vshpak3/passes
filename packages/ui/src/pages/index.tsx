@@ -7,6 +7,8 @@ import { IntercomProvider } from "react-use-intercom"
 import CardCarousel from "src/components/molecules/CardCarousel"
 import LandingIcon from "src/icons/landingIcon"
 
+import { isProd } from "../helpers/env"
+
 const HomePage = () => {
   const router = useRouter()
   const [emailAddress, setEmailAddress] = useState("")
@@ -111,7 +113,7 @@ const HomePage = () => {
             </h2>
             <CardCarousel />
           </div>
-          {process.env.NEXT_PUBLIC_NODE_ENV !== "prod" && (
+          {!isProd && (
             <div className="align-items mx-auto flex justify-center">
               <button
                 type="button"

@@ -208,12 +208,15 @@ export class LocalAuthService {
         .update(AuthEntity.toDict<AuthEntity>({ passwordHash: hashedPassword }))
     })
 
-    await this.emailService.sendRenderedEmail(
-      email,
-      RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
-      CONFIRM_PASSWORD_RESET_EMAIL,
-      { email },
-    )
+    // Skip sending password confirmation emails in local development
+    if (this.env !== 'dev') {
+      await this.emailService.sendRenderedEmail(
+        email,
+        RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
+        CONFIRM_PASSWORD_RESET_EMAIL,
+        { email },
+      )
+    }
 
     return this.authService.getAuthRecordFromAuthOrUser(authRecord)
   }
