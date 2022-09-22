@@ -196,6 +196,14 @@ export class UserService {
     return updated === 1
   }
 
+  async getIdFromUsername(username: string) {
+    const user = await this.dbReader(UserEntity.table)
+      .where('username', username)
+      .select('id')
+      .first()
+    return user ? user.id : ''
+  }
+
   async searchByQuery(
     searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {

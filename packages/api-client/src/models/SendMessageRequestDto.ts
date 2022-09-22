@@ -37,7 +37,7 @@ export interface SendMessageRequestDto {
      * @type {Array<string>}
      * @memberof SendMessageRequestDto
      */
-    attachments: Array<string>;
+    contentIds: Array<string>;
     /**
      * 
      * @type {string}
@@ -46,16 +46,16 @@ export interface SendMessageRequestDto {
     channelId: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof SendMessageRequestDto
      */
-    otherUserId: string;
+    tipAmount: number;
     /**
      * 
      * @type {number}
      * @memberof SendMessageRequestDto
      */
-    tipAmount: number;
+    price?: number;
     /**
      * 
      * @type {PayinMethodDto}
@@ -70,9 +70,8 @@ export interface SendMessageRequestDto {
 export function instanceOfSendMessageRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
-    isInstance = isInstance && "attachments" in value;
+    isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "channelId" in value;
-    isInstance = isInstance && "otherUserId" in value;
     isInstance = isInstance && "tipAmount" in value;
 
     return isInstance;
@@ -89,10 +88,10 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'text': json['text'],
-        'attachments': json['attachments'],
+        'contentIds': json['contentIds'],
         'channelId': json['channelId'],
-        'otherUserId': json['otherUserId'],
         'tipAmount': json['tipAmount'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
@@ -107,10 +106,10 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
     return {
         
         'text': value.text,
-        'attachments': value.attachments,
+        'contentIds': value.contentIds,
         'channelId': value.channelId,
-        'otherUserId': value.otherUserId,
         'tipAmount': value.tipAmount,
+        'price': value.price,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }

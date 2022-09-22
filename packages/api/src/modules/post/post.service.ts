@@ -24,7 +24,6 @@ import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
-import { MessagePostEntity } from '../messages/entities/message-post.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
 import {
@@ -100,11 +99,9 @@ export class PostService {
           user: userId,
           text: createPostDto.text,
           tags: JSON.stringify(createPostDto.tags),
-          isMessage: createPostDto.isMessage,
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
           scheduledAt: createPostDto.scheduledAt,
-          contentLength: 0,
         })
 
         await trx(PostEntity.table).insert(post)
@@ -121,7 +118,7 @@ export class PostService {
           await trx(PostContentEntity.table).insert(postContent)
         }
         await trx(ContentEntity.table)
-          .update(createPostDto.isMessage ? 'in_message' : 'in_post', true)
+          .update('in_post', true)
           .whereIn('id', createPostDto.contentIds)
 
         // TODO: schedule access add
@@ -187,59 +184,7 @@ export class PostService {
           )
           .count(),
       })
-    await this.dbWriter(CreatorStatEntity.table)
-      .where('user_id', userId)
-      .update({
-        num_media: this.dbWriter(ContentEntity.table)
-          .where(
-            ContentEntity.toDict<ContentEntity>({
-              user: userId,
-              inPost: true,
-            }),
-          )
-          .count(),
-      })
     return { postId }
-  }
-
-  async getGalleryMessages(userId: string, channelId: string) {
-    const query = this.dbReader(MessagePostEntity.table)
-      .innerJoin(
-        PostEntity.table,
-        `${MessagePostEntity.table}.post_id`,
-        `${PostEntity.table}.id`,
-      )
-      .innerJoin(
-        UserEntity.table,
-        `${UserEntity.table}.id`,
-        `${PostEntity.table}.user_id`,
-      )
-      .leftJoin(PostUserAccessEntity.table, function () {
-        this.on(
-          `${UserEntity.table}.id`,
-          `${PostUserAccessEntity.table}.user_id`,
-        ).andOn(
-          `${PostEntity.table}.id`,
-          `${PostUserAccessEntity.table}.post_id`,
-        )
-      })
-      .leftJoin(
-        LikeEntity.table,
-        `${LikeEntity.table}.post_id`,
-        `${PostEntity.table}.id`,
-      )
-      .select([
-        `${PostEntity.table}.*`,
-        `${UserEntity.table}.username`,
-        `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.post_id as access`,
-        `${LikeEntity.table}.id as is_liked`,
-      ])
-      .where(`${PostEntity.table}.is_message`, true)
-      .andWhere(`${MessagePostEntity.table}.user_id`, userId)
-      .andWhere(`${MessagePostEntity.table}.channel_id`, channelId)
-      .orderBy('created_at', 'desc')
-    return await this.getPostsFromQuery(userId, query)
   }
 
   async findPost(postId: string, userId: string): Promise<PostDto> {
@@ -579,7 +524,6 @@ export class PostService {
   async registerPurchasePost(
     userId: string,
     postId: string,
-    fromDM: boolean,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
     const { amount, target, blocked } = await this.registerPurchasePostData(
@@ -587,7 +531,7 @@ export class PostService {
       postId,
     )
     if (blocked) {
-      throw new InvalidPayinRequestError('invalid post purchase')
+      throw new InvalidPayinRequestError('blocked')
     }
 
     const post = await this.dbReader(PostEntity.table)
@@ -608,9 +552,7 @@ export class PostService {
       target,
       amount,
       payinMethod,
-      callback: fromDM
-        ? PayinCallbackEnum.PURCHASE_DM_POST
-        : PayinCallbackEnum.PURCHASE_FEED_POST,
+      callback: PayinCallbackEnum.PURCHASE_POST,
       callbackInputJSON: callbackInput,
       creatorId: post.user_id,
     })

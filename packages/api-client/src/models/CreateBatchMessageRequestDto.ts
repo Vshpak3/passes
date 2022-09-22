@@ -21,6 +21,24 @@ import { exists, mapValues } from '../runtime';
 export interface CreateBatchMessageRequestDto {
     /**
      * 
+     * @type {string}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    text: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    contentIds: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    price?: number;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
@@ -37,12 +55,6 @@ export interface CreateBatchMessageRequestDto {
      * @memberof CreateBatchMessageRequestDto
      */
     passIds: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateBatchMessageRequestDto
-     */
-    postId: string;
 }
 
 /**
@@ -50,10 +62,11 @@ export interface CreateBatchMessageRequestDto {
  */
 export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "text" in value;
+    isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "includeListIds" in value;
     isInstance = isInstance && "exlcudeListIds" in value;
     isInstance = isInstance && "passIds" in value;
-    isInstance = isInstance && "postId" in value;
 
     return isInstance;
 }
@@ -68,10 +81,12 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
+        'text': json['text'],
+        'contentIds': json['contentIds'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
         'includeListIds': json['includeListIds'],
         'exlcudeListIds': json['exlcudeListIds'],
         'passIds': json['passIds'],
-        'postId': json['postId'],
     };
 }
 
@@ -84,10 +99,12 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
     }
     return {
         
+        'text': value.text,
+        'contentIds': value.contentIds,
+        'price': value.price,
         'includeListIds': value.includeListIds,
         'exlcudeListIds': value.exlcudeListIds,
         'passIds': value.passIds,
-        'postId': value.postId,
     };
 }
 

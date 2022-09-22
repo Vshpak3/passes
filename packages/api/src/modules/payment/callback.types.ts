@@ -1,11 +1,12 @@
-import { SendMessageRequestDto } from '../messages/dto/send-message.dto'
-
 export class PayinCallbackInput {}
 
 export class MessagePayinCallbackInput extends PayinCallbackInput {
   userId: string
-  sendMessageDto: SendMessageRequestDto
-  tippedMessageId?: string
+  text: string
+  channelId: string
+  contentIds: string[]
+  price?: number
+  messageId?: string
 }
 
 export class CreateNftPassPayinCallbackInput extends PayinCallbackInput {
@@ -22,6 +23,11 @@ export class PurchasePostCallbackInput extends PayinCallbackInput {
   postId: string
 }
 
+export class PurchaseMessageCallbackInput extends PayinCallbackInput {
+  messageId: string
+  paidMessageId: string
+}
+
 export class TipPostCallbackInput extends PayinCallbackInput {
   userId: string
   postId: string
@@ -35,7 +41,7 @@ export class ExamplePayinCallbackInput extends PayinCallbackInput {
 export class PayinCallbackOutput {}
 
 export class TippedMessagePayinCallbackOutput extends PayinCallbackOutput {
-  userId: string
+  messageId: string
 }
 
 export class CreateNftPassPayinCallbackOutput extends PayinCallbackOutput {
@@ -51,6 +57,8 @@ export class RenewNftPassPayinCallbackOutput extends PayinCallbackOutput {
 export class PurchasePostCallbackOutput extends PayinCallbackOutput {
   postId: string
 }
+
+export class PurchaseMessageCallbackOutput extends PayinCallbackOutput {}
 
 export class TipPostCallbackOutput extends PayinCallbackOutput {
   postId: string

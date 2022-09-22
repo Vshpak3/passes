@@ -98,9 +98,6 @@ export class CommentService {
         { column: `${CommentEntity.table}.created_at`, order: 'desc' },
         { column: `${CommentEntity.table}.id`, order: 'desc' },
       ])
-    if (lastId) {
-      query = query.andWhere(`${CommentEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(
         `${CommentEntity.table}.created_at`,
@@ -110,9 +107,9 @@ export class CommentService {
     }
 
     const comments = await query.limit(MAX_COMMENTS_PER_REQUEST)
-
+    const index = comments.findIndex((comment) => comment.id === lastId)
     return new GetCommentsForPostResponseDto(
-      comments.map((c) => new CommentDto(c)),
+      comments.slice(index + 1).map((c) => new CommentDto(c)),
     )
   }
 

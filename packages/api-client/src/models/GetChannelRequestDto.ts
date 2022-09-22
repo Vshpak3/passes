@@ -24,12 +24,6 @@ export interface GetChannelRequestDto {
      * @type {string}
      * @memberof GetChannelRequestDto
      */
-    username: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChannelRequestDto
-     */
     userId?: string;
 }
 
@@ -38,7 +32,6 @@ export interface GetChannelRequestDto {
  */
 export function instanceOfGetChannelRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "username" in value;
 
     return isInstance;
 }
@@ -53,7 +46,6 @@ export function GetChannelRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'username': json['username'],
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
     };
 }
@@ -67,7 +59,6 @@ export function GetChannelRequestDtoToJSON(value?: GetChannelRequestDto | null):
     }
     return {
         
-        'username': value.username,
         'userId': value.userId,
     };
 }

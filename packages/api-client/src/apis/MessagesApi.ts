@@ -18,12 +18,12 @@ import type {
   CreateBatchMessageRequestDto,
   GetChannelRequestDto,
   GetChannelResponseDto,
-  GetChannelSettingsResponseDto,
-  GetChannelStatsRequestDto,
-  GetChannelStatsResponseDto,
+  GetChannelsRequestDto,
+  GetChannelsResponseDto,
   GetFreeMesssagesResponseDto,
-  GetMessagesResponseDto,
+  GetMessageResponseDto,
   PayinDataDto,
+  PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
   SendMessageRequestDto,
   TokenResponseDto,
@@ -36,18 +36,18 @@ import {
     GetChannelRequestDtoToJSON,
     GetChannelResponseDtoFromJSON,
     GetChannelResponseDtoToJSON,
-    GetChannelSettingsResponseDtoFromJSON,
-    GetChannelSettingsResponseDtoToJSON,
-    GetChannelStatsRequestDtoFromJSON,
-    GetChannelStatsRequestDtoToJSON,
-    GetChannelStatsResponseDtoFromJSON,
-    GetChannelStatsResponseDtoToJSON,
+    GetChannelsRequestDtoFromJSON,
+    GetChannelsRequestDtoToJSON,
+    GetChannelsResponseDtoFromJSON,
+    GetChannelsResponseDtoToJSON,
     GetFreeMesssagesResponseDtoFromJSON,
     GetFreeMesssagesResponseDtoToJSON,
-    GetMessagesResponseDtoFromJSON,
-    GetMessagesResponseDtoToJSON,
+    GetMessageResponseDtoFromJSON,
+    GetMessageResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
+    PurchaseMessageRequestDtoFromJSON,
+    PurchaseMessageRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
     SendMessageRequestDtoFromJSON,
@@ -62,21 +62,36 @@ export interface GetChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
 }
 
-export interface GetChannelSettingsRequest {
-    channelId: string;
-}
-
-export interface GetChannelsStatsRequest {
-    getChannelStatsRequestDto: GetChannelStatsRequestDto;
+export interface GetChannelsRequest {
+    getChannelsRequestDto: GetChannelsRequestDto;
 }
 
 export interface GetFreeMessagesRequest {
-    creatorId: string;
     channelId: string;
+}
+
+export interface GetMessageRequest {
+    messageId: string;
+}
+
+export interface GetOrCreateChannelRequest {
+    getChannelRequestDto: GetChannelRequestDto;
 }
 
 export interface MassSendRequest {
     createBatchMessageRequestDto: CreateBatchMessageRequestDto;
+}
+
+export interface ReadMessagesRequest {
+    channelId: string;
+}
+
+export interface RegisterPurchaseMessageRequest {
+    purchaseMessageRequestDto: PurchaseMessageRequestDto;
+}
+
+export interface RegisterPurchaseMessageDataRequest {
+    purchaseMessageRequestDto: PurchaseMessageRequestDto;
 }
 
 export interface SendMessageRequest {
@@ -88,7 +103,6 @@ export interface SendMessageDataRequest {
 }
 
 export interface UpdateChannelSettingsRequest {
-    channelId: string;
     updateChannelSettingsRequestDto: UpdateChannelSettingsRequestDto;
 }
 
@@ -139,82 +153,11 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get channels settings
-     */
-    async getChannelSettingsRaw(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelSettingsResponseDto>> {
-        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
-            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getChannelSettings.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/messages/channel/settings/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelSettingsResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get channels settings
-     */
-    async getChannelSettings(requestParameters: GetChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelSettingsResponseDto> {
-        const response = await this.getChannelSettingsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Get channels
      */
-    async getChannelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/messages/channels`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Get channels
-     */
-    async getChannels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getChannelsRaw(initOverrides);
-    }
-
-    /**
-     * Get channels stats
-     */
-    async getChannelsStatsRaw(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelStatsResponseDto>> {
-        if (requestParameters.getChannelStatsRequestDto === null || requestParameters.getChannelStatsRequestDto === undefined) {
-            throw new runtime.RequiredError('getChannelStatsRequestDto','Required parameter requestParameters.getChannelStatsRequestDto was null or undefined when calling getChannelsStats.');
+    async getChannelsRaw(requestParameters: GetChannelsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelsResponseDto>> {
+        if (requestParameters.getChannelsRequestDto === null || requestParameters.getChannelsRequestDto === undefined) {
+            throw new runtime.RequiredError('getChannelsRequestDto','Required parameter requestParameters.getChannelsRequestDto was null or undefined when calling getChannels.');
         }
 
         const queryParameters: any = {};
@@ -232,55 +175,21 @@ export class MessagesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/messages/channel/stats`,
+            path: `/api/messages/channels`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetChannelStatsRequestDtoToJSON(requestParameters.getChannelStatsRequestDto),
+            body: GetChannelsRequestDtoToJSON(requestParameters.getChannelsRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelStatsResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelsResponseDtoFromJSON(jsonValue));
     }
 
     /**
-     * Get channels stats
+     * Get channels
      */
-    async getChannelsStats(requestParameters: GetChannelsStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelStatsResponseDto> {
-        const response = await this.getChannelsStatsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get completed tipped messages
-     */
-    async getCompletedTippedMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/messages/completed-tipped`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessagesResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get completed tipped messages
-     */
-    async getCompletedTippedMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessagesResponseDto> {
-        const response = await this.getCompletedTippedMessagesRaw(initOverrides);
+    async getChannels(requestParameters: GetChannelsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelsResponseDto> {
+        const response = await this.getChannelsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -288,10 +197,6 @@ export class MessagesApi extends runtime.BaseAPI {
      * Get free chat messages
      */
     async getFreeMessagesRaw(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFreeMesssagesResponseDto>> {
-        if (requestParameters.creatorId === null || requestParameters.creatorId === undefined) {
-            throw new runtime.RequiredError('creatorId','Required parameter requestParameters.creatorId was null or undefined when calling getFreeMessages.');
-        }
-
         if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
             throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getFreeMessages.');
         }
@@ -309,7 +214,7 @@ export class MessagesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/messages/free-messages/{creatorId}/{channelId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))).replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            path: `/api/messages/free-messages/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -323,6 +228,44 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getFreeMessages(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFreeMesssagesResponseDto> {
         const response = await this.getFreeMessagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get message
+     */
+    async getMessageRaw(requestParameters: GetMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessageResponseDto>> {
+        if (requestParameters.messageId === null || requestParameters.messageId === undefined) {
+            throw new runtime.RequiredError('messageId','Required parameter requestParameters.messageId was null or undefined when calling getMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/message/retreive/{messageId}`.replace(`{${"messageId"}}`, encodeURIComponent(String(requestParameters.messageId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessageResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get message
+     */
+    async getMessage(requestParameters: GetMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessageResponseDto> {
+        const response = await this.getMessageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -360,12 +303,18 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get pending messages
+     * Gets or creates a channel
      */
-    async getPendingRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
+    async getOrCreateChannelRaw(requestParameters: GetOrCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelResponseDto>> {
+        if (requestParameters.getChannelRequestDto === null || requestParameters.getChannelRequestDto === undefined) {
+            throw new runtime.RequiredError('getChannelRequestDto','Required parameter requestParameters.getChannelRequestDto was null or undefined when calling getOrCreateChannel.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -376,20 +325,21 @@ export class MessagesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/messages/pending`,
-            method: 'GET',
+            path: `/api/messages/channel/create`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetChannelRequestDtoToJSON(requestParameters.getChannelRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessagesResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelResponseDtoFromJSON(jsonValue));
     }
 
     /**
-     * Get pending messages
+     * Gets or creates a channel
      */
-    async getPending(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessagesResponseDto> {
-        const response = await this.getPendingRaw(initOverrides);
+    async getOrCreateChannel(requestParameters: GetOrCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelResponseDto> {
+        const response = await this.getOrCreateChannelRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -470,7 +420,11 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Set status as read
      */
-    async readMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async readMessagesRaw(requestParameters: ReadMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling readMessages.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -484,8 +438,8 @@ export class MessagesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/messages/read`,
-            method: 'POST',
+            path: `/api/messages/read/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -496,8 +450,90 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Set status as read
      */
-    async readMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.readMessagesRaw(initOverrides);
+    async readMessages(requestParameters: ReadMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.readMessagesRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Register purchase message payin
+     */
+    async registerPurchaseMessageRaw(requestParameters: RegisterPurchaseMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+        if (requestParameters.purchaseMessageRequestDto === null || requestParameters.purchaseMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('purchaseMessageRequestDto','Required parameter requestParameters.purchaseMessageRequestDto was null or undefined when calling registerPurchaseMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/pay/purchase`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PurchaseMessageRequestDtoToJSON(requestParameters.purchaseMessageRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Register purchase message payin
+     */
+    async registerPurchaseMessage(requestParameters: RegisterPurchaseMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.registerPurchaseMessageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get register purchase message data
+     */
+    async registerPurchaseMessageDataRaw(requestParameters: RegisterPurchaseMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+        if (requestParameters.purchaseMessageRequestDto === null || requestParameters.purchaseMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('purchaseMessageRequestDto','Required parameter requestParameters.purchaseMessageRequestDto was null or undefined when calling registerPurchaseMessageData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/pay/data/purchase`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PurchaseMessageRequestDtoToJSON(requestParameters.purchaseMessageRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get register purchase message data
+     */
+    async registerPurchaseMessageData(requestParameters: RegisterPurchaseMessageDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
+        const response = await this.registerPurchaseMessageDataRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -585,6 +621,39 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Subscribe to receive new messages
      */
+    async subscribeChannelUpdatesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/messages/subscribe-channel`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Subscribe to receive new messages
+     */
+    async subscribeChannelUpdates(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.subscribeChannelUpdatesRaw(initOverrides);
+    }
+
+    /**
+     * Subscribe to receive new messages
+     */
     async subscribeMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
@@ -619,10 +688,6 @@ export class MessagesApi extends runtime.BaseAPI {
      * Update channels settings
      */
     async updateChannelSettingsRaw(requestParameters: UpdateChannelSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
-            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling updateChannelSettings.');
-        }
-
         if (requestParameters.updateChannelSettingsRequestDto === null || requestParameters.updateChannelSettingsRequestDto === undefined) {
             throw new runtime.RequiredError('updateChannelSettingsRequestDto','Required parameter requestParameters.updateChannelSettingsRequestDto was null or undefined when calling updateChannelSettings.');
         }
@@ -642,7 +707,7 @@ export class MessagesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/messages/channel/settings/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            path: `/api/messages/channel/settings`,
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -663,18 +728,19 @@ export class MessagesApi extends runtime.BaseAPI {
 
 export const MessagesSecurityInfo = new Set<string>([
     "getChannel",
-    "getChannelSettings",
     "getChannels",
-    "getChannelsStats",
-    "getCompletedTippedMessages",
     "getFreeMessages",
+    "getMessage",
     "getMessages",
-    "getPending",
+    "getOrCreateChannel",
     "getToken",
     "massSend",
     "readMessages",
+    "registerPurchaseMessage",
+    "registerPurchaseMessageData",
     "sendMessage",
     "sendMessageData",
+    "subscribeChannelUpdates",
     "subscribeMessages",
     "updateChannelSettings",
 ])

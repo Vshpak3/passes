@@ -1,7 +1,8 @@
-import { PartialType } from '@nestjs/swagger'
+import { PickType } from '@nestjs/swagger'
 
-import { ChannelSettingsDto } from './channel-settings.dto'
+import { ChannelMemberDto } from './channel-member.dto'
 
-export class UpdateChannelSettingsRequestDto extends PartialType(
-  ChannelSettingsDto,
+export class UpdateChannelSettingsRequestDto extends PickType(
+  ChannelMemberDto,
+  ['unlimitedMessages', 'channelId'],
 ) {}

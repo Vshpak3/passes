@@ -24,25 +24,13 @@ export interface UpdateChannelSettingsRequestDto {
      * @type {string}
      * @memberof UpdateChannelSettingsRequestDto
      */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateChannelSettingsRequestDto
-     */
     channelId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateChannelSettingsRequestDto
-     */
-    userId?: string;
     /**
      * 
      * @type {boolean}
      * @memberof UpdateChannelSettingsRequestDto
      */
-    unlimitedMessages?: boolean;
+    unlimitedMessages: boolean;
 }
 
 /**
@@ -50,6 +38,7 @@ export interface UpdateChannelSettingsRequestDto {
  */
 export function instanceOfUpdateChannelSettingsRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "unlimitedMessages" in value;
 
     return isInstance;
 }
@@ -64,10 +53,8 @@ export function UpdateChannelSettingsRequestDtoFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'channelId': !exists(json, 'channelId') ? undefined : json['channelId'],
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
-        'unlimitedMessages': !exists(json, 'unlimitedMessages') ? undefined : json['unlimitedMessages'],
+        'unlimitedMessages': json['unlimitedMessages'],
     };
 }
 
@@ -80,9 +67,7 @@ export function UpdateChannelSettingsRequestDtoToJSON(value?: UpdateChannelSetti
     }
     return {
         
-        'id': value.id,
         'channelId': value.channelId,
-        'userId': value.userId,
         'unlimitedMessages': value.unlimitedMessages,
     };
 }

@@ -29,9 +29,9 @@ export class CreatorStatsService {
       case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
       case PayinCallbackEnum.RENEW_NFT_PASS:
         return EarningTypeEnum.SUBSCRIPTION
-      case PayinCallbackEnum.PURCHASE_FEED_POST:
+      case PayinCallbackEnum.PURCHASE_POST:
         return EarningTypeEnum.POSTS
-      case PayinCallbackEnum.PURCHASE_DM_POST:
+      case PayinCallbackEnum.PURCHASE_DM:
         return EarningTypeEnum.MESSAGES
       case PayinCallbackEnum.TIP_POST:
       case PayinCallbackEnum.TIPPED_MESSAGE:

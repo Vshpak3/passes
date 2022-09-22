@@ -1,34 +1,33 @@
-import { PayinMethodDto, PostApi } from "@passes/api-client"
+import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
 
 import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
-interface IBuyPostButton {
-  postId: string
-  fromDM: boolean
+interface IBuyMessageButton {
+  messageId: string
   payinMethod?: PayinMethodDto
   onSuccess: () => void
 }
 
-export const BuyPostButton = ({
-  postId,
+export const BuyMessageButton = ({
+  messageId,
   payinMethod,
   onSuccess
-}: IBuyPostButton) => {
-  const api = wrapApi(PostApi)
+}: IBuyMessageButton) => {
+  const api = wrapApi(MessagesApi)
   const register = async () => {
-    return await api.registerPurchasePost({
-      purchasePostRequestDto: {
-        postId,
+    return await api.registerPurchaseMessage({
+      purchaseMessageRequestDto: {
+        messageId,
         payinMethod
       }
     })
   }
   const registerData = async () => {
-    return await api.registerPurchasePostData({
-      purchasePostRequestDto: {
-        postId,
+    return await api.registerPurchaseMessageData({
+      purchaseMessageRequestDto: {
+        messageId,
         payinMethod
       }
     })

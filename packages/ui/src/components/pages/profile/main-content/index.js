@@ -28,7 +28,6 @@ const MainContent = ({
             contentIds: values.contentIds,
             passIds: [],
             tags: [],
-            isMessage: false,
             price: 0,
             scheduledAt: postTime?.$d
           }

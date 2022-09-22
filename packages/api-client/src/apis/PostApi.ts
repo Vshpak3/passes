@@ -15,29 +15,26 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreatePostAccessRequestDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
-  GetGalleryViewDto,
   GetPostResponseDto,
   PayinDataDto,
+  PurchasePostRequestDto,
   RegisterPayinResponseDto,
   TipPostRequestDto,
   UpdatePostRequestDto,
 } from '../models';
 import {
-    CreatePostAccessRequestDtoFromJSON,
-    CreatePostAccessRequestDtoToJSON,
     CreatePostRequestDtoFromJSON,
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
-    GetGalleryViewDtoFromJSON,
-    GetGalleryViewDtoToJSON,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
+    PurchasePostRequestDtoFromJSON,
+    PurchasePostRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
     TipPostRequestDtoFromJSON,
@@ -54,20 +51,16 @@ export interface FindPostRequest {
     postId: string;
 }
 
-export interface GetGalleryViewRequest {
-    channelId: string;
-}
-
 export interface PinPostRequest {
     postId: string;
 }
 
 export interface RegisterPurchasePostRequest {
-    createPostAccessRequestDto: CreatePostAccessRequestDto;
+    purchasePostRequestDto: PurchasePostRequestDto;
 }
 
 export interface RegisterPurchasePostDataRequest {
-    createPostAccessRequestDto: CreatePostAccessRequestDto;
+    purchasePostRequestDto: PurchasePostRequestDto;
 }
 
 export interface RegisterTipPostRequest {
@@ -172,44 +165,6 @@ export class PostApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get gallery view
-     */
-    async getGalleryViewRaw(requestParameters: GetGalleryViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetGalleryViewDto>> {
-        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
-            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getGalleryView.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/post/gallery/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetGalleryViewDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get gallery view
-     */
-    async getGalleryView(requestParameters: GetGalleryViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetGalleryViewDto> {
-        const response = await this.getGalleryViewRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Pin a post
      */
     async pinPostRaw(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
@@ -251,8 +206,8 @@ export class PostApi extends runtime.BaseAPI {
      * Register purchase post payin
      */
     async registerPurchasePostRaw(requestParameters: RegisterPurchasePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
-        if (requestParameters.createPostAccessRequestDto === null || requestParameters.createPostAccessRequestDto === undefined) {
-            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling registerPurchasePost.');
+        if (requestParameters.purchasePostRequestDto === null || requestParameters.purchasePostRequestDto === undefined) {
+            throw new runtime.RequiredError('purchasePostRequestDto','Required parameter requestParameters.purchasePostRequestDto was null or undefined when calling registerPurchasePost.');
         }
 
         const queryParameters: any = {};
@@ -274,7 +229,7 @@ export class PostApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreatePostAccessRequestDtoToJSON(requestParameters.createPostAccessRequestDto),
+            body: PurchasePostRequestDtoToJSON(requestParameters.purchasePostRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
@@ -292,8 +247,8 @@ export class PostApi extends runtime.BaseAPI {
      * Get register purchase post data
      */
     async registerPurchasePostDataRaw(requestParameters: RegisterPurchasePostDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
-        if (requestParameters.createPostAccessRequestDto === null || requestParameters.createPostAccessRequestDto === undefined) {
-            throw new runtime.RequiredError('createPostAccessRequestDto','Required parameter requestParameters.createPostAccessRequestDto was null or undefined when calling registerPurchasePostData.');
+        if (requestParameters.purchasePostRequestDto === null || requestParameters.purchasePostRequestDto === undefined) {
+            throw new runtime.RequiredError('purchasePostRequestDto','Required parameter requestParameters.purchasePostRequestDto was null or undefined when calling registerPurchasePostData.');
         }
 
         const queryParameters: any = {};
@@ -315,7 +270,7 @@ export class PostApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreatePostAccessRequestDtoToJSON(requestParameters.createPostAccessRequestDto),
+            body: PurchasePostRequestDtoToJSON(requestParameters.purchasePostRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
@@ -495,7 +450,6 @@ export class PostApi extends runtime.BaseAPI {
 export const PostSecurityInfo = new Set<string>([
     "createPost",
     "findPost",
-    "getGalleryView",
     "pinPost",
     "registerPurchasePost",
     "registerPurchasePostData",

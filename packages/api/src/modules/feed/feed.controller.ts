@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
+import { Body, Controller, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -57,25 +57,6 @@ export class FeedController {
   ): Promise<GetFeedResponseDto> {
     return await this.feedService.getPostsForOwner(
       req.user.id,
-      false,
-      getPostsRequestDto,
-    )
-  }
-
-  @ApiEndpoint({
-    summary: 'Gets my messages',
-    responseStatus: HttpStatus.OK,
-    responseType: GetFeedResponseDto,
-    responseDesc: 'A list of messages was retrieved',
-  })
-  @Get('owner/messages')
-  async getMessagesForOwner(
-    @Req() req: RequestWithUser,
-    @Body() getPostsRequestDto: GetPostsRequestDto,
-  ): Promise<GetFeedResponseDto> {
-    return await this.feedService.getPostsForOwner(
-      req.user.id,
-      true,
       getPostsRequestDto,
     )
   }

@@ -33,7 +33,7 @@ models/AdminDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BillingDetailsDto.ts
-models/ChannelStatDto.ts
+models/ChannelMemberDto.ts
 models/CircleBankAddressDto.ts
 models/CircleBankDto.ts
 models/CircleCardDto.ts
@@ -59,7 +59,6 @@ models/CreateOrUpdateProfileRequestDto.ts
 models/CreatePassHolderRequestDto.ts
 models/CreatePassRequestDto.ts
 models/CreatePassResponseDto.ts
-models/CreatePostAccessRequestDto.ts
 models/CreatePostRequestDto.ts
 models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
@@ -71,9 +70,8 @@ models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetChannelRequestDto.ts
 models/GetChannelResponseDto.ts
-models/GetChannelSettingsResponseDto.ts
-models/GetChannelStatsRequestDto.ts
-models/GetChannelStatsResponseDto.ts
+models/GetChannelsRequestDto.ts
+models/GetChannelsResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts
@@ -99,13 +97,12 @@ models/GetFeedRequestDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
 models/GetFreeMesssagesResponseDto.ts
-models/GetGalleryViewDto.ts
 models/GetListMembersRequestDto.ts
 models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsRequestsDto.ts
 models/GetListsResponseDto.ts
-models/GetMessagesResponseDto.ts
+models/GetMessageResponseDto.ts
 models/GetNotificationSettingsResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
@@ -137,7 +134,6 @@ models/InitResetPasswordRequestDto.ts
 models/IsFollowingDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
-models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts
 models/MetamaskCircleUSDCEntryRequestDto.ts
@@ -155,6 +151,8 @@ models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/PostDto.ts
+models/PurchaseMessageRequestDto.ts
+models/PurchasePostRequestDto.ts
 models/RawFacebookDeletionRequestDto.ts
 models/RefreshAuthTokenRequestDto.ts
 models/RegisterPayinResponseDto.ts

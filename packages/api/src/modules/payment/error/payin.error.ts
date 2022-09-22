@@ -1,11 +1,13 @@
-export class NoPayinMethodError extends Error {
+import { BadRequestException } from '@nestjs/common'
+
+export class NoPayinMethodError extends BadRequestException {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, NoPayinMethodError.prototype)
   }
 }
 
-export class InvalidPayinRequestError extends Error {
+export class InvalidPayinRequestError extends BadRequestException {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, InvalidPayinRequestError.prototype)

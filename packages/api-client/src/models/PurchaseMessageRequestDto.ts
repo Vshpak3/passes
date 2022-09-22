@@ -23,57 +23,49 @@ import {
 /**
  * 
  * @export
- * @interface CreatePostAccessRequestDto
+ * @interface PurchaseMessageRequestDto
  */
-export interface CreatePostAccessRequestDto {
+export interface PurchaseMessageRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof CreatePostAccessRequestDto
+     * @memberof PurchaseMessageRequestDto
      */
-    postId: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreatePostAccessRequestDto
-     */
-    fromDM: boolean;
+    messageId: string;
     /**
      * 
      * @type {PayinMethodDto}
-     * @memberof CreatePostAccessRequestDto
+     * @memberof PurchaseMessageRequestDto
      */
     payinMethod?: PayinMethodDto;
 }
 
 /**
- * Check if a given object implements the CreatePostAccessRequestDto interface.
+ * Check if a given object implements the PurchaseMessageRequestDto interface.
  */
-export function instanceOfCreatePostAccessRequestDto(value: object): boolean {
+export function instanceOfPurchaseMessageRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "postId" in value;
-    isInstance = isInstance && "fromDM" in value;
+    isInstance = isInstance && "messageId" in value;
 
     return isInstance;
 }
 
-export function CreatePostAccessRequestDtoFromJSON(json: any): CreatePostAccessRequestDto {
-    return CreatePostAccessRequestDtoFromJSONTyped(json, false);
+export function PurchaseMessageRequestDtoFromJSON(json: any): PurchaseMessageRequestDto {
+    return PurchaseMessageRequestDtoFromJSONTyped(json, false);
 }
 
-export function CreatePostAccessRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreatePostAccessRequestDto {
+export function PurchaseMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PurchaseMessageRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'postId': json['postId'],
-        'fromDM': json['fromDM'],
+        'messageId': json['messageId'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
 
-export function CreatePostAccessRequestDtoToJSON(value?: CreatePostAccessRequestDto | null): any {
+export function PurchaseMessageRequestDtoToJSON(value?: PurchaseMessageRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -82,8 +74,7 @@ export function CreatePostAccessRequestDtoToJSON(value?: CreatePostAccessRequest
     }
     return {
         
-        'postId': value.postId,
-        'fromDM': value.fromDM,
+        'messageId': value.messageId,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }

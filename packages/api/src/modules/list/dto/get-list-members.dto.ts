@@ -54,6 +54,9 @@ export class GetListMembersResponseDto extends PageResponseDto {
 
     if (listMembers.length > 0) {
       this.lastId = listMembers[listMembers.length - 1].listMemberId
+      if (!this.lastId) {
+        this.lastId = listMembers[listMembers.length - 1].follow as string
+      }
       switch (orderType) {
         case ListMemberOrderTypeEnum.CREATED_AT:
           this.createdAt = listMembers[listMembers.length - 1].createdAt

@@ -20,9 +20,6 @@ export class PostEntity extends BaseEntity {
   @Property({ length: POST_TAGS_LENGTH })
   tags: string
 
-  @Property()
-  contentLength: number
-
   @Index()
   @Property({ default: 0 })
   numLikes: number
@@ -41,9 +38,6 @@ export class PostEntity extends BaseEntity {
 
   @Property()
   deletedAt?: Date
-
-  @Property()
-  isMessage: boolean
 
   @Property({ columnType: USD_AMOUNT_TYPE })
   price?: number

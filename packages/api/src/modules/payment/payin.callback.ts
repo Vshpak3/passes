@@ -7,6 +7,8 @@ import {
   MessagePayinCallbackInput,
   PayinCallbackInput,
   PayinCallbackOutput,
+  PurchaseMessageCallbackInput,
+  PurchaseMessageCallbackOutput,
   PurchasePostCallbackInput,
   PurchasePostCallbackOutput,
   RenewNftPassPayinCallbackInput,
@@ -47,10 +49,15 @@ export const functionMapping = (payinCallbackEnum: PayinCallbackEnum) => {
         failure: empty,
         creation: empty,
       }
-    case PayinCallbackEnum.PURCHASE_FEED_POST:
-    case PayinCallbackEnum.PURCHASE_DM_POST:
+    case PayinCallbackEnum.PURCHASE_POST:
       return {
         success: purchasePostSuccessfulCallback,
+        failure: empty,
+        creation: empty,
+      }
+    case PayinCallbackEnum.PURCHASE_DM:
+      return {
+        success: purchaseMessageSuccessfulCallback,
         failure: empty,
         creation: empty,
       }
@@ -79,12 +86,28 @@ async function tippedMessageCreationCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  input.tippedMessageId = await payService.messagesService.createTippedMessage(
+  let paidMessageId: string | undefined = undefined
+  if (input.contentIds.length > 0) {
+    paidMessageId = await payService.messagesService.createPaidMessage(
+      input.userId,
+      input.text,
+      input.contentIds,
+      input.price ? 0 : (input.price as number),
+    )
+  }
+
+  const messageId = await payService.messagesService.createMessage(
     input.userId,
-    input.sendMessageDto,
+    input.text,
+    input.channelId,
+    payin.amount,
+    true,
+    input.price,
+    paidMessageId,
   )
-  await payService.updateInputJSON(payin.id, input)
-  return { userId: input.userId }
+  input.messageId = messageId
+  await this.payService.updateInputJSON(payin.id, input)
+  return { messageId }
 }
 
 async function tippedMessageFailureCallback(
@@ -93,10 +116,8 @@ async function tippedMessageFailureCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  if (input.tippedMessageId) {
-    await payService.messagesService.deleteTippedMessage(input.tippedMessageId)
-  }
-  return { userId: input.userId }
+  await payService.messagesService.deleteMessage(input.messageId as string)
+  return { messageId: input.messageId as string }
 }
 
 async function tippedMessageSuccessCallback(
@@ -105,11 +126,13 @@ async function tippedMessageSuccessCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  await payService.messagesService.sendMessage(
+  await payService.messagesService.sendPendingMessage(
     input.userId,
-    input.sendMessageDto,
+    input.messageId as string,
+    input.channelId,
+    payin.amount,
   )
-  return { userId: input.userId }
+  return { messageId: input.messageId as string }
 }
 
 async function createNftPassCreationCallback(
@@ -185,6 +208,20 @@ async function purchasePostSuccessfulCallback(
   return { postId: input.postId }
 }
 
+async function purchaseMessageSuccessfulCallback(
+  payin: any,
+  input: PurchaseMessageCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchaseMessageCallbackOutput> {
+  await payService.messagesService.purchaseMessage(
+    input.messageId,
+    input.paidMessageId,
+    await payService.getTotalEarnings(payin.id),
+  )
+  return {}
+}
+
 async function tipPostSuccessfulCallback(
   payin: any,
   input: TipPostCallbackInput,
@@ -199,3 +236,44 @@ async function tipPostSuccessfulCallback(
   )
   return { postId: input.postId, amount: input.amount }
 }
+
+// try {
+//   await this.dbWriter.transaction(async (trx) => {
+//     await trx(MessagePostEntity.table)
+//       .insert(
+//         MessagePostEntity.toDict<MessagePostEntity>({
+//           user: channelMember.other_user_id,
+//           channel: sendMessageDto.channelId,
+//           post: sendMessageDto.attachments[0],
+//         }),
+//       )
+//       .onConflict(['user_id', 'post_id']) p
+//       .ignore()
+//     await trx
+//       .from(
+//         trx.raw('?? (??, ??)', [
+//           UserMessageContentEntity.table,
+//           'user_id',
+//           'channel_id',
+//           'content_id',
+//         ]),
+//       )
+//       .insert(function () {
+//         this.from(`${PostContentEntity.table}`)
+//           .where('post_id', sendMessageDto.attachments[0].length)
+//           .select(
+//             this.dbWriter.raw('? AS ??', [
+//               channelMember.other_user_id,
+//               'user_id',
+//             ]),
+//             this.dbWriter.raw('? AS ??', [
+//               sendMessageDto.channelId,
+//               'channel_id',
+//             ]),
+//             'content_id',
+//           )
+//       })
+//   })
+// } catch (err) {
+//   this.logger.info('resent post / content')
+// }

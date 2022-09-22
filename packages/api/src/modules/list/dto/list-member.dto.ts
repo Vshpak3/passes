@@ -23,8 +23,9 @@ export class ListMemberDto {
   @DtoProperty()
   displayName: string
 
+  @IsUUID()
   @DtoProperty({ optional: true })
-  isFollowing?: boolean
+  follow?: string
 
   @DtoProperty()
   createdAt: Date
@@ -37,7 +38,7 @@ export class ListMemberDto {
       this.displayName = listMember.display_name
       this.createdAt = listMember.created_at
 
-      this.isFollowing = !!listMember.follow
+      this.follow = listMember.follow
     }
   }
 }

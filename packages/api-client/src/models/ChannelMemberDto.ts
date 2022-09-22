@@ -16,87 +16,87 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetChannelResponseDto
+ * @interface ChannelMemberDto
  */
-export interface GetChannelResponseDto {
+export interface ChannelMemberDto {
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     channelId?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     streamChannelId: string;
     /**
      * 
      * @type {Date}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     recent: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     channelMemberId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     userId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     otherUserId: string;
     /**
      * 
      * @type {boolean}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     unlimitedMessages: boolean;
     /**
      * 
      * @type {number}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     tipSent: number;
     /**
      * 
      * @type {number}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     tipRecieved: number;
     /**
      * 
      * @type {number}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     unreadTip: number;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     otherUserUsername?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetChannelResponseDto
+     * @memberof ChannelMemberDto
      */
     otherUserDisplayName?: string;
 }
 
 /**
- * Check if a given object implements the GetChannelResponseDto interface.
+ * Check if a given object implements the ChannelMemberDto interface.
  */
-export function instanceOfGetChannelResponseDto(value: object): boolean {
+export function instanceOfChannelMemberDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "streamChannelId" in value;
     isInstance = isInstance && "recent" in value;
@@ -111,11 +111,11 @@ export function instanceOfGetChannelResponseDto(value: object): boolean {
     return isInstance;
 }
 
-export function GetChannelResponseDtoFromJSON(json: any): GetChannelResponseDto {
-    return GetChannelResponseDtoFromJSONTyped(json, false);
+export function ChannelMemberDtoFromJSON(json: any): ChannelMemberDto {
+    return ChannelMemberDtoFromJSONTyped(json, false);
 }
 
-export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetChannelResponseDto {
+export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ChannelMemberDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -136,7 +136,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null): any {
+export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
     if (value === undefined) {
         return undefined;
     }

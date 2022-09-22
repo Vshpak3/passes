@@ -63,7 +63,7 @@ export class UserController {
     responseDesc: 'A username was checked for validity',
     allowUnauthorizedRequest: true,
   })
-  @Get('/username/validate/:username')
+  @Get('username/validate/:username')
   async validateUsername(
     @Param('username') username: string,
   ): Promise<boolean> {
@@ -114,6 +114,17 @@ export class UserController {
   @Get('adult')
   async makeAdult(@Req() req: RequestWithUser): Promise<void> {
     await this.userService.makeAdult(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Get user id from username',
+    responseStatus: HttpStatus.OK,
+    responseType: String,
+    responseDesc: 'User id retreieved',
+  })
+  @Get('username/:username')
+  async getUserId(@Param('username') username: string): Promise<string> {
+    return this.userService.getIdFromUsername(username)
   }
 
   /*

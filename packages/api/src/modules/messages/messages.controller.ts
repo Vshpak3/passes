@@ -18,14 +18,12 @@ import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
 import {
   GetChannelRequestDto,
   GetChannelResponseDto,
+  GetChannelsRequestDto,
+  GetChannelsResponseDto,
 } from './dto/get-channel.dto'
-import { GetChannelSettingsResponseDto } from './dto/get-channel-settings.dto'
-import {
-  GetChannelStatsRequestDto,
-  GetChannelStatsResponseDto,
-} from './dto/get-channel-stat.dto'
 import { GetFreeMesssagesResponseDto } from './dto/get-free-message.dto'
-import { GetMessagesResponseDto } from './dto/get-messages.dto'
+import { GetMessageResponseDto } from './dto/get-message.dto'
+import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
@@ -71,37 +69,6 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Get pending messages',
-    responseStatus: HttpStatus.OK,
-    responseType: GetMessagesResponseDto,
-    responseDesc: 'Pending messages was retrieved',
-  })
-  @Get('pending')
-  async getPending(
-    @Req() req: RequestWithUser,
-  ): Promise<GetMessagesResponseDto> {
-    return new GetMessagesResponseDto(
-      await this.messagesService.getPendingTippedMessages(req.user.id),
-    )
-  }
-
-  @ApiEndpoint({
-    summary: 'Get completed tipped messages',
-    responseStatus: HttpStatus.OK,
-    responseType: GetMessagesResponseDto,
-    responseDesc: 'Completed tipped messages retrieved',
-  })
-  @Get('completed-tipped')
-  async getCompletedTippedMessages(
-    @Req() req: RequestWithUser,
-  ): Promise<GetMessagesResponseDto> {
-    const messages = await this.messagesService.getCompletedTippedMessages(
-      req.user.id,
-    )
-    return new GetMessagesResponseDto(messages)
-  }
-
-  @ApiEndpoint({
     summary: 'Batch message',
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
@@ -130,6 +97,23 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
+    summary: 'Gets or creates a channel',
+    responseStatus: HttpStatus.OK,
+    responseType: GetChannelResponseDto,
+    responseDesc: 'Channel was retrieved',
+  })
+  @Post('channel/create')
+  async getOrCreateChannel(
+    @Req() req: RequestWithUser,
+    @Body() getChannelRequestDto: GetChannelRequestDto,
+  ): Promise<GetChannelResponseDto> {
+    return await this.messagesService.createChannel(
+      req.user.id,
+      getChannelRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
     summary: 'Gets a channel',
     responseStatus: HttpStatus.OK,
     responseType: GetChannelResponseDto,
@@ -145,55 +129,19 @@ export class MessagesController {
       getChannelRequestDto,
     )
   }
-
-  @ApiEndpoint({
-    summary: 'Get channels stats',
-    responseStatus: HttpStatus.OK,
-    responseType: GetChannelStatsResponseDto,
-    responseDesc: 'Channel stats was retrieved ',
-  })
-  @Post('channel/stats')
-  async getChannelsStats(
-    @Req() req: RequestWithUser,
-    @Body() getChannelStatsRequestDto: GetChannelStatsRequestDto,
-  ): Promise<GetChannelStatsResponseDto> {
-    return new GetChannelStatsResponseDto(
-      await this.messagesService.getChannelsStats(
-        req.user.id,
-        getChannelStatsRequestDto,
-      ),
-    )
-  }
-
-  @ApiEndpoint({
-    summary: 'Get channels settings',
-    responseStatus: HttpStatus.OK,
-    responseType: GetChannelSettingsResponseDto,
-    responseDesc: 'Channel settings was retrieved ',
-  })
-  @Get('channel/settings/:channelId')
-  async getChannelSettings(
-    @Req() req: RequestWithUser,
-    @Param('channelId') channelId: string,
-  ): Promise<GetChannelSettingsResponseDto> {
-    return await this.messagesService.getChannelSettings(req.user.id, channelId)
-  }
-
   @ApiEndpoint({
     summary: 'Update channels settings',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Channel settings was updated ',
   })
-  @Patch('channel/settings/:channelId')
+  @Patch('channel/settings')
   async updateChannelSettings(
     @Req() req: RequestWithUser,
-    @Param('channelId') channelId: string,
     @Body() updateChannelSettingsDto: UpdateChannelSettingsRequestDto,
   ): Promise<void> {
     return await this.messagesService.updateChannelSettings(
       req.user.id,
-      channelId,
       updateChannelSettingsDto,
     )
   }
@@ -204,18 +152,13 @@ export class MessagesController {
     responseType: GetFreeMesssagesResponseDto,
     responseDesc: 'Channel settings was updated ',
   })
-  @Get('free-messages/:creatorId/:channelId')
+  @Get('free-messages/:channelId')
   async getFreeMessages(
     @Req() req: RequestWithUser,
-    @Param('creatorId') creatorId: string,
     @Param('channelId') channelId: string,
   ): Promise<GetFreeMesssagesResponseDto> {
     return new GetFreeMesssagesResponseDto(
-      await this.messagesService.checkFreeMessages(
-        req.user.id,
-        creatorId,
-        channelId,
-      ),
+      await this.messagesService.checkFreeMessages(req.user.id, channelId),
     )
   }
 
@@ -225,9 +168,12 @@ export class MessagesController {
     responseType: undefined,
     responseDesc: 'Status was set as read',
   })
-  @Post('read')
-  async readMessages(): Promise<void> {
-    return
+  @Get('read/:channelId')
+  async readMessages(
+    @Req() req: RequestWithUser,
+    @Param('channelId') channelId: string,
+  ): Promise<void> {
+    await this.messagesService.read(req.user.id, channelId)
   }
 
   @ApiEndpoint({
@@ -253,13 +199,98 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Get channels',
+    summary: 'Subscribe to receive new messages',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
+    responseDesc: 'Subscription to messages was made',
+  })
+  @Post('subscribe-channel')
+  async subscribeChannelUpdates(): Promise<void> {
+    return
+  }
+
+  @ApiEndpoint({
+    summary: 'Get channels',
+    responseStatus: HttpStatus.OK,
+    responseType: GetChannelsResponseDto,
     responseDesc: 'Channels were retrieved',
   })
   @Post('channels')
-  async getChannels(): Promise<void> {
-    return
+  async getChannels(
+    @Req() req: RequestWithUser,
+    @Body() getChannelsRequestDto: GetChannelsRequestDto,
+  ): Promise<GetChannelsResponseDto> {
+    return new GetChannelsResponseDto(
+      await this.messagesService.getChannels(
+        req.user.id,
+        getChannelsRequestDto,
+      ),
+      getChannelsRequestDto.orderType,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Register purchase message payin',
+    responseStatus: HttpStatus.CREATED,
+    responseType: RegisterPayinResponseDto,
+    responseDesc: 'Purcuase post payin was registered',
+  })
+  @Post('pay/purchase')
+  async registerPurchaseMessage(
+    @Req() req: RequestWithUser,
+    @Body() purchaseMessageRequestDto: PurchaseMessageRequestDto,
+  ): Promise<RegisterPayinResponseDto> {
+    return await this.messagesService.registerPurchaseMessage(
+      req.user.id,
+      purchaseMessageRequestDto.messageId,
+      purchaseMessageRequestDto.payinMethod,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get register purchase message data',
+    responseStatus: HttpStatus.OK,
+    responseType: PayinDataDto,
+    responseDesc: 'Data for register purchase message was retrieved',
+  })
+  @Post('pay/data/purchase')
+  async registerPurchaseMessageData(
+    @Req() req: RequestWithUser,
+    @Body() purchaseMessageRequestDto: PurchaseMessageRequestDto,
+  ): Promise<PayinDataDto> {
+    return await this.messagesService.registerPurchaseMessageData(
+      req.user.id,
+      purchaseMessageRequestDto.messageId,
+    )
+  }
+
+  // @ApiEndpoint({
+  //   summary: 'Get gallery view',
+  //   responseStatus: HttpStatus.OK,
+  //   responseType: GetGalleryViewDto,
+  //   responseDesc: 'Gallery view was retrieved',
+  // })
+  // @Get('gallery/:channelId')
+  // async getGalleryView(
+  //   @Req() req: RequestWithUser,
+  //   @Param('channelId') channelId: string,
+  // ): Promise<GetGalleryViewDto> {
+  //   return new GetGalleryViewDto(
+  //     await this.postService.getGalleryMessages(req.user.id, channelId),
+  //   )
+  // }
+
+  @ApiEndpoint({
+    summary: 'Get message',
+    responseStatus: HttpStatus.OK,
+    responseType: GetMessageResponseDto,
+    responseDesc: 'Gallery view was retrieved',
+  })
+  @Get('message/retreive/:messageId')
+  async getMessage(
+    @Req() req: RequestWithUser,
+    @Param('messageId') messageId: string,
+  ): Promise<GetMessageResponseDto> {
+    return await this.messagesService.getMessage(req.user.id, messageId)
   }
 }

@@ -218,6 +218,7 @@ export class PassService {
     userId: string,
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
+    const { creatorId, lastId, passId } = getPassHoldingsRequestDto
     let query = this.dbReader(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
@@ -241,27 +242,29 @@ export class PassService {
         `${UserEntity.table}.display_name as creator_display_name`,
       )
 
-    if (getPassHoldingsRequestDto.creatorId) {
-      query = query.andWhere(
-        `${UserEntity.table}.id`,
-        getPassHoldingsRequestDto.creatorId,
-      )
+    if (creatorId) {
+      query = query.andWhere(`${UserEntity.table}.id`, creatorId)
     }
 
-    if (getPassHoldingsRequestDto.passId) {
-      query = query.andWhere(
-        `${PassEntity.table}.id`,
-        getPassHoldingsRequestDto.passId,
-      )
+    if (passId) {
+      query = query.andWhere(`${PassEntity.table}.id`, passId)
     }
     query = createPassHolderQuery(query, getPassHoldingsRequestDto)
-    return (await query).map((pass) => new PassHolderDto(pass))
+    const passHolders = await query
+
+    const index = passHolders.findIndex(
+      (passHolder) => passHolder.id === lastId,
+    )
+    return passHolders
+      .slice(index + 1)
+      .map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async getPassHolders(
     userId: string,
     getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
+    const { holderId, lastId, passId } = getPassHoldersRequest
     let query = this.dbReader(PassHolderEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -293,20 +296,21 @@ export class PassService {
         `${UserEntity.table}.username as holder_username`,
         `${UserEntity.table}.display_name as holder_display_name`,
       ])
-    if (getPassHoldersRequest.passId) {
-      query = query.andWhere(
-        `${PassEntity.table}.id`,
-        getPassHoldersRequest.passId,
-      )
+    if (passId) {
+      query = query.andWhere(`${PassEntity.table}.id`, passId)
     }
-    if (getPassHoldersRequest.holderId) {
-      query = query.andWhere(
-        `${PassHolderEntity.table}.holder_id`,
-        getPassHoldersRequest.holderId,
-      )
+    if (holderId) {
+      query = query.andWhere(`${PassHolderEntity.table}.holder_id`, holderId)
     }
     query = createPassHolderQuery(query, getPassHoldersRequest)
-    return (await query).map((passHolder) => new PassHolderDto(passHolder))
+    const passHolders = await query
+
+    const index = passHolders.findIndex(
+      (passHolder) => passHolder.id === lastId,
+    )
+    return passHolders
+      .slice(index + 1)
+      .map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async findPassesByCreator(
@@ -322,16 +326,13 @@ export class PassService {
         { column: `${PassEntity.table}.created_at`, order: 'desc' },
         { column: `${PassEntity.table}.id`, order: 'desc' },
       ])
-    if (lastId) {
-      query = query.andWhere(`${PassEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
     }
     if (search) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
-      query = query.where(function () {
+      query = query.andWhere(function () {
         return this.whereILike(
           `${PassEntity.table}.title`,
           likeClause,
@@ -339,9 +340,9 @@ export class PassService {
       })
     }
 
-    return (await query.limit(MAX_PASSES_PER_REQUEST)).map(
-      (pass) => new PassDto(pass),
-    )
+    const passes = await query.limit(MAX_PASSES_PER_REQUEST)
+    const index = passes.findIndex((pass) => pass.id === lastId)
+    return passes.slice(index + 1).map((pass) => new PassDto(pass))
   }
 
   async getExternalPasses(
@@ -355,9 +356,6 @@ export class PassService {
         { column: `${PassEntity.table}.created_at`, order: 'desc' },
         { column: `${PassEntity.table}.id`, order: 'desc' },
       ])
-    if (lastId) {
-      query = query.andWhere(`${PassEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
     }
@@ -375,16 +373,17 @@ export class PassService {
     if (search) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
-      query = query.where(function () {
+      query = query.andWhere(function () {
         return this.whereILike(
           `${PassEntity.table}.title`,
           likeClause,
         ).orWhereILike(`${PassEntity.table}.description`, likeClause)
       })
     }
-    return (await query.limit(MAX_PASSES_PER_REQUEST)).map(
-      (pass) => new PassDto(pass),
-    )
+
+    const passes = await query.limit(MAX_PASSES_PER_REQUEST)
+    const index = passes.findIndex((pass) => pass.id === lastId)
+    return passes.slice(index + 1).map((pass) => new PassDto(pass))
   }
 
   async updatePass(

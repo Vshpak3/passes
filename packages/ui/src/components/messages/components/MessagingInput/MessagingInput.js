@@ -91,7 +91,6 @@ const MessagingInput = () => {
       async () =>
         await api.createPost({
           createPostRequestDto: {
-            isMessage: true,
             price: targetAcquired ? parseInt(postPrice) : 0,
             contentIds,
             passIds: [],

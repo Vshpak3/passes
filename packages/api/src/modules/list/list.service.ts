@@ -198,22 +198,18 @@ export class ListService {
         }
         break
     }
-    if (lastId) {
-      query = query.andWhere(
-        `${ListEntity.table}.id`,
-        orderToSymbol[order],
-        lastId,
-      )
-    }
     if (search) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
-      query = query.whereILike(`${ListEntity.table}.name`, likeClause)
+      query = query.andWhereILike(`${ListEntity.table}.name`, likeClause)
     }
 
     const lists = await query.limit(MAX_LISTS_PER_REQUEST)
-    await this.fillAutomatedLists(lists)
-    return lists.map((list) => new ListDto(list))
+    const index = lists.findIndex((list) => list.id === lastId)
+    const filteredLists = lists.slice(index + 1)
+
+    await this.fillAutomatedLists(filteredLists)
+    return filteredLists.map((list) => new ListDto(list))
   }
 
   // TODO: put cursor pagination for names and created_at
@@ -225,33 +221,7 @@ export class ListService {
     const type = await this.checkList(userId, listId, false)
     switch (type) {
       case ListTypeEnum.NORMAL:
-        return (
-          await createGetMemberQuery(
-            this.dbReader(ListMemberEntity.table)
-              .leftJoin(
-                UserEntity.table,
-                `${ListMemberEntity.table}.user_id`,
-                `${UserEntity.table}.id`,
-              )
-              .leftJoin(
-                FollowEntity.table,
-                `${ListMemberEntity.table}.user_id`,
-                `${FollowEntity.table}.follower_id`,
-              )
-              .select([
-                `${UserEntity.table}.id`,
-                `${UserEntity.table}.username`,
-                `${UserEntity.table}.display_name`,
-                `${FollowEntity.table}.id as follow`,
-              ])
-              .where(
-                `${ListMemberEntity.table}.list_id`,
-                getListMembersRequestDto.listId,
-              ),
-            getListMembersRequestDto,
-            ListMemberEntity.table,
-          ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
-        ).map((listMember) => new ListMemberDto(listMember))
+        return await this.getNormalListMembers(getListMembersRequestDto)
       case ListTypeEnum.FOLLOWERS:
         return await this.followService.searchFansByQuery(
           userId,
@@ -265,6 +235,45 @@ export class ListService {
       default:
         return []
     }
+  }
+
+  async getNormalListMembers(
+    getListMembersRequestDto: GetListMembersRequestDto,
+  ) {
+    const result = await createGetMemberQuery(
+      this.dbReader(ListMemberEntity.table)
+        .leftJoin(
+          UserEntity.table,
+          `${ListMemberEntity.table}.user_id`,
+          `${UserEntity.table}.id`,
+        )
+        .leftJoin(
+          FollowEntity.table,
+          `${ListMemberEntity.table}.user_id`,
+          `${FollowEntity.table}.follower_id`,
+        )
+        .select([
+          `${UserEntity.table}.id as user_id`,
+          `${UserEntity.table}.username`,
+          `${UserEntity.table}.display_name`,
+          `${FollowEntity.table}.id as follow`,
+          `${ListMemberEntity.table}.id`,
+        ])
+        .where(
+          `${ListMemberEntity.table}.list_id`,
+          getListMembersRequestDto.listId,
+        ),
+      getListMembersRequestDto,
+      ListMemberEntity.table,
+    ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
+
+    const index = result.findIndex(
+      (member) => member.id === getListMembersRequestDto.lastId,
+    )
+
+    return result.slice(index + 1).map((follow) => {
+      return new ListMemberDto(follow)
+    })
   }
 
   async checkList(

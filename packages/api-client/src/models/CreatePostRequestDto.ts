@@ -45,12 +45,6 @@ export interface CreatePostRequestDto {
     passIds: Array<string>;
     /**
      * 
-     * @type {boolean}
-     * @memberof CreatePostRequestDto
-     */
-    isMessage: boolean;
-    /**
-     * 
      * @type {number}
      * @memberof CreatePostRequestDto
      */
@@ -78,7 +72,6 @@ export function instanceOfCreatePostRequestDto(value: object): boolean {
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "passIds" in value;
-    isInstance = isInstance && "isMessage" in value;
 
     return isInstance;
 }
@@ -97,7 +90,6 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'tags': json['tags'],
         'contentIds': json['contentIds'],
         'passIds': json['passIds'],
-        'isMessage': json['isMessage'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
@@ -117,7 +109,6 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'tags': value.tags,
         'contentIds': value.contentIds,
         'passIds': value.passIds,
-        'isMessage': value.isMessage,
         'price': value.price,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),

@@ -1,8 +1,13 @@
+import { PickType } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { SendMessageRequestDto } from './send-message.dto'
 
-export class CreateBatchMessageRequestDto {
+export class CreateBatchMessageRequestDto extends PickType(
+  SendMessageRequestDto,
+  ['price', 'contentIds', 'text'],
+) {
   @IsUUID('all', { each: true })
   @DtoProperty()
   includeListIds: string[]
@@ -14,8 +19,4 @@ export class CreateBatchMessageRequestDto {
   @IsUUID('all', { each: true })
   @DtoProperty()
   passIds: string[]
-
-  @IsUUID()
-  @DtoProperty()
-  postId: string
 }

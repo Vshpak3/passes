@@ -1,42 +1,49 @@
 import { IsUUID, Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { CHANNEL_ID_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
+import { ContentDto } from '../../content/dto/content.dto'
+import { MESSAGE_LENGTH } from '../constants/schema'
 
 export class MessageDto {
   @IsUUID()
-  @DtoProperty({ optional: true })
-  messageId?: string
+  @DtoProperty()
+  messageId: string
+
+  @IsUUID()
+  @DtoProperty()
+  senderId: string
 
   @Length(1, MESSAGE_LENGTH)
   @DtoProperty()
   text: string
 
   @DtoProperty()
-  attachments: any[]
-
-  @Length(1, CHANNEL_ID_LENGTH)
-  @DtoProperty()
-  channelId: string
+  contents: ContentDto[]
 
   @IsUUID()
   @DtoProperty()
-  otherUserId: string
+  channelId: string
 
   @Min(0)
   @DtoProperty({ optional: true })
   tipAmount?: number
 
-  @DtoProperty({ optional: true })
-  reverted?: boolean
+  @DtoProperty()
+  paid: boolean
 
-  @DtoProperty({ optional: true })
-  created_at?: number
+  @DtoProperty()
+  pending: boolean
+
+  @DtoProperty()
+  reverted: boolean
+
+  @DtoProperty()
+  created_at: number
 
   constructor(message) {
     if (message) {
       this.text = message.text
-      this.attachments = JSON.parse(message.attachments_json)
+      this.senderId = message.senderId
       this.channelId = message.channel_id
       this.tipAmount = message.tip_amount
       this.created_at = message.created_at

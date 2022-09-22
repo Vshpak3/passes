@@ -2232,17 +2232,15 @@ export class PaymentService {
       // TODO: revoke post access for subscriptions
       switch (payin.callback) {
         case PayinCallbackEnum.TIPPED_MESSAGE:
-          await this.messagesService.revertTippedMessage(
-            payinInput.tippedMessageId,
-          )
+          await this.messagesService.revertMessage(payinInput.tippedMessageId)
           break
         case PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS:
         case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
         case PayinCallbackEnum.RENEW_NFT_PASS:
           await this.passService.revertPassHolder(payinOutput.passHolderId)
           break
-        case PayinCallbackEnum.PURCHASE_FEED_POST:
-        case PayinCallbackEnum.PURCHASE_DM_POST:
+        case PayinCallbackEnum.PURCHASE_POST:
+        case PayinCallbackEnum.PURCHASE_DM:
           await this.postService.revertPostPurchase(
             payinInput.postId,
             payin.id,

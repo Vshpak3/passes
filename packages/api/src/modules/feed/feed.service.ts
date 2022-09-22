@@ -64,7 +64,6 @@ export class FeedService {
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${PostEntity.table}.is_message`, false)
       .andWhere(function () {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
           `${PostEntity.table}.expires_at`,
@@ -86,14 +85,12 @@ export class FeedService {
       ])
       .limit(FEED_LIMIT)
 
-    if (lastId) {
-      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(postDtos)
+    const index = postDtos.findIndex((post) => post.postId === lastId)
+    return new GetFeedResponseDto(postDtos.slice(index + 1))
   }
 
   async getFeedForCreator(
@@ -139,7 +136,6 @@ export class FeedService {
       ])
       .where(`${PostEntity.table}.user_id`, creatorId)
       .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${PostEntity.table}.is_message`, false)
       .andWhere(function () {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
           `${PostEntity.table}.expires_at`,
@@ -160,19 +156,16 @@ export class FeedService {
       ])
       .limit(FEED_LIMIT)
 
-    if (lastId) {
-      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
-    }
     if (time) {
       query = query.andWhere(`${PostEntity.table}.created_at`, '<=', time)
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(postDtos)
+    const index = postDtos.findIndex((post) => post.postId === lastId)
+    return new GetFeedResponseDto(postDtos.slice(index + 1))
   }
 
   async getPostsForOwner(
     userId: string,
-    isMessage: boolean,
     getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
     const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
@@ -180,16 +173,11 @@ export class FeedService {
       .select([`${PostEntity.table}.*`])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
-      .andWhere(`${PostEntity.table}.is_message`, isMessage)
       .orderBy(`${PostEntity.table}.created_at`, 'desc')
       .orderBy([
         { column: `${PostEntity.table}.created_at`, order: 'desc' },
         { column: `${PostEntity.table}.id`, order: 'desc' },
       ])
-
-    if (lastId) {
-      query = query.andWhere(`${PostEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
     }
@@ -197,7 +185,8 @@ export class FeedService {
       query = query.whereNotNull('scheduled_at')
     }
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
+    const index = postDtos.findIndex((post) => post.postId === lastId)
     // filter out expired posts
-    return new GetFeedResponseDto(postDtos)
+    return new GetFeedResponseDto(postDtos.slice(index))
   }
 }

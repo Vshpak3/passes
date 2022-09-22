@@ -148,17 +148,16 @@ export class FollowService {
             creator: creatorId,
           }),
         )
-        const channel = await this.messagesService.getChannel(userId, {
-          username: '',
+        const channel = await this.messagesService.createChannel(userId, {
           userId: creatorId,
         })
-        await this.messagesService.sendMessage(creator.id, {
-          text: creatorSettings.welcomeMessage,
-          attachments: [],
-          channelId: channel.channelId,
-          otherUserId: userId,
-          tipAmount: 0,
-        })
+        await this.messagesService.createMessage(
+          creator.id,
+          creatorSettings.welcomeMessage,
+          channel.channelId,
+          0,
+          false,
+        )
       }
     } catch (err) {
       this.logger.error('failed to send welcome message', err)
@@ -191,7 +190,11 @@ export class FollowService {
 
     const followResult = await query
 
-    return followResult.map((follow) => {
+    const index = followResult.findIndex(
+      (follow) => follow.follow === searchFanDto.lastId,
+    )
+
+    return followResult.slice(index + 1).map((follow) => {
       return new ListMemberDto(follow)
     })
   }
@@ -210,6 +213,7 @@ export class FollowService {
         `${UserEntity.table}.id as user_id`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
+        `${FollowEntity.table}.id as follow`,
       )
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
 
@@ -220,8 +224,11 @@ export class FollowService {
     ).limit(MAX_FOLLOWERS_PER_REQUEST)
 
     const followResult = await query
+    const index = followResult.findIndex(
+      (follow) => follow.follow === searchFollowingDto.lastId,
+    )
 
-    return followResult.map((follow) => {
+    return followResult.slice(index + 1).map((follow) => {
       return new ListMemberDto(follow)
     })
   }

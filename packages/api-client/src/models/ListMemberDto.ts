@@ -45,10 +45,10 @@ export interface ListMemberDto {
     displayName: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof ListMemberDto
      */
-    isFollowing?: boolean;
+    follow?: string;
     /**
      * 
      * @type {Date}
@@ -85,7 +85,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
-        'isFollowing': !exists(json, 'isFollowing') ? undefined : json['isFollowing'],
+        'follow': !exists(json, 'follow') ? undefined : json['follow'],
         'createdAt': (new Date(json['createdAt'])),
     };
 }
@@ -103,7 +103,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
-        'isFollowing': value.isFollowing,
+        'follow': value.follow,
         'createdAt': (value.createdAt.toISOString()),
     };
 }

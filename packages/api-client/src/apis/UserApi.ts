@@ -31,6 +31,10 @@ import {
     UpdateUsernameRequestDtoToJSON,
 } from '../models';
 
+export interface GetUserIdRequest {
+    username: string;
+}
+
 export interface SearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
 }
@@ -117,6 +121,44 @@ export class UserApi extends runtime.BaseAPI {
      */
     async deactivateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.deactivateUserRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user id from username
+     */
+    async getUserIdRaw(requestParameters: GetUserIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.username === null || requestParameters.username === undefined) {
+            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling getUserId.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/user/username/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Get user id from username
+     */
+    async getUserId(requestParameters: GetUserIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.getUserIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -342,6 +384,7 @@ export class UserApi extends runtime.BaseAPI {
 export const UserSecurityInfo = new Set<string>([
     "activateUser",
     "deactivateUser",
+    "getUserId",
     "makeAdult",
     "makeCreator",
     "searchCreatorByUsername",

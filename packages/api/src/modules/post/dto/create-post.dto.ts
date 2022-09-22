@@ -20,9 +20,6 @@ export class CreatePostRequestDto {
   @DtoProperty()
   passIds: string[]
 
-  @DtoProperty()
-  isMessage: boolean
-
   @Min(0)
   @DtoProperty({ optional: true })
   price?: number

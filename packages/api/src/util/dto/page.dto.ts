@@ -24,8 +24,8 @@ export class PageRequestDto {
 }
 
 export const orderToSymbol = {
-  desc: '<',
-  asc: '>',
+  desc: '<=',
+  asc: '>=',
 }
 
 export class PageResponseDto {

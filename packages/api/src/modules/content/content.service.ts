@@ -141,9 +141,6 @@ export class ContentService {
         ContentEntity.toDict<ContentEntity>({ contentType: type }),
       )
     }
-    if (lastId) {
-      query = query.andWhere(`${ContentEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(
         `${ContentEntity.table}.created_at`,
@@ -151,12 +148,12 @@ export class ContentService {
         createdAt,
       )
     }
-    return (
-      await query.select([`${ContentEntity.table}.*`]).orderBy([
-        { column: `${ContentEntity.table}.created_at`, order: 'desc' },
-        { column: `${ContentEntity.table}.id`, order: 'desc' },
-      ])
-    ).map((content) => new ContentDto(content, ''))
+    const result = await query.select([`${ContentEntity.table}.*`]).orderBy([
+      { column: `${ContentEntity.table}.created_at`, order: 'desc' },
+      { column: `${ContentEntity.table}.id`, order: 'desc' },
+    ])
+    const index = result.findIndex((content) => content.id === lastId)
+    return result.slice(index + 1).map((content) => new ContentDto(content, ''))
   }
 
   async preSignContent(userId: string, contentType: ContentTypeEnum) {

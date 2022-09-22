@@ -9,3 +9,5 @@ export class GetMessagesResponseDto {
     this.messages = messages
   }
 }
+
+export class GetMessageResponseDto extends MessageDto {}

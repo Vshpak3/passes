@@ -88,9 +88,6 @@ export class FanWallService {
         { column: `${FanWallCommentEntity.table}.id`, order: 'desc' },
       ])
 
-    if (lastId) {
-      query = query.andWhere(`${FanWallCommentEntity.table}.id`, '<', lastId)
-    }
     if (createdAt) {
       query = query.andWhere(
         `${FanWallCommentEntity.table}.created_at`,
@@ -100,9 +97,12 @@ export class FanWallService {
     }
 
     const comments = await query.limit(MAX_FAN_WALL_COMMENTS_PER_REQUEST)
+    const index = comments.findIndex((comment) => comment.id === lastId)
 
     return new GetFanWallResponseDto(
-      comments.map((comment) => new FanWallCommentDto(comment)),
+      comments
+        .slice(index + 1)
+        .map((comment) => new FanWallCommentDto(comment)),
     )
   }
 

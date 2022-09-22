@@ -1,10 +1,10 @@
-import { MessagesApi, PostApi } from "@passes/api-client/apis"
+import { MessagesApi } from "@passes/api-client/apis"
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
 import { wrapApi } from "src/helpers"
 import { useUser } from "src/hooks"
-import { useSWRConfig } from "swr"
 
+// import { useSWRConfig } from "swr"
 import { MessagesChannel } from "../molecules/direct-messages/messages-channel"
 import { MessagesChannelList } from "../molecules/direct-messages/messages-channel-list"
 import { MessagesPriceDialog } from "../molecules/direct-messages/messages-price-dialog"
@@ -232,37 +232,37 @@ const DirectMessage = ({
     handleSubmit,
     register,
     formState: { errors },
-    getValues,
+    // getValues,
     watch,
     reset
   } = useForm({
     defaultValues: {}
   })
   const postPrice = watch("postPrice" as any) as unknown as number
-  const { mutate } = useSWRConfig()
+  // const { mutate } = useSWRConfig()
   const { user } = useUser()
 
   const onSubmit = async () => {
     // const contentApi = wrapApi(ContentApi)
 
-    const values = getValues()
-    const content = await Promise.all(
-      files.map(async (file) => {
-        // const url = await uploadFile(file, "uploads")
-        // let contentType = file.type
-        // if (file.type.startsWith("image/")) contentType = "image/jpeg"
-        // if (file.type.startsWith("video/")) contentType = "video/mp4"
-        // const content = await contentApi.create({
-        //   CreateContentRequestDto: {
-        //     url,
-        //     contentType
-        //   }
-        // })
-        // return content.id
-        return file
-      })
-    )
-    const { postId } = await createPost({ ...values, content })
+    // const values = getValues()
+    // const content = await Promise.all(
+    //   files.map(async (file) => {
+    //     // const url = await uploadFile(file, "uploads")
+    //     // let contentType = file.type
+    //     // if (file.type.startsWith("image/")) contentType = "image/jpeg"
+    //     // if (file.type.startsWith("video/")) contentType = "video/mp4"
+    //     // const content = await contentApi.create({
+    //     //   CreateContentRequestDto: {
+    //     //     url,
+    //     //     contentType
+    //     //   }
+    //     // })
+    //     // return content.id
+    //     return file
+    //   })
+    // )
+    // const { postId } = await createPost({ ...values, content })
     const messagesApi = wrapApi(MessagesApi)
 
     await messagesApi.massSend({
@@ -271,49 +271,50 @@ const DirectMessage = ({
         exlcudeListIds: [],
         // TODO: get lists and use their Ids
         passIds: [],
-        postId
+        contentIds: [],
+        text: "",
+        price: 0
       }
     })
     reset()
   }
 
-  const createPost = async (values: any) => {
-    const api = wrapApi(PostApi)
-    const result = await mutate(
-      ["/post/creator/", user?.username],
-      async () =>
-        await api.createPost({
-          createPostRequestDto: {
-            isMessage: true,
-            price: targetAcquired ? postPrice : 0,
-            contentIds: [],
-            passIds: [],
-            tags: [],
-            text: values.text
-          }
-        }),
-      {
-        populateCache: (post, previousPosts) => {
-          if (!previousPosts)
-            return {
-              count: 1,
-              cursor: user?.username,
-              posts: [post]
-            }
-          else
-            return {
-              count: previousPosts.count + 1,
-              cursor: previousPosts.cursor,
-              posts: [post, ...previousPosts.posts]
-            }
-        },
-        // Since the API already gives us the updated information,
-        // we don't need to revalidate here.
-        revalidate: false
-      }
-    )
-    return result.posts[0]
-  }
+  // const createPost = async (values: any) => {
+  //   const api = wrapApi(PostApi)
+  //   const result = await mutate(
+  //     ["/post/creator/", user?.username],
+  //     async () =>
+  //       await api.createPost({
+  //         createPostRequestDto: {
+  //           price: targetAcquired ? postPrice : 0,
+  //           contentIds: [],
+  //           passIds: [],
+  //           tags: [],
+  //           text: values.text
+  //         }
+  //       }),
+  //     {
+  //       populateCache: (post, previousPosts) => {
+  //         if (!previousPosts)
+  //           return {
+  //             count: 1,
+  //             cursor: user?.username,
+  //             posts: [post]
+  //           }
+  //         else
+  //           return {
+  //             count: previousPosts.count + 1,
+  //             cursor: previousPosts.cursor,
+  //             posts: [post, ...previousPosts.posts]
+  //           }
+  //       },
+  //       // Since the API already gives us the updated information,
+  //       // we don't need to revalidate here.
+  //       revalidate: false
+  //     }
+  //   )
+  //   return result.posts[0]
+  // }
 
   const onMediaHeaderChange = (event: any) => {
     if (typeof event !== "string") return onFileInputChange(event)

@@ -14,7 +14,7 @@ const useChat = (username: string) => {
 
       const response = await api.getChannel({
         getChannelRequestDto: {
-          username: username
+          userId: username
         }
       })
       return response.channelId

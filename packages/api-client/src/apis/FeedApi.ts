@@ -39,10 +39,6 @@ export interface GetFeedForCreatorRequest {
     getProfileFeedRequestDto: GetProfileFeedRequestDto;
 }
 
-export interface GetMessagesForOwnerRequest {
-    getPostsRequestDto: GetPostsRequestDto;
-}
-
 export interface GetPostsForOwnerRequest {
     getPostsRequestDto: GetPostsRequestDto;
 }
@@ -135,47 +131,6 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets my messages
-     */
-    async getMessagesForOwnerRaw(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getMessagesForOwner.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/feed/owner/messages`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets my messages
-     */
-    async getMessagesForOwner(requestParameters: GetMessagesForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
-        const response = await this.getMessagesForOwnerRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Gets my posts
      */
     async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
@@ -221,6 +176,5 @@ export class FeedApi extends runtime.BaseAPI {
 export const FeedSecurityInfo = new Set<string>([
     "getFeed",
     "getFeedForCreator",
-    "getMessagesForOwner",
     "getPostsForOwner",
 ])

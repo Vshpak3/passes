@@ -19,9 +19,8 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
-import { CreatePostAccessRequestDto } from './dto/create-post-access.dto'
-import { GetGalleryViewDto } from './dto/get-gallery-view.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
+import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostService } from './post.service'
@@ -97,13 +96,12 @@ export class PostController {
   @Post('pay/purchase')
   async registerPurchasePost(
     @Req() req: RequestWithUser,
-    @Body() createPostAccessDto: CreatePostAccessRequestDto,
+    @Body() purchasePostRequestDto: PurchasePostRequestDto,
   ): Promise<RegisterPayinResponseDto> {
     return await this.postService.registerPurchasePost(
       req.user.id,
-      createPostAccessDto.postId,
-      createPostAccessDto.fromDM,
-      createPostAccessDto.payinMethod,
+      purchasePostRequestDto.postId,
+      purchasePostRequestDto.payinMethod,
     )
   }
 
@@ -116,11 +114,11 @@ export class PostController {
   @Post('pay/data/purchase')
   async registerPurchasePostData(
     @Req() req: RequestWithUser,
-    @Body() createPostAccessDto: CreatePostAccessRequestDto,
+    @Body() purchasePostRequestDto: PurchasePostRequestDto,
   ): Promise<PayinDataDto> {
     return await this.postService.registerPurchasePostData(
       req.user.id,
-      createPostAccessDto.postId,
+      purchasePostRequestDto.postId,
     )
   }
 
@@ -169,23 +167,5 @@ export class PostController {
     @Param('postId') postId: string,
   ): Promise<boolean> {
     return await this.postService.unpinPost(req.user.id, postId)
-  }
-
-  // returns all post-messages, paid or unpaid
-  // filter in FE
-  @ApiEndpoint({
-    summary: 'Get gallery view',
-    responseStatus: HttpStatus.OK,
-    responseType: GetGalleryViewDto,
-    responseDesc: 'Gallery view was retrieved',
-  })
-  @Get('gallery/:channelId')
-  async getGalleryView(
-    @Req() req: RequestWithUser,
-    @Param('channelId') channelId: string,
-  ): Promise<GetGalleryViewDto> {
-    return new GetGalleryViewDto(
-      await this.postService.getGalleryMessages(req.user.id, channelId),
-    )
   }
 }

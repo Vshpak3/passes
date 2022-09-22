@@ -53,6 +53,7 @@ export class CircleCardDto {
       this.expMonth = card.exp_month
       this.expYear = card.exp_year
       this.active = card.active
+      this.name = card.name
     }
   }
 }

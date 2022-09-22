@@ -1,6 +1,6 @@
-export class ChannelMissingMembersError extends Error {
+export class ChannelMissingError extends Error {
   constructor(msg: string) {
     super(msg)
-    Object.setPrototypeOf(this, ChannelMissingMembersError.prototype)
+    Object.setPrototypeOf(this, ChannelMissingError.prototype)
   }
 }

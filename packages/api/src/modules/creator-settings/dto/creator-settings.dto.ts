@@ -31,7 +31,7 @@ export class CreatorSettingsDto {
       this.minimumTipAmount = creatorSettings.minimum_tip_amount
       this.payoutFrequency = creatorSettings.payout_frequency
       this.welcomeMessage = creatorSettings.welcome_message
-      this.allowCommentsOnPosts = creatorSettings.allow_comments_on_post
+      this.allowCommentsOnPosts = creatorSettings.allow_comments_on_posts
       this.showFollowerCount = creatorSettings.show_follower_count
       this.showMediaCount = creatorSettings.show_media_count
     }

@@ -11,7 +11,7 @@ export function createGetMemberQuery(
   getListMembersRequestDto: GetListMembersRequestDto | SearchFollowRequestDto,
   memberTable: string,
 ): Knex.QueryBuilder {
-  const { username, displayName, orderType, lastId, createdAt, order, search } =
+  const { username, displayName, orderType, createdAt, order, search } =
     getListMembersRequestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
@@ -54,14 +54,11 @@ export function createGetMemberQuery(
       }
       break
   }
-  if (lastId) {
-    query = query.andWhere(`${memberTable}.id`, orderToSymbol[order], lastId)
-  }
 
   if (search) {
     // const strippedSearch = search.replace(/\W/g, '')
     const likeClause = `%${search}%`
-    query = query.where(function () {
+    query = query.andWhere(function () {
       return this.whereILike(
         `${UserEntity.table}.username`,
         likeClause,
