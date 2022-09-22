@@ -23,7 +23,7 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
   }, [month, year])
 
   return (
-    <div className="select-none px-[15px] md:px-[30px]">
+    <div className="mb-[52px] select-none px-[15px] md:px-[30px]">
       <div className="mb-[15px] flex items-center justify-evenly">
         <div className="w-[14.2%] pr-[12px] text-end">Sun</div>
         <div className="w-[14.2%] pr-[12px] text-end">Mon</div>

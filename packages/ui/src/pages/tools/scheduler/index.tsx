@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import Calendar from "src/components/molecules/scheduler/Calendar"
+import EventTable from "src/components/molecules/scheduler/EventTable"
 import SchedulerHeader from "src/components/molecules/scheduler/SchedulerHeader"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -23,6 +24,7 @@ const SchedulerPage = () => {
           availableFrom={{ month: 6, year: 2021 }}
         />
         <Calendar month={month} year={year} />
+        <EventTable />
       </div>
     </CreatorOnlyWrapper>
   )

@@ -23,6 +23,7 @@ module.exports = {
           "blue-100": "#598BF4",
           "blue-200": "#b3bee799",
           "purple-100": "#B53BEC",
+          "purple-200": "#1A131C",
           "pink-100": "#C943A8",
           "dark-100": "#28282C",
           "dark-200": "#2C282D",
@@ -38,7 +39,8 @@ module.exports = {
           "gray-700": "#34343A",
           "white-100": "#ffffff",
           green: "#71CB6F",
-          red: "#ED6B66"
+          red: "#ED6B66",
+          yellow: "#C9BC43"
         }
       },
       fontFamily: {
