@@ -194,14 +194,14 @@ export class ContentService {
       .whereIn('id', contentIds)
       .andWhere('user_id', userId)
       .select('id')
-
     const filteredContentIds = new Set(
       filteredContent.map((content) => content.id),
     )
-    for (const contentId in contentIds) {
+
+    contentIds.forEach((contentId) => {
       if (!filteredContentIds.has(contentId)) {
         throw new NoContentError('cant find content for user')
       }
-    }
+    })
   }
 }

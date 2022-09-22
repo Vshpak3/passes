@@ -29,10 +29,11 @@ export const MessagesVaultDialog = ({
   } = useVaultGallery()
   const pushToMessages = () => {
     setContentIds(selectedItems)
+    setHasVault(false)
   }
   return (
     <Dialog
-      className="flex h-full w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"
+      className="flex h-[90vh] w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"
       open={hasVault}
       title={
         <div className="mt-[180px]">
@@ -55,14 +56,14 @@ export const MessagesVaultDialog = ({
               <button
                 className="rounded-full bg-passes-secondary-color py-2 px-6"
                 type="button"
-                onClick={() => pushToMessages()}
+                onClick={() => setHasVault(false)}
               >
                 Cancel
               </button>
               <button
                 className="rounded-full bg-passes-secondary-color py-2 px-6"
                 type="button"
-                onClick={() => setHasVault(false)}
+                onClick={() => pushToMessages()}
               >
                 Use selected media
               </button>

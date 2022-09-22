@@ -12,7 +12,12 @@ import {
   MediaFile
 } from "src/components/pages/profile/main-content/new-post/media"
 import { SendMessageButton } from "src/components/payment/send-message"
-import { classNames, formatCurrency, wrapApi } from "src/helpers"
+import {
+  classNames,
+  ContentService,
+  formatCurrency,
+  wrapApi
+} from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
@@ -43,7 +48,6 @@ const MessagingInput = () => {
     register,
     formState: { errors },
     setValue,
-    getValues,
     watch
   } = useForm({
     defaultValues: {}
@@ -56,35 +60,22 @@ const MessagingInput = () => {
 
   const onSubmit = async () => {
     if (text?.length < 1) return null
-    if (files.length > 0) {
+    if (files.length > 0 || contentIds.length > 0) {
       await onSubmitWithAttachment()
       if (isCreator && files.length > 0) {
-        submitData()
+        await submitData()
+        await submit()
         setValue("text", "", { shouldValidate: true })
       } else submit()
     } else submit()
   }
 
   const onSubmitWithAttachment = async () => {
-    // const contentApi = wrapApi(ContentApi)
-    const values = getValues()
-    const content = await Promise.all(
-      files.map(async (file) => {
-        // const url = await uploadFile(file, "uploads")
-        // let contentType = file.type
-        // if (file.type.startsWith("image/")) contentType = "image/jpeg"
-        // if (file.type.startsWith("video/")) contentType = "video/mp4"
-        // const content = await contentApi.create({
-        //   CreateContentRequestDto: {
-        //     url,
-        //     contentType
-        //   }
-        // })
-        // return content.id
-        return file
-      })
-    )
-    const { postId } = await createPost({ ...values, content })
+    const content = await new ContentService().uploadContent(files)
+    const uploadedContentIds = content.map((c) => c.id)
+    const { postId } = await createPost({
+      contentIds: [...contentIds, ...uploadedContentIds]
+    })
     const uploadedAttachment = [postId]
     setAttachments(uploadedAttachment)
     setFiles([])
@@ -93,8 +84,7 @@ const MessagingInput = () => {
     // reset()
   }
 
-  const createPost = async (values) => {
-    console.log(values)
+  const createPost = async ({ contentIds }) => {
     const api = wrapApi(PostApi)
     const result = await mutate(
       [`/post/creator/`, user?.username],
@@ -103,7 +93,7 @@ const MessagingInput = () => {
           createPostRequestDto: {
             isMessage: true,
             price: targetAcquired ? parseInt(postPrice) : 0,
-            contentIds: ["be06dd06-303f-11ed-ae7a-0242ac120002"],
+            contentIds,
             passIds: [],
             tags: [],
             text
@@ -136,7 +126,8 @@ const MessagingInput = () => {
     return await api.sendMessage({
       sendMessageRequestDto: {
         text,
-        attachments: [],
+        attachments,
+        otherUserId: members[0]?.user.id,
         channelId,
         tipAmount: 0,
         payinMethod
@@ -149,6 +140,7 @@ const MessagingInput = () => {
       sendMessageRequestDto: {
         text,
         attachments,
+        otherUserId: members[0]?.user.id,
         channelId,
         tipAmount: 0,
         payinMethod
@@ -605,7 +597,7 @@ const MessagingInput = () => {
                       <button
                         className="rounded-full bg-passes-secondary-color py-2 px-6"
                         type="button"
-                        onClick={() => setContentIds(false)}
+                        onClick={() => onTargetAcquired()}
                       >
                         Cancel
                       </button>

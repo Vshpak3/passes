@@ -191,30 +191,26 @@ export const usePay = (
     }
   }
 
-  const submitData = () => {
-    setLoading(true)
+  const submitData = async () => {
     if (phantomProvider === undefined) {
       const provider = getPhantomProvider()
       if (provider !== undefined) {
         setPhantomProvider(provider)
       }
     }
-    const fetchData = async () => {
-      if (metamaskProvider === undefined) {
-        const provider = await detectEthereumProvider()
-        if (provider !== undefined) {
-          setMetamaskProvider(provider as EthereumProvider)
-        }
+    // const fetchData = async () => {
+    if (metamaskProvider === undefined) {
+      const provider = await detectEthereumProvider()
+      if (provider !== undefined) {
+        setMetamaskProvider(provider as EthereumProvider)
       }
-
-      const { amount, blocked } = await registerPaymentDataFunc()
-      setAmountUSD(amount)
-      setBlocked(blocked)
-      setLoading(false)
     }
-    fetchData()
-    if (amountUSD > 0) submit()
-    if (!blocked) submit()
+
+    const { amount, blocked } = await registerPaymentDataFunc()
+    setAmountUSD(amount)
+    setBlocked(blocked)
+    // }
+    // fetchData()
   }
   // TODO: Patrick ; registerPaymentDataFunc() is called on every render and we
   //  submit too many times the message, by removing registerPaymentDataFunc fixes for me but it may lead to other problems, please check this

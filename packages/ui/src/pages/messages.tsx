@@ -15,7 +15,7 @@ const Messages = () => {
     if (typeof _contentIds === "string") contentIds = [_contentIds]
     else contentIds = _contentIds
   }
-  const [newMessage, setNewMessage] = useState(contentIds?.length > 0)
+  const [newMessage, setNewMessage] = useState(contentIds[0].length > 0)
 
   return (
     // <AuthOnlyWrapper isPage>

@@ -64,7 +64,7 @@ const VaultNavigation = ({
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
         </div>
-        {fromMessages && (
+        {!fromMessages && (
           <div className="align-center items-align flex justify-center">
             {selectedItems && selectedItems?.length > 0 && (
               <>

@@ -438,7 +438,7 @@ export class MessagesService {
       .select('id')
       .first()
     if (!user.is_creator && !follow) {
-      return BlockedReasonEnum.DOES_NOT_FOLLOW
+      return BlockedReasonEnum.USER_BLOCKED
     }
 
     // neither user can be blocked

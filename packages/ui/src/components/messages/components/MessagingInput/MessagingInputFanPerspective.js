@@ -1,5 +1,5 @@
 import { MessagesApi } from "@passes/api-client/apis"
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { SendMessageButton } from "src/components/payment/send-message"
@@ -24,16 +24,19 @@ const MessagingInputFanPerspective = () => {
   const tip = watch("tipAmount")
   const payinMethod = undefined
   const api = wrapApi(MessagesApi)
+  // On initiate call submitData to check for tip, also a useffect when tip changes check first submitData
+  // make sure to have button disabled when checking submit data tip
+
+  useEffect(() => {
+    if (channelId) submitData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [channelId])
 
   const onSubmit = async () => {
-    if (tip > 0 && text?.length > 0 && freeMessages !== 0) {
-      submitData()
-      setValue("text", "", { shouldValidate: true })
-    } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) return null
-    else {
+    if (text?.length > 0 && freeMessages !== 0) {
       submit()
       setValue("text", "", { shouldValidate: true })
-    }
+    } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) return null
   }
 
   const registerMessage = async () => {
@@ -42,9 +45,8 @@ const MessagingInputFanPerspective = () => {
         text,
         attachments: [],
         channelId,
-        tipAmount: 0,
-        // tipAmount: tip.length > 0 ? parseInt(tip) : 0,
-        // TODO: fix sending tip when payin method is solved. Meaning having cc registered
+        otherUserId: members[0]?.user.id,
+        tipAmount: tip === null ? 0 : tip === "" ? 0 : parseInt(tip),
         payinMethod
       }
     })
@@ -53,10 +55,11 @@ const MessagingInputFanPerspective = () => {
   const registerMessageData = async () => {
     return await api.sendMessageData({
       sendMessageRequestDto: {
-        text,
+        text: "test",
+        otherUserId: members[0]?.user.id,
         attachments: [],
         channelId,
-        tipAmount: parseInt(tip ?? 0),
+        tipAmount: tip === null ? 0 : tip === "" ? 0 : parseInt(tip),
         payinMethod
       }
     })
