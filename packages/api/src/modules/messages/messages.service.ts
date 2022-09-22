@@ -453,7 +453,7 @@ export class MessagesService {
       .select('id')
       .first()
     if (!user.is_creator && !follow) {
-      return undefined
+      return BlockedReasonEnum.DOES_NOT_FOLLOW
     }
 
     // neither user can be blocked
@@ -469,11 +469,10 @@ export class MessagesService {
       )
       .select('minimum_tip_amount')
       .first()
-    if (
-      !creatorSettings ||
-      !creatorSettings.minimum_tip_amount ||
-      tipAmount >= creatorSettings.minimum_tip_amount
-    ) {
+    if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
+      return undefined
+    }
+    if (tipAmount >= creatorSettings.minimum_tip_amount) {
       return BlockedReasonEnum.INSUFFICIENT_TIP
     }
     const freeMessages = await this.checkFreeMessages(

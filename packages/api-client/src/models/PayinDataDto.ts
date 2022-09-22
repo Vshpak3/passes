@@ -52,7 +52,8 @@ export const PayinDataDtoBlockedEnum = {
     AlreadyOwnsPass: 'already owns pass',
     UserBlocked: 'user blocked',
     InsufficientTip: 'insufficient tip',
-    InsufficientSupply: 'insufficient supply'
+    InsufficientSupply: 'insufficient supply',
+    DoesNotFollow: 'does not follow'
 } as const;
 export type PayinDataDtoBlockedEnum = typeof PayinDataDtoBlockedEnum[keyof typeof PayinDataDtoBlockedEnum];
 

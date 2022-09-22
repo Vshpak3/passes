@@ -8,4 +8,5 @@ export enum BlockedReasonEnum {
   USER_BLOCKED = 'user blocked',
   INSUFFICIENT_TIP = 'insufficient tip',
   INSUFFICIENT_SUPPLY = 'insufficient supply',
+  DOES_NOT_FOLLOW = 'does not follow',
 }
