@@ -8,6 +8,6 @@ module.exports = {
   updateEmailPreferenceUrl: 'https://passes.com',
   termsUrl: 'https://passes.com/terms',
   privacyUrl: 'https://passes.com/privacy',
-  supportEmail: 'support@passes.com'
+  supportEmail: 'support@passes.com',
   year: new Date().getFullYear(),
 }
