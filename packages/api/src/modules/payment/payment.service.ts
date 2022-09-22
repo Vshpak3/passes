@@ -2239,7 +2239,7 @@ export class PaymentService {
         case PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS:
         case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
         case PayinCallbackEnum.RENEW_NFT_PASS:
-          await this.passService.revertPass(payinOutput.passHolderId)
+          await this.passService.revertPassHolder(payinOutput.passHolderId)
           break
         case PayinCallbackEnum.PURCHASE_FEED_POST:
         case PayinCallbackEnum.PURCHASE_DM_POST:

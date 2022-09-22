@@ -24,6 +24,7 @@ import type {
   GetCreatorFeeResponseDto,
   ImpersonateUserRequestDto,
   SetCreatorFeeRequestDto,
+  UpdateChargebackRequestDto,
   UpdateExternalPassRequestDto,
   UserExternalPassRequestDto,
 } from '../models';
@@ -46,6 +47,8 @@ import {
     ImpersonateUserRequestDtoToJSON,
     SetCreatorFeeRequestDtoFromJSON,
     SetCreatorFeeRequestDtoToJSON,
+    UpdateChargebackRequestDtoFromJSON,
+    UpdateChargebackRequestDtoToJSON,
     UpdateExternalPassRequestDtoFromJSON,
     UpdateExternalPassRequestDtoToJSON,
     UserExternalPassRequestDtoFromJSON,
@@ -84,12 +87,20 @@ export interface GetCreatorFeeRequest {
     getCreatorFeeRequestDto: GetCreatorFeeRequestDto;
 }
 
+export interface GetUnprocessChargebacksRequest {
+    adminDto: AdminDto;
+}
+
 export interface ImpersonateUserRequest {
     impersonateUserRequestDto: ImpersonateUserRequestDto;
 }
 
 export interface SetCreatorFeeRequest {
     setCreatorFeeRequestDto: SetCreatorFeeRequestDto;
+}
+
+export interface UpdateChargebackRequest {
+    updateChargebackRequestDto: UpdateChargebackRequestDto;
 }
 
 export interface UpdateExternalPassRequest {
@@ -429,6 +440,46 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get unprocessed chargebacks
+     */
+    async getUnprocessChargebacksRaw(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling getUnprocessChargebacks.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/chargeback/unprocessed`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Get unprocessed chargebacks
+     */
+    async getUnprocessChargebacks(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getUnprocessChargebacksRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Impersonates a user
      */
     async impersonateUserRaw(requestParameters: ImpersonateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
@@ -511,6 +562,46 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Update chargeback
+     */
+    async updateChargebackRaw(requestParameters: UpdateChargebackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.updateChargebackRequestDto === null || requestParameters.updateChargebackRequestDto === undefined) {
+            throw new runtime.RequiredError('updateChargebackRequestDto','Required parameter requestParameters.updateChargebackRequestDto was null or undefined when calling updateChargeback.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/admin/chargeback/update`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateChargebackRequestDtoToJSON(requestParameters.updateChargebackRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update chargeback
+     */
+    async updateChargeback(requestParameters: UpdateChargebackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateChargebackRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Update external pass
      */
     async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
@@ -562,7 +653,9 @@ export const AdminSecurityInfo = new Set<string>([
     "deleteUserExternalPass",
     "flagAsAdult",
     "getCreatorFee",
+    "getUnprocessChargebacks",
     "impersonateUser",
     "setCreatorFee",
+    "updateChargeback",
     "updateExternalPass",
 ])

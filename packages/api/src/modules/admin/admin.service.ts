@@ -17,6 +17,7 @@ import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { PassTypeEnum } from '../pass/enum/pass.enum'
+import { CircleChargebackEntity } from '../payment/entities/circle-chargeback.entity'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { PaymentService } from '../payment/payment.service'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -28,6 +29,7 @@ import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
 import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
+import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
@@ -258,5 +260,29 @@ export class AdminService {
       )
       .delete()
     return updated === 1
+  }
+
+  async getChargebacks() {
+    return await this.dbReader(CircleChargebackEntity.table)
+      .where(
+        CircleChargebackEntity.toDict<CircleChargebackEntity>({
+          disputed: null,
+        }),
+      )
+      .select('*')
+  }
+
+  async updateChargeback(
+    updateChargebackRequestDto: UpdateChargebackRequestDto,
+  ) {
+    if (updateChargebackRequestDto.disputed) {
+      await this.paymentService.disputedChargeback(
+        updateChargebackRequestDto.circleChargebackId,
+      )
+    } else {
+      await this.paymentService.undisputedChargeback(
+        updateChargebackRequestDto.circleChargebackId,
+      )
+    }
   }
 }

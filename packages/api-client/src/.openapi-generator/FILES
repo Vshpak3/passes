@@ -176,6 +176,7 @@ models/SubscriptionDto.ts
 models/TipPostRequestDto.ts
 models/TokenResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
+models/UpdateChargebackRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts
 models/UpdateDisplayNameRequestDto.ts
 models/UpdateExternalPassRequestDto.ts

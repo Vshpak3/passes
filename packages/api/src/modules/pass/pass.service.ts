@@ -30,6 +30,8 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
+import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -518,7 +520,7 @@ export class PassService {
     return expiresAt
   }
 
-  async revertPass(passHolderId: string) {
+  async revertPassHolder(passHolderId: string) {
     const passHolder = await this.dbReader(PassHolderEntity.table)
       .join(
         PassEntity.table,
@@ -543,12 +545,33 @@ export class PassService {
         .update('expires_at', new Date(0))
         .where('id', passHolderId)
     } else if (passHolder.type === PassTypeEnum.SUBSCRIPTION) {
+      const oldDate = passHolder.expires_at
+      const newDate = new Date(oldDate.valueOf() - passHolder.duration)
       await this.dbWriter(PassHolderEntity.table)
-        .update(
-          'expires_at',
-          new Date(passHolder.expires_at.valueOf() - passHolder.duration),
-        )
+        .update('expires_at', newDate)
         .where('id', passHolderId)
+      const filteredIds = (
+        await this.dbReader(PostPassHolderAccessEntity.table)
+          .where('pass_holder_id', passHolderId)
+          .andWhere('created_at', '>=', newDate)
+          .andWhere('created_at', '<=', oldDate)
+          .select('post_user_access_id')
+      ).map((postPassHolderAccess) => postPassHolderAccess.post_user_access_id)
+      await this.dbWriter(PostPassHolderAccessEntity.table)
+        .where('pass_holder_id', passHolderId)
+        .andWhere('created_at', '>=', newDate)
+        .andWhere('created_at', '<=', oldDate)
+        .delete()
+      await this.dbWriter(PostUserAccessEntity.table)
+        .leftJoin(
+          PostPassHolderAccessEntity.table,
+          `${PostPassHolderAccessEntity.table}.post_user_access_id`,
+          `${PostUserAccessEntity.table}.id`,
+        )
+        .whereIn(`${PostUserAccessEntity.table}.id`, filteredIds)
+        .whereNull(`${PostPassHolderAccessEntity.table}.id`)
+        .whereNull(`${PostUserAccessEntity.table}.payin_id`)
+        .delete()
     }
   }
 

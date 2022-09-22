@@ -53,8 +53,10 @@ import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostContentEntity } from './entities/post-content.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
+import { PostPassHolderAccessEntity } from './entities/post-passholder-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
+import { ForbiddenPostException } from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 
@@ -138,11 +140,25 @@ export class PostService {
         for (const userId in userToPassHolders) {
           const postUserAccess =
             PostUserAccessEntity.toDict<PostUserAccessEntity>({
+              id: v4(),
               post: postId,
               user: userId,
-              passHolderIds: JSON.stringify(userToPassHolders[userId]),
             })
-          await trx(PostUserAccessEntity.table).insert(postUserAccess)
+          await trx(PostUserAccessEntity.table)
+            .insert(postUserAccess)
+            .onConflict(['post_id', 'user_id'])
+            .ignore()
+          for (const passHolderId in userToPassHolders[userId]) {
+            await trx(PostPassHolderAccessEntity.table)
+              .insert(
+                PostPassHolderAccessEntity.toDict<PostPassHolderAccessEntity>({
+                  postUserAccess: postUserAccess.id,
+                  passHolder: passHolderId,
+                }),
+              )
+              .onConflict(['post_user_access_id', 'pass_holder_id'])
+              .ignore()
+          }
         }
 
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
@@ -456,32 +472,44 @@ export class PostService {
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
+    const id = (
+      await this.dbReader(PostUserAccessEntity.table)
+        .where('payin_id', payinId)
+        .select('id')
+        .first()
+    ).id
+    if (!id) {
+      throw new ForbiddenPostException(
+        `cant find post access for payinId ${payinId}`,
+      )
+    }
+
+    const passAccess = await this.dbReader(PostPassHolderAccessEntity.table)
+      .where(
+        PostPassHolderAccessEntity.toDict<PostPassHolderAccessEntity>({
+          postUserAccess: id,
+        }),
+      )
+      .first()
+
     await this.dbWriter.transaction(async (trx) => {
-      await trx(PostUserAccessEntity.table)
-        .update(
-          PostUserAccessEntity.toDict<PostUserAccessEntity>({
-            payin: null,
-          }),
-        )
-        .where(
-          PostUserAccessEntity.toDict<PostUserAccessEntity>({
-            payin: payinId,
-          }),
-        )
+      if (passAccess) {
+        await trx(PostUserAccessEntity.table)
+          .update(
+            PostUserAccessEntity.toDict<PostUserAccessEntity>({
+              payin: null,
+            }),
+          )
+          .where('id', id)
+      } else {
+        await trx(PostEntity.table).where('id', id).delete()
+      }
       await trx(PostEntity.table)
         .where('id', postId)
         .decrement('num_purchases', 1)
       await trx(PostEntity.table)
         .where('id', postId)
         .decrement('earnings_purchases', earnings)
-      await trx(PostEntity.table)
-        .where(
-          PostUserAccessEntity.toDict<PostUserAccessEntity>({
-            payin: null,
-            passHolderIds: null,
-          }),
-        )
-        .delete()
     })
   }
 

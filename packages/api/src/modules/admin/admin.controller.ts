@@ -24,6 +24,7 @@ import {
 } from './dto/get-creator-fee.dto'
 import { ImpersonateUserRequestDto } from './dto/impersonate-user.dto'
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
+import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
@@ -179,5 +180,30 @@ export class AdminController {
     @Body() body: GetCreatorFeeRequestDto,
   ): Promise<GetCreatorFeeResponseDto> {
     return await this.adminService.getCreatorFee(body)
+  }
+
+  @ApiEndpoint({
+    summary: 'Get unprocessed chargebacks',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Unprocessed chargebacks were retrieved',
+  })
+  @Post('chargeback/unprocessed')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async getUnprocessChargebacks(@Body() _body: AdminDto): Promise<any[]> {
+    return await this.adminService.getChargebacks()
+  }
+
+  @ApiEndpoint({
+    summary: 'Update chargeback',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Chargeback was updated',
+  })
+  @Post('chargeback/update')
+  async updateChargeback(
+    @Body() body: UpdateChargebackRequestDto,
+  ): Promise<void> {
+    await this.adminService.updateChargeback(body)
   }
 }

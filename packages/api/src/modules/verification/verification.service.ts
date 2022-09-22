@@ -230,6 +230,7 @@ export class VerificationService {
     switch (submitCreatorVerificationStepRequestDto.step) {
       case CreatorVerificationStepEnum.STEP_1_PROFILE:
         if (
+          !profile ||
           !profile.description ||
           !(
             profile.facebook_url ||
