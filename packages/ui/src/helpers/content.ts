@@ -20,6 +20,10 @@ class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-image.jpeg`
   }
 
+  static profileThumbnail(userId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-thumbnail.jpeg`
+  }
+
   static profileBanner(userId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
   }
