@@ -5,13 +5,13 @@ import ClockIcon from "public/icons/clock-icon.svg"
 import FileIcon from "public/icons/file-icon.svg"
 import MessageTextIcon from "public/icons/message-text-icon.svg"
 import { forwardRef, useCallback, useState } from "react"
-import CalendarPicker from "src/components/atoms/CalendarPicker"
+import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 
 interface CreateSchedulerPopupProps {
   onCancel: () => void
 }
 
-export const CreateSchedulerPopup = forwardRef<
+const CreateSchedulerPopup = forwardRef<
   HTMLDivElement,
   CreateSchedulerPopupProps
 >((props, ref) => {
@@ -100,3 +100,5 @@ export const CreateSchedulerPopup = forwardRef<
 })
 
 CreateSchedulerPopup.displayName = "CreateSchedulerPopup"
+
+export default CreateSchedulerPopup

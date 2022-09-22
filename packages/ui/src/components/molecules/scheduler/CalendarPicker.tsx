@@ -163,12 +163,12 @@ const CalendarPicker: FC<{
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
-            <div className="rounded-[8px] border border-passes-gray-300 bg-passes-gray-200 p-6">
+            <div className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md">
               <style>{css}</style>
               <div className="relative w-full">
-                <div className="absolute top-11 flex w-full items-center gap-3 bg-passes-gray-200">
-                  <span className="z-10 flex-1 rounded-lg border border-white bg-passes-gray-200 py-[6px] px-[14px] text-base font-normal leading-6 text-white">
-                    {selectionDate ? format(selectionDate, "MMM DD, YYYY") : ""}
+                <div className="absolute top-11 flex w-full items-center gap-3 bg-[rgba(27,20,29,0.5)]">
+                  <span className="z-10 flex-1 rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-[6px] px-[14px] text-base font-normal leading-6 text-white">
+                    {selectionDate ? format(selectionDate, "MMM dd, yyyy") : ""}
                   </span>
                   <button
                     className="cursor-pointer rounded-lg border-none bg-white py-[10px] px-[16px] text-passes-gray-200"
@@ -225,7 +225,7 @@ const CalendarPicker: FC<{
                   </div>
                 </div>
                 <button
-                  className="duration-400 mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-passes-gray-200 py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"
+                  className="duration-400 mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"
                   onClick={handleSaveDateAndTime}
                 >
                   Save

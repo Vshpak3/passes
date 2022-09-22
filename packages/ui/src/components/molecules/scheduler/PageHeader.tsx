@@ -2,7 +2,8 @@ import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useRef, useState } from "react"
-import { CreateSchedulerPopup } from "src/components/pages/tools/scheduler"
+
+import CreateSchedulerPopup from "./CreateSchedulerPopup"
 
 export const SchedulerPageHeader: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -54,7 +55,7 @@ export const SchedulerPageHeader: FC = () => {
           <Fade {...TransitionProps} timeout={350}>
             <div
               ref={popperContainerRef}
-              className="rounded-[8px] border border-passes-gray-300 bg-passes-gray-200 py-9 px-10"
+              className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
             >
               <CreateSchedulerPopup onCancel={dismissPopper} />
             </div>

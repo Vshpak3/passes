@@ -54,46 +54,6 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
           )
         })}
       </div>
-      {/* <div className="flex flex-wrap">
-        {[...Array(42)].map((item, index) =>
-          index >= months[activeDateIndex]?.firstDayIndex ? (
-            <div
-              key={index}
-              className={`h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px] ${
-                index === 0
-                  ? "rounded-tl-[20px]"
-                  : index === 6
-                  ? "rounded-tr-[20px]"
-                  : index === 35
-                  ? "rounded-bl-[20px]"
-                  : index === 41
-                  ? "rounded-br-[20px]"
-                  : null
-              } `}
-            >
-              {index - months[activeDateIndex]?.firstDayIndex + 1 <=
-              months[activeDateIndex]?.days
-                ? index - months[activeDateIndex]?.firstDayIndex + 1
-                : null}
-            </div>
-          ) : (
-            <div
-              key={index}
-              className={`h-[80px] w-[14.2%] border border-[#ffffff26] md:h-[160px] ${
-                index === 0
-                  ? "rounded-tl-[20px]"
-                  : index === 6
-                  ? "rounded-tr-[20px]"
-                  : index === 35
-                  ? "rounded-bl-[20px]"
-                  : index === 41
-                  ? "rounded-br-[20px]"
-                  : null
-              }`}
-            ></div>
-          )
-        )}
-      </div> */}
     </div>
   )
 }

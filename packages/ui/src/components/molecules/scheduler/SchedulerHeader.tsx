@@ -2,8 +2,10 @@ import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import moment from "moment"
-import { FC, useCallback, useState } from "react"
+import PlusQuareIcon from "public/icons/plus-square.svg"
+import { FC, useCallback, useRef, useState } from "react"
 import MonthYearPicker from "react-month-year-picker"
+import CreateSchedulerPopup from "src/components/molecules/scheduler/CreateSchedulerPopup"
 
 const today = new Date()
 
@@ -42,16 +44,38 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
 }) => {
   const [month, setMonth] = useState<number>(today.getMonth())
   const [year, setYear] = useState<number>(today.getFullYear())
+  const popperContainerRef = useRef<HTMLDivElement | null>(null)
 
-  const [open, setOpen] = useState(false)
+  const [monthYearPopperOpen, setMonthYearPopperOpen] = useState(false)
+  const [createScheduleOpen, setCreateScheduleOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [buttonCreateSchedulerEl, setButtonCreateSchedulerEl] =
+    useState<null | HTMLElement>(null)
 
-  const handleShowPopper = (event: React.MouseEvent<HTMLElement>) => {
+  const handleShowMonthYearPopper = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
-    setOpen((previousOpen) => !previousOpen)
+    setMonthYearPopperOpen((previousOpen) => !previousOpen)
   }
-  const canBeOpen = open && Boolean(anchorEl)
-  const id = canBeOpen ? "transition-popper" : undefined
+
+  const handleShowCreateSchedulerPopper = (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    setButtonCreateSchedulerEl(
+      buttonCreateSchedulerEl ? null : event.currentTarget
+    )
+    setCreateScheduleOpen((previousOpen) => !previousOpen)
+  }
+
+  const canBeMonthYearPopperOpen = monthYearPopperOpen && Boolean(anchorEl)
+  const monthYearPopperId = canBeMonthYearPopperOpen
+    ? "transition-popper"
+    : undefined
+
+  const canBeCreateSchedulerPopperOpen =
+    monthYearPopperOpen && Boolean(anchorEl)
+  const createScheduleropperId = canBeCreateSchedulerPopperOpen
+    ? "transition-popper"
+    : undefined
 
   const handleChangeTime = useCallback(
     (type: string, value: number) => {
@@ -93,16 +117,20 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     }
   }, [month, year, onChangeTime])
 
-  // TODO: this was breaking builds
-  // const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
-  console.log(availableFrom)
-  const { month: availableMonthFrom, year: availableYearFrom } = {
-    month: 1,
-    year: 2022
-  }
+  const dismissCreateSchedulerPopper = useCallback(() => {
+    buttonCreateSchedulerEl && setButtonCreateSchedulerEl(null)
+  }, [buttonCreateSchedulerEl])
+
+  const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
 
   return (
     <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
+      {buttonCreateSchedulerEl && (
+        <div
+          className="bg-black-100 fixed top-0 left-0 h-screen w-full"
+          onClick={dismissCreateSchedulerPopper}
+        />
+      )}
       <style>{`${css}`}</style>
       <div className="select-none text-base font-bold md:text-2xl">
         Scheduler
@@ -117,9 +145,9 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
             />
           )}
           <button
-            aria-describedby={id}
+            aria-describedby={monthYearPopperId}
             type="button"
-            onClick={handleShowPopper}
+            onClick={handleShowMonthYearPopper}
           >
             <span className="w-[200px] select-none">
               {`${moment().month(month).format("MMMM")} ${year}`}
@@ -131,8 +159,36 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
             onClick={handleGoNext}
           />
           <Popper
-            id={id}
-            open={open}
+            id={createScheduleropperId}
+            open={createScheduleOpen}
+            anchorEl={buttonCreateSchedulerEl}
+            transition
+            placement="bottom-end"
+            modifiers={[
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 17]
+                }
+              }
+            ]}
+          >
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <div
+                  ref={popperContainerRef}
+                  className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
+                >
+                  <CreateSchedulerPopup
+                    onCancel={dismissCreateSchedulerPopper}
+                  />
+                </div>
+              </Fade>
+            )}
+          </Popper>
+          <Popper
+            id={monthYearPopperId}
+            open={monthYearPopperOpen}
             anchorEl={anchorEl}
             transition
             modifiers={[
@@ -146,7 +202,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
           >
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
-                <div className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md">
+                <div className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md">
                   <MonthYearPicker
                     minYear={2000}
                     caption="Pick your month and year"
@@ -165,7 +221,13 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
           </Popper>
         </div>
       </div>
-      <span />
+      <button
+        className="flex appearance-none items-center gap-2 rounded-[50px] bg-passes-primary-color py-[10px] px-[30px] text-white"
+        onClick={handleShowCreateSchedulerPopper}
+      >
+        <PlusQuareIcon />
+        <span>Schedule</span>
+      </button>
     </div>
   )
 }
