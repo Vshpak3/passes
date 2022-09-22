@@ -104,6 +104,7 @@ export class PostService {
           price: createPostDto.price,
           expiresAt: createPostDto.expiresAt,
           scheduledAt: createPostDto.scheduledAt,
+          contentLength: 0,
         })
 
         await trx(PostEntity.table).insert(post)
