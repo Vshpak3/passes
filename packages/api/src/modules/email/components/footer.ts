@@ -1,4 +1,4 @@
-<div class="text-left">
+export const FOOTER = `<div class="text-left">
   <table class="w-full" role="separator">
     <tr>
       <td class="pt-16 pb-4">
@@ -10,7 +10,7 @@
   <p class="mb-4 mt-0 text-xs leading-4 text-gray-500">
     This email was sent to you as a registered member of
     <a href="{{ page.websiteUrl }}"
-      class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">Shopname.com</a>.
+      class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">Passes.com</a>.
 
     To update your emails preferences <a href="{{ page.updateEmailPreferenceUrl }}"
       class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">click here</a>.
@@ -28,4 +28,4 @@
   </p>
 
   <p class="m-0 text-xs leading-4 text-gray-500">&copy; Passes. All rights reserved.</p>
-</div>
+</div>`

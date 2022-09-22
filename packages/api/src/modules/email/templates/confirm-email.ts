@@ -1,11 +1,11 @@
-import path from 'path'
+import { MAIN_LAYOUT_PATH } from './constants'
 
 export const CONFIRM_EMAIL_TEMPLATE = `---
 title: Please confirm your email address
 preheader: Please confirm your email address
 ---
 
-<extends src="${path.join(__dirname, '..', '/layouts/main.html')}">
+<extends src="${MAIN_LAYOUT_PATH}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>
