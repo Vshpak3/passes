@@ -14,9 +14,7 @@ console.log(`Set by infra:
   - AWS_REGION: ${infra_config_aws_region}`)
 
 export const configOptions = {
-  envFilePath: path
-    .join(__dirname, `.env.${infra_config_node_env}`)
-    .replace('dist/', ''),
+  envFilePath: path.join(__dirname, `.env.${infra_config_node_env}`),
   load: [configConfiguration],
   validationSchema: configValidationSchema,
   isGlobal: true,

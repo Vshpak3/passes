@@ -5,7 +5,7 @@ title: Please confirm your email address
 preheader: Please confirm your email address
 ---
 
-<extends src"${path.join(__dirname, '..', '/layouts/main.html')}">
+<extends src="${path.join(__dirname, '..', '/layouts/main.html')}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>

@@ -34,8 +34,11 @@ RUN yarn config set enableNetwork false
 COPY packages/api packages/api
 RUN yarn workspace @passes/api ts:build
 
-# Purge dev dependencies
-# TODO: Find a better way to do it
+# Copy non-code files into dist and remove the source
+RUN packages/api/bin/copy_files.sh
+RUN rm -rf packages/api/src
+
+# Purge dev dependencies (TODO: find a better way to do it)
 RUN rm -rf node_modules
 RUN yarn cache clean
 RUN yarn workspaces focus @passes/api --production
