@@ -1,4 +1,7 @@
-import { VerificationApi } from "@passes/api-client"
+import {
+  GetCreatorVerificationStepResponseDtoStepEnum,
+  VerificationApi
+} from "@passes/api-client"
 import { identity } from "lodash"
 import CheckIcon from "public/icons/check.svg"
 import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
@@ -161,16 +164,16 @@ const CreatorFlow = () => {
       const result = await api.getCreatorVerificationStep()
       const step = result.step
 
-      if (step === "step 2 KYC") {
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._2Kyc) {
         window.location.assign("/verification")
       }
 
-      if (step === "step 3 payout") {
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._3Payout) {
         setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
         setSelectedStep(CREATOR_STEPS.PAYMENT)
       }
 
-      if (step === "step 4 done") {
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._4Done) {
         finishFormHandler()
       }
     }
@@ -187,7 +190,7 @@ const CreatorFlow = () => {
     try {
       await api.submitCreatorVerificationStep({
         submitCreatorVerificationStepRequestDto: {
-          step: "step 1 profile"
+          step: GetCreatorVerificationStepResponseDtoStepEnum._1Profile
         }
       })
 
@@ -211,7 +214,7 @@ const CreatorFlow = () => {
   const onPaymentFormPageFinish = async () => {
     await api.submitCreatorVerificationStep({
       submitCreatorVerificationStepRequestDto: {
-        step: "step 3 payout"
+        step: GetCreatorVerificationStepResponseDtoStepEnum._3Payout
       }
     })
     finishFormHandler()

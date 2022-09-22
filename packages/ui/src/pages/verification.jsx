@@ -1,4 +1,7 @@
-import { VerificationApi } from "@passes/api-client"
+import {
+  GetCreatorVerificationStepResponseDtoStepEnum,
+  VerificationApi
+} from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
@@ -25,7 +28,7 @@ const VerificationPage = () => {
 
           await api.submitCreatorVerificationStep({
             submitCreatorVerificationStepRequestDto: {
-              step: "step 2 KYC"
+              step: GetCreatorVerificationStepResponseDtoStepEnum._2Kyc
             }
           })
 
