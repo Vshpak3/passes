@@ -283,8 +283,8 @@ export class PassService {
       })
       .select([
         `${PassHolderEntity.table}.*`,
-        `${PassEntity.table}.totalSupply`,
-        `${PassEntity.table}.remainingSupply`,
+        `${PassEntity.table}.total_supply`,
+        `${PassEntity.table}.remaining_supply`,
         `${PassEntity.table}.price`,
         `${PassEntity.table}.freetrial`,
         `${PassEntity.table}.title`,
@@ -471,10 +471,6 @@ export class PassService {
     await this.dbWriter(PassHolderEntity.table)
       .where('id', id)
       .update(updateData)
-    await this.dbWriter(PassEntity.table)
-      .where('id', passId)
-      .decrement('remaining_supply')
-
     await this.passPurchased(userId, passId)
 
     return {
@@ -483,6 +479,18 @@ export class PassService {
       holderId: userId,
       expiresAt,
     }
+  }
+
+  async useSupply(passId: string) {
+    await this.dbWriter(PassEntity.table)
+      .where('id', passId)
+      .decrement('remaining_supply', 1)
+  }
+
+  async freeSupply(passId: string) {
+    await this.dbWriter(PassEntity.table)
+      .where('id', passId)
+      .increment('remaining_supply', 1)
   }
 
   async renewPass(passHolderId: string) {
@@ -715,6 +723,7 @@ export class PassService {
         pass.type === PassTypeEnum.SUBSCRIPTION &&
         (await passPurchaseQuery))
     ) {
+      await this.useSupply(passId)
       await this.createPassHolder(userId, passId)
       return new RegisterPayinResponseDto()
     }

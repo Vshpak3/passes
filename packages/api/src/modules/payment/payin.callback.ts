@@ -6,6 +6,7 @@ import {
   CreateNftPassPayinCallbackOutput,
   MessagePayinCallbackInput,
   PayinCallbackInput,
+  PayinCallbackOutput,
   PurchasePostCallbackInput,
   PurchasePostCallbackOutput,
   RenewNftPassPayinCallbackInput,
@@ -31,8 +32,8 @@ export const functionMapping = (payinCallbackEnum: PayinCallbackEnum) => {
     case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
       return {
         success: createNftPassSuccessCallback,
-        failure: empty,
-        creation: empty,
+        failure: createNftPassFailureCallback,
+        creation: createNftPassCreationCallback,
       }
     case PayinCallbackEnum.RENEW_NFT_PASS:
       return {
@@ -72,16 +73,17 @@ const empty = async (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 ) => {}
 
-async function tippedMessageSuccessCallback(
+async function tippedMessageCreationCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  await payService.messagesService.sendMessage(
+  input.tippedMessageId = await payService.messagesService.createTippedMessage(
     input.userId,
     input.sendMessageDto,
   )
+  await payService.updateInputJSON(payin.id, input)
   return { userId: input.userId }
 }
 
@@ -97,18 +99,37 @@ async function tippedMessageFailureCallback(
   return { userId: input.userId }
 }
 
-async function tippedMessageCreationCallback(
+async function tippedMessageSuccessCallback(
   payin: any,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  input.tippedMessageId = await payService.messagesService.createTippedMessage(
+  await payService.messagesService.sendMessage(
     input.userId,
     input.sendMessageDto,
   )
-  await payService.updateInputJSON(payin.id, input)
   return { userId: input.userId }
+}
+
+async function createNftPassCreationCallback(
+  payin: any,
+  input: CreateNftPassPayinCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PayinCallbackOutput> {
+  await this.payService.passService.useSupply(input.passId)
+  return {}
+}
+
+async function createNftPassFailureCallback(
+  payin: any,
+  input: CreateNftPassPayinCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PayinCallbackOutput> {
+  await this.payService.passService.freeSupply(input.passId)
+  return {}
 }
 
 async function createNftPassSuccessCallback(
