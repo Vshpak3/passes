@@ -3,15 +3,8 @@ import { useRouter } from "next/router"
 
 const TITLE = "Passes"
 const DESCRIPTION =
-  "A platform for creators to autonomously scale their content and own their audiences."
-const PRODUCTION_URL = "https://passes.com"
-const DEVELOPMENT_URL = "http://localhost:3000"
-const VERCEL_URL =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
-    ? PRODUCTION_URL
-    : process.env.NODE_ENV === "development"
-    ? DEVELOPMENT_URL
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  "A platform for creators to  scale their content and own their audiences."
+const CLIENT_URL = process.env.NEXT_PUBLIC_UI_BASE_URL
 
 const DefaultHead = () => {
   const router = useRouter()
@@ -40,7 +33,7 @@ const DefaultHead = () => {
       <meta
         key="twitter-image"
         property="twitter:image"
-        content={`${VERCEL_URL}/img/open-graph/og-image-300x300.png`}
+        content={`${CLIENT_URL}/img/open-graph/og-image-300x300.png`}
       />
       <meta
         key="twitter-image-alt"
@@ -54,7 +47,7 @@ const DefaultHead = () => {
       <meta
         key="og-url"
         property="og:url"
-        content={`${VERCEL_URL}${router.asPath}`}
+        content={`${CLIENT_URL}${router.asPath}`}
       />
       <meta
         key="og-description"
@@ -64,7 +57,7 @@ const DefaultHead = () => {
       <meta
         key="og-image"
         property="og:image"
-        content={`${VERCEL_URL}/img/open-graph/og-image-300x300.png`}
+        content={`${CLIENT_URL}/img/open-graph/og-image-300x300.png`}
       />
       <meta
         key="og-image-alt"
@@ -82,13 +75,13 @@ const DefaultHead = () => {
       <meta
         key="msapplication-config"
         name="msapplication-config"
-        content={`${VERCEL_URL}/browserconfig.xml`}
+        content={`${CLIENT_URL}/browserconfig.xml`}
       />
 
       <link
         key="canonical"
         rel="canonical"
-        href={`${PRODUCTION_URL}${router.asPath}`}
+        href={`${CLIENT_URL}${router.asPath}`}
       />
       <link
         key="favicon"

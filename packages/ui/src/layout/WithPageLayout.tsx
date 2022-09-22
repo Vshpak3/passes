@@ -1,5 +1,6 @@
 import React from "react"
 
+import { isProd } from "../helpers/env"
 import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
 
@@ -32,9 +33,7 @@ export const withPageLayout = (
 
 function getComponentName(target: any) {
   return (
-    (process.env.NODE_ENV !== "production"
-      ? typeof target === "string" && target
-      : false) ||
+    (!isProd ? typeof target === "string" && target : false) ||
     target.displayName ||
     target.name ||
     "Component"
