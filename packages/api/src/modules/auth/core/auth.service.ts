@@ -90,7 +90,6 @@ export class AuthService {
   }
 
   async verifyEmailForUserSignin(
-    authId: string,
     verifyEmailDto: VerifyEmailDto,
   ): Promise<AuthRecord> {
     let request = await this.dbReader(VerifyEmailRequestEntity.table)
@@ -148,13 +147,13 @@ export class AuthService {
 
       await trx(AuthEntity.table)
         .update(AuthEntity.toDict<AuthEntity>(authRecordUpdate))
-        .where({ id: authId })
+        .where({ id: request.auth_id })
     })
 
     if (user) {
       return AuthRecord.fromUserDto(new UserDto(user))
     } else {
-      return new AuthRecord({ id: authId, isEmailVerified: true })
+      return new AuthRecord({ id: request.auth_id, isEmailVerified: true })
     }
   }
 

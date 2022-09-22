@@ -71,14 +71,10 @@ export class AuthController {
   })
   @Post('verify-email')
   async verifyUserEmail(
-    @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
     @Body() body: VerifyEmailRequestDto,
   ): Promise<AccessTokensResponseDto> {
-    const authRecord = await this.authService.verifyEmailForUserSignin(
-      req.user.id,
-      body,
-    )
+    const authRecord = await this.authService.verifyEmailForUserSignin(body)
     return await createTokens(
       res,
       authRecord,
