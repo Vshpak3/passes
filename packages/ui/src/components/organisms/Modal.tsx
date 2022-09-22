@@ -21,8 +21,8 @@ const Modal = ({
   }, [])
   return (
     <ReactModal
-      isOpen={!!isOpen}
-      onRequestClose={() => setOpen(null)}
+      isOpen={isOpen}
+      onRequestClose={() => setOpen(false)}
       shouldCloseOnOverlayClick={true}
       style={{
         content: {
@@ -49,7 +49,7 @@ const Modal = ({
               type="button"
               className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="popup-modal"
-              onClick={() => setOpen(null)}
+              onClick={() => setOpen(false)}
             >
               <Image
                 src="/icons/exit-icon.svg"

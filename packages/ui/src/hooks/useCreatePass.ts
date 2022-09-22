@@ -1,7 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-// import { PassApi } from "@passes/api-client"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
+import {
+  CreatePassRequestDtoChainEnum,
+  CreatePassRequestDtoTypeEnum,
+  PassApi
+} from "@passes/api-client"
+import { useRouter } from "next/router"
+import { ChangeEvent, useState } from "react"
+import { FieldValues, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
+import { wrapApi } from "src/helpers"
 import * as yup from "yup"
 
 const MB = 1048576
@@ -21,11 +28,17 @@ export const PassTypeEnum = {
   LIFETIME: "lifetime"
 }
 
-const useCreatePass = ({ passType }) => {
-  const [files, setFiles] = useState([])
-  const [fileUploadError, setFileUploadError] = useState(null)
+interface CreatePassProps {
+  passType: string
+}
+
+const useCreatePass = ({ passType }: CreatePassProps) => {
+  const [files, setFiles] = useState<File[]>([])
+  const [fileUploadError, setFileUploadError] = useState<string | null>(null)
   const isLifetimePass = passType === PassTypeEnum.LIFETIME
   const isSubscriptionPass = passType === PassTypeEnum.SUBSCRIPTION
+  const router = useRouter()
+  const MOCKED_DURATION = 2900000
 
   const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION
   const MIN_FILES = isLifetimePass ? MIN_FILES_LIFETIME : MIN_FILES_SUBSCRIPTION
@@ -38,11 +51,23 @@ const useCreatePass = ({ passType }) => {
     register,
     formState: { errors }
   } = useForm({
-    defaultValues: {},
     resolver: yupResolver(createPassSchema)
   })
 
-  const onMediaChange = (filesArray) => {
+  const newPassType = (value: string) => {
+    switch (value) {
+      case "subscription":
+        return CreatePassRequestDtoTypeEnum.Subscription
+      case "lifetime":
+        return CreatePassRequestDtoTypeEnum.Lifetime
+      case "external":
+        return CreatePassRequestDtoTypeEnum.External
+      default:
+        return CreatePassRequestDtoTypeEnum.Subscription
+    }
+  }
+
+  const onMediaChange = (filesArray: File[]) => {
     if (fileUploadError) setFileUploadError(null)
 
     let maxFileSizeExceeded = false
@@ -70,7 +95,7 @@ const useCreatePass = ({ passType }) => {
     setFiles([...files, ..._files])
   }
 
-  const onDragDropChange = (event) => {
+  const onDragDropChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (!files) return null
     const filesArray = Array.from(files)
@@ -78,7 +103,9 @@ const useCreatePass = ({ passType }) => {
     onMediaChange(filesArray)
   }
 
-  const submitPassCreation = async (data) => {
+  const submitPassCreation = async (data: FieldValues) => {
+    const passApi = wrapApi(PassApi)
+
     if (files.length < MIN_FILES) {
       setFileUploadError(minFileError)
       return
@@ -88,34 +115,38 @@ const useCreatePass = ({ passType }) => {
       return
     }
 
-    // TODO: use data values to post to API
-    console.log({ data })
+    const newPassRequestConfig = {
+      title: data.passName,
+      description: data.passDescription,
+      freetrial: data["free-dm-month-checkbox"],
+      type: newPassType(router.query.passType as string),
+      price: parseInt(data.price),
+      totalSupply: parseInt(data["free-dms-month"]),
+      duration: MOCKED_DURATION,
+      chain: CreatePassRequestDtoChainEnum.Sol,
+      royalties: 0
+    }
 
-    // const passApi = wrapApi(PassApi)
-    // passApi.passCreate(
-    //   {
-    //     createPassDto: {
-    //       title: params.title,
-    //       description: params.description,
-    //       // imageUrl: files[0].name,
-    //       imageUrl:
-    //         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ellie_Goulding_-_Global_Citizen_Festival_Hamburg_07.jpg/440px-Ellie_Goulding_-_Global_Citizen_Festival_Hamburg_07.jpg",
-    //       type:
-    //         typeof router.query.passType === "string"
-    //           ? router.query.passType
-    //           : "subscription",
-    //       price: parseInt(params.price),
-    //       totalSupply: parseInt(params.totalSupply),
-    //       duration: 2900000
-    //     }
-    //   }
-    // )
+    const passId = await passApi
+      .createPass({
+        createPassRequestDto: newPassRequestConfig
+      })
+      .then(({ passId }) => passId)
+      .catch(({ message }) => toast(message))
+
+    passApi
+      .mintPass({
+        mintPassRequestDto: {
+          passId: `${passId}`
+        }
+      })
+      .catch(({ message }) => toast(message))
   }
 
   const onCreatePass = handleSubmit((data) => submitPassCreation(data))
 
-  const onRemoveFileUpload = (index) => {
-    setFiles(files.filter((_, i) => i !== index))
+  const onRemoveFileUpload = (index: number) => {
+    setFiles(files.filter((_: File, i: number) => i !== index))
   }
 
   return {
