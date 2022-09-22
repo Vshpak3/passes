@@ -99,8 +99,8 @@ export const configConfiguration = async function (): Promise<
     clientUrl: getConfigValue('CLIENT_URL'),
     apiBaseUrl: getConfigValue('API_URL'),
     database: {
-      hostReadWrite: getConfigValue('DATABASE_HOST_RO'),
-      hostReadOnly: getConfigValue('DATABASE_HOST_RW'),
+      hostReadWrite: getConfigValue('DATABASE_HOST_RW'),
+      hostReadOnly: getConfigValue('DATABASE_HOST_RO'),
       port: getConfigValue('DATABASE_PORT', parseInt),
       user: getConfigValue('DATABASE_USER'),
       password: getConfigValue('DATABASE_PASSWORD'),
