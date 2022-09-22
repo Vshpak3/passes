@@ -125,4 +125,12 @@ export class ProfileService {
       )
     return updated === 1
   }
+
+  async isProfileActive(userId: string): Promise<boolean> {
+    const status = await this.dbReader(ProfileEntity.table)
+      .where(ProfileEntity.toDict<ProfileEntity>({ user: userId }))
+      .select('is_active')
+      .first()
+    return status && status.is_active
+  }
 }

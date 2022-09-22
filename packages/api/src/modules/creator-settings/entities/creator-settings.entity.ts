@@ -29,4 +29,10 @@ export class CreatorSettingsEntity extends BaseEntity {
     default: PayoutFrequencyEnum.MANUAL,
   })
   payoutFrequency: PayoutFrequencyEnum
+
+  @Property({ default: true })
+  showFollowerCount: boolean
+
+  @Property({ default: true })
+  showMediaCount: boolean
 }

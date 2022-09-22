@@ -183,10 +183,45 @@ export class ProfileApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Check if profile is active
+     */
+    async isProfileActiveRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/profile/active`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Check if profile is active
+     */
+    async isProfileActive(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.isProfileActiveRaw(initOverrides);
+        return await response.value();
+    }
+
 }
 
 export const ProfileSecurityInfo = new Set<string>([
     "activateProfile",
     "createOrUpdateProfile",
     "deactivateProfile",
+    "isProfileActive",
 ])

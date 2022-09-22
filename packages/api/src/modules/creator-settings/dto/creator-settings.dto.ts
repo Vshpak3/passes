@@ -20,12 +20,20 @@ export class CreatorSettingsDto {
   @DtoProperty({ optional: true })
   allowCommentsOnPosts?: boolean
 
+  @DtoProperty({ optional: true })
+  showFollowerCount: boolean
+
+  @DtoProperty({ optional: true })
+  showMediaCount: boolean
+
   constructor(creatorSettings) {
     if (creatorSettings) {
       this.minimumTipAmount = creatorSettings.minimum_tip_amount
       this.payoutFrequency = creatorSettings.payout_frequency
       this.welcomeMessage = creatorSettings.welcome_message
       this.allowCommentsOnPosts = creatorSettings.allow_comments_on_post
+      this.showFollowerCount = creatorSettings.show_follower_count
+      this.showMediaCount = creatorSettings.show_media_count
     }
   }
 }

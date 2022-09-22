@@ -10,7 +10,7 @@ import { DatabaseService } from '../../database/database.service'
 import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CommentsBlockedError } from '../creator-settings/error/creator-settings.error'
-import { COMMNETS_DISABLED, FOLLOWER_BLOCKED } from '../follow/constants/errors'
+import { COMMENTS_DISABLED, FOLLOWER_BLOCKED } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
@@ -271,7 +271,7 @@ export class CommentService {
       .select('allow_comments_on_posts')
       .first()
     if (!creatorSettings.allow_comments_on_posts) {
-      throw new CommentsBlockedError(COMMNETS_DISABLED)
+      throw new CommentsBlockedError(COMMENTS_DISABLED)
     }
   }
 }

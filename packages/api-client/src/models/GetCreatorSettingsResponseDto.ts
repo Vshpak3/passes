@@ -43,6 +43,18 @@ export interface GetCreatorSettingsResponseDto {
      * @memberof GetCreatorSettingsResponseDto
      */
     allowCommentsOnPosts?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCreatorSettingsResponseDto
+     */
+    showFollowerCount?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCreatorSettingsResponseDto
+     */
+    showMediaCount?: boolean;
 }
 
 
@@ -82,6 +94,8 @@ export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDisc
         'payoutFrequency': json['payoutFrequency'],
         'welcomeMessage': !exists(json, 'welcomeMessage') ? undefined : json['welcomeMessage'],
         'allowCommentsOnPosts': !exists(json, 'allowCommentsOnPosts') ? undefined : json['allowCommentsOnPosts'],
+        'showFollowerCount': !exists(json, 'showFollowerCount') ? undefined : json['showFollowerCount'],
+        'showMediaCount': !exists(json, 'showMediaCount') ? undefined : json['showMediaCount'],
     };
 }
 
@@ -98,6 +112,8 @@ export function GetCreatorSettingsResponseDtoToJSON(value?: GetCreatorSettingsRe
         'payoutFrequency': value.payoutFrequency,
         'welcomeMessage': value.welcomeMessage,
         'allowCommentsOnPosts': value.allowCommentsOnPosts,
+        'showFollowerCount': value.showFollowerCount,
+        'showMediaCount': value.showMediaCount,
     };
 }
 

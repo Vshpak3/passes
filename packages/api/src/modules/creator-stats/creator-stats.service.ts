@@ -9,6 +9,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { ContentEntity } from '../content/entities/content.entity'
+import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
@@ -183,9 +184,19 @@ export class CreatorStatsService {
 
   async getCreatorStats(creatorId: string, userId?: string) {
     return new CreatorStatDto(
-      await this.dbReader
+      await this.dbReader(CreatorStatEntity.table)
+        .leftJoin(
+          CreatorSettingsEntity.table,
+          `${CreatorSettingsEntity.table}.user_id`,
+          `${CreatorStatEntity.table}.user_id`,
+        )
         .where(CreatorStatEntity.toDict<CreatorStatEntity>({ user: creatorId }))
-        .select('*'),
+        .select([
+          `${CreatorStatEntity.table}.user_id`,
+          'show_follower_count',
+          'show_media_count',
+        ])
+        .first(),
       userId === creatorId,
     )
   }

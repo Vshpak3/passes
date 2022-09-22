@@ -16,10 +16,4 @@ export class CreatorStatEntity extends BaseEntity {
 
   @Property({ default: 0 })
   numMedia: number
-
-  @Property({ default: true })
-  showFollowerCount: boolean
-
-  @Property({ default: true })
-  showMediaCount: boolean
 }

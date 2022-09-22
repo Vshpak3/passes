@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Patch,
   Post,
@@ -78,5 +79,16 @@ export class ProfileController {
   @Patch('activate')
   async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
     return await this.profileService.activateProfile(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Check if profile is active',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'Profile status was returned',
+  })
+  @Get('active')
+  async isProfileActive(@Req() req: RequestWithUser): Promise<boolean> {
+    return await this.profileService.isProfileActive(req.user.id)
   }
 }
