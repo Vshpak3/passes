@@ -9,7 +9,6 @@ const CreatorSearchBar = () => {
     creatorResults,
     searchValue,
     onChangeInput,
-    onSearchBlur,
     onSearchFocus,
     resultsVisible,
     searchRef
@@ -20,7 +19,6 @@ const CreatorSearchBar = () => {
       <SearchInput
         onChangeInput={onChangeInput}
         onSearchFocus={onSearchFocus}
-        onSearchBlur={onSearchBlur}
         searchValue={searchValue}
       />
       {resultsVisible && <SearchDropdown creatorResults={creatorResults} />}

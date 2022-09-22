@@ -12,9 +12,9 @@ export const withPageLayout = (
   options: WithPageLayoutOptions = { header: true }
 ) => {
   const WithPageLayout = React.forwardRef((props, ref) => (
-    <div className="relative flex h-screen min-h-screen w-full bg-black">
+    <div className="relative flex min-h-screen w-full bg-black">
       <Sidebar />
-      <main className="flex w-full flex-col bg-[#000]">
+      <main className="w-full bg-[#000]">
         {options.header && (
           <div className="cover-image h-[300px] pr-10 pt-4">
             <CreatorSearchBar />
