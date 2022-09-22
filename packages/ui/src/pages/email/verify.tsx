@@ -5,7 +5,11 @@ import { useEffect, useState } from "react"
 import { Text, Wordmark } from "src/components/atoms"
 import { wrapApi } from "src/helpers/wrapApi"
 
-import { authRouter } from "../../helpers/authRouter"
+import {
+  authRouter,
+  authStateMachine,
+  AuthStates
+} from "../../helpers/authRouter"
 import { setTokens } from "../../helpers/setTokens"
 import { useUser } from "../../hooks"
 import { JWTUserClaims } from "../../hooks/useUser"
@@ -22,11 +26,8 @@ const VerifyEmailPage = () => {
       return
     }
 
-    if (!userClaims) {
-      setError(
-        "Please open this link on the same browser where you requested to verify your email."
-      )
-      return
+    if (userClaims && authStateMachine(userClaims) !== AuthStates.EMAIL) {
+      authRouter(router, userClaims)
     }
 
     const verify = async () => {
@@ -35,7 +36,7 @@ const VerifyEmailPage = () => {
 
         // Needs to match /email/verify?id=${id}
         if (!id) {
-          router.push("/")
+          authRouter(router, userClaims)
           return
         }
 
@@ -55,7 +56,7 @@ const VerifyEmailPage = () => {
       } catch (err: any) {
         console.error(err)
         setError(
-          "Failed to verify email, is the email verification link valid, or perhaps it has expired?"
+          "Is the email verification link valid? Or perhaps it has expired?"
         )
       } finally {
         setIsLoading(false)
