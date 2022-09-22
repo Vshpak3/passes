@@ -1,24 +1,25 @@
-import React from "react"
+import React, { useState } from "react"
+import useMessages from "src/hooks/useMessages"
 
 import { ChannelList, ChannelView } from "../molecules/messages"
 
-const mockedChannels = [
-  { displayName: "Anna DeGuzman", messagePreview: "You: Hey back!..", id: "1" },
-  { displayName: "user2938293", messagePreview: "You: Hey back!..", id: "2" },
-  { displayName: "Kianna Press", messagePreview: "You: Hey back!..", id: "3" },
-  {
-    displayName: "Marilyn George",
-    messagePreview: "You: Hey back!..",
-    id: "4"
-  },
-  { displayName: "Rayna Calzoni", messagePreview: "You: Hey back!..", id: "5" },
-  { displayName: "Kianna Culhane", messagePreview: "You: Hey back!..", id: "6" }
-]
 const MessagesV2 = () => {
+  const [selectedChannelId, setSelectedChannelId] = useState("")
+  const { channels } = useMessages("test")
+
+  const handleChannelClicked = (channelId: string) => {
+    setSelectedChannelId(channelId)
+  }
+
   return (
     <div className="flex h-full flex-row border border-gray-800">
-      <ChannelList channels={mockedChannels} />
-      <ChannelView />
+      {channels?.length && (
+        <ChannelList
+          channels={channels}
+          onChannelClicked={handleChannelClicked}
+        />
+      )}
+      <ChannelView selectedChannelId={selectedChannelId} />
     </div>
   )
 }

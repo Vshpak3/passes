@@ -2,10 +2,11 @@ import classNames from "classnames"
 import React from "react"
 
 export interface Channel {
-  id: string
+  channelId: string
   messagePreview: string
   displayName: string
 }
+
 interface Props {
   onClick: () => void
   channel: Channel
@@ -26,7 +27,7 @@ export const ChannelListItem = ({ onClick, channel, isSelected }: Props) => {
           width="50px"
           height="50px"
           className="rounded-full"
-          src={`https://www.w3schools.com/w3images/avatar${channel.id}.png`}
+          src={`https://www.w3schools.com/w3images/avatar${channel.channelId}.png`}
           alt="ProfilePhoto"
         />
       </div>
