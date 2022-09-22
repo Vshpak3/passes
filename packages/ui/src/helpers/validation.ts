@@ -16,6 +16,11 @@ export interface SignInSchema {
   password: string
 }
 
+const creatorFlowProfileSchema = object({
+  displayName: string().required("Please enter your name"),
+  bio: string().required("Please enter bio")
+})
+
 const changePasswordSchema = object({
   currentPassword: string().required("Please enter your current password"),
   password: string()
@@ -157,6 +162,7 @@ export {
   bankingSchema,
   changePasswordSchema,
   chatSettingsSchema,
+  creatorFlowProfileSchema,
   creditCardSchema,
   digitsOnly,
   passwordRegex,

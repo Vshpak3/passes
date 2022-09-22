@@ -1,4 +1,5 @@
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
+import Link from "next/link"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
 import CoinbaseIcon from "public/icons/coinbase-icon.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
@@ -86,7 +87,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   }
   return (
     <div className="flex justify-center pb-20 text-white">
-      <div className="flex w-4/5 max-w-screen-xl flex-col justify-between gap-6 sm:-mt-12 sm:flex-row">
+      <div className="flex w-4/5 max-w-[1110px] flex-col justify-between gap-6 sm:-mt-12 sm:flex-row">
         <div className="flex-[33]">
           <div className="flex w-full flex-col gap-[10px] rounded-3xl px-4 py-10 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-8 sm:backdrop-blur-3xl">
             <div className="flex flex-row items-center gap-2">
@@ -136,10 +137,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         >
           <div className="flex w-full flex-col gap-[12px] rounded-3xl px-4 py-8 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-5 sm:backdrop-blur-3xl">
             <div className="flex flex-col">
-              <div className="font-bold">
+              <div className="text-base font-bold">
                 Your Bank Account Data for Payouts
               </div>
-              <div className="text-xs text-[#b3bee7] opacity-[0.6]">
+              <div className="text-xs font-medium leading-[22px] text-[#b3bee7] opacity-[0.6]">
                 You will be able to edit it in the settings later.
               </div>
             </div>
@@ -256,7 +257,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                 register={register}
                 name="email"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Email"
+                placeholder="lucy@passes.com"
                 type="text"
                 errors={errors}
                 options={{
@@ -336,11 +337,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                 Or Use Your Crypto Wallet for Payouts
               </div>
               <div className="flex flex-row gap-5">
-                <MetamaskIcon />
-                <CoinbaseIcon />
-                <TrelloIcon />
-                <PhantomIcon />
-                <WalletConnectIcon />
+                <MetamaskIcon className="h-[34px] w-[34px]" />
+                <CoinbaseIcon className="h-[34px] w-[34px]" />
+                <TrelloIcon className="h-[34px] w-[34px]" />
+                <PhantomIcon className="h-[34px] w-[34px]" />
+                <WalletConnectIcon className="h-[34px] w-[34px]" />
               </div>
               <div>
                 <div className="flex flex-col gap-[6px]">
@@ -349,7 +350,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                   </div>
                   <FormInput
                     register={register}
-                    name="email"
+                    name="emailRecipient"
                     className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                     placeholder="lucy@passes.com"
                     type="text"
@@ -363,15 +364,24 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                       }
                     }}
                   />
-                  <div>
-                    <FormInput
-                      register={register}
-                      type="checkbox"
-                      name="termsAndConditions"
-                      label="I agree to Client Terms and Conditions and moment.com Terms and Conditions"
-                      className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                      labelClassName="text-[#b3bee7] opacity-[0.6]"
-                    />
+                  <div className="mt-2.5">
+                    <label className="flex items-center">
+                      <FormInput
+                        register={register}
+                        type="checkbox"
+                        name="termsAndConditions"
+                        className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-600"
+                      />
+                      <span className="text-base">
+                        By checking this box I agree to Passes
+                        <Link href="/terms">
+                          <a className="text-passes-pink-100">
+                            {" "}
+                            Terms and Conditions
+                          </a>
+                        </Link>
+                      </span>
+                    </label>
                   </div>
                 </div>
               </div>

@@ -36,21 +36,14 @@ type CreatorStepsProps = {
   creatorStep: string
   isDone: boolean
   isSelected: boolean
-  setSelectedStep: MouseEventHandler
 }
 
-function CreatorSteps({
-  creatorStep,
-  isDone,
-  isSelected,
-  setSelectedStep
-}: CreatorStepsProps) {
+function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
   return (
     <>
       {/* small screens */}
       <div
-        onClick={setSelectedStep}
-        className={`flex cursor-pointer flex-row items-center  gap-3 rounded-full py-3 text-white sm:hidden
+        className={`flex flex-row items-center  gap-3 rounded-full py-3 text-white sm:hidden
         ${
           isSelected
             ? "flex-1 pl-6"
@@ -75,8 +68,7 @@ function CreatorSteps({
       </div>
       {/* md and up Screen */}
       <div
-        onClick={setSelectedStep}
-        className={`hidden flex-1 cursor-pointer flex-row items-center gap-3 rounded-full py-3 pl-6 text-white sm:flex
+        className={`hidden flex-1 flex-row items-center gap-3 rounded-full py-3 pl-6 text-white sm:flex
         ${isSelected ? "border border-gray-700" : ""}`}
       >
         <div
@@ -165,7 +157,7 @@ const CreatorFlow = () => {
   const { width } = useWindowSize()
 
   useEffect(() => {
-    const step3Handler = async () => {
+    const stepHandler = async () => {
       const result = await api.getCreatorVerificationStep()
       const step = result.step
 
@@ -183,7 +175,7 @@ const CreatorFlow = () => {
       }
     }
 
-    step3Handler()
+    stepHandler()
   }, [])
 
   const onCustomizePageFinish = async () => {
@@ -192,17 +184,21 @@ const CreatorFlow = () => {
     setStepsDone((prev) => [...prev, CREATOR_STEPS.CUSTOMIZE])
     setSelectedStep(CREATOR_STEPS.VERIFICATION)
 
-    await api.submitCreatorVerificationStep({
-      submitCreatorVerificationStepRequestDto: {
-        step: "step 1 profile"
+    try {
+      await api.submitCreatorVerificationStep({
+        submitCreatorVerificationStepRequestDto: {
+          step: "step 1 profile"
+        }
+      })
+
+      const result = await api.canSubmitPersona()
+
+      if (result) {
+        await api.refreshPersonaVerifications()
+        window.location.assign("/verification")
       }
-    })
-
-    const result = await api.canSubmitPersona()
-
-    if (result) {
-      await api.refreshPersonaVerifications()
-      window.location.assign("/verification")
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -237,7 +233,6 @@ const CreatorFlow = () => {
                       isDone={stepsDone.includes(step)}
                       creatorStep={step}
                       isSelected={selectedStep === step}
-                      setSelectedStep={() => setSelectedStep(step)}
                     />
                   )
                 })}
@@ -317,13 +312,13 @@ const CreatorFlow = () => {
           isOpen={isVerificationDialogOpen}
           setOpen={setIsVerificationDialogOpen}
           closable={false}
-          modalContainerClassname="w-auto sm:flex hidden"
+          modalContainerClassname="!w-auto sm:flex hidden rounded-[20px] bg-[#1B141D]/50 backdrop-blur-[50px]"
         >
-          <div className="text-xl font-bold text-white">
-            <div className="flex h-[387px] w-[624px] items-center justify-center">
+          <div className="px-[72px] py-[95px] text-xl font-bold text-white">
+            <div className="flex max-w-[624px] items-center justify-center">
               <VerificationLoading />
             </div>
-            <div className="text-center">
+            <div className="mx-auto mt-3 max-w-[472px] text-center">
               Just a moment while we transfer you to the verification screen...
             </div>
           </div>

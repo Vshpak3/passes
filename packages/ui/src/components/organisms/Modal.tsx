@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import Image from "next/image"
 import React, { Dispatch, SetStateAction, useEffect } from "react"
 import ReactModal from "react-modal"
@@ -14,7 +15,8 @@ const Modal = ({
   isOpen = null,
   setOpen,
   children,
-  closable = true
+  closable = true,
+  modalContainerClassname
 }: IModal) => {
   useEffect(() => {
     ReactModal.setAppElement("body")
@@ -39,9 +41,10 @@ const Modal = ({
     >
       <div
         id="popup-modal"
-        className={
-          "m-auto w-[500px] rounded bg-[#1b141d] p-4 md:border-[#ffffff]/10"
-        }
+        className={classNames(
+          "m-auto min-w-[500px] rounded bg-[#1b141d] p-4 md:border-[#ffffff]/10",
+          modalContainerClassname
+        )}
       >
         {closable && (
           <div className="text-right">

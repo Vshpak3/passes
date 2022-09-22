@@ -1,4 +1,5 @@
-import { identity } from "lodash"
+import { yupResolver } from "@hookform/resolvers/yup"
+import _, { identity } from "lodash"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import ProfileDiscordIcon from "public/icons/profile-discord-icon.svg"
 import ProfileFacebookIcon from "public/icons/profile-facebook-icon.svg"
@@ -8,8 +9,9 @@ import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
 import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
+import { FormInput, Text } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import { creatorFlowProfileSchema } from "src/helpers/validation"
 import { useBecomeCreator, useUser } from "src/hooks"
 
 interface IFormData {
@@ -50,14 +52,16 @@ const CustomizePageForm = ({
     twitch: false
   })
   const { user } = useUser()
-
   const {
     register,
     getValues,
     setValue,
+    setError,
+    handleSubmit,
     formState: { errors }
   } = useForm<IFormData>({
-    defaultValues: { displayName: user?.displayName || "" }
+    defaultValues: { displayName: user?.displayName || "" },
+    resolver: yupResolver(creatorFlowProfileSchema)
   })
 
   const saveProfileHandler = () => {
@@ -67,12 +71,19 @@ const CustomizePageForm = ({
       "free-dm-month-checkbox": isAdult,
       ...socialAccounts
     } = getValues()
-    if (!displayName || !description) return
+
+    if (Object.values(socialAccounts).filter(Boolean).length === 0) {
+      setError("facebookUrl", {
+        type: "required",
+        message: "Please enter at least 1 social url"
+      })
+      return
+    }
 
     makeCreatorProfile({
       displayName,
       isAdult,
-      profile: { description, ...socialAccounts }
+      profile: { description, ..._.pickBy(socialAccounts, _.identity) }
     })
     onCustomizePageFinish()
   }
@@ -83,7 +94,10 @@ const CustomizePageForm = ({
 
   return (
     <div className="flex justify-center pb-20 text-white">
-      <div className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-40">
+      <form
+        onSubmit={handleSubmit(saveProfileHandler)}
+        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-40"
+      >
         <div className="mb-6 flex flex-col items-center justify-center px-16 sm:px-32">
           <p className="mb-3 text-2xl">Tell us about your page</p>
           <p className="flex text-center text-slate-400 sm:hidden">
@@ -120,9 +134,6 @@ const CustomizePageForm = ({
               placeholder="Display Name"
               type="text"
               errors={errors}
-              options={{
-                required: true
-              }}
             />
           </div>
 
@@ -135,9 +146,6 @@ const CustomizePageForm = ({
               placeholder="Tell us more about yourself"
               type="text"
               errors={errors}
-              options={{
-                required: true
-              }}
             />
           </div>
 
@@ -157,9 +165,6 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
@@ -175,9 +180,6 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
@@ -193,9 +195,6 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
@@ -212,9 +211,6 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
@@ -231,9 +227,6 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
@@ -249,12 +242,14 @@ const CustomizePageForm = ({
                   placeholder="Enter Url"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true
-                  }}
                 />
               )}
             </div>
+            {errors.facebookUrl && (
+              <Text fontSize={12} className="mt-1 text-[red]">
+                {errors.facebookUrl.message}
+              </Text>
+            )}
           </div>
         </div>
 
@@ -275,13 +270,12 @@ const CustomizePageForm = ({
 
         <div className="mb-6 flex flex-col px-12 sm:px-20">
           <PassesPinkButton
-            onClick={saveProfileHandler}
             name="Continue"
-            type={ButtonTypeEnum.BUTTON}
+            type={ButtonTypeEnum.SUBMIT}
             className="rounded-xl font-normal"
           />
         </div>
-      </div>
+      </form>
     </div>
   )
 }
