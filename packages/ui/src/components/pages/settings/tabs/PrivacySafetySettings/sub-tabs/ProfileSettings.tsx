@@ -67,6 +67,7 @@ const ProfileSettings = () => {
         onSubmit={handleSubmit(saveProfileSettingsHandler)}
       >
         <div className="mt-[32px] space-y-[32px]">
+          {/* Disable private profiles for now
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Fully Private Profile</span>
             <FormInput
@@ -74,7 +75,7 @@ const ProfileSettings = () => {
               register={register}
               type="toggle"
             />
-          </label>
+          </label> */}
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Show fans count on your profile</span>
             <FormInput

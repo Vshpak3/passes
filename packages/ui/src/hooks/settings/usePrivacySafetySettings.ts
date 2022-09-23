@@ -1,11 +1,9 @@
 import {
   CreatorSettingsApi,
-  ProfileApi,
   UpdateCreatorSettingsRequestDto
 } from "@passes/api-client"
 
 export const usePrivacySafetySettings = () => {
-  const profileApi = new ProfileApi()
   const creatorApi = new CreatorSettingsApi()
 
   const getCreatorSettings = async () => {
@@ -21,10 +19,8 @@ export const usePrivacySafetySettings = () => {
   }
 
   const privateProfileHandler = async (isPrivate: boolean) => {
-    if (isPrivate) {
-      return await profileApi.deactivateProfile()
-    }
-    return await profileApi.activateProfile()
+    console.log(isPrivate)
+    return null
   }
 
   return {
