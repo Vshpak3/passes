@@ -16,7 +16,6 @@ import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
-import { SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY } from '../sol/sol.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import {
@@ -116,6 +115,9 @@ export class WalletService {
     // create wallet if it does not exist
     let address = ''
     if (localMockedAwsDev()) {
+      const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
+        '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
+
       const keypair = Keypair.fromSecretKey(
         base58.decode(SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY),
       )

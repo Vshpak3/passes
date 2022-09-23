@@ -33,6 +33,7 @@ import { PaymentService } from '../payment/payment.service'
 import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { S3ContentService } from '../s3content/s3content.service'
+import { getCollectionImageUri } from '../sol/sol.helper'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
@@ -159,7 +160,7 @@ export class PassService {
 
     if (
       !(await this.s3ContentService.doesObjectExist(
-        `nft/${pass.id}/image.${ContentFormatEnum.IMAGE}`,
+        getCollectionImageUri(null, pass.id, ContentFormatEnum.IMAGE),
       ))
     ) {
       throw new NotFoundException('Image is not uploaded')

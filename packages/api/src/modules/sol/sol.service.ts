@@ -39,10 +39,14 @@ import { createCollectionTransaction, createNftTransaction } from './chain'
 import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
 import { JsonMetadata } from './json-metadata.interface'
+import {
+  getCollectionImageUri,
+  getCollectionMetadataUri,
+  getNftImageUri,
+  getNftMetadataUri,
+} from './sol.helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
-export const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
-  '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
 
 const MAX_TIME_NFT_REFRESH = 1000 * 60 * 30 // 30 minutes
 
@@ -206,14 +210,6 @@ export class SolService {
     signerPubKey: PublicKey,
     signerId: string,
   ): Promise<string> {
-    // Original Opcodes code:
-    // const signature = await sendAndConfirmTransaction(
-    //   connection,
-    //   transaction,
-    //   [wallet, mint],
-    //   { skipPreflight: true },
-    // )
-
     const blockhash = await this.getConnection().getLatestBlockhash()
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
@@ -247,8 +243,14 @@ export class SolService {
     description: string,
     royalties: number,
     passPubKey: PublicKey,
+    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/${passHolderId}/image.${ContentFormatEnum.IMAGE}`
+    const imageUrl = getNftImageUri(
+      this.cloudfrontUrl,
+      passId,
+      passHolderId,
+      contentType,
+    )
 
     const jsonMetadata: JsonMetadata = {
       name: name,
@@ -259,7 +261,7 @@ export class SolService {
       properties: {
         files: [
           {
-            type: `image/${ContentFormatEnum.IMAGE}`,
+            type: `image/${contentType}`,
             uri: imageUrl,
           },
         ],
@@ -273,15 +275,16 @@ export class SolService {
       },
     }
 
-    const key = `nft/${passId}/${passHolderId}/metadata.json`
-
     await this.s3contentService.putObject({
       Bucket: this.nftS3Bucket,
       Body: JSON.stringify(jsonMetadata),
-      Key: key,
+      Key: getNftMetadataUri(null, passId, passHolderId),
     })
 
-    return { jsonMetadata, metadataUri: `${this.cloudfrontUrl}/${key}` }
+    return {
+      jsonMetadata,
+      metadataUri: getNftMetadataUri(this.cloudfrontUrl, passId, passHolderId),
+    }
   }
 
   async createNftPass(
@@ -357,12 +360,18 @@ export class SolService {
     symbol: string,
     description: string,
     walletPubKey: PublicKey,
+    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
     const username = (
       await this.dbReader(UserEntity.table).where({ id: userId }).first()
     ).username
 
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}`
+    const imageUrl = getCollectionImageUri(
+      this.cloudfrontUrl,
+      passId,
+      contentType,
+    )
+
     const metadataJson: JsonMetadata = {
       name,
       symbol,
@@ -380,21 +389,20 @@ export class SolService {
         files: [
           {
             uri: imageUrl,
-            type: `image/${ContentFormatEnum.IMAGE}`,
+            type: `image/${contentType}`,
           },
         ],
         category: 'image',
       },
     }
-    const key = `nft/${passId}/metadata.json`
 
     await this.s3contentService.putObject({
       Bucket: this.nftS3Bucket,
       Body: JSON.stringify(metadataJson),
-      Key: key,
+      Key: getCollectionMetadataUri(null, passId),
     })
 
-    return `${this.cloudfrontUrl}/${key}`
+    return getCollectionMetadataUri(this.cloudfrontUrl, passId)
   }
 
   async createSolNftCollection(
