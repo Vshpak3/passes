@@ -4,6 +4,8 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
 import { getAwsConfig } from '../../util/aws.util'
+import maizzleConfig from './config'
+import tailwindConfig from './tailwindConfig'
 
 @Injectable()
 export class EmailService {
@@ -21,7 +23,14 @@ export class EmailService {
     template: string,
     data: Record<any, any>,
   ) {
-    const { html } = await Maizzle.render(template, { maizzle: data })
+    const { html } = await Maizzle.render(template, {
+      tailwind: { config: tailwindConfig },
+      maizzle: {
+        ...data,
+        logoUrl: this.configService.get('ses.logoUrl') as string,
+        ...maizzleConfig,
+      },
+    })
     await this.sendEmail(email, html, subject)
   }
 

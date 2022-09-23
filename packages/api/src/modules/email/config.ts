@@ -1,7 +1,8 @@
-// Leave me as JS, Maizzle is expecting this file to be JS.
+import { MAIN_LAYOUT_PATH } from './templates/constants'
 
-module.exports = {
+export default {
   build: {},
+  mainLayoutPath: MAIN_LAYOUT_PATH,
   inlineCSS: false,
   removeUnusedCSS: false,
   websiteUrl: 'https://passes.com',

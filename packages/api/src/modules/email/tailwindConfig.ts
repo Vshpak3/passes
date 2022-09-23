@@ -1,8 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable sonarjs/no-duplicate-string */
-// Leave me as JS, Tailwind is expecting this file to be JS.
-
-module.exports = {
+export default {
   theme: {
     screens: {
       sm: { max: '640px' },
