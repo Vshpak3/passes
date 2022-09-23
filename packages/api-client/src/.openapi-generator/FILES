@@ -103,6 +103,8 @@ models/GetListResponseDto.ts
 models/GetListsRequestsDto.ts
 models/GetListsResponseDto.ts
 models/GetMessageResponseDto.ts
+models/GetMessagesRequestDto.ts
+models/GetMessagesResponseDto.ts
 models/GetNotificationSettingsResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
@@ -135,6 +137,7 @@ models/InitResetPasswordRequestDto.ts
 models/IsFollowingDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
+models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts
 models/MetamaskCircleUSDCEntryRequestDto.ts

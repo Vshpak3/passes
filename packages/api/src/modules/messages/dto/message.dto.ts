@@ -38,17 +38,18 @@ export class MessageDto {
   reverted: boolean
 
   @DtoProperty()
-  created_at: number
+  createdAt: Date
 
-  constructor(message) {
+  constructor(message, contents) {
     if (message) {
       this.text = message.text
       this.senderId = message.senderId
       this.channelId = message.channel_id
       this.tipAmount = message.tip_amount
-      this.created_at = message.created_at
+      this.createdAt = message.created_at
       this.messageId = message.id
       this.reverted = message.reverted
     }
+    this.contents = contents
   }
 }

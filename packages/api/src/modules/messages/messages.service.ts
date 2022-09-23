@@ -48,6 +48,7 @@ import {
   GetChannelRequestDto,
   GetChannelsRequestDto,
 } from './dto/get-channel.dto'
+import { GetMessagesRequestDto } from './dto/get-message.dto'
 import { MessageDto } from './dto/message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
@@ -58,6 +59,7 @@ import { MessageEntity } from './entities/message.entity'
 import { PaidMessageEntity } from './entities/paid-message.entity'
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
+import { ChannelMissingError } from './error/channel.error'
 import { MessageSendError } from './error/message.error'
 
 const MESSAGING_CHAT_TYPE = 'messaging'
@@ -839,45 +841,6 @@ export class MessagesService {
         }),
       )
   }
-  // async getGalleryMessages(userId: string, channelId: string) {
-  //   const query = this.dbReader(MessagePostEntity.table)
-  //     .innerJoin(
-  //       PostEntity.table,
-  //       `${MessagePostEntity.table}.post_id`,
-  //       `${PostEntity.table}.id`,
-  //     )
-  //     .innerJoin(
-  //       UserEntity.table,
-  //       `${UserEntity.table}.id`,
-  //       `${PostEntity.table}.user_id`,
-  //     )
-  //     .leftJoin(PostUserAccessEntity.table, function () {
-  //       this.on(
-  //         `${UserEntity.table}.id`,
-  //         `${PostUserAccessEntity.table}.user_id`,
-  //       ).andOn(
-  //         `${PostEntity.table}.id`,
-  //         `${PostUserAccessEntity.table}.post_id`,
-  //       )
-  //     })
-  //     .leftJoin(
-  //       LikeEntity.table,
-  //       `${LikeEntity.table}.post_id`,
-  //       `${PostEntity.table}.id`,
-  //     )
-  //     .select([
-  //       `${PostEntity.table}.*`,
-  //       `${UserEntity.table}.username`,
-  //       `${UserEntity.table}.display_name`,
-  //       `${PostUserAccessEntity.table}.post_id as access`,
-  //       `${LikeEntity.table}.id as is_liked`,
-  //     ])
-  //     .where(`${PostEntity.table}.is_message`, true)
-  //     .andWhere(`${MessagePostEntity.table}.user_id`, userId)
-  //     .andWhere(`${MessagePostEntity.table}.channel_id`, channelId)
-  //     .orderBy('created_at', 'desc')
-  //   return await this.getPostsFromQuery(userId, query)
-  // }
 
   async purchaseMessage(
     userId: string,
@@ -990,6 +953,68 @@ export class MessagesService {
     return { amount: message.price, target, blocked }
   }
 
+  async getMessages(
+    userId: string,
+    getMessagesRequestDto: GetMessagesRequestDto,
+  ) {
+    const { createdAt, lastId, dateLimit, channelId, contentOnly } =
+      getMessagesRequestDto
+    const channel = await this.dbReader(ChannelMemberEntity.table)
+      .where(
+        ChannelMemberEntity.toDict<ChannelMemberEntity>({
+          channel: channelId,
+          user: userId,
+        }),
+      )
+      .select('id')
+      .first()
+    if (!channel) {
+      throw new ChannelMissingError(
+        `cant find channel ${channelId} for user ${userId}`,
+      )
+    }
+
+    let query = this.dbReader(MessageEntity.table)
+      .where(`${MessageEntity.table}.channel_id`, channelId)
+      .select(`${MessageEntity.table}.*`)
+      .orderBy([
+        { column: `${MessageEntity.table}.created_at`, order: 'desc' },
+        { column: `${MessageEntity.table}.id`, order: 'desc' },
+      ])
+
+    if (contentOnly) {
+      query = query.whereNotNull('paid_message_id')
+    }
+
+    if (createdAt) {
+      query = query.andWhere(
+        `${MessageEntity.table}.created_at`,
+        '<=',
+        createdAt,
+      )
+    }
+
+    if (dateLimit) {
+      query = query.andWhere(
+        `${MessageEntity.table}.created_at`,
+        '>=',
+        dateLimit,
+      )
+    }
+
+    const messages = await query
+    const index = messages.findIndex((message) => message.id === lastId)
+    const filteredMessages = messages.slice(index + 1)
+    const contents = await this.getContentLookupForMessages(
+      filteredMessages.map((message) => message.sender_id),
+      filteredMessages.map((message) => JSON.parse(message.contentIds)),
+      filteredMessages.map((message) => message.paid),
+    )
+    return filteredMessages.map((message, ind) => {
+      return new MessageDto(message, contents[ind])
+    })
+  }
+
   async getMessage(userId: string, messageId: string) {
     const message = await this.dbReader(MessageEntity.table)
       .innerJoin(
@@ -1001,12 +1026,14 @@ export class MessagesService {
       .andWhere(`${ChannelMemberEntity.table}.user_id`, userId)
       .select(`${MessageEntity.table}.*`)
       .first()
-    message.contents = await this.getContentLookupForMessages(
-      [message.sender_id],
-      [message.contentIds],
-      [message.paid],
-    )[0]
-    return new MessageDto(message)
+    return new MessageDto(
+      message,
+      await this.getContentLookupForMessages(
+        [message.sender_id],
+        [JSON.parse(message.contentIds)],
+        [message.paid],
+      )[0],
+    )
   }
 
   private async getContentLookupForMessages(

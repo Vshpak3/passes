@@ -16,75 +16,75 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetMessageResponseDto
+ * @interface MessageDto
  */
-export interface GetMessageResponseDto {
+export interface MessageDto {
     /**
      * 
      * @type {string}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     messageId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     senderId: string;
     /**
      * 
      * @type {string}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     text: string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     contents: Array<string>;
     /**
      * 
      * @type {string}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     channelId: string;
     /**
      * 
      * @type {number}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     tipAmount?: number;
     /**
      * 
      * @type {boolean}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     paid: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     pending: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     reverted: boolean;
     /**
      * 
      * @type {Date}
-     * @memberof GetMessageResponseDto
+     * @memberof MessageDto
      */
     createdAt: Date;
 }
 
 /**
- * Check if a given object implements the GetMessageResponseDto interface.
+ * Check if a given object implements the MessageDto interface.
  */
-export function instanceOfGetMessageResponseDto(value: object): boolean {
+export function instanceOfMessageDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "messageId" in value;
     isInstance = isInstance && "senderId" in value;
@@ -99,11 +99,11 @@ export function instanceOfGetMessageResponseDto(value: object): boolean {
     return isInstance;
 }
 
-export function GetMessageResponseDtoFromJSON(json: any): GetMessageResponseDto {
-    return GetMessageResponseDtoFromJSONTyped(json, false);
+export function MessageDtoFromJSON(json: any): MessageDto {
+    return MessageDtoFromJSONTyped(json, false);
 }
 
-export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetMessageResponseDto {
+export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MessageDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -122,7 +122,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null): any {
+export function MessageDtoToJSON(value?: MessageDto | null): any {
     if (value === undefined) {
         return undefined;
     }

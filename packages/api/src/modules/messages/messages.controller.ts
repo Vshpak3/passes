@@ -22,7 +22,11 @@ import {
   GetChannelsResponseDto,
 } from './dto/get-channel.dto'
 import { GetFreeMesssagesResponseDto } from './dto/get-free-message.dto'
-import { GetMessageResponseDto } from './dto/get-message.dto'
+import {
+  GetMessageResponseDto,
+  GetMessagesRequestDto,
+  GetMessagesResponseDto,
+} from './dto/get-message.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { TokenResponseDto } from './dto/token.dto'
@@ -177,17 +181,6 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Get messages',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'Messages were retrieved',
-  })
-  @Post('messages')
-  async getMessages(): Promise<void> {
-    return
-  }
-
-  @ApiEndpoint({
     summary: 'Subscribe to receive new messages',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
@@ -264,21 +257,24 @@ export class MessagesController {
     )
   }
 
-  // @ApiEndpoint({
-  //   summary: 'Get gallery view',
-  //   responseStatus: HttpStatus.OK,
-  //   responseType: GetGalleryViewDto,
-  //   responseDesc: 'Gallery view was retrieved',
-  // })
-  // @Get('gallery/:channelId')
-  // async getGalleryView(
-  //   @Req() req: RequestWithUser,
-  //   @Param('channelId') channelId: string,
-  // ): Promise<GetGalleryViewDto> {
-  //   return new GetGalleryViewDto(
-  //     await this.postService.getGalleryMessages(req.user.id, channelId),
-  //   )
-  // }
+  @ApiEndpoint({
+    summary: 'Get messages',
+    responseStatus: HttpStatus.OK,
+    responseType: GetMessagesResponseDto,
+    responseDesc: 'Messages were retrieved',
+  })
+  @Post('messages')
+  async getMessages(
+    @Req() req: RequestWithUser,
+    @Body() getMessagesRequestDto: GetMessagesRequestDto,
+  ): Promise<GetMessagesResponseDto> {
+    return new GetMessagesResponseDto(
+      await this.messagesService.getMessages(
+        req.user.id,
+        getMessagesRequestDto,
+      ),
+    )
+  }
 
   @ApiEndpoint({
     summary: 'Get message',

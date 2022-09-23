@@ -22,6 +22,8 @@ import type {
   GetChannelsResponseDto,
   GetFreeMesssagesResponseDto,
   GetMessageResponseDto,
+  GetMessagesRequestDto,
+  GetMessagesResponseDto,
   PayinDataDto,
   PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
@@ -44,6 +46,10 @@ import {
     GetFreeMesssagesResponseDtoToJSON,
     GetMessageResponseDtoFromJSON,
     GetMessageResponseDtoToJSON,
+    GetMessagesRequestDtoFromJSON,
+    GetMessagesRequestDtoToJSON,
+    GetMessagesResponseDtoFromJSON,
+    GetMessagesResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchaseMessageRequestDtoFromJSON,
@@ -72,6 +78,10 @@ export interface GetFreeMessagesRequest {
 
 export interface GetMessageRequest {
     messageId: string;
+}
+
+export interface GetMessagesRequest {
+    getMessagesRequestDto: GetMessagesRequestDto;
 }
 
 export interface GetOrCreateChannelRequest {
@@ -260,10 +270,16 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get messages
      */
-    async getMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async getMessagesRaw(requestParameters: GetMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessagesResponseDto>> {
+        if (requestParameters.getMessagesRequestDto === null || requestParameters.getMessagesRequestDto === undefined) {
+            throw new runtime.RequiredError('getMessagesRequestDto','Required parameter requestParameters.getMessagesRequestDto was null or undefined when calling getMessages.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
 
@@ -275,16 +291,18 @@ export class MessagesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: GetMessagesRequestDtoToJSON(requestParameters.getMessagesRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessagesResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get messages
      */
-    async getMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getMessagesRaw(initOverrides);
+    async getMessages(requestParameters: GetMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessagesResponseDto> {
+        const response = await this.getMessagesRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
