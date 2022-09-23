@@ -313,7 +313,7 @@ export class PostService {
               )
             : undefined,
         ),
-      ) //TODO get signed URL
+      )
       return map
     }, {})
     for (const post in map) {
@@ -384,7 +384,7 @@ export class PostService {
   }
 
   async removePost(userId: string, postId: string) {
-    //TODO: allow admins + managers to remove posts
+    // TODO: allow admins + managers to remove posts
     const updated = await this.dbWriter(PostEntity.table)
       .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
       .update('deleted_at', new Date())

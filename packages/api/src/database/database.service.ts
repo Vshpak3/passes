@@ -59,7 +59,6 @@ const mapPopulateFields = (
 ) =>
   fields.reduce((resultArray: string[], field) => {
     if (propObj[field]) {
-      // TODO: ManyToMany case
       switch (propObj[field].reference) {
         case 'scalar': {
           let newField = propObj[field].fieldNames[0]
@@ -85,7 +84,6 @@ const mapPopulateFields = (
           ]
           break
         }
-        // TODO: OneToMany case
         case '1:m':
           break
         default:

@@ -21,8 +21,6 @@ import { GetProfileRequestDto } from './dto/get-profile.dto'
 import { ProfileDto } from './dto/profile.dto'
 import { ProfileEntity } from './entities/profile.entity'
 
-// TODO: Use CASL to determine if user can access an entity
-// See https://docs.nestjs.com/security/authorization#integrating-casl
 @Injectable()
 export class ProfileService {
   constructor(

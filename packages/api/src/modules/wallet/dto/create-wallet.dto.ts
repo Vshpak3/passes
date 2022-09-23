@@ -5,7 +5,6 @@ import { BLOCKCHAIN_ADDRESS_LENGTH } from '../constants/schema'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class CreateWalletRequestDto {
-  //TODO: add length validation - patrick
   @DtoProperty()
   signedMessage: string
 

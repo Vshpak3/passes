@@ -2089,6 +2089,7 @@ export class PaymentService {
           await this.dbWriter
             .where('id', subscription.id)
             .update('subscription_status', status)
+
           // TODO: send email notifications
 
           // try to pay subscription if possible

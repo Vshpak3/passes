@@ -12,7 +12,6 @@ export class ContentDto {
   @DtoProperty()
   userId: string
 
-  //TODO: add length validation
   @DtoProperty()
   signedUrl: string
 

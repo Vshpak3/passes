@@ -43,9 +43,6 @@ export class AuthService {
   }
 
   async setEmail(authId: string, email: string): Promise<void> {
-    // TODO: rate limit this endpoint since it effectively allows someone
-    // to send an email from our server
-
     const authRecord = await this.dbReader(AuthEntity.table)
       .where({ id: authId })
       .select('is_email_verified')

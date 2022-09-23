@@ -55,7 +55,7 @@ export class ContentService {
         ...createContentDto,
       })
       await this.dbWriter(ContentEntity.table).insert(data)
-      return new GetContentResponseDto(data, '') //TODO: put in signed url
+      return new GetContentResponseDto(data, '')
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
@@ -70,7 +70,7 @@ export class ContentService {
       throw new NotFoundException(CONTENT_NOT_EXIST)
     }
 
-    return new GetContentResponseDto(content, '') //TODO: put in signed url
+    return new GetContentResponseDto(content, '')
   }
 
   async updateContent(
@@ -91,7 +91,7 @@ export class ContentService {
         id: contentId,
         ...updateContentDto,
       },
-      '', //TODO: put in signed url
+      '',
     )
   }
 

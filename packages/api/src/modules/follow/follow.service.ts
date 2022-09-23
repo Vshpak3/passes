@@ -43,8 +43,6 @@ import { WelcomeMessaged } from './entities/welcome-messaged.entity'
 
 export const MAX_FOLLOWERS_PER_REQUEST = 20
 
-// TODO: Use CASL to determine if user can access an entity
-// See https://docs.nestjs.com/security/authorization#integrating-casl
 @Injectable()
 export class FollowService {
   constructor(

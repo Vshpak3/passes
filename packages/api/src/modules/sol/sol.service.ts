@@ -298,7 +298,7 @@ export class SolService {
         ChainEnum.SOL,
       ),
     )
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}`
 
     const jsonMetadata = {
       name: name,
@@ -309,7 +309,7 @@ export class SolService {
       properties: {
         files: [
           {
-            type: 'image/png',
+            type: `image/${ContentFormatEnum.IMAGE}`,
             uri: imageUrl,
           },
         ],
@@ -499,7 +499,9 @@ export class SolService {
         transactionHash: '',
       }
     }
+
     const connection = await this.getConnection()
+
     const user = await this.dbReader(UserEntity.table)
       .where({ id: userId })
       .first()
@@ -517,13 +519,13 @@ export class SolService {
       ),
     )
 
-    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}` //TODO: supoprt other media
+    const imageUrl = `${this.cloudfrontUrl}/nft/${passId}/image.${ContentFormatEnum.IMAGE}`
     const metadataJson = {
       name: name,
       symbol: symbol,
       description: description,
       image: imageUrl,
-      external_url: `https://www.passes.com/${user.username}`, //TODO: (pz129) fix
+      external_url: `https://www.passes.com/${user.username}`,
       seller_fee_basis_points: 0,
       properties: {
         creators: [
@@ -535,7 +537,7 @@ export class SolService {
         files: [
           {
             uri: imageUrl,
-            type: 'image/png',
+            type: `image/${ContentFormatEnum.IMAGE}`,
           },
         ],
         category: 'image',

@@ -65,7 +65,6 @@ export class LocalAuthService {
       .first()
 
     if (currenAuthRecord) {
-      // TODO: we should avoid leaking account info
       throw new ConflictException('User already exists with this email')
     }
 

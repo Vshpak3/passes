@@ -28,7 +28,6 @@ export class EntityDBHelpers {
   // The following properties get initialized and replaced in the database service init function
   static isInitialized = false
 
-  // TODO: Get the entity type without passing it manually
   /**
    * Maps data object from entity property name to db column name
    * @example
