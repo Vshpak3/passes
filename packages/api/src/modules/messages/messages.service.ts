@@ -285,7 +285,6 @@ export class MessagesService {
       query = query.andWhere(`${ChannelMemberEntity}.unread`, true)
     }
 
-    const channelMembers = await query.limit(MAX_CHANNELS_PER_REQUEST)
     if (search) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
@@ -296,6 +295,8 @@ export class MessagesService {
         ).orWhereILike(`${UserEntity.table}.display_name`, likeClause)
       })
     }
+
+    const channelMembers = await query.limit(MAX_CHANNELS_PER_REQUEST)
 
     const index = channelMembers.findIndex(
       (channelMember) => channelMember.id === lastId,
