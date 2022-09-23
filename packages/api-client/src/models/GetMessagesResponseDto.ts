@@ -50,6 +50,12 @@ export interface GetMessagesResponseDto {
      * @memberof GetMessagesResponseDto
      */
     messages: Array<MessageDto>;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetMessagesResponseDto
+     */
+    sentAt: Date;
 }
 
 /**
@@ -59,6 +65,7 @@ export function instanceOfGetMessagesResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "lastId" in value;
     isInstance = isInstance && "messages" in value;
+    isInstance = isInstance && "sentAt" in value;
 
     return isInstance;
 }
@@ -77,6 +84,7 @@ export function GetMessagesResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'messages': ((json['messages'] as Array<any>).map(MessageDtoFromJSON)),
+        'sentAt': (new Date(json['sentAt'])),
     };
 }
 
@@ -93,6 +101,7 @@ export function GetMessagesResponseDtoToJSON(value?: GetMessagesResponseDto | nu
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'messages': ((value.messages as Array<any>).map(MessageDtoToJSON)),
+        'sentAt': (value.sentAt.toISOString()),
     };
 }
 

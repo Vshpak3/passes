@@ -78,7 +78,7 @@ export interface MessageDto {
      * @type {Date}
      * @memberof MessageDto
      */
-    createdAt: Date;
+    sentAt: Date;
 }
 
 /**
@@ -94,7 +94,7 @@ export function instanceOfMessageDto(value: object): boolean {
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "pending" in value;
     isInstance = isInstance && "reverted" in value;
-    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "sentAt" in value;
 
     return isInstance;
 }
@@ -118,7 +118,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'paid': json['paid'],
         'pending': json['pending'],
         'reverted': json['reverted'],
-        'createdAt': (new Date(json['createdAt'])),
+        'sentAt': (new Date(json['sentAt'])),
     };
 }
 
@@ -140,7 +140,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'paid': value.paid,
         'pending': value.pending,
         'reverted': value.reverted,
-        'createdAt': (value.createdAt.toISOString()),
+        'sentAt': (value.sentAt.toISOString()),
     };
 }
 

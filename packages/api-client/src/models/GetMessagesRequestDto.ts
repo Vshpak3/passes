@@ -21,16 +21,16 @@ import { exists, mapValues } from '../runtime';
 export interface GetMessagesRequestDto {
     /**
      * 
-     * @type {Date}
-     * @memberof GetMessagesRequestDto
-     */
-    createdAt?: Date;
-    /**
-     * 
      * @type {string}
      * @memberof GetMessagesRequestDto
      */
     lastId?: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetMessagesRequestDto
+     */
+    sentAt: Date;
     /**
      * 
      * @type {Date}
@@ -62,6 +62,7 @@ export interface GetMessagesRequestDto {
  */
 export function instanceOfGetMessagesRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "sentAt" in value;
     isInstance = isInstance && "dateLimit" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "contentOnly" in value;
@@ -80,8 +81,8 @@ export function GetMessagesRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'sentAt': (new Date(json['sentAt'])),
         'dateLimit': (new Date(json['dateLimit'])),
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
@@ -98,8 +99,8 @@ export function GetMessagesRequestDtoToJSON(value?: GetMessagesRequestDto | null
     }
     return {
         
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'sentAt': (value.sentAt.toISOString()),
         'dateLimit': (value.dateLimit.toISOString()),
         'channelId': value.channelId,
         'contentOnly': value.contentOnly,

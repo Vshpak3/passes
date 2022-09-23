@@ -78,7 +78,7 @@ export interface GetMessageResponseDto {
      * @type {Date}
      * @memberof GetMessageResponseDto
      */
-    createdAt: Date;
+    sentAt: Date;
 }
 
 /**
@@ -94,7 +94,7 @@ export function instanceOfGetMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "pending" in value;
     isInstance = isInstance && "reverted" in value;
-    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "sentAt" in value;
 
     return isInstance;
 }
@@ -118,7 +118,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'paid': json['paid'],
         'pending': json['pending'],
         'reverted': json['reverted'],
-        'createdAt': (new Date(json['createdAt'])),
+        'sentAt': (new Date(json['sentAt'])),
     };
 }
 
@@ -140,7 +140,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'paid': value.paid,
         'pending': value.pending,
         'reverted': value.reverted,
-        'createdAt': (value.createdAt.toISOString()),
+        'sentAt': (value.sentAt.toISOString()),
     };
 }
 
