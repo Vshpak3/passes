@@ -16,12 +16,15 @@
 import * as runtime from '../runtime';
 import type {
   GetCreatorVerificationStepResponseDto,
+  GetPersonaStatusResponseDto,
   SubmitCreatorVerificationStepRequestDto,
   SubmitPersonaInquiryRequestDto,
 } from '../models';
 import {
     GetCreatorVerificationStepResponseDtoFromJSON,
     GetCreatorVerificationStepResponseDtoToJSON,
+    GetPersonaStatusResponseDtoFromJSON,
+    GetPersonaStatusResponseDtoToJSON,
     SubmitCreatorVerificationStepRequestDtoFromJSON,
     SubmitCreatorVerificationStepRequestDtoToJSON,
     SubmitPersonaInquiryRequestDtoFromJSON,
@@ -106,7 +109,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Refresh persona KYC verifications for user
      */
-    async refreshPersonaVerificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async refreshPersonaVerificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPersonaStatusResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -123,14 +126,15 @@ export class VerificationApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPersonaStatusResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Refresh persona KYC verifications for user
      */
-    async refreshPersonaVerifications(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.refreshPersonaVerificationsRaw(initOverrides);
+    async refreshPersonaVerifications(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPersonaStatusResponseDto> {
+        const response = await this.refreshPersonaVerificationsRaw(initOverrides);
+        return await response.value();
     }
 
     /**

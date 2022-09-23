@@ -177,10 +177,10 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Get status as read',
+    summary: 'Get messages',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
-    responseDesc: 'Status was set as read',
+    responseDesc: 'Messages were retrieved',
   })
   @Post('messages')
   async getMessages(): Promise<void> {

@@ -92,6 +92,7 @@ export * from './GetPayinsResponseDto';
 export * from './GetPayoutMethodResponseDto';
 export * from './GetPayoutsRequestDto';
 export * from './GetPayoutsResponseDto';
+export * from './GetPersonaStatusResponseDto';
 export * from './GetPostResponseDto';
 export * from './GetPostsRequestDto';
 export * from './GetProfileFeedRequestDto';

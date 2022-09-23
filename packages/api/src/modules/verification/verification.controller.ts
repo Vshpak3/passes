@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
+import { GetPersonaStatusResponseDto } from './dto/get-persona-status.dto'
 import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
 import { SubmitPersonaInquiryRequestDto } from './dto/submit-persona-inquiry.dto'
 import { VerificationService } from './verification.service'
@@ -44,14 +45,18 @@ export class VerificationController {
   @ApiEndpoint({
     summary: 'Refresh persona KYC verifications for user',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: GetPersonaStatusResponseDto,
     responseDesc: 'Persona KYC verifications for user were refreshed',
   })
   @Get('persona/refresh')
   async refreshPersonaVerifications(
     @Req() req: RequestWithUser,
-  ): Promise<void> {
-    await this.verificationService.refreshPersonaVerifications(req.user.id)
+  ): Promise<GetPersonaStatusResponseDto> {
+    return {
+      status: await this.verificationService.refreshPersonaVerifications(
+        req.user.id,
+      ),
+    }
   }
 
   @ApiEndpoint({

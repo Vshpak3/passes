@@ -118,6 +118,7 @@ models/GetPayinsResponseDto.ts
 models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
+models/GetPersonaStatusResponseDto.ts
 models/GetPostResponseDto.ts
 models/GetPostsRequestDto.ts
 models/GetProfileFeedRequestDto.ts

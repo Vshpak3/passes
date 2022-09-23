@@ -16,6 +16,7 @@ import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
+import { GetPersonaStatusResponseDto } from './dto/get-persona-status.dto'
 import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
 import { SubmitPersonaInquiryRequestDto } from './dto/submit-persona-inquiry.dto'
 import { CreatorVerificationEntity } from './entities/creator-verification.entity'
@@ -102,7 +103,9 @@ export class VerificationService {
     })
   }
 
-  async refreshPersonaVerifications(userId?: string) {
+  async refreshPersonaVerifications(
+    userId?: string,
+  ): Promise<KYCStatusEnum | undefined> {
     let query = this.dbReader(PersonaInquiryEntity.table)
       .where('kyc_status', KYCStatusEnum.PENDING)
       .select(['id', 'user_id'])
@@ -120,6 +123,27 @@ export class VerificationService {
         }
       }),
     )
+    if (userId) {
+      const inquiries = await this.dbWriter(PersonaInquiryEntity.table)
+        .where('user_id', userId)
+        .select(['kyc_status'])
+      inquiries.forEach((inquiry) => {
+        if (inquiry.kyc_status === KYCStatusEnum.COMPLETED) {
+          return KYCStatusEnum.COMPLETED
+        }
+      })
+      inquiries.forEach((inquiry) => {
+        if (inquiry.kyc_status === KYCStatusEnum.PENDING) {
+          return KYCStatusEnum.PENDING
+        }
+      })
+      inquiries.forEach((inquiry) => {
+        if (inquiry.kyc_status === KYCStatusEnum.FAILED) {
+          return KYCStatusEnum.FAILED
+        }
+      })
+    }
+    return undefined
   }
 
   async refreshPersonaVerification(inquiryId: string, userId: string) {

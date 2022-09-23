@@ -258,7 +258,7 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get status as read
+     * Get messages
      */
     async getMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
@@ -281,7 +281,7 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get status as read
+     * Get messages
      */
     async getMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.getMessagesRaw(initOverrides);
