@@ -196,10 +196,3 @@ export class FanWallApi extends runtime.BaseAPI {
     }
 
 }
-
-export const FanWallSecurityInfo = new Set<string>([
-    "createFanWallComment",
-    "deleteFanWallComment",
-    "getFanWallForCreator",
-    "hideFanWallComment",
-])

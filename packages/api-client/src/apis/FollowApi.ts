@@ -404,15 +404,3 @@ export class FollowApi extends runtime.BaseAPI {
     }
 
 }
-
-export const FollowSecurityInfo = new Set<string>([
-    "blockFollower",
-    "checkFollow",
-    "followCreator",
-    "getBlocked",
-    "reportFollower",
-    "searchFans",
-    "searchFollowing",
-    "unblockFollower",
-    "unfollowCreator",
-])

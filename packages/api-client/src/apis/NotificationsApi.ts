@@ -220,11 +220,3 @@ export class NotificationsApi extends runtime.BaseAPI {
     }
 
 }
-
-export const NotificationsSecurityInfo = new Set<string>([
-    "getNotificationSettings",
-    "getNotifications",
-    "readNotification",
-    "subscribeNotifications",
-    "updateNotificationSettings",
-])

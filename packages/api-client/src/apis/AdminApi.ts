@@ -604,19 +604,3 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
 }
-
-export const AdminSecurityInfo = new Set<string>([
-    "addExternalPass",
-    "addExternalPassAddress",
-    "addUserExternalPass",
-    "deleteExternalPass",
-    "deleteExternalPassAddress",
-    "deleteUserExternalPass",
-    "flagAsAdult",
-    "getCreatorFee",
-    "getUnprocessChargebacks",
-    "impersonateUser",
-    "setCreatorFee",
-    "updateChargeback",
-    "updateExternalPass",
-])

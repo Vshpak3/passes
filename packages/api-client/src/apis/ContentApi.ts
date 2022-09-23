@@ -306,13 +306,3 @@ export const PreSignContentContentTypeEnum = {
     Audio: 'audio'
 } as const;
 export type PreSignContentContentTypeEnum = typeof PreSignContentContentTypeEnum[keyof typeof PreSignContentContentTypeEnum];
-
-export const ContentSecurityInfo = new Set<string>([
-    "createContent",
-    "getVaultContent",
-    "preSignContent",
-    "preSignPass",
-    "preSignProfileBanner",
-    "preSignProfileImage",
-    "preSignW9",
-])

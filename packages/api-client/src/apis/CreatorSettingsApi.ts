@@ -104,8 +104,3 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     }
 
 }
-
-export const CreatorSettingsSecurityInfo = new Set<string>([
-    "getCreatorSettings",
-    "updateCreatorSettings",
-])

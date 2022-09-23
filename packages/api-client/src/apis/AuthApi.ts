@@ -221,8 +221,3 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
 }
-
-export const AuthSecurityInfo = new Set<string>([
-    "changePassword",
-    "getCurrentUser",
-])

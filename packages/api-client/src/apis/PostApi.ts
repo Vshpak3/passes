@@ -419,15 +419,3 @@ export class PostApi extends runtime.BaseAPI {
     }
 
 }
-
-export const PostSecurityInfo = new Set<string>([
-    "createPost",
-    "findPost",
-    "pinPost",
-    "registerPurchasePost",
-    "registerPurchasePostData",
-    "registerTipPost",
-    "removePost",
-    "unpinPost",
-    "updatePost",
-])

@@ -61,7 +61,7 @@ echo
 rm -rf "${out_path}/src/.openapi-generator*"
 
 
-### Generate secured endpoint file
+### Output information about unathenticated endpoints
 
 python3 <<EOT
 import collections
@@ -80,15 +80,6 @@ for path, method in spec['paths'].items():
             no_auth[api_name].append(operation['operationId'])
         else:
             yes_auth[api_name].append(operation['operationId'])
-
-for api, ops in yes_auth.items():
-    security_info_content = f"""
-export const {api}SecurityInfo = new Set<string>([
-{f"{os.linesep}".join([f'    "{op}",' for op in sorted(ops)])}
-])
-"""
-    with open(os.path.join('packages/api-client', f'src/apis/{api}Api.ts'), 'a') as f:
-        f.write(security_info_content)
 
 no_auth_print_str = sorted(f'{api}.{op}' for api, ops in no_auth.items() for op in ops)
 print(f'No full authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth_print_str)}')

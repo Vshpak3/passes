@@ -97,8 +97,3 @@ export class LikeApi extends runtime.BaseAPI {
     }
 
 }
-
-export const LikeSecurityInfo = new Set<string>([
-    "likePost",
-    "unlikePost",
-])

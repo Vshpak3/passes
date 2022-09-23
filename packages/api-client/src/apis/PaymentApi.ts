@@ -1126,30 +1126,3 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
 }
-
-export const PaymentSecurityInfo = new Set<string>([
-    "cancelPayin",
-    "cancelSubscription",
-    "createCircleBank",
-    "createCircleCard",
-    "deleteCircleBank",
-    "deleteCircleCard",
-    "entryCircleCard",
-    "entryMetamaskCircleETH",
-    "entryMetamaskCircleUSDC",
-    "entryPhantomCircleUSDC",
-    "getCircleBanks",
-    "getCircleCard",
-    "getCircleCards",
-    "getDefaultPayinMethod",
-    "getDefaultPayoutMethod",
-    "getPayins",
-    "getPayouts",
-    "getSubscriptions",
-    "payout",
-    "registerPayin",
-    "registerPayinData",
-    "setDefaultPayinMethod",
-    "setDefaultPayoutMethod",
-    "setSubscriptionPayinMethod",
-])

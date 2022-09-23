@@ -206,10 +206,3 @@ export class CommentApi extends runtime.BaseAPI {
     }
 
 }
-
-export const CommentSecurityInfo = new Set<string>([
-    "createComment",
-    "deleteComment",
-    "findCommentsForPost",
-    "hideComment",
-])
