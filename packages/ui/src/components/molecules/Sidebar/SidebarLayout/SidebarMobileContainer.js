@@ -37,7 +37,7 @@ const SidebarMobileContainer = ({
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative flex max-h-[100vh] w-full max-w-[256px] flex-1 flex-col bg-[#120C14] drop-shadow-sidebar-shadow">
+            <Dialog.Panel className="relative flex max-h-[100vh] w-full max-w-[256px] flex-1 flex-col bg-[#120C14]">
               <div className="h-0 flex-1 overflow-y-auto px-[15px] py-[20px]">
                 <SidebarMobileHeader toggleSidebar={toggleSidebar} />
                 <div className="">
