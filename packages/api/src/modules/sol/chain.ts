@@ -195,14 +195,6 @@ export const createNftTransaction = async (
     total: uses,
   }
 
-  if (
-    !JsonMetadata.properties ||
-    !JsonMetadata.properties.creators ||
-    JsonMetadata.properties.creators.length === 0
-  ) {
-    throw 'The metadata has to contain the creators array.'
-  }
-
   const creators: Creator[] = JsonMetadata.properties.creators.map((c) => ({
     address: new PublicKey(c.address as PublicKeyInitData),
     share: c.share as number,
@@ -282,10 +274,10 @@ export const createNftTransaction = async (
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: JsonMetadata.name ?? '',
-            symbol: JsonMetadata.symbol ?? '',
+            name: JsonMetadata.name,
+            symbol: JsonMetadata.symbol,
             uri: UriMetadata.href,
-            sellerFeeBasisPoints: JsonMetadata.seller_fee_basis_points ?? 0,
+            sellerFeeBasisPoints: JsonMetadata.seller_fee_basis_points,
             creators,
             collection: collectionData,
             uses: usesFormatted,
