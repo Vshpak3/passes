@@ -19,9 +19,9 @@ const LogoutButton = ({ handleLogout }) => {
         onClick={handleLogout}
         className="group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex"
       >
-        <a className="group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-[#eeedef]/50 text-white group-hover:text-white sidebar-collapse:flex">
+        <a className="group hidden cursor-pointer items-center font-semibold tracking-[0.003em] text-white first-line:text-base sidebar-collapse:flex">
           <LogoutIcon
-            className="mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-[#ffffff]/50 stroke-2 group-hover:stroke-[#ffffff]/80"
+            className="mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/50 stroke-2 group-hover:stroke-[#ffffff]/80"
             aria-hidden="true"
           />
           Logout
