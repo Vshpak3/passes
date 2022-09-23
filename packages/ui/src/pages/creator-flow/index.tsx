@@ -191,13 +191,7 @@ const CreatorFlow = () => {
           step: GetCreatorVerificationStepResponseDtoStepEnum._1Profile
         }
       })
-
-      const result = await api.canSubmitPersona()
-
-      if (result) {
-        await api.refreshPersonaVerifications()
-        window.location.assign("/verification")
-      }
+      window.location.assign("/verification")
     } catch (err) {
       console.log(err)
     }

@@ -11,12 +11,16 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import FormImage from "src/components/organisms/FormImage"
+import { updateProfile } from "src/helpers"
 import { creatorFlowProfileSchema } from "src/helpers/validation"
-import { useBecomeCreator, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 
 interface IFormData {
   displayName: string
   bio: string
+  profileImage: File[]
+  profileCoverImage: File[]
   "free-dm-month-checkbox": boolean
   facebookUrl: string
   instagramUrl: string
@@ -42,7 +46,6 @@ type CustomizePageFormProps = {
 const CustomizePageForm = ({
   onCustomizePageFinish = identity
 }: CustomizePageFormProps) => {
-  const { makeCreatorProfile } = useBecomeCreator()
   const [connectedAccounts] = useState<IConnectedAccounts>({
     facebook: false,
     instagram: false,
@@ -58,17 +61,23 @@ const CustomizePageForm = ({
     setValue,
     setError,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<IFormData>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(creatorFlowProfileSchema)
   })
 
-  const saveProfileHandler = () => {
+  const profileImage = watch("profileImage")
+  const profileCoverImage = watch("profileCoverImage")
+
+  const saveProfileHandler = async () => {
     const {
       displayName,
       bio: description,
       "free-dm-month-checkbox": isAdult,
+      profileImage,
+      profileCoverImage,
       ...socialAccounts
     } = getValues()
 
@@ -80,10 +89,13 @@ const CustomizePageForm = ({
       return
     }
 
-    makeCreatorProfile({
-      displayName,
+    await updateProfile({
+      profileImage,
+      profileCoverImage,
       isAdult,
-      profile: { description, ..._.pickBy(socialAccounts, _.identity) }
+      displayName,
+      description,
+      ..._.pickBy(socialAccounts, _.identity)
     })
     onCustomizePageFinish()
   }
@@ -116,12 +128,53 @@ const CustomizePageForm = ({
         </div>
 
         <div className="mb-6 flex flex-col px-12 sm:px-20">
-          <div className="cover-image flex w-full justify-center rounded-xl py-11">
-            <CameraIcon />
-          </div>
-          <div className="cover-image -mt-16 ml-3 flex h-24 w-24 items-center justify-center rounded-full sm:-mt-20 sm:ml-6 sm:h-32 sm:w-32">
-            <CameraIcon />
-          </div>
+          <FormImage
+            setValue={setValue}
+            register={register}
+            name="profileCoverImage"
+            imgData={profileCoverImage}
+            cropWidth={1500}
+            cropHeight={300}
+            inputUI={
+              <div className="z-10 flex w-full flex-col">
+                <div className="relative w-full">
+                  <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
+                  <img // eslint-disable-line @next/next/no-img-element
+                    alt=""
+                    className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                    src={
+                      profileCoverImage?.length
+                        ? URL.createObjectURL(profileCoverImage[0])
+                        : "/pages/profile/profile-cover-photo.png"
+                    }
+                  />
+                </div>
+              </div>
+            }
+          />
+
+          <FormImage
+            setValue={setValue}
+            register={register}
+            name="profileImage"
+            imgData={profileImage}
+            cropWidth={400}
+            cropHeight={400}
+            inputUI={
+              <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
+                <CameraIcon className="absolute z-30 cursor-pointer" />
+                <img // eslint-disable-line @next/next/no-img-element
+                  alt=""
+                  className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
+                  src={
+                    profileImage?.length
+                      ? URL.createObjectURL(profileImage[0])
+                      : "/pages/profile/profile-photo.jpeg"
+                  }
+                />
+              </div>
+            }
+          />
         </div>
 
         <div className="mb-6 flex flex-col gap-6 px-12 sm:px-28">

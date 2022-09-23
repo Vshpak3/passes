@@ -10,7 +10,7 @@ import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
-import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
+import FormImage from "src/components/organisms/FormImage"
 
 const bioForm = {
   coverDescription: {
@@ -79,9 +79,6 @@ const socialMediaForm = {
   }
 }
 export const EditProfile = ({ profile, onSubmit }) => {
-  const [profileImageCropOpen, setProfileImageCropOpen] = useState(false)
-  const [coverImageCropOpen, setCoverImageCropOpen] = useState(false)
-
   const { handleSubmit, register, getValues, watch, setValue } = useForm({
     defaultValues: profile
   })
@@ -99,16 +96,6 @@ export const EditProfile = ({ profile, onSubmit }) => {
 
   const onChangeSocialMedia = (event, key) => {
     setValue(key, event.target.value, { shouldValidate: true })
-  }
-
-  const onProfileCrop = (croppedImage) => {
-    setValue("profileImage", [croppedImage], { shouldValidate: true })
-    setProfileImageCropOpen(false)
-  }
-
-  const onCoverCrop = (croppedImage) => {
-    setValue("profileCoverImage", [croppedImage], { shouldValidate: true })
-    setCoverImageCropOpen(false)
   }
 
   const renderInput = ([key, input]) => (
@@ -129,24 +116,6 @@ export const EditProfile = ({ profile, onSubmit }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col  items-center gap-5"
     >
-      {profileImageCropOpen && profileImage?.length && (
-        <ImageCropDialog
-          onCrop={onProfileCrop}
-          onClose={() => setProfileImageCropOpen(false)}
-          width={400}
-          height={400}
-          src={URL.createObjectURL(profileImage[0])}
-        />
-      )}
-      {coverImageCropOpen && profileCoverImage?.length && (
-        <ImageCropDialog
-          onCrop={onCoverCrop}
-          onClose={() => setCoverImageCropOpen(false)}
-          width={1500}
-          height={300}
-          src={URL.createObjectURL(profileCoverImage[0])}
-        />
-      )}
       <Dialog
         className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[20px]"
         open={true}
@@ -161,19 +130,19 @@ export const EditProfile = ({ profile, onSubmit }) => {
           </div>
         }
       >
-        <FormInput
-          type="file"
+        <FormImage
+          setValue={setValue}
           register={register}
           name="profileCoverImage"
-          accept={["image"]}
-          options={{ onChange: () => setCoverImageCropOpen(true) }}
-          trigger={
+          imgData={profileCoverImage}
+          cropWidth={1500}
+          cropHeight={300}
+          inputUI={
             <div className="z-10 flex w-full flex-col">
               <div className="relative w-full">
                 <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
                 <img // eslint-disable-line @next/next/no-img-element
                   alt=""
-                  layout="fill"
                   className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                   src={
                     profileCoverImage?.length
@@ -185,14 +154,14 @@ export const EditProfile = ({ profile, onSubmit }) => {
             </div>
           }
         />
-        <FormInput
-          type="file"
+        <FormImage
+          setValue={setValue}
           register={register}
           name="profileImage"
-          accept={["image"]}
-          className="hidden"
-          options={{ onChange: () => setProfileImageCropOpen(true) }}
-          trigger={
+          imgData={profileImage}
+          cropWidth={400}
+          cropHeight={400}
+          inputUI={
             <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
               <CameraIcon className="absolute z-30 cursor-pointer" />
               <img // eslint-disable-line @next/next/no-img-element

@@ -6,6 +6,7 @@ import {
   getFormattedDate
 } from "./formatters"
 import encrypt from "./openpgp"
+import { updateProfile } from "./updateProfile"
 
 export {
   classNames,
@@ -13,5 +14,6 @@ export {
   ContentService,
   encrypt,
   formatCurrency,
-  getFormattedDate
+  getFormattedDate,
+  updateProfile
 }

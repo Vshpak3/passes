@@ -2,14 +2,13 @@ import {
   FanWallApi,
   FeedApi,
   GetProfileResponseDto,
-  ProfileApi,
   UserApi
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
 
-import { ContentService } from "../helpers"
+import { updateProfile } from "../helpers"
 import { isProd } from "../helpers/env"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
@@ -55,40 +54,10 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     })
 
   const onSubmitEditProfile = async (values: Record<string, any>) => {
-    const { profileImage, profileCoverImage, ...rest } = values
-
-    const contentService = new ContentService()
-
-    const [profileImageUrl, profileCoverImageUrl] = await Promise.all([
-      profileImage?.length
-        ? contentService.uploadProfileImage(profileImage[0])
-        : undefined,
-      profileCoverImage?.length
-        ? contentService.uploadProfileBanner(profileCoverImage[0])
-        : undefined
-    ])
-
-    const newValues = { ...rest }
-
-    newValues.fullName = `${values.firstName} ${values.lastName}`
-
-    if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
-    if (profileCoverImageUrl)
-      newValues.profileCoverImageUrl = profileCoverImageUrl
-
-    setProfile(newValues as any)
-    const api = new ProfileApi()
-    await api.createOrUpdateProfile({
-      createOrUpdateProfileRequestDto: {
-        ...rest
-        // profileImageUrl: profileImageUrl ?? rest.profileImageUrl,
-        // profileCoverImageUrl: profileCoverImageUrl ?? rest.profileCoverImageUrl
-      }
-    })
-
+    const newProfileValues = await updateProfile(values)
+    setProfile(newProfileValues as any)
     setEditProfile(false)
-
-    if (rest.username !== username) await updateUsername(rest.username)
+    if (values.username !== username) await updateUsername(values.username)
   }
 
   const updateUsername = async (username: string) => {
