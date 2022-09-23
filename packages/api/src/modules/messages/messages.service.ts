@@ -705,7 +705,12 @@ export class MessagesService {
           pending: true,
         }),
       )
-      .update('pending', false)
+      .update(
+        MessageEntity.toDict<MessageEntity>({
+          sentAt: new Date(),
+          pending: false,
+        }),
+      )
     if (updated) {
       await this.sendMessage(userId, channelId, messageId)
       await this.updateChannelTipStats(userId, channelId, tipAmount)
@@ -981,7 +986,7 @@ export class MessagesService {
     userId: string,
     getMessagesRequestDto: GetMessagesRequestDto,
   ) {
-    const { createdAt, lastId, dateLimit, channelId, contentOnly, pending } =
+    const { sentAt, lastId, dateLimit, channelId, contentOnly, pending } =
       getMessagesRequestDto
     const channel = await this.dbReader(ChannelMemberEntity.table)
       .where(
@@ -1002,7 +1007,7 @@ export class MessagesService {
       .where(`${MessageEntity.table}.channel_id`, channelId)
       .select(`${MessageEntity.table}.*`)
       .orderBy([
-        { column: `${MessageEntity.table}.created_at`, order: 'desc' },
+        { column: `${MessageEntity.table}.sent_at`, order: 'desc' },
         { column: `${MessageEntity.table}.id`, order: 'desc' },
       ])
 
@@ -1014,20 +1019,12 @@ export class MessagesService {
       query = query.andWhere('pending', true).andWhere('sender_id', userId)
     }
 
-    if (createdAt) {
-      query = query.andWhere(
-        `${MessageEntity.table}.created_at`,
-        '<=',
-        createdAt,
-      )
+    if (sentAt) {
+      query = query.andWhere(`${MessageEntity.table}.sent_at`, '<=', sentAt)
     }
 
     if (dateLimit) {
-      query = query.andWhere(
-        `${MessageEntity.table}.created_at`,
-        '>=',
-        dateLimit,
-      )
+      query = query.andWhere(`${MessageEntity.table}.sent_at`, '>=', dateLimit)
     }
 
     const messages = await query

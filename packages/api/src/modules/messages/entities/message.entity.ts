@@ -41,4 +41,7 @@ export class MessageEntity extends BaseEntity {
 
   @ManyToOne()
   paidMessage?: PaidMessageEntity
+
+  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
+  sentAt: Date
 }
