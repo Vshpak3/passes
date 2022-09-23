@@ -445,7 +445,6 @@ export class PassService {
       case ChainEnum.SOL:
         address = (
           await this.solService.createNftPass(
-            userId,
             pass.id,
             id,
             pass.title,
