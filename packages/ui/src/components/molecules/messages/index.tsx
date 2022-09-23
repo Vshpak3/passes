@@ -1,3 +1,5 @@
+export { Avatar } from "./Avatar"
+export { ChannelHeader } from "./ChannelHeader"
 export { ChannelList } from "./ChannelList"
 export { ChannelListItem } from "./ChannelListItem"
 export { ChannelMessage } from "./ChannelMessage"

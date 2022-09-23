@@ -1,6 +1,8 @@
 import classNames from "classnames"
 import React from "react"
 
+import { Avatar } from "./index"
+
 export interface Channel {
   channelId: string
   messagePreview: string
@@ -23,12 +25,8 @@ export const ChannelListItem = ({ onClick, channel, isSelected }: Props) => {
       )}
     >
       <div className="item-center flex pr-[10px]">
-        <img // eslint-disable-line @next/next/no-img-element
-          width="50px"
-          height="50px"
-          className="rounded-full"
-          src={`https://www.w3schools.com/w3images/avatar${channel.channelId}.png`}
-          alt="ProfilePhoto"
+        <Avatar
+          imageSrc={`https://www.w3schools.com/w3images/avatar${channel.channelId}.png`}
         />
       </div>
       <div className="flex flex-col items-start justify-start">

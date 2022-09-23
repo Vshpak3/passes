@@ -1,6 +1,8 @@
 import classNames from "classnames"
 import React from "react"
 
+import { Avatar } from "./index"
+
 export const ChannelMessage = ({ isOwnMessage = false }) => {
   return (
     <div
@@ -10,12 +12,8 @@ export const ChannelMessage = ({ isOwnMessage = false }) => {
       )}
     >
       {!isOwnMessage && (
-        <div className="flex w-[100px] items-end">
-          <img // eslint-disable-line @next/next/no-img-element
-            className="h-[40px] w-[40px] rounded-full"
-            src="https://www.w3schools.com/w3images/avatar1.png"
-            alt="Profile picture"
-          />
+        <div className="flex w-[35%] items-end">
+          <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
         </div>
       )}
       <div className="mx-4 rounded border border-[#363037] bg-[#1E1820] p-2">
