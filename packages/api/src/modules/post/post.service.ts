@@ -309,7 +309,7 @@ export class PostService {
           postContent,
           accessiblePostIds.has(postContent.post_id)
             ? await this.s3ContentService.signUrl(
-                `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.user_id}`,
+                `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.id}`,
               )
             : undefined,
         ),

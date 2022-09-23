@@ -40,6 +40,7 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChannelMemberDto } from './dto/channel-member.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
@@ -65,6 +66,7 @@ const MAX_CHANNELS_PER_REQUEST = 10
 @Injectable()
 export class MessagesService {
   streamClient: StreamChat
+  cloudfrontUrl: string
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -80,7 +82,9 @@ export class MessagesService {
     private readonly passService: PassService,
     private readonly listService: ListService,
     private readonly contentService: ContentService,
+    private readonly s3ContentService: S3ContentService,
   ) {
+    this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
     this.streamClient = StreamChat.getInstance(
       configService.get('stream.api_key') as string,
       configService.get('stream.api_secret'),
@@ -970,26 +974,41 @@ export class MessagesService {
       .select(`${MessageEntity.table}.*`)
       .first()
     message.contents = await this.getContentLookupForMessages(
-      message.contentIds,
-      message.paid,
-    )
+      [message.sender_id],
+      [message.contentIds],
+      [message.paid],
+    )[0]
     return new MessageDto(message)
   }
 
   private async getContentLookupForMessages(
-    contentIds: string[],
-    paid: boolean,
-  ): Promise<ContentDto[]> {
+    senderIds: string[],
+    contentIds: string[][],
+    paid: boolean[],
+  ): Promise<ContentDto[][]> {
     const contents = await this.dbReader(ContentEntity.table)
-      .whereIn('id', contentIds)
+      .whereIn(
+        'id',
+        contentIds.reduce((acc, ids) => acc.concat(ids), []),
+      )
       .select([`${ContentEntity.table}.*`])
     const contentMap = {}
     contents.forEach((content) => (contentMap[content.id] = content))
 
     return await Promise.all(
-      contentIds.map(async (contentId) => {
-        return new ContentDto(contentMap[contentId], paid ? '' : undefined)
-        //TODO get signed URL
+      contentIds.map(async (contentIdsInner, ind) => {
+        return await Promise.all(
+          contentIdsInner.map(async (contentId) => {
+            return new ContentDto(
+              contentMap[contentId],
+              paid[ind]
+                ? await this.s3ContentService.signUrl(
+                    `${this.cloudfrontUrl}/media/${contentMap[contentId].user_id}/${contentMap[contentId].id}`,
+                  )
+                : undefined,
+            )
+          }),
+        )
       }),
     )
   }
