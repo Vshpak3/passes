@@ -68,6 +68,17 @@ export class AdminController {
   }
 
   @ApiEndpoint({
+    summary: 'Set user up as a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'User was set up as a creator',
+  })
+  @Post('creator')
+  async setupCreator(@Body() body: AdminDto): Promise<void> {
+    await this.adminService.makeCreator(body.userId, body.username)
+  }
+
+  @ApiEndpoint({
     summary: 'Add external pass',
     responseStatus: HttpStatus.OK,
     responseType: Boolean,

@@ -39,7 +39,6 @@ export class ProfileService {
   ): Promise<boolean> {
     const data = ProfileEntity.toDict<ProfileEntity>({
       user: userId,
-      isActive: true,
       ...createOrUpdateProfileRequestDto,
     })
 

@@ -126,21 +126,4 @@ export class UserController {
   async getUserId(@Param('username') username: string): Promise<string> {
     return this.userService.getIdFromUsername(username)
   }
-
-  /*
-  -------------------------------------------------------------------------------
-  TEST (to be removed)
-  -------------------------------------------------------------------------------
-  */
-
-  @ApiEndpoint({
-    summary: 'Make yourself a creator',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'You were made a creator',
-  })
-  @Get('make/creator')
-  async makeCreator(@Req() req: RequestWithUser): Promise<void> {
-    await this.userService.makeCreator(req.user.id)
-  }
 }

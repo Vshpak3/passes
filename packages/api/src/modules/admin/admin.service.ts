@@ -20,6 +20,8 @@ import { PassTypeEnum } from '../pass/enum/pass.enum'
 import { CircleChargebackEntity } from '../payment/entities/circle-chargeback.entity'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { PaymentService } from '../payment/payment.service'
+import { ProfileEntity } from '../profile/entities/profile.entity'
+import { ProfileService } from '../profile/profile.service'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserDto } from '../user/dto/user.dto'
 import { UserEntity } from '../user/entities/user.entity'
@@ -46,6 +48,7 @@ export class AdminService {
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly userService: UserService,
+    private readonly profileService: ProfileService,
     private readonly jwtAuthService: JwtAuthService,
     private readonly jwtRefreshService: JwtRefreshService,
     private readonly s3contentService: S3ContentService,
@@ -92,6 +95,15 @@ export class AdminService {
     }
 
     await this.userService.makeAdult(userId)
+  }
+
+  async makeCreator(userId?: string, username?: string): Promise<void> {
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).id
+    }
+
+    await this.userService.makeCreator(userId)
+    await this.profileService.createOrUpdateProfile(userId, {})
   }
 
   async addExternalPass(

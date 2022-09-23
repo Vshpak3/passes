@@ -14,7 +14,7 @@ export class InvalidPayinRequestError extends BadRequestException {
   }
 }
 
-export class InvalidPayinStatusError extends Error {
+export class InvalidPayinStatusError extends BadRequestException {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, InvalidPayinStatusError.prototype)
