@@ -34,7 +34,7 @@ export function authStateToRoute(state: AuthStates) {
   }
 }
 
-export function authRouter(
+function authRouter(
   router: NextRouter,
   jwt?: JWTUserClaims | null,
   routeOnlyIfAuth = false

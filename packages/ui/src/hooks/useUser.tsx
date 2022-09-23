@@ -10,8 +10,8 @@ export interface JWTUserClaims {
   isEmailVerified: boolean
   aud: string
   iss: string
-  iat: string
-  exp: string
+  iat: number
+  exp: number
 }
 
 const useUser = () => {
