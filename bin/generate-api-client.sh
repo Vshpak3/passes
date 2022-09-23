@@ -28,7 +28,7 @@ if "${1:-false}" ; then
   echo -e "Only regenerating template files\n"
   docker run --rm -v ${root}:/local \
     openapitools/openapi-generator-cli:v${openapi_gen_version} author template  \
-    --output "/local/bin/openapi" \
+    --output "/local/${api_client_path}/templates" \
     --generator-name ${openapi_gen_generator}
   exit
 fi
@@ -51,7 +51,7 @@ mkdir "${out_path}/src/"
 # the cli requires Java on the host env).
 docker run --rm -v ${root}:/local \
   openapitools/openapi-generator-cli:v${openapi_gen_version} generate \
-  --template-dir "/local/bin/openapi" \
+  --template-dir "/local/${api_client_path}/templates" \
   --input-spec "/local/${spec_filename}" \
   --output "/local/${api_client_path}/src" \
   --generator-name ${openapi_gen_generator}
@@ -82,7 +82,7 @@ for path, method in spec['paths'].items():
             yes_auth[api_name].append(operation['operationId'])
 
 no_auth_print_str = sorted(f'{api}.{op}' for api, ops in no_auth.items() for op in ops)
-print(f'No full authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth_print_str)}')
+print(f'No authentication for endpoints:{os.linesep}- {f"{os.linesep}- ".join(no_auth_print_str)}')
 EOT
 echo
 
