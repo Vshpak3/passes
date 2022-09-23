@@ -20,6 +20,9 @@ yarn install
 
 # spins up docker containers for backend
 ./bin/reset-local-database.sh full
+
+# creates s3 bucket for hosting content
+./bin/setup-local-s3-bucket.sh
 ```
 
 ### On Rebase / Pulling New Code
