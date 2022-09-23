@@ -50,6 +50,9 @@ const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
 const MAX_TIME_NFT_REFRESH = 1000 * 60 * 30 // 30 minutes
 
+const SIGNER_ID_PREFIX_PASS = 'pass'
+const SIGNER_ID_PREFIX_PASSHOLDER = 'passholder'
+
 export class SolService {
   private _connection: Connection | undefined
   private cloudfrontUrl: string
@@ -302,7 +305,7 @@ export class SolService {
 
     const passPubKey = new PublicKey(
       await this.lambdaService.blockchainSignCreateAddress(
-        `pass.${passId}`,
+        `${SIGNER_ID_PREFIX_PASS}.${passId}`,
         ChainEnum.SOL,
       ),
     )
@@ -316,7 +319,7 @@ export class SolService {
 
     const mintPubKey = new PublicKey(
       await this.lambdaService.blockchainSignCreateAddress(
-        `passholder.${passHolderId}`,
+        `${SIGNER_ID_PREFIX_PASSHOLDER}.${passHolderId}`,
         ChainEnum.SOL,
       ),
     )
@@ -330,8 +333,6 @@ export class SolService {
       royalties,
       passPubKey,
     )
-
-    const solNftId = uuid.v4()
 
     const transaction = await createNftTransaction(
       this.getConnection(),
@@ -348,7 +349,7 @@ export class SolService {
       transaction,
       walletPubKey,
       mintPubKey,
-      `mint.${solNftId}`,
+      `${SIGNER_ID_PREFIX_PASSHOLDER}.${passHolderId}`,
     )
     return { mintPubKey: mintPubKey.toBase58(), transactionHash }
   }
@@ -428,7 +429,7 @@ export class SolService {
 
     const passPubKey = new PublicKey(
       await this.lambdaService.blockchainSignCreateAddress(
-        `pass.${passId}`,
+        `${SIGNER_ID_PREFIX_PASS}.${passId}`,
         ChainEnum.SOL,
       ),
     )
@@ -469,7 +470,7 @@ export class SolService {
       transaction,
       walletPubKey,
       passPubKey,
-      `pass.${passId}`,
+      `${SIGNER_ID_PREFIX_PASS}.${passId}`,
     )
 
     return { passPubKey: passPubKey.toBase58(), transactionHash }
