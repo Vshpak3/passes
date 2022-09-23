@@ -2,8 +2,8 @@
 
 module.exports = {
   build: {},
-  inlineCSS: true,
-  removeUnusedCSS: true,
+  inlineCSS: false,
+  removeUnusedCSS: false,
   websiteUrl: 'https://passes.com',
   updateEmailPreferenceUrl: 'https://passes.com',
   termsUrl: 'https://passes.com/terms',
