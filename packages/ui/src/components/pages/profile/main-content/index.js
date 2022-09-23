@@ -1,6 +1,6 @@
-import { FanWallApi, PostApi } from "@passes/api-client"
-import React, { useContext, useState } from "react"
-import { MainContext } from "src/context/MainContext"
+import { FanWallApi } from "@passes/api-client"
+import React, { useState } from "react"
+import { useCreatePost } from "src/hooks"
 import { useSWRConfig } from "swr"
 
 import NewsFeedNavigation from "./new-post/navigation"
@@ -13,44 +13,30 @@ const MainContent = ({
   fanWallPosts,
   username
 }) => {
-  const { postTime } = useContext(MainContext)
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
-  const createPost = async (values) => {
-    const api = new PostApi()
-    mutate(
-      ["/post/creator/", username],
-      async () =>
-        await api.createPost({
-          createPostRequestDto: {
-            text: values.text,
-            contentIds: values.contentIds,
-            passIds: [],
-            tags: [],
-            price: 0,
-            scheduledAt: postTime?.$d
+  const { createPost } = useCreatePost()
+
+  const handleCreatePost = (values) => {
+    mutate(["/post/creator/", username], async () => createPost(values), {
+      populateCache: (post, previousPosts) => {
+        if (!previousPosts)
+          return {
+            count: 1,
+            cursor: username,
+            posts: [post]
           }
-        }),
-      {
-        populateCache: (post, previousPosts) => {
-          if (!previousPosts)
-            return {
-              count: 1,
-              cursor: username,
-              posts: [post]
-            }
-          else
-            return {
-              count: previousPosts.count + 1,
-              cursor: previousPosts.cursor,
-              posts: [post, ...previousPosts.posts]
-            }
-        },
-        // Since the API already gives us the updated information,
-        // we don't need to revalidate here.
-        revalidate: false
-      }
-    )
+        else
+          return {
+            count: previousPosts.count + 1,
+            cursor: previousPosts.cursor,
+            posts: [post, ...previousPosts.posts]
+          }
+      },
+      // Since the API already gives us the updated information,
+      // we don't need to revalidate here.
+      revalidate: false
+    })
   }
   const writeToFanWall = async (values) => {
     const api = new FanWallApi()
@@ -89,7 +75,7 @@ const MainContent = ({
         ownsProfile={ownsProfile}
         posts={posts}
         fanWallPosts={fanWallPosts}
-        createPost={createPost}
+        createPost={handleCreatePost}
         writeToFanWall={writeToFanWall}
       />
     </>
