@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MessageDto } from './MessageDto';
+import {
+    MessageDtoFromJSON,
+    MessageDtoFromJSONTyped,
+    MessageDtoToJSON,
+} from './MessageDto';
+
 /**
  * 
  * @export
@@ -91,6 +98,12 @@ export interface ChannelMemberDto {
      * @memberof ChannelMemberDto
      */
     otherUserDisplayName?: string;
+    /**
+     * 
+     * @type {MessageDto}
+     * @memberof ChannelMemberDto
+     */
+    mostRecentMessage?: MessageDto;
 }
 
 /**
@@ -133,6 +146,7 @@ export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'unreadTip': json['unreadTip'],
         'otherUserUsername': !exists(json, 'otherUserUsername') ? undefined : json['otherUserUsername'],
         'otherUserDisplayName': !exists(json, 'otherUserDisplayName') ? undefined : json['otherUserDisplayName'],
+        'mostRecentMessage': !exists(json, 'mostRecentMessage') ? undefined : MessageDtoFromJSON(json['mostRecentMessage']),
     };
 }
 
@@ -157,6 +171,7 @@ export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
         'unreadTip': value.unreadTip,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
+        'mostRecentMessage': MessageDtoToJSON(value.mostRecentMessage),
     };
 }
 

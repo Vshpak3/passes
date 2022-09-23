@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MessageDto } from './MessageDto';
+import {
+    MessageDtoFromJSON,
+    MessageDtoFromJSONTyped,
+    MessageDtoToJSON,
+} from './MessageDto';
+
 /**
  * 
  * @export
@@ -91,6 +98,12 @@ export interface GetChannelResponseDto {
      * @memberof GetChannelResponseDto
      */
     otherUserDisplayName?: string;
+    /**
+     * 
+     * @type {MessageDto}
+     * @memberof GetChannelResponseDto
+     */
+    mostRecentMessage?: MessageDto;
 }
 
 /**
@@ -133,6 +146,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'unreadTip': json['unreadTip'],
         'otherUserUsername': !exists(json, 'otherUserUsername') ? undefined : json['otherUserUsername'],
         'otherUserDisplayName': !exists(json, 'otherUserDisplayName') ? undefined : json['otherUserDisplayName'],
+        'mostRecentMessage': !exists(json, 'mostRecentMessage') ? undefined : MessageDtoFromJSON(json['mostRecentMessage']),
     };
 }
 
@@ -157,6 +171,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         'unreadTip': value.unreadTip,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
+        'mostRecentMessage': MessageDtoToJSON(value.mostRecentMessage),
     };
 }
 

@@ -1007,7 +1007,13 @@ export class MessagesService {
       ])
 
     if (contentOnly) {
-      query = query.whereNotNull('paid_message_id')
+      query = query
+        .whereNotNull('paid_message_id')
+        .andWhereNot('sender_id', userId)
+    } else {
+      query = query.andWhere(function () {
+        return this.where('pending', false).orWhere('sender_id', userId)
+      })
     }
 
     if (createdAt) {
@@ -1032,7 +1038,9 @@ export class MessagesService {
     const contents = await this.getContentLookupForMessages(
       filteredMessages.map((message) => message.sender_id),
       filteredMessages.map((message) => JSON.parse(message.contentIds)),
-      filteredMessages.map((message) => message.paid),
+      filteredMessages.map(
+        (message) => message.paid || message.sender_id == userId,
+      ),
     )
     return filteredMessages.map((message, ind) => {
       return new MessageDto(message, contents[ind])
@@ -1055,7 +1063,7 @@ export class MessagesService {
       await this.getContentLookupForMessages(
         [message.sender_id],
         [JSON.parse(message.contentIds)],
-        [message.paid],
+        [message.paid || message.sender_id == userId],
       )[0],
     )
   }
