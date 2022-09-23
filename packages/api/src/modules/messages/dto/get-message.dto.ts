@@ -20,6 +20,9 @@ export class GetMessagesRequestDto extends PickType(PageRequestDto, [
 
   @DtoProperty()
   contentOnly: boolean
+
+  @DtoProperty()
+  pending: boolean
 }
 
 export class GetMessagesResponseDto extends PageResponseDto {

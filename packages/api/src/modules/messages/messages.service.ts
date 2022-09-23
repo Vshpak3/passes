@@ -981,7 +981,7 @@ export class MessagesService {
     userId: string,
     getMessagesRequestDto: GetMessagesRequestDto,
   ) {
-    const { createdAt, lastId, dateLimit, channelId, contentOnly } =
+    const { createdAt, lastId, dateLimit, channelId, contentOnly, pending } =
       getMessagesRequestDto
     const channel = await this.dbReader(ChannelMemberEntity.table)
       .where(
@@ -1010,10 +1010,8 @@ export class MessagesService {
       query = query
         .whereNotNull('paid_message_id')
         .andWhereNot('sender_id', userId)
-    } else {
-      query = query.andWhere(function () {
-        return this.where('pending', false).orWhere('sender_id', userId)
-      })
+    } else if (pending) {
+      query = query.andWhere('pending', true).andWhere('sender_id', userId)
     }
 
     if (createdAt) {

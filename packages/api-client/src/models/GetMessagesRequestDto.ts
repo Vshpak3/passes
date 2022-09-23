@@ -49,6 +49,12 @@ export interface GetMessagesRequestDto {
      * @memberof GetMessagesRequestDto
      */
     contentOnly: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessagesRequestDto
+     */
+    pending: boolean;
 }
 
 /**
@@ -59,6 +65,7 @@ export function instanceOfGetMessagesRequestDto(value: object): boolean {
     isInstance = isInstance && "dateLimit" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "contentOnly" in value;
+    isInstance = isInstance && "pending" in value;
 
     return isInstance;
 }
@@ -78,6 +85,7 @@ export function GetMessagesRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'dateLimit': (new Date(json['dateLimit'])),
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
+        'pending': json['pending'],
     };
 }
 
@@ -95,6 +103,7 @@ export function GetMessagesRequestDtoToJSON(value?: GetMessagesRequestDto | null
         'dateLimit': (value.dateLimit.toISOString()),
         'channelId': value.channelId,
         'contentOnly': value.contentOnly,
+        'pending': value.pending,
     };
 }
 
