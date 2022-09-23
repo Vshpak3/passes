@@ -6,7 +6,7 @@ import CalendarIcon from "public/icons/calendar-blank-outline.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { DateRangePicker } from "react-date-range"
-import { getFormattedDate, wrapApi } from "src/helpers"
+import { getFormattedDate } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 import ChevronDown from "../../../icons/chevron-down"
@@ -26,7 +26,7 @@ const PastTransactions = () => {
   })
 
   const fetchPayouts = useCallback(async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     const data = await api.getPayouts({
       getPayoutsRequestDto: { offset: offset, limit: PAGE_SIZE }
     })

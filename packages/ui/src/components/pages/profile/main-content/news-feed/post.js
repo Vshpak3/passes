@@ -20,7 +20,6 @@ import {
 } from "src/components/organisms"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import TipsModal from "../../../../organisms/TipsModal"
 import { PostDropdown } from "./post-dropdown"
@@ -212,7 +211,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
 
   async function updateEngagement() {
     try {
-      const api = wrapApi(PostApi)
+      const api = new PostApi()
       const response = await api.findPost({
         id: post.id
       })
@@ -230,7 +229,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
     try {
       if (!postUnlocked) return
 
-      const api = wrapApi(LikeApi)
+      const api = new LikeApi()
 
       if (!liked)
         await api.likePost({
@@ -313,7 +312,7 @@ export const CommentSection = ({
   const getComments = useCallback(async () => {
     try {
       setLoadingComments(true)
-      const api = wrapApi(CommentApi)
+      const api = new CommentApi()
 
       const response = await api.findCommentsForPost({
         id: postId
@@ -339,7 +338,7 @@ export const CommentSection = ({
       const content = getValues("comment")
       if (content.length === 0) return
 
-      const api = wrapApi(CommentApi)
+      const api = new CommentApi()
 
       const response = await api.createComment({
         createCommentDto: {

@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 
-import { wrapApi } from "../helpers"
 import { authRouter } from "../helpers/authRouter"
 import { isDev } from "../helpers/env"
 import { useUser } from "../hooks"
@@ -44,7 +43,7 @@ const ForgotPassword = () => {
     try {
       setIsLoading(true)
 
-      const api = wrapApi(AuthLocalApi)
+      const api = new AuthLocalApi()
       await api.initPasswordReset({
         initResetPasswordRequestDto: {
           email: data.email

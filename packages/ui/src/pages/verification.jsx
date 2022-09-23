@@ -5,8 +5,6 @@ import {
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
-import { wrapApi } from "../helpers"
-
 //TODO: use canSubmit
 const VerificationPage = () => {
   const router = useRouter()
@@ -17,7 +15,7 @@ const VerificationPage = () => {
       environment: "sandbox",
       onReady: () => client.open(),
       onComplete: async ({ inquiryId, status }) => {
-        const api = wrapApi(VerificationApi)
+        const api = new VerificationApi()
         if (status === "completed") {
           await api.submitPersonaInquiry({
             submitPersonaInquiryRequestDto: {

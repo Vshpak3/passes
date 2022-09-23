@@ -10,7 +10,6 @@ import { SHA256 } from "crypto-js"
 import { useState } from "react"
 import { toast } from "react-toastify"
 
-import { wrapApi } from "../helpers"
 import { getPhantomProvider } from "../helpers/payment/payment-wallet"
 import {
   connectMetamask,
@@ -56,7 +55,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
 
     if (phantomProvider == undefined) {
       //display message to user
@@ -89,7 +88,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
 
     if (metamaskProvider == undefined) {
       //display message to user
@@ -118,7 +117,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
 
     if (metamaskProvider == undefined) {
       //display message to user
@@ -146,7 +145,7 @@ export const usePay = (
   const submit = async () => {
     setSubmitting(true)
     setLoading(true)
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
     try {
       const registerResponse = await registerPaymentFunc()
       const cancelPayinCallback = async () => {

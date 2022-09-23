@@ -15,7 +15,6 @@ import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms"
 import Checkbox from "src/components/atoms/Checkbox"
 import IconTooltip from "src/components/atoms/IconTooltip"
-import { wrapApi } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
 interface WalletListItemProps {
@@ -119,8 +118,8 @@ const WalletListItem = ({
     const isPayoutChecked = getValues("payouts")
     const isSolanaMintingChecked = getValues("solanaMinting")
     const isEthereumMintingChecked = getValues("ethereumMinting")
-    const payoutApi = wrapApi(PaymentApi)
-    const walletApi = wrapApi(WalletApi)
+    const payoutApi = new PaymentApi()
+    const walletApi = new WalletApi()
 
     if (
       chain === SetDefaultWalletRequestDtoChainEnum.Sol &&

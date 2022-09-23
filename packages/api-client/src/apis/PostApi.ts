@@ -99,13 +99,10 @@ export class PostApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post`,
@@ -138,13 +135,10 @@ export class PostApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
@@ -176,13 +170,10 @@ export class PostApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/pin/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
@@ -216,13 +207,10 @@ export class PostApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/pay/purchase`,
@@ -257,13 +245,10 @@ export class PostApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/pay/data/purchase`,
@@ -298,13 +283,10 @@ export class PostApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/pay/tip`,
@@ -337,13 +319,10 @@ export class PostApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
@@ -374,13 +353,10 @@ export class PostApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/unpin/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
@@ -418,13 +394,10 @@ export class PostApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
+        const token = window.localStorage.getItem("access-token")
 
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
             path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),

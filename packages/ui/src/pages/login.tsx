@@ -16,7 +16,6 @@ import { RoundedIconButton } from "../components/atoms/Button"
 import { CssGridTiles } from "../components/molecules"
 import { authRouter } from "../helpers/authRouter"
 import { setTokens } from "../helpers/setTokens"
-import { wrapApi } from "../helpers/wrapApi"
 import { JWTUserClaims } from "../hooks/useUser"
 
 const LoginPage = () => {
@@ -51,7 +50,7 @@ const LoginPage = () => {
 
   const onUserLogin = async (email: string, password: string) => {
     try {
-      const api = wrapApi(AuthLocalApi)
+      const api = new AuthLocalApi()
       const res = await api.loginWithEmailPassword({
         localUserLoginRequestDto: { email, password }
       })

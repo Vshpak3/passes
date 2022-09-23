@@ -1,7 +1,6 @@
 import { PassApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
 interface IRenewPassButton {
@@ -13,7 +12,7 @@ export const RenewPassButton = ({
   passHolderId,
   payinMethod
 }: IRenewPassButton) => {
-  const api = wrapApi(PassApi)
+  const api = new PassApi()
   const register = async () => {
     return await api.registerRenewPass({
       renewPassHolderRequestDto: {

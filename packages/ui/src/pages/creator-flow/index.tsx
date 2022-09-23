@@ -15,8 +15,6 @@ import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/contants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
-import { wrapApi } from "../../helpers"
-
 type BulletItemProps = {
   isSelected: boolean
   setSelectedStep: MouseEventHandler
@@ -147,7 +145,7 @@ function WelcomeToPasses() {
   )
 }
 
-const api = wrapApi(VerificationApi)
+const api = new VerificationApi()
 
 const CreatorFlow = () => {
   const [stepsDone, setStepsDone] = useState<string[]>([])

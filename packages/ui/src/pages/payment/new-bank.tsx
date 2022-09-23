@@ -8,7 +8,6 @@ import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers"
 
 enum BankTypeEnum {
   US,
@@ -63,7 +62,7 @@ const NewCard = () => {
         }
       }
 
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       //TODO: handle error on frontend (display some generic message)
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       router.push("/payment/default-payout-method")

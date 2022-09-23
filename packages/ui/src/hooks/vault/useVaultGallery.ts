@@ -5,9 +5,8 @@ import {
 } from "@passes/api-client"
 import { ContentApi } from "@passes/api-client/apis"
 import { useCallback, useEffect, useState } from "react"
-import { wrapApi } from "src/helpers"
 
-const api = wrapApi(ContentApi)
+const api = new ContentApi()
 
 export type TVaultData = ContentDto[] | null
 export type TSelectedVaultData = ContentDto[]

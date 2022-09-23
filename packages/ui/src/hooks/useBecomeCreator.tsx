@@ -3,7 +3,6 @@ import {
   ProfileApi,
   UserApi
 } from "@passes/api-client"
-import { wrapApi } from "src/helpers"
 
 interface IMakeCreator {
   profile: CreateOrUpdateProfileRequestDto
@@ -12,8 +11,8 @@ interface IMakeCreator {
 }
 
 const useBecomeCreator = () => {
-  const userApi = wrapApi(UserApi)
-  const profileApi = wrapApi(ProfileApi)
+  const userApi = new UserApi()
+  const profileApi = new ProfileApi()
 
   const makeCreatorProfile = async ({
     profile,

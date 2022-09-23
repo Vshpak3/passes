@@ -4,7 +4,6 @@ import DeleteIcon from "public/icons/delete-outline.svg"
 import { useCallback, useEffect } from "react"
 import { toast } from "react-toastify"
 
-import { wrapApi } from "../../../helpers"
 import BankIcon from "../../../icons/bank-icon"
 import WalletIcon from "../../../icons/wallet-icon"
 import { Button, PassesPinkButton } from "../../atoms"
@@ -12,13 +11,13 @@ import { Button, PassesPinkButton } from "../../atoms"
 const DefaultPayoutMethod = () => {
   const router = useRouter()
   const fetchBanks = useCallback(async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     const data = await api.getCircleBanks()
     console.log(data, "getCircleBanks")
   }, [])
 
   const setDefaultPayout = useCallback(async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     try {
       await api.setDefaultPayoutMethod({
         setPayoutMethodRequestDto: {
@@ -32,7 +31,7 @@ const DefaultPayoutMethod = () => {
   }, [])
 
   const fetchDefaultPayout = useCallback(async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     const data = await api.getDefaultPayoutMethod()
     console.log(data, "getDefaultPayoutMethod")
   }, [])

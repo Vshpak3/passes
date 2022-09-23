@@ -13,8 +13,15 @@
  */
 
 
-import { passesConfig } from './config'
-export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
+// Check for required environment variable
+if (process.env.NEXT_PUBLIC_API_BASE_URL === undefined) {
+    throw new Error('NEXT_PUBLIC_API_BASE_URL is not set')
+}
+
+// Create custom passes config
+export const passesConfig: ConfigurationParameters = {
+    basePath: process.env.NEXT_PUBLIC_API_BASE_URL,
+}
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path
@@ -37,7 +44,7 @@ export class Configuration {
     }
 
     get basePath(): string {
-        return this.configuration.basePath != null ? this.configuration.basePath : BASE_PATH;
+        return this.configuration.basePath != null ? this.configuration.basePath : "";
     }
 
     get fetchApi(): FetchAPI | undefined {

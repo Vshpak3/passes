@@ -14,7 +14,6 @@ import AccountCard from "src/components/organisms/AccountCard"
 import AddBankingModal from "src/components/organisms/AddBankingModal"
 import AddWalletModal from "src/components/organisms/AddWalletModal"
 import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
-import { wrapApi } from "src/helpers"
 import { useUser } from "src/hooks"
 import BankIcon from "src/icons/bank-icon"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -49,7 +48,7 @@ const DefaultPayoutMethod = () => {
   }, [])
 
   const submit = async (dto: PayoutMethodDto) => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
     try {
       await paymentApi.setDefaultPayoutMethod({
         setPayoutMethodRequestDto: dto
@@ -62,7 +61,7 @@ const DefaultPayoutMethod = () => {
   }
 
   const deleteBank = async (bankId: string) => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
     try {
       await paymentApi.deleteCircleBank({ circleBankId: bankId })
     } catch (error: any) {
@@ -74,8 +73,8 @@ const DefaultPayoutMethod = () => {
   }
 
   const deleteWallet = async (walletId: string) => {
-    const walletApi = wrapApi(WalletApi)
-    const paymentApi = wrapApi(PaymentApi)
+    const walletApi = new WalletApi()
+    const paymentApi = new PaymentApi()
     try {
       await walletApi.removeWallet({ walletId: walletId })
     } catch (error) {
@@ -95,8 +94,8 @@ const DefaultPayoutMethod = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = wrapApi(PaymentApi)
-      const walletApi = wrapApi(WalletApi)
+      const paymentApi = new PaymentApi()
+      const walletApi = new WalletApi()
       await getBanks(paymentApi)
       await getWallets(walletApi)
       await getDefaultPayout(paymentApi)

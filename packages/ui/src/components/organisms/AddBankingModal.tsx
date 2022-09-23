@@ -18,7 +18,6 @@ import { bankingSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
-import { wrapApi } from "../../helpers"
 import Modal from "./Modal"
 
 enum BankTypeEnum {
@@ -84,7 +83,7 @@ IAddPayoutModal) => {
         }
       }
 
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       //TODO: handle error on frontend (display some generic message)
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       router.push("/payment/default-payout-method")

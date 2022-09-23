@@ -21,7 +21,7 @@ import React from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
-import { formatCurrency, getFormattedDate, wrapApi } from "src/helpers"
+import { formatCurrency, getFormattedDate } from "src/helpers"
 import Caret from "src/icons/caret"
 
 ChartJS.register(
@@ -52,7 +52,7 @@ const EarningsGraph: React.FC<IEarningsGraph> = ({
   const handleOnTabClick = (value: string) => {
     setActiveTab(value)
   }
-  const api = wrapApi(CreatorStatsApi)
+  const api = new CreatorStatsApi()
 
   const fetchEarnings = React.useCallback(async () => {
     const data = await api.getHistoricEarnings({

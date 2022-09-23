@@ -4,7 +4,6 @@ import {
   PassHolderDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { wrapApi } from "src/helpers/wrapApi"
 import { useUser } from "src/hooks"
 import useSWR from "swr"
 
@@ -53,7 +52,7 @@ const usePasses = (creatorId = "") => {
     user ? ["/pass/created/", creatorId] : null,
     async () => {
       if (user) {
-        const api = wrapApi(PassApi)
+        const api = new PassApi()
         return (
           await api.getCreatorPasses({
             getCreatorPassesRequestDto: { creatorId }
@@ -66,7 +65,7 @@ const usePasses = (creatorId = "") => {
   const { data: fanPasses, isValidating: isLoadingFanPasses } = useSWR(
     user ? "/pass/owned" : null,
     async () => {
-      const api = wrapApi(PassApi)
+      const api = new PassApi()
       return (
         await api.getPassHoldings({
           getPassHoldingsRequestDto: {

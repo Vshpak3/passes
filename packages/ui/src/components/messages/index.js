@@ -3,7 +3,6 @@ import "@stream-io/stream-chat-css/dist/css/index.css"
 import { MessagesApi } from "@passes/api-client/apis"
 import ThreeLines from "public/icons/three-lines-icon.svg"
 import React, { useEffect, useState } from "react"
-import { wrapApi } from "src/helpers"
 import { useChat, useUser } from "src/hooks"
 import { StreamChat } from "stream-chat"
 import { Channel, ChannelList, Chat } from "stream-chat-react"
@@ -92,7 +91,7 @@ const MessagesComponent = ({ username }) => {
   // }
 
   useEffect(() => {
-    const api = wrapApi(MessagesApi)
+    const api = new MessagesApi()
 
     const getMessageStats = async (channelIds) => {
       const { channelStats } = await api.getChannelsStats({

@@ -1,10 +1,9 @@
 import { UserApi } from "@passes/api-client"
 import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { wrapApi } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
 
-const api = wrapApi(UserApi)
+const api = new UserApi()
 const DEBOUNCE_DELAY = 300
 
 const useCreatorSearch = () => {

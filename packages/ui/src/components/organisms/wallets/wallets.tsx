@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, Input } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
-import { wrapApi } from "src/helpers"
 import { useUser } from "src/hooks"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
 import { KeyedMutator } from "swr"
@@ -93,7 +92,7 @@ const Wallets = () => {
         chain: "eth"
       }
 
-      const api = wrapApi(WalletApi)
+      const api = new WalletApi()
       await api.createWallet({ createWalletRequestDto: createWalletDto })
       mutate()
     } catch ({ type, message }) {
@@ -136,7 +135,7 @@ const Wallets = () => {
         chain: "sol"
       }
 
-      const api = wrapApi(WalletApi)
+      const api = new WalletApi()
       await api.createWallet({ createWalletRequestDto: createWalletDto })
       mutate()
     } catch ({ type, message }) {
@@ -149,7 +148,7 @@ const Wallets = () => {
     chain: "eth" | "sol" | "avax" | "matic"
   ) => {
     try {
-      const api = wrapApi(WalletApi)
+      const api = new WalletApi()
       const res = await api.authMessage({
         authWalletRequestDto: {
           walletAddress,
@@ -164,7 +163,7 @@ const Wallets = () => {
 
   const confirmNewPayoutAddressOnSubmit = async () => {
     const walletAddress = getValues("payoutAddress")
-    const api = wrapApi(WalletApi)
+    const api = new WalletApi()
     await api
       .createUnauthenticatedWallet({
         createUnauthenticatedWalletRequestDto: {
@@ -178,7 +177,7 @@ const Wallets = () => {
   }
 
   const deleteWalletHandler = async (id: string) => {
-    const api = wrapApi(WalletApi)
+    const api = new WalletApi()
     setWalletsList((prevState) =>
       prevState.filter(({ walletId }) => walletId !== id)
     )
@@ -193,8 +192,8 @@ const Wallets = () => {
   }, [wallets, loading])
 
   useEffect(() => {
-    const walletApi = wrapApi(WalletApi)
-    const payoutApi = wrapApi(PaymentApi)
+    const walletApi = new WalletApi()
+    const payoutApi = new PaymentApi()
 
     payoutApi
       .getDefaultPayoutMethod()

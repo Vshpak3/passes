@@ -10,7 +10,6 @@ import { Fragment, useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { wrapApi } from "../../../helpers"
 import { FormInput, PassesPinkButton } from "../../atoms"
 
 const payoutFrequencyOptions = [
@@ -34,13 +33,13 @@ const RequestPayouts = () => {
   } = useForm()
 
   const fetchAutomaticPayoutSchedule = useCallback(async () => {
-    const api = wrapApi(CreatorSettingsApi)
+    const api = new CreatorSettingsApi()
     const data = await api.getCreatorSettings()
     console.log(data, "fetchAutomaticPayoutSchedule")
   }, [])
 
   const onManualPayoutClick = useCallback(async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     try {
       await api.payout()
     } catch (error: any) {
@@ -53,7 +52,7 @@ const RequestPayouts = () => {
   }, [fetchAutomaticPayoutSchedule])
 
   const onScheduleSave = useCallback(async () => {
-    const api = wrapApi(CreatorSettingsApi)
+    const api = new CreatorSettingsApi()
     try {
       const data = await api.updateCreatorSettings({
         updateCreatorSettingsRequestDto: {

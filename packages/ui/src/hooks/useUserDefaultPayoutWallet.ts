@@ -1,7 +1,6 @@
 import { PaymentApi } from "@passes/api-client"
 import useSWR from "swr"
 
-import { wrapApi } from "../helpers"
 import useLocalStorage from "./useLocalStorage"
 
 const useUserDefaultPayoutWallet = () => {
@@ -12,7 +11,7 @@ const useUserDefaultPayoutWallet = () => {
     isValidating: loading,
     mutate
   } = useSWR(accessToken ? "/payout/default" : null, async () => {
-    const api = wrapApi(PaymentApi)
+    const api = new PaymentApi()
     return await api.getDefaultPayoutMethod()
   })
 

@@ -9,7 +9,6 @@ import {
   FormInput,
   PassesPinkButton
 } from "src/components/atoms"
-import { wrapApi } from "src/helpers"
 import { walletSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
 
@@ -39,7 +38,7 @@ IAddPayoutModal) => {
   })
 
   async function onSubmit() {
-    const walletApi = wrapApi(WalletApi)
+    const walletApi = new WalletApi()
     try {
       const walletValues: any = getValues()
       await walletApi.createUnauthenticatedWallet({

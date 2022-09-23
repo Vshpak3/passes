@@ -6,14 +6,13 @@ import { TabButton } from "src/components/atoms/Button"
 import EarningsGraph from "src/components/pages/tools/analytics/AnalyticsGraph"
 import AnalyticsHeader from "src/components/pages/tools/analytics/AnalyticsHeader"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
-import { wrapApi } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
 
 const Analytics: NextPage = () => {
   const [analyticsTab, setAnalyticsTab] = React.useState("earnings")
   const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
-    const api = wrapApi(CreatorStatsApi)
+    const api = new CreatorStatsApi()
     return await api.getBalance()
   })
   const handleAnalyticsTabClick = (value: string) => {

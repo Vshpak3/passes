@@ -2,7 +2,6 @@ import { FanWallApi } from "@passes/api-client"
 import React, { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { BlockModal, ReportModal } from "src/components/organisms"
-import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
 
 import { Comment } from "./comment"
@@ -11,7 +10,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }) => {
   const [posts, setPosts] = useState(fanWallPosts.comments)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
-  const api = wrapApi(FanWallApi)
+  const api = new FanWallApi()
   const { mutate } = useSWRConfig()
 
   const deleteComment = async (id) => {

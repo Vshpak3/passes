@@ -6,8 +6,6 @@ import {
 } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../wrapApi"
-
 //TODO: add FE for payment object specific stuff
 // e.g. displaying nft picture of nft brought, or name of person for tipped message
 const Payin = (payin: PayinDto) => {
@@ -37,7 +35,7 @@ const Payin = (payin: PayinDto) => {
       break
   }
   const cancel = async () => {
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
     await paymentApi.cancelPayin({ payinId: payin.id })
     window.location.reload()
   }

@@ -2,10 +2,9 @@ import {
   NotificationsApi,
   UpdateNotificationSettingsRequestDto
 } from "@passes/api-client"
-import { wrapApi } from "src/helpers"
 
 export const useNotificationSettings = () => {
-  const notificationApi = wrapApi(NotificationsApi)
+  const notificationApi = new NotificationsApi()
 
   const getNotificationSettings = async () => {
     return await notificationApi.getNotificationSettings()

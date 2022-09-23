@@ -14,7 +14,6 @@ import Chart from "src/components/molecules/performance/Chart"
 import FilterByDays from "src/components/molecules/performance/FilterByDays"
 import Header from "src/components/molecules/performance/Header"
 import Table from "src/components/molecules/performance/Table"
-import { wrapApi } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
 
@@ -53,7 +52,7 @@ const PERFORMANCE_OPTIONS = [
 
 const Performance = () => {
   const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
-    const api = wrapApi(CreatorStatsApi)
+    const api = new CreatorStatsApi()
     return await api.getBalance()
   })
   const [activeTab, setActiveTab] = useState("total")
@@ -66,7 +65,7 @@ const Performance = () => {
 
   useEffect(() => {
     const fetchEarnings = async () => {
-      const api = wrapApi(CreatorStatsApi)
+      const api = new CreatorStatsApi()
       const data = await api.getHistoricEarnings({
         getCreatorEarningsHistoryRequestDto: {
           start: dateRange.startDate,

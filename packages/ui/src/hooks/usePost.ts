@@ -1,14 +1,12 @@
 import { PostApi } from "@passes/api-client"
 import useSWR from "swr"
 
-import { wrapApi } from "../helpers/wrapApi"
-
 const usePost = (postId: string) => {
   const { data: post, isValidating: loading } = useSWR(
     postId ? "/posts" + "/" + postId : null,
     async () => {
       if (!postId) return null
-      const api = wrapApi(PostApi)
+      const api = new PostApi()
 
       return await api.findPost({
         postId: postId

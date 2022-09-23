@@ -1,5 +1,4 @@
 import { GetWalletsResponseDto, WalletApi } from "@passes/api-client"
-import { wrapApi } from "src/helpers/wrapApi"
 import useSWR from "swr"
 
 import useLocalStorage from "./useLocalStorage"
@@ -16,7 +15,7 @@ const useUserConnectedWallets = () => {
     isValidating: loading,
     mutate
   } = useSWR(accessToken ? "/wallets" : null, async () => {
-    const api = wrapApi(WalletApi)
+    const api = new WalletApi()
     return await api.getWallets()
   })
 

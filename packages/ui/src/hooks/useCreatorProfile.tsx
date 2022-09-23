@@ -11,7 +11,6 @@ import useSWR from "swr"
 
 import { ContentService } from "../helpers"
 import { isProd } from "../helpers/env"
-import { wrapApi } from "../helpers/wrapApi"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
 
@@ -31,7 +30,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     useSWR(
       doesProfileExist ? ["/fan-wall/creator/", username] : null,
       async () => {
-        const api = wrapApi(FanWallApi)
+        const api = new FanWallApi()
         return await api.getFanWallForCreator({
           getFanWallRequestDto: { creatorId: props.userId }
         })
@@ -49,7 +48,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const { data: profilePosts = { posts: [] }, isValidating: isLoadingPosts } =
     useSWR(doesProfileExist ? ["/post/creator/", username] : null, async () => {
-      const api = wrapApi(FeedApi)
+      const api = new FeedApi()
       return await api.getFeedForCreator({
         getProfileFeedRequestDto: { creatorId: props.userId }
       })
@@ -78,7 +77,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
       newValues.profileCoverImageUrl = profileCoverImageUrl
 
     setProfile(newValues as any)
-    const api = wrapApi(ProfileApi)
+    const api = new ProfileApi()
     await api.createOrUpdateProfile({
       createOrUpdateProfileRequestDto: {
         ...rest
@@ -93,7 +92,7 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
   }
 
   const updateUsername = async (username: string) => {
-    const api = wrapApi(UserApi)
+    const api = new UserApi()
     await api.setUsername({
       updateUsernameRequestDto: {
         username

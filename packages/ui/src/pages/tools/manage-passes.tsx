@@ -10,7 +10,6 @@ import {
   MyPassSearchHeader
 } from "src/components/molecules/passes/MyPasses"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
-import { wrapApi } from "src/helpers"
 import { useOnClickOutside, usePasses, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
@@ -56,7 +55,7 @@ const ManagePasses = () => {
   }
 
   const submitHandler = () => {
-    const api = wrapApi(PassApi)
+    const api = new PassApi()
     api
       .updatePass({
         passId: passId,

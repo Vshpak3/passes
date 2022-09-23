@@ -9,16 +9,16 @@ import Link from "next/link"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { useCallback, useEffect, useState } from "react"
-import { wrapApi } from "src/helpers/wrapApi"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const FanLists: NextPage = () => {
   const [list, setList] = useState<Array<any>>([])
   const [, setFans] = useState<Array<any>>([])
-  const listApi = wrapApi(ListApi)
-  const followApi = wrapApi(FollowApi)
 
   const fetchList = useCallback(async () => {
+    const listApi = new ListApi()
+    const followApi = new FollowApi()
+
     try {
       const allLists: any = await listApi.getLists({
         getListsRequestsDto: {
@@ -38,7 +38,7 @@ const FanLists: NextPage = () => {
     } catch (error) {
       console.error(error)
     }
-  }, [listApi, followApi])
+  }, [])
 
   useEffect(() => {
     fetchList()

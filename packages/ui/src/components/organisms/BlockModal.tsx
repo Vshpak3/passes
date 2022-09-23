@@ -4,7 +4,6 @@ import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { Button, Text } from "src/components/atoms"
 
-import { wrapApi } from "../../helpers"
 import Modal from "./Modal"
 
 interface BlockModalProps {
@@ -21,7 +20,7 @@ const BlockModal = ({ isOpen = false, setOpen, userId }: BlockModalProps) => {
       const followBlockRequest = {
         followerId: userId
       }
-      const api = wrapApi(FollowApi)
+      const api = new FollowApi()
       await api.blockFollower(followBlockRequest)
       setOpen(false)
     } catch (error: any) {

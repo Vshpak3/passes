@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 
-import { wrapApi } from "../helpers"
 import { authRouter } from "../helpers/authRouter"
 import { setTokens } from "../helpers/setTokens"
 import { useUser } from "../hooks"
@@ -56,7 +55,7 @@ const NewPassword = () => {
 
       const verificationToken = router.query.token as string
 
-      const api = wrapApi(AuthLocalApi)
+      const api = new AuthLocalApi()
       const res = await api.confirmPasswordReset({
         confirmResetPasswordRequestDto: {
           password: data.password,

@@ -17,7 +17,6 @@ import { CssGridTiles } from "../../components/molecules"
 import { authRouter } from "../../helpers/authRouter"
 import { isDev } from "../../helpers/env"
 import { setTokens } from "../../helpers/setTokens"
-import { wrapApi } from "../../helpers/wrapApi"
 import { JWTUserClaims } from "../../hooks/useUser"
 
 const SignupPage = () => {
@@ -49,7 +48,7 @@ const SignupPage = () => {
     try {
       setIsSubmitting(true)
 
-      const api = wrapApi(AuthLocalApi)
+      const api = new AuthLocalApi()
       const res = await api.createEmailPasswordUser({
         createLocalUserRequestDto: { email, password }
       })
@@ -60,7 +59,8 @@ const SignupPage = () => {
 
       // In local development we auto-verify the email
       if (isDev) {
-        const res = await wrapApi(AuthApi).verifyUserEmail({
+        const authApi = new AuthApi()
+        const res = await authApi.verifyUserEmail({
           verifyEmailDto: {
             verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
           }

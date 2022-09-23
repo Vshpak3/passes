@@ -6,7 +6,6 @@ import {
   getFormattedDate
 } from "./formatters"
 import encrypt from "./openpgp"
-import { wrapApi } from "./wrapApi"
 
 export {
   classNames,
@@ -14,6 +13,5 @@ export {
   ContentService,
   encrypt,
   formatCurrency,
-  getFormattedDate,
-  wrapApi
+  getFormattedDate
 }

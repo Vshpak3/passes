@@ -1,7 +1,6 @@
 import { PayinDataDto, PayinMethodDto, PostApi } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
 interface ITipPostButton {
@@ -19,7 +18,7 @@ export const TipPostButton = ({
   onClick,
   onCompleted
 }: ITipPostButton) => {
-  const api = wrapApi(PostApi)
+  const api = new PostApi()
   const register = async () => {
     const response = await api.registerTipPost({
       tipPostRequestDto: {

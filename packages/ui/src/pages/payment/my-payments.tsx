@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers"
 import Payin from "../../helpers/payment/payin"
 import { useLocalStorage } from "../../hooks"
 import useUser from "../../hooks/useUser"
@@ -28,7 +27,7 @@ const MyPayments = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       const payinsResponse = await paymentApi.getPayins({
         getPayinsRequestDto: { offset: PAGE_SIZE * page, limit: PAGE_SIZE }
       })

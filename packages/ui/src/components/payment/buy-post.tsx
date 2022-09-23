@@ -1,7 +1,6 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
 interface IBuyPostButton {
@@ -16,7 +15,7 @@ export const BuyPostButton = ({
   payinMethod,
   onSuccess
 }: IBuyPostButton) => {
-  const api = wrapApi(PostApi)
+  const api = new PostApi()
   const register = async () => {
     return await api.registerPurchasePost({
       purchasePostRequestDto: {

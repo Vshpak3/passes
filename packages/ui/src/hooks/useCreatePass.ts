@@ -8,7 +8,6 @@ import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { wrapApi } from "src/helpers"
 import * as yup from "yup"
 
 const MB = 1048576
@@ -104,7 +103,7 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
   }
 
   const submitPassCreation = async (data: FieldValues) => {
-    const passApi = wrapApi(PassApi)
+    const passApi = new PassApi()
 
     if (files.length < MIN_FILES) {
       setFileUploadError(minFileError)

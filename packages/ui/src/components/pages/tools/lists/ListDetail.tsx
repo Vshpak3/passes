@@ -18,7 +18,6 @@ import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Skeleton from "src/components/molecules/Skeleton"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import ListItem from "./ListItem"
 
@@ -37,13 +36,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [isEditingListName, setIsEditingListName] = useState<boolean>(false)
   const [listName, setListName] = useState<string>("")
 
-  const followApi = wrapApi(FollowApi)
-  const listApi = wrapApi(ListApi)
-
   const listNameRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
   const fetchData = useCallback(async () => {
+    const followApi = new FollowApi()
+    const listApi = new ListApi()
+
     try {
       setIsFetchingFanRequest(true)
       if (id) {
@@ -82,7 +81,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       console.error(error)
       setIsFetchingFanRequest(false)
     }
-  }, [followApi, listApi, id])
+  }, [id])
 
   const handleChangeSearchFan = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase()
@@ -98,6 +97,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
 
   const handleRemoveFan = useCallback(
     async (event: React.MouseEvent<HTMLSpanElement>, user_id: string) => {
+      const listApi = new ListApi()
+
       event.preventDefault()
       event.stopPropagation()
       if (id) {
@@ -118,11 +119,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         )
       }
     },
-    [fanSelectionList, fetchData, id, listApi]
+    [fanSelectionList, fetchData, id]
   )
 
   const handleAddFan = useCallback(
     async (event: React.MouseEvent<HTMLSpanElement>, user_id: string) => {
+      const listApi = new ListApi()
+
       event.preventDefault()
       event.stopPropagation()
       if (id) {
@@ -141,7 +144,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         setFanSelectionList([...fanSelectionList, user_id])
       }
     },
-    [fanSelectionList, fetchData, id, listApi]
+    [fanSelectionList, fetchData, id]
   )
 
   const handleChangeListName = useCallback(
@@ -153,6 +156,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
 
   const toggleEditListName = useCallback(
     async (event: React.MouseEvent<HTMLDivElement>) => {
+      const listApi = new ListApi()
+
       event.preventDefault()
       const inputListNameValue = listNameRef.current?.value ?? ""
       if (
@@ -177,7 +182,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         setIsEditingListName((isEditingListName) => !isEditingListName)
       }
     },
-    [id, isEditingListName, listApi]
+    [id, isEditingListName]
   )
 
   useEffect(() => {
@@ -192,6 +197,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
   }, [isEditingListName, listInfo])
 
   const handleCreateNewList = useCallback(async () => {
+    const listApi = new ListApi()
+
     try {
       await listApi.createList({
         createListRequestDto: {
@@ -203,7 +210,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     } catch (error) {
       console.error(error)
     }
-  }, [fanSelectionList, listApi, listName, router])
+  }, [fanSelectionList, listName, router])
 
   const isAlreadyInList = (userId: string, username: string): boolean => {
     if (!id) {

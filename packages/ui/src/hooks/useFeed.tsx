@@ -1,7 +1,6 @@
 import { FeedApi } from "@passes/api-client"
 import useSWRInfinite from "swr/infinite"
 
-import { wrapApi } from "../helpers/wrapApi"
 import useUser from "./useUser"
 
 const withCursorPrefix = "/post?cursor="
@@ -17,7 +16,7 @@ const getKey = (_pageIndex: number, previousPageData: any) => {
 }
 
 const fetcher = async () => {
-  const api = wrapApi(FeedApi)
+  const api = new FeedApi()
   return await api.getFeed({ getFeedRequestDto: {} })
 }
 

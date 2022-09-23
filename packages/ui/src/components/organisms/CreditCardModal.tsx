@@ -25,7 +25,6 @@ import {
 import { EIcon } from "src/components/atoms/Input"
 import encrypt from "src/helpers/openpgp"
 import { creditCardSchema } from "src/helpers/validation"
-import { wrapApi } from "src/helpers/wrapApi"
 import { useLocalStorage } from "src/hooks"
 import { v4 } from "uuid"
 
@@ -81,7 +80,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
       },
       cardNumber: cardDetails.number
     }
-    const paymentApi = wrapApi(PaymentApi)
+    const paymentApi = new PaymentApi()
 
     const publicKey = await paymentApi.getCircleEncryptionKey()
 

@@ -1,7 +1,6 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
-import { wrapApi } from "src/helpers"
 import { useUser } from "src/hooks"
 
 // import { useSWRConfig } from "swr"
@@ -243,7 +242,7 @@ const DirectMessage = ({
   const { user } = useUser()
 
   const onSubmit = async () => {
-    // const contentApi = wrapApi(ContentApi)
+    // const contentApi = new ContentApi()
 
     // const values = getValues()
     // const content = await Promise.all(
@@ -263,7 +262,7 @@ const DirectMessage = ({
     //   })
     // )
     // const { postId } = await createPost({ ...values, content })
-    const messagesApi = wrapApi(MessagesApi)
+    const messagesApi = new MessagesApi()
 
     await messagesApi.massSend({
       createBatchMessageRequestDto: {
@@ -280,7 +279,7 @@ const DirectMessage = ({
   }
 
   // const createPost = async (values: any) => {
-  //   const api = wrapApi(PostApi)
+  //   const api = new PostApi()
   //   const result = await mutate(
   //     ["/post/creator/", user?.username],
   //     async () =>

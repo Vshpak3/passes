@@ -30,7 +30,7 @@ import {
   SettingsProvider,
   useSettings
 } from "src/contexts/settings"
-import { classNames, wrapApi } from "src/helpers"
+import { classNames } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Settings = () => {
@@ -39,7 +39,7 @@ const Settings = () => {
 
   useEffect(() => {
     ;(async () => {
-      const api = wrapApi(UserApi)
+      const api = new UserApi()
       await api.makeCreator()
     })()
   }, [])

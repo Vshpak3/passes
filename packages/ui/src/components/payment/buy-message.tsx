@@ -1,7 +1,6 @@
 import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
 interface IBuyMessageButton {
@@ -15,7 +14,7 @@ export const BuyMessageButton = ({
   payinMethod,
   onSuccess
 }: IBuyMessageButton) => {
-  const api = wrapApi(MessagesApi)
+  const api = new MessagesApi()
   const register = async () => {
     return await api.registerPurchaseMessage({
       purchaseMessageRequestDto: {

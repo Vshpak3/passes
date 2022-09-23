@@ -1,7 +1,6 @@
 import { FanWallApi, PostApi } from "@passes/api-client"
 import React, { useContext, useState } from "react"
 import { MainContext } from "src/context/MainContext"
-import { wrapApi } from "src/helpers/wrapApi"
 import { useSWRConfig } from "swr"
 
 import NewsFeedNavigation from "./new-post/navigation"
@@ -18,7 +17,7 @@ const MainContent = ({
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
   const createPost = async (values) => {
-    const api = wrapApi(PostApi)
+    const api = new PostApi()
     mutate(
       ["/post/creator/", username],
       async () =>
@@ -54,7 +53,7 @@ const MainContent = ({
     )
   }
   const writeToFanWall = async (values) => {
-    const api = wrapApi(FanWallApi)
+    const api = new FanWallApi()
 
     mutate(
       ["/fan-wall/creator/", username],

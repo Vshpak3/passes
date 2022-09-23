@@ -9,7 +9,6 @@ import encrypt from "src/helpers/openpgp"
 import { v4 } from "uuid"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers/wrapApi"
 import { useUser } from "../../hooks"
 
 const NewCard = () => {
@@ -74,7 +73,7 @@ const NewCard = () => {
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
 
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       //TODO: handle error on frontend (display some generic message)
       await paymentApi.createCircleCard({
         circleCreateCardAndExtraRequestDto: payload
@@ -96,7 +95,7 @@ const NewCard = () => {
       router.push("/login")
     }
     const fetchData = async () => {
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       setPublicKey(await paymentApi.getCircleEncryptionKey())
     }
     fetchData()

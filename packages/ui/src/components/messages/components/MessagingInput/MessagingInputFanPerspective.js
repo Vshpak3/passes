@@ -3,7 +3,6 @@ import React, { useContext, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { SendMessageButton } from "src/components/payment/send-message"
-import { wrapApi } from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
@@ -23,7 +22,7 @@ const MessagingInputFanPerspective = () => {
   const text = watch("text")
   const tip = watch("tipAmount")
   const payinMethod = undefined
-  const api = wrapApi(MessagesApi)
+  const api = new MessagesApi()
   // On initiate call submitData to check for tip, also a useffect when tip changes check first submitData
   // make sure to have button disabled when checking submit data tip
 

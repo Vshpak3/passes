@@ -12,7 +12,6 @@ import { useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import {
   authRouter,
@@ -79,7 +78,7 @@ const UserInfoPage = () => {
     try {
       setIsSubmitting(true)
 
-      const api = wrapApi(AuthApi)
+      const api = new AuthApi()
       const res = await api.createUser({
         createUserRequestDto: {
           legalFullName: name,

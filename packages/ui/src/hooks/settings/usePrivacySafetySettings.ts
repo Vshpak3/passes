@@ -3,11 +3,10 @@ import {
   ProfileApi,
   UpdateCreatorSettingsRequestDto
 } from "@passes/api-client"
-import { wrapApi } from "src/helpers"
 
 export const usePrivacySafetySettings = () => {
-  const profileApi = wrapApi(ProfileApi)
-  const creatorApi = wrapApi(CreatorSettingsApi)
+  const profileApi = new ProfileApi()
+  const creatorApi = new CreatorSettingsApi()
 
   const getCreatorSettings = async () => {
     return await creatorApi.getCreatorSettings()

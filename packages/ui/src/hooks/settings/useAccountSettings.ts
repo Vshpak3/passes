@@ -1,8 +1,7 @@
 import { UserApi } from "@passes/api-client"
-import { wrapApi } from "src/helpers"
 
 export const useAccountSettings = () => {
-  const userApi = wrapApi(UserApi)
+  const userApi = new UserApi()
 
   const validateUsername = async (username: string) => {
     return await userApi.validateUsername({ username })

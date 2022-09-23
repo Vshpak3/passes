@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers"
 import { useUser } from "../../hooks"
 
 const NewAddress = () => {
@@ -28,7 +27,7 @@ const NewAddress = () => {
     setSubmitting(true)
     try {
       const values: any = getValues()
-      const walletApi = wrapApi(WalletApi)
+      const walletApi = new WalletApi()
       //TODO: handle error on frontend (display some generic message)
       await walletApi.createUnauthenticatedWallet({
         createUnauthenticatedWalletRequestDto: {

@@ -12,12 +12,7 @@ import {
   MediaFile
 } from "src/components/pages/profile/main-content/new-post/media"
 import { SendMessageButton } from "src/components/payment/send-message"
-import {
-  classNames,
-  ContentService,
-  formatCurrency,
-  wrapApi
-} from "src/helpers"
+import { classNames, ContentService, formatCurrency } from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
@@ -56,7 +51,7 @@ const MessagingInput = () => {
   const text = watch("text")
 
   const payinMethod = undefined
-  const api = wrapApi(MessagesApi)
+  const api = new MessagesApi()
 
   const onSubmit = async () => {
     if (text?.length < 1) return null
@@ -85,7 +80,7 @@ const MessagingInput = () => {
   }
 
   const createPost = async ({ contentIds }) => {
-    const api = wrapApi(PostApi)
+    const api = new PostApi()
     const result = await mutate(
       [`/post/creator/`, user?.username],
       async () =>

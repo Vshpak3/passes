@@ -1,10 +1,8 @@
 import { FollowApi } from "@passes/api-client"
 import useSWR from "swr"
 
-import { wrapApi } from "../helpers/wrapApi"
-
 const useFollow = (creatorId: string) => {
-  const api = wrapApi(FollowApi)
+  const api = new FollowApi()
   const fetchIsFollowing = async () => {
     return await api.checkFollow({
       creatorId

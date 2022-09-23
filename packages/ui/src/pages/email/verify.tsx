@@ -3,7 +3,6 @@ import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Text, Wordmark } from "src/components/atoms"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import {
   authRouter,
@@ -42,7 +41,7 @@ const VerifyEmailPage = () => {
 
         const verificationToken = Array.isArray(id) ? id[0] : (id as string)
 
-        const api = wrapApi(AuthApi)
+        const api = new AuthApi()
         const res = await api.verifyUserEmail({
           verifyEmailDto: { verificationToken }
         })

@@ -2,12 +2,11 @@ import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-import { wrapApi } from "../helpers/wrapApi"
 const usePayinMethod = () => {
   const [defaultPayinMethod, setDefaultPayinMethod] = useState<PayinMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [cards, setCards] = useState<CircleCardDto[]>([])
-  const api = wrapApi(PaymentApi)
+  const api = new PaymentApi()
   // const { user } = useUser()
 
   async function getDefaultPayinMethod() {

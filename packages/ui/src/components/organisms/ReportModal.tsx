@@ -4,7 +4,6 @@ import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { Button, Text } from "src/components/atoms"
 
-import { wrapApi } from "../../helpers"
 import Modal from "./Modal"
 
 interface ReportModalProps {
@@ -22,7 +21,7 @@ const ReportModal = ({ isOpen = false, setOpen, userId }: ReportModalProps) => {
         followerId: userId,
         reportFanDto: { reason: reportValue }
       }
-      const api = wrapApi(FollowApi)
+      const api = new FollowApi()
       await api.reportFollower(followReportRequest)
       setOpen(false)
     } catch (error: any) {

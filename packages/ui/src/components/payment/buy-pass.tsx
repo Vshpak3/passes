@@ -1,7 +1,6 @@
 import { PassApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
 
-import { wrapApi } from "../../helpers"
 import { usePay } from "../../hooks/usePay"
 
 interface IBuyPassButton {
@@ -10,7 +9,7 @@ interface IBuyPassButton {
 }
 
 export const BuyPassButton = ({ passId, payinMethod }: IBuyPassButton) => {
-  const api = wrapApi(PassApi)
+  const api = new PassApi()
   const register = async () => {
     return await api.registerBuyPass({
       createPassHolderRequestDto: {

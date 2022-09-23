@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import {
   authRouter,
@@ -46,7 +45,7 @@ const UserEmailPage = () => {
     try {
       setIsSubmitting(true)
 
-      const api = wrapApi(AuthApi)
+      const api = new AuthApi()
       await api.setUserEmail({ setEmailRequestDto: { email } })
 
       // In local development (dev) we auto-verify the email

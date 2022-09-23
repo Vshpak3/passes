@@ -24,7 +24,7 @@ const mockedChannelsResponse = [
 ]
 
 const useMessages = (username: string) => {
-  // const api = wrapApi(MessagesApi)
+  // const api = new MessagesApi()
   const fetchChannels = async () => {
     // return await api.getChannels()
     return mockedChannelsResponse

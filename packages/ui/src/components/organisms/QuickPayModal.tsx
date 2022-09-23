@@ -2,7 +2,6 @@ import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
-import { wrapApi } from "src/helpers/wrapApi"
 import { usePayment, useUser } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
@@ -27,7 +26,7 @@ IQuickPayModal) => {
   const { defaultPayinMethod } = usePayment()
 
   const handlePayment = async () => {
-    const passApi = wrapApi(PassApi)
+    const passApi = new PassApi()
     if (user && isOpen) {
       const createPassHolderDto = {
         passId: isOpen && isOpen.passId,

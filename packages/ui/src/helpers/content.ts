@@ -1,7 +1,6 @@
 import { ContentApi, ContentDtoContentTypeEnum } from "@passes/api-client"
 
 import { isDev } from "./env"
-import { wrapApi } from "./wrapApi"
 
 class Content {
   url!: string
@@ -14,7 +13,7 @@ class Content {
 }
 
 class ContentService {
-  private readonly contentApi = wrapApi(ContentApi)
+  private readonly contentApi = new ContentApi()
 
   static profileImage(userId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-image.jpeg`

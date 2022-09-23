@@ -3,8 +3,6 @@ import jwtDecode from "jwt-decode"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
-import { wrapApi } from "../helpers/wrapApi"
-
 export interface JWTUserClaims {
   sub: string
   isVerified: boolean
@@ -29,7 +27,7 @@ const useUser = () => {
     if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }
-    const api = wrapApi(AuthApi)
+    const api = new AuthApi()
     return await api.getCurrentUser()
   })
 

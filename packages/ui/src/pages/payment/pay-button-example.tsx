@@ -1,11 +1,10 @@
 import { PaymentApi } from "@passes/api-client"
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
-import { wrapApi } from "../../helpers/wrapApi"
 import { usePay } from "../../hooks/usePay"
 
 const PayPage = () => {
-  const api = wrapApi(PaymentApi)
+  const api = new PaymentApi()
   const register = async () => {
     return await api.registerPayin()
   }

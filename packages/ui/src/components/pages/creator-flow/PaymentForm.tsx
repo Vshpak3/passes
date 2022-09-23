@@ -15,7 +15,6 @@ import {
   FormInput,
   PassesPinkButton
 } from "src/components/atoms"
-import { wrapApi } from "src/helpers"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
@@ -77,7 +76,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         }
       }
 
-      const paymentApi = wrapApi(PaymentApi)
+      const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       onPaymentFormPageFinish()
     } catch (error: any) {

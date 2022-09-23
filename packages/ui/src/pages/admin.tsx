@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { wrapApi } from "src/helpers/wrapApi"
 
 import { useUser } from "../hooks"
 
@@ -34,7 +33,7 @@ const AdminPage = () => {
     username?: string
   ) => {
     try {
-      const api = wrapApi(AdminApi)
+      const api = new AdminApi()
       const res = await api.impersonateUser({
         impersonateUserRequestDto: { userId, username, secret }
       })
@@ -54,7 +53,7 @@ const AdminPage = () => {
     username?: string
   ) => {
     try {
-      const api = wrapApi(AdminApi)
+      const api = new AdminApi()
       await api.flagAsAdult({
         adminDto: { userId, username, secret }
       })
