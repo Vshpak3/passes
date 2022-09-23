@@ -111,7 +111,7 @@ export class LambdaService {
         ? message.toString()
         : ethers.utils.hexlify(message)
     const input: InvokeCommandInput = {
-      FunctionName: this.prefix + '-lambda-blockchain-sign-message',
+      FunctionName: `${this.prefix}-blockchain-sign-message`,
       Payload: new TextEncoder().encode(
         `{"body":{"keyId":"${keyId}", "chain":"${chain}","message":"${messageStr}"}}`,
       ),
