@@ -87,7 +87,7 @@ async function tippedMessageCreationCallback(
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
   let paidMessageId: string | undefined = undefined
-  if (input.contentIds.length > 0) {
+  if (input.price && input.price > 0) {
     paidMessageId = await payService.messagesService.createPaidMessage(
       input.userId,
       input.text,
@@ -238,44 +238,3 @@ async function tipPostSuccessfulCallback(
   )
   return { postId: input.postId, amount: input.amount }
 }
-
-// try {
-//   await this.dbWriter.transaction(async (trx) => {
-//     await trx(MessagePostEntity.table)
-//       .insert(
-//         MessagePostEntity.toDict<MessagePostEntity>({
-//           user: channelMember.other_user_id,
-//           channel: sendMessageDto.channelId,
-//           post: sendMessageDto.attachments[0],
-//         }),
-//       )
-//       .onConflict(['user_id', 'post_id']) p
-//       .ignore()
-//     await trx
-//       .from(
-//         trx.raw('?? (??, ??)', [
-//           UserMessageContentEntity.table,
-//           'user_id',
-//           'channel_id',
-//           'content_id',
-//         ]),
-//       )
-//       .insert(function () {
-//         this.from(`${PostContentEntity.table}`)
-//           .where('post_id', sendMessageDto.attachments[0].length)
-//           .select(
-//             this.dbWriter.raw('? AS ??', [
-//               channelMember.other_user_id,
-//               'user_id',
-//             ]),
-//             this.dbWriter.raw('? AS ??', [
-//               sendMessageDto.channelId,
-//               'channel_id',
-//             ]),
-//             'content_id',
-//           )
-//       })
-//   })
-// } catch (err) {
-//   this.logger.info('resent post / content')
-// }

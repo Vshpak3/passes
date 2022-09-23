@@ -342,6 +342,9 @@ export class MessagesService {
   ): Promise<void> {
     const { includeListIds, exlcudeListIds, passIds, contentIds, price, text } =
       createBatchMessageDto
+    if (contentIds.length == 0 && price) {
+      throw new MessageSendError('cant give price to messages with no content')
+    }
     const paidMessageId = await this.createPaidMessage(
       userId,
       text,
@@ -439,6 +442,9 @@ export class MessagesService {
     sendMessageDto: SendMessageRequestDto,
   ) {
     const { text, contentIds, channelId, tipAmount, price } = sendMessageDto
+    if (contentIds.length == 0 && price) {
+      throw new MessageSendError('cant give price to messages with no content')
+    }
     const channelMember = await this.dbReader(ChannelMemberEntity.table)
       .where({ user: userId, channel: sendMessageDto.channelId })
       .select(['unlimited_messages', 'other_user_id'])
@@ -467,7 +473,25 @@ export class MessagesService {
         creatorId: channelMember.other_user_id,
       })
     } else {
-      await this.createMessage(userId, text, channelId, tipAmount, false)
+      let paidMessageId: string | undefined = undefined
+      if (price && price > 0) {
+        paidMessageId = await this.createPaidMessage(
+          userId,
+          text,
+          contentIds,
+          price ? 0 : (price as number),
+        )
+      }
+      await this.createMessage(
+        userId,
+        text,
+        channelId,
+        tipAmount,
+        false,
+        price,
+        paidMessageId,
+        contentIds,
+      )
       await this.removeFreeMessage(userId, sendMessageDto.channelId)
       return new RegisterPayinResponseDto()
     }
