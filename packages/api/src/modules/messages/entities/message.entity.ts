@@ -2,7 +2,7 @@ import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { MESSAGE_LENGTH } from '../constants/schema'
+import { CONTENT_IDS_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
 import { ChannelEntity } from './channel.entity'
 import { PaidMessageEntity } from './paid-message.entity'
 
@@ -14,6 +14,9 @@ export class MessageEntity extends BaseEntity {
 
   @Property({ type: types.text, length: MESSAGE_LENGTH })
   text: string
+
+  @Property({ length: CONTENT_IDS_LENGTH })
+  contentIds: string
 
   @ManyToOne()
   channel: ChannelEntity

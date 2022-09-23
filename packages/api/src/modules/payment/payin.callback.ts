@@ -104,6 +104,7 @@ async function tippedMessageCreationCallback(
     true,
     input.price,
     paidMessageId,
+    input.contentIds,
   )
   input.messageId = messageId
   await this.payService.updateInputJSON(payin.id, input)
@@ -215,6 +216,7 @@ async function purchaseMessageSuccessfulCallback(
   db: DatabaseService['knex'],
 ): Promise<PurchaseMessageCallbackOutput> {
   await payService.messagesService.purchaseMessage(
+    payin.user_id,
     input.messageId,
     input.paidMessageId,
     await payService.getTotalEarnings(payin.id),

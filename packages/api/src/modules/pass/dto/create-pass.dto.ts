@@ -45,8 +45,8 @@ export class CreatePassRequestDto {
   chain: ChainEnum
 
   @IsInt()
-  @Min(0)
-  @Max(10000)
+  @Min(500)
+  @Max(3000)
   @DtoProperty()
   royalties: number
 }

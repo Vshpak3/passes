@@ -17,6 +17,8 @@ const MIN_FILES_SUBSCRIPTION = 0
 const MAX_FILES_LIFETIME = 5000
 const MIN_FILES_LIFETIME = 10
 
+const THIRTY_DAY_DURATION = 30 * 24 * 60 * 60
+
 const createPassSchema = yup.object({
   passName: yup.string().required(),
   passDescription: yup.string().required()
@@ -37,7 +39,6 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
   const isLifetimePass = passType === PassTypeEnum.LIFETIME
   const isSubscriptionPass = passType === PassTypeEnum.SUBSCRIPTION
   const router = useRouter()
-  const MOCKED_DURATION = 2900000
 
   const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION
   const MIN_FILES = isLifetimePass ? MIN_FILES_LIFETIME : MIN_FILES_SUBSCRIPTION
@@ -121,7 +122,7 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
       type: newPassType(router.query.passType as string),
       price: parseInt(data.price),
       totalSupply: parseInt(data["free-dms-month"]),
-      duration: MOCKED_DURATION,
+      duration: THIRTY_DAY_DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
       royalties: 0
     }

@@ -392,6 +392,7 @@ export class MessagesService {
       userId,
       text,
       price,
+      contentIds,
     )
   }
 
@@ -401,6 +402,7 @@ export class MessagesService {
     creatorId: string,
     text: string,
     price?: number,
+    contentIds?: string[],
   ): Promise<void> {
     await Promise.all(
       userIds.map(async (userId) => {
@@ -418,6 +420,7 @@ export class MessagesService {
             false,
             price,
             paidMessageId,
+            contentIds,
           )
         } catch (err) {
           this.logger.error(
@@ -643,6 +646,7 @@ export class MessagesService {
     pending: boolean,
     price?: number,
     paidMessageId?: string,
+    contentIds?: string[],
   ): Promise<string> {
     const data = MessageEntity.toDict<MessageEntity>({
       id: v4(),
@@ -653,6 +657,7 @@ export class MessagesService {
       pending,
       price,
       paidMessage: paidMessageId,
+      contentIds: JSON.stringify(contentIds ? contentIds : []),
     })
     await this.dbWriter(MessageEntity.table).insert(data)
     if (!pending) {
@@ -875,6 +880,7 @@ export class MessagesService {
   // }
 
   async purchaseMessage(
+    userId: string,
     messageId: string,
     paidMessageId: string,
     earnings: number,
@@ -887,6 +893,28 @@ export class MessagesService {
       await trx(PaidMessageEntity.table)
         .where('id', paidMessageId)
         .increment('earnings_purchases', earnings)
+
+      const contentIds = JSON.parse(
+        (
+          await trx(MessageEntity.table)
+            .where('id', messageId)
+            .select('content_ids')
+            .first()
+        ).content_ids,
+      )
+
+      await Promise.all(
+        contentIds.map(async (contentId) => {
+          await trx(UserMessageContentEntity.table).insert(
+            UserMessageContentEntity.toDict<UserMessageContentEntity>({
+              user: userId,
+              content: contentId as string,
+            })
+              .onConflict()
+              .ignore(),
+          )
+        }),
+      )
     })
   }
 

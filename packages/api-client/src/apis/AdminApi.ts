@@ -99,6 +99,10 @@ export interface SetCreatorFeeRequest {
     setCreatorFeeRequestDto: SetCreatorFeeRequestDto;
 }
 
+export interface SetupCreatorRequest {
+    adminDto: AdminDto;
+}
+
 export interface UpdateChargebackRequest {
     updateChargebackRequestDto: UpdateChargebackRequestDto;
 }
@@ -526,6 +530,43 @@ export class AdminApi extends runtime.BaseAPI {
     async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.setCreatorFeeRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Set user up as a creator
+     */
+    async setupCreatorRaw(requestParameters: SetupCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling setupCreator.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/admin/creator`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Set user up as a creator
+     */
+    async setupCreator(requestParameters: SetupCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.setupCreatorRaw(requestParameters, initOverrides);
     }
 
     /**
