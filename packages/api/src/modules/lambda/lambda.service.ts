@@ -14,6 +14,10 @@ import {
   LambdaResponseStatusError,
 } from './error/lambda.error'
 
+const LAMBDA_CREATE_ADDRESS = 'blockchain-create-address'
+const LAMBDA_GET_ADDRESS = 'blockchain-get-public-address'
+const LAMBDA_SIGN_MESSAGE = 'blockchain-sign-message'
+
 @Injectable()
 export class LambdaService {
   client: LambdaClient
@@ -56,7 +60,7 @@ export class LambdaService {
     chain: ChainEnum,
   ): Promise<string> {
     const input: InvokeCommandInput = {
-      FunctionName: this.prefix + '-lambda-blockchain-create-address',
+      FunctionName: `${this.prefix}-${LAMBDA_CREATE_ADDRESS}`,
       Payload: new TextEncoder().encode(
         `{"body":{"keyId":"${keyId}", "chain":"${chain}"}}`,
       ),
@@ -81,7 +85,7 @@ export class LambdaService {
     chain: ChainEnum,
   ): Promise<string> {
     const input: InvokeCommandInput = {
-      FunctionName: this.prefix + '-lambda-blockchain-get-public-address',
+      FunctionName: `${this.prefix}-${LAMBDA_GET_ADDRESS}`,
       Payload: new TextEncoder().encode(
         `{"body":{"keyId":"${keyId}", "chain":"${chain}"}}`,
       ),
@@ -111,7 +115,7 @@ export class LambdaService {
         ? message.toString()
         : ethers.utils.hexlify(message)
     const input: InvokeCommandInput = {
-      FunctionName: `${this.prefix}-blockchain-sign-message`,
+      FunctionName: `${this.prefix}-${LAMBDA_SIGN_MESSAGE}`,
       Payload: new TextEncoder().encode(
         `{"body":{"keyId":"${keyId}", "chain":"${chain}","message":"${messageStr}"}}`,
       ),
