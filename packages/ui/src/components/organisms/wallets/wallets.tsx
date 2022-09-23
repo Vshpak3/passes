@@ -196,25 +196,41 @@ const Wallets = () => {
     const walletApi = wrapApi(WalletApi)
     const payoutApi = wrapApi(PaymentApi)
 
-    Promise.all([
-      payoutApi.getDefaultPayoutMethod(),
-      walletApi.getDefaultWallet({
+    payoutApi
+      .getDefaultPayoutMethod()
+      .then(({ walletId }) => {
+        return setDefaultAddress((prevState) => ({
+          ...prevState,
+          payoutWalletId: walletId
+        }))
+      })
+      .catch(({ message }) => toast(message))
+
+    walletApi
+      .getDefaultWallet({
         getDefaultWalletRequestDto: {
           chain: "eth"
         }
-      }),
-      walletApi.getDefaultWallet({
+      })
+      .then(({ walletId }) => {
+        return setDefaultAddress((prevState) => ({
+          ...prevState,
+          miningEthereumWalletId: walletId
+        }))
+      })
+      .catch(({ message }) => toast(message))
+
+    walletApi
+      .getDefaultWallet({
         getDefaultWalletRequestDto: {
           chain: "sol"
         }
       })
-    ])
-      .then((response) => {
-        return setDefaultAddress({
-          payoutWalletId: response[0].walletId,
-          miningEthereumWalletId: response[1].walletId,
-          miningSolanaWalletId: response[2].walletId
-        })
+      .then(({ walletId }) => {
+        return setDefaultAddress((prevState) => ({
+          ...prevState,
+          miningSolanaWalletId: walletId
+        }))
       })
       .catch(({ message }) => toast(message))
   }, [])
@@ -235,7 +251,7 @@ const Wallets = () => {
       </Modal>
       <div className="mt-[50px] flex items-center justify-start">
         <div className="flex items-center">
-          <Phantom className="ml-[37px] h-[50px] w-[50px]" />
+          <Phantom className="ml-[25px] h-[50px] w-[50px]" />
           <Metamask className="ml-[30px] mr-[25px] h-[50px] w-[50px]" />
           <Button variant="purple" onClick={() => setIsModalOpen(true)}>
             <div className="flex items-center justify-center">
@@ -293,12 +309,13 @@ const Wallets = () => {
       </div>
       <div
         className="
-          ml-[80px]
+          ml-[40px]
           mr-[120px]
           mt-[83px]
           flex
+          w-full
           items-center
-          justify-between
+          justify-around
           pr-[35px]
           pl-[20px]
           pt-[11px]
@@ -306,15 +323,15 @@ const Wallets = () => {
           text-[12px]
           text-[#ffffffeb]"
       >
-        <span>Wallet Type</span>
-        <span className="mr-[80px] ml-[80px]">Address</span>
-        <span className="ml-[80px]">Default For</span>
-        <span>Delete</span>
+        <span className="block">Wallet Type</span>
+        <span className="mx-[135px] block">Address</span>
+        <span className="block">Default For</span>
+        <span className="block">Delete</span>
       </div>
       <WalletsList
         walletsList={walletsList}
         deleteWalletHandler={deleteWalletHandler}
-        isCreator={user?.isCreator}
+        isCreator={!!user?.isCreator}
         defaultPayoutWalletId={payoutWalletId}
         miningSolanaWalletId={miningSolanaWalletId}
         miningEthereumWalletId={miningEthereumWalletId}

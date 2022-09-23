@@ -1,9 +1,13 @@
 import React from "react"
-
-import Tab from "../../../Tab"
+import Wallets from "src/components/organisms/wallets/wallets"
+import Tab from "src/components/pages/settings/Tab"
 
 const WalletManagementSettings = () => {
-  return <Tab withBack title="Wallet Management & Settings" />
+  return (
+    <Tab withBack title="Wallet Management & Settings">
+      <Wallets />
+    </Tab>
+  )
 }
 
 export default WalletManagementSettings

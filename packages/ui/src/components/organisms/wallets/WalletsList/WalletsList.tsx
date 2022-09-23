@@ -32,7 +32,6 @@ const WalletsList = ({
     className="
         mt-[11px]
         ml-[31px]
-        mr-[50px]
         place-items-center
         justify-center
         gap-[40px]

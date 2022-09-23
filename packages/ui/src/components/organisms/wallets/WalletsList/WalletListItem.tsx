@@ -107,10 +107,10 @@ const WalletListItem = ({
   }
 
   const selectListHandler = (isCreator?: boolean, isAuth?: boolean) => {
-    if (isCreator && isAuth) {
-      return SELECT_FAN_OPTIONS
+    if (isCreator && !isAuth) {
+      return SELECT_CREATOR_OPTIONS
     }
-    return SELECT_CREATOR_OPTIONS
+    return SELECT_FAN_OPTIONS
   }
 
   const selectWalletHandler = (value: string) => setSelectedAddress(value)
@@ -196,17 +196,14 @@ const WalletListItem = ({
     <>
       <div
         className="
-          ml-[30px]
-          mr-[50px]
           mb-[11px]
           flex
           items-center
           justify-between
           border-t
           border-[#2C282D]
-          pr-[35px]
-          pl-[20px]
-          pt-[11px]"
+          pt-[11px]
+          pl-[20px]"
         key={walletId}
       >
         <div className="relative flex items-center">
@@ -236,7 +233,7 @@ const WalletListItem = ({
             </span>
           </div>
         </div>
-        <div className='text-[#ffffffeb]" w-[350px] text-left text-[12px]'>
+        <div className='text-[#ffffffeb]" min-w-[330px] text-left text-[12px]'>
           {address}
         </div>
         <form
@@ -271,14 +268,15 @@ const WalletListItem = ({
               md:ml-4"
           />
           <div
+            onClick={() => selectWalletHandler(address)}
             className="
               absolute
               top-[50%]
-              right-[16px]
+              right-[12px]
               translate-y-[-50%]
               cursor-pointer"
           >
-            <ArrowDown onClick={() => selectWalletHandler(address)} />
+            <ArrowDown />
           </div>
           {selectedAddress === walletId && (
             <div
@@ -328,7 +326,7 @@ const WalletListItem = ({
           onClick={() => deleteWalletHandler(walletId)}
           variant="link-purple"
         >
-          <span className="ml-[59px]">Delete</span>
+          <span className="ml-[39px] mr-[29px]">Delete</span>
         </Button>
       </div>
     </>

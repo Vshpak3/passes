@@ -63,7 +63,7 @@ const Input = ({
             <span
               className={`absolute inset-y-0 ${toLower(
                 iconAlign
-              )}-0 ml-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`}
+              )}-0 left-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`}
             >
               {icon}
             </span>
