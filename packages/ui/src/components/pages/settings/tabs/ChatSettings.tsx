@@ -1,49 +1,122 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
+import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import { classNames } from "src/helpers"
 import { chatSettingsSchema } from "src/helpers/validation"
+import { useChatSettings } from "src/hooks"
+import useSWR from "swr"
 
 import Tab from "../Tab"
 
 const defaultValues = {
-  withoutTip: true,
+  isWithoutTip: true,
   showWelcomeMessageInput: false,
-  tipAmount: "" as unknown as number,
+  minimumTipAmount: "" as number | string,
   welcomeMessage: ""
 }
 
 const ChatSettings = () => {
+  const { getChatSettings, updateChatSettings } = useChatSettings()
+  const { data: chatSettings, mutate } = useSWR(
+    "/chat-settings",
+    getChatSettings
+  )
   const {
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<typeof defaultValues>({
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
   })
-  const [isValidate, setIsValidate] = useState(false)
+  const [isDisableBtn, setIsDisabledBtn] = useState(false)
   const values = watch()
 
-  const saveChatSettingsHandler = ({
-    tipAmount,
-    welcomeMessage
-  }: typeof defaultValues) => {
-    console.log(tipAmount, welcomeMessage)
+  const saveChatSettingsHandler = async () => {
+    const data: UpdateCreatorSettingsRequestDto = {}
+
+    if (!values.isWithoutTip) {
+      data.minimumTipAmount = +values.minimumTipAmount
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      data.minimumTipAmount = null
+    }
+
+    if (values.showWelcomeMessageInput) {
+      data.welcomeMessage = values.welcomeMessage
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      data.welcomeMessage = null
+    }
+
+    await updateChatSettings(data)
+    mutate()
   }
 
   useEffect(() => {
+    // inject already saved values in fields
+    if (!chatSettings) return
+    const { welcomeMessage, minimumTipAmount } = chatSettings
+
+    if (welcomeMessage) {
+      setValue("showWelcomeMessageInput", true)
+    }
+
+    if (minimumTipAmount) {
+      setValue("isWithoutTip", false)
+    }
+
+    setValue("minimumTipAmount", minimumTipAmount || "")
+    setValue("welcomeMessage", welcomeMessage || "")
+  }, [chatSettings, setValue])
+
+  useEffect(() => {
+    // all of the below code is just for validation and disable save button
+    if (chatSettings) {
+      const { welcomeMessage, minimumTipAmount } = chatSettings
+
+      const formatedValues = {
+        isWithoutTip: values.isWithoutTip,
+        showWelcomeMessageInput: values.showWelcomeMessageInput,
+        minimumTipAmount: values.isWithoutTip
+          ? minimumTipAmount || ""
+          : +values.minimumTipAmount,
+        welcomeMessage: values.showWelcomeMessageInput
+          ? values.welcomeMessage
+          : welcomeMessage || ""
+      }
+
+      // making copy of saved data to compare it with current data
+      const savedData = {
+        isWithoutTip: !minimumTipAmount,
+        showWelcomeMessageInput: !!welcomeMessage,
+        minimumTipAmount: minimumTipAmount || "",
+        welcomeMessage: welcomeMessage || ""
+      }
+
+      if (_.isEqual(savedData, formatedValues)) {
+        setIsDisabledBtn(false)
+        return
+      }
+    }
+
+    // if fields does not satisfy schema, disable the button
     chatSettingsSchema
       .validate(values)
       .then(() => {
-        return setIsValidate(true)
+        return setIsDisabledBtn(true)
       })
       .catch(() => {
-        setIsValidate(false)
+        setIsDisabledBtn(false)
       })
-  }, [values])
+  }, [values, chatSettings])
 
   return (
     <>
@@ -56,22 +129,22 @@ const ChatSettings = () => {
         <div
           className={classNames(
             "border-b border-passes-dark-200",
-            values.withoutTip ? "pb-[22px]" : "pb-3"
+            values.isWithoutTip ? "pb-[22px]" : "pb-3"
           )}
         >
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Accept messages without a Tip</span>
-            <FormInput name="withoutTip" register={register} type="toggle" />
+            <FormInput name="isWithoutTip" register={register} type="toggle" />
           </label>
 
-          {!values.withoutTip && (
+          {!values.isWithoutTip && (
             <div className="relative">
               <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
                 Minimum $5.00
               </span>
               <FormInput
                 placeholder="Enter Minimum Tip Amount"
-                name="tipAmount"
+                name="minimumTipAmount"
                 type="number"
                 register={register}
                 className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
@@ -109,7 +182,7 @@ const ChatSettings = () => {
           variant="pink"
           className="mt-6 w-auto !px-[52px]"
           tag="button"
-          disabled={!isValidate}
+          disabled={!isDisableBtn}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

@@ -1,6 +1,7 @@
+import { UserApi } from "@passes/api-client"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React from "react"
+import React, { useEffect } from "react"
 import Header from "src/components/molecules/performance/Header"
 import AccountSettings from "src/components/pages/settings/tabs/AccountSettings"
 import AccountInformation from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
@@ -29,17 +30,24 @@ import {
   SettingsProvider,
   useSettings
 } from "src/contexts/settings"
-import { classNames } from "src/helpers"
+import { classNames, wrapApi } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Settings = () => {
   const { activeTab, setActiveTab, subTabsStack } =
     useSettings() as ISettingsContext
 
+  useEffect(() => {
+    ;(async () => {
+      const api = wrapApi(UserApi)
+      await api.makeCreator()
+    })()
+  }, [])
+
   return (
     <>
       <Header />
-      <div className="mx-auto flex h-full max-w-[1235px]">
+      <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
         <div className="max-w-[380px] border-r border-passes-dark-200 pt-6 pl-11">
           <div className="pr-[35px]">
             <h2 className="text-label-lg">Settings</h2>

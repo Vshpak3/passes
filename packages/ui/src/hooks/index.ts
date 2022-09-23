@@ -1,5 +1,7 @@
 import { useAccountSettings } from "./settings/useAccountSettings"
+import { useChatSettings } from "./settings/useChatSettings"
 import { useNotificationSettings } from "./settings/useNotificationSettings"
+import { usePrivacySafetySettings } from "./settings/usePrivacySafetySettings"
 import useBecomeCreator from "./useBecomeCreator"
 import useChat from "./useChat"
 import useCreatePass from "./useCreatePass"
@@ -27,6 +29,7 @@ export {
   useAccountSettings,
   useBecomeCreator,
   useChat,
+  useChatSettings,
   useCreatePass,
   useCreatorProfile,
   useCreatorSearch,
@@ -44,6 +47,7 @@ export {
   usePasses,
   usePayinMethod as usePayment,
   usePrefersReducedMotion,
+  usePrivacySafetySettings,
   useRandomInterval,
   useUser,
   useUserConnectedWallets,

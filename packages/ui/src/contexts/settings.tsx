@@ -18,7 +18,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
 
   const addTabToStackHandler = (tab: SubTabsEnum) => {
-    setSubTabsStack((prevTabs) => [...prevTabs, tab])
+    if (!subTabsStack.includes(tab))
+      setSubTabsStack((prevTabs) => [...prevTabs, tab])
   }
 
   const popTabFromStackHandler = () => {

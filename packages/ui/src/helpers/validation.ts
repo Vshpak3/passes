@@ -36,9 +36,9 @@ const changePasswordSchema = object({
 })
 
 const chatSettingsSchema = object({
-  withoutTip: boolean(),
+  isWithoutTip: boolean(),
   showWelcomeMessageInput: boolean(),
-  tipAmount: mixed().when("withoutTip", {
+  minimumTipAmount: mixed().when("isWithoutTip", {
     is: false,
     then: number()
       .min(5, "minimum tip amount is $5")

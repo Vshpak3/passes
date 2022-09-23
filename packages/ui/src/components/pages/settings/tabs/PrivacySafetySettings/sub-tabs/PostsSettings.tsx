@@ -1,21 +1,41 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import { usePrivacySafetySettings } from "src/hooks"
+import useSWR from "swr"
 
 import Tab from "../../../Tab"
 
 const defaultValues = {
-  enableComments: true
+  enableComments: false
 }
 
 const PostsSettings = () => {
-  const { register, handleSubmit } = useForm<typeof defaultValues>({
+  const { getCreatorSettings, updateCreatorSettings } =
+    usePrivacySafetySettings()
+  const { data: creatorSettings, mutate } = useSWR(
+    "/creator-settings",
+    getCreatorSettings
+  )
+  const { register, setValue, handleSubmit, watch } = useForm<
+    typeof defaultValues
+  >({
     defaultValues
   })
 
-  const savePostsSettingsHandler = (values: typeof defaultValues) => {
-    console.log("saving settings", values)
+  const values = watch()
+
+  const savePostsSettingsHandler = async (values: typeof defaultValues) => {
+    await updateCreatorSettings({ allowCommentsOnPosts: values.enableComments })
+    mutate()
   }
+
+  useEffect(() => {
+    if (creatorSettings) {
+      setValue("enableComments", !!creatorSettings?.allowCommentsOnPosts)
+    }
+  }, [creatorSettings, setValue])
+
   return (
     <Tab withBack title="Posts">
       <form
@@ -37,6 +57,9 @@ const PostsSettings = () => {
           variant="pink"
           className="mt-[34px] w-auto !px-[52px]"
           tag="button"
+          disabled={
+            values.enableComments === !!creatorSettings?.allowCommentsOnPosts
+          }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >
