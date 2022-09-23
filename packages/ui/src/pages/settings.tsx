@@ -1,7 +1,5 @@
-import { UserApi } from "@passes/api-client"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React, { useEffect } from "react"
 import Header from "src/components/molecules/performance/Header"
 import AccountSettings from "src/components/pages/settings/tabs/AccountSettings"
 import AccountInformation from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
@@ -38,13 +36,6 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 const Settings = () => {
   const { activeTab, setActiveTab, subTabsStack } =
     useSettings() as ISettingsContext
-
-  useEffect(() => {
-    ;(async () => {
-      const api = new UserApi()
-      await api.makeCreator()
-    })()
-  }, [])
 
   return (
     <>
