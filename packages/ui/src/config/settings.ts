@@ -40,5 +40,7 @@ export enum SubTabsEnum {
   "PaymentSettings",
   "WalletManagementSettings",
   "ManageBank",
-  "AddBank"
+  "AddBank",
+  "ManageCard",
+  "AddCard"
 }

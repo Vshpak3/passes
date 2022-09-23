@@ -18,6 +18,7 @@ import useMounted from "./useMounted"
 import useOnClickOutside from "./useOnClickOutside"
 import usePasses from "./usePasses"
 import usePayinMethod from "./usePayinMethod"
+import usePayoutMethod from "./usePayoutMethod"
 import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
 import useUser from "./useUser"
@@ -44,6 +45,7 @@ export {
   useOnClickOutside,
   usePasses,
   usePayinMethod as usePayment,
+  usePayoutMethod as usePayout,
   usePrefersReducedMotion,
   usePrivacySafetySettings,
   useRandomInterval,

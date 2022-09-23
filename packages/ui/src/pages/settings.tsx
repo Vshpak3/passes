@@ -16,7 +16,9 @@ import EmailNotifications from "src/components/pages/settings/tabs/NotificationE
 import NotificationPrefrences from "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPrefrences"
 import PaymentWalletSettings from "src/components/pages/settings/tabs/PaymentWalletSettings"
 import AddBank from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddBank"
+import AddCard from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddCard"
 import ManageBank from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageBank"
+import ManageCard from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageCard"
 import PaymentsSettings from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/PaymentsSettings"
 import WalletManagementSettings from "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/WalletManagementSettings"
 import PrivacySafetySettings from "src/components/pages/settings/tabs/PrivacySafetySettings"
@@ -154,5 +156,9 @@ const renderSubTab = (tab: SubTabsEnum) => {
       return <ManageBank />
     case SubTabsEnum.AddBank:
       return <AddBank />
+    case SubTabsEnum.ManageCard:
+      return <ManageCard />
+    case SubTabsEnum.AddCard:
+      return <AddCard />
   }
 }

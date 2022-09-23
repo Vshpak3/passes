@@ -1,48 +1,85 @@
-import { PaymentApi } from "@passes/api-client"
+import { CircleBankDto, PaymentApi, PayoutMethodDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
+import { useUser } from "../../../hooks"
 import BankIcon from "../../../icons/bank-icon"
 import WalletIcon from "../../../icons/wallet-icon"
 import { Button, PassesPinkButton } from "../../atoms"
 
 const DefaultPayoutMethod = () => {
-  const router = useRouter()
-  const fetchBanks = useCallback(async () => {
-    const api = new PaymentApi()
-    const data = await api.getCircleBanks()
-    console.log(data, "getCircleBanks")
-  }, [])
+  const [banks, setBanks] = useState<CircleBankDto[]>([])
+  const [defaultPayout, setDefaultPayout] = useState<PayoutMethodDto>()
 
-  const setDefaultPayout = useCallback(async () => {
-    const api = new PaymentApi()
+  const { user, loading } = useUser()
+  const router = useRouter()
+
+  const getDefaultPayout = useCallback(async (api: PaymentApi) => {
     try {
-      await api.setDefaultPayoutMethod({
-        setPayoutMethodRequestDto: {
-          method: "none",
-          bankId: "someId"
-        }
-      })
+      setDefaultPayout(await api.getDefaultPayoutMethod())
     } catch (error: any) {
-      toast(error)
+      toast.error(error)
+      setDefaultPayout(undefined)
     }
   }, [])
 
-  const fetchDefaultPayout = useCallback(async () => {
-    const api = new PaymentApi()
-    const data = await api.getDefaultPayoutMethod()
-    console.log(data, "getDefaultPayoutMethod")
+  const filteredDefaultPayout = banks.find(
+    (bank) => bank.id === defaultPayout?.bankId
+  )
+
+  const getBanks = useCallback(async (paymentApi: PaymentApi) => {
+    setBanks((await paymentApi.getCircleBanks()).banks)
   }, [])
 
+  const deleteBank = async (bankId: string) => {
+    const paymentApi = new PaymentApi()
+    try {
+      await paymentApi.deleteCircleBank({ circleBankId: bankId })
+    } catch (error: any) {
+      toast.error(error)
+    } finally {
+      await getBanks(paymentApi)
+      await getDefaultPayout(paymentApi)
+    }
+  }
+
+  const setDefaultPayoutMethod = async (bankId: string) => {
+    const paymentApi = new PaymentApi()
+    try {
+      await paymentApi.setDefaultPayoutMethod({
+        setPayoutMethodRequestDto: {
+          method: "none",
+          bankId: bankId
+        }
+      })
+    } catch (error: any) {
+      toast.error(error)
+    } finally {
+      await getBanks(paymentApi)
+      await getDefaultPayout(paymentApi)
+    }
+  }
+
   useEffect(() => {
-    fetchBanks()
-    fetchDefaultPayout()
-  }, [fetchBanks, fetchDefaultPayout])
+    if (!router.isReady || loading) {
+      console.log("r2")
+      return
+    }
+    if (!user) {
+      router.push("/login")
+    }
+    const fetchData = async () => {
+      const paymentApi = new PaymentApi()
+      await getBanks(paymentApi)
+      await getDefaultPayout(paymentApi)
+    }
+    fetchData()
+  }, [router, user, loading, getBanks, getDefaultPayout])
 
   const BankAccountMethod = () => {
-    const noBankAccount = true
+    const noBankAccount = !filteredDefaultPayout?.id
 
     return (
       <div className="flex w-full items-center justify-center rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-10">
@@ -55,7 +92,9 @@ const DefaultPayoutMethod = () => {
               <PassesPinkButton
                 className="h-[41px] w-[200px]"
                 name="Set Default"
-                onClick={() => setDefaultPayout()}
+                onClick={() =>
+                  setDefaultPayoutMethod(filteredDefaultPayout?.id ?? "")
+                }
               />
               <Button
                 variant="purple"
@@ -75,9 +114,15 @@ const DefaultPayoutMethod = () => {
               </div>
               <div className="flex flex-col items-center gap-4 md:flex-row">
                 <PassesPinkButton
-                  className="h-[41px] w-[200px]"
-                  name="Set Default"
-                  onClick={() => setDefaultPayout()}
+                  className={
+                    "h-[41px] w-[200px] " +
+                    (filteredDefaultPayout.id &&
+                      " border-passes-dark-200 bg-transparent")
+                  }
+                  name={filteredDefaultPayout.id ? "Default" : "Set Default"}
+                  onClick={() =>
+                    setDefaultPayoutMethod(filteredDefaultPayout?.id ?? "")
+                  }
                 />
                 <Button
                   variant="purple"
@@ -86,7 +131,10 @@ const DefaultPayoutMethod = () => {
                 >
                   Manage Wallet
                 </Button>
-                <div className="flex h-[41px] w-[41px] cursor-pointer items-center justify-center rounded-full bg-passes-dark-200 p-2 hover:opacity-[0.5]">
+                <div
+                  onClick={() => deleteBank(filteredDefaultPayout?.id ?? "")}
+                  className="flex h-[41px] w-[41px] cursor-pointer items-center justify-center rounded-full bg-passes-dark-200 p-2 hover:opacity-[0.5]"
+                >
                   <DeleteIcon className="fill-white" />
                 </div>
               </div>
@@ -132,7 +180,9 @@ const DefaultPayoutMethod = () => {
               <PassesPinkButton
                 className="h-[41px] w-[200px]"
                 name="Set Default"
-                onClick={() => setDefaultPayout()}
+                onClick={() =>
+                  setDefaultPayoutMethod(filteredDefaultPayout?.id ?? "")
+                }
               />
               <Button
                 variant="purple"
@@ -155,7 +205,9 @@ const DefaultPayoutMethod = () => {
               <PassesPinkButton
                 className="h-[41px] w-[200px]"
                 name="Set Default"
-                onClick={() => setDefaultPayout()}
+                onClick={() =>
+                  setDefaultPayoutMethod(filteredDefaultPayout?.id ?? "")
+                }
               />
               <Button
                 variant="purple"

@@ -1,14 +1,43 @@
-import React from "react"
+import { PayoutMethodDto, PayoutMethodDtoMethodEnum } from "@passes/api-client"
+import { useRouter } from "next/router"
+import React, { useEffect } from "react"
 import { Button } from "src/components/atoms"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import BankIcon from "src/icons/bank-icon.svg"
 
+import { usePayout, useUser } from "../../../../../../hooks"
 import Tab from "../../../Tab"
 
 const ManageBank = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
+  const { user, loading } = useUser()
+  const router = useRouter()
+  const {
+    banks,
+    setDefaultPayoutMethod,
+    defaultPayoutMethod: defaultPayout,
+    deleteBank
+  } = usePayout()
+
+  const filteredDefaultPayout = banks.find(
+    (bank) => bank.id === defaultPayout?.bankId
+  )
+
+  const setDefaultPayout = async (dto: PayoutMethodDto) => {
+    setDefaultPayoutMethod(dto)
+  }
+
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      console.log("r2")
+      return
+    }
+    if (!user) {
+      router.push("/login")
+    }
+  }, [router, user, loading])
   return (
     <Tab
       title="Manage Bank"
@@ -25,108 +54,94 @@ const ManageBank = () => {
       }
       withBack
     >
-      <div className="mt-7">
-        <div className="rounded-[20px] border border-white/[0.15] bg-[rgba(27,20,29,0.5)] py-[26px] pl-[35px] pr-[30px] backdrop-blur-[50px]">
-          <div className="flex justify-between">
-            <div>
-              <h3 className="text-label-lg">Wells Fargo</h3>
-              <p className="mt-[18px] text-base font-medium">*******8920</p>
-            </div>
-            <div className="max-w-[241px] font-medium">
-              <h5 className="text-base">
-                We&apos;ll use this bank account for:
-              </h5>
-              <p className="mt-1.5 text-xs text-white/50">
-                Transfers to this account will always be made in IDR.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-[22px] flex justify-between font-medium">
-            <div>
-              <h6 className="text-xs leading-6 text-white/50">Transfer type</h6>
-              <p className="mt-1.5 text-base">Domestic</p>
-            </div>
-            <div>
-              <h6 className="text-xs leading-6 text-white/50">Bank Country</h6>
-              <p className="mt-1.5 text-base">USA</p>
-            </div>
-            <div className="max-w-[241px]">
-              <h6 className="text-xs leading-6 text-white/50">
-                We&apos;ll use this bank account for:
-              </h6>
-              <p className="mt-1.5 text-base">
-                Transfers to this account will always be made in IDR.
-              </p>
-            </div>
-            <div className="max-w-[241px]">
-              <h6 className="text-xs leading-6 text-white/50">Set Default</h6>
-              <div className="mt-[15px] flex space-x-[15px]">
-                <button className="whitespace-nowrap rounded-md border border-white py-1.5 px-6 text-sm font-bold leading-6 text-white dark:text-white">
-                  Bank Default
-                </button>
-                <Button variant="gray" className="!py-1.5 !px-6" tag="button">
-                  <span className="text-sm font-bold leading-[25px]">
-                    Delete
-                  </span>
-                </Button>
-              </div>
-            </div>
-          </div>
+      {banks?.length === 0 && (
+        <div className="mt-6 flex w-[700px] items-center justify-center rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7">
+          <span>No Bank Account Found</span>
         </div>
-        <div className="mt-4 rounded-[20px] border border-white/[0.15] bg-[rgba(27,20,29,0.5)] py-[26px] pl-[35px] pr-[30px] backdrop-blur-[50px]">
-          <div className="flex justify-between">
-            <div>
-              <h3 className="text-label-lg">IDR / BCA</h3>
-              <p className="mt-[18px] text-base font-medium">*******8920</p>
+      )}
+
+      {banks?.map((bank) => (
+        <div
+          key={bank.id}
+          className="mb-6 mt-6 flex flex-col gap-5 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7"
+        >
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-col">
+              <span className="text-[24px] font-[700]">
+                {bank.description.split(",")[0]}
+              </span>
+              <span className="text-[16px] font-[500]">
+                {bank.description.split(",")[1]}
+              </span>
             </div>
-            <div className="max-w-[241px] font-medium">
-              <h5 className="text-base">
+            <div className="flex w-[241px] flex-col">
+              <span className="text-[16px] font-[500]">
                 We&apos;ll use this bank account for:
-              </h5>
-              <p className="mt-1.5 text-xs text-white/50">
+              </span>
+              <span className="text-[12px] font-[500] opacity-50">
                 Transfers to this account will always be made in IDR.
-              </p>
+              </span>
             </div>
           </div>
-
-          <div className="mt-[22px] flex justify-between font-medium">
-            <div>
-              <h6 className="text-xs leading-6 text-white/50">Transfer type</h6>
-              <p className="mt-1.5 text-base">Domestic</p>
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <div className="flex flex-[0.2] flex-col">
+              <span className="text-[12px] font-[500] opacity-50">
+                Transfer type
+              </span>
+              <span className="text-[16px] font-[500]">Domestic</span>
             </div>
-            <div>
-              <h6 className="text-xs leading-6 text-white/50">Bank Country</h6>
-              <p className="mt-1.5 text-base">USA</p>
+            <div className="flex flex-[0.2] flex-col">
+              <span className="text-[12px] font-[500] opacity-50">
+                Bank country
+              </span>
+              <span className="text-[16px] font-[500]">{bank.country}</span>
             </div>
-            <div className="max-w-[241px]">
-              <h6 className="text-xs leading-6 text-white/50">
+            <div className="flex flex-[0.4] flex-col">
+              <span className="text-[12px] font-[500] opacity-50">
                 We&apos;ll use this bank account for:
-              </h6>
-              <p className="mt-1.5 text-base">
+              </span>
+              <span className="text-[14px] font-[500]">
                 Transfers to this account will always be made in IDR.
-              </p>
+              </span>
             </div>
-            <div className="max-w-[241px]">
-              <h6 className="text-xs leading-6 text-white/50">Set Default</h6>
-              <div className="mt-[15px] flex space-x-[15px]">
-                <Button
-                  variant="purple-light"
-                  tag="button"
-                  className="!px-6 !py-1.5 font-medium"
+            <div className="flex flex-[0.4] flex-col">
+              <span className="text-[12px] font-[500] opacity-50">
+                Set Default
+              </span>
+              <div className="flex flex-row gap-2">
+                <button
+                  disabled={filteredDefaultPayout?.id === bank?.id}
+                  className={
+                    filteredDefaultPayout?.id === bank?.id
+                      ? "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-[6px] border border-white/70 bg-transparent px-2 text-white"
+                      : "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-passes-primary-color bg-passes-primary-color px-2 text-white"
+                  }
+                  onClick={() =>
+                    setDefaultPayout({
+                      bankId: bank.id,
+                      method: PayoutMethodDtoMethodEnum.CircleWire
+                    })
+                  }
                 >
-                  <span className="leading-[25px]">Set Default</span>
-                </Button>
-                <Button variant="gray" className="!py-1.5 !px-6" tag="button">
-                  <span className="text-sm font-bold leading-[25px]">
-                    Delete
+                  <span className="text-[16px] font-[500]">
+                    {filteredDefaultPayout?.id === bank?.id
+                      ? "Bank Default"
+                      : "Set Default"}
                   </span>
-                </Button>
+                </button>
+
+                <button
+                  className="flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-2 text-white"
+                  onClick={() => deleteBank(bank?.id ?? "")}
+                >
+                  <BankIcon width={25} height={25} />
+                  <span className="text-[16px] font-[500]">Delete</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      ))}
     </Tab>
   )
 }

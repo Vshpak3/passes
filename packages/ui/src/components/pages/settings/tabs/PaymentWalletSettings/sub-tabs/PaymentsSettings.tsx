@@ -1,48 +1,161 @@
-import Image from "next/image"
-import ArrowDownIcon from "public/icons/arrow-down.svg"
-import CalendarIcon from "public/icons/calendar.svg"
-import SearchIcon from "public/icons/header-search-icon-2.svg"
-import MenuIcon from "public/icons/menu.svg"
+import "react-date-range/dist/styles.css"
+import "react-date-range/dist/theme/default.css"
+
+import {
+  CircleBankDto,
+  PayinDto,
+  PaymentApi,
+  PayoutMethodDto
+} from "@passes/api-client"
+import { useRouter } from "next/router"
+import AmexCardIcon from "public/icons/amex-icon.svg"
+import CalendarIcon from "public/icons/calendar-blank-outline.svg"
+import DiscoverCardIcon from "public/icons/discover-icon.svg"
+import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
-import VisaIcon from "public/icons/visa-icon.png"
-import WalletIcon from "public/icons/wallet.svg"
+import VisaIcon from "public/icons/visa-icon.svg"
 import WalletEditIcon from "public/icons/wallet-edit.svg"
-import React, { useRef, useState } from "react"
+import WalletIcon from "public/icons/wallet-manage.svg"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { DateRangePicker } from "react-date-range"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms"
-import FilterMenu from "src/components/atoms/FilterMenu"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
-import { useOnClickOutside } from "src/hooks"
-import BankIcon from "src/icons/bank-icon.svg"
+import { getFormattedDate } from "src/helpers"
+import { useOnClickOutside, usePayment, useUser } from "src/hooks"
+import BankIcon from "src/icons/bank-icon"
+import ChevronDown from "src/icons/chevron-down"
 
 import Tab from "../../../Tab"
 
-const PaymentsSettings = () => {
-  const [showFilterDateMenu, setShowFilterDateMenu] = useState(false)
+const PaymentSettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
+  const [payins, setPayins] = useState<PayinDto[]>([])
+  const [count, setCount] = useState(0)
+  const [banks, setBanks] = useState<CircleBankDto[]>([])
+  const [defaultPayout, setDefaultPayout] = useState<PayoutMethodDto>()
+  const [offset, setOffset] = useState(0)
+  const [showFilterDropDown, setShowFilterDropDown] = useState(false)
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date("2020-01-01"),
+    endDate: new Date(),
+    key: "selection"
+  })
+
+  const { cards, defaultPayinMethod: defaultPayin } = usePayment()
+
+  const filteredDefaultPayment = cards.find(
+    (card) => card.id === defaultPayin?.cardId
+  )
+
+  const { user, loading } = useUser()
+  const router = useRouter()
+
+  const getBanks = useCallback(async (paymentApi: PaymentApi) => {
+    setBanks((await paymentApi.getCircleBanks()).banks)
+  }, [])
+
+  const getDefaultPayout = useCallback(async (api: PaymentApi) => {
+    try {
+      setDefaultPayout(await api.getDefaultPayoutMethod())
+    } catch (error: any) {
+      toast.error(error)
+      setDefaultPayout(undefined)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      console.log("r2")
+      return
+    }
+    if (!user) {
+      router.push("/login")
+    }
+    const fetchData = async () => {
+      const paymentApi = new PaymentApi()
+      await getBanks(paymentApi)
+      await getDefaultPayout(paymentApi)
+    }
+    fetchData()
+  }, [router, user, loading, getBanks, getDefaultPayout])
+
+  const filteredDefaultPayout = banks.find(
+    (bank) => bank.id === defaultPayout?.bankId
+  )
+
+  const fetchPayouts = useCallback(async () => {
+    const api = new PaymentApi()
+    const data = await api.getPayins({
+      getPayinsRequestDto: { offset: offset, limit: 7 }
+    })
+    setPayins(data.payins)
+    setCount(data.count)
+  }, [offset])
+
+  useEffect(() => {
+    fetchPayouts()
+  }, [fetchPayouts])
+
+  const setRangeHandler = useCallback(
+    (days: number) => {
+      setDateRange((prevDate) => ({
+        ...prevDate,
+        startDate: getPrevDate(days),
+        endDate: new Date()
+      }))
+      setShowFilterDropDown(false)
+    },
+    [setDateRange]
+  )
 
   const filterEl = useRef(null)
   useOnClickOutside(filterEl, () => {
-    setShowFilterDateMenu(false)
+    setShowFilterDropDown(false)
   })
 
+  const getPrevDate = (days: number) => {
+    return new Date(new Date().valueOf() - days * 1000 * 60 * 60 * 24)
+  }
+
+  const displayCardIcon = (cardDigit: string) => {
+    switch (cardDigit) {
+      case "4":
+        return <VisaIcon width={25} height={25} />
+      case "5":
+        return <MasterCardIcon width={25} height={25} />
+      case "3":
+        return <AmexCardIcon width={25} height={25} />
+      case "6":
+        return <DiscoverCardIcon width={25} height={25} />
+      default:
+        return null
+    }
+  }
+
+  const isCreator = true
   return (
     <>
       <Tab withBack title="Payment Settings" />
-      <div className="mt-9">
-        <div className="flex space-x-3">
-          <div className="space-y-3 rounded-[20px] border border-white/[0.15] px-[30px] py-5">
-            <p className="text-sm leading-6 text-white/[0.92]">
+
+      <div className="my-8 flex flex-col gap-6 xl:flex-row">
+        {isCreator && (
+          <div className="flex w-[248px] flex-col justify-center gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-6">
+            <span className="text-[14px] font-[400] opacity-90">
               Default Payout Method:
-            </p>
-
-            <div>
-              <span className="text-label mr-6">Wells Fargo</span>
-              <span className="text-base font-medium">USA</span>
+            </span>
+            <div className="flex gap-6">
+              <span className="text-[16px] font-[700]">
+                {filteredDefaultPayout?.description.split(",")[0]}
+              </span>
+              <span className="text-[16px] font-[500]">
+                {filteredDefaultPayout?.country}
+              </span>
             </div>
-
-            <p className="text-white/70">*******8920</p>
-
+            <span className="text-[14px] font-[500] opacity-70">
+              {filteredDefaultPayout?.description.split(",")[1]}
+            </span>
             <Button
               icon={<BankIcon />}
               variant="purple-light"
@@ -53,259 +166,225 @@ const PaymentsSettings = () => {
               Manage Payout
             </Button>
           </div>
-
-          <div className="space-y-3 rounded-[20px] border border-white/[0.15] px-[30px] py-5">
-            <p className="text-sm leading-6 text-white/[0.92]">
-              Default Payout Method:
-            </p>
-
-            <div>
-              <span className="text-label mr-6">Anna DeGuzman</span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="text-white/70">*******8920</p>
-              <Image src={VisaIcon} width={36} height={26} alt="VISA logo" />
-            </div>
-
-            <Button
-              icon={<WalletEditIcon />}
-              variant="purple-light"
-              tag="button"
-              className="!px-4 !py-2.5"
-            >
-              Manage Payment
-            </Button>
+        )}
+        <div className="flex  w-[248px] flex-col justify-center gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-6">
+          <span className="text-[14px] font-[400] opacity-90">
+            Default Payment Method:
+          </span>
+          <span className="text-[16px] font-[700]">
+            {filteredDefaultPayment?.fourDigits}
+          </span>
+          <div className="flex gap-6">
+            <span className="text-[14px] font-[500] opacity-70">
+              *******{filteredDefaultPayment?.fourDigits}
+            </span>
+            {displayCardIcon(filteredDefaultPayment?.firstDigit ?? "")}
           </div>
-
-          <div className="flex flex-col justify-between rounded-[20px] border border-white/[0.15] px-[30px] py-5">
-            <p className="text-sm leading-6 text-white/[0.92]">
-              Default Payout Method:
-            </p>
-
-            <div className="flex items-center justify-between">
-              <span className="text-label mr-6">Axy...56huad</span>
-              <MetamaskIcon />
-            </div>
-
-            <Button
-              icon={<WalletIcon />}
-              variant="purple-light"
-              tag="button"
-              className="!px-4 !py-2.5"
-            >
-              Manage Wallet
-            </Button>
-          </div>
+          <Button
+            icon={<WalletEditIcon />}
+            variant="purple-light"
+            tag="button"
+            className="!px-4 !py-2.5"
+            onClick={() => addTabToStackHandler(SubTabsEnum.ManageCard)}
+          >
+            Manage Payment
+          </Button>
         </div>
-
-        <div className="mt-9 rounded-xl border border-white/[0.15] px-6 pt-3 pb-4">
-          <div className="text-label flex items-center justify-between">
-            <h4>Payments Transaction History</h4>
-            <a className="text-passes-pink-100" href="#">
-              View All
-            </a>
+        <div className="flex  w-[248px] flex-col justify-center gap-6 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-6">
+          <span className="text-[14px] font-[400] opacity-90">
+            Default Wallet:
+          </span>
+          <div className="flex gap-6">
+            <span className="text-[16px] font-[700]">Axy...56huad</span>
+            <MetamaskIcon width={25} height={25} />
           </div>
+          <Button
+            icon={<WalletIcon />}
+            variant="purple-light"
+            tag="button"
+            className="!px-4 !py-2.5"
+            onClick={() =>
+              addTabToStackHandler(SubTabsEnum.WalletManagementSettings)
+            }
+          >
+            Manage Wallet
+          </Button>
+        </div>
+      </div>
 
-          <div className="mt-[15px] flex items-center justify-between">
-            <label className="relative">
+      <div className="mb-5 flex w-full flex-col gap-4">
+        <div className="flex flex-row items-center justify-between rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4">
+          <span className="text-[16px] font-[700]">
+            Payments Transaction History
+          </span>
+          <div className="flex flex-col gap-2 md:flex-row">
+            <div className="relative inline-block" ref={filterEl}>
+              <div className="form-input h-[44px] w-full rounded-md border-transparent bg-[#191919] pl-11 text-[#ffffff] outline-none">
+                <button
+                  type="button"
+                  className="flex items-center space-x-5"
+                  onClick={() => setShowFilterDropDown((show) => !show)}
+                >
+                  <CalendarIcon className="pointer-events-none absolute top-1/2 left-[14px] h-[20px] w-[20px] -translate-y-1/2 transform fill-white" />
+                  {getFormattedDate(dateRange.startDate)} -{" "}
+                  {getFormattedDate(dateRange.endDate)}
+                </button>
+              </div>
+
               <input
-                type="text"
-                className="w-[243px] rounded-lg border-none bg-[#191919] pl-[42px]"
-                placeholder="Search for Transaction"
+                type="checkbox"
+                id="calender-modal"
+                className="modal-toggle"
               />
-              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2" />
-            </label>
+              <label htmlFor="calender-modal" className="modal cursor-pointer">
+                <label
+                  className="modal-box relative flex items-center justify-center bg-[#fff]"
+                  htmlFor=""
+                >
+                  <DateRangePicker
+                    ranges={[dateRange]}
+                    onChange={(newRange) => {
+                      setDateRange(newRange.selection as any)
+                      setShowFilterDropDown(false)
+                    }}
+                  />
+                </label>
+              </label>
+              {showFilterDropDown && (
+                <ul className="text-label absolute -top-2 w-full -translate-y-full transform rounded-md border border-passes-dark-200 bg-passes-dark-700 py-2.5 px-3">
+                  <li className="border-b border-passes-dark-200 pb-2.5">
+                    <label htmlFor="calender-modal" className="cursor-pointer">
+                      Custom
+                    </label>
+                  </li>
 
-            <div className="relative">
-              <button
-                className="flex items-center space-x-2 rounded-lg bg-[#191919] py-2.5 px-4"
-                onClick={() => setShowFilterDateMenu(true)}
-                ref={filterEl}
-              >
-                <CalendarIcon />
-                <span>Jan 6, 2022 – Jan 13, 2022</span>
-              </button>
+                  <li className="pt-2.5">
+                    <button onClick={() => setRangeHandler(7)}>
+                      Last 7 Days
+                    </button>
+                  </li>
+                  <li className="pt-2.5">
+                    <button onClick={() => setRangeHandler(30)}>
+                      Last 30 Days
+                    </button>
+                  </li>
+                  <li className="pt-2.5">
+                    <button onClick={() => setRangeHandler(90)}>
+                      Last 90 Days
+                    </button>
+                  </li>
+                  <li className="border-b border-passes-dark-200 py-2.5">
+                    <button onClick={() => setRangeHandler(365)}>
+                      Last 365 Days
+                    </button>
+                  </li>
 
-              {showFilterDateMenu && (
-                <FilterMenu
-                  onFilter={(startDate, endDate) => {
-                    console.log("date", startDate, endDate)
-                  }}
-                  className="left-10 w-[165px] translate-y-2"
-                />
+                  <li className="pt-2.5">
+                    <button>2022</button>
+                  </li>
+                  <li className="border-b border-passes-dark-200 py-2.5">
+                    <button>All time</button>
+                  </li>
+
+                  <li className="pt-2.5">
+                    <button>September</button>
+                  </li>
+                  <li className="pt-2.5">
+                    <button>August</button>
+                  </li>
+                </ul>
               )}
             </div>
           </div>
         </div>
-
-        <div className="w-full overflow-auto">
-          <table className="mt-[34px] w-full whitespace-nowrap lg:mt-6">
-            <thead>
-              <tr className="border-b-2 border-passes-dark-500 text-white/[0.92]">
-                <th className="pr-4 pb-[13px] text-start text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Transaction Hash
-                </th>
-                <th className="pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Payment Info
-                </th>
-                <th className="flex items-center justify-center space-x-1 pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  <span>Date</span>
-                  <ArrowDownIcon />
-                </th>
-                <th className="pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Amount
-                </th>
-                <th className="pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Payment Method
-                </th>
-                <th className="pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Status
-                </th>
-                <th className="pr-4 pb-[13px] text-center text-xs font-medium leading-[18px] md:pr-2 lg:pr-1">
-                  Details
-                </th>
-              </tr>
-            </thead>
-            <tbody className="text-center text-sm text-[#B8B8B8]">
-              <tr className="border-b border-passes-dark-200">
-                <td className="py-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  ACA54769
-                </td>
-                <td className="md:px-auto px-4 py-[26px] md:px-2 lg:px-1">
-                  Axy...56huad
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 py-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 py-[26px] text-white md:px-2 lg:px-1">
-                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#667085]" />
-                  <span>pending</span>
-                </td>
-                <td className="py-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  EtherScan
-                </td>
-              </tr>
-              <tr className="border-b border-passes-dark-200">
-                <td className="py-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  Visa
-                </td>
-                <td className="md:px-auto px-4 py-[26px] md:px-2 lg:px-1">
-                  **** **** 4585
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 py-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 py-[26px] text-white md:px-2 lg:px-1">
-                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#667085]" />
-                  <span>pending</span>
-                </td>
-                <td className="py-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  <button type="button" className="mx-auto">
-                    <MenuIcon />
-                  </button>
-                  {/* EtherScan */}
-                </td>
-              </tr>
-
-              <tr className="border-b border-passes-dark-200">
-                <td className="py-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  ACA54769
-                </td>
-                <td className="md:px-auto px-4 py-[26px] md:px-2 lg:px-1">
-                  Axy...56huad
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 py-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 py-[26px] text-white md:px-2 lg:px-1">
-                  <span>Completed</span>
-                </td>
-                <td className="py-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  EtherScan
-                </td>
-              </tr>
-              <tr className="border-b border-passes-dark-200">
-                <td className="py-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  Visa
-                </td>
-                <td className="md:px-auto px-4 py-[26px] md:px-2 lg:px-1">
-                  **** **** 4585
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 py-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 py-[26px] text-white md:px-2 lg:px-1">
-                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#667085]" />
-                  <span>pending</span>
-                </td>
-                <td className="py-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  <button type="button" className="mx-auto">
-                    <MenuIcon />
-                  </button>
-                  {/* EtherScan */}
-                </td>
-              </tr>
-
-              <tr className="border-b border-passes-dark-200">
-                <td className="py-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  ACA54769
-                </td>
-                <td className="md:px-auto px-4 py-[26px] md:px-2 lg:px-1">
-                  Axy...56huad
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 py-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 py-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 py-[26px] text-white md:px-2 lg:px-1">
-                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#667085]" />
-                  <span>pending</span>
-                </td>
-                <td className="py-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  BlockExplorer
-                </td>
-              </tr>
-              <tr>
-                <td className="pt-[26px] pr-4 font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  ACA54769
-                </td>
-                <td className="md:px-auto px-4 pt-[26px] md:px-2 lg:px-1">
-                  Axy...56huad
-                </td>
-                <td className="flex items-center justify-center space-x-3 px-4 pt-[26px] md:px-2 lg:px-1">
-                  Jan 13, 2022
-                </td>
-                <td className="px-4 pt-[26px] md:px-2 lg:px-1">$30,021.23</td>
-                <td className="px-4 pt-[26px] md:px-2 lg:px-1">Crypto</td>
-                <td className="flex items-center justify-center space-x-[7px] px-4 pt-[26px] text-white md:px-2 lg:px-1">
-                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#667085]" />
-                  <span>pending</span>
-                </td>
-                <td className="pt-[26px] pr-4 text-sm font-bold text-passes-pink-100 md:pr-2 lg:pr-1">
-                  EtherScan
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="flex flex-col">
+          <div className="flex flex-row justify-between border-b border-passes-dark-200">
+            <div className=" mb-4 flex flex-1 justify-center">
+              <span className="text-[12px] font-[500]">Transaction Hash</span>
+            </div>
+            <div className="flex flex-1 justify-center">
+              <span className="mb-4 text-[12px] font-[500]">Payment Info</span>
+            </div>
+            <div className="mb-4 flex flex-1 items-center justify-center gap-2">
+              <span className="text-[12px] font-[500]">Date</span>
+              <ChevronDown />
+            </div>
+            <div className="flex flex-1 justify-center">
+              <span className="mb-4 text-[12px] font-[500]">Amount</span>
+            </div>
+            <div className="flex flex-1 justify-center">
+              <span className="mb-4 text-[12px] font-[500]">
+                Payment Method
+              </span>
+            </div>
+            <div className="flex flex-1 justify-center">
+              <span className="mb-4 text-[12px] font-[500]">Status</span>
+            </div>
+            <div className=" mb-4 flex flex-1 justify-center">
+              <span className="text-[12px] font-[500]">Details</span>
+            </div>
+          </div>
+          {payins.map((transaction) => (
+            <div
+              key={transaction.id}
+              className="flex flex-row justify-between border-b border-passes-dark-200"
+            >
+              <div className="flex h-[72px] flex-1 items-center justify-center">
+                <span className="text-[14px] font-[700] text-passes-pink-100">
+                  {transaction.transactionHash ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+                <span className="text-[12px] font-[500]">
+                  {transaction?.card?.name ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+                <span className="text-[12px] font-[500]">
+                  {new Date(transaction.createdAt)
+                    .toISOString()
+                    .substring(0, 10) ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+                <span className="text-[12px] font-[500]">
+                  {transaction.amount ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+                <span className="text-[12px] font-[500]">
+                  {transaction?.payinMethod?.method ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center">
+                <div className="mt-1 mr-1 rounded-full bg-[#667085] p-1" />
+                <span className="text-[12px] font-[500]">
+                  {transaction.payinStatus ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex h-[72px] flex-1 items-center justify-center">
+                <span className="text-[14px] font-[700] text-passes-pink-100">
+                  {transaction.address ?? "N/A"}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
-
-        <div className="mt-[56px] flex items-center justify-between border-t border-white/[0.15] px-6 pt-[17px]">
-          <p className="text-sm text-[#646464]">Page 1 of 10</p>
-          <div className="space-x-3">
-            <button className="rounded-md bg-[#322F33] px-[17px] py-[9px] text-[#FAFBFD]">
+        <div className="flex w-full flex-row justify-between px-10">
+          <span className="text-[14px] font-[500] text-[#646464]">{`Page ${offset} of ${count}`}</span>
+          <div className="flex gap-4">
+            <button
+              disabled={offset === 0}
+              onClick={() => setOffset(offset - 1)}
+              className="rounded-[6px] bg-[#322F33] py-[9px] px-[17px] hover:opacity-50"
+            >
               Previous
             </button>
-            <button className="rounded-md bg-[#322F33] px-[17px] py-[9px] text-[#FAFBFD]">
+            <button
+              disabled={offset === count}
+              onClick={() => setOffset(offset + 1)}
+              className="rounded-[6px] bg-[#322F33] py-[9px] px-[17px] hover:opacity-50"
+            >
               Next
             </button>
           </div>
@@ -315,4 +394,4 @@ const PaymentsSettings = () => {
   )
 }
 
-export default PaymentsSettings
+export default PaymentSettings
