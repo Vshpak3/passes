@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
@@ -54,6 +54,7 @@ export class FacebookOauthController {
     responseDesc: 'Redirect from facebook oauth flow',
     allowUnauthorizedRequest: true,
   })
+  @ApiBearerAuth()
   @UseGuards(FacebookOauthGuard)
   @Get('redirect')
   async facebookAuthRedirect(@Req() req: Request, @Res() res: Response) {

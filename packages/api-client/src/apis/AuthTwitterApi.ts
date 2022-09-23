@@ -53,6 +53,11 @@ export class AuthTwitterApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
         const response = await this.request({
             path: `/api/auth/twitter/redirect`,
             method: 'GET',

@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
@@ -47,6 +47,7 @@ export class TwitterOauthController {
     responseDesc: 'Redirect from twitter oauth flow',
     allowUnauthorizedRequest: true,
   })
+  @ApiBearerAuth()
   @UseGuards(TwitterOauthGuard)
   @Get('redirect')
   async twitterAuthRedirect(@Req() req: Request, @Res() res: Response) {

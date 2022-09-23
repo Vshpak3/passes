@@ -72,6 +72,11 @@ export class AuthApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
         const response = await this.request({
             path: `/api/auth/create-user`,
             method: 'POST',
@@ -136,6 +141,11 @@ export class AuthApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
         const response = await this.request({
             path: `/api/auth/refresh`,
             method: 'POST',
@@ -169,6 +179,11 @@ export class AuthApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
         const response = await this.request({
             path: `/api/auth/set-email`,
             method: 'POST',

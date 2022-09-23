@@ -8,7 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { RequestWithUser } from '../../../types/request'
@@ -50,6 +50,7 @@ export class AuthController {
     responseDesc: 'Sets the user email',
     allowUnauthorizedRequest: true,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtUnverifiedGuard)
   @Post('set-email')
   async setUserEmail(
@@ -94,6 +95,7 @@ export class AuthController {
     responseDesc: 'Creates a new user',
     allowUnauthorizedRequest: true,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtUnverifiedGuard)
   @Post('create-user')
   async createUser(
@@ -137,6 +139,7 @@ export class AuthController {
     responseDesc: 'Refresh token token was created',
     allowUnauthorizedRequest: true,
   })
+  @ApiBearerAuth()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refreshAccessToken(
