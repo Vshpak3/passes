@@ -1817,6 +1817,11 @@ export class PaymentService {
     const availableBalance = (
       await this.creatorStatsService.getAvailableBalance(userId)
     ).amount
+
+    if (!availableBalance || availableBalance <= 0) {
+      throw new PayoutAmountError('No balance to payout')
+    }
+
     try {
       await this.creatorStatsService.handlePayout(userId, availableBalance)
 

@@ -14,6 +14,7 @@ import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostContentEntity } from '../post/entities/post-content.entity'
+import { NEGATIVE_AMOUNT } from './constants/error'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
 import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
@@ -104,13 +105,6 @@ export class CreatorStatsService {
     earningType: EarningTypeEnum,
     amount: number,
   ) {
-    if (
-      amount < 0 &&
-      earningType !== EarningTypeEnum.BALANCE &&
-      earningType !== EarningTypeEnum.AVAILABLE_BALANCE
-    ) {
-      throw new EarningsTypeError('can not decrement non-balance type earning')
-    }
     await this.dbWriter.transaction(async (trx) => {
       await trx(CreatorEarningEntity.table)
         .insert(
@@ -150,21 +144,33 @@ export class CreatorStatsService {
   }
 
   async handleChargebackSuccess(userId: string, amount: number) {
+    if (amount < 0) {
+      throw new EarningsTypeError(NEGATIVE_AMOUNT)
+    }
     await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
     await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
     await this.updateEarning(userId, EarningTypeEnum.CHARGEBACKS, amount)
   }
 
   async handlePayout(userId: string, amount: number) {
+    if (amount < 0) {
+      throw new EarningsTypeError(NEGATIVE_AMOUNT)
+    }
     await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
   }
 
   async handlePayoutSuccess(userId: string, amount: number) {
+    if (amount < 0) {
+      throw new EarningsTypeError(NEGATIVE_AMOUNT)
+    }
     await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
   }
 
   async handlePayoutFail(userId: string, amount: number) {
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
+    if (amount < 0) {
+      throw new EarningsTypeError(NEGATIVE_AMOUNT)
+    }
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amount)
   }
 
   async createEarningHistory() {
