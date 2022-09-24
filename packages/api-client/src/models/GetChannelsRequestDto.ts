@@ -54,7 +54,7 @@ export interface GetChannelsRequestDto {
      * @type {string}
      * @memberof GetChannelsRequestDto
      */
-    orderType: string;
+    orderType: GetChannelsRequestDtoOrderTypeEnum;
     /**
      * 
      * @type {boolean}
@@ -62,6 +62,17 @@ export interface GetChannelsRequestDto {
      */
     unreadOnly: boolean;
 }
+
+
+/**
+ * @export
+ */
+export const GetChannelsRequestDtoOrderTypeEnum = {
+    Recent: 'recent',
+    Tip: 'tip'
+} as const;
+export type GetChannelsRequestDtoOrderTypeEnum = typeof GetChannelsRequestDtoOrderTypeEnum[keyof typeof GetChannelsRequestDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetChannelsRequestDto interface.

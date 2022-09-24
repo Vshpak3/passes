@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Checks configs to ensure that
-#   1) Each environment's config has the same keys.
-#   2) Each declared secret exists in Terraform.
-#
-# This script requires that the infra repo can be found at ../infra.
+# Local MySQL utilities. Supported commands:
+#  connect:     opens up a mysql shell
+#  enable_logs: enables general logs
+#  logs:        prints out all logs
+#  clear_logs:  clears general logs
 #
 set -o errexit
 set -o nounset
