@@ -34,7 +34,6 @@ export const configValidationSchema = Joi.object({
   S3_BUCKET_W9: Joi.string().required(),
 
   SES_SENDER_EMAIL: Joi.string().required(),
-  SES_LOGO_CDN_URL: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -124,7 +123,6 @@ export const configConfiguration = async function (): Promise<
     },
     ses: {
       senderEmail: getConfigValue('SES_SENDER_EMAIL'),
-      logoUrl: getConfigValue('SES_LOGO_CDN_URL'),
     },
     oauth: {
       google: {

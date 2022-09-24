@@ -17,14 +17,18 @@ import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
-import { CONFIRM_PASSWORD_RESET_EMAIL } from '../../email/templates/confirm-password-reset'
-import { INIT_PASSWORD_RESET_EMAIL_TEMPLATE } from '../../email/templates/init-password-reset'
-import { UserEntity } from '../../user/entities/user.entity'
 import {
-  RESET_PASSWORD_EMAIL_INIT_SUBJECT,
-  RESET_PASSWORD_EMAIL_LIFETIME_MS,
-  RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
-} from '../constants/email'
+  CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT,
+  CONFIRM_PASSWORD_RESET_EMAIL_TEMPLATE,
+  ConfirmPasswordResetTemplateVariables,
+} from '../../email/templates/confirm-password-reset'
+import {
+  INIT_PASSWORD_RESET_EMAIL_SUBJECT,
+  INIT_PASSWORD_RESET_EMAIL_TEMPLATE,
+  InitPasswordResetEmailTemplateVariables,
+} from '../../email/templates/init-password-reset'
+import { UserEntity } from '../../user/entities/user.entity'
+import { RESET_PASSWORD_EMAIL_LIFETIME_MS } from '../constants/email'
 import { AuthService } from '../core/auth.service'
 import { AuthRecord } from '../core/auth-record'
 import { ConfirmResetPasswordRequestDto } from '../dto/local/confirm-reset-password.dto'
@@ -141,9 +145,9 @@ export class LocalAuthService {
     const passwordResetLink = `${this.clientUrl}/reset-password?token=${id}`
     await this.emailService.sendRenderedEmail(
       email,
-      RESET_PASSWORD_EMAIL_INIT_SUBJECT,
+      INIT_PASSWORD_RESET_EMAIL_SUBJECT,
       INIT_PASSWORD_RESET_EMAIL_TEMPLATE,
-      { email, passwordResetLink },
+      { passwordResetLink } as InitPasswordResetEmailTemplateVariables,
     )
   }
 
@@ -211,9 +215,9 @@ export class LocalAuthService {
     if (this.env !== 'dev') {
       await this.emailService.sendRenderedEmail(
         email,
-        RESET_PASSWORD_EMAIL_SUCCESS_SUBJECT,
-        CONFIRM_PASSWORD_RESET_EMAIL,
-        { email },
+        CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT,
+        CONFIRM_PASSWORD_RESET_EMAIL_TEMPLATE,
+        {} as ConfirmPasswordResetTemplateVariables,
       )
     }
 

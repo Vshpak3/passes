@@ -1,11 +1,16 @@
-import { MAIN_LAYOUT_PATH } from './constants'
+export const INIT_PASSWORD_RESET_EMAIL_SUBJECT =
+  '[Passes] Confirm Password Reset'
+
+export interface InitPasswordResetEmailTemplateVariables {
+  passwordResetLink: string
+}
 
 export const INIT_PASSWORD_RESET_EMAIL_TEMPLATE = `---
-title: Reset your password
-preheader: Reset your password
+title: Please confirm your password reset
+preheader: Please confirm your password reset
 ---
 
-<extends src="${MAIN_LAYOUT_PATH}">
+<extends src="{{ page.mainLayoutPath }}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>
@@ -19,12 +24,12 @@ preheader: Reset your password
                   </a>
                 </div>
 
-                <p class="m-0 text-[21px] leading-7 text-gray-900">
+                <p class="m-0 mb-8 text-[21px] leading-7 text-gray-900">
                   Hi 👋,
                 </p>
 
-                <p class="m-0 text-[21px] leading-7 text-gray-900">
-                  We received a request to reset your password. You can reset is at this link below:
+                <p class="m-0 mb-4 text-[21px] leading-7 text-gray-900">
+                  We received a request to reset your password. Click the link below to reset your password:
                 </p>
 
                 <div class="leading-4" role="separator">&zwnj;</div>
@@ -40,8 +45,8 @@ preheader: Reset your password
 
                 <div class="leading-4" role="separator">&zwnj;</div>
 
-                <p class="m-0 text-base leading-5.5 text-gray-500">
-                  If you did not request to reset your password, ignore this email and the link will expire in an hour automatically.
+                <p class="m-0 mt-4 text-base leading-5.5 text-gray-500">
+                  If you did not request to reset your password, ignore this email and the link will automatically expire in an hour.
                 </p>
               </td>
             </tr>

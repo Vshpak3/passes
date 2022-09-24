@@ -11,10 +11,18 @@ import tailwindConfig from './tailwindConfig'
 export class EmailService {
   private senderEmail: string
   private sesClient: SESClient
+  private maizzleConfig: Record<string, any>
 
   constructor(private readonly configService: ConfigService) {
     this.senderEmail = this.configService.get('ses.senderEmail') as string
     this.sesClient = new SESClient(getAwsConfig(configService))
+
+    this.maizzleConfig = {
+      ...maizzleConfig,
+      logoUrl: `${this.configService.get(
+        'cloudfront.baseUrl',
+      )}/assets/logo_200x200.png`,
+    }
   }
 
   async sendRenderedEmail(
@@ -25,35 +33,31 @@ export class EmailService {
   ) {
     const { html } = await Maizzle.render(template, {
       tailwind: { config: tailwindConfig },
-      maizzle: {
-        ...data,
-        logoUrl: this.configService.get('ses.logoUrl') as string,
-        ...maizzleConfig,
-      },
+      maizzle: { ...this.maizzleConfig, ...data },
     })
     await this.sendEmail(email, html, subject)
   }
 
   async sendEmail(recipient: string, messageHtml: string, subject: string) {
-    const command = new SendEmailCommand({
-      Destination: {
-        ToAddresses: [recipient],
-      },
-      Message: {
-        Body: {
-          Html: {
+    await this.sesClient.send(
+      new SendEmailCommand({
+        Destination: {
+          ToAddresses: [recipient],
+        },
+        Message: {
+          Body: {
+            Html: {
+              Charset: 'UTF-8',
+              Data: messageHtml,
+            },
+          },
+          Subject: {
             Charset: 'UTF-8',
-            Data: messageHtml,
+            Data: subject,
           },
         },
-        Subject: {
-          Charset: 'UTF-8',
-          Data: subject,
-        },
-      },
-      Source: this.senderEmail,
-    })
-
-    await this.sesClient.send(command)
+        Source: this.senderEmail,
+      }),
+    )
   }
 }

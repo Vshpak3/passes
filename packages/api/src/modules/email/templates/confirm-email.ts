@@ -1,11 +1,15 @@
-import { MAIN_LAYOUT_PATH } from './constants'
+export const CONFIRM_EMAIL_SUBJECT = '[Passes] Verify Email'
+
+export interface ConfirmEmailTemplateVariables {
+  verifyEmailUrl: string
+}
 
 export const CONFIRM_EMAIL_TEMPLATE = `---
 title: Please confirm your email address
 preheader: Please confirm your email address
 ---
 
-<extends src="${MAIN_LAYOUT_PATH}">
+<extends src="{{ page.mainLayoutPath }}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>
@@ -19,11 +23,11 @@ preheader: Please confirm your email address
                   </a>
                 </div>
 
-                <p class="m-0 text-[21px] leading-7 text-gray-900">
+                <p class="m-0 mb-8 text-[21px] leading-7 text-gray-900">
                   Hi 👋,
                 </p>
 
-                <p class="m-0 text-[21px] leading-7 text-gray-900">
+                <p class="m-0 mb-4 text-[21px] leading-7 text-gray-900">
                   In order to start using your account, you need to confirm your email.
                 </p>
 
@@ -40,7 +44,7 @@ preheader: Please confirm your email address
 
                 <div class="leading-4" role="separator">&zwnj;</div>
 
-                <p class="m-0 text-base leading-5.5 text-gray-500">
+                <p class="m-0 mt-4 text-base leading-5.5 text-gray-500">
                   If you did not sign up for this account you can ignore this email and the account will be deleted automatically after 5 days.
                 </p>
               </td>

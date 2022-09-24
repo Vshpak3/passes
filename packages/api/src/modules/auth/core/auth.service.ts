@@ -11,14 +11,15 @@ import { DatabaseService } from '../../../database/database.service'
 import { OAuthProvider } from '../../auth/helpers/oauth-provider.type'
 import { EmailService } from '../../email/email.service'
 import { VerifyEmailRequestEntity } from '../../email/entities/verify-email-request.entity'
-import { CONFIRM_EMAIL_TEMPLATE } from '../../email/templates/confirm-email'
+import {
+  CONFIRM_EMAIL_SUBJECT,
+  CONFIRM_EMAIL_TEMPLATE,
+  ConfirmEmailTemplateVariables,
+} from '../../email/templates/confirm-email'
 import { UserDto } from '../../user/dto/user.dto'
 import { UserEntity } from '../../user/entities/user.entity'
 import { UserService } from '../../user/user.service'
-import {
-  VERIFY_EMAIL_LIFETIME_MS,
-  VERIFY_EMAIL_SUBJECT,
-} from '../constants/email'
+import { VERIFY_EMAIL_LIFETIME_MS } from '../constants/email'
 import { CreateUserRequestDto } from '../dto/create-user.dto'
 import { VerifyEmailDto } from '../dto/verify-email.dto'
 import { AuthEntity } from '../entities/auth.entity'
@@ -80,9 +81,9 @@ export class AuthService {
     const verificationLink = `${this.clientUrl}/email/verify?id=${id}`
     await this.emailService.sendRenderedEmail(
       email,
-      VERIFY_EMAIL_SUBJECT,
+      CONFIRM_EMAIL_SUBJECT,
       CONFIRM_EMAIL_TEMPLATE,
-      { email, verifyEmailUrl: verificationLink },
+      { verifyEmailUrl: verificationLink } as ConfirmEmailTemplateVariables,
     )
   }
 

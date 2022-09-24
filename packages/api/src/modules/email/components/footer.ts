@@ -10,7 +10,7 @@ export const FOOTER = `<div class="text-left">
   <p class="mb-4 mt-0 text-xs leading-4 text-gray-500">
     This email was sent to you as a registered member of
     <a href="{{ page.websiteUrl }}"
-      class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">Passes.com</a>.
+      class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">passes.com</a>.
 
     To update your emails preferences <a href="{{ page.updateEmailPreferenceUrl }}"
       class="hover:text-brand-700 hover:[text-decoration:underline] inline-block">click here</a>.

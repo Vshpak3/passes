@@ -22,4 +22,3 @@ copy src/config '.env.*'
 # Email files
 copy src/modules/email '*.css'
 copy src/modules/email '*.html'
-copy src/modules/email '*.js'

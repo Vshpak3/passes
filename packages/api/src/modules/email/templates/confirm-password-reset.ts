@@ -1,12 +1,17 @@
 import { FOOTER } from '../components/footer'
-import { MAIN_LAYOUT_PATH } from './constants'
 
-export const CONFIRM_PASSWORD_RESET_EMAIL = `---
+export const CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT =
+  '[Passes] Password Reset Successful'
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfirmPasswordResetTemplateVariables {}
+
+export const CONFIRM_PASSWORD_RESET_EMAIL_TEMPLATE = `---
 title: You have successfully reset your password
 preheader: You have successfully reset your password
 ---
 
-<extends src="${MAIN_LAYOUT_PATH}">
+<extends src="{{ page.mainLayoutPath }}">
   <block name="template">
     <table class="wrapper w-full font-sans">
       <tr>
@@ -25,7 +30,8 @@ preheader: You have successfully reset your password
                 </p>
 
                 <p class="m-0 text-base leading-5.5 text-gray-500">
-                  If this is your account but you did not request a password change, please, <a href="{{ page.supportEmail }}" class="hover:text-brand-700 hover:underline">contact the support team</a> immediately.
+                  If you did not request a password change, please contact the support team immediately at
+                    <a href="mailto:{{ page.supportEmail }}" class="hover:text-brand-700 hover:underline">{{ page.supportEmail }}</a>.
                 </p>
 
                 ${FOOTER}
