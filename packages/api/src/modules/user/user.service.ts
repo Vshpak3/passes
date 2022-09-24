@@ -207,12 +207,15 @@ export class UserService {
   async searchByQuery(
     searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {
+    if (!searchCreatorDto.query) {
+      return new SearchCreatorResponseDto([])
+    }
     const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     return new SearchCreatorResponseDto(
       await this.dbReader(UserEntity.table)
-        .where(async function () {
-          await this.whereILike('username', likeClause).orWhereILike(
+        .where(function () {
+          return this.whereILike('username', likeClause).orWhereILike(
             'display_name',
             likeClause,
           )

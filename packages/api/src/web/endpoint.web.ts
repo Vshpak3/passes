@@ -1,4 +1,4 @@
-import { applyDecorators } from '@nestjs/common'
+import { applyDecorators, HttpCode } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
 import { AllowUnauthorizedRequest } from '../modules/auth/core/auth.metadata'
@@ -23,6 +23,7 @@ export function ApiEndpoint(options: ApiOptions) {
       type: options.responseType,
       description: options.responseDesc,
     }),
+    HttpCode(options.responseStatus),
     auth,
   )
 }

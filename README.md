@@ -107,7 +107,7 @@ can then access the database via:
 brew install mysql-client
 
 # starts mysql shell
-mysql -u root -P 3306 -h 127.0.0.1 -p'root' passes
+./bin/mysql.sh connect
 ```
 
 The following script will wipe any local migration files and regenerate all
