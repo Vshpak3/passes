@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -25,7 +25,8 @@ export class GetChannelsRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ optional: true })
   tip?: number
 
-  @DtoProperty()
+  @IsEnum(ChannelOrderTypeEnum)
+  @DtoProperty({ enum: ChannelOrderTypeEnum })
   orderType: ChannelOrderTypeEnum
 
   @DtoProperty()

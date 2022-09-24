@@ -1,10 +1,11 @@
-import { IsUUID } from 'class-validator'
+import { IsEnum, IsUUID } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
 import { CircleChargebackTypeEnum } from '../../enum/circle-chargeback.type.enum'
 import { CircleAmountDto } from './circle-utils.dto'
 
 export class CircleChargebackSettlementDto {
+  @IsEnum(CircleChargebackTypeEnum)
   @DtoProperty({ enum: CircleChargebackTypeEnum })
   type: CircleChargebackTypeEnum
 
