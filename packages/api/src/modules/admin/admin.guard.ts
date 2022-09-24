@@ -1,4 +1,5 @@
 import { ExecutionContext } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 import { AdminService } from './admin.service'
@@ -8,6 +9,7 @@ import { AdminService } from './admin.service'
  * controller and will always be called after the main JWT authentication:
  *   https://docs.nestjs.com/faq/request-lifecycle#summary
  */
+@Injectable()
 export class AdminGuard extends AuthGuard('jwt') {
   constructor(private readonly adminService: AdminService) {
     super()
