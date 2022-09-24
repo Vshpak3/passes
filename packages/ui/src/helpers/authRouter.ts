@@ -1,6 +1,7 @@
 import { NextRouter } from "next/router"
 
 import { JWTUserClaims } from "../hooks/useUser"
+import { tokenStillValid } from "./token"
 
 export enum AuthStates {
   LOGIN,
@@ -10,7 +11,7 @@ export enum AuthStates {
 }
 
 export function authStateMachine(jwt?: JWTUserClaims | null): AuthStates {
-  if (!jwt) {
+  if (!jwt || !tokenStillValid(jwt)) {
     return AuthStates.LOGIN
   } else if (!jwt.isEmailVerified) {
     return AuthStates.EMAIL

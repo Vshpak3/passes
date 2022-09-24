@@ -3,6 +3,20 @@ import jwtDecode from "jwt-decode"
 
 import { JWTUserClaims } from "../hooks/useUser"
 
+/**
+ * Checks the expiration of the token.
+ *
+ * @param timeRemaining Check if the access token has less than or equal to
+ *                      this time remaining (in seconds).
+ * @returns Boolean whether or not the token is valid (not expired).
+ */
+export const tokenStillValid = (
+  token: JWTUserClaims,
+  timeRemaining = 0
+): boolean => {
+  return token.exp - Date.now() / 1000 > timeRemaining
+}
+
 const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
   try {
     const authApi = new AuthApi()
@@ -28,7 +42,7 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
  *                        this time remaining (in seconds).
  * @returns True if the token was refreshed and False otherwise.
  */
-const refreshAccessToken = async (
+export const refreshAccessToken = async (
   timeRemaining: number = 5 * 60 // 5 minutes
 ): Promise<boolean> => {
   const accessToken = window.localStorage.getItem("access-token")
@@ -38,14 +52,12 @@ const refreshAccessToken = async (
     return false
   }
 
-  if (accessToken) {
-    const decodedAuthToken = jwtDecode<JWTUserClaims>(accessToken)
-    if (decodedAuthToken.exp - Date.now() / 1000 > timeRemaining) {
-      return false
-    }
+  if (
+    accessToken &&
+    tokenStillValid(jwtDecode<JWTUserClaims>(accessToken), timeRemaining)
+  ) {
+    return false
   }
 
   return await _refreshAccessToken(refreshToken)
 }
-
-export default refreshAccessToken
