@@ -122,27 +122,28 @@ export class VerificationService {
         }
       }),
     )
+    let ret: KYCStatusEnum | undefined = undefined
     if (userId) {
       const inquiries = await this.dbWriter(PersonaInquiryEntity.table)
         .where('user_id', userId)
         .select(['kyc_status'])
       inquiries.forEach((inquiry) => {
-        if (inquiry.kyc_status === KYCStatusEnum.COMPLETED) {
-          return KYCStatusEnum.COMPLETED
-        }
-      })
-      inquiries.forEach((inquiry) => {
         if (inquiry.kyc_status === KYCStatusEnum.PENDING) {
-          return KYCStatusEnum.PENDING
+          ret = KYCStatusEnum.PENDING
         }
       })
       inquiries.forEach((inquiry) => {
         if (inquiry.kyc_status === KYCStatusEnum.FAILED) {
-          return KYCStatusEnum.FAILED
+          ret = KYCStatusEnum.FAILED
+        }
+      })
+      inquiries.forEach((inquiry) => {
+        if (inquiry.kyc_status === KYCStatusEnum.COMPLETED) {
+          ret = KYCStatusEnum.COMPLETED
         }
       })
     }
-    return undefined
+    return ret
   }
 
   async refreshPersonaVerification(inquiryId: string, userId: string) {
