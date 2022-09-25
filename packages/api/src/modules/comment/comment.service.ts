@@ -82,7 +82,7 @@ export class CommentService {
       )
       .where(
         CommentEntity.toDict<CommentEntity>({
-          id: postId,
+          post: postId,
           hidden: false,
           blocked: false,
           deactivated: false,
