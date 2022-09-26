@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic"
-import ClockIcon from "public/icons/clock-icon.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"

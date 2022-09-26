@@ -20,7 +20,7 @@ const ProfileDetailsDesktop = ({
       {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
       <div className="col-span-4 flex flex-col px-5 pt-4">
         <ProfileInformation
-          displayName={profile.displayName}
+          displayName={profile.coverTitle}
           username={username}
           quote={profile.coverDescription}
           posts={profile.postsCount}

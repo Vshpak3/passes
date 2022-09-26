@@ -1763,6 +1763,7 @@ export class PaymentService {
         `${CreatorSettingsEntity.table}.user_id`,
       )
       .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
+      .andWhereNot('payout_frequency', PayoutFrequencyEnum.MANUAL)
       .select([`${UserEntity.table}.id`, 'payout_frequency'])
     await Promise.all(
       creators.map(async (creator) => {

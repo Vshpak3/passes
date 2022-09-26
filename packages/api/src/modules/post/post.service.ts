@@ -4,7 +4,6 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -47,7 +46,9 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { PostDto } from './dto/post.dto'
+import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
@@ -57,7 +58,10 @@ import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostPassHolderAccessEntity } from './entities/post-passholder-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
-import { ForbiddenPostException } from './error/post.error'
+import {
+  ForbiddenPostException,
+  PostNotFoundException,
+} from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 
@@ -225,7 +229,7 @@ export class PostService {
     const postDtos = await this.getPostsFromQuery(userId, query)
 
     if (postDtos.length === 0) {
-      throw new NotFoundException(POST_NOT_EXIST)
+      throw new PostNotFoundException(POST_NOT_EXIST)
     }
 
     return postDtos[0]
@@ -665,6 +669,26 @@ export class PostService {
           'total_tip_amount',
         ]),
       )
+  }
+
+  async getPostHistory(
+    userId: string,
+    getPostHistoryRequestDto: GetPostHistoryRequestDto,
+  ) {
+    const { postId, start, end } = getPostHistoryRequestDto
+    const post = await this.dbReader(PostEntity.table).where(
+      PostEntity.toDict<PostEntity>({ id: postId, user: userId }),
+    )
+    if (!post) {
+      throw new PostNotFoundException(
+        `post ${postId} not found for user ${userId}`,
+      )
+    }
+    const postHistories = await this.dbReader(PostHistoryEntity.table)
+      .where('post_id', postId)
+      .andWhere('created_at', '>=', start)
+      .andWhere('created_at', '<=', end)
+    return postHistories.map((postHistory) => new PostHistoryDto(postHistory))
   }
 
   async refreshPostsCounts() {

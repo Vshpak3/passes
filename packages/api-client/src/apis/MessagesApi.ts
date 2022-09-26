@@ -24,6 +24,8 @@ import type {
   GetMessageResponseDto,
   GetMessagesRequestDto,
   GetMessagesResponseDto,
+  GetPaidMessageHistoryRequestDto,
+  GetPaidMessageHistoryResponseDto,
   PayinDataDto,
   PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
@@ -49,6 +51,10 @@ import {
     GetMessagesRequestDtoToJSON,
     GetMessagesResponseDtoFromJSON,
     GetMessagesResponseDtoToJSON,
+    GetPaidMessageHistoryRequestDtoFromJSON,
+    GetPaidMessageHistoryRequestDtoToJSON,
+    GetPaidMessageHistoryResponseDtoFromJSON,
+    GetPaidMessageHistoryResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchaseMessageRequestDtoFromJSON,
@@ -83,6 +89,10 @@ export interface GetMessagesRequest {
 
 export interface GetOrCreateChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
+}
+
+export interface GetPaidMessageHistoryRequest {
+    getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto;
 }
 
 export interface MassSendRequest {
@@ -337,6 +347,44 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getOrCreateChannel(requestParameters: GetOrCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelResponseDto> {
         const response = await this.getOrCreateChannelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get paid message history
+     */
+    async getPaidMessageHistoryRaw(requestParameters: GetPaidMessageHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessageHistoryResponseDto>> {
+        if (requestParameters.getPaidMessageHistoryRequestDto === null || requestParameters.getPaidMessageHistoryRequestDto === undefined) {
+            throw new runtime.RequiredError('getPaidMessageHistoryRequestDto','Required parameter requestParameters.getPaidMessageHistoryRequestDto was null or undefined when calling getPaidMessageHistory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/history`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPaidMessageHistoryRequestDtoToJSON(requestParameters.getPaidMessageHistoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPaidMessageHistoryResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get paid message history
+     */
+    async getPaidMessageHistory(requestParameters: GetPaidMessageHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
+        const response = await this.getPaidMessageHistoryRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

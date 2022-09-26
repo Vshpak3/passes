@@ -20,6 +20,10 @@ import {
   CreatePostResponseDto,
 } from './dto/create-post.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
+import {
+  GetPostHistoryRequestDto,
+  GetPostHistoryResponseDto,
+} from './dto/get-post-history.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -167,5 +171,24 @@ export class PostController {
     @Param('postId') postId: string,
   ): Promise<boolean> {
     return await this.postService.unpinPost(req.user.id, postId)
+  }
+
+  @ApiEndpoint({
+    summary: 'Get post history',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPostHistoryResponseDto,
+    responseDesc: 'Post history was retrieved',
+  })
+  @Post('history')
+  async getPostHistory(
+    @Req() req: RequestWithUser,
+    @Body() getPostHistoryRequestDto: GetPostHistoryRequestDto,
+  ): Promise<GetPostHistoryResponseDto> {
+    return new GetPostHistoryResponseDto(
+      await this.postService.getPostHistory(
+        req.user.id,
+        getPostHistoryRequestDto,
+      ),
+    )
   }
 }

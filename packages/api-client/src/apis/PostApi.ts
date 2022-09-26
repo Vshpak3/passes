@@ -17,6 +17,8 @@ import * as runtime from '../runtime';
 import type {
   CreatePostRequestDto,
   CreatePostResponseDto,
+  GetPostHistoryRequestDto,
+  GetPostHistoryResponseDto,
   GetPostResponseDto,
   PayinDataDto,
   PurchasePostRequestDto,
@@ -29,6 +31,10 @@ import {
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
+    GetPostHistoryRequestDtoFromJSON,
+    GetPostHistoryRequestDtoToJSON,
+    GetPostHistoryResponseDtoFromJSON,
+    GetPostHistoryResponseDtoToJSON,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
     PayinDataDtoFromJSON,
@@ -49,6 +55,10 @@ export interface CreatePostRequest {
 
 export interface FindPostRequest {
     postId: string;
+}
+
+export interface GetPostHistoryRequest {
+    getPostHistoryRequestDto: GetPostHistoryRequestDto;
 }
 
 export interface PinPostRequest {
@@ -155,6 +165,44 @@ export class PostApi extends runtime.BaseAPI {
      */
     async findPost(requestParameters: FindPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostResponseDto> {
         const response = await this.findPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get post history
+     */
+    async getPostHistoryRaw(requestParameters: GetPostHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostHistoryResponseDto>> {
+        if (requestParameters.getPostHistoryRequestDto === null || requestParameters.getPostHistoryRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostHistoryRequestDto','Required parameter requestParameters.getPostHistoryRequestDto was null or undefined when calling getPostHistory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/post/history`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPostHistoryRequestDtoToJSON(requestParameters.getPostHistoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostHistoryResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get post history
+     */
+    async getPostHistory(requestParameters: GetPostHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostHistoryResponseDto> {
+        const response = await this.getPostHistoryRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

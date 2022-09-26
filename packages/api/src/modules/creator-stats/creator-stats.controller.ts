@@ -38,18 +38,18 @@ export class CreatorStatsController {
   }
 
   @ApiEndpoint({
-    summary: 'Get historic earnings',
+    summary: 'Get earnings history',
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningsResponseDto,
-    responseDesc: 'Historic earnings was retrieved',
+    responseDesc: 'Earnings history was retrieved',
   })
-  @Post('earnings/historic')
-  async getHistoricEarnings(
+  @Post('history/earnings')
+  async getEarningsHistory(
     @Req() req: RequestWithUser,
     @Body() getCreatorEarningHistoryDto: GetCreatorEarningsHistoryRequestDto,
   ): Promise<GetCreatorEarningsResponseDto> {
     return new GetCreatorEarningsResponseDto(
-      await this.creatorStatsService.getHistoricEarnings(
+      await this.creatorStatsService.getEarningsHistory(
         req.user.id,
         getCreatorEarningHistoryDto.start,
         getCreatorEarningHistoryDto.end,
