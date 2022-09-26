@@ -20,19 +20,25 @@ const FOLDER_BUCKET_MAP = {
   media: 'usercontent',
   w9: 'w9',
 } as const
-type S3Bucket = typeof FOLDER_BUCKET_MAP[keyof typeof FOLDER_BUCKET_MAP]
+
+type Folders = keyof typeof FOLDER_BUCKET_MAP
+
+type S3Bucket = { [K in typeof FOLDER_BUCKET_MAP[Folders]]: string }
 
 @Injectable()
 export class S3ContentService {
-  private s3Client: S3Client
-  private s3Buckets: { [K in S3Bucket]: string }
-  private env: string
-  private keyPairId: string
-  private privateKey: string
-  private cloudfrontUrl: string
-  private cookieOptions: CookieOptions
+  private readonly s3Client: S3Client
+  private readonly s3Buckets: S3Bucket
+
+  private readonly env: string
+  private readonly keyPairId: string
+  private readonly privateKey: string
+  private readonly cloudfrontUrl: string
+  private readonly cookieOptions: CookieOptions
   private readonly signedUrlExpirationTime: number
   private readonly signedCookieExpirationTime: number
+
+  private readonly folderPathRegexp: RegExp
 
   constructor(private readonly configService: ConfigService) {
     this.env = configService.get('infra.env') as string
@@ -48,18 +54,19 @@ export class S3ContentService {
     this.signedCookieExpirationTime = configService.get(
       'cloudfront.signedCookieExpirationTime',
     ) as number
-    this.s3Buckets = configService.get('s3_bucket') as {
-      [K in S3Bucket]: string
-    }
+
+    this.s3Buckets = configService.get('s3_bucket') as S3Bucket
     this.s3Client = new S3Client(getAwsConfig(configService))
+
+    this.folderPathRegexp = new RegExp(
+      `^(${Object.keys(FOLDER_BUCKET_MAP).join('|')})`,
+    )
   }
 
   private getFolderFromPath(path: string) {
-    const folderPathRegexp = new RegExp(
-      `^(${Object.keys(FOLDER_BUCKET_MAP).join('|')})`,
-    )
-    const { 1: _folder } = path.match(folderPathRegexp) || []
-    const folder = _folder as keyof typeof FOLDER_BUCKET_MAP
+    const folder = path.match(this.folderPathRegexp)?.at(1) as
+      | Folders
+      | undefined
 
     if (!folder) {
       throw new BadRequestException('invalid path')
@@ -74,10 +81,7 @@ export class S3ContentService {
    * @param rest rest of the path
    * @returns upload path
    */
-  private generateS3Key = (
-    folder: keyof typeof FOLDER_BUCKET_MAP,
-    rest: string,
-  ) => {
+  private generateS3Key(folder: Folders, rest: string) {
     // upload files directly to the downstream directory in dev
     if (this.env === 'dev') {
       switch (folder) {

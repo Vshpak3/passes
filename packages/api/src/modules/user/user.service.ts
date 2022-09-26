@@ -28,7 +28,7 @@ import { NotificationSettingsEntity } from '../notifications/entities/notificati
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
-import { MIN_AGE_NOT_MET, USERNAME_TAKEN } from './constants/errors'
+import { USER_MIN_AGE_NOT_MET, USERNAME_TAKEN } from './constants/errors'
 import { USER_MIN_AGE } from './constants/schema'
 import {
   MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
@@ -70,7 +70,7 @@ export class UserService {
       differenceInYears(new Date(), new Date(createUserRequestDto.birthday)) <
       USER_MIN_AGE
     if (isTooYoung) {
-      throw new BadRequestException(MIN_AGE_NOT_MET)
+      throw new BadRequestException(USER_MIN_AGE_NOT_MET)
     }
 
     const user = {

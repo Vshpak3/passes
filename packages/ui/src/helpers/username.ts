@@ -19,6 +19,6 @@ export async function checkUsername(
   }
 
   if (usernameTaken.value) {
-    throw new Error("Username is not available")
+    throw new Error("This username is not available")
   }
 }

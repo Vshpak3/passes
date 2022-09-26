@@ -21,7 +21,7 @@ import { ProfileEntity } from '../profile/entities/profile.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
-import { MIN_AGE_NOT_MET } from './constants/errors'
+import { CREATOR_MIN_AGE_NOT_MET } from './constants/errors'
 import { CREATOR_MIN_AGE } from './constants/schema'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
 import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
@@ -63,8 +63,6 @@ export class VerificationService {
   }
 
   async canSubmitPersona(userId: string) {
-    await this.checkUserAgeForCreator(userId)
-
     const count = await this.dbReader<PersonaInquiryEntity>(
       PersonaInquiryEntity.table,
     )
@@ -77,8 +75,6 @@ export class VerificationService {
     userId: string,
     submitInquiryRequest: SubmitPersonaInquiryRequestDto,
   ) {
-    await this.checkUserAgeForCreator(userId)
-
     if (!(await this.canSubmitPersona(userId))) {
       throw new PersonaVerificationError(
         'user has exceeded max verification attempts',
@@ -357,7 +353,7 @@ export class VerificationService {
     return { step: creatorVerification.step }
   }
 
-  async checkUserAgeForCreator(userId: string) {
+  private async checkUserAgeForCreator(userId: string) {
     const user = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: userId })
       .select('birthday')
@@ -370,7 +366,7 @@ export class VerificationService {
     const isTooYoung =
       differenceInYears(new Date(), new Date(user.birthday)) < CREATOR_MIN_AGE
     if (isTooYoung) {
-      throw new BadRequestException(MIN_AGE_NOT_MET)
+      throw new BadRequestException(CREATOR_MIN_AGE_NOT_MET)
     }
   }
 }

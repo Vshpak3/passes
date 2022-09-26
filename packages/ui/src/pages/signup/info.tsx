@@ -84,10 +84,8 @@ const UserInfoPage = () => {
 
       const validUsername = await checkUsername(username, userApi)
         .then(() => true)
-        .catch(() => {
-          setError("username", {
-            message: "ERROR: This username is unavailable."
-          })
+        .catch((err: Error) => {
+          setError("username", { message: err.message })
           return false
         })
 

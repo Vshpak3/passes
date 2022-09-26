@@ -15,7 +15,7 @@ jobs:
   ui-lint:
     name: Lint @passes/ui package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
   ui-test:
     name: Test @passes/ui package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -50,7 +50,7 @@ jobs:
   api-lint:
     name: Lint @passes/api package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -67,7 +67,7 @@ jobs:
   api-test:
     name: Test @passes/api package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -100,7 +100,7 @@ jobs:
   api-compatibility:
     name: Check @passes/api API compatibility
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
