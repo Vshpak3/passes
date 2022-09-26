@@ -319,25 +319,30 @@ export const CommentSection = ({
   const [comments, setComments] = useState([])
   const { getValues, setValue } = useForm()
 
-  const getComments = useCallback(async () => {
-    try {
-      setLoadingComments(true)
-      const api = new CommentApi()
-
-      const response = await api.findCommentsForPost({
-        getCommentsForPostRequestDto: {
-          postId
+  const getComments = useCallback(
+    async (withLoadingState = true) => {
+      try {
+        if (withLoadingState) {
+          setLoadingComments(true)
         }
-      })
+        const api = new CommentApi()
 
-      setComments(response.comments)
-    } catch (error) {
-      console.error(error)
-      toast.error(error)
-    } finally {
-      setLoadingComments(false)
-    }
-  }, [postId])
+        const response = await api.findCommentsForPost({
+          getCommentsForPostRequestDto: {
+            postId
+          }
+        })
+
+        setComments(response.comments)
+      } catch (error) {
+        console.error(error)
+        toast.error(error)
+      } finally {
+        setLoadingComments(false)
+      }
+    },
+    [postId]
+  )
 
   useEffect(() => {
     if (visible) {
@@ -353,17 +358,17 @@ export const CommentSection = ({
 
       const api = new CommentApi()
 
-      const response = await api.createComment({
-        createCommentDto: {
+      await api.createComment({
+        createCommentRequestDto: {
           text,
           tags,
-          postId: postId
+          postId
         }
       })
 
-      setComments((prev) => [...prev, { ...response, createdAt: new Date() }])
       setValue("comment", "")
-      setTimeout(updateEngagement, 1000)
+      getComments(false)
+      updateEngagement()
     } catch (error) {
       console.error(error)
       toast.error(error)
@@ -427,13 +432,13 @@ export const Comment = ({ comment }) => {
       />
       <div className="ml-4 flex max-w-[100%] flex-col flex-wrap">
         <Text fontSize={14} className="mb-1 font-bold">
-          {comment?.commenterUsername ?? "Fan"}
+          {comment?.commenterDisplayName ?? "Fan"}
         </Text>
         <Text
           fontSize={14}
           className="break-normal break-all text-start font-light"
         >
-          {comment?.content}
+          {comment?.text}
         </Text>
       </div>
     </div>
