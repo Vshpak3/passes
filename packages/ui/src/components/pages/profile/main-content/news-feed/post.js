@@ -250,7 +250,7 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
           postId: post.postId
         })
       }
-      setTimeout(updateEngagement, 1000)
+      updateEngagement()
     } catch (error) {
       console.error(error)
       toast.error(error)
@@ -347,15 +347,15 @@ export const CommentSection = ({
 
   async function postComment() {
     try {
-      const content = getValues("comment")
+      const text = getValues("comment")
       const tags = getValues("mentions")
-      if (content.length === 0) return
+      if (text.length === 0) return
 
       const api = new CommentApi()
 
       const response = await api.createComment({
         createCommentDto: {
-          content,
+          text,
           tags,
           postId: postId
         }

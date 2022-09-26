@@ -66,7 +66,7 @@ const Dialog = ({
           </Transition.Child>
 
           <div className="fixed inset-0">
-            <div className="flex min-h-full items-center justify-center bg-inherit text-center md:px-4">
+            <div className="flex min-h-full items-center justify-center bg-inherit md:px-4">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
