@@ -15,8 +15,6 @@ import { isDev } from "../../helpers/env"
 import { setTokens } from "../../helpers/setTokens"
 import { useUser } from "../../hooks"
 
-// TODO: Designs for "confirm email state", https://buildmoment.atlassian.net/browse/PASS-654
-
 const UserEmailPage = () => {
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()

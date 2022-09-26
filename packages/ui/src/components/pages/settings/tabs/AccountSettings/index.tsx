@@ -1,6 +1,5 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import KeyIcon from "public/icons/key.svg"
-import TrashIcon from "public/icons/trash.svg"
 import UserIcon from "public/icons/user.svg"
 import React from "react"
 import { SubTabsEnum } from "src/config/settings"
