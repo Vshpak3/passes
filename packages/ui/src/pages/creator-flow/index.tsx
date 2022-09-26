@@ -12,7 +12,7 @@ import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
-import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/contants"
+import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 type BulletItemProps = {

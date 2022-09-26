@@ -73,7 +73,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
 
   const canBeCreateSchedulerPopperOpen =
     monthYearPopperOpen && Boolean(anchorEl)
-  const createScheduleropperId = canBeCreateSchedulerPopperOpen
+  const createSchedulerPopperId = canBeCreateSchedulerPopperOpen
     ? "transition-popper"
     : undefined
 
@@ -159,7 +159,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
             onClick={handleGoNext}
           />
           <Popper
-            id={createScheduleropperId}
+            id={createSchedulerPopperId}
             open={createScheduleOpen}
             anchorEl={buttonCreateSchedulerEl}
             transition

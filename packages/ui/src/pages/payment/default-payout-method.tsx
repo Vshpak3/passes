@@ -192,7 +192,7 @@ const DefaultPayoutMethod = () => {
               </div>
             )
           })}
-          {/* List of walletes */}
+          {/* List of wallets */}
           {wallets.map((wallet) => {
             return (
               <div

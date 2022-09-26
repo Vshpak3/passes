@@ -14,7 +14,7 @@ export class CreateBatchMessageRequestDto extends PickType(
 
   @IsUUID('all', { each: true })
   @DtoProperty()
-  exlcudeListIds: string[]
+  excludeListIds: string[]
 
   @IsUUID('all', { each: true })
   @DtoProperty()

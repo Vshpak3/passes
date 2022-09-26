@@ -299,7 +299,7 @@ export class MessagesService {
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
-    const { includeListIds, exlcudeListIds, passIds, contentIds, price, text } =
+    const { includeListIds, excludeListIds, passIds, contentIds, price, text } =
       createBatchMessageDto
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
@@ -332,7 +332,7 @@ export class MessagesService {
 
     const exclude = await this.listService.getAllListMembers(
       userId,
-      exlcudeListIds,
+      excludeListIds,
     )
 
     const userIds = Array.from(include)

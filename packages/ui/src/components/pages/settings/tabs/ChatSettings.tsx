@@ -82,7 +82,7 @@ const ChatSettings = () => {
     if (chatSettings) {
       const { welcomeMessage, minimumTipAmount } = chatSettings
 
-      const formatedValues = {
+      const formattedValues = {
         isWithoutTip: values.isWithoutTip,
         showWelcomeMessageInput: values.showWelcomeMessageInput,
         minimumTipAmount: values.isWithoutTip
@@ -101,7 +101,7 @@ const ChatSettings = () => {
         welcomeMessage: welcomeMessage || ""
       }
 
-      if (_.isEqual(savedData, formatedValues)) {
+      if (_.isEqual(savedData, formattedValues)) {
         setIsDisabledBtn(false)
         return
       }
