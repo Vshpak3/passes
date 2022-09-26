@@ -18,6 +18,7 @@ export const usePrivacySafetySettings = () => {
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const privateProfileHandler = async (isPrivate: boolean) => {
     return null
   }

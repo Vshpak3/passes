@@ -8,6 +8,7 @@ const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =
     useState(false)
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const deactivateAccountHandler = () => {}
 
   const hideDeactivateModalHandler = () =>

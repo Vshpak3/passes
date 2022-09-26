@@ -37,7 +37,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     register,
     handleSubmit,
     getValues,
-    watch,
     formState: { errors }
   } = useForm()
 

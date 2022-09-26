@@ -21,7 +21,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: yarn
+          cache: yarn
+      - run: yarn install --frozen-lockfile
       - run: yarn workspace @passes/api prettier:check
       - run: yarn workspace @passes/api lint:check
       - run: yarn workspace @passes/api ts:check
@@ -38,8 +39,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: yarn
       - run: ./packages/ui/bin/lint.sh
-      - run: yarn
+      - run: yarn install --frozen-lockfile
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
       - run: yarn workspace @passes/ui ts:check
@@ -74,4 +76,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: yarn
       - run: ./bin/api-compatibility.sh
