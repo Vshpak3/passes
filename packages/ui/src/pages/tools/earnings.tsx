@@ -1,7 +1,6 @@
 import { CreatorStatsApi } from "@passes/api-client"
-import { uniqueId } from "lodash"
 import { NextPage } from "next"
-import React from "react"
+import React, { useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
 import EarningsGraph from "src/components/pages/tools/analytics/AnalyticsGraph"
 import AnalyticsHeader from "src/components/pages/tools/analytics/AnalyticsHeader"
@@ -10,7 +9,7 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
 
 const Analytics: NextPage = () => {
-  const [analyticsTab, setAnalyticsTab] = React.useState("earnings")
+  const [analyticsTab, setAnalyticsTab] = useState("earnings")
   const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
     const api = new CreatorStatsApi()
     return await api.getBalance()
@@ -27,7 +26,7 @@ const Analytics: NextPage = () => {
           {ANALYTICS_OPTIONS.map((tab) => (
             <TabButton
               variant="tab"
-              key={tab.id}
+              key={tab.value}
               active={analyticsTab === tab.value}
               onClick={() => handleAnalyticsTabClick(tab.value)}
             >
@@ -44,23 +43,19 @@ const Analytics: NextPage = () => {
 const ANALYTICS_OPTIONS = [
   {
     label: "Earnings",
-    value: "earnings",
-    id: uniqueId()
+    value: "earnings"
   },
   {
     label: "Payout requests",
-    value: "payout-requests",
-    id: uniqueId()
+    value: "payout-requests"
   },
   {
     label: "Chargebacks",
-    value: "chargebacks",
-    id: uniqueId()
+    value: "chargebacks"
   },
   {
     label: "Referrals",
-    value: "referrals",
-    id: uniqueId()
+    value: "referrals"
   }
 ]
 

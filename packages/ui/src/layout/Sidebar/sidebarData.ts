@@ -111,11 +111,6 @@ export const collapsedNavigation = [
     href: "/tools/list"
   },
   {
-    id: "analytics",
-    name: "Analytics",
-    href: "/tools/analytics"
-  },
-  {
     id: "earnings",
     name: "Earnings",
     href: "/tools/earnings"
