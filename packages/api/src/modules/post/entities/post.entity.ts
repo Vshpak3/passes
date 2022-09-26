@@ -17,7 +17,7 @@ export class PostEntity extends BaseEntity {
   @Property({ type: types.text, length: POST_TEXT_LENGTH })
   text: string
 
-  @Property({ length: POST_TAGS_LENGTH })
+  @Property({ length: POST_TAGS_LENGTH, default: '[]' })
   tags: string
 
   @Index()

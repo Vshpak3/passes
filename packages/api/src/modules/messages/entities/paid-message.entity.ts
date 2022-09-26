@@ -17,7 +17,7 @@ export class PaidMessageEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE })
   price: number
 
-  @Property({ length: CONTENT_IDS_LENGTH })
+  @Property({ length: CONTENT_IDS_LENGTH, default: '[]' })
   contentIds: string
 
   @Property({ default: 0 })

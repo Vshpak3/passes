@@ -19,7 +19,7 @@ export class FanWallCommentEntity extends BaseEntity {
   @Property({ length: FAN_COMMENT_TEXT_LENGTH })
   text: string
 
-  @Property({ length: FAN_COMMENT_TAGS_LENGTH })
+  @Property({ length: FAN_COMMENT_TAGS_LENGTH, default: '[]' })
   tags: string
 
   // Is Hidden by Post Owner (creator)

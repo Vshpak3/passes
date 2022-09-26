@@ -16,7 +16,7 @@ export class MessageEntity extends BaseEntity {
   @Property({ type: types.text, length: MESSAGE_LENGTH })
   text: string
 
-  @Property({ length: CONTENT_IDS_LENGTH })
+  @Property({ length: CONTENT_IDS_LENGTH, default: '[]' })
   contentIds: string
 
   @ManyToOne()

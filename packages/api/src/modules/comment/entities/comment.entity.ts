@@ -16,7 +16,7 @@ export class CommentEntity extends BaseEntity {
   @Property({ length: COMMENT_TEXT_LENGTH })
   text: string
 
-  @Property({ length: COMMENT_TAGS_LENGTH })
+  @Property({ length: COMMENT_TAGS_LENGTH, default: '[]' })
   tags: string
 
   // Is Hidden by Post Owner (creator)
