@@ -68,7 +68,15 @@ const SignupPage = () => {
         setTokens(res, setAccessToken, setRefreshToken)
       }
 
-      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+      const params = new URLSearchParams()
+      params.set("hasEmail", "true")
+
+      authRouter(
+        router,
+        jwtDecode<JWTUserClaims>(res.accessToken),
+        false,
+        params
+      )
     } catch (err) {
       alert(err)
     } finally {

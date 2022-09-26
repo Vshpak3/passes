@@ -26,7 +26,7 @@ const UserEmailPage = () => {
     handleSubmit,
     formState: { errors }
   } = useForm()
-  const [hasSentEmail, setHasSentEmail] = useState(false)
+  const [hasSentEmail, setHasSentEmail] = useState(!!router.query.hasEmail)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {

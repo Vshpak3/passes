@@ -38,7 +38,8 @@ export function authStateToRoute(state: AuthStates) {
 export function authRouter(
   router: NextRouter,
   jwt?: JWTUserClaims | null,
-  routeOnlyIfAuth = false
+  routeOnlyIfAuth = false,
+  searchParams: URLSearchParams | null = null
 ): boolean {
   const state = authStateMachine(jwt)
 
@@ -46,10 +47,15 @@ export function authRouter(
     return false
   }
 
-  const url = authStateToRoute(state)
+  const _url = authStateToRoute(state)
 
-  if (router.pathname === url) {
+  if (router.pathname === _url) {
     return false
+  }
+
+  let url = ""
+  if (searchParams) {
+    url = `${_url}?${searchParams.toString()}`
   }
 
   router.push(url)
