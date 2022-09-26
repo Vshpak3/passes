@@ -15,6 +15,9 @@ import React, {
 } from "react"
 
 import editorStyles from "../../styles/components/CustomComponentMentionEditor.module.css"
+
+const MENTION_LIMIT = 5
+
 const mentions: MentionData[] = [
   {
     name: "Alex Drachnik",
@@ -148,7 +151,7 @@ export default function CustomComponentMentionEditor({
         ref={ref}
         placeholder={placeholder}
       />
-      {mentionLimit < 5 && (
+      {mentionLimit <= MENTION_LIMIT && (
         <MentionSuggestions
           open={open}
           onOpenChange={onOpenChange}

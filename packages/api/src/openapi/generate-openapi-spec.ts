@@ -5,7 +5,6 @@ import { App } from '../app/app.main'
 const OUTPUT_PATH = 'src/openapi/specs'
 
 // Generates OpenAPI JSON file from application
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 ;(async () => {
   console.log('Generating OpenAPI JSON file') // eslint-disable-line no-console
   const app = new App()
