@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-duplicate-string */
 import { DataV2 } from '@metaplex-foundation/mpl-token-metadata'
 import { Inject, ServiceUnavailableException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -235,6 +233,10 @@ export class SolService {
     return await sendAndConfirmRawTransaction(
       this.getConnection(),
       transaction.serialize(),
+      {
+        ...blockhash,
+        signature: transaction.signature?.toString() as string,
+      },
     )
   }
 
