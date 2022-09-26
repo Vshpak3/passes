@@ -39,8 +39,8 @@ export class PostEntity extends BaseEntity {
   @Property()
   deletedAt?: Date
 
-  @Property({ columnType: USD_AMOUNT_TYPE })
-  price?: number
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
+  price: number
 
   @Index()
   @Property()

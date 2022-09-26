@@ -1,6 +1,7 @@
 import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CONTENT_IDS_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
 import { ChannelEntity } from './channel.entity'
@@ -30,8 +31,8 @@ export class MessageEntity extends BaseEntity {
   @Property({ default: false })
   paid: boolean
 
-  @Property({ default: 0 })
-  price?: number
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
+  price: number
 
   @Property({ default: false })
   reverted: boolean
