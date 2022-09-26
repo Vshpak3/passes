@@ -1,11 +1,10 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import React from "react"
+import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { getFormattedDate } from "src/helpers"
 import { useUser } from "src/hooks"
-
-import Tab from "../../../Tab"
 
 const AccountInformation = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
@@ -31,18 +30,20 @@ const AccountInformation = () => {
           <ChevronRightIcon />
         </button>
 
-        <button
-          className="flex w-full items-center justify-between"
-          onClick={() => addTabToStackHandler(SubTabsEnum.DisplayName)}
-        >
-          <div className="text-start">
-            <p className="text-label">Display Name</p>
-            <p className="text-base font-medium text-white/50">
-              {user?.displayName}
-            </p>
-          </div>
-          <ChevronRightIcon />
-        </button>
+        {user?.isCreator ? (
+          <button
+            className="flex w-full items-center justify-between"
+            onClick={() => addTabToStackHandler(SubTabsEnum.DisplayName)}
+          >
+            <div className="text-start">
+              <p className="text-label">Display Name</p>
+              <p className="text-base font-medium text-white/50">
+                {user?.displayName}
+              </p>
+            </div>
+            <ChevronRightIcon />
+          </button>
+        ) : null}
 
         <button
           className="flex w-full items-center justify-between"
