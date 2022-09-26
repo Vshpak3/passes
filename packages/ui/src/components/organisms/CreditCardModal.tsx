@@ -238,7 +238,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             register={register}
             type="text"
             name="alternativeAddress"
-            placeholder="Street address (optinal)"
+            placeholder="Street address (optional)"
             className="mb-4 border-transparent bg-transparent text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
           <FormInput

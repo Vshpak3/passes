@@ -55,6 +55,7 @@ import { ChannelEntity } from './entities/channel.entity'
 import { ChannelMemberEntity } from './entities/channel-members.entity'
 import { MessageEntity } from './entities/message.entity'
 import { PaidMessageEntity } from './entities/paid-message.entity'
+import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity'
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
 import { ChannelMissingError } from './error/channel.error'
@@ -298,7 +299,7 @@ export class MessagesService {
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
-    const { includeListIds, exlcudeListIds, passIds, contentIds, price, text } =
+    const { includeListIds, excludeListIds, passIds, contentIds, price, text } =
       createBatchMessageDto
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
@@ -331,7 +332,7 @@ export class MessagesService {
 
     const exclude = await this.listService.getAllListMembers(
       userId,
-      exlcudeListIds,
+      excludeListIds,
     )
 
     const userIds = Array.from(include)
@@ -1035,5 +1036,24 @@ export class MessagesService {
         )
       }),
     )
+  }
+
+  async createMessageHistory() {
+    await this.dbWriter
+      .from(
+        this.dbWriter.raw('?? (??, ??, ??)', [
+          PaidMessageHistoryEntity.table,
+          'paid_message_id',
+          'num_purchases',
+          'earnings_purchases',
+        ]),
+      )
+      .insert(
+        this.dbWriter(PaidMessageEntity.table).select([
+          'id as paid_message_id',
+          'num_purchases',
+          'earnings_purchases',
+        ]),
+      )
   }
 }

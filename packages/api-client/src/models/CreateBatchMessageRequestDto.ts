@@ -48,7 +48,7 @@ export interface CreateBatchMessageRequestDto {
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
-    exlcudeListIds: Array<string>;
+    excludeListIds: Array<string>;
     /**
      * 
      * @type {Array<string>}
@@ -65,7 +65,7 @@ export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "includeListIds" in value;
-    isInstance = isInstance && "exlcudeListIds" in value;
+    isInstance = isInstance && "excludeListIds" in value;
     isInstance = isInstance && "passIds" in value;
 
     return isInstance;
@@ -85,7 +85,7 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
         'contentIds': json['contentIds'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'includeListIds': json['includeListIds'],
-        'exlcudeListIds': json['exlcudeListIds'],
+        'excludeListIds': json['excludeListIds'],
         'passIds': json['passIds'],
     };
 }
@@ -103,7 +103,7 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
         'contentIds': value.contentIds,
         'price': value.price,
         'includeListIds': value.includeListIds,
-        'exlcudeListIds': value.exlcudeListIds,
+        'excludeListIds': value.excludeListIds,
         'passIds': value.passIds,
     };
 }

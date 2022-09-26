@@ -62,7 +62,7 @@ const mockCreator = {
     {
       title: "Monthly Ambassador",
       description:
-        "You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free reponses to DMs per month.",
+        "You'll get to see exclusive tips and tricks on how I make viral tiktoks for myself and others. And I'll guarantee *3* free responses to DMs per month.",
       imageUrl: "/pages/profile/pass-example-2.png",
       type: "Monthly",
       price: 20,

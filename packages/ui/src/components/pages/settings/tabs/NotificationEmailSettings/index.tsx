@@ -20,7 +20,7 @@ const NotificationEmailSettings = () => {
   return (
     <Tab
       title="Notifications & Emails Settings"
-      description="Select the notifactions you receive about your activities, transactions, and recommendations."
+      description="Select the notifications you receive about your activities, transactions, and recommendations."
     >
       <ul className="mt-[34px]">
         {subTabs.map(({ Icon, id, name, subText }) => (

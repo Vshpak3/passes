@@ -5,7 +5,7 @@ import { ISettingsContext, useSettings } from "src/contexts/settings"
 
 import Tab from "../../../Tab"
 
-const NotificationPrefrences = () => {
+const NotificationPreferences = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (
@@ -29,4 +29,4 @@ const NotificationPrefrences = () => {
   )
 }
 
-export default NotificationPrefrences
+export default NotificationPreferences

@@ -77,7 +77,7 @@ const AdminPage = () => {
     }
 
     if (data.userId && data.username) {
-      alert("Cannor set both User ID and Username")
+      alert("Cannot set both User ID and Username")
       return
     }
 

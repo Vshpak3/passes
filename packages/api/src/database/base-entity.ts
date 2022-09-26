@@ -56,7 +56,7 @@ export abstract class BaseEntity<O = void> extends EntityDBHelpers {
 
   @PrimaryKey({
     type: new UuidType(),
-    defaultRaw: "'UUID()'",
+    defaultRaw: '(UUID())',
   })
   id: string
 
