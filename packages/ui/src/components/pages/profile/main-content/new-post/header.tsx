@@ -87,14 +87,11 @@ const MediaHeader = ({
     _mediaTypes = messagesMediaTypes
   } else _mediaTypes = mediaTypes
   return (
-    <div className="w-full">
+    <div className="w-full pb-1">
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
         <div className="flex items-center ">
           {/* <span className="mr-2">Type</span> */}
           <div className="flex w-full flex-wrap justify-between gap-1">
-            <span className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,0.124)] bg-[rgba(27,20,29,0.5)] p-2">
-              <ClockIcon />
-            </span>
             {_mediaTypes.map(({ name, Icon, accept, type, multiple }, index) =>
               type === "button" ? (
                 <button

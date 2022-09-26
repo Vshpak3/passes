@@ -46,7 +46,7 @@ IQuickPayModal) => {
   }
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={Boolean(isOpen)} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         {}
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">

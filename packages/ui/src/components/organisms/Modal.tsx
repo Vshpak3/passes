@@ -12,7 +12,7 @@ interface IModal {
 }
 
 const Modal = ({
-  isOpen = null,
+  isOpen = false,
   setOpen,
   children,
   closable = true,

@@ -27,7 +27,7 @@ const BuyMessagesModal = ({
   const [messagesAmount, setMessagesAmount] = useState(0)
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={Boolean(isOpen)} setOpen={setOpen}>
       <div className="flex items-center justify-center gap-[6px]">
         <span className="text-xl font-bold text-white">Unlock</span>
         <span>

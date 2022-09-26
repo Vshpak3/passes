@@ -19,7 +19,7 @@ const mockPost = {
   ]
 }
 
-const CreatorContentFeed = ({ existingPosts }) => {
+const CreatorContentFeed = ({ existingPosts, ownsProfile }) => {
   const [posts, setPosts] = useState([...existingPosts])
   const [hasMore] = useState(true)
 
@@ -50,6 +50,7 @@ const CreatorContentFeed = ({ existingPosts }) => {
                   fullName: post.displayName
                 }}
                 post={post}
+                ownsProfile={ownsProfile}
               />
             </div>
           ))}

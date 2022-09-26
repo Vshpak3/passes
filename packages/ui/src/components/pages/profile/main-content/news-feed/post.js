@@ -34,7 +34,7 @@ import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 
 import { PostDropdown } from "./post-dropdown"
 
-export const Post = ({ profile, post }) => {
+export const Post = ({ profile, post, ownsProfile }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post?.locked)
   const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
@@ -82,7 +82,11 @@ export const Post = ({ profile, post }) => {
           setPostUnlocked={setPostUnlocked}
         />
       )}
-      <PostEngagement post={post} postUnlocked={postUnlocked} />
+      <PostEngagement
+        post={post}
+        postUnlocked={postUnlocked}
+        ownsProfile={ownsProfile}
+      />
       {post.fundraiser && <FundraiserTab post={post} />}
     </FormContainer>
   )
@@ -212,7 +216,7 @@ export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }) => {
   )
 }
 
-export const PostEngagement = ({ post, postUnlocked = false }) => {
+export const PostEngagement = ({ post, postUnlocked = false, ownsProfile }) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
   const [numComments, setNumComments] = useState(post.numComments)
@@ -283,14 +287,16 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
             <ShareIcon />
-            <span className="text-[12px] leading-[15px] text-passes-gray-100">
-              {compactNumberFormatter(post.sharesCount)}
-            </span>
+            {ownsProfile && (
+              <span className="text-[12px] leading-[15px] text-passes-gray-100">
+                {compactNumberFormatter(post.sharesCount)}
+              </span>
+            )}
           </div>
         </div>
         <div
           onClick={() => setIsTipsModalOpen((prev) => !prev)}
-          className="flex items-center gap-2 pr-2 text-passes-gray-100"
+          className="flex cursor-pointer items-center gap-2 pr-2 text-passes-gray-100"
         >
           <span className="text-[16px] leading-[25px]">{post.price}</span>
           <CostIcon />
