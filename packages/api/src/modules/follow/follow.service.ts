@@ -5,7 +5,6 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
@@ -17,6 +16,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
@@ -29,7 +29,6 @@ import { UserEntity } from '../user/entities/user.entity'
 import {
   CREATOR_NOT_EXIST,
   FOLLOWER_NOT_EXIST,
-  FOLLOWING_NOT_EXIST,
   IS_NOT_CREATOR,
 } from './constants/errors'
 import { FollowDto } from './dto/follow.dto'
@@ -116,7 +115,7 @@ export class FollowService {
       creator: creatorId,
     })
 
-    await this.dbWriter.transaction(async (trx) => {
+    const query = this.dbWriter.transaction(async (trx) => {
       await trx(FollowEntity.table).insert(data)
       await trx(CreatorStatEntity.table)
         .where('user_id', creatorId)
@@ -134,6 +133,12 @@ export class FollowService {
         }),
       )
     })
+
+    await createOrThrowOnDuplicate(
+      () => query,
+      this.logger,
+      'cant follow a creator twice',
+    )
 
     try {
       if (
@@ -231,17 +236,6 @@ export class FollowService {
     })
   }
 
-  async findOne(id: string): Promise<FollowDto> {
-    const following = await this.dbReader(FollowEntity.table)
-      .where({ id })
-      .first()
-    if (!following) {
-      throw new NotFoundException(FOLLOWING_NOT_EXIST)
-    }
-
-    return new FollowDto(following)
-  }
-
   async reportFollower(
     creatorId: string,
     followerId: string,
@@ -258,11 +252,16 @@ export class FollowService {
   }
 
   async blockFollower(creatorId: string, followerId: string): Promise<void> {
-    await this.dbWriter(FollowBlockEntity.table).insert(
+    const query = this.dbWriter(FollowBlockEntity.table).insert(
       FollowBlockEntity.toDict({
         creator: creatorId,
         follower: followerId,
       }),
+    )
+    await createOrThrowOnDuplicate(
+      () => query,
+      this.logger,
+      'cant follow a creator twice',
     )
     await this.dbWriter(BlockTaskEntity.table).insert(
       BlockTaskEntity.toDict<BlockTaskEntity>({
