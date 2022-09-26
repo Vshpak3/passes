@@ -282,7 +282,10 @@ export const NewPost = ({
           >
             <CustomMentionEditor
               placeholder={placeholder}
-              onInputChange={(params) => setValue("text", params)}
+              onInputChange={(params) => {
+                setValue("text", params?.text)
+                setValue("mentions", params?.mentions)
+              }}
             />
           </div>
           {!onlyText && extended && (

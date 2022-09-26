@@ -5,7 +5,7 @@ import createMentionPlugin, {
   Popover
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
-import { EditorState } from "draft-js"
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
 import React, {
   ReactElement,
   useCallback,
@@ -64,8 +64,22 @@ function Entry(props: EntryComponentProps): ReactElement {
 
 interface CustomMentionProps {
   placeholder?: string
-  onInputChange: (params: string) => any
+  onInputChange: (params: object) => any
 }
+
+const emptyContentState = convertFromRaw({
+  entityMap: {},
+  blocks: [
+    {
+      text: "",
+      key: "foo",
+      type: "unstyled",
+      entityRanges: [],
+      depth: 0,
+      inlineStyleRanges: []
+    }
+  ]
+})
 
 export default function CustomComponentMentionEditor({
   placeholder,
@@ -73,10 +87,11 @@ export default function CustomComponentMentionEditor({
 }: CustomMentionProps): ReactElement {
   const ref = useRef<Editor>(null)
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+    EditorState.createWithContent(emptyContentState)
   )
 
   const [open, setOpen] = useState(false)
+  const [mentionLimit, setMentionLimit] = useState(0)
   const [suggestions, setSuggestions] = useState(mentions)
 
   const { MentionSuggestions, plugins } = useMemo(() => {
@@ -122,29 +137,33 @@ export default function CustomComponentMentionEditor({
             .getCurrentContent()
             .getPlainText("\u0001")
           setEditorState(value)
-          onInputChange(plainTextValue)
+          const raw = convertToRaw(value.getCurrentContent()).entityMap
+          const mentionedUsers = Object.values(raw).map(
+            (entity) => entity.data?.mention?.userName
+          )
+          setMentionLimit(mentionedUsers?.length)
+          onInputChange({ text: plainTextValue, mentions: mentionedUsers })
         }}
         plugins={plugins}
         ref={ref}
         placeholder={placeholder}
       />
-      <MentionSuggestions
-        open={open}
-        onOpenChange={onOpenChange}
-        suggestions={suggestions}
-        onSearchChange={onSearchChange}
-        onAddMention={() => {
-          // get the mention object selected
-        }}
-        entryComponent={Entry}
-        popoverContainer={({ children, ...props }) => (
-          <Popover {...props}>
-            <div className="z-50 rounded-md border border-passes-dark-100 bg-black">
-              {children}
-            </div>
-          </Popover>
-        )}
-      />
+      {mentionLimit < 5 && (
+        <MentionSuggestions
+          open={open}
+          onOpenChange={onOpenChange}
+          suggestions={suggestions}
+          onSearchChange={onSearchChange}
+          entryComponent={Entry}
+          popoverContainer={({ children, ...props }) => (
+            <Popover {...props}>
+              <div className="z-50 rounded-md border border-passes-dark-100 bg-black">
+                {children}
+              </div>
+            </Popover>
+          )}
+        />
+      )}
     </div>
   )
 }

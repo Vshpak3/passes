@@ -5,6 +5,7 @@ import { MainContext } from "src/context/MainContext"
 export interface CreatePostValues {
   text: string
   contentIds: Array<any>
+  mentions: Array<any>
 }
 const useCreatePost = () => {
   const { postTime } = useContext(MainContext)
@@ -13,7 +14,7 @@ const useCreatePost = () => {
     return await api.createPost({
       createPostRequestDto: {
         text: values.text,
-        tags: [],
+        tags: values.mentions,
         contentIds: values.contentIds,
         passIds: [],
         price: 0,

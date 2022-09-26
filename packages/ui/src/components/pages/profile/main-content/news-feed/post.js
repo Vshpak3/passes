@@ -13,9 +13,10 @@ import React, { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
-import { Button, FormInput, PostUnlockButton, Text } from "src/components/atoms"
+import { Button, PostUnlockButton, Text } from "src/components/atoms"
 import {
   BlockModal,
+  CustomMentionEditor,
   FormContainer,
   ReportModal
 } from "src/components/organisms"
@@ -316,7 +317,7 @@ export const CommentSection = ({
 }) => {
   const [isLoadingComments, setLoadingComments] = useState(false)
   const [comments, setComments] = useState([])
-  const { register, getValues, setValue } = useForm()
+  const { getValues, setValue } = useForm()
 
   const getComments = useCallback(async () => {
     try {
@@ -347,6 +348,7 @@ export const CommentSection = ({
   async function postComment() {
     try {
       const content = getValues("comment")
+      const tags = getValues("mentions")
       if (content.length === 0) return
 
       const api = new CommentApi()
@@ -354,6 +356,7 @@ export const CommentSection = ({
       const response = await api.createComment({
         createCommentDto: {
           content,
+          tags,
           postId: postId
         }
       })
@@ -391,13 +394,15 @@ export const CommentSection = ({
         }}
         className="flex w-full flex-row items-center pt-5"
       >
-        <FormInput
-          className="hide-scroll flex flex-1 resize-none overflow-auto overflow-y-visible rounded-lg bg-black/10 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]"
-          type="text-area"
-          name="comment"
-          placeholder="Type a comment..."
-          register={register}
-        />
+        <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
+          <CustomMentionEditor
+            placeholder="Type a comment..."
+            onInputChange={(params) => {
+              setValue("comment", params?.text)
+              setValue("mentions", params?.mentions)
+            }}
+          />
+        </div>
         <Button
           tag="button"
           type="submit"

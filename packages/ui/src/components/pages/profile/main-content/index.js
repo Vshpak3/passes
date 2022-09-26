@@ -48,7 +48,7 @@ const MainContent = ({
           createFanWallCommentRequestDto: {
             creatorId: profile.userId,
             text: values.text,
-            tags: []
+            tags: values.mentions
           }
         }),
       {
