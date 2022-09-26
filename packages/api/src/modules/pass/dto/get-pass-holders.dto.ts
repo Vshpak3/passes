@@ -35,6 +35,9 @@ export class GetPassHoldersRequestDto extends PickType(PageRequestDto, [
   @IsEnum(ListMemberOrderTypeEnum)
   @DtoProperty({ enum: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
+
+  @DtoProperty()
+  activeOnly: boolean
 }
 
 export class GetPassHolderResponseDto extends PassHolderDto {}

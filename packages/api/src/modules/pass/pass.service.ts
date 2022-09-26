@@ -265,7 +265,7 @@ export class PassService {
     userId: string,
     getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
-    const { holderId, lastId, passId } = getPassHoldersRequest
+    const { holderId, lastId, passId, activeOnly } = getPassHoldersRequest
     let query = this.dbReader(PassHolderEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -278,13 +278,6 @@ export class PassService {
         `${PassHolderEntity.table}.pass_id`,
       )
       .where(`${PassEntity.table}.creator`, userId)
-      .andWhere(function () {
-        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
-          `${PassHolderEntity.table}.expires_at`,
-          '>',
-          Date.now(),
-        )
-      })
       .select([
         `${PassHolderEntity.table}.*`,
         `${PassEntity.table}.total_supply`,
@@ -297,6 +290,16 @@ export class PassService {
         `${UserEntity.table}.username as holder_username`,
         `${UserEntity.table}.display_name as holder_display_name`,
       ])
+
+    if (activeOnly) {
+      query = query.andWhere(function () {
+        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+          `${PassHolderEntity.table}.expires_at`,
+          '>',
+          Date.now(),
+        )
+      })
+    }
     if (passId) {
       query = query.andWhere(`${PassEntity.table}.id`, passId)
     }

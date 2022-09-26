@@ -73,6 +73,12 @@ export interface GetPassHoldersRequestDto {
      * @memberof GetPassHoldersRequestDto
      */
     orderType: GetPassHoldersRequestDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPassHoldersRequestDto
+     */
+    activeOnly: boolean;
 }
 
 
@@ -94,6 +100,7 @@ export function instanceOfGetPassHoldersRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
     isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "activeOnly" in value;
 
     return isInstance;
 }
@@ -117,6 +124,7 @@ export function GetPassHoldersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
+        'activeOnly': json['activeOnly'],
     };
 }
 
@@ -138,6 +146,7 @@ export function GetPassHoldersRequestDtoToJSON(value?: GetPassHoldersRequestDto 
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,
+        'activeOnly': value.activeOnly,
     };
 }
 
