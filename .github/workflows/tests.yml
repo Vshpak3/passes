@@ -10,28 +10,12 @@ on:
 
 jobs:
 
-  check-api:
-    name: Check @passes/api package
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-      - run: yarn install --frozen-lockfile
-      - run: yarn workspace @passes/api prettier:check
-      - run: yarn workspace @passes/api lint:check
-      - run: yarn workspace @passes/api ts:check
-      - run: yarn workspace @passes/api test
+  # UI (frontend)
 
-  check-ui:
-    name: Check @passes/ui package
+  ui-lint:
+    name: Lint @passes/ui package
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -45,9 +29,57 @@ jobs:
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
       - run: yarn workspace @passes/ui ts:check
+
+  ui-test:
+    name: Test @passes/ui package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - run: yarn install --frozen-lockfile
       - run: yarn workspace @passes/ui build
 
-  check-api-configs:
+  # API (backend)
+
+  api-lint:
+    name: Lint @passes/api package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn workspace @passes/api prettier:check
+      - run: yarn workspace @passes/api lint:check
+      - run: yarn workspace @passes/api ts:check
+
+  api-test:
+    name: Test @passes/api package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn workspace @passes/api test
+
+  api-check-configs:
     name: Check @passes/api configs
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -65,10 +97,10 @@ jobs:
           path: infra
       - run: ./monorepo/bin/config-check.sh
 
-  check-api-openapi:
-    name: Check @passes/api OpenAPI
+  api-compatibility:
+    name: Check @passes/api API compatibility
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
