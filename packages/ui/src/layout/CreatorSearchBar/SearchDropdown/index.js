@@ -1,14 +1,23 @@
+import { useRouter } from "next/router"
+
 import { EmptyResult, SearchResult } from "./SearchResults"
 
 const SearchDropdown = ({ creatorResults = [] }) => {
+  const router = useRouter()
+
+  const goToProfile = (username) => {
+    router.push(`/${username}`)
+  }
+
   const resultsExist = creatorResults?.length > 0
   const renderResults = resultsExist ? (
-    creatorResults.map((result) => (
+    creatorResults.map((creator) => (
       <SearchResult
-        key={result.id}
-        onClick={() => console.log(result)}
-        fullName={result.displayName}
-        username={result.username}
+        key={creator.id}
+        onClick={() => goToProfile(creator.username)}
+        userId={creator.id}
+        fullName={creator.display_name}
+        username={creator.username}
       />
     ))
   ) : (

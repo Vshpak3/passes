@@ -16,7 +16,6 @@ import DefaultHead from "./Head"
 import Input from "./Input"
 import Label from "./Label"
 import Link from "./Link"
-import MonogramIcon from "./MonogramIcon"
 import {
   CreatePassButton,
   CreatePassHeader,
@@ -57,7 +56,6 @@ export {
   Input,
   Label,
   Link,
-  MonogramIcon,
   PassDescriptionInput,
   PassesPinkButton,
   PassesPurpleButton,

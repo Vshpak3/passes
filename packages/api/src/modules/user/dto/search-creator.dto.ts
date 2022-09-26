@@ -12,6 +12,10 @@ export class SearchCreatorResponseDto {
   creators: CreatorInfoDto[]
 
   constructor(creators: UserEntity[]) {
-    this.creators = creators.map((c) => new CreatorInfoDto(c))
+    this.creators = creators.map((c) => ({
+      id: c.id,
+      username: c.username,
+      display_name: c.displayName,
+    }))
   }
 }

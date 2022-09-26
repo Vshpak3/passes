@@ -217,24 +217,26 @@ export class UserService {
     if (!searchCreatorDto.query) {
       return new SearchCreatorResponseDto([])
     }
+
     const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
-    return new SearchCreatorResponseDto(
-      await this.dbReader(UserEntity.table)
-        .where(function () {
-          return this.whereILike('username', likeClause).orWhereILike(
-            'display_name',
-            likeClause,
-          )
-        })
-        .andWhere(
-          UserEntity.toDict<UserEntity>({
-            isCreator: true,
-            isActive: true,
-          }),
+    const creators = await this.dbReader(UserEntity.table)
+      .select('id', 'username', 'display_name as displayName')
+      .where(function () {
+        return this.whereILike('username', likeClause).orWhereILike(
+          'display_name',
+          likeClause,
         )
-        .limit(10),
-    )
+      })
+      .andWhere(
+        UserEntity.toDict<UserEntity>({
+          isCreator: true,
+          isActive: true,
+        }),
+      )
+      .limit(10)
+
+    return new SearchCreatorResponseDto(creators)
   }
 
   async makeAdult(userId: string): Promise<void> {
