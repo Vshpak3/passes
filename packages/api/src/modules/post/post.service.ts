@@ -52,6 +52,7 @@ import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostContentEntity } from './entities/post-content.entity'
+import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostPassHolderAccessEntity } from './entities/post-passholder-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
@@ -305,7 +306,7 @@ export class PostService {
       if (!map[postContent.post_id]) {
         map[postContent.post_id] = []
       }
-      map[postContent.post_id].append(
+      map[postContent.post_id].push(
         new ContentDto(
           postContent,
           accessiblePostIds.has(postContent.post_id)
@@ -639,6 +640,31 @@ export class PostService {
         .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
         .update(PostEntity.toDict<PostEntity>({ pinnedAt: null }))) === 1
     )
+  }
+
+  async createPostHistory() {
+    await this.dbWriter
+      .from(
+        this.dbWriter.raw('?? (??, ??, ??, ??, ??, ??)', [
+          PostHistoryEntity.table,
+          'post_id',
+          'num_likes',
+          'num_comments',
+          'num_purchases',
+          'earnings_purchases',
+          'total_tip_amount',
+        ]),
+      )
+      .insert(
+        this.dbWriter(PostEntity.table).select([
+          'id',
+          'num_likes',
+          'num_comments',
+          'num_purchases',
+          'earnings_purchases',
+          'total_tip_amount',
+        ]),
+      )
   }
 
   async refreshPostsCounts() {

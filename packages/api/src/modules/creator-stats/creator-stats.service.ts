@@ -176,16 +176,20 @@ export class CreatorStatsService {
   async createEarningHistory() {
     await this.dbWriter
       .from(
-        this.dbWriter.raw('?? (?? ?? ??)', [
+        this.dbWriter.raw('?? (??, ??, ??)', [
           CreatorEarningHistoryEntity.table,
-          ...CreatorEarningHistoryEntity.populate<CreatorEarningHistoryEntity>([
-            'user',
-            'amount',
-            'type',
-          ]),
+          'user_id',
+          'amount',
+          'type',
         ]),
       )
-      .insert(this.dbWriter(CreatorEarningEntity.table).select('*'))
+      .insert(
+        this.dbWriter(CreatorEarningEntity.table).select([
+          'user_id',
+          'amount',
+          'type',
+        ]),
+      )
   }
 
   async getCreatorStats(creatorId: string, userId?: string) {

@@ -55,6 +55,7 @@ import { ChannelEntity } from './entities/channel.entity'
 import { ChannelMemberEntity } from './entities/channel-members.entity'
 import { MessageEntity } from './entities/message.entity'
 import { PaidMessageEntity } from './entities/paid-message.entity'
+import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity'
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
 import { ChannelMissingError } from './error/channel.error'
@@ -1035,5 +1036,24 @@ export class MessagesService {
         )
       }),
     )
+  }
+
+  async createMessageHistory() {
+    await this.dbWriter
+      .from(
+        this.dbWriter.raw('?? (??, ??, ??)', [
+          PaidMessageHistoryEntity.table,
+          'paid_message_id',
+          'num_purchases',
+          'earnings_purchases',
+        ]),
+      )
+      .insert(
+        this.dbWriter(PaidMessageEntity.table).select([
+          'id as paid_message_id',
+          'num_purchases',
+          'earnings_purchases',
+        ]),
+      )
   }
 }
