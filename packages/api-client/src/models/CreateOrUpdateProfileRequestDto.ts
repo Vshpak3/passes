@@ -42,37 +42,37 @@ export interface CreateOrUpdateProfileRequestDto {
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    instagramUrl?: string;
+    discordUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    tiktokUrl?: string;
+    facebookUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    youtubeUrl?: string;
+    instagramUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    discordUrl?: string;
+    tiktokUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    twitchUrl?: string;
+    twitchUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    facebookUrl?: string;
+    youtubeUsername?: string;
 }
 
 /**
@@ -97,12 +97,12 @@ export function CreateOrUpdateProfileRequestDtoFromJSONTyped(json: any, ignoreDi
         'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
         'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
-        'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
-        'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
-        'discordUrl': !exists(json, 'discordUrl') ? undefined : json['discordUrl'],
-        'twitchUrl': !exists(json, 'twitchUrl') ? undefined : json['twitchUrl'],
-        'facebookUrl': !exists(json, 'facebookUrl') ? undefined : json['facebookUrl'],
+        'discordUsername': !exists(json, 'discordUsername') ? undefined : json['discordUsername'],
+        'facebookUsername': !exists(json, 'facebookUsername') ? undefined : json['facebookUsername'],
+        'instagramUsername': !exists(json, 'instagramUsername') ? undefined : json['instagramUsername'],
+        'tiktokUsername': !exists(json, 'tiktokUsername') ? undefined : json['tiktokUsername'],
+        'twitchUsername': !exists(json, 'twitchUsername') ? undefined : json['twitchUsername'],
+        'youtubeUsername': !exists(json, 'youtubeUsername') ? undefined : json['youtubeUsername'],
     };
 }
 
@@ -118,12 +118,12 @@ export function CreateOrUpdateProfileRequestDtoToJSON(value?: CreateOrUpdateProf
         'coverTitle': value.coverTitle,
         'coverDescription': value.coverDescription,
         'description': value.description,
-        'instagramUrl': value.instagramUrl,
-        'tiktokUrl': value.tiktokUrl,
-        'youtubeUrl': value.youtubeUrl,
-        'discordUrl': value.discordUrl,
-        'twitchUrl': value.twitchUrl,
-        'facebookUrl': value.facebookUrl,
+        'discordUsername': value.discordUsername,
+        'facebookUsername': value.facebookUsername,
+        'instagramUsername': value.instagramUsername,
+        'tiktokUsername': value.tiktokUsername,
+        'twitchUsername': value.twitchUsername,
+        'youtubeUsername': value.youtubeUsername,
     };
 }
 

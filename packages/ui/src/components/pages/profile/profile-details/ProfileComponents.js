@@ -61,14 +61,14 @@ export const ProfileInformation = ({
   posts,
   likes,
   creatorId,
-  instagramUrl,
-  tiktokUrl,
-  youtubeUrl,
-  discordUrl,
   ownsProfile,
-  twitchUrl,
-  facebookUrl,
-  twitterUrl,
+  discordUsername,
+  facebookUsername,
+  instagramUsername,
+  tiktokUsername,
+  twitchUsername,
+  twitterUsername,
+  youtubeUsername,
   onChat
 }) => {
   const { follow, unfollow, isFollowing } = useFollow(creatorId)
@@ -129,13 +129,13 @@ export const ProfileInformation = ({
         </div>
 
         <ProfileSocialMedia
-          instagramUrl={instagramUrl}
-          tiktokUrl={tiktokUrl}
-          youtubeUrl={youtubeUrl}
-          discordUrl={discordUrl}
-          twitchUrl={twitchUrl}
-          facebookUrl={facebookUrl}
-          twitterUrl={twitterUrl}
+          discordUsername={discordUsername}
+          facebookUsername={facebookUsername}
+          instagramUsername={instagramUsername}
+          tiktokUsername={tiktokUsername}
+          twitchUsername={twitchUsername}
+          twitterUsername={twitterUsername}
+          youtubeUsername={youtubeUsername}
         />
       </div>
     </div>
@@ -152,15 +152,15 @@ export const ProfileInformationMobile = ({
   displayName,
   username,
   description,
-  instagramUrl,
-  tiktokUrl,
-  youtubeUrl,
-  discordUrl,
-  twitchUrl,
-  facebookUrl,
+  discordUsername,
+  facebookUsername,
+  instagramUsername,
+  tiktokUsername,
+  twitchUsername,
+  twitterUsername,
+  youtubeUsername,
   onChat,
   creatorId,
-  twitterUrl,
   ownsProfile,
   posts,
   likes
@@ -181,13 +181,13 @@ export const ProfileInformationMobile = ({
         {description}
       </span>
       <ProfileSocialMedia
-        instagramUrl={instagramUrl}
-        tiktokUrl={tiktokUrl}
-        youtubeUrl={youtubeUrl}
-        discordUrl={discordUrl}
-        twitchUrl={twitchUrl}
-        facebookUrl={facebookUrl}
-        twitterUrl={twitterUrl}
+        discordUsername={discordUsername}
+        facebookUsername={facebookUsername}
+        instagramUsername={instagramUsername}
+        tiktokUsername={tiktokUsername}
+        twitchUsername={twitchUsername}
+        twitterUsername={twitterUsername}
+        youtubeUsername={youtubeUsername}
       />
       <ProfileStatsMobile posts={posts} likes={likes} />
       {!ownsProfile && (
@@ -211,72 +211,72 @@ export const ProfileInformationMobile = ({
 }
 
 export const ProfileSocialMedia = ({
-  instagramUrl,
-  tiktokUrl,
-  youtubeUrl,
-  discordUrl,
-  twitchUrl,
-  facebookUrl,
-  twitterUrl
+  discordUsername,
+  facebookUsername,
+  instagramUsername,
+  tiktokUsername,
+  twitchUsername,
+  twitterUsername,
+  youtubeUsername
 }) => (
   <div className="flex cursor-pointer items-center justify-center gap-3">
-    {facebookUrl && (
+    {facebookUsername && (
       <a
-        href={`https://www.facebook.com/${facebookUrl}`}
+        href={`https://www.facebook.com/${facebookUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Facebook className="h-[22px] w-[22px]" />
       </a>
     )}
-    {instagramUrl && (
+    {instagramUsername && (
       <a
-        href={`https://www.instagram.com/${instagramUrl}`}
+        href={`https://www.instagram.com/${instagramUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Instagram className="h-[22px] w-[22px]" />
       </a>
     )}
-    {twitterUrl && (
+    {twitterUsername && (
       <a
-        href={`https://www.twitter.com/${twitterUrl}`}
+        href={`https://www.twitter.com/${twitterUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Twitter className="h-[22px] w-[22px]" />
       </a>
     )}
-    {discordUrl && (
+    {discordUsername && (
       <a
-        href={`https://www.discord.gg/${discordUrl}`}
+        href={`https://www.discord.gg/${discordUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Discord className="h-[22px] w-[22px]" />
       </a>
     )}
-    {youtubeUrl && (
+    {youtubeUsername && (
       <a
-        href={`https://www.youtube.com/c/${youtubeUrl}`}
+        href={`https://www.youtube.com/c/${youtubeUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Youtube className="h-[22px] w-[22px]" />
       </a>
     )}
-    {twitchUrl && (
+    {twitchUsername && (
       <a
-        href={`https://www.twitch.com/${twitchUrl}`}
+        href={`https://www.twitch.com/${twitchUsername}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <Twitch className="h-[22px] w-[22px]" />
       </a>
     )}
-    {tiktokUrl && (
+    {tiktokUsername && (
       <a
-        href={`https://www.tiktok.com/${tiktokUrl}?lang=en`}
+        href={`https://www.tiktok.com/${tiktokUsername}?lang=en`}
         target="_blank"
         rel="noopener noreferrer"
       >

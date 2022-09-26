@@ -9,7 +9,7 @@ import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
 import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Text } from "src/components/atoms"
+import { FormInput } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import FormImage from "src/components/organisms/FormImage"
 import { updateProfile } from "src/helpers"
@@ -22,21 +22,23 @@ interface IFormData {
   profileImage: File[]
   profileCoverImage: File[]
   "free-dm-month-checkbox": boolean
-  facebookUrl: string
-  instagramUrl: string
-  twitterUrl: string
-  discordUrl: string
-  tiktokUrl: string
-  twitchUrl: string
+  discordUsername: string
+  facebookUsername: string
+  instagramUsername: string
+  tiktokUsername: string
+  twitchUsername: string
+  twitterUsername: string
+  youtubeUsername: string
 }
 
 interface IConnectedAccounts {
+  discord: boolean
   facebook: boolean
   instagram: boolean
-  twitter: boolean
-  discord: boolean
   tiktok: boolean
   twitch: boolean
+  twitter: boolean
+  youtube: boolean
 }
 
 type CustomizePageFormProps = {
@@ -47,19 +49,19 @@ const CustomizePageForm = ({
   onCustomizePageFinish = identity
 }: CustomizePageFormProps) => {
   const [connectedAccounts] = useState<IConnectedAccounts>({
+    discord: false,
     facebook: false,
     instagram: false,
-    twitter: false,
-    discord: false,
     tiktok: false,
-    twitch: false
+    twitch: false,
+    twitter: false,
+    youtube: false
   })
   const { user } = useUser()
   const {
     register,
     getValues,
     setValue,
-    setError,
     handleSubmit,
     watch,
     formState: { errors }
@@ -80,14 +82,6 @@ const CustomizePageForm = ({
       profileCoverImage,
       ...socialAccounts
     } = getValues()
-
-    if (Object.values(socialAccounts).filter(Boolean).length === 0) {
-      setError("facebookUrl", {
-        type: "required",
-        message: "Please enter at least 1 social url"
-      })
-      return
-    }
 
     await updateProfile({
       profileImage,
@@ -204,7 +198,7 @@ const CustomizePageForm = ({
 
           <div className="flex flex-col gap-[6px]">
             <div className="text-[#b3bee7] opacity-[0.6]">
-              Social Media Links* (connect minimum 1)
+              Social Media Accounts
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileFacebookIcon className="h-[17px] w-[17px] flex-shrink-0" />
@@ -213,9 +207,9 @@ const CustomizePageForm = ({
               ) : (
                 <FormInput
                   register={register}
-                  name="facebookUrl"
+                  name="facebookUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
@@ -228,9 +222,9 @@ const CustomizePageForm = ({
               ) : (
                 <FormInput
                   register={register}
-                  name="instagramUrl"
+                  name="instagramUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
@@ -243,9 +237,9 @@ const CustomizePageForm = ({
               ) : (
                 <FormInput
                   register={register}
-                  name="twitterUrl"
+                  name="twitterUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
@@ -253,15 +247,14 @@ const CustomizePageForm = ({
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileDiscordIcon className="h-[17px] w-[17px]" />
-
               {connectedAccounts.discord ? (
                 <span>@discordnam</span>
               ) : (
                 <FormInput
                   register={register}
-                  name="discordUrl"
+                  name="discordUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
@@ -269,15 +262,14 @@ const CustomizePageForm = ({
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTiktokIcon className="h-[17px] w-[17px]" />
-
               {connectedAccounts.tiktok ? (
                 <span>@tiktoknam</span>
               ) : (
                 <FormInput
                   register={register}
-                  name="tiktokUrl"
+                  name="tiktokUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
@@ -290,19 +282,29 @@ const CustomizePageForm = ({
               ) : (
                 <FormInput
                   register={register}
-                  name="twitchUrl"
+                  name="twitchUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter Url"
+                  placeholder="Enter username"
                   type="text"
                   errors={errors}
                 />
               )}
             </div>
-            {errors.facebookUrl && (
-              <Text fontSize={12} className="mt-1 text-[red]">
-                {errors.facebookUrl.message}
-              </Text>
-            )}
+            <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
+              <ProfileTwitchIcon className="h-[17px] w-[17px]" />
+              {connectedAccounts.youtube ? (
+                <span>@youtubenam</span>
+              ) : (
+                <FormInput
+                  register={register}
+                  name="youtubeUsername"
+                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  placeholder="Enter username"
+                  type="text"
+                  errors={errors}
+                />
+              )}
+            </div>
           </div>
         </div>
 

@@ -6,7 +6,7 @@ import {
   USER_LEGAL_FULL_NAME_LENGTH,
 } from '../../user/constants/schema'
 import {
-  EXTERNAL_URL_LENGTH,
+  EXTERNAL_USERNAME_LENGTH,
   PROFILE_COVER_DESCRIPTION_LENGTH,
   PROFILE_COVER_TITLE_LENGTH,
   PROFILE_DESCRIPTION_LENGTH,
@@ -41,29 +41,33 @@ export class ProfileDto {
   @DtoProperty({ optional: true })
   description?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  instagramUrl?: string
+  discordUsername?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  tiktokUrl?: string
+  facebookUsername?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  youtubeUrl?: string
+  instagramUsername?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  discordUrl?: string
+  tiktokUsername?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  twitchUrl?: string
+  twitchUsername?: string
 
-  @Length(1, EXTERNAL_URL_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ optional: true })
-  facebookUrl?: string
+  twitterUsername?: string
+
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
+  @DtoProperty({ optional: true })
+  youtubeUsername?: string
 
   @DtoProperty({ optional: true })
   isKYCVerified?: boolean
@@ -73,6 +77,7 @@ export class ProfileDto {
 
   @DtoProperty({ optional: true })
   isAdult?: boolean
+
   constructor(profile) {
     this.profileId = profile.id
     this.userId = profile.user_id
@@ -83,11 +88,13 @@ export class ProfileDto {
     this.coverTitle = profile.cover_title
     this.coverDescription = profile.cover_description
 
-    this.instagramUrl = profile.instagram_url
-    this.tiktokUrl = profile.tiktok_url
-    this.youtubeUrl = profile.youtube_url
-    this.discordUrl = profile.discord_url
-    this.twitchUrl = profile.twitch_url
+    this.discordUsername = profile.discord_username
+    this.facebookUsername = profile.facebook_username
+    this.instagramUsername = profile.instagram_username
+    this.tiktokUsername = profile.tiktok_username
+    this.twitchUsername = profile.twitch_username
+    this.twitterUsername = profile.twitter_username
+    this.youtubeUsername = profile.youtube_username
 
     this.isKYCVerified = profile.is_kycverified
     this.isActive = profile.is_active

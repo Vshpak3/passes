@@ -1,8 +1,10 @@
 import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
-import { EXTERNAL_URL_LENGTH } from '../../../profile/constants/schema'
-import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../../wallet/constants/schema'
+import {
+  BLOCKCHAIN_ADDRESS_LENGTH,
+  EXTERNAL_URL_LENGTH,
+} from '../../../wallet/constants/schema'
 import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
 export class PhantomCircleUSDCEntryRequestDto extends PayinEntryRequestDto {}

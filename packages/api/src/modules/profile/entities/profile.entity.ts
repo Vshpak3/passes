@@ -3,7 +3,7 @@ import { Entity, OneToOne, Property, types } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import {
-  EXTERNAL_URL_LENGTH,
+  EXTERNAL_USERNAME_LENGTH,
   PROFILE_COVER_DESCRIPTION_LENGTH,
   PROFILE_COVER_TITLE_LENGTH,
   PROFILE_DESCRIPTION_LENGTH,
@@ -23,23 +23,26 @@ export class ProfileEntity extends BaseEntity {
   @Property({ type: types.text, length: PROFILE_DESCRIPTION_LENGTH })
   description?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  instagramUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  discordUsername?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  tiktokUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  facebookUsername?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  youtubeUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  instagramUsername?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  discordUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  tiktokUsername?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  twitchUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  twitchUsername?: string
 
-  @Property({ length: EXTERNAL_URL_LENGTH })
-  facebookUrl?: string
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  twitterUsername?: string
+
+  @Property({ length: EXTERNAL_USERNAME_LENGTH })
+  youtubeUsername?: string
 
   @Property({ default: true })
   isActive: boolean

@@ -66,37 +66,43 @@ export interface GetProfileResponseDto {
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    instagramUrl?: string;
+    discordUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    tiktokUrl?: string;
+    facebookUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    youtubeUrl?: string;
+    instagramUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    discordUrl?: string;
+    tiktokUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    twitchUrl?: string;
+    twitchUsername?: string;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    facebookUrl?: string;
+    twitterUsername?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileResponseDto
+     */
+    youtubeUsername?: string;
     /**
      * 
      * @type {boolean}
@@ -146,12 +152,13 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'coverTitle': !exists(json, 'coverTitle') ? undefined : json['coverTitle'],
         'coverDescription': !exists(json, 'coverDescription') ? undefined : json['coverDescription'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'instagramUrl': !exists(json, 'instagramUrl') ? undefined : json['instagramUrl'],
-        'tiktokUrl': !exists(json, 'tiktokUrl') ? undefined : json['tiktokUrl'],
-        'youtubeUrl': !exists(json, 'youtubeUrl') ? undefined : json['youtubeUrl'],
-        'discordUrl': !exists(json, 'discordUrl') ? undefined : json['discordUrl'],
-        'twitchUrl': !exists(json, 'twitchUrl') ? undefined : json['twitchUrl'],
-        'facebookUrl': !exists(json, 'facebookUrl') ? undefined : json['facebookUrl'],
+        'discordUsername': !exists(json, 'discordUsername') ? undefined : json['discordUsername'],
+        'facebookUsername': !exists(json, 'facebookUsername') ? undefined : json['facebookUsername'],
+        'instagramUsername': !exists(json, 'instagramUsername') ? undefined : json['instagramUsername'],
+        'tiktokUsername': !exists(json, 'tiktokUsername') ? undefined : json['tiktokUsername'],
+        'twitchUsername': !exists(json, 'twitchUsername') ? undefined : json['twitchUsername'],
+        'twitterUsername': !exists(json, 'twitterUsername') ? undefined : json['twitterUsername'],
+        'youtubeUsername': !exists(json, 'youtubeUsername') ? undefined : json['youtubeUsername'],
         'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
         'isActive': json['isActive'],
         'isAdult': !exists(json, 'isAdult') ? undefined : json['isAdult'],
@@ -174,12 +181,13 @@ export function GetProfileResponseDtoToJSON(value?: GetProfileResponseDto | null
         'coverTitle': value.coverTitle,
         'coverDescription': value.coverDescription,
         'description': value.description,
-        'instagramUrl': value.instagramUrl,
-        'tiktokUrl': value.tiktokUrl,
-        'youtubeUrl': value.youtubeUrl,
-        'discordUrl': value.discordUrl,
-        'twitchUrl': value.twitchUrl,
-        'facebookUrl': value.facebookUrl,
+        'discordUsername': value.discordUsername,
+        'facebookUsername': value.facebookUsername,
+        'instagramUsername': value.instagramUsername,
+        'tiktokUsername': value.tiktokUsername,
+        'twitchUsername': value.twitchUsername,
+        'twitterUsername': value.twitterUsername,
+        'youtubeUsername': value.youtubeUsername,
         'isKYCVerified': value.isKYCVerified,
         'isActive': value.isActive,
         'isAdult': value.isAdult,

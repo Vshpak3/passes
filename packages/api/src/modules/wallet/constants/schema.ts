@@ -1,1 +1,2 @@
 export const BLOCKCHAIN_ADDRESS_LENGTH = 64
+export const EXTERNAL_URL_LENGTH = 256

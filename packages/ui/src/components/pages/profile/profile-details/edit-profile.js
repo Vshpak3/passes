@@ -35,47 +35,47 @@ const birthInformationForm = {
 }
 
 const socialMediaForm = {
-  instagramUrl: {
-    type: "text",
-    label: "Instagram",
-    colSpan: "col-span-6",
-    icon: Instagram
-  },
-  tiktokUrl: {
-    type: "text",
-    label: "TikTok",
-    colSpan: "col-span-6",
-    icon: TikTok
-  },
-  youtubeUrl: {
-    type: "text",
-    label: "Youtube",
-    colSpan: "col-span-6",
-    icon: Youtube
-  },
-  discordUrl: {
+  discordUsername: {
     type: "text",
     label: "Discord",
     colSpan: "col-span-6",
     icon: Discord
   },
-  twitchUrl: {
-    type: "text",
-    label: "Twitch",
-    colSpan: "col-span-6",
-    icon: Twitch
-  },
-  facebookUrl: {
+  facebookUsername: {
     type: "text",
     label: "Facebook",
     colSpan: "col-span-6",
     icon: Facebook
   },
-  twitterUrl: {
+  instagramUsername: {
+    type: "text",
+    label: "Instagram",
+    colSpan: "col-span-6",
+    icon: Instagram
+  },
+  tiktokUsername: {
+    type: "text",
+    label: "TikTok",
+    colSpan: "col-span-6",
+    icon: TikTok
+  },
+  twitchUsername: {
+    type: "text",
+    label: "Twitch",
+    colSpan: "col-span-6",
+    icon: Twitch
+  },
+  twitterUsername: {
     type: "text",
     label: "Twitter",
     colSpan: "col-span-6",
     icon: Twitter
+  },
+  youtubeUsername: {
+    type: "text",
+    label: "Youtube",
+    colSpan: "col-span-6",
+    icon: Youtube
   }
 }
 export const EditProfile = ({ profile, onSubmit }) => {
