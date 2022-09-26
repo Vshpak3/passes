@@ -206,40 +206,40 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
   const [numComments, setNumComments] = useState(post.numComments)
-  const [liked, setLiked] = useState(post.hasLiked)
+  const [liked, setLiked] = useState(post.isLiked)
   const [showCommentSection, setShowCommentSection] = useState(false)
 
   async function updateEngagement() {
     try {
       const api = new PostApi()
       const response = await api.findPost({
-        id: post.id
+        postId: post.postId
       })
 
       setNumLikes(response.numLikes)
       setNumComments(response.numComments)
-      setLiked(response.hasLiked)
+      setLiked(response.isLiked)
     } catch (error) {
       console.error(error)
       toast.error(error)
     }
   }
 
-  async function likePost() {
+  const likePost = async () => {
     try {
       if (!postUnlocked) return
 
       const api = new LikeApi()
 
-      if (!liked)
+      if (!liked) {
         await api.likePost({
-          postId: post.id
+          postId: post.postId
         })
-      else
+      } else {
         await api.unlikePost({
-          postId: post.id
+          postId: post.postId
         })
-
+      }
       setTimeout(updateEngagement, 1000)
     } catch (error) {
       console.error(error)
@@ -287,13 +287,13 @@ export const PostEngagement = ({ post, postUnlocked = false }) => {
         </div>
       </div>
       <CommentSection
-        postId={post.id}
+        postId={post.postId}
         visible={showCommentSection}
         updateEngagement={updateEngagement}
       />
       <TipsModal
         isOpen={isTipsModalOpen}
-        postId={post.id}
+        postId={post.postId}
         setOpen={setIsTipsModalOpen}
       />
     </div>
@@ -315,7 +315,9 @@ export const CommentSection = ({
       const api = new CommentApi()
 
       const response = await api.findCommentsForPost({
-        id: postId
+        getCommentsForPostRequestDto: {
+          postId
+        }
       })
 
       setComments(response.comments)
