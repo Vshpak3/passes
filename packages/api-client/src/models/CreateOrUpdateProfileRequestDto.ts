@@ -72,6 +72,12 @@ export interface CreateOrUpdateProfileRequestDto {
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
+    twitterUsername?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrUpdateProfileRequestDto
+     */
     youtubeUsername?: string;
 }
 
@@ -102,6 +108,7 @@ export function CreateOrUpdateProfileRequestDtoFromJSONTyped(json: any, ignoreDi
         'instagramUsername': !exists(json, 'instagramUsername') ? undefined : json['instagramUsername'],
         'tiktokUsername': !exists(json, 'tiktokUsername') ? undefined : json['tiktokUsername'],
         'twitchUsername': !exists(json, 'twitchUsername') ? undefined : json['twitchUsername'],
+        'twitterUsername': !exists(json, 'twitterUsername') ? undefined : json['twitterUsername'],
         'youtubeUsername': !exists(json, 'youtubeUsername') ? undefined : json['youtubeUsername'],
     };
 }
@@ -123,6 +130,7 @@ export function CreateOrUpdateProfileRequestDtoToJSON(value?: CreateOrUpdateProf
         'instagramUsername': value.instagramUsername,
         'tiktokUsername': value.tiktokUsername,
         'twitchUsername': value.twitchUsername,
+        'twitterUsername': value.twitterUsername,
         'youtubeUsername': value.youtubeUsername,
     };
 }
