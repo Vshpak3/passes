@@ -250,9 +250,13 @@ const Wallets = () => {
       </Modal>
       <div className="mt-[50px] flex items-center justify-start">
         <div className="flex items-center">
-          <Phantom className="ml-[25px] h-[50px] w-[50px]" />
-          <Metamask className="ml-[30px] mr-[25px] h-[50px] w-[50px]" />
-          <Button variant="purple" onClick={() => setIsModalOpen(true)}>
+          <Phantom className="ml-[25px]" />
+          <Metamask className="ml-[30px] mr-[25px]" />
+          <Button
+            className="h-[36px] border-none"
+            variant="purple"
+            onClick={() => setIsModalOpen(true)}
+          >
             <div className="flex items-center justify-center">
               <Wallet className="block h-[24px] w-[24px]" />
               <span className="ml-[10px] block">Connect New Wallet</span>
