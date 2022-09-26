@@ -4,11 +4,12 @@ import {
   MyPassSearchHeader
 } from "src/components/molecules/passes/MyPasses"
 import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
-import { usePasses } from "src/hooks"
+import { usePasses, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Passes = () => {
   const [hasMounted, setHasMounted] = useState(false)
+  const { user } = useUser()
 
   const {
     filteredActive,
@@ -17,7 +18,7 @@ const Passes = () => {
     onSearchPass,
     setPassType,
     passType
-  } = usePasses()
+  } = usePasses(user?.id)
 
   useEffect(() => {
     setHasMounted(true)

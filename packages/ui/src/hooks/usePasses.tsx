@@ -1,46 +1,30 @@
 import {
   GetPassHoldingsRequestDtoOrderTypeEnum,
   PassApi,
-  PassHolderDto
+  PassDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { useUser } from "src/hooks"
 import useSWR from "swr"
 
-const MOCKED_VIEWER_PASSES: PassHolderDto[] = [
-  {
-    passHolderId: "1",
-    passId: "1",
-    price: 20,
-    title: "Kalia Troy Basic Kalia Troy Basic Kalia Troy Basic",
-    type: "subscription",
-    expiresAt: 1659945535 as unknown as Date,
-    creatorId: "test",
-    description: "test",
-    totalSupply: 0,
-    remainingSupply: 0,
-    freetrial: false,
-    address: "0",
-    chain: "sol",
-    symbol: "PASS",
-    collectionAddress: ""
-  }
-]
-
 function filterPasses(expired = true) {
-  return (pass: PassHolderDto) => {
+  return (pass: PassDto) => {
     const currentDate = Date.now()
-    const expiryDate = Number(pass.expiresAt) * 1000
-
-    return expired ? currentDate < expiryDate : currentDate > expiryDate
+    const expiryDate =
+      pass.createdAt &&
+      new Date(pass.createdAt).getMilliseconds() + Number(pass.duration)
+    if (expiryDate) {
+      return expired ? currentDate < expiryDate : currentDate > expiryDate
+    }
+    return false
   }
 }
 function filterPassesByTitle(searchTerm: string) {
-  return (item: PassHolderDto) =>
+  return (item: PassDto) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
 }
 function filterPassesByType(type: string) {
-  return (item: PassHolderDto | undefined) => {
+  return (item: PassDto | undefined) => {
     if (type === "all") return true
     return item?.type.toLowerCase() === type.toLowerCase()
   }
@@ -48,9 +32,8 @@ function filterPassesByType(type: string) {
 
 const usePasses = (creatorId = "") => {
   const { user } = useUser()
-  const { data: creatorPasses, isValidating: isLoadingCreatorPasses } = useSWR(
-    user ? ["/pass/created/", creatorId] : null,
-    async () => {
+  const { data: creatorPasses = [], isValidating: isLoadingCreatorPasses } =
+    useSWR(user ? ["/pass/created/", creatorId] : null, async () => {
       if (user) {
         const api = new PassApi()
         return (
@@ -59,11 +42,10 @@ const usePasses = (creatorId = "") => {
           })
         ).passes
       }
-    }
-  )
+    })
 
   const { data: fanPasses, isValidating: isLoadingFanPasses } = useSWR(
-    user ? "/pass/owned" : null,
+    user ? "/pass/passholdings" : null,
     async () => {
       const api = new PassApi()
       return (
@@ -77,10 +59,10 @@ const usePasses = (creatorId = "") => {
     }
   )
 
-  const [filteredActive, setFilteredActive] = useState(MOCKED_VIEWER_PASSES)
-  const [filteredExpired, setFilteredExpired] = useState(MOCKED_VIEWER_PASSES)
+  const [filteredActive, setFilteredActive] = useState(creatorPasses)
+  const [filteredExpired, setFilteredExpired] = useState(creatorPasses)
   const [filteredCreatorPassesList, setFilteredCreatorPassesList] =
-    useState(MOCKED_VIEWER_PASSES)
+    useState(creatorPasses)
 
   const [passType, setPassType] = useState("all")
   const [passSearchTerm, setPassSearchTerm] = useState("")
@@ -90,21 +72,22 @@ const usePasses = (creatorId = "") => {
   }
 
   useEffect(() => {
-    const filterActivePasses = MOCKED_VIEWER_PASSES.filter(filterPasses(true))
+    const filterActivePasses = creatorPasses
+      .filter(filterPasses(true))
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredActive(filterActivePasses)
-    const filterExpiredPasses = MOCKED_VIEWER_PASSES.filter(filterPasses(false))
+    const filterExpiredPasses = creatorPasses
+      .filter(filterPasses(false))
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredExpired(filterExpiredPasses)
-    const filteredCreatorPasses = MOCKED_VIEWER_PASSES.filter(
-      filterPasses(false)
-    )
+    const filteredCreatorPasses = creatorPasses
+      .filter(filterPasses(false))
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredCreatorPassesList(filteredCreatorPasses)
-  }, [passType, passSearchTerm])
+  }, [passType, passSearchTerm, creatorPasses])
 
   return {
     passType,
