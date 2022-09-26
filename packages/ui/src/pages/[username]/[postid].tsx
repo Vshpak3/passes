@@ -1,7 +1,16 @@
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import React from "react"
 
-import { Post } from "../../components/pages/profile/main-content/news-feed/post"
+const Post = dynamic<any>(
+  () =>
+    import("src/components/pages/profile/main-content/news-feed/post").then(
+      (mod) => mod.Post
+    ),
+  {
+    ssr: false
+  }
+)
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import usePost from "../../hooks/usePost"
 import { withPageLayout } from "../../layout/WithPageLayout"

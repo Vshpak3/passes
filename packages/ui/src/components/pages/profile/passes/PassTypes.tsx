@@ -2,9 +2,16 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import { PassDto } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import React, { useState } from "react"
 import Slider from "react-slick"
-import { QuickPayModal } from "src/components/organisms"
+
+const QuickPayModal = dynamic<any>(
+  () => import("src/components/organisms").then((mod) => mod.QuickPayModal),
+  {
+    ssr: false
+  }
+)
 
 import { useCarousel } from "../../../../hooks/useCarousel"
 import { PassCardDesktop, PassCardMobile } from "./PassesComponents"

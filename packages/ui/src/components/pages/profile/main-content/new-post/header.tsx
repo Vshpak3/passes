@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic"
 import ClockIcon from "public/icons/clock-icon.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
@@ -13,8 +14,13 @@ import {
 import { classNames } from "src/helpers"
 
 import { MainContext } from "../../../../../context/MainContext"
-import { DateAndTimePicker } from "../../../../atoms/DateAndTimePicker"
 import { PostScheduleAlert } from "../../../../atoms/PostScheduleAlert"
+
+const DateAndTimePicker = dynamic<never>(() =>
+  import("src/components/atoms/DateAndTimePicker").then(
+    (md) => md.DateAndTimePicker
+  )
+)
 
 const messagesMediaTypes = [
   {

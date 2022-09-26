@@ -1,14 +1,28 @@
 import { GetProfileResponseDto, PassDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import { toast } from "react-toastify"
-import MainContent from "src/components/pages/profile/main-content"
 import PassTypes from "src/components/pages/profile/passes/PassTypes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
-import { EditProfile } from "src/components/pages/profile/profile-details/edit-profile"
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
+const EditProfile = dynamic<any>(
+  () =>
+    import("src/components/pages/profile/profile-details/edit-profile").then(
+      (mod) => mod.EditProfile
+    ),
+  {
+    ssr: false
+  }
+)
+const MainContent = dynamic<any>(
+  () => import("src/components/pages/profile/main-content"),
+  {
+    ssr: false
+  }
+)
 
 import { ContentService } from "../../helpers"
 

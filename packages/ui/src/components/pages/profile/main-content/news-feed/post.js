@@ -1,4 +1,5 @@
 import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
+import dynamic from "next/dynamic"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
@@ -18,10 +19,18 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import BuyPostModal from "src/components/organisms/BuyPostModal"
+const BuyPostModal = dynamic(
+  () => import("src/components/organisms/BuyPostModal"),
+  {
+    ssr: false
+  }
+)
+const TipsModal = dynamic(() => import("src/components/organisms/TipsModal"), {
+  ssr: false
+})
+
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 
-import TipsModal from "../../../../organisms/TipsModal"
 import { PostDropdown } from "./post-dropdown"
 
 export const Post = ({ profile, post }) => {

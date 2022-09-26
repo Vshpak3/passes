@@ -4,19 +4,24 @@ import {
   GetCreatorEarningsHistoryRequestDtoTypeEnum
 } from "@passes/api-client"
 import { uniqueId } from "lodash"
+import dynamic from "next/dynamic"
 import ArrowDownRight from "public/icons/arrow-down-right.svg"
 import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import ChevronLeft from "public/icons/chevron-left-bold-icon.svg"
 import React, { useEffect, useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
 import Balance from "src/components/atoms/performance/Balance"
-import Chart from "src/components/molecules/performance/Chart"
 import FilterByDays from "src/components/molecules/performance/FilterByDays"
 import Header from "src/components/molecules/performance/Header"
 import Table from "src/components/molecules/performance/Table"
 import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
-
+const Chart = dynamic<any>(
+  () => import("src/components/molecules/performance/Chart"),
+  {
+    ssr: false
+  }
+)
 const PERFORMANCE_OPTIONS = [
   {
     label: "All",

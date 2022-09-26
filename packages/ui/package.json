@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Passes frontend UI package",
   "private": true,
+  "sideEffects": false,
   "scripts": {
     "prebuild": "node scripts/generate-robots-txt.js",
     "build": "next build",

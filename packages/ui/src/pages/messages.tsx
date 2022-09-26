@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import MessagesComponent from "src/components/messages"
 import { DirectMessage } from "src/components/organisms"
 import { withPageLayout } from "src/layout/WithPageLayout"
+
+const MessagesComponent = dynamic(() => import("src/components/messages"))
 
 // import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
 // TODO: @Jonathan this component re-renders messages too many times

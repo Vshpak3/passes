@@ -1,10 +1,17 @@
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { PassesPinkButton } from "src/components/atoms"
-import { CreditCardModal } from "src/components/organisms"
 import { usePayment, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
+
+const CreditCardModal = dynamic<any>(
+  () => import("src/components/organisms").then((mod) => mod.CreditCardModal),
+  {
+    ssr: false
+  }
+)
 
 import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 // const EVM_CHAINID = {

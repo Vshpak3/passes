@@ -7,7 +7,7 @@ import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { CustomMentionEditor, Dialog } from "src/components/organisms"
+import { Dialog } from "src/components/organisms"
 import { classNames, ContentService } from "src/helpers"
 
 import { NewPostDropdown } from "./audience-dropdown"
@@ -22,6 +22,13 @@ const RecordView = dynamic(
     import("src/components/organisms/media-record").then(
       (mod) => mod.RecordView
     ),
+  {
+    ssr: false
+  }
+)
+const CustomMentionEditor = dynamic(
+  () =>
+    import("src/components/organisms").then((mod) => mod.CustomMentionEditor),
   {
     ssr: false
   }

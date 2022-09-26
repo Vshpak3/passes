@@ -1,8 +1,13 @@
+import dynamic from "next/dynamic"
 import { SidebarComponents as SB } from "src/components/molecules"
 
 import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
 import ConditionalWrap from "../../../wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
+
+const NewPostButton = dynamic(() =>
+  import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton")
+)
 
 const SidebarDefault = ({
   active,
@@ -64,11 +69,7 @@ const SidebarDefault = ({
               />
             </CreatorOnlyWrapper>
             <AuthOnlyWrapper>
-              {user?.isCreator ? (
-                <SB.NewPostButton />
-              ) : (
-                <SB.BecomeCreatorButton />
-              )}
+              {user?.isCreator ? <NewPostButton /> : <SB.BecomeCreatorButton />}
             </AuthOnlyWrapper>
           </nav>
         </div>

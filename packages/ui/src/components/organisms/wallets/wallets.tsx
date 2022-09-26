@@ -4,7 +4,6 @@ import {
   PaymentApi,
   WalletApi
 } from "@passes/api-client"
-import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import Wallet from "public/icons/wallet-manage.svg"
@@ -72,6 +71,8 @@ const Wallets = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await window.ethereum.send("eth_requestAccounts")
+
+      const { ethers } = await import("ethers").then((mod) => mod.default)
 
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
