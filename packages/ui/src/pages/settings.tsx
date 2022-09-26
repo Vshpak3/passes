@@ -1,5 +1,4 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
-import SearchIcon from "public/icons/header-search-icon-2.svg"
 import Header from "src/components/molecules/performance/Header"
 import AccountSettings from "src/components/pages/settings/tabs/AccountSettings"
 import AccountInformation from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
@@ -41,20 +40,9 @@ const Settings = () => {
     <>
       <Header />
       <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
-        <div className="max-w-[380px] border-r border-passes-dark-200 pt-6 pl-11">
+        <div className="min-w-[330px] max-w-[380px] border-r border-passes-dark-200 pt-6 pl-11">
           <div className="pr-[35px]">
             <h2 className="text-label-lg">Settings</h2>
-            <div className="relative mt-6 flex items-center gap-3">
-              <SearchIcon className="pointer-events-none  absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
-              <input
-                type="search"
-                name="search"
-                id="search"
-                autoComplete="off"
-                placeholder="Search setting"
-                className="form-input h-[51px] w-full min-w-[320px] rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
-              />
-            </div>
           </div>
           <ul className="mt-6 -mr-px">
             {tabs.map(({ name, id }) => (
