@@ -17,11 +17,7 @@ const SearchResult = ({ userId, fullName, username, onClick }) => {
         <div className="align-items flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#a78df0] p-[10px]">
           <p className="table-cell text-center text-[18px] font-bold no-underline ">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={ContentService.profileImage(userId)}
-              alt=""
-              onerror="this.style.display='none'"
-            />
+            <img src={ContentService.profileImage(userId)} alt="" />
           </p>
         </div>
       </div>
