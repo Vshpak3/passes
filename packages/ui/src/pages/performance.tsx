@@ -71,7 +71,7 @@ const Performance = () => {
   useEffect(() => {
     const fetchEarnings = async () => {
       const api = new CreatorStatsApi()
-      const data = await api.getHistoricEarnings({
+      const data = await api.getEarningsHistory({
         getCreatorEarningsHistoryRequestDto: {
           start: dateRange.startDate,
           end: dateRange.endDate,

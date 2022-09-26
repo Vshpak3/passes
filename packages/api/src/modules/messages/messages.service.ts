@@ -48,7 +48,9 @@ import {
   GetChannelsRequestDto,
 } from './dto/get-channel.dto'
 import { GetMessagesRequestDto } from './dto/get-message.dto'
+import { GetPaidMessageHistoryRequestDto } from './dto/get-paid-message-history.dto'
 import { MessageDto } from './dto/message.dto'
+import { PaidMessageHistoryDto } from './dto/paid-message-history.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { ChannelEntity } from './entities/channel.entity'
@@ -59,7 +61,7 @@ import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
 import { ChannelMissingError } from './error/channel.error'
-import { MessageSendError } from './error/message.error'
+import { MessageSendError, PaidMessageNotFound } from './error/message.error'
 
 const MAX_CHANNELS_PER_REQUEST = 10
 
@@ -1055,5 +1057,32 @@ export class MessagesService {
           'earnings_purchases',
         ]),
       )
+  }
+
+  async getPaidMessageHistory(
+    userId: string,
+    getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto,
+  ) {
+    const { paidMessageId, start, end } = getPaidMessageHistoryRequestDto
+    const paidMessage = await this.dbReader(PaidMessageEntity.table).where(
+      PaidMessageEntity.toDict<PaidMessageEntity>({
+        id: paidMessageId,
+        creator: userId,
+      }),
+    )
+    if (!paidMessage) {
+      throw new PaidMessageNotFound(
+        `paid message ${paidMessageId} not found for user ${userId}`,
+      )
+    }
+    const paidMessageHistories = await this.dbReader(
+      PaidMessageHistoryEntity.table,
+    )
+      .where('paid_message_id', paidMessageId)
+      .andWhere('created_at', '>=', start)
+      .andWhere('created_at', '<=', end)
+    return paidMessageHistories.map(
+      (paidMessageHistory) => new PaidMessageHistoryDto(paidMessageHistory),
+    )
   }
 }

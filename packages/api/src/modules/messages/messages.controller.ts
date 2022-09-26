@@ -27,6 +27,10 @@ import {
   GetMessagesRequestDto,
   GetMessagesResponseDto,
 } from './dto/get-message.dto'
+import {
+  GetPaidMessageHistoryRequestDto,
+  GetPaidMessageHistoryResponseDto,
+} from './dto/get-paid-message-history.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
@@ -277,5 +281,24 @@ export class MessagesController {
     @Param('messageId') messageId: string,
   ): Promise<GetMessageResponseDto> {
     return await this.messagesService.getMessage(req.user.id, messageId)
+  }
+
+  @ApiEndpoint({
+    summary: 'Get paid message history',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPaidMessageHistoryResponseDto,
+    responseDesc: 'Paid message history was retrieved',
+  })
+  @Post('history')
+  async getPaidMessageHistory(
+    @Req() req: RequestWithUser,
+    @Body() getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto,
+  ): Promise<GetPaidMessageHistoryResponseDto> {
+    return new GetPaidMessageHistoryResponseDto(
+      await this.messagesService.getPaidMessageHistory(
+        req.user.id,
+        getPaidMessageHistoryRequestDto,
+      ),
+    )
   }
 }

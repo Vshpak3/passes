@@ -108,6 +108,8 @@ models/GetMessagesResponseDto.ts
 models/GetNotificationSettingsResponseDto.ts
 models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
+models/GetPaidMessageHistoryRequestDto.ts
+models/GetPaidMessageHistoryResponseDto.ts
 models/GetPassHoldersRequestDto.ts
 models/GetPassHoldersResponseDto.ts
 models/GetPassHoldingsRequestDto.ts
@@ -121,6 +123,8 @@ models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
 models/GetPersonaStatusResponseDto.ts
+models/GetPostHistoryRequestDto.ts
+models/GetPostHistoryResponseDto.ts
 models/GetPostResponseDto.ts
 models/GetPostsRequestDto.ts
 models/GetProfileFeedRequestDto.ts

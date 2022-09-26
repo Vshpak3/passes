@@ -83,7 +83,7 @@ export class CreatorStatsService {
     )
   }
 
-  async getHistoricEarnings(
+  async getEarningsHistory(
     userId: string,
     start: Date,
     end: Date,
