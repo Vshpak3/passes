@@ -47,15 +47,14 @@ export function authRouter(
     return false
   }
 
-  const _url = authStateToRoute(state)
+  let url = authStateToRoute(state)
 
-  if (router.pathname === _url) {
+  if (router.pathname === url) {
     return false
   }
 
-  let url = ""
   if (searchParams) {
-    url = `${_url}?${searchParams.toString()}`
+    url += "?" + searchParams.toString()
   }
 
   router.push(url)
