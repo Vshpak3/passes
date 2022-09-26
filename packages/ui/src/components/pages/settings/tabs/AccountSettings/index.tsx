@@ -21,13 +21,14 @@ const subTabs = [
     subText: "Change your password at any time",
     id: SubTabsEnum.ChangePassword,
     Icon: KeyIcon
-  },
-  {
-    name: "Deactivate your account",
-    subText: "Find out how you can deactivate your account.",
-    id: SubTabsEnum.DeactivateAccount,
-    Icon: TrashIcon
   }
+  // Not supported for now
+  // {
+  //   name: "Deactivate your account",
+  //   subText: "Find out how you can deactivate your account.",
+  //   id: SubTabsEnum.DeactivateAccount,
+  //   Icon: TrashIcon
+  // }
 ]
 
 const AccountSettings: React.FC = () => {
