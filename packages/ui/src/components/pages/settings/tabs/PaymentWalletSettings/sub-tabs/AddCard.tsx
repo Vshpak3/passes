@@ -91,7 +91,6 @@ const AddCard = () => {
 
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
-      console.log(payload, "payload")
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleCard({

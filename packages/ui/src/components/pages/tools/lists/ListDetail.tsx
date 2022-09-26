@@ -66,7 +66,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
             })
           setListAlreadyMember(listAlreadyMemberRes.listMembers)
         } catch (error) {
-          console.log("error ", error)
+          console.error("error ", error)
         }
       }
       const followRes: GetListMembersResponseDto = await followApi.searchFans({

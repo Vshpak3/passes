@@ -43,7 +43,6 @@ const DefaultPayinMethod = () => {
 
   useEffect(() => {
     if (!router.isReady || loading) {
-      console.log("r2")
       return
     }
     if (!user) {

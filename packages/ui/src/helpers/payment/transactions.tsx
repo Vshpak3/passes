@@ -76,13 +76,11 @@ export const sendAndGenerateEthereumTokenTransactionMessage = async (
     chainId: chainId
   }
   const contract = new ethers.Contract(token, ERC20ABI)
-  console.log(token)
   const transaction = await contract.populateTransaction.transfer(
     depositAddress,
     ethers.BigNumber.from(amount)
   )
   transactionParameters.data = transaction.data as string
-  console.log(transactionParameters)
   await provider.request({
     method: "eth_sendTransaction",
     params: [transactionParameters]

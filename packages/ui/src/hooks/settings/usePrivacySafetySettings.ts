@@ -19,7 +19,6 @@ export const usePrivacySafetySettings = () => {
   }
 
   const privateProfileHandler = async (isPrivate: boolean) => {
-    console.log(isPrivate)
     return null
   }
 

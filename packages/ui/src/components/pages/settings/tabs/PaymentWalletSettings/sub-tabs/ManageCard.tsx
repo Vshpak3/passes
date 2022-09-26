@@ -35,9 +35,6 @@ const ManageCard = () => {
     (card) => card.id === defaultPayin?.cardId
   )
 
-  console.log(defaultPayin, "defaultPayin")
-  console.log(cards, "cards")
-
   const { user, loading } = useUser()
   const router = useRouter()
 
@@ -47,7 +44,6 @@ const ManageCard = () => {
 
   useEffect(() => {
     if (!router.isReady || loading) {
-      console.log("r2")
       return
     }
     if (!user) {

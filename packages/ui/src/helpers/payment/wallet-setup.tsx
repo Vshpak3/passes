@@ -69,7 +69,6 @@ export const setUpPhantomProvider = (
     sent = true
   }
   provider.on("connect", async (publicKey: PublicKey) => {
-    console.log(depositAddress)
     const response = await paymentApi.entryPhantomCircleUSDC({
       phantomCircleUSDCEntryRequestDto: {
         payinId

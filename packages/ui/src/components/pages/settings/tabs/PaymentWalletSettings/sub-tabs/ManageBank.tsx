@@ -31,7 +31,6 @@ const ManageBank = () => {
 
   useEffect(() => {
     if (!router.isReady || loading) {
-      console.log("r2")
       return
     }
     if (!user) {

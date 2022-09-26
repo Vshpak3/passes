@@ -39,15 +39,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     getValues,
     watch,
     formState: { errors }
-  } = useForm({
-    // resolver: yupResolver(bankingSchema)
-  })
-
-  console.log(watch())
+  } = useForm()
 
   const onSubmit = async () => {
-    console.log("submitting?")
-
     try {
       const values: any = getValues()
 

@@ -17,7 +17,6 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
     ;(async function () {
       const selectionTime = new Date(year, month)
       const matrix = await calendarDates.getMatrix(selectionTime)
-      console.log(flatten(matrix))
       setMatrixDate(flatten(matrix))
     })()
   }, [month, year])

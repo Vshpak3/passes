@@ -193,7 +193,7 @@ const CreatorFlow = () => {
       })
       window.location.assign("/verification")
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 

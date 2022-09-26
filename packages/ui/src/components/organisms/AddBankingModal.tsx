@@ -103,10 +103,6 @@ IAddPayoutModal) => {
     }
   }, [router, user, loading])
 
-  useEffect(() => {
-    console.log("🚀 ~ file: AddBankingModal.tsx ~ line 105 ~ errors", errors)
-  }, [errors])
-
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <form

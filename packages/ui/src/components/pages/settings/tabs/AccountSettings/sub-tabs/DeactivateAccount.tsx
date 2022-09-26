@@ -8,9 +8,7 @@ const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =
     useState(false)
 
-  const deactivateAccountHandler = () => {
-    console.log("deactivating account")
-  }
+  const deactivateAccountHandler = () => {}
 
   const hideDeactivateModalHandler = () =>
     setShowDeactivateConfirmationModal(false)
