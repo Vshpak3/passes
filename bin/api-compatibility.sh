@@ -27,7 +27,7 @@ if [[ -n "${conflicting_routes}" ]] ; then
 fi
 
 # Generate new OpenAPI spec
-yarn install
+yarn install --frozen-lockfile
 yarn workspace @passes/api generate-openapi-spec ${new_openapi_filename}
 echo -e '\n--------------------------------------------------------------------------------\n'
 
