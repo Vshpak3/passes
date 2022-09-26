@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { StreamChat } from 'stream-chat'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
@@ -51,7 +50,6 @@ import {
 import { GetMessagesRequestDto } from './dto/get-message.dto'
 import { MessageDto } from './dto/message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
-import { TokenResponseDto } from './dto/token.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { ChannelEntity } from './entities/channel.entity'
 import { ChannelMemberEntity } from './entities/channel-members.entity'
@@ -62,12 +60,10 @@ import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
 import { ChannelMissingError } from './error/channel.error'
 import { MessageSendError } from './error/message.error'
 
-const MESSAGING_CHAT_TYPE = 'messaging'
 const MAX_CHANNELS_PER_REQUEST = 10
 
 @Injectable()
 export class MessagesService {
-  streamClient: StreamChat
   cloudfrontUrl: string
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -87,16 +83,6 @@ export class MessagesService {
     private readonly s3ContentService: S3ContentService,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
-    this.streamClient = StreamChat.getInstance(
-      configService.get('stream.api_key') as string,
-      configService.get('stream.api_secret'),
-    )
-  }
-
-  async getToken(userId: string): Promise<TokenResponseDto> {
-    await this.streamClient.upsertUser({ id: userId })
-
-    return { token: this.streamClient.createToken(userId) }
   }
 
   async createChannel(
@@ -123,36 +109,8 @@ export class MessagesService {
       .first()
 
     if (!lookup) {
-      await this.streamClient.upsertUsers([
-        { id: userId },
-        { id: otherUser.id },
-      ])
-      const streamChannel = this.streamClient.channel('messaging', {
-        members: [userId, otherUser.id],
-        created_by_id: userId,
-      })
-
-      const createResponse = await streamChannel.create()
-      await streamChannel.updatePartial({
-        set: {
-          config_overrides: {
-            grants: {
-              channel_member: [
-                '!add-links',
-                '!create-reaction',
-                '!create-message',
-                '!update-message-owner',
-                '!delete-message-owner',
-                '!send-custom-event',
-              ],
-            },
-          },
-        },
-      })
-      const streamChannelId = createResponse.channel.id
       const channelData = ChannelEntity.toDict<ChannelEntity>({
         id: v4(),
-        streamChannelId,
       })
       await this.dbWriter.transaction(async (trx) => {
         await trx(ChannelEntity.table).insert(channelData)
@@ -687,7 +645,7 @@ export class MessagesService {
     })
     await this.dbWriter(MessageEntity.table).insert(data)
     if (!pending) {
-      await this.sendMessage(userId, channelId, data.id)
+      await this.updateStatus(userId, channelId)
     }
     return data.id
   }
@@ -712,28 +670,12 @@ export class MessagesService {
         }),
       )
     if (updated) {
-      await this.sendMessage(userId, channelId, messageId)
+      await this.updateStatus(userId, channelId)
       await this.updateChannelTipStats(userId, channelId, tipAmount)
     }
   }
 
-  async sendMessage(userId: string, channelId: string, messageId: string) {
-    const channel = await this.dbReader(ChannelEntity.table)
-      .where('id', channelId)
-      .select('*')
-      .first()
-
-    const streamChannel = this.streamClient.channel(
-      MESSAGING_CHAT_TYPE,
-      channel.stream_channel_id,
-    )
-
-    await streamChannel.sendMessage({
-      id: messageId,
-      text: '',
-      user_id: userId,
-      attachments: [messageId as any],
-    })
+  async updateStatus(userId: string, channelId: string) {
     await this.dbWriter(ChannelMemberEntity.table)
       .where(
         ChannelMemberEntity.toDict<ChannelMemberEntity>({

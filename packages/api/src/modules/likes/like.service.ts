@@ -8,6 +8,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
@@ -49,7 +50,7 @@ export class LikeService {
       throw new BadRequestException(POST_DELETED)
     }
 
-    await this.dbWriter.transaction(async (trx) => {
+    const query = this.dbWriter.transaction(async (trx) => {
       await trx(LikeEntity.table).insert(
         LikeEntity.toDict<LikeEntity>({
           post: postId,
@@ -61,6 +62,11 @@ export class LikeService {
         .where('user_id', userId)
         .increment('num_likes', 1)
     })
+    await createOrThrowOnDuplicate(
+      () => query,
+      this.logger,
+      'cant like a post twice',
+    )
   }
 
   async unlikePost(userId: string, postId: string) {

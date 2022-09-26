@@ -28,7 +28,6 @@ import type {
   PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
   SendMessageRequestDto,
-  TokenResponseDto,
   UpdateChannelSettingsRequestDto,
 } from '../models';
 import {
@@ -58,8 +57,6 @@ import {
     RegisterPayinResponseDtoToJSON,
     SendMessageRequestDtoFromJSON,
     SendMessageRequestDtoToJSON,
-    TokenResponseDtoFromJSON,
-    TokenResponseDtoToJSON,
     UpdateChannelSettingsRequestDtoFromJSON,
     UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
@@ -340,37 +337,6 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getOrCreateChannel(requestParameters: GetOrCreateChannelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelResponseDto> {
         const response = await this.getOrCreateChannelRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets token
-     */
-    async getTokenRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponseDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-        const response = await this.request({
-            path: `/api/messages/token`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TokenResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets token
-     */
-    async getToken(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponseDto> {
-        const response = await this.getTokenRaw(initOverrides);
         return await response.value();
     }
 

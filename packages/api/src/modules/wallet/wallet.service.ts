@@ -367,10 +367,13 @@ export class WalletService {
     const knexResult = await this.dbWriter(WalletEntity.table)
       .update({ user_id: null })
       .where('id', walletId)
-      .where('user_id', userId)
-    await this.dbWriter(PassHolderEntity.table)
-      .where('wallet_id', walletId)
-      .update('holder_id', null)
+      .andWhere('user_id', userId)
+      .andWhere('custodial', false)
+    if (knexResult === 1) {
+      await this.dbWriter(PassHolderEntity.table)
+        .where('wallet_id', walletId)
+        .update('holder_id', null)
+    }
     return knexResult == 1
   }
 }

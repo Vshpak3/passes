@@ -176,7 +176,6 @@ models/SubmitCreatorVerificationStepRequestDto.ts
 models/SubmitPersonaInquiryRequestDto.ts
 models/SubscriptionDto.ts
 models/TipPostRequestDto.ts
-models/TokenResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateChargebackRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts

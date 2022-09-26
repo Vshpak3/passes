@@ -29,7 +29,6 @@ import {
 } from './dto/get-message.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
-import { TokenResponseDto } from './dto/token.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { MessagesService } from './messages.service'
 
@@ -90,17 +89,6 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Gets token',
-    responseStatus: HttpStatus.OK,
-    responseType: TokenResponseDto,
-    responseDesc: 'Token was retrieved',
-  })
-  @Get('token')
-  async getToken(@Req() req: RequestWithUser): Promise<TokenResponseDto> {
-    return await this.messagesService.getToken(req.user.id)
-  }
-
-  @ApiEndpoint({
     summary: 'Gets or creates a channel',
     responseStatus: HttpStatus.OK,
     responseType: GetChannelResponseDto,
@@ -133,6 +121,7 @@ export class MessagesController {
       getChannelRequestDto,
     )
   }
+
   @ApiEndpoint({
     summary: 'Update channels settings',
     responseStatus: HttpStatus.OK,

@@ -150,7 +150,6 @@ export * from './SubmitCreatorVerificationStepRequestDto';
 export * from './SubmitPersonaInquiryRequestDto';
 export * from './SubscriptionDto';
 export * from './TipPostRequestDto';
-export * from './TokenResponseDto';
 export * from './UpdateChannelSettingsRequestDto';
 export * from './UpdateChargebackRequestDto';
 export * from './UpdateCreatorSettingsRequestDto';
