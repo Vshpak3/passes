@@ -21,7 +21,7 @@ function SidebarChildItem({ subItem, isActive, setActive }) {
       <span
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          "group hidden cursor-pointer items-center pb-2 text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         {subItem.name}

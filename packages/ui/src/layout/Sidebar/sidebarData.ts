@@ -3,7 +3,6 @@ import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
 import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
-import VaultIcon from "public/icons/sidebar-vault-icon.svg"
 
 export const navigation = [
   {
@@ -30,12 +29,6 @@ export const navigation = [
     creatorOnly: false
   },
   {
-    id: "vault",
-    name: "Vault",
-    href: "/vault",
-    icon: VaultIcon
-  },
-  {
     id: "tools",
     name: "Creator Tools",
     href: "",
@@ -55,6 +48,12 @@ export const navigation = [
         id: "list",
         name: "List",
         href: "/tools/list"
+      },
+
+      {
+        id: "vault",
+        name: "Vault",
+        href: "/tools/vault"
       },
       {
         id: "analytics",

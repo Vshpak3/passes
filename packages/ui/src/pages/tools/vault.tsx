@@ -1,9 +1,8 @@
 import { useRouter } from "next/router"
+import { VaultMediaGrid, VaultNavigation } from "src/components/organisms"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import useVaultGallery from "src/hooks/vault/useVaultGallery"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import { VaultMediaGrid, VaultNavigation } from "../components/organisms"
-import CreatorOnlyWrapper from "../components/wrappers/CreatorOnly"
 
 const Vault = () => {
   const {
