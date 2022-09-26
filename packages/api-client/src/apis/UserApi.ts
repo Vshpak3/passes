@@ -15,12 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
+  IsPasswordUserResponseDto,
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
   UpdateDisplayNameRequestDto,
   UpdateUsernameRequestDto,
 } from '../models';
 import {
+    IsPasswordUserResponseDtoFromJSON,
+    IsPasswordUserResponseDtoToJSON,
     SearchCreatorRequestDtoFromJSON,
     SearchCreatorRequestDtoToJSON,
     SearchCreatorResponseDtoFromJSON,
@@ -150,6 +153,37 @@ export class UserApi extends runtime.BaseAPI {
      */
     async getUserId(requestParameters: GetUserIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
         const response = await this.getUserIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get if user uses a password
+     */
+    async isPasswordUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<IsPasswordUserResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/user/is-password`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IsPasswordUserResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get if user uses a password
+     */
+    async isPasswordUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<IsPasswordUserResponseDto> {
+        const response = await this.isPasswordUserRaw(initOverrides);
         return await response.value();
     }
 

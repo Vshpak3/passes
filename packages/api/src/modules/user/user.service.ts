@@ -243,6 +243,14 @@ export class UserService {
       .where({ id: userId })
   }
 
+  async isPasswordUser(userId: string): Promise<boolean> {
+    return !!(await this.dbReader(AuthEntity.table)
+      .whereNotNull('password_hash')
+      .andWhere('user_id', userId)
+      .select('id')
+      .first())
+  }
+
   async makeCreator(userId: string): Promise<void> {
     await this.dbWriter.transaction(async (trx) => {
       await trx(UserEntity.table).where('id', userId).update('is_creator', true)

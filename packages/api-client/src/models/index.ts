@@ -109,6 +109,7 @@ export * from './GetWalletsResponseDto';
 export * from './ImpersonateUserRequestDto';
 export * from './InitResetPasswordRequestDto';
 export * from './IsFollowingDto';
+export * from './IsPasswordUserResponseDto';
 export * from './ListMemberDto';
 export * from './LocalUserLoginRequestDto';
 export * from './MessageDto';

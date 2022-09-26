@@ -135,6 +135,7 @@ models/GetWalletsResponseDto.ts
 models/ImpersonateUserRequestDto.ts
 models/InitResetPasswordRequestDto.ts
 models/IsFollowingDto.ts
+models/IsPasswordUserResponseDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts

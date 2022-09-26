@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { IsPasswordUserResponseDto } from './dto/is-password.dto'
 import {
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
@@ -124,6 +125,21 @@ export class UserController {
   })
   @Get('username/:username')
   async getUserId(@Param('username') username: string): Promise<string> {
-    return this.userService.getIdFromUsername(username)
+    return await this.userService.getIdFromUsername(username)
+  }
+
+  @ApiEndpoint({
+    summary: 'Get if user uses a password',
+    responseStatus: HttpStatus.OK,
+    responseType: IsPasswordUserResponseDto,
+    responseDesc: 'If user uses a password retreieved',
+  })
+  @Get('is-password')
+  async isPasswordUser(
+    @Req() req: RequestWithUser,
+  ): Promise<IsPasswordUserResponseDto> {
+    return new IsPasswordUserResponseDto(
+      await this.userService.isPasswordUser(req.user.id),
+    )
   }
 }
