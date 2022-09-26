@@ -6,6 +6,11 @@ import {
 import { useRouter } from "next/router"
 import { useCallback, useEffect } from "react"
 
+import { isProd } from "../helpers/env"
+
+const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
+const PERSONA_HANDLER_TIMEOUT = 10000
+
 const api = new VerificationApi()
 
 const VerificationPage = () => {
@@ -21,8 +26,8 @@ const VerificationPage = () => {
       if (canSubmit) {
         // eslint-disable-next-line no-undef
         const client = new Persona.Client({
-          templateId: "itmpl_dzFXWpxh3j1MNgGMEmteDfr1",
-          environment: "sandbox",
+          templateId: PERSONA_TEMPLATE_ID,
+          environment: isProd ? "production" : "sandbox",
           onReady: () => client.open(),
           onComplete: async ({ inquiryId, status }) => {
             if (status === "completed") {
@@ -42,7 +47,7 @@ const VerificationPage = () => {
     if (status === GetPersonaStatusResponseDtoStatusEnum.Pending) {
       setTimeout(() => {
         personaStatusHandler()
-      }, 10000)
+      }, PERSONA_HANDLER_TIMEOUT)
     }
 
     if (status === GetPersonaStatusResponseDtoStatusEnum.Completed) {
