@@ -24,6 +24,7 @@ import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
+import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
 import {
@@ -414,6 +415,25 @@ export class PostService {
       await trx(PostEntity.table)
         .where('id', postId)
         .increment('earnings_purchases', earnings)
+
+      const contentIds = (
+        await trx(PostContentEntity.table)
+          .where('post_id', postId)
+          .select('content_id')
+      ).map((postContent) => postContent.content_id)
+
+      await Promise.all(
+        contentIds.map(async (contentId) => {
+          await trx(UserMessageContentEntity.table).insert(
+            UserMessageContentEntity.toDict<UserMessageContentEntity>({
+              user: userId,
+              content: contentId as string,
+            })
+              .onConflict()
+              .ignore(),
+          )
+        }),
+      )
     })
   }
 

@@ -25,6 +25,8 @@ import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
+import { ChainEnum } from '../wallet/enum/chain.enum'
+import { WalletService } from '../wallet/wallet.service'
 import { USERNAME_TAKEN } from './constants/errors'
 import {
   MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
@@ -50,6 +52,7 @@ export class UserService {
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
+    protected readonly walletService: WalletService,
   ) {}
 
   async createUser(
@@ -78,6 +81,10 @@ export class UserService {
         }),
       )
     })
+
+    // create custodial wallets on create user
+    await this.walletService.getUserCustodialWallet(user.id, ChainEnum.SOL)
+    await this.walletService.getUserCustodialWallet(user.id, ChainEnum.ETH)
 
     return new UserDto(user)
   }
