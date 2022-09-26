@@ -1,9 +1,10 @@
 import { useRouter } from "next/router"
+import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import { memo, useEffect, useState } from "react"
 import { SidebarDefault, SidebarMobile } from "src/components/organisms"
 
 import { useUser } from "../../hooks"
-import { collapsedNavigation, navigation } from "./sidebarData"
+import { collapsedNavigation, navigation as _navigation } from "./sidebarData"
 
 const Sidebar = () => {
   const router = useRouter()
@@ -11,6 +12,24 @@ const Sidebar = () => {
   const [hasMounted, setHasMounted] = useState(false)
   const [active, setActive] = useState(router.asPath.split("/").pop())
   const { user, logout } = useUser()
+  const [navigation, setNavigation] = useState(_navigation)
+
+  useEffect(() => {
+    if (!user || !user.isCreator) {
+      setNavigation(_navigation)
+      return
+    }
+
+    setNavigation([
+      ..._navigation,
+      {
+        id: "profile",
+        name: "Profile",
+        href: `/${user?.username}`,
+        icon: ProfileIcon
+      }
+    ])
+  }, [user])
 
   // TODO: replace with owns a profile endpoint
   useEffect(() => {

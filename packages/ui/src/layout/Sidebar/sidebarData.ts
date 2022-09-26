@@ -1,4 +1,3 @@
-import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
@@ -85,12 +84,6 @@ export const navigation = [
     href: "/settings",
     icon: SettingsIcon,
     creatorOnly: false
-  },
-  {
-    id: "profile",
-    name: "Profile",
-    href: "/test", // TODO update this
-    icon: ProfileIcon
   }
 ]
 

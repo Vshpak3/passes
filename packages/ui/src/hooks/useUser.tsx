@@ -27,6 +27,7 @@ const useUser = () => {
     if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }
+
     const api = new AuthApi()
     return await api.getCurrentUser()
   })
