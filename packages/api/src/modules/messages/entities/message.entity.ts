@@ -30,7 +30,7 @@ export class MessageEntity extends BaseEntity {
   @Property({ default: false })
   paid: boolean
 
-  @Property({ default: false })
+  @Property({ default: 0 })
   price?: number
 
   @Property({ default: false })
