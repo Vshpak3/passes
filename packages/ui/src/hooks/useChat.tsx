@@ -2,33 +2,24 @@ import { MessagesApi } from "@passes/api-client"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
-const useChat = (username: string) => {
+const useChat = (userId: string) => {
   const [accessToken] = useLocalStorage("access-token", "")
   const channelId = useSWR(
-    accessToken ? "/messages/channel" + "/" + username : null,
+    accessToken ? "/messages/channel" + "/" + userId : null,
     async () => {
-      if (!username) return null
+      if (!userId) return null
       const api = new MessagesApi()
 
       const response = await api.getChannel({
         getChannelRequestDto: {
-          userId: username
+          userId
         }
       })
       return response.channelId
     }
   )
 
-  const streamToken = useSWR(
-    accessToken ? "/messages/token" : null,
-    async () => {
-      const api = new MessagesApi()
-      const response = await api.getToken()
-      return response.token
-    }
-  )
-
-  return { channelId: channelId.data, streamToken: streamToken.data }
+  return { channelId: channelId.data }
 }
 
 export default useChat
