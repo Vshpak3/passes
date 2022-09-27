@@ -217,8 +217,7 @@ export class MessagesService {
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
-      .where(`${ChannelMemberEntity.table}.user`, userId)
-      .first()
+      .where(`${ChannelMemberEntity.table}.user_id`, userId)
 
     switch (orderType) {
       case ChannelOrderTypeEnum.RECENT:
