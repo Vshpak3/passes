@@ -1,6 +1,9 @@
 import { UserApi } from "@passes/api-client"
+import { ContentService } from "src/helpers"
+import { useUser } from "src/hooks"
 
 export const useAccountSettings = () => {
+  const { user } = useUser()
   const userApi = new UserApi()
 
   const validateUsername = async (username: string) => {
@@ -23,5 +26,14 @@ export const useAccountSettings = () => {
     return await userApi.setUsername({ updateUsernameRequestDto: { username } })
   }
 
-  return { setDisplayName, setUsername }
+  const getProfileUrl = () => {
+    if (!user?.id) return "/pages/profile/profile-photo.jpeg"
+    return ContentService.profileImage(user?.id)
+  }
+
+  const setProfilePicture = async (picture: File) => {
+    return await new ContentService().uploadProfileImage(picture)
+  }
+
+  return { setDisplayName, setUsername, setProfilePicture, getProfileUrl }
 }
