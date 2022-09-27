@@ -51,7 +51,7 @@ const messagesMediaTypes = [
 
 const mediaTypes = [
   {
-    name: "Photo",
+    name: "Media",
     Icon: Photos,
     accept: [".png", ".jpg", ".jpeg", ".mp4", ".mov", ".qt", ".mp3"],
     multiple: true,
@@ -86,10 +86,9 @@ const MediaHeader = ({
     _mediaTypes = messagesMediaTypes
   } else _mediaTypes = mediaTypes
   return (
-    <div className="w-full pb-1">
+    <div className="w-full pb-3">
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
-        <div className="flex items-center ">
-          {/* <span className="mr-2">Type</span> */}
+        <div className="flex items-center">
           <div className="flex w-full flex-wrap justify-between gap-1">
             {_mediaTypes.map(({ name, Icon, accept, type, multiple }, index) =>
               type === "button" ? (
