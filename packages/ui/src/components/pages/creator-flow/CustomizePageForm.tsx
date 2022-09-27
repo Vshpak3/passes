@@ -308,12 +308,11 @@ const CustomizePageForm = ({
           </div>
         </div>
 
-        <div className="mb-6 flex flex-col gap-[6px] px-12 sm:px-20">
+        <div className="mb-6 flex gap-[6px] px-12 sm:px-20">
           <FormInput
             register={register}
             type="checkbox"
             name="free-dm-month-checkbox"
-            label="Yes"
             className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             labelClassName="text-[#b3bee7] opacity-[0.6]"
           />

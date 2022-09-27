@@ -1,21 +1,24 @@
 import {
-  GetCreatorVerificationStepResponseDtoStepEnum,
   GetPersonaStatusResponseDtoStatusEnum,
   VerificationApi
 } from "@passes/api-client"
-import { useRouter } from "next/router"
 import { useCallback, useEffect } from "react"
-
-import { isProd } from "../helpers/env"
+import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
 const PERSONA_HANDLER_TIMEOUT = 10000
 
 const api = new VerificationApi()
 
-const VerificationPage = () => {
-  const router = useRouter()
+interface IPersonaVerification {
+  onFinishPersonaVerification: () => void
+  showPersonaModal: boolean
+}
 
+const PersonaVerification: React.FC<IPersonaVerification> = ({
+  onFinishPersonaVerification,
+  showPersonaModal
+}) => {
   const personaStatusHandler = useCallback(async () => {
     const result = await api.refreshPersonaVerifications()
     const { status } = result
@@ -24,12 +27,19 @@ const VerificationPage = () => {
       const canSubmit = await api.canSubmitPersona()
 
       if (canSubmit) {
-        // eslint-disable-next-line no-undef
+        // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Unreachable code error
         const client = new Persona.Client({
           templateId: PERSONA_TEMPLATE_ID,
           environment: isProd ? "production" : "sandbox",
           onReady: () => client.open(),
-          onComplete: async ({ inquiryId, status }) => {
+          onComplete: async ({
+            inquiryId,
+            status
+          }: {
+            inquiryId: string
+            status: string
+          }) => {
             if (status === "completed") {
               await api.submitPersonaInquiry({
                 submitPersonaInquiryRequestDto: {
@@ -51,28 +61,15 @@ const VerificationPage = () => {
     }
 
     if (status === GetPersonaStatusResponseDtoStatusEnum.Completed) {
-      await api.submitCreatorVerificationStep({
-        submitCreatorVerificationStepRequestDto: {
-          step: GetCreatorVerificationStepResponseDtoStepEnum._2Kyc
-        }
-      })
-      router.push("/creator-flow")
+      onFinishPersonaVerification()
     }
-  }, [router])
+  }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    personaStatusHandler()
-  })
+    if (showPersonaModal) personaStatusHandler()
+  }, [showPersonaModal, personaStatusHandler])
 
-  return (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: `<script src="https://cdn.withpersona.com/dist/persona-v4.2.0.js"></script>
-	<script>
-	</script>`
-      }}
-    ></div>
-  )
+  return null
 }
 
-export default VerificationPage
+export default PersonaVerification

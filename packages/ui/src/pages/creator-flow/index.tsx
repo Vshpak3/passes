@@ -2,16 +2,14 @@ import {
   GetCreatorVerificationStepResponseDtoStepEnum,
   VerificationApi
 } from "@passes/api-client"
-import { identity } from "lodash"
 import CheckIcon from "public/icons/check.svg"
-import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
-import SubscriptionIcon from "public/icons/subscription-pass.svg"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
 import { MouseEventHandler, useEffect, useState } from "react"
-import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import WelcomeToPasses from "src/components/organisms/creator-flow/WelcomePasses"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
+import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
 import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
@@ -94,57 +92,6 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
   )
 }
 
-function WelcomeToPasses() {
-  return (
-    <div className="p-12 text-xl text-white">
-      <div className="text-center text-2xl">Welcome to Passes!</div>
-      <div className="text-center text-sm text-[#737893]">
-        Now it&apos;s time to create your first pass!
-      </div>
-
-      <div className="mt-12 flex max-w-3xl flex-col gap-10 sm:flex-row">
-        <div className="flex min-w-[330px] flex-1 flex-col items-center justify-between rounded-md border border-[#624256] bg-black px-10 py-8">
-          <div className="flex flex-col items-center">
-            <SubscriptionIcon />
-            <div className="mt-5 text-center text-2xl font-bold">
-              Subscription
-            </div>
-            <div className="mt-5 text-center text-base text-[#737893]">
-              These are passes that anyone can buy where you charge per month,
-              year, or lifetime. They are unlimited in amount
-            </div>
-          </div>
-          <PassesPinkButton
-            onClick={identity}
-            name="Get Started"
-            type={ButtonTypeEnum.BUTTON}
-            className="mt-6 font-normal"
-          />
-        </div>
-        <div className="flex min-w-[330px] flex-1 flex-col items-center justify-between rounded-md border border-[#624256] bg-black px-10 py-8">
-          <div className="flex flex-col items-center">
-            <LimitedEditionIcon />
-            <div className="mt-5 text-center text-2xl font-bold">
-              Limited Edition
-            </div>
-            <div className="mt-5 text-center text-base text-[#737893]">
-              These are passes that are limited edition. Once they sell out,
-              people will have to buy on the resale market. You get a % royalty
-              every time it resales.
-            </div>
-          </div>
-          <PassesPinkButton
-            onClick={identity}
-            name="Get Started"
-            type={ButtonTypeEnum.BUTTON}
-            className="mt-6 font-normal"
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const api = new VerificationApi()
 
 const CreatorFlow = () => {
@@ -163,11 +110,12 @@ const CreatorFlow = () => {
       const step = result.step
 
       if (step === GetCreatorVerificationStepResponseDtoStepEnum._2Kyc) {
-        window.location.assign("/verification")
+        setStepsDone([CREATOR_STEPS.CUSTOMIZE])
+        setSelectedStep(CREATOR_STEPS.VERIFICATION)
       }
 
       if (step === GetCreatorVerificationStepResponseDtoStepEnum._3Payout) {
-        setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
+        setStepsDone([CREATOR_STEPS.CUSTOMIZE, CREATOR_STEPS.VERIFICATION])
         setSelectedStep(CREATOR_STEPS.PAYMENT)
       }
 
@@ -183,7 +131,6 @@ const CreatorFlow = () => {
     // Show modal
     setIsVerificationDialogOpen(true)
     setStepsDone((prev) => [...prev, CREATOR_STEPS.CUSTOMIZE])
-    setSelectedStep(CREATOR_STEPS.VERIFICATION)
 
     try {
       await api.submitCreatorVerificationStep({
@@ -191,16 +138,20 @@ const CreatorFlow = () => {
           step: GetCreatorVerificationStepResponseDtoStepEnum._1Profile
         }
       })
-      window.location.assign("/verification")
+      setSelectedStep(CREATOR_STEPS.VERIFICATION)
     } catch (err) {
       console.error(err)
     }
   }
 
-  const finishFormHandler = () => {
-    setIsWelcomeModalOpen(true)
-    setStepsDone((prev) => [...prev, CREATOR_STEPS.PAYMENT])
+  const onFinishPersonaVerification = async () => {
+    await api.submitCreatorVerificationStep({
+      submitCreatorVerificationStepRequestDto: {
+        step: GetCreatorVerificationStepResponseDtoStepEnum._2Kyc
+      }
+    })
     setSelectedStep(CREATOR_STEPS.PAYMENT)
+    setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
   }
 
   const onPaymentFormPageFinish = async () => {
@@ -210,6 +161,12 @@ const CreatorFlow = () => {
       }
     })
     finishFormHandler()
+  }
+
+  const finishFormHandler = () => {
+    setIsWelcomeModalOpen(true)
+    setStepsDone((prev) => [...prev, CREATOR_STEPS.PAYMENT])
+    setSelectedStep(CREATOR_STEPS.PAYMENT)
   }
 
   return (
@@ -277,6 +234,16 @@ const CreatorFlow = () => {
             )}
           </>
         )}
+
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<script src="https://cdn.withpersona.com/dist/persona-v4.2.0.js"></script>`
+          }}
+        ></div>
+        <PersonaVerification
+          showPersonaModal={selectedStep === CREATOR_STEPS.VERIFICATION}
+          onFinishPersonaVerification={onFinishPersonaVerification}
+        />
 
         {selectedStep === CREATOR_STEPS.PAYMENT && (
           <>
