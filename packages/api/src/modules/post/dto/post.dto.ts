@@ -1,4 +1,10 @@
-import { IsArray, Length, Min } from 'class-validator'
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
+  Length,
+  Min,
+} from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -7,7 +13,7 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { POST_TEXT_LENGTH } from '../constants/schema'
+import { POST_TAG_MAX_COUNT, POST_TEXT_LENGTH } from '../constants/schema'
 
 export class PostDto {
   @DtoProperty({ type: 'uuid' })
@@ -32,6 +38,8 @@ export class PostDto {
   text: string
 
   @IsArray()
+  @ArrayMinSize(0)
+  @ArrayMaxSize(POST_TAG_MAX_COUNT)
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 
