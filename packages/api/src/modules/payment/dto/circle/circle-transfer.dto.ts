@@ -1,5 +1,3 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 import { CircleTransferStatusEnum } from '../../enum/circle-transfer.status.enum'
 import {
@@ -9,23 +7,21 @@ import {
 } from './circle-utils.dto'
 
 export class CircleTransferDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsEnum(CircleTransferStatusEnum)
-  @DtoProperty({ enum: CircleTransferStatusEnum })
+  @DtoProperty({ custom_type: CircleTransferStatusEnum })
   status: CircleTransferStatusEnum
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleDestinationDto })
   destination: CircleDestinationDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   amount: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   transactionHash: string
 }

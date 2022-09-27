@@ -1,25 +1,20 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 import { CircleAccountStatusEnum } from '../../enum/circle-account.status.enum'
 
 export class CircleBankDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   circleId?: string
 
-  @IsEnum(CircleAccountStatusEnum)
-  @DtoProperty({ enum: CircleAccountStatusEnum })
+  @DtoProperty({ custom_type: CircleAccountStatusEnum })
   status: CircleAccountStatusEnum
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   description: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   country: string
 
   constructor(bank) {

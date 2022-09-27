@@ -6,10 +6,10 @@ import { PASSWORD_REGEX } from '../../constants/schema'
 
 export class UpdatePasswordRequestDto {
   @Matches(PASSWORD_REGEX, { message: PASSWORD_VALIDATION_MSG })
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   oldPassword: string
 
   @Matches(PASSWORD_REGEX, { message: PASSWORD_VALIDATION_MSG })
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   newPassword: string
 }

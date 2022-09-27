@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger'
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -16,43 +16,39 @@ export class GetPassHoldingsRequestDto extends PickType(PageRequestDto, [
   'order',
   'search',
 ]) {
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   passId?: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
-  @IsEnum(ListMemberOrderTypeEnum)
-  @DtoProperty({ enum: ListMemberOrderTypeEnum })
+  @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
 }
 
 export class GetPassHoldingResponseDto extends PassHolderDto {}
 
 export class GetPassHoldingsResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [PassHolderDto] })
+  @DtoProperty({ custom_type: [PassHolderDto] })
   passHolders: PassHolderDto[]
 
-  @IsEnum(ListMemberOrderTypeEnum)
-  @DtoProperty({ enum: ListMemberOrderTypeEnum })
+  @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
   constructor(

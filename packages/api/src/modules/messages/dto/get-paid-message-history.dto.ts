@@ -1,22 +1,19 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { PaidMessageHistoryDto } from './paid-message-history.dto'
 
 export class GetPaidMessageHistoryRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   paidMessageId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   start: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   end: Date
 }
 
 export class GetPaidMessageHistoryResponseDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: [PaidMessageHistoryDto] })
   paidMessageHistories: PaidMessageHistoryDto[]
 
   constructor(paidMessageHistories) {

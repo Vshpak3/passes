@@ -5,6 +5,6 @@ import { USER_USERNAME_LENGTH } from '../../user/constants/schema'
 
 export class GetUsernamesResponseDto {
   @Length(1, USER_USERNAME_LENGTH, { each: true })
-  @DtoProperty()
+  @DtoProperty({ type: 'string[]' })
   usernames: string[]
 }

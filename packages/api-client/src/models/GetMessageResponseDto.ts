@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ContentDto } from './ContentDto';
+import {
+    ContentDtoFromJSON,
+    ContentDtoFromJSONTyped,
+    ContentDtoToJSON,
+} from './ContentDto';
+
 /**
  * 
  * @export
@@ -39,10 +46,10 @@ export interface GetMessageResponseDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<ContentDto>}
      * @memberof GetMessageResponseDto
      */
-    contents: Array<string>;
+    contents: Array<ContentDto>;
     /**
      * 
      * @type {string}
@@ -112,7 +119,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'messageId': json['messageId'],
         'senderId': json['senderId'],
         'text': json['text'],
-        'contents': json['contents'],
+        'contents': ((json['contents'] as Array<any>).map(ContentDtoFromJSON)),
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'paid': json['paid'],
@@ -134,7 +141,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'messageId': value.messageId,
         'senderId': value.senderId,
         'text': value.text,
-        'contents': value.contents,
+        'contents': ((value.contents as Array<any>).map(ContentDtoToJSON)),
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'paid': value.paid,

@@ -1,4 +1,4 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -13,69 +13,67 @@ import {
 } from '../constants/schema'
 
 export class ProfileDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   profileId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   legalFullName?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
   @Length(1, PROFILE_COVER_TITLE_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   coverTitle?: string
 
   @Length(1, PROFILE_COVER_DESCRIPTION_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   coverDescription?: string
 
   @Length(1, PROFILE_DESCRIPTION_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   description?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   discordUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   facebookUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   instagramUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   tiktokUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   twitchUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   twitterUsername?: string
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   youtubeUsername?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   isKYCVerified?: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   isActive: boolean
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   isAdult?: boolean
 
   constructor(profile) {

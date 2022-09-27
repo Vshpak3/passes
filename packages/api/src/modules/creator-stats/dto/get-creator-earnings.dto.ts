@@ -4,7 +4,7 @@ import { CreatorEarningDto } from './creator-earning.dto'
 export class GetCreatorEarningResponseDto extends CreatorEarningDto {}
 
 export class GetCreatorEarningsResponseDto {
-  @DtoProperty({ type: [CreatorEarningDto] })
+  @DtoProperty({ custom_type: [CreatorEarningDto] })
   earnings: CreatorEarningDto[]
 
   constructor(earnings: CreatorEarningDto[]) {

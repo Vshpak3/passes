@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -10,35 +10,31 @@ import { NotificationStatusEnum } from '../enum/notification.status.enum'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 
 export class NotificationDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   senderDisplayName: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   senderUsername: string
 
-  @IsEnum(NotificationStatusEnum)
-  @DtoProperty({ enum: NotificationStatusEnum })
+  @DtoProperty({ custom_type: NotificationStatusEnum })
   status: NotificationStatusEnum
 
-  @IsEnum(NotificationTypeEnum)
-  @DtoProperty({ enum: NotificationTypeEnum })
+  @DtoProperty({ custom_type: NotificationTypeEnum })
   type: NotificationTypeEnum
 
   @Length(1, NOTIFICATION_MESSAGE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   message: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   constructor(notification) {

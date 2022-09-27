@@ -1,18 +1,15 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class CircleUpdateCardDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   keyId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   encryptedData: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expMonth: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expYear: number
 }

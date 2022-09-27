@@ -1,4 +1,4 @@
-import { IsEnum, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { WELCOME_MESSAGE_MAX_LENGTH } from '../constants/schema'
@@ -6,24 +6,23 @@ import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
 export class CreatorSettingsDto {
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   minimumTipAmount: number
 
-  @IsEnum(PayoutFrequencyEnum)
-  @DtoProperty({ enum: PayoutFrequencyEnum })
+  @DtoProperty({ custom_type: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 
   @Length(1, WELCOME_MESSAGE_MAX_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   welcomeMessage?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   allowCommentsOnPosts?: boolean
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   showFollowerCount: boolean
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   showMediaCount: boolean
 
   constructor(creatorSettings) {

@@ -1,19 +1,14 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { PayoutMethodEnum } from '../enum/payout-method.enum'
 
 export class PayoutMethodDto {
-  @IsEnum(PayoutMethodEnum)
-  @DtoProperty({ enum: PayoutMethodEnum })
+  @DtoProperty({ custom_type: PayoutMethodEnum })
   method: PayoutMethodEnum = PayoutMethodEnum.NONE
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   bankId?: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   walletId?: string
 
   constructor(payoutMethod) {

@@ -1,5 +1,4 @@
 import { PickType } from '@nestjs/swagger'
-import { IsEnum } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -11,17 +10,15 @@ export class GetVaultQueryRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
 ]) {
-  @IsEnum(VaultCategoryEnum)
-  @DtoProperty({ enum: VaultCategoryEnum, optional: true })
+  @DtoProperty({ custom_type: VaultCategoryEnum, optional: true })
   category?: VaultCategoryEnum
 
-  @IsEnum(ContentTypeEnum)
-  @DtoProperty({ enum: ContentTypeEnum, optional: true })
+  @DtoProperty({ custom_type: ContentTypeEnum, optional: true })
   type?: ContentTypeEnum
 }
 
 export class GetVaultQueryResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [ContentDto] })
+  @DtoProperty({ custom_type: [ContentDto] })
   contents: ContentDto[]
 
   constructor(contents: ContentDto[]) {

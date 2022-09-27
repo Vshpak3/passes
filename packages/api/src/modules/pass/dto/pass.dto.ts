@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -14,71 +14,64 @@ import {
 } from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 export class PassDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 
   @Length(1, PASS_TITLE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   title: string
 
   @Length(1, PASS_DESCRIPTION_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   description: string
 
   @Length(1, PASS_SYMBOL_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   symbol: string
 
-  @IsEnum(PassTypeEnum)
-  @DtoProperty({ enum: PassTypeEnum })
+  @DtoProperty({ custom_type: PassTypeEnum })
   type: PassTypeEnum
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   price: number
 
-  @IsInt()
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   duration?: number
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   totalSupply: number
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   remainingSupply: number
 
-  @IsEnum(ChainEnum)
   chain: ChainEnum
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   freetrial: boolean
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   collectionAddress: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   pinnedAt?: Date
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   creatorUsername?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   creatorDisplayName?: string
 
   constructor(pass) {

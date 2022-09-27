@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { WalletDto } from '../../wallet/dto/wallet.dto'
@@ -8,36 +8,33 @@ import { CircleBankDto } from './circle/circle-bank.dto'
 import { PayoutMethodDto } from './payout-method.dto'
 
 export class PayoutDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: PayoutMethodDto })
   payoutMethod: PayoutMethodDto
 
-  @IsEnum(PayoutStatusEnum)
-  @DtoProperty({ enum: PayoutStatusEnum })
+  @DtoProperty({ custom_type: PayoutStatusEnum })
   payoutStatus: PayoutStatusEnum
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   @Length(1, TRANSACTION_HASH_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   transactionHash?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: CircleBankDto, optional: true })
   bank?: CircleBankDto
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: WalletDto, optional: true })
   wallet?: WalletDto
 
   constructor(payout) {

@@ -5,24 +5,24 @@ import { USER_LEGAL_FULL_NAME_LENGTH } from '../../../user/constants/schema'
 
 export class BillingDetailsDto {
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   name: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   city: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   country: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   line1: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   line2?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   district?: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   postalCode: string
 }

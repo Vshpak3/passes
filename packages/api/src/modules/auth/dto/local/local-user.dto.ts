@@ -6,10 +6,10 @@ import { PASSWORD_REGEX } from '../../constants/schema'
 
 export class LocalUserDto {
   @IsEmail()
-  @DtoProperty({ forceLower: true })
+  @DtoProperty({ type: 'string', forceLower: true })
   email: string
 
   @Matches(PASSWORD_REGEX, { message: PASSWORD_VALIDATION_MSG })
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   password: string
 }

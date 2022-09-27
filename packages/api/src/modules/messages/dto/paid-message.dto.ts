@@ -1,18 +1,16 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { MESSAGE_LENGTH } from '../constants/schema'
 
 export class PaidMessageDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   paidMessageId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 
   @Length(1, MESSAGE_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   price?: number
 }

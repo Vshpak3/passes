@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class TokenResponseDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   token: string
 }

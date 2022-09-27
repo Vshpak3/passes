@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PassDto } from '../../pass/dto/pass.dto'
@@ -8,36 +8,32 @@ import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscriptionDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: PayinMethodDto })
   payinMethod: PayinMethodDto
 
-  @IsEnum(SubscriptionStatusEnum)
-  @DtoProperty({ enum: SubscriptionStatusEnum })
+  @DtoProperty({ custom_type: SubscriptionStatusEnum })
   subscriptionStatus: SubscriptionStatusEnum
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: CircleCardDto, optional: true })
   card?: CircleCardDto
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   passHolderId?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PassHolderDto, optional: true })
   passHolder?: PassHolderDto
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PassDto, optional: true })
   pass?: PassDto
 
   constructor(subscription) {

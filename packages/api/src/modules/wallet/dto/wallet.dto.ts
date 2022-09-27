@@ -1,30 +1,27 @@
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../constants/schema'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class WalletDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   walletId: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   userId?: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   address: string
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   custodial: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   authenticated: boolean
 
   constructor(wallet) {

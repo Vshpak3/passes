@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger'
-import { IsEnum, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -15,20 +15,19 @@ export class GetListsRequestsDto extends PickType(PageRequestDto, [
   'search',
 ]) {
   @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   name?: string
 
-  @IsEnum(ListOrderTypeEnum)
-  @DtoProperty({ enum: ListOrderTypeEnum })
+  @DtoProperty({ custom_type: ListOrderTypeEnum })
   orderType: ListOrderTypeEnum
 }
 
 export class GetListsResponseDto extends PageResponseDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: [ListDto] })
   lists: ListDto[]
 
   @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   name?: string
 
   constructor(lists: ListDto[], orderType: ListOrderTypeEnum) {

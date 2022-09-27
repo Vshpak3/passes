@@ -3,12 +3,12 @@ import { UserEntity } from '../entities/user.entity'
 import { CreatorInfoDto } from './creator-info.dto'
 
 export class SearchCreatorRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   query: string
 }
 
 export class SearchCreatorResponseDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: [CreatorInfoDto] })
   creators: CreatorInfoDto[]
 
   constructor(creators: UserEntity[]) {

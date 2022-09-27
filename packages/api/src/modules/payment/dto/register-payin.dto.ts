@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinCallbackInput } from '../callback.types'
@@ -7,54 +7,50 @@ import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class RegisterPayinResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   payinId: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: PayinMethodDto })
   payinMethod: PayinMethodDto
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 }
 
 export class RegisterPayinRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 
   // callback
-  @IsEnum(PayinCallbackEnum)
-  @DtoProperty({ enum: PayinCallbackEnum })
+  @DtoProperty({ custom_type: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
-  @DtoProperty()
+  // TODO: how to handle since subtyped
+  @DtoProperty({ custom_type: 'any' })
   callbackInputJSON: PayinCallbackInput
 
   // target object
   @Length(1, SHA256_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   target?: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 }
 
 export class CreatorShareDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 }

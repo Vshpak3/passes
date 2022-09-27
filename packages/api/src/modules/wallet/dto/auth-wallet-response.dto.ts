@@ -1,18 +1,17 @@
-import { IsEnum, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../constants/schema'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class AuthWalletResponseDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   rawMessage: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   walletAddress: string
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 }

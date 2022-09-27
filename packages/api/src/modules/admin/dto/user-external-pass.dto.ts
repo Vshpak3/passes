@@ -1,14 +1,10 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { AdminDto } from './admin.dto'
 
 export class UserExternalPassRequestDto extends AdminDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 }

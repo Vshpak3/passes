@@ -1,10 +1,10 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class AccessTokensResponseDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   accessToken: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   refreshToken?: string
 
   public constructor(accessToken: string, refreshToken?: string) {

@@ -1,30 +1,26 @@
-import { IsEnum, IsInt, IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
 export class ContentDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   contentId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   signedUrl: string
 
-  @IsEnum(ContentTypeEnum)
-  @DtoProperty({ enum: ContentTypeEnum })
+  @DtoProperty({ custom_type: ContentTypeEnum })
   contentType: ContentTypeEnum
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   order: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   constructor(content, signedUrl) {

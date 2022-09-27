@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, IsUUID, Length, Max, Min } from 'class-validator'
+import { Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
@@ -7,53 +7,45 @@ import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {
   @Length(1, PASS_TITLE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   title: string
 
   @Length(1, PASS_DESCRIPTION_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   description: string
 
-  @IsEnum(PassTypeEnum)
-  @DtoProperty({ enum: PassTypeEnum })
+  @DtoProperty({ custom_type: PassTypeEnum })
   type: PassTypeEnum
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   price: number
 
-  @DtoProperty()
-  @IsInt()
   @Min(1)
+  @DtoProperty({ type: 'number' })
   totalSupply: number
 
-  @IsInt()
   @Min(1)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   duration?: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   freetrial: boolean
 
-  @DtoProperty({ optional: true })
-  @IsInt()
+  @DtoProperty({ type: 'number', optional: true })
   messages?: number | null
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @IsInt()
   @Min(500)
   @Max(3000)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   royalties: number
 }
 
 export class CreatePassResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 
   constructor(passId: string) {

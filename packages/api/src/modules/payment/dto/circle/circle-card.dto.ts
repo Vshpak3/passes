@@ -1,46 +1,41 @@
-import { IsEnum, IsInt, IsUUID, Length, Max, Min } from 'class-validator'
+import { Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
 import { USER_LEGAL_FULL_NAME_LENGTH } from '../../../user/constants/schema'
 import { CircleAccountStatusEnum } from '../../enum/circle-account.status.enum'
 
 export class CircleCardDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   circleId?: string
 
-  @IsEnum(CircleAccountStatusEnum)
-  @DtoProperty({ enum: CircleAccountStatusEnum })
+  @DtoProperty({ custom_type: CircleAccountStatusEnum })
   status: CircleAccountStatusEnum
 
   @Length(1, 1)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   firstDigit: string
 
   @Length(4, 4)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   fourDigits: string
 
-  @IsInt()
   @Min(1)
   @Max(12)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expMonth: number
 
-  @IsInt()
   @Min(2000)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expYear: number
 
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   name: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   active: boolean
 
   constructor(card) {

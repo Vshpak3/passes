@@ -1,14 +1,13 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { LIST_NAME_LENGTH } from '../constants/schema'
 
 export class EditListNameRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   listId: string
 
   @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   name: string
 }

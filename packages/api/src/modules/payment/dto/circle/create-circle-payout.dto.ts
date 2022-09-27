@@ -7,18 +7,18 @@ import {
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreatePayoutRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   idempotencyKey: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleDestinationDto })
   destination: CircleDestinationDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   amount: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleMetaDataDto })
   metadata: CircleMetaDataDto
 }

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PaidMessageHistoryDto } from './PaidMessageHistoryDto';
+import {
+    PaidMessageHistoryDtoFromJSON,
+    PaidMessageHistoryDtoFromJSONTyped,
+    PaidMessageHistoryDtoToJSON,
+} from './PaidMessageHistoryDto';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface GetPaidMessageHistoryResponseDto {
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<PaidMessageHistoryDto>}
      * @memberof GetPaidMessageHistoryResponseDto
      */
-    paidMessageHistories: Array<string>;
+    paidMessageHistories: Array<PaidMessageHistoryDto>;
 }
 
 /**
@@ -47,7 +54,7 @@ export function GetPaidMessageHistoryResponseDtoFromJSONTyped(json: any, ignoreD
     }
     return {
         
-        'paidMessageHistories': json['paidMessageHistories'],
+        'paidMessageHistories': ((json['paidMessageHistories'] as Array<any>).map(PaidMessageHistoryDtoFromJSON)),
     };
 }
 
@@ -60,7 +67,7 @@ export function GetPaidMessageHistoryResponseDtoToJSON(value?: GetPaidMessageHis
     }
     return {
         
-        'paidMessageHistories': value.paidMessageHistories,
+        'paidMessageHistories': ((value.paidMessageHistories as Array<any>).map(PaidMessageHistoryDtoToJSON)),
     };
 }
 

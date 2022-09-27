@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
+
 /**
  * 
  * @export
@@ -27,10 +34,10 @@ export interface CreatePostRequestDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof CreatePostRequestDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
     /**
      * 
      * @type {Array<string>}
@@ -87,7 +94,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'contentIds': json['contentIds'],
         'passIds': json['passIds'],
         'price': !exists(json, 'price') ? undefined : json['price'],
@@ -106,7 +113,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
     return {
         
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'contentIds': value.contentIds,
         'passIds': value.passIds,
         'price': value.price,

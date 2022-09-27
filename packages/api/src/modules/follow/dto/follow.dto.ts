@@ -1,17 +1,12 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 export class FollowDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   followerId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 
   constructor(follow) {

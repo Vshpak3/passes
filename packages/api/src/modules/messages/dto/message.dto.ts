@@ -1,43 +1,40 @@
-import { IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
 import { MESSAGE_LENGTH } from '../constants/schema'
 
 export class MessageDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   messageId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   senderId: string
 
   @Length(1, MESSAGE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   text: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: [ContentDto] })
   contents: ContentDto[]
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   channelId: string
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   tipAmount?: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   paid: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   pending: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   reverted: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   sentAt: Date
 
   constructor(message, contents) {

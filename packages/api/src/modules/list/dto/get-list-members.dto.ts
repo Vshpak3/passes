@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger'
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -16,33 +16,31 @@ export class GetListMembersRequestDto extends PickType(PageRequestDto, [
   'order',
   'search',
 ]) {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   listId: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
-  @IsEnum(ListMemberOrderTypeEnum)
-  @DtoProperty({ enum: ListMemberOrderTypeEnum })
+  @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
 }
 
 export class GetListMembersResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [ListMemberDto] })
+  @DtoProperty({ custom_type: [ListMemberDto] })
   listMembers: ListMemberDto[]
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
   constructor(

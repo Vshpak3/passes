@@ -19,6 +19,12 @@ import {
     ContentDtoFromJSONTyped,
     ContentDtoToJSON,
 } from './ContentDto';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
 
 /**
  * 
@@ -64,10 +70,10 @@ export interface PostDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof PostDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
     /**
      * 
      * @type {Array<ContentDto>}
@@ -124,10 +130,10 @@ export interface PostDto {
     updatedAt: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof PostDto
      */
-    scheduledAt?: string;
+    scheduledAt?: Date;
     /**
      * 
      * @type {Date}
@@ -187,7 +193,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'username': json['username'],
         'displayName': json['displayName'],
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
         'passIds': json['passIds'],
         'numLikes': json['numLikes'],
@@ -197,7 +203,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isLiked': !exists(json, 'isLiked') ? undefined : json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : json['scheduledAt'],
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
@@ -219,7 +225,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'username': value.username,
         'displayName': value.displayName,
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
         'passIds': value.passIds,
         'numLikes': value.numLikes,
@@ -229,7 +235,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
-        'scheduledAt': value.scheduledAt,
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,

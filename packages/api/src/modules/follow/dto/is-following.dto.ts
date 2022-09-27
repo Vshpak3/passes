@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 export class IsFollowingDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   isFollowing: boolean
 
   constructor(isFollowing: boolean) {

@@ -1,5 +1,4 @@
 import { PickType } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -14,19 +13,17 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
 ]) {}
 
 export class GetCreatorPassesRequestDto extends GetPassesRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 }
 
 export class GetExternalPassesRequestDto extends GetPassesRequestDto {
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 }
 
 export class GetPassesResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [PassDto] })
+  @DtoProperty({ custom_type: [PassDto] })
   passes: PassDto[]
 
   constructor(passes: PassDto[]) {

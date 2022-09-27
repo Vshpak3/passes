@@ -1,4 +1,4 @@
-import { IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
@@ -6,25 +6,23 @@ import { MESSAGE_LENGTH } from '../constants/schema'
 
 export class SendMessageRequestDto {
   @Length(1, MESSAGE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   text: string
 
-  @IsUUID('all', { each: true })
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid[]' })
   contentIds: string[]
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   channelId: string
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   tipAmount: number
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   price?: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 }

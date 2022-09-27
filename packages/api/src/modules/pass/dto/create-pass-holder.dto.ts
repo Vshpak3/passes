@@ -1,13 +1,10 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 
 export class CreatePassHolderRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 }

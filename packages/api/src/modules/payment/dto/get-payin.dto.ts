@@ -1,26 +1,23 @@
-import { IsInt, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinDto } from './payin.dto'
 
 export class GetPayinsRequestDto {
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   offset: number
 
-  @IsInt()
   @Min(1)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   limit: number
 }
 
 export class GetPayinsResponseDto {
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   count: number
 
-  @DtoProperty({ type: [PayinDto] })
+  @DtoProperty({ custom_type: [PayinDto] })
   payins: PayinDto[]
 }

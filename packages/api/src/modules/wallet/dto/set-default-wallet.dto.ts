@@ -1,14 +1,10 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../enum/chain.enum'
 
 export class SetDefaultWalletRequestDto {
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   walletId: string
 }

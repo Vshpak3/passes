@@ -1,4 +1,4 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -7,27 +7,24 @@ import {
 } from '../../user/constants/schema'
 
 export class ListMemberDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   listMemberId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   username: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   displayName: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   follow?: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   constructor(listMember) {

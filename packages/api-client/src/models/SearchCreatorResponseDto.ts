@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CreatorInfoDto } from './CreatorInfoDto';
+import {
+    CreatorInfoDtoFromJSON,
+    CreatorInfoDtoFromJSONTyped,
+    CreatorInfoDtoToJSON,
+} from './CreatorInfoDto';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface SearchCreatorResponseDto {
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<CreatorInfoDto>}
      * @memberof SearchCreatorResponseDto
      */
-    creators: Array<string>;
+    creators: Array<CreatorInfoDto>;
 }
 
 /**
@@ -47,7 +54,7 @@ export function SearchCreatorResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'creators': json['creators'],
+        'creators': ((json['creators'] as Array<any>).map(CreatorInfoDtoFromJSON)),
     };
 }
 
@@ -60,7 +67,7 @@ export function SearchCreatorResponseDtoToJSON(value?: SearchCreatorResponseDto 
     }
     return {
         
-        'creators': value.creators,
+        'creators': ((value.creators as Array<any>).map(CreatorInfoDtoToJSON)),
     };
 }
 

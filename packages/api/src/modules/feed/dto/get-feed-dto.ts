@@ -10,10 +10,10 @@ export class GetFeedRequestDto extends PickType(PageRequestDto, [
 ]) {}
 
 export class GetFeedResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [PostDto] })
+  @DtoProperty({ custom_type: [PostDto] })
   posts: PostDto[]
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   count: number
 
   constructor(posts: PostDto[]) {

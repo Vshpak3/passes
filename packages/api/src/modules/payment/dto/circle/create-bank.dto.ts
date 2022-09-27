@@ -2,41 +2,41 @@ import { DtoProperty } from '../../../../web/dto.web'
 import { BillingDetailsDto } from './billing-details.dto'
 
 class CircleBankAddressDto {
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   bankName?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   city?: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   country: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   line1?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   line2?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   district?: string
 }
 
 export class CircleCreateBankRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   idempotencyKey: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   accountNumber?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   routingNumber?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   iban?: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: BillingDetailsDto })
   billingDetails: BillingDetailsDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleBankAddressDto })
   bankAddress: CircleBankAddressDto
 }

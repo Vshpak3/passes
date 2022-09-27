@@ -1,30 +1,27 @@
-import { IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscribeResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   subscriptionId: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: PayinMethodDto })
   payinMethod: PayinMethodDto
 }
 
 export class SubscribeRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passHolderId: string
 }

@@ -7,6 +7,6 @@ import { USER_DISPLAY_NAME_LENGTH } from '../constants/schema'
 // should figure out a better way around this
 export class UpdateDisplayNameRequestDto {
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName: string
 }

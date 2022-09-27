@@ -1,35 +1,29 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 import { CirclePaymentStatusEnum } from '../../enum/circle-payment.status.enum'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 
 export class CirclePaymentDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   type: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   amount: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto
 
-  @IsEnum(CirclePaymentStatusEnum)
-  @DtoProperty({ enum: CirclePaymentStatusEnum })
+  @DtoProperty({ custom_type: CirclePaymentStatusEnum })
   status: CirclePaymentStatusEnum
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   merchantId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   merchantWalletId: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   description?: string
 }

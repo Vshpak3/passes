@@ -1,5 +1,4 @@
 import { PickType } from '@nestjs/swagger'
-import { IsEnum, IsUUID } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -7,8 +6,7 @@ import { ChannelOrderTypeEnum } from '../enum/channel.order.enum'
 import { ChannelMemberDto } from './channel-member.dto'
 
 export class GetChannelRequestDto {
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   userId: string
 }
 
@@ -19,28 +17,27 @@ export class GetChannelsRequestDto extends PickType(PageRequestDto, [
   'search',
   'order',
 ]) {
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   recent?: Date
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   tip?: number
 
-  @IsEnum(ChannelOrderTypeEnum)
-  @DtoProperty({ enum: ChannelOrderTypeEnum })
+  @DtoProperty({ custom_type: ChannelOrderTypeEnum })
   orderType: ChannelOrderTypeEnum
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   unreadOnly: boolean
 }
 
 export class GetChannelsResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [ChannelMemberDto] })
+  @DtoProperty({ custom_type: [ChannelMemberDto] })
   channelMembers: ChannelMemberDto[]
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   tip?: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   recent?: Date
 
   constructor(

@@ -1,4 +1,4 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -9,34 +9,31 @@ import {
 import { COMMENT_TEXT_LENGTH } from '../constants/schema'
 
 export class CommentDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   commentId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   postId: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   commenterId: string
 
   @Length(1, COMMENT_TEXT_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   text: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   commenterUsername: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   commenterDisplayName: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   constructor(comment) {

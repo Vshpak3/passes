@@ -1,16 +1,12 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class CircleStatusResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   circleId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   status: string
 }

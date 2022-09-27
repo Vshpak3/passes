@@ -1,4 +1,4 @@
-import { IsEnum, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { SHA256_LENGTH } from '../constants/schema'
@@ -6,14 +6,13 @@ import { BlockedReasonEnum } from '../enum/blocked-reason.enum'
 
 export class PayinDataDto {
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
   @Length(1, SHA256_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   target?: string
 
-  @IsEnum(BlockedReasonEnum)
-  @DtoProperty({ enum: BlockedReasonEnum, optional: true })
+  @DtoProperty({ custom_type: BlockedReasonEnum, optional: true })
   blocked?: BlockedReasonEnum
 }

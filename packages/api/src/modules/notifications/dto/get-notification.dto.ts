@@ -1,4 +1,4 @@
-import { IsEnum, IsInt, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
@@ -7,23 +7,20 @@ import { NotificationDto } from './notification.dto'
 export class GetNotificationResponseDto extends NotificationDto {}
 
 export class GetNotificationsRequestDto {
-  @IsEnum(NotificationTypeEnum)
-  @DtoProperty({ enum: NotificationTypeEnum })
+  @DtoProperty({ custom_type: NotificationTypeEnum })
   type?: NotificationTypeEnum
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   offset: number
 
-  @IsInt()
   @Min(1)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   limit: number
 }
 
 export class GetNotificationsResponseDto {
-  @DtoProperty({ type: [NotificationDto] })
+  @DtoProperty({ custom_type: [NotificationDto] })
   notifications: NotificationDto[]
 
   constructor(notifications: NotificationDto[]) {

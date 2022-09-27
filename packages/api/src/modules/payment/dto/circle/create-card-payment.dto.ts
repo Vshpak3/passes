@@ -3,41 +3,41 @@ import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreatePaymentRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   idempotencyKey: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   amount: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   description?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   channel?: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleMetaDataDto })
   metadata: CircleMetaDataDto
 }
 
 export class CircleCreateCardPaymentRequestDto extends CircleCreatePaymentRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   verification = 'none'
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   autoCapture?: boolean
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   verificationSuccessUrl?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   verificationFailureUrl?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   keyId?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   encryptedData?: string
 }

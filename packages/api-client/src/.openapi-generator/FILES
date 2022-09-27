@@ -65,6 +65,7 @@ models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
+models/CreatorInfoDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
 models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
@@ -140,6 +141,7 @@ models/ImpersonateUserRequestDto.ts
 models/InitResetPasswordRequestDto.ts
 models/IsFollowingDto.ts
 models/IsPasswordUserResponseDto.ts
+models/ListDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MessageDto.ts
@@ -150,6 +152,7 @@ models/MetamaskCircleUSDCEntryResponseDto.ts
 models/MintPassRequestDto.ts
 models/MintPassResponseDto.ts
 models/NotificationDto.ts
+models/PaidMessageHistoryDto.ts
 models/PassDto.ts
 models/PassHolderDto.ts
 models/PayinDataDto.ts
@@ -160,6 +163,7 @@ models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/PostDto.ts
+models/PostHistoryDto.ts
 models/PurchaseMessageRequestDto.ts
 models/PurchasePostRequestDto.ts
 models/RawFacebookDeletionRequestDto.ts
@@ -180,6 +184,7 @@ models/SetPayoutMethodRequestDto.ts
 models/SubmitCreatorVerificationStepRequestDto.ts
 models/SubmitPersonaInquiryRequestDto.ts
 models/SubscriptionDto.ts
+models/TagDto.ts
 models/TipPostRequestDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateChargebackRequestDto.ts

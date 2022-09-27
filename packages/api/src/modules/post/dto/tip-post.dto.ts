@@ -1,18 +1,17 @@
-import { IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 import { MINIMUM_POST_TIP_AMOUNT } from '../post.service'
 
 export class TipPostRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   postId: string
 
   @Min(MINIMUM_POST_TIP_AMOUNT)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 }

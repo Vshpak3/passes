@@ -2,13 +2,13 @@ import { DtoProperty } from '../../../web/dto.web'
 import { PostDto } from './post.dto'
 
 export class GetFeedRequestDto {
-  @DtoProperty({ type: [PostDto] })
+  @DtoProperty({ custom_type: [PostDto] })
   posts: PostDto[]
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   count: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   cursor: string
 
   constructor(posts: PostDto[], cursor: string) {

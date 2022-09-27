@@ -1,15 +1,12 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 
 export class MintPassRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 }
 
 export class MintPassResponseDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   minted: boolean
 
   constructor(minted: boolean) {

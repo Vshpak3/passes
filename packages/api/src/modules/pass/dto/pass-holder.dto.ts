@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -10,42 +10,37 @@ import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { PassDto } from './pass.dto'
 
 export class PassHolderDto extends PassDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passHolderId: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   holderId?: string
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   walletId?: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   messages?: number | null
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   expiresAt?: Date
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   holderUsername?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   holderDisplayName?: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   address: string
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   tokenId?: string
 
   constructor(passHolder) {

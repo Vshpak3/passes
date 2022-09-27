@@ -4,6 +4,6 @@ import { DtoProperty } from '../../../web/dto.web'
 
 export class RefreshAuthTokenRequestDto {
   @IsString()
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   refreshToken: string
 }

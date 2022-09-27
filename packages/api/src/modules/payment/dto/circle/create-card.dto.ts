@@ -3,32 +3,32 @@ import { BillingDetailsDto } from './billing-details.dto'
 import { CircleMetaDataDto } from './metadata.dto'
 
 export class CircleCreateCardDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   idempotencyKey: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   keyId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   encryptedData: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: BillingDetailsDto })
   billingDetails: BillingDetailsDto
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expMonth: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   expYear: number
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleMetaDataDto })
   metadata: CircleMetaDataDto
 }
 
 export class CircleCreateCardAndExtraRequestDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleCreateCardDto })
   createCardDto: CircleCreateCardDto
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   cardNumber: string
 }

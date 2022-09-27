@@ -1,13 +1,9 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 
 export class AddListMembersRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   listId: string
 
-  @IsUUID('all', { each: true })
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid[]' })
   userIds: string[]
 }

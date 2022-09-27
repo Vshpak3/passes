@@ -7,6 +7,6 @@ export class GetPostsRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
 ]) {
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   scheduledOnly?: boolean
 }

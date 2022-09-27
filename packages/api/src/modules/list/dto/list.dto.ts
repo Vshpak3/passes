@@ -1,31 +1,28 @@
-import { IsEnum, IsInt, IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { LIST_NAME_LENGTH } from '../constants/schema'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 export class ListDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   listId: string
 
   @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   name: string
 
-  @IsEnum(ListTypeEnum)
-  @DtoProperty({ enum: ListTypeEnum })
+  @DtoProperty({ custom_type: ListTypeEnum })
   type: ListTypeEnum
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   count: number
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   updatedAt: Date
 
   constructor(list) {

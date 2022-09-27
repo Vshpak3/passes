@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PostHistoryDto } from './PostHistoryDto';
+import {
+    PostHistoryDtoFromJSON,
+    PostHistoryDtoFromJSONTyped,
+    PostHistoryDtoToJSON,
+} from './PostHistoryDto';
+
 /**
  * 
  * @export
@@ -21,10 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface GetPostHistoryResponseDto {
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<PostHistoryDto>}
      * @memberof GetPostHistoryResponseDto
      */
-    postHistories: Array<string>;
+    postHistories: Array<PostHistoryDto>;
 }
 
 /**
@@ -47,7 +54,7 @@ export function GetPostHistoryResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
-        'postHistories': json['postHistories'],
+        'postHistories': ((json['postHistories'] as Array<any>).map(PostHistoryDtoFromJSON)),
     };
 }
 
@@ -60,7 +67,7 @@ export function GetPostHistoryResponseDtoToJSON(value?: GetPostHistoryResponseDt
     }
     return {
         
-        'postHistories': value.postHistories,
+        'postHistories': ((value.postHistories as Array<any>).map(PostHistoryDtoToJSON)),
     };
 }
 

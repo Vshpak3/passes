@@ -1,22 +1,20 @@
-import { IsEnum, IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class CreatorEarningDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   amount: number
 
-  @IsEnum(EarningTypeEnum)
-  @DtoProperty({ enum: EarningTypeEnum })
+  @DtoProperty({ custom_type: EarningTypeEnum })
   type: EarningTypeEnum
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
   constructor(creatorEarning) {

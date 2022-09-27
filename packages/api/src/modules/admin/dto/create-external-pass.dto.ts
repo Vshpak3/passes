@@ -1,4 +1,4 @@
-import { IsEnum, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import {
@@ -10,14 +10,13 @@ import { AdminDto } from './admin.dto'
 
 export class CreateExternalPassRequestDto extends AdminDto {
   @Length(1, PASS_TITLE_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   title: string
 
   @Length(1, PASS_DESCRIPTION_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   description: string
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 }

@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class GetSignedUrlResponseDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   url: string
 }

@@ -1,26 +1,25 @@
-import { IsUUID, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 
 export class CreatorFeeDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   fiatRate?: number
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   fiatFlat?: number
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   cryptoRate?: number
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   cryptoFlat?: number
 
   constructor(creatorFee) {

@@ -1,16 +1,13 @@
-import { IsEnum } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class GetCreatorEarningsHistoryRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   start: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   end: Date
 
-  @IsEnum(EarningTypeEnum)
-  @DtoProperty({ enum: EarningTypeEnum })
+  @DtoProperty({ custom_type: EarningTypeEnum })
   type?: EarningTypeEnum
 }

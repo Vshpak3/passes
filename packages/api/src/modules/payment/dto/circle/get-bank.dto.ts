@@ -4,7 +4,7 @@ import { CircleBankDto } from './circle-bank.dto'
 export class GetCircleBankResponseDto extends CircleBankDto {}
 
 export class GetCircleBanksResponseDto {
-  @DtoProperty({ type: [CircleBankDto] })
+  @DtoProperty({ custom_type: [CircleBankDto] })
   banks: CircleBankDto[]
 
   constructor(banks: CircleBankDto[]) {

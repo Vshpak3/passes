@@ -1,22 +1,19 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { PostHistoryDto } from './post-history.dto'
 
 export class GetPostHistoryRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   postId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   start: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   end: Date
 }
 
 export class GetPostHistoryResponseDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: [PostHistoryDto] })
   postHistories: PostHistoryDto[]
 
   constructor(postHistories) {

@@ -1,4 +1,4 @@
-import { IsEnum, IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
@@ -7,14 +7,12 @@ import { AdminDto } from './admin.dto'
 
 export class ExternalPassAddressRequestDto extends AdminDto {
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   address: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   passId: string
 
-  @IsEnum(ChainEnum)
-  @DtoProperty({ enum: ChainEnum })
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 }

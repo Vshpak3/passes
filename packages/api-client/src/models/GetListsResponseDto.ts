@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ListDto } from './ListDto';
+import {
+    ListDtoFromJSON,
+    ListDtoFromJSONTyped,
+    ListDtoToJSON,
+} from './ListDto';
+
 /**
  * 
  * @export
@@ -39,10 +46,10 @@ export interface GetListsResponseDto {
     updatedAt?: Date;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<ListDto>}
      * @memberof GetListsResponseDto
      */
-    lists: Array<string>;
+    lists: Array<ListDto>;
     /**
      * 
      * @type {string}
@@ -75,7 +82,7 @@ export function GetListsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator:
         'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'lists': json['lists'],
+        'lists': ((json['lists'] as Array<any>).map(ListDtoFromJSON)),
         'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
@@ -92,7 +99,7 @@ export function GetListsResponseDtoToJSON(value?: GetListsResponseDto | null): a
         'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'lists': value.lists,
+        'lists': ((value.lists as Array<any>).map(ListDtoToJSON)),
         'name': value.name,
     };
 }

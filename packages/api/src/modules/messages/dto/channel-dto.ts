@@ -1,18 +1,17 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { STREAM_CHANNEL_ID_LENGTH } from '../constants/schema'
 
 export class ChannelDto {
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   channelId: string
 
   @Length(1, STREAM_CHANNEL_ID_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   streamChannelId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   recent: Date
 
   constructor(channel) {

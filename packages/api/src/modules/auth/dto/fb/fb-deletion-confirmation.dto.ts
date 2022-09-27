@@ -1,7 +1,7 @@
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class FacebookDeletionConfirmationDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   success: boolean
 
   constructor(success: boolean) {

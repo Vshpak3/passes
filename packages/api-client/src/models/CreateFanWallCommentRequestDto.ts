@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
+
 /**
  * 
  * @export
@@ -33,10 +40,10 @@ export interface CreateFanWallCommentRequestDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof CreateFanWallCommentRequestDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
 }
 
 /**
@@ -63,7 +70,7 @@ export function CreateFanWallCommentRequestDtoFromJSONTyped(json: any, ignoreDis
         
         'creatorId': json['creatorId'],
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
     };
 }
 
@@ -78,7 +85,7 @@ export function CreateFanWallCommentRequestDtoToJSON(value?: CreateFanWallCommen
         
         'creatorId': value.creatorId,
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
     };
 }
 

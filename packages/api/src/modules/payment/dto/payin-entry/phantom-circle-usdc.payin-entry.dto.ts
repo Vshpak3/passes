@@ -11,14 +11,14 @@ export class PhantomCircleUSDCEntryRequestDto extends PayinEntryRequestDto {}
 
 export class PhantomCircleUSDCEntryResponseDto extends PayinEntryResponseDto {
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   tokenAddress: string
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   depositAddress: string
 
   @Length(1, EXTERNAL_URL_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   networkUrl: string
 }

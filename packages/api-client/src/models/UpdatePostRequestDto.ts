@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
+
 /**
  * 
  * @export
@@ -27,10 +34,10 @@ export interface UpdatePostRequestDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof UpdatePostRequestDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
     /**
      * 
      * @type {number}
@@ -67,7 +74,7 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
     };
@@ -83,7 +90,7 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
     return {
         
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'price': value.price,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
     };

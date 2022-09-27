@@ -1,5 +1,4 @@
 import { PickType } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -10,28 +9,27 @@ export class GetMessageResponseDto extends MessageDto {}
 export class GetMessagesRequestDto extends PickType(PageRequestDto, [
   'lastId',
 ]) {
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   sentAt: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   dateLimit?: Date
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   channelId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   contentOnly: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   pending: boolean
 }
 
 export class GetMessagesResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [MessageDto] })
+  @DtoProperty({ custom_type: [MessageDto] })
   messages: MessageDto[]
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   sentAt: Date
 
   constructor(messages: MessageDto[]) {

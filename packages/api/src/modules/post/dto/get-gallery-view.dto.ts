@@ -2,10 +2,10 @@ import { DtoProperty } from '../../../web/dto.web'
 import { PostDto } from '../../post/dto/post.dto'
 
 export class GetGalleryViewDto {
-  @DtoProperty({ type: [PostDto] })
+  @DtoProperty({ custom_type: [PostDto] })
   paid: PostDto[]
 
-  @DtoProperty({ type: [PostDto] })
+  @DtoProperty({ custom_type: [PostDto] })
   unpaid: PostDto[]
 
   constructor(posts: PostDto[]) {

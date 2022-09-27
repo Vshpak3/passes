@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class RawFacebookDeletionRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   signed_request: string
 }

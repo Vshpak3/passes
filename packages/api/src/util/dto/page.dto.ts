@@ -1,25 +1,24 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../web/dto.web'
 
 export const MAX_SEARCH_LENGTH = 300
 
 export class PageRequestDto {
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   updatedAt?: Date
 
-  @IsUUID()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'uuid', optional: true })
   lastId?: string
 
   @Length(1, MAX_SEARCH_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   search?: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   order: 'desc' | 'asc'
 }
 
@@ -29,13 +28,12 @@ export const orderToSymbol = {
 }
 
 export class PageResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   lastId: string
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   updatedAt?: Date
 }

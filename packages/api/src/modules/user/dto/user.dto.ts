@@ -1,8 +1,6 @@
 import {
-  IsBoolean,
   IsEmail,
   IsPhoneNumber,
-  IsUUID,
   Length,
   Matches,
   Validate,
@@ -23,13 +21,12 @@ import {
 import { VALID_USERNAME_REGEX } from '../constants/username'
 
 export class UserDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
   @IsEmail()
   @Length(1, USER_EMAIL_LENGTH)
-  @DtoProperty({ forceLower: true })
+  @DtoProperty({ type: 'string', forceLower: true })
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
@@ -38,34 +35,33 @@ export class UserDto {
       'Username can only contain alphanumeric characters and underscores.',
   })
   @Validate(IsNotBlocklistedUsername)
-  @DtoProperty({ forceLower: true })
+  @DtoProperty({ type: 'string', forceLower: true })
   username: string
 
   // Sensitive fields (when viewing own profile)
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty({ forceLower: true })
+  @DtoProperty({ type: 'string', forceLower: true })
   legalFullName: string
 
   @Length(1, USER_COUNTRY_CODE_LENGTH)
   @Validate(IsValidCountryCode)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   countryCode: string
 
   @Validate(IsOnlyDate)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   birthday: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
-  @IsBoolean()
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   isCreator?: boolean
 
   @IsPhoneNumber()
   @Length(1, USER_PHONE_NUMBER_LENGTH)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   phoneNumber?: string
 
   constructor(userEntity) {

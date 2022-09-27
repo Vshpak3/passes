@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
+
 /**
  * 
  * @export
@@ -33,10 +40,10 @@ export interface CreateCommentRequestDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof CreateCommentRequestDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
 }
 
 /**
@@ -63,7 +70,7 @@ export function CreateCommentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'postId': json['postId'],
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
     };
 }
 
@@ -78,7 +85,7 @@ export function CreateCommentRequestDtoToJSON(value?: CreateCommentRequestDto | 
         
         'postId': value.postId,
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
     };
 }
 

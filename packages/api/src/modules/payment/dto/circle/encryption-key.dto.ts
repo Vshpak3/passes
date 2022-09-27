@@ -1,12 +1,9 @@
-import { IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class CircleEncryptionKeyResponseDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   keyId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   publicKey: string
 }

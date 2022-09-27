@@ -6,10 +6,10 @@ import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 
 export class GetSolNftResponseDto {
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   mintPubKey: string
 
   @Length(1, TRANSACTION_HASH_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   transactionHash: string
 }

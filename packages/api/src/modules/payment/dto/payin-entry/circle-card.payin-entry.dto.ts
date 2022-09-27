@@ -7,14 +7,14 @@ import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
 export class CircleCardPayinEntryRequestDto extends PayinEntryRequestDto {
   @Length(1, IP_ADDRESS_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   ip: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   sessionId: string
 }
 
 export class CircleCardPayinEntryResponseDto extends PayinEntryResponseDto {
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleStatusResponseDto })
   status: CircleStatusResponseDto
 }

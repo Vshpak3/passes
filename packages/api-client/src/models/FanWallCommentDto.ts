@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TagDto } from './TagDto';
+import {
+    TagDtoFromJSON,
+    TagDtoFromJSONTyped,
+    TagDtoToJSON,
+} from './TagDto';
+
 /**
  * 
  * @export
@@ -45,10 +52,10 @@ export interface FanWallCommentDto {
     text: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<TagDto>}
      * @memberof FanWallCommentDto
      */
-    tags: Array<string>;
+    tags: Array<TagDto>;
     /**
      * 
      * @type {string}
@@ -100,7 +107,7 @@ export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'creatorId': json['creatorId'],
         'commenterId': json['commenterId'],
         'text': json['text'],
-        'tags': json['tags'],
+        'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
         'createdAt': (new Date(json['createdAt'])),
@@ -120,7 +127,7 @@ export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
         'creatorId': value.creatorId,
         'commenterId': value.commenterId,
         'text': value.text,
-        'tags': value.tags,
+        'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
         'createdAt': (value.createdAt.toISOString()),

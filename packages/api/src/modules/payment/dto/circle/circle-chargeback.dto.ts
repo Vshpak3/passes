@@ -1,37 +1,31 @@
-import { IsEnum, IsUUID } from 'class-validator'
-
 import { DtoProperty } from '../../../../web/dto.web'
 import { CircleChargebackTypeEnum } from '../../enum/circle-chargeback.type.enum'
 import { CircleAmountDto } from './circle-utils.dto'
 
 export class CircleChargebackSettlementDto {
-  @IsEnum(CircleChargebackTypeEnum)
-  @DtoProperty({ enum: CircleChargebackTypeEnum })
+  @DtoProperty({ custom_type: CircleChargebackTypeEnum })
   type: CircleChargebackTypeEnum
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   chargebackAmount: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   fee: CircleAmountDto
 
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   description: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   settlementId: string
 }
 
 export class CircleChargebackDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   id: string
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   paymentId: string
 
-  @DtoProperty({ type: [CircleChargebackSettlementDto] })
+  @DtoProperty({ custom_type: [CircleChargebackSettlementDto] })
   history: CircleChargebackSettlementDto[]
 }

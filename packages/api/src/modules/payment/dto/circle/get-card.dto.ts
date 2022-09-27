@@ -4,7 +4,7 @@ import { CircleCardDto } from './circle-card.dto'
 export class GetCircleCardResponseDto extends CircleCardDto {}
 
 export class GetCircleCardsResponseDto {
-  @DtoProperty({ type: [CircleCardDto] })
+  @DtoProperty({ custom_type: [CircleCardDto] })
   cards: CircleCardDto[]
 
   constructor(cards: CircleCardDto[]) {

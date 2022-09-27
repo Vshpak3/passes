@@ -6,15 +6,15 @@ import {
 } from './circle-utils.dto'
 
 export class CircleCreateTransferRequestDto {
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   idempotencyKey: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleDestinationDto })
   destination: CircleDestinationDto
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: CircleAmountDto })
   amount: CircleAmountDto
 }

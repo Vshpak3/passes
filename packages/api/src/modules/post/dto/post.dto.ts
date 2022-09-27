@@ -1,4 +1,4 @@
-import { IsInt, IsUUID, Length, Min } from 'class-validator'
+import { Length, Min } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -10,79 +10,72 @@ import {
 import { POST_TEXT_LENGTH } from '../constants/schema'
 
 export class PostDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   postId: string
 
-  @DtoProperty()
+  @DtoProperty({ type: 'boolean' })
   paywall: boolean
 
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   userId: string
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   username: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   displayName: string
 
   @Length(1, POST_TEXT_LENGTH)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   text: string
 
-  @DtoProperty()
+  @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 
-  @DtoProperty({ type: [ContentDto], optional: true })
+  @DtoProperty({ custom_type: [ContentDto], optional: true })
   content?: ContentDto[]
 
-  @IsUUID('all', { each: true })
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid[]' })
   passIds: string[]
 
-  @IsInt()
-  @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   numLikes: number
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   numComments: number
 
-  @IsInt()
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   numPurchases: number
 
   @Min(0)
-  @DtoProperty()
+  @DtoProperty({ type: 'number' })
   earningsPurchases: number
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'boolean', optional: true })
   isLiked?: boolean
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  @DtoProperty()
+  @DtoProperty({ type: 'date' })
   updatedAt: Date
 
-  @DtoProperty({ optional: true })
-  scheduledAt?: string
+  @DtoProperty({ type: 'date', optional: true })
+  scheduledAt?: Date
 
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'date', optional: true })
   expiresAt?: Date
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'string', optional: true })
   price?: string
 
   @Min(0)
-  @DtoProperty({ optional: true })
+  @DtoProperty({ type: 'number', optional: true })
   totalTipAmount?: number
 
   constructor(post, paywall, isCreator, content?: ContentDto[]) {

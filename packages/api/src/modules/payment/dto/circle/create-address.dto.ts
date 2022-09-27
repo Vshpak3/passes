@@ -1,17 +1,16 @@
-import { IsUUID, Length } from 'class-validator'
+import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
 
 export class CircleCreateAddressRequestDto {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   idempotencyKey: string
 
   @Length(3, 3)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   currency: string
 
   @Length(3, 5)
-  @DtoProperty()
+  @DtoProperty({ type: 'string' })
   chain: string
 }

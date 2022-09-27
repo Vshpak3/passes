@@ -1,5 +1,4 @@
 import { PickType } from '@nestjs/swagger'
-import { IsUUID } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -9,13 +8,12 @@ export class GetCommentsForPostRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
 ]) {
-  @IsUUID()
-  @DtoProperty()
+  @DtoProperty({ type: 'uuid' })
   postId: string
 }
 
 export class GetCommentsForPostResponseDto extends PageResponseDto {
-  @DtoProperty({ type: [CommentDto] })
+  @DtoProperty({ custom_type: [CommentDto] })
   comments: CommentDto[]
 
   constructor(comments: CommentDto[]) {
