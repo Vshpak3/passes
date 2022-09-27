@@ -64,11 +64,11 @@ export class UserController {
     responseDesc: 'A username was checked for validity',
     allowUnauthorizedRequest: true,
   })
-  @Get('username/validate/:username')
-  async validateUsername(
-    @Param('username') username: string,
+  @Post('username/validate')
+  async isUsernameTaken(
+    @Body() checkUsernameDto: UpdateUsernameRequestDto,
   ): Promise<boolean> {
-    return !(await this.userService.isUsernameTaken(username))
+    return await this.userService.isUsernameTaken(checkUsernameDto.username)
   }
 
   @ApiEndpoint({
@@ -121,7 +121,7 @@ export class UserController {
     summary: 'Get user id from username',
     responseStatus: HttpStatus.OK,
     responseType: String,
-    responseDesc: 'User id retreieved',
+    responseDesc: 'User id retrieved',
   })
   @Get('username/:username')
   async getUserId(@Param('username') username: string): Promise<string> {
@@ -132,7 +132,7 @@ export class UserController {
     summary: 'Get if user uses a password',
     responseStatus: HttpStatus.OK,
     responseType: IsPasswordUserResponseDto,
-    responseDesc: 'If user uses a password retreieved',
+    responseDesc: 'If user uses a password retrieved',
   })
   @Get('is-password')
   async isPasswordUser(

@@ -38,6 +38,10 @@ export interface GetUserIdRequest {
     username: string;
 }
 
+export interface IsUsernameTakenRequest {
+    updateUsernameRequestDto: UpdateUsernameRequestDto;
+}
+
 export interface SearchCreatorByUsernameRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
 }
@@ -48,10 +52,6 @@ export interface SetDisplayNameRequest {
 
 export interface SetUsernameRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
-}
-
-export interface ValidateUsernameRequest {
-    username: string;
 }
 
 /**
@@ -184,6 +184,39 @@ export class UserApi extends runtime.BaseAPI {
      */
     async isPasswordUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<IsPasswordUserResponseDto> {
         const response = await this.isPasswordUserRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Validates whether a username is available
+     */
+    async isUsernameTakenRaw(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.updateUsernameRequestDto === null || requestParameters.updateUsernameRequestDto === undefined) {
+            throw new runtime.RequiredError('updateUsernameRequestDto','Required parameter requestParameters.updateUsernameRequestDto was null or undefined when calling isUsernameTaken.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/user/username/validate`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUsernameRequestDtoToJSON(requestParameters.updateUsernameRequestDto),
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Validates whether a username is available
+     */
+    async isUsernameTaken(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.isUsernameTakenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -327,36 +360,6 @@ export class UserApi extends runtime.BaseAPI {
      */
     async setUsername(requestParameters: SetUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.setUsernameRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Validates whether a username is available
-     */
-    async validateUsernameRaw(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling validateUsername.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/api/user/username/validate/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Validates whether a username is available
-     */
-    async validateUsername(requestParameters: ValidateUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
-        const response = await this.validateUsernameRaw(requestParameters, initOverrides);
-        return await response.value();
     }
 
 }
