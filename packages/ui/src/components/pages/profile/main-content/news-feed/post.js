@@ -5,6 +5,7 @@ import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
+import PinIcon from "public/icons/post-pinned-inactive.svg"
 // import PinnedActive from "public/icons/post-pinned-active.svg"
 // import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
 import { Button, PostUnlockButton, Text } from "src/components/atoms"
+import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import {
   BlockModal,
   CustomMentionEditor,
@@ -30,15 +32,23 @@ const TipsModal = dynamic(() => import("src/components/organisms/TipsModal"), {
   ssr: false
 })
 
+const PostViewModal = dynamic(
+  () => import("src/components/organisms/post/ViewModal"),
+  {
+    ssr: false
+  }
+)
+
 import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 
 import { PostDropdown } from "./post-dropdown"
 
-export const Post = ({ profile, post, ownsProfile }) => {
+export const Post = ({ profile, post }) => {
   const [postUnlocked, setPostUnlocked] = useState(!post?.locked)
   const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
+  const [currentPost, setCurrentPost] = useState(null)
 
   const getDropdownOptions = [
     {
@@ -52,86 +62,100 @@ export const Post = ({ profile, post, ownsProfile }) => {
   ]
 
   return (
-    //this is the rounded container
-    <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
-      <PostProfileAvatar
-        post={post}
-        profile={profile}
-        postPinned={postPinned}
-        setPostPinned={setPostPinned}
-        dropdownItems={getDropdownOptions}
-      />
-      <BlockModal
-        isOpen={userBlockModal}
-        setOpen={setUserBlockModal}
-        userId={profile.userId}
-      />
-      <ReportModal
-        isOpen={userReportModal}
-        setOpen={setUserReportModal}
-        userId={profile.userId}
-      />
-
-      <PostTextContent post={post} />
-      {post.fundraiser ? (
-        <FundraiserMedia images={post.content} />
-      ) : (
-        <LockedMedia
-          post={post}
-          postUnlocked={postUnlocked}
-          setPostUnlocked={setPostUnlocked}
+    <>
+      {currentPost && (
+        <PostViewModal
+          post={currentPost}
+          isOpen
+          onClose={() => setCurrentPost(null)}
+          view={currentPost.fundraiser ? "creator" : "fan"}
         />
       )}
-      <PostEngagement
-        post={post}
-        postUnlocked={postUnlocked}
-        ownsProfile={ownsProfile}
-      />
-      {post.fundraiser && <FundraiserTab post={post} />}
-    </FormContainer>
+      <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
+        <PostProfileAvatar
+          post={post}
+          profile={profile}
+          postPinned={postPinned}
+          setPostPinned={setPostPinned}
+          dropdownItems={getDropdownOptions}
+        />
+        <BlockModal
+          isOpen={userBlockModal}
+          setOpen={setUserBlockModal}
+          userId={profile.userId}
+        />
+        <ReportModal
+          isOpen={userReportModal}
+          setOpen={setUserReportModal}
+          userId={profile.userId}
+        />
+
+        <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
+          <PostTextContent post={post} />
+        </div>
+        {post.fundraiser ? (
+          <FundraiserMedia images={post.content} />
+        ) : (
+          <LockedMedia
+            post={post}
+            postUnlocked={postUnlocked}
+            setPostUnlocked={setPostUnlocked}
+          />
+        )}
+        <PostEngagement post={post} postUnlocked={postUnlocked} />
+        {post.fundraiser && <FundraiserTab post={post} />}
+      </FormContainer>
+    </>
   )
 }
 
-export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => (
-  <div className="flex w-full items-center justify-between">
-    <div className="flex items-center space-x-4">
-      {profile.profileImageUrl ? (
-        <img // eslint-disable-line @next/next/no-img-element
-          className="h-12 w-12 rounded-full object-cover"
-          src={profile.profileImageUrl || ""}
-          alt={profile.fullName}
-        />
-      ) : (
-        <div className="h-12 w-12 rounded-full bg-passes-primary-color">
-          <div className="absolute flex h-12 w-12 items-center justify-center uppercase">
-            {profile.fullName && profile.fullName[0]}
+export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => {
+  return (
+    <>
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {profile.profileImageUrl ? (
+            <img // eslint-disable-line @next/next/no-img-element
+              className="h-12 w-12 rounded-full object-cover"
+              src={profile.profileImageUrl || ""}
+              alt={profile.fullName}
+            />
+          ) : (
+            <div className="h-12 w-12 rounded-full bg-passes-primary-color">
+              <div className="absolute flex h-12 w-12 items-center justify-center uppercase">
+                {profile.fullName && profile.fullName[0]}
+              </div>
+            </div>
+          )}
+          <div className="space-y-1 font-medium dark:text-white">
+            <div className="flex items-center gap-[6px]">
+              <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+                {profile.fullName}
+              </span>
+              <span className="flex items-center">
+                <VerifiedSmall />
+              </span>
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {profile.username}
+            </div>
           </div>
         </div>
-      )}
-      <div className="space-y-1 font-medium dark:text-white">
-        <div className="flex items-center gap-[6px]">
-          <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-            {profile.fullName}
-          </span>
-          <span className="flex items-center">
-            <VerifiedSmall />
-          </span>
-        </div>
-        <div className="text-sm text-gray-500 dark:text-gray-400">
-          {profile.username}
-        </div>
-      </div>
-    </div>
-    <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
-      <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
-        <TimeAgo
-          className="uppercase text-gray-300/60"
-          date={post.createdAt ? post.createdAt : post.date}
-          minPeriod={30}
-        />
-      </div>
-      <div className="flex items-center gap-[15px]">
-        {/* <div
+        <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
+          <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
+            <TimeAgo
+              className="uppercase text-gray-300/60"
+              date={post.createdAt ? post.createdAt : post.date}
+              minPeriod={30}
+            />
+          </div>
+          <PostStaticsButton />
+
+          <button className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/10">
+            <PinIcon />
+          </button>
+          <div className="flex items-center gap-[15px]">
+            {/* <div
           onClick={() => setPostPinned(!postPinned)}
           className={classNames(
             postPinned ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]" : "",
@@ -145,13 +169,15 @@ export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => (
           )}
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
-        <div>
-          <PostDropdown post={post} items={dropdownItems} />
+            <div>
+              <PostDropdown post={post} items={dropdownItems} />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-)
+    </>
+  )
+}
 
 export const PostTextContent = ({ post }) => (
   <div className="flex flex-col items-start">
