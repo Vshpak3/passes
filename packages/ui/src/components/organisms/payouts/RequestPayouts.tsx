@@ -1,12 +1,13 @@
 import { Menu, Transition } from "@headlessui/react"
 import {
   CreatorSettingsApi,
+  CreatorStatsApi,
   PaymentApi,
   UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
 } from "@passes/api-client"
 import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down-icon.svg"
-import { Fragment, useCallback, useEffect } from "react"
+import { Fragment, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
@@ -24,6 +25,7 @@ const payoutFrequencyOptions = [
 ]
 
 const RequestPayouts = () => {
+  const [balance, setBalance] = useState(0)
   const {
     register,
     getValues,
@@ -32,10 +34,10 @@ const RequestPayouts = () => {
     formState: { errors }
   } = useForm()
 
-  const fetchAutomaticPayoutSchedule = useCallback(async () => {
-    const api = new CreatorSettingsApi()
-    const data = await api.getCreatorSettings()
-    console.log(data, "fetchAutomaticPayoutSchedule")
+  const fetchCreatorBalance = useCallback(async () => {
+    const api = new CreatorStatsApi()
+    const data = await api.getBalance()
+    setBalance(data.amount)
   }, [])
 
   const onManualPayoutClick = useCallback(async () => {
@@ -48,18 +50,17 @@ const RequestPayouts = () => {
   }, [])
 
   useEffect(() => {
-    fetchAutomaticPayoutSchedule()
-  }, [fetchAutomaticPayoutSchedule])
+    fetchCreatorBalance()
+  }, [fetchCreatorBalance])
 
   const onScheduleSave = useCallback(async () => {
     const api = new CreatorSettingsApi()
     try {
-      const data = await api.updateCreatorSettings({
+      await api.updateCreatorSettings({
         updateCreatorSettingsRequestDto: {
           payoutFrequency: getValues().payoutFrequency
         }
       })
-      console.log(data, "fetchAutomaticPayoutSchedule")
     } catch (error: any) {
       toast(error)
     }
@@ -69,11 +70,11 @@ const RequestPayouts = () => {
     <div>
       <div className="mb-5 text-[24px] font-[700]">Request Payouts</div>
       <div className="flex flex-col gap-5 md:flex-row">
-        <div className="flex-[0.2] rounded-[20px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50  to-[#441E25] p-5">
+        <div className="min-w-[200px] flex-[0.2] rounded-[20px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50  to-[#441E25] p-5">
           <div className="mb-4 text-[16px] opacity-[50%]">
             Balance Available
           </div>
-          <div className="text-[28px] font-[700]">$2,001.89</div>
+          <div className="text-[28px] font-[700]">${balance ?? "0"}</div>
         </div>
         <div className=" ">
           <div className="mb-[15px] text-[16px] font-[500] opacity-[0.5]">
