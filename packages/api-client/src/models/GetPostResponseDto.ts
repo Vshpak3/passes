@@ -76,6 +76,12 @@ export interface GetPostResponseDto {
     content?: Array<ContentDto>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof GetPostResponseDto
+     */
+    passIds: Array<string>;
+    /**
+     * 
      * @type {number}
      * @memberof GetPostResponseDto
      */
@@ -154,6 +160,7 @@ export function instanceOfGetPostResponseDto(value: object): boolean {
     isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "passIds" in value;
     isInstance = isInstance && "numLikes" in value;
     isInstance = isInstance && "numComments" in value;
     isInstance = isInstance && "numPurchases" in value;
@@ -182,6 +189,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'text': json['text'],
         'tags': json['tags'],
         'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
+        'passIds': json['passIds'],
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
         'numPurchases': json['numPurchases'],
@@ -213,6 +221,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'text': value.text,
         'tags': value.tags,
         'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
+        'passIds': value.passIds,
         'numLikes': value.numLikes,
         'numComments': value.numComments,
         'numPurchases': value.numPurchases,

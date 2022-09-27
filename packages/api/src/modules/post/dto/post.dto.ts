@@ -39,6 +39,10 @@ export class PostDto {
   @DtoProperty({ type: [ContentDto], optional: true })
   content?: ContentDto[]
 
+  @IsUUID('all', { each: true })
+  @DtoProperty()
+  passIds: string[]
+
   @IsInt()
   @Min(0)
   @DtoProperty()
@@ -97,6 +101,7 @@ export class PostDto {
       this.createdAt = post.created_at
       this.paywall = paywall
       this.tags = JSON.parse(post.tags)
+      this.passIds = JSON.parse(post.passIds)
       if (isCreator) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount
