@@ -11,17 +11,13 @@ function SidebarChildItem({ subItem, isActive, setActive }) {
       href={subItem.href}
       as={subItem.href}
       onClick={() => setActive(subItem.id)}
-      className={classNames(
-        isActive
-          ? "rounded-[56px] bg-[#FFFEFF]/10"
-          : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        "group ml-10 hidden cursor-pointer items-center py-[10px] px-[26px] sidebar-collapse:inline-block"
-      )}
     >
       <span
         className={classNames(
-          isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          "group hidden cursor-pointer items-center pb-2 text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          isActive
+            ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 py-[10px] px-[26px]"
+            : "text-[#eeedef]/50 hover:text-white",
+          "group mb-[19px] hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         {subItem.name}
