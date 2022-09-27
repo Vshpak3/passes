@@ -272,13 +272,12 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               Add
             </button>
             <button
-              disabled={fanSelectionList.length === 0}
+              disabled={listName.trim().length === 0}
               className={classNames({
                 "duration-all transition-400 rounded-[50px] py-[10px] px-[30px] text-base font-medium text-white":
                   true,
-                "cursor-not-allowed bg-slate-600":
-                  fanSelectionList.length === 0,
-                "cursor-pointer bg-passes-pink-100": fanSelectionList.length > 0
+                "cursor-not-allowed bg-slate-600": listName.trim().length === 0,
+                "cursor-pointer bg-passes-pink-100": listName.trim().length > 0
               })}
               onClick={handleCreateNewList}
             >
