@@ -40,16 +40,16 @@ export interface UpdatePostRequestDto {
     tags: Array<TagDto>;
     /**
      * 
-     * @type {number}
-     * @memberof UpdatePostRequestDto
-     */
-    price?: number;
-    /**
-     * 
      * @type {Date}
      * @memberof UpdatePostRequestDto
      */
     expiresAt?: Date;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdatePostRequestDto
+     */
+    price?: number;
 }
 
 /**
@@ -75,8 +75,8 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
-        'price': !exists(json, 'price') ? undefined : json['price'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
 
@@ -91,8 +91,8 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
         
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
-        'price': value.price,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'price': value.price,
     };
 }
 

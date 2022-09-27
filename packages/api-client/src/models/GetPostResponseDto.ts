@@ -142,10 +142,10 @@ export interface GetPostResponseDto {
     expiresAt?: Date;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof GetPostResponseDto
      */
-    price?: string;
+    price?: number;
     /**
      * 
      * @type {number}

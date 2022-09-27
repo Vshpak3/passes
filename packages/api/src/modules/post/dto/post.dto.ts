@@ -1,4 +1,4 @@
-import { Length, Min } from 'class-validator'
+import { IsArray, Length, Min } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -31,6 +31,7 @@ export class PostDto {
   @DtoProperty({ type: 'string' })
   text: string
 
+  @IsArray()
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 
@@ -71,8 +72,8 @@ export class PostDto {
   expiresAt?: Date
 
   @Min(0)
-  @DtoProperty({ type: 'string', optional: true })
-  price?: string
+  @DtoProperty({ type: 'number', optional: true })
+  price?: number
 
   @Min(0)
   @DtoProperty({ type: 'number', optional: true })

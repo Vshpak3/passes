@@ -142,10 +142,10 @@ export interface PostDto {
     expiresAt?: Date;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof PostDto
      */
-    price?: string;
+    price?: number;
     /**
      * 
      * @type {number}

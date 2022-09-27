@@ -1,7 +1,8 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger'
-import { Expose, Transform } from 'class-transformer'
+import { Expose, Transform, Type } from 'class-transformer'
 import {
+  IsArray,
   IsBoolean,
   IsDateString,
   IsEnum,
@@ -47,6 +48,7 @@ export interface DtoOptions {
   forceLower?: boolean
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function DtoProperty(options: DtoOptions) {
   const decorators: Array<PropertyDecorator> = [Expose()]
 
@@ -59,23 +61,32 @@ export function DtoProperty(options: DtoOptions) {
     throw new Error('Cannot set both type and custom_type')
   }
 
-  // Adds validation for the provided type
+  // Add validation if using a non-custom type
   if (options.type !== undefined && options.type !== 'any') {
     const decorator = decoratorMap[options.type.replace('[]', '')]
-    const args = options.type.endsWith('[]') ? ['all', { each: true }] : []
-    decorators.push(decorator(...args))
+    const isArray = options.type.endsWith('[]')
+    if (isArray) {
+      decorators.push(IsArray())
+    }
+    decorators.push(decorator('all', { each: isArray }))
   }
 
-  // Adds validation for the provided custom type
+  // Add validation for the provided custom type
   if (options.custom_type !== undefined) {
-    if (isEnum(options.custom_type)) {
+    const type = options.custom_type
+    const isArray = Array.isArray(type)
+    if (isArray) {
+      decorators.push(IsArray())
+    }
+    if (isEnum(type)) {
       // Validate as an enum if an enum is provided
-      decorators.push(IsEnum(options.custom_type))
-      apiProperty.enum = options.custom_type
+      decorators.push(IsEnum(type, { each: isArray }))
+      apiProperty.enum = type
     } else {
       // Validate nested objects if a type is provided
-      decorators.push(ValidateNested())
-      apiProperty.type = options.custom_type
+      decorators.push(ValidateNested({ each: isArray }))
+      decorators.push(Type(() => (isArray ? type[0] : type)))
+      apiProperty.type = type
     }
   }
 

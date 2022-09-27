@@ -43,19 +43,13 @@ export interface CreatePostRequestDto {
      * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
-    contentIds: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CreatePostRequestDto
-     */
     passIds: Array<string>;
     /**
      * 
-     * @type {number}
+     * @type {Date}
      * @memberof CreatePostRequestDto
      */
-    price?: number;
+    scheduledAt?: Date;
     /**
      * 
      * @type {Date}
@@ -64,10 +58,16 @@ export interface CreatePostRequestDto {
     expiresAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {number}
      * @memberof CreatePostRequestDto
      */
-    scheduledAt?: Date;
+    price?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreatePostRequestDto
+     */
+    contentIds: Array<string>;
 }
 
 /**
@@ -77,8 +77,8 @@ export function instanceOfCreatePostRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "passIds" in value;
+    isInstance = isInstance && "contentIds" in value;
 
     return isInstance;
 }
@@ -95,11 +95,11 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
-        'contentIds': json['contentIds'],
         'passIds': json['passIds'],
-        'price': !exists(json, 'price') ? undefined : json['price'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'price': !exists(json, 'price') ? undefined : json['price'],
+        'contentIds': json['contentIds'],
     };
 }
 
@@ -114,11 +114,11 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
-        'contentIds': value.contentIds,
         'passIds': value.passIds,
-        'price': value.price,
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
+        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'price': value.price,
+        'contentIds': value.contentIds,
     };
 }
 
