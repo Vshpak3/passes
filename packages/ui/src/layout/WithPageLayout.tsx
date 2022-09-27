@@ -1,5 +1,6 @@
 import React from "react"
 
+import { MainContextProvider } from "../context/MainContext"
 import { isProd } from "../helpers/env"
 import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
@@ -14,17 +15,19 @@ export const withPageLayout = (
 ) => {
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
-      <Sidebar />
-      <main className="w-full bg-[#000]">
-        {options.header && (
-          <div className="cover-image h-[300px] pr-10 pt-4">
-            <CreatorSearchBar />
+      <MainContextProvider>
+        <Sidebar />
+        <main className="w-full bg-[#000]">
+          {options.header && (
+            <div className="cover-image h-[300px] pr-10 pt-4">
+              <CreatorSearchBar />
+            </div>
+          )}
+          <div className="flex shrink-0 flex-col">
+            <Page {...props} ref={ref} />
           </div>
-        )}
-        <div className="flex shrink-0 flex-col">
-          <Page {...props} ref={ref} />
-        </div>
-      </main>
+        </main>
+      </MainContextProvider>
     </div>
   ))
   WithPageLayout.displayName = `WithPageLayout(${getComponentName(Page)})`

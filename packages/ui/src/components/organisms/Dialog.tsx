@@ -12,6 +12,7 @@ type DialogProps = {
   children?: ReactNode
   className?: string
   media?: boolean
+  onTriggerClick?: () => void
 }
 
 const Dialog = ({
@@ -23,7 +24,8 @@ const Dialog = ({
   footer,
   className,
   media,
-  children
+  children,
+  onTriggerClick
 }: DialogProps) => {
   const [isOpen, setIsOpen] = useState(open)
 
@@ -38,7 +40,13 @@ const Dialog = ({
 
   return (
     <>
-      <button className={triggerClassName} onClick={() => setIsOpen(true)}>
+      <button
+        className={triggerClassName}
+        onClick={() => {
+          setIsOpen(true)
+          onTriggerClick && onTriggerClick()
+        }}
+      >
         {trigger}
       </button>
       <Transition appear show={isOpen} as={Fragment}>

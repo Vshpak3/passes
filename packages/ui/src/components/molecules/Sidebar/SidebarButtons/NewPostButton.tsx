@@ -9,6 +9,7 @@ import { Button } from "../../../atoms"
 const NewPostButton = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const { createPost } = useCreatePost()
+
   const handleCreatePost = (values: CreatePostValues) => {
     createPost(values)
     setIsNewPostModalOpen(false)
@@ -39,7 +40,7 @@ const NewPostButton = () => {
       <NewPost
         passes={[]}
         createPost={handleCreatePost}
-        placeholder="What’s on your mind?"
+        placeholder="What's on your mind?"
       />
     </NewPostDialog>
   )
