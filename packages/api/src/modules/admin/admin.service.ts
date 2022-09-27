@@ -38,6 +38,7 @@ const ADMIN_EMAIL = '@passes.com'
 
 @Injectable()
 export class AdminService {
+  private env: string
   private secret: string
 
   constructor(
@@ -54,10 +55,15 @@ export class AdminService {
     private readonly paymentService: PaymentService,
   ) {
     this.secret = this.configService.get('admin.secret') as string
+    this.env = this.configService.get('infra.env') as string
   }
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {
     const reqUser = await this.userService.findOne(id)
+    // Skip admin check in local development
+    if (this.env === 'dev') {
+      return reqUser
+    }
     if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
       throw new BadRequestException('Invalid request')
     }
