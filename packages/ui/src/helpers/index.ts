@@ -1,5 +1,6 @@
 import classNames from "./classNames"
 import ContentService from "./content"
+import { downloadFile } from "./downloadFile"
 import {
   compactNumberFormatter,
   formatCurrency,
@@ -12,6 +13,7 @@ export {
   classNames,
   compactNumberFormatter,
   ContentService,
+  downloadFile,
   encrypt,
   formatCurrency,
   getFormattedDate,

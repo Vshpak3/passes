@@ -15,6 +15,8 @@ import {
   FormInput,
   PassesPinkButton
 } from "src/components/atoms"
+import DownloadW9FormButton from "src/components/atoms/DownloadW9FormButton"
+import UploadW9FormButton from "src/components/atoms/UploadW9FormButton"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
@@ -92,30 +94,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             <div className="text-[#b3bee7] opacity-[0.6]">
               You will be able to edit it in the settings later.
             </div>
-            <div className="">
-              <Button
-                variant="primary"
-                style={{
-                  background: "rgba(255, 254, 255, 0.15)",
-                  fontWeight: "bold",
-                  width: "100%"
-                }}
-              >
-                Download W9 Form
-              </Button>
-            </div>
-            <div className="font-bold">
-              <Button
-                variant="primary"
-                style={{
-                  background: "rgba(255, 254, 255, 0.15)",
-                  fontWeight: "bold",
-                  width: "100%"
-                }}
-              >
-                Upload W9 Form
-              </Button>
-            </div>
+            <DownloadW9FormButton />
+            <UploadW9FormButton />
           </div>
         </div>
         <form
