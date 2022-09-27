@@ -6,7 +6,10 @@ const DownloadW9FormButton = () => {
   return (
     <Button
       onClick={() =>
-        downloadFile("https://cdn.passes-staging.com/assets/w9.pdf", "w9.pdf")
+        downloadFile(
+          `${process.env.NEXT_PUBLIC_CDN_URL}/assets/w9.pdf`,
+          "w9.pdf"
+        )
       }
       variant="primary"
       style={{

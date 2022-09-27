@@ -1,4 +1,4 @@
-import { UserApi } from "@passes/api-client"
+import { CreatorInfoDto, UserApi } from "@passes/api-client"
 import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks"
@@ -8,7 +8,7 @@ const DEBOUNCE_DELAY = 300
 
 const useCreatorSearch = () => {
   const [searchValue, setSearchValue] = useState("")
-  const [creatorResults, setCreatorResults] = useState<string[]>([])
+  const [creatorResults, setCreatorResults] = useState<CreatorInfoDto[]>([])
   const [resultsVisible, setResultsVisible] = useState(false)
   const searchRef = useRef(null)
 
