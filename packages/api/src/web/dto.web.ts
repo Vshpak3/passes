@@ -49,61 +49,64 @@ export interface DtoOptions {
   forceLower?: boolean
   nullable?: boolean
 }
-
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function DtoProperty(options: DtoOptions) {
   const decorators: Array<PropertyDecorator> = [Expose()]
+  const apiProperties: ApiPropertyOptions = {}
 
-  const apiProperty: ApiPropertyOptions = {}
+  const general_type = options.type
+  const custom_type = options.custom_type
 
   // Validation on passed in types
-  if (options.type === undefined && options.custom_type === undefined) {
+  if (general_type === undefined && custom_type === undefined) {
     throw new Error('Either type or custom_type must be set')
-  } else if (options.type !== undefined && options.custom_type !== undefined) {
+  } else if (general_type !== undefined && custom_type !== undefined) {
     throw new Error('Cannot set both type and custom_type')
   }
 
   // Add validation if using a non-custom type
-  if (options.type !== undefined && options.type !== 'any') {
-    const decorator = decoratorMap[options.type.replace('[]', '')]
-    const isArray = options.type.endsWith('[]')
+  if (general_type !== undefined && general_type !== 'any') {
+    const type = general_type.replace('[]', '')
+    const isArray = general_type.endsWith('[]')
     if (isArray) {
       decorators.push(IsArray())
-      apiProperty.isArray = true
+      apiProperties.isArray = true
     }
-    decorators.push(decorator('all', { each: isArray }))
-    apiProperty.type = options.type.replace('[]', '').replace('uuid', 'string')
+    decorators.push(decoratorMap[type]('all', { each: isArray }))
+    apiProperties.type = type
+    if (type === 'uuid') {
+      apiProperties.type = 'string'
+      apiProperties.format = 'uuid'
+    }
   }
 
   // Add validation for the provided custom type
-  if (options.custom_type !== undefined) {
-    const type = options.custom_type
-    const isArray = Array.isArray(type)
+  // TODO: consider arrays of enums
+  if (custom_type !== undefined) {
+    const isArray = Array.isArray(custom_type)
     if (isArray) {
       decorators.push(IsArray())
     }
-    if (isEnum(type)) {
-      // Validate as an enum if an enum is provided
-      decorators.push(IsEnum(type, { each: isArray }))
-      apiProperty.enum = type
+    if (isEnum(custom_type)) {
+      decorators.push(IsEnum(custom_type, { each: isArray }))
+      apiProperties.enum = custom_type
     } else {
-      // Validate nested objects if a type is provided
       decorators.push(ValidateNested({ each: isArray }))
-      decorators.push(Type(() => (isArray ? type[0] : type)))
-      apiProperty.type = type
+      decorators.push(Type(() => (isArray ? custom_type[0] : custom_type)))
+      apiProperties.type = custom_type
     }
   }
 
   // Check for the nullable decorator
   if (options.nullable) {
     decorators.push(ValidateIf((_object, value) => value !== null))
-    apiProperty.nullable = true
+    apiProperties.nullable = true
   }
 
   // Check for the optional decorator
   if (options.optional) {
     decorators.push(IsOptional())
-    apiProperty.required = false
+    apiProperties.required = false
   }
 
   // Check for lower case option
@@ -111,7 +114,7 @@ export function DtoProperty(options: DtoOptions) {
     decorators.push(Transform((s) => s.value?.toLowerCase()))
   }
 
-  decorators.push(ApiProperty(apiProperty))
+  decorators.push(ApiProperty(apiProperties))
 
   return applyDecorators(...decorators)
 }
