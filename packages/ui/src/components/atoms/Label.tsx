@@ -27,9 +27,9 @@ const Label = ({
     <label
       htmlFor={name}
       className={classNames(
-        "block text-sm font-medium",
+        "block ",
         errors[name] ? "text-red-500" : "text-white",
-        className ?? ""
+        className ?? "text-sm font-medium"
       )}
     >
       {label} {options.required && "*"}

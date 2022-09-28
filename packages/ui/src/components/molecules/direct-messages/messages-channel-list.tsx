@@ -8,7 +8,7 @@ interface IMessagingChannelList {
   lists: List[]
   activeList: List
   setActiveList: Dispatch<SetStateAction<any>>
-  onToggleUser: (member: any) => void
+  onToggleUser: (e: any, member: any) => void
 }
 export const MessagesChannelList = ({
   lists,
@@ -27,7 +27,7 @@ export const MessagesChannelList = ({
             key={index}
             onClick={() => setActiveList(list)}
             className={classNames(
-              list.name === activeList.name
+              list.listId === activeList?.listId
                 ? "bg-[#EDEDED] text-[#000]"
                 : "bg-[#FFFEFF]/10 text-[#FFFF]",
               "flex w-[96px] flex-shrink-0 cursor-pointer items-center justify-center rounded-[56px] py-[10px] text-[16px] font-bold leading-[25px]"
@@ -46,37 +46,39 @@ export const MessagesChannelList = ({
       </div>
       <MessagesSearchInput placeholder="Exclude people" />
       <div className="flex h-full w-full flex-col  overflow-auto pt-5">
-        {activeList.members.map((member, index) => (
-          <div
-            key={index}
-            onClick={() => onToggleUser(member)}
-            className="flex w-full cursor-pointer items-center rounded-sm py-[7px] px-[10px] hover:bg-[#ffffff]/10"
-          >
-            <div className="flex items-center pr-[14px]">
-              <input
-                id={`member-${member.id}`}
-                name={`member-${member.displayName}`}
-                checked={member.selected}
-                // value={member.selected}
-                type="checkbox"
-                className="focus:border-gary-300 h-4 w-4 rounded border-gray-300 bg-transparent text-pink-600 outline-0 ring-offset-0 focus:ring-transparent focus:ring-offset-0"
-              />
+        {activeList &&
+          activeList.members &&
+          activeList?.members.map((member, index) => (
+            <div
+              key={index}
+              className="flex w-full cursor-pointer items-center rounded-sm py-[7px] px-[10px] hover:bg-[#ffffff]/10"
+            >
+              <div className="flex items-center pr-[14px]">
+                <input
+                  id={`member-${member.listMemberId}`}
+                  name={`member-${member.displayName}`}
+                  onChange={(event) =>
+                    onToggleUser(event.target.checked, member)
+                  }
+                  type="checkbox"
+                  className="focus:border-gary-300 h-4 w-4 rounded border-gray-300 bg-transparent text-pink-600 outline-0 ring-offset-0 focus:ring-transparent focus:ring-offset-0"
+                />
+              </div>
+              <div className="item-center flex pr-[10px]">
+                <img // eslint-disable-line @next/next/no-img-element
+                  width="50px"
+                  height="50px"
+                  className="rounded-full"
+                  src={`https://www.w3schools.com/w3images/avatar1.png`}
+                  alt="ProfilePhoto"
+                />
+              </div>
+              <div className="flex flex-col items-start justify-start">
+                <span>{member.displayName}</span>
+                <span>{member.username}</span>
+              </div>
             </div>
-            <div className="item-center flex pr-[10px]">
-              <img // eslint-disable-line @next/next/no-img-element
-                width="50px"
-                height="50px"
-                className="rounded-full"
-                src={`https://www.w3schools.com/w3images/avatar${member.id}.png`}
-                alt="ProfilePhoto"
-              />
-            </div>
-            <div className="flex flex-col items-start justify-start">
-              <span>{member.displayName}</span>
-              <span>{member.userId}</span>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   )

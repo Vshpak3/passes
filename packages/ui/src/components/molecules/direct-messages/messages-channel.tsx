@@ -3,6 +3,7 @@ import classNames from "classnames"
 import UsersIcon from "public/icons/messages-users-icon.svg"
 import DeleteIcon from "public/icons/messages-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
+import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { FormInput } from "src/components/atoms"
@@ -14,14 +15,14 @@ import {
 import { formatCurrency } from "src/helpers"
 
 import { List } from "../../organisms/DirectMessage"
-import { ListsDropdown } from "./messages-lists-dropdown"
+import { MessagesListsDropdownDialog } from "./messages-lists-dropdown"
 
 interface File {
   type: string
 }
 interface IMessagesChanel {
   lists: List[]
-  onSelectList: Dispatch<SetStateAction<any>>
+  onSaveLists: (selectedList: any) => void
   selectedLists: List[]
   onDeleteList: (selectedList: any) => void
   newMessage: boolean
@@ -38,10 +39,12 @@ interface IMessagesChanel {
   postPrice: any
   contentIds: string[]
   user?: GetUserResponseDto
+  listDropdownVisible: boolean
+  setListDropdownVisible: Dispatch<SetStateAction<any>>
 }
 export const MessagesChannel = ({
   lists,
-  onSelectList,
+  onSaveLists,
   selectedLists,
   onDeleteList,
   newMessage,
@@ -57,13 +60,31 @@ export const MessagesChannel = ({
   targetAcquired,
   postPrice,
   contentIds,
-  user
+  user,
+  listDropdownVisible,
+  setListDropdownVisible
 }: IMessagesChanel) => {
   return (
     <div className="flex w-full flex-col items-center justify-between ">
       <div className="flex w-full items-center justify-start gap-5 border-b border-[#FFFF]/10 py-[18px] pl-5">
         <span className="flex flex-shrink-0 items-center">
-          <ListsDropdown lists={lists} onSelectList={onSelectList} />
+          <button
+            type="button"
+            className="text-[16px]leading-[25px] box-border flex items-center gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11] p-[10px] font-bold text-[#FFFF]/90"
+            onClick={() => setListDropdownVisible(!listDropdownVisible)}
+          >
+            Select Audience
+            <ChevronDown className=" h-6 w-6" />
+          </button>
+          {listDropdownVisible && (
+            <MessagesListsDropdownDialog
+              selectedLists={selectedLists}
+              lists={lists}
+              onSaveLists={onSaveLists}
+              listDropdownVisible={listDropdownVisible}
+              setListDropdownVisible={setListDropdownVisible}
+            />
+          )}
         </span>
         <div className="flex flex-nowrap items-center gap-[10px] overflow-x-auto">
           {selectedLists?.map((selectedList, index) => (
@@ -90,7 +111,7 @@ export const MessagesChannel = ({
         </div>
       </div>
       <div className="flex h-full w-full bg-black "></div>
-      <div className="flex w-full flex-col border-t border-[#FFFF]/10 bg-black ">
+      <div className="flex w-full flex-col border-r-0 border-l-0 border-t border-[#FFFF]/10 bg-black">
         {(files.length > 0 || contentIds) && (
           <div className="h-full w-full items-center overflow-y-auto pt-1">
             <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1">
@@ -131,34 +152,37 @@ export const MessagesChannel = ({
                     </div>
                   ))}
                 </div>
-                <FormInput
-                  register={register}
-                  name="drag-drop"
-                  type="file"
-                  multiple={true}
-                  trigger={
-                    <div className="box-border flex h-[66px] w-[79px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
-                      <PlusIcon />
-                    </div>
-                  }
-                  options={{ onChange: onFileInputChange }}
-                  accept={[
-                    ".png",
-                    ".jpg",
-                    ".jpeg",
-                    ".mp4",
-                    ".mov",
-                    ".qt",
-                    ".mp3"
-                  ]}
-                  errors={errors}
-                />
+                {files.length > 0 ||
+                  (contentIds.length > 0 && (
+                    <FormInput
+                      register={register}
+                      name="drag-drop"
+                      type="file"
+                      multiple={true}
+                      trigger={
+                        <div className="box-border flex h-[66px] w-[79px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
+                          <PlusIcon />
+                        </div>
+                      }
+                      options={{ onChange: onFileInputChange }}
+                      accept={[
+                        ".png",
+                        ".jpg",
+                        ".jpeg",
+                        ".mp4",
+                        ".mov",
+                        ".qt",
+                        ".mp3"
+                      ]}
+                      errors={errors}
+                    />
+                  ))}
               </div>
             </div>
           </div>
         )}
         <div className="flex w-full items-center justify-between">
-          <div className="flex flex-shrink-0 items-center">
+          <div className="flex flex-shrink-0 items-center px-6">
             <MediaHeader
               messages={true}
               activeMediaHeader={activeMediaHeader}
@@ -179,7 +203,7 @@ export const MessagesChannel = ({
             </div>
           )}
         </div>
-        <div className="-mt-5 border-none pl-4 pt-4">
+        <div className="-mt-5 border-none px-6 pt-4">
           <FormInput
             register={register}
             type="text-area"
@@ -190,15 +214,15 @@ export const MessagesChannel = ({
             cols={40}
           />
         </div>
-        <div className="flex w-full justify-end border border-[#ffffff]/10  py-5 pr-5">
+        <div className="flex w-full justify-end border border-l-0 border-r-0 border-[#ffffff]/10  py-5">
           <div
-            className="opacity-80 transition-opacity ease-in-out hover:opacity-100 "
+            className="pr-3 opacity-80 transition-opacity ease-in-out hover:opacity-100 "
             role="button"
             aria-roledescription="button"
           >
             <button
               type="submit"
-              className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white"
+              className="cursor-pointer gap-[10px] rounded-[50px] bg-passes-dark-200 px-[18px] py-[10px] text-white "
             >
               Send message
             </button>

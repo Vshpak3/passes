@@ -17,7 +17,7 @@ const Messages = () => {
     if (typeof _contentIds === "string") contentIds = [_contentIds]
     else contentIds = _contentIds
   }
-  const [newMessage, setNewMessage] = useState(contentIds[0].length > 0)
+  const [newMessage, setNewMessage] = useState(true)
 
   return (
     // <AuthOnlyWrapper isPage>
@@ -26,7 +26,7 @@ const Messages = () => {
         <DirectMessage
           newMessage={newMessage}
           setNewMessage={setNewMessage}
-          contentIds={contentIds}
+          vaultContentIds={contentIds}
         />
       ) : (
         <MessagesComponent username="" />

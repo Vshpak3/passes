@@ -142,6 +142,7 @@ const FormInput = ({
         label={label}
         options={options}
         className={className}
+        textPosition={textPosition}
         errors={errors}
         register={register}
         labelClassName={labelClassName}

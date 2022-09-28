@@ -1,211 +1,40 @@
-import { MessagesApi } from "@passes/api-client/apis"
-import React, { Dispatch, SetStateAction, useState } from "react"
+import {
+  GetListMembersRequestDtoOrderTypeEnum,
+  GetListsRequestsDtoOrderTypeEnum
+} from "@passes/api-client"
+import { ListApi, MessagesApi } from "@passes/api-client/apis"
+import { useRouter } from "next/router"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import { useForm } from "react-hook-form"
+import { ContentService } from "src/helpers"
 import { useUser } from "src/hooks"
 
-// import { useSWRConfig } from "swr"
 import { MessagesChannel } from "../molecules/direct-messages/messages-channel"
 import { MessagesChannelList } from "../molecules/direct-messages/messages-channel-list"
 import { MessagesPriceDialog } from "../molecules/direct-messages/messages-price-dialog"
 
 export type List = {
   name: string
-  selected: boolean
-  id: number
-  members: {
-    selected: boolean
-    id: number
-    displayName: string
-    avatarUrl: string
+  listId: string
+  type: string
+  members?: {
+    displayName?: string
     userId: string
+    username: string
+    listMemberId: string
   }[]
 }
-const MOCK_DATA_LISTS = [
-  {
-    name: "Basic",
-    selected: true,
-    id: 1,
-    members: [
-      {
-        selected: false,
-        id: 1,
-        displayName: "Alex Drachnik",
-        avatarUrl: "",
-        userId: "drachnik"
-      },
-      {
-        selected: false,
-        id: 2,
-        displayName: "Zoya Ramzanli",
-        avatarUrl: "",
-        userId: "zoya773"
-      },
-      {
-        selected: false,
-        id: 3,
-        displayName: "Berat Salija",
-        avatarUrl: "",
-        userId: "berat28"
-      },
-      {
-        selected: false,
-        id: 4,
-        displayName: "John Wick",
-        avatarUrl: "",
-        userId: "John50"
-      }
-    ]
-  },
-  {
-    name: "Gold",
-    id: 2,
-    selected: false,
-    members: [
-      {
-        selected: false,
-        id: 1,
-        displayName: "Kelmend Tairi",
-        avatarUrl: "",
-        userId: "kel"
-      },
-      {
-        selected: false,
-        id: 2,
-        displayName: "Captain America",
-        avatarUrl: "",
-        userId: "captain007"
-      },
-      {
-        selected: false,
-        id: 3,
-        displayName: "Geralt Rivia",
-        avatarUrl: "",
-        userId: "gor"
-      },
-      {
-        selected: false,
-        id: 4,
-        displayName: "Spider Man",
-        avatarUrl: "",
-        userId: "spidey"
-      }
-    ]
-  },
-  {
-    name: "Plat",
-    id: 3,
-    selected: false,
-    members: [
-      {
-        selected: false,
-        id: 1,
-        displayName: "Alex Drachnik",
-        avatarUrl: "",
-        userId: "drachnik"
-      },
-      {
-        selected: false,
-        id: 2,
-        displayName: "Zoya Ramzanli",
-        avatarUrl: "",
-        userId: "zoya773"
-      },
-      {
-        selected: false,
-        id: 3,
-        displayName: "Berat Salija",
-        avatarUrl: "",
-        userId: "berat28"
-      },
-      {
-        selected: false,
-        id: 4,
-        displayName: "John Wick",
-        avatarUrl: "",
-        userId: "John50"
-      }
-    ]
-  },
-  {
-    name: "&&&",
-    id: 4,
-    selected: false,
-    members: [
-      {
-        selected: false,
-        id: 1,
-        displayName: "Alex Drachnik",
-        avatarUrl: "",
-        userId: "drachnik"
-      },
-      {
-        selected: false,
-        id: 2,
-        displayName: "Zoya Ramzanli",
-        avatarUrl: "",
-        userId: "zoya773"
-      },
-      {
-        selected: false,
-        id: 3,
-        displayName: "Berat Salija",
-        avatarUrl: "",
-        userId: "berat28"
-      },
-      {
-        selected: false,
-        id: 4,
-        displayName: "John Wick",
-        avatarUrl: "",
-        userId: "John50"
-      }
-    ]
-  },
-  {
-    name: "list1",
-    id: 5,
-    selected: false,
-    members: [
-      {
-        selected: false,
-        id: 1,
-        displayName: "Alex Drachnik",
-        avatarUrl: "",
-        userId: "drachnik"
-      },
-      {
-        selected: false,
-        id: 2,
-        displayName: "Zoya Ramzanli",
-        avatarUrl: "",
-        userId: "zoya773"
-      },
-      {
-        selected: false,
-        id: 3,
-        displayName: "Berat Salija",
-        avatarUrl: "",
-        userId: "berat28"
-      },
-      {
-        selected: false,
-        id: 4,
-        displayName: "John Wick",
-        avatarUrl: "",
-        userId: "John50"
-      }
-    ]
-  }
-]
 
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
-// TODO: Fix uploadFile content when change from Berat are done
-// TODO: replace MOCK lists with real lists when useLists hooks ready from Dan
-// TODO: Decide if we should remove upload from device at Message Input (Photos,Videos) since images come as selected from vault Aaron & Zoya
-// TODO: Add selected Media from vault when they are not mock data and adaptable for MessageInput preview - Dan
-// TODO: ADD Search dropdown async for lists from our date Design Feature when ready from Kristina
 // TODO: Do mobile optimizations with toggle button
 // TODO: return Successful Batch Message on Channel Chat Window after upper todos are done
 // TODO: Add mass Direct-Message at Creator Profile and into Messages in other ticket when functionality is done
@@ -213,113 +42,120 @@ const MAX_FILES = 9
 interface IDirectMessages {
   newMessage: boolean
   setNewMessage: Dispatch<SetStateAction<any>>
-  contentIds: string[]
+  vaultContentIds: string[]
 }
 const DirectMessage = ({
   newMessage,
   setNewMessage,
-  contentIds
+  vaultContentIds
 }: IDirectMessages) => {
-  const [activeList, setActiveList] = useState<List>(MOCK_DATA_LISTS[0])
+  const [lists, setLists] = useState<Array<any>>([])
+  const [activeList, setActiveList] = useState<any>({ name: "initial" })
   const [selectedLists, setSelectedLists] = useState<List[]>([])
   const [hasPrice, setHasPrice] = useState(false)
   const [targetAcquired, setTargetAcquired] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [files, setFiles] = useState<File[]>([])
-
+  const [listDropdownVisible, setListDropdownVisible] = useState(false)
+  const [contentIds, setContentIds] = useState<any>(vaultContentIds)
+  const [excludedListIds, setExcludedListIds] = useState<any>([])
+  const listApi = useMemo(() => new ListApi(), [])
+  const { user } = useUser()
+  const router = useRouter()
   const {
     handleSubmit,
     register,
     formState: { errors },
-    // getValues,
-    watch,
-    reset
+    getValues,
+    watch
   } = useForm({
-    defaultValues: {}
+    defaultValues: {
+      text: "",
+      postPrice: "0"
+    }
   })
-  const postPrice = watch("postPrice" as any) as unknown as number
-  // const { mutate } = useSWRConfig()
-  const { user } = useUser()
+  const postPrice = watch("postPrice")
+
+  const fetchList = useCallback(async () => {
+    if (lists.length > 0) return
+    try {
+      const allLists: any = await listApi.getLists({
+        getListsRequestsDto: {
+          order: "desc",
+          orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt
+        }
+      })
+
+      setLists(allLists.lists)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [listApi, lists])
+
+  useEffect(() => {
+    fetchList()
+  }, [fetchList])
+
+  const fetchActiveListMembers = useCallback(async () => {
+    if (activeList.name === "initial") return
+    try {
+      const activeListMembers: any = await listApi.getListMembers({
+        getListMembersRequestDto: {
+          order: "desc",
+          orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
+          listId: activeList?.listId
+        }
+      })
+
+      setActiveList({
+        ...activeList,
+        members: [...activeListMembers.listMembers]
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    // eslint-disable-next-line no-use-before-define, react-hooks/exhaustive-deps
+  }, [listApi, activeList.name])
+
+  useEffect(() => {
+    fetchActiveListMembers()
+    // eslint-disable-next-line no-use-before-define, react-hooks/exhaustive-deps
+  }, [fetchActiveListMembers])
+
+  const mergeContentIds = (uploadedContentIds: (string | undefined)[]) => {
+    return [...contentIds, ...uploadedContentIds]
+  }
 
   const onSubmit = async () => {
-    // const contentApi = new ContentApi()
-
-    // const values = getValues()
-    // const content = await Promise.all(
-    //   files.map(async (file) => {
-    //     // const url = await uploadFile(file, "uploads")
-    //     // let contentType = file.type
-    //     // if (file.type.startsWith("image/")) contentType = "image/jpeg"
-    //     // if (file.type.startsWith("video/")) contentType = "video/mp4"
-    //     // const content = await contentApi.create({
-    //     //   CreateContentRequestDto: {
-    //     //     url,
-    //     //     contentType
-    //     //   }
-    //     // })
-    //     // return content.id
-    //     return file
-    //   })
-    // )
-    // const { postId } = await createPost({ ...values, content })
     const messagesApi = new MessagesApi()
+    const listIds = selectedLists.map((s) => s.listId)
+    const content = await new ContentService().uploadContent(files)
+    const uploadedContentIds = content.map((c) => c.id)
+    const values = getValues()
+    const _contentIds = mergeContentIds(uploadedContentIds)
 
     await messagesApi.massSend({
       createBatchMessageRequestDto: {
-        includeListIds: [] as string[],
-        excludeListIds: [],
-        // TODO: get lists and use their Ids
+        includeListIds: listIds,
+        excludeListIds: excludedListIds,
         passIds: [],
-        contentIds: [],
-        text: "",
-        price: 0
+        contentIds: _contentIds || [],
+        text: values?.text || "",
+        price: values.postPrice ? parseInt(values.postPrice) : 0
       }
     })
-    reset()
   }
-
-  // const createPost = async (values: any) => {
-  //   const api = new PostApi()
-  //   const result = await mutate(
-  //     ["/post/creator/", user?.username],
-  //     async () =>
-  //       await api.createPost({
-  //         createPostRequestDto: {
-  //           price: targetAcquired ? postPrice : 0,
-  //           contentIds: [],
-  //           passIds: [],
-  //           tags: [],
-  //           text: values.text
-  //         }
-  //       }),
-  //     {
-  //       populateCache: (post, previousPosts) => {
-  //         if (!previousPosts)
-  //           return {
-  //             count: 1,
-  //             cursor: user?.username,
-  //             posts: [post]
-  //           }
-  //         else
-  //           return {
-  //             count: previousPosts.count + 1,
-  //             cursor: previousPosts.cursor,
-  //             posts: [post, ...previousPosts.posts]
-  //           }
-  //       },
-  //       // Since the API already gives us the updated information,
-  //       // we don't need to revalidate here.
-  //       revalidate: false
-  //     }
-  //   )
-  //   return result.posts[0]
-  // }
 
   const onMediaHeaderChange = (event: any) => {
     if (typeof event !== "string") return onFileInputChange(event)
     switch (event) {
       case "Vault":
-        setNewMessage(false)
+        router.push(
+          {
+            pathname: "/tools/vault"
+          },
+          "/tools/vault"
+        )
         break
       case "Message Price":
         setHasPrice(true)
@@ -363,49 +199,56 @@ const DirectMessage = ({
   }
   const onRemove = (index: any) => {
     setFiles(files.filter((_, i) => i !== index))
+    setContentIds(contentIds.filter((_: any, i: any) => i !== index))
   }
 
-  const onSelectList = (list: any) => {
-    const listExists = selectedLists.find(
-      (existingList) => existingList?.id === list.id
-    )
-    if (listExists === undefined) {
-      const updatedList = [...selectedLists, list]
-      setSelectedLists(updatedList)
-    }
+  const onSaveLists = (updatedLists: List[]) => {
+    setSelectedLists(updatedLists)
+    setListDropdownVisible(false)
   }
   const onDeleteList = (listToDelete: any) => {
     const updatedList = selectedLists.filter(
-      (list) => list?.id !== listToDelete.id
+      (list) => list?.listId !== listToDelete.listId
     )
     setSelectedLists(updatedList)
   }
 
-  const onToggleUser = (member: any) => {
-    const updatedList = {
-      ...activeList,
-      members: activeList.members.map((user) =>
-        user.id === member?.id
-          ? { ...member, selected: !member?.selected }
-          : user
+  const onToggleUser = (checked: any, member: any) => {
+    if (checked) {
+      const memberExists = excludedListIds.find(
+        (existingMember: { listMemberId: any }) =>
+          existingMember === member.listMemberId
       )
+      if (memberExists === undefined) {
+        const updatedExcludedMembersList = [
+          ...excludedListIds,
+          member.listMemberId
+        ]
+        setExcludedListIds(updatedExcludedMembersList)
+      }
+    } else if (!checked) {
+      const removeFromList = excludedListIds.filter(
+        (exists: any) => exists !== member.listMemberId
+      )
+      setExcludedListIds(removeFromList)
     }
-    setActiveList(updatedList)
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full bg-black">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="h-screen w-full bg-black"
+    >
       <div className="flex h-full justify-start">
-        <div className="flex w-full border border-[#FFFF]/10 bg-[#120C14] ">
+        <div className="flex h-full w-full border border-[#FFFF]/10 bg-[#120C14] ">
           <MessagesChannelList
-            lists={MOCK_DATA_LISTS}
+            lists={lists}
             activeList={activeList}
             setActiveList={setActiveList}
             onToggleUser={onToggleUser}
           />
-
           <MessagesChannel
-            lists={MOCK_DATA_LISTS}
-            onSelectList={onSelectList}
+            lists={lists}
+            onSaveLists={onSaveLists}
             selectedLists={selectedLists}
             onDeleteList={onDeleteList}
             newMessage={newMessage}
@@ -422,6 +265,8 @@ const DirectMessage = ({
             postPrice={postPrice}
             setNewMessage={setNewMessage}
             user={user}
+            listDropdownVisible={listDropdownVisible}
+            setListDropdownVisible={setListDropdownVisible}
           />
         </div>
       </div>

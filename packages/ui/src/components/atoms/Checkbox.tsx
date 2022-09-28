@@ -36,7 +36,12 @@ const Checkbox = ({
   ...rest
 }: CheckBoxProps) => (
   <div>
-    <div className="relative flex items-start">
+    <div
+      className={classNames(
+        textPosition === "Special" ? "justify-between" : "",
+        "relative flex items-start"
+      )}
+    >
       {!!textPosition && (
         <div className="mr-3 text-sm">
           {label && (
