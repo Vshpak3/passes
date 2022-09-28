@@ -36,7 +36,7 @@ export interface GetMessagesRequestDto {
      * @type {Date}
      * @memberof GetMessagesRequestDto
      */
-    dateLimit: Date;
+    dateLimit?: Date;
     /**
      * 
      * @type {string}
@@ -63,7 +63,6 @@ export interface GetMessagesRequestDto {
 export function instanceOfGetMessagesRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "sentAt" in value;
-    isInstance = isInstance && "dateLimit" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "contentOnly" in value;
     isInstance = isInstance && "pending" in value;
@@ -83,7 +82,7 @@ export function GetMessagesRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'sentAt': json['sentAt'],
-        'dateLimit': json['dateLimit'],
+        'dateLimit': !exists(json, 'dateLimit') ? undefined : json['dateLimit'],
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
         'pending': json['pending'],

@@ -29,7 +29,7 @@ export const ChannelView = ({
         <ChannelGalleryView activeContent={activeContent} />
       ) : (
         <>
-          <ChannelStream />
+          <ChannelStream channelId={selectedChannelId} />
           <InputMessage />
         </>
       )}
