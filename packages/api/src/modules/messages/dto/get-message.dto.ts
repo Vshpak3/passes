@@ -9,7 +9,7 @@ export class GetMessageResponseDto extends MessageDto {}
 export class GetMessagesRequestDto extends PickType(PageRequestDto, [
   'lastId',
 ]) {
-  @DtoProperty({ type: 'date' })
+  @DtoProperty({ type: 'date', optional: true })
   sentAt: Date
 
   @DtoProperty({ type: 'date', optional: true })

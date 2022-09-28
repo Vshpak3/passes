@@ -1,3 +1,4 @@
+import { MessagesApi } from "@passes/api-client/apis"
 import React from "react"
 
 import {
@@ -14,6 +15,13 @@ const ProfileDetailsDesktop = ({
   onEditProfile,
   username
 }) => {
+  const onChat = async () => {
+    const api = new MessagesApi()
+    await api.getOrCreateChannel({
+      getChannelRequestDto: { userId: profile.userId }
+    })
+  }
+
   return (
     <div className="relative hidden grid-cols-5 md:grid">
       <ProfilePhoto url={profile.profileImageUrl} />
@@ -34,6 +42,7 @@ const ProfileDetailsDesktop = ({
           twitterUsername={profile.twitterUsername}
           youtubeUsername={profile.youtubeUsername}
           ownsProfile={ownsProfile}
+          onChat={onChat}
         />
       </div>
     </div>
@@ -41,6 +50,14 @@ const ProfileDetailsDesktop = ({
 }
 
 const ProfileDetailsMobile = ({ profile, username, ownsProfile }) => {
+  // eslint-disable-next-line sonarjs/no-identical-functions
+  const onChat = async () => {
+    const api = new MessagesApi()
+    await api.getOrCreateChannel({
+      getChannelRequestDto: { userId: profile.userId }
+    })
+  }
+
   return (
     <div className="align-center my-4 -mt-[220px] flex grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
       {/* <div className="absolute top-2 left-2">
@@ -62,6 +79,7 @@ const ProfileDetailsMobile = ({ profile, username, ownsProfile }) => {
         posts={profile.postsCount}
         likes={profile.likes}
         ownsProfile={ownsProfile}
+        onChat={onChat}
       />
     </div>
   )
