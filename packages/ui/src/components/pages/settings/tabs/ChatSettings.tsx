@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { classNames } from "src/helpers"
 import { chatSettingsSchema } from "src/helpers/validation"
 import { useChatSettings } from "src/hooks"
@@ -193,4 +194,12 @@ const ChatSettings = () => {
   )
 }
 
-export default ChatSettings
+const ChatSettingsCreatorWrapper = () => {
+  return (
+    <CreatorOnlyWrapper isPage>
+      <ChatSettings />
+    </CreatorOnlyWrapper>
+  )
+}
+
+export default ChatSettingsCreatorWrapper
