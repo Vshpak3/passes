@@ -6,7 +6,7 @@ import { ChannelList, ChannelView } from "../molecules/messages"
 const MessagesV2 = () => {
   const [selectedChannelId, setSelectedChannelId] = useState("")
   const { channels } = useMessages("test")
-
+  const [gallery, setGallery] = useState(false)
   const handleChannelClicked = (channelId: string) => {
     setSelectedChannelId(channelId)
   }
@@ -19,7 +19,11 @@ const MessagesV2 = () => {
           onChannelClicked={handleChannelClicked}
         />
       )}
-      <ChannelView selectedChannelId={selectedChannelId} />
+      <ChannelView
+        selectedChannelId={selectedChannelId}
+        gallery={gallery}
+        setGallery={setGallery}
+      />
     </div>
   )
 }

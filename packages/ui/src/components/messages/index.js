@@ -1,6 +1,6 @@
 import "@stream-io/stream-chat-css/dist/css/index.css"
 
-import { MessagesApi } from "@passes/api-client/apis"
+// import { MessagesApi } from "@passes/api-client/apis"
 import ThreeLines from "public/icons/three-lines-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useChat, useUser } from "src/hooks"
@@ -80,7 +80,7 @@ const MessagesComponent = ({ username }) => {
 
     connect()
   }, [user, streamToken, chatClient])
-
+  // TODO: MessageStats gives error on frontend messages v1 because its not there anymore
   // const getMessageStats = async (channelIds) => {
   //   const { channelStats } = await api.getChannelsStats({
   //     getChannelStatsRequestDto: {
@@ -90,27 +90,27 @@ const MessagesComponent = ({ username }) => {
   //   setMessagesStats(channelStats)
   // }
 
-  useEffect(() => {
-    const api = new MessagesApi()
+  // useEffect(() => {
+  //   const api = new MessagesApi()
 
-    const getMessageStats = async (channelIds) => {
-      const { channelStats } = await api.getChannelsStats({
-        getChannelStatsRequestDto: {
-          channelIds
-        }
-      })
-      setMessagesStats(channelStats)
-    }
-    if (
-      chatClient?.activeChannels &&
-      Object.keys(chatClient.activeChannels).length > 0
-    ) {
-      const channelIds = Object.values(chatClient.activeChannels).map(
-        (channel) => channel.id
-      )
-      getMessageStats(channelIds)
-    }
-  }, [chatClient.user, chatClient.activeChannels])
+  //   const getMessageStats = async (channelIds) => {
+  //     const { channelStats } = await api.getChannelsStats({
+  //       getChannelStatsRequestDto: {
+  //         channelIds
+  //       }
+  //     })
+  //     setMessagesStats(channelStats)
+  //   }
+  //   if (
+  //     chatClient?.activeChannels &&
+  //     Object.keys(chatClient.activeChannels).length > 0
+  //   ) {
+  //     const channelIds = Object.values(chatClient.activeChannels).map(
+  //       (channel) => channel.id
+  //     )
+  //     getMessageStats(channelIds)
+  //   }
+  // }, [chatClient.user, chatClient.activeChannels])
 
   if (isLoading || !user?.id || !streamToken) {
     return null
@@ -132,6 +132,7 @@ const MessagesComponent = ({ username }) => {
     setFreeMessages,
     activeContent,
     setActiveContent,
+    setMessagesStats,
     user
   }
   const options = { state: true, watch: true, presence: true, limit: 8 }
