@@ -13,5 +13,5 @@ export class VerifyEmailRequestEntity extends BaseEntity {
   email: string
 
   @Property()
-  used_at?: Date
+  used_at: Date | null
 }
