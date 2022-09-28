@@ -29,6 +29,10 @@ import {
   GetMessagesResponseDto,
 } from './dto/get-message.dto'
 import {
+  GetPaidMessagesRequestDto,
+  GetPaidMessagesResponseDto,
+} from './dto/get-paid-message.dto'
+import {
   GetPaidMessageHistoryRequestDto,
   GetPaidMessageHistoryResponseDto,
 } from './dto/get-paid-message-history.dto'
@@ -306,8 +310,8 @@ export class MessagesController {
     responseDesc: 'Paid message history was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Post('history')
-  async getPaidMessageHistory(
+  @Post('paid-message/history')
+  async getPaidMessages(
     @Req() req: RequestWithUser,
     @Body() getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto,
   ): Promise<GetPaidMessageHistoryResponseDto> {
@@ -315,6 +319,26 @@ export class MessagesController {
       await this.messagesService.getPaidMessageHistory(
         req.user.id,
         getPaidMessageHistoryRequestDto,
+      ),
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get paid messages',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPaidMessagesResponseDto,
+    responseDesc: 'Paid messages was retrieved',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('paid-message')
+  async getPaidMessage(
+    @Req() req: RequestWithUser,
+    @Body() getPaidMessagesRequestDto: GetPaidMessagesRequestDto,
+  ): Promise<GetPaidMessagesResponseDto> {
+    return new GetPaidMessagesResponseDto(
+      await this.messagesService.getPaidMessages(
+        req.user.id,
+        getPaidMessagesRequestDto,
       ),
     )
   }

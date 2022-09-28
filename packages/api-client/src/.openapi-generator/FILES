@@ -110,6 +110,8 @@ models/GetNotificationsRequestDto.ts
 models/GetNotificationsResponseDto.ts
 models/GetPaidMessageHistoryRequestDto.ts
 models/GetPaidMessageHistoryResponseDto.ts
+models/GetPaidMessagesRequestDto.ts
+models/GetPaidMessagesResponseDto.ts
 models/GetPassHoldersRequestDto.ts
 models/GetPassHoldersResponseDto.ts
 models/GetPassHoldingsRequestDto.ts
@@ -150,6 +152,7 @@ models/MetamaskCircleUSDCEntryResponseDto.ts
 models/MintPassRequestDto.ts
 models/MintPassResponseDto.ts
 models/NotificationDto.ts
+models/PaidMessageDto.ts
 models/PaidMessageHistoryDto.ts
 models/PassDto.ts
 models/PassHolderDto.ts

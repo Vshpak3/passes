@@ -26,6 +26,8 @@ import type {
   GetMessagesResponseDto,
   GetPaidMessageHistoryRequestDto,
   GetPaidMessageHistoryResponseDto,
+  GetPaidMessagesRequestDto,
+  GetPaidMessagesResponseDto,
   PayinDataDto,
   PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
@@ -55,6 +57,10 @@ import {
     GetPaidMessageHistoryRequestDtoToJSON,
     GetPaidMessageHistoryResponseDtoFromJSON,
     GetPaidMessageHistoryResponseDtoToJSON,
+    GetPaidMessagesRequestDtoFromJSON,
+    GetPaidMessagesRequestDtoToJSON,
+    GetPaidMessagesResponseDtoFromJSON,
+    GetPaidMessagesResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchaseMessageRequestDtoFromJSON,
@@ -91,7 +97,11 @@ export interface GetOrCreateChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
 }
 
-export interface GetPaidMessageHistoryRequest {
+export interface GetPaidMessageRequest {
+    getPaidMessagesRequestDto: GetPaidMessagesRequestDto;
+}
+
+export interface GetPaidMessagesRequest {
     getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto;
 }
 
@@ -351,11 +361,11 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get paid message history
+     * Get paid messages
      */
-    async getPaidMessageHistoryRaw(requestParameters: GetPaidMessageHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessageHistoryResponseDto>> {
-        if (requestParameters.getPaidMessageHistoryRequestDto === null || requestParameters.getPaidMessageHistoryRequestDto === undefined) {
-            throw new runtime.RequiredError('getPaidMessageHistoryRequestDto','Required parameter requestParameters.getPaidMessageHistoryRequestDto was null or undefined when calling getPaidMessageHistory.');
+    async getPaidMessageRaw(requestParameters: GetPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessagesResponseDto>> {
+        if (requestParameters.getPaidMessagesRequestDto === null || requestParameters.getPaidMessagesRequestDto === undefined) {
+            throw new runtime.RequiredError('getPaidMessagesRequestDto','Required parameter requestParameters.getPaidMessagesRequestDto was null or undefined when calling getPaidMessage.');
         }
 
         const queryParameters: any = {};
@@ -370,7 +380,45 @@ export class MessagesApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/messages/history`,
+            path: `/api/messages/paid-message`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPaidMessagesRequestDtoToJSON(requestParameters.getPaidMessagesRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPaidMessagesResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get paid messages
+     */
+    async getPaidMessage(requestParameters: GetPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessagesResponseDto> {
+        const response = await this.getPaidMessageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get paid message history
+     */
+    async getPaidMessagesRaw(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessageHistoryResponseDto>> {
+        if (requestParameters.getPaidMessageHistoryRequestDto === null || requestParameters.getPaidMessageHistoryRequestDto === undefined) {
+            throw new runtime.RequiredError('getPaidMessageHistoryRequestDto','Required parameter requestParameters.getPaidMessageHistoryRequestDto was null or undefined when calling getPaidMessages.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/paid-message/history`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -383,8 +431,8 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get paid message history
      */
-    async getPaidMessageHistory(requestParameters: GetPaidMessageHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
-        const response = await this.getPaidMessageHistoryRaw(requestParameters, initOverrides);
+    async getPaidMessages(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
+        const response = await this.getPaidMessagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

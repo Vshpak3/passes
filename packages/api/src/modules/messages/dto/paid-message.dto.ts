@@ -2,6 +2,7 @@ import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { CONTENT_IDS_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
+import { PaidMessageEntity } from '../entities/paid-message.entity'
 
 export class PaidMessageDto {
   @DtoProperty({ type: 'uuid' })
@@ -29,4 +30,20 @@ export class PaidMessageDto {
   @Min(0)
   @DtoProperty({ type: 'number' })
   earningsPurchases: number
+
+  @DtoProperty({ type: 'date' })
+  createdAt: Date
+
+  constructor(paidMessage: PaidMessageEntity | undefined) {
+    if (paidMessage) {
+      this.paidMessageId = paidMessage.id
+      this.creatorId = paidMessage.creator_id
+      this.text = paidMessage.text
+      this.price = paidMessage.price
+      this.contentIds = paidMessage.content_ids
+      this.numPurchases = paidMessage.num_purchases
+      this.earningsPurchases = paidMessage.earnings_purchases
+      this.createdAt = paidMessage.created_at
+    }
+  }
 }

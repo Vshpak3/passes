@@ -48,8 +48,10 @@ import {
   GetChannelsRequestDto,
 } from './dto/get-channel.dto'
 import { GetMessagesRequestDto } from './dto/get-message.dto'
+import { GetPaidMessagesRequestDto } from './dto/get-paid-message.dto'
 import { GetPaidMessageHistoryRequestDto } from './dto/get-paid-message-history.dto'
 import { MessageDto } from './dto/message.dto'
+import { PaidMessageDto } from './dto/paid-message.dto'
 import { PaidMessageHistoryDto } from './dto/paid-message-history.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
@@ -1072,5 +1074,30 @@ export class MessagesService {
     return paidMessageHistories.map(
       (paidMessageHistory) => new PaidMessageHistoryDto(paidMessageHistory),
     )
+  }
+
+  async getPaidMessages(
+    userId: string,
+    getPaidMessagesRequestDto: GetPaidMessagesRequestDto,
+  ) {
+    const { lastId, createdAt } = getPaidMessagesRequestDto
+    let query = this.dbReader<PaidMessageEntity>(PaidMessageEntity.table)
+      .where('creator_id', userId)
+      .select('*')
+      .orderBy([
+        { column: 'created_at', order: 'desc' },
+        { column: 'id', order: 'desc' },
+      ])
+    if (createdAt) {
+      query = query.andWhere('created_at', '<=', createdAt)
+    }
+    const paidMessages = await query
+    const index = paidMessages.findIndex(
+      (paidMessage) => paidMessage.id === lastId,
+    )
+
+    return paidMessages
+      .slice(index + 1)
+      .map((paidMessage) => new PaidMessageDto(paidMessage))
   }
 }
