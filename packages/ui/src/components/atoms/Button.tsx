@@ -35,6 +35,7 @@ interface IGenericButton {
   value?: string
   type?: ButtonTypeEnum
   className?: string
+  isDisabled?: boolean
 }
 
 export const Button = ({
@@ -174,12 +175,16 @@ export const PassesPinkButton = ({
   type,
   name,
   onClick,
-  className = ""
+  className = "",
+  isDisabled = false
 }: IGenericButton) => {
   return (
     <button
+      disabled={isDisabled}
       className={classNames(
-        "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
+        isDisabled
+          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
+          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
         className
       )}
       onClick={onClick}

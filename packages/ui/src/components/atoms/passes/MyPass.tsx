@@ -1,9 +1,12 @@
-import { PassHolderDto } from "@passes/api-client"
+import { PassApi, PassDto, PassHolderDto } from "@passes/api-client"
 import EditIcon from "public/icons/edit-pass.svg"
 import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import RenewModal from "src/components/organisms/RenewModal"
 import { classNames } from "src/helpers"
+import { useUser } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 
 interface IPassTileLabel {
@@ -215,16 +218,34 @@ const MyPassTile = ({
   isEdit = false,
   passOnEditHandler
 }: IMyPassTile) => {
+  const { user } = useUser()
   const [hasMounted, setHasMounted] = useState(false)
+  const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
+  const [externalPasses, setExternalPasses] = useState<PassDto[]>([])
   const expiryInMilSeconds = Number(passData.expiresAt)
   const expiryDate = new Date(expiryInMilSeconds)
   const dateNow = Date.now()
+
+  const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
 
   const willExpireSoon =
     expiryInMilSeconds - dateNow < ONE_MONTH && expiryInMilSeconds > dateNow
 
   useEffect(() => {
     setHasMounted(true)
+    const api = new PassApi()
+    api
+      .getExternalPasses({
+        getExternalPassesRequestDto: {
+          creatorId: user?.id
+        }
+      })
+      .then(({ passes }) => setExternalPasses(passes))
+      .catch(({ message }) => {
+        console.error()
+        toast(message)
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!hasMounted) {
@@ -279,8 +300,12 @@ const MyPassTile = ({
           <div className="mt-[5px] md:mt-[10px]">
             {isExpired ? (
               <div className="align-items flex items-center justify-center">
-                <PassRenewalButton
-                  onRenewal={() => console.log("on renewal")}
+                <PassRenewalButton onRenewal={toggleRenewModal} />
+                <RenewModal
+                  isOpen={isRenewModalOpen}
+                  setOpen={setIsRenewModalOpen}
+                  passInfo={passData}
+                  externalPasses={externalPasses}
                 />
               </div>
             ) : (

@@ -1,4 +1,9 @@
-import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
+import {
+  CircleCardDto,
+  GetCircleCardResponseDto,
+  PayinMethodDto,
+  PaymentApi
+} from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -6,6 +11,9 @@ const usePayinMethod = () => {
   const [defaultPayinMethod, setDefaultPayinMethod] = useState<PayinMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [cards, setCards] = useState<CircleCardDto[]>([])
+  const [cardInfo, setCardInfo] = useState<GetCircleCardResponseDto | null>(
+    null
+  )
   const api = new PaymentApi()
   // const { user } = useUser()
 
@@ -67,6 +75,21 @@ const usePayinMethod = () => {
     }
   }
 
+  async function getCardInfo(cardId: string) {
+    try {
+      setIsLoading(true)
+      const response = await api.getCircleCard({
+        cardId
+      })
+      setCardInfo(response)
+    } catch (error: any) {
+      console.error(error)
+      toast.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     getDefaultPayinMethod()
     getCards()
@@ -75,9 +98,11 @@ const usePayinMethod = () => {
 
   return {
     cards,
+    cardInfo,
     defaultPayinMethod,
     isLoadingPayinMethod: isLoading,
     setDefaultPayinMethod: updateDefaultPayinMethod,
+    getCardInfo,
     deleteCard
   }
 }
