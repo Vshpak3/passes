@@ -581,7 +581,7 @@ export class MessagesService {
       PassHolderEntity.table,
     )
       .innerJoin(
-        PassHolderEntity.table,
+        PassEntity.table,
         `${PassEntity.table}.id`,
         `${PassHolderEntity.table}.pass_id`,
       )
