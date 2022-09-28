@@ -121,114 +121,129 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     buttonCreateSchedulerEl && setButtonCreateSchedulerEl(null)
   }, [buttonCreateSchedulerEl])
 
+  const DateTimeSelected = () => {
+    return (
+      <>
+        {availableMonthFrom === month && availableYearFrom === year ? null : (
+          <ChevronLeft
+            size={32}
+            className="cursor-pointer"
+            onClick={handleGoPrevious}
+          />
+        )}
+        <button
+          aria-describedby={monthYearPopperId}
+          type="button"
+          onClick={handleShowMonthYearPopper}
+        >
+          <span className="w-[100px] select-none">
+            {`${moment().month(month).format("MMMM")} ${year}`}
+          </span>
+        </button>
+        <ChevronRight
+          size={32}
+          className="cursor-pointer"
+          onClick={handleGoNext}
+        />
+      </>
+    )
+  }
+
   const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
 
   return (
-    <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
-      {buttonCreateSchedulerEl && (
-        <div
-          className="bg-black-100 fixed top-0 left-0 h-screen w-full"
-          onClick={dismissCreateSchedulerPopper}
-        />
-      )}
-      <style>{`${css}`}</style>
-      <div className="select-none text-base font-bold md:text-2xl">
-        Scheduler
-      </div>
-      <div className="flex items-center justify-between text-base font-bold md:w-[300px] md:text-2xl">
-        <div className="flex items-center gap-1">
-          {availableMonthFrom === month && availableYearFrom === year ? null : (
-            <ChevronLeft
-              size={32}
-              className="cursor-pointer"
-              onClick={handleGoPrevious}
-            />
-          )}
-          <button
-            aria-describedby={monthYearPopperId}
-            type="button"
-            onClick={handleShowMonthYearPopper}
-          >
-            <span className="w-[200px] select-none">
-              {`${moment().month(month).format("MMMM")} ${year}`}
-            </span>
-          </button>
-          <ChevronRight
-            size={32}
-            className="cursor-pointer"
-            onClick={handleGoNext}
+    <>
+      <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
+        {buttonCreateSchedulerEl && (
+          <div
+            className="bg-black-100 fixed top-0 left-0 h-screen w-full"
+            onClick={dismissCreateSchedulerPopper}
           />
-          <Popper
-            id={createSchedulerPopperId}
-            open={createScheduleOpen}
-            anchorEl={buttonCreateSchedulerEl}
-            transition
-            placement="bottom-end"
-            modifiers={[
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 17]
-                }
-              }
-            ]}
-          >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <div
-                  ref={popperContainerRef}
-                  className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
-                >
-                  <CreateSchedulerPopup
-                    onCancel={dismissCreateSchedulerPopper}
-                  />
-                </div>
-              </Fade>
-            )}
-          </Popper>
-          <Popper
-            id={monthYearPopperId}
-            open={monthYearPopperOpen}
-            anchorEl={anchorEl}
-            transition
-            modifiers={[
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 10]
-                }
-              }
-            ]}
-          >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <div className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md">
-                  <MonthYearPicker
-                    minYear={2000}
-                    caption="Pick your month and year"
-                    selectedMonth={month}
-                    selectedYear={year}
-                    onChangeYear={(year: number) =>
-                      handleChangeTime("year", year)
-                    }
-                    onChangeMonth={(month: number) =>
-                      handleChangeTime("month", month)
-                    }
-                  />
-                </div>
-              </Fade>
-            )}
-          </Popper>
+        )}
+        <style>{`${css}`}</style>
+        <div className="select-none text-base font-bold md:text-2xl">
+          Scheduler
         </div>
+        <div className="flex items-center justify-between text-base font-bold md:w-[300px] md:text-2xl">
+          <div className="flex items-center gap-1">
+            <div className="hidden md:flex">
+              <DateTimeSelected />
+            </div>
+            <Popper
+              id={createSchedulerPopperId}
+              open={createScheduleOpen}
+              anchorEl={buttonCreateSchedulerEl}
+              transition
+              placement="bottom-end"
+              modifiers={[
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 17]
+                  }
+                }
+              ]}
+            >
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={350}>
+                  <div
+                    ref={popperContainerRef}
+                    className="ounded mr-[25px] w-[320px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md md:mr-0 md:w-[480px]"
+                  >
+                    <CreateSchedulerPopup
+                      onCancel={dismissCreateSchedulerPopper}
+                    />
+                  </div>
+                </Fade>
+              )}
+            </Popper>
+            <Popper
+              id={monthYearPopperId}
+              open={monthYearPopperOpen}
+              anchorEl={anchorEl}
+              transition
+              modifiers={[
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, 10]
+                  }
+                }
+              ]}
+            >
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={350}>
+                  <div className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md">
+                    <MonthYearPicker
+                      minYear={2000}
+                      caption="Pick your month and year"
+                      selectedMonth={month}
+                      selectedYear={year}
+                      onChangeYear={(year: number) =>
+                        handleChangeTime("year", year)
+                      }
+                      onChangeMonth={(month: number) =>
+                        handleChangeTime("month", month)
+                      }
+                    />
+                  </div>
+                </Fade>
+              )}
+            </Popper>
+          </div>
+        </div>
+        <button
+          className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]"
+          onClick={handleShowCreateSchedulerPopper}
+        >
+          <PlusQuareIcon />
+          <span className="hidden md:block">Schedule</span>
+        </button>
       </div>
-      <button
-        className="flex appearance-none items-center gap-2 rounded-[50px] bg-passes-primary-color py-[10px] px-[30px] text-white"
-        onClick={handleShowCreateSchedulerPopper}
-      >
-        <PlusQuareIcon />
-        <span>Schedule</span>
-      </button>
-    </div>
+      <div className="relative bottom-[35px] flex items-center justify-center md:hidden">
+        <DateTimeSelected />
+      </div>
+    </>
   )
 }
 

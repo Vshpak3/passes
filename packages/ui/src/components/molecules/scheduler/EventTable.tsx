@@ -5,28 +5,28 @@ import EventTableItem from "src/components/molecules/scheduler/EventTableItem"
 
 import DeleteEventModal from "./DeleteEventModal"
 
-// const EVENTS = [
-//   {
-//     name: "Content - 5$",
-//     content: "4 videos, 20 photos",
-//     date: new Date("2022, 09, 10"),
-//     actionStatus: "in queue"
-//   },
-//   {
-//     name: "New Pass Release",
-//     content: "Golden Pass",
-//     date: new Date("2022, 09, 10"),
-//     actionStatus: "Re-schedule"
-//   },
-//   {
-//     name: "Mass Message",
-//     content: "Mass message (402 users)",
-//     date: new Date("2022, 09, 10"),
-//     actionStatus: "Re-schedule"
-//   }
-// ]
+const EVENTS = [
+  {
+    name: "Content - 5$",
+    content: "4 videos, 20 photos",
+    date: new Date("2022, 09, 10"),
+    actionStatus: "in queue"
+  },
+  {
+    name: "New Pass Release",
+    content: "Golden Pass",
+    date: new Date("2022, 09, 10"),
+    actionStatus: "Re-schedule"
+  },
+  {
+    name: "Mass Message",
+    content: "Mass message (402 users)",
+    date: new Date("2022, 09, 10"),
+    actionStatus: "Re-schedule"
+  }
+]
 
-const EVENTS: any = []
+// const EVENTS: any = []
 
 const EventTable: FC = () => {
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<number>(-1)
@@ -56,7 +56,7 @@ const EventTable: FC = () => {
           </span>
         </div>
       ) : (
-        <div className="mb-[30px] w-full rounded-[20px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
+        <div className="mb-[30px] w-full rounded-[20px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
           {selectEventIdDelete > -1 && (
             <DeleteEventModal
               onCancel={handleCancelDelete}
@@ -64,7 +64,7 @@ const EventTable: FC = () => {
             />
           )}
           <table className="w-full">
-            <tr className="pb-2 text-left text-base font-medium leading-6 text-white opacity-50">
+            <tr className="hidden pb-2 text-left text-base font-medium leading-6 text-white opacity-50 md:contents">
               <th className="pl-5 pb-1">Name</th>
               <th className="pb-1">Content</th>
               <th className="pb-1">Date</th>
