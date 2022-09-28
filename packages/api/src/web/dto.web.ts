@@ -71,15 +71,8 @@ export function DtoProperty(options: DtoOptions) {
       decorators.push(IsArray())
       apiProperty.isArray = true
     }
-    if (options.nullable) {
-      decorators.push(ValidateIf((_object, value) => value !== null))
-    }
     decorators.push(decorator('all', { each: isArray }))
     apiProperty.type = options.type.replace('[]', '').replace('uuid', 'string')
-  }
-
-  if (options.nullable) {
-    apiProperty.nullable = true
   }
 
   // Add validation for the provided custom type
@@ -99,6 +92,12 @@ export function DtoProperty(options: DtoOptions) {
       decorators.push(Type(() => (isArray ? type[0] : type)))
       apiProperty.type = type
     }
+  }
+
+  // Check for the nullable decorator
+  if (options.nullable) {
+    decorators.push(ValidateIf((_object, value) => value !== null))
+    apiProperty.nullable = true
   }
 
   // Check for the optional decorator
