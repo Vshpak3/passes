@@ -14,6 +14,8 @@ function log() {
 }
 
 log 'Applying schema migrations'
+
+yarn workspace @passes/api migration:create
 yarn workspace @passes/api migration:up
 
 log 'Done!'
