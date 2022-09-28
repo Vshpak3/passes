@@ -218,17 +218,7 @@ export class CreatorStatsService {
           `${ContentEntity.table}.id`,
         )
         .whereNull(`${PostEntity.table}.deleted_at`)
-        .andWhere(`${PostEntity.table}.is_message`, false)
         .update(`${ContentEntity.table}.in_post`, true)
-      await trx<ContentEntity>(ContentEntity.table)
-        .innerJoin(
-          PostContentEntity.table,
-          `${PostContentEntity.table}.content_id`,
-          `${ContentEntity.table}.id`,
-        )
-        .whereNull(`${PostEntity.table}.deleted_at`)
-        .andWhere(`${PostEntity.table}.is_message`, true)
-        .update(`${ContentEntity.table}.in_message`, true)
     })
 
     const creators = await this.dbReader<CreatorStatEntity>(
