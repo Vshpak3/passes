@@ -14,6 +14,7 @@ import {
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
 import { POST_TAG_MAX_COUNT, POST_TEXT_LENGTH } from '../constants/schema'
+import { PostEntity } from '../entities/post.entity'
 
 export class PostDto {
   @DtoProperty({ type: 'uuid' })
@@ -73,11 +74,11 @@ export class PostDto {
   @DtoProperty({ type: 'date' })
   updatedAt: Date
 
-  @DtoProperty({ type: 'date', optional: true })
-  scheduledAt?: Date
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  scheduledAt?: Date | null
 
-  @DtoProperty({ type: 'date', optional: true })
-  expiresAt?: Date
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  expiresAt?: Date | null
 
   @Min(0)
   @DtoProperty({ type: 'number', optional: true })
@@ -87,7 +88,16 @@ export class PostDto {
   @DtoProperty({ type: 'number', optional: true })
   totalTipAmount?: number
 
-  constructor(post, paywall, isCreator, content?: ContentDto[]) {
+  constructor(
+    post: PostEntity & {
+      is_liked: boolean
+      username: string
+      display_name: string
+    },
+    paywall,
+    isCreator,
+    content?: ContentDto[],
+  ) {
     if (post) {
       // only content gets paywalled
       this.text = post.text
@@ -103,7 +113,7 @@ export class PostDto {
       this.createdAt = post.created_at
       this.paywall = paywall
       this.tags = JSON.parse(post.tags)
-      this.passIds = JSON.parse(post.passIds)
+      this.passIds = JSON.parse(post.pass_ids)
       if (isCreator) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount

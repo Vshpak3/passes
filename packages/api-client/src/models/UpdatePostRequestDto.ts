@@ -43,7 +43,7 @@ export interface UpdatePostRequestDto {
      * @type {Date}
      * @memberof UpdatePostRequestDto
      */
-    expiresAt?: Date;
+    expiresAt?: Date | null;
     /**
      * 
      * @type {number}

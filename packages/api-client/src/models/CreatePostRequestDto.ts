@@ -49,13 +49,13 @@ export interface CreatePostRequestDto {
      * @type {Date}
      * @memberof CreatePostRequestDto
      */
-    scheduledAt?: Date;
+    scheduledAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof CreatePostRequestDto
      */
-    expiresAt?: Date;
+    expiresAt?: Date | null;
     /**
      * 
      * @type {number}

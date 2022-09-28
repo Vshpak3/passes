@@ -133,13 +133,13 @@ export interface GetPostResponseDto {
      * @type {Date}
      * @memberof GetPostResponseDto
      */
-    scheduledAt?: Date;
+    scheduledAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof GetPostResponseDto
      */
-    expiresAt?: Date;
+    expiresAt?: Date | null;
     /**
      * 
      * @type {number}

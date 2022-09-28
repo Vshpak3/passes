@@ -133,13 +133,13 @@ export interface PostDto {
      * @type {Date}
      * @memberof PostDto
      */
-    scheduledAt?: Date;
+    scheduledAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof PostDto
      */
-    expiresAt?: Date;
+    expiresAt?: Date | null;
     /**
      * 
      * @type {number}
