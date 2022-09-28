@@ -8,8 +8,8 @@ import { ChainEnum } from '../enum/chain.enum'
 @Entity({ tableName: 'wallet' })
 @Unique({ properties: ['chain', 'address'] })
 export class WalletEntity extends BaseEntity {
-  @ManyToOne()
-  user?: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string | null
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
   address: string

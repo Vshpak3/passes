@@ -48,25 +48,25 @@ export interface GetCreatorFeeResponseDto {
      * @type {number}
      * @memberof GetCreatorFeeResponseDto
      */
-    fiatRate: number;
+    fiatRate: number | null;
     /**
      * 
      * @type {number}
      * @memberof GetCreatorFeeResponseDto
      */
-    fiatFlat: number;
+    fiatFlat: number | null;
     /**
      * 
      * @type {number}
      * @memberof GetCreatorFeeResponseDto
      */
-    cryptoRate: number;
+    cryptoRate: number | null;
     /**
      * 
      * @type {number}
      * @memberof GetCreatorFeeResponseDto
      */
-    cryptoFlat: number;
+    cryptoFlat: number | null;
 }
 
 /**

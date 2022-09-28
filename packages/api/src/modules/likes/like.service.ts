@@ -27,19 +27,17 @@ export class LikeService {
   ) {}
 
   async checkLike(userId: string, postId: string): Promise<boolean> {
-    return !!(await this.dbReader(LikeEntity.table)
-      .where(
-        LikeEntity.toDict<LikeEntity>({
-          post: postId,
-          liker: userId,
-        }),
-      )
+    return !!(await this.dbReader<LikeEntity>(LikeEntity.table)
+      .where({
+        post_id: postId,
+        liker_id: userId,
+      })
       .select('id')
       .first())
   }
 
   async likePost(userId: string, postId: string) {
-    const post = await this.dbReader(PostEntity.table)
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .first()
     if (!post) {
@@ -51,15 +49,15 @@ export class LikeService {
     }
 
     const query = this.dbWriter.transaction(async (trx) => {
-      await trx(LikeEntity.table).insert(
-        LikeEntity.toDict<LikeEntity>({
-          post: postId,
-          liker: userId,
-        }),
-      )
-      await trx(PostEntity.table).where('id', postId).increment('num_likes', 1)
-      await trx(CreatorStatEntity.table)
-        .where('user_id', userId)
+      await trx<LikeEntity>(LikeEntity.table).insert({
+        post_id: postId,
+        liker_id: userId,
+      })
+      await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId })
+        .increment('num_likes', 1)
+      await trx<CreatorStatEntity>(CreatorStatEntity.table)
+        .where({ user_id: userId })
         .increment('num_likes', 1)
     })
     await createOrThrowOnDuplicate(
@@ -70,7 +68,7 @@ export class LikeService {
   }
 
   async unlikePost(userId: string, postId: string) {
-    const post = await this.dbReader(PostEntity.table)
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select('deleted_at')
       .first()
@@ -84,18 +82,18 @@ export class LikeService {
     }
 
     await this.dbWriter.transaction(async (trx) => {
-      const deleted = await trx(LikeEntity.table)
+      const deleted = await trx<LikeEntity>(LikeEntity.table)
         .where({
           post_id: postId,
           liker_id: userId,
         })
         .delete()
       if (deleted) {
-        await trx(PostEntity.table)
-          .where('id', postId)
+        await trx<PostEntity>(PostEntity.table)
+          .where({ id: postId })
           .decrement('num_likes', 1)
-        await trx(CreatorStatEntity.table)
-          .where('user_id', userId)
+        await trx<CreatorStatEntity>(CreatorStatEntity.table)
+          .where({ user_id: userId })
           .decrement('num_likes', 1)
       }
     })

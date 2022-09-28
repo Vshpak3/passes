@@ -25,7 +25,7 @@ interface WalletListItemProps {
   authenticated: number
   deleteWalletHandler: (value: string) => void
   isCreator?: boolean
-  defaultPayoutWalletId?: string
+  defaultPayoutWalletId?: string | null
   miningSolanaWalletId?: string
   miningEthereumWalletId?: string
   userId?: string

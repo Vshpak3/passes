@@ -62,8 +62,8 @@ export function GetPaidMessageHistoryRequestDtoFromJSONTyped(json: any, ignoreDi
     return {
         
         'paidMessageId': json['paidMessageId'],
-        'start': (new Date(json['start'])),
-        'end': (new Date(json['end'])),
+        'start': json['start'],
+        'end': json['end'],
     };
 }
 
@@ -77,8 +77,8 @@ export function GetPaidMessageHistoryRequestDtoToJSON(value?: GetPaidMessageHist
     return {
         
         'paidMessageId': value.paidMessageId,
-        'start': (value.start.toISOString()),
-        'end': (value.end.toISOString()),
+        'start': value.start,
+        'end': value.end,
     };
 }
 

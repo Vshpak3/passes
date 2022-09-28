@@ -62,13 +62,11 @@ export class FollowService {
     userId: string,
     creatorId: string,
   ): Promise<IsFollowingDto> {
-    const isFollowing = !!(await this.dbReader(FollowEntity.table)
-      .where(
-        FollowEntity.toDict<FollowEntity>({
-          follower: userId,
-          creator: creatorId,
-        }),
-      )
+    const isFollowing = !!(await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({
+        follower_id: userId,
+        creator_id: creatorId,
+      })
       .select('id')
       .first())
 
@@ -77,22 +75,20 @@ export class FollowService {
 
   async followCreator(userId: string, creatorId: string): Promise<FollowDto> {
     const [follower, creator, creatorSettings] = await Promise.all([
-      this.dbReader(UserEntity.table).where({ id: userId }).first(),
-      this.dbReader(UserEntity.table).where({ id: creatorId }).first(),
-      this.dbReader(CreatorSettingsEntity.table)
-        .where({
-          user_id: creatorId,
-        })
+      this.dbReader<UserEntity>(UserEntity.table).where({ id: userId }).first(),
+      this.dbReader<UserEntity>(UserEntity.table)
+        .where({ id: creatorId })
+        .first(),
+      this.dbReader<CreatorSettingsEntity>(CreatorSettingsEntity.table)
+        .where({ user_id: creatorId })
         .first(),
     ])
     if (
-      await this.dbReader(FollowBlockEntity.table)
-        .where(
-          FollowBlockEntity.toDict<FollowBlockEntity>({
-            follower: userId,
-            creator: creatorId,
-          }),
-        )
+      await this.dbReader<FollowBlockEntity>(FollowBlockEntity.table)
+        .where({
+          follower_id: userId,
+          creator_id: creatorId,
+        })
         .select('id')
         .first()
     ) {
@@ -110,28 +106,26 @@ export class FollowService {
       throw new BadRequestException(IS_NOT_CREATOR)
     }
 
-    const data = FollowEntity.toDict<FollowEntity>({
-      follower: userId,
-      creator: creatorId,
-    })
+    const data = {
+      follower_id: userId,
+      creator_id: creatorId,
+    } as FollowEntity
 
     const query = this.dbWriter.transaction(async (trx) => {
-      await trx(FollowEntity.table).insert(data)
-      await trx(CreatorStatEntity.table)
-        .where('user_id', creatorId)
+      await trx<FollowEntity>(FollowEntity.table).insert(data)
+      await trx<CreatorStatEntity>(CreatorStatEntity.table)
+        .where({ user_id: creatorId })
         .increment('num_followers', 1)
-      await trx(UserEntity.table)
-        .where('id', userId)
+      await trx<UserEntity>(UserEntity.table)
+        .where({ id: userId })
         .increment('num_following', 1)
-      await trx(UserEntity.table)
-        .where('id', userId)
+      await trx<UserEntity>(UserEntity.table)
+        .where({ id: userId })
         .increment('num_following', 1)
-      await trx(BlockTaskEntity.table).insert(
-        BlockTaskEntity.toDict<BlockTaskEntity>({
-          follower: userId,
-          creator: creatorId,
-        }),
-      )
+      await trx<BlockTaskEntity>(BlockTaskEntity.table).insert({
+        follower_id: userId,
+        creator_id: creatorId,
+      })
     })
 
     await createOrThrowOnDuplicate(
@@ -142,21 +136,19 @@ export class FollowService {
 
     try {
       if (
-        creatorSettings?.welcomeMessage &&
-        creatorSettings.welcomeMessage != ''
+        creatorSettings?.welcome_message &&
+        creatorSettings.welcome_message != ''
       ) {
-        await this.dbWriter(WelcomeMessaged.table).insert(
-          WelcomeMessaged.toDict<WelcomeMessaged>({
-            follower: userId,
-            creator: creatorId,
-          }),
-        )
+        await this.dbWriter<WelcomeMessaged>(WelcomeMessaged.table).insert({
+          follower_id: userId,
+          creator_id: creatorId,
+        })
         const channel = await this.messagesService.createChannel(userId, {
           userId: creatorId,
         })
         await this.messagesService.createMessage(
           creator.id,
-          creatorSettings.welcomeMessage,
+          creatorSettings.welcome_message,
           channel.channelId,
           0,
           false,
@@ -173,7 +165,7 @@ export class FollowService {
     userId: string,
     searchFanDto: SearchFollowRequestDto,
   ): Promise<ListMemberDto[]> {
-    let query = this.dbReader(FollowEntity.table)
+    let query = this.dbReader<FollowEntity>(FollowEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -206,7 +198,7 @@ export class FollowService {
     userId: string,
     searchFollowingDto: SearchFollowRequestDto,
   ): Promise<ListMemberDto[]> {
-    let query = this.dbReader(FollowEntity.table)
+    let query = this.dbReader<FollowEntity>(FollowEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -241,73 +233,65 @@ export class FollowService {
     followerId: string,
     reason: string,
   ): Promise<void> {
-    await this.dbWriter(FollowReportEntity.table).insert(
-      FollowReportEntity.toDict({
-        id: uuid.v4(),
-        creator: creatorId,
-        follower: followerId,
-        reason: reason,
-      }),
-    )
+    await this.dbWriter<FollowReportEntity>(FollowReportEntity.table).insert({
+      id: uuid.v4(),
+      creator_id: creatorId,
+      follower_id: followerId,
+      reason: reason,
+    })
   }
 
   async blockFollower(creatorId: string, followerId: string): Promise<void> {
-    const query = this.dbWriter(FollowBlockEntity.table).insert(
-      FollowBlockEntity.toDict({
-        creator: creatorId,
-        follower: followerId,
-      }),
-    )
+    const query = this.dbWriter<FollowBlockEntity>(
+      FollowBlockEntity.table,
+    ).insert({
+      creator_id: creatorId,
+      follower_id: followerId,
+    })
     await createOrThrowOnDuplicate(
       () => query,
       this.logger,
       'cant follow a creator twice',
     )
-    await this.dbWriter(BlockTaskEntity.table).insert(
-      BlockTaskEntity.toDict<BlockTaskEntity>({
-        follower: followerId,
-        creator: creatorId,
-      }),
-    )
+    await this.dbWriter<BlockTaskEntity>(BlockTaskEntity.table).insert({
+      follower_id: followerId,
+      creator_id: creatorId,
+    })
     await this.unfollowCreator(followerId, creatorId)
   }
 
   async unblockFollower(creatorId: string, followerId: string): Promise<void> {
-    await this.dbWriter(FollowBlockEntity.table)
+    await this.dbWriter<FollowBlockEntity>(FollowBlockEntity.table)
       .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
       .where(`${FollowBlockEntity.table}.follower_id`, followerId)
       .delete()
-    await this.dbWriter(BlockTaskEntity.table).insert(
-      BlockTaskEntity.toDict<BlockTaskEntity>({
-        follower: followerId,
-        creator: creatorId,
-      }),
-    )
+    await this.dbWriter<BlockTaskEntity>(BlockTaskEntity.table).insert({
+      follower_id: followerId,
+      creator_id: creatorId,
+    })
   }
 
   async unfollowCreator(userId: string, creatorId: string): Promise<void> {
     await this.dbWriter.transaction(async (trx) => {
-      const deleted = await trx(FollowEntity.table)
-        .where(
-          FollowEntity.toDict<FollowEntity>({
-            follower: userId,
-            creator: creatorId,
-          }),
-        )
+      const deleted = await trx<FollowEntity>(FollowEntity.table)
+        .where({
+          follower_id: userId,
+          creator_id: creatorId,
+        })
         .delete()
       if (deleted === 1) {
-        await trx(CreatorStatEntity.table)
-          .where('user_id', creatorId)
+        await trx<CreatorStatEntity>(CreatorStatEntity.table)
+          .where({ user_id: creatorId })
           .decrement('num_followers', 1)
-        await trx(UserEntity.table)
-          .where('id', userId)
+        await trx<UserEntity>(UserEntity.table)
+          .where({ id: userId })
           .decrement('num_following', 1)
       }
     })
   }
 
   async getBlocked(userId: string) {
-    const query = this.dbReader(FollowBlockEntity.table)
+    const query = this.dbReader<FollowBlockEntity>(FollowBlockEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -331,7 +315,7 @@ export class FollowService {
   }
 
   async processBlocks() {
-    await this.dbWriter(FollowEntity.table)
+    await this.dbWriter<FollowEntity>(FollowEntity.table)
       .innerJoin(FollowBlockEntity.table, function () {
         this.on(
           `${FollowEntity.table}.follower_id`,
@@ -343,7 +327,7 @@ export class FollowService {
       })
       .delete()
     const now = new Date()
-    const tasks = await this.dbWriter(BlockTaskEntity.table)
+    const tasks = await this.dbWriter<BlockTaskEntity>(BlockTaskEntity.table)
       .leftJoin(FollowBlockEntity.table, function () {
         this.on(
           `${BlockTaskEntity.table}.follower_id`,
@@ -364,7 +348,7 @@ export class FollowService {
     for (let i = 0; i < tasks.length; ++i) {
       const blocked = tasks[i].blocked
       users.add(tasks[i].follower_id)
-      await this.dbWriter(PostEntity.table)
+      await this.dbWriter<PostEntity>(PostEntity.table)
         .leftJoin(
           CommentEntity.table,
           `${CommentEntity.table}.post_id`,
@@ -372,9 +356,9 @@ export class FollowService {
         )
         .where(`${PostEntity.table}.user_id`, tasks[i].creator_id)
         .andWhere(`${CommentEntity.table}.commentor_id`, tasks[i].follower_id)
-        .update('blocked', blocked)
+        .update({ blocked: blocked })
     }
-    const comments = await this.dbReader(CommentEntity.table)
+    const comments = await this.dbReader<CommentEntity>(CommentEntity.table)
       .whereIn('commentor_id', Array.from(users))
       .distinct('post_id')
     await Promise.all(
@@ -391,7 +375,7 @@ export class FollowService {
     )
 
     // reset counts of all posts that any blocked or unblocked user has commented on
-    await this.dbWriter(BlockTaskEntity.table)
+    await this.dbWriter<BlockTaskEntity>(BlockTaskEntity.table)
       .where(`${BlockTaskEntity.table}.created_at`, '<', now)
       .delete()
   }

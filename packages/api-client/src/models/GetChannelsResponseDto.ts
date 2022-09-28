@@ -86,11 +86,11 @@ export function GetChannelsResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
         'channelMembers': ((json['channelMembers'] as Array<any>).map(ChannelMemberDtoFromJSON)),
         'tip': !exists(json, 'tip') ? undefined : json['tip'],
-        'recent': !exists(json, 'recent') ? undefined : (new Date(json['recent'])),
+        'recent': !exists(json, 'recent') ? undefined : json['recent'],
     };
 }
 
@@ -104,11 +104,11 @@ export function GetChannelsResponseDtoToJSON(value?: GetChannelsResponseDto | nu
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
+        'createdAt': value.createdAt,
+        'updatedAt': value.updatedAt,
         'channelMembers': ((value.channelMembers as Array<any>).map(ChannelMemberDtoToJSON)),
         'tip': value.tip,
-        'recent': value.recent === undefined ? undefined : (value.recent.toISOString()),
+        'recent': value.recent,
     };
 }
 

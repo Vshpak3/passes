@@ -23,7 +23,6 @@ import {
   GetCreatorPassesRequestDto,
   GetExternalPassesRequestDto,
   GetPassesResponseDto,
-  GetPassResponseDto,
 } from './dto/get-pass.dto'
 import {
   GetPassHoldersRequestDto,
@@ -126,7 +125,7 @@ export class PassController {
   @ApiEndpoint({
     summary: 'Updates a pass',
     responseStatus: HttpStatus.OK,
-    responseType: GetPassResponseDto,
+    responseType: undefined,
     responseDesc: 'A pass was updated',
   })
   @Patch('pass-info/:passId')
@@ -134,8 +133,8 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
     @Body() updatePassDto: UpdatePassRequestDto,
-  ): Promise<GetPassResponseDto> {
-    return await this.passService.updatePass(req.user.id, passId, updatePassDto)
+  ): Promise<void> {
+    await this.passService.updatePass(req.user.id, passId, updatePassDto)
   }
 
   @ApiEndpoint({

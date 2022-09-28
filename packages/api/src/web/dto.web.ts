@@ -10,6 +10,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateIf,
   ValidateNested,
 } from 'class-validator'
 import _ from 'lodash'
@@ -46,6 +47,7 @@ export interface DtoOptions {
   custom_type?: any
   optional?: boolean
   forceLower?: boolean
+  nullable?: boolean
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -67,8 +69,17 @@ export function DtoProperty(options: DtoOptions) {
     const isArray = options.type.endsWith('[]')
     if (isArray) {
       decorators.push(IsArray())
+      apiProperty.isArray = true
+    }
+    if (options.nullable) {
+      decorators.push(ValidateIf((_object, value) => value !== null))
     }
     decorators.push(decorator('all', { each: isArray }))
+    apiProperty.type = options.type.replace('[]', '').replace('uuid', 'string')
+  }
+
+  if (options.nullable) {
+    apiProperty.nullable = true
   }
 
   // Add validation for the provided custom type

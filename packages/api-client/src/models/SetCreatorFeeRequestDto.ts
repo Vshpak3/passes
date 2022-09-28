@@ -48,25 +48,25 @@ export interface SetCreatorFeeRequestDto {
      * @type {number}
      * @memberof SetCreatorFeeRequestDto
      */
-    fiatRate: number;
+    fiatRate: number | null;
     /**
      * 
      * @type {number}
      * @memberof SetCreatorFeeRequestDto
      */
-    fiatFlat: number;
+    fiatFlat: number | null;
     /**
      * 
      * @type {number}
      * @memberof SetCreatorFeeRequestDto
      */
-    cryptoRate: number;
+    cryptoRate: number | null;
     /**
      * 
      * @type {number}
      * @memberof SetCreatorFeeRequestDto
      */
-    cryptoFlat: number;
+    cryptoFlat: number | null;
 }
 
 /**

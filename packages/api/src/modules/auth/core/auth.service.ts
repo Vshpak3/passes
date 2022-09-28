@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { v4 } from 'uuid'
 
@@ -44,10 +48,14 @@ export class AuthService {
   }
 
   async setEmail(authId: string, email: string): Promise<void> {
-    const authRecord = await this.dbReader(AuthEntity.table)
+    const authRecord = await this.dbReader<AuthEntity>(AuthEntity.table)
       .where({ id: authId })
       .select('is_email_verified')
       .first()
+
+    if (!authRecord) {
+      throw new InternalServerErrorException('Unexpected missing auth record')
+    }
 
     // Block endpoint if verified. Do not block if only the email is set
     // (since the user may have entered the wrong email)
@@ -55,8 +63,8 @@ export class AuthService {
       throw new BadRequestException('Email already verified')
     }
 
-    await this.dbWriter(AuthEntity.table)
-      .update(AuthEntity.toDict<AuthEntity>({ email: email }))
+    await this.dbWriter<AuthEntity>(AuthEntity.table)
+      .update({ email: email })
       .where({ id: authId })
 
     await this.sendVerifyEmailForUserSignin(authId, email)
@@ -65,13 +73,13 @@ export class AuthService {
   async sendVerifyEmailForUserSignin(authId: string, email: string) {
     const id = v4()
 
-    await this.dbWriter(VerifyEmailRequestEntity.table).insert(
-      VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
-        id,
-        auth: authId,
-        email,
-      }),
-    )
+    await this.dbWriter<VerifyEmailRequestEntity>(
+      VerifyEmailRequestEntity.table,
+    ).insert({
+      id,
+      auth_id: authId,
+      email,
+    })
 
     // Skip sending verifications emails in local development
     if (this.env === 'dev') {
@@ -90,7 +98,9 @@ export class AuthService {
   async verifyEmailForUserSignin(
     verifyEmailDto: VerifyEmailDto,
   ): Promise<AuthRecord> {
-    let request = await this.dbReader(VerifyEmailRequestEntity.table)
+    let _request = await this.dbReader<VerifyEmailRequestEntity>(
+      VerifyEmailRequestEntity.table,
+    )
       .where({ id: verifyEmailDto.verificationToken })
       .select('*')
       .first()
@@ -99,16 +109,20 @@ export class AuthService {
     // easily retrive the verification id, so we just grab the last created
     // entry
     if (this.env === 'dev') {
-      request = await this.dbReader(VerifyEmailRequestEntity.table)
+      _request = await this.dbReader<VerifyEmailRequestEntity>(
+        VerifyEmailRequestEntity.table,
+      )
         .select('*')
         .orderBy('created_at', 'desc')
         .limit(1)
         .first()
     }
 
-    if (!request) {
+    if (!_request) {
       throw new BadRequestException('Verify email request does not exist')
     }
+
+    const request = _request
 
     if (
       new Date().getTime() - new Date(request.created_at).getTime() >
@@ -124,27 +138,27 @@ export class AuthService {
     }
 
     // Handles deduplicating users based on email
-    const user = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ email: request.email }))
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ email: request.email })
       .select('*')
       .first()
 
-    const authRecordUpdate = { isEmailVerified: true }
+    const authRecordUpdate = { is_email_verified: true }
     if (user) {
       authRecordUpdate['user'] = user.id
     }
 
+    if (request === undefined) {
+      throw new BadRequestException('Verify email request does not exist')
+    }
+
     await this.dbWriter.transaction(async (trx) => {
-      await trx(VerifyEmailRequestEntity.table)
-        .update(
-          VerifyEmailRequestEntity.toDict<VerifyEmailRequestEntity>({
-            usedAt: new Date(),
-          }),
-        )
+      await trx<VerifyEmailRequestEntity>(VerifyEmailRequestEntity.table)
+        .update({ used_at: new Date() })
         .where({ id: request.id })
 
-      await trx(AuthEntity.table)
-        .update(AuthEntity.toDict<AuthEntity>(authRecordUpdate))
+      await trx<AuthEntity>(AuthEntity.table)
+        .update(authRecordUpdate)
         .where({ id: request.auth_id })
     })
 
@@ -159,10 +173,14 @@ export class AuthService {
     authId: string,
     createUserRequestDto: CreateUserRequestDto,
   ): Promise<AuthRecord> {
-    const authRecord = await this.dbReader(AuthEntity.table)
+    const authRecord = await this.dbReader<AuthEntity>(AuthEntity.table)
       .where({ id: authId })
       .select(['user_id', 'is_email_verified', 'email'])
       .first()
+
+    if (!authRecord) {
+      throw new InternalServerErrorException('Unexpected missing auth record')
+    }
 
     if (authRecord.user_id) {
       throw new BadRequestException('Auth is already associated with a user')
@@ -174,7 +192,7 @@ export class AuthService {
 
     const user = await this.userService.createUser(
       authId,
-      authRecord.email,
+      authRecord.email as string,
       createUserRequestDto,
     )
 
@@ -202,9 +220,9 @@ export class AuthService {
     oauthId: string,
     email?: string,
   ): Promise<AuthRecord> {
-    const authRecord = await this.dbReader(AuthEntity.table)
-      .where(AuthEntity.toDict<AuthEntity>({ oauthId, oauthProvider }))
-      .select(['id', 'user_id', 'is_email_verified'])
+    const authRecord = await this.dbReader<AuthEntity>(AuthEntity.table)
+      .where({ oauth_id: oauthId, oauth_provider: oauthProvider })
+      .select('id', 'user_id', 'is_email_verified')
       .first()
 
     if (authRecord) {
@@ -212,16 +230,14 @@ export class AuthService {
     }
 
     const id = v4()
-    await this.dbWriter(AuthEntity.table).insert(
-      AuthEntity.toDict<AuthEntity>({
-        id,
-        oauthProvider: oauthProvider,
-        oauthId: oauthId,
-        email: email,
-        // If we received an email from OAuth we mark it verified
-        isEmailVerified: !!email,
-      }),
-    )
+    await this.dbWriter<AuthEntity>(AuthEntity.table).insert({
+      id,
+      oauth_provider: oauthProvider,
+      oauth_id: oauthId,
+      email,
+      // If we received an email from OAuth we mark it verified
+      is_email_verified: !!email,
+    })
 
     return new AuthRecord({ id: id, isEmailVerified: !!email })
   }

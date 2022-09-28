@@ -5,11 +5,11 @@ import { PassEntity } from '../../pass/entities/pass.entity'
 import { PostEntity } from './post.entity'
 
 @Entity({ tableName: 'post_pass_access' })
-@Unique({ properties: ['post', 'pass'] })
+@Unique({ properties: ['post_id', 'pass_id'] })
 export class PostPassAccessEntity extends BaseEntity {
   @ManyToOne({ entity: () => PostEntity })
-  post: PostEntity
+  post_id: string
 
   @ManyToOne({ entity: () => PassEntity })
-  pass: PassEntity
+  pass_id: string
 }

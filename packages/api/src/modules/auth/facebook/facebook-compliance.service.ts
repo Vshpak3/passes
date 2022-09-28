@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import crypto from 'crypto'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -16,7 +11,6 @@ import {
   DB_WRITER,
 } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
-import { UserEntity } from '../../user/entities/user.entity'
 import { FacebookDeletionRequestDto } from '../dto/fb/fb-deletion-request.dto'
 import { FacebookDeletionRequestEntity } from '../entities/facebook-deletion-request.entity'
 
@@ -57,29 +51,24 @@ export class FacebookComplianceService {
       )
     }
 
-    await this.dbWriter
-      .transaction(async (trx) => {
-        const id = uuid.v4()
-        const userId = decodedBody.user_id
+    const id = uuid.v4()
+    const userId = decodedBody.user_id
 
-        const request =
-          FacebookDeletionRequestEntity.toDict<FacebookDeletionRequestEntity>({
-            id,
-            facebookUserId: userId,
-          })
-        await trx(FacebookDeletionRequestEntity.table).insert(request)
-
-        await trx(UserEntity.table)
-          .update({ email: null })
-          .where('oauth_id', userId)
-          .where('oauth_provider', 'facebook')
-
-        return id
+    await this.dbWriter.transaction(async (trx) => {
+      await trx<FacebookDeletionRequestEntity>(
+        FacebookDeletionRequestEntity.table,
+      ).insert({
+        id,
+        facebook_user_id: userId,
       })
-      .catch((err) => {
-        this.logger.error(err)
-        throw new InternalServerErrorException()
-      })
+
+      // Don't actually do an update since this will break out relations; we
+      // also don't break if we actually received this information from fb
+      // await trx<AuthEntity>(AuthEntity.table)
+      //   .update({ email: undefined })
+      //   .where({ oauth_id: userId })
+      //   .where({ oauth_provider: 'facebook' })
+    })
 
     return ''
   }
@@ -92,10 +81,9 @@ export class FacebookComplianceService {
   }
 
   async checkDeletionRequest(confirmationCode: string): Promise<boolean> {
-    const res = await this.dbReader(FacebookDeletionRequestEntity.table).where(
-      'id',
-      confirmationCode,
-    )
+    const res = await this.dbReader<FacebookDeletionRequestEntity>(
+      FacebookDeletionRequestEntity.table,
+    ).where({ id: confirmationCode })
 
     return res.length > 0
   }

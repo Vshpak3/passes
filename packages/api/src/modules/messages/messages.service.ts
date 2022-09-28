@@ -60,8 +60,15 @@ import { PaidMessageEntity } from './entities/paid-message.entity'
 import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity'
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
-import { ChannelMissingError } from './error/channel.error'
-import { MessageSendError, PaidMessageNotFound } from './error/message.error'
+import {
+  ChannelNotFoundException,
+  ForbiddenChannelError,
+} from './error/channel.error'
+import {
+  MessageNotFoundException,
+  MessageSendError,
+  PaidMessageNotFoundException,
+} from './error/message.error'
 
 const MAX_CHANNELS_PER_REQUEST = 10
 
@@ -92,8 +99,8 @@ export class MessagesService {
     userId: string,
     getChannelRequestDto: GetChannelRequestDto,
   ): Promise<ChannelMemberDto> {
-    const otherUser = await this.dbReader(UserEntity.table)
-      .where('id', getChannelRequestDto.userId)
+    const otherUser = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: getChannelRequestDto.userId })
       .select('id')
       .first()
 
@@ -101,40 +108,38 @@ export class MessagesService {
       throw new BadRequestException('userId could not be found')
     }
 
-    const lookup = await this.dbReader(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-          otherUser: otherUser.id,
-        }),
-      )
+    const lookup = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
+      .where({
+        user_id: userId,
+        other_user_id: otherUser.id,
+      })
       .select('channel_id')
       .first()
 
     if (!lookup) {
-      const channelData = ChannelEntity.toDict<ChannelEntity>({
+      const channelData = {
         id: v4(),
-      })
+      }
       await this.dbWriter.transaction(async (trx) => {
-        await trx(ChannelEntity.table).insert(channelData)
-        await trx(ChannelMemberEntity.table).insert(
-          ChannelMemberEntity.toDict<ChannelMemberEntity>({
-            channel: channelData.id,
-            user: userId,
-            otherUser: otherUser.id,
-          }),
-        )
-        await trx(ChannelMemberEntity.table).insert(
-          ChannelMemberEntity.toDict<ChannelMemberEntity>({
-            channel: channelData.id,
-            otherUser: userId,
-            user: otherUser.id,
-          }),
-        )
+        await trx<ChannelEntity>(ChannelEntity.table).insert(channelData)
+        await trx<ChannelMemberEntity>(ChannelMemberEntity.table).insert({
+          channel_id: channelData.id,
+          user_id: userId,
+          other_user_id: otherUser.id,
+        })
+        await trx<ChannelMemberEntity>(ChannelMemberEntity.table).insert({
+          channel_id: channelData.id,
+          other_user_id: userId,
+          user_id: otherUser.id,
+        })
       })
     }
 
-    const channelMember = await this.dbWriter(ChannelMemberEntity.table)
+    const channelMember = await this.dbWriter<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
       .innerJoin(
         ChannelEntity.table,
         `${ChannelMemberEntity.table}.channel_id`,
@@ -145,12 +150,10 @@ export class MessagesService {
         `${ChannelMemberEntity.table}.other_user_id`,
         `${UserEntity.table}.id`,
       )
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-          otherUser: otherUser.id,
-        }),
-      )
+      .where({
+        user_id: userId,
+        otherUser: otherUser.id,
+      })
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
@@ -164,7 +167,9 @@ export class MessagesService {
   }
 
   async getChannel(userId: string, getChannelRequestDto: GetChannelRequestDto) {
-    const channelMember = await this.dbReader(ChannelMemberEntity.table)
+    const channelMember = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
       .innerJoin(
         ChannelEntity.table,
         `${ChannelMemberEntity.table}.channel_id`,
@@ -175,12 +180,10 @@ export class MessagesService {
         `${ChannelMemberEntity.table}.other_user_id`,
         `${UserEntity.table}.id`,
       )
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-          otherUser: getChannelRequestDto.userId,
-        }),
-      )
+      .where({
+        user_id: userId,
+        otherUser: getChannelRequestDto.userId,
+      })
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
@@ -199,7 +202,7 @@ export class MessagesService {
   ) {
     const { lastId, search, order, recent, tip, orderType, unreadOnly } =
       getChannelsRequestDto
-    let query = this.dbWriter(ChannelMemberEntity.table)
+    let query = this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .innerJoin(
         ChannelEntity.table,
         `${ChannelMemberEntity.table}.channel_id`,
@@ -280,17 +283,17 @@ export class MessagesService {
     price: number,
   ): Promise<string> {
     await this.contentService.validateContentIds(userId, contentIds)
-    const data = PaidMessageEntity.toDict<PaidMessageEntity>({
+    const data = {
       id: v4(),
       creator: userId,
       text,
       price,
-      contentIds: JSON.stringify(contentIds),
-    })
+      content_ids: JSON.stringify(contentIds),
+    }
     await this.dbWriter.transaction(async (trx) => {
-      await trx(PaidMessageEntity.table).insert(data)
-      await trx(ContentEntity.table)
-        .update('in_message', true)
+      await trx<PaidMessageEntity>(PaidMessageEntity.table).insert(data)
+      await trx<ContentEntity>(ContentEntity.table)
+        .update({ in_message: true })
         .whereIn('id', contentIds)
     })
     return data.id
@@ -319,7 +322,7 @@ export class MessagesService {
       includeListIds,
     )
     ;(
-      await this.dbReader(PassHolderEntity.table)
+      await this.dbReader<PassHolderEntity>(PassHolderEntity.table)
         .whereIn('pass_id', passIds)
         .andWhere(function () {
           return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
@@ -329,7 +332,11 @@ export class MessagesService {
           )
         })
         .distinct('holder_id')
-    ).forEach((passHolder) => include.add(passHolder.holder_id))
+    ).forEach((passHolder) => {
+      if (passHolder.holder_id) {
+        include.add(passHolder.holder_id)
+      }
+    })
 
     const exclude = await this.listService.getAllListMembers(
       userId,
@@ -340,7 +347,9 @@ export class MessagesService {
 
     const removeUserIds = new Set(
       (
-        await this.dbReader(UserMessageContentEntity.table)
+        await this.dbReader<UserMessageContentEntity>(
+          UserMessageContentEntity.table,
+        )
           .whereIn('user_id', userIds)
           .whereIn('content', contentIds)
           .distinct('user_id')
@@ -405,10 +414,17 @@ export class MessagesService {
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
-    const channelMember = await this.dbReader(ChannelMemberEntity.table)
-      .where({ user: userId, channel: sendMessageDto.channelId })
+    const channelMember = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
+      .where({ user_id: userId, channel_id: sendMessageDto.channelId })
       .select(['unlimited_messages', 'other_user_id'])
       .first()
+    if (!channelMember) {
+      throw new ChannelNotFoundException(
+        `channel ${sendMessageDto.channelId} not found for user ${userId}`,
+      )
+    }
     const { blocked, amount } = await this.registerSendMessageData(
       userId,
       sendMessageDto,
@@ -463,11 +479,13 @@ export class MessagesService {
     otherUserId?: string,
   ): Promise<PayinDataDto> {
     if (!otherUserId) {
-      const channelMember = await this.dbReader(ChannelMemberEntity.table)
-        .where({ user: userId, channel: sendMessageDto.channelId })
+      const channelMember = await this.dbReader<ChannelMemberEntity>(
+        ChannelMemberEntity.table,
+      )
+        .where({ user_id: userId, channel_id: sendMessageDto.channelId })
         .select(['unlimited_messages', 'other_user_id'])
         .first()
-      otherUserId = channelMember.other_user_id
+      otherUserId = channelMember ? channelMember.other_user_id : ''
     }
     let blocked = await this.checkMessageBlocked(
       userId,
@@ -483,22 +501,31 @@ export class MessagesService {
   }
 
   async removeFreeMessage(userId: string, channelId: string) {
-    const channelMember = await this.dbReader(ChannelMemberEntity.table)
-      .where({ user: userId, channel: channelId })
+    const channelMember = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
+      .where({ user_id: userId, channel_id: channelId })
       .select(['unlimited_messages', 'other_user_id'])
       .first()
+    if (!channelMember) {
+      throw new ForbiddenChannelError('not in channel')
+    }
     const creatorId = channelMember.other_user_id
     if (channelMember.unlimited_messages) {
       return
     }
-    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
-      .where('user_id', creatorId)
+    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
+      CreatorSettingsEntity.table,
+    )
+      .where({ user_id: creatorId })
       .select('minimum_tip_amount')
       .first()
     if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
       return
     }
-    const passHoldings = await this.dbReader(PassHolderEntity.table)
+    const passHoldings = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .innerJoin(
         PassHolderEntity.table,
         `${PassEntity.table}.id`,
@@ -524,8 +551,8 @@ export class MessagesService {
     ) {
       return
     }
-    await this.dbWriter(PassHolderEntity.table)
-      .where('id', passHoldings[0].id)
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+      .where({ id: passHoldings[0].id })
       .andWhere('messages', '>', 0)
       .decrement('messages', 1)
   }
@@ -534,16 +561,25 @@ export class MessagesService {
     userId: string,
     channelId: string,
   ): Promise<number | null> {
-    const channelMember = await this.dbReader(ChannelMemberEntity.table)
-      .where({ user: userId, channel: channelId })
+    const channelMember = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
+      .where({ user_id: userId, channel_id: channelId })
       .select(['unlimited_messages', 'other_user_id'])
       .first()
+    if (!channelMember) {
+      throw new ChannelNotFoundException(
+        `channel ${channelId} not found for user ${userId}`,
+      )
+    }
     const creatorId = channelMember.other_user_id
     if (channelMember.unlimited_messages) {
       return null
     }
 
-    const passHoldings = await this.dbReader(PassHolderEntity.table)
+    const passHoldings = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .innerJoin(
         PassHolderEntity.table,
         `${PassEntity.table}.id`,
@@ -581,20 +617,18 @@ export class MessagesService {
     tipAmount: number,
   ): Promise<BlockedReasonEnum | undefined> {
     // userId must be a creator or follow otherUserId
-    const user = await this.dbReader(UserEntity.table)
-      .where('id', userId)
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
       .select('is_creator')
       .first()
-    const follow = await this.dbReader(FollowEntity.table)
-      .where(
-        FollowEntity.toDict<FollowEntity>({
-          follower: userId,
-          creator: otherUserId,
-        }),
-      )
+    const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({
+        follower_id: userId,
+        creator_id: otherUserId,
+      })
       .select('id')
       .first()
-    if (!user.is_creator && !follow) {
+    if (!user || (!user.is_creator && !follow)) {
       return BlockedReasonEnum.USER_BLOCKED
     }
 
@@ -603,12 +637,10 @@ export class MessagesService {
       return BlockedReasonEnum.USER_BLOCKED
     }
 
-    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
-      .where(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({
-          user: otherUserId,
-        }),
-      )
+    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
+      CreatorSettingsEntity.table,
+    )
+      .where({ user_id: otherUserId })
       .select('minimum_tip_amount')
       .first()
     if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
@@ -634,18 +666,18 @@ export class MessagesService {
     paidMessageId?: string,
     contentIds?: string[],
   ): Promise<string> {
-    const data = MessageEntity.toDict<MessageEntity>({
+    const data = {
       id: v4(),
       sender: userId,
       text,
-      channel: channelId,
-      tipAmount,
+      channel_id: channelId,
+      tip_amount: tipAmount,
       pending,
       price,
-      paidMessage: paidMessageId,
-      contentIds: JSON.stringify(contentIds ? contentIds : []),
-    })
-    await this.dbWriter(MessageEntity.table).insert(data)
+      paid_message_id: paidMessageId,
+      content_ids: JSON.stringify(contentIds ? contentIds : []),
+    }
+    await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
       await this.updateStatus(userId, channelId)
     }
@@ -658,19 +690,15 @@ export class MessagesService {
     channelId: string,
     tipAmount: number,
   ) {
-    const updated = await this.dbWriter(MessageEntity.table)
-      .where(
-        MessageEntity.toDict<MessageEntity>({
-          id: messageId,
-          pending: true,
-        }),
-      )
-      .update(
-        MessageEntity.toDict<MessageEntity>({
-          sentAt: new Date(),
-          pending: false,
-        }),
-      )
+    const updated = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .where({
+        id: messageId,
+        pending: true,
+      })
+      .update({
+        sent_at: new Date(),
+        pending: false,
+      })
     if (updated) {
       await this.updateStatus(userId, channelId)
       await this.updateChannelTipStats(userId, channelId, tipAmount)
@@ -678,27 +706,19 @@ export class MessagesService {
   }
 
   async updateStatus(userId: string, channelId: string) {
-    await this.dbWriter(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          channel: channelId,
-        }),
-      )
-      .andWhereNot(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-        }),
-      )
-      .update('unread', true)
-    await this.dbWriter(ChannelEntity.table)
-      .where('id', channelId)
-      .update('recent', new Date())
+    await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
+      .where({ channel_id: channelId })
+      .andWhereNot({ user_id: userId })
+      .update({ unread: true })
+    await this.dbWriter<ChannelEntity>(ChannelEntity.table)
+      .where({ id: channelId })
+      .update({ recent: new Date() })
   }
 
   async deleteMessage(messageId: string): Promise<boolean> {
     return (
-      (await this.dbWriter(MessageEntity.table)
-        .where('id', messageId)
+      (await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .where({ id: messageId })
         .delete()) === 1
     )
   }
@@ -708,111 +728,82 @@ export class MessagesService {
     channelId: string,
     amount: number,
   ) {
-    await this.dbWriter(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-          channel: channelId,
-        }),
-      )
+    await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
+      .where({
+        user_id: userId,
+        channel_id: channelId,
+      })
       .increment('tip_sent', amount)
-    await this.dbWriter(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          channel: channelId,
-        }),
-      )
-      .andWhereNot(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-        }),
-      )
+    await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
+      .where({ channel_id: channelId })
+      .andWhereNot({ user_id: userId })
       .increment('tip_received', amount)
     if (amount > 0) {
-      await this.dbWriter(ChannelMemberEntity.table)
-        .where(
-          ChannelMemberEntity.toDict<ChannelMemberEntity>({
-            channel: channelId,
-          }),
-        )
-        .andWhereNot(
-          ChannelMemberEntity.toDict<ChannelMemberEntity>({
-            user: userId,
-          }),
-        )
+      await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
+        .where({ channel_id: channelId })
+        .andWhereNot({ user_id: userId })
         .decrement('unread_tip', amount)
     }
     // TODO: add channel subscribe
   }
 
   async revertMessage(messageId: string): Promise<void> {
-    const tippedMessage = await this.dbReader(MessageEntity.table)
-      .where('id', messageId)
+    const tippedMessage = await this.dbReader<MessageEntity>(
+      MessageEntity.table,
+    )
+      .where({ id: messageId })
       .select('*')
       .first()
+    if (!tippedMessage) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
     await this.updateChannelTipStats(
       tippedMessage.sender_id,
       tippedMessage.channel_id,
       tippedMessage.tip_amount,
     )
-    await this.dbWriter(MessageEntity.table)
-      .where('id', messageId)
-      .update(MessageEntity.toDict<MessageEntity>({ reverted: true }))
+    await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
+      .update({ reverted: true })
   }
 
   async updateChannelSettings(
     userId: string,
     updateChannelSettingsDto: UpdateChannelSettingsRequestDto,
   ) {
-    const data = ChannelMemberEntity.toDict<ChannelMemberEntity>(
-      updateChannelSettingsDto,
+    const data = {
+      unlimited_messages: updateChannelSettingsDto.unlimitedMessages,
+      channel_id: updateChannelSettingsDto.channelId,
+    }
+    Object.keys(data).forEach((key) =>
+      data[key] === undefined ? delete data[key] : {},
     )
     if (Object.keys(data).length === 0) {
       return
     }
-    await this.dbWriter(ChannelMemberEntity.table)
+    await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .update(data)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          user: userId,
-          channel: updateChannelSettingsDto.channelId,
-        }),
-      )
+      .where({
+        user_id: userId,
+        channel_id: updateChannelSettingsDto.channelId,
+      })
   }
 
   async checkBlocked(userId: string, otherUserId: string): Promise<boolean> {
-    const blockedResult = await this.dbReader(FollowBlockEntity.table)
-      .where(
-        FollowBlockEntity.toDict<FollowBlockEntity>({
-          follower: userId,
-          creator: otherUserId,
-        }),
-      )
-      .orWhere(
-        FollowBlockEntity.toDict<FollowBlockEntity>({
-          follower: otherUserId,
-          creator: userId,
-        }),
-      )
+    const blockedResult = await this.dbReader<FollowBlockEntity>(
+      FollowBlockEntity.table,
+    )
+      .where({ follower_id: userId, creator_id: otherUserId })
+      .orWhere({ follower_id: otherUserId, creator_id: userId })
       .select(`${FollowBlockEntity.table}.id`)
       .first()
     return !!blockedResult
   }
 
   async read(userId: string, channelId: string) {
-    await this.dbWriter(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          channel: channelId,
-          user: userId,
-        }),
-      )
-      .update(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          unread: false,
-          unreadTip: 0,
-        }),
-      )
+    await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
+      .where({ channel_id: channelId, user_id: userId })
+      .update({ unread: false, unread_tip: 0 })
   }
 
   async purchaseMessage(
@@ -822,33 +813,31 @@ export class MessagesService {
     earnings: number,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(MessageEntity.table).update('paid', true).where('id', messageId)
-      await trx(PaidMessageEntity.table)
-        .where('id', paidMessageId)
+      await trx<MessageEntity>(MessageEntity.table)
+        .update({ paid: true })
+        .where({ id: messageId })
+      await trx<PaidMessageEntity>(PaidMessageEntity.table)
+        .where({ id: paidMessageId })
         .increment('num_purchases', 1)
-      await trx(PaidMessageEntity.table)
-        .where('id', paidMessageId)
+      await trx<PaidMessageEntity>(PaidMessageEntity.table)
+        .where({ id: paidMessageId })
         .increment('earnings_purchases', earnings)
+      const message = await trx<MessageEntity>(MessageEntity.table)
+        .where({ id: messageId })
+        .select('content_ids')
+        .first()
+      if (!message) {
+        throw new MessageNotFoundException(`message ${messageId} not found`)
+      }
 
-      const contentIds = JSON.parse(
-        (
-          await trx(MessageEntity.table)
-            .where('id', messageId)
-            .select('content_ids')
-            .first()
-        ).content_ids,
-      )
+      const contentIds = JSON.parse(message.content_ids)
 
       await Promise.all(
         contentIds.map(async (contentId) => {
-          await trx(UserMessageContentEntity.table).insert(
-            UserMessageContentEntity.toDict<UserMessageContentEntity>({
-              user: userId,
-              content: contentId as string,
-            })
-              .onConflict()
-              .ignore(),
-          )
+          await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
+            .insert({ user_id: userId, content_id: contentId as string })
+            .onConflict(['user_id', 'content_id'])
+            .ignore()
         }),
       )
     })
@@ -866,16 +855,18 @@ export class MessagesService {
     if (blocked) {
       throw new InvalidPayinRequestError('invalid post purchase')
     }
-    const message = await this.dbReader(MessageEntity.table)
-      .where('id', messageId)
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
       .select(['sender_id', 'paid_message_id'])
       .first()
-
+    if (!message || !message.paid_message_id) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
     const callbackInput: PurchaseMessageCallbackInput = {
       messageId,
       paidMessageId: message.paid_message_id,
     }
-    if (payinMethod === undefined) {
+    if (!payinMethod) {
       payinMethod = await this.payService.getDefaultPayinMethod(userId)
     }
 
@@ -898,17 +889,19 @@ export class MessagesService {
       CryptoJS.enc.Hex,
     )
 
-    const message = await this.dbReader(MessageEntity.table)
-      .where('id', messageId)
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
       .select(['paid', 'price'])
       .first()
-
-    const checkPayin = await this.dbReader(PayinEntity.table)
+    if (!message || !message.price) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
+    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .where('target', target)
+      .where({ target: target })
       .select('id')
       .first()
 
@@ -932,22 +925,19 @@ export class MessagesService {
   ) {
     const { sentAt, lastId, dateLimit, channelId, contentOnly, pending } =
       getMessagesRequestDto
-    const channel = await this.dbReader(ChannelMemberEntity.table)
-      .where(
-        ChannelMemberEntity.toDict<ChannelMemberEntity>({
-          channel: channelId,
-          user: userId,
-        }),
-      )
+    const channel = await this.dbReader<ChannelMemberEntity>(
+      ChannelMemberEntity.table,
+    )
+      .where({ channel_id: channelId, user_id: userId })
       .select('id')
       .first()
     if (!channel) {
-      throw new ChannelMissingError(
+      throw new ChannelNotFoundException(
         `cant find channel ${channelId} for user ${userId}`,
       )
     }
 
-    let query = this.dbReader(MessageEntity.table)
+    let query = this.dbReader<MessageEntity>(MessageEntity.table)
       .where(`${MessageEntity.table}.channel_id`, channelId)
       .select(`${MessageEntity.table}.*`)
       .orderBy([
@@ -960,7 +950,7 @@ export class MessagesService {
         .whereNotNull('paid_message_id')
         .andWhereNot('sender_id', userId)
     } else if (pending) {
-      query = query.andWhere('pending', true).andWhere('sender_id', userId)
+      query = query.andWhere({ pending: true }).andWhere({ sender_id: userId })
     }
 
     if (sentAt) {
@@ -987,7 +977,7 @@ export class MessagesService {
   }
 
   async getMessage(userId: string, messageId: string) {
-    const message = await this.dbReader(MessageEntity.table)
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
       .innerJoin(
         ChannelMemberEntity.table,
         `${ChannelMemberEntity.table}.channel_id`,
@@ -1012,12 +1002,12 @@ export class MessagesService {
     contentIds: string[][],
     paid: boolean[],
   ): Promise<ContentDto[][]> {
-    const contents = await this.dbReader(ContentEntity.table)
+    const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .whereIn(
         'id',
         contentIds.reduce((acc, ids) => acc.concat(ids), []),
       )
-      .select([`${ContentEntity.table}.*`])
+      .select('*')
     const contentMap = {}
     contents.forEach((content) => (contentMap[content.id] = content))
 
@@ -1028,9 +1018,11 @@ export class MessagesService {
             return new ContentDto(
               contentMap[contentId],
               paid[ind]
-                ? await this.s3ContentService.signUrl(
-                    `${this.cloudfrontUrl}/media/${contentMap[contentId].user_id}/${contentMap[contentId].id}`,
-                  )
+                ? (
+                    await this.s3ContentService.signUrl(
+                      `${this.cloudfrontUrl}/media/${contentMap[contentId].user_id}/${contentMap[contentId].id}`,
+                    )
+                  ).url
                 : undefined,
             )
           }),
@@ -1050,7 +1042,7 @@ export class MessagesService {
         ]),
       )
       .insert(
-        this.dbWriter(PaidMessageEntity.table).select([
+        this.dbWriter<PaidMessageEntity>(PaidMessageEntity.table).select([
           'id as paid_message_id',
           'num_purchases',
           'earnings_purchases',
@@ -1063,14 +1055,14 @@ export class MessagesService {
     getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto,
   ) {
     const { paidMessageId, start, end } = getPaidMessageHistoryRequestDto
-    const paidMessage = await this.dbReader(PaidMessageEntity.table).where(
-      PaidMessageEntity.toDict<PaidMessageEntity>({
-        id: paidMessageId,
-        creator: userId,
-      }),
-    )
+    const paidMessage = await this.dbReader<PaidMessageEntity>(
+      PaidMessageEntity.table,
+    ).where({
+      id: paidMessageId,
+      creator_id: userId,
+    })
     if (!paidMessage) {
-      throw new PaidMessageNotFound(
+      throw new PaidMessageNotFoundException(
         `paid message ${paidMessageId} not found for user ${userId}`,
       )
     }

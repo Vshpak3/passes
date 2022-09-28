@@ -8,14 +8,14 @@ import { CircleCardEntity } from './circle-card.entity'
 @Entity({ tableName: 'default_payin_method' })
 export class DefaultPayinMethodEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Enum(() => PayinMethodEnum)
   method: PayinMethodEnum
 
   @OneToOne({ entity: () => CircleCardEntity })
-  card?: CircleCardEntity
+  card_id: string | null
 
   @Property()
-  chainId?: number
+  chain_id: number | null
 }

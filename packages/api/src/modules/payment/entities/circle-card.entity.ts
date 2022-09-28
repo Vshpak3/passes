@@ -13,31 +13,31 @@ import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 @Entity({ tableName: 'circle_card' })
 export class CircleCardEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()
-  idempotencyKey: string
+  idempotency_key: string
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleId?: string
+  circle_id: string | null
 
   @Enum(() => CircleAccountStatusEnum)
   status: CircleAccountStatusEnum
 
   @Property({ length: CREDIT_CARD_NUMBER_LENGTH })
-  cardNumber: string
+  card_number: string
 
   @Property()
-  expMonth: number
+  exp_month: number
 
   @Property()
-  expYear: number
+  exp_year: number
 
   @Property({ length: USER_LEGAL_FULL_NAME_LENGTH })
   name: string
 
   @Property()
-  deletedAt?: Date
+  deleted_at: Date | null
 }

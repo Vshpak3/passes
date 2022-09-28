@@ -11,26 +11,26 @@ import { CircleBankEntity } from './circle-bank.entity'
 @Entity({ tableName: 'payout' })
 export class PayoutEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   // payin method
   @ManyToOne({ entity: () => CircleBankEntity })
-  bank?: CircleBankEntity
+  bank_id: string | null
 
   @ManyToOne({ entity: () => WalletEntity })
-  wallet?: WalletEntity
+  wallet_id: string | null
 
   @Enum(() => PayoutMethodEnum)
-  payoutMethod: PayoutMethodEnum
+  payout_method: PayoutMethodEnum
 
   @Property({ length: TRANSACTION_HASH_LENGTH })
-  transactionHash?: string
+  transaction_hash: string | null
 
   // transaction information
   @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })
-  amount?: number
+  amount: number
 
   @Enum(() => PayoutStatusEnum)
-  payoutStatus: PayoutStatusEnum
+  payout_status: PayoutStatusEnum
 }

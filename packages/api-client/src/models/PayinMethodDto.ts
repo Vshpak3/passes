@@ -30,13 +30,13 @@ export interface PayinMethodDto {
      * @type {string}
      * @memberof PayinMethodDto
      */
-    cardId?: string;
+    cardId?: string | null;
     /**
      * 
      * @type {number}
      * @memberof PayinMethodDto
      */
-    chainId?: number;
+    chainId?: number | null;
     /**
      * 
      * @type {string}

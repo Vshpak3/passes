@@ -37,12 +37,12 @@ export class ProfileService {
     userId: string,
     createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto,
   ): Promise<boolean> {
-    const data = ProfileEntity.toDict<ProfileEntity>({
-      user: userId,
+    const data = {
+      user_id: userId,
       ...createOrUpdateProfileRequestDto,
-    })
+    }
 
-    await this.dbWriter(ProfileEntity.table)
+    await this.dbWriter<ProfileEntity>(ProfileEntity.table)
       .insert(data)
       .onConflict('user_id')
       .merge()
@@ -58,7 +58,7 @@ export class ProfileService {
       throw new BadRequestException(PROFILE_NOT_EXIST)
     }
 
-    let query = this.dbReader(ProfileEntity.table)
+    let query = this.dbReader<ProfileEntity>(ProfileEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
         `${ProfileEntity.table}.user_id`,
@@ -70,7 +70,7 @@ export class ProfileService {
       .select(
         `${ProfileEntity.table}.*`,
         `${UserEntity.table}.legal_full_name`,
-        `${UserEntity.table}.is_kycverified`,
+        `${UserEntity.table}.is_kyc_verified`,
         `${UserEntity.table}.is_adult`,
       )
       .first()
@@ -90,7 +90,9 @@ export class ProfileService {
     }
 
     if (userId) {
-      const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+      const followBlockResult = await this.dbReader<FollowBlockEntity>(
+        FollowBlockEntity.table,
+      )
         .where(`${FollowBlockEntity.table}.follower_id`, userId)
         .where(`${FollowBlockEntity.table}.creator_id`, profile.user_id)
         .first()
@@ -104,30 +106,24 @@ export class ProfileService {
   }
 
   async deactivateProfile(userId: string): Promise<boolean> {
-    const data = ProfileEntity.toDict<ProfileEntity>({ isActive: false })
-    const updated = await this.dbWriter(ProfileEntity.table)
-      .update(data)
-      .where(
-        ProfileEntity.toDict<ProfileEntity>({ user: userId, isActive: true }),
-      )
+    const updated = await this.dbWriter<ProfileEntity>(ProfileEntity.table)
+      .update({ is_active: false })
+      .where({ user_id: userId, is_active: true })
     return updated === 1
   }
 
   async activateProfile(userId: string): Promise<boolean> {
-    const data = ProfileEntity.toDict<ProfileEntity>({ isActive: true })
-    const updated = await this.dbWriter(ProfileEntity.table)
-      .update(data)
-      .where(
-        ProfileEntity.toDict<ProfileEntity>({ user: userId, isActive: false }),
-      )
+    const updated = await this.dbWriter<ProfileEntity>(ProfileEntity.table)
+      .update({ is_active: true })
+      .where({ user_id: userId, is_active: false })
     return updated === 1
   }
 
   async isProfileActive(userId: string): Promise<boolean> {
-    const status = await this.dbReader(ProfileEntity.table)
-      .where(ProfileEntity.toDict<ProfileEntity>({ user: userId }))
+    const status = await this.dbReader<ProfileEntity>(ProfileEntity.table)
+      .where({ user_id: userId })
       .select('is_active')
       .first()
-    return status && status.is_active
+    return !!status && status.is_active
   }
 }

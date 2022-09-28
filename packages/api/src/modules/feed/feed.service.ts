@@ -30,8 +30,8 @@ export class FeedService {
   ): Promise<GetFeedResponseDto> {
     const { lastId, createdAt } = getFeedRequestDto
     const dbReader = this.dbReader
-    let query = this.dbReader(FollowEntity.table)
-      .innerJoin(
+    let query = this.dbReader<FollowEntity>(FollowEntity.table)
+      .innerJoin<UserEntity>(
         UserEntity.table,
         `${UserEntity.table}.id`,
         `${FollowEntity.table}.creator_id`,
@@ -98,15 +98,15 @@ export class FeedService {
     getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
     const { creatorId, lastId, createdAt: time } = getProfileFeedRequestDto
-    const creator = await this.dbReader(UserEntity.table)
-      .where('id', creatorId)
+    const creator = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: creatorId })
       .select(['is_active', 'is_creator'])
       .first()
     if (!creator || !creator.is_active || !creator.is_creator) {
       throw new BadRequestException(CREATOR_NOT_EXIST)
     }
     const dbReader = this.dbReader
-    let query = this.dbReader(UserEntity.table)
+    let query = this.dbReader<UserEntity>(UserEntity.table)
       .innerJoin(
         PostEntity.table,
         `${UserEntity.table}.id`,
@@ -169,7 +169,7 @@ export class FeedService {
     getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetFeedResponseDto> {
     const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
-    let query = this.dbReader(PostEntity.table)
+    let query = this.dbReader<PostEntity>(PostEntity.table)
       .select([`${PostEntity.table}.*`])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)

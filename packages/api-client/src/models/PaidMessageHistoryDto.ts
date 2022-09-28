@@ -27,16 +27,16 @@ export interface PaidMessageHistoryDto {
     paidMessageId: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof PaidMessageHistoryDto
      */
-    creatorId: string;
+    numPurchases: number;
     /**
      * 
      * @type {number}
      * @memberof PaidMessageHistoryDto
      */
-    price?: number;
+    earningsPurchases: number;
 }
 
 /**
@@ -45,7 +45,8 @@ export interface PaidMessageHistoryDto {
 export function instanceOfPaidMessageHistoryDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "paidMessageId" in value;
-    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "numPurchases" in value;
+    isInstance = isInstance && "earningsPurchases" in value;
 
     return isInstance;
 }
@@ -61,8 +62,8 @@ export function PaidMessageHistoryDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'paidMessageId': json['paidMessageId'],
-        'creatorId': json['creatorId'],
-        'price': !exists(json, 'price') ? undefined : json['price'],
+        'numPurchases': json['numPurchases'],
+        'earningsPurchases': json['earningsPurchases'],
     };
 }
 
@@ -76,8 +77,8 @@ export function PaidMessageHistoryDtoToJSON(value?: PaidMessageHistoryDto | null
     return {
         
         'paidMessageId': value.paidMessageId,
-        'creatorId': value.creatorId,
-        'price': value.price,
+        'numPurchases': value.numPurchases,
+        'earningsPurchases': value.earningsPurchases,
     };
 }
 

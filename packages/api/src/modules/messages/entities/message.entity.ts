@@ -8,22 +8,22 @@ import { ChannelEntity } from './channel.entity'
 import { PaidMessageEntity } from './paid-message.entity'
 
 @Entity({ tableName: 'message' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class MessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  sender: UserEntity
+  sender_id: string
 
   @Property({ type: types.text, length: MESSAGE_LENGTH })
   text: string
 
   @Property({ length: CONTENT_IDS_LENGTH, default: '[]' })
-  contentIds: string
+  content_ids: string
 
-  @ManyToOne()
-  channel: ChannelEntity
+  @ManyToOne({ entity: () => ChannelEntity })
+  channel_id: string
 
   @Property()
-  tipAmount: number
+  tip_amount: number
 
   @Property()
   pending: boolean
@@ -37,12 +37,12 @@ export class MessageEntity extends BaseEntity {
   @Property({ default: false })
   reverted: boolean
 
-  @ManyToOne()
-  reply?: MessageEntity
+  @ManyToOne({ entity: () => MessageEntity })
+  reply_id: string | null
 
-  @ManyToOne()
-  paidMessage?: PaidMessageEntity
+  @ManyToOne({ entity: () => PaidMessageEntity })
+  paid_message_id: string | null
 
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-  sentAt: Date
+  sent_at: Date
 }

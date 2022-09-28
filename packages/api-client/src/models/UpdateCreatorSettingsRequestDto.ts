@@ -24,7 +24,7 @@ export interface UpdateCreatorSettingsRequestDto {
      * @type {number}
      * @memberof UpdateCreatorSettingsRequestDto
      */
-    minimumTipAmount?: number;
+    minimumTipAmount?: number | null;
     /**
      * 
      * @type {string}
@@ -36,7 +36,7 @@ export interface UpdateCreatorSettingsRequestDto {
      * @type {string}
      * @memberof UpdateCreatorSettingsRequestDto
      */
-    welcomeMessage?: string;
+    welcomeMessage?: string | null;
     /**
      * 
      * @type {boolean}

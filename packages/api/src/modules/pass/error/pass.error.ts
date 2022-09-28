@@ -7,10 +7,17 @@ export class ForbiddenPassException extends Error {
   }
 }
 
-export class NoPassError extends BadRequestException {
+export class PassNotFoundException extends BadRequestException {
   constructor(msg: string) {
     super(msg)
-    Object.setPrototypeOf(this, NoPassError.prototype)
+    Object.setPrototypeOf(this, PassNotFoundException.prototype)
+  }
+}
+
+export class PassHolderNotFoundException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, PassHolderNotFoundException.prototype)
   }
 }
 

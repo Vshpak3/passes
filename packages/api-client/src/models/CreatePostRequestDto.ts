@@ -96,8 +96,8 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'passIds': json['passIds'],
-        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : json['scheduledAt'],
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'contentIds': json['contentIds'],
     };
@@ -115,8 +115,8 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'passIds': value.passIds,
-        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'scheduledAt': value.scheduledAt,
+        'expiresAt': value.expiresAt,
         'price': value.price,
         'contentIds': value.contentIds,
     };

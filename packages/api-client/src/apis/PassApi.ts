@@ -24,7 +24,6 @@ import type {
   GetPassHoldersResponseDto,
   GetPassHoldingsRequestDto,
   GetPassHoldingsResponseDto,
-  GetPassResponseDto,
   GetPassesResponseDto,
   MintPassRequestDto,
   MintPassResponseDto,
@@ -52,8 +51,6 @@ import {
     GetPassHoldingsRequestDtoToJSON,
     GetPassHoldingsResponseDtoFromJSON,
     GetPassHoldingsResponseDtoToJSON,
-    GetPassResponseDtoFromJSON,
-    GetPassResponseDtoToJSON,
     GetPassesResponseDtoFromJSON,
     GetPassesResponseDtoToJSON,
     MintPassRequestDtoFromJSON,
@@ -609,7 +606,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Updates a pass
      */
-    async updatePassRaw(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPassResponseDto>> {
+    async updatePassRaw(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling updatePass.');
         }
@@ -637,15 +634,14 @@ export class PassApi extends runtime.BaseAPI {
             body: UpdatePassRequestDtoToJSON(requestParameters.updatePassRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPassResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Updates a pass
      */
-    async updatePass(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPassResponseDto> {
-        const response = await this.updatePassRaw(requestParameters, initOverrides);
-        return await response.value();
+    async updatePass(requestParameters: UpdatePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updatePassRaw(requestParameters, initOverrides);
     }
 
 }

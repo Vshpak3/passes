@@ -8,5 +8,5 @@ import { AUTH_FACEBOOK_USER_ID_LENGTH } from '../constants/schema'
 @Entity({ tableName: 'facebook_deletion_request' })
 export class FacebookDeletionRequestEntity extends BaseEntity {
   @Property({ length: AUTH_FACEBOOK_USER_ID_LENGTH })
-  facebookUserId: string
+  facebook_user_id: string
 }

@@ -5,23 +5,23 @@ import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { PostEntity } from './post.entity'
 
 @Entity({ tableName: 'post_history' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class PostHistoryEntity extends BaseEntity {
-  @ManyToOne()
-  post: PostEntity
+  @ManyToOne({ entity: () => PostEntity })
+  post_id: string
 
   @Property()
-  numLikes: number
+  num_likes: number
 
   @Property()
-  numComments: number
+  num_comments: number
 
   @Property()
-  numPurchases: number
+  num_purchases: number
 
   @Property({ columnType: USD_AMOUNT_TYPE })
-  earningsPurchases: number
+  earnings_purchases: number
 
   @Property({ columnType: USD_AMOUNT_TYPE })
-  totalTipAmount: number
+  total_tip_amount: number
 }

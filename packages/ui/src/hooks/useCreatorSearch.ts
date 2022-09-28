@@ -1,4 +1,5 @@
-import { CreatorInfoDto, UserApi } from "@passes/api-client"
+import { UserApi } from "@passes/api-client"
+import { CreatorInfoDto } from "@passes/api-client/src/models/CreatorInfoDto"
 import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks"

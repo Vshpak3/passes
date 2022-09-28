@@ -115,7 +115,7 @@ export function GetPassHoldersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
@@ -137,7 +137,7 @@ export function GetPassHoldersRequestDtoToJSON(value?: GetPassHoldersRequestDto 
     }
     return {
         
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'createdAt': value.createdAt,
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,

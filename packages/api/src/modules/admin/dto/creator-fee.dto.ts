@@ -1,6 +1,9 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { CreatorFeeEntity } from '../../payment/entities/creator-fee.entity'
 import { AdminDto } from './admin.dto'
 
 export class CreatorFeeDto extends AdminDto {
@@ -8,22 +11,22 @@ export class CreatorFeeDto extends AdminDto {
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  fiatRate: number
+  @DtoProperty({ type: 'number', nullable: true })
+  fiatRate: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  fiatFlat: number
+  @DtoProperty({ type: 'number', nullable: true })
+  fiatFlat: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  cryptoRate: number
+  @DtoProperty({ type: 'number', nullable: true })
+  cryptoRate: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  cryptoFlat: number
+  @DtoProperty({ type: 'number', nullable: true })
+  cryptoFlat: number | null
 
-  constructor(creatorFee) {
+  constructor(creatorFee: CreatorFeeEntity | undefined) {
     super()
     if (creatorFee) {
       this.creatorId = creatorFee.creator_id

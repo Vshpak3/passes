@@ -5,11 +5,11 @@ import { ContentEntity } from '../../content/entities/content.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'user_message_content' })
-@Index({ properties: ['user', 'content'] })
+@Index({ properties: ['user_id', 'content_id'] })
 export class UserMessageContentEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @ManyToOne({ entity: () => ContentEntity })
-  content: ContentEntity
+  content_id: string
 }

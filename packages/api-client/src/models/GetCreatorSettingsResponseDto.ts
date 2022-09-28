@@ -24,7 +24,7 @@ export interface GetCreatorSettingsResponseDto {
      * @type {number}
      * @memberof GetCreatorSettingsResponseDto
      */
-    minimumTipAmount: number;
+    minimumTipAmount: number | null;
     /**
      * 
      * @type {string}
@@ -36,25 +36,25 @@ export interface GetCreatorSettingsResponseDto {
      * @type {string}
      * @memberof GetCreatorSettingsResponseDto
      */
-    welcomeMessage?: string;
+    welcomeMessage: string | null;
     /**
      * 
      * @type {boolean}
      * @memberof GetCreatorSettingsResponseDto
      */
-    allowCommentsOnPosts?: boolean;
+    allowCommentsOnPosts: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetCreatorSettingsResponseDto
      */
-    showFollowerCount?: boolean;
+    showFollowerCount: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetCreatorSettingsResponseDto
      */
-    showMediaCount?: boolean;
+    showMediaCount: boolean;
 }
 
 
@@ -76,6 +76,10 @@ export function instanceOfGetCreatorSettingsResponseDto(value: object): boolean 
     let isInstance = true;
     isInstance = isInstance && "minimumTipAmount" in value;
     isInstance = isInstance && "payoutFrequency" in value;
+    isInstance = isInstance && "welcomeMessage" in value;
+    isInstance = isInstance && "allowCommentsOnPosts" in value;
+    isInstance = isInstance && "showFollowerCount" in value;
+    isInstance = isInstance && "showMediaCount" in value;
 
     return isInstance;
 }
@@ -92,10 +96,10 @@ export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDisc
         
         'minimumTipAmount': json['minimumTipAmount'],
         'payoutFrequency': json['payoutFrequency'],
-        'welcomeMessage': !exists(json, 'welcomeMessage') ? undefined : json['welcomeMessage'],
-        'allowCommentsOnPosts': !exists(json, 'allowCommentsOnPosts') ? undefined : json['allowCommentsOnPosts'],
-        'showFollowerCount': !exists(json, 'showFollowerCount') ? undefined : json['showFollowerCount'],
-        'showMediaCount': !exists(json, 'showMediaCount') ? undefined : json['showMediaCount'],
+        'welcomeMessage': json['welcomeMessage'],
+        'allowCommentsOnPosts': json['allowCommentsOnPosts'],
+        'showFollowerCount': json['showFollowerCount'],
+        'showMediaCount': json['showMediaCount'],
     };
 }
 

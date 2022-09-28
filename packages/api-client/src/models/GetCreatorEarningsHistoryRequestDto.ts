@@ -80,8 +80,8 @@ export function GetCreatorEarningsHistoryRequestDtoFromJSONTyped(json: any, igno
     }
     return {
         
-        'start': (new Date(json['start'])),
-        'end': (new Date(json['end'])),
+        'start': json['start'],
+        'end': json['end'],
         'type': json['type'],
     };
 }
@@ -95,8 +95,8 @@ export function GetCreatorEarningsHistoryRequestDtoToJSON(value?: GetCreatorEarn
     }
     return {
         
-        'start': (value.start.toISOString()),
-        'end': (value.end.toISOString()),
+        'start': value.start,
+        'end': value.end,
         'type': value.type,
     };
 }

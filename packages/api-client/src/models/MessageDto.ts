@@ -125,7 +125,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'paid': json['paid'],
         'pending': json['pending'],
         'reverted': json['reverted'],
-        'sentAt': (new Date(json['sentAt'])),
+        'sentAt': json['sentAt'],
     };
 }
 
@@ -147,7 +147,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'paid': value.paid,
         'pending': value.pending,
         'reverted': value.reverted,
-        'sentAt': (value.sentAt.toISOString()),
+        'sentAt': value.sentAt,
     };
 }
 

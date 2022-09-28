@@ -1,22 +1,29 @@
 import { BadRequestException } from '@nestjs/common'
 
-export class NoPayoutMethodError extends BadRequestException {
+export class NoPayoutMethodExcption extends BadRequestException {
   constructor(msg: string) {
     super(msg)
-    Object.setPrototypeOf(this, NoPayoutMethodError.prototype)
+    Object.setPrototypeOf(this, NoPayoutMethodExcption.prototype)
   }
 }
 
-export class PayoutFrequencyError extends BadRequestException {
+export class PayoutNotFoundException extends BadRequestException {
   constructor(msg: string) {
     super(msg)
-    Object.setPrototypeOf(this, PayoutFrequencyError.prototype)
+    Object.setPrototypeOf(this, PayoutNotFoundException.prototype)
   }
 }
 
-export class PayoutAmountError extends BadRequestException {
+export class PayoutFrequencyException extends BadRequestException {
   constructor(msg: string) {
     super(msg)
-    Object.setPrototypeOf(this, PayoutAmountError.prototype)
+    Object.setPrototypeOf(this, PayoutFrequencyException.prototype)
+  }
+}
+
+export class PayoutAmountException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, PayoutAmountException.prototype)
   }
 }

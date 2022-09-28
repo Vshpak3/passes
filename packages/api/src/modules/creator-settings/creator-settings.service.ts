@@ -28,10 +28,10 @@ export class CreatorSettingsService {
   ) {}
 
   async findByUser(userId: string): Promise<CreatorSettingsDto> {
-    const creatorSettings = await this.dbReader(CreatorSettingsEntity.table)
-      .where(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
-      )
+    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
+      CreatorSettingsEntity.table,
+    )
+      .where({ user_id: userId })
       .first()
     if (!creatorSettings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
@@ -43,8 +43,16 @@ export class CreatorSettingsService {
     userId: string,
     updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
   ): Promise<boolean> {
-    const data = CreatorSettingsEntity.toDict<CreatorSettingsEntity>(
-      updateCreatorSettingsDto,
+    const data = {
+      minimum_tip_amount: updateCreatorSettingsDto.minimumTipAmount,
+      welcome_message: updateCreatorSettingsDto.welcomeMessage,
+      allow_comments_on_posts: updateCreatorSettingsDto.allowCommentsOnPosts,
+      payout_frequency: updateCreatorSettingsDto.payoutFrequency,
+      show_follower_count: updateCreatorSettingsDto.showFollowerCount,
+      show_media_count: updateCreatorSettingsDto.showMediaCount,
+    }
+    Object.keys(data).forEach((key) =>
+      data[key] === undefined ? delete data[key] : {},
     )
     if (Object.keys(data).length === 0) {
       return false
@@ -55,11 +63,11 @@ export class CreatorSettingsService {
     ) {
       throw new InvalidMessageTipMinimumError('minimum tp value too low')
     }
-    const updated = await this.dbWriter(CreatorSettingsEntity.table)
+    const updated = await this.dbWriter<CreatorSettingsEntity>(
+      CreatorSettingsEntity.table,
+    )
       .update(data)
-      .where(
-        CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
-      )
+      .where({ user_id: userId })
     return updated === 1
   }
 }

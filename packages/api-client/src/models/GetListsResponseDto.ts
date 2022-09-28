@@ -80,8 +80,8 @@ export function GetListsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
         'lists': ((json['lists'] as Array<any>).map(ListDtoFromJSON)),
         'name': !exists(json, 'name') ? undefined : json['name'],
     };
@@ -97,8 +97,8 @@ export function GetListsResponseDtoToJSON(value?: GetListsResponseDto | null): a
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
+        'createdAt': value.createdAt,
+        'updatedAt': value.updatedAt,
         'lists': ((value.lists as Array<any>).map(ListDtoToJSON)),
         'name': value.name,
     };

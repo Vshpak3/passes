@@ -24,4 +24,7 @@ export class SubscribeRequestDto {
 
   @DtoProperty({ type: 'uuid' })
   passHolderId: string
+
+  @DtoProperty({ type: 'string' })
+  target: string
 }

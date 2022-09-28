@@ -12,13 +12,14 @@ import {
   PASS_SYMBOL_LENGTH,
   PASS_TITLE_LENGTH,
 } from '../constants/schema'
+import { PassEntity } from '../entities/pass.entity'
 import { PassTypeEnum } from '../enum/pass.enum'
 export class PassDto {
   @DtoProperty({ type: 'uuid' })
   passId: string
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  creatorId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  creatorId?: string | null
 
   @Length(1, PASS_TITLE_LENGTH)
   @DtoProperty({ type: 'string' })
@@ -40,8 +41,8 @@ export class PassDto {
   price: number
 
   @Min(0)
-  @DtoProperty({ type: 'number', optional: true })
-  duration?: number
+  @DtoProperty({ type: 'number', nullable: true, optional: true })
+  duration?: number | null
 
   @Min(0)
   @DtoProperty({ type: 'number' })
@@ -57,14 +58,14 @@ export class PassDto {
   freetrial: boolean
 
   @Length(1, BLOCKCHAIN_ADDRESS_LENGTH)
-  @DtoProperty({ type: 'string' })
-  collectionAddress: string
+  @DtoProperty({ type: 'string', nullable: true })
+  collectionAddress: string | null
 
-  @DtoProperty({ type: 'date', optional: true })
-  pinnedAt?: Date
+  @DtoProperty({ type: 'date', nullable: true, optional: true })
+  pinnedAt: Date | null
 
-  @DtoProperty({ type: 'date', optional: true })
-  createdAt?: Date
+  @DtoProperty({ type: 'date' })
+  createdAt: Date
 
   @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', optional: true })
@@ -74,25 +75,34 @@ export class PassDto {
   @DtoProperty({ type: 'string', optional: true })
   creatorDisplayName?: string
 
-  constructor(pass) {
-    this.passId = pass.id
-    this.creatorId = pass.creator_id
-    this.title = pass.title
-    this.description = pass.description
-    this.symbol = pass.symbol
-    this.type = pass.type
-    this.duration = pass.duration
-    this.totalSupply = pass.total_supply
-    this.remainingSupply = pass.remaining_supply
-    this.freetrial = pass.freetrial
-    this.pinnedAt = pass.pinned_at
-    this.price = pass.price
-    this.totalSupply = pass.total_supply
-    this.createdAt = pass.created_at
-    this.chain = pass.chain
-    this.collectionAddress = pass.collection_address
+  constructor(
+    pass:
+      | (PassEntity & {
+          creator_username?: string
+          creator_display_name?: string
+        })
+      | undefined,
+  ) {
+    if (pass) {
+      this.passId = pass.id
+      this.creatorId = pass.creator_id
+      this.title = pass.title
+      this.description = pass.description
+      this.symbol = pass.symbol
+      this.type = pass.type
+      this.duration = pass.duration
+      this.totalSupply = pass.total_supply
+      this.remainingSupply = pass.remaining_supply
+      this.freetrial = pass.freetrial
+      this.pinnedAt = pass.pinned_at
+      this.price = pass.price
+      this.totalSupply = pass.total_supply
+      this.createdAt = pass.created_at
+      this.chain = pass.chain
+      this.collectionAddress = pass.collection_address
 
-    this.creatorUsername = pass.creator_username
-    this.creatorDisplayName = pass.creator_display_name
+      this.creatorUsername = pass.creator_username
+      this.creatorDisplayName = pass.creator_display_name
+    }
   }
 }

@@ -6,7 +6,7 @@ interface WalletsListProps {
   walletsList: Wallet[]
   deleteWalletHandler: (value: string) => void
   isCreator?: boolean
-  defaultPayoutWalletId?: string
+  defaultPayoutWalletId?: string | null
   miningSolanaWalletId?: string
   miningEthereumWalletId?: string
 }

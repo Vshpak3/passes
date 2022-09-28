@@ -1,4 +1,5 @@
 import { DtoProperty } from '../../../web/dto.web'
+import { NotificationSettingsEntity } from '../entities/notification-settings.entity'
 
 export class NotificationSettingsDto {
   @DtoProperty({ type: 'boolean', optional: true })
@@ -19,7 +20,7 @@ export class NotificationSettingsDto {
   @DtoProperty({ type: 'boolean', optional: true })
   mentionEmails?: boolean
 
-  constructor(notificationSettings) {
+  constructor(notificationSettings: NotificationSettingsEntity | undefined) {
     if (notificationSettings) {
       this.directMessageEmails = notificationSettings.direct_message_emails
       this.passesEmails = notificationSettings.passes_emails

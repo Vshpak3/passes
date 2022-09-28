@@ -114,46 +114,38 @@ export class AdminService {
   async addExternalPass(
     createPassDto: CreateExternalPassRequestDto,
   ): Promise<boolean> {
-    await this.dbWriter(PassEntity.table).insert(
-      PassEntity.toDict<PassEntity>({
-        type: PassTypeEnum.EXTERNAL,
-        freetrial: false,
-        totalSupply: 0,
-        title: createPassDto.title,
-        description: createPassDto.description,
-        chain: createPassDto.chain,
-      }),
-    )
+    await this.dbWriter<PassEntity>(PassEntity.table).insert({
+      type: PassTypeEnum.EXTERNAL,
+      freetrial: false,
+      total_supply: 0,
+      title: createPassDto.title,
+      description: createPassDto.description,
+      chain: createPassDto.chain,
+    })
     return true
   }
 
   async updateExternalPass(
     updatePassDto: UpdateExternalPassRequestDto,
   ): Promise<boolean> {
-    const updated = await this.dbWriter(PassEntity.table)
-      .update(
-        PassEntity.toDict<PassEntity>({
-          title: updatePassDto.title,
-          description: updatePassDto.description,
-        }),
-      )
-      .where(
-        PassEntity.toDict<PassEntity>({
-          id: updatePassDto.passId,
-          type: PassTypeEnum.EXTERNAL,
-        }),
-      )
+    const updated = await this.dbWriter<PassEntity>(PassEntity.table)
+      .update({
+        title: updatePassDto.title,
+        description: updatePassDto.description,
+      })
+      .where({
+        id: updatePassDto.passId,
+        type: PassTypeEnum.EXTERNAL,
+      })
     return updated === 1
   }
 
   async deleteExternalPass(passId: string): Promise<boolean> {
-    const updated = await this.dbWriter(PassEntity.table)
-      .where(
-        PassEntity.toDict<PassEntity>({
-          id: passId,
-          type: PassTypeEnum.EXTERNAL,
-        }),
-      )
+    const updated = await this.dbWriter<PassEntity>(PassEntity.table)
+      .where({
+        id: passId,
+        type: PassTypeEnum.EXTERNAL,
+      })
       .delete()
     return updated === 1
   }
@@ -163,23 +155,21 @@ export class AdminService {
   ): Promise<boolean> {
     switch (addressRequestDto.chain) {
       case ChainEnum.ETH:
-        await this.dbWriter(PassEntity.table)
-          .where(
-            PassEntity.toDict<PassEntity>({
-              id: addressRequestDto.passId,
-              type: PassTypeEnum.EXTERNAL,
-            }),
-          )
-          .update('address', addressRequestDto.address.toLowerCase())
+        await this.dbWriter<PassEntity>(PassEntity.table)
+          .where({
+            id: addressRequestDto.passId,
+            type: PassTypeEnum.EXTERNAL,
+          })
+          .update({
+            collection_address: addressRequestDto.address.toLowerCase(),
+          })
         break
       case ChainEnum.SOL:
-        await this.dbWriter(PassHolderEntity.table).insert(
-          PassHolderEntity.toDict<PassHolderEntity>({
-            pass: addressRequestDto.passId,
-            address: addressRequestDto.address,
-            chain: ChainEnum.SOL,
-          }),
-        )
+        await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert({
+          pass_id: addressRequestDto.passId,
+          address: addressRequestDto.address,
+          chain: ChainEnum.SOL,
+        })
         break
     }
     return true
@@ -190,26 +180,22 @@ export class AdminService {
   ): Promise<boolean> {
     switch (addressRequestDto.chain) {
       case ChainEnum.ETH:
-        await this.dbWriter(PassEntity.table)
-          .where(
-            PassEntity.toDict<PassEntity>({
-              id: addressRequestDto.passId,
-              type: PassTypeEnum.EXTERNAL,
-              collectionAddress: addressRequestDto.address.toLowerCase(),
-              chain: addressRequestDto.chain,
-            }),
-          )
-          .update('address', null)
+        await this.dbWriter<PassEntity>(PassEntity.table)
+          .where({
+            id: addressRequestDto.passId,
+            type: PassTypeEnum.EXTERNAL,
+            collection_address: addressRequestDto.address.toLowerCase(),
+            chain: addressRequestDto.chain,
+          })
+          .update({ collection_address: '' })
         break
       case ChainEnum.SOL:
-        await this.dbWriter(PassHolderEntity.table)
-          .where(
-            PassHolderEntity.toDict<PassHolderEntity>({
-              pass: addressRequestDto.passId,
-              address: addressRequestDto.address,
-              chain: ChainEnum.SOL,
-            }),
-          )
+        await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+          .where({
+            pass_id: addressRequestDto.passId,
+            address: addressRequestDto.address,
+            chain: ChainEnum.SOL,
+          })
           .delete()
         break
     }
@@ -218,23 +204,21 @@ export class AdminService {
 
   async getCreatorFee(getCreatorFeeRequestDto: GetCreatorFeeRequestDto) {
     return new CreatorFeeDto(
-      await this.dbReader(CreatorFeeEntity.table)
-        .where('creator_id', getCreatorFeeRequestDto.creatorId)
+      await this.dbReader<CreatorFeeEntity>(CreatorFeeEntity.table)
+        .where({ creator_id: getCreatorFeeRequestDto.creatorId })
         .select('*')
         .first(),
     )
   }
   async setCreatorFee(creatorFeeDto: CreatorFeeDto) {
-    await this.dbWriter(CreatorFeeEntity.table)
-      .insert(
-        CreatorFeeEntity.toDict<CreatorFeeEntity>({
-          creator: creatorFeeDto.creatorId,
-          fiatRate: creatorFeeDto.fiatFlat,
-          fiatFlat: creatorFeeDto.fiatFlat,
-          cryptoRate: creatorFeeDto.cryptoRate,
-          cryptoFlat: creatorFeeDto.cryptoFlat,
-        }),
-      )
+    await this.dbWriter<CreatorFeeEntity>(CreatorFeeEntity.table)
+      .insert({
+        creator_id: creatorFeeDto.creatorId,
+        fiat_rate: creatorFeeDto.fiatFlat,
+        fiat_flat: creatorFeeDto.fiatFlat,
+        crypto_rate: creatorFeeDto.cryptoRate,
+        crypto_flat: creatorFeeDto.cryptoFlat,
+      })
       .onConflict('creator_id')
       .merge(['fiat_rate', 'fiat_flat', 'crypto_rate', 'crypto_flat'])
     return true
@@ -244,23 +228,23 @@ export class AdminService {
     userExternalPassRequestDto: UserExternalPassRequestDto,
   ) {
     const { userId, passId } = userExternalPassRequestDto
-    const user = await this.dbReader(UserEntity.table)
-      .where('id', userId)
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
       .select('is_creator')
       .first()
-    const pass = await this.dbReader(PassEntity.table)
-      .where('id', passId)
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
+      .where({ id: passId })
       .select('creator_id')
       .first()
     if (!user || !pass || !user.is_creator || pass.creator_id) {
       return false
     }
-    await this.dbWriter(UserExternalPassEntity.table).insert(
-      UserExternalPassEntity.toDict<UserExternalPassEntity>({
-        user: userId,
-        pass: passId,
-      }),
-    )
+    await this.dbWriter<UserExternalPassEntity>(
+      UserExternalPassEntity.table,
+    ).insert({
+      user_id: userId,
+      pass_id: passId,
+    })
     return true
   }
 
@@ -268,24 +252,22 @@ export class AdminService {
     userExternalPassRequestDto: UserExternalPassRequestDto,
   ) {
     const { userId, passId } = userExternalPassRequestDto
-    const updated = await this.dbWriter(UserExternalPassEntity.table)
-      .where(
-        UserExternalPassEntity.toDict<UserExternalPassEntity>({
-          user: userId,
-          pass: passId,
-        }),
-      )
+    const updated = await this.dbWriter<UserExternalPassEntity>(
+      UserExternalPassEntity.table,
+    )
+      .where({
+        user_id: userId,
+        pass_id: passId,
+      })
       .delete()
     return updated === 1
   }
 
   async getChargebacks() {
-    return await this.dbReader(CircleChargebackEntity.table)
-      .where(
-        CircleChargebackEntity.toDict<CircleChargebackEntity>({
-          disputed: null,
-        }),
-      )
+    return await this.dbReader<CircleChargebackEntity>(
+      CircleChargebackEntity.table,
+    )
+      .whereNull('disputed')
       .select('*')
   }
 

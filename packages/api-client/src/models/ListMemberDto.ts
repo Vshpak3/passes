@@ -42,7 +42,7 @@ export interface ListMemberDto {
      * @type {string}
      * @memberof ListMemberDto
      */
-    displayName: string;
+    displayName: string | null;
     /**
      * 
      * @type {string}
@@ -86,7 +86,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'username': json['username'],
         'displayName': json['displayName'],
         'follow': !exists(json, 'follow') ? undefined : json['follow'],
-        'createdAt': (new Date(json['createdAt'])),
+        'createdAt': json['createdAt'],
     };
 }
 
@@ -104,7 +104,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'username': value.username,
         'displayName': value.displayName,
         'follow': value.follow,
-        'createdAt': (value.createdAt.toISOString()),
+        'createdAt': value.createdAt,
     };
 }
 

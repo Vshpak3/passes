@@ -9,14 +9,14 @@ import { CircleBankEntity } from './circle-bank.entity'
 @Entity({ tableName: 'default_payout_method' })
 export class DefaultPayoutMethodEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Enum(() => PayoutMethodEnum)
   method: PayoutMethodEnum
 
   @OneToOne({ entity: () => CircleBankEntity })
-  bank?: CircleBankEntity
+  bank_id: string | null
 
   @OneToOne({ entity: () => WalletEntity })
-  wallet?: WalletEntity
+  wallet_id: string | null
 }

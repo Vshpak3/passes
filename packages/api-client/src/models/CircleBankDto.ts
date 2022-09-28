@@ -30,7 +30,7 @@ export interface CircleBankDto {
      * @type {string}
      * @memberof CircleBankDto
      */
-    circleId?: string;
+    circleId?: string | null;
     /**
      * 
      * @type {string}

@@ -7,6 +7,7 @@ import {
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
 import { FAN_COMMENT_TEXT_LENGTH } from '../constants/schema'
+import { FanWallCommentEntity } from '../entities/fan-wall-comment.entity'
 
 export class FanWallCommentDto {
   @DtoProperty({ type: 'uuid' })
@@ -36,9 +37,14 @@ export class FanWallCommentDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  constructor(fanWallPost) {
+  constructor(
+    fanWallPost: FanWallCommentEntity & {
+      commenter_username: string
+      commenter_display_name: string
+    },
+  ) {
     this.fanWallCommentId = fanWallPost.id
-    this.creatorId = fanWallPost.post_id
+    this.creatorId = fanWallPost.creator_id
     this.commenterId = fanWallPost.commenter_id
     this.text = fanWallPost.text
     this.commenterUsername = fanWallPost.commenter_username

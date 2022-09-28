@@ -1,5 +1,6 @@
 import { PickType } from '@nestjs/swagger'
 
+import { PostHistoryEntity } from '../entities/post-history.entity'
 import { PostDto } from './post.dto'
 
 export class PostHistoryDto extends PickType(PostDto, [
@@ -10,7 +11,7 @@ export class PostHistoryDto extends PickType(PostDto, [
   'earningsPurchases',
   'totalTipAmount',
 ]) {
-  constructor(postHistory) {
+  constructor(postHistory: PostHistoryEntity | undefined) {
     super()
     if (postHistory) {
       this.postId = postHistory.post_id

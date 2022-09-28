@@ -38,7 +38,7 @@ interface WalletsResponse {
 }
 
 interface DefaultPayoutMiningAddress {
-  payoutWalletId?: string
+  payoutWalletId?: string | null
   miningSolanaWalletId?: string
   miningEthereumWalletId?: string
 }

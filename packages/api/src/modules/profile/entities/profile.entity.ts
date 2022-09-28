@@ -11,39 +11,39 @@ import {
 
 @Entity({ tableName: 'profile' })
 export class ProfileEntity extends BaseEntity {
-  @OneToOne()
-  user: UserEntity
+  @OneToOne({ entity: () => UserEntity })
+  user_id: string
 
   @Property({ length: PROFILE_COVER_TITLE_LENGTH })
-  coverTitle?: string
+  cover_title: string | null
 
   @Property({ type: types.text, length: PROFILE_COVER_DESCRIPTION_LENGTH })
-  coverDescription?: string
+  cover_description: string | null
 
   @Property({ type: types.text, length: PROFILE_DESCRIPTION_LENGTH })
-  description?: string
+  description: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  discordUsername?: string
+  discord_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  facebookUsername?: string
+  facebook_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  instagramUsername?: string
+  instagram_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  tiktokUsername?: string
+  tiktok_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  twitchUsername?: string
+  twitch_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  twitterUsername?: string
+  twitter_username: string | null
 
   @Property({ length: EXTERNAL_USERNAME_LENGTH })
-  youtubeUsername?: string
+  youtube_username: string | null
 
   @Property({ default: true })
-  isActive: boolean
+  is_active: boolean
 }

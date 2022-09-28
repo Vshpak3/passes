@@ -16,7 +16,7 @@ export class GetPostHistoryResponseDto {
   @DtoProperty({ custom_type: [PostHistoryDto] })
   postHistories: PostHistoryDto[]
 
-  constructor(postHistories) {
+  constructor(postHistories: PostHistoryDto[]) {
     this.postHistories = postHistories
   }
 }

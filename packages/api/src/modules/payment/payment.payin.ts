@@ -23,21 +23,17 @@ async function handleCallback(
     )
     if (output) {
       await db(PayinEntity.table)
-        .update(
-          PayinEntity.toDict<PayinEntity>({
-            callbackOutputJSON: JSON.stringify(output),
-          }),
-        )
-        .where('id', payin.id)
+        .update({
+          callbackOutputJSON: JSON.stringify(output),
+        })
+        .where({ id: payin.id })
     }
   } catch (err) {
     await db(PayinEntity.table)
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          payinStatus: failedCallbackStatus,
-        }),
-      )
-      .where('id', payin.id)
+      .update({
+        payinStatus: failedCallbackStatus,
+      })
+      .where({ id: payin.id })
 
     throw err
   }

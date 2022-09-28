@@ -1,5 +1,5 @@
 import { DtoProperty } from '../../../../web/dto.web'
-import { CircleTransferStatusEnum } from '../../enum/circle-transfer.status.enum'
+import { CircleAccountStatusEnum } from '../../enum/circle-account.status.enum'
 import {
   CircleAmountDto,
   CircleDestinationDto,
@@ -10,8 +10,8 @@ export class CircleTransferDto {
   @DtoProperty({ type: 'uuid' })
   id: string
 
-  @DtoProperty({ custom_type: CircleTransferStatusEnum })
-  status: CircleTransferStatusEnum
+  @DtoProperty({ custom_type: CircleAccountStatusEnum })
+  status: CircleAccountStatusEnum
 
   @DtoProperty({ custom_type: CircleSourceDto })
   source: CircleSourceDto

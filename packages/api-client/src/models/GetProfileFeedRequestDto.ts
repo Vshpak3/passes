@@ -59,7 +59,7 @@ export function GetProfileFeedRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'creatorId': json['creatorId'],
     };
@@ -74,7 +74,7 @@ export function GetProfileFeedRequestDtoToJSON(value?: GetProfileFeedRequestDto 
     }
     return {
         
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'createdAt': value.createdAt,
         'lastId': value.lastId,
         'creatorId': value.creatorId,
     };

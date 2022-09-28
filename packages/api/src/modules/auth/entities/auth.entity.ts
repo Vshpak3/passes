@@ -10,25 +10,25 @@ import {
 } from '../constants/schema'
 
 @Entity({ tableName: 'auth' })
-@Index({ properties: ['oauthId', 'oauthProvider'] })
+@Index({ properties: ['oauth_id', 'oauth_provider'] })
 export class AuthEntity extends BaseEntity {
   @Property({ length: AUTH_PASSWORD_HASH_LENGTH })
-  passwordHash?: string
+  password_hash: string | null
 
   @Property({ length: AUTH_OAUTH_PROVIDER_LENGTH })
-  oauthProvider?: string
+  oauth_provider: string | null
 
   @Property({ length: AUTH_OAUTH_ID_LENGTH })
-  oauthId?: string
+  oauth_id: string | null
 
   // Duplicate of user email field; only used for auth purposes
   @Index()
   @Property({ length: USER_EMAIL_LENGTH })
-  email?: string
+  email: string | null
 
   @Property({ default: false })
-  isEmailVerified = false
+  is_email_verified = false
 
-  @ManyToOne()
-  user?: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string | null
 }

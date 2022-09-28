@@ -98,8 +98,8 @@ export function GetListResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'name': json['name'],
         'type': json['type'],
         'count': json['count'],
-        'createdAt': (new Date(json['createdAt'])),
-        'updatedAt': (new Date(json['updatedAt'])),
+        'createdAt': json['createdAt'],
+        'updatedAt': json['updatedAt'],
     };
 }
 
@@ -116,8 +116,8 @@ export function GetListResponseDtoToJSON(value?: GetListResponseDto | null): any
         'name': value.name,
         'type': value.type,
         'count': value.count,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'createdAt': value.createdAt,
+        'updatedAt': value.updatedAt,
     };
 }
 

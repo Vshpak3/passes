@@ -7,11 +7,11 @@ import { COMMENT_TAGS_LENGTH, COMMENT_TEXT_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'comment' })
 export class CommentEntity extends BaseEntity {
-  @ManyToOne()
-  post: PostEntity
+  @ManyToOne({ entity: () => PostEntity })
+  post_id: string
 
-  @ManyToOne()
-  commenter: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  commenter_id: string
 
   @Property({ length: COMMENT_TEXT_LENGTH })
   text: string
@@ -31,5 +31,5 @@ export class CommentEntity extends BaseEntity {
 
   // Deleted by commenter
   @Property()
-  deletedAt?: Date
+  deleted_at: Date | null
 }

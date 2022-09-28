@@ -4,11 +4,11 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'welcome_messaged' })
-@Unique({ properties: ['follower', 'creator'] })
+@Unique({ properties: ['follower_id', 'creator_id'] })
 export class WelcomeMessaged extends BaseEntity {
-  @ManyToOne()
-  follower: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  follower_id: string
 
-  @ManyToOne()
-  creator: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  creator_id: string
 }

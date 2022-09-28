@@ -63,10 +63,10 @@ export interface CreatePassRequestDto {
     freetrial?: boolean;
     /**
      * 
-     * @type {object}
+     * @type {number}
      * @memberof CreatePassRequestDto
      */
-    messages?: object;
+    messages?: number;
     /**
      * 
      * @type {string}

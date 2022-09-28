@@ -6,12 +6,12 @@ import { USER_EMAIL_LENGTH } from '../../user/constants/schema'
 
 @Entity({ tableName: 'verify_email_request' })
 export class VerifyEmailRequestEntity extends BaseEntity {
-  @ManyToOne()
-  auth: AuthEntity
+  @ManyToOne({ entity: () => AuthEntity })
+  auth_id: string
 
   @Property({ length: USER_EMAIL_LENGTH })
   email: string
 
   @Property()
-  usedAt?: Date
+  used_at?: Date
 }

@@ -6,10 +6,10 @@ import { LIST_NAME_LENGTH } from '../constants/schema'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
 @Entity({ tableName: 'list' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class ListEntity extends BaseEntity {
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
   @Property({ length: LIST_NAME_LENGTH })
   name: string

@@ -64,22 +64,23 @@ export class UserService {
       throw new ConflictException(USERNAME_TAKEN)
     }
 
-    const user = UserEntity.toDict<UserEntity>({
+    const user = {
       id: v4(),
       email,
-      ...createUserRequestDto,
-    })
+      birthday: createUserRequestDto.birthday,
+      country_code: createUserRequestDto.countryCode,
+      legal_full_name: createUserRequestDto.legalFullName,
+      username: createUserRequestDto.username,
+    } as UserEntity
 
     await this.dbWriter.transaction(async (trx) => {
-      await trx(UserEntity.table).insert(user)
-      await trx(AuthEntity.table)
-        .update(AuthEntity.toDict<AuthEntity>({ user: user.id }))
+      await trx<UserEntity>(UserEntity.table).insert(user)
+      await trx<AuthEntity>(AuthEntity.table)
+        .update({ user_id: user.id })
         .where({ id: authId })
-      await trx(NotificationSettingsEntity.table).insert(
-        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
-          user: user.id,
-        }),
-      )
+      await trx<NotificationSettingsEntity>(
+        NotificationSettingsEntity.table,
+      ).insert({ user_id: user.id })
     })
 
     // create custodial wallets on create user
@@ -90,7 +91,7 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<UserDto> {
-    const user = await this.dbReader(UserEntity.table)
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id })
       .select('*')
       .first()
@@ -102,8 +103,8 @@ export class UserService {
   }
 
   async findOneByUsername(username: string): Promise<UserDto> {
-    const user = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ username }))
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ username })
       .select('*')
       .first()
     if (!user) {
@@ -142,10 +143,10 @@ export class UserService {
       USERNAME_RESET_TIMEFRAME_MS,
       MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
       `setUsername:${userId}`,
-      async function () {
+      async () => {
         const query = () =>
-          this.dbWriter(UserEntity.table)
-            .update(UserEntity.toDict<UserEntity>({ username }))
+          this.dbWriter<UserEntity>(UserEntity.table)
+            .update({ username: username })
             .where({ id: userId })
         await createOrThrowOnDuplicate(query, this.logger, USERNAME_TAKEN)
       },
@@ -153,12 +154,8 @@ export class UserService {
   }
 
   async setDisplayName(userId: string, displayName: string): Promise<void> {
-    await this.dbWriter(UserEntity.table)
-      .update(
-        UserEntity.toDict<UserEntity>({
-          displayName,
-        }),
-      )
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .update({ display_name: displayName })
       .where({ id: userId })
   }
 
@@ -172,40 +169,27 @@ export class UserService {
   }
 
   async deactivateUser(userId: string): Promise<boolean> {
-    const updated = await this.dbWriter(UserEntity.table)
-      .update(
-        UserEntity.toDict<UserEntity>({
-          isActive: true,
-        }),
-      )
-      .where(
-        UserEntity.toDict<UserEntity>({
-          id: userId,
-          isActive: false,
-        }),
-      )
+    const updated = await this.dbWriter<UserEntity>(UserEntity.table)
+      .update({ is_active: true })
+      .where({ id: userId, is_active: false })
     return updated === 1
   }
 
   async activateUser(userId: string): Promise<boolean> {
-    const updated = await this.dbWriter(UserEntity.table)
-      .update(
-        UserEntity.toDict<UserEntity>({
-          isActive: false,
-        }),
-      )
-      .where(
-        UserEntity.toDict<UserEntity>({
-          id: userId,
-          isActive: true,
-        }),
-      )
+    const updated = await this.dbWriter<UserEntity>(UserEntity.table)
+      .update({
+        is_active: false,
+      })
+      .where({
+        id: userId,
+        is_active: true,
+      })
     return updated === 1
   }
 
   async getIdFromUsername(username: string) {
-    const user = await this.dbReader(UserEntity.table)
-      .where('username', username)
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ username })
       .select('id')
       .first()
     return user ? user.id : ''
@@ -220,7 +204,7 @@ export class UserService {
 
     const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
-    const creators = await this.dbReader(UserEntity.table)
+    const creators = await this.dbReader<UserEntity>(UserEntity.table)
       .select('id', 'username', 'display_name as displayName')
       .where(function () {
         return this.whereILike('username', likeClause).orWhereILike(
@@ -228,71 +212,65 @@ export class UserService {
           likeClause,
         )
       })
-      .andWhere(
-        UserEntity.toDict<UserEntity>({
-          isCreator: true,
-          isActive: true,
-        }),
-      )
+      .andWhere({
+        is_creator: true,
+        is_active: true,
+      })
       .limit(10)
 
     return new SearchCreatorResponseDto(creators)
   }
 
   async makeAdult(userId: string): Promise<void> {
-    await this.dbWriter(UserEntity.table)
-      .update(UserEntity.toDict<UserEntity>({ isAdult: true }))
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .update({ is_adult: true })
       .where({ id: userId })
   }
 
   async isPasswordUser(userId: string): Promise<boolean> {
-    return !!(await this.dbReader(AuthEntity.table)
+    return !!(await this.dbReader<AuthEntity>(AuthEntity.table)
       .whereNotNull('password_hash')
-      .andWhere('user_id', userId)
+      .andWhere({ user_id: userId })
       .select('id')
       .first())
   }
 
   async makeCreator(userId: string): Promise<void> {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(UserEntity.table).where('id', userId).update('is_creator', true)
-      await trx(CreatorSettingsEntity.table)
-        .insert(
-          CreatorSettingsEntity.toDict<CreatorSettingsEntity>({ user: userId }),
-        )
+      await trx<UserEntity>(UserEntity.table)
+        .where({ id: userId })
+        .update({ is_creator: true })
+      await trx<CreatorSettingsEntity>(CreatorSettingsEntity.table)
+        .insert({ user_id: userId })
         .onConflict('user_id')
         .ignore()
-      await trx(CreatorStatEntity.table)
-        .insert(CreatorStatEntity.toDict<CreatorStatEntity>({ user: userId }))
+      await trx<CreatorStatEntity>(CreatorStatEntity.table)
+        .insert({ user_id: userId })
         .onConflict('user_id')
         .ignore()
-      await trx(ListEntity.table)
-        .where(
-          ListEntity.toDict<ListEntity>({
-            user: userId,
-            type: ListTypeEnum.FOLLOWING,
-          }),
-        )
+      await trx<ListEntity>(ListEntity.table)
+        .where({
+          user_id: userId,
+          type: ListTypeEnum.FOLLOWING,
+        })
         .delete()
-      await trx(ListEntity.table)
-        .where(
-          ListEntity.toDict<ListEntity>({
-            user: userId,
-            type: ListTypeEnum.FOLLOWERS,
-          }),
-        )
+      await trx<ListEntity>(ListEntity.table)
+        .where({
+          user_id: userId,
+          type: ListTypeEnum.FOLLOWERS,
+        })
         .delete()
-      await trx(ListEntity.table).insert([
-        ListEntity.toDict<ListEntity>({
-          user: userId,
+      await trx<ListEntity>(ListEntity.table).insert([
+        {
+          user_id: userId,
           name: 'Following',
           type: ListTypeEnum.FOLLOWING,
-        }),
-        ListEntity.toDict<ListEntity>({
-          user: userId,
+        },
+        {
+          user_id: userId,
           name: 'Fans',
           type: ListTypeEnum.FOLLOWERS,
-        }),
+        },
       ])
     })
   }

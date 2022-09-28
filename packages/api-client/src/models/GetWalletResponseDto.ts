@@ -30,7 +30,7 @@ export interface GetWalletResponseDto {
      * @type {string}
      * @memberof GetWalletResponseDto
      */
-    userId?: string;
+    userId: string | null;
     /**
      * 
      * @type {string}
@@ -76,6 +76,7 @@ export type GetWalletResponseDtoChainEnum = typeof GetWalletResponseDtoChainEnum
 export function instanceOfGetWalletResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "walletId" in value;
+    isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "address" in value;
     isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "custodial" in value;
@@ -95,7 +96,7 @@ export function GetWalletResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'walletId': json['walletId'],
-        'userId': !exists(json, 'userId') ? undefined : json['userId'],
+        'userId': json['userId'],
         'address': json['address'],
         'chain': json['chain'],
         'custodial': json['custodial'],

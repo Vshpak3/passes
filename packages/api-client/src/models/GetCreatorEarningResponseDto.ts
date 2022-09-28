@@ -90,7 +90,7 @@ export function GetCreatorEarningResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'userId': json['userId'],
         'amount': json['amount'],
         'type': json['type'],
-        'createdAt': (new Date(json['createdAt'])),
+        'createdAt': json['createdAt'],
     };
 }
 
@@ -106,7 +106,7 @@ export function GetCreatorEarningResponseDtoToJSON(value?: GetCreatorEarningResp
         'userId': value.userId,
         'amount': value.amount,
         'type': value.type,
-        'createdAt': (value.createdAt.toISOString()),
+        'createdAt': value.createdAt,
     };
 }
 

@@ -40,8 +40,8 @@ export class GetListMembersResponseDto extends PageResponseDto {
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  displayName?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  displayName?: string | null
 
   constructor(
     listMembers: ListMemberDto[],

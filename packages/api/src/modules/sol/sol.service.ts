@@ -88,12 +88,10 @@ export class SolService {
   }
 
   async refreshSolNfts() {
-    const passholders = await this.dbReader(PassHolderEntity.table)
-      .where(
-        PassHolderEntity.toDict<PassHolderEntity>({
-          chain: ChainEnum.SOL,
-        }),
-      )
+    const passholders = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
+      .where({ chain: ChainEnum.SOL })
       .select(['address', 'id'])
     // run synchronously to avoid throttling
     // its fine that its done slowly
@@ -139,29 +137,23 @@ export class SolService {
       await this.getOwnerOfPass(connection, new PublicKey(address))
     )?.toBase58()
     if (walletAddress) {
-      const wallet = await this.dbReader(WalletEntity.table)
-        .where(
-          WalletEntity.toDict<WalletEntity>({
-            chain: ChainEnum.SOL,
-            address: walletAddress,
-            authenticated: true,
-          }),
-        )
+      const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+        .where({
+          chain: ChainEnum.SOL,
+          address: walletAddress,
+          authenticated: true,
+        })
         .select(['id', 'user_id'])
         .first()
       if (wallet) {
-        await this.dbWriter(PassHolderEntity.table)
-          .where(
-            PassHolderEntity.toDict<PassHolderEntity>({
-              id: passHolderId,
-            }),
-          )
-          .update(
-            PassHolderEntity.toDict<PassHolderEntity>({
-              wallet: wallet.id,
-              holder: wallet.user_id,
-            }),
-          )
+        await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+          .where({
+            id: passHolderId,
+          })
+          .update({
+            wallet_id: wallet.id,
+            holder_id: wallet.user_id,
+          })
       }
     }
   }
@@ -366,8 +358,10 @@ export class SolService {
     contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
     const username = (
-      await this.dbReader(UserEntity.table).where({ id: userId }).first()
-    ).username
+      await this.dbReader<UserEntity>(UserEntity.table)
+        .where({ id: userId })
+        .first()
+    )?.username
 
     const imageUrl = getCollectionImageUri(
       this.cloudfrontUrl,

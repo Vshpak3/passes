@@ -36,7 +36,7 @@ export interface ContentDto {
      * @type {string}
      * @memberof ContentDto
      */
-    signedUrl: string;
+    signedUrl?: string;
     /**
      * 
      * @type {string}
@@ -48,7 +48,7 @@ export interface ContentDto {
      * @type {number}
      * @memberof ContentDto
      */
-    order: number;
+    index: number;
     /**
      * 
      * @type {Date}
@@ -77,9 +77,8 @@ export function instanceOfContentDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "contentId" in value;
     isInstance = isInstance && "userId" in value;
-    isInstance = isInstance && "signedUrl" in value;
     isInstance = isInstance && "contentType" in value;
-    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "index" in value;
     isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
@@ -97,10 +96,10 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'contentId': json['contentId'],
         'userId': json['userId'],
-        'signedUrl': json['signedUrl'],
+        'signedUrl': !exists(json, 'signedUrl') ? undefined : json['signedUrl'],
         'contentType': json['contentType'],
-        'order': json['order'],
-        'createdAt': (new Date(json['createdAt'])),
+        'index': json['index'],
+        'createdAt': json['createdAt'],
     };
 }
 
@@ -117,8 +116,8 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'userId': value.userId,
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
-        'order': value.order,
-        'createdAt': (value.createdAt.toISOString()),
+        'index': value.index,
+        'createdAt': value.createdAt,
     };
 }
 

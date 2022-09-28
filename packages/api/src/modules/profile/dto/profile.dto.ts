@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable sonarjs/no-duplicate-string */
 import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
@@ -11,6 +13,7 @@ import {
   PROFILE_COVER_TITLE_LENGTH,
   PROFILE_DESCRIPTION_LENGTH,
 } from '../constants/schema'
+import { ProfileEntity } from '../entities/profile.entity'
 
 export class ProfileDto {
   @DtoProperty({ type: 'uuid' })
@@ -20,63 +23,70 @@ export class ProfileDto {
   userId: string
 
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  legalFullName?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  legalFullName?: string | null
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  displayName?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  displayName?: string | null
 
   @Length(1, PROFILE_COVER_TITLE_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  coverTitle?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  coverTitle?: string | null
 
   @Length(1, PROFILE_COVER_DESCRIPTION_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  coverDescription?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  coverDescription?: string | null
 
   @Length(1, PROFILE_DESCRIPTION_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  description?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  description?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  discordUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  discordUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  facebookUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  facebookUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  instagramUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  instagramUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  tiktokUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  tiktokUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  twitchUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  twitchUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  twitterUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  twitterUsername?: string | null
 
   @Length(1, EXTERNAL_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  youtubeUsername?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  youtubeUsername?: string | null
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  isKYCVerified?: boolean
+  @DtoProperty({ type: 'boolean' })
+  isKYCVerified: boolean
 
   @DtoProperty({ type: 'boolean' })
   isActive: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  isAdult?: boolean
+  @DtoProperty({ type: 'boolean' })
+  isAdult: boolean
 
-  constructor(profile) {
+  constructor(
+    profile: ProfileEntity & {
+      legal_full_name?: string
+      display_name?: string
+      is_kyc_verified: boolean
+      is_adult: boolean
+    },
+  ) {
     this.profileId = profile.id
     this.userId = profile.user_id
     this.description = profile.description
@@ -94,7 +104,7 @@ export class ProfileDto {
     this.twitterUsername = profile.twitter_username
     this.youtubeUsername = profile.youtube_username
 
-    this.isKYCVerified = profile.is_kycverified
+    this.isKYCVerified = profile.is_kyc_verified
     this.isActive = profile.is_active
     this.isAdult = profile.is_adult
   }

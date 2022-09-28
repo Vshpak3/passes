@@ -16,7 +16,7 @@ export class GetPaidMessageHistoryResponseDto {
   @DtoProperty({ custom_type: [PaidMessageHistoryDto] })
   paidMessageHistories: PaidMessageHistoryDto[]
 
-  constructor(paidMessageHistories) {
+  constructor(paidMessageHistories: PaidMessageHistoryDto[]) {
     this.paidMessageHistories = paidMessageHistories
   }
 }

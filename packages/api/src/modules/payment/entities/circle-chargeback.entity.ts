@@ -8,14 +8,14 @@ import { CirclePaymentEntity } from './circle-payment.entity'
 export class CircleChargebackEntity extends BaseEntity {
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleId: string
+  circle_id: string
 
-  @ManyToOne()
-  circlePayment: CirclePaymentEntity
+  @ManyToOne({ entity: () => CirclePaymentEntity })
+  circle_payment_id: string
 
   @Property({ type: types.text })
-  fullContent: string
+  full_content: string
 
   @Property()
-  disputed?: boolean
+  disputed: boolean | null
 }

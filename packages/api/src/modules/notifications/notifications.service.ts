@@ -48,7 +48,7 @@ export class NotificationsService {
     userId: string,
     getNotificationsRequest: GetNotificationsRequestDto,
   ): Promise<NotificationDto[]> {
-    let query = this.dbReader(NotificationEntity.table)
+    let query = this.dbReader<NotificationEntity>(NotificationEntity.table)
       .leftJoin(
         UserEntity.table,
         `${NotificationEntity.table}.sender_id`,
@@ -64,7 +64,7 @@ export class NotificationsService {
         `${UserEntity.table}.display_name as sender_display_name`,
         `${UserEntity.table}.username as sender_username`,
       ])
-      .where('user_id', userId)
+      .where({ user_id: userId })
       .orderBy('created_at', 'desc')
       .offset(getNotificationsRequest.offset)
       .limit(getNotificationsRequest.limit)
@@ -84,15 +84,19 @@ export class NotificationsService {
     message: string,
     type: NotificationTypeEnum,
   ) {
-    const data = NotificationEntity.toDict<NotificationEntity>({
+    const data = {
       id: v4(),
       user: receiverId,
-      sender: senderId,
+      sender_id: senderId,
       message,
       type,
-    })
-    await this.dbWriter(NotificationEntity.table).insert(data)
-    const notification = await this.dbReader(NotificationEntity.table)
+    }
+    await this.dbWriter<NotificationEntity>(NotificationEntity.table).insert(
+      data,
+    )
+    const notification = await this.dbReader<NotificationEntity>(
+      NotificationEntity.table,
+    )
       .leftJoin(
         UserEntity.table,
         `${NotificationEntity.table}.sender_id`,
@@ -108,7 +112,7 @@ export class NotificationsService {
         `${UserEntity.table}.display_name as sender_display_name`,
         `${UserEntity.table}.username as sender_username`,
       ])
-      .where('id', data.id)
+      .where({ id: data.id })
       .first()
     this.emitter.emit(
       this.getEventName('receiverId'),
@@ -117,25 +121,21 @@ export class NotificationsService {
   }
 
   async readNotification(userId: string, notificationId: string) {
-    await this.dbWriter(NotificationEntity.table)
-      .update('status', NotificationStatusEnum.READ)
-      .where(
-        NotificationEntity.toDict<NotificationEntity>({
-          user: userId,
-          id: notificationId,
-        }),
-      )
+    await this.dbWriter<NotificationEntity>(NotificationEntity.table)
+      .update({ status: NotificationStatusEnum.READ })
+      .where({
+        user_id: userId,
+        id: notificationId,
+      })
   }
 
   async getNotificationSettings(
     userId: string,
   ): Promise<NotificationSettingsDto> {
-    const settings = await this.dbReader(NotificationSettingsEntity.table)
-      .where(
-        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
-          user: userId,
-        }),
-      )
+    const settings = await this.dbReader<NotificationSettingsEntity>(
+      NotificationSettingsEntity.table,
+    )
+      .where({ user_id: userId })
       .first()
     if (!settings) {
       throw new NotFoundException('CreatorSettings does not exist for user')
@@ -147,20 +147,27 @@ export class NotificationsService {
     userId: string,
     updateSettingsDto: NotificationSettingsDto,
   ): Promise<boolean> {
-    const data =
-      NotificationSettingsEntity.toDict<NotificationSettingsEntity>(
-        updateSettingsDto,
-      )
+    const data = {
+      direct_message_emails: updateSettingsDto.directMessageEmails,
+      passes_emails: updateSettingsDto.passesEmails,
+      payment_emails: updateSettingsDto.paymentEmails,
+      post_emails: updateSettingsDto.postEmails,
+      marketing_emails: updateSettingsDto.marketingEmails,
+      mention_emails: updateSettingsDto.mentionEmails,
+    }
+
+    Object.keys(data).forEach((key) =>
+      data[key] === undefined ? delete data[key] : {},
+    )
     if (Object.keys(data).length === 0) {
       return false
     }
-    const updated = await this.dbWriter(NotificationSettingsEntity.table)
+
+    const updated = await this.dbWriter<NotificationSettingsEntity>(
+      NotificationSettingsEntity.table,
+    )
       .update(data)
-      .where(
-        NotificationSettingsEntity.toDict<NotificationSettingsEntity>({
-          user: userId,
-        }),
-      )
+      .where({ user_id: userId })
     return updated === 1
   }
 }

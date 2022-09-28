@@ -8,13 +8,13 @@ import {
 } from '../constants/schema'
 
 @Entity({ tableName: 'fan_wall_comment' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class FanWallCommentEntity extends BaseEntity {
-  @ManyToOne()
-  creator: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  creator_id: string
 
-  @ManyToOne()
-  commenter: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  commenter_id: string
 
   @Property({ length: FAN_COMMENT_TEXT_LENGTH })
   text: string
@@ -34,5 +34,5 @@ export class FanWallCommentEntity extends BaseEntity {
 
   // Deleted by commenter
   @Property()
-  deletedAt?: Date
+  deleted_at: Date | null
 }

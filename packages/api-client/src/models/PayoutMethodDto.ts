@@ -30,13 +30,13 @@ export interface PayoutMethodDto {
      * @type {string}
      * @memberof PayoutMethodDto
      */
-    bankId?: string;
+    bankId?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PayoutMethodDto
      */
-    walletId?: string;
+    walletId?: string | null;
 }
 
 

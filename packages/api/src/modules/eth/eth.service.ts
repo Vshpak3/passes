@@ -49,28 +49,28 @@ export class EthService {
   }
 
   async refreshEthNfts(): Promise<void> {
-    const passes = await this.dbReader(PassEntity.table)
+    const passes = await this.dbReader<PassEntity>(PassEntity.table)
       .whereNotNull('collection_address')
       .andWhere('chain', ChainEnum.ETH)
-      .select(['id', 'collection_address'])
+      .select('id', 'collection_address')
     // run synchronously to avoid throttling
     // its fine that its done slowly
     for (let i = 0; i < passes.length; ++i) {
       try {
         await this.getNewEthNftsForPass(
           passes[i].id,
-          passes[i].collection_address,
+          passes[i].collection_address as string,
           false,
         )
       } catch (err) {
         this.logger.error(`failed eth nft-pass refresh ${passes[i].id}`, err)
       }
     }
-    const wallets = await this.dbReader(WalletEntity.table).where(
-      WalletEntity.toDict<WalletEntity>({
+    const wallets = await this.dbReader<WalletEntity>(WalletEntity.table).where(
+      {
         chain: ChainEnum.ETH,
         authenticated: true,
-      }),
+      },
     )
     // run synchronously to avoid throttling
     // its fine that its done slowly
@@ -113,15 +113,15 @@ export class EthService {
       nfts.push(...response.nfts)
       pageKey = response.pageKey
     } while (pageKey)
-    await this.dbWriter(PassHolderEntity.table)
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
       .insert(
         nfts.map((nft) => {
-          return PassHolderEntity.toDict<PassHolderEntity>({
-            pass: passId,
+          return {
+            pass_id: passId,
             address: ethAddress,
             chain: ChainEnum.ETH,
-            tokenId: nft.tokenId,
-          })
+            token_id: nft.tokenId,
+          }
         }),
       )
       .onConflict(['address', 'chain', 'token_id'])
@@ -147,15 +147,11 @@ export class EthService {
         )
       }
     }
-    const wallet = await this.dbReader(WalletEntity.table)
-      .where(WalletEntity.toDict<WalletEntity>({ id: walletId, user: userId }))
-      .select(['address'])
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+      .where({ id: walletId, user_id: userId })
+      .select('address', 'user_id', 'chain')
       .first()
-    if (
-      !wallet.user ||
-      wallet.user.id != userId ||
-      wallet.chain != ChainEnum.ETH
-    ) {
+    if (!wallet || wallet.user_id != userId || wallet.chain != ChainEnum.ETH) {
       throw new BadRequestException('invalid wallet id specified')
     }
     const nfts: OwnedNft[] = []
@@ -168,30 +164,24 @@ export class EthService {
       pageKey = response.pageKey
     } while (pageKey)
     await this.dbWriter.transaction(async (trx) => {
-      await trx(PassHolderEntity.table)
-        .where('wallet_id', walletId)
-        .update(
-          PassHolderEntity.toDict<PassHolderEntity>({
-            wallet: null,
-            holder: null,
-          }),
-        )
+      await trx<PassHolderEntity>(PassHolderEntity.table)
+        .where({ wallet_id: walletId })
+        .update({
+          wallet_id: null,
+          holder_id: null,
+        })
       await Promise.all(
         nfts.map(async (nft) => {
-          await trx(PassHolderEntity.table)
-            .update(
-              PassHolderEntity.toDict<PassHolderEntity>({
-                wallet: walletId,
-                holder: userId,
-              }),
-            )
-            .where(
-              PassHolderEntity.toDict<PassHolderEntity>({
-                address: nft.contract.address.toLowerCase(),
-                chain: ChainEnum.ETH,
-                tokenId: nft.tokenId,
-              }),
-            )
+          await trx<PassHolderEntity>(PassHolderEntity.table)
+            .update({
+              wallet_id: walletId,
+              holder_id: userId,
+            })
+            .where({
+              address: nft.contract.address.toLowerCase(),
+              chain: ChainEnum.ETH,
+              token_id: nft.tokenId,
+            })
         }),
       )
     })

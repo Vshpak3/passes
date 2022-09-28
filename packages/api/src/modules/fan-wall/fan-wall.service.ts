@@ -36,23 +36,25 @@ export class FanWallService {
     const { creatorId, text, tags } = createFanWallCommentDto
     verifyTaggedText(text, tags)
     await this.checkBlock(userId, creatorId)
-    const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+    const data = {
       id: v4(),
-      creator: creatorId,
-      commenter: userId,
+      creator_id: creatorId,
+      commenter_id: userId,
       text,
       tags: JSON.stringify(tags),
-    })
+    }
 
     // post creation check incase user was blocked in between the checkPost and writing
     try {
       await this.checkBlock(userId, creatorId)
     } catch (err) {
-      await this.dbWriter(FanWallCommentEntity.table)
-        .where('id', data.id)
-        .update('blocked', true)
+      await this.dbWriter<FanWallCommentEntity>(FanWallCommentEntity.table)
+        .where({ id: data.id })
+        .update({ blocked: true })
     }
-    await this.dbWriter(FanWallCommentEntity.table).insert(data)
+    await this.dbWriter<FanWallCommentEntity>(
+      FanWallCommentEntity.table,
+    ).insert(data)
 
     return true
   }
@@ -63,21 +65,19 @@ export class FanWallService {
   ): Promise<GetFanWallResponseDto> {
     const { creatorId, lastId, createdAt } = getFanWallRequestDto
     await this.checkBlock(userId, creatorId)
-    let query = this.dbReader(FanWallCommentEntity.table)
+    let query = this.dbReader<FanWallCommentEntity>(FanWallCommentEntity.table)
       .leftJoin(
         UserEntity.table,
         `${FanWallCommentEntity.table}.commenter_id`,
         `${UserEntity.table}.id`,
       )
-      .where(
-        FanWallCommentEntity.toDict<FanWallCommentEntity>({
-          creator: creatorId,
-          hidden: false,
-          blocked: false,
-          deactivated: false,
-          deletedAt: null,
-        }),
-      )
+      .where({
+        creator_id: creatorId,
+        hidden: false,
+        blocked: false,
+        deactivated: false,
+        deleted_at: null,
+      })
       .select(
         `${FanWallCommentEntity.table}.*`,
         `${UserEntity.table}.username as commenter_username`,
@@ -110,19 +110,19 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+    const data = {
       hidden: true,
-    })
-    const updated = await this.dbWriter(FanWallCommentEntity.table)
+    }
+    const updated = await this.dbWriter<FanWallCommentEntity>(
+      FanWallCommentEntity.table,
+    )
       .update(data)
-      .where(
-        FanWallCommentEntity.toDict<FanWallCommentEntity>({
-          id: fanWallCommentId,
-          creator: userId,
-          hidden: false,
-          deletedAt: null,
-        }),
-      )
+      .where({
+        id: fanWallCommentId,
+        creator_id: userId,
+        hidden: false,
+        deleted_at: null,
+      })
     return updated === 1
   }
 
@@ -130,19 +130,19 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
+    const data = {
       hidden: false,
-    })
-    const updated = await this.dbWriter(FanWallCommentEntity.table)
+    }
+    const updated = await this.dbWriter<FanWallCommentEntity>(
+      FanWallCommentEntity.table,
+    )
       .update(data)
-      .where(
-        FanWallCommentEntity.toDict<FanWallCommentEntity>({
-          id: fanWallCommentId,
-          creator: userId,
-          hidden: true,
-          deletedAt: null,
-        }),
-      )
+      .where({
+        id: fanWallCommentId,
+        creator_id: userId,
+        hidden: true,
+        deleted_at: null,
+      })
     return updated === 1
   }
 
@@ -150,23 +150,25 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = FanWallCommentEntity.toDict<FanWallCommentEntity>({
-      deletedAt: this.dbWriter.fn.now(),
-    })
-    const updated = await this.dbWriter(FanWallCommentEntity.table)
+    const data = {
+      deleted_at: this.dbWriter.fn.now(),
+    }
+    const updated = await this.dbWriter<FanWallCommentEntity>(
+      FanWallCommentEntity.table,
+    )
       .update(data)
-      .where(
-        FanWallCommentEntity.toDict<FanWallCommentEntity>({
-          id: fanWallCommentId,
-          commenter: userId,
-          deletedAt: null,
-        }),
-      )
+      .where({
+        id: fanWallCommentId,
+        commenter_id: userId,
+        deleted_at: null,
+      })
     return updated === 1
   }
 
   async checkBlock(userId: string, creatorId: string) {
-    const followBlockResult = await this.dbReader(FollowBlockEntity.table)
+    const followBlockResult = await this.dbReader<FollowBlockEntity>(
+      FollowBlockEntity.table,
+    )
       .where(`${FollowBlockEntity.table}.follower_id`, userId)
       .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
       .first()

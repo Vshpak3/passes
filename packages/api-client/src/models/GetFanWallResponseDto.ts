@@ -74,8 +74,8 @@ export function GetFanWallResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
         'comments': ((json['comments'] as Array<any>).map(FanWallCommentDtoFromJSON)),
     };
 }
@@ -90,8 +90,8 @@ export function GetFanWallResponseDtoToJSON(value?: GetFanWallResponseDto | null
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
+        'createdAt': value.createdAt,
+        'updatedAt': value.updatedAt,
         'comments': ((value.comments as Array<any>).map(FanWallCommentDtoToJSON)),
     };
 }

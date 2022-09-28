@@ -6,6 +6,7 @@ import {
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
 import { NOTIFICATION_MESSAGE_LENGTH } from '../constants/schema'
+import { NotificationEntity } from '../entities/notification.entity'
 import { NotificationStatusEnum } from '../enum/notification.status.enum'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 
@@ -37,7 +38,14 @@ export class NotificationDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  constructor(notification) {
+  constructor(
+    notification:
+      | (NotificationEntity & {
+          sender_display_name: string
+          sender_username: string
+        })
+      | undefined,
+  ) {
     if (notification) {
       this.id = notification.id
       this.userId = notification.user_id

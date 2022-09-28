@@ -12,9 +12,7 @@ import {
 } from '../constants/schema'
 
 @Entity({ tableName: 'users' }) // pural because it not a good idea to have a table named "user" in mysql
-export class UserEntity extends BaseEntity<
-  'isKYCVerified' | 'isCreator' | 'isDisabled'
-> {
+export class UserEntity extends BaseEntity {
   @Property({ length: USER_EMAIL_LENGTH })
   @Unique()
   email: string
@@ -24,39 +22,39 @@ export class UserEntity extends BaseEntity<
   username: string
 
   @Property({ length: USER_LEGAL_FULL_NAME_LENGTH })
-  legalFullName: string
+  legal_full_name: string
 
   @Property({ length: USER_COUNTRY_CODE_LENGTH })
-  countryCode: string
+  country_code: string
 
   @Property({ type: new DateType() })
   birthday: string
 
   @Property({ length: USER_DISPLAY_NAME_LENGTH })
   @Index()
-  displayName?: string
+  display_name: string | null
 
   @Property({ length: USER_PHONE_NUMBER_LENGTH })
-  phoneNumber?: string
+  phone_number: string | null
 
   @Property({ default: false })
-  isKYCVerified = false
+  is_kyc_verified = false
 
   @Property({ default: false })
-  isCreator = false
+  is_creator = false
 
   @Property({ default: true })
-  isActive = true
+  is_active = true
 
   @Property({ default: false })
-  isAdult = false
+  is_adult = false
 
   @Property({ default: 0 })
-  numFollowing: number
+  num_following: number
 
   @Property({ default: false })
-  paymentBlocked: boolean
+  payment_blocked: boolean
 
   @Property({ default: 0 })
-  chargebackCount: number
+  chargeback_count: number
 }

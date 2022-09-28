@@ -29,6 +29,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { WalletDto } from '../wallet/dto/wallet.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
+import { WalletNotFoundError } from '../wallet/error/wallet.error'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -91,7 +92,6 @@ import { CircleAccountStatusEnum } from './enum/circle-account.status.enum'
 import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum'
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
-import { CircleTransferStatusEnum } from './enum/circle-transfer.status.enum'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { PayinStatusEnum } from './enum/payin.status.enum'
 import { PayinMethodEnum } from './enum/payin-method.enum'
@@ -107,8 +107,14 @@ import {
   InvalidPayinRequestError,
   InvalidPayinStatusError,
   NoPayinMethodError,
+  PayinNotFoundError,
 } from './error/payin.error'
-import { PayoutAmountError, PayoutFrequencyError } from './error/payout.error'
+import {
+  NoPayoutMethodExcption,
+  PayoutAmountException,
+  PayoutFrequencyException,
+  PayoutNotFoundException,
+} from './error/payout.error'
 import { InvalidSubscriptionError } from './error/subscription.error'
 import {
   handleCreationCallback,
@@ -206,46 +212,42 @@ export class PaymentService {
     cardNumber: string,
   ): Promise<CircleStatusResponseDto> {
     if (
-      await this.dbReader(CircleCardEntity.table)
-        .where(
-          CircleCardEntity.toDict<CircleCardEntity>({
-            idempotencyKey: createCardDto.idempotencyKey,
-          }),
-        )
+      await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+        .where({ idempotency_key: createCardDto.idempotencyKey })
         .select('id')
         .first()
     ) {
       throw new CircleRequestError('reused idempotency key')
     }
 
-    const count = await this.dbReader(CircleCardEntity.table)
+    const count = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
       .whereNull('deleted_at')
-      .andWhere('user_id', userId)
+      .andWhere({ user_id: userId })
       .count()
     if (count[0]['count(*)'] >= MAX_CARDS_PER_USER) {
       throw new BadRequestException(`${MAX_CARDS_PER_USER} card limit reached`)
     }
 
-    createCardDto.metadata.email = (
-      await this.dbReader(UserEntity.table)
-        .where('id', userId)
-        .select('email')
-        .first()
-    ).email
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select('email')
+      .first()
+
+    createCardDto.metadata.email = user ? user.email : ''
     createCardDto.metadata.ipAddress = ip
     const response = await this.circleConnector.createCard(createCardDto)
 
-    const data = CircleCardEntity.toDict<CircleCardEntity>({
+    const data = {
       id: v4(),
-      user: userId,
-      cardNumber,
-      circleId: response['id'],
+      user_id: userId,
+      card_number: cardNumber,
+      circle_id: response['id'],
       status: response['status'],
       name: createCardDto.billingDetails.name,
       ...createCardDto,
-    })
+    }
 
-    await this.dbWriter(CircleCardEntity.table).insert(data)
+    await this.dbWriter<CircleCardEntity>(CircleCardEntity.table).insert(data)
 
     return { id: data.id, circleId: response['id'], status: response['status'] }
   }
@@ -257,11 +259,9 @@ export class PaymentService {
    * @returns
    */
   async deleteCircleCard(userId: string, cardId: string): Promise<void> {
-    await this.dbWriter(CircleCardEntity.table)
-      .update('deleted_at', this.dbWriter.fn.now())
-      .where(
-        CircleCardEntity.toDict<CircleCardEntity>({ user: userId, id: cardId }),
-      )
+    await this.dbWriter<CircleCardEntity>(CircleCardEntity.table)
+      .update({ deleted_at: this.dbWriter.fn.now() })
+      .where({ user_id: userId, id: cardId })
   }
 
   /**
@@ -272,13 +272,9 @@ export class PaymentService {
    */
   async getCircleCards(userId: string): Promise<CircleCardDto[]> {
     return (
-      await this.dbReader(CircleCardEntity.table)
+      await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
         .select('*')
-        .where(
-          CircleCardEntity.toDict<CircleCardEntity>({
-            user: userId,
-          }),
-        )
+        .where({ user_id: userId })
         .whereNull('deleted_at')
     ).map((card) => new CircleCardDto(card))
   }
@@ -291,15 +287,14 @@ export class PaymentService {
    */
   async getCircleCard(userId: string, cardId: string): Promise<CircleCardDto> {
     return new CircleCardDto(
-      await this.dbReader(CircleCardEntity.table)
+      await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+        .where({
+          user_id: userId,
+          id: cardId,
+        })
+        .whereNull('deleted_at')
         .select('*')
-        .where(
-          CircleCardEntity.toDict<CircleCardEntity>({
-            user: userId,
-            id: cardId,
-          }),
-        )
-        .whereNull('deleted_at'),
+        .first(),
     )
   }
 
@@ -316,21 +311,32 @@ export class PaymentService {
     sessionId: string,
     payin: PayinDto,
   ): Promise<CircleStatusResponseDto> {
-    const card = await this.dbReader(CircleCardEntity.table)
-      .where('id', payin.payinMethod.cardId)
+    if (!payin.payinMethod.cardId) {
+      throw new NoPayinMethodError('card not selected')
+    }
+    const card = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+      .where({ id: payin.payinMethod.cardId })
       .select('id', 'circle_id')
       .first()
-
+    if (!card || !card.circle_id) {
+      throw new BadRequestException('bank not found')
+    }
     // save metadata into subscription for repeat purchases
-    if (card.target) {
-      await this.dbWriter(SubscriptionEntity.table)
-        .where('target', card.target)
-        .update(
-          SubscriptionEntity.toDict<SubscriptionEntity>({
-            ipAddress,
-            sessionId,
-          }),
-        )
+    if (payin.target) {
+      await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
+        .where({ target: payin.target, user_id: payin.userId })
+        .update({
+          ip_address: ipAddress,
+          session_id: sessionId,
+        })
+    }
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: payin.userId })
+      .select('email')
+      .first()
+
+    if (!user) {
+      throw new BadRequestException('user not found')
     }
 
     const createCardPaymentDto: CircleCreateCardPaymentRequestDto = {
@@ -345,39 +351,34 @@ export class PaymentService {
       },
       metadata: {
         ipAddress,
-        email: (
-          await this.dbReader(UserEntity.table)
-            .where('id', payin.userId)
-            .select('email')
-            .first()
-        ).email,
+        email: user.email,
         sessionId: sessionId,
       },
       verification: 'none',
     }
 
-    const data = CirclePaymentEntity.toDict<CirclePaymentEntity>({
+    const data = {
       id: v4(),
-      card: card.id,
+      card_id: card.id,
       payin: payin.id,
-      idempotencyKey: createCardPaymentDto.idempotencyKey,
+      idempotency_key: createCardPaymentDto.idempotencyKey,
       amount: createCardPaymentDto.amount.amount,
       verification: CircleCardVerificationEnum.NONE,
       status: CirclePaymentStatusEnum.UNKOWN,
-    })
-    await this.dbWriter(CirclePaymentEntity.table).insert(data)
+    }
+    await this.dbWriter<CirclePaymentEntity>(CirclePaymentEntity.table).insert(
+      data,
+    )
 
     const response = await this.circleConnector.createPayment(
       createCardPaymentDto,
     )
 
-    await this.dbWriter(CirclePaymentEntity.table)
-      .update(
-        CirclePaymentEntity.toDict<CirclePaymentEntity>({
-          circleId: response['id'],
-          status: response['status'],
-        }),
-      )
+    await this.dbWriter<CirclePaymentEntity>(CirclePaymentEntity.table)
+      .update({
+        circle_id: response['id'],
+        status: response['status'],
+      })
       .where({ id: data.id })
 
     return {
@@ -415,39 +416,35 @@ export class PaymentService {
     createBankDto: CircleCreateBankRequestDto,
   ): Promise<CircleStatusResponseDto> {
     if (
-      await this.dbReader(CircleBankEntity.table)
-        .where(
-          CircleBankEntity.toDict<CircleBankEntity>({
-            idempotencyKey: createBankDto.idempotencyKey,
-          }),
-        )
+      await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
+        .where({ idempotency_key: createBankDto.idempotencyKey })
         .select('id')
         .first()
     ) {
       throw new CircleRequestError('reused idempotency key')
     }
 
-    const count = await this.dbReader(CircleBankEntity.table)
+    const count = await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
       .whereNull('deleted_at')
-      .andWhere('user_id', userId)
+      .andWhere({ user_id: userId })
       .count()
     if (count[0]['count(*)'] >= MAX_BANKS_PER_USER) {
       throw new BadRequestException(`${MAX_BANKS_PER_USER} bank limit reached`)
     }
 
     const response = await this.circleConnector.createBank(createBankDto)
-    const data = CircleBankEntity.toDict<CircleBankEntity>({
+    const data = {
       id: v4(),
-      user: userId,
+      user_id: userId,
       status: response['status'],
       description: response['description'],
       trackingRef: response['trackingRef'],
       fingerprint: response['fingerprint'],
       circleId: response['id'],
-      idempotencyKey: createBankDto.idempotencyKey,
+      idempotency_key: createBankDto.idempotencyKey,
       country: createBankDto.billingDetails.country,
-    })
-    await this.dbWriter(CircleBankEntity.table).insert(data)
+    }
+    await this.dbWriter<CircleBankEntity>(CircleBankEntity.table).insert(data)
 
     return {
       id: data.id,
@@ -463,14 +460,12 @@ export class PaymentService {
    * @param circleBankId
    */
   async deleteCircleBank(userId: string, circleBankId: string): Promise<void> {
-    await this.dbWriter(CircleBankEntity.table)
-      .update('deleted_at', this.dbWriter.fn.now())
-      .where(
-        CircleBankEntity.toDict<CircleBankEntity>({
-          user: userId,
-          id: circleBankId,
-        }),
-      )
+    await this.dbWriter<CircleBankEntity>(CircleBankEntity.table)
+      .update({ deleted_at: this.dbWriter.fn.now() })
+      .where({
+        user_id: userId,
+        id: circleBankId,
+      })
   }
 
   /**
@@ -480,13 +475,9 @@ export class PaymentService {
    */
   async getCircleBanks(userId: string): Promise<CircleBankDto[]> {
     return (
-      await this.dbReader(CircleBankEntity.table)
+      await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
         .select('*')
-        .where(
-          CircleBankEntity.toDict<CircleBankEntity>({
-            user: userId,
-          }),
-        )
+        .where({ user_id: userId })
         .whereNull('deleted_at')
     ).map((bank) => new CircleBankDto(bank))
   }
@@ -502,20 +493,29 @@ export class PaymentService {
     userId: string,
     payout: PayoutDto,
   ): Promise<CircleStatusResponseDto> {
-    const bank = await this.dbReader(CircleBankEntity.table)
+    if (!payout.payoutMethod.bankId) {
+      throw new NoPayoutMethodExcption('bank not selected')
+    }
+    const bank = await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
       .where({
         id: payout.payoutMethod.bankId,
         user_id: userId,
       })
       .select('id', 'circle_id')
       .first()
+    if (!bank || !bank.circle_id) {
+      throw new BadRequestException('bank not found')
+    }
 
-    const user = await this.dbReader(UserEntity.table)
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
       .where({
         id: userId,
       })
       .select('email')
       .first()
+    if (!user) {
+      throw new BadRequestException('user not found')
+    }
 
     const createPayoutDto: CircleCreatePayoutRequestDto = {
       idempotencyKey: v4(),
@@ -536,24 +536,24 @@ export class PaymentService {
       },
     }
 
-    const data = CirclePayoutEntity.toDict<CirclePayoutEntity>({
+    const data = {
       id: v4(),
-      bank: bank.id,
-      payout: payout.id,
-      idempotencyKey: createPayoutDto.idempotencyKey,
+      bank_id: bank.id,
+      payout_id: payout.id,
+      idempotency_key: createPayoutDto.idempotencyKey,
       amount: createPayoutDto.amount.amount,
       status: CircleAccountStatusEnum.PENDING,
-    })
-    await this.dbWriter(CirclePayoutEntity.table).insert(data)
+    }
+    await this.dbWriter<CirclePayoutEntity>(CirclePayoutEntity.table).insert(
+      data,
+    )
     const response = await this.circleConnector.createPayout(createPayoutDto)
 
-    await this.dbWriter(CirclePayoutEntity.table)
-      .update(
-        CirclePayoutEntity.toDict<CirclePayoutEntity>({
-          circleId: response['id'],
-          status: response['status'],
-        }),
-      )
+    await this.dbWriter<CirclePayoutEntity>(CirclePayoutEntity.table)
+      .update({
+        circle_id: response['id'],
+        status: response['status'],
+      })
       .where({ id: data.id })
 
     return {
@@ -574,11 +574,20 @@ export class PaymentService {
     userId: string,
     payout: PayoutDto,
   ): Promise<CircleStatusResponseDto> {
-    const wallet = await this.dbReader(WalletEntity.table)
-      .where('id', payout.payoutMethod.walletId)
-      .andWhere('user_id', userId)
+    if (!payout.payoutMethod.walletId) {
+      throw new NoPayoutMethodExcption('wallet not selected')
+    }
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+      .where({ id: payout.payoutMethod.walletId })
+      .andWhere({ user_id: userId })
       .select('*')
       .first()
+
+    if (!wallet) {
+      throw new WalletNotFoundError(
+        'wallet not found when making blockchain transfer',
+      )
+    }
 
     const createTransferDto: CircleCreateTransferRequestDto = {
       idempotencyKey: v4(),
@@ -612,27 +621,27 @@ export class PaymentService {
       },
     }
 
-    const data = CircleTransferEntity.toDict<CircleTransferEntity>({
+    const data = {
       id: v4(),
-      payout: payout.id,
-      idempotencyKey: createTransferDto.idempotencyKey,
+      payout_id: payout.id,
+      idempotency_key: createTransferDto.idempotencyKey,
       amount: createTransferDto.amount.amount,
       currency: createTransferDto.amount.currency,
       status: CircleAccountStatusEnum.PENDING,
-    })
-    await this.dbWriter(CircleTransferEntity.table).insert(data)
+    }
+    await this.dbWriter<CircleTransferEntity>(
+      CircleTransferEntity.table,
+    ).insert(data)
 
     const response = await this.circleConnector.createTransfer(
       createTransferDto,
     )
 
-    await this.dbWriter(CircleTransferEntity.table)
-      .update(
-        CircleTransferEntity.toDict<CircleTransferEntity>({
-          circleId: response['id'],
-          status: response['status'],
-        }),
-      )
+    await this.dbWriter<CircleTransferEntity>(CircleTransferEntity.table)
+      .update({
+        circle_id: response['id'],
+        status: response['status'],
+      })
       .where({ id: data.id })
 
     return {
@@ -651,14 +660,14 @@ export class PaymentService {
   async processCircleUpdate(update: CircleNotificationDto): Promise<void> {
     //log new notification in DB
     const id = v4()
-    await this.dbWriter(CircleNotificationEntity.table).insert(
-      CircleNotificationEntity.toDict<CircleNotificationEntity>({
-        id,
-        clientId: update.clientId,
-        notificationType: update.notificationType,
-        fullContent: JSON.stringify(update),
-      }),
-    )
+    await this.dbWriter<CircleNotificationEntity>(
+      CircleNotificationEntity.table,
+    ).insert({
+      id,
+      client_id: update.clientId,
+      notification_type: update.notificationType,
+      full_content: JSON.stringify(update),
+    })
 
     //update information with notification
     try {
@@ -710,20 +719,20 @@ export class PaymentService {
             "notification type unrecognized: API might've updated",
           )
       }
-      await this.dbWriter(CircleNotificationEntity.table)
-        .update(
-          CircleNotificationEntity.toDict<CircleNotificationEntity>({
-            processed: true,
-          }),
-        )
+      await this.dbWriter<CircleNotificationEntity>(
+        CircleNotificationEntity.table,
+      )
+        .update({
+          processed: true,
+        })
         .where({ id })
     } catch (err) {
-      await this.dbWriter(CircleNotificationEntity.table)
-        .update(
-          CircleNotificationEntity.toDict<CircleNotificationEntity>({
-            processed: false,
-          }),
-        )
+      await this.dbWriter<CircleNotificationEntity>(
+        CircleNotificationEntity.table,
+      )
+        .update({
+          processed: false,
+        })
         .where({ id })
       this.logger.error(`Error processing notification ${id}`, err)
     }
@@ -732,46 +741,49 @@ export class PaymentService {
   async processCircleChargebackUpdate(
     chargebackDto: CircleChargebackDto,
   ): Promise<void> {
-    const payment = await this.dbReader(CirclePaymentEntity.table)
+    const payment = await this.dbReader<CirclePaymentEntity>(
+      CirclePaymentEntity.table,
+    )
       .join(
         PayinEntity.table,
         `${CirclePaymentEntity.table}.payin_id`,
         `${PayinEntity.table}.id`,
       )
-      .where('circle_id', chargebackDto.paymentId)
-      .select([`${CirclePaymentEntity}.id`, `${PayinEntity.table}.user_id`])
+      .where({ circle_id: chargebackDto.paymentId })
+      .select(`${CirclePaymentEntity}.id`, `${PayinEntity.table}.user_id`)
       .first()
     if (payment) {
-      const exists = await this.dbReader(CircleChargebackEntity.table)
-        .where('circle_id', chargebackDto.id)
+      const exists = await this.dbReader<CircleChargebackEntity>(
+        CircleChargebackEntity.table,
+      )
+        .where({ circle_id: chargebackDto.id })
         .select('id')
         .first()
       if (!exists) {
-        await this.dbWriter(UserEntity.table)
-          .where('id', payment.user_id)
+        await this.dbWriter<UserEntity>(UserEntity.table)
+          .where({ id: payment.user_id })
           .increment('chargeback_count', 1)
-        const chargebackCount = (
-          await this.dbWriter(UserEntity.table)
-            .where('id', payment.user_id)
-            .select('chargeback_count')
-            .first()
-        ).chargeback_count
+        const user = await this.dbWriter<UserEntity>(UserEntity.table)
+          .where({ id: payment.user_id })
+          .select('chargeback_count')
+          .first()
+        const chargebackCount = user?.chargeback_count
         if (
-          chargebackCount >= MAX_CHARGEBACKS ||
+          (chargebackCount && chargebackCount >= MAX_CHARGEBACKS) ||
           parseFloat(chargebackDto.history[0].chargebackAmount.amount) >
             MAX_CHARGEBACK_AMOUNT
         ) {
-          await this.dbWriter(UserEntity.table)
-            .where('id', payment.user_id)
-            .update('payment_blocked', true)
+          await this.dbWriter<UserEntity>(UserEntity.table)
+            .where({ id: payment.user_id })
+            .update({ payment_blocked: true })
         }
-        await this.dbWriter(CircleChargebackEntity.table)
-          .insert(
-            CircleChargebackEntity.toDict<CircleChargebackEntity>({
-              circleId: chargebackDto.id,
-              circlePayment: payment.id,
-            }),
-          )
+        await this.dbWriter<CircleChargebackEntity>(
+          CircleChargebackEntity.table,
+        )
+          .insert({
+            circle_id: chargebackDto.id,
+            circle_payment_id: payment.id,
+          })
           .onConflict(['circle_id'])
           .ignore()
       }
@@ -786,60 +798,46 @@ export class PaymentService {
   async processCircleWireUpdate(
     wireDto: GenericCircleObjectWrapper,
   ): Promise<void> {
-    await this.dbWriter(CircleBankEntity.table)
-      .update(
-        CircleBankEntity.toDict<CircleBankEntity>({
-          status: wireDto.status as CircleAccountStatusEnum,
-        }),
-      )
-      .where(
-        CircleBankEntity.toDict<CircleBankEntity>({ circleId: wireDto.id }),
-      )
+    await this.dbWriter<CircleBankEntity>(CircleBankEntity.table)
+      .update({ status: wireDto.status as CircleAccountStatusEnum })
+      .where({ circle_id: wireDto.id })
   }
 
   async processCircleCardUpdate(
     cardDto: GenericCircleObjectWrapper,
   ): Promise<void> {
-    await this.dbWriter(CircleCardEntity.table)
-      .update(
-        CircleCardEntity.toDict<CircleCardEntity>({
-          status: cardDto.status as CircleAccountStatusEnum,
-        }),
-      )
-      .where(
-        CircleCardEntity.toDict<CircleCardEntity>({ circleId: cardDto.id }),
-      )
+    await this.dbWriter<CircleCardEntity>(CircleCardEntity.table)
+      .update({ status: cardDto.status as CircleAccountStatusEnum })
+      .where({ circle_id: cardDto.id })
   }
 
   async processCirclePaymentUpdate(
     paymentDto: CirclePaymentDto,
   ): Promise<void> {
-    const payin = await this.dbWriter(PayinEntity.table)
+    const payin = await this.dbWriter<PayinEntity>(PayinEntity.table)
       .join(
         CirclePaymentEntity.table,
         PayinEntity.table + '.id',
         CirclePaymentEntity.table + '.payin_id',
       )
       .select(PayinEntity.table + '.id as id', PayinEntity.table + '.user_id')
-      .where('circle_id', paymentDto.id)
+      .where({ circle_id: paymentDto.id })
       .first()
 
     if (!payin) {
       throw new CircleNotificationError('notification for unrecorded payin')
     }
 
-    await this.dbWriter(CirclePaymentEntity.table)
-      .where('circle_id', paymentDto.id)
+    await this.dbWriter<CirclePaymentEntity>(CirclePaymentEntity.table)
+      .where({ circle_id: paymentDto.id })
       .update({ status: paymentDto.status })
 
     switch (paymentDto.status) {
       case CirclePaymentStatusEnum.PENDING:
-        await this.dbWriter(PayinEntity.table)
-          .update(
-            PayinEntity.toDict<PayinEntity>({
-              payinStatus: PayinStatusEnum.PENDING,
-            }),
-          )
+        await this.dbWriter<PayinEntity>(PayinEntity.table)
+          .update({
+            payin_status: PayinStatusEnum.PENDING,
+          })
           .where({ id: payin.id })
         break
       case CirclePaymentStatusEnum.CONFIRMED:
@@ -850,44 +848,40 @@ export class PaymentService {
         await this.failPayin(payin.id, payin.user_id)
         break
       case CirclePaymentStatusEnum.ACTION_REQUIRED:
-        await this.dbWriter(PayinEntity.table)
-          .update(
-            PayinEntity.toDict<PayinEntity>({
-              payinStatus: PayinStatusEnum.ACTION_REQUIRED,
-            }),
-          )
+        await this.dbWriter<PayinEntity>(PayinEntity.table)
+          .update({
+            payin_status: PayinStatusEnum.ACTION_REQUIRED,
+          })
           .where({ id: payin.id })
         break
     }
   }
 
   async processCirclePayoutUpdate(payoutDto: any): Promise<void> {
-    const payout = await this.dbReader(PayoutEntity.table)
+    const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
       .join(
         CirclePayoutEntity.table,
         PayoutEntity.table + '.id',
         CirclePayoutEntity.table + '.payout_id',
       )
       .select(PayoutEntity.table + '.id as id', PayoutEntity.table + '.user_id')
-      .where('circle_id', payoutDto.id)
+      .where({ circle_id: payoutDto.id })
       .first()
 
     if (!payout) {
       throw new CircleNotificationError('notification for unrecorded payout')
     }
 
-    await this.dbWriter(CirclePayoutEntity.table)
-      .where('circle_id', payoutDto.id)
+    await this.dbWriter<CirclePayoutEntity>(CirclePayoutEntity.table)
+      .where({ circle_id: payoutDto.id })
       .update({ status: payoutDto.status, fee: payoutDto.fees.amount })
 
     switch (payoutDto.status) {
       case CircleAccountStatusEnum.PENDING:
-        await this.dbWriter(PayoutEntity.table)
-          .update(
-            PayoutEntity.toDict<PayoutEntity>({
-              payoutStatus: PayoutStatusEnum.PENDING,
-            }),
-          )
+        await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+          .update({
+            payout_status: PayoutStatusEnum.PENDING,
+          })
           .where({ id: payout.id })
         break
       case CircleAccountStatusEnum.COMPLETE:
@@ -951,31 +945,34 @@ export class PaymentService {
         method = PayinMethodEnum.METAMASK_CIRCLE_USDC
       }
     }
-    let query = this.dbWriter(PayinEntity.table).select('id', 'user_id').where({
-      address: transferDto.destination.address,
-      payin_method: method,
-    })
+    let query = this.dbWriter<PayinEntity>(PayinEntity.table)
+      .select('id', 'user_id')
+      .where({
+        address: transferDto.destination.address,
+        payin_method: method,
+      })
     if (chainId !== undefined) {
-      query = query.where('chain_id', chainId)
+      query = query.where({ chain_id: chainId })
     }
     const payin = await query.first()
-    await this.dbWriter(PayinEntity.table)
+    if (!payin) {
+      throw new PayinNotFoundError('payin not found')
+    }
+    await this.dbWriter<PayinEntity>(PayinEntity.table)
       .update({ transaction_hash: transferDto.transactionHash })
-      .where('id', payin.id)
+      .where({ id: payin.id })
     switch (transferDto.status) {
-      case CircleTransferStatusEnum.PENDING:
-        await this.dbWriter(PayinEntity.table)
-          .update(
-            PayinEntity.toDict<PayinEntity>({
-              payinStatus: PayinStatusEnum.PENDING,
-            }),
-          )
+      case CircleAccountStatusEnum.PENDING:
+        await this.dbWriter<PayinEntity>(PayinEntity.table)
+          .update({
+            payin_status: PayinStatusEnum.PENDING,
+          })
           .where({ id: payin.id })
         break
-      case CircleTransferStatusEnum.COMPLETE:
+      case CircleAccountStatusEnum.COMPLETE:
         await this.completePayin(payin.id, payin.user_id)
         break
-      case CircleTransferStatusEnum.FAILED:
+      case CircleAccountStatusEnum.FAILED:
         await this.failPayin(payin.id, payin.user_id)
         break
     }
@@ -988,39 +985,46 @@ export class PaymentService {
   async processCircleOutgoingTransferUpdate(
     transferDto: CircleTransferDto,
   ): Promise<void> {
-    const circleTransfer = await this.dbReader(CircleTransferEntity.table)
-      .where('circle_id', transferDto.id)
+    const circleTransfer = await this.dbReader<CircleTransferEntity>(
+      CircleTransferEntity.table,
+    )
+      .where({ circle_id: transferDto.id })
       .select('payout_id')
       .first()
-    const payout = await this.dbReader(PayoutEntity.table)
-      .where('id', circleTransfer.payout_id)
+    if (!circleTransfer) {
+      throw new PayoutNotFoundException('payout not found for transfer')
+    }
+    const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+      .where({ id: circleTransfer.payout_id })
       .select('*')
       .first()
-
+    if (!payout) {
+      throw new PayoutNotFoundException(
+        'payout not found while processing outgoing transfer',
+      )
+    }
     if (transferDto.transactionHash) {
-      await this.dbWriter(PayoutEntity.table)
-        .where('id', payout.id)
+      await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+        .where({ id: payout.id })
         .update({ transaction_hash: transferDto.transactionHash })
     }
 
-    await this.dbWriter(CircleTransferEntity.table)
-      .where('id', transferDto.id)
-      .update('status', transferDto.status)
+    await this.dbWriter<CircleTransferEntity>(CircleTransferEntity.table)
+      .where({ id: transferDto.id })
+      .update({ status: transferDto.status })
 
     switch (transferDto.status) {
-      case CircleTransferStatusEnum.PENDING:
-        await this.dbWriter(PayoutEntity.table)
-          .update(
-            PayoutEntity.toDict<PayoutEntity>({
-              payoutStatus: PayoutStatusEnum.PENDING,
-            }),
-          )
+      case CircleAccountStatusEnum.PENDING:
+        await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+          .update({
+            payout_status: PayoutStatusEnum.PENDING,
+          })
           .where({ id: payout.id })
         break
-      case CircleTransferStatusEnum.COMPLETE:
+      case CircleAccountStatusEnum.COMPLETE:
         await this.completePayout(payout.id, payout.user_id)
         break
-      case CircleTransferStatusEnum.FAILED:
+      case CircleAccountStatusEnum.FAILED:
         await this.failPayout(payout.id, payout.user_id)
         break
     }
@@ -1043,15 +1047,13 @@ export class PaymentService {
     userId: string,
     entryDto: PayinEntryRequestDto,
   ): Promise<PayinEntryResponseDto> {
-    const payin = await this.dbReader(PayinEntity.table)
+    const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .select('*')
-      .where(
-        PayinEntity.toDict<PayinEntity>({
-          id: entryDto.payinId,
-          user: userId,
-          payinStatus: PayinStatusEnum.REGISTERED,
-        }),
-      )
+      .where({
+        id: entryDto.payinId,
+        user_id: userId,
+        payin_status: PayinStatusEnum.REGISTERED,
+      })
       .first()
     if (!payin) {
       throw new InvalidPayinStatusError(
@@ -1081,7 +1083,7 @@ export class PaymentService {
           throw new NoPayinMethodError('entrypoint hit with no method')
       }
 
-      await this.dbWriter(PayinEntity.table)
+      await this.dbWriter<PayinEntity>(PayinEntity.table)
         .update({ payin_status: PayinStatusEnum.CREATED })
         .where({ id: entryDto.payinId })
     } catch (err) {
@@ -1151,7 +1153,7 @@ export class PaymentService {
   */
 
   async linkAddressToPayin(address: string, payinId: string): Promise<void> {
-    await this.dbWriter(PayinEntity.table)
+    await this.dbWriter<PayinEntity>(PayinEntity.table)
       .update({ address })
       .where({ id: payinId })
   }
@@ -1219,15 +1221,15 @@ export class PaymentService {
       payinMethoDto.chainId = this.getEvmChainId(payinMethoDto.chain)
     }
 
-    await this.dbWriter(DefaultPayinMethodEntity.table)
-      .insert(
-        DefaultPayinMethodEntity.toDict<DefaultPayinMethodEntity>({
-          user: userId,
-          method: payinMethoDto.method,
-          card: payinMethoDto.cardId,
-          chainId: payinMethoDto.chainId,
-        }),
-      )
+    await this.dbWriter<DefaultPayinMethodEntity>(
+      DefaultPayinMethodEntity.table,
+    )
+      .insert({
+        user_id: userId,
+        method: payinMethoDto.method,
+        card_id: payinMethoDto.cardId,
+        chain_id: payinMethoDto.chainId,
+      })
       .onConflict('user_id')
       .merge(['method', 'card_id', 'chain_id'])
   }
@@ -1241,7 +1243,7 @@ export class PaymentService {
     const defaultPayinMethod = await this.dbReader(
       DefaultPayinMethodEntity.table,
     )
-      .where('user_id', userId)
+      .where({ user_id: userId })
       .select('*')
       .first()
 
@@ -1263,17 +1265,16 @@ export class PaymentService {
       case PayinMethodEnum.CIRCLE_CARD:
         // assert that card exists and is not deleted
         return (
-          (await this.dbReader(CircleCardEntity.table)
-            .where(
-              CircleCardEntity.toDict<CircleCardEntity>({
-                user: userId,
-                id: payinMethodDto.cardId,
-                status: CircleAccountStatusEnum.COMPLETE,
-              }),
-            )
+          !!payinMethodDto.cardId &&
+          !!(await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+            .where({
+              user_id: userId,
+              id: payinMethodDto.cardId,
+              status: CircleAccountStatusEnum.COMPLETE,
+            })
             .whereNull('deleted_at')
             .select('id')
-            .first()) !== undefined
+            .first())
         )
       case PayinMethodEnum.METAMASK_CIRCLE_USDC:
         // metamask payin must be on an approved chainId
@@ -1303,15 +1304,15 @@ export class PaymentService {
     userId: string,
     payoutMethodDto: PayoutMethodDto,
   ): Promise<void> {
-    await this.dbWriter(DefaultPayoutMethodEntity.table)
-      .insert(
-        DefaultPayoutMethodEntity.toDict<DefaultPayoutMethodEntity>({
-          user: userId,
-          method: payoutMethodDto.method,
-          bank: payoutMethodDto.bankId,
-          wallet: payoutMethodDto.walletId,
-        }),
-      )
+    await this.dbWriter<DefaultPayoutMethodEntity>(
+      DefaultPayoutMethodEntity.table,
+    )
+      .insert({
+        user_id: userId,
+        method: payoutMethodDto.method,
+        bank_id: payoutMethodDto.bankId,
+        wallet_id: payoutMethodDto.walletId,
+      })
       .onConflict('user_id')
       .merge(['method', 'bank_id', 'wallet_id'])
   }
@@ -1325,7 +1326,7 @@ export class PaymentService {
     const defaultPayoutMethod = await this.dbReader(
       DefaultPayoutMethodEntity.table,
     )
-      .where('user_id', userId)
+      .where({ user_id: userId })
       .select('*')
       .first()
 
@@ -1349,28 +1350,26 @@ export class PaymentService {
       case PayoutMethodEnum.CIRCLE_WIRE:
         // assert that bank exists and is not deleted
         return (
-          (await this.dbReader(CircleBankEntity.table)
-            .where(
-              CircleBankEntity.toDict<CircleBankEntity>({
-                user: userId,
-                id: payoutMethodDto.bankId,
-              }),
-            )
+          !!payoutMethodDto.bankId &&
+          !!(await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
+            .where({
+              user_id: userId,
+              id: payoutMethodDto.bankId,
+            })
             .whereNull('deleted_at')
             .select('id')
-            .first()) !== undefined
+            .first())
         )
       case PayoutMethodEnum.CIRCLE_USDC:
         return (
-          (await this.dbReader(WalletEntity.table)
-            .where(
-              WalletEntity.toDict<WalletEntity>({
-                user: userId,
-                id: payoutMethodDto.walletId,
-              }),
-            )
+          !!payoutMethodDto.walletId &&
+          !!(await this.dbReader<WalletEntity>(WalletEntity.table)
+            .where({
+              user_id: userId,
+              id: payoutMethodDto.walletId,
+            })
             .select('id')
-            .first()) !== undefined
+            .first())
         )
       default:
         return false
@@ -1384,12 +1383,11 @@ export class PaymentService {
   */
 
   async checkPayinBlocked(userId: string): Promise<boolean> {
-    return (
-      await this.dbReader(UserEntity.table)
-        .where('id', userId)
-        .select('payment_blocked')
-        .first()
-    ).payment_blocked
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select('payment_blocked')
+      .first()
+    return !user || user.payment_blocked
   }
   /**
    * Step 1 of payin process
@@ -1423,20 +1421,20 @@ export class PaymentService {
       throw new InvalidPayinRequestError('invalid payin method')
     }
 
-    const data = PayinEntity.toDict<PayinEntity>({
+    const data = {
       id: v4(),
-      user: request.userId,
-      payinMethod: payinMethod.method,
-      card: payinMethod.cardId,
-      chainId: payinMethod.chainId,
-      payinStatus: PayinStatusEnum.REGISTERED,
+      user_id: request.userId,
+      payin_method: payinMethod.method,
+      card_id: payinMethod.cardId,
+      chain_id: payinMethod.chainId,
+      payin_status: PayinStatusEnum.REGISTERED,
       callback: request.callback,
-      callbackInputJSON: JSON.stringify(request.callbackInputJSON),
+      callback_input_json: JSON.stringify(request.callbackInputJSON),
       amount: request.amount,
       target: request.target,
-    })
+    }
 
-    await this.dbWriter(PayinEntity.table).insert(data)
+    await this.dbWriter<PayinEntity>(PayinEntity.table).insert(data)
 
     // create creator share of payment
     try {
@@ -1464,7 +1462,7 @@ export class PaymentService {
     payinMethod: PayinMethodDto,
     payinId: string,
   ) {
-    const creator = await this.dbReader(UserEntity.table)
+    const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .leftJoin(
         CreatorFeeEntity.table,
         `${UserEntity.table}.id`,
@@ -1509,22 +1507,20 @@ export class PaymentService {
     // round to cents
     shareAmount = Math.round(shareAmount * 100) / 100
 
-    await this.dbWriter(CreatorShareEntity.table).insert(
-      CreatorShareEntity.toDict<CreatorShareEntity>({
-        creator: creatorId,
-        amount: shareAmount,
-        payin: payinId,
-      }),
-    )
+    await this.dbWriter<CreatorShareEntity>(CreatorShareEntity.table).insert({
+      creator_id: creatorId,
+      amount: shareAmount,
+      payin_id: payinId,
+    })
   }
 
   async getTotalEarnings(payinId: string): Promise<number> {
-    const shares = await this.dbReader(CreatorShareEntity.table)
-      .where(
-        CreatorShareEntity.toDict<CreatorShareEntity>({
-          payin: payinId,
-        }),
-      )
+    const shares = await this.dbReader<CreatorShareEntity>(
+      CreatorShareEntity.table,
+    )
+      .where({
+        payin_id: payinId,
+      })
       .select('amount')
     return shares.reduce((sum, share) => {
       return sum + share.amount
@@ -1533,21 +1529,19 @@ export class PaymentService {
 
   async getCreatorFee(creatorId: string) {
     return new CreatorFeeDto(
-      await this.dbReader(CreatorFeeEntity.table)
-        .where('creator_id', creatorId)
+      await this.dbReader<CreatorFeeEntity>(CreatorFeeEntity.table)
+        .where({ creator_id: creatorId })
         .select('*')
         .first(),
     )
   }
 
   async updateInputJSON(payinId: string, json: any) {
-    await this.dbWriter(PayinEntity.table)
-      .where('id', payinId)
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          callbackInputJSON: JSON.stringify(json),
-        }),
-      )
+    await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payinId })
+      .update({
+        callback_input_json: JSON.stringify(json),
+      })
   }
 
   async userCancelPayin(payinId: string, userId: string): Promise<void> {
@@ -1558,78 +1552,69 @@ export class PaymentService {
   }
 
   async unregisterPayin(payinId: string, userId: string): Promise<void> {
-    await this.dbWriter(PayinEntity.table)
-      .where('id', payinId)
-      .andWhere('user_id', userId)
+    await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payinId })
+      .andWhere({ user_id: userId })
       .andWhere('payin_status', PayinStatusEnum.REGISTERED)
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          payinStatus: PayinStatusEnum.UNREGISTERED,
-        }),
-      )
+      .update({
+        payin_status: PayinStatusEnum.UNREGISTERED,
+      })
   }
 
   async failPayin(payinId: string, userId: string): Promise<void> {
-    const rows = await this.dbWriter(PayinEntity.table)
-      .where('id', payinId)
-      .andWhere('user_id', userId)
+    const rows = await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payinId })
+      .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          payinStatus: PayinStatusEnum.FAILED,
-        }),
-      )
+      .update({
+        payin_status: PayinStatusEnum.FAILED,
+      })
     // check for completed update
     if (rows == 1) {
-      const payin = await this.dbReader(PayinEntity.table)
-        .where('id', payinId)
-        .andWhere('user_id', userId)
-        .select(
-          ...PayinEntity.populate<PayinEntity>([
-            'id',
-            'callback',
-            'callbackInputJSON',
-          ]),
-        )
+      const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
+        .where({ id: payinId })
+        .andWhere({ user_id: userId })
+        .select(['id', 'callback', 'callback_input_json'])
         .first()
       await handleFailedCallback(payin, this, this.dbReader)
     }
   }
 
   async completePayin(payinId: string, userId: string): Promise<void> {
-    const rows = await this.dbWriter(PayinEntity.table)
-      .where('id', payinId)
-      .andWhere('user_id', userId)
+    const rows = await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payinId })
+      .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .update(
-        PayinEntity.toDict<PayinEntity>({
-          payinStatus: PayinStatusEnum.SUCCESSFUL,
-        }),
-      )
+      .update({
+        payin_status: PayinStatusEnum.SUCCESSFUL,
+      })
     // check for completed update
     if (rows == 1) {
-      const payin = await this.dbReader(PayinEntity.table)
-        .where('id', payinId)
-        .andWhere('user_id', userId)
-        .select(
-          ...PayinEntity.populate<PayinEntity>([
-            'id',
-            'callback',
-            'callbackInputJSON',
-            'amount',
-            'payinMethod',
-          ]),
-        )
+      const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
+        .where({ id: payinId })
+        .andWhere({ user_id: userId })
+        .select([
+          'id',
+          'callback',
+          'callback_input_json',
+          'amount',
+          'payin_method',
+        ])
         .first()
+      if (!payin) {
+        throw new PayinNotFoundError('payin not found')
+      }
       await handleSuccesfulCallback(payin, this, this.dbWriter)
-      const creatorShares = await this.dbReader(CreatorShareEntity.table)
-        .where('payin_id', payin.id)
+      const creatorShares = await this.dbReader<CreatorShareEntity>(
+        CreatorShareEntity.table,
+      )
+        .where({ payin_id: payin.id })
         .select('*')
 
       await Promise.all(
@@ -1656,8 +1641,8 @@ export class PaymentService {
     userId: string,
     getPayinsRequest: GetPayinsRequestDto,
   ): Promise<GetPayinsResponseDto> {
-    const payins = await this.dbReader(PayinEntity.table)
-      .where('user_id', userId)
+    const payins = await this.dbReader<PayinEntity>(PayinEntity.table)
+      .where({ user_id: userId })
       .andWhere('payin_status', 'not in', [
         PayinStatusEnum.REGISTERED,
         PayinStatusEnum.UNREGISTERED,
@@ -1666,15 +1651,15 @@ export class PaymentService {
       .orderBy('created_at', 'desc')
       .offset(getPayinsRequest.offset)
       .limit(getPayinsRequest.limit)
-    const count = await this.dbReader(PayinEntity.table)
-      .where('user_id', userId)
+    const count = await this.dbReader<PayinEntity>(PayinEntity.table)
+      .where({ user_id: userId })
       .andWhere('payin_status', 'not in', [
         PayinStatusEnum.REGISTERED,
         PayinStatusEnum.UNREGISTERED,
       ])
       .count()
 
-    const cards = await this.dbReader(CircleCardEntity.table)
+    const cards = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
       .where(
         'id',
         'in',
@@ -1707,62 +1692,60 @@ export class PaymentService {
   */
 
   async failPayout(payoutId: string, userId: string): Promise<void> {
-    const rows = await this.dbWriter(PayoutEntity.table)
-      .where('id', payoutId)
-      .andWhere('user_id', userId)
+    const rows = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+      .where({ id: payoutId })
+      .andWhere({ user_id: userId })
       .andWhere('payout_status', 'in', [
         PayoutStatusEnum.CREATED,
         PayoutStatusEnum.PENDING,
       ])
-      .update(
-        PayoutEntity.toDict<PayoutEntity>({
-          payoutStatus: PayoutStatusEnum.FAILED,
-        }),
-      )
+      .update({ payout_status: PayoutStatusEnum.FAILED })
     // check for completed update
     if (rows == 1) {
       const amount = (
-        await this.dbReader(PayoutEntity.table)
-          .where('id', payoutId)
+        await this.dbReader<PayoutEntity>(PayoutEntity.table)
+          .where({ id: payoutId })
           .select('amount')
           .first()
-      ).amount
-      await this.creatorStatsService.handlePayoutFail(userId, amount)
+      )?.amount
+      await this.creatorStatsService.handlePayoutFail(
+        userId,
+        amount ? amount : 0,
+      )
     }
   }
 
   async completePayout(payoutId: string, userId: string): Promise<void> {
-    const rows = await this.dbWriter(PayoutEntity.table)
-      .where('id', payoutId)
-      .andWhere('user_id', userId)
+    const rows = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+      .where({ id: payoutId })
+      .andWhere({ user_id: userId })
       .andWhere('payout_status', 'in', [
         PayoutStatusEnum.CREATED,
         PayoutStatusEnum.PENDING,
       ])
-      .update(
-        PayoutEntity.toDict<PayoutEntity>({
-          payoutStatus: PayoutStatusEnum.SUCCESSFUL,
-        }),
-      )
+      .update({ payout_status: PayoutStatusEnum.SUCCESSFUL })
     if (rows == 1) {
       const amount = (
-        await this.dbReader(PayoutEntity.table)
-          .where('id', payoutId)
+        await this.dbReader<PayoutEntity>(PayoutEntity.table)
+          .where({ id: payoutId })
           .select('amount')
           .first()
-      ).amount
-      await this.creatorStatsService.handlePayoutSuccess(userId, amount)
+      )?.amount
+      await this.creatorStatsService.handlePayoutSuccess(
+        userId,
+        amount ? amount : 0,
+      )
     }
   }
 
   async payoutAll(): Promise<void> {
-    const creators = await this.dbReader(UserEntity.table)
+    const creators = await this.dbReader<UserEntity>(UserEntity.table)
       .join(
         CreatorSettingsEntity.table,
         `${UserEntity.table}.id`,
         `${CreatorSettingsEntity.table}.user_id`,
       )
-      .where(UserEntity.toDict<UserEntity>({ isCreator: true }))
+      .where({ is_creator: true })
       .andWhereNot('payout_frequency', PayoutFrequencyEnum.MANUAL)
       .select([`${UserEntity.table}.id`, 'payout_frequency'])
     await Promise.all(
@@ -1787,7 +1770,7 @@ export class PaymentService {
       MAX_TIME_BETWEEN_PAYOUTS_MS,
     )
     if (!lockResult) {
-      throw new PayoutFrequencyError(
+      throw new PayoutFrequencyException(
         'Payout created for creator recently, try again later',
       )
     }
@@ -1804,11 +1787,11 @@ export class PaymentService {
           }
           break
         case PayoutFrequencyEnum.MANUAL:
-          throw new PayoutFrequencyError(
+          throw new PayoutFrequencyException(
             'automatic payout with manual selected',
           )
         default:
-          throw new PayoutFrequencyError(
+          throw new PayoutFrequencyException(
             'automatic payout with no frequency selected',
           )
       }
@@ -1820,7 +1803,7 @@ export class PaymentService {
     ).amount
 
     if (!availableBalance || availableBalance <= 0) {
-      throw new PayoutAmountError('No balance to payout')
+      throw new PayoutAmountException('No balance to payout')
     }
 
     try {
@@ -1835,10 +1818,10 @@ export class PaymentService {
         payout_status: PayoutStatusEnum.CREATED,
         amount: availableBalance,
       }
-      await this.dbWriter(PayoutEntity.table).insert(data)
+      await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
 
       if (availableBalance < MIN_PAYOUT_AMOUNT) {
-        throw new PayoutAmountError(
+        throw new PayoutAmountException(
           `${availableBalance} is not enough to payout`,
         )
       }
@@ -1853,15 +1836,17 @@ export class PaymentService {
    * @param payout_id
    */
   async submitPayout(payout_id: string): Promise<void> {
-    const payout = await this.dbReader(PayoutEntity.table)
+    const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
       .whereIn('payout_status', [
         PayoutStatusEnum.FAILED,
         PayoutStatusEnum.CREATED,
       ])
-      .andWhere('id', payout_id)
+      .andWhere({ id: payout_id })
       .select('*')
       .first()
-
+    if (!payout) {
+      throw new PayoutNotFoundException('payout not found')
+    }
     switch (payout.payout_method) {
       case PayoutMethodEnum.CIRCLE_USDC:
         await this.makeCircleBlockchainTransfer(
@@ -1879,17 +1864,17 @@ export class PaymentService {
     userId: string,
     getPayoutsRequest: GetPayoutsRequestDto,
   ): Promise<GetPayoutsResponseDto> {
-    const payouts = await this.dbReader(PayoutEntity.table)
-      .where('user_id', userId)
+    const payouts = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+      .where({ user_id: userId })
       .select('*')
       .orderBy('created_at', 'desc')
       .offset(getPayoutsRequest.offset)
       .limit(getPayoutsRequest.limit)
-    const count = await this.dbReader(PayoutEntity.table)
-      .where('user_id', userId)
+    const count = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+      .where({ user_id: userId })
       .count()
 
-    const banks = await this.dbReader(CircleCardEntity.table)
+    const banks = await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
       .where(
         'id',
         'in',
@@ -1900,7 +1885,7 @@ export class PaymentService {
       map[bank.id] = new CircleBankDto(bank)
       return map
     }, {})
-    const wallets = await this.dbReader(WalletEntity.table)
+    const wallets = await this.dbReader<WalletEntity>(WalletEntity.table)
       .where(
         'id',
         'in',
@@ -1943,29 +1928,27 @@ export class PaymentService {
         'invalid amount value ' + request.amount,
       )
     }
-
+    const passholder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
+      .where({ id: request.passHolderId })
+      .select('holder_id')
+      .first()
     // ensure that the subscription is for an accurate pass holder object
-    if (
-      (
-        await this.dbReader(PassHolderEntity.table)
-          .where('id', request.passHolderId)
-          .select('holder_id')
-          .first()
-      ).holder_id !== request.userId
-    ) {
+    if (!passholder || passholder.holder_id !== request.userId) {
       throw new InvalidSubscriptionError(
         `${request.userId} is not the holder in pass-holder ${request.passHolderId}`,
       )
     }
 
     // try to find subscription object if previously subscribed
-    const subscription = await this.dbReader(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          passHolder: request.passHolderId,
-          user: request.userId,
-        }),
-      )
+    const subscription = await this.dbReader<SubscriptionEntity>(
+      SubscriptionEntity.table,
+    )
+      .where({
+        pass_holder_id: request.passHolderId,
+        user_id: request.userId,
+      })
       .select('*')
       .first()
 
@@ -1977,17 +1960,20 @@ export class PaymentService {
 
     if (!subscription) {
       // make new subscription object
-      const data = SubscriptionEntity.toDict<SubscriptionEntity>({
+      const data = {
         id: v4(),
-        subscriptionStatus: SubscriptionStatusEnum.ACTIVE,
-        user: request.userId,
-        payinMethod: payinMethod.method,
-        card: payinMethod.cardId,
-        chainId: payinMethod.chainId,
+        subscription_status: SubscriptionStatusEnum.ACTIVE,
+        user_id: request.userId,
+        payin_method: payinMethod.method,
+        card_id: payinMethod.cardId,
+        chain_id: payinMethod.chainId,
         amount: request.amount,
-        passHolder: request.passHolderId,
-      })
-      await this.dbWriter(SubscriptionEntity.table).insert(data)
+        pass_holder_id: request.passHolderId,
+        target: request.target,
+      } as SubscriptionEntity
+      await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table).insert(
+        data,
+      )
       return { subscriptionId: data.id, payinMethod }
     } else if (
       subscription.subscription_status === SubscriptionStatusEnum.CANCELLED
@@ -1997,9 +1983,9 @@ export class PaymentService {
         request.userId,
         payinMethod,
       )
-      await this.dbWriter(SubscriptionEntity.table)
-        .where('id', subscription.id)
-        .update('amount', request.amount)
+      await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
+        .where({ id: subscription.id })
+        .update({ amount: request.amount })
       return { subscriptionId: subscription.id as string, payinMethod }
     } else {
       throw new InvalidSubscriptionError('subscription already exists')
@@ -2016,43 +2002,37 @@ export class PaymentService {
         'invalid payin method for subscription',
       )
     }
-    await this.dbWriter(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          id: subscriptionId,
-          user: userId,
-        }),
-      )
-      .update(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          payinMethod: payinMethodDto.method,
-          card: payinMethodDto.cardId,
-          chainId: payinMethodDto.chainId,
-        }),
-      )
+    await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
+      .where({
+        id: subscriptionId,
+        user_id: userId,
+      })
+      .update({
+        payin_method: payinMethodDto.method,
+        card_id: payinMethodDto.cardId,
+        chain_id: payinMethodDto.chainId,
+      })
   }
 
   async cancelSubscription(
     userId: string,
     subscriptionId: string,
   ): Promise<void> {
-    await this.dbWriter(SubscriptionEntity.table)
-      .where(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          id: subscriptionId,
-          user: userId,
-        }),
-      )
-      .update(
-        SubscriptionEntity.toDict<SubscriptionEntity>({
-          subscriptionStatus: SubscriptionStatusEnum.CANCELLED,
-        }),
-      )
+    await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
+      .where({
+        id: subscriptionId,
+        user_id: userId,
+      })
+      .update({
+        subscription_status: SubscriptionStatusEnum.CANCELLED,
+      })
   }
 
   async updateSubscriptions(): Promise<void> {
     const now = Date.now()
-    const nftPassSubscriptions = await this.dbReader(SubscriptionEntity.table)
+    const nftPassSubscriptions = await this.dbReader<SubscriptionEntity>(
+      SubscriptionEntity.table,
+    )
       .join(
         PassHolderEntity.table,
         `${SubscriptionEntity.table}.pass_holder_id`,
@@ -2065,11 +2045,9 @@ export class PaymentService {
       .select([
         `${SubscriptionEntity.table}'.id`,
         `${SubscriptionEntity.table}'.user_id`,
-        ...SubscriptionEntity.populate<SubscriptionEntity>([
-          'payinMethod',
-          'chainId',
-          'card',
-        ]),
+        'payin_method',
+        'chain_id',
+        'card_id',
         `${PassHolderEntity.table}'.expires_at`,
         `${PassHolderEntity.table}'.holder_id`,
       ])
@@ -2080,8 +2058,8 @@ export class PaymentService {
           // holder of pass changed
           if (subscription.user_id !== subscription.holder_id) {
             await this.dbWriter
-              .where('id', subscription.id)
-              .update('subscription_status', SubscriptionStatusEnum.CANCELLED)
+              .where({ id: subscription.id })
+              .update({ subscription_status: SubscriptionStatusEnum.CANCELLED })
             return
           }
 
@@ -2093,8 +2071,8 @@ export class PaymentService {
           }
 
           await this.dbWriter
-            .where('id', subscription.id)
-            .update('subscription_status', status)
+            .where({ id: subscription.id })
+            .update({ subscription_status: status })
 
           // TODO: send email notifications
 
@@ -2133,23 +2111,27 @@ export class PaymentService {
   }
 
   async getSubscriptions(userId: string): Promise<SubscriptionDto[]> {
-    const subscriptions = await this.dbReader(SubscriptionEntity.table)
-      .where('user_id', userId)
+    const subscriptions = await this.dbReader<SubscriptionEntity>(
+      SubscriptionEntity.table,
+    )
+      .where({ user_id: userId })
       .andWhereNot('subscription_status', SubscriptionStatusEnum.CANCELLED)
       .select('*')
 
-    const passHoldings = await this.dbReader(PassHolderEntity.table)
+    const passHoldings = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .whereIn(
         'id',
         subscriptions.map((subscription) => subscription.pass_holder_id),
       )
       .select('*')
     const passHoldingsMap = passHoldings.reduce((map, passHolding) => {
-      map[passHolding.id] = new PassHolderDto(passHolding)
+      map[passHolding.id] = new PassHolderDto(passHolding as any)
       return map
     }, {})
 
-    const passes = await this.dbReader(PassEntity.table)
+    const passes = await this.dbReader<PassEntity>(PassEntity.table)
       .where(
         'id',
         'in',
@@ -2181,37 +2163,31 @@ export class PaymentService {
 
   async disputedChargeback(chargebackId: string) {
     return (
-      (await this.dbWriter(CircleChargebackEntity.table)
-        .update(
-          CircleChargebackEntity.toDict<CircleChargebackEntity>({
-            disputed: true,
-          }),
-        )
-        .where(
-          CircleChargebackEntity.toDict<CircleChargebackEntity>({
-            id: chargebackId,
-            disputed: null,
-          }),
-        )) === 1
+      (await this.dbWriter<CircleChargebackEntity>(CircleChargebackEntity.table)
+        .update({
+          disputed: true,
+        })
+        .where({
+          id: chargebackId,
+          disputed: null,
+        })) === 1
     )
   }
 
   async undisputedChargeback(chargebackId: string) {
     const updated =
-      (await this.dbWriter(CircleChargebackEntity.table)
-        .update(
-          CircleChargebackEntity.toDict<CircleChargebackEntity>({
-            disputed: false,
-          }),
-        )
-        .where(
-          CircleChargebackEntity.toDict<CircleChargebackEntity>({
-            id: chargebackId,
-            disputed: null,
-          }),
-        )) === 1
+      (await this.dbWriter<CircleChargebackEntity>(CircleChargebackEntity.table)
+        .update({
+          disputed: false,
+        })
+        .where({
+          id: chargebackId,
+          disputed: null,
+        })) === 1
     if (updated) {
-      const payin = await this.dbReader(CircleChargebackEntity.table)
+      const payin = await this.dbReader<CircleChargebackEntity>(
+        CircleChargebackEntity.table,
+      )
         .join(
           CirclePaymentEntity.table,
           `${CircleChargebackEntity.table}.circle_payment_id`,

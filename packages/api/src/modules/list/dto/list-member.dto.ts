@@ -5,6 +5,8 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
+import { UserEntity } from '../../user/entities/user.entity'
+import { ListMemberEntity } from '../entities/list-member.entity'
 
 export class ListMemberDto {
   @DtoProperty({ type: 'uuid' })
@@ -18,8 +20,8 @@ export class ListMemberDto {
   username: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  displayName: string
+  @DtoProperty({ type: 'string', nullable: true })
+  displayName: string | null
 
   @DtoProperty({ type: 'uuid', optional: true })
   follow?: string
@@ -27,7 +29,12 @@ export class ListMemberDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  constructor(listMember) {
+  constructor(
+    listMember:
+      | (ListMemberEntity &
+          Pick<UserEntity, 'username' | 'display_name'> & { follow?: string })
+      | undefined,
+  ) {
     if (listMember) {
       this.listMemberId = listMember.id
       this.userId = listMember.user_id

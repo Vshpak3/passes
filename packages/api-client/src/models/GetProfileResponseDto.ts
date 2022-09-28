@@ -36,79 +36,79 @@ export interface GetProfileResponseDto {
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    legalFullName?: string;
+    legalFullName?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    displayName?: string;
+    displayName?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    coverTitle?: string;
+    coverTitle?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    coverDescription?: string;
+    coverDescription?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    description?: string;
+    description?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    discordUsername?: string;
+    discordUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    facebookUsername?: string;
+    facebookUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    instagramUsername?: string;
+    instagramUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    tiktokUsername?: string;
+    tiktokUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    twitchUsername?: string;
+    twitchUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    twitterUsername?: string;
+    twitterUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof GetProfileResponseDto
      */
-    youtubeUsername?: string;
+    youtubeUsername?: string | null;
     /**
      * 
      * @type {boolean}
      * @memberof GetProfileResponseDto
      */
-    isKYCVerified?: boolean;
+    isKYCVerified: boolean;
     /**
      * 
      * @type {boolean}
@@ -120,7 +120,7 @@ export interface GetProfileResponseDto {
      * @type {boolean}
      * @memberof GetProfileResponseDto
      */
-    isAdult?: boolean;
+    isAdult: boolean;
 }
 
 /**
@@ -130,7 +130,9 @@ export function instanceOfGetProfileResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "profileId" in value;
     isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "isKYCVerified" in value;
     isInstance = isInstance && "isActive" in value;
+    isInstance = isInstance && "isAdult" in value;
 
     return isInstance;
 }
@@ -159,9 +161,9 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'twitchUsername': !exists(json, 'twitchUsername') ? undefined : json['twitchUsername'],
         'twitterUsername': !exists(json, 'twitterUsername') ? undefined : json['twitterUsername'],
         'youtubeUsername': !exists(json, 'youtubeUsername') ? undefined : json['youtubeUsername'],
-        'isKYCVerified': !exists(json, 'isKYCVerified') ? undefined : json['isKYCVerified'],
+        'isKYCVerified': json['isKYCVerified'],
         'isActive': json['isActive'],
-        'isAdult': !exists(json, 'isAdult') ? undefined : json['isAdult'],
+        'isAdult': json['isAdult'],
     };
 }
 

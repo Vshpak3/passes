@@ -15,15 +15,15 @@ import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 @Entity({ tableName: 'circle_bank' })
 export class CircleBankEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()
-  idempotencyKey: string
+  idempotency_key: string
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleId?: string
+  circle_id: string | null
 
   @Property({ length: CIRCLE_COUNTRY_LENGTH })
   country: string
@@ -35,11 +35,11 @@ export class CircleBankEntity extends BaseEntity {
   description: string
 
   @Property({ length: CIRCLE_BANK_TRACKING_REF_LENGTH })
-  trackingRef: string
+  tracking_ref: string
 
   @Property({ length: CIRCLE_FINGERPRINT_LENGTH })
   fingerprint: string
 
   @Property()
-  deletedAt?: Date
+  deleted_at: Date | null
 }

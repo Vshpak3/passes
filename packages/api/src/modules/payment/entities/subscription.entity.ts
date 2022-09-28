@@ -20,23 +20,23 @@ import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardEntity } from './circle-card.entity'
 
 @Entity({ tableName: 'subscription' })
-@Unique({ properties: ['user', 'passHolder'] })
+@Unique({ properties: ['user_id', 'pass_holder_id'] })
 export class SubscriptionEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Enum(() => SubscriptionStatusEnum)
-  subscriptionStatus: SubscriptionStatusEnum
+  subscription_status: SubscriptionStatusEnum
 
   // payin method
   @Enum(() => PayinMethodEnum)
-  payinMethod: PayinMethodEnum
+  payin_method: PayinMethodEnum
 
   @ManyToOne({ entity: () => CircleCardEntity })
-  card?: CircleCardEntity
+  card_id: string | null
 
   @Property()
-  chainId?: number
+  chain_id: number | null
 
   @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })
@@ -44,11 +44,14 @@ export class SubscriptionEntity extends BaseEntity {
 
   // card specific information
   @Property({ length: IP_ADDRESS_LENGTH })
-  ipAddress?: string
+  ip_address: string | null
 
   @Property({ length: SHA256_LENGTH })
-  sessionId?: string
+  session_id: string | null
+
+  @Property({ length: SHA256_LENGTH })
+  target: string
 
   @ManyToOne({ entity: () => PassHolderEntity })
-  passHolder: PassHolderEntity
+  pass_holder_id: string
 }

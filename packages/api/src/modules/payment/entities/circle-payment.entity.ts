@@ -21,24 +21,24 @@ import { PayinEntity } from './payin.entity'
 @Entity({ tableName: 'circle_payment' })
 export class CirclePaymentEntity extends BaseEntity {
   @ManyToOne({ entity: () => CircleCardEntity })
-  card: CircleCardEntity
+  card_id: string
 
   @OneToOne({ entity: () => PayinEntity })
-  payin: PayinEntity
+  payin_id: string
 
   @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()
-  idempotencyKey?: string
+  idempotency_key: string | null
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleId?: string
+  circle_id: string | null
 
   @Property({ length: CIRCLE_MONEY_AMOUNT_STRING_LENGTH })
   amount: string
 
   @Enum(() => CircleCardVerificationEnum)
-  verification?: CircleCardVerificationEnum
+  verification: CircleCardVerificationEnum | null
 
   @Enum(() => CirclePaymentStatusEnum)
   status!: CirclePaymentStatusEnum

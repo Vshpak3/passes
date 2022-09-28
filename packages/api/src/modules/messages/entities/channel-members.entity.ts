@@ -6,30 +6,30 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { ChannelEntity } from './channel.entity'
 
 @Entity({ tableName: 'channel_member' })
-@Unique({ properties: ['channel', 'user'] })
-@Unique({ properties: ['user', 'otherUser'] })
+@Unique({ properties: ['channel_id', 'user_id'] })
+@Unique({ properties: ['user_id', 'other_user_id'] })
 export class ChannelMemberEntity extends BaseEntity {
-  @ManyToOne()
-  channel: ChannelEntity
+  @ManyToOne({ entity: () => ChannelEntity })
+  channel_id: string
 
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
-  @ManyToOne()
-  otherUser: UserEntity
-
-  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  tipSent: number
+  @ManyToOne({ entity: () => UserEntity })
+  other_user_id: string
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  tipReceived: number
+  tip_sent: number
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  unreadTip: number
+  tip_received: number
+
+  @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
+  unread_tip: number
 
   @Property({ default: false })
   unread: boolean
 
   @Property({ default: false })
-  unlimitedMessages: boolean
+  unlimited_messages: boolean
 }

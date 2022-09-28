@@ -15,7 +15,7 @@ export class SearchCreatorResponseDto {
     this.creators = creators.map((c) => ({
       id: c.id,
       username: c.username,
-      display_name: c.displayName,
+      display_name: c.display_name,
     }))
   }
 }

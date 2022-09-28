@@ -24,23 +24,23 @@ import { CircleCardEntity } from './circle-card.entity'
 @Entity({ tableName: 'payin' })
 export class PayinEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   // payin method
   @Enum(() => PayinMethodEnum)
-  payinMethod: PayinMethodEnum
+  payin_method: PayinMethodEnum
 
   @ManyToOne({ entity: () => CircleCardEntity })
-  card?: CircleCardEntity
+  card_id: string | null
 
   @Property()
-  chainId?: number
+  chain_id: number | null
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
-  address?: string
+  address: string | null
 
   @Property({ length: TRANSACTION_HASH_LENGTH })
-  transactionHash?: string
+  transaction_hash: string | null
 
   // transaction information
   @Index()
@@ -48,25 +48,25 @@ export class PayinEntity extends BaseEntity {
   amount: number
 
   @Property({ type: types.float })
-  convertedAmount?: number
+  converted_amoun: number | null
 
   @Enum(() => PayinStatusEnum)
-  payinStatus: PayinStatusEnum
+  payin_status: PayinStatusEnum
 
   // callback
   @Enum(() => PayinCallbackEnum)
   callback: PayinCallbackEnum
 
   @Property({ type: types.json })
-  callbackInputJSON: PayinCallbackInput
+  callback_input_json: PayinCallbackInput
 
   @Property({ type: types.json })
-  callbackOutputJSON?: PayinCallbackOutput
+  callback_output_json: PayinCallbackOutput | null
 
   // payin target
 
   // ensure that someone isn't paying for the same "target"
   // while payin is inprogress
   @Property({ length: SHA256_LENGTH })
-  target?: string
+  target: string | null
 }

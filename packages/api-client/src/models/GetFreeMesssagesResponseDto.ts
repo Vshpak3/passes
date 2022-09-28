@@ -21,10 +21,10 @@ import { exists, mapValues } from '../runtime';
 export interface GetFreeMesssagesResponseDto {
     /**
      * 
-     * @type {object}
+     * @type {number}
      * @memberof GetFreeMesssagesResponseDto
      */
-    messages: object;
+    messages: number;
 }
 
 /**

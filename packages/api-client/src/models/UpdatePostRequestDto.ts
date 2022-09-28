@@ -75,7 +75,7 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
@@ -91,7 +91,7 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
         
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'expiresAt': value.expiresAt,
         'price': value.price,
     };
 }

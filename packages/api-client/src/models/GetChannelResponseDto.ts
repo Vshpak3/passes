@@ -34,12 +34,6 @@ export interface GetChannelResponseDto {
     channelId?: string;
     /**
      * 
-     * @type {string}
-     * @memberof GetChannelResponseDto
-     */
-    streamChannelId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetChannelResponseDto
      */
@@ -111,7 +105,6 @@ export interface GetChannelResponseDto {
  */
 export function instanceOfGetChannelResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "streamChannelId" in value;
     isInstance = isInstance && "recent" in value;
     isInstance = isInstance && "channelMemberId" in value;
     isInstance = isInstance && "userId" in value;
@@ -135,8 +128,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'channelId': !exists(json, 'channelId') ? undefined : json['channelId'],
-        'streamChannelId': json['streamChannelId'],
-        'recent': (new Date(json['recent'])),
+        'recent': json['recent'],
         'channelMemberId': json['channelMemberId'],
         'userId': json['userId'],
         'otherUserId': json['otherUserId'],
@@ -160,8 +152,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
     return {
         
         'channelId': value.channelId,
-        'streamChannelId': value.streamChannelId,
-        'recent': (value.recent.toISOString()),
+        'recent': value.recent,
         'channelMemberId': value.channelMemberId,
         'userId': value.userId,
         'otherUserId': value.otherUserId,

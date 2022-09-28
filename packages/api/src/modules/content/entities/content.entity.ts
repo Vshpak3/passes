@@ -6,15 +6,15 @@ import { ContentTypeEnum } from '../enums/content-type.enum'
 
 @Entity({ tableName: 'content' })
 export class ContentEntity extends BaseEntity {
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
   @Enum(() => ContentTypeEnum)
-  contentType: ContentTypeEnum
+  content_type: ContentTypeEnum
 
   @Property({ default: false })
-  inMessage: boolean
+  in_message: boolean
 
   @Property({ default: false })
-  inPost: boolean
+  in_post: boolean
 }

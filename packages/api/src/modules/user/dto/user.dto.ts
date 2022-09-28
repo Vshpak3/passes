@@ -19,6 +19,7 @@ import {
   USER_USERNAME_LENGTH,
 } from '../constants/schema'
 import { VALID_USERNAME_REGEX } from '../constants/username'
+import { UserEntity } from '../entities/user.entity'
 
 export class UserDto {
   @DtoProperty({ type: 'uuid' })
@@ -53,18 +54,18 @@ export class UserDto {
   birthday: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  displayName?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  displayName?: string | null
 
   @DtoProperty({ type: 'boolean', optional: true })
   isCreator?: boolean
 
   @IsPhoneNumber()
   @Length(1, USER_PHONE_NUMBER_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  phoneNumber?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  phoneNumber?: string | null
 
-  constructor(userEntity) {
+  constructor(userEntity: UserEntity | undefined) {
     if (userEntity) {
       this.id = userEntity.id
       this.email = userEntity.email

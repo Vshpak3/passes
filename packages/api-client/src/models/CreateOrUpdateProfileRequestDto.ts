@@ -24,61 +24,61 @@ export interface CreateOrUpdateProfileRequestDto {
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    coverTitle?: string;
+    coverTitle?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    coverDescription?: string;
+    coverDescription?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    description?: string;
+    description?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    discordUsername?: string;
+    discordUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    facebookUsername?: string;
+    facebookUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    instagramUsername?: string;
+    instagramUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    tiktokUsername?: string;
+    tiktokUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    twitchUsername?: string;
+    twitchUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    twitterUsername?: string;
+    twitterUsername?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateProfileRequestDto
      */
-    youtubeUsername?: string;
+    youtubeUsername?: string | null;
 }
 
 /**

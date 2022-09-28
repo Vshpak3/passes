@@ -30,13 +30,13 @@ export interface SetPayinMethodRequestDto {
      * @type {string}
      * @memberof SetPayinMethodRequestDto
      */
-    cardId?: string;
+    cardId?: string | null;
     /**
      * 
      * @type {number}
      * @memberof SetPayinMethodRequestDto
      */
-    chainId?: number;
+    chainId?: number | null;
     /**
      * 
      * @type {string}

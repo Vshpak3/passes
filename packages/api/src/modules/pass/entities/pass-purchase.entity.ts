@@ -5,11 +5,11 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { PassEntity } from './pass.entity'
 
 @Entity({ tableName: 'pass_purchase' })
-@Unique({ properties: ['pass', 'user'] })
+@Unique({ properties: ['pass_id', 'user_id'] })
 export class PassPurchaseEntity extends BaseEntity {
-  @ManyToOne()
-  pass: PassEntity
+  @ManyToOne({ entity: () => PassEntity })
+  pass_id: string
 
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 }

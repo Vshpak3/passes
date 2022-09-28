@@ -2,30 +2,31 @@ import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { WELCOME_MESSAGE_MAX_LENGTH } from '../constants/schema'
+import { CreatorSettingsEntity } from '../entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
 export class CreatorSettingsDto {
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  minimumTipAmount: number
+  @DtoProperty({ type: 'number', nullable: true })
+  minimumTipAmount: number | null
 
   @DtoProperty({ custom_type: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 
   @Length(1, WELCOME_MESSAGE_MAX_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  welcomeMessage?: string
+  @DtoProperty({ type: 'string', nullable: true })
+  welcomeMessage: string | null
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  allowCommentsOnPosts?: boolean
+  @DtoProperty({ type: 'boolean' })
+  allowCommentsOnPosts: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
+  @DtoProperty({ type: 'boolean' })
   showFollowerCount: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
+  @DtoProperty({ type: 'boolean' })
   showMediaCount: boolean
 
-  constructor(creatorSettings) {
+  constructor(creatorSettings: CreatorSettingsEntity | undefined) {
     if (creatorSettings) {
       this.minimumTipAmount = creatorSettings.minimum_tip_amount
       this.payoutFrequency = creatorSettings.payout_frequency

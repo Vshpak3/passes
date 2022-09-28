@@ -60,7 +60,7 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    displayName?: string;
+    displayName?: string | null;
     /**
      * 
      * @type {boolean}
@@ -72,7 +72,7 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    phoneNumber?: string;
+    phoneNumber?: string | null;
 }
 
 /**

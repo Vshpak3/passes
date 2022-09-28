@@ -266,7 +266,7 @@ const DirectMessage = ({
 
     await messagesApi.massSend({
       createBatchMessageRequestDto: {
-        includeListIds: [],
+        includeListIds: [] as string[],
         excludeListIds: [],
         // TODO: get lists and use their Ids
         passIds: [],

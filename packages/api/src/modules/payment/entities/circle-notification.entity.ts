@@ -10,14 +10,14 @@ import {
 @Entity({ tableName: 'circle_notification' })
 export class CircleNotificationEntity extends BaseEntity {
   @Property({ length: CIRCLE_CLIENT_ID_LENGTH })
-  clientId: string
+  client_id: string
 
   @Property({ length: CIRCLE_NOTIFICATION_TYPE_LENGTH })
-  notificationType: string
+  notification_type: string
 
   @Property({ type: types.text })
-  fullContent: string
+  full_content: string
 
   @Property()
-  processed?: boolean
+  processed: boolean | null
 }

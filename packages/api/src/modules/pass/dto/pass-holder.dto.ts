@@ -7,23 +7,25 @@ import {
 } from '../../user/constants/schema'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
+import { PassEntity } from '../entities/pass.entity'
+import { PassHolderEntity } from '../entities/pass-holder.entity'
 import { PassDto } from './pass.dto'
 
 export class PassHolderDto extends PassDto {
   @DtoProperty({ type: 'uuid' })
   passHolderId: string
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  holderId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  holderId?: string | null
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  walletId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  walletId?: string | null
 
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'number', nullable: true, optional: true })
   messages?: number | null
 
-  @DtoProperty({ type: 'date', optional: true })
-  expiresAt?: Date
+  @DtoProperty({ type: 'date', nullable: true, optional: true })
+  expiresAt?: Date | null
 
   @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', optional: true })
@@ -43,7 +45,15 @@ export class PassHolderDto extends PassDto {
   @DtoProperty({ type: 'uuid', optional: true })
   tokenId?: string
 
-  constructor(passHolder) {
+  constructor(
+    passHolder:
+      | (PassHolderEntity &
+          PassEntity & {
+            holder_username?: string
+            holder_display_name?: string
+          })
+      | undefined,
+  ) {
     super(passHolder)
     if (passHolder) {
       this.passHolderId = passHolder.id

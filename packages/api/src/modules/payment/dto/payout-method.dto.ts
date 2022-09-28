@@ -1,17 +1,18 @@
 import { DtoProperty } from '../../../web/dto.web'
+import { DefaultPayoutMethodEntity } from '../entities/default-payout-method.entity'
 import { PayoutMethodEnum } from '../enum/payout-method.enum'
 
 export class PayoutMethodDto {
   @DtoProperty({ custom_type: PayoutMethodEnum })
   method: PayoutMethodEnum = PayoutMethodEnum.NONE
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  bankId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  bankId?: string | null
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  walletId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  walletId?: string | null
 
-  constructor(payoutMethod) {
+  constructor(payoutMethod: DefaultPayoutMethodEntity | undefined) {
     if (payoutMethod) {
       this.method = payoutMethod.method
       this.bankId = payoutMethod.bank_id

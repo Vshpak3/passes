@@ -57,13 +57,11 @@ export class CreatorStatsService {
 
   async getBalance(userId: string) {
     return new CreatorEarningDto(
-      await this.dbReader(CreatorEarningEntity.table)
-        .where(
-          CreatorEarningEntity.toDict<CreatorEarningEntity>({
-            user: userId,
-            type: EarningTypeEnum.BALANCE,
-          }),
-        )
+      await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
+        .where({
+          user_id: userId,
+          type: EarningTypeEnum.BALANCE,
+        })
         .select('*')
         .first(),
     )
@@ -71,13 +69,11 @@ export class CreatorStatsService {
 
   async getAvailableBalance(userId: string) {
     return new CreatorEarningDto(
-      await this.dbReader(CreatorEarningEntity.table)
-        .where(
-          CreatorEarningEntity.toDict<CreatorEarningEntity>({
-            user: userId,
-            type: EarningTypeEnum.AVAILABLE_BALANCE,
-          }),
-        )
+      await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
+        .where({
+          user_id: userId,
+          type: EarningTypeEnum.AVAILABLE_BALANCE,
+        })
         .select('*')
         .first(),
     )
@@ -89,13 +85,15 @@ export class CreatorStatsService {
     end: Date,
     type?: EarningTypeEnum,
   ) {
-    let query = this.dbReader(CreatorEarningHistoryEntity.table)
-      .where('user_id', userId)
+    let query = this.dbReader<CreatorEarningHistoryEntity>(
+      CreatorEarningHistoryEntity.table,
+    )
+      .where({ user_id: userId })
       .andWhere('created_at', '>=', start)
       .andWhere('created_at', '<=', end)
       .select('*')
     if (type) {
-      query = query.andWhere('type', type)
+      query = query.andWhere({ type: type })
     }
     return (await query).map((earning) => new CreatorEarningDto(earning))
   }
@@ -106,24 +104,20 @@ export class CreatorStatsService {
     amount: number,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(CreatorEarningEntity.table)
-        .insert(
-          CreatorEarningEntity.toDict<CreatorEarningEntity>({
-            amount,
-            user: userId,
-            type: earningType,
-          }),
-        )
+      await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+        .insert({
+          amount,
+          user_id: userId,
+          type: earningType,
+        })
         .onConflict()
         .ignore()
-      await trx(CreatorEarningEntity.table)
-        .where(
-          CreatorEarningEntity.toDict<CreatorEarningEntity>({
-            amount,
-            user: userId,
-            type: earningType,
-          }),
-        )
+      await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+        .where({
+          amount,
+          user_id: userId,
+          type: earningType,
+        })
         .increment('amount', amount)
     })
   }
@@ -184,7 +178,7 @@ export class CreatorStatsService {
         ]),
       )
       .insert(
-        this.dbWriter(CreatorEarningEntity.table).select([
+        this.dbWriter<CreatorEarningEntity>(CreatorEarningEntity.table).select([
           'user_id',
           'amount',
           'type',
@@ -194,13 +188,13 @@ export class CreatorStatsService {
 
   async getCreatorStats(creatorId: string, userId?: string) {
     return new CreatorStatDto(
-      await this.dbReader(CreatorStatEntity.table)
+      await this.dbReader<CreatorStatEntity>(CreatorStatEntity.table)
         .leftJoin(
           CreatorSettingsEntity.table,
           `${CreatorSettingsEntity.table}.user_id`,
           `${CreatorStatEntity.table}.user_id`,
         )
-        .where(CreatorStatEntity.toDict<CreatorStatEntity>({ user: creatorId }))
+        .where({ user_id: creatorId })
         .select([
           `${CreatorStatEntity.table}.user_id`,
           'show_follower_count',
@@ -213,13 +207,11 @@ export class CreatorStatsService {
 
   async refreshCreatorsStats() {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(ContentEntity.table).update(
-        ContentEntity.toDict<ContentEntity>({
-          inMessage: false,
-          inPost: false,
-        }),
-      )
-      await trx(ContentEntity.table)
+      await trx<ContentEntity>(ContentEntity.table).update({
+        in_message: false,
+        in_post: false,
+      })
+      await trx<ContentEntity>(ContentEntity.table)
         .innerJoin(
           PostContentEntity.table,
           `${PostContentEntity.table}.content_id`,
@@ -228,7 +220,7 @@ export class CreatorStatsService {
         .whereNull(`${PostEntity.table}.deleted_at`)
         .andWhere(`${PostEntity.table}.is_message`, false)
         .update(`${ContentEntity.table}.in_post`, true)
-      await trx(ContentEntity.table)
+      await trx<ContentEntity>(ContentEntity.table)
         .innerJoin(
           PostContentEntity.table,
           `${PostContentEntity.table}.content_id`,
@@ -239,16 +231,16 @@ export class CreatorStatsService {
         .update(`${ContentEntity.table}.in_message`, true)
     })
 
-    const creators = await this.dbReader(CreatorStatEntity.table).select(
-      'user_id',
-    )
+    const creators = await this.dbReader<CreatorStatEntity>(
+      CreatorStatEntity.table,
+    ).select('user_id')
     await Promise.all(
       creators.map(async (creator) => {
         try {
           await this.refreshCreatorStats(creator.user_id)
         } catch (err) {
           this.logger.error(
-            `Error updating stats for creator ${creator.id}`,
+            `Error updating stats for creator ${creator.user_id}`,
             err,
           )
         }
@@ -257,31 +249,33 @@ export class CreatorStatsService {
   }
 
   async refreshCreatorStats(creatorId: string) {
-    await this.dbWriter(CreatorStatEntity.table)
-      .where('user_id', creatorId)
-      .update({
-        num_likes: this.dbWriter(PostEntity.table)
-          .where(
-            PostEntity.toDict<PostEntity>({
-              user: creatorId,
-            }),
-          )
+    // TODO-test: test after refactor
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: creatorId })
+      .update(
+        'num_likes',
+        this.dbWriter<PostEntity>(PostEntity.table)
+          .where({
+            user_id: creatorId,
+          })
           .sum('num_likes'),
-        num_followers: this.dbWriter(FollowEntity.table)
-          .where(
-            FollowEntity.toDict<FollowEntity>({
-              creator: creatorId,
-            }),
-          )
+      )
+      .update(
+        'num_followers',
+        this.dbWriter<FollowEntity>(FollowEntity.table)
+          .where({
+            creator_id: creatorId,
+          })
           .count(),
-        num_media: this.dbWriter(ContentEntity.table)
-          .where(
-            ContentEntity.toDict<ContentEntity>({
-              user: creatorId,
-              inPost: true,
-            }),
-          )
+      )
+      .update(
+        'num_media',
+        this.dbWriter<ContentEntity>(ContentEntity.table)
+          .where({
+            user_id: creatorId,
+            in_post: true,
+          })
           .count(),
-      })
+      )
   }
 }

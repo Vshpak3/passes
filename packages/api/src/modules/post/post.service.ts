@@ -100,42 +100,50 @@ export class PostService {
     )
     await this.dbWriter
       .transaction(async (trx) => {
-        const post = PostEntity.toDict<PostEntity>({
+        const post = {
           id: postId,
-          user: userId,
+          user_id: userId,
           text: createPostDto.text,
           tags: JSON.stringify(createPostDto.tags),
           price: createPostDto.price,
-          expiresAt: createPostDto.expiresAt,
-          scheduledAt: createPostDto.scheduledAt,
-          passIds: JSON.stringify(createPostDto.passIds),
+          expires_at: createPostDto.expiresAt,
+          scheduled_at: createPostDto.scheduledAt,
+          pass_ids: JSON.stringify(createPostDto.passIds),
+        }
+
+        await trx<PostEntity>(PostEntity.table).insert(post)
+
+        const postContent = createPostDto.contentIds.map(function (
+          contentId,
+          index,
+        ) {
+          return {
+            content_id: contentId,
+            post_id: postId,
+            index,
+          }
         })
 
-        await trx(PostEntity.table).insert(post)
-
-        const postContent = createPostDto.contentIds.map((contentId, index) =>
-          PostContentEntity.toDict<PostContentEntity>({
-            content: contentId,
-            post: postId,
-            index,
-          }),
-        )
-
         if (postContent.length) {
-          await trx(PostContentEntity.table).insert(postContent)
+          await trx<PostContentEntity>(PostContentEntity.table).insert(
+            postContent,
+          )
         }
-        await trx(ContentEntity.table)
-          .update('in_post', true)
+        await trx<ContentEntity>(ContentEntity.table)
+          .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
 
         // TODO: schedule access add
-        const passHolders = await trx(PassHolderEntity.table)
+        const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)
           .whereIn('pass_id', createPostDto.passIds)
           .whereNotNull('expires_at')
           .whereNotNull('holder_id')
           .andWhere('expires_at', '>', new Date())
           .select(['holder_id', 'id'])
         const userToPassHolders = passHolders.reduce((map, passHolder) => {
+          if (!passHolder.holder_id) {
+            return map
+          }
           if (!map[passHolder.holder_id]) {
             map[passHolder.holder_id] = []
           }
@@ -143,60 +151,59 @@ export class PostService {
           return map
         }, {})
         for (const userId in userToPassHolders) {
-          const postUserAccess =
-            PostUserAccessEntity.toDict<PostUserAccessEntity>({
-              id: v4(),
-              post: postId,
-              user: userId,
-            })
-          await trx(PostUserAccessEntity.table)
+          const postUserAccess = {
+            id: v4(),
+            post_id: postId,
+            user_id: userId,
+          }
+          await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
             .insert(postUserAccess)
             .onConflict(['post_id', 'user_id'])
             .ignore()
           for (const passHolderId in userToPassHolders[userId]) {
-            await trx(PostPassHolderAccessEntity.table)
-              .insert(
-                PostPassHolderAccessEntity.toDict<PostPassHolderAccessEntity>({
-                  postUserAccess: postUserAccess.id,
-                  passHolder: passHolderId,
-                }),
-              )
+            await trx<PostPassHolderAccessEntity>(
+              PostPassHolderAccessEntity.table,
+            )
+              .insert({
+                post_user_access_id: postUserAccess.id,
+                pass_holder_id: passHolderId,
+              })
               .onConflict(['post_user_access_id', 'pass_holder_id'])
               .ignore()
           }
         }
 
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
-          const postPassAccess =
-            PostPassAccessEntity.toDict<PostPassAccessEntity>({
-              post: postId,
-              pass: createPostDto.passIds[i],
-            })
-          await trx(PostPassAccessEntity.table).insert(postPassAccess)
+          const postPassAccess = {
+            post_id: postId,
+            pass_id: createPostDto.passIds[i],
+          }
+          await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
+            postPassAccess,
+          )
         }
       })
       .catch((err) => {
         this.logger.error(err)
         throw err
       })
-    await this.dbWriter(CreatorStatEntity.table)
-      .where('user_id', userId)
-      .update({
-        num_media: this.dbWriter(ContentEntity.table)
-          .where(
-            ContentEntity.toDict<ContentEntity>({
-              user: userId,
-              inPost: true,
-            }),
-          )
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: userId })
+      .update(
+        'num_media',
+        this.dbWriter<ContentEntity>(ContentEntity.table)
+          .where({
+            user_id: userId,
+            in_post: true,
+          })
           .count(),
-      })
+      )
     return { postId }
   }
 
   async findPost(postId: string, userId: string): Promise<PostDto> {
     const dbReader = this.dbReader
-    const query = this.dbReader(PostEntity.table)
+    const query = this.dbReader<PostEntity>(PostEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -242,7 +249,9 @@ export class PostService {
   ): Promise<PostDto[]> {
     const posts = await query
 
-    const passAccesses = await this.dbReader(PostPassAccessEntity.table)
+    const passAccesses = await this.dbReader<PostPassAccessEntity>(
+      PostPassAccessEntity.table,
+    )
       .innerJoin(
         PassHolderEntity.table,
         `${PostPassAccessEntity.table}.pass_id`,
@@ -294,7 +303,9 @@ export class PostService {
     postIds: string[],
     accessiblePostIds: Set<string>,
   ): Promise<Map<string, ContentDto[]>> {
-    const postContents = await this.dbReader(PostContentEntity.table)
+    const postContents = await this.dbReader<PostContentEntity>(
+      PostContentEntity.table,
+    )
       .innerJoin(
         ContentEntity.table,
         `${ContentEntity.table}.id`,
@@ -315,9 +326,11 @@ export class PostService {
         new ContentDto(
           postContent,
           accessiblePostIds.has(postContent.post_id)
-            ? await this.s3ContentService.signUrl(
-                `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.id}`,
-              )
+            ? (
+                await this.s3ContentService.signUrl(
+                  `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.id}`,
+                )
+              ).url
             : undefined,
         ),
       )
@@ -343,16 +356,14 @@ export class PostService {
     if (updatePostDto.text && updatePostDto.tags) {
       verifyTaggedText(updatePostDto.text, updatePostDto.tags)
     }
-    const updated = await this.dbWriter(PostEntity.table)
-      .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
-      .update(
-        PostEntity.toDict<PostEntity>({
-          text: updatePostDto.text,
-          tags: JSON.stringify(updatePostDto.tags),
-          price: updatePostDto.price,
-          expiresAt: updatePostDto.expiresAt,
-        }),
-      )
+    const updated = await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .update({
+        text: updatePostDto.text,
+        tags: JSON.stringify(updatePostDto.tags),
+        price: updatePostDto.price,
+        expires_at: updatePostDto.expiresAt,
+      })
     return updated === 1
   }
 
@@ -362,39 +373,45 @@ export class PostService {
     updatePostDto: UpdatePostContentRequestDto,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(PostContentEntity.table).where('post_id', postId).delete()
-      const postContent = updatePostDto.contentIds.map((contentId, index) =>
-        PostContentEntity.toDict<PostContentEntity>({
-          content: contentId,
-          post: postId,
+      await trx<PostContentEntity>(PostContentEntity.table)
+        .where({ post_id: postId })
+        .delete()
+      const postContent = updatePostDto.contentIds.map(function (
+        contentId,
+        index,
+      ) {
+        return {
+          content_id: contentId,
+          post_id: postId,
           index,
-        }),
-      )
+        }
+      })
 
       if (postContent.length) {
-        await trx(PostContentEntity.table).insert(postContent)
+        await trx<PostContentEntity>(PostContentEntity.table).insert(
+          postContent,
+        )
       }
     })
-    await this.dbWriter(CreatorStatEntity.table)
-      .where('user_id', userId)
-      .update({
-        num_media: this.dbWriter(ContentEntity.table)
-          .where(
-            ContentEntity.toDict<ContentEntity>({
-              user: userId,
-              inPost: true,
-            }),
-          )
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: userId })
+      .update(
+        'num_media',
+        this.dbWriter<ContentEntity>(ContentEntity.table)
+          .where({
+            user_id: userId,
+            in_post: true,
+          })
           .count(),
-      })
+      )
     return true
   }
 
   async removePost(userId: string, postId: string) {
     // TODO: allow admins + managers to remove posts
-    const updated = await this.dbWriter(PostEntity.table)
-      .where(PostEntity.toDict<PostEntity>({ id: postId, user: userId }))
-      .update('deleted_at', new Date())
+    const updated = await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .update({ deleted_at: new Date() })
     return updated === 1
   }
 
@@ -405,39 +422,36 @@ export class PostService {
     earnings: number,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await trx(PostUserAccessEntity.table)
-        .insert(
-          PostUserAccessEntity.toDict<PostUserAccessEntity>({
-            user: userId,
-            post: postId,
-            payin: payinId,
-          }),
-        )
+      await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
+        .insert({
+          user_id: userId,
+          post_id: postId,
+          payin_id: payinId,
+        })
         .onConflict(['post_id', 'user_id'])
         .merge(['payin_id'])
-      await trx(PostEntity.table)
-        .where('id', postId)
+      await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId })
         .increment('num_purchases', 1)
-      await trx(PostEntity.table)
-        .where('id', postId)
+      await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId })
         .increment('earnings_purchases', earnings)
 
       const contentIds = (
-        await trx(PostContentEntity.table)
-          .where('post_id', postId)
+        await trx<PostContentEntity>(PostContentEntity.table)
+          .where({ post_id: postId })
           .select('content_id')
       ).map((postContent) => postContent.content_id)
 
       await Promise.all(
         contentIds.map(async (contentId) => {
-          await trx(UserMessageContentEntity.table).insert(
-            UserMessageContentEntity.toDict<UserMessageContentEntity>({
-              user: userId,
-              content: contentId as string,
+          await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
+            .insert({
+              user_id: userId,
+              content_id: contentId,
             })
-              .onConflict()
-              .ignore(),
-          )
+            .onConflict()
+            .ignore()
         }),
       )
     })
@@ -445,42 +459,36 @@ export class PostService {
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
     const id = (
-      await this.dbReader(PostUserAccessEntity.table)
-        .where('payin_id', payinId)
+      await this.dbReader<PostUserAccessEntity>(PostUserAccessEntity.table)
+        .where({ payin_id: payinId })
         .select('id')
         .first()
-    ).id
+    )?.id
     if (!id) {
       throw new ForbiddenPostException(
         `cant find post access for payinId ${payinId}`,
       )
     }
 
-    const passAccess = await this.dbReader(PostPassHolderAccessEntity.table)
-      .where(
-        PostPassHolderAccessEntity.toDict<PostPassHolderAccessEntity>({
-          postUserAccess: id,
-        }),
-      )
+    const passAccess = await this.dbReader<PostPassHolderAccessEntity>(
+      PostPassHolderAccessEntity.table,
+    )
+      .where({ post_user_access_id: id })
       .first()
 
     await this.dbWriter.transaction(async (trx) => {
       if (passAccess) {
-        await trx(PostUserAccessEntity.table)
-          .update(
-            PostUserAccessEntity.toDict<PostUserAccessEntity>({
-              payin: null,
-            }),
-          )
-          .where('id', id)
+        await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
+          .update({ payin_id: undefined })
+          .where({ id: id })
       } else {
-        await trx(PostEntity.table).where('id', id).delete()
+        await trx<PostEntity>(PostEntity.table).where({ id: id }).delete()
       }
-      await trx(PostEntity.table)
-        .where('id', postId)
+      await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId })
         .decrement('num_purchases', 1)
-      await trx(PostEntity.table)
-        .where('id', postId)
+      await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId })
         .decrement('earnings_purchases', earnings)
     })
   }
@@ -491,29 +499,23 @@ export class PostService {
     postId: string,
     amount: number,
   ) {
-    await this.dbWriter(PostTipEntity.table).insert(
-      PostTipEntity.toDict<PostTipEntity>({
-        payin: payinId,
-        user: userId,
-        post: postId,
-        amount,
-      }),
-    )
-    await this.dbWriter(PostEntity.table)
+    await this.dbWriter<PostTipEntity>(PostTipEntity.table).insert({
+      payin_id: payinId,
+      user_id: userId,
+      post_id: postId,
+      amount,
+    })
+    await this.dbWriter<PostEntity>(PostEntity.table)
       .increment('total_tip_amount', amount)
-      .where('id', postId)
+      .where({ id: postId })
   }
 
   async deleteTip(payinId: string, postId: string, amount: number) {
-    await this.dbWriter(PostEntity.table)
+    await this.dbWriter<PostEntity>(PostEntity.table)
       .increment('total_tip_amount', amount)
-      .where('id', postId)
-    await this.dbWriter(PostTipEntity.table)
-      .where(
-        PostTipEntity.toDict<PostTipEntity>({
-          payin: payinId,
-        }),
-      )
+      .where({ id: postId })
+    await this.dbWriter<PostTipEntity>(PostTipEntity.table)
+      .where({ payin_id: payinId })
       .delete()
   }
 
@@ -523,11 +525,13 @@ export class PostService {
     amount: number,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const post = await this.dbReader(PostEntity.table)
-      .where('id', postId)
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
       .select('user_id')
       .first()
-
+    if (!post) {
+      throw new PostNotFoundException(`post ${postId} not found`)
+    }
     const callbackInput: TipPostCallbackInput = {
       userId,
       postId,
@@ -560,11 +564,13 @@ export class PostService {
       throw new InvalidPayinRequestError('blocked')
     }
 
-    const post = await this.dbReader(PostEntity.table)
-      .where('id', postId)
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
       .select('user_id')
       .first()
-
+    if (!post) {
+      throw new PostNotFoundException(`post ${postId} not found`)
+    }
     const callbackInput: PurchasePostCallbackInput = {
       userId,
       postId,
@@ -592,26 +598,28 @@ export class PostService {
       CryptoJS.enc.Hex,
     )
 
-    const post = await this.dbReader(PostEntity.table)
-      .where('id', postId)
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
       .select('price')
       .first()
-
-    const checkPayin = await this.dbReader(PayinEntity.table)
+    if (!post) {
+      throw new PostNotFoundException(`post ${postId} not found`)
+    }
+    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .where('target', target)
+      .where({ target: target })
       .select('id')
       .first()
-    const checkAccess = await this.dbReader(PostUserAccessEntity.table)
-      .where(
-        PostUserAccessEntity.toDict<PostUserAccessEntity>({
-          post: postId,
-          user: userId,
-        }),
-      )
+    const checkAccess = await this.dbReader<PostUserAccessEntity>(
+      PostUserAccessEntity.table,
+    )
+      .where({
+        post_id: postId,
+        user_id: userId,
+      })
       .select('id')
       .first()
 
@@ -631,19 +639,17 @@ export class PostService {
 
   async pinPost(userId: string, postId: string): Promise<boolean> {
     return (
-      (await this.dbWriter(PostEntity.table)
-        .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
-        .update(
-          PostEntity.toDict<PostEntity>({ pinnedAt: this.dbWriter.fn.now() }),
-        )) === 1
+      (await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ user_id: userId, id: postId })
+        .update({ pinned_at: this.dbWriter.fn.now() })) === 1
     )
   }
 
   async unpinPost(userId: string, postId: string): Promise<boolean> {
     return (
-      (await this.dbWriter(PostEntity.table)
-        .where(PostEntity.toDict<PostEntity>({ user: userId, id: postId }))
-        .update(PostEntity.toDict<PostEntity>({ pinnedAt: null }))) === 1
+      (await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ user_id: userId, id: postId })
+        .update({ pinned_at: undefined })) === 1
     )
   }
 
@@ -661,7 +667,7 @@ export class PostService {
         ]),
       )
       .insert(
-        this.dbWriter(PostEntity.table).select([
+        this.dbWriter<PostEntity>(PostEntity.table).select([
           'id',
           'num_likes',
           'num_comments',
@@ -677,15 +683,18 @@ export class PostService {
     getPostHistoryRequestDto: GetPostHistoryRequestDto,
   ) {
     const { postId, start, end } = getPostHistoryRequestDto
-    const post = await this.dbReader(PostEntity.table).where(
-      PostEntity.toDict<PostEntity>({ id: postId, user: userId }),
-    )
+    const post = await this.dbReader<PostEntity>(PostEntity.table).where({
+      id: postId,
+      user_id: userId,
+    })
     if (!post) {
       throw new PostNotFoundException(
         `post ${postId} not found for user ${userId}`,
       )
     }
-    const postHistories = await this.dbReader(PostHistoryEntity.table)
+    const postHistories = await this.dbReader<PostHistoryEntity>(
+      PostHistoryEntity.table,
+    )
       .where('post_id', postId)
       .andWhere('created_at', '>=', start)
       .andWhere('created_at', '<=', end)
@@ -693,7 +702,7 @@ export class PostService {
   }
 
   async refreshPostsCounts() {
-    const posts = await this.dbReader(PostEntity.table)
+    const posts = await this.dbReader<PostEntity>(PostEntity.table)
       .whereNull('deleted_at')
       .select('id')
     await Promise.all(
@@ -708,32 +717,28 @@ export class PostService {
   }
 
   async refreshPostCounts(postId: string) {
-    await this.dbWriter(PostEntity.table)
-      .where('id', postId)
+    await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId })
       .update(
         'num_comments',
-        this.dbWriter(CommentEntity.table)
-          .where(
-            CommentEntity.toDict<CommentEntity>({
-              post: postId,
-              blocked: false,
-              deactivated: false,
-              hidden: false,
-              deletedAt: null,
-            }),
-          )
+        this.dbWriter<CommentEntity>(CommentEntity.table)
+          .where({
+            post_id: postId,
+            blocked: false,
+            deactivated: false,
+            hidden: false,
+            deleted_at: null,
+          })
           .count(),
       )
-    await this.dbWriter(PostEntity.table)
-      .where('id', postId)
+    await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId })
       .update(
         'num_likes',
-        this.dbWriter(LikeEntity.table)
-          .where(
-            LikeEntity.toDict<LikeEntity>({
-              post: postId,
-            }),
-          )
+        this.dbWriter<LikeEntity>(LikeEntity.table)
+          .where({
+            post_id: postId,
+          })
           .count(),
       )
   }

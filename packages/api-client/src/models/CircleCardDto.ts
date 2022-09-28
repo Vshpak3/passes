@@ -30,7 +30,7 @@ export interface CircleCardDto {
      * @type {string}
      * @memberof CircleCardDto
      */
-    circleId?: string;
+    circleId?: string | null;
     /**
      * 
      * @type {string}
@@ -67,12 +67,6 @@ export interface CircleCardDto {
      * @memberof CircleCardDto
      */
     name: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CircleCardDto
-     */
-    active: boolean;
 }
 
 
@@ -99,7 +93,6 @@ export function instanceOfCircleCardDto(value: object): boolean {
     isInstance = isInstance && "expMonth" in value;
     isInstance = isInstance && "expYear" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "active" in value;
 
     return isInstance;
 }
@@ -122,7 +115,6 @@ export function CircleCardDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'expMonth': json['expMonth'],
         'expYear': json['expYear'],
         'name': json['name'],
-        'active': json['active'],
     };
 }
 
@@ -143,7 +135,6 @@ export function CircleCardDtoToJSON(value?: CircleCardDto | null): any {
         'expMonth': value.expMonth,
         'expYear': value.expYear,
         'name': value.name,
-        'active': value.active,
     };
 }
 

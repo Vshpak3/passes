@@ -87,7 +87,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     const value = e.target.value.toLowerCase()
     if (value.trim().length > 0) {
       const filteredList = fans.filter((elm: ListMemberDto) =>
-        elm.displayName.toLowerCase().includes(value)
+        elm.displayName?.toLowerCase().includes(value)
       )
       setFans([...filteredList])
     } else {

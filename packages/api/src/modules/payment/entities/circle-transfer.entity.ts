@@ -13,15 +13,15 @@ import { PayoutEntity } from './payout.entity'
 @Entity({ tableName: 'circle_transfer' })
 export class CircleTransferEntity extends BaseEntity {
   @OneToOne({ entity: () => PayoutEntity })
-  payout: PayoutEntity
+  payout_id: string
 
   @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()
-  idempotencyKey?: string
+  idempotency_key: string | null
 
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
-  circleId?: string
+  circle_id: string | null
 
   @Property({ length: CIRCLE_MONEY_AMOUNT_STRING_LENGTH })
   amount: string

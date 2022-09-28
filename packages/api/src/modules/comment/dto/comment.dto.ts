@@ -7,6 +7,7 @@ import {
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
 import { COMMENT_TEXT_LENGTH } from '../constants/schema'
+import { CommentEntity } from '../entities/comment.entity'
 
 export class CommentDto {
   @DtoProperty({ type: 'uuid' })
@@ -36,7 +37,12 @@ export class CommentDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  constructor(comment) {
+  constructor(
+    comment: CommentEntity & {
+      commenter_username: string
+      commenter_display_name: string
+    },
+  ) {
     this.commentId = comment.id
     this.postId = comment.post_id
     this.commenterId = comment.commenter_id

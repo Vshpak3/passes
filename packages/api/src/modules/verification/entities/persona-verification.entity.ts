@@ -8,15 +8,15 @@ import { PersonaInquiryEntity } from './persona-inquiry.entity'
 @Entity({ tableName: 'persona_verification' })
 export class PersonaVerificationEntity extends BaseEntity {
   @ManyToOne({ entity: () => PersonaInquiryEntity })
-  inquiry: PersonaInquiryEntity
+  inquiry_id: string
 
   @Unique()
   @Property({ length: PERSONA_ID_LENGTH })
-  personaId: string
+  persona_id: string
 
   @Enum({
     type: () => PersonaVerificationStatusEnum,
     default: PersonaVerificationStatusEnum.CREATED,
   })
-  personaStatus: PersonaVerificationStatusEnum
+  persona_status: PersonaVerificationStatusEnum
 }

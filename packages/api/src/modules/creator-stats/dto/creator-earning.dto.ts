@@ -1,6 +1,7 @@
 import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
+import { CreatorEarningEntity } from '../entities/creator-earning.entity'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class CreatorEarningDto {
@@ -17,7 +18,7 @@ export class CreatorEarningDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
-  constructor(creatorEarning) {
+  constructor(creatorEarning: CreatorEarningEntity | undefined) {
     if (creatorEarning) {
       this.userId = creatorEarning.user_id
       this.amount = creatorEarning.amount

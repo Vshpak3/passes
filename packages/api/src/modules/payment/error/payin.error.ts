@@ -7,6 +7,13 @@ export class NoPayinMethodError extends BadRequestException {
   }
 }
 
+export class PayinNotFoundError extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, PayinNotFoundError.prototype)
+  }
+}
+
 export class InvalidPayinRequestError extends BadRequestException {
   constructor(msg: string) {
     super(msg)

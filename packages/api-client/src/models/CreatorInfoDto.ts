@@ -36,7 +36,7 @@ export interface CreatorInfoDto {
      * @type {string}
      * @memberof CreatorInfoDto
      */
-    displayName?: string;
+    displayName?: string | null;
 }
 
 /**

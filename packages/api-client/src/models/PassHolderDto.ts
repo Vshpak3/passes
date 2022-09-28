@@ -30,7 +30,7 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    creatorId?: string;
+    creatorId?: string | null;
     /**
      * 
      * @type {string}
@@ -66,7 +66,7 @@ export interface PassHolderDto {
      * @type {number}
      * @memberof PassHolderDto
      */
-    duration?: number;
+    duration?: number | null;
     /**
      * 
      * @type {number}
@@ -90,19 +90,19 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    collectionAddress: string;
+    collectionAddress: string | null;
     /**
      * 
      * @type {Date}
      * @memberof PassHolderDto
      */
-    pinnedAt?: Date;
+    pinnedAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof PassHolderDto
      */
-    createdAt?: Date;
+    createdAt: Date;
     /**
      * 
      * @type {string}
@@ -126,25 +126,25 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    holderId?: string;
+    holderId?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PassHolderDto
      */
-    walletId?: string;
+    walletId?: string | null;
     /**
      * 
-     * @type {object}
+     * @type {number}
      * @memberof PassHolderDto
      */
-    messages?: object;
+    messages?: number | null;
     /**
      * 
      * @type {Date}
      * @memberof PassHolderDto
      */
-    expiresAt?: Date;
+    expiresAt?: Date | null;
     /**
      * 
      * @type {string}
@@ -215,6 +215,7 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "remainingSupply" in value;
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
+    isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
     isInstance = isInstance && "chain" in value;
@@ -244,15 +245,15 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'collectionAddress': json['collectionAddress'],
-        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : json['pinnedAt'],
+        'createdAt': json['createdAt'],
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
         'passHolderId': json['passHolderId'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'walletId': !exists(json, 'walletId') ? undefined : json['walletId'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
-        'expiresAt': !exists(json, 'expiresAt') ? undefined : (new Date(json['expiresAt'])),
+        'expiresAt': !exists(json, 'expiresAt') ? undefined : json['expiresAt'],
         'holderUsername': !exists(json, 'holderUsername') ? undefined : json['holderUsername'],
         'holderDisplayName': !exists(json, 'holderDisplayName') ? undefined : json['holderDisplayName'],
         'address': json['address'],
@@ -282,15 +283,15 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'collectionAddress': value.collectionAddress,
-        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'pinnedAt': value.pinnedAt,
+        'createdAt': value.createdAt,
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
         'passHolderId': value.passHolderId,
         'holderId': value.holderId,
         'walletId': value.walletId,
         'messages': value.messages,
-        'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt.toISOString()),
+        'expiresAt': value.expiresAt,
         'holderUsername': value.holderUsername,
         'holderDisplayName': value.holderDisplayName,
         'address': value.address,

@@ -5,14 +5,14 @@ import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { PaidMessageEntity } from './paid-message.entity'
 
 @Entity({ tableName: 'paid_message_history' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class PaidMessageHistoryEntity extends BaseEntity {
-  @ManyToOne()
-  paidMessage: PaidMessageEntity
+  @ManyToOne({ entity: () => PaidMessageEntity })
+  paid_message_id: string
 
   @Property()
-  numPurchases: number
+  num_purchases: number
 
   @Property({ columnType: USD_AMOUNT_TYPE })
-  earningsPurchases: number
+  earnings_purchases: number
 }

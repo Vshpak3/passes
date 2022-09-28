@@ -26,7 +26,7 @@ import { WalletDto } from './dto/wallet.dto'
 import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { ChainEnum } from './enum/chain.enum'
-import { UnsupportedDefaultWallet } from './error/wallet.error'
+import { UnsupportedDefaultWalletError } from './error/wallet.error'
 
 const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
 const MAX_WALLETS_PER_USER = 10
@@ -60,8 +60,8 @@ export class WalletService {
   }
 
   async findWallet(walletId: string): Promise<WalletDto | undefined> {
-    const wallet = await this.dbReader(WalletEntity.table)
-      .where('id', walletId)
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+      .where({ id: walletId })
       .select('*')
       .first()
 
@@ -72,7 +72,7 @@ export class WalletService {
     address: string,
     chain: ChainEnum,
   ): Promise<WalletDto | undefined> {
-    const wallet = await this.dbReader(WalletEntity.table)
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
       .select('*')
       .where(`${WalletEntity.table}.address`, address)
       .where(`${WalletEntity.table}.chain`, chain)
@@ -94,18 +94,16 @@ export class WalletService {
     chain: ChainEnum,
   ): Promise<WalletDto> {
     if (chain !== ChainEnum.SOL && chain !== ChainEnum.ETH) {
-      throw new UnsupportedDefaultWallet(
+      throw new UnsupportedDefaultWalletError(
         `can not have a deafult wallet on chain ${chain}`,
       )
     }
-    const wallet = await this.dbReader(WalletEntity.table)
-      .where(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-          custodial: true,
-          chain,
-        }),
-      )
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+      .where({
+        user_id: userId,
+        custodial: true,
+        chain,
+      })
       .first()
     if (wallet) {
       return new WalletDto(wallet)
@@ -128,15 +126,15 @@ export class WalletService {
         chain,
       )
     }
-    const data = WalletEntity.toDict<WalletEntity>({
+    const data = {
       id,
-      user: userId,
+      user_id: userId,
       address: address,
       chain,
       custodial: true,
       authenticated: true,
-    })
-    await this.dbWriter(WalletEntity.table).insert(data)
+    } as WalletEntity
+    await this.dbWriter<WalletEntity>(WalletEntity.table).insert(data)
     return new WalletDto(data)
   }
 
@@ -148,7 +146,7 @@ export class WalletService {
    * @returns
    */
   async getDefaultWallet(userId: string, chain: ChainEnum): Promise<WalletDto> {
-    const wallet = await this.dbReader(WalletEntity.table)
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
       .join(
         DefaultWalletEntity.table,
         `${DefaultWalletEntity.table}.wallet_id`,
@@ -182,28 +180,22 @@ export class WalletService {
     walletId: string,
     chain: ChainEnum,
   ): Promise<void> {
-    await this.dbWriter(DefaultWalletEntity.table)
-      .insert(
-        DefaultWalletEntity.toDict<DefaultWalletEntity>({
-          user: userId,
-          wallet: walletId,
-          chain,
-        }),
-      )
+    await this.dbWriter<DefaultWalletEntity>(DefaultWalletEntity.table)
+      .insert({
+        user_id: userId,
+        wallet_id: walletId,
+        chain,
+      })
       .onConflict(['user_id', 'chain'])
       .ignore()
-    await this.dbWriter(DefaultWalletEntity.table)
-      .update(
-        DefaultWalletEntity.toDict<DefaultWalletEntity>({
-          wallet: walletId,
-        }),
-      )
-      .where(
-        DefaultWalletEntity.toDict<DefaultWalletEntity>({
-          user: userId,
-          chain,
-        }),
-      )
+    await this.dbWriter<DefaultWalletEntity>(DefaultWalletEntity.table)
+      .update({
+        wallet_id: walletId,
+      })
+      .where({
+        user_id: userId,
+        chain,
+      })
   }
 
   fixAddress(address: string, chain: ChainEnum): string {
@@ -222,11 +214,9 @@ export class WalletService {
 
   async checkWallets(userId: string) {
     const numWallets = (
-      await this.dbReader(WalletEntity.table).where(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-        }),
-      )
+      await this.dbReader<WalletEntity>(WalletEntity.table).where({
+        user_id: userId,
+      })
     ).length
     if (numWallets >= MAX_WALLETS_PER_USER) {
       throw new BadRequestException(
@@ -264,11 +254,9 @@ export class WalletService {
 
   async getWalletsForUser(userId: string): Promise<WalletDto[]> {
     return (
-      await this.dbReader(WalletEntity.table).where(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-        }),
-      )
+      await this.dbReader<WalletEntity>(WalletEntity.table).where({
+        user_id: userId,
+      })
     ).map((wallet) => new WalletDto(wallet))
   }
 
@@ -314,31 +302,25 @@ export class WalletService {
         throw new BadRequestException('invalid chain specified')
     }
 
-    await this.dbWriter(WalletEntity.table)
-      .insert(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-          address: walletAddress,
-          chain: createWalletDto.chain,
-          authenticated: true,
-        }),
-      )
+    await this.dbWriter<WalletEntity>(WalletEntity.table)
+      .insert({
+        user_id: userId,
+        address: walletAddress,
+        chain: createWalletDto.chain,
+        authenticated: true,
+      })
       .onConflict(['address', 'chain'])
       .ignore()
     // authenticate if already exists
-    const updated = await this.dbWriter(WalletEntity.table)
-      .update(
-        WalletEntity.toDict<WalletEntity>({
-          authenticated: true,
-        }),
-      )
-      .where(
-        WalletEntity.toDict<WalletEntity>({
-          user: userId,
-          address: walletAddress,
-          chain: createWalletDto.chain,
-        }),
-      )
+    const updated = await this.dbWriter<WalletEntity>(WalletEntity.table)
+      .update({
+        authenticated: true,
+      })
+      .where({
+        user_id: userId,
+        address: walletAddress,
+        chain: createWalletDto.chain,
+      })
     // insert if not exists
     //  if wallet is held by someone else return false
     return updated === 1
@@ -353,26 +335,24 @@ export class WalletService {
       createUnauthenticatedWalletDto.walletAddress,
       createUnauthenticatedWalletDto.chain,
     )
-    await this.dbWriter(WalletEntity.table).insert(
-      WalletEntity.toDict<WalletEntity>({
-        user: userId,
-        authenticated: false,
-        address: walletAddress,
-        chain: createUnauthenticatedWalletDto.chain,
-      }),
-    )
+    await this.dbWriter<WalletEntity>(WalletEntity.table).insert({
+      user_id: userId,
+      authenticated: false,
+      address: walletAddress,
+      chain: createUnauthenticatedWalletDto.chain,
+    })
   }
 
   async removeWallet(userId: string, walletId: string): Promise<boolean> {
-    const knexResult = await this.dbWriter(WalletEntity.table)
-      .update({ user_id: null })
-      .where('id', walletId)
-      .andWhere('user_id', userId)
-      .andWhere('custodial', false)
+    const knexResult = await this.dbWriter<WalletEntity>(WalletEntity.table)
+      .update({ user_id: undefined })
+      .where({ id: walletId })
+      .andWhere({ user_id: userId })
+      .andWhere({ custodial: false })
     if (knexResult === 1) {
-      await this.dbWriter(PassHolderEntity.table)
-        .where('wallet_id', walletId)
-        .update('holder_id', null)
+      await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+        .where({ wallet_id: walletId })
+        .update({ holder_id: undefined })
     }
     return knexResult == 1
   }

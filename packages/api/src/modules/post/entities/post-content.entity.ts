@@ -5,13 +5,13 @@ import { ContentEntity } from '../../content/entities/content.entity'
 import { PostEntity } from './post.entity'
 
 @Entity({ tableName: 'post_content' })
-@Unique({ properties: ['post', 'content', 'index'] })
+@Unique({ properties: ['post_id', 'content_id', 'index'] })
 export class PostContentEntity extends BaseEntity {
   @ManyToOne({ entity: () => PostEntity })
-  post: PostEntity
+  post_id: string
 
   @ManyToOne({ entity: () => ContentEntity })
-  content: ContentEntity
+  content_id: string
 
   @Property()
   index: number

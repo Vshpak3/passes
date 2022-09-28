@@ -4,11 +4,11 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
 @Entity({ tableName: 'block_task' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class BlockTaskEntity extends BaseEntity {
-  @ManyToOne()
-  follower: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  follower_id: string
 
-  @ManyToOne()
-  creator: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  creator_id: string
 }

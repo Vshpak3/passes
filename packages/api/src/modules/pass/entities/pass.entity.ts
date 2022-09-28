@@ -14,8 +14,8 @@ import { PassTypeEnum } from '../enum/pass.enum'
 
 @Entity({ tableName: 'pass' })
 export class PassEntity extends BaseEntity {
-  @ManyToOne()
-  creator?: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  creator_id: string | null
 
   @Property({ length: PASS_TITLE_LENGTH })
   title: string
@@ -33,26 +33,26 @@ export class PassEntity extends BaseEntity {
   price: number
 
   @Property({ type: types.bigint })
-  duration?: number
+  duration: number | null
 
   @Property()
   freetrial: boolean
 
   @Property()
-  pinnedAt?: Date
+  pinned_at: Date | null
 
   @Property()
-  totalSupply: number
+  total_supply: number
 
   @Property({ default: 0 })
-  remainingSupply: number
+  remaining_supply: number
 
   // null means unlimited
   @Property({ default: 0 })
-  messages?: number
+  messages: number | null
 
   @Property({ length: BLOCKCHAIN_ADDRESS_LENGTH })
-  collectionAddress?: string
+  collection_address: string | null
 
   @Property({ default: false })
   minted: boolean

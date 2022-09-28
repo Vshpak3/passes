@@ -16,7 +16,6 @@
 import * as runtime from '../runtime';
 import type {
   CreateContentRequestDto,
-  GetContentResponseDto,
   GetContentsResponseDto,
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
@@ -24,8 +23,6 @@ import type {
 import {
     CreateContentRequestDtoFromJSON,
     CreateContentRequestDtoToJSON,
-    GetContentResponseDtoFromJSON,
-    GetContentResponseDtoToJSON,
     GetContentsResponseDtoFromJSON,
     GetContentsResponseDtoToJSON,
     GetSignedUrlResponseDtoFromJSON,
@@ -58,7 +55,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Create content
      */
-    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContentResponseDto>> {
+    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
             throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling createContent.');
         }
@@ -82,15 +79,14 @@ export class ContentApi extends runtime.BaseAPI {
             body: CreateContentRequestDtoToJSON(requestParameters.createContentRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetContentResponseDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Create content
      */
-    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentResponseDto> {
-        const response = await this.createContentRaw(requestParameters, initOverrides);
-        return await response.value();
+    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.createContentRaw(requestParameters, initOverrides);
     }
 
     /**

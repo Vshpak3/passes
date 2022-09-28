@@ -81,17 +81,15 @@ const DefaultPayinMethod = () => {
                   {/* this might need to be placed in BE
                   as a new field called "type" or something */}
                 </span>
-                {!card.active && (
-                  <PassesPinkButton
-                    name="Set as default"
-                    onClick={() =>
-                      submit({
-                        cardId: card.id,
-                        method: PayinMethodDtoMethodEnum.CircleCard
-                      })
-                    }
-                  />
-                )}
+                <PassesPinkButton
+                  name="Set as default"
+                  onClick={() =>
+                    submit({
+                      cardId: card.id,
+                      method: PayinMethodDtoMethodEnum.CircleCard
+                    })
+                  }
+                />
               </div>
             )
           })}

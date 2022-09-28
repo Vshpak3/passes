@@ -5,12 +5,12 @@ import { UserEntity } from '../../user/entities/user.entity'
 
 // Represents a creator restricting a follower
 @Entity({ tableName: 'follow_block' })
-@Unique({ properties: ['follower', 'creator'] })
-@Index({ properties: ['createdAt'] })
+@Unique({ properties: ['follower_id', 'creator_id'] })
+@Index({ properties: ['created_at'] })
 export class FollowBlockEntity extends BaseEntity {
-  @ManyToOne()
-  follower: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  follower_id: string
 
-  @ManyToOne()
-  creator: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  creator_id: string
 }

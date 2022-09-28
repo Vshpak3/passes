@@ -7,7 +7,7 @@ import { CreatorVerificationStepEnum } from '../enum/creator-verification.enum'
 @Entity({ tableName: 'creator_verification' })
 export class CreatorVerificationEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Enum({
     type: () => CreatorVerificationStepEnum,

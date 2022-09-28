@@ -2,14 +2,15 @@ import { Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../../web/dto.web'
 import { USER_LEGAL_FULL_NAME_LENGTH } from '../../../user/constants/schema'
+import { CircleCardEntity } from '../../entities/circle-card.entity'
 import { CircleAccountStatusEnum } from '../../enum/circle-account.status.enum'
 
 export class CircleCardDto {
   @DtoProperty({ type: 'uuid' })
   id: string
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  circleId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  circleId?: string | null
 
   @DtoProperty({ custom_type: CircleAccountStatusEnum })
   status: CircleAccountStatusEnum
@@ -35,10 +36,7 @@ export class CircleCardDto {
   @DtoProperty({ type: 'string' })
   name: string
 
-  @DtoProperty({ type: 'boolean' })
-  active: boolean
-
-  constructor(card) {
+  constructor(card: CircleCardEntity | undefined) {
     if (card) {
       this.id = card.id
       this.circleId = card.circle_id
@@ -47,7 +45,6 @@ export class CircleCardDto {
       this.fourDigits = card.card_number.slice(12)
       this.expMonth = card.exp_month
       this.expYear = card.exp_year
-      this.active = card.active
       this.name = card.name
     }
   }

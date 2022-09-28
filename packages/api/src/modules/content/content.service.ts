@@ -22,7 +22,6 @@ import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
-import { UpdateContentRequestDto } from './dto/update-content.dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
@@ -46,24 +45,24 @@ export class ContentService {
   async createContent(
     userId: string,
     createContentDto: CreateContentRequestDto,
-  ): Promise<GetContentResponseDto> {
+  ): Promise<string> {
     try {
       const id = uuid.v4()
-      const data = ContentEntity.toDict<ContentEntity>({
+      const data = {
         id,
-        user: userId,
-        ...createContentDto,
-      })
-      await this.dbWriter(ContentEntity.table).insert(data)
-      return new GetContentResponseDto(data, '')
+        user_id: userId,
+        content_type: createContentDto.contentType,
+      }
+      await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
+      return id
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
   }
 
   async findContent(id: string): Promise<GetContentResponseDto> {
-    const content = await this.dbReader(ContentEntity.table)
-      .where('id', id)
+    const content = await this.dbReader<ContentEntity>(ContentEntity.table)
+      .where({ id: id })
       .select('*')
       .first()
     if (!content) {
@@ -73,73 +72,37 @@ export class ContentService {
     return new GetContentResponseDto(content, '')
   }
 
-  async updateContent(
-    contentId: string,
-    updateContentDto: UpdateContentRequestDto,
-  ): Promise<GetContentResponseDto> {
-    const data = ContentEntity.toDict<ContentEntity>(updateContentDto)
-    const updateCount = await this.dbWriter(ContentEntity.table)
-      .update(data)
-      .where({ id: contentId })
-
-    if (!updateCount) {
-      throw new NotFoundException(CONTENT_NOT_EXIST)
-    }
-
-    return new GetContentResponseDto(
-      {
-        id: contentId,
-        ...updateContentDto,
-      },
-      '',
-    )
-  }
-
   async getVault(
     userId: string,
     getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ) {
     const { category, type, lastId, createdAt } = getVaultQueryRequestDto
-    let query = this.dbReader(ContentEntity.table).where(
-      ContentEntity.toDict<ContentEntity>({
-        user: userId,
-      }),
-    )
+    let query = this.dbReader<ContentEntity>(ContentEntity.table).where({
+      user_id: userId,
+    })
     switch (category) {
       // filter content that has been used in messages
       case VaultCategoryEnum.MESSAGES: //TOODO
-        query = query.andWhere(
-          ContentEntity.toDict<ContentEntity>({
-            inMessage: true,
-          }),
-        )
+        query = query.andWhere({ in_message: true })
         break
       // filter content that has been used in posts
       case VaultCategoryEnum.POSTS:
-        query = query.andWhere(
-          ContentEntity.toDict<ContentEntity>({
-            inPost: true,
-          }),
-        )
+        query = query.andWhere({ in_post: true })
 
         break
       case VaultCategoryEnum.UPLOADS:
         // filter content that has not been used anywhere (uploaded directly to vault)
-        query = query.andWhere(
-          ContentEntity.toDict<ContentEntity>({
-            inMessage: false,
-            inPost: false,
-          }),
-        )
+        query = query.andWhere({
+          in_message: false,
+          in_post: false,
+        })
         break
 
       default:
         break
     }
     if (type) {
-      query = query.andWhere(
-        ContentEntity.toDict<ContentEntity>({ contentType: type }),
-      )
+      query = query.andWhere({ content_type: type })
     }
     if (createdAt) {
       query = query.andWhere(
@@ -148,20 +111,19 @@ export class ContentService {
         createdAt,
       )
     }
-    const result = await query.select([`${ContentEntity.table}.*`]).orderBy([
+    query = query.select('*').orderBy([
       { column: `${ContentEntity.table}.created_at`, order: 'desc' },
       { column: `${ContentEntity.table}.id`, order: 'desc' },
     ])
+    const result = await query
     const index = result.findIndex((content) => content.id === lastId)
     return result.slice(index + 1).map((content) => new ContentDto(content, ''))
   }
 
   async preSignContent(userId: string, contentType: ContentTypeEnum) {
-    const content = await this.createContent(userId, { contentType })
+    const contentId = await this.createContent(userId, { contentType })
     return this.s3contentService.preSignUrl(
-      `upload/${userId}/${content.contentId}.${getContentTypeFormat(
-        contentType,
-      )}`,
+      `upload/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
     )
   }
 
@@ -187,9 +149,11 @@ export class ContentService {
   }
 
   async validateContentIds(userId: string, contentIds: string[]) {
-    const filteredContent = await this.dbReader(ContentEntity.table)
+    const filteredContent = await this.dbReader<ContentEntity>(
+      ContentEntity.table,
+    )
       .whereIn('id', contentIds)
-      .andWhere('user_id', userId)
+      .andWhere({ user_id: userId })
       .select('id')
     const filteredContentIds = new Set(
       filteredContent.map((content) => content.id),

@@ -7,16 +7,16 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { PostEntity } from './post.entity'
 
 @Entity({ tableName: 'post_tip' })
-@Index({ properties: ['post', 'user'] })
+@Index({ properties: ['post_id', 'user_id'] })
 export class PostTipEntity extends BaseEntity {
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
-  @ManyToOne()
-  post: PostEntity
+  @ManyToOne({ entity: () => PostEntity })
+  post_id: string
 
-  @OneToOne()
-  payin: PayinEntity
+  @OneToOne({ entity: () => PayinEntity })
+  payin_id: string
 
   @Index()
   @Property({ columnType: USD_AMOUNT_TYPE })

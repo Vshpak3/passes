@@ -60,7 +60,8 @@ import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { PassTypeEnum } from './enum/pass.enum'
 import {
   ForbiddenPassException,
-  NoPassError,
+  PassHolderNotFoundException,
+  PassNotFoundException,
   UnsupportedChainPassError,
 } from './error/pass.error'
 import { createPassHolderQuery } from './pass.util'
@@ -95,8 +96,8 @@ export class PassService {
     userId: string,
     createPassDto: CreatePassRequestDto,
   ): Promise<CreatePassResponseDto> {
-    const user = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId, is_creator: true })
       .select(['id', 'username'])
       .first()
     if (!user) {
@@ -109,7 +110,7 @@ export class PassService {
       createPassDto.type === PassTypeEnum.SUBSCRIPTION
         ? DEFAULT_PASS_DURATION_MS
         : createPassDto.duration
-    const data = PassEntity.toDict<PassEntity>({
+    const data = {
       id: v4(),
       creator: userId,
       title: createPassDto.title,
@@ -119,11 +120,11 @@ export class PassService {
       duration,
       freetrial: createPassDto.freetrial,
       messages: createPassDto.messages,
-      totalSupply: createPassDto.totalSupply,
-      remainingSupply: createPassDto.totalSupply,
+      total_supply: createPassDto.totalSupply,
+      remaining_supply: createPassDto.totalSupply,
       chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
-    })
+    }
     if (
       createPassDto.chain !== ChainEnum.SOL &&
       createPassDto.chain !== ChainEnum.ETH
@@ -132,7 +133,7 @@ export class PassService {
         `can not create a pass on chain ${createPassDto.chain}`,
       )
     }
-    await this.dbWriter(PassEntity.table).insert(data)
+    await this.dbWriter<PassEntity>(PassEntity.table).insert(data)
 
     return new CreatePassResponseDto(data.id)
   }
@@ -141,22 +142,23 @@ export class PassService {
     userId: string,
     mintPassDto: MintPassRequestDto,
   ): Promise<MintPassResponseDto> {
-    const user = await this.dbReader(UserEntity.table)
-      .where(UserEntity.toDict<UserEntity>({ id: userId, isCreator: true }))
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId, is_creator: true })
       .select(['id', 'username'])
       .first()
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
-    const pass = await this.dbReader(PassEntity.table)
-      .where(
-        PassEntity.toDict<PassEntity>({
-          creator: userId,
-          id: mintPassDto.passId,
-        }),
-      )
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
+      .where({
+        creator_id: userId,
+        id: mintPassDto.passId,
+      })
       .select('*')
       .first()
+    if (!pass) {
+      throw new NotFoundException('No pass found')
+    }
 
     if (
       !(await this.s3ContentService.doesObjectExist(
@@ -187,14 +189,14 @@ export class PassService {
           `can not create a pass on chain ${pass.chain}`,
         )
     }
-    await this.dbWriter(PassEntity.table)
-      .update(PassEntity.toDict<PassEntity>({ collectionAddress }))
-      .where('id', pass.id)
+    await this.dbWriter<PassEntity>(PassEntity.table)
+      .update({ collection_address: collectionAddress })
+      .where({ id: pass.id })
     return new MintPassResponseDto(true)
   }
 
   async findPass(passId: string): Promise<PassDto> {
-    const pass = await this.dbReader(PassEntity.table)
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
         `${PassEntity.table}.creator_id`,
@@ -220,7 +222,7 @@ export class PassService {
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
     const { creatorId, lastId, passId } = getPassHoldingsRequestDto
-    let query = this.dbReader(PassHolderEntity.table)
+    let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
         `${PassEntity.table}.id`,
@@ -266,7 +268,7 @@ export class PassService {
     getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
     const { holderId, lastId, passId, activeOnly } = getPassHoldersRequest
-    let query = this.dbReader(PassHolderEntity.table)
+    let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -321,9 +323,9 @@ export class PassService {
     getCreatorPassesRequestDto: GetCreatorPassesRequestDto,
   ) {
     const { lastId, createdAt, search, creatorId } = getCreatorPassesRequestDto
-    let query = this.dbReader(PassEntity.table)
+    let query = this.dbReader<PassEntity>(PassEntity.table)
       .whereNotNull('collection_address')
-      .andWhere('creator_id', creatorId)
+      .andWhere({ creator_id: creatorId })
       .select('*')
       .orderBy([
         { column: `${PassEntity.table}.pinned_at`, order: 'desc' },
@@ -353,7 +355,7 @@ export class PassService {
     getExternalPassesRequestDto: GetExternalPassesRequestDto,
   ) {
     const { lastId, createdAt, search, creatorId } = getExternalPassesRequestDto
-    let query = this.dbReader(PassEntity.table)
+    let query = this.dbReader<PassEntity>(PassEntity.table)
       .whereNull('creator_id')
       .select('*')
       .orderBy([
@@ -367,7 +369,7 @@ export class PassService {
       const userExternalPasses = await this.dbReader(
         UserExternalPassEntity.table,
       )
-        .where('user_id', creatorId)
+        .where({ user_id: creatorId })
         .select('pass_id')
       query = query.whereIn(
         `${PassEntity.table}.id`,
@@ -395,7 +397,7 @@ export class PassService {
     passId: string,
     updatePassDto: UpdatePassRequestDto,
   ) {
-    const currentPass = await this.dbReader(PassEntity.table)
+    const currentPass = await this.dbReader<PassEntity>(PassEntity.table)
       .where({ id: passId })
       .select(['id', 'creator_id'])
       .first()
@@ -408,22 +410,35 @@ export class PassService {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }
 
-    const data = PassEntity.toDict<PassEntity>(updatePassDto)
-    await this.dbWriter(PassEntity.table).update(data).where({ id: passId })
-    return new PassDto(data)
+    const data = {
+      title: updatePassDto.title,
+      description: updatePassDto.description,
+    }
+
+    Object.keys(data).forEach((key) =>
+      data[key] === undefined ? delete data[key] : {},
+    )
+
+    await this.dbWriter<PassEntity>(PassEntity.table)
+      .update(data)
+      .where({ id: passId })
   }
 
   async createPassHolder(userId: string, passId: string) {
     const id = v4()
 
-    const pass = await this.dbReader(PassEntity.table)
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .select('*')
       .whereNotNull('collection_address')
-      .andWhere('id', passId)
+      .andWhere({ id: passId })
       .first()
 
+    if (!pass) {
+      throw new NotFoundException('No pass found')
+    }
+
     const expiresAt =
-      pass.type === PassTypeEnum.SUBSCRIPTION
+      pass.type === PassTypeEnum.SUBSCRIPTION && pass.duration
         ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
         : undefined
 
@@ -432,19 +447,19 @@ export class PassService {
       pass.chain,
     )
 
-    const data = PassHolderEntity.toDict<PassHolderEntity>({
+    const data = {
       id,
-      pass: passId,
+      pass_id: passId,
       wallet: userWallet.walletId,
       holder: userId,
       expiresAt: expiresAt,
       messages: pass.messages,
       chain: pass.chain,
-    })
-    await this.dbWriter(PassHolderEntity.table).insert(data)
+    }
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
 
     let address = ''
-    const tokenId = undefined
+    const tokenId = null
     switch (pass.chain) {
       case ChainEnum.SOL:
         address = (
@@ -466,13 +481,12 @@ export class PassService {
           `can not create a pass on chain ${pass.chain}`,
         )
     }
-    const updateData = PassHolderEntity.toDict<PassHolderEntity>({
-      address,
-      tokenId,
-    })
-    await this.dbWriter(PassHolderEntity.table)
-      .where('id', id)
-      .update(updateData)
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+      .where({ id: id })
+      .update({
+        address,
+        token_id: tokenId,
+      })
     await this.passPurchased(userId, passId)
 
     return {
@@ -484,19 +498,21 @@ export class PassService {
   }
 
   async useSupply(passId: string) {
-    await this.dbWriter(PassEntity.table)
-      .where('id', passId)
+    await this.dbWriter<PassEntity>(PassEntity.table)
+      .where({ id: passId })
       .decrement('remaining_supply', 1)
   }
 
   async freeSupply(passId: string) {
-    await this.dbWriter(PassEntity.table)
-      .where('id', passId)
+    await this.dbWriter<PassEntity>(PassEntity.table)
+      .where({ id: passId })
       .increment('remaining_supply', 1)
   }
 
   async renewPass(passHolderId: string) {
-    const passHolder = await this.dbReader(PassHolderEntity.table)
+    const passHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
@@ -518,20 +534,20 @@ export class PassService {
     const expiresAt = new Date(
       Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
     )
-    await this.dbWriter(PassHolderEntity.table)
-      .where('id', passHolder.id)
-      .update(
-        PassHolderEntity.toDict<PassHolderEntity>({
-          expiresAt,
-          messages: passHolder.pass_messages,
-        }),
-      )
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+      .where({ id: passHolder.id })
+      .update({
+        expires_at: expiresAt,
+        messages: passHolder.pass_messages,
+      })
 
     return expiresAt
   }
 
   async revertPassHolder(passHolderId: string) {
-    const passHolder = await this.dbReader(PassHolderEntity.table)
+    const passHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
@@ -551,28 +567,32 @@ export class PassService {
     }
 
     if (passHolder.type === PassTypeEnum.LIFETIME) {
-      await this.dbWriter(PassHolderEntity.table)
-        .update('expires_at', new Date(0))
-        .where('id', passHolderId)
+      await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+        .update({ expires_at: new Date(0) })
+        .where({ id: passHolderId })
     } else if (passHolder.type === PassTypeEnum.SUBSCRIPTION) {
       const oldDate = passHolder.expires_at
       const newDate = new Date(oldDate.valueOf() - passHolder.duration)
-      await this.dbWriter(PassHolderEntity.table)
-        .update('expires_at', newDate)
-        .where('id', passHolderId)
+      await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+        .update({ expires_at: newDate })
+        .where({ id: passHolderId })
       const filteredIds = (
-        await this.dbReader(PostPassHolderAccessEntity.table)
-          .where('pass_holder_id', passHolderId)
+        await this.dbReader<PostPassHolderAccessEntity>(
+          PostPassHolderAccessEntity.table,
+        )
+          .where({ pass_holder_id: passHolderId })
           .andWhere('created_at', '>=', newDate)
           .andWhere('created_at', '<=', oldDate)
           .select('post_user_access_id')
       ).map((postPassHolderAccess) => postPassHolderAccess.post_user_access_id)
-      await this.dbWriter(PostPassHolderAccessEntity.table)
-        .where('pass_holder_id', passHolderId)
+      await this.dbWriter<PostPassHolderAccessEntity>(
+        PostPassHolderAccessEntity.table,
+      )
+        .where({ pass_holder_id: passHolderId })
         .andWhere('created_at', '>=', newDate)
         .andWhere('created_at', '<=', oldDate)
         .delete()
-      await this.dbWriter(PostUserAccessEntity.table)
+      await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
         .leftJoin(
           PostPassHolderAccessEntity.table,
           `${PostPassHolderAccessEntity.table}.post_user_access_id`,
@@ -604,7 +624,9 @@ export class PassService {
       return new RegisterPayinResponseDto()
     }
 
-    const passHolder = await this.dbReader(PassHolderEntity.table)
+    const passHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
@@ -618,7 +640,7 @@ export class PassService {
     const callbackInput: RenewNftPassPayinCallbackInput = {
       passHolderId,
     }
-    if (payinMethod === undefined) {
+    if (!payinMethod) {
       payinMethod = await this.payService.getDefaultPayinMethod(userId)
     }
 
@@ -641,31 +663,29 @@ export class PassService {
       CryptoJS.enc.Hex,
     )
 
-    const checkPayin = await this.dbReader(PayinEntity.table)
+    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .andWhere('target', target)
+      .andWhere({ target: target })
       .select('id')
       .first()
-    const checkHolder = await this.dbReader(PassHolderEntity.table)
-      .where(
-        PassHolderEntity.toDict<PassHolderEntity>({
-          id: passHolderId,
-          holder: userId,
-        }),
-      )
+    const checkHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
+      .where({
+        id: passHolderId,
+        holder_id: userId,
+      })
       .whereNotNull('address')
-      .select(
-        ...PassHolderEntity.populate<PassHolderEntity>([
-          'id',
-          'holder',
-          'pass',
-        ]),
-      )
+      .select('*')
       .first()
-
+    if (!checkHolder) {
+      throw new PassHolderNotFoundException(
+        `passholder ${passHolderId} not found`,
+      )
+    }
     let blocked: BlockedReasonEnum | undefined = undefined
     if (await this.payService.checkPayinBlocked(userId)) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
@@ -675,11 +695,13 @@ export class PassService {
       blocked = BlockedReasonEnum.IS_NOT_PASSHOLDER
     }
 
-    const pass = await this.dbReader(PassEntity.table)
-      .where('id', checkHolder.pass_id)
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
+      .where({ id: checkHolder.pass_id })
       .select('price')
       .first()
-
+    if (!pass) {
+      throw new PassNotFoundException(`passholder ${passHolderId} not found`)
+    }
     return { amount: pass.price, target, blocked }
   }
 
@@ -697,25 +719,26 @@ export class PassService {
     }
 
     // free pass or free trial
-    const pass = await this.dbReader(PassEntity.table)
-      .where('id', passId)
-      .select(
-        ...PassEntity.populate<PassEntity>(['creator', 'type', 'freetrial']),
-      )
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
+      .where({ id: passId })
+      .select('creator', 'type', 'freetrial')
       .first()
+    if (!pass) {
+      throw new PassNotFoundException(`pass ${passId} not found`)
+    }
 
     // stop people from following scenario -
     //    1. get free trial for pass
     //    2. transfer pass after free trial
     //    3. get new pass with free trial
 
-    const passPurchaseQuery = this.dbReader(PassPurchaseEntity.table)
-      .where(
-        PassPurchaseEntity.toDict<PassPurchaseEntity>({
-          user: userId,
-          pass: passId,
-        }),
-      )
+    const passPurchaseQuery = this.dbReader<PassPurchaseEntity>(
+      PassPurchaseEntity.table,
+    )
+      .where({
+        user_id: userId,
+        pass_id: passId,
+      })
       .select('id')
       .first()
 
@@ -734,7 +757,7 @@ export class PassService {
       userId,
       passId,
     }
-    if (payinMethod === undefined) {
+    if (!payinMethod) {
       payinMethod = await this.payService.getDefaultPayinMethod(userId)
     }
 
@@ -760,35 +783,38 @@ export class PassService {
       CryptoJS.enc.Hex,
     )
 
-    const pass = await this.dbReader(PassEntity.table)
-      .where('id', passId)
+    const pass = await this.dbReader<PassEntity>(PassEntity.table)
+      .where({ id: passId })
       .select(['price', 'remaining_supply'])
       .first()
+    if (!pass) {
+      throw new PassNotFoundException(`pass ${passId} not found`)
+    }
 
-    const checkPayin = await this.dbReader(PayinEntity.table)
+    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
-      .andWhere('target', target)
+      .andWhere({ target: target })
       .select('id')
       .first()
-    const checkHolder = await this.dbReader(PassHolderEntity.table)
-      .where(
-        PassHolderEntity.toDict<PassHolderEntity>({
-          pass: passId,
-          holder: userId,
-        }),
-      )
+    const checkHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
+      .where({
+        pass_id: passId,
+        holder_id: userId,
+      })
       .select('id')
       .first()
 
     let blocked: BlockedReasonEnum | undefined = undefined
     if (await this.payService.checkPayinBlocked(userId)) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
-    } else if (checkPayin !== undefined) {
+    } else if (checkPayin) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
-    } else if (checkHolder !== undefined) {
+    } else if (checkHolder) {
       blocked = BlockedReasonEnum.ALREADY_OWNS_PASS
     } else if (pass.remaining_supply === 0) {
       blocked = BlockedReasonEnum.INSUFFICIENT_SUPPLY
@@ -805,7 +831,9 @@ export class PassService {
    * @param passHolderId
    */
   async addPassSubscription(userId: string, passHolderId: string) {
-    const passHolder = await this.dbReader(PassHolderEntity.table)
+    const passHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
       .join(
         PassEntity.table,
         `${PassEntity.table}.id`,
@@ -828,51 +856,50 @@ export class PassService {
       userId,
       passHolderId,
       amount: passHolder.price,
+      target: CryptoJS.SHA256(`nft-pass-holder-${passHolderId}`).toString(
+        CryptoJS.enc.Hex,
+      ),
     })
   }
 
   async passPurchased(userId: string, passId: string) {
-    await this.dbWriter(PassPurchaseEntity.table)
-      .insert(
-        PassPurchaseEntity.toDict<PassPurchaseEntity>({
-          pass: passId,
-          user: userId,
-        }),
-      )
+    await this.dbWriter<PassPurchaseEntity>(PassPurchaseEntity.table)
+      .insert({
+        pass_id: passId,
+        user_id: userId,
+      })
       .onConflict(['pass_id', 'user_id'])
       .ignore()
   }
 
   async pinPass(userId: string, passId: string): Promise<boolean> {
     return (
-      (await this.dbWriter(PassEntity.table)
-        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
-        .update(
-          PassEntity.toDict<PassEntity>({ pinnedAt: this.dbWriter.fn.now() }),
-        )) === 1
+      (await this.dbWriter<PassEntity>(PassEntity.table)
+        .where({ creator_id: userId, id: passId })
+        .update({ pinned_at: this.dbWriter.fn.now() })) === 1
     )
   }
 
   async unpinPass(userId: string, passId: string): Promise<boolean> {
     return (
-      (await this.dbWriter(PassEntity.table)
-        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
-        .update(PassEntity.toDict<PassEntity>({ pinnedAt: null }))) === 1
+      (await this.dbWriter<PassEntity>(PassEntity.table)
+        .where({ creator_id: userId, id: passId })
+        .update({ pinned_at: null })) === 1
     )
   }
 
   async checkPass(userId: string, passId: string) {
     if (
-      !(await this.dbReader(PassEntity.table)
-        .where(PassEntity.toDict<PassEntity>({ creator: userId, id: passId }))
+      !(await this.dbReader<PassEntity>(PassEntity.table)
+        .where({ creator_id: userId, id: passId })
         .first())
     ) {
-      throw new NoPassError('pass does not exist or unowned by user')
+      throw new PassNotFoundException('pass does not exist or unowned by user')
     }
   }
 
   async validatePassIds(userId: string, passIds: string[]): Promise<void> {
-    const filteredPasses = await this.dbReader(PassEntity.table)
+    const filteredPasses = await this.dbReader<PassEntity>(PassEntity.table)
       .leftJoin(
         UserExternalPassEntity.table,
         `${UserExternalPassEntity.table}.pass_id`,
@@ -889,7 +916,7 @@ export class PassService {
     const filteredPassIds = new Set(filteredPasses.map((pass) => pass.id))
     for (const passId in passIds) {
       if (!filteredPassIds.has(passId)) {
-        throw new NoPassError('cant find pass for user')
+        throw new PassNotFoundException('cant find pass for user')
       }
     }
   }

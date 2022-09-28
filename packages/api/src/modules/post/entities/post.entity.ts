@@ -11,8 +11,8 @@ import {
 
 @Entity({ tableName: 'post' })
 export class PostEntity extends BaseEntity {
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
   @Property({ type: types.text, length: POST_TEXT_LENGTH })
   text: string
@@ -22,42 +22,42 @@ export class PostEntity extends BaseEntity {
 
   @Index()
   @Property({ default: 0 })
-  numLikes: number
+  num_likes: number
 
   @Index()
   @Property({ default: 0 })
-  numComments: number
+  num_comments: number
 
   @Index()
   @Property({ default: 0 })
-  numPurchases: number
+  num_purchases: number
 
   @Index()
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  earningsPurchases: number
+  earnings_purchases: number
 
   @Property()
-  deletedAt?: Date
+  deleted_at: Date | null
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   price: number
 
   @Index()
   @Property()
-  expiresAt?: Date
+  expires_at: Date | null
 
   @Index()
   @Property()
-  pinnedAt?: Date
+  pinned_at: Date | null
 
   @Index()
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  totalTipAmount: number
+  total_tip_amount: number
 
   @Index()
   @Property()
-  scheduledAt?: Date
+  scheduled_at: Date | null
 
   @Property({ length: PASS_IDS_LENGTH })
-  passIds?: string
+  pass_ids: string | null
 }

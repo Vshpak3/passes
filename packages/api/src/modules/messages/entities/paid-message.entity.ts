@@ -6,10 +6,10 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { CONTENT_IDS_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
 
 @Entity({ tableName: 'paid_message' })
-@Index({ properties: ['createdAt'] })
+@Index({ properties: ['created_at'] })
 export class PaidMessageEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  creator: UserEntity
+  creator_id: string
 
   @Property({ type: types.text, length: MESSAGE_LENGTH })
   text: string
@@ -18,11 +18,11 @@ export class PaidMessageEntity extends BaseEntity {
   price: number
 
   @Property({ length: CONTENT_IDS_LENGTH, default: '[]' })
-  contentIds: string
+  content_ids: string
 
   @Property({ default: 0 })
-  numPurchases: number
+  num_purchases: number
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
-  earningsPurchases: number
+  earnings_purchases: number
 }

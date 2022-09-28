@@ -85,25 +85,25 @@ export interface PayinDto {
      * @type {string}
      * @memberof PayinDto
      */
-    transactionHash?: string;
+    transactionHash: string | null;
     /**
      * 
      * @type {string}
      * @memberof PayinDto
      */
-    address?: string;
+    address: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof PayinDto
+     */
+    callbackOutputJSON: object;
     /**
      * 
      * @type {string}
      * @memberof PayinDto
      */
-    callbackOutputJSON?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PayinDto
-     */
-    target?: string;
+    target: string | null;
 }
 
 
@@ -153,6 +153,10 @@ export function instanceOfPayinDto(value: object): boolean {
     isInstance = isInstance && "amount" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "callback" in value;
+    isInstance = isInstance && "transactionHash" in value;
+    isInstance = isInstance && "address" in value;
+    isInstance = isInstance && "callbackOutputJSON" in value;
+    isInstance = isInstance && "target" in value;
 
     return isInstance;
 }
@@ -172,13 +176,13 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'payinStatus': json['payinStatus'],
         'amount': json['amount'],
-        'createdAt': (new Date(json['createdAt'])),
+        'createdAt': json['createdAt'],
         'callback': json['callback'],
         'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
-        'transactionHash': !exists(json, 'transactionHash') ? undefined : json['transactionHash'],
-        'address': !exists(json, 'address') ? undefined : json['address'],
-        'callbackOutputJSON': !exists(json, 'callbackOutputJSON') ? undefined : json['callbackOutputJSON'],
-        'target': !exists(json, 'target') ? undefined : json['target'],
+        'transactionHash': json['transactionHash'],
+        'address': json['address'],
+        'callbackOutputJSON': json['callbackOutputJSON'],
+        'target': json['target'],
     };
 }
 
@@ -196,7 +200,7 @@ export function PayinDtoToJSON(value?: PayinDto | null): any {
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'payinStatus': value.payinStatus,
         'amount': value.amount,
-        'createdAt': (value.createdAt.toISOString()),
+        'createdAt': value.createdAt,
         'callback': value.callback,
         'card': CircleCardDtoToJSON(value.card),
         'transactionHash': value.transactionHash,

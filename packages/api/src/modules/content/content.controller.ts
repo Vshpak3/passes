@@ -14,10 +14,7 @@ import { ApiEndpoint } from '../../web/endpoint.web'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
-import {
-  GetContentResponseDto,
-  GetContentsResponseDto,
-} from './dto/get-content.dto'
+import { GetContentsResponseDto } from './dto/get-content.dto'
 import {
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
@@ -31,15 +28,15 @@ export class ContentController {
   @ApiEndpoint({
     summary: 'Create content',
     responseStatus: HttpStatus.CREATED,
-    responseType: GetContentResponseDto,
+    responseType: undefined,
     responseDesc: 'Content was created',
   })
   @Post()
   async createContent(
     @Req() req: RequestWithUser,
     @Body() createContentRequestDto: CreateContentRequestDto,
-  ): Promise<GetContentResponseDto> {
-    return await this.contentService.createContent(
+  ): Promise<void> {
+    await this.contentService.createContent(
       req.user.id,
       createContentRequestDto,
     )

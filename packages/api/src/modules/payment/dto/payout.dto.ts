@@ -3,6 +3,7 @@ import { Length, Min } from 'class-validator'
 import { DtoProperty } from '../../../web/dto.web'
 import { WalletDto } from '../../wallet/dto/wallet.dto'
 import { TRANSACTION_HASH_LENGTH } from '../constants/schema'
+import { PayoutEntity } from '../entities/payout.entity'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
 import { CircleBankDto } from './circle/circle-bank.dto'
 import { PayoutMethodDto } from './payout-method.dto'
@@ -28,8 +29,8 @@ export class PayoutDto {
   createdAt: Date
 
   @Length(1, TRANSACTION_HASH_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  transactionHash?: string
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  transactionHash?: string | null
 
   @DtoProperty({ custom_type: CircleBankDto, optional: true })
   bank?: CircleBankDto
@@ -37,7 +38,7 @@ export class PayoutDto {
   @DtoProperty({ custom_type: WalletDto, optional: true })
   wallet?: WalletDto
 
-  constructor(payout) {
+  constructor(payout: PayoutEntity | undefined) {
     if (payout) {
       this.id = payout.id
       this.userId = payout.user_id

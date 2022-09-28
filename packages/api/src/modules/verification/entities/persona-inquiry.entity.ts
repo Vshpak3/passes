@@ -9,15 +9,15 @@ import { PersonaInquiryStatusEnum } from '../enum/persona-inquiry.status.enum'
 @Entity({ tableName: 'persona_inquiry' })
 export class PersonaInquiryEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Unique()
   @Property({ length: PERSONA_ID_LENGTH })
-  personaId: string
+  persona_id: string
 
   @Enum(() => PersonaInquiryStatusEnum)
-  personaStatus: PersonaInquiryStatusEnum
+  persona_status: PersonaInquiryStatusEnum
 
   @Enum({ type: () => KYCStatusEnum, default: KYCStatusEnum.PENDING })
-  kycStatus: KYCStatusEnum
+  kyc_status: KYCStatusEnum
 }

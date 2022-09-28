@@ -7,17 +7,17 @@ import { USD_AMOUNT_TYPE } from '../constants/schema'
 @Entity({ tableName: 'creator_fee' })
 export class CreatorFeeEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  creator: UserEntity
+  creator_id: string
 
   @Property({ type: types.float })
-  fiatRate?: number
+  fiat_rate: number | null
 
   @Property({ type: types.float })
-  fiatFlat?: number
+  fiat_flat: number | null
 
   @Property({ columnType: USD_AMOUNT_TYPE })
-  cryptoRate?: number
+  crypto_rate: number | null
 
   @Property({ columnType: USD_AMOUNT_TYPE })
-  cryptoFlat?: number
+  crypto_flat: number | null
 }

@@ -9,10 +9,10 @@ import { NotificationTypeEnum } from '../enum/notification.type.enum'
 @Entity({ tableName: 'notification' })
 export class NotificationEntity extends BaseEntity {
   @ManyToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @ManyToOne({ entity: () => UserEntity })
-  sender?: UserEntity
+  sender_id: string | null
 
   @Property({ length: NOTIFICATION_MESSAGE_LENGTH })
   message: string

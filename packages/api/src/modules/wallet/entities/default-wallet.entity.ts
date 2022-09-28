@@ -6,13 +6,13 @@ import { ChainEnum } from '../enum/chain.enum'
 import { WalletEntity } from './wallet.entity'
 
 @Entity({ tableName: 'default_wallet' })
-@Unique({ properties: ['user', 'chain'] })
+@Unique({ properties: ['user_id', 'chain'] })
 export class DefaultWalletEntity extends BaseEntity {
-  @OneToOne()
-  user: UserEntity
+  @OneToOne({ entity: () => UserEntity })
+  user_id: string
 
-  @OneToOne()
-  wallet: WalletEntity
+  @OneToOne({ entity: () => WalletEntity })
+  wallet_id: string
 
   @Enum(() => ChainEnum)
   chain: ChainEnum

@@ -58,8 +58,8 @@ export class ListService {
     userId: string,
     createListDto: CreateListRequestDto,
   ): Promise<void> {
-    const count = await this.dbReader(ListEntity.table)
-      .where('user_id', userId)
+    const count = await this.dbReader<ListEntity>(ListEntity.table)
+      .where({ user_id: userId })
       .count()
     if (count[0]['count(*)'] >= USER_LIST_LIMIT) {
       throw new ListLimitReachedError('list limit reached')
@@ -68,28 +68,26 @@ export class ListService {
     const listId = uuid.v4()
     let listMemberRecords: any[] = []
 
-    const followers = await this.dbReader(FollowEntity.table)
-      .where('creator_id', userId)
+    const followers = await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({ creator_id: userId })
       .whereIn('follower_id', createListDto.userIds)
       .select('follower_id')
 
     listMemberRecords = followers.map((follower) => {
-      return ListMemberEntity.toDict<ListMemberEntity>({
-        list: listId,
+      return {
+        list_id: listId,
         user: follower.follower_id,
-      })
+      }
     })
 
     await this.dbWriter.transaction(async (trx) => {
-      await trx(ListEntity.table).insert(
-        ListEntity.toDict<ListEntity>({
-          id: listId,
-          user: userId,
-          name: createListDto.name,
-        }),
-      )
+      await trx<ListEntity>(ListEntity.table).insert({
+        id: listId,
+        user_id: userId,
+        name: createListDto.name,
+      })
       if (listMemberRecords.length != 0) {
-        await trx(ListMemberEntity.table)
+        await trx<ListMemberEntity>(ListMemberEntity.table)
           .insert(listMemberRecords)
           .onConflict(['list_id', 'user_id'])
           .ignore()
@@ -99,14 +97,12 @@ export class ListService {
   }
 
   async deleteList(userId: string, id: string): Promise<boolean> {
-    const dbResult = await this.dbWriter(ListEntity.table)
-      .where(
-        ListEntity.toDict<ListEntity>({
-          id,
-          user: userId,
-          type: ListTypeEnum.NORMAL,
-        }),
-      )
+    const dbResult = await this.dbWriter<ListEntity>(ListEntity.table)
+      .where({
+        id,
+        user_id: userId,
+        type: ListTypeEnum.NORMAL,
+      })
       .delete()
     return dbResult == 1
   }
@@ -117,16 +113,16 @@ export class ListService {
         switch (list.type) {
           case ListTypeEnum.FOLLOWERS:
             list.count = (
-              await this.dbReader(CreatorStatEntity.table)
-                .where('user_id', list.user_id)
+              await this.dbReader<CreatorStatEntity>(CreatorStatEntity.table)
+                .where({ user_id: list.user_id })
                 .select('num_followers')
                 .first()
             )?.num_followers
             break
           case ListTypeEnum.FOLLOWING:
             list.count = (
-              await this.dbReader(UserEntity.table)
-                .where('id', list.user_id)
+              await this.dbReader<UserEntity>(UserEntity.table)
+                .where({ id: list.user_id })
                 .select('num_following')
                 .first()
             )?.num_following
@@ -139,8 +135,8 @@ export class ListService {
   }
 
   async getList(userId: string, listId: string): Promise<ListDto> {
-    const list = await this.dbReader(ListEntity.table)
-      .where(ListEntity.toDict<ListEntity>({ id: listId, user: userId }))
+    const list = await this.dbReader<ListEntity>(ListEntity.table)
+      .where({ id: listId, user_id: userId })
       .select('*')
       .first()
     await this.fillAutomatedLists([list])
@@ -153,8 +149,8 @@ export class ListService {
   ): Promise<ListDto[]> {
     const { name, lastId, createdAt, updatedAt, order, orderType, search } =
       getListsRequestsDto
-    let query = this.dbReader(ListEntity.table)
-      .where(ListEntity.toDict<ListEntity>({ user: userId }))
+    let query = this.dbReader<ListEntity>(ListEntity.table)
+      .where({ user_id: userId })
       .select('*')
 
     switch (orderType) {
@@ -241,7 +237,7 @@ export class ListService {
     getListMembersRequestDto: GetListMembersRequestDto,
   ) {
     const result = await createGetMemberQuery(
-      this.dbReader(ListMemberEntity.table)
+      this.dbReader<ListMemberEntity>(ListMemberEntity.table)
         .leftJoin(
           UserEntity.table,
           `${ListMemberEntity.table}.user_id`,
@@ -281,16 +277,14 @@ export class ListService {
     listId: string,
     manual: boolean,
   ): Promise<ListTypeEnum> {
-    const list = await this.dbReader(ListEntity.table)
-      .where(
-        ListEntity.toDict<ListEntity>({
-          user: userId,
-          id: listId,
-        }),
-      )
+    const list = await this.dbReader<ListEntity>(ListEntity.table)
+      .where({
+        user_id: userId,
+        id: listId,
+      })
       .select('type')
       .first()
-    if (list == undefined) {
+    if (!list) {
       throw new NoListError('list not found')
     }
     if (manual && list.type !== ListTypeEnum.NORMAL) {
@@ -300,12 +294,12 @@ export class ListService {
   }
 
   async updateCount(listId: string) {
-    const count = await this.dbReader(ListMemberEntity.table)
-      .where('list_id', listId)
+    const count = await this.dbReader<ListMemberEntity>(ListMemberEntity.table)
+      .where({ list_id: listId })
       .count()
-    await this.dbWriter(ListEntity.table)
-      .where('id', listId)
-      .update('count', count[0]['count(*)'])
+    await this.dbWriter<ListEntity>(ListEntity.table)
+      .where({ id: listId })
+      .update({ count: Number(count[0]['count(*)']) })
   }
 
   async addListMembers(
@@ -315,19 +309,19 @@ export class ListService {
   ): Promise<void> {
     await this.checkList(userId, addListMembersDto.listId, manual)
 
-    const followers = await this.dbReader(FollowEntity.table)
+    const followers = await this.dbReader<FollowEntity>(FollowEntity.table)
       .select('follower_id')
-      .where('creator_id', userId)
+      .where({ creator_id: userId })
       .whereIn('follower_id', addListMembersDto.userIds)
 
-    await this.dbWriter(ListMemberEntity.table)
+    await this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
       .insert(
-        followers.map((follower) =>
-          ListMemberEntity.toDict<ListMemberEntity>({
-            list: addListMembersDto.listId,
-            user: follower.follower_id,
-          }),
-        ),
+        followers.map(function (follower) {
+          return {
+            list_id: addListMembersDto.listId,
+            user_id: follower.follower_id,
+          }
+        }),
       )
       .onConflict(['list_id', 'user_id'])
       .ignore()
@@ -341,8 +335,8 @@ export class ListService {
   ): Promise<void> {
     await this.checkList(userId, removeListMembersDto.listId, manual)
 
-    await this.dbWriter(ListMemberEntity.table)
-      .where('list_id', removeListMembersDto.listId)
+    await this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
+      .where({ list_id: removeListMembersDto.listId })
       .whereIn('user_id', removeListMembersDto.userIds)
       .delete()
     await this.updateCount(removeListMembersDto.listId)
@@ -353,26 +347,22 @@ export class ListService {
     editListNameRequestDto: EditListNameRequestDto,
   ): Promise<boolean> {
     const { listId, name } = editListNameRequestDto
-    const updated = await this.dbWriter(ListEntity.table)
-      .where(
-        ListEntity.toDict<ListEntity>({
-          id: listId,
-          user: userId,
-          type: ListTypeEnum.NORMAL,
-        }),
-      )
-      .update(
-        ListEntity.toDict<ListEntity>({
-          name,
-        }),
-      )
+    const updated = await this.dbWriter<ListEntity>(ListEntity.table)
+      .where({
+        id: listId,
+        user_id: userId,
+        type: ListTypeEnum.NORMAL,
+      })
+      .update({
+        name,
+      })
     return updated === 1
   }
 
   async validateListIds(userId: string, listIds: string[]) {
-    const filteredLists = await this.dbReader(ListEntity.table)
+    const filteredLists = await this.dbReader<ListEntity>(ListEntity.table)
       .whereIn('id', listIds)
-      .andWhere('user_id', userId)
+      .andWhere({ user_id: userId })
       .select('id')
 
     const filteredListsIds = new Set(filteredLists.map((list) => list.id))
@@ -386,22 +376,22 @@ export class ListService {
     await this.validateListIds(userId, listIds)
     const userIdsSet = new Set(
       (
-        await this.dbReader(ListMemberEntity.table)
+        await this.dbReader<ListMemberEntity>(ListMemberEntity.table)
           .whereIn('list_id', listIds)
           .distinct('user_id')
       ).map((listMember) => listMember.user_id),
     )
     const listTypes = new Set(
       (
-        await this.dbReader(ListEntity.table)
+        await this.dbReader<ListEntity>(ListEntity.table)
           .whereIn('id', listIds)
           .select('type')
       ).map((list) => list.type),
     )
     if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
       ;(
-        await this.dbReader(FollowEntity.table)
-          .where('creator_id', userId)
+        await this.dbReader<FollowEntity>(FollowEntity.table)
+          .where({ creator_id: userId })
           .select('follower_id')
       ).forEach((follow) => userIdsSet.add(follow.follower_id))
     }

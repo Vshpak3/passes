@@ -6,14 +6,14 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { PostEntity } from './post.entity'
 
 @Entity({ tableName: 'post_user_access' })
-@Unique({ properties: ['post', 'user'] })
+@Unique({ properties: ['post_id', 'user_id'] })
 export class PostUserAccessEntity extends BaseEntity {
-  @ManyToOne()
-  post: PostEntity
+  @ManyToOne({ entity: () => PostEntity })
+  post_id: string
 
-  @ManyToOne()
-  user: UserEntity
+  @ManyToOne({ entity: () => UserEntity })
+  user_id: string
 
-  @OneToOne()
-  payin?: PayinEntity
+  @OneToOne({ entity: () => PayinEntity })
+  payin_id: string | null
 }

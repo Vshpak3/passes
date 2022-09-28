@@ -30,7 +30,7 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    creatorId?: string;
+    creatorId?: string | null;
     /**
      * 
      * @type {string}
@@ -66,7 +66,7 @@ export interface PassDto {
      * @type {number}
      * @memberof PassDto
      */
-    duration?: number;
+    duration?: number | null;
     /**
      * 
      * @type {number}
@@ -90,19 +90,19 @@ export interface PassDto {
      * @type {string}
      * @memberof PassDto
      */
-    collectionAddress: string;
+    collectionAddress: string | null;
     /**
      * 
      * @type {Date}
      * @memberof PassDto
      */
-    pinnedAt?: Date;
+    pinnedAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof PassDto
      */
-    createdAt?: Date;
+    createdAt: Date;
     /**
      * 
      * @type {string}
@@ -144,6 +144,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "remainingSupply" in value;
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
+    isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
 }
@@ -170,8 +171,8 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'collectionAddress': json['collectionAddress'],
-        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : json['pinnedAt'],
+        'createdAt': json['createdAt'],
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
@@ -198,8 +199,8 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'collectionAddress': value.collectionAddress,
-        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'pinnedAt': value.pinnedAt,
+        'createdAt': value.createdAt,
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
     };

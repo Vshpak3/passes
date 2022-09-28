@@ -6,6 +6,8 @@ import {
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
 import { STREAM_CHANNEL_ID_LENGTH } from '../constants/schema'
+import { ChannelEntity } from '../entities/channel.entity'
+import { ChannelMemberEntity } from '../entities/channel-members.entity'
 import { ChannelDto } from './channel-dto'
 import { MessageDto } from './message.dto'
 
@@ -49,7 +51,14 @@ export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ custom_type: MessageDto, optional: true })
   mostRecentMessage?: MessageDto
 
-  constructor(channelMember, mostRecentMessage?) {
+  constructor(
+    channelMember: ChannelMemberEntity &
+      ChannelEntity & {
+        other_user_username: string
+        other_user_display_name: string
+      },
+    mostRecentMessage?,
+  ) {
     super(channelMember)
     if (channelMember) {
       this.channelMemberId = channelMember.id

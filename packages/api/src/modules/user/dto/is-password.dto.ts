@@ -4,7 +4,7 @@ export class IsPasswordUserResponseDto {
   @DtoProperty({ type: 'boolean' })
   usesPassword: boolean
 
-  constructor(usesPassword) {
+  constructor(usesPassword: boolean) {
     this.usesPassword = usesPassword
   }
 }

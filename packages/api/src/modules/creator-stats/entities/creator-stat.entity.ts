@@ -6,14 +6,14 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Entity({ tableName: 'creator_stat' })
 export class CreatorStatEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Property({ default: 0 })
-  numFollowers: number
+  num_followers: number
 
   @Property({ default: 0 })
-  numLikes: number
+  num_likes: number
 
   @Property({ default: 0 })
-  numMedia: number
+  num_media: number
 }

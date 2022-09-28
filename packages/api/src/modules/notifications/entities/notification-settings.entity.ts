@@ -6,23 +6,23 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Entity({ tableName: 'notification_settings' })
 export class NotificationSettingsEntity extends BaseEntity {
   @OneToOne({ entity: () => UserEntity })
-  user: UserEntity
+  user_id: string
 
   @Property({ default: true })
-  directMessageEmails: boolean
+  direct_message_emails: boolean
 
   @Property({ default: true })
-  passesEmails: boolean
+  passes_emails: boolean
 
   @Property({ default: true })
-  paymentEmails: boolean
+  payment_emails: boolean
 
   @Property({ default: true })
-  postEmails: boolean
+  post_emails: boolean
 
   @Property({ default: true })
-  marketingEmails: boolean
+  marketing_emails: boolean
 
   @Property({ default: true })
-  mentionEmails: boolean
+  mention_emails: boolean
 }

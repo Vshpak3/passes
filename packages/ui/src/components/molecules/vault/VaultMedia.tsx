@@ -29,12 +29,16 @@ const VaultMediaItem = ({
           "dropdown-shadow aspect-w-1 aspect-h-1 w-full cursor-pointer overflow-hidden rounded-[5px] bg-gray-200 md:rounded-[20px] xl:aspect-w-8 xl:aspect-h-8"
         )}
       >
-        <Image
-          alt={`vault-img-${itemData.contentId}`}
-          src={itemData.signedUrl}
-          layout="fill"
-          objectFit="cover"
-        />
+        {itemData.signedUrl ? (
+          <Image
+            alt={`vault-img-${itemData.contentId}`}
+            src={itemData.signedUrl}
+            layout="fill"
+            objectFit="cover"
+          />
+        ) : (
+          ""
+        )}
         <div className="flex p-3">
           <VaultItemDate date={`${date.month} ${date.day}`} />
           <div

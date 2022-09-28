@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import path from 'path'
 
 import { ContextName, DB_WRITER } from './database.decorator'
+import { ColumnNamingStrategy } from './mikro-orm.naming'
 
 export function getMikroOrmOptions(
   configService: ConfigService,
@@ -26,6 +27,7 @@ export function getMikroOrmOptions(
   return {
     metadataProvider: TsMorphMetadataProvider,
     highlighter: new SqlHighlighter(),
+    namingStrategy: ColumnNamingStrategy,
     type: 'mysql',
     entities: [path.join(__dirname, '..', '/**/entities/*.js')],
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
