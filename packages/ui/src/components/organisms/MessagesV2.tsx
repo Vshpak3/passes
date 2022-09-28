@@ -1,21 +1,22 @@
+import { ChannelMemberDto } from "@passes/api-client/models"
 import React, { useState } from "react"
-import useMessages from "src/hooks/useMessages"
+import { useMessages } from "src/hooks"
 
 import { ChannelList, ChannelView } from "../molecules/messages"
 
 const MessagesV2 = () => {
-  const [selectedChannelId, setSelectedChannelId] = useState("")
+  const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
   const { channels, hasMore, next } = useMessages()
   const [gallery, setGallery] = useState(false)
-  const handleChannelClicked = (channelId: string) => {
-    setSelectedChannelId(channelId)
+  const handleChannelClicked = (channel: ChannelMemberDto) => {
+    setSelectedChannel(channel)
   }
 
   return (
     <div className="flex h-full flex-row border border-gray-800">
       {channels?.length && (
         <ChannelList
-          selectedChannelId={selectedChannelId}
+          selectedChannel={selectedChannel}
           channels={channels}
           hasMore={hasMore}
           next={next}
@@ -23,7 +24,7 @@ const MessagesV2 = () => {
         />
       )}
       <ChannelView
-        selectedChannelId={selectedChannelId}
+        selectedChannel={selectedChannel}
         gallery={gallery}
         setGallery={setGallery}
       />

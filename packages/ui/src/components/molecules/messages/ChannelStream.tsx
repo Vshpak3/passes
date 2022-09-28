@@ -10,7 +10,7 @@ import React, {
 import { ChannelMessage } from "./index"
 
 export interface ChannelStreamProps {
-  channelId: string
+  channelId?: string
 }
 
 export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
@@ -27,6 +27,9 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
   }
 
   const loadPreviousMessages = useCallback(async () => {
+    if (!channelId) {
+      return
+    }
     const api = new MessagesApi()
     const res = await api.getMessages({
       getMessagesRequestDto: {

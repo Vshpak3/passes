@@ -1,19 +1,12 @@
-import { MessageDto } from "@passes/api-client"
+import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import React from "react"
 
 import { Avatar } from "./index"
 
-export interface Channel {
-  channelId?: string
-  otherUserDisplayName?: string
-  otherUserUsername?: string
-  mostRecentMessage?: MessageDto
-}
-
 interface Props {
   onClick: () => void
-  channel: Channel
+  channel: ChannelMemberDto
   isSelected?: boolean
 }
 

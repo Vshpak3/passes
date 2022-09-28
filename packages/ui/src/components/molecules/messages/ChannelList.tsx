@@ -1,7 +1,7 @@
+import { ChannelMemberDto } from "@passes/api-client/models"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
-import { Channel } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 import { ChannelListItem } from "./index"
 
@@ -13,9 +13,9 @@ export type Users = {
 }
 
 interface Props {
-  selectedChannelId: string
-  channels: Array<Channel>
-  onChannelClicked: (channelId: string) => void
+  selectedChannel?: ChannelMemberDto
+  channels: Array<ChannelMemberDto>
+  onChannelClicked: (channel: ChannelMemberDto) => void
   hasMore: boolean
   next: () => void
 }
@@ -67,7 +67,7 @@ const users = [
   // More users...
 ]
 export const ChannelList = ({
-  selectedChannelId,
+  selectedChannel,
   channels,
   onChannelClicked,
   hasMore,
@@ -86,12 +86,10 @@ export const ChannelList = ({
       >
         {channels.map((channel, index) => (
           <ChannelListItem
-            onClick={() => {
-              onChannelClicked(channel.channelId as string)
-            }}
+            onClick={() => onChannelClicked(channel)}
             channel={channel}
             key={index}
-            isSelected={selectedChannelId === channel.channelId}
+            isSelected={selectedChannel?.channelId === channel.channelId}
           />
         ))}
       </InfiniteScroll>

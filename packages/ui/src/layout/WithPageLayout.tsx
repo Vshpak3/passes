@@ -23,7 +23,7 @@ export const withPageLayout = (
               <CreatorSearchBar />
             </div>
           )}
-          <div className="flex shrink-0 flex-col">
+          <div className="flex h-full shrink-0 flex-col">
             <Page {...props} ref={ref} />
           </div>
         </main>

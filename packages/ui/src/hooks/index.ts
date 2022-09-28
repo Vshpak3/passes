@@ -14,6 +14,7 @@ import useFeed from "./useFeed"
 import useFollow from "./useFollow"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
 import useLocalStorage from "./useLocalStorage"
+import useMessages from "./useMessages"
 import useMessageToDevelopers from "./useMessageToDevelopers"
 import useMounted from "./useMounted"
 import useOnClickOutside from "./useOnClickOutside"
@@ -41,6 +42,7 @@ export {
   useFollow,
   useIsomorphicLayoutEffect,
   useLocalStorage,
+  useMessages,
   useMessageToDevelopers,
   useMounted,
   useNotificationSettings,
