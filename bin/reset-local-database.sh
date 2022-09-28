@@ -36,9 +36,6 @@ fi
 log 'Removing all ORM metadata'
 git clean -xfd packages/api/src/database/
 
-log 'Generating schema migrations'
-yarn workspace @passes/api migration:create
-
 log 'Applying schema migrations'
 yarn workspace @passes/api migration:up
 
