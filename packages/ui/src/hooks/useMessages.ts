@@ -1,38 +1,36 @@
-import useSWR from "swr"
+import { MessagesApi } from "@passes/api-client"
+import { useMemo } from "react"
 
-const mockedChannelsResponse = [
-  {
-    displayName: "Anna DeGuzman",
-    messagePreview: "You: Hey back!..",
-    channelId: "1"
-  },
-  {
-    displayName: "user2938293",
-    messagePreview: "You: Hey back!..",
-    channelId: "2"
-  },
-  {
-    displayName: "Kianna Press",
-    messagePreview: "You: Hey back!..",
-    channelId: "3"
-  },
-  {
-    displayName: "Marilyn George",
-    messagePreview: "You: Hey back!..",
-    channelId: "4"
+import { usePagination } from "./usePagination"
+
+const useMessages = () => {
+  const api = useMemo(() => new MessagesApi(), [])
+  const fetcher = ({ lastId }: { lastId?: string } = {}) =>
+    api.getChannels({
+      getChannelsRequestDto: {
+        unreadOnly: false,
+        order: "desc",
+        orderType: "recent",
+        lastId
+      }
+    })
+
+  const createChannel = (userId: string) => {
+    return api.getOrCreateChannel({
+      getChannelRequestDto: {
+        userId
+      }
+    })
   }
-]
-
-const useMessages = (username: string) => {
-  // const api = new MessagesApi()
-  const fetchChannels = async () => {
-    // return await api.getChannels()
-    return mockedChannelsResponse
-  }
-  const { data } = useSWR(["/messages/", username], fetchChannels)
-
+  const { data, hasMore, next } = usePagination(fetcher, {
+    refreshInterval: 10000 // revalidate every 10 seconds
+  })
+  const channels = data ? data.map((d) => d.channelMembers).flat() : []
   return {
-    channels: data
+    createChannel,
+    channels,
+    hasMore,
+    next
   }
 }
 

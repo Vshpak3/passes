@@ -1,12 +1,14 @@
+import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import React from "react"
 
 import { Avatar } from "./index"
 
 export interface Channel {
-  channelId: string
-  messagePreview: string
-  displayName: string
+  channelId?: string
+  otherUserDisplayName?: string
+  otherUserUsername?: string
+  mostRecentMessage?: MessageDto
 }
 
 interface Props {
@@ -25,13 +27,13 @@ export const ChannelListItem = ({ onClick, channel, isSelected }: Props) => {
       )}
     >
       <div className="item-center flex pr-[10px]">
-        <Avatar
-          imageSrc={`https://www.w3schools.com/w3images/avatar${channel.channelId}.png`}
-        />
+        <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
       </div>
       <div className="flex flex-col items-start justify-start">
-        <span>{channel.displayName}</span>
-        <span className="text-sm text-gray-400">{channel.messagePreview}</span>
+        <span>{channel.otherUserDisplayName || channel.otherUserUsername}</span>
+        <span className="text-sm text-gray-400">
+          {channel?.mostRecentMessage?.text}
+        </span>
       </div>
     </div>
   )

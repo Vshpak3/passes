@@ -1,4 +1,5 @@
 import React from "react"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Channel } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
@@ -12,8 +13,11 @@ export type Users = {
 }
 
 interface Props {
+  selectedChannelId: string
   channels: Array<Channel>
   onChannelClicked: (channelId: string) => void
+  hasMore: boolean
+  next: () => void
 }
 
 const users = [
@@ -62,22 +66,35 @@ const users = [
 
   // More users...
 ]
-export const ChannelList = ({ channels, onChannelClicked }: Props) => {
+export const ChannelList = ({
+  selectedChannelId,
+  channels,
+  onChannelClicked,
+  hasMore,
+  next
+}: Props) => {
   return (
     <div className="min-w-[20vw] border-r border-gray-800">
       <div className="px-[10px] py-[7px]">
         <ChannelSearchInput users={users} />
       </div>
-      {channels.map((channel, index) => (
-        <ChannelListItem
-          onClick={() => {
-            onChannelClicked(channel.channelId)
-          }}
-          channel={channel}
-          key={index}
-          isSelected={index === 0}
-        />
-      ))}
+      <InfiniteScroll
+        dataLength={channels.length}
+        next={next}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>} // TODO: loader
+      >
+        {channels.map((channel, index) => (
+          <ChannelListItem
+            onClick={() => {
+              onChannelClicked(channel.channelId as string)
+            }}
+            channel={channel}
+            key={index}
+            isSelected={selectedChannelId === channel.channelId}
+          />
+        ))}
+      </InfiniteScroll>
     </div>
   )
 }
