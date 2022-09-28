@@ -20,14 +20,14 @@ export function ApiEndpoint(options: ApiOptions) {
       authDecorators = []
       break
     case RoleEnum.UNVERIFIED:
-      authDecorators = [ApiBearerAuth, UseGuards(JwtUnverifiedGuard)]
+      authDecorators = [ApiBearerAuth(), UseGuards(JwtUnverifiedGuard)]
       break
     case RoleEnum.GENERAL:
     case RoleEnum.CREATOR_ONLY:
-      authDecorators = [ApiBearerAuth]
+      authDecorators = [ApiBearerAuth()]
       break
     case RoleEnum.REFRESH:
-      authDecorators = [ApiBearerAuth, UseGuards(JwtRefreshGuard)]
+      authDecorators = [ApiBearerAuth(), UseGuards(JwtRefreshGuard)]
       break
   }
 
