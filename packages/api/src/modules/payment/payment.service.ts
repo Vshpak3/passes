@@ -2042,15 +2042,15 @@ export class PaymentService {
         `${SubscriptionEntity.table}.subscription_status`,
         SubscriptionStatusEnum.CANCELLED,
       )
-      .select([
-        `${SubscriptionEntity.table}'.id`,
-        `${SubscriptionEntity.table}'.user_id`,
+      .select(
+        `${SubscriptionEntity.table}.id`,
+        `${SubscriptionEntity.table}.user_id`,
         'payin_method',
         'chain_id',
         'card_id',
         `${PassHolderEntity.table}'.expires_at`,
         `${PassHolderEntity.table}'.holder_id`,
-      ])
+      )
 
     await Promise.all(
       nftPassSubscriptions.map(async (subscription) => {
