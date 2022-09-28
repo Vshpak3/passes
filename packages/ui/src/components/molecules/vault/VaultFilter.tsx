@@ -18,14 +18,13 @@ const VAULT_TYPE_OPTIONS: ITypeFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "image", label: "Image" },
   { id: "video", label: "Video" },
-  { id: "gif", label: "GIF" },
-  { id: "audio", label: "Audio" }
+  { id: "gif", label: "GIF" }
 ]
 const VAULT_CATEGORY_OPTIONS: ICategoryFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "posts", label: "Posts" },
   { id: "messages", label: "Messages" },
-  { id: "uploads", label: "Vault" }
+  { id: "uploads", label: "Upload" }
 ]
 
 const filterStyles = {
