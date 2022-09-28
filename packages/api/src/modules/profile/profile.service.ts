@@ -39,7 +39,16 @@ export class ProfileService {
   ): Promise<boolean> {
     const data = {
       user_id: userId,
-      ...createOrUpdateProfileRequestDto,
+      cover_title: createOrUpdateProfileRequestDto.coverTitle,
+      cover_description: createOrUpdateProfileRequestDto.coverDescription,
+      description: createOrUpdateProfileRequestDto.description,
+      discord_username: createOrUpdateProfileRequestDto.discordUsername,
+      facebook_username: createOrUpdateProfileRequestDto.facebookUsername,
+      instagram_username: createOrUpdateProfileRequestDto.instagramUsername,
+      tiktok_username: createOrUpdateProfileRequestDto.tiktokUsername,
+      twitch_username: createOrUpdateProfileRequestDto.twitchUsername,
+      twitter_username: createOrUpdateProfileRequestDto.twitterUsername,
+      youtube_username: createOrUpdateProfileRequestDto.youtubeUsername,
     }
 
     await this.dbWriter<ProfileEntity>(ProfileEntity.table)

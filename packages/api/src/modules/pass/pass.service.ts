@@ -112,7 +112,7 @@ export class PassService {
         : createPassDto.duration
     const data = {
       id: v4(),
-      creator: userId,
+      creator_id: userId,
       title: createPassDto.title,
       description: createPassDto.description,
       type: createPassDto.type,
@@ -447,16 +447,15 @@ export class PassService {
       pass.chain,
     )
 
-    const data = {
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert({
       id,
       pass_id: passId,
-      wallet: userWallet.walletId,
-      holder: userId,
-      expiresAt: expiresAt,
+      wallet_id: userWallet.walletId,
+      holder_id: userId,
+      expires_at: expiresAt,
       messages: pass.messages,
       chain: pass.chain,
-    }
-    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
+    })
 
     let address = ''
     const tokenId = null

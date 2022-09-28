@@ -42,7 +42,7 @@ export interface SearchFollowRequestDto {
      * @type {string}
      * @memberof SearchFollowRequestDto
      */
-    order: string;
+    order: SearchFollowRequestDtoOrderEnum;
     /**
      * 
      * @type {string}
@@ -63,6 +63,15 @@ export interface SearchFollowRequestDto {
     orderType: SearchFollowRequestDtoOrderTypeEnum;
 }
 
+
+/**
+ * @export
+ */
+export const SearchFollowRequestDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type SearchFollowRequestDtoOrderEnum = typeof SearchFollowRequestDtoOrderEnum[keyof typeof SearchFollowRequestDtoOrderEnum];
 
 /**
  * @export

@@ -42,7 +42,7 @@ export interface GetPassHoldingsRequestDto {
      * @type {string}
      * @memberof GetPassHoldingsRequestDto
      */
-    order: string;
+    order: GetPassHoldingsRequestDtoOrderEnum;
     /**
      * 
      * @type {string}
@@ -75,6 +75,15 @@ export interface GetPassHoldingsRequestDto {
     orderType: GetPassHoldingsRequestDtoOrderTypeEnum;
 }
 
+
+/**
+ * @export
+ */
+export const GetPassHoldingsRequestDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetPassHoldingsRequestDtoOrderEnum = typeof GetPassHoldingsRequestDtoOrderEnum[keyof typeof GetPassHoldingsRequestDtoOrderEnum];
 
 /**
  * @export

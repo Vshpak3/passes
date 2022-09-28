@@ -145,7 +145,7 @@ export class AuthService {
 
     const authRecordUpdate = { is_email_verified: true }
     if (user) {
-      authRecordUpdate['user'] = user.id
+      authRecordUpdate['user_id'] = user.id
     }
 
     if (request === undefined) {

@@ -48,7 +48,7 @@ export interface GetListsRequestsDto {
      * @type {string}
      * @memberof GetListsRequestsDto
      */
-    order: string;
+    order: GetListsRequestsDtoOrderEnum;
     /**
      * 
      * @type {string}
@@ -63,6 +63,15 @@ export interface GetListsRequestsDto {
     orderType: GetListsRequestsDtoOrderTypeEnum;
 }
 
+
+/**
+ * @export
+ */
+export const GetListsRequestsDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetListsRequestsDtoOrderEnum = typeof GetListsRequestsDtoOrderEnum[keyof typeof GetListsRequestsDtoOrderEnum];
 
 /**
  * @export

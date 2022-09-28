@@ -4,6 +4,10 @@ import { DtoProperty } from '../../web/dto.web'
 
 export const MAX_SEARCH_LENGTH = 300
 
+export enum OrderEnum {
+  ASC = 'asc',
+  DESC = 'desc',
+}
 export class PageRequestDto {
   @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
@@ -18,8 +22,8 @@ export class PageRequestDto {
   @DtoProperty({ type: 'string', optional: true })
   search?: string
 
-  @DtoProperty({ type: 'string' })
-  order: 'desc' | 'asc'
+  @DtoProperty({ custom_type: OrderEnum })
+  order: OrderEnum
 }
 
 export const orderToSymbol = {

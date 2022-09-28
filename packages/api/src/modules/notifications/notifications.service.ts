@@ -86,7 +86,7 @@ export class NotificationsService {
   ) {
     const data = {
       id: v4(),
-      user: receiverId,
+      user_id: receiverId,
       sender_id: senderId,
       message,
       type,

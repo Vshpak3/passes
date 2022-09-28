@@ -36,7 +36,7 @@ export interface GetChannelsRequestDto {
      * @type {string}
      * @memberof GetChannelsRequestDto
      */
-    order: string;
+    order: GetChannelsRequestDtoOrderEnum;
     /**
      * 
      * @type {Date}
@@ -63,6 +63,15 @@ export interface GetChannelsRequestDto {
     unreadOnly: boolean;
 }
 
+
+/**
+ * @export
+ */
+export const GetChannelsRequestDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetChannelsRequestDtoOrderEnum = typeof GetChannelsRequestDtoOrderEnum[keyof typeof GetChannelsRequestDtoOrderEnum];
 
 /**
  * @export

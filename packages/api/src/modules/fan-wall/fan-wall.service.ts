@@ -110,13 +110,12 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = {
-      hidden: true,
-    }
     const updated = await this.dbWriter<FanWallCommentEntity>(
       FanWallCommentEntity.table,
     )
-      .update(data)
+      .update({
+        hidden: true,
+      })
       .where({
         id: fanWallCommentId,
         creator_id: userId,
@@ -130,13 +129,12 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = {
-      hidden: false,
-    }
     const updated = await this.dbWriter<FanWallCommentEntity>(
       FanWallCommentEntity.table,
     )
-      .update(data)
+      .update({
+        hidden: false,
+      })
       .where({
         id: fanWallCommentId,
         creator_id: userId,
@@ -150,13 +148,12 @@ export class FanWallService {
     userId: string,
     fanWallCommentId: string,
   ): Promise<boolean> {
-    const data = {
-      deleted_at: this.dbWriter.fn.now(),
-    }
     const updated = await this.dbWriter<FanWallCommentEntity>(
       FanWallCommentEntity.table,
     )
-      .update(data)
+      .update({
+        deleted_at: new Date(),
+      })
       .where({
         id: fanWallCommentId,
         commenter_id: userId,

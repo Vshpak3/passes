@@ -360,7 +360,7 @@ export class PaymentService {
     const data = {
       id: v4(),
       card_id: card.id,
-      payin: payin.id,
+      payin_id: payin.id,
       idempotency_key: createCardPaymentDto.idempotencyKey,
       amount: createCardPaymentDto.amount.amount,
       verification: CircleCardVerificationEnum.NONE,
@@ -438,9 +438,9 @@ export class PaymentService {
       user_id: userId,
       status: response['status'],
       description: response['description'],
-      trackingRef: response['trackingRef'],
+      tracking_ref: response['trackingRef'],
       fingerprint: response['fingerprint'],
-      circleId: response['id'],
+      circle_id: response['id'],
       idempotency_key: createBankDto.idempotencyKey,
       country: createBankDto.billingDetails.country,
     }

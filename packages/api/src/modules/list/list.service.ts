@@ -76,7 +76,7 @@ export class ListService {
     listMemberRecords = followers.map((follower) => {
       return {
         list_id: listId,
-        user: follower.follower_id,
+        user_id: follower.follower_id,
       }
     })
 

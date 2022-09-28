@@ -285,7 +285,7 @@ export class MessagesService {
     await this.contentService.validateContentIds(userId, contentIds)
     const data = {
       id: v4(),
-      creator: userId,
+      creator_id: userId,
       text,
       price,
       content_ids: JSON.stringify(contentIds),
@@ -668,7 +668,7 @@ export class MessagesService {
   ): Promise<string> {
     const data = {
       id: v4(),
-      sender: userId,
+      sender_id: userId,
       text,
       channel_id: channelId,
       tip_amount: tipAmount,

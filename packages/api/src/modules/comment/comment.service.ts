@@ -120,13 +120,12 @@ export class CommentService {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
-    const data = {
-      hidden: true,
-    }
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<CommentEntity>(CommentEntity.table)
-        .update(data)
+        .update({
+          hidden: true,
+        })
         .where({
           id: commentId,
           post_id: postId,
@@ -135,12 +134,16 @@ export class CommentService {
           deactivated: false,
           deleted_at: null,
         })
-      await trx<CommentEntity>(CommentEntity.table).update(data).where({
-        id: commentId,
-        commenter_id: userId,
-        post_id: postId,
-        deleted_at: null,
-      })
+      await trx<CommentEntity>(CommentEntity.table)
+        .update({
+          hidden: true,
+        })
+        .where({
+          id: commentId,
+          commenter_id: userId,
+          post_id: postId,
+          deleted_at: null,
+        })
       if (updated === 1) {
         await trx<PostEntity>(PostEntity.table)
           .where({ id: postId })
@@ -159,13 +162,12 @@ export class CommentService {
       throw new BadRequestException(POST_NOT_EXIST)
     }
 
-    const data = {
-      hidden: false,
-    }
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<CommentEntity>(CommentEntity.table)
-        .update(data)
+        .update({
+          hidden: false,
+        })
         .where({
           id: commentId,
           post_id: postId,
@@ -180,7 +182,9 @@ export class CommentService {
           .increment('num_comments', 1)
       }
       updated += await trx<CommentEntity>(CommentEntity.table)
-        .update(data)
+        .update({
+          hidden: false,
+        })
         .where({
           id: commentId,
           commenter_id: userId,
@@ -192,13 +196,12 @@ export class CommentService {
   }
 
   async deleteComment(userId: string, postId: string, commentId: string) {
-    const data = {
-      deleted_at: this.dbWriter.fn.now(),
-    }
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<CommentEntity>(CommentEntity.table)
-        .update(data)
+        .update({
+          deleted_at: new Date(),
+        })
         .where({
           id: commentId,
           commenter_id: userId,
@@ -214,7 +217,9 @@ export class CommentService {
           .decrement('num_comments', 1)
       }
       updated += await trx<CommentEntity>(CommentEntity.table)
-        .update(data)
+        .update({
+          deleted_at: this.dbWriter.fn.now(),
+        })
         .where({
           id: commentId,
           commenter_id: userId,
