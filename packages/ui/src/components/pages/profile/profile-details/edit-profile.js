@@ -21,17 +21,9 @@ const bioForm = {
 }
 
 const profileInformationForm = {
-  username: { type: "text", label: "Username", colSpan: "col-span-6" },
-  firstName: { type: "text", label: "First Name", colSpan: "col-span-3" },
-  lastName: { type: "text", label: "Last Name", colSpan: "col-span-3" },
+  displayName: { type: "text", label: "Display Name", colSpan: "col-span-6" },
   location: { type: "text", label: "Location", colSpan: "col-span-6" },
   website: { type: "text", label: "Website", colSpan: "col-span-6" }
-}
-
-const birthInformationForm = {
-  dayOfBirth: { type: "text", label: "Day", colSpan: "col-span-2" },
-  monthOfBirth: { type: "text", label: "Month", colSpan: "col-span-2" },
-  yearOfBirth: { type: "text", label: "Year", colSpan: "col-span-2" }
 }
 
 const socialMediaForm = {
@@ -191,25 +183,6 @@ export const EditProfile = ({ profile, onSubmit }) => {
             </span>
             <div className="grid w-full grid-cols-6 gap-3">
               {Object.entries(profileInformationForm).map(renderInput)}
-            </div>
-          </div>
-          <div className="pt-3">
-            <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
-              Date of birth
-            </span>
-            <div className="grid w-full grid-cols-6 gap-3">
-              {Object.entries(birthInformationForm).map(([key, input]) => (
-                <div className={input.colSpan} key={key}>
-                  <FormInput
-                    register={register}
-                    name={key}
-                    className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
-                    type={input.type}
-                    placeholder={input.label}
-                    accept={input?.accept}
-                  />
-                </div>
-              ))}
             </div>
           </div>
           <div className="pt-3">
