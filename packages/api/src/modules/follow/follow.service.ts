@@ -20,6 +20,7 @@ import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { FanWallCommentEntity } from '../fan-wall/entities/fan-wall-comment.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
 import { createGetMemberQuery } from '../list/list.util'
 import { MessagesService } from '../messages/messages.service'
@@ -346,7 +347,7 @@ export class FollowService {
 
     const users = new Set<string>()
     for (let i = 0; i < tasks.length; ++i) {
-      const blocked = tasks[i].blocked
+      const blocked = !!tasks[i].blocked
       users.add(tasks[i].follower_id)
       await this.dbWriter<PostEntity>(PostEntity.table)
         .leftJoin(
@@ -355,11 +356,17 @@ export class FollowService {
           `${PostEntity.table}.id`,
         )
         .where(`${PostEntity.table}.user_id`, tasks[i].creator_id)
-        .andWhere(`${CommentEntity.table}.commentor_id`, tasks[i].follower_id)
-        .update({ blocked: blocked })
+        .andWhere(`${CommentEntity.table}.commenter_id`, tasks[i].follower_id)
+        .update({ blocked })
+      await this.dbWriter<FanWallCommentEntity>(FanWallCommentEntity.table)
+        .where({
+          creator_id: tasks[i].creator_id,
+          commenter_id: tasks[i].follower_id,
+        })
+        .update({ blocked })
     }
     const comments = await this.dbReader<CommentEntity>(CommentEntity.table)
-      .whereIn('commentor_id', Array.from(users))
+      .whereIn('commenter_id', Array.from(users))
       .distinct('post_id')
     await Promise.all(
       comments.map(async (comment) => {
