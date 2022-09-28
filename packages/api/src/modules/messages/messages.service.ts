@@ -184,7 +184,7 @@ export class MessagesService {
       )
       .where({
         user_id: userId,
-        otherUser: getChannelRequestDto.userId,
+        other_user_id: getChannelRequestDto.userId,
       })
       .select([
         `${ChannelMemberEntity.table}.*`,
