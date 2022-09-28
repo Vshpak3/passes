@@ -2,6 +2,7 @@ import { Fade } from "@mui/material"
 import Popper from "@mui/material/Popper"
 import {
   GetListMembersResponseDto,
+  GetListsRequestsDtoOrderEnum,
   GetListsRequestsDtoOrderTypeEnum,
   SearchFollowRequestDtoOrderTypeEnum
 } from "@passes/api-client"
@@ -21,10 +22,11 @@ const followApi = new FollowApi()
 const FanLists: NextPage = () => {
   const [list, setList] = useState<Array<any>>([])
   const [, setFans] = useState<Array<any>>([])
-  const [orderType, setOrderType] = useState<any>(
+  const [orderType, setOrderType] = useState<GetListsRequestsDtoOrderTypeEnum>(
     GetListsRequestsDtoOrderTypeEnum.Name
   )
-  const [orderDirection, setOrderDirection] = useState("asc")
+  const [orderDirection, setOrderDirection] =
+    useState<GetListsRequestsDtoOrderEnum>(GetListsRequestsDtoOrderEnum.Asc)
   const [lastId, setLastId] = useState<string>("")
   const [keyword, setKeyword] = useState<string>("")
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
@@ -34,14 +36,15 @@ const FanLists: NextPage = () => {
   const fetchList = useCallback(
     async (
       keywordSearch = "",
-      orderTypeInput = "name",
-      orderDirectionInput = "asc",
+      orderTypeInput?: GetListsRequestsDtoOrderTypeEnum,
+      orderDirectionInput?: GetListsRequestsDtoOrderEnum,
       isUpdate = false
     ) => {
       const requestDto = {
         order: orderDirectionInput ? orderDirectionInput : orderDirection,
         orderType: orderTypeInput ? orderTypeInput : orderType
       }
+
       // only call api when no any request is calling
       if (!isLoadingMore) {
         try {
@@ -115,8 +118,10 @@ const FanLists: NextPage = () => {
 
   const handleSaveOrdering = useCallback(
     (selection: string) => {
-      const orderTypeInner = selection.split(":")[0]
-      const orderDirectionInner = selection.split(":")[1]
+      const split = selection.split(":")
+      const orderTypeInner = split[0] as GetListsRequestsDtoOrderTypeEnum
+      const orderDirectionInner = split[1] as GetListsRequestsDtoOrderEnum
+
       setOrderType(orderTypeInner)
       setOrderDirection(orderDirectionInner)
       setAnchorSortPopperEl(null)
