@@ -237,16 +237,31 @@ const Wallets = () => {
 
   return (
     <div>
-      <Modal isOpen={isModalOpen} setOpen={setIsModalOpen}>
-        <div className="flex flex-col items-center justify-center">
-          <Metamask
-            className="m-[10px] h-[100px] w-[100px] cursor-pointer"
-            onClick={handleOnETHWalletConnect}
-          />
-          <Phantom
-            className="m-[10px] h-[100px] w-[100px] cursor-pointer"
-            onClick={handleOnSolanaWalletConnect}
-          />
+      <Modal
+        modalContainerClassname="rounded-[20px]"
+        isOpen={isModalOpen}
+        setOpen={setIsModalOpen}
+      >
+        <div className="px-10 pb-10">
+          <h4 className="mt-5 text-center text-2xl font-bold dark:text-white">
+            Choose Wallet to Connect
+          </h4>
+          <div className="mt-10 flex items-center justify-center space-x-7">
+            <div className="flex items-center space-x-4">
+              <Metamask
+                className="h-[34px] w-[34px] cursor-pointer"
+                onClick={handleOnETHWalletConnect}
+              />
+              <span className="text-xl font-bold">Metamask</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Phantom
+                className="h-[34px] w-[34px] cursor-pointer"
+                onClick={handleOnSolanaWalletConnect}
+              />
+              <span className="text-xl font-bold">Phantom</span>
+            </div>
+          </div>
         </div>
       </Modal>
       <div className="mt-[50px] flex items-center justify-start">
