@@ -113,12 +113,7 @@ export class WalletService {
     // create wallet if it does not exist
     let address = ''
     if (localMockedAwsDev()) {
-      const SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY =
-        '3HYQhGSwsYuRx3Kvzg9g6EKrjWrLTY4SKzrGboRzsjg1AkjCBrPHZn9DZxHkxkoe7YWxAqw1XUVfaQnw7NXegA2h'
-
-      const keypair = Keypair.fromSecretKey(
-        base58.decode(SOL_DEV_NFT_MASTER_WALLET_PRIVATE_KEY),
-      )
+      const keypair = Keypair.generate()
       address = keypair.publicKey.toString()
     } else {
       address = await this.lambdaService.blockchainSignCreateAddress(
