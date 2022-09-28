@@ -434,7 +434,7 @@ export const NewPost = ({
                   </div>
                 </div>
               )}
-              <Footer onlyText={onlyText} />
+              <Footer />
             </>
           )}
         </div>

@@ -2,7 +2,7 @@ import { useContext } from "react"
 
 import { MainContext } from "../../../../../context/MainContext"
 
-export const Footer = ({ onlyText }) => {
+export const Footer = () => {
   const { postTime } = useContext(MainContext)
 
   return (
