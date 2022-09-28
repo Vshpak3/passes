@@ -58,6 +58,6 @@ export class PostEntity extends BaseEntity {
   @Property()
   scheduled_at: Date | null
 
-  @Property({ length: PASS_IDS_LENGTH })
-  pass_ids: string | null
+  @Property({ length: PASS_IDS_LENGTH, default: '[]' })
+  pass_ids: string
 }
