@@ -366,12 +366,13 @@ export class ListService {
       .select('id')
 
     const filteredListsIds = new Set(filteredLists.map((list) => list.id))
-    for (const listId in listIds) {
+    listIds.forEach((listId) => {
       if (!filteredListsIds.has(listId)) {
         throw new NoListError('cant find list for user')
       }
-    }
+    })
   }
+
   async getAllListMembers(userId: string, listIds: string[]) {
     await this.validateListIds(userId, listIds)
     const userIdsSet = new Set(

@@ -913,10 +913,12 @@ export class PassService {
       })
       .select(`${PassEntity.table}.id`)
     const filteredPassIds = new Set(filteredPasses.map((pass) => pass.id))
-    for (const passId in passIds) {
-      if (!filteredPassIds.has(passId)) {
-        throw new PassNotFoundException('cant find pass for user')
-      }
-    }
+    await Promise.all(
+      passIds.map(async (passId) => {
+        if (!filteredPassIds.has(passId)) {
+          throw new PassNotFoundException('cant find pass for user')
+        }
+      }),
+    )
   }
 }

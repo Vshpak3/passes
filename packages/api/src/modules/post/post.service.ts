@@ -150,28 +150,32 @@ export class PostService {
           map[passHolder.holder_id].push(passHolder.id)
           return map
         }, {})
-        for (const userId in userToPassHolders) {
-          const postUserAccess = {
-            id: v4(),
-            post_id: postId,
-            user_id: userId,
-          }
-          await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
-            .insert(postUserAccess)
-            .onConflict(['post_id', 'user_id'])
-            .ignore()
-          for (const passHolderId in userToPassHolders[userId]) {
-            await trx<PostPassHolderAccessEntity>(
-              PostPassHolderAccessEntity.table,
-            )
-              .insert({
-                post_user_access_id: postUserAccess.id,
-                pass_holder_id: passHolderId,
-              })
-              .onConflict(['post_user_access_id', 'pass_holder_id'])
+        await Promise.all(
+          Object.keys(userToPassHolders).map(async (userId) => {
+            const postUserAccess = {
+              id: v4(),
+              post_id: postId,
+              user_id: userId,
+            }
+            await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
+              .insert(postUserAccess)
+              .onConflict(['post_id', 'user_id'])
               .ignore()
-          }
-        }
+            await Promise.all(
+              userToPassHolders[userId].map(async (passHolderId) => {
+                await trx<PostPassHolderAccessEntity>(
+                  PostPassHolderAccessEntity.table,
+                )
+                  .insert({
+                    post_user_access_id: postUserAccess.id,
+                    pass_holder_id: passHolderId,
+                  })
+                  .onConflict(['post_user_access_id', 'pass_holder_id'])
+                  .ignore()
+              }),
+            )
+          }),
+        )
 
         for (let i = 0; i < createPostDto.passIds.length; ++i) {
           const postPassAccess = {
@@ -336,9 +340,9 @@ export class PostService {
       )
       return map
     }, {})
-    for (const post in map) {
-      map[post].sort((a, b) => a.order - b.order)
-    }
+    Object.keys(map).forEach((key) =>
+      map[key].sort((a, b) => a.order - b.order),
+    )
     return map
   }
 

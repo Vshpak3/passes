@@ -161,7 +161,7 @@ export class WalletController {
     responseStatus: HttpStatus.CREATED,
     responseType: CreateWalletRequestDto,
     responseDesc: 'Unchecked wallet was created',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('unauthenticated')
   async createUnauthenticatedWallet(
