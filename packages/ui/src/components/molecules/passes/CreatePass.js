@@ -187,40 +187,6 @@ const PassRenewal = ({ register }) => (
   </div>
 )
 
-const PassUnlockTier = ({ register }) => (
-  <>
-    <hr className="border-passes-dark-200" />
-    <div className="my-4">
-      <PassesSectionTitle title="What does this tier of pass unlock?" />
-      <PassFormCheckbox
-        name="all-media-access"
-        label="All Media"
-        register={register}
-      />
-      <PassFormCheckbox
-        name="all-stories-access"
-        label="All Stories"
-        register={register}
-      />
-      <PassFormCheckbox
-        name="all-stream-access"
-        label="All Live streams"
-        register={register}
-      />
-      <PassFormCheckbox
-        name="all-photos-access"
-        label="All Photos"
-        register={register}
-      />
-      <PassFormCheckbox
-        name="all-videos-access"
-        label="All Videos"
-        register={register}
-      />
-    </div>
-  </>
-)
-
 const CreatePassOption = ({
   icon,
   title,
@@ -251,6 +217,5 @@ export {
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,
-  PassRenewal,
-  PassUnlockTier
+  PassRenewal
 }

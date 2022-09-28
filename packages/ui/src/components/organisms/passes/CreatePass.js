@@ -13,8 +13,7 @@ import {
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,
-  PassRenewal,
-  PassUnlockTier
+  PassRenewal
 } from "src/components/molecules"
 import { useCreatePass } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
@@ -90,7 +89,6 @@ const CreatePassForm = ({ passType }) => {
           />
           <PassDescriptionInput register={register} errors={errors} />
           {isLifetimePass && <PassLifetimeOptions register={register} />}
-          {isLifetimePass && <PassUnlockTier register={register} />}
           <PassDirectMessage register={register} />
           {isSubscriptionPass && <PassRenewal register={register} />}
           <CreatePassButton onCreateHandler={onCreatePass} />

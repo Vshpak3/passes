@@ -12,8 +12,7 @@ import {
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,
-  PassRenewal,
-  PassUnlockTier
+  PassRenewal
 } from "./passes"
 import * as SidebarComponents from "./Sidebar"
 import Tabs from "./Tabs"
@@ -42,7 +41,6 @@ export {
   PassFileUpload,
   PassLifetimeOptions,
   PassRenewal,
-  PassUnlockTier,
   SidebarComponents,
   Tabs,
   TagsInput,

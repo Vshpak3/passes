@@ -3,8 +3,7 @@ import {
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,
-  PassRenewal,
-  PassUnlockTier
+  PassRenewal
 } from "./CreatePass"
 import { CreatorPasses } from "./MyPasses"
 
@@ -14,6 +13,5 @@ export {
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,
-  PassRenewal,
-  PassUnlockTier
+  PassRenewal
 }
