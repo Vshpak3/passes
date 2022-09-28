@@ -157,7 +157,6 @@ export class MessagesService {
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
-        `${ChannelEntity.table}.stream_channel_id`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
@@ -187,7 +186,6 @@ export class MessagesService {
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
-        `${ChannelEntity.table}.stream_channel_id`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
@@ -216,7 +214,6 @@ export class MessagesService {
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
-        `${ChannelEntity.table}.stream_channel_id`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
@@ -351,7 +348,7 @@ export class MessagesService {
           UserMessageContentEntity.table,
         )
           .whereIn('user_id', userIds)
-          .whereIn('content', contentIds)
+          .whereIn('content_id', contentIds)
           .distinct('user_id')
       ).map((messageContent) => messageContent.user_id),
     )
