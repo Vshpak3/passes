@@ -304,7 +304,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetPaidMessageHistoryResponseDto,
     responseDesc: 'Paid message history was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('history')
   async getPaidMessageHistory(

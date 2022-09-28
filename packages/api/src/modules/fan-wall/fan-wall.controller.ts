@@ -67,7 +67,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A fan wall comment was hidden',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch(':fanWallCommentId')
   async hideFanWallComment(

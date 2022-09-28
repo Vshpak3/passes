@@ -48,7 +48,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
     responseDesc: 'A pass was created',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post()
   async createPass(
@@ -63,7 +63,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: MintPassResponseDto,
     responseDesc: 'A pass was minted',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('mint')
   async mintPass(
@@ -131,7 +131,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A pass was updated',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch('pass-info/:passId')
   async updatePass(
@@ -236,7 +236,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A pass was pinned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('pin/:passId')
   async pinPass(
@@ -251,7 +251,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A pass was unpinned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('unpin/:passId')
   async unpinPass(
@@ -266,7 +266,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
     responseDesc: 'A pass was unpinned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('passholders')
   async getPassHolders(

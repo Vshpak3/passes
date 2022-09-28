@@ -75,7 +75,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of followers was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('followers/search')
   async searchFans(
@@ -114,7 +114,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'A follower was reported',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('report/:followerId')
   async reportFollower(
@@ -134,7 +134,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A follower was unblocked',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Delete('unblock/:followerId')
   async unblockFollower(
@@ -149,7 +149,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'A follower was blocked',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('block/:followerId')
   async blockFollower(
@@ -164,7 +164,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of blocked followers was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('blocked')
   async getBlocked(

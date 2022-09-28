@@ -452,7 +452,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetPayoutsResponseDto,
     responseDesc: 'Payouts were retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('payouts')
   async getPayouts(
@@ -467,7 +467,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Payout was made',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('payout')
   async payout(@Req() req: RequestWithUser): Promise<void> {

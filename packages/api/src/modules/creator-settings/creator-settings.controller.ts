@@ -20,7 +20,7 @@ export class CreatorSettingsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorSettingsResponseDto,
     responseDesc: 'Creator Settings was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get()
   async getCreatorSettings(
@@ -34,7 +34,7 @@ export class CreatorSettingsController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Creator Settings was updated',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch()
   async updateCreatorSettings(

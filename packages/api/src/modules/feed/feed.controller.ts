@@ -52,7 +52,7 @@ export class FeedController {
     responseStatus: HttpStatus.OK,
     responseType: GetFeedResponseDto,
     responseDesc: 'A list of posts was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('owner/posts')
   async getPostsForOwner(

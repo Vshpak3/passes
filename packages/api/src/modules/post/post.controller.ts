@@ -40,7 +40,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePostResponseDto,
     responseDesc: 'A post was created',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post()
   async createPost(
@@ -70,7 +70,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was updated',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch(':postId')
   async updatePost(
@@ -86,7 +86,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A post was deleted',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Delete(':postId')
   async removePost(
@@ -158,7 +158,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was pinned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('pin/:postId')
   async pinPost(
@@ -173,7 +173,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was unpinned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('unpin/:postId')
   async unpinPost(
@@ -188,7 +188,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: GetPostHistoryResponseDto,
     responseDesc: 'Post history was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('history')
   async getPostHistory(

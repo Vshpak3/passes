@@ -66,7 +66,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A comment was hidden',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch('hide/:postId/:commentId')
   async hideComment(

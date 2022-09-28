@@ -36,7 +36,7 @@ export class ListController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'List was created',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('create')
   async createList(
@@ -51,7 +51,7 @@ export class ListController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'List Members added',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('add-members')
   async addListMembers(
@@ -70,7 +70,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'List Members removed',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Delete('members')
   async removeListMembers(
@@ -89,7 +89,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListResponseDto,
     responseDesc: 'List was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('list-info/:listId')
   async getList(
@@ -104,7 +104,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListsResponseDto,
     responseDesc: 'Lists were retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('lists-info')
   async getLists(
@@ -122,7 +122,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListMembersResponseDto,
     responseDesc: 'List members was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('members')
   async getListMembers(
@@ -143,7 +143,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'List was deleted',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Delete('list-info/:listId')
   async deleteList(
@@ -158,7 +158,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'List name was edited',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Patch('list-info')
   async editListName(

@@ -31,7 +31,7 @@ export class ContentController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'Content was created',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post()
   async createContent(
@@ -135,7 +135,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetContentsResponseDto,
     responseDesc: 'Creator vault was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('vault')
   async getVaultContent(

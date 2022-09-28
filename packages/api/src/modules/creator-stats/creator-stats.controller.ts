@@ -30,7 +30,7 @@ export class CreatorStatsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningResponseDto,
     responseDesc: 'Balance was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('balance')
   async getBalance(
@@ -44,7 +44,7 @@ export class CreatorStatsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningsResponseDto,
     responseDesc: 'Earnings history was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Post('history/earnings')
   async getEarningsHistory(
