@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetListMembersResponseDto } from '../list/dto/get-list-members.dto'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
 import { IsFollowingDto } from './dto/is-following.dto'
@@ -29,6 +30,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: IsFollowingDto,
     responseDesc: 'A follow was checked',
+    role: RoleEnum.GENERAL,
   })
   @Get('check/:creatorId')
   async checkFollow(
@@ -43,6 +45,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: GetFollowResponseDto,
     responseDesc: 'A follow was created',
+    role: RoleEnum.GENERAL,
   })
   @Post(':creatorId')
   async followCreator(
@@ -57,6 +60,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A following was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete(':creatorId')
   async unfollowCreator(
@@ -71,6 +75,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of followers was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('followers/search')
   async searchFans(
@@ -88,6 +93,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of following was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('following/search')
   async searchFollowing(
@@ -108,6 +114,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'A follower was reported',
+    role: RoleEnum.GENERAL,
   })
   @Post('report/:followerId')
   async reportFollower(
@@ -127,6 +134,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A follower was unblocked',
+    role: RoleEnum.GENERAL,
   })
   @Delete('unblock/:followerId')
   async unblockFollower(
@@ -141,6 +149,7 @@ export class FollowController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'A follower was blocked',
+    role: RoleEnum.GENERAL,
   })
   @Post('block/:followerId')
   async blockFollower(
@@ -155,6 +164,7 @@ export class FollowController {
     responseStatus: HttpStatus.OK,
     responseType: GetListMembersResponseDto,
     responseDesc: 'A list of blocked followers was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('blocked')
   async getBlocked(

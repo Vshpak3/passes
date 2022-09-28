@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
@@ -18,6 +19,7 @@ export class FeedController {
     responseStatus: HttpStatus.OK,
     responseType: GetFeedResponseDto,
     responseDesc: 'A feed of posts was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async getFeed(
@@ -32,6 +34,7 @@ export class FeedController {
     responseStatus: HttpStatus.OK,
     responseType: GetFeedResponseDto,
     responseDesc: 'A feed was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('profile')
   async getFeedForCreator(
@@ -49,6 +52,7 @@ export class FeedController {
     responseStatus: HttpStatus.OK,
     responseType: GetFeedResponseDto,
     responseDesc: 'A list of posts was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('owner/posts')
   async getPostsForOwner(

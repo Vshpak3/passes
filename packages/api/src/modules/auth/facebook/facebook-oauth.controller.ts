@@ -16,6 +16,7 @@ import { Request, Response } from 'express'
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
+import { RoleEnum } from '../core/auth.metadata'
 import { FacebookDeletionConfirmationDto } from '../dto/fb/fb-deletion-confirmation.dto'
 import { RawFacebookDeletionRequestDto } from '../dto/fb/raw-fb-deletion-request.dto'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
@@ -39,7 +40,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Start the facebook oauth flow',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @UseGuards(FacebookOauthGuard)
   @Get()
@@ -52,7 +53,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Redirect from facebook oauth flow',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @ApiBearerAuth()
   @UseGuards(FacebookOauthGuard)
@@ -66,7 +67,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Initiate a deletion request for a Facebook OAuth user',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('deletion_callback')
   async facebookInitiateDelete(
@@ -92,7 +93,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Check if a deletion request has been fulfilled',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Get('deletion_confirmation')
   async facebookDeletionConfirmation(

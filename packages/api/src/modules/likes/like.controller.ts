@@ -10,6 +10,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { LikeService } from './like.service'
 
 @ApiTags('like')
@@ -22,6 +23,7 @@ export class LikeController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A like was created',
+    role: RoleEnum.GENERAL,
   })
   @Post(':postId')
   async likePost(
@@ -36,6 +38,7 @@ export class LikeController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A like was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete(':postId')
   async unlikePost(

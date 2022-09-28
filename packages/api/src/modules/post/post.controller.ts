@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import {
@@ -39,6 +40,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePostResponseDto,
     responseDesc: 'A post was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createPost(
@@ -53,6 +55,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: GetPostResponseDto,
     responseDesc: 'A post was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get(':postId')
   async findPost(
@@ -67,6 +70,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was updated',
+    role: RoleEnum.GENERAL,
   })
   @Patch(':postId')
   async updatePost(
@@ -82,6 +86,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A post was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete(':postId')
   async removePost(
@@ -96,6 +101,7 @@ export class PostController {
     responseStatus: HttpStatus.CREATED,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Purcuase post payin was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('pay/purchase')
   async registerPurchasePost(
@@ -114,6 +120,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Data for register purchase post was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('pay/data/purchase')
   async registerPurchasePostData(
@@ -131,6 +138,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Tip post payin was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('pay/tip')
   async registerTipPost(
@@ -150,6 +158,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was pinned',
+    role: RoleEnum.GENERAL,
   })
   @Get('pin/:postId')
   async pinPost(
@@ -164,6 +173,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A post was unpinned',
+    role: RoleEnum.GENERAL,
   })
   @Get('unpin/:postId')
   async unpinPost(
@@ -178,6 +188,7 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: GetPostHistoryResponseDto,
     responseDesc: 'Post history was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('history')
   async getPostHistory(

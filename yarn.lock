@@ -5666,6 +5666,7 @@ __metadata:
     iso-3166-1-alpha-2: 1.0.0
     jest: 29.0.3
     joi: 17.6.0
+    jwt-decode: 3.1.2
     lodash: 4.17.21
     nest-winston: 1.7.0
     nestjs-real-ip: 2.2.0

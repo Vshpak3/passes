@@ -2,6 +2,7 @@ import { Controller, Get, HttpStatus } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 
 @ApiTags('health')
 @Controller('health')
@@ -11,7 +12,7 @@ export class HealthController {
     responseStatus: HttpStatus.OK,
     responseType: String,
     responseDesc: 'App is running',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Get()
   health() {

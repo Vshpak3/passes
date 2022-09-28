@@ -14,6 +14,7 @@ import { EventEmitter } from 'events'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import {
   GetNotificationsRequestDto,
   GetNotificationsResponseDto,
@@ -33,6 +34,7 @@ export class NotificationsController {
     responseStatus: HttpStatus.OK,
     responseType: GetNotificationsResponseDto,
     responseDesc: 'Notifications were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('get')
   async getNotifications(
@@ -49,6 +51,7 @@ export class NotificationsController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Notification events were subscribed',
+    role: RoleEnum.GENERAL,
   })
   @Sse('subscribe')
   async subscribeNotifications(@Req() req: RequestWithUser) {
@@ -60,6 +63,7 @@ export class NotificationsController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Status was set as read',
+    role: RoleEnum.GENERAL,
   })
   @Patch('read/:notificationId')
   async readNotification(
@@ -77,6 +81,7 @@ export class NotificationsController {
     responseStatus: HttpStatus.OK,
     responseType: GetNotificationSettingsResponseDto,
     responseDesc: 'Notification settings was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('settings')
   async getNotificationSettings(
@@ -90,6 +95,7 @@ export class NotificationsController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Notification settings was updated',
+    role: RoleEnum.GENERAL,
   })
   @Patch('settings')
   async updateNotificationSettings(

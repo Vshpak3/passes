@@ -16,6 +16,7 @@ import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { ExamplePayinCallbackInput } from './callback.types'
 import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardAndExtraRequestDto } from './dto/circle/create-card.dto'
@@ -84,7 +85,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: CircleEncryptionKeyResponseDto,
     responseDesc: 'Encryption key was retrieved',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Get('key')
   async getCircleEncryptionKey(): Promise<CircleEncryptionKeyResponseDto> {
@@ -96,6 +97,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: CircleStatusResponseDto,
     responseDesc: 'A card was created',
+    role: RoleEnum.GENERAL,
   })
   @Post('card/create')
   async createCircleCard(
@@ -116,6 +118,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A card was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete('card/delete/:circleCardId')
   async deleteCircleCard(
@@ -130,6 +133,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetCircleCardsResponseDto,
     responseDesc: 'Cards were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('cards')
   async getCircleCards(
@@ -145,6 +149,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetCircleCardResponseDto,
     responseDesc: 'Card was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('card/:cardId')
   async getCircleCard(
@@ -159,6 +164,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: CircleStatusResponseDto,
     responseDesc: 'A wire bank account was created',
+    role: RoleEnum.GENERAL,
   })
   @Post('bank/create')
   async createCircleBank(
@@ -176,6 +182,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A wire bank account was dleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete('bank/delete/:circleBankId')
   async deleteCircleBank(
@@ -190,6 +197,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetCircleBanksResponseDto,
     responseDesc: 'Wire bank accounts were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('banks')
   async getCircleBanks(
@@ -208,7 +216,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Update from circle was received',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('circle/notification')
   async receiveNotifications(@Body() body: string) {
@@ -241,7 +249,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Updates from circle was registered',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Head('circle/notification')
   async registerNotifications(): Promise<boolean> {
@@ -259,6 +267,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: CircleCardPayinEntryResponseDto,
     responseDesc: 'Circecard payin was initiated',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/entry/circle-card')
   async entryCircleCard(
@@ -278,6 +287,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: PhantomCircleUSDCEntryResponseDto,
     responseDesc: 'Phantom USDC payin was initiated',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/entry/phantom-usdc')
   async entryPhantomCircleUSDC(
@@ -295,6 +305,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: MetamaskCircleUSDCEntryResponseDto,
     responseDesc: 'Metamask USDC was initiated',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/entry/metamask-usdc')
   async entryMetamaskCircleUSDC(
@@ -312,6 +323,7 @@ export class PaymentController {
     responseStatus: HttpStatus.CREATED,
     responseType: MetamaskCircleETHEntryResponseDto,
     responseDesc: 'Metamask ETH was initiated',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/entry/metamask-eth')
   async entryMetamaskCircleETH(
@@ -335,6 +347,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A payin method was set as default',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/default')
   async setDefaultPayinMethod(
@@ -352,6 +365,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetPayinMethodResponseDto,
     responseDesc: 'Default payin method was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('payin/default')
   async getDefaultPayinMethod(
@@ -365,6 +379,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A payout method was set as default',
+    role: RoleEnum.GENERAL,
   })
   @Post('payout/default')
   async setDefaultPayoutMethod(
@@ -382,6 +397,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetPayoutMethodResponseDto,
     responseDesc: 'Default payout method was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('payout/default')
   async getDefaultPayoutMethod(
@@ -401,6 +417,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Payin was cancelled',
+    role: RoleEnum.GENERAL,
   })
   @Post('payin/cancel/:payinId')
   async cancelPayin(
@@ -415,6 +432,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetPayinsResponseDto,
     responseDesc: 'Payins were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('payins')
   async getPayins(
@@ -434,6 +452,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetPayoutsResponseDto,
     responseDesc: 'Payouts were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('payouts')
   async getPayouts(
@@ -448,6 +467,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Payout was made',
+    role: RoleEnum.GENERAL,
   })
   @Get('payout')
   async payout(@Req() req: RequestWithUser): Promise<void> {
@@ -464,6 +484,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Subscription payin method was set',
+    role: RoleEnum.GENERAL,
   })
   @Post('subscription/method/:subscriptionId')
   async setSubscriptionPayinMethod(
@@ -483,6 +504,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Subscription was cancelled',
+    role: RoleEnum.GENERAL,
   })
   @Delete('subscription/:subscriptionId')
   async cancelSubscription(
@@ -497,6 +519,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSubscriptionsResponseDto,
     responseDesc: 'Subscriptions were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('subscriptions')
   async getSubscriptions(
@@ -518,6 +541,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Payin registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('test/register/payin')
   async registerPayin(
@@ -537,6 +561,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Register payin data retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('test/register/payin/data')
   async registerPayinData(): Promise<PayinDataDto> {
@@ -548,7 +573,7 @@ export class PaymentController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Payout rerun',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Get('test/payout/:payoutId')
   async rePayout(@Param('payoutId') payoutId: string): Promise<void> {

@@ -12,9 +12,9 @@ export class JwtAuthService {
   createAccessToken(authRecord: AuthRecord): string {
     const payload: JwtAuthPayload = {
       sub: authRecord.id,
+      isEmailVerified: authRecord.isEmailVerified,
       isVerified: !!authRecord.isVerified,
       isCreator: !!authRecord.isCreator,
-      isEmailVerified: authRecord.isEmailVerified,
       ...BASE_CLAIMS,
     }
     return this.jwtService.sign(payload)

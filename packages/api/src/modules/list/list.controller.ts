@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
 import { CreateListRequestDto } from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
@@ -35,6 +36,7 @@ export class ListController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'List was created',
+    role: RoleEnum.GENERAL,
   })
   @Post('create')
   async createList(
@@ -49,6 +51,7 @@ export class ListController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'List Members added',
+    role: RoleEnum.GENERAL,
   })
   @Post('add-members')
   async addListMembers(
@@ -67,6 +70,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'List Members removed',
+    role: RoleEnum.GENERAL,
   })
   @Delete('members')
   async removeListMembers(
@@ -85,6 +89,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListResponseDto,
     responseDesc: 'List was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('list-info/:listId')
   async getList(
@@ -99,6 +104,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListsResponseDto,
     responseDesc: 'Lists were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('lists-info')
   async getLists(
@@ -116,6 +122,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: GetListMembersResponseDto,
     responseDesc: 'List members was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('members')
   async getListMembers(
@@ -136,6 +143,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'List was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete('list-info/:listId')
   async deleteList(
@@ -150,6 +158,7 @@ export class ListController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'List name was edited',
+    role: RoleEnum.GENERAL,
   })
   @Patch('list-info')
   async editListName(

@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { IsPasswordUserResponseDto } from './dto/is-password.dto'
 import {
   SearchCreatorRequestDto,
@@ -31,6 +32,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A username was set for the current user',
+    role: RoleEnum.GENERAL,
   })
   @Patch('set-username')
   async setUsername(
@@ -45,6 +47,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A display name was set for the current user',
+    role: RoleEnum.GENERAL,
   })
   @Patch('set-display-name')
   async setDisplayName(
@@ -62,7 +65,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A username was checked for validity',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('username/validate')
   async isUsernameTaken(
@@ -76,6 +79,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A user account was deactivated',
+    role: RoleEnum.GENERAL,
   })
   @Get('deactivate')
   async deactivateUser(@Req() req: RequestWithUser): Promise<boolean> {
@@ -87,6 +91,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A user account was activated',
+    role: RoleEnum.GENERAL,
   })
   @Get('activate')
   async activateUser(@Req() req: RequestWithUser): Promise<boolean> {
@@ -98,6 +103,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: SearchCreatorResponseDto,
     responseDesc: 'A list of creators was returned',
+    role: RoleEnum.GENERAL,
   })
   @Post('creator/search')
   async searchCreatorByUsername(
@@ -111,6 +117,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Self was marked as adult',
+    role: RoleEnum.GENERAL,
   })
   @Get('adult')
   async makeAdult(@Req() req: RequestWithUser): Promise<void> {
@@ -122,6 +129,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: String,
     responseDesc: 'User id retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('username/:username')
   async getUserId(@Param('username') username: string): Promise<string> {
@@ -133,6 +141,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: IsPasswordUserResponseDto,
     responseDesc: 'If user uses a password retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('is-password')
   async isPasswordUser(

@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import {
@@ -47,6 +48,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
     responseDesc: 'A pass was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createPass(
@@ -61,6 +63,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: MintPassResponseDto,
     responseDesc: 'A pass was minted',
+    role: RoleEnum.GENERAL,
   })
   @Post('mint')
   async mintPass(
@@ -75,7 +78,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: GetPassesResponseDto,
     responseDesc: 'A list of creator passes was retrieved',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('created')
   async getCreatorPasses(
@@ -91,7 +94,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: GetPassesResponseDto,
     responseDesc: 'A list of external passes was retrieved',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external')
   async getExternalPasses(
@@ -107,6 +110,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldingsResponseDto,
     responseDesc: 'A list of pass holdings was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('passholdings')
   async getPassHoldings(
@@ -127,6 +131,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'A pass was updated',
+    role: RoleEnum.GENERAL,
   })
   @Patch('pass-info/:passId')
   async updatePass(
@@ -142,6 +147,7 @@ export class PassController {
     responseStatus: HttpStatus.CREATED,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Create pass payin was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('buy/create')
   async registerBuyPass(
@@ -160,6 +166,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Data for register create pass was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('buy/create/data')
   async registerBuyPassData(
@@ -177,6 +184,7 @@ export class PassController {
     responseStatus: HttpStatus.CREATED,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Renew pass payin was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('buy/renew')
   async registerRenewPass(
@@ -195,6 +203,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Data for register renew pass was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('buy/renew/data')
   async registerRenewPassData(
@@ -212,6 +221,7 @@ export class PassController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'Pass subscription was added',
+    role: RoleEnum.GENERAL,
   })
   @Post('subscription/add/:passHolderId')
   async addPassSubscription(
@@ -226,6 +236,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A pass was pinned',
+    role: RoleEnum.GENERAL,
   })
   @Get('pin/:passId')
   async pinPass(
@@ -240,6 +251,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A pass was unpinned',
+    role: RoleEnum.GENERAL,
   })
   @Get('unpin/:passId')
   async unpinPass(
@@ -254,6 +266,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
     responseDesc: 'A pass was unpinned',
+    role: RoleEnum.GENERAL,
   })
   @Get('passholders')
   async getPassHolders(

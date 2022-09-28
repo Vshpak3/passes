@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { EthService } from '../eth/eth.service'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
 import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
@@ -41,6 +42,7 @@ export class WalletController {
     responseStatus: HttpStatus.OK,
     responseType: GetWalletResponseDto,
     responseDesc: 'User custodial wallet retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('custodial')
   async getUserCustodialWallet(
@@ -58,6 +60,7 @@ export class WalletController {
     responseStatus: HttpStatus.OK,
     responseType: GetWalletResponseDto,
     responseDesc: 'Default wallet retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('find-default')
   async getDefaultWallet(
@@ -75,6 +78,7 @@ export class WalletController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Default wallet set',
+    role: RoleEnum.GENERAL,
   })
   @Post('set-default')
   async setDefaultWallet(
@@ -93,6 +97,7 @@ export class WalletController {
     responseStatus: HttpStatus.CREATED,
     responseType: Boolean,
     responseDesc: 'Wallet was created',
+    role: RoleEnum.GENERAL,
   })
   @Post('authenticated')
   async createWallet(
@@ -107,6 +112,7 @@ export class WalletController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Wallet was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete('ownership/:walletId')
   async removeWallet(
@@ -121,6 +127,7 @@ export class WalletController {
     responseStatus: HttpStatus.CREATED,
     responseType: AuthWalletResponseDto,
     responseDesc: 'Wallet Auth Message created',
+    role: RoleEnum.GENERAL,
   })
   @Post('auth')
   async authMessage(
@@ -138,6 +145,7 @@ export class WalletController {
     responseStatus: HttpStatus.OK,
     responseType: GetWalletsResponseDto,
     responseDesc: 'Wallets were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('wallets')
   async getWallets(
@@ -153,6 +161,7 @@ export class WalletController {
     responseStatus: HttpStatus.CREATED,
     responseType: CreateWalletRequestDto,
     responseDesc: 'Unchecked wallet was created',
+    role: RoleEnum.GENERAL,
   })
   @Post('unauthenticated')
   async createUnauthenticatedWallet(

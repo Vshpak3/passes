@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
@@ -46,6 +47,7 @@ export class MessagesController {
     responseStatus: HttpStatus.CREATED,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Sending message was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async sendMessage(
@@ -63,6 +65,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Sending message data was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('data')
   async sendMessageData(
@@ -80,6 +83,7 @@ export class MessagesController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'Batch Message was enqueued',
+    role: RoleEnum.GENERAL,
   })
   @Post('batch')
   async massSend(
@@ -97,6 +101,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetChannelResponseDto,
     responseDesc: 'Channel was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('channel/create')
   async getOrCreateChannel(
@@ -114,6 +119,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetChannelResponseDto,
     responseDesc: 'Channel was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('channel')
   async getChannel(
@@ -131,6 +137,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Channel settings was updated ',
+    role: RoleEnum.GENERAL,
   })
   @Patch('channel/settings')
   async updateChannelSettings(
@@ -148,6 +155,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetFreeMesssagesResponseDto,
     responseDesc: 'Channel settings was updated ',
+    role: RoleEnum.GENERAL,
   })
   @Get('free-messages/:channelId')
   async getFreeMessages(
@@ -164,6 +172,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Status was set as read',
+    role: RoleEnum.GENERAL,
   })
   @Get('read/:channelId')
   async readMessages(
@@ -178,6 +187,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Subscription to messages was made',
+    role: RoleEnum.GENERAL,
   })
   @Post('subscribe-messages')
   async subscribeMessages(): Promise<void> {
@@ -189,6 +199,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Subscription to messages was made',
+    role: RoleEnum.GENERAL,
   })
   @Post('subscribe-channel')
   async subscribeChannelUpdates(): Promise<void> {
@@ -200,6 +211,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetChannelsResponseDto,
     responseDesc: 'Channels were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('channels')
   async getChannels(
@@ -220,6 +232,7 @@ export class MessagesController {
     responseStatus: HttpStatus.CREATED,
     responseType: RegisterPayinResponseDto,
     responseDesc: 'Purcuase post payin was registered',
+    role: RoleEnum.GENERAL,
   })
   @Post('pay/purchase')
   async registerPurchaseMessage(
@@ -238,6 +251,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: PayinDataDto,
     responseDesc: 'Data for register purchase message was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('pay/data/purchase')
   async registerPurchaseMessageData(
@@ -255,6 +269,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetMessagesResponseDto,
     responseDesc: 'Messages were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('messages')
   async getMessages(
@@ -274,6 +289,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetMessageResponseDto,
     responseDesc: 'Gallery view was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('message/retreive/:messageId')
   async getMessage(
@@ -288,6 +304,7 @@ export class MessagesController {
     responseStatus: HttpStatus.OK,
     responseType: GetPaidMessageHistoryResponseDto,
     responseDesc: 'Paid message history was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('history')
   async getPaidMessageHistory(

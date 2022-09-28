@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreatorStatsService } from './creator-stats.service'
 import {
   GetCreatorEarningResponseDto,
@@ -29,6 +30,7 @@ export class CreatorStatsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningResponseDto,
     responseDesc: 'Balance was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('balance')
   async getBalance(
@@ -42,6 +44,7 @@ export class CreatorStatsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningsResponseDto,
     responseDesc: 'Earnings history was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('history/earnings')
   async getEarningsHistory(
@@ -63,7 +66,7 @@ export class CreatorStatsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorStatsResponseDto,
     responseDesc: 'Current stats returned',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Get('stats/:creatorId')
   async getCreatorStats(

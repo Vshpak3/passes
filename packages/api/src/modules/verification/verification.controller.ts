@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
 import { GetPersonaStatusResponseDto } from './dto/get-persona-status.dto'
 import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
@@ -19,6 +20,7 @@ export class VerificationController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'Inquiry was submitted',
+    role: RoleEnum.GENERAL,
   })
   @Post('persona/inquiry')
   async submitPersonaInquiry(
@@ -36,6 +38,7 @@ export class VerificationController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Check was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('persona/inquiry/check')
   async canSubmitPersona(@Req() req: RequestWithUser): Promise<boolean> {
@@ -47,6 +50,7 @@ export class VerificationController {
     responseStatus: HttpStatus.OK,
     responseType: GetPersonaStatusResponseDto,
     responseDesc: 'Persona KYC verifications for user were refreshed',
+    role: RoleEnum.GENERAL,
   })
   @Get('persona/refresh')
   async refreshPersonaVerifications(
@@ -64,6 +68,7 @@ export class VerificationController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorVerificationStepResponseDto,
     responseDesc: 'Creator verification step was submitted',
+    role: RoleEnum.GENERAL,
   })
   @Post('creator-verification/step')
   async submitCreatorVerificationStep(
@@ -82,6 +87,7 @@ export class VerificationController {
     responseStatus: HttpStatus.CREATED,
     responseType: GetCreatorVerificationStepResponseDto,
     responseDesc: 'Current creator verification step was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get('creator-verification/step')
   async getCreatorVerificationStep(

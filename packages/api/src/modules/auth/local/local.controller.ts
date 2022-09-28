@@ -6,6 +6,7 @@ import { RequestWithUser } from '../../../types/request'
 import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
+import { RoleEnum } from '../core/auth.metadata'
 import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
 import { ConfirmResetPasswordRequestDto } from '../dto/local/confirm-reset-password.dto'
 import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
@@ -31,7 +32,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.CREATED,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access tokens for new account',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('signup')
   async createEmailPasswordUser(
@@ -55,7 +56,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access tokens for login',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('login')
   async loginWithEmailPassword(
@@ -79,7 +80,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Sent email',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('init-reset-password')
   async initPasswordReset(
@@ -95,7 +96,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access tokens for password reset',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('confirm-reset-password')
   async confirmPasswordReset(
@@ -119,6 +120,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Change password for current user',
+    role: RoleEnum.GENERAL,
   })
   @Post('change-password')
   async changePassword(

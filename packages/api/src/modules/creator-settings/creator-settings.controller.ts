@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreatorSettingsService } from './creator-settings.service'
 import { GetCreatorSettingsResponseDto } from './dto/get-creator-settings.dto'
 import { UpdateCreatorSettingsRequestDto } from './dto/update-creator-settings.dto'
@@ -19,6 +20,7 @@ export class CreatorSettingsController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorSettingsResponseDto,
     responseDesc: 'Creator Settings was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Get()
   async getCreatorSettings(
@@ -32,6 +34,7 @@ export class CreatorSettingsController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Creator Settings was updated',
+    role: RoleEnum.GENERAL,
   })
   @Patch()
   async updateCreatorSettings(

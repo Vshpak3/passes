@@ -13,6 +13,7 @@ import { Request, Response } from 'express'
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
+import { RoleEnum } from '../core/auth.metadata'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
 import { TwitterOauthGuard } from './twitter-oauth.guard'
@@ -32,7 +33,7 @@ export class TwitterOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Start the twitter oauth flow',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @UseGuards(TwitterOauthGuard)
   @Get()
@@ -45,7 +46,7 @@ export class TwitterOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Redirect from twitter oauth flow',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @ApiBearerAuth()
   @UseGuards(TwitterOauthGuard)

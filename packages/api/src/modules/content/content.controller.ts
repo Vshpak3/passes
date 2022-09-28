@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
@@ -30,6 +31,7 @@ export class ContentController {
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
     responseDesc: 'Content was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createContent(
@@ -47,6 +49,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'Profile image was signed',
+    role: RoleEnum.GENERAL,
   })
   @Get('sign/profile/image')
   async preSignProfileImage(
@@ -64,6 +67,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'Profile banner was signed',
+    role: RoleEnum.GENERAL,
   })
   @Get('sign/profile/banner')
   async preSignProfileBanner(
@@ -81,6 +85,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'Pass image was signed',
+    role: RoleEnum.GENERAL,
   })
   @Get('sign/pass/:passId')
   async preSignPass(
@@ -96,6 +101,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'Content url was signed',
+    role: RoleEnum.GENERAL,
   })
   @Get('sign/content/:contentType')
   async preSignContent(
@@ -114,6 +120,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'W-9 url was signed',
+    role: RoleEnum.GENERAL,
   })
   @Get('sign/w9')
   async preSignW9(
@@ -128,6 +135,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetContentsResponseDto,
     responseDesc: 'Creator vault was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('vault')
   async getVaultContent(

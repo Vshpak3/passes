@@ -11,6 +11,7 @@ import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
 import { AdminGuard } from './admin.guard'
 import { AdminService } from './admin.service'
@@ -42,6 +43,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access token for impersonated user',
+    role: RoleEnum.GENERAL,
   })
   @Post('impersonate')
   async impersonateUser(
@@ -61,6 +63,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'User was marked as adult',
+    role: RoleEnum.GENERAL,
   })
   @Post('adult')
   async flagAsAdult(@Body() body: AdminDto): Promise<void> {
@@ -72,6 +75,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'User was set up as a creator',
+    role: RoleEnum.GENERAL,
   })
   @Post('creator')
   async setupCreator(@Body() body: AdminDto): Promise<void> {
@@ -83,6 +87,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass was added',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/add')
   async addExternalPass(
@@ -96,6 +101,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass was updated',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/update')
   async updateExternalPass(
@@ -109,6 +115,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/delete')
   async deleteExternalPass(
@@ -122,6 +129,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass was added',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/address/add')
   async addExternalPassAddress(
@@ -135,6 +143,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/address/delete')
   async deleteExternalPassAddress(
@@ -148,6 +157,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass for user was added',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/user/add')
   async addUserExternalPass(
@@ -161,6 +171,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'External pass for user deleted',
+    role: RoleEnum.GENERAL,
   })
   @Post('external-pass/user/delete')
   async deleteUserExternalPass(
@@ -174,6 +185,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Creator fee was set',
+    role: RoleEnum.GENERAL,
   })
   @Post('creator-fee/set')
   async setCreatorFee(@Body() body: SetCreatorFeeRequestDto): Promise<boolean> {
@@ -185,6 +197,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorFeeResponseDto,
     responseDesc: 'Creator fee was received',
+    role: RoleEnum.GENERAL,
   })
   @Post('creator-fee/get')
   async getCreatorFee(
@@ -198,6 +211,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Unprocessed chargebacks were retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('chargeback/unprocessed')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -210,6 +224,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Chargeback was updated',
+    role: RoleEnum.GENERAL,
   })
   @Post('chargeback/update')
   async updateChargeback(

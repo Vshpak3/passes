@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
 import {
   GetFanWallRequestDto,
@@ -29,6 +30,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A fan wall comment was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createFanWallComment(
@@ -46,6 +48,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: GetFanWallResponseDto,
     responseDesc: 'A list of fan wall comments was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('profile')
   async getFanWallForCreator(
@@ -64,6 +67,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A fan wall comment was hidden',
+    role: RoleEnum.GENERAL,
   })
   @Patch(':fanWallCommentId')
   async hideFanWallComment(
@@ -81,6 +85,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A fan wall comment was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete(':fanWallCommentId')
   async deleteFanWallComment(

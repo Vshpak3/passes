@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
 import {
   GetProfileRequestDto,
@@ -29,6 +30,7 @@ export class ProfileController {
     responseStatus: HttpStatus.CREATED,
     responseType: Boolean,
     responseDesc: 'A profile was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createOrUpdateProfile(
@@ -46,7 +48,7 @@ export class ProfileController {
     responseStatus: HttpStatus.OK,
     responseType: GetProfileResponseDto,
     responseDesc: 'A profile was retrieved',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('search')
   async findProfile(
@@ -64,6 +66,7 @@ export class ProfileController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A profile was deactivated',
+    role: RoleEnum.GENERAL,
   })
   @Delete('deactivate')
   async deactivateProfile(@Req() req: RequestWithUser): Promise<boolean> {
@@ -75,6 +78,7 @@ export class ProfileController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A profile was activated',
+    role: RoleEnum.GENERAL,
   })
   @Patch('activate')
   async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
@@ -86,6 +90,7 @@ export class ProfileController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'Profile status was returned',
+    role: RoleEnum.GENERAL,
   })
   @Get('active')
   async isProfileActive(@Req() req: RequestWithUser): Promise<boolean> {

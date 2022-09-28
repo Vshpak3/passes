@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { RoleEnum } from '../auth/core/auth.metadata'
 import { CommentService } from './comment.service'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import {
@@ -29,6 +30,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A comment was created',
+    role: RoleEnum.GENERAL,
   })
   @Post()
   async createComment(
@@ -46,6 +48,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: GetCommentsForPostResponseDto,
     responseDesc: 'A list of comments was retrieved',
+    role: RoleEnum.GENERAL,
   })
   @Post('post')
   async findCommentsForPost(
@@ -63,6 +66,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A comment was hidden',
+    role: RoleEnum.GENERAL,
   })
   @Patch('hide/:postId/:commentId')
   async hideComment(
@@ -78,6 +82,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: Boolean,
     responseDesc: 'A comment was deleted',
+    role: RoleEnum.GENERAL,
   })
   @Delete('delete/:postId/:commentId')
   async deleteComment(

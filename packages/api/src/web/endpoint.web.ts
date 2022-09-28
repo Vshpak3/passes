@@ -1,20 +1,35 @@
-import { applyDecorators, HttpCode } from '@nestjs/common'
+import { applyDecorators, HttpCode, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-import { AllowUnauthorizedRequest } from '../modules/auth/core/auth.metadata'
+import { Role, RoleEnum } from '../modules/auth/core/auth.metadata'
+import { JwtRefreshGuard } from '../modules/auth/jwt/jwt-refresh.guard'
+import { JwtUnverifiedGuard } from '../modules/auth/jwt/jwt-unverified.guard'
 
 class ApiOptions {
   summary: string
   responseStatus: number
   responseType: any
   responseDesc: string
-  allowUnauthorizedRequest?: boolean
+  role: RoleEnum
 }
 
 export function ApiEndpoint(options: ApiOptions) {
-  const auth = options.allowUnauthorizedRequest
-    ? AllowUnauthorizedRequest()
-    : ApiBearerAuth()
+  let authDecorators
+  switch (options.role) {
+    case RoleEnum.NO_AUTH:
+      authDecorators = []
+      break
+    case RoleEnum.UNVERIFIED:
+      authDecorators = [ApiBearerAuth, UseGuards(JwtUnverifiedGuard)]
+      break
+    case RoleEnum.GENERAL:
+    case RoleEnum.CREATOR_ONLY:
+      authDecorators = [ApiBearerAuth]
+      break
+    case RoleEnum.REFRESH:
+      authDecorators = [ApiBearerAuth, UseGuards(JwtRefreshGuard)]
+      break
+  }
 
   return applyDecorators(
     ApiOperation({ summary: options.summary }),
@@ -24,6 +39,7 @@ export function ApiEndpoint(options: ApiOptions) {
       description: options.responseDesc,
     }),
     HttpCode(options.responseStatus),
-    auth,
+    Role(options.role),
+    ...authDecorators,
   )
 }

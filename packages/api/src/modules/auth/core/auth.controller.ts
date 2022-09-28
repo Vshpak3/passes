@@ -6,9 +6,8 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
 } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { RequestWithUser } from '../../../types/request'
@@ -23,9 +22,8 @@ import { RefreshAuthTokenRequestDto } from '../dto/refresh-auth-token.dto'
 import { SetEmailRequestDto } from '../dto/set-email.dto'
 import { VerifyEmailDto as VerifyEmailRequestDto } from '../dto/verify-email.dto'
 import { JwtAuthService } from '../jwt/jwt-auth.service'
-import { JwtRefreshGuard } from '../jwt/jwt-refresh.guard'
 import { JwtRefreshService } from '../jwt/jwt-refresh.service'
-import { JwtUnverifiedGuard } from '../jwt/jwt-unverified.guard'
+import { RoleEnum } from './auth.metadata'
 import { AuthService } from './auth.service'
 import { AuthRecord } from './auth-record'
 
@@ -48,10 +46,8 @@ export class AuthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Sets the user email',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.UNVERIFIED,
   })
-  @ApiBearerAuth()
-  @UseGuards(JwtUnverifiedGuard)
   @Post('set-email')
   async setUserEmail(
     @Req() req: RequestWithUser,
@@ -68,7 +64,7 @@ export class AuthController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'A email was verified',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('verify-email')
   async verifyUserEmail(
@@ -93,10 +89,8 @@ export class AuthController {
     responseStatus: HttpStatus.CREATED,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Creates a new user',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.UNVERIFIED,
   })
-  @ApiBearerAuth()
-  @UseGuards(JwtUnverifiedGuard)
   @Post('create-user')
   async createUser(
     @Req() req: RequestWithUser,
@@ -121,6 +115,7 @@ export class AuthController {
     responseStatus: HttpStatus.OK,
     responseType: GetUserResponseDto,
     responseDesc: 'Gets the current authenticated user',
+    role: RoleEnum.GENERAL,
   })
   @Get('user')
   async getCurrentUser(
@@ -137,10 +132,8 @@ export class AuthController {
     responseStatus: HttpStatus.CREATED,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Refresh token token was created',
-    allowUnauthorizedRequest: true,
+    role: RoleEnum.REFRESH,
   })
-  @ApiBearerAuth()
-  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refreshAccessToken(
     @Req() req: RequestWithUser,
