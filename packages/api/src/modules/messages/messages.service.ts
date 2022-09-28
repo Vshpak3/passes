@@ -73,6 +73,7 @@ import {
 } from './error/message.error'
 
 const MAX_CHANNELS_PER_REQUEST = 10
+const MAX_MESSAGES_PER_REQUEST = 10
 
 @Injectable()
 export class MessagesService {
@@ -943,6 +944,7 @@ export class MessagesService {
         { column: `${MessageEntity.table}.sent_at`, order: 'desc' },
         { column: `${MessageEntity.table}.id`, order: 'desc' },
       ])
+      .limit(MAX_MESSAGES_PER_REQUEST)
 
     if (contentOnly) {
       query = query
@@ -1088,6 +1090,7 @@ export class MessagesService {
         { column: 'created_at', order: 'desc' },
         { column: 'id', order: 'desc' },
       ])
+      .limit(MAX_MESSAGES_PER_REQUEST)
     if (createdAt) {
       query = query.andWhere('created_at', '<=', createdAt)
     }
