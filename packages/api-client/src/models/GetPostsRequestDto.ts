@@ -59,7 +59,7 @@ export function GetPostsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'scheduledOnly': json['scheduledOnly'],
     };
@@ -74,7 +74,7 @@ export function GetPostsRequestDtoToJSON(value?: GetPostsRequestDto | null): any
     }
     return {
         
-        'createdAt': value.createdAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'scheduledOnly': value.scheduledOnly,
     };

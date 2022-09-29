@@ -102,7 +102,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'contentIds': json['contentIds'],
         'numPurchases': json['numPurchases'],
         'earningsPurchases': json['earningsPurchases'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -122,7 +122,7 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'contentIds': value.contentIds,
         'numPurchases': value.numPurchases,
         'earningsPurchases': value.earningsPurchases,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

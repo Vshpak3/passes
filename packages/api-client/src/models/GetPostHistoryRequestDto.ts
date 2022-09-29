@@ -62,8 +62,8 @@ export function GetPostHistoryRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'postId': json['postId'],
-        'start': json['start'],
-        'end': json['end'],
+        'start': (new Date(json['start'])),
+        'end': (new Date(json['end'])),
     };
 }
 
@@ -77,8 +77,8 @@ export function GetPostHistoryRequestDtoToJSON(value?: GetPostHistoryRequestDto 
     return {
         
         'postId': value.postId,
-        'start': value.start,
-        'end': value.end,
+        'start': (value.start.toISOString()),
+        'end': (value.end.toISOString()),
     };
 }
 

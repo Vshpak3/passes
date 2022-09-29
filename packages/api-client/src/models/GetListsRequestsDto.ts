@@ -105,8 +105,8 @@ export function GetListsRequestsDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
@@ -124,8 +124,8 @@ export function GetListsRequestsDtoToJSON(value?: GetListsRequestsDto | null): a
     }
     return {
         
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,

@@ -81,10 +81,10 @@ export function GetPaidMessagesResponseDtoFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'paidMessages': ((json['paidMessages'] as Array<any>).map(PaidMessageDtoFromJSON)),
-        'sentAt': json['sentAt'],
+        'sentAt': (new Date(json['sentAt'])),
     };
 }
 
@@ -98,10 +98,10 @@ export function GetPaidMessagesResponseDtoToJSON(value?: GetPaidMessagesResponse
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'paidMessages': ((value.paidMessages as Array<any>).map(PaidMessageDtoToJSON)),
-        'sentAt': value.sentAt,
+        'sentAt': (value.sentAt.toISOString()),
     };
 }
 

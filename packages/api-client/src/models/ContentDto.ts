@@ -99,7 +99,7 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'signedUrl': !exists(json, 'signedUrl') ? undefined : json['signedUrl'],
         'contentType': json['contentType'],
         'index': json['index'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -117,7 +117,7 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
         'index': value.index,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

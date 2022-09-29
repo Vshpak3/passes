@@ -126,7 +126,7 @@ export function NotificationDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'status': json['status'],
         'type': json['type'],
         'message': json['message'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -146,7 +146,7 @@ export function NotificationDtoToJSON(value?: NotificationDto | null): any {
         'status': value.status,
         'type': value.type,
         'message': value.message,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

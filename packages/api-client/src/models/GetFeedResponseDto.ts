@@ -81,8 +81,8 @@ export function GetFeedResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'posts': ((json['posts'] as Array<any>).map(PostDtoFromJSON)),
         'count': json['count'],
     };
@@ -98,8 +98,8 @@ export function GetFeedResponseDtoToJSON(value?: GetFeedResponseDto | null): any
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'posts': ((value.posts as Array<any>).map(PostDtoToJSON)),
         'count': value.count,
     };

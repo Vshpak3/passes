@@ -128,7 +128,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'channelId': !exists(json, 'channelId') ? undefined : json['channelId'],
-        'recent': json['recent'],
+        'recent': (new Date(json['recent'])),
         'channelMemberId': json['channelMemberId'],
         'userId': json['userId'],
         'otherUserId': json['otherUserId'],
@@ -152,7 +152,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
     return {
         
         'channelId': value.channelId,
-        'recent': value.recent,
+        'recent': (value.recent.toISOString()),
         'channelMemberId': value.channelMemberId,
         'userId': value.userId,
         'otherUserId': value.otherUserId,

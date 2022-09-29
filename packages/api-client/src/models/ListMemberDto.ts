@@ -86,7 +86,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'username': json['username'],
         'displayName': json['displayName'],
         'follow': !exists(json, 'follow') ? undefined : json['follow'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -104,7 +104,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'username': value.username,
         'displayName': value.displayName,
         'follow': value.follow,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

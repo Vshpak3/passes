@@ -48,6 +48,7 @@ export interface DtoOptions {
   optional?: boolean
   forceLower?: boolean
   nullable?: boolean
+  format?: string
 }
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function DtoProperty(options: DtoOptions) {
@@ -73,10 +74,22 @@ export function DtoProperty(options: DtoOptions) {
       apiProperties.isArray = true
     }
     decorators.push(decoratorMap[type]('all', { each: isArray }))
-    apiProperties.type = type
-    if (type === 'uuid') {
-      apiProperties.type = 'string'
-      apiProperties.format = 'uuid'
+    switch (type) {
+      case 'uuid':
+        apiProperties.type = 'string'
+        apiProperties.format = 'uuid'
+        break
+      case 'date':
+        apiProperties.type = 'string'
+        apiProperties.format = 'date-time'
+        break
+      default:
+        apiProperties.type = type
+        break
+    }
+
+    if (options.format) {
+      apiProperties.format = options.format
     }
   }
 

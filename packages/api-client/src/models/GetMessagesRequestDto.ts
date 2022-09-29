@@ -80,8 +80,8 @@ export function GetMessagesRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
-        'sentAt': !exists(json, 'sentAt') ? undefined : json['sentAt'],
-        'dateLimit': !exists(json, 'dateLimit') ? undefined : json['dateLimit'],
+        'sentAt': !exists(json, 'sentAt') ? undefined : (new Date(json['sentAt'])),
+        'dateLimit': !exists(json, 'dateLimit') ? undefined : (new Date(json['dateLimit'])),
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
         'pending': json['pending'],
@@ -98,8 +98,8 @@ export function GetMessagesRequestDtoToJSON(value?: GetMessagesRequestDto | null
     return {
         
         'lastId': value.lastId,
-        'sentAt': value.sentAt,
-        'dateLimit': value.dateLimit,
+        'sentAt': value.sentAt === undefined ? undefined : (value.sentAt.toISOString()),
+        'dateLimit': value.dateLimit === undefined ? undefined : (value.dateLimit.toISOString()),
         'channelId': value.channelId,
         'contentOnly': value.contentOnly,
         'pending': value.pending,

@@ -171,8 +171,8 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'remainingSupply': json['remainingSupply'],
         'freetrial': json['freetrial'],
         'collectionAddress': json['collectionAddress'],
-        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : json['pinnedAt'],
-        'createdAt': json['createdAt'],
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
+        'createdAt': (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
     };
@@ -199,8 +199,8 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'remainingSupply': value.remainingSupply,
         'freetrial': value.freetrial,
         'collectionAddress': value.collectionAddress,
-        'pinnedAt': value.pinnedAt,
-        'createdAt': value.createdAt,
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
+        'createdAt': (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
     };

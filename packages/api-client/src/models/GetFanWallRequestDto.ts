@@ -59,7 +59,7 @@ export function GetFanWallRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'creatorId': json['creatorId'],
     };
@@ -74,7 +74,7 @@ export function GetFanWallRequestDtoToJSON(value?: GetFanWallRequestDto | null):
     }
     return {
         
-        'createdAt': value.createdAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'creatorId': value.creatorId,
     };

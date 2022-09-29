@@ -125,7 +125,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'paid': json['paid'],
         'pending': json['pending'],
         'reverted': json['reverted'],
-        'sentAt': json['sentAt'],
+        'sentAt': (new Date(json['sentAt'])),
     };
 }
 
@@ -147,7 +147,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'paid': value.paid,
         'pending': value.pending,
         'reverted': value.reverted,
-        'sentAt': value.sentAt,
+        'sentAt': (value.sentAt.toISOString()),
     };
 }
 

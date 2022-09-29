@@ -86,8 +86,8 @@ export function GetListMembersResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
     return {
         
         'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : json['createdAt'],
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'listMembers': ((json['listMembers'] as Array<any>).map(ListMemberDtoFromJSON)),
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -104,8 +104,8 @@ export function GetListMembersResponseDtoToJSON(value?: GetListMembersResponseDt
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'listMembers': ((value.listMembers as Array<any>).map(ListMemberDtoToJSON)),
         'username': value.username,
         'displayName': value.displayName,

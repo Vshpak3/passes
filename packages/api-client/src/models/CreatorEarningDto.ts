@@ -90,7 +90,7 @@ export function CreatorEarningDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'userId': json['userId'],
         'amount': json['amount'],
         'type': json['type'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -106,7 +106,7 @@ export function CreatorEarningDtoToJSON(value?: CreatorEarningDto | null): any {
         'userId': value.userId,
         'amount': value.amount,
         'type': value.type,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

@@ -110,7 +110,7 @@ export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
-        'createdAt': json['createdAt'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -130,7 +130,7 @@ export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
-        'createdAt': value.createdAt,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

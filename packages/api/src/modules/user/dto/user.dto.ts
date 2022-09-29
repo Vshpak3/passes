@@ -27,7 +27,7 @@ export class UserDto {
 
   @IsEmail()
   @Length(1, USER_EMAIL_LENGTH)
-  @DtoProperty({ type: 'string', forceLower: true })
+  @DtoProperty({ type: 'string', format: 'email', forceLower: true })
   email: string
 
   @Length(1, USER_USERNAME_LENGTH)
