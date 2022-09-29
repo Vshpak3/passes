@@ -1,4 +1,4 @@
-import { Length, Max, Min } from 'class-validator'
+import { IsInt, Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
@@ -40,6 +40,7 @@ export class CreatePassRequestDto {
 
   @Min(500)
   @Max(3000)
+  @IsInt()
   @DtoProperty({ type: 'number' })
   royalties: number
 }

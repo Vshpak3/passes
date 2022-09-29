@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { EventEmitter } from 'events'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import {
@@ -93,7 +94,7 @@ export class NotificationsController {
   @ApiEndpoint({
     summary: 'Update notification settings',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Notification settings was updated',
     role: RoleEnum.GENERAL,
   })
@@ -101,10 +102,12 @@ export class NotificationsController {
   async updateNotificationSettings(
     @Req() req: RequestWithUser,
     @Body() updateNotificationSettingsDto: UpdateNotificationSettingsRequestDto,
-  ): Promise<boolean> {
-    return await this.notificationsService.updateNotificationSettings(
-      req.user.id,
-      updateNotificationSettingsDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.notificationsService.updateNotificationSettings(
+        req.user.id,
+        updateNotificationSettingsDto,
+      ),
     )
   }
 }

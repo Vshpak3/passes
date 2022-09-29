@@ -256,7 +256,7 @@ export class MessagesService {
       query = query.andWhere(`${ChannelMemberEntity.table}.unread`, true)
     }
 
-    if (search) {
+    if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
       query = query.andWhere(function () {

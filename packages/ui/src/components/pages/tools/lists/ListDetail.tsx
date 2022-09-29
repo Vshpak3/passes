@@ -1,15 +1,15 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @next/next/no-img-element */
+import { Fade, Popper } from "@mui/material"
 import {
-  FollowApi,
+  GetListMembersRequestDtoOrderEnum,
   GetListMembersRequestDtoOrderTypeEnum,
   GetListMembersResponseDto,
   GetListResponseDto,
   ListApi,
   ListMemberDto
 } from "@passes/api-client"
-import classNames from "classnames"
-import { useRouter } from "next/router"
+import { debounce } from "lodash"
 import ChevronRight from "public/icons/chevron-right-icon.svg"
 import EditIcon from "public/icons/edit-icon.svg"
 import PlusIcon from "public/icons/plus-sign.svg"
@@ -17,9 +17,9 @@ import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
-import Skeleton from "src/components/molecules/Skeleton"
 
 import ListItem from "./ListItem"
+import SortListPopup from "./SortListPopup"
 
 type ListDetailProps = {
   id?: string
@@ -27,72 +27,163 @@ type ListDetailProps = {
 
 const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
-  const [listAlreadyMember, setListAlreadyMember] = useState<
-    Array<ListMemberDto>
-  >([])
-  const [fans, setFans] = useState<Array<ListMemberDto>>([])
-  const [isFetchingFanRequest, setIsFetchingFanRequest] = useState(true)
-  const [fanSelectionList, setFanSelectionList] = useState<Array<string>>([])
-  const [isEditingListName, setIsEditingListName] = useState<boolean>(false)
   const [listName, setListName] = useState<string>("")
 
+  const [listMembers, setListMembers] = useState<Array<ListMemberDto>>([])
+  const [resets, setResets] = useState(0)
+
+  const [orderType, setOrderType] =
+    useState<GetListMembersRequestDtoOrderTypeEnum>(
+      GetListMembersRequestDtoOrderTypeEnum.CreatedAt
+    )
+
+  const [order, setOrder] = useState<GetListMembersRequestDtoOrderEnum>(
+    GetListMembersRequestDtoOrderEnum.Asc
+  )
+  const [lastId, setLastId] = useState<string | undefined>(undefined)
+  const [search, setSearch] = useState<string>("")
+  const [createdAt, setCreatedAt] = useState<Date | undefined>(undefined)
+  const [username, setUsername] = useState<string | undefined>(undefined)
+
+  const [isEditingListName, setIsEditingListName] = useState<boolean>(false)
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
+  const [anchorSortPopperEl, setAnchorSortPopperEl] =
+    useState<null | HTMLElement>(null)
+
   const listNameRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
 
-  const fetchData = useCallback(async () => {
-    const followApi = new FollowApi()
+  const fetchInfo = useCallback(async () => {
     const listApi = new ListApi()
-
-    try {
-      setIsFetchingFanRequest(true)
-      if (id) {
-        try {
-          // Get list information by ID
-          const listInfoRes: GetListResponseDto = await listApi.getList({
-            listId: id
-          })
-          setListInfo(listInfoRes)
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          listNameRef.current!.value = listInfoRes.name
-          setListName(listInfoRes.name)
-          // Get list Item in a list by listId
-          const listAlreadyMemberRes: GetListMembersResponseDto =
-            await listApi.getListMembers({
-              getListMembersRequestDto: {
-                listId: id,
-                order: "desc",
-                orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt
-              }
-            })
-          setListAlreadyMember(listAlreadyMemberRes.listMembers)
-        } catch (error) {
-          console.error("error ", error)
-        }
+    if (id) {
+      try {
+        // Get list information by ID
+        const listInfoRes: GetListResponseDto = await listApi.getList({
+          listId: id
+        })
+        setListInfo(listInfoRes)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        listNameRef.current!.value = listInfoRes.name
+        setListName(listInfoRes.name)
+      } catch (error) {
+        console.error("error ", error)
       }
-      const followRes: GetListMembersResponseDto = await followApi.searchFans({
-        searchFollowRequestDto: {
-          order: "desc",
-          orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt
-        }
-      })
-      setFans(followRes.listMembers)
-      setIsFetchingFanRequest(false)
-    } catch (error) {
-      console.error(error)
-      setIsFetchingFanRequest(false)
     }
   }, [id])
 
-  const handleChangeSearchFan = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toLowerCase()
-    if (value.trim().length > 0) {
-      const filteredList = fans.filter((elm: ListMemberDto) =>
-        elm.displayName?.toLowerCase().includes(value)
-      )
-      setFans([...filteredList])
-    } else {
-      fetchData()
+  const fetchMembers = useCallback(async () => {
+    const listApi = new ListApi()
+    if (!isLoadingMore) {
+      setIsLoadingMore(true)
+      const curResets = resets
+      try {
+        if (id) {
+          try {
+            // Get list Item in a list by listId
+            const listMembers: GetListMembersResponseDto =
+              await listApi.getListMembers({
+                getListMembersRequestDto: {
+                  listId: id,
+                  order,
+                  orderType,
+                  search,
+                  createdAt,
+                  username,
+                  lastId
+                }
+              })
+            if (curResets === resets) {
+              setListMembers(listMembers.listMembers)
+              setLastId(listMembers.lastId)
+              setCreatedAt(listMembers.createdAt)
+              setUsername(listMembers.username)
+            }
+          } catch (error) {
+            console.error("error ", error)
+          }
+        }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoadingMore(false)
+      }
     }
+  }, [
+    createdAt,
+    id,
+    isLoadingMore,
+    lastId,
+    order,
+    orderType,
+    resets,
+    search,
+    username
+  ])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceChangeInputSearch = useCallback(
+    debounce(fetchMembers, 1000),
+    []
+  )
+
+  useEffect(() => {
+    fetchMembers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resets])
+
+  useEffect(() => {
+    fetchInfo()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleScroll = useCallback(async () => {
+    const isToBottom =
+      window.innerHeight + window.scrollY === document.body.offsetHeight
+
+    window.removeEventListener("scroll", handleScroll)
+    if (isToBottom) {
+      await fetchMembers()
+    }
+  }, [fetchMembers])
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
+  }, [handleScroll])
+
+  const reset = useCallback(() => {
+    setLastId(undefined)
+    setIsLoadingMore(false)
+    setUsername(undefined)
+    setCreatedAt(undefined)
+    setListMembers([])
+    setResets(resets + 1)
+  }, [resets])
+
+  const handleChangeSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value.toLowerCase()
+      debounceChangeInputSearch()
+      setSearch(value)
+      reset()
+    },
+    [debounceChangeInputSearch, reset]
+  )
+
+  const handleOpenPopper = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorSortPopperEl(anchorSortPopperEl ? null : event.currentTarget)
+    },
+    [anchorSortPopperEl]
+  )
+
+  const handleSaveOrdering = async (selection: string) => {
+    const split = selection.split(":")
+    const orderTypeInner = split[0] as GetListMembersRequestDtoOrderTypeEnum
+    const orderInner = split[1] as GetListMembersRequestDtoOrderEnum
+
+    setOrderType(orderTypeInner)
+    setOrder(orderInner)
+    reset()
+    setAnchorSortPopperEl(null)
   }
 
   const handleRemoveFan = useCallback(
@@ -109,17 +200,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               userIds: [user_id]
             }
           })
-          fetchData()
+          reset()
         } catch (error) {
           console.error("Remove member from a list has error: ", error)
         }
-      } else {
-        setFanSelectionList(
-          fanSelectionList.filter((fan_id: string) => fan_id !== user_id)
-        )
       }
     },
-    [fanSelectionList, fetchData, id]
+    [id, reset]
   )
 
   const handleAddFan = useCallback(
@@ -136,15 +223,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               userIds: [user_id]
             }
           })
-          fetchData()
+          reset()
         } catch (error) {
           console.error("Add member to list has error: ", error)
         }
-      } else {
-        setFanSelectionList([...fanSelectionList, user_id])
       }
     },
-    [fanSelectionList, fetchData, id]
+    [id, reset]
   )
 
   const handleChangeListName = useCallback(
@@ -185,6 +270,9 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     [id, isEditingListName]
   )
 
+  const sortPopperOpen = Boolean(anchorSortPopperEl)
+  const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
+
   useEffect(() => {
     if (isEditingListName) {
       listNameRef.current?.focus()
@@ -196,44 +284,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     }
   }, [isEditingListName, listInfo])
 
-  const handleCreateNewList = useCallback(async () => {
-    const listApi = new ListApi()
-
-    try {
-      await listApi.createList({
-        createListRequestDto: {
-          name: listName,
-          userIds: fanSelectionList
-        }
-      })
-      router.push("/tools/list")
-    } catch (error) {
-      console.error(error)
-    }
-  }, [fanSelectionList, listName, router])
-
-  const isAlreadyInList = (userId: string, username: string): boolean => {
-    if (!id) {
-      return fanSelectionList.findIndex((id) => id == userId) >= 0
-    }
-    return listAlreadyMember.findIndex((user) => user.username == username) >= 0
-  }
-
-  useEffect(() => {
-    fetchData()
-    // eslint-disable-next-line no-use-before-define, react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <div className="text-white">
-      <div className="-mt-[160px] flex items-center justify-between px-7">
-        <h1 className="text-xl font-bold">Fan List</h1>
-        <header className="flex items-center justify-end">
-          <button className="ml-2 block min-h-[50px] min-w-[147px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 font-bold  shadow-sm  focus:border-blue-500 focus:outline-none focus:ring-blue-500">
-            + New List
-          </button>
-        </header>
-      </div>
       <ul className="px-7 pt-[82px]">
         <li className="mb-3 flex items-center text-base font-medium leading-5 text-white">
           <span>List</span>
@@ -259,52 +311,85 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
               <input
                 type="text"
-                onChange={handleChangeSearchFan}
-                placeholder="Search fan"
+                onChange={handleChangeSearch}
+                placeholder="Search list"
                 className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
               />
             </span>
             <FilterIcon />
+          </div>
+          <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
+            <div
+              aria-describedby={sortPopperId}
+              onClick={handleOpenPopper}
+              className="cursor-pointer"
+            >
+              <FilterIcon />
+            </div>
           </div>
           <div className="flex items-center gap-7">
             <button className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30">
               <PlusIcon />
               Add
             </button>
-            <button
-              disabled={listName.trim().length === 0}
-              className={classNames({
-                "duration-all transition-400 rounded-[50px] py-[10px] px-[30px] text-base font-medium text-white":
-                  true,
-                "cursor-not-allowed bg-slate-600": listName.trim().length === 0,
-                "cursor-pointer bg-passes-pink-100": listName.trim().length > 0
-              })}
-              onClick={handleCreateNewList}
-            >
-              Save
-            </button>
           </div>
         </li>
-        <ConditionRendering condition={isFetchingFanRequest}>
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-full" />
-          </div>
-        </ConditionRendering>
-
-        <ConditionRendering
-          condition={!isFetchingFanRequest && fans.length > 0}
+        <Popper
+          id={sortPopperId}
+          open={sortPopperOpen}
+          anchorEl={anchorSortPopperEl}
+          transition
+          placement="bottom-end"
+          modifiers={[
+            {
+              name: "offset",
+              options: {
+                offset: [0, 8]
+              }
+            }
+          ]}
         >
-          {fans.map((item: ListMemberDto) => {
-            const { userId, username } = item
+          {({ TransitionProps }) => (
+            <Fade {...TransitionProps} timeout={350}>
+              <div>
+                <SortListPopup
+                  defaultOption={{ orderType, order }}
+                  options={[
+                    {
+                      orderType: GetListMembersRequestDtoOrderTypeEnum.Username,
+                      order: "asc"
+                    },
+                    {
+                      orderType: GetListMembersRequestDtoOrderTypeEnum.Username,
+                      order: "desc"
+                    },
+                    {
+                      orderType:
+                        GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
+                      order: "asc"
+                    },
+                    {
+                      orderType:
+                        GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
+                      order: "desc"
+                    }
+                  ]}
+                  onSave={handleSaveOrdering}
+                />
+              </div>
+            </Fade>
+          )}
+        </Popper>
+
+        <ConditionRendering condition={listMembers.length > 0}>
+          {listMembers.map((item: ListMemberDto) => {
+            const { userId } = item
             return (
               <ListItem
                 key={userId}
                 fanInfo={item}
                 onRemoveFan={handleRemoveFan}
-                onAddFan={handleAddFan}
-                isInSelectionList={isAlreadyInList(userId, username)}
+                removable={true}
               />
             )
           })}

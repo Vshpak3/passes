@@ -335,7 +335,7 @@ export class PassService {
     if (createdAt) {
       query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
     }
-    if (search) {
+    if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
       query = query.andWhere(function () {
@@ -376,7 +376,7 @@ export class PassService {
         userExternalPasses.map((externalPass) => externalPass.pass_id),
       )
     }
-    if (search) {
+    if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
       query = query.andWhere(function () {

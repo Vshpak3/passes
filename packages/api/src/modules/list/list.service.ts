@@ -194,7 +194,7 @@ export class ListService {
         }
         break
     }
-    if (search) {
+    if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
       query = query.andWhereILike(`${ListEntity.table}.name`, likeClause)

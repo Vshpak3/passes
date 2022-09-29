@@ -1,12 +1,12 @@
 import { Fade } from "@mui/material"
 import Popper from "@mui/material/Popper"
 import {
-  GetListMembersResponseDto,
   GetListsRequestsDtoOrderEnum,
   GetListsRequestsDtoOrderTypeEnum,
-  SearchFollowRequestDtoOrderTypeEnum
+  ListDto,
+  ListDtoTypeEnum
 } from "@passes/api-client"
-import { FollowApi, ListApi } from "@passes/api-client/apis"
+import { ListApi } from "@passes/api-client/apis"
 import { debounce } from "lodash"
 import { NextPage } from "next"
 import Link from "next/link"
@@ -16,97 +16,108 @@ import React, { useCallback, useEffect, useState } from "react"
 import SortListPopup from "src/components/pages/tools/lists/SortListPopup"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
+import ConditionRendering from "../../../components/molecules/ConditionRendering"
+
 const listApi = new ListApi()
-const followApi = new FollowApi()
 
 const FanLists: NextPage = () => {
-  const [list, setList] = useState<Array<any>>([])
-  const [, setFans] = useState<Array<any>>([])
+  const [lists, setLists] = useState<Array<ListDto>>([])
+  const [resets, setResets] = useState(0)
+
   const [orderType, setOrderType] = useState<GetListsRequestsDtoOrderTypeEnum>(
     GetListsRequestsDtoOrderTypeEnum.Name
   )
-  const [orderDirection, setOrderDirection] =
-    useState<GetListsRequestsDtoOrderEnum>(GetListsRequestsDtoOrderEnum.Asc)
-  const [lastId, setLastId] = useState<string>("")
-  const [keyword, setKeyword] = useState<string>("")
+  const [order, setOrder] = useState<GetListsRequestsDtoOrderEnum>(
+    GetListsRequestsDtoOrderEnum.Asc
+  )
+  const [lastId, setLastId] = useState<string | undefined>(undefined)
+  const [search, setSearch] = useState<string>("")
+  const [createdAt, setCreatedAt] = useState<Date | undefined>(undefined)
+  const [name, setName] = useState<string | undefined>(undefined)
+
+  const [listName, setListName] = useState<string>("")
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
 
-  const fetchList = useCallback(
-    async (
-      keywordSearch = "",
-      orderTypeInput?: GetListsRequestsDtoOrderTypeEnum,
-      orderDirectionInput?: GetListsRequestsDtoOrderEnum,
-      isUpdate = false
-    ) => {
-      const requestDto = {
-        order: orderDirectionInput ? orderDirectionInput : orderDirection,
-        orderType: orderTypeInput ? orderTypeInput : orderType
-      }
-
-      // only call api when no any request is calling
-      if (!isLoadingMore) {
-        try {
-          const allLists: any = await listApi.getLists({
-            getListsRequestsDto: Object.assign(requestDto, {
-              lastId: lastId.length > 0 ? lastId : undefined,
-              search: keywordSearch.length > 0 ? keywordSearch : undefined
-            })
-          })
-          const followRes: GetListMembersResponseDto =
-            await followApi.searchFollowing({
-              searchFollowRequestDto: {
-                order: "desc",
-                orderType: SearchFollowRequestDtoOrderTypeEnum.CreatedAt
-              }
-            })
-          const curentLastId = allLists.lastId
-          setFans(followRes.listMembers)
-          isUpdate
-            ? setList([...list, ...allLists.lists])
-            : setList(allLists.lists)
-          setIsLoadingMore(false)
-          setLastId(curentLastId)
-        } catch (error) {
-          console.error(error)
+  const fetchList = useCallback(async () => {
+    // only call api when no any request is calling
+    if (!isLoadingMore) {
+      setIsLoadingMore(true)
+      const curResets = resets
+      try {
+        const newLists = await listApi.getLists({
+          getListsRequestsDto: {
+            order,
+            orderType,
+            lastId,
+            search: search && search.length > 0 ? search : undefined,
+            name,
+            createdAt
+          }
+        })
+        if (curResets === resets) {
+          setLists([...lists, ...newLists.lists])
+          setLastId(newLists.lastId)
+          setCreatedAt(newLists.createdAt)
+          setName(newLists.name)
         }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoadingMore(false)
       }
-    },
-    [orderDirection, orderType, isLoadingMore, lastId, list]
-  )
-
+    }
+  }, [
+    isLoadingMore,
+    resets,
+    order,
+    orderType,
+    lastId,
+    search,
+    name,
+    createdAt,
+    lists
+  ])
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceChangeInuptSearch = useCallback(debounce(fetchList, 1000), [])
+  const debounceChangeInputSearch = useCallback(debounce(fetchList, 1000), [])
 
   useEffect(() => {
     fetchList()
-    // eslint-disable-next-line no-use-before-define, react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resets])
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback(async () => {
     const isToBottom =
       window.innerHeight + window.scrollY === document.body.offsetHeight
-    if (isToBottom && !isLoadingMore) {
-      setIsLoadingMore(true)
-      fetchList(keyword, orderType, orderDirection, true)
+
+    window.removeEventListener("scroll", handleScroll)
+    if (isToBottom) {
+      await fetchList()
     }
-  }, [isLoadingMore, fetchList, keyword, orderType, orderDirection])
+  }, [fetchList])
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
   }, [handleScroll])
+
+  const reset = useCallback(() => {
+    setLastId(undefined)
+    setIsLoadingMore(false)
+    setName(undefined)
+    setCreatedAt(undefined)
+    setLists([])
+    setResets(resets + 1)
+  }, [resets])
 
   const handleChangeSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
-      debounceChangeInuptSearch(value)
-      setKeyword(value)
+      debounceChangeInputSearch()
+      setSearch(value)
+      reset()
     },
-    [debounceChangeInuptSearch]
+    [debounceChangeInputSearch, reset]
   )
 
   const handleOpenPopper = useCallback(
@@ -116,20 +127,43 @@ const FanLists: NextPage = () => {
     [anchorSortPopperEl]
   )
 
-  const handleSaveOrdering = useCallback(
-    (selection: string) => {
-      const split = selection.split(":")
-      const orderTypeInner = split[0] as GetListsRequestsDtoOrderTypeEnum
-      const orderDirectionInner = split[1] as GetListsRequestsDtoOrderEnum
+  const handleSaveOrdering = async (selection: string) => {
+    const split = selection.split(":")
+    const orderTypeInner = split[0] as GetListsRequestsDtoOrderTypeEnum
+    const orderInner = split[1] as GetListsRequestsDtoOrderEnum
 
-      setOrderType(orderTypeInner)
-      setOrderDirection(orderDirectionInner)
-      setAnchorSortPopperEl(null)
-      fetchList(keyword, orderTypeInner, orderDirectionInner)
-    },
-    [fetchList, keyword]
-  )
+    setOrderType(orderTypeInner)
+    setOrder(orderInner)
+    reset()
+    setAnchorSortPopperEl(null)
+  }
 
+  const handleCreateNewList = async (event: any) => {
+    event.preventDefault()
+    event.stopPropagation()
+    try {
+      await listApi.createList({
+        createListRequestDto: {
+          name: listName,
+          userIds: []
+        }
+      })
+      reset()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleDelete = async (event: any) => {
+    event.preventDefault()
+    event.stopPropagation()
+    try {
+      await listApi.deleteList({ listId: event.target.value })
+      reset()
+    } catch (error) {
+      console.error(error)
+    }
+  }
   const sortPopperOpen = Boolean(anchorSortPopperEl)
   const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
 
@@ -146,12 +180,19 @@ const FanLists: NextPage = () => {
               placeholder="Search list"
               className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
             />
-          </span>
-          <Link href="/tools/list/create">
-            <button className="ml-2 block min-h-[50px] min-w-[147px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 font-bold  shadow-sm  focus:border-blue-500 focus:outline-none focus:ring-blue-500">
+            <input
+              type="text"
+              placeholder="new list name"
+              onInput={(e) => setListName((e.target as HTMLInputElement).value)}
+              className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+            />
+            <button
+              className="ml-2 block min-h-[50px] min-w-[147px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 font-bold  shadow-sm  focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              onClick={handleCreateNewList}
+            >
               + New List
             </button>
-          </Link>
+          </span>
         </header>
       </div>
 
@@ -174,8 +215,25 @@ const FanLists: NextPage = () => {
           <Fade {...TransitionProps} timeout={350}>
             <div>
               <SortListPopup
-                orderType={orderType}
-                orderDirection={orderDirection}
+                defaultOption={{ orderType, order }}
+                options={[
+                  {
+                    orderType: GetListsRequestsDtoOrderTypeEnum.Name,
+                    order: "asc"
+                  },
+                  {
+                    orderType: GetListsRequestsDtoOrderTypeEnum.Name,
+                    order: "desc"
+                  },
+                  {
+                    orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt,
+                    order: "asc"
+                  },
+                  {
+                    orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt,
+                    order: "desc"
+                  }
+                ]}
                 onSave={handleSaveOrdering}
               />
             </div>
@@ -194,16 +252,24 @@ const FanLists: NextPage = () => {
             </div>
           </div>
         </li>
-        {list &&
-          list.map((item: any) => (
-            <Link href={`/tools/list/${item.listId}`} key={item.listId}>
+        {lists &&
+          lists.map((list) => (
+            <Link href={`/tools/list/${list.listId}`} key={list.listId}>
               <li className="duration-400 cursor-pointer border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
                 <h1 className="text-xl font-bold">
-                  {item.name || item.listId}
+                  {list.name || list.listId}
                 </h1>
                 <span className="text-base font-bold text-gray-500">
-                  &nbsp; {item.count}
+                  &nbsp; {list.count}
                 </span>
+
+                <ConditionRendering
+                  condition={list.type === ListDtoTypeEnum.Normal}
+                >
+                  <button value={list.listId} onClick={handleDelete}>
+                    delete
+                  </button>
+                </ConditionRendering>
               </li>
             </Link>
           ))}
