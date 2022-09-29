@@ -1,6 +1,8 @@
-import { ResponseError, UserApi } from "@passes/api-client"
+import { UserApi } from "@passes/api-client"
 import { ContentService } from "src/helpers"
 import { useUser } from "src/hooks"
+
+import { checkUsername } from "../../helpers/username"
 
 export const useAccountSettings = () => {
   const { user } = useUser()
@@ -13,20 +15,7 @@ export const useAccountSettings = () => {
   }
 
   const setUsername = async (username: string) => {
-    let usernameTaken
-    try {
-      usernameTaken = await userApi.isUsernameTaken({
-        updateUsernameRequestDto: { username }
-      })
-    } catch (err: any) {
-      const error = await (err as ResponseError).response.json()
-      throw new Error(error.message[0])
-    }
-
-    if (usernameTaken.toString() === "true") {
-      throw new Error("Username is not available")
-    }
-
+    await checkUsername(username, userApi)
     return await userApi.setUsername({ updateUsernameRequestDto: { username } })
   }
 

@@ -20,6 +20,7 @@ import {
 } from "../../helpers/authRouter"
 import { COUNTRIES } from "../../helpers/countries"
 import { setTokens } from "../../helpers/setTokens"
+import { checkUsername } from "../../helpers/username"
 import { useUser } from "../../hooks"
 
 const MIN_AGE_IN_YEARS = 18
@@ -71,7 +72,6 @@ const UserInfoPage = () => {
     countryCode: string,
     birthday: string
   ) => {
-    let usernameTaken
     if (isSubmitting) {
       return
     }
@@ -82,23 +82,16 @@ const UserInfoPage = () => {
       const api = new AuthApi()
       const userApi = new UserApi()
 
-      usernameTaken = await userApi
-        .isUsernameTaken({
-          updateUsernameRequestDto: { username }
-        })
-        .then((response) => response)
+      const validUsername = await checkUsername(username, userApi)
+        .then(() => true)
         .catch(() => {
           setError("username", {
             message: "ERROR: This username is unavailable."
           })
+          return false
         })
 
-      if (
-        typeof usernameTaken === "string" &&
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        usernameTaken.toString() === "false"
-      ) {
+      if (validUsername) {
         const res = await api.createUser({
           createUserRequestDto: {
             legalFullName: name,
