@@ -1,7 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
-import { AuthApi } from "@passes/api-client/apis"
+import { AuthApi, UserApi } from "@passes/api-client/apis"
 import { differenceInYears, format } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -71,6 +71,7 @@ const UserInfoPage = () => {
     countryCode: string,
     birthday: string
   ) => {
+    let usernameTaken
     if (isSubmitting) {
       return
     }
@@ -79,26 +80,46 @@ const UserInfoPage = () => {
       setIsSubmitting(true)
 
       const api = new AuthApi()
-      const res = await api.createUser({
-        createUserRequestDto: {
-          legalFullName: name,
-          username: username,
-          countryCode: countryCode,
-          birthday: birthday
-        }
-      })
+      const userApi = new UserApi()
 
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        setError("submitError", {
-          type: "custom",
-          message: "ERROR: Received no access token"
+      usernameTaken = await userApi
+        .isUsernameTaken({
+          updateUsernameRequestDto: { username }
         })
+        .then((response) => response)
+        .catch(() => {
+          setError("username", {
+            message: "ERROR: This username is unavailable."
+          })
+        })
+
+      if (
+        typeof usernameTaken === "string" &&
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        usernameTaken.toString() === "false"
+      ) {
+        const res = await api.createUser({
+          createUserRequestDto: {
+            legalFullName: name,
+            username: username,
+            countryCode: countryCode,
+            birthday: birthday
+          }
+        })
+
+        const setRes = setTokens(res, setAccessToken, setRefreshToken)
+        if (!setRes) {
+          setError("submitError", {
+            type: "custom",
+            message: "ERROR: Received no access token"
+          })
+        }
+
+        refreshUser()
+
+        router.push(authStateToRoute(AuthStates.AUTHED))
       }
-
-      refreshUser()
-
-      router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: unknown) {
       setError("submitError", {
         type: "custom",
