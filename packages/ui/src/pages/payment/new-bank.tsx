@@ -7,7 +7,7 @@ import { FormInput } from "src/components/atoms"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import AuthWrapper from "../../components/wrappers/AuthWrapper"
 
 enum BankTypeEnum {
   US,
@@ -84,7 +84,7 @@ const NewCard = () => {
   }, [router, user, loading])
 
   return (
-    <AuthOnlyWrapper isPage>
+    <AuthWrapper isPage>
       <div>
         <button
           onClick={() => {
@@ -265,7 +265,7 @@ const NewCard = () => {
           />
         </form>
       </div>
-    </AuthOnlyWrapper>
+    </AuthWrapper>
   )
 }
 export default NewCard

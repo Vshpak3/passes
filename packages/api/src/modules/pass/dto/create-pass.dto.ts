@@ -1,4 +1,4 @@
-import { IsInt, Length, Max, Min } from 'class-validator'
+import { Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'

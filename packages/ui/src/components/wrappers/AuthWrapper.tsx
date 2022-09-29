@@ -9,15 +9,17 @@ import {
 } from "../../helpers/authRouter"
 import { useUser } from "../../hooks"
 
-export interface AuthOnlyWrapperProps {
+interface AuthWrapperProps {
   // isPage will handle redirecting user to /login if not logged in;
   // otherwise will conditionally render children
   isPage?: boolean
+  skipAuth?: boolean
 }
 
-const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
+const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   children,
-  isPage
+  isPage,
+  skipAuth
 }) => {
   const { userClaims } = useUser()
   const router = useRouter()
@@ -30,7 +32,7 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
     return null
   }
 
-  if (authStateMachine(userClaims) !== AuthStates.AUTHED) {
+  if (!skipAuth && authStateMachine(userClaims) !== AuthStates.AUTHED) {
     if (isPage && typeof window !== "undefined") {
       authRouter(router, userClaims)
     }
@@ -41,4 +43,4 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
   return <>{children}</>
 }
 
-export default AuthOnlyWrapper
+export default AuthWrapper

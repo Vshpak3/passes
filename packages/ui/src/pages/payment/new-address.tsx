@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import AuthWrapper from "../../components/wrappers/AuthWrapper"
 import { useUser } from "../../hooks"
 
 const NewAddress = () => {
@@ -54,7 +54,7 @@ const NewAddress = () => {
   }, [router, user, loading])
   //TODO: add address validation
   return (
-    <AuthOnlyWrapper isPage>
+    <AuthWrapper isPage>
       <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
         <FormInput
           register={register}
@@ -80,7 +80,7 @@ const NewAddress = () => {
           {...(submitting ? { disabled: true } : {})}
         />
       </form>
-    </AuthOnlyWrapper>
+    </AuthWrapper>
   )
 }
 export default NewAddress

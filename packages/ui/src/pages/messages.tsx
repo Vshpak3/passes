@@ -1,36 +1,14 @@
-import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import { DirectMessage } from "src/components/organisms"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const MessagesComponent = dynamic(() => import("src/components/messages"))
+import { MessagesV2 } from "../components/organisms"
 
-// TODO: @Jonathan this component re-renders messages too many times
-const Messages = () => {
-  const router = useRouter()
+const Messages2 = () => (
+  <div className="flex h-full h-screen flex-col">
+    <div className="mt-8 ml-5 mb-3 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+      Messages
+    </div>
+    <MessagesV2 />
+  </div>
+)
 
-  const { contentIds: _contentIds } = router.query
-  let contentIds = [""]
-  if (_contentIds) {
-    if (typeof _contentIds === "string") contentIds = [_contentIds]
-    else contentIds = _contentIds
-  }
-  const [newMessage, setNewMessage] = useState(true)
-
-  return (
-    <>
-      {newMessage ? (
-        <DirectMessage
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          vaultContentIds={contentIds}
-        />
-      ) : (
-        <MessagesComponent username="" />
-      )}
-    </>
-  )
-}
-
-export default withPageLayout(Messages, { header: false })
+export default withPageLayout(Messages2, { header: false })

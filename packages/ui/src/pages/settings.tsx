@@ -184,9 +184,11 @@ const Settings = () => {
 
 const SettingsWrapper = () => {
   return (
-    <SettingsProvider>
-      <Settings />
-    </SettingsProvider>
+    <>
+      <SettingsProvider>
+        <Settings />
+      </SettingsProvider>
+    </>
   )
 }
 

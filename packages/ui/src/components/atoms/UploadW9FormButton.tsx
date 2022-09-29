@@ -29,7 +29,7 @@ const UploadW9FormButton = ({ text, icon }: W9Button) => {
 
       reset({})
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 

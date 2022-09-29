@@ -2,7 +2,7 @@ import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import { SidebarComponents as SB } from "src/components/molecules"
 
-import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
+import AuthWrapper from "../../../wrappers/AuthWrapper"
 import ConditionalWrap from "../../../wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
 
@@ -50,7 +50,7 @@ const SidebarDefault = ({
       >
         <ConditionalWrap
           if={!item.showWithoutAuth && !item.creatorOnly}
-          wrapper={AuthOnlyWrapper}
+          wrapper={AuthWrapper}
         >
           {child}
         </ConditionalWrap>
@@ -77,19 +77,19 @@ const SidebarDefault = ({
               />
             </CreatorOnlyWrapper>
             {user ? (
-              <AuthOnlyWrapper>
+              <AuthWrapper>
                 {user?.isCreator ? (
                   <NewPostButton />
                 ) : isOver18 ? (
                   <SB.BecomeCreatorButton />
                 ) : null}
-              </AuthOnlyWrapper>
+              </AuthWrapper>
             ) : null}
           </nav>
         </div>
-        <AuthOnlyWrapper>
+        <AuthWrapper>
           <SB.LogoutButton handleLogout={handleLogout} />
-        </AuthOnlyWrapper>
+        </AuthWrapper>
       </SB.SidebarContainer>
       <SB.CreatorToolsSidebar
         active={active}

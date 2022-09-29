@@ -1,6 +1,6 @@
 import React from "react"
 
-import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
+import AuthWrapper from "../components/wrappers/AuthWrapper"
 import { MainContextProvider } from "../context/MainContext"
 import { isProd } from "../helpers/env"
 import CreatorSearchBar from "./CreatorSearchBar"
@@ -15,11 +15,6 @@ export const withPageLayout = (
   Page: any,
   options: WithPageLayoutOptions = { noAuth: false, header: true }
 ) => {
-  console.log(getComponentName(Page), options)
-  const AuthedPage = options.noAuth
-    ? Page
-    : () => <AuthOnlyWrapper isPage>{Page}</AuthOnlyWrapper>
-
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
       <MainContextProvider>
@@ -31,13 +26,15 @@ export const withPageLayout = (
             </div>
           )}
           <div className="flex shrink-0 flex-col">
-            <AuthedPage {...props} ref={ref} />
+            <AuthWrapper isPage skipAuth={options.noAuth}>
+              <Page {...props} ref={ref} />
+            </AuthWrapper>
           </div>
         </main>
       </MainContextProvider>
     </div>
   ))
-  WithPageLayout.displayName = `WithPageLayout(${getComponentName(AuthedPage)})`
+  WithPageLayout.displayName = `WithPageLayout(${getComponentName(Page)})`
   return WithPageLayout
 }
 

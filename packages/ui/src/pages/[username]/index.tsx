@@ -273,4 +273,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { props: {} }
   }
 }
-export default withPageLayout(Username)
+export default withPageLayout(Username, { noAuth: true })

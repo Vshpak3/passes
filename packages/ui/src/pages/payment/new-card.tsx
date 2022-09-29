@@ -8,7 +8,7 @@ import { FormInput } from "src/components/atoms"
 import encrypt from "src/helpers/openpgp"
 import { v4 } from "uuid"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import AuthWrapper from "../../components/wrappers/AuthWrapper"
 import { useUser } from "../../hooks"
 
 const NewCard = () => {
@@ -105,7 +105,7 @@ const NewCard = () => {
     return null
   }
   return (
-    <AuthOnlyWrapper isPage>
+    <AuthWrapper isPage>
       <form onSubmit={handleSubmit(onSubmit)} className="form-classic">
         <FormInput
           register={register}
@@ -235,7 +235,7 @@ const NewCard = () => {
           {...(submitting ? { disabled: true } : {})}
         />
       </form>
-    </AuthOnlyWrapper>
+    </AuthWrapper>
   )
 }
 export default NewCard

@@ -1,6 +1,6 @@
 import { PaymentApi } from "@passes/api-client"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
+import AuthWrapper from "../../components/wrappers/AuthWrapper"
 import { usePay } from "../../hooks/usePay"
 
 const PayPage = () => {
@@ -19,7 +19,7 @@ const PayPage = () => {
   )
 
   return (
-    <AuthOnlyWrapper isPage>
+    <AuthWrapper isPage>
       <button
         onClick={() => {
           submit()
@@ -30,7 +30,7 @@ const PayPage = () => {
       >
         {loading ? "loading" : `Pay ${amountUSD}`}
       </button>
-    </AuthOnlyWrapper>
+    </AuthWrapper>
   )
 }
 export default PayPage

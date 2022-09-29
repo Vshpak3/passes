@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
 
-import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
+import AuthWrapper from "../../../wrappers/AuthWrapper"
 import ConditionalWrap from "../../../wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
 
@@ -41,7 +41,7 @@ const SidebarMobile = ({
       >
         <ConditionalWrap
           if={item.authOnly && !item.creatorOnly}
-          wrapper={AuthOnlyWrapper}
+          wrapper={AuthWrapper}
         >
           {child}
         </ConditionalWrap>
@@ -57,9 +57,9 @@ const SidebarMobile = ({
         toggleSidebar={toggleSidebar}
       >
         {renderSidebarItems}
-        <AuthOnlyWrapper>
+        <AuthWrapper>
           <SB.MobileLogoutButton handleLogout={handleLogout} />
-        </AuthOnlyWrapper>
+        </AuthWrapper>
       </SB.SidebarMobileContainer>
     </>
   )

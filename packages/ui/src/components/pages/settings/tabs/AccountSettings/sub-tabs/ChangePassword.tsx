@@ -43,7 +43,7 @@ const ChangePassword = () => {
       if (newPassword !== confirmPassword) return
       await changePassword({ oldPassword, newPassword })
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 
