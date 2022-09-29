@@ -74,6 +74,7 @@ import {
 
 const MAX_CHANNELS_PER_REQUEST = 10
 const MAX_MESSAGES_PER_REQUEST = 10
+const MAX_PENDING_MESSAGES = 10
 
 @Injectable()
 export class MessagesService {
@@ -494,11 +495,19 @@ export class MessagesService {
       sendMessageDto.channelId,
       sendMessageDto.tipAmount,
     )
-    if (
-      sendMessageDto.tipAmount > 0 &&
-      (await this.payService.checkPayinBlocked(userId))
-    ) {
-      blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+    const count = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({
+        sender_id: userId,
+        channel_id: sendMessageDto.channelId,
+        pending: true,
+      })
+      .count()
+    if (sendMessageDto.tipAmount > 0) {
+      if (count[0]['count(*)'] >= MAX_PENDING_MESSAGES) {
+        blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
+      } else if (await this.payService.checkPayinBlocked(userId)) {
+        blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
+      }
     }
 
     return { blocked, amount: sendMessageDto.tipAmount }
