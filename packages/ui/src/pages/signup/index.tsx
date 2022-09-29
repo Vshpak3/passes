@@ -24,6 +24,7 @@ const SignupPage = () => {
   const { setAccessToken, setRefreshToken, userClaims } = useUser()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   const {
     register,
@@ -33,12 +34,13 @@ const SignupPage = () => {
   } = useForm()
 
   useEffect(() => {
-    if (!router.isReady) {
+    if (!router.isReady || hasLoaded) {
       return
     }
 
     authRouter(router, userClaims, true)
-  }, [router, userClaims])
+    setHasLoaded(true)
+  }, [router, userClaims, hasLoaded])
 
   const onUserRegister = async (email: string, password: string) => {
     if (isSubmitting) {
