@@ -1,12 +1,19 @@
-import { UserApi } from "@passes/api-client"
+import {
+  AuthLocalApi,
+  UpdatePasswordRequestDto,
+  UserApi
+} from "@passes/api-client"
+import { useRouter } from "next/router"
 import { ContentService } from "src/helpers"
 import { useUser } from "src/hooks"
 
 import { checkUsername } from "../../helpers/username"
 
 export const useAccountSettings = () => {
-  const { user } = useUser()
+  const router = useRouter()
+  const { user, logout } = useUser()
   const userApi = new UserApi()
+  const authApi = new AuthLocalApi()
 
   const setDisplayName = async (displayName: string) => {
     return await userApi.setDisplayName({
@@ -27,5 +34,19 @@ export const useAccountSettings = () => {
     return await new ContentService().uploadProfileImage(picture)
   }
 
-  return { setDisplayName, setUsername, setProfilePicture, getProfileUrl }
+  const changePassword = async (password: UpdatePasswordRequestDto) => {
+    await authApi.changePassword({
+      updatePasswordRequestDto: password
+    })
+    logout()
+    router.push("/login")
+  }
+
+  return {
+    setDisplayName,
+    setUsername,
+    setProfilePicture,
+    getProfileUrl,
+    changePassword
+  }
 }

@@ -22,15 +22,15 @@ const creatorFlowProfileSchema = object({
 })
 
 const changePasswordSchema = object({
-  currentPassword: string().required("Please enter your current password"),
-  password: string()
+  oldPassword: string().required("Please enter your current password"),
+  newPassword: string()
     .required("Please enter a new password")
     .matches(
       passwordRegex,
       "Your password must include:\n* At least 8 characters\n* A number\n* An uppercase and a lowercase character\n* A special character (!, @, #, $, etc.)"
     ),
   confirmPassword: string().oneOf(
-    [ref("password"), null],
+    [ref("newPassword"), null],
     "Passwords must match"
   )
 })

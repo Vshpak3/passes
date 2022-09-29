@@ -1,18 +1,24 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import { changePasswordSchema } from "src/helpers/validation"
+import { useAccountSettings } from "src/hooks"
 
 import Tab from "../../../Tab"
 
 interface IChangePasswordForm {
-  currentPassword: string
-  password: string
+  oldPassword: string
+  newPassword: string
   confirmPassword: string
 }
 
-const defaultValues = { currentPassword: "", password: "", confirmPassword: "" }
+const defaultValues = {
+  oldPassword: "",
+  newPassword: "",
+  confirmPassword: ""
+}
 
 const ChangePassword = () => {
   const {
@@ -25,14 +31,20 @@ const ChangePassword = () => {
     resolver: yupResolver(changePasswordSchema)
   })
   const [isValidate, setIsValidate] = useState(false)
+  const { changePassword } = useAccountSettings()
   const values = watch()
 
-  const onChangePassword = ({
-    currentPassword,
+  const onChangePassword = async ({
+    oldPassword,
     confirmPassword,
-    password
+    newPassword
   }: IChangePasswordForm) => {
-    console.log("passwords", currentPassword, confirmPassword, password)
+    try {
+      if (newPassword !== confirmPassword) return
+      await changePassword({ oldPassword, newPassword })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
@@ -58,23 +70,22 @@ const ChangePassword = () => {
           <FormInput
             errors={errors}
             placeholder="Current Password"
-            name="currentPassword"
+            name="oldPassword"
             type="password"
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
-          <a
-            href="#"
-            className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100"
-          >
-            Forgot Password?
-          </a>
+          <Link href="/forgot-password" passHref>
+            <a className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100">
+              Forgot Password?
+            </a>
+          </Link>
         </div>
 
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
           <FormInput
             placeholder="New Password"
-            name="password"
+            name="newPassword"
             type="password"
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
