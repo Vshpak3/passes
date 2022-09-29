@@ -6,6 +6,7 @@ import {
   GetListMembersRequestDtoOrderTypeEnum,
   GetListMembersResponseDto,
   GetListResponseDto,
+  GetListResponseDtoTypeEnum,
   ListApi,
   ListMemberDto
 } from "@passes/api-client"
@@ -317,7 +318,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
                 className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
               />
             </span>
-            <FilterIcon />
           </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
             <div
@@ -328,12 +328,16 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               <FilterIcon />
             </div>
           </div>
-          <div className="flex items-center gap-7">
-            <button className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30">
-              <PlusIcon />
-              Add
-            </button>
-          </div>
+          <ConditionRendering
+            condition={listInfo?.type === GetListResponseDtoTypeEnum.Normal}
+          >
+            <div className="flex items-center gap-7">
+              <button className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30">
+                <PlusIcon />
+                Add
+              </button>
+            </div>
+          </ConditionRendering>
         </li>
         <Popper
           id={sortPopperId}
