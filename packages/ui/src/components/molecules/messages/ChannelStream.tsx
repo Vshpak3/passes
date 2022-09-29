@@ -7,15 +7,23 @@ import React, {
   useState
 } from "react"
 
+import { TippedMessage } from "../direct-messages/completed-tipped-message"
+import { FreeMessagesLeftContainer } from "../direct-messages/free-messages-left-container"
 import { ChannelMessage } from "./index"
 
 const FETCH_NEW_MESSAGES_RATE = 3000 // 3 seconds
 
 export interface ChannelStreamProps {
   channelId?: string
+  freeMessages?: number
+  isCreator?: boolean
 }
 
-export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
+export const ChannelStream = ({
+  channelId,
+  freeMessages,
+  isCreator
+}: ChannelStreamProps) => {
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
@@ -125,6 +133,11 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
       {isLoadingOlderMessages && <div>Loading older messages...</div>}
       {messages.length ? (
         <>
+          {!isCreator && (
+            <div className="sticky top-0 w-full">
+              <FreeMessagesLeftContainer freeMessages={freeMessages} />
+            </div>
+          )}
           <ChannelMessage />
           <ChannelMessage isOwnMessage />
           <ChannelMessage />
@@ -135,6 +148,7 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
           <ChannelMessage />
           <ChannelMessage />
           <ChannelMessage isOwnMessage />
+          <TippedMessage isOwnMessage tipAmount={5} />
         </>
       ) : (
         <div className="flex flex-1 items-center justify-center">
