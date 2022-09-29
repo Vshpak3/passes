@@ -21,7 +21,7 @@ export const tabs = [
   {
     name: "Privacy & Safety Settings",
     id: TabsEnum.PrivacySafetySettings,
-    creatorOnly: false
+    creatorOnly: true
   },
   {
     name: "Payment & Wallet Settings",
