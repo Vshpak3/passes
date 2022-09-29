@@ -67,7 +67,8 @@ export const MINIMUM_POST_TIP_AMOUNT = 5.0
 
 @Injectable()
 export class PostService {
-  cloudfrontUrl: string
+  private cloudfrontUrl: string
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,

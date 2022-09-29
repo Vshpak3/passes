@@ -33,7 +33,8 @@ const MAX_WALLETS_PER_USER = 10
 
 @Injectable()
 export class WalletService {
-  web3: Web3
+  private web3: Web3
+
   constructor(
     private readonly lambdaService: LambdaService,
     @Database(DB_READER)

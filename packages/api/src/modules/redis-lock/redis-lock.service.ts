@@ -4,7 +4,7 @@ import * as uuid from 'uuid'
 
 @Injectable()
 export class RedisLockService {
-  public readonly uuid: string = uuid.v4()
+  private readonly uuid: string = uuid.v4()
 
   constructor(@InjectRedis() private readonly redisService: Redis) {}
 
@@ -21,7 +21,7 @@ export class RedisLockService {
    * @param {number} [expire] milliseconds, TTL for the redis key
    * @returns {boolean} true: success, false: failed
    */
-  public async lockOnce(name, expire) {
+  async lockOnce(name, expire) {
     const client = this.getClient()
     const result = await client.set(
       this.prefix(name),
@@ -40,7 +40,7 @@ export class RedisLockService {
    * @param {number} [retryInterval] milliseconds, the interval to retry if failed
    * @param {number} [maxRetryTimes] max times to retry
    */
-  public async lock(
+  async lock(
     name: string,
     expire = 60000,
     retryInterval = 100,
@@ -65,7 +65,7 @@ export class RedisLockService {
    * Unlock a lock by name
    * @param {string} name lock name
    */
-  public async unlock(name) {
+  async unlock(name) {
     const client = this.getClient()
     await client.eval(
       "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end",
@@ -80,7 +80,7 @@ export class RedisLockService {
    * @param {string} name lock name
    * @param {number} milliseconds TTL
    */
-  public async setTTL(name, milliseconds) {
+  async setTTL(name, milliseconds) {
     const client = this.getClient()
     await client.pexpire(this.prefix(name), milliseconds)
   }
@@ -90,7 +90,7 @@ export class RedisLockService {
    * @param {string} name lock name
    * @returns {number} true: success, false: failed
    */
-  public async getTTL(name) {
+  async getTTL(name) {
     const client = this.getClient()
     return await client.ttl(this.prefix(name))
   }
@@ -99,7 +99,7 @@ export class RedisLockService {
    * @param {number} ms milliseconds, the sleep interval
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
-  public sleep(ms: number): Promise<Function> {
+  sleep(ms: number): Promise<Function> {
     return new Promise((resolve) => setTimeout(resolve, Number(ms)))
   }
 }

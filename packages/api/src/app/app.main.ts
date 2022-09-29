@@ -18,8 +18,8 @@ import { loggingOptions } from '../monitoring/logging/logging.options'
 const APPLICATION_PORT = 3001
 
 export class App {
-  app: INestApplication
-  document: OpenAPIObject
+  public app: INestApplication
+  public document: OpenAPIObject
 
   async init() {
     console.log('Starting application')

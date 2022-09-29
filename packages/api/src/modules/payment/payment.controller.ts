@@ -69,7 +69,8 @@ const circleArn =
 @ApiTags('payment')
 @Controller('payment')
 export class PaymentController {
-  validator: MessageValidator
+  private validator: MessageValidator
+
   constructor(private readonly paymentService: PaymentService) {
     this.validator = new MessageValidator()
   }

@@ -77,7 +77,8 @@ const MAX_MESSAGES_PER_REQUEST = 10
 
 @Injectable()
 export class MessagesService {
-  cloudfrontUrl: string
+  private cloudfrontUrl: string
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,

@@ -23,9 +23,7 @@ const METRICS_MODULE_OPTIONS = 'metrics:module-options'
 @Global()
 @Module({})
 export class MetricsModule {
-  public static forRootAsync(
-    options: MetricsModuleAsyncOptions,
-  ): DynamicModule {
+  static forRootAsync(options: MetricsModuleAsyncOptions): DynamicModule {
     const MetricsServiceFactoryProvider: Provider<MetricsService> = {
       provide: MetricsService,
       useFactory: (options: MetricsModuleOptions) =>

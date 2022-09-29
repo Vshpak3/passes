@@ -7,7 +7,7 @@ export class AccessTokensResponseDto {
   @DtoProperty({ type: 'string' })
   refreshToken?: string
 
-  public constructor(accessToken: string, refreshToken?: string) {
+  constructor(accessToken: string, refreshToken?: string) {
     this.accessToken = accessToken
     this.refreshToken = refreshToken
   }

@@ -7,7 +7,7 @@ import { getKnexOptions } from './database.options'
   scope: Scope.TRANSIENT,
 })
 export class DatabaseService {
-  knex: Knex
+  public knex: Knex
 
   constructor(entityManager: EntityManager) {
     this.knex = knex(getKnexOptions(entityManager.getKnex()))

@@ -143,12 +143,13 @@ const MAX_CHARGEBACK_AMOUNT = 300
 
 @Injectable()
 export class PaymentService {
-  circleConnector: CircleConnector
-  circleMasterWallet: string
-  passService: PassService
-  messagesService: MessagesService
-  postService: PostService
-  creatorShares: any
+  private circleConnector: CircleConnector
+  private circleMasterWallet: string
+  public passService: PassService
+  public messagesService: MessagesService
+  public postService: PostService
+  private creatorShares: any
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,

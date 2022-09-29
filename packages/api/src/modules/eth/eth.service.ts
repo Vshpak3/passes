@@ -27,7 +27,8 @@ const MAX_TIME_WALLET_REFRESH = 1000 * 60 * 30 // 30 minutes
 const MAX_TIME_PASS_REFRESH = 1000 * 60 * 60 * 7 // 1 week
 @Injectable()
 export class EthService {
-  alchemy: Alchemy
+  private alchemy: Alchemy
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
