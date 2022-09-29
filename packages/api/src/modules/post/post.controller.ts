@@ -202,4 +202,18 @@ export class PostController {
       ),
     )
   }
+
+  @ApiEndpoint({
+    summary: 'Checks if all content in a post is ready',
+    responseStatus: HttpStatus.OK,
+    responseType: Boolean,
+    responseDesc: 'Whether or not all content is ready',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Get('ready/:postId')
+  async isAllPostContentReady(
+    @Param('postId') postId: string,
+  ): Promise<boolean> {
+    return await this.postService.isAllPostContentReady(postId)
+  }
 }
