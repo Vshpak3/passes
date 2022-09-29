@@ -746,4 +746,27 @@ export class PostService {
           .count(),
       )
   }
+
+  async isAllPostContentReady(postId: string): Promise<boolean> {
+    const userId = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
+      .select('user_id')
+      .first()
+
+    const contentIds = await this.dbReader<PostContentEntity>(
+      PostContentEntity.table,
+    )
+      .where({ post_id: postId })
+      .select('content_id')
+
+    const results = await Promise.all(
+      contentIds.map(async (contentId) => {
+        return await this.s3ContentService.doesObjectExist(
+          `media/${userId?.user_id}/${contentId.content_id}`,
+        )
+      }),
+    )
+
+    return results.filter((r) => !r).length === 0
+  }
 }

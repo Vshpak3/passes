@@ -61,6 +61,10 @@ export interface GetPostHistoryRequest {
     getPostHistoryRequestDto: GetPostHistoryRequestDto;
 }
 
+export interface IsAllPostContentReadyRequest {
+    postId: string;
+}
+
 export interface PinPostRequest {
     postId: string;
 }
@@ -203,6 +207,41 @@ export class PostApi extends runtime.BaseAPI {
      */
     async getPostHistory(requestParameters: GetPostHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostHistoryResponseDto> {
         const response = await this.getPostHistoryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Checks if all content in a post is ready
+     */
+    async isAllPostContentReadyRaw(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling isAllPostContentReady.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/post/ready/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Checks if all content in a post is ready
+     */
+    async isAllPostContentReady(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.isAllPostContentReadyRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
