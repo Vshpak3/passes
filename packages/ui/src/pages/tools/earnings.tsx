@@ -52,10 +52,6 @@ const ANALYTICS_OPTIONS = [
   {
     label: "Chargebacks",
     value: "chargebacks"
-  },
-  {
-    label: "Referrals",
-    value: "referrals"
   }
 ]
 

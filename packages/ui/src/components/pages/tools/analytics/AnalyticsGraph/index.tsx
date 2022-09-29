@@ -198,11 +198,6 @@ const EARNINGS_GRAPH_TABS = [
     label: "Messages",
     id: uniqueId(),
     value: "messages"
-  },
-  {
-    label: "Streams",
-    id: uniqueId(),
-    value: "others"
   }
 ]
 
