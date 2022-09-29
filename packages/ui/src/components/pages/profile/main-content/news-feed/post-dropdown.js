@@ -12,7 +12,7 @@ export const PostDropdown = ({ post, items = [] }) => {
   const copyToClipboard = () => {
     let baseRoute = ""
     if (typeof window !== "undefined") baseRoute = window.location.origin
-    const linkToCopy = baseRoute + "/" + post.username + "/" + post.id
+    const linkToCopy = baseRoute + "/" + post.username + "/" + post.postId
     copy(linkToCopy)
 
     toast("Link to post has been copied to clipboard!", {
