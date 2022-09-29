@@ -12,6 +12,7 @@ import useEventListener from "./useEventListener"
 import useFanWall from "./useFanWall"
 import useFeed from "./useFeed"
 import useFollow from "./useFollow"
+import useFollowSearch from "./useFollowSearch"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
 import useLocalStorage from "./useLocalStorage"
 import useMessages from "./useMessages"
@@ -23,6 +24,7 @@ import usePayinMethod from "./usePayinMethod"
 import usePayoutMethod from "./usePayoutMethod"
 import usePrefersReducedMotion from "./usePrefersReducedMotion"
 import useRandomInterval from "./useRandomInterval"
+import useSearch from "./useSearch"
 import useUser from "./useUser"
 import useUserConnectedWallets from "./useUserConnectedWallets"
 import useUserDefaultPayoutWallet from "./useUserDefaultPayoutWallet"
@@ -40,6 +42,7 @@ export {
   useFanWall,
   useFeed,
   useFollow,
+  useFollowSearch,
   useIsomorphicLayoutEffect,
   useLocalStorage,
   useMessages,
@@ -53,6 +56,7 @@ export {
   usePrefersReducedMotion,
   usePrivacySafetySettings,
   useRandomInterval,
+  useSearch,
   useUser,
   useUserConnectedWallets,
   useUserDefaultPayoutWallet

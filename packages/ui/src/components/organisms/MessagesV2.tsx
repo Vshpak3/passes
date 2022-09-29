@@ -1,5 +1,5 @@
 // import { MessagesApi } from "@passes/api-client"
-import { ChannelMemberDto } from "@passes/api-client/models"
+import { ChannelMemberDto, ListMemberDto } from "@passes/api-client/models"
 import React, { useState } from "react"
 import { useMessages } from "src/hooks"
 
@@ -7,10 +7,16 @@ import { ChannelList, ChannelView } from "../molecules/messages"
 
 const MessagesV2 = () => {
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
-  const { channels, hasMore, next } = useMessages()
+  const { channels, hasMore, next, createChannel, refresh } = useMessages()
   const [gallery, setGallery] = useState(false)
   const freeMessages = 20
   const handleChannelClicked = (channel: ChannelMemberDto) => {
+    setSelectedChannel(channel)
+  }
+
+  const onUserSelect = async (user: ListMemberDto) => {
+    const channel = await createChannel(user.userId)
+    await refresh()
     setSelectedChannel(channel)
   }
 
@@ -24,15 +30,14 @@ const MessagesV2 = () => {
 
   return (
     <div className="flex h-full flex-row border border-gray-800">
-      {channels?.length > 0 && (
-        <ChannelList
-          selectedChannel={selectedChannel}
-          channels={channels}
-          hasMore={hasMore}
-          next={next}
-          onChannelClicked={handleChannelClicked}
-        />
-      )}
+      <ChannelList
+        onUserSelect={onUserSelect}
+        selectedChannel={selectedChannel}
+        channels={channels}
+        hasMore={hasMore}
+        next={next}
+        onChannelClicked={handleChannelClicked}
+      />
       <ChannelView
         selectedChannel={selectedChannel}
         gallery={gallery}

@@ -22,7 +22,7 @@ const useMessages = () => {
       }
     })
   }
-  const { data, hasMore, next } = usePagination(fetcher, {
+  const { data, hasMore, next, refresh } = usePagination(fetcher, {
     refreshInterval: 10000 // revalidate every 10 seconds
   })
   const channels = data ? data.map((d) => d.channelMembers).flat() : []
@@ -30,7 +30,8 @@ const useMessages = () => {
     createChannel,
     channels,
     hasMore,
-    next
+    next,
+    refresh
   }
 }
 

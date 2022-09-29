@@ -12,13 +12,7 @@ export interface ChannelStreamProps {
   isCreator?: boolean
 }
 
-export const ChannelStream = ({
-  channelId,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  freeMessages,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isCreator
-}: ChannelStreamProps) => {
+export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
