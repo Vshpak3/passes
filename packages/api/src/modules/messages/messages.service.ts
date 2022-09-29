@@ -253,7 +253,7 @@ export class MessagesService {
         break
     }
     if (unreadOnly) {
-      query = query.andWhere(`${ChannelMemberEntity}.unread`, true)
+      query = query.andWhere(`${ChannelMemberEntity.table}.unread`, true)
     }
 
     if (search) {

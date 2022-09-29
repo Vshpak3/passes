@@ -63,8 +63,8 @@ export function createPassHolderQuery(
     query = query.andWhere(function () {
       return this.whereILike(`${UserEntity.table}.username`, likeClause)
         .orWhereILike(`${UserEntity.table}.display_name`, likeClause)
-        .orWhereILike(`${PassEntity}.title`, likeClause)
-        .orWhereILike(`${PassEntity}.description`, likeClause)
+        .orWhereILike(`${PassEntity.table}.title`, likeClause)
+        .orWhereILike(`${PassEntity.table}.description`, likeClause)
     })
   }
   return query.limit(MAX_PASSHOLDERS_PER_REQUEST)

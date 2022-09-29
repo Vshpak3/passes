@@ -751,7 +751,7 @@ export class PaymentService {
         `${PayinEntity.table}.id`,
       )
       .where({ circle_id: chargebackDto.paymentId })
-      .select(`${CirclePaymentEntity}.id`, `${PayinEntity.table}.user_id`)
+      .select(`${CirclePaymentEntity.table}.id`, `${PayinEntity.table}.user_id`)
       .first()
     if (payment) {
       const exists = await this.dbReader<CircleChargebackEntity>(
