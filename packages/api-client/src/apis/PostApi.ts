@@ -70,7 +70,7 @@ export interface GetPostHistoryRequest {
     getPostHistoryRequestDto: GetPostHistoryRequestDto;
 }
 
-export interface GetPostsForOwnerRequest {
+export interface GetPostsRequest {
     getPostsRequestDto: GetPostsRequestDto;
 }
 
@@ -226,9 +226,9 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets posts
      */
-    async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsResponseDto>> {
+    async getPostsRaw(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsResponseDto>> {
         if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPostsForOwner.');
+            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPosts.');
         }
 
         const queryParameters: any = {};
@@ -243,7 +243,7 @@ export class PostApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/post/owner/posts`,
+            path: `/api/post/posts`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -256,8 +256,8 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets posts
      */
-    async getPostsForOwner(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
-        const response = await this.getPostsForOwnerRaw(requestParameters, initOverrides);
+    async getPosts(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
+        const response = await this.getPostsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

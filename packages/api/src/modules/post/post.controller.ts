@@ -15,7 +15,6 @@ import { RequestWithUser } from '../../types/request'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
-import { GetFeedResponseDto } from '../feed/dto/get-feed-dto'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import {
@@ -235,11 +234,11 @@ export class PostController {
     responseDesc: 'A list of posts was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Post('owner/posts')
-  async getPostsForOwner(
+  @Post('posts')
+  async getPosts(
     @Req() req: RequestWithUser,
     @Body() getPostsRequestDto: GetPostsRequestDto,
-  ): Promise<GetFeedResponseDto> {
+  ): Promise<GetPostsResponseDto> {
     return await this.postService.getPosts(req.user.id, getPostsRequestDto)
   }
 }
