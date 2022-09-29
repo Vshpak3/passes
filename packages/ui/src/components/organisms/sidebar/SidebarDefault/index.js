@@ -1,9 +1,12 @@
+import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import { SidebarComponents as SB } from "src/components/molecules"
 
 import AuthOnlyWrapper from "../../../wrappers/AuthOnly"
 import ConditionalWrap from "../../../wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
+
+export const MIN_CREATOR_AGE_IN_YEARS = 18
 
 const NewPostButton = dynamic(() =>
   import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton")
@@ -55,6 +58,11 @@ const SidebarDefault = ({
     )
   })
 
+  const isOver18 = user?.birthday
+    ? differenceInYears(new Date(), new Date(user?.birthday)) >=
+      MIN_CREATOR_AGE_IN_YEARS
+    : false
+
   return (
     <>
       <SB.SidebarContainer>
@@ -68,9 +76,15 @@ const SidebarDefault = ({
                 openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
               />
             </CreatorOnlyWrapper>
-            <AuthOnlyWrapper>
-              {user?.isCreator ? <NewPostButton /> : <SB.BecomeCreatorButton />}
-            </AuthOnlyWrapper>
+            {user ? (
+              <AuthOnlyWrapper>
+                {user?.isCreator ? (
+                  <NewPostButton />
+                ) : isOver18 ? (
+                  <SB.BecomeCreatorButton />
+                ) : null}
+              </AuthOnlyWrapper>
+            ) : null}
           </nav>
         </div>
         <AuthOnlyWrapper>

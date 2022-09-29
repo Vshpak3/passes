@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { differenceInYears } from 'date-fns'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -27,7 +28,8 @@ import { NotificationSettingsEntity } from '../notifications/entities/notificati
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
-import { USERNAME_TAKEN } from './constants/errors'
+import { MIN_AGE_NOT_MET, USERNAME_TAKEN } from './constants/errors'
+import { USER_MIN_AGE } from './constants/schema'
 import {
   MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
   USERNAME_RESET_TIME_SPAN_MS as USERNAME_RESET_TIMEFRAME_MS,
@@ -62,6 +64,13 @@ export class UserService {
   ): Promise<UserDto> {
     if (await this.isUsernameTaken(createUserRequestDto.username)) {
       throw new ConflictException(USERNAME_TAKEN)
+    }
+
+    const isTooYoung =
+      differenceInYears(new Date(), new Date(createUserRequestDto.birthday)) <
+      USER_MIN_AGE
+    if (isTooYoung) {
+      throw new BadRequestException(MIN_AGE_NOT_MET)
     }
 
     const user = {

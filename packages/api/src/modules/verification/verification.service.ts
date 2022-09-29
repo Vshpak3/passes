@@ -1,5 +1,11 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { differenceInYears } from 'date-fns'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -15,6 +21,8 @@ import { ProfileEntity } from '../profile/entities/profile.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
+import { MIN_AGE_NOT_MET } from './constants/errors'
+import { CREATOR_MIN_AGE } from './constants/schema'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
 import { SubmitCreatorVerificationStepRequestDto } from './dto/submit-creator-verification-step.dto'
 import { SubmitPersonaInquiryRequestDto } from './dto/submit-persona-inquiry.dto'
@@ -55,6 +63,8 @@ export class VerificationService {
   }
 
   async canSubmitPersona(userId: string) {
+    await this.checkUserAgeForCreator(userId)
+
     const count = await this.dbReader<PersonaInquiryEntity>(
       PersonaInquiryEntity.table,
     )
@@ -67,6 +77,8 @@ export class VerificationService {
     userId: string,
     submitInquiryRequest: SubmitPersonaInquiryRequestDto,
   ) {
+    await this.checkUserAgeForCreator(userId)
+
     if (!(await this.canSubmitPersona(userId))) {
       throw new PersonaVerificationError(
         'user has exceeded max verification attempts',
@@ -231,6 +243,8 @@ export class VerificationService {
     userId: string,
     submitCreatorVerificationStepRequestDto: SubmitCreatorVerificationStepRequestDto,
   ): Promise<GetCreatorVerificationStepResponseDto> {
+    await this.checkUserAgeForCreator(userId)
+
     const creatorVerification = await this.dbReader(
       CreatorVerificationEntity.table,
     )
@@ -324,6 +338,8 @@ export class VerificationService {
   async getCreatorVerificationStep(
     userId: string,
   ): Promise<GetCreatorVerificationStepResponseDto> {
+    await this.checkUserAgeForCreator(userId)
+
     const creatorVerification = await this.dbReader(
       CreatorVerificationEntity.table,
     )
@@ -339,5 +355,22 @@ export class VerificationService {
       return { step: CreatorVerificationStepEnum.STEP_1_PROFILE }
     }
     return { step: creatorVerification.step }
+  }
+
+  async checkUserAgeForCreator(userId: string) {
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select('birthday')
+      .first()
+
+    if (!user) {
+      throw new NotFoundException('User does not exist')
+    }
+
+    const isTooYoung =
+      differenceInYears(new Date(), new Date(user.birthday)) < CREATOR_MIN_AGE
+    if (isTooYoung) {
+      throw new BadRequestException(MIN_AGE_NOT_MET)
+    }
   }
 }

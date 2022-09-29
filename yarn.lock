@@ -5646,6 +5646,7 @@ __metadata:
     class-validator: 0.13.2
     cookie-parser: 1.4.6
     crypto-js: 4.1.1
+    date-fns: 2.29.3
     dedent: 0.7.0
     depcheck: 1.4.3
     eslint: 8.23.1

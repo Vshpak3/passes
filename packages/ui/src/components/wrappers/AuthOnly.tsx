@@ -26,6 +26,10 @@ const AuthOnlyWrapper: FC<PropsWithChildren<AuthOnlyWrapperProps>> = ({
     return null
   }
 
+  if (typeof window === "undefined") {
+    return null
+  }
+
   if (authStateMachine(userClaims) !== AuthStates.AUTHED) {
     if (isPage && typeof window !== "undefined") {
       authRouter(router, userClaims)

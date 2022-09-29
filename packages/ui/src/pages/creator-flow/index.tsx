@@ -2,6 +2,8 @@ import {
   GetCreatorVerificationStepResponseDtoStepEnum,
   VerificationApi
 } from "@passes/api-client"
+import { differenceInYears } from "date-fns"
+import { useRouter } from "next/router"
 import CheckIcon from "public/icons/check.svg"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
 import { MouseEventHandler, useEffect, useState } from "react"
@@ -12,6 +14,9 @@ import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
 import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
+
+import { MIN_CREATOR_AGE_IN_YEARS } from "../../components/organisms/sidebar/SidebarDefault"
+import { useUser } from "../../hooks"
 
 type BulletItemProps = {
   isSelected: boolean
@@ -95,6 +100,9 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
 const api = new VerificationApi()
 
 const CreatorFlow = () => {
+  const { user } = useUser()
+  const router = useRouter()
+
   const [stepsDone, setStepsDone] = useState<string[]>([])
   const [selectedStep, setSelectedStep] = useState<string>(
     CREATOR_STEPS.CUSTOMIZE
@@ -167,6 +175,19 @@ const CreatorFlow = () => {
     setIsWelcomeModalOpen(true)
     setStepsDone((prev) => [...prev, CREATOR_STEPS.PAYMENT])
     setSelectedStep(CREATOR_STEPS.PAYMENT)
+  }
+
+  const isOver18 = user?.birthday
+    ? differenceInYears(new Date(), new Date(user?.birthday)) >=
+      MIN_CREATOR_AGE_IN_YEARS
+    : false
+
+  if (!isOver18) {
+    if (typeof window === "undefined") {
+      return null
+    }
+
+    router.push("/home")
   }
 
   return (

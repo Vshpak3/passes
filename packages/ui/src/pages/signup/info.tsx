@@ -23,7 +23,7 @@ import { setTokens } from "../../helpers/setTokens"
 import { checkUsername } from "../../helpers/username"
 import { useUser } from "../../hooks"
 
-const MIN_AGE_IN_YEARS = 18
+const MIN_AGE_IN_YEARS = 13
 const DATE_FORMAT = "yyyy-MM-dd"
 
 export type UserInfoFormValues = {
