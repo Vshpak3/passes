@@ -9,8 +9,7 @@ import {
 import { SHA256 } from "crypto-js"
 import { useState } from "react"
 import { toast } from "react-toastify"
-
-import { getPhantomProvider } from "../helpers/payment/payment-wallet"
+import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
   connectMetamask,
   EthereumProvider,
@@ -18,7 +17,8 @@ import {
   executeMetamaskUSDCProvider,
   PhantomProvider,
   setUpPhantomProvider
-} from "../helpers/payment/wallet-setup"
+} from "src/helpers/payment/wallet-setup"
+
 import useLocalStorage from "./useLocalStorage"
 
 export const usePay = (
@@ -160,7 +160,7 @@ export const usePay = (
         const error = new Error("sanity check: amounts don't matchup")
         if (callback) callback(error)
 
-        throw error
+        console.error(error)
       }
       switch (registerResponse.payinMethod?.method) {
         case PayinMethodDtoMethodEnum.CircleCard:

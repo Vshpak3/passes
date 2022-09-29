@@ -237,7 +237,7 @@ export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }) => {
           />
         )}
       </div>
-      <BuyPostModal isOpen={openBuyPostModal} setOpen={onMockedSuccess} />
+      <BuyPostModal postInfo={openBuyPostModal} setOpen={onMockedSuccess} />
     </>
   )
 }

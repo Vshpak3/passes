@@ -91,7 +91,7 @@ const mockCreator = {
       caption:
         "I'm so excited to share EXACTLY how I made these TikToks for Insomniac go viral. I show how I experimented, the videos, and explain the process for making engaged Tiktoks.",
       content: [
-        { url: "/pages/profile/profile-post-photo.png", type: "image/jpeg" }
+        { url: "/pages/profile/profile-post-photo.png", contentType: "image" }
       ]
     },
     {
@@ -112,11 +112,11 @@ const mockCreator = {
       content: [
         {
           url: "/pages/profile/fundraiser1.png",
-          type: "image/jpeg"
+          contentType: "image"
         },
         {
           url: "/pages/profile/fundraiser2.png",
-          type: "image/jpeg"
+          contentType: "image"
         }
       ]
     }

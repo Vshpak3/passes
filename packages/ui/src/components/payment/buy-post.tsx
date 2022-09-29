@@ -1,4 +1,5 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
+import classNames from "classnames"
 import React from "react"
 
 import { usePay } from "../../hooks/usePay"
@@ -6,14 +7,16 @@ import { usePay } from "../../hooks/usePay"
 interface IBuyPostButton {
   postId: string
   fromDM: boolean
-  payinMethod?: PayinMethodDto
   onSuccess: () => void
+  payinMethod?: PayinMethodDto
+  isDisabled?: boolean
 }
 
 export const BuyPostButton = ({
   postId,
   payinMethod,
-  onSuccess
+  onSuccess,
+  isDisabled = false
 }: IBuyPostButton) => {
   const api = new PostApi()
   const register = async () => {
@@ -44,9 +47,13 @@ export const BuyPostButton = ({
   return (
     <button
       onClick={submit}
-      className="mt-2 w-32 rounded-[50px] bg-passes-pink-100 p-2 text-white"
+      className={classNames(
+        isDisabled
+          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
+          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
+      )}
       type="submit"
-      {...(blocked || submitting ? { disabled: true } : {})}
+      {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
     >
       {loading ? "Loading" : buttonText}
     </button>

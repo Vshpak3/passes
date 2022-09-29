@@ -59,6 +59,18 @@ const usePasses = (creatorId = "") => {
     }
   )
 
+  const { data: externalPasses = [], isValidating: isLoadingExternalPasses } =
+    useSWR(user ? "/pass/external" : null, async () => {
+      const api = new PassApi()
+      return (
+        await api.getExternalPasses({
+          getExternalPassesRequestDto: {
+            creatorId: user?.id
+          }
+        })
+      ).passes
+    })
+
   const [filteredActive, setFilteredActive] = useState(creatorPasses)
   const [filteredExpired, setFilteredExpired] = useState(creatorPasses)
   const [filteredCreatorPassesList, setFilteredCreatorPassesList] =
@@ -94,9 +106,11 @@ const usePasses = (creatorId = "") => {
     filteredActive,
     filteredCreatorPassesList,
     creatorPasses,
+    externalPasses,
     filteredExpired,
     fanPasses,
     isLoadingFanPasses,
+    isLoadingExternalPasses,
     isLoadingCreatorPasses,
     passSearchTerm,
     onSearchPass,
