@@ -24,37 +24,37 @@ export interface GetNotificationSettingsResponseDto {
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    directMessageEmails?: boolean;
+    directMessageEmails: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    passesEmails?: boolean;
+    passesEmails: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    paymentEmails?: boolean;
+    paymentEmails: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    postEmails?: boolean;
+    postEmails: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    marketingEmails?: boolean;
+    marketingEmails: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof GetNotificationSettingsResponseDto
      */
-    mentionEmails?: boolean;
+    mentionEmails: boolean;
 }
 
 /**
@@ -62,6 +62,12 @@ export interface GetNotificationSettingsResponseDto {
  */
 export function instanceOfGetNotificationSettingsResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "directMessageEmails" in value;
+    isInstance = isInstance && "passesEmails" in value;
+    isInstance = isInstance && "paymentEmails" in value;
+    isInstance = isInstance && "postEmails" in value;
+    isInstance = isInstance && "marketingEmails" in value;
+    isInstance = isInstance && "mentionEmails" in value;
 
     return isInstance;
 }
@@ -76,12 +82,12 @@ export function GetNotificationSettingsResponseDtoFromJSONTyped(json: any, ignor
     }
     return {
         
-        'directMessageEmails': !exists(json, 'directMessageEmails') ? undefined : json['directMessageEmails'],
-        'passesEmails': !exists(json, 'passesEmails') ? undefined : json['passesEmails'],
-        'paymentEmails': !exists(json, 'paymentEmails') ? undefined : json['paymentEmails'],
-        'postEmails': !exists(json, 'postEmails') ? undefined : json['postEmails'],
-        'marketingEmails': !exists(json, 'marketingEmails') ? undefined : json['marketingEmails'],
-        'mentionEmails': !exists(json, 'mentionEmails') ? undefined : json['mentionEmails'],
+        'directMessageEmails': json['directMessageEmails'],
+        'passesEmails': json['passesEmails'],
+        'paymentEmails': json['paymentEmails'],
+        'postEmails': json['postEmails'],
+        'marketingEmails': json['marketingEmails'],
+        'mentionEmails': json['mentionEmails'],
     };
 }
 

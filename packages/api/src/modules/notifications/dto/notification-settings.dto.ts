@@ -2,23 +2,23 @@ import { DtoProperty } from '../../../web/dto.web'
 import { NotificationSettingsEntity } from '../entities/notification-settings.entity'
 
 export class NotificationSettingsDto {
-  @DtoProperty({ type: 'boolean', optional: true })
-  directMessageEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  directMessageEmails: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  passesEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  passesEmails: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  paymentEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  paymentEmails: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  postEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  postEmails: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  marketingEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  marketingEmails: boolean
 
-  @DtoProperty({ type: 'boolean', optional: true })
-  mentionEmails?: boolean
+  @DtoProperty({ type: 'boolean' })
+  mentionEmails: boolean
 
   constructor(notificationSettings: NotificationSettingsEntity | undefined) {
     if (notificationSettings) {

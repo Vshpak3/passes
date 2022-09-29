@@ -15,6 +15,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { GetNotificationsRequestDto } from './dto/get-notification.dto'
 import { NotificationDto } from './dto/notification.dto'
 import { NotificationSettingsDto } from './dto/notification-settings.dto'
+import { UpdateNotificationSettingsRequestDto } from './dto/update-notification-settings.dto'
 import { NotificationEntity } from './entities/notification.entity'
 import { NotificationSettingsEntity } from './entities/notification-settings.entity'
 import { NotificationStatusEnum } from './enum/notification.status.enum'
@@ -138,14 +139,16 @@ export class NotificationsService {
       .where({ user_id: userId })
       .first()
     if (!settings) {
-      throw new NotFoundException('CreatorSettings does not exist for user')
+      throw new NotFoundException(
+        'Notification settings does not exist for user',
+      )
     }
     return new NotificationSettingsDto(settings)
   }
 
   async updateNotificationSettings(
     userId: string,
-    updateSettingsDto: NotificationSettingsDto,
+    updateSettingsDto: UpdateNotificationSettingsRequestDto,
   ): Promise<boolean> {
     const data = {
       direct_message_emails: updateSettingsDto.directMessageEmails,
