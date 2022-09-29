@@ -5,7 +5,6 @@ import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MenuIcon from "public/icons/menu.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
-import PinIcon from "public/icons/post-pinned-inactive.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import LockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import ShareIcon from "public/icons/share-outline.svg"
@@ -85,23 +84,20 @@ const ViewModal: React.FC<IViewProps> = ({
         <div className="max-w-[248px] pt-3 pb-[70px]">
           <div className="flex items-center justify-between space-x-2.5 pl-0.5 pr-1.5">
             <div className="flex items-center space-x-2.5">
-              <span
-                className={cn("text-start text-xs text-white/50", {
-                  "max-w-[35px]": view === "creator"
-                })}
-              >
-                <TimeAgo date={post.createdAt} minPeriod={30} />
-              </span>
+              {post.createdAt && (
+                <span
+                  className={cn("text-start text-xs text-white/50", {
+                    "max-w-[35px]": view === "creator"
+                  })}
+                >
+                  <TimeAgo date={post.createdAt} minPeriod={30} />
+                </span>
+              )}
               {view === "creator" && <PostStaticsButton />}
             </div>
-            <div className="flex items-center space-x-4">
-              <button className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/10">
-                <PinIcon />
-              </button>
-              <button>
-                <MenuIcon color="#868487" />
-              </button>
-            </div>
+            <button>
+              <MenuIcon color="#868487" />
+            </button>
           </div>
           <div className="mt-[50px] flex space-x-4">
             <div className="relative h-12 w-12 overflow-hidden rounded-full">

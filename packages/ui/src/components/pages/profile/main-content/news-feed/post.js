@@ -5,7 +5,6 @@ import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
-import PinIcon from "public/icons/post-pinned-inactive.svg"
 // import PinnedActive from "public/icons/post-pinned-active.svg"
 // import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
@@ -68,7 +67,8 @@ export const Post = ({ profile, post }) => {
           post={currentPost}
           isOpen
           onClose={() => setCurrentPost(null)}
-          view={currentPost.fundraiser ? "creator" : "fan"}
+          view="creator"
+          // view={currentPost.fundraiser ? "creator" : "fan"}
         />
       )}
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
@@ -151,9 +151,6 @@ export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => {
           </div>
           <PostStaticsButton />
 
-          <button className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/10">
-            <PinIcon />
-          </button>
           <div className="flex items-center gap-[15px]">
             {/* <div
           onClick={() => setPostPinned(!postPinned)}
