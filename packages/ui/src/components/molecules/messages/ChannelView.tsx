@@ -33,7 +33,7 @@ export const ChannelView = ({
           ) : (
             <>
               <ChannelStream channelId={selectedChannel.channelId} />
-              <InputMessage />
+              <InputMessage channelId={selectedChannel.channelId} />
             </>
           )}
         </>
