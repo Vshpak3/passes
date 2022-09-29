@@ -18,8 +18,6 @@ export const InputMessage = ({ channelId }: Props) => {
 
   // TODO: error validation
   const submitMessage = async ({ message }: any) => {
-    console.log("submit")
-
     if (!channelId) {
       return false
     }
@@ -29,13 +27,7 @@ export const InputMessage = ({ channelId }: Props) => {
         text: message,
         contentIds: [],
         channelId,
-        tipAmount: 0,
-        payinMethod: {
-          method: "none",
-          cardId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          chainId: 0,
-          chain: "eth"
-        }
+        tipAmount: 0
       }
     })
 

@@ -114,7 +114,7 @@ export const ChannelStream = ({
 
       setMessages(newMessages)
       latestMessageTimestamp.current =
-        newMessages.length - 1
+        newMessages.length > 0
           ? newMessages[newMessages.length - 1].sentAt
           : new Date()
     }, FETCH_NEW_MESSAGES_RATE)
@@ -131,30 +131,18 @@ export const ChannelStream = ({
       ref={bottomOfChatRef}
     >
       {isLoadingOlderMessages && <div>Loading older messages...</div>}
-      {messages.length ? (
-        <>
-          {!isCreator && (
-            <div className="sticky top-0 w-full">
-              <FreeMessagesLeftContainer freeMessages={freeMessages} />
-            </div>
-          )}
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <TippedMessage isOwnMessage tipAmount={5} />
-        </>
-      ) : (
-        <div className="flex flex-1 items-center justify-center">
-          No messages
-        </div>
-      )}
+
+      <ChannelMessage />
+      <ChannelMessage isOwnMessage />
+      <ChannelMessage />
+      <ChannelMessage isOwnMessage />
+      <ChannelMessage />
+      <ChannelMessage />
+      <ChannelMessage isOwnMessage />
+      <ChannelMessage />
+      <ChannelMessage />
+      <ChannelMessage isOwnMessage />
+      <TippedMessage isOwnMessage tipAmount={5} />
 
       {/* Dummy ref to allow scrolling to bottom of chat */}
       <div ref={bottomOfChatRef} />

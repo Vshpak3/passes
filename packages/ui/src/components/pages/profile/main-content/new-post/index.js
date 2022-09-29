@@ -307,7 +307,7 @@ export const NewPost = ({
                 />
               ) : (
                 <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color  md:h-[480px] md:p-9">
-                  <div className="relative flex h-[230px] w-full items-center justify-center rounded-[6px]">
+                  <div className="relative flex h-[300px] w-full items-center justify-center rounded-[6px]">
                     {selectedMedia ? (
                       <MediaFile
                         preview={true}

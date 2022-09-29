@@ -24,7 +24,7 @@ const MessagesV2 = () => {
 
   return (
     <div className="flex h-full flex-row border border-gray-800">
-      {channels?.length && (
+      {channels?.length > 0 && (
         <ChannelList
           selectedChannel={selectedChannel}
           channels={channels}
