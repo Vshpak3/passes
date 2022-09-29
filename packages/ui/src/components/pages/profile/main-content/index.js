@@ -1,4 +1,4 @@
-import { FanWallApi } from "@passes/api-client"
+import { FanWallApi, FeedApi } from "@passes/api-client"
 import React, { useState } from "react"
 import { useCreatePost } from "src/hooks"
 import { useSWRConfig } from "swr"
@@ -19,23 +19,26 @@ const MainContent = ({
 
   const handleCreatePost = (values) => {
     mutate(["/post/creator/", username], async () => createPost(values), {
-      populateCache: (post, previousPosts) => {
+      populateCache: async (post, previousPosts) => {
+        const api = new FeedApi()
+        const { posts } = await api.getFeedForCreator({
+          getProfileFeedRequestDto: { creatorId: profile.userId }
+        })
+
         if (!previousPosts)
           return {
             count: 1,
             cursor: username,
-            posts: [post]
+            posts
           }
         else
           return {
             count: previousPosts.count + 1,
             cursor: previousPosts.cursor,
-            posts: [post, ...previousPosts.posts]
+            posts
           }
       },
-      // Since the API already gives us the updated information,
-      // we don't need to revalidate here.
-      revalidate: false
+      revalidate: true
     })
   }
   const writeToFanWall = async (values) => {
@@ -52,14 +55,16 @@ const MainContent = ({
           }
         }),
       {
-        populateCache: (fanWallPost, fanWallPreviousPosts) => {
+        populateCache: async () => {
+          const api = new FanWallApi()
+          const { comments } = await api.getFanWallForCreator({
+            getFanWallRequestDto: { creatorId: profile.userId }
+          })
           return {
-            comments: !fanWallPosts
-              ? [fanWallPost]
-              : [fanWallPost, ...fanWallPreviousPosts.comments]
+            comments: comments
           }
         },
-        revalidate: false
+        revalidate: true
       }
     )
   }
