@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetCreatorVerificationStepResponseDto } from './dto/get-creator-verification-step.dto'
@@ -36,13 +37,17 @@ export class VerificationController {
   @ApiEndpoint({
     summary: 'Check if user can submit inquiry',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Check was retrieved',
     role: RoleEnum.GENERAL,
   })
   @Get('persona/inquiry/check')
-  async canSubmitPersona(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.verificationService.canSubmitPersona(req.user.id)
+  async canSubmitPersona(
+    @Req() req: RequestWithUser,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.verificationService.canSubmitPersona(req.user.id),
+    )
   }
 
   @ApiEndpoint({

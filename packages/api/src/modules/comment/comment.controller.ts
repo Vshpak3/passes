@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { CommentService } from './comment.service'
@@ -28,7 +29,7 @@ export class CommentController {
   @ApiEndpoint({
     summary: 'Creates a comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A comment was created',
     role: RoleEnum.GENERAL,
   })
@@ -36,10 +37,9 @@ export class CommentController {
   async createComment(
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentRequestDto,
-  ): Promise<boolean> {
-    return await this.commentService.createComment(
-      req.user.id,
-      createCommentDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.commentService.createComment(req.user.id, createCommentDto),
     )
   }
 
@@ -64,7 +64,7 @@ export class CommentController {
   @ApiEndpoint({
     summary: 'Hides a comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A comment was hidden',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -73,14 +73,16 @@ export class CommentController {
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
-  ): Promise<boolean> {
-    return await this.commentService.hideComment(req.user.id, postId, commentId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.commentService.hideComment(req.user.id, postId, commentId),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Deletes a comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A comment was deleted',
     role: RoleEnum.GENERAL,
   })
@@ -89,11 +91,9 @@ export class CommentController {
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
-  ): Promise<boolean> {
-    return await this.commentService.deleteComment(
-      req.user.id,
-      postId,
-      commentId,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.commentService.deleteComment(req.user.id, postId, commentId),
     )
   }
 }

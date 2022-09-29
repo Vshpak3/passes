@@ -10,7 +10,6 @@ import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
-import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 
 export const FEED_LIMIT = 100
@@ -163,31 +162,5 @@ export class FeedService {
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     const index = postDtos.findIndex((post) => post.postId === lastId)
     return new GetFeedResponseDto(postDtos.slice(index + 1))
-  }
-
-  async getPostsForOwner(
-    userId: string,
-    getPostsRequestDto: GetPostsRequestDto,
-  ): Promise<GetFeedResponseDto> {
-    const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
-    let query = this.dbReader<PostEntity>(PostEntity.table)
-      .select([`${PostEntity.table}.*`])
-      .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere(`${PostEntity.table}.user_id`, userId)
-      .orderBy(`${PostEntity.table}.created_at`, 'desc')
-      .orderBy([
-        { column: `${PostEntity.table}.created_at`, order: 'desc' },
-        { column: `${PostEntity.table}.id`, order: 'desc' },
-      ])
-    if (createdAt) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
-    }
-    if (scheduledOnly) {
-      query = query.whereNotNull('scheduled_at')
-    }
-    const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    const index = postDtos.findIndex((post) => post.postId === lastId)
-    // filter out expired posts
-    return new GetFeedResponseDto(postDtos.slice(index))
   }
 }

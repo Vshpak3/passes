@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
   GetPostResponseDto,
+  GetPostsRequestDto,
+  GetPostsResponseDto,
   PayinDataDto,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
@@ -27,6 +30,8 @@ import type {
   UpdatePostRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreatePostRequestDtoFromJSON,
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
@@ -37,6 +42,10 @@ import {
     GetPostHistoryResponseDtoToJSON,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
+    GetPostsRequestDtoFromJSON,
+    GetPostsRequestDtoToJSON,
+    GetPostsResponseDtoFromJSON,
+    GetPostsResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchasePostRequestDtoFromJSON,
@@ -59,6 +68,10 @@ export interface FindPostRequest {
 
 export interface GetPostHistoryRequest {
     getPostHistoryRequestDto: GetPostHistoryRequestDto;
+}
+
+export interface GetPostsForOwnerRequest {
+    getPostsRequestDto: GetPostsRequestDto;
 }
 
 export interface IsAllPostContentReadyRequest {
@@ -211,9 +224,47 @@ export class PostApi extends runtime.BaseAPI {
     }
 
     /**
+     * Gets posts
+     */
+    async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsResponseDto>> {
+        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPostsForOwner.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/post/owner/posts`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets posts
+     */
+    async getPostsForOwner(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
+        const response = await this.getPostsForOwnerRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Checks if all content in a post is ready
      */
-    async isAllPostContentReadyRaw(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async isAllPostContentReadyRaw(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling isAllPostContentReady.');
         }
@@ -234,13 +285,13 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Checks if all content in a post is ready
      */
-    async isAllPostContentReady(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async isAllPostContentReady(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.isAllPostContentReadyRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -248,7 +299,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Pin a post
      */
-    async pinPostRaw(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async pinPostRaw(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling pinPost.');
         }
@@ -269,13 +320,13 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Pin a post
      */
-    async pinPost(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async pinPost(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.pinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -431,7 +482,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Unpin a post
      */
-    async unpinPostRaw(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async unpinPostRaw(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling unpinPost.');
         }
@@ -452,13 +503,13 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Unpin a post
      */
-    async unpinPost(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async unpinPost(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.unpinPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -466,7 +517,7 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Updates a post
      */
-    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling updatePost.');
         }
@@ -494,13 +545,13 @@ export class PostApi extends runtime.BaseAPI {
             body: UpdatePostRequestDtoToJSON(requestParameters.updatePostRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Updates a post
      */
-    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.updatePostRaw(requestParameters, initOverrides);
         return await response.value();
     }

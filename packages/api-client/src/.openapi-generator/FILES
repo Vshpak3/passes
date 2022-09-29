@@ -33,6 +33,7 @@ models/AdminDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BillingDetailsDto.ts
+models/BooleanResponseDto.ts
 models/ChannelMemberDto.ts
 models/CircleBankAddressDto.ts
 models/CircleBankDto.ts
@@ -128,6 +129,7 @@ models/GetPostHistoryRequestDto.ts
 models/GetPostHistoryResponseDto.ts
 models/GetPostResponseDto.ts
 models/GetPostsRequestDto.ts
+models/GetPostsResponseDto.ts
 models/GetProfileFeedRequestDto.ts
 models/GetProfileRequestDto.ts
 models/GetProfileResponseDto.ts

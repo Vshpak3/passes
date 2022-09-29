@@ -47,6 +47,7 @@ import {
   CreatePostResponseDto,
 } from './dto/create-post.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
+import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -246,6 +247,32 @@ export class PostService {
     }
 
     return postDtos[0]
+  }
+
+  async getPosts(
+    userId: string,
+    getPostsRequestDto: GetPostsRequestDto,
+  ): Promise<GetPostsResponseDto> {
+    const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
+    let query = this.dbReader<PostEntity>(PostEntity.table)
+      .select([`${PostEntity.table}.*`])
+      .whereNull(`${PostEntity.table}.deleted_at`)
+      .andWhere(`${PostEntity.table}.user_id`, userId)
+      .orderBy(`${PostEntity.table}.created_at`, 'desc')
+      .orderBy([
+        { column: `${PostEntity.table}.created_at`, order: 'desc' },
+        { column: `${PostEntity.table}.id`, order: 'desc' },
+      ])
+    if (createdAt) {
+      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
+    }
+    if (scheduledOnly) {
+      query = query.whereNotNull('scheduled_at')
+    }
+    const postDtos = await this.getPostsFromQuery(userId, query)
+    const index = postDtos.findIndex((post) => post.postId === lastId)
+    // filter out expired posts
+    return new GetPostsResponseDto(postDtos.slice(index))
   }
 
   async getPostsFromQuery(

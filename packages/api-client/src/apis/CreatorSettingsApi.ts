@@ -15,10 +15,13 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   GetCreatorSettingsResponseDto,
   UpdateCreatorSettingsRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     GetCreatorSettingsResponseDtoFromJSON,
     GetCreatorSettingsResponseDtoToJSON,
     UpdateCreatorSettingsRequestDtoFromJSON,
@@ -68,7 +71,7 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
     /**
      * Updates creator settings
      */
-    async updateCreatorSettingsRaw(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateCreatorSettingsRaw(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.updateCreatorSettingsRequestDto === null || requestParameters.updateCreatorSettingsRequestDto === undefined) {
             throw new runtime.RequiredError('updateCreatorSettingsRequestDto','Required parameter requestParameters.updateCreatorSettingsRequestDto was null or undefined when calling updateCreatorSettings.');
         }
@@ -92,13 +95,13 @@ export class CreatorSettingsApi extends runtime.BaseAPI {
             body: UpdateCreatorSettingsRequestDtoToJSON(requestParameters.updateCreatorSettingsRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Updates creator settings
      */
-    async updateCreatorSettings(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async updateCreatorSettings(requestParameters: UpdateCreatorSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.updateCreatorSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }

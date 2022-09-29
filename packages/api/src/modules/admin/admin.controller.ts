@@ -10,6 +10,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { MetricsService } from '../../monitoring/metrics/metric.service'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
@@ -85,111 +86,125 @@ export class AdminController {
   @ApiEndpoint({
     summary: 'Add external pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass was added',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/add')
   async addExternalPass(
     @Body() body: CreateExternalPassRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.addExternalPass(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(await this.adminService.addExternalPass(body))
   }
 
   @ApiEndpoint({
     summary: 'Update external pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass was updated',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/update')
   async updateExternalPass(
     @Body() body: UpdateExternalPassRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.updateExternalPass(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.updateExternalPass(body),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Delete external pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass was deleted',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/delete')
   async deleteExternalPass(
     @Body() body: UpdateExternalPassRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.deleteExternalPass(body.passId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.deleteExternalPass(body.passId),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Add external pass address',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass was added',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/address/add')
   async addExternalPassAddress(
     @Body() body: AddExternalPassAddressRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.addExternalPassAddress(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.addExternalPassAddress(body),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Delete external pass address',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass was deleted',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/address/delete')
   async deleteExternalPassAddress(
     @Body() body: DeleteExternalPassAddressRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.deleteExternalPassAddress(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.deleteExternalPassAddress(body),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Add external pass for user',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass for user was added',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/user/add')
   async addUserExternalPass(
     @Body() body: UserExternalPassRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.addUserExternalPass(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.addUserExternalPass(body),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Delete external pass for user',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'External pass for user deleted',
     role: RoleEnum.GENERAL,
   })
   @Post('external-pass/user/delete')
   async deleteUserExternalPass(
     @Body() body: UserExternalPassRequestDto,
-  ): Promise<boolean> {
-    return await this.adminService.deleteUserExternalPass(body)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.adminService.deleteUserExternalPass(body),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Set creator fee',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Creator fee was set',
     role: RoleEnum.GENERAL,
   })
   @Post('creator-fee/set')
-  async setCreatorFee(@Body() body: SetCreatorFeeRequestDto): Promise<boolean> {
-    return await this.adminService.setCreatorFee(body)
+  async setCreatorFee(
+    @Body() body: SetCreatorFeeRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(await this.adminService.setCreatorFee(body))
   }
 
   @ApiEndpoint({

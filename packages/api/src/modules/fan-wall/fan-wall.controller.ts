@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
@@ -28,7 +29,7 @@ export class FanWallController {
   @ApiEndpoint({
     summary: 'Creates a fan wall comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A fan wall comment was created',
     role: RoleEnum.GENERAL,
   })
@@ -36,10 +37,12 @@ export class FanWallController {
   async createFanWallComment(
     @Req() req: RequestWithUser,
     @Body() createFanWallCommentDto: CreateFanWallCommentRequestDto,
-  ): Promise<boolean> {
-    return await this.fanWallService.createFanWallComment(
-      req.user.id,
-      createFanWallCommentDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.fanWallService.createFanWallComment(
+        req.user.id,
+        createFanWallCommentDto,
+      ),
     )
   }
 
@@ -65,7 +68,7 @@ export class FanWallController {
   @ApiEndpoint({
     summary: 'Hides a fan wall comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A fan wall comment was hidden',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -73,17 +76,19 @@ export class FanWallController {
   async hideFanWallComment(
     @Req() req: RequestWithUser,
     @Param('fanWallCommentId') fanWallCommentId: string,
-  ): Promise<boolean> {
-    return await this.fanWallService.hideFanWallCommment(
-      req.user.id,
-      fanWallCommentId,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.fanWallService.hideFanWallCommment(
+        req.user.id,
+        fanWallCommentId,
+      ),
     )
   }
 
   @ApiEndpoint({
     summary: 'Deletes a fan wall comment',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A fan wall comment was deleted',
     role: RoleEnum.GENERAL,
   })
@@ -91,10 +96,12 @@ export class FanWallController {
   async deleteFanWallComment(
     @Req() req: RequestWithUser,
     @Param('fanWallCommentId') fanWallCommentId: string,
-  ): Promise<boolean> {
-    return await this.fanWallService.deleteFanWallComment(
-      req.user.id,
-      fanWallCommentId,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.fanWallService.deleteFanWallComment(
+        req.user.id,
+        fanWallCommentId,
+      ),
     )
   }
 }

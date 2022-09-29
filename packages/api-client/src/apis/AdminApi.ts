@@ -18,6 +18,7 @@ import type {
   AccessTokensResponseDto,
   AddExternalPassAddressRequestDto,
   AdminDto,
+  BooleanResponseDto,
   CreateExternalPassRequestDto,
   DeleteExternalPassAddressRequestDto,
   GetCreatorFeeRequestDto,
@@ -35,6 +36,8 @@ import {
     AddExternalPassAddressRequestDtoToJSON,
     AdminDtoFromJSON,
     AdminDtoToJSON,
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateExternalPassRequestDtoFromJSON,
     CreateExternalPassRequestDtoToJSON,
     DeleteExternalPassAddressRequestDtoFromJSON,
@@ -119,7 +122,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Add external pass
      */
-    async addExternalPassRaw(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async addExternalPassRaw(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.createExternalPassRequestDto === null || requestParameters.createExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('createExternalPassRequestDto','Required parameter requestParameters.createExternalPassRequestDto was null or undefined when calling addExternalPass.');
         }
@@ -143,13 +146,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: CreateExternalPassRequestDtoToJSON(requestParameters.createExternalPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Add external pass
      */
-    async addExternalPass(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async addExternalPass(requestParameters: AddExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.addExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -157,7 +160,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Add external pass address
      */
-    async addExternalPassAddressRaw(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async addExternalPassAddressRaw(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.addExternalPassAddressRequestDto === null || requestParameters.addExternalPassAddressRequestDto === undefined) {
             throw new runtime.RequiredError('addExternalPassAddressRequestDto','Required parameter requestParameters.addExternalPassAddressRequestDto was null or undefined when calling addExternalPassAddress.');
         }
@@ -181,13 +184,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: AddExternalPassAddressRequestDtoToJSON(requestParameters.addExternalPassAddressRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Add external pass address
      */
-    async addExternalPassAddress(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async addExternalPassAddress(requestParameters: AddExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.addExternalPassAddressRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -195,7 +198,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Add external pass for user
      */
-    async addUserExternalPassRaw(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async addUserExternalPassRaw(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.userExternalPassRequestDto === null || requestParameters.userExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('userExternalPassRequestDto','Required parameter requestParameters.userExternalPassRequestDto was null or undefined when calling addUserExternalPass.');
         }
@@ -219,13 +222,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: UserExternalPassRequestDtoToJSON(requestParameters.userExternalPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Add external pass for user
      */
-    async addUserExternalPass(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async addUserExternalPass(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.addUserExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -233,7 +236,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass
      */
-    async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteExternalPassRaw(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling deleteExternalPass.');
         }
@@ -257,13 +260,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: UpdateExternalPassRequestDtoToJSON(requestParameters.updateExternalPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Delete external pass
      */
-    async deleteExternalPass(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteExternalPass(requestParameters: DeleteExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -271,7 +274,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass address
      */
-    async deleteExternalPassAddressRaw(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteExternalPassAddressRaw(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.deleteExternalPassAddressRequestDto === null || requestParameters.deleteExternalPassAddressRequestDto === undefined) {
             throw new runtime.RequiredError('deleteExternalPassAddressRequestDto','Required parameter requestParameters.deleteExternalPassAddressRequestDto was null or undefined when calling deleteExternalPassAddress.');
         }
@@ -295,13 +298,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: DeleteExternalPassAddressRequestDtoToJSON(requestParameters.deleteExternalPassAddressRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Delete external pass address
      */
-    async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteExternalPassAddress(requestParameters: DeleteExternalPassAddressRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteExternalPassAddressRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -309,7 +312,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Delete external pass for user
      */
-    async deleteUserExternalPassRaw(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteUserExternalPassRaw(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.userExternalPassRequestDto === null || requestParameters.userExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('userExternalPassRequestDto','Required parameter requestParameters.userExternalPassRequestDto was null or undefined when calling deleteUserExternalPass.');
         }
@@ -333,13 +336,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: UserExternalPassRequestDtoToJSON(requestParameters.userExternalPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Delete external pass for user
      */
-    async deleteUserExternalPass(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteUserExternalPass(requestParameters: DeleteUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteUserExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -497,7 +500,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Set creator fee
      */
-    async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.setCreatorFeeRequestDto === null || requestParameters.setCreatorFeeRequestDto === undefined) {
             throw new runtime.RequiredError('setCreatorFeeRequestDto','Required parameter requestParameters.setCreatorFeeRequestDto was null or undefined when calling setCreatorFee.');
         }
@@ -521,13 +524,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: SetCreatorFeeRequestDtoToJSON(requestParameters.setCreatorFeeRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Set creator fee
      */
-    async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async setCreatorFee(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.setCreatorFeeRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -609,7 +612,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Update external pass
      */
-    async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateExternalPassRaw(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.updateExternalPassRequestDto === null || requestParameters.updateExternalPassRequestDto === undefined) {
             throw new runtime.RequiredError('updateExternalPassRequestDto','Required parameter requestParameters.updateExternalPassRequestDto was null or undefined when calling updateExternalPass.');
         }
@@ -633,13 +636,13 @@ export class AdminApi extends runtime.BaseAPI {
             body: UpdateExternalPassRequestDtoToJSON(requestParameters.updateExternalPassRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Update external pass
      */
-    async updateExternalPass(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async updateExternalPass(requestParameters: UpdateExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.updateExternalPassRaw(requestParameters, initOverrides);
         return await response.value();
     }

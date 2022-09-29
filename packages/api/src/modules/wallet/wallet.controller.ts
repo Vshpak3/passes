@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { EthService } from '../eth/eth.service'
@@ -95,7 +96,7 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Creates authenticated wallet for a user',
     responseStatus: HttpStatus.CREATED,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Wallet was created',
     role: RoleEnum.GENERAL,
   })
@@ -103,8 +104,10 @@ export class WalletController {
   async createWallet(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletRequestDto,
-  ): Promise<boolean> {
-    return await this.walletService.createWallet(req.user.id, createWalletDto)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.walletService.createWallet(req.user.id, createWalletDto),
+    )
   }
 
   @ApiEndpoint({

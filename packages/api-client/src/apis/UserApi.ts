@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   IsPasswordUserResponseDto,
   SearchCreatorRequestDto,
   SearchCreatorResponseDto,
@@ -22,6 +23,8 @@ import type {
   UpdateUsernameRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     IsPasswordUserResponseDtoFromJSON,
     IsPasswordUserResponseDtoToJSON,
     SearchCreatorRequestDtoFromJSON,
@@ -62,7 +65,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Activate a user account
      */
-    async activateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async activateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -79,13 +82,13 @@ export class UserApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Activate a user account
      */
-    async activateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async activateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.activateUserRaw(initOverrides);
         return await response.value();
     }
@@ -93,7 +96,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Deactivate a user account
      */
-    async deactivateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deactivateUserRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -110,13 +113,13 @@ export class UserApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Deactivate a user account
      */
-    async deactivateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deactivateUser(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deactivateUserRaw(initOverrides);
         return await response.value();
     }
@@ -190,7 +193,7 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Validates whether a username is available
      */
-    async isUsernameTakenRaw(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async isUsernameTakenRaw(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.updateUsernameRequestDto === null || requestParameters.updateUsernameRequestDto === undefined) {
             throw new runtime.RequiredError('updateUsernameRequestDto','Required parameter requestParameters.updateUsernameRequestDto was null or undefined when calling isUsernameTaken.');
         }
@@ -209,13 +212,13 @@ export class UserApi extends runtime.BaseAPI {
             body: UpdateUsernameRequestDtoToJSON(requestParameters.updateUsernameRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Validates whether a username is available
      */
-    async isUsernameTaken(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async isUsernameTaken(requestParameters: IsUsernameTakenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.isUsernameTakenRaw(requestParameters, initOverrides);
         return await response.value();
     }

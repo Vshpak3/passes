@@ -17,7 +17,6 @@ import * as runtime from '../runtime';
 import type {
   GetFeedRequestDto,
   GetFeedResponseDto,
-  GetPostsRequestDto,
   GetProfileFeedRequestDto,
 } from '../models';
 import {
@@ -25,8 +24,6 @@ import {
     GetFeedRequestDtoToJSON,
     GetFeedResponseDtoFromJSON,
     GetFeedResponseDtoToJSON,
-    GetPostsRequestDtoFromJSON,
-    GetPostsRequestDtoToJSON,
     GetProfileFeedRequestDtoFromJSON,
     GetProfileFeedRequestDtoToJSON,
 } from '../models';
@@ -37,10 +34,6 @@ export interface GetFeedRequest {
 
 export interface GetFeedForCreatorRequest {
     getProfileFeedRequestDto: GetProfileFeedRequestDto;
-}
-
-export interface GetPostsForOwnerRequest {
-    getPostsRequestDto: GetPostsRequestDto;
 }
 
 /**
@@ -121,44 +114,6 @@ export class FeedApi extends runtime.BaseAPI {
      */
     async getFeedForCreator(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
         const response = await this.getFeedForCreatorRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Gets my posts
-     */
-    async getPostsForOwnerRaw(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
-        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPostsForOwner.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-        const response = await this.request({
-            path: `/api/feed/owner/posts`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Gets my posts
-     */
-    async getPostsForOwner(requestParameters: GetPostsForOwnerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
-        const response = await this.getPostsForOwnerRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

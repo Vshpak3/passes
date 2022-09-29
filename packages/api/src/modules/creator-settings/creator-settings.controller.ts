@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpStatus, Patch, Req } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreatorSettingsService } from './creator-settings.service'
@@ -32,7 +33,7 @@ export class CreatorSettingsController {
   @ApiEndpoint({
     summary: 'Updates creator settings',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Creator Settings was updated',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -40,10 +41,12 @@ export class CreatorSettingsController {
   async updateCreatorSettings(
     @Req() req: RequestWithUser,
     @Body() updateCreatorSettingsDto: UpdateCreatorSettingsRequestDto,
-  ): Promise<boolean> {
-    return await this.creatorSettingsService.updateCreatorSettings(
-      req.user.id,
-      updateCreatorSettingsDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.creatorSettingsService.updateCreatorSettings(
+        req.user.id,
+        updateCreatorSettingsDto,
+      ),
     )
   }
 }

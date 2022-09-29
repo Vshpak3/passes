@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
@@ -234,7 +235,7 @@ export class PassController {
   @ApiEndpoint({
     summary: 'Pin a pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A pass was pinned',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -242,14 +243,16 @@ export class PassController {
   async pinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
-  ): Promise<boolean> {
-    return await this.passService.pinPass(req.user.id, passId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.passService.pinPass(req.user.id, passId),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Unpin a pass',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A pass was unpinned',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -257,8 +260,10 @@ export class PassController {
   async unpinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
-  ): Promise<boolean> {
-    return await this.passService.unpinPass(req.user.id, passId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.passService.unpinPass(req.user.id, passId),
+    )
   }
 
   @ApiEndpoint({

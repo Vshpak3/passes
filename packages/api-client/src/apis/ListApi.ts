@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   AddListMembersRequestDto,
+  BooleanResponseDto,
   CreateListRequestDto,
   EditListNameRequestDto,
   GetListMembersRequestDto,
@@ -28,6 +29,8 @@ import type {
 import {
     AddListMembersRequestDtoFromJSON,
     AddListMembersRequestDtoToJSON,
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateListRequestDtoFromJSON,
     CreateListRequestDtoToJSON,
     EditListNameRequestDtoFromJSON,
@@ -160,7 +163,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Delete list for user
      */
-    async deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteListRaw(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.listId === null || requestParameters.listId === undefined) {
             throw new runtime.RequiredError('listId','Required parameter requestParameters.listId was null or undefined when calling deleteList.');
         }
@@ -181,13 +184,13 @@ export class ListApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Delete list for user
      */
-    async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteList(requestParameters: DeleteListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteListRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -195,7 +198,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Edit list name
      */
-    async editListNameRaw(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async editListNameRaw(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.editListNameRequestDto === null || requestParameters.editListNameRequestDto === undefined) {
             throw new runtime.RequiredError('editListNameRequestDto','Required parameter requestParameters.editListNameRequestDto was null or undefined when calling editListName.');
         }
@@ -219,13 +222,13 @@ export class ListApi extends runtime.BaseAPI {
             body: EditListNameRequestDtoToJSON(requestParameters.editListNameRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Edit list name
      */
-    async editListName(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async editListName(requestParameters: EditListNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.editListNameRaw(requestParameters, initOverrides);
         return await response.value();
     }

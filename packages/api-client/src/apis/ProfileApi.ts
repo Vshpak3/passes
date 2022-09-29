@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreateOrUpdateProfileRequestDto,
   GetProfileRequestDto,
   GetProfileResponseDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateOrUpdateProfileRequestDtoFromJSON,
     CreateOrUpdateProfileRequestDtoToJSON,
     GetProfileRequestDtoFromJSON,
@@ -44,7 +47,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Activate a profile
      */
-    async activateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async activateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -61,13 +64,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Activate a profile
      */
-    async activateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async activateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.activateProfileRaw(initOverrides);
         return await response.value();
     }
@@ -75,7 +78,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Creates a profile
      */
-    async createOrUpdateProfileRaw(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createOrUpdateProfileRaw(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.createOrUpdateProfileRequestDto === null || requestParameters.createOrUpdateProfileRequestDto === undefined) {
             throw new runtime.RequiredError('createOrUpdateProfileRequestDto','Required parameter requestParameters.createOrUpdateProfileRequestDto was null or undefined when calling createOrUpdateProfile.');
         }
@@ -99,13 +102,13 @@ export class ProfileApi extends runtime.BaseAPI {
             body: CreateOrUpdateProfileRequestDtoToJSON(requestParameters.createOrUpdateProfileRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a profile
      */
-    async createOrUpdateProfile(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async createOrUpdateProfile(requestParameters: CreateOrUpdateProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.createOrUpdateProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -113,7 +116,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Deactivate a profile
      */
-    async deactivateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deactivateProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -130,13 +133,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Deactivate a profile
      */
-    async deactivateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deactivateProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deactivateProfileRaw(initOverrides);
         return await response.value();
     }
@@ -177,7 +180,7 @@ export class ProfileApi extends runtime.BaseAPI {
     /**
      * Check if profile is active
      */
-    async isProfileActiveRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async isProfileActiveRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -194,13 +197,13 @@ export class ProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Check if profile is active
      */
-    async isProfileActive(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async isProfileActive(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.isProfileActiveRaw(initOverrides);
         return await response.value();
     }

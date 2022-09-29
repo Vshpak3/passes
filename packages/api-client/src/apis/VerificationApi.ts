@@ -15,12 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   GetCreatorVerificationStepResponseDto,
   GetPersonaStatusResponseDto,
   SubmitCreatorVerificationStepRequestDto,
   SubmitPersonaInquiryRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     GetCreatorVerificationStepResponseDtoFromJSON,
     GetCreatorVerificationStepResponseDtoToJSON,
     GetPersonaStatusResponseDtoFromJSON,
@@ -47,7 +50,7 @@ export class VerificationApi extends runtime.BaseAPI {
     /**
      * Check if user can submit inquiry
      */
-    async canSubmitPersonaRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async canSubmitPersonaRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -64,13 +67,13 @@ export class VerificationApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Check if user can submit inquiry
      */
-    async canSubmitPersona(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async canSubmitPersona(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.canSubmitPersonaRaw(initOverrides);
         return await response.value();
     }

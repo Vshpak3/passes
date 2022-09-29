@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreateFanWallCommentRequestDto,
   GetFanWallRequestDto,
   GetFanWallResponseDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateFanWallCommentRequestDtoFromJSON,
     CreateFanWallCommentRequestDtoToJSON,
     GetFanWallRequestDtoFromJSON,
@@ -52,7 +55,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Creates a fan wall comment
      */
-    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.createFanWallCommentRequestDto === null || requestParameters.createFanWallCommentRequestDto === undefined) {
             throw new runtime.RequiredError('createFanWallCommentRequestDto','Required parameter requestParameters.createFanWallCommentRequestDto was null or undefined when calling createFanWallComment.');
         }
@@ -76,13 +79,13 @@ export class FanWallApi extends runtime.BaseAPI {
             body: CreateFanWallCommentRequestDtoToJSON(requestParameters.createFanWallCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a fan wall comment
      */
-    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.createFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -90,7 +93,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Deletes a fan wall comment
      */
-    async deleteFanWallCommentRaw(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteFanWallCommentRaw(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.fanWallCommentId === null || requestParameters.fanWallCommentId === undefined) {
             throw new runtime.RequiredError('fanWallCommentId','Required parameter requestParameters.fanWallCommentId was null or undefined when calling deleteFanWallComment.');
         }
@@ -111,13 +114,13 @@ export class FanWallApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Deletes a fan wall comment
      */
-    async deleteFanWallComment(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteFanWallComment(requestParameters: DeleteFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -163,7 +166,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Hides a fan wall comment
      */
-    async hideFanWallCommentRaw(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async hideFanWallCommentRaw(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.fanWallCommentId === null || requestParameters.fanWallCommentId === undefined) {
             throw new runtime.RequiredError('fanWallCommentId','Required parameter requestParameters.fanWallCommentId was null or undefined when calling hideFanWallComment.');
         }
@@ -184,13 +187,13 @@ export class FanWallApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Hides a fan wall comment
      */
-    async hideFanWallComment(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async hideFanWallComment(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.hideFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -12,8 +12,10 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
+import { GetFeedResponseDto } from '../feed/dto/get-feed-dto'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import {
@@ -25,6 +27,7 @@ import {
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
+import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -68,7 +71,7 @@ export class PostController {
   @ApiEndpoint({
     summary: 'Updates a post',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A post was updated',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -77,8 +80,10 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
     @Body() updatePostDto: UpdatePostRequestDto,
-  ): Promise<boolean> {
-    return await this.postService.updatePost(req.user.id, postId, updatePostDto)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.postService.updatePost(req.user.id, postId, updatePostDto),
+    )
   }
 
   @ApiEndpoint({
@@ -156,7 +161,7 @@ export class PostController {
   @ApiEndpoint({
     summary: 'Pin a post',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A post was pinned',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -164,14 +169,16 @@ export class PostController {
   async pinPost(
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
-  ): Promise<boolean> {
-    return await this.postService.pinPost(req.user.id, postId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.postService.pinPost(req.user.id, postId),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Unpin a post',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A post was unpinned',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -179,8 +186,10 @@ export class PostController {
   async unpinPost(
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
-  ): Promise<boolean> {
-    return await this.postService.unpinPost(req.user.id, postId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.postService.unpinPost(req.user.id, postId),
+    )
   }
 
   @ApiEndpoint({
@@ -206,14 +215,31 @@ export class PostController {
   @ApiEndpoint({
     summary: 'Checks if all content in a post is ready',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Whether or not all content is ready',
     role: RoleEnum.CREATOR_ONLY,
   })
   @Get('ready/:postId')
   async isAllPostContentReady(
     @Param('postId') postId: string,
-  ): Promise<boolean> {
-    return await this.postService.isAllPostContentReady(postId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.postService.isAllPostContentReady(postId),
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Gets posts',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPostsResponseDto,
+    responseDesc: 'A list of posts was retrieved',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('owner/posts')
+  async getPostsForOwner(
+    @Req() req: RequestWithUser,
+    @Body() getPostsRequestDto: GetPostsRequestDto,
+  ): Promise<GetFeedResponseDto> {
+    return await this.postService.getPosts(req.user.id, getPostsRequestDto)
   }
 }

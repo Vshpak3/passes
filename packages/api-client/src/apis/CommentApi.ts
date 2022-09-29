@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreateCommentRequestDto,
   GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateCommentRequestDtoFromJSON,
     CreateCommentRequestDtoToJSON,
     GetCommentsForPostRequestDtoFromJSON,
@@ -54,7 +57,7 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Creates a comment
      */
-    async createCommentRaw(requestParameters: CreateCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createCommentRaw(requestParameters: CreateCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.createCommentRequestDto === null || requestParameters.createCommentRequestDto === undefined) {
             throw new runtime.RequiredError('createCommentRequestDto','Required parameter requestParameters.createCommentRequestDto was null or undefined when calling createComment.');
         }
@@ -78,13 +81,13 @@ export class CommentApi extends runtime.BaseAPI {
             body: CreateCommentRequestDtoToJSON(requestParameters.createCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a comment
      */
-    async createComment(requestParameters: CreateCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async createComment(requestParameters: CreateCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.createCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -92,7 +95,7 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Deletes a comment
      */
-    async deleteCommentRaw(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async deleteCommentRaw(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling deleteComment.');
         }
@@ -117,13 +120,13 @@ export class CommentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Deletes a comment
      */
-    async deleteComment(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async deleteComment(requestParameters: DeleteCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.deleteCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -169,7 +172,7 @@ export class CommentApi extends runtime.BaseAPI {
     /**
      * Hides a comment
      */
-    async hideCommentRaw(requestParameters: HideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async hideCommentRaw(requestParameters: HideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
             throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling hideComment.');
         }
@@ -194,13 +197,13 @@ export class CommentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Hides a comment
      */
-    async hideComment(requestParameters: HideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async hideComment(requestParameters: HideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.hideCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }

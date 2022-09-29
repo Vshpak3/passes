@@ -12,6 +12,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
@@ -141,7 +142,7 @@ export class ListController {
   @ApiEndpoint({
     summary: 'Delete list for user',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'List was deleted',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -149,14 +150,16 @@ export class ListController {
   async deleteList(
     @Req() req: RequestWithUser,
     @Param('listId') listId: string,
-  ): Promise<boolean> {
-    return await this.listService.deleteList(req.user.id, listId)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.listService.deleteList(req.user.id, listId),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Edit list name',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'List name was edited',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -164,10 +167,9 @@ export class ListController {
   async editListName(
     @Req() req: RequestWithUser,
     @Body() editListNameRequestDto: EditListNameRequestDto,
-  ): Promise<boolean> {
-    return await this.listService.editListName(
-      req.user.id,
-      editListNameRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.listService.editListName(req.user.id, editListNameRequestDto),
     )
   }
 }

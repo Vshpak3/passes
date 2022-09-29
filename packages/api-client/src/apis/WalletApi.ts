@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   AuthWalletRequestDto,
   AuthWalletResponseDto,
+  BooleanResponseDto,
   CreateUnauthenticatedWalletRequestDto,
   CreateWalletRequestDto,
   GetCustodialWalletRequestDto,
@@ -30,6 +31,8 @@ import {
     AuthWalletRequestDtoToJSON,
     AuthWalletResponseDtoFromJSON,
     AuthWalletResponseDtoToJSON,
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateUnauthenticatedWalletRequestDtoFromJSON,
     CreateUnauthenticatedWalletRequestDtoToJSON,
     CreateWalletRequestDtoFromJSON,
@@ -158,7 +161,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Creates authenticated wallet for a user
      */
-    async createWalletRaw(requestParameters: CreateWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async createWalletRaw(requestParameters: CreateWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.createWalletRequestDto === null || requestParameters.createWalletRequestDto === undefined) {
             throw new runtime.RequiredError('createWalletRequestDto','Required parameter requestParameters.createWalletRequestDto was null or undefined when calling createWallet.');
         }
@@ -182,13 +185,13 @@ export class WalletApi extends runtime.BaseAPI {
             body: CreateWalletRequestDtoToJSON(requestParameters.createWalletRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates authenticated wallet for a user
      */
-    async createWallet(requestParameters: CreateWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async createWallet(requestParameters: CreateWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.createWalletRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -5,7 +5,6 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
-import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 import { FeedService } from './feed.service'
 
@@ -44,24 +43,6 @@ export class FeedController {
     return await this.feedService.getFeedForCreator(
       req.user.id,
       getProfileFeedRequestDto,
-    )
-  }
-
-  @ApiEndpoint({
-    summary: 'Gets my posts',
-    responseStatus: HttpStatus.OK,
-    responseType: GetFeedResponseDto,
-    responseDesc: 'A list of posts was retrieved',
-    role: RoleEnum.CREATOR_ONLY,
-  })
-  @Post('owner/posts')
-  async getPostsForOwner(
-    @Req() req: RequestWithUser,
-    @Body() getPostsRequestDto: GetPostsRequestDto,
-  ): Promise<GetFeedResponseDto> {
-    return await this.feedService.getPostsForOwner(
-      req.user.id,
-      getPostsRequestDto,
     )
   }
 }

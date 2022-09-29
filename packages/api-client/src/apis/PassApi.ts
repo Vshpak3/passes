@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreatePassHolderRequestDto,
   CreatePassRequestDto,
   CreatePassResponseDto,
@@ -33,6 +34,8 @@ import type {
   UpdatePassRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreatePassHolderRequestDtoFromJSON,
     CreatePassHolderRequestDtoToJSON,
     CreatePassRequestDtoFromJSON,
@@ -384,7 +387,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Pin a pass
      */
-    async pinPassRaw(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async pinPassRaw(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling pinPass.');
         }
@@ -405,13 +408,13 @@ export class PassApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Pin a pass
      */
-    async pinPass(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async pinPass(requestParameters: PinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.pinPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -571,7 +574,7 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Unpin a pass
      */
-    async unpinPassRaw(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async unpinPassRaw(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.passId === null || requestParameters.passId === undefined) {
             throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling unpinPass.');
         }
@@ -592,13 +595,13 @@ export class PassApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Unpin a pass
      */
-    async unpinPass(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async unpinPass(requestParameters: UnpinPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.unpinPassRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { IsPasswordUserResponseDto } from './dto/is-password.dto'
@@ -63,39 +64,47 @@ export class UserController {
   @ApiEndpoint({
     summary: 'Validates whether a username is available',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A username was checked for validity',
     role: RoleEnum.NO_AUTH,
   })
   @Post('username/validate')
   async isUsernameTaken(
     @Body() checkUsernameDto: UpdateUsernameRequestDto,
-  ): Promise<boolean> {
-    return await this.userService.isUsernameTaken(checkUsernameDto.username)
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.userService.isUsernameTaken(checkUsernameDto.username),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Deactivate a user account',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A user account was deactivated',
     role: RoleEnum.GENERAL,
   })
   @Get('deactivate')
-  async deactivateUser(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.userService.deactivateUser(req.user.id)
+  async deactivateUser(
+    @Req() req: RequestWithUser,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.userService.deactivateUser(req.user.id),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Activate a user account',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A user account was activated',
     role: RoleEnum.GENERAL,
   })
   @Get('activate')
-  async activateUser(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.userService.activateUser(req.user.id)
+  async activateUser(@Req() req: RequestWithUser): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.userService.activateUser(req.user.id),
+    )
   }
 
   @ApiEndpoint({

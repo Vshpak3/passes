@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { CreateOrUpdateProfileRequestDto } from './dto/create-or-update-profile.dto'
@@ -28,7 +29,7 @@ export class ProfileController {
   @ApiEndpoint({
     summary: 'Creates a profile',
     responseStatus: HttpStatus.CREATED,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A profile was created',
     role: RoleEnum.GENERAL,
   })
@@ -36,10 +37,12 @@ export class ProfileController {
   async createOrUpdateProfile(
     @Req() req: RequestWithUser,
     @Body() createOrUpdateProfileRequestDto: CreateOrUpdateProfileRequestDto,
-  ): Promise<boolean> {
-    return await this.profileService.createOrUpdateProfile(
-      req.user.id,
-      createOrUpdateProfileRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.profileService.createOrUpdateProfile(
+        req.user.id,
+        createOrUpdateProfileRequestDto,
+      ),
     )
   }
 
@@ -64,36 +67,48 @@ export class ProfileController {
   @ApiEndpoint({
     summary: 'Deactivate a profile',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A profile was deactivated',
     role: RoleEnum.GENERAL,
   })
   @Delete('deactivate')
-  async deactivateProfile(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.profileService.deactivateProfile(req.user.id)
+  async deactivateProfile(
+    @Req() req: RequestWithUser,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.profileService.deactivateProfile(req.user.id),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Activate a profile',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'A profile was activated',
     role: RoleEnum.GENERAL,
   })
   @Patch('activate')
-  async activateProfile(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.profileService.activateProfile(req.user.id)
+  async activateProfile(
+    @Req() req: RequestWithUser,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.profileService.activateProfile(req.user.id),
+    )
   }
 
   @ApiEndpoint({
     summary: 'Check if profile is active',
     responseStatus: HttpStatus.OK,
-    responseType: Boolean,
+    responseType: BooleanResponseDto,
     responseDesc: 'Profile status was returned',
     role: RoleEnum.GENERAL,
   })
   @Get('active')
-  async isProfileActive(@Req() req: RequestWithUser): Promise<boolean> {
-    return await this.profileService.isProfileActive(req.user.id)
+  async isProfileActive(
+    @Req() req: RequestWithUser,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.profileService.isProfileActive(req.user.id),
+    )
   }
 }
