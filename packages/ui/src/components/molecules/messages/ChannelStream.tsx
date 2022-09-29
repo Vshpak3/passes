@@ -2,6 +2,7 @@ import { MessageDto, MessagesApi } from "@passes/api-client"
 import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
 
 import { TippedMessage } from "../direct-messages/completed-tipped-message"
+import { FreeMessagesLeftContainer } from "../direct-messages/free-messages-left-container"
 import { ChannelMessage } from "./index"
 
 const FETCH_NEW_MESSAGES_RATE = 3000 // 3 seconds
@@ -18,6 +19,7 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(true)
   const [messages, setMessages] = useState<MessageDto[]>([])
+  const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
 
   // Ref to keep latest message to fetch new ones, without causing refresh
   const latestMessageTimestamp = useRef<Date>(new Date())
@@ -27,7 +29,7 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
     if (element.scrollTop <= 200) {
       setIsLoadingOlderMessages(true)
       try {
-        await loadPreviousMessages()
+        await loadPreviousMessages(false)
       } catch (e) {
         console.error("Error loading previous messages", e)
       } finally {
@@ -36,44 +38,62 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
     }
   }
 
-  const loadPreviousMessages = useCallback(async () => {
-    if (!channelId) {
-      return
-    }
-    const api = new MessagesApi()
-    const res = await api.getMessages({
-      getMessagesRequestDto: {
-        sentAt: earliestSentAt,
-        channelId,
-        contentOnly: false,
-        pending: true
+  const loadPreviousMessages = useCallback(
+    async (includePending: boolean) => {
+      if (!channelId) {
+        return
       }
-    })
 
-    setEarliestSentAt(res.sentAt)
-    setMessages((m) => {
-      const messages = [...res.messages, ...m]
+      const api = new MessagesApi()
+      const nonPendingMessagesRes = await api.getMessages({
+        getMessagesRequestDto: {
+          sentAt: earliestSentAt,
+          channelId,
+          contentOnly: false,
+          pending: false
+        }
+      })
 
-      latestMessageTimestamp.current = messages.length
-        ? messages[messages.length - 1].sentAt
-        : new Date()
+      setEarliestSentAt(nonPendingMessagesRes.sentAt)
+      setMessages((m) => {
+        const messages = [...nonPendingMessagesRes.messages, ...m]
 
-      return messages
-    })
-  }, [channelId, earliestSentAt])
+        latestMessageTimestamp.current = messages.length
+          ? messages[messages.length - 1].sentAt
+          : new Date()
+
+        return messages
+      })
+
+      // Fetch pending messages, only on initial load
+      if (includePending) {
+        const pendingMessagesRes = await api.getMessages({
+          getMessagesRequestDto: {
+            sentAt: earliestSentAt,
+            channelId,
+            contentOnly: false,
+            pending: true
+          }
+        })
+
+        setPendingMessages(pendingMessagesRes.messages)
+      }
+    },
+    [channelId, earliestSentAt]
+  )
 
   useEffect(() => {
     if (isLoading) {
       return
     }
 
-    const loadMessages = async () => {
-      await loadPreviousMessages()
+    const loadInitialMessages = async () => {
+      await loadPreviousMessages(true)
       bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
       setIsLoading(false)
     }
 
-    loadMessages()
+    loadInitialMessages()
   }, [isLoading, loadPreviousMessages])
 
   useEffect(() => {
@@ -83,7 +103,31 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
 
     const loadNewMessages = setTimeout(async () => {
       const api = new MessagesApi()
-      const res = await api.getMessages({
+      const nonPendingMessagesRes = await api.getMessages({
+        getMessagesRequestDto: {
+          dateLimit: latestMessageTimestamp.current,
+          channelId,
+          contentOnly: false,
+          pending: false
+        }
+      })
+
+      const existingIds = new Set(messages.map((m) => m.messageId))
+      const newMessages = [...messages]
+      for (let i = 0; i < nonPendingMessagesRes.messages.length; ++i) {
+        const message = nonPendingMessagesRes.messages[i]
+        if (!existingIds.has(message.messageId)) {
+          newMessages.push(message)
+        }
+      }
+
+      setMessages(newMessages)
+      latestMessageTimestamp.current = newMessages.length
+        ? newMessages[newMessages.length - 1].sentAt
+        : new Date()
+
+      // This always returns all pending messages
+      const pendingMessagesRes = await api.getMessages({
         getMessagesRequestDto: {
           dateLimit: latestMessageTimestamp.current,
           channelId,
@@ -91,21 +135,7 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
           pending: true
         }
       })
-
-      const existingIds = new Set(messages.map((m) => m.messageId))
-      const newMessages = [...messages]
-      for (let i = 0; i < res.messages.length; ++i) {
-        const message = res.messages[i]
-        if (!existingIds.has(message.messageId)) {
-          newMessages.push(message)
-        }
-      }
-
-      setMessages(newMessages)
-      latestMessageTimestamp.current =
-        newMessages.length > 0
-          ? newMessages[newMessages.length - 1].sentAt
-          : new Date()
+      setPendingMessages(pendingMessagesRes.messages)
     }, FETCH_NEW_MESSAGES_RATE)
 
     return () => clearTimeout(loadNewMessages)
@@ -120,18 +150,32 @@ export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
       ref={bottomOfChatRef}
     >
       {isLoadingOlderMessages && <div>Loading older messages...</div>}
-
-      <ChannelMessage />
-      <ChannelMessage isOwnMessage />
-      <ChannelMessage />
-      <ChannelMessage isOwnMessage />
-      <ChannelMessage />
-      <ChannelMessage />
-      <ChannelMessage isOwnMessage />
-      <ChannelMessage />
-      <ChannelMessage />
-      <ChannelMessage isOwnMessage />
-      <TippedMessage isOwnMessage tipAmount={5} />
+      {messages.length ? (
+        <>
+          {!isCreator && (
+            <div className="sticky top-0 w-full">
+              <FreeMessagesLeftContainer freeMessages={freeMessages} />
+            </div>
+          )}
+          <ChannelMessage />
+          <ChannelMessage isOwnMessage />
+          <ChannelMessage />
+          <ChannelMessage isOwnMessage />
+          <ChannelMessage />
+          <ChannelMessage />
+          <ChannelMessage isOwnMessage />
+          <ChannelMessage />
+          <ChannelMessage />
+          <ChannelMessage isOwnMessage />
+          <TippedMessage isOwnMessage tipAmount={5} />
+        </>
+      ) : (
+        <div className="flex flex-1 items-center justify-center">
+          No messages
+        </div>
+      )}
+      {pendingMessages.length &&
+        pendingMessages.map((m) => <div key={m.messageId}>{m.messageId}</div>)}
 
       {/* Dummy ref to allow scrolling to bottom of chat */}
       <div ref={bottomOfChatRef} />
