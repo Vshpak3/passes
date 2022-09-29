@@ -4,21 +4,19 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { toInteger } from "lodash"
 import { useRouter } from "next/router"
-import EditIcon from "public/icons/edit.svg"
 import InfoIcon from "public/icons/info-icon.svg"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
+import { SubTabsEnum } from "src/config/settings"
+import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { COUNTRIES } from "src/helpers/countries"
+import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
-import { SubTabsEnum } from "../../../../../../config/settings"
-import {
-  ISettingsContext,
-  useSettings
-} from "../../../../../../contexts/settings"
-import { COUNTRIES } from "../../../../../../helpers/countries"
-import { useUser } from "../../../../../../hooks"
+import DownloadW9FormButton from "../../../../../atoms/DownloadW9FormButton"
+import UploadW9FormButton from "../../../../../atoms/UploadW9FormButton"
 import Tab from "../../../Tab"
 
 enum BankTypeEnum {
@@ -118,12 +116,7 @@ const AddBank = () => {
       </span>
       <div className="flex items-center justify-between">
         <span className="text-[16px] font-[500]">To download W9 form</span>
-        <button
-          className="flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-2 text-white"
-          onClick={() => console.log}
-        >
-          <span className="text-[16px] font-[500]">Download W9 Form</span>
-        </button>
+        <DownloadW9FormButton />
       </div>
       <div className="mt-4 mb-8 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -135,13 +128,7 @@ const AddBank = () => {
             <InfoIcon />
           </div>
         </div>
-        <button
-          className="flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-2 text-white"
-          onClick={() => console.log}
-        >
-          <EditIcon />
-          <span className="text-[16px] font-[500]">Edit W9 Form</span>
-        </button>
+        <UploadW9FormButton text="Upload W9 Form" icon={true} />
       </div>
       <span className="text-[16px] font-[500] text-[#767676]">
         Type of Bank Account

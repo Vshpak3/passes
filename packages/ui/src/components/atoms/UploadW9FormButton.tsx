@@ -1,3 +1,4 @@
+import EditIcon from "public/icons/edit.svg"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms"
@@ -8,8 +9,12 @@ import FormInput from "./FormInput"
 interface IForm {
   form: File[]
 }
+interface W9Button {
+  text: string
+  icon: boolean
+}
 
-const UploadW9FormButton = () => {
+const UploadW9FormButton = ({ text, icon }: W9Button) => {
   const { register, handleSubmit, watch, reset } = useForm<IForm>()
 
   const { form } = watch()
@@ -54,7 +59,8 @@ const UploadW9FormButton = () => {
                 color: "white"
               }}
             >
-              Upload W9 Form
+              {icon && <EditIcon />}
+              {text}
             </Button>
           }
         />

@@ -193,9 +193,9 @@ const PaymentSettings = () => {
           <span className="text-[14px] font-[400] opacity-90">
             Default Wallet:
           </span>
-          <div className="flex gap-6">
+          <div className="flex items-center gap-6">
             <span className="text-[16px] font-[700]">Axy...56huad</span>
-            <MetamaskIcon width={25} height={25} />
+            <MetamaskIcon />
           </div>
           <Button
             icon={<WalletIcon />}

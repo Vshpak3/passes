@@ -95,7 +95,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
               You will be able to edit it in the settings later.
             </div>
             <DownloadW9FormButton />
-            <UploadW9FormButton />
+            <UploadW9FormButton text="Upload W9 Form" icon={false} />
           </div>
         </div>
         <form
