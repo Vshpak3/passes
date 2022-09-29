@@ -939,7 +939,7 @@ export class MessagesService {
     }
 
     let query = this.dbReader<MessageEntity>(MessageEntity.table)
-      .where(`${MessageEntity.table}.channel_id`, channelId)
+      .where({ channel_id: channelId, pending })
       .select(`${MessageEntity.table}.*`)
       .orderBy([
         { column: `${MessageEntity.table}.sent_at`, order: 'desc' },
@@ -951,8 +951,10 @@ export class MessagesService {
       query = query
         .whereNotNull('paid_message_id')
         .andWhereNot('sender_id', userId)
-    } else if (pending) {
-      query = query.andWhere({ pending: true }).andWhere({ sender_id: userId })
+    }
+
+    if (pending) {
+      query = query.andWhere({ sender_id: userId })
     }
 
     if (sentAt) {
