@@ -21,7 +21,7 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
   try {
     const authApi = new AuthApi()
     const res = await authApi.refreshAccessToken({
-      refreshAuthTokenRequestDto: { refreshToken }
+      refreshAuthTokenRequestDto: { refreshToken: JSON.parse(refreshToken) }
     })
     if (!res.accessToken) {
       console.error("did not receive an access token")

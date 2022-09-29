@@ -1,5 +1,5 @@
-import "src/styles/global/main.css"
 import "react-toastify/dist/ReactToastify.css"
+import "src/styles/global/main.css"
 
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
@@ -14,6 +14,8 @@ import { DefaultHead } from "src/components/atoms"
 import { useMessageToDevelopers } from "src/hooks"
 import Providers from "src/providers"
 import { SWRConfig, SWRConfiguration } from "swr"
+
+import { refreshAccessToken } from "../helpers/token"
 
 const swrConfig: SWRConfiguration = {
   // enable or disable automatic revalidation when component is mounted
@@ -36,7 +38,8 @@ const swrConfig: SWRConfiguration = {
 }
 
 // Only show nprogress after 500ms (slow loading)
-const start = debounce(nprogress.start, 500)
+const LOADING_DEBOUNCE_TIME = 500
+const start = debounce(nprogress.start, LOADING_DEBOUNCE_TIME)
 Router.events.on("routeChangeStart", start)
 Router.events.on("routeChangeComplete", () => {
   start.cancel()
@@ -46,6 +49,11 @@ Router.events.on("routeChangeComplete", () => {
 Router.events.on("routeChangeError", () => {
   start.cancel()
   nprogress.done()
+})
+
+// Refresh access token on page load
+Router.events.on("routeChangeStart", async () => {
+  await refreshAccessToken()
 })
 
 const App = ({ Component, pageProps }: AppProps) => {
