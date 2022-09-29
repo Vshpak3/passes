@@ -26,4 +26,4 @@ export const NotFoundPage: FC = () => (
   </div>
 )
 
-export default withPageLayout(NotFoundPage)
+export default withPageLayout(NotFoundPage, { noAuth: true })

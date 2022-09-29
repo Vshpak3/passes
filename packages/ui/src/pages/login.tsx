@@ -78,7 +78,6 @@ const LoginPage = () => {
   }
 
   return (
-    // Do not use AuthOnlyWrapper, login/signup flow uses custom routing
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
         height={28}

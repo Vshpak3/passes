@@ -13,7 +13,11 @@ export interface ChannelStreamProps {
   isCreator?: boolean
 }
 
-export const ChannelStream = ({ channelId }: ChannelStreamProps) => {
+export const ChannelStream = ({
+  channelId,
+  freeMessages,
+  isCreator
+}: ChannelStreamProps) => {
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)

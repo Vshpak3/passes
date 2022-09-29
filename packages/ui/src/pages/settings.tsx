@@ -124,7 +124,6 @@ const SafetySettings = dynamic(
       "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
     )
 )
-import AuthOnlyWrapper from "src/components/wrappers/AuthOnly"
 import { SubTabsEnum, tabs, TabsEnum } from "src/config/settings"
 import {
   ISettingsContext,
@@ -185,11 +184,9 @@ const Settings = () => {
 
 const SettingsWrapper = () => {
   return (
-    <AuthOnlyWrapper isPage>
-      <SettingsProvider>
-        <Settings />
-      </SettingsProvider>
-    </AuthOnlyWrapper>
+    <SettingsProvider>
+      <Settings />
+    </SettingsProvider>
   )
 }
 

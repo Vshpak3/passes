@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-import AuthOnlyWrapper from "../../components/wrappers/AuthOnly"
 import Payin from "../../helpers/payment/payin"
 import { useLocalStorage } from "../../hooks"
 import useUser from "../../hooks/useUser"
@@ -38,31 +37,29 @@ const MyPayments = () => {
   }, [router, user, loading, page])
 
   return (
-    <AuthOnlyWrapper isPage>
-      <div>
-        {Array.from({ length: Math.ceil(count / PAGE_SIZE) }).map((_, i) => {
-          return (
-            <button
-              key={i}
-              onClick={() => {
-                setPage(i)
-              }}
-            >
-              {i + 1}
-            </button>
-          )
-        })}
-        <br />
-        {payins?.map((payin, i) => {
-          return (
-            <div key={i}>
-              {Payin(payin)}
-              <br />
-            </div>
-          )
-        })}
-      </div>
-    </AuthOnlyWrapper>
+    <div>
+      {Array.from({ length: Math.ceil(count / PAGE_SIZE) }).map((_, i) => {
+        return (
+          <button
+            key={i}
+            onClick={() => {
+              setPage(i)
+            }}
+          >
+            {i + 1}
+          </button>
+        )
+      })}
+      <br />
+      {payins?.map((payin, i) => {
+        return (
+          <div key={i}>
+            {Payin(payin)}
+            <br />
+          </div>
+        )
+      })}
+    </div>
   )
 }
 export default withPageLayout(MyPayments)

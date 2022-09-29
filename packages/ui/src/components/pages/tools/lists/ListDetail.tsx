@@ -209,6 +209,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     [id, reset]
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddFan = useCallback(
     async (event: React.MouseEvent<HTMLSpanElement>, user_id: string) => {
       const listApi = new ListApi()

@@ -6,7 +6,6 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 
 const MessagesComponent = dynamic(() => import("src/components/messages"))
 
-// import AuthOnlyWrapper from "../components/wrappers/AuthOnly"
 // TODO: @Jonathan this component re-renders messages too many times
 const Messages = () => {
   const router = useRouter()
@@ -20,7 +19,6 @@ const Messages = () => {
   const [newMessage, setNewMessage] = useState(true)
 
   return (
-    // <AuthOnlyWrapper isPage>
     <>
       {newMessage ? (
         <DirectMessage
@@ -32,8 +30,6 @@ const Messages = () => {
         <MessagesComponent username="" />
       )}
     </>
-
-    // </AuthOnlyWrapper>
   )
 }
 
