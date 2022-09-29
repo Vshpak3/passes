@@ -494,7 +494,10 @@ export class MessagesService {
       sendMessageDto.channelId,
       sendMessageDto.tipAmount,
     )
-    if (await this.payService.checkPayinBlocked(userId)) {
+    if (
+      sendMessageDto.tipAmount > 0 &&
+      (await this.payService.checkPayinBlocked(userId))
+    ) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
     }
 
@@ -970,7 +973,7 @@ export class MessagesService {
     const filteredMessages = messages.slice(index + 1)
     const contents = await this.getContentLookupForMessages(
       filteredMessages.map((message) => message.sender_id),
-      filteredMessages.map((message) => JSON.parse(message.contentIds)),
+      filteredMessages.map((message) => JSON.parse(message.content_ids)),
       filteredMessages.map(
         (message) => message.paid || message.sender_id == userId,
       ),

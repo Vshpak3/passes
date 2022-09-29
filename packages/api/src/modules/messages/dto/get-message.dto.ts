@@ -10,10 +10,10 @@ export class GetMessagesRequestDto extends PickType(PageRequestDto, [
   'lastId',
 ]) {
   @DtoProperty({ type: 'date', optional: true })
-  sentAt: Date
+  sentAt?: Date
 
   @DtoProperty({ type: 'date', optional: true })
-  dateLimit: Date
+  dateLimit?: Date
 
   @DtoProperty({ type: 'uuid' })
   channelId: string
