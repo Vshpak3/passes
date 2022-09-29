@@ -1,5 +1,129 @@
+import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import Header from "src/components/molecules/performance/Header"
+const AccountSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/AccountSettings")
+)
+const AccountInformation = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
+    )
+)
+const ChangePassword = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
+    )
+)
+const DeactivateAccount = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
+    )
+)
+const DisplayName = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
+    )
+)
+const ProfilePicture = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
+    )
+)
+const Username = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
+    )
+)
+const ChatSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/ChatSettings")
+)
+const NotificationEmailSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/NotificationEmailSettings")
+)
+const EmailNotifications = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
+    )
+)
+const NotificationPreferences = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
+    )
+)
+const PaymentWalletSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PaymentWalletSettings")
+)
+const AddBank = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddBank"
+    )
+)
+const AddCard = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddCard"
+    )
+)
+const ManageBank = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageBank"
+    )
+)
+const ManageCard = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageCard"
+    )
+)
+const PaymentsSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/PaymentsSettings"
+    )
+)
+const WalletManagementSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/WalletManagementSettings"
+    )
+)
+const PrivacySafetySettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PrivacySafetySettings")
+)
+const BlockedRestrictedAccounts = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
+    )
+)
+const PostsSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
+    )
+)
+const ProfileSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
+    )
+)
+const SafetySettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
+    )
+)
 import { SubTabsEnum, tabs, TabsEnum } from "src/config/settings"
 import {
   ISettingsContext,
@@ -9,30 +133,7 @@ import {
 import { classNames } from "src/helpers"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-import AccountSettings from "../components/pages/settings/tabs/AccountSettings"
-import AccountInformation from "../components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
-import ChangePassword from "../components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
-import DeactivateAccount from "../components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
-import DisplayName from "../components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
-import ProfilePicture from "../components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
-import ChatSettings from "../components/pages/settings/tabs/ChatSettings"
-import NotificationEmailSettings from "../components/pages/settings/tabs/NotificationEmailSettings"
-import EmailNotifications from "../components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
-import NotificationPreferences from "../components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
-import PaymentWalletSettings from "../components/pages/settings/tabs/PaymentWalletSettings"
-import AddBank from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddBank"
-import AddCard from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddCard"
-import ManageBank from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageBank"
-import ManageCard from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageCard"
-import PaymentsSettings from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/PaymentsSettings"
-import WalletManagementSettings from "../components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/WalletManagementSettings"
-import PrivacySafetySettings from "../components/pages/settings/tabs/PrivacySafetySettings"
-import BlockedRestrictedAccounts from "../components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
-import PostsSettings from "../components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
-import ProfileSettings from "../components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
-import SafetySettings from "../components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
 import { useUser } from "../hooks"
-import Username from "./[username]"
 
 const Settings = () => {
   const { user } = useUser()
