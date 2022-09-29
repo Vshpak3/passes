@@ -99,6 +99,9 @@ export class UserService {
       throw new NotFoundException('User does not exist')
     }
 
+    // For some reason knex converts this to a Date but is typed as a string...
+    user.birthday = new Date(user.birthday).toISOString().split('T')[0]
+
     return new UserDto(user)
   }
 

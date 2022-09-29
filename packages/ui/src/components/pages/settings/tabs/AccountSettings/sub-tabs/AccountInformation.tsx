@@ -1,9 +1,7 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
-import React from "react"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
-import { getFormattedDate } from "src/helpers"
 import { useUser } from "src/hooks"
 
 const AccountInformation = () => {
@@ -79,7 +77,7 @@ const AccountInformation = () => {
         <div className="text-start">
           <p className="text-label">Date of Birth</p>
           <p className="text-base font-medium text-white/50">
-            {user?.birthday && getFormattedDate(new Date(user?.birthday))}
+            {user?.birthday}
           </p>
         </div>
       </div>
