@@ -99,7 +99,8 @@ const usePasses = (creatorId = "") => {
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredCreatorPassesList(filteredCreatorPasses)
-  }, [passType, passSearchTerm, creatorPasses])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passType, passSearchTerm])
 
   return {
     passType,
