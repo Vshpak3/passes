@@ -2048,8 +2048,8 @@ export class PaymentService {
         'payin_method',
         'chain_id',
         'card_id',
-        `${PassHolderEntity.table}'.expires_at`,
-        `${PassHolderEntity.table}'.holder_id`,
+        `${PassHolderEntity.table}.expires_at`,
+        `${PassHolderEntity.table}.holder_id`,
       )
 
     await Promise.all(
