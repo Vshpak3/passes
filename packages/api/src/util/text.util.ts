@@ -1,5 +1,5 @@
 import { TagDto } from './dto/tag.dto'
-import { TagError } from './error.ts/tag.error'
+import { TagError } from './error/tag.error'
 
 export const verifyTaggedText = (text: string, tags: TagDto[]) => {
   const indices = new Set(tags.map((tag) => tag.index))

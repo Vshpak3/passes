@@ -1,14 +1,7 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
-import React, {
-  UIEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
 
 import { TippedMessage } from "../direct-messages/completed-tipped-message"
-import { FreeMessagesLeftContainer } from "../direct-messages/free-messages-left-container"
 import { ChannelMessage } from "./index"
 
 const FETCH_NEW_MESSAGES_RATE = 3000 // 3 seconds
@@ -21,7 +14,9 @@ export interface ChannelStreamProps {
 
 export const ChannelStream = ({
   channelId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   freeMessages,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isCreator
 }: ChannelStreamProps) => {
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
