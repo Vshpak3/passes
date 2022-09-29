@@ -178,7 +178,7 @@ export const ChannelStream = ({
           No messages
         </div>
       )}
-      {pendingMessages.length &&
+      {pendingMessages.length > 0 &&
         pendingMessages.map((m) => <div key={m.messageId}>{m.messageId}</div>)}
 
       {/* Dummy ref to allow scrolling to bottom of chat */}

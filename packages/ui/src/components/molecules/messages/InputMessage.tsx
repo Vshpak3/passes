@@ -12,26 +12,34 @@ export const InputMessage = ({ channelId }: Props) => {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
+    setError,
+    clearErrors
   } = useForm()
   const api = new MessagesApi()
 
-  // TODO: error validation
   const submitMessage = async ({ message }: any) => {
     if (!channelId) {
       return false
     }
 
-    await api.sendMessage({
-      sendMessageRequestDto: {
-        text: message,
-        contentIds: [],
-        channelId,
-        tipAmount: 0
-      }
-    })
+    try {
+      await api.sendMessage({
+        sendMessageRequestDto: {
+          text: message,
+          contentIds: [],
+          channelId,
+          tipAmount: 0
+        }
+      })
 
-    reset()
+      reset()
+    } catch (error) {
+      setError("submitError", {
+        type: "custom",
+        message: "There was an error sending the message"
+      })
+    }
   }
 
   const submitOnEnter = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -40,6 +48,7 @@ export const InputMessage = ({ channelId }: Props) => {
       handleSubmit(submitMessage)()
     }
   }
+  const { submitError } = errors
 
   return (
     <form
@@ -54,6 +63,9 @@ export const InputMessage = ({ channelId }: Props) => {
         )}
         autoComplete="off"
         onKeyDown={submitOnEnter}
+        onFocus={() => {
+          clearErrors()
+        }}
       />
       <Button
         variant="gray"
@@ -63,6 +75,9 @@ export const InputMessage = ({ channelId }: Props) => {
       >
         Send message
       </Button>
+      {submitError?.message && (
+        <span className="text-red-500">{String(submitError.message)}</span>
+      )}
     </form>
   )
 }

@@ -15,7 +15,7 @@ import { usePasses, usePayment } from "src/hooks"
 import { BuyPostButton } from "../payment/buy-post"
 
 interface IBuyPostModal {
-  postInfo: GetPostResponseDto | null
+  postInfo?: GetPostResponseDto | null
   setOpen: Dispatch<SetStateAction<GetPostResponseDto | null>>
   isOpen?: boolean
 }
