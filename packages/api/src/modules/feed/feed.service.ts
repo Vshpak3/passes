@@ -78,6 +78,7 @@ export class FeedService {
           new Date(),
         )
       })
+      .andWhere(`${FollowEntity.table}.follower_id`, userId)
       .orderBy([
         { column: `${PostEntity.table}.pinned_at`, order: 'desc' },
         { column: `${PostEntity.table}.created_at`, order: 'desc' },

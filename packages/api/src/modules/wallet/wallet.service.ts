@@ -116,7 +116,7 @@ export class WalletService {
       const keypair = Keypair.generate()
       address = keypair.publicKey.toString()
     } else {
-      address = await this.lambdaService.blockchainSignCreateAddress(
+      address = await this.lambdaService.getOrCreateBlockchainAddress(
         'user.' + id,
         chain,
       )
