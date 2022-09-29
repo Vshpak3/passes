@@ -54,6 +54,7 @@ export const NewPost = ({
   const [hasVideo, setHasVideo] = useState(false)
   const [hasAudio, setHasAudio] = useState(false)
   const [extended, setExtended] = useState(false)
+  const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
   const {
     handleSubmit,
@@ -106,6 +107,7 @@ export const NewPost = ({
     setExtended(false)
     createPost({ ...values, contentIds: content.map((c) => c.id) })
     reset()
+    setIsReset(true)
   }
 
   const onFileInputChange = (event) => {
@@ -281,6 +283,8 @@ export const NewPost = ({
             )}
           >
             <CustomMentionEditor
+              isReset={isReset}
+              setIsReset={setIsReset}
               placeholder={placeholder}
               onInputChange={(params) => {
                 setValue("text", params?.text)

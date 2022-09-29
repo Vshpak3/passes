@@ -9,6 +9,7 @@ import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
 import React, {
   ReactElement,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState
@@ -68,6 +69,8 @@ function Entry(props: EntryComponentProps): ReactElement {
 interface CustomMentionProps {
   placeholder?: string
   onInputChange: (params: object) => any
+  isReset?: boolean
+  setIsReset?: (value: boolean) => void
 }
 
 const emptyContentState = convertFromRaw({
@@ -86,7 +89,9 @@ const emptyContentState = convertFromRaw({
 
 export default function CustomComponentMentionEditor({
   placeholder,
-  onInputChange
+  onInputChange,
+  isReset,
+  setIsReset
 }: CustomMentionProps): ReactElement {
   const ref = useRef<Editor>(null)
   const [editorState, setEditorState] = useState(() =>
@@ -124,6 +129,12 @@ export default function CustomComponentMentionEditor({
     },
     []
   )
+  useEffect(() => {
+    if (isReset && setIsReset) {
+      setEditorState(EditorState.createEmpty())
+      setIsReset(false)
+    }
+  }, [isReset, setIsReset])
 
   return (
     <div
