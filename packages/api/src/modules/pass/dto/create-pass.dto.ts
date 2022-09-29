@@ -18,7 +18,7 @@ export class CreatePassRequestDto {
   type: PassTypeEnum
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   price: number
 
   @Min(1)
@@ -40,7 +40,6 @@ export class CreatePassRequestDto {
 
   @Min(500)
   @Max(3000)
-  @IsInt()
   @DtoProperty({ type: 'number' })
   royalties: number
 }

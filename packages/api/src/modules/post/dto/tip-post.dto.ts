@@ -9,7 +9,7 @@ export class TipPostRequestDto {
   postId: string
 
   @Min(MINIMUM_POST_TIP_AMOUNT)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })

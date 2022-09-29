@@ -11,19 +11,19 @@ export class CreatorFeeDto extends AdminDto {
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true })
+  @DtoProperty({ type: 'currency', nullable: true })
   fiatRate: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true })
+  @DtoProperty({ type: 'currency', nullable: true })
   fiatFlat: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true })
+  @DtoProperty({ type: 'currency', nullable: true })
   cryptoRate: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true })
+  @DtoProperty({ type: 'currency', nullable: true })
   cryptoFlat: number | null
 
   constructor(creatorFee: CreatorFeeEntity | undefined) {

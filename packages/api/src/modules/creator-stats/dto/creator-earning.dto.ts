@@ -9,7 +9,7 @@ export class CreatorEarningDto {
   userId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 
   @DtoProperty({ custom_type: EarningTypeEnum })

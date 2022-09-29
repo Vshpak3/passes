@@ -22,7 +22,7 @@ export class PayoutDto {
   payoutStatus: PayoutStatusEnum
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 
   @DtoProperty({ type: 'date' })

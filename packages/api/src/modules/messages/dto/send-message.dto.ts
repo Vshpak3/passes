@@ -16,11 +16,11 @@ export class SendMessageRequestDto {
   channelId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   tipAmount: number
 
   @Min(0)
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   price?: number
 
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })

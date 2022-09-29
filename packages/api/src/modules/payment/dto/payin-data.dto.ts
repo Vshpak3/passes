@@ -6,7 +6,7 @@ import { BlockedReasonEnum } from '../enum/blocked-reason.enum'
 
 export class PayinDataDto {
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 
   @Length(1, SHA256_LENGTH)

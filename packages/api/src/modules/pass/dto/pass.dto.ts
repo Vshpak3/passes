@@ -37,7 +37,7 @@ export class PassDto {
   type: PassTypeEnum
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   price: number
 
   @Min(0)
@@ -52,6 +52,7 @@ export class PassDto {
   @DtoProperty({ type: 'number' })
   remainingSupply: number
 
+  @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
   @DtoProperty({ type: 'boolean' })

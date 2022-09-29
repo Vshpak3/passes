@@ -62,7 +62,7 @@ export class PostDto {
   numPurchases: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   earningsPurchases: number
 
   @DtoProperty({ type: 'boolean', optional: true })
@@ -81,11 +81,11 @@ export class PostDto {
   expiresAt?: Date | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   price?: number
 
   @Min(0)
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   totalTipAmount?: number
 
   constructor(

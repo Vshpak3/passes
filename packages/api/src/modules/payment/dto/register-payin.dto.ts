@@ -14,7 +14,7 @@ export class RegisterPayinResponseDto {
   payinMethod: PayinMethodDto
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 }
 
@@ -23,7 +23,7 @@ export class RegisterPayinRequestDto {
   userId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })
@@ -51,6 +51,6 @@ export class CreatorShareDto {
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   amount: number
 }

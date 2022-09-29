@@ -20,7 +20,7 @@ export class GetChannelsRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'date', optional: true })
   recent?: Date
 
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   tip?: number
 
   @DtoProperty({ custom_type: ChannelOrderTypeEnum })
@@ -34,7 +34,7 @@ export class GetChannelsResponseDto extends PageResponseDto {
   @DtoProperty({ custom_type: [ChannelMemberDto] })
   channelMembers: ChannelMemberDto[]
 
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   tip?: number
 
   @DtoProperty({ type: 'date', optional: true })

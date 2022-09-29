@@ -27,15 +27,15 @@ export class ChannelMemberDto extends ChannelDto {
   unlimitedMessages: boolean
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   tipSent: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   tipRecieved: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   unreadTip: number
 
   @Length(1, USER_USERNAME_LENGTH)

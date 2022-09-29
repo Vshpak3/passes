@@ -10,19 +10,19 @@ export class CreatorFeeDto {
   creatorId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true, optional: true })
+  @DtoProperty({ type: 'currency', nullable: true, optional: true })
   fiatRate?: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true, optional: true })
+  @DtoProperty({ type: 'currency', nullable: true, optional: true })
   fiatFlat?: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true, optional: true })
+  @DtoProperty({ type: 'currency', nullable: true, optional: true })
   cryptoRate?: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true, optional: true })
+  @DtoProperty({ type: 'currency', nullable: true, optional: true })
   cryptoFlat?: number | null
 
   constructor(creatorFee: CreatorFeeEntity | undefined) {

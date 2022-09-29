@@ -7,7 +7,7 @@ import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
 export class CreatorSettingsDto {
   @Min(0)
-  @DtoProperty({ type: 'number', nullable: true })
+  @DtoProperty({ type: 'currency', nullable: true })
   minimumTipAmount: number | null
 
   @DtoProperty({ custom_type: PayoutFrequencyEnum })

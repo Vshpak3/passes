@@ -16,7 +16,7 @@ export class PaidMessageDto {
   text: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   price: number
 
   @Length(1, CONTENT_IDS_LENGTH)
@@ -28,7 +28,7 @@ export class PaidMessageDto {
   numPurchases: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
+  @DtoProperty({ type: 'currency' })
   earningsPurchases: number
 
   @DtoProperty({ type: 'date' })
