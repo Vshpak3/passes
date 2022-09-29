@@ -22,12 +22,12 @@ const fetcher = async () => {
 
 const useFeed = () => {
   const { accessToken } = useUser()
-  const { data: posts, isValidating: isLoadingPosts } = useSWRInfinite(
+  const { data: feed, isValidating: isLoadingPosts } = useSWRInfinite(
     accessToken ? getKey : () => null,
     () => fetcher()
   )
 
-  return { posts, isLoadingPosts }
+  return { feed, isLoadingPosts }
 }
 
 export default useFeed

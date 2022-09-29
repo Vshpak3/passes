@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Post } from "./post"
 
-const CreatorContentFeed = ({ existingPosts, ownsProfile }) => {
+const CreatorContentFeed = ({ posts: existingPosts, ownsProfile }) => {
   // TODO: implement pagination with infinite scroll, and loading state
   const [posts] = useState([...existingPosts])
 
