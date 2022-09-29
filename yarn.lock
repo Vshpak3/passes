@@ -5681,7 +5681,6 @@ __metadata:
     rxjs: 7.5.6
     sns-validator: 0.3.5
     source-map-support: 0.5.21
-    stream-chat: 7.1.0
     supertest: 6.2.4
     tailwindcss-box-shadow: 2.0.0
     tailwindcss-email-variants: 2.0.0

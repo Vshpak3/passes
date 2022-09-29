@@ -46,11 +46,8 @@ export const configValidationSchema = Joi.object({
   OAUTH_TWITTER_CONSUMER_KEY: Joi.string().required(),
   OAUTH_TWITTER_CONSUMER_SECRET: Joi.string().required(),
 
-  JWT_SECRET: Joi.string().required(),
-  JWT_EXPIRES_IN: Joi.string().required(),
-
+  JWT_AUTH_SECRET: Joi.string().required(),
   JWT_REFRESH_SECRET: Joi.string().required(),
-  JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
 
   OAUTH_TWITTER_COOKIE_SECRET: Joi.string().required(),
 
@@ -68,9 +65,6 @@ export const configValidationSchema = Joi.object({
   CIRCLE_API_ENDPOINT: Joi.string().required(),
   CIRCLE_API_KEY: Joi.string().required(),
   CIRCLE_MASTER_WALLET_ID: Joi.string().required(),
-
-  STREAM_API_KEY: Joi.string().required(),
-  STREAM_API_SECRET: Joi.string().required(),
 
   ALCHEMY_SOL_API_KEY: Joi.string().required(),
   ALCHEMY_SOL_HTTPS_ENDPOINT: Joi.string().uri().required(),
@@ -140,10 +134,10 @@ export const configConfiguration = async function (): Promise<
       },
     },
     jwt: {
-      secret: getConfigValue('JWT_SECRET'),
-      expiresIn: getConfigValue('JWT_EXPIRES_IN'),
-      refreshSecret: getConfigValue('JWT_REFRESH_SECRET'),
-      refreshExpiresIn: getConfigValue('JWT_REFRESH_EXPIRES_IN'),
+      authSecret: getConfigValue('JWT_AUTH_SECRET'),
+      authExpiresIn: '3600s',
+      refreshSecret: getConfigValue('JWT_REFRESH_EXPIRES_IN'),
+      refreshExpiresIn: '604800s',
     },
     admin: {
       secret: getConfigValue('ADMIN_SECRET'),
@@ -166,10 +160,6 @@ export const configConfiguration = async function (): Promise<
       api_endpoint: getConfigValue('CIRCLE_API_ENDPOINT'),
       api_key: getConfigValue('CIRCLE_API_KEY'),
       master_wallet_id: getConfigValue('CIRCLE_MASTER_WALLET_ID'),
-    },
-    stream: {
-      api_key: getConfigValue('STREAM_API_KEY'),
-      api_secret: getConfigValue('STREAM_API_SECRET'),
     },
     alchemy: {
       sol: {

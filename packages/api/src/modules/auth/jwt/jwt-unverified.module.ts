@@ -9,9 +9,9 @@ import { JwtUnverifiedStrategy } from './jwt-unverified.strategy'
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {
-          secret: configService.get('jwt.secret'),
+          secret: configService.get('jwt.authSecret'),
           signOptions: {
-            expiresIn: configService.get('jwt.expiresIn'),
+            expiresIn: configService.get('jwt.authExpiresIn'),
           },
         }
       },

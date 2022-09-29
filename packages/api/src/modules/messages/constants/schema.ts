@@ -1,3 +1,2 @@
-export const STREAM_CHANNEL_ID_LENGTH = 60
 export const MESSAGE_LENGTH = 10000
 export const CONTENT_IDS_LENGTH = 500

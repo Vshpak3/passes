@@ -5,7 +5,6 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { STREAM_CHANNEL_ID_LENGTH } from '../constants/schema'
 import { ChannelEntity } from '../entities/channel.entity'
 import { ChannelMemberEntity } from '../entities/channel-members.entity'
 import { ChannelDto } from './channel-dto'
@@ -21,8 +20,7 @@ export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ type: 'uuid' })
   otherUserId: string
 
-  @Length(1, STREAM_CHANNEL_ID_LENGTH)
-  @DtoProperty({ type: 'string' })
+  @DtoProperty({ type: 'uuid' })
   channelId: string
 
   @DtoProperty({ type: 'boolean' })
