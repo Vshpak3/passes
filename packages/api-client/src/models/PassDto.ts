@@ -81,6 +81,12 @@ export interface PassDto {
     remainingSupply: number;
     /**
      * 
+     * @type {string}
+     * @memberof PassDto
+     */
+    chain: PassDtoChainEnum;
+    /**
+     * 
      * @type {boolean}
      * @memberof PassDto
      */
@@ -128,6 +134,17 @@ export const PassDtoTypeEnum = {
 } as const;
 export type PassDtoTypeEnum = typeof PassDtoTypeEnum[keyof typeof PassDtoTypeEnum];
 
+/**
+ * @export
+ */
+export const PassDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type PassDtoChainEnum = typeof PassDtoChainEnum[keyof typeof PassDtoChainEnum];
+
 
 /**
  * Check if a given object implements the PassDto interface.
@@ -142,6 +159,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "remainingSupply" in value;
+    isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -169,6 +187,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'totalSupply': json['totalSupply'],
         'remainingSupply': json['remainingSupply'],
+        'chain': json['chain'],
         'freetrial': json['freetrial'],
         'collectionAddress': json['collectionAddress'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
@@ -197,6 +216,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'duration': value.duration,
         'totalSupply': value.totalSupply,
         'remainingSupply': value.remainingSupply,
+        'chain': value.chain,
         'freetrial': value.freetrial,
         'collectionAddress': value.collectionAddress,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),

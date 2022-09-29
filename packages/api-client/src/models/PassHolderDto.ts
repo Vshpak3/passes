@@ -81,6 +81,12 @@ export interface PassHolderDto {
     remainingSupply: number;
     /**
      * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    chain: PassHolderDtoChainEnum;
+    /**
+     * 
      * @type {boolean}
      * @memberof PassHolderDto
      */
@@ -168,12 +174,6 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    chain: PassHolderDtoChainEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof PassHolderDto
-     */
     tokenId?: string;
 }
 
@@ -213,12 +213,12 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "remainingSupply" in value;
+    isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
-    isInstance = isInstance && "chain" in value;
 
     return isInstance;
 }
@@ -243,6 +243,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'totalSupply': json['totalSupply'],
         'remainingSupply': json['remainingSupply'],
+        'chain': json['chain'],
         'freetrial': json['freetrial'],
         'collectionAddress': json['collectionAddress'],
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
@@ -257,7 +258,6 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'holderUsername': !exists(json, 'holderUsername') ? undefined : json['holderUsername'],
         'holderDisplayName': !exists(json, 'holderDisplayName') ? undefined : json['holderDisplayName'],
         'address': json['address'],
-        'chain': json['chain'],
         'tokenId': !exists(json, 'tokenId') ? undefined : json['tokenId'],
     };
 }
@@ -281,6 +281,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'duration': value.duration,
         'totalSupply': value.totalSupply,
         'remainingSupply': value.remainingSupply,
+        'chain': value.chain,
         'freetrial': value.freetrial,
         'collectionAddress': value.collectionAddress,
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
@@ -295,7 +296,6 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'holderUsername': value.holderUsername,
         'holderDisplayName': value.holderDisplayName,
         'address': value.address,
-        'chain': value.chain,
         'tokenId': value.tokenId,
     };
 }

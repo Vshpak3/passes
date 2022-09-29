@@ -15,12 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   GetNotificationSettingsResponseDto,
   GetNotificationsRequestDto,
   GetNotificationsResponseDto,
   UpdateNotificationSettingsRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     GetNotificationSettingsResponseDtoFromJSON,
     GetNotificationSettingsResponseDtoToJSON,
     GetNotificationsRequestDtoFromJSON,
@@ -184,7 +187,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Update notification settings
      */
-    async updateNotificationSettingsRaw(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+    async updateNotificationSettingsRaw(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
         if (requestParameters.updateNotificationSettingsRequestDto === null || requestParameters.updateNotificationSettingsRequestDto === undefined) {
             throw new runtime.RequiredError('updateNotificationSettingsRequestDto','Required parameter requestParameters.updateNotificationSettingsRequestDto was null or undefined when calling updateNotificationSettings.');
         }
@@ -208,13 +211,13 @@ export class NotificationsApi extends runtime.BaseAPI {
             body: UpdateNotificationSettingsRequestDtoToJSON(requestParameters.updateNotificationSettingsRequestDto),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Update notification settings
      */
-    async updateNotificationSettings(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+    async updateNotificationSettings(requestParameters: UpdateNotificationSettingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.updateNotificationSettingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
