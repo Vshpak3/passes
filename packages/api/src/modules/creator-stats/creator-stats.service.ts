@@ -217,6 +217,11 @@ export class CreatorStatsService {
           `${PostContentEntity.table}.content_id`,
           `${ContentEntity.table}.id`,
         )
+        .innerJoin(
+          PostEntity.table,
+          `${PostContentEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        )
         .whereNull(`${PostEntity.table}.deleted_at`)
         .update(`${ContentEntity.table}.in_post`, true)
     })
