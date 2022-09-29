@@ -4,6 +4,7 @@ import { Expose, Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
+  IsCurrency,
   IsDateString,
   IsEnum,
   IsInt,
@@ -25,6 +26,7 @@ type TypeOptions =
   | 'any'
   | 'boolean'
   | 'boolean[]'
+  | 'currency'
   | 'date'
   | 'date[]'
   | 'number'
@@ -36,6 +38,7 @@ type TypeOptions =
 
 const decoratorMap = {
   boolean: IsBoolean,
+  currency: IsCurrency,
   date: IsDateString,
   number: IsInt,
   string: IsString,
@@ -75,13 +78,20 @@ export function DtoProperty(options: DtoOptions) {
     }
     decorators.push(decoratorMap[type]('all', { each: isArray }))
     switch (type) {
-      case 'uuid':
-        apiProperties.type = 'string'
-        apiProperties.format = 'uuid'
-        break
       case 'date':
         apiProperties.type = 'string'
         apiProperties.format = 'date-time'
+        break
+      case 'currency':
+        apiProperties.type = 'number'
+        apiProperties.format = 'currency'
+        break
+      case 'number':
+        apiProperties.type = 'integer'
+        break
+      case 'uuid':
+        apiProperties.type = 'string'
+        apiProperties.format = 'uuid'
         break
       default:
         apiProperties.type = type
