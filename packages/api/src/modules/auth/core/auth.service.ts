@@ -203,7 +203,7 @@ export class AuthService {
     // Auth table has user ID and therefore we have a fully verified user
     if (authEntity.user_id) {
       return AuthRecord.fromUserDto(
-        await this.userService.findOne(authEntity.user_id),
+        await this.userService.findOne({ id: authEntity.user_id }),
       )
     }
     // No user ID and therefore no user entity exists yet
