@@ -29,7 +29,7 @@ const NewsFeedContent = ({
           {posts?.length > 0 && (
             <CreatorContentFeed
               profile={profile}
-              existingPosts={posts}
+              posts={posts}
               ownsProfile={ownsProfile}
             />
           )}

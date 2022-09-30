@@ -24,10 +24,10 @@ export const Verified = ({ isVerified }) => (
 const ProfileStatItemMobile = ({ stat, label }) => (
   <div className="grid grid-rows-2">
     <span className="text-[14px] font-medium text-passes-white-100">
-      {stat}
+      {stat ?? "-"}
     </span>
     <span className="text-[12px] font-normal text-passes-white-100/60">
-      {label}
+      {label ?? "-"}
     </span>
   </div>
 )
@@ -111,7 +111,7 @@ export const ProfileInformation = ({
         <div className="flex items-center">
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {posts}
+              {posts ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
@@ -120,7 +120,7 @@ export const ProfileInformation = ({
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(likes)}
+              {compactNumberFormatter(likes) ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
