@@ -3,6 +3,7 @@ import { Length, Min } from 'class-validator'
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
 import { MESSAGE_LENGTH } from '../constants/schema'
+import { MessageEntity } from '../entities/message.entity'
 
 export class MessageDto {
   @DtoProperty({ type: 'uuid' })
@@ -22,7 +23,7 @@ export class MessageDto {
   channelId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'currency', optional: true })
   tipAmount?: number
 
   @DtoProperty({ type: 'boolean' })
@@ -37,10 +38,10 @@ export class MessageDto {
   @DtoProperty({ type: 'date' })
   sentAt: Date
 
-  constructor(message, contents) {
+  constructor(message: MessageEntity | undefined, contents: ContentDto[]) {
     if (message) {
       this.text = message.text
-      this.senderId = message.senderId
+      this.senderId = message.sender_id
       this.channelId = message.channel_id
       this.tipAmount = message.tip_amount
       this.sentAt = message.sent_at
