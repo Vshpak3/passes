@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Alchemy, Network, Nft, OwnedNft } from 'alchemy-sdk'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Logger } from 'winston'
 
@@ -23,8 +24,9 @@ import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 
-const MAX_TIME_WALLET_REFRESH = 1000 * 60 * 30 // 30 minutes
-const MAX_TIME_PASS_REFRESH = 1000 * 60 * 60 * 7 // 1 week
+const MAX_TIME_WALLET_REFRESH = ms('30 minutes')
+const MAX_TIME_PASS_REFRESH = ms('1 week')
+
 @Injectable()
 export class EthService {
   private alchemy: Alchemy

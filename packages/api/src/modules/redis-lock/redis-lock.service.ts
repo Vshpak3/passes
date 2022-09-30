@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
+import ms from 'ms'
 import * as uuid from 'uuid'
 
 @Injectable()
@@ -42,7 +43,7 @@ export class RedisLockService {
    */
   async lock(
     name: string,
-    expire = 60000,
+    expire = ms('1 hour'),
     retryInterval = 100,
     maxRetryTimes = 36000,
   ): Promise<void> {

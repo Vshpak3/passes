@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ModuleRef } from '@nestjs/core'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -130,11 +131,11 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MAX_TIME_BETWEEN_PAYOUTS_MS = 1000 // TODO: change to 3 days:  3 * 24 * 60 * 60 * 1000
+const MAX_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 3 days
 
-const EXPIRING_DURATION_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
+const EXPIRING_DURATION_MS = ms('3 days')
 
-const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
+const ONE_WEEK_MS = ms('1 week')
 
 const MIN_PAYOUT_AMOUNT = 25.0
 

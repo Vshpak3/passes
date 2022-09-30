@@ -43,10 +43,11 @@ import {
   getNftImageUri,
   getNftMetadataUri,
 } from './sol.helper'
+import ms from 'ms'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
-const MAX_TIME_NFT_REFRESH = 1000 * 60 * 30 // 30 minutes
+const MAX_TIME_NFT_REFRESH = ms('30 minutes')
 
 const SIGNER_ID_PREFIX_PASS = 'pass'
 const SIGNER_ID_PREFIX_PASSHOLDER = 'passholder'

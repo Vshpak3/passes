@@ -3,6 +3,7 @@ import "src/styles/global/main.css"
 
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
+import ms from "ms"
 import { AppProps } from "next/app"
 import Router from "next/router"
 import Script from "next/script"
@@ -38,10 +39,10 @@ const swrConfig: SWRConfiguration = {
   revalidateOnReconnect: false
 }
 
-// Try to refresh the auth token every this many milliseconds
-const CHECK_FOR_AUTH_REFRESH = 300000 // 5 minutes
+// Try to refresh the access token every this many minutes
+const CHECK_FOR_AUTH_REFRESH = ms("5 minutes")
 
-// Only show nprogress after 500ms (slow loading)
+// Only show nprogress after this many milliseconds (slow loading)
 const LOADING_DEBOUNCE_TIME = 500
 const start = debounce(nprogress.start, LOADING_DEBOUNCE_TIME)
 Router.events.on("routeChangeStart", start)
@@ -58,7 +59,7 @@ Router.events.on("routeChangeError", () => {
 // Refresh access token on page load
 Router.events.on("routeChangeStart", async () => {
   if (await refreshAccessToken()) {
-    console.log("Refresh token was refreshed")
+    console.log("Access token was refreshed")
   }
 })
 
@@ -68,7 +69,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const interval = setInterval(async () => {
       if (await refreshAccessToken()) {
-        console.log("Refresh token was refreshed")
+        console.log("Access token was refreshed")
       }
       setRefresh(refresh + 1)
     }, CHECK_FOR_AUTH_REFRESH)

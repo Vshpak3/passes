@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -66,8 +67,8 @@ import {
 } from './error/pass.error'
 import { createPassHolderQuery } from './pass.util'
 
-export const DEFAULT_PASS_DURATION_MS = 30 * 24 * 60 * 60 * 1000 // 30 days
-export const DEFAULT_PASS_GRACE_MS = 2 * 24 * 60 * 60 * 1000 // 2 days
+export const DEFAULT_PASS_DURATION_MS = ms('30 days')
+export const DEFAULT_PASS_GRACE_MS = ms('2 days')
 export const DEFAULT_PASS_SYMBOL = 'PASS'
 export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
