@@ -7,13 +7,13 @@ import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
 
 type WithPageLayoutOptions = {
-  noAuth?: boolean
+  skipAuth?: boolean
   header?: boolean
 }
 
 export const withPageLayout = (
   Page: any,
-  options: WithPageLayoutOptions = { noAuth: false, header: true }
+  options: WithPageLayoutOptions = { skipAuth: false, header: true }
 ) => {
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
@@ -26,7 +26,7 @@ export const withPageLayout = (
             </div>
           )}
           <div className="flex shrink-0 flex-col">
-            <AuthWrapper isPage skipAuth={options.noAuth}>
+            <AuthWrapper isPage skipAuth={!!options.skipAuth}>
               <Page {...props} ref={ref} />
             </AuthWrapper>
           </div>

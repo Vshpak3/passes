@@ -1,5 +1,6 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import React from "react"
+import { ContentService } from "src/helpers"
 
 import {
   EditProfileAction,
@@ -24,7 +25,7 @@ const ProfileDetailsDesktop = ({
 
   return (
     <div className="relative hidden grid-cols-5 md:grid">
-      <ProfilePhoto url={profile.profileImageUrl} />
+      <ProfilePhoto url={ContentService.profileThumbnail(profile.userId)} />
       {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
       <div className="col-span-4 flex flex-col px-5 pt-4">
         <ProfileInformation

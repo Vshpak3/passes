@@ -21,7 +21,7 @@ const CreatorContentFeed = ({ posts: existingPosts, ownsProfile }) => {
                 key={`post_${index}`}
                 profile={{
                   username: post.username,
-                  profileImageUrl: "",
+                  userId: "",
                   fullName: post.displayName
                 }}
                 post={post}

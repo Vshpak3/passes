@@ -5,11 +5,9 @@ import CostIcon from "public/icons/post-cost-icon.svg"
 import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
-// import PinnedActive from "public/icons/post-pinned-active.svg"
-// import PinnedInactive from "public/icons/post-pinned-inactive.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
@@ -21,6 +19,14 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
+
+import {
+  classNames,
+  compactNumberFormatter,
+  ContentService,
+  formatCurrency
+} from "../../../../../helpers"
+
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/BuyPostModal"),
   {
@@ -37,8 +43,6 @@ const PostViewModal = dynamic(
     ssr: false
   }
 )
-
-import { classNames, compactNumberFormatter, formatCurrency } from "src/helpers"
 
 import { PostDropdown } from "./post-dropdown"
 
@@ -114,10 +118,10 @@ export const PostProfileAvatar = ({ profile, post, dropdownItems = [] }) => {
     <>
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center space-x-4">
-          {profile.profileImageUrl ? (
+          {profile.userId ? (
             <img // eslint-disable-line @next/next/no-img-element
               className="h-12 w-12 rounded-full object-cover"
-              src={profile.profileImageUrl || ""}
+              src={ContentService.profileThumbnail(profile.userId)}
               alt={profile.fullName}
             />
           ) : (
