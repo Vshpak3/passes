@@ -7,6 +7,7 @@ import {
   authStateMachine,
   AuthStates
 } from "../../helpers/authRouter"
+import { isProd } from "../../helpers/env"
 import { useUser } from "../../hooks"
 
 interface AuthWrapperProps {
@@ -36,6 +37,11 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
 
     if (skipAuth) {
       return
+    }
+
+    // DISABLE ALL AUTHED PAGES IN PROD
+    if (isProd) {
+      setAuthed(false)
     }
 
     const _authed = authStateMachine(userClaims) === AuthStates.AUTHED
