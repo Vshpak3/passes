@@ -20,7 +20,7 @@ import UploadW9FormButton from "src/components/atoms/UploadW9FormButton"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
-  onPaymentFormPageFinish: () => void
+  onFinishPaymentForm: (isSubmitedBankDetails?: boolean) => void
 }
 
 enum BankTypeEnum {
@@ -29,9 +29,7 @@ enum BankTypeEnum {
   NON_IBAN
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({
-  onPaymentFormPageFinish
-}) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
 
@@ -73,7 +71,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
-      onPaymentFormPageFinish()
+      onFinishPaymentForm(true)
     } catch (error: any) {
       toast.error(error)
       console.error(error)
@@ -361,7 +359,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
             <div className="mt-4 flex flex-col gap-3">
               <PassesPinkButton
-                // onClick={onPaymentFormPageFinish}
                 name="Confirm and Save"
                 type={ButtonTypeEnum.SUBMIT}
                 className="font-normal"
@@ -373,6 +370,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                   width: "100%",
                   color: "#737893"
                 }}
+                onClick={() => onFinishPaymentForm(false)}
               >
                 Skip for now
               </Button>

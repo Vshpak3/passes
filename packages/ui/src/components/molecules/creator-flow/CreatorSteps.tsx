@@ -1,5 +1,5 @@
 import CheckIcon from "public/icons/check.svg"
-import { CREATOR_STEPS_TEXT } from "src/configurations/constants"
+import { CREATOR_STEPS_TEXT } from "src/config/constants"
 
 type CreatorStepsProps = {
   creatorStep: string

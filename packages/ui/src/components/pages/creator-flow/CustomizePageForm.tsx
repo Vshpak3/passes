@@ -45,11 +45,11 @@ interface IConnectedAccounts {
 }
 
 type CustomizePageFormProps = {
-  onCustomizePageFinish?: () => void
+  onFinishCustomizePage?: () => void
 }
 
 const CustomizePageForm = ({
-  onCustomizePageFinish = identity
+  onFinishCustomizePage = identity
 }: CustomizePageFormProps) => {
   const [connectedAccounts] = useState<IConnectedAccounts>({
     discord: false,
@@ -94,7 +94,7 @@ const CustomizePageForm = ({
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })
-    onCustomizePageFinish()
+    onFinishCustomizePage()
   }
 
   useEffect(() => {

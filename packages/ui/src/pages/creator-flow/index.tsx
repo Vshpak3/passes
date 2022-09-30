@@ -5,14 +5,13 @@ import {
 import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
-import { useCallback, useEffect, useLayoutEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import WelcomeToPasses from "src/components/organisms/creator-flow/WelcomePasses"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
-import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
-import { CREATOR_STEPS } from "src/configurations/constants"
+import { CREATOR_STEPS, MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 import BulletItem from "../../components/atoms/BulletItem"
@@ -34,7 +33,7 @@ const CreatorFlow = () => {
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false)
   const { width } = useWindowSize()
 
-  const onCustomizePageFinish = async () => {
+  const onFinishCustomizePage = async () => {
     // Show modal
     setIsVerificationDialogOpen(true)
     setStepsDone((prev) => [...prev, CREATOR_STEPS.CUSTOMIZE])
@@ -62,12 +61,15 @@ const CreatorFlow = () => {
     setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
   }, [])
 
-  const onPaymentFormPageFinish = async () => {
-    await api.submitCreatorVerificationStep({
-      submitCreatorVerificationStepRequestDto: {
-        step: GetCreatorVerificationStepResponseDtoStepEnum._3Payout
-      }
-    })
+  const onFinishPaymentForm = async (isSubmitedBankDetails = false) => {
+    if (isSubmitedBankDetails) {
+      await api.submitCreatorVerificationStep({
+        submitCreatorVerificationStepRequestDto: {
+          step: GetCreatorVerificationStepResponseDtoStepEnum._3Payout
+        }
+      })
+    }
+
     finishFormHandler()
   }
 
@@ -77,7 +79,7 @@ const CreatorFlow = () => {
     setSelectedStep(CREATOR_STEPS.PAYMENT)
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (user) {
       const userAge = user.birthday
         ? differenceInYears(new Date(), new Date(user.birthday))
@@ -153,7 +155,7 @@ const CreatorFlow = () => {
           <>
             {Number(width || 0) > 640 ? (
               <CustomizePageForm
-                onCustomizePageFinish={onCustomizePageFinish}
+                onFinishCustomizePage={onFinishCustomizePage}
               />
             ) : (
               <>
@@ -173,7 +175,7 @@ const CreatorFlow = () => {
                   </div>
                 ) : (
                   <CustomizePageForm
-                    onCustomizePageFinish={onCustomizePageFinish}
+                    onFinishCustomizePage={onFinishCustomizePage}
                   />
                 )}
               </>
@@ -189,15 +191,13 @@ const CreatorFlow = () => {
         {selectedStep === CREATOR_STEPS.PAYMENT && (
           <>
             {Number(width || 0) > 640 ? (
-              <PaymentForm onPaymentFormPageFinish={onPaymentFormPageFinish} />
+              <PaymentForm onFinishPaymentForm={onFinishPaymentForm} />
             ) : (
               <>
                 {isWelcomeModalOpen ? (
                   <WelcomeToPasses />
                 ) : (
-                  <PaymentForm
-                    onPaymentFormPageFinish={onPaymentFormPageFinish}
-                  />
+                  <PaymentForm onFinishPaymentForm={onFinishPaymentForm} />
                 )}
               </>
             )}
@@ -205,7 +205,7 @@ const CreatorFlow = () => {
         )}
         {/* {selectedStep === CREATOR_STEPS.PAYMENT &&
           <PaymentForm
-            onPaymentFormPageFinish={onPaymentFormPageFinish}
+            onFinishPaymentForm={onFinishPaymentForm}
           />
         } */}
       </div>

@@ -18,7 +18,7 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   onFinishPersonaVerification,
   showPersonaModal
 }) => {
-  const [loadedPersonaScript, setLoadedPersonaScript] = useState(false)
+  const [isLoadedPersonaScript, setIsLoadedPersonaScript] = useState(false)
 
   const personaStatusHandler = useCallback(async () => {
     const api = new VerificationApi()
@@ -68,16 +68,16 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    if (showPersonaModal && loadedPersonaScript) {
+    if (showPersonaModal && isLoadedPersonaScript) {
       personaStatusHandler()
     }
-  }, [showPersonaModal, personaStatusHandler, loadedPersonaScript])
+  }, [showPersonaModal, personaStatusHandler, isLoadedPersonaScript])
 
   useEffect(() => {
     const scriptEl = document.createElement("script")
     scriptEl.src = "https://cdn.withpersona.com/dist/persona-v4.2.0.js"
     document.body.append(scriptEl)
-    scriptEl.addEventListener("load", () => setLoadedPersonaScript(true))
+    scriptEl.addEventListener("load", () => setIsLoadedPersonaScript(true))
   }, [])
 
   return null
