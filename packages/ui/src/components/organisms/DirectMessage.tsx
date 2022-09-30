@@ -77,7 +77,9 @@ const DirectMessage = ({
   const postPrice = watch("postPrice")
 
   const fetchList = useCallback(async () => {
-    if (lists.length > 0) return
+    if (lists.length > 0) {
+      return
+    }
     try {
       const allLists: any = await listApi.getLists({
         getListsRequestsDto: {
@@ -97,7 +99,9 @@ const DirectMessage = ({
   }, [fetchList])
 
   const fetchActiveListMembers = useCallback(async () => {
-    if (activeList.name === "initial") return
+    if (activeList.name === "initial") {
+      return
+    }
     try {
       const activeListMembers: any = await listApi.getListMembers({
         getListMembersRequestDto: {
@@ -147,7 +151,9 @@ const DirectMessage = ({
   }
 
   const onMediaHeaderChange = (event: any) => {
-    if (typeof event !== "string") return onFileInputChange(event)
+    if (typeof event !== "string") {
+      return onFileInputChange(event)
+    }
     switch (event) {
       case "Vault":
         router.push(
@@ -184,8 +190,12 @@ const DirectMessage = ({
   const onMediaChange = (filesProp: any) => {
     let maxFileSizeExceeded = false
     const _files = filesProp.filter((file: any) => {
-      if (!MAX_FILE_SIZE) return true
-      if (file.size < MAX_FILE_SIZE) return true
+      if (!MAX_FILE_SIZE) {
+        return true
+      }
+      if (file.size < MAX_FILE_SIZE) {
+        return true
+      }
       maxFileSizeExceeded = true
       return false
     })
@@ -194,7 +204,9 @@ const DirectMessage = ({
       // TODO: show error message
     }
 
-    if (files.length + _files.length > MAX_FILES) return // TODO: max file limit error message
+    if (files.length + _files.length > MAX_FILES) {
+      return
+    } // TODO: max file limit error message
     setFiles([...files, ..._files])
   }
   const onRemove = (index: any) => {

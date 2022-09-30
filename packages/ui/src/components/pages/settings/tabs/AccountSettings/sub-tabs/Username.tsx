@@ -30,7 +30,9 @@ const Username = () => {
       mutate()
     } catch (err) {
       let errorMessage = "Something went wrong"
-      if (err instanceof Error) errorMessage = err.message
+      if (err instanceof Error) {
+        errorMessage = err.message
+      }
 
       setError(
         "username",

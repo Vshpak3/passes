@@ -20,7 +20,9 @@ const UploadW9FormButton = ({ text, icon }: W9Button) => {
   const { form } = watch()
 
   const uploadW9FormHandler = async ({ form }: IForm) => {
-    if (!form || !form[0]) return
+    if (!form || !form[0]) {
+      return
+    }
     const file = form[0]
 
     try {

@@ -2,12 +2,16 @@ import React, { useEffect } from "react"
 
 const WindowControls = ({ theme, setTheme }) => {
   const darkClick = () => {
-    if (theme === "dark") return
+    if (theme === "dark") {
+      return
+    }
     setTheme("dark")
   }
 
   const lightClick = () => {
-    if (theme === "light") return
+    if (theme === "light") {
+      return
+    }
     setTheme("light")
   }
 

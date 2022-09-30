@@ -22,8 +22,9 @@ export const NewFundraiserTab = ({
   const [targetAcquired, setTargetAcquired] = useState(false)
 
   useEffect(() => {
-    if (fields.length === 0)
+    if (fields.length === 0) {
       append([{ value: "10" }, { value: "25" }, { value: "50" }])
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields])
 

@@ -71,7 +71,9 @@ const AccountCard = ({
                   <Button
                     variant="pink"
                     onClick={() => {
-                      if (deleteBank) deleteBank()
+                      if (deleteBank) {
+                        deleteBank()
+                      }
                     }}
                   >
                     Delete
@@ -115,7 +117,9 @@ const AccountCard = ({
                     <Button
                       variant="pink"
                       onClick={() => {
-                        if (deleteWallet) deleteWallet()
+                        if (deleteWallet) {
+                          deleteWallet()
+                        }
                       }}
                     >
                       Delete

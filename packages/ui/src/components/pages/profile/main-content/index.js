@@ -25,18 +25,19 @@ const MainContent = ({
           getProfileFeedRequestDto: { creatorId: profile.userId }
         })
 
-        if (!previousPosts)
+        if (!previousPosts) {
           return {
             count: 1,
             cursor: username,
             posts
           }
-        else
+        } else {
           return {
             count: previousPosts.count + 1,
             cursor: previousPosts.cursor,
             posts
           }
+        }
       },
       revalidate: true
     })

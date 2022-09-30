@@ -39,9 +39,13 @@ function TagsInput({
   const popoverRef = useRef<HTMLDivElement>(null)
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== "Enter") return
+    if (e.key !== "Enter") {
+      return
+    }
     const value = e.currentTarget.value
-    if (!value.toString()) return
+    if (!value.toString()) {
+      return
+    }
     setTags([...tags, value])
   }
 

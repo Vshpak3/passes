@@ -14,7 +14,9 @@ function classNames(...classes) {
 export const PostDropdown = ({ post, items = [] }) => {
   const copyToClipboard = () => {
     let baseRoute = ""
-    if (typeof window !== "undefined") baseRoute = window.location.origin
+    if (typeof window !== "undefined") {
+      baseRoute = window.location.origin
+    }
     const linkToCopy = baseRoute + "/" + post.username + "/" + post.postId
     copy(linkToCopy)
 

@@ -113,7 +113,9 @@ const getChannelUnreadTip = (messagesStats, channel) => {
     map[stat.channelId] = stat
     return map
   }, {})
-  if (!mapChannelId[channel.data.id]) return 0
+  if (!mapChannelId[channel.data.id]) {
+    return 0
+  }
   return mapChannelId[channel.data.id].tipRecieved
 }
 
@@ -127,8 +129,11 @@ export const ChannelInner = (props) => {
   const { theme, toggleMobile, freeMessages } = props
   const { sumPaid, sumPending } = content.reduce(
     function (prev, current) {
-      if (!current.locked) prev.sumPending += current.price
-      else prev.sumPaid += current.price
+      if (!current.locked) {
+        prev.sumPending += current.price
+      } else {
+        prev.sumPaid += current.price
+      }
       return prev
     },
     { sumPaid: 0, sumPending: 0 }

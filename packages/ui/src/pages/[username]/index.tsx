@@ -81,7 +81,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || !params.username) return { props: {} }
+  if (!params || !params.username) {
+    return { props: {} }
+  }
 
   const username = Array.isArray(params.username)
     ? params.username[0]

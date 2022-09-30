@@ -5,7 +5,9 @@ export const TypingIndicator = () => {
   const { client } = useChatContext()
   const { typing } = useTypingContext()
 
-  if (!client || !typing) return null
+  if (!client || !typing) {
+    return null
+  }
 
   const users = Object.values(typing)
     .filter(({ user }) => user?.id !== client?.user?.id)

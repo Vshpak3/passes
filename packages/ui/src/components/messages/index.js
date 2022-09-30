@@ -58,7 +58,9 @@ const MessagesComponent = ({ username }) => {
     if (!user?.isCreator) {
       return
     }
-    if (user?.isCreator === 1) setIsCreator(true)
+    if (user?.isCreator === 1) {
+      setIsCreator(true)
+    }
   }, [user])
 
   useEffect(() => {
@@ -152,7 +154,9 @@ const MessagesComponent = ({ username }) => {
     SearchResultItem: SearchResult
   }
 
-  if (!chatClient) return null
+  if (!chatClient) {
+    return null
+  }
 
   return (
     <div>

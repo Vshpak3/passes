@@ -66,13 +66,14 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Unreachable code error
-    if (showPersonaModal && typeof Persona !== "undefined")
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (showPersonaModal && typeof Persona !== "undefined") {
       personaStatusHandler()
+    }
 
-    // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Unreachable code error
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showPersonaModal, personaStatusHandler, typeof Persona])
 

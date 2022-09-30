@@ -158,7 +158,9 @@ export const usePay = (
         registerResponse.amount !== amountUSD
       ) {
         const error = new Error("sanity check: amounts don't matchup")
-        if (callback) callback(error)
+        if (callback) {
+          callback(error)
+        }
 
         console.error(error)
       }
@@ -178,12 +180,16 @@ export const usePay = (
         default:
           break
       }
-      if (callback) callback()
+      if (callback) {
+        callback()
+      }
     } catch (error) {
       setSubmitting(false)
       setLoading(false)
 
-      if (callback) callback()
+      if (callback) {
+        callback()
+      }
     } finally {
       setSubmitting(false)
       setLoading(false)

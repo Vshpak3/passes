@@ -7,7 +7,9 @@ const useChat = (userId: string) => {
   const channelId = useSWR(
     accessToken ? "/messages/channel" + "/" + userId : null,
     async () => {
-      if (!userId) return null
+      if (!userId) {
+        return null
+      }
       const api = new MessagesApi()
 
       const response = await api.getChannel({

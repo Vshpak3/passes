@@ -111,7 +111,9 @@ const getChannelUnreadTip = (messagesStats, channel) => {
     map[stat.channelId] = stat
     return map
   }, {})
-  if (!mapChannelId[channel.data.id]) return 0
+  if (!mapChannelId[channel.data.id]) {
+    return 0
+  }
   return mapChannelId[channel.data.id].unreadTip
   // if (channelStats[0]?.unreadTip) return channelStats[0]?.unreadTip
   // else return null
@@ -131,8 +133,12 @@ const getTimeStamp = (channel) => {
     half = "PM"
   }
 
-  if (lastHours === 0) lastHours = 12
-  if (lastHours === 12) half = "PM"
+  if (lastHours === 0) {
+    lastHours = 12
+  }
+  if (lastHours === 12) {
+    half = "PM"
+  }
 
   if (lastMinutes.toString().length === 1) {
     lastMinutes = `0${lastMinutes}`

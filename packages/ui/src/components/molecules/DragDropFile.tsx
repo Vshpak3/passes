@@ -54,7 +54,9 @@ const DragDropFile = ({
       event.target.files = event.dataTransfer.files
       onChange(event)
       onBlur(event)
-      if (options.onChange) options.onChange(event)
+      if (options.onChange) {
+        options.onChange(event)
+      }
     }
   }
 

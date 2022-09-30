@@ -5,7 +5,9 @@ const usePost = (postId: string) => {
   const { data: post, isValidating: loading } = useSWR(
     postId ? "/posts" + "/" + postId : null,
     async () => {
-      if (!postId) return null
+      if (!postId) {
+        return null
+      }
       const api = new PostApi()
 
       return await api.findPost({

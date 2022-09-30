@@ -27,7 +27,9 @@ const MessagingInputFanPerspective = () => {
   // make sure to have button disabled when checking submit data tip
 
   useEffect(() => {
-    if (channelId) submitData()
+    if (channelId) {
+      submitData()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId])
 
@@ -35,7 +37,9 @@ const MessagingInputFanPerspective = () => {
     if (text?.length > 0 && freeMessages !== 0) {
       submit()
       setValue("text", "", { shouldValidate: true })
-    } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) return null
+    } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) {
+      return null
+    }
   }
 
   const registerMessage = async () => {

@@ -4,8 +4,12 @@ import { CloseThreadIcon } from "../../assets"
 
 const MessagingThreadHeader = ({ closeThread, thread }) => {
   const getReplyCount = () => {
-    if (!thread?.reply_count) return ""
-    if (thread.reply_count === 1) return "1 reply"
+    if (!thread?.reply_count) {
+      return ""
+    }
+    if (thread.reply_count === 1) {
+      return "1 reply"
+    }
     return `${thread.reply_count} Replies`
   }
 

@@ -93,7 +93,9 @@ export const setUpPhantomProvider = (
     }
   })
   provider.on("disconnect", () => {
-    if (!sent) throw new Error("closed wallet early")
+    if (!sent) {
+      throw new Error("closed wallet early")
+    }
   })
 }
 

@@ -44,7 +44,9 @@ export const MessagesListsDropdownDialog = ({
         })
   const groupedLists = filteredLists.reduce(
     (acc: { [key: string]: any[] }, list) => {
-      if (!acc[list.type]) acc[list.type] = []
+      if (!acc[list.type]) {
+        acc[list.type] = []
+      }
       acc[list.type].push(list)
       return acc
     },

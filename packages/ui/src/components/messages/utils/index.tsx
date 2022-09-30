@@ -1,9 +1,13 @@
 export const getWholeChar = (str: string, i: number) => {
   const code = str.charCodeAt(i)
 
-  if (Number.isNaN(code)) return ""
+  if (Number.isNaN(code)) {
+    return ""
+  }
 
-  if (code < 0xd800 || code > 0xdfff) return str.charAt(i)
+  if (code < 0xd800 || code > 0xdfff) {
+    return str.charAt(i)
+  }
 
   if (0xd800 <= code && code <= 0xdbff) {
     if (str.length <= i + 1) {

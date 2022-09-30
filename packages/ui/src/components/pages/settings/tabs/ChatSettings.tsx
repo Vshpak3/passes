@@ -63,7 +63,9 @@ const ChatSettings = () => {
 
   useEffect(() => {
     // inject already saved values in fields
-    if (!chatSettings) return
+    if (!chatSettings) {
+      return
+    }
     const { welcomeMessage, minimumTipAmount } = chatSettings
 
     if (welcomeMessage) {

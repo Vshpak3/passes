@@ -57,7 +57,9 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     const newProfileValues = await updateProfile(values)
     setProfile(newProfileValues as any)
     setEditProfile(false)
-    if (values.username !== username) await updateUsername(values.username)
+    if (values.username !== username) {
+      await updateUsername(values.username)
+    }
   }
 
   const updateUsername = async (username: string) => {

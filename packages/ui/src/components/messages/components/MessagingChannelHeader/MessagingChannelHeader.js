@@ -139,7 +139,9 @@ const MessagingChannelHeader = (props) => {
   )
 
   const updateChannel = async (e) => {
-    if (e) e.preventDefault()
+    if (e) {
+      e.preventDefault()
+    }
 
     if (channelName && channelName !== channel.data.name) {
       await channel.update(

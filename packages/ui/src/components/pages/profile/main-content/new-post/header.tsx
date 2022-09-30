@@ -84,7 +84,9 @@ const MediaHeader = ({
   let _mediaTypes = []
   if (messages) {
     _mediaTypes = messagesMediaTypes
-  } else _mediaTypes = mediaTypes
+  } else {
+    _mediaTypes = mediaTypes
+  }
   return (
     <div className="w-full pb-3">
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">

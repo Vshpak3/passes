@@ -72,13 +72,19 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
   }
 
   const onMediaChange = (filesArray: File[]) => {
-    if (fileUploadError) setFileUploadError(null)
+    if (fileUploadError) {
+      setFileUploadError(null)
+    }
 
     let maxFileSizeExceeded = false
 
     const _files = filesArray.filter((file) => {
-      if (!MAX_FILE_SIZE) return true
-      if (file.size < MAX_FILE_SIZE) return true
+      if (!MAX_FILE_SIZE) {
+        return true
+      }
+      if (file.size < MAX_FILE_SIZE) {
+        return true
+      }
       maxFileSizeExceeded = true
       return false
     })
@@ -101,7 +107,9 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
 
   const onDragDropChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
-    if (!files) return null
+    if (!files) {
+      return null
+    }
     const filesArray = Array.from(files)
 
     onMediaChange(filesArray)

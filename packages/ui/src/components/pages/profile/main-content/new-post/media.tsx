@@ -29,9 +29,15 @@ export const MediaFile = ({
 }: MediaFileProp) => {
   const src = URL.createObjectURL(file)
   let type!: ContentDtoContentTypeEnum
-  if (file.type.startsWith("image/")) type = "image"
-  if (file.type.startsWith("video/")) type = "video"
-  if (file.type.startsWith("audio/")) type = "audio"
+  if (file.type.startsWith("image/")) {
+    type = "image"
+  }
+  if (file.type.startsWith("video/")) {
+    type = "video"
+  }
+  if (file.type.startsWith("audio/")) {
+    type = "audio"
+  }
   return (
     <Media
       src={src}

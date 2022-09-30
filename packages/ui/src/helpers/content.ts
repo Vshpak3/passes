@@ -41,7 +41,9 @@ class ContentService {
    */
   private getFileContentType(file: File) {
     const match = file.type.match(/^(image|video|audio)\//)
-    if (!match) return null
+    if (!match) {
+      return null
+    }
     return match[1] as ContentDtoContentTypeEnum
   }
 
@@ -142,7 +144,9 @@ class ContentService {
     return Promise.all(
       files.map(async (file: File) => {
         const _contentType = contentType ?? this.getFileContentType(file)
-        if (!_contentType) throw new Error("invalid file type")
+        if (!_contentType) {
+          throw new Error("invalid file type")
+        }
         const url = await this.preSignUrl("content", {
           contentType: _contentType
         })

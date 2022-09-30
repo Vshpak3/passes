@@ -33,9 +33,12 @@ export async function updateProfile(values: Record<string, any>) {
 
   newValues.fullName = `${values.firstName} ${values.lastName}`
 
-  if (profileImageUrl) newValues.profileImageUrl = profileImageUrl
-  if (profileCoverImageUrl)
+  if (profileImageUrl) {
+    newValues.profileImageUrl = profileImageUrl
+  }
+  if (profileCoverImageUrl) {
     newValues.profileCoverImageUrl = profileCoverImageUrl
+  }
 
   const api = new ProfileApi()
   await api.createOrUpdateProfile({

@@ -24,7 +24,7 @@ const CreatorPassTiles = ({
   }
   if (!hasMounted) {
     return null
-  } else
+  } else {
     return (
       <>
         <div
@@ -55,6 +55,7 @@ const CreatorPassTiles = ({
         />
       </>
     )
+  }
 }
 
 export default CreatorPassTiles

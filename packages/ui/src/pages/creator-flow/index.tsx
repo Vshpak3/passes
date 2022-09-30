@@ -4,104 +4,20 @@ import {
 } from "@passes/api-client"
 import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
-import CheckIcon from "public/icons/check.svg"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState
-} from "react"
+import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import WelcomeToPasses from "src/components/organisms/creator-flow/WelcomePasses"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
 import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
-import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/constants"
+import { CREATOR_STEPS } from "src/configurations/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
+import BulletItem from "../../components/atoms/BulletItem"
+import CreatorSteps from "../../components/molecules/creator-flow/CreatorSteps"
 import { useUser } from "../../hooks"
-
-type BulletItemProps = {
-  isSelected: boolean
-  setSelectedStep: MouseEventHandler
-}
-
-function BulletItem({ isSelected, setSelectedStep }: BulletItemProps) {
-  return (
-    <div
-      onClick={setSelectedStep}
-      className={`cursor-pointer ${
-        isSelected ? "text-gray-500" : "text-gray-700"
-      }`}
-    >
-      &bull;
-    </div>
-  )
-}
-
-type CreatorStepsProps = {
-  creatorStep: string
-  isDone: boolean
-  isSelected: boolean
-}
-
-function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
-  return (
-    <>
-      {/* small screens */}
-      <div
-        className={`flex flex-row items-center  gap-3 rounded-full py-3 text-white sm:hidden
-        ${
-          isSelected
-            ? "flex-1 pl-6"
-            : "w-[66px] items-center justify-center border border-gray-700"
-        }`}
-      >
-        <div
-          className={
-            "bg-creator-flow-violet flex h-8 w-8 items-center justify-center rounded-full border border-gray-700"
-          }
-        >
-          {isDone ? <CheckIcon /> : CREATOR_STEPS_TEXT[creatorStep].number}
-        </div>
-        <div className={`${isSelected ? "flex flex-1" : "hidden"} flex-col`}>
-          <div className="flex w-full flex-1">
-            {CREATOR_STEPS_TEXT[creatorStep].title}
-          </div>
-          <div className="text-slate-400">
-            {CREATOR_STEPS_TEXT[creatorStep].subtitle}
-          </div>
-        </div>
-      </div>
-      {/* md and up Screen */}
-      <div
-        className={`hidden flex-1 flex-row items-center gap-3 rounded-full py-3 pl-6 text-white sm:flex
-        ${isSelected ? "border border-gray-700" : ""}`}
-      >
-        <div
-          className={`h-8 w-8 rounded-full  ${
-            isDone || isSelected
-              ? "bg-creator-flow-violet"
-              : "border border-gray-700"
-          } flex items-center justify-center`}
-        >
-          {isDone ? <CheckIcon /> : CREATOR_STEPS_TEXT[creatorStep].number}
-        </div>
-        <div className={"flex flex-1 flex-col"}>
-          <div className="flex w-full flex-1">
-            {CREATOR_STEPS_TEXT[creatorStep].title}
-          </div>
-          <div className="text-slate-400">
-            {CREATOR_STEPS_TEXT[creatorStep].subtitle}
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
 
 const api = new VerificationApi()
 

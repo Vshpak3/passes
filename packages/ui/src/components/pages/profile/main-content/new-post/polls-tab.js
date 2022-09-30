@@ -17,12 +17,13 @@ export const PollsTab = ({ control, register, onCloseTab }) => {
   const options = ["1 Day", "3 days", "7 Days", "10 Days", "No Limit"]
 
   useEffect(() => {
-    if (fields.length === 0)
+    if (fields.length === 0) {
       append([
         { value: "Option 1" },
         { value: "Option 2" },
         { value: "Option 3" }
       ])
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields])
 

@@ -24,7 +24,9 @@ const ProfilePicture = () => {
   }
 
   const onSaveProfile = async () => {
-    if (!profileImage || !profileImage.length) return
+    if (!profileImage || !profileImage.length) {
+      return
+    }
     await setProfilePicture(profileImage[0])
     setValue("profileImage", null)
   }

@@ -13,7 +13,9 @@ export const RecordView = ({
     useReactMediaRecorder({
       ...options,
       onStop: (blobUrl, blobObject) => {
-        if (onStop) onStop(blobUrl, blobObject, options.video)
+        if (onStop) {
+          onStop(blobUrl, blobObject, options.video)
+        }
       },
       onStart
     })

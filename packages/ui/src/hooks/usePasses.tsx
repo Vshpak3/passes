@@ -25,7 +25,9 @@ function filterPassesByTitle(searchTerm: string) {
 }
 function filterPassesByType(type: string) {
   return (item: PassDto | undefined) => {
-    if (type === "all") return true
+    if (type === "all") {
+      return true
+    }
     return item?.type.toLowerCase() === type.toLowerCase()
   }
 }

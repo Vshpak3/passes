@@ -268,7 +268,9 @@ export const PostEngagement = ({ post, postUnlocked = false, ownsProfile }) => {
 
   const likePost = async () => {
     try {
-      if (!postUnlocked) return
+      if (!postUnlocked) {
+        return
+      }
 
       const api = new LikeApi()
 
@@ -387,7 +389,9 @@ export const CommentSection = ({
     try {
       const text = getValues("comment")
       const tags = getValues("mentions")
-      if (text.length === 0) return
+      if (text.length === 0) {
+        return
+      }
 
       const api = new CommentApi()
 

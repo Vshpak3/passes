@@ -118,7 +118,9 @@ export const NewPost = ({
   }
 
   const onMediaHeaderChange = (event) => {
-    if (typeof event !== "string") return onFileInputChange(event)
+    if (typeof event !== "string") {
+      return onFileInputChange(event)
+    }
 
     switch (event) {
       case "Fundraiser":
@@ -140,7 +142,9 @@ export const NewPost = ({
   }
 
   const onDragDropChange = (event) => {
-    if (event?.target?.files) return onFileInputChange(event)
+    if (event?.target?.files) {
+      return onFileInputChange(event)
+    }
     const files = [...event.target.files]
 
     onMediaChange(files)
@@ -150,8 +154,12 @@ export const NewPost = ({
   const onMediaChange = (filesProp) => {
     let maxFileSizeExceeded = false
     const _files = filesProp.filter((file) => {
-      if (!MAX_FILE_SIZE) return true
-      if (file.size < MAX_FILE_SIZE) return true
+      if (!MAX_FILE_SIZE) {
+        return true
+      }
+      if (file.size < MAX_FILE_SIZE) {
+        return true
+      }
       maxFileSizeExceeded = true
       return false
     })
@@ -160,7 +168,9 @@ export const NewPost = ({
       // TODO: show error message
     }
 
-    if (files.length + _files.length > MAX_FILES) return // TODO: max file limit error message
+    if (files.length + _files.length > MAX_FILES) {
+      return
+    } // TODO: max file limit error message
     setFiles([...files, ..._files])
   }
 
@@ -176,13 +186,16 @@ export const NewPost = ({
     })
     setSelectedMedia(file)
     setFiles([...files, file])
-    if (hasVideo) setHasVideo(false)
-    else setHasAudio(false)
+    if (hasVideo) {
+      setHasVideo(false)
+    } else {
+      setHasAudio(false)
+    }
   }
 
   if (!hasMounted) {
     return null
-  } else
+  } else {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
@@ -444,4 +457,5 @@ export const NewPost = ({
         </div>
       </form>
     )
+  }
 }

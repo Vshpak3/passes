@@ -8,12 +8,13 @@ const PassesFeed = ({ profile }) => {
   const [filteredPasses, setFilteredPasses] = useState([])
 
   useEffect(() => {
-    if (passType && creatorPasses?.length > 0)
+    if (passType && creatorPasses?.length > 0) {
       setFilteredPasses(
         creatorPasses.filter(
           (pass) => passType === "all" || passType === pass.type
         )
       )
+    }
   }, [passType, creatorPasses])
 
   return (

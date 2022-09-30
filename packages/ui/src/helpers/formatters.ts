@@ -1,7 +1,9 @@
 const formatter = Intl.NumberFormat("en", { notation: "compact" })
 
 export function compactNumberFormatter(num: number) {
-  if (!num || isNaN(num)) return null
+  if (!num || isNaN(num)) {
+    return null
+  }
   return formatter.format(num)
 }
 

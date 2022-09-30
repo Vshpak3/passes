@@ -61,7 +61,9 @@ const PastTransactions = () => {
     return new Date(new Date().valueOf() - days * ONE_DAY)
   }
 
-  if (!payouts) return null
+  if (!payouts) {
+    return null
+  }
   return (
     <div className="mb-5 flex w-full flex-col gap-4">
       <div className="flex flex-col rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4">

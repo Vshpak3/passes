@@ -95,7 +95,9 @@ const CustomizePageForm = ({
   }
 
   useEffect(() => {
-    if (user?.displayName) setValue("displayName", user.displayName)
+    if (user?.displayName) {
+      setValue("displayName", user.displayName)
+    }
   }, [user?.displayName, setValue])
 
   return (

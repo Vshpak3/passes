@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'curly': 'error',
     // Eventually turn this on:
     // 'no-magic-numbers': ["error", { "ignore": [0, 1] }],
     'no-trailing-spaces': 'error',

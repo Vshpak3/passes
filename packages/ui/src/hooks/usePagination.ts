@@ -15,10 +15,14 @@ const getKey: SWRInfiniteKeyLoader = (
   previousPageData: { lastId: string; [key: string]: any }
 ) => {
   // reached the end
-  if (previousPageData && !previousPageData.lastId) return null
+  if (previousPageData && !previousPageData.lastId) {
+    return null
+  }
 
   // first page, we don't have `previousPageData`
-  if (pageIndex === 0) return {}
+  if (pageIndex === 0) {
+    return {}
+  }
 
   // pass the cursor to the fetcher function
   return { lastId: previousPageData.lastId }

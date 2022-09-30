@@ -39,7 +39,9 @@ const TextArea = ({
   const { ref, ...reg } = register(name, {
     ...options,
     onChange: (event: any) => {
-      if (options.onChange) options.onChange(event, keyDownEvent)
+      if (options.onChange) {
+        options.onChange(event, keyDownEvent)
+      }
     }
   })
   useEffect(() => {

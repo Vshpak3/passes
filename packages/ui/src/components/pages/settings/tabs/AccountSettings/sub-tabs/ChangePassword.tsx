@@ -40,7 +40,9 @@ const ChangePassword = () => {
     newPassword
   }: IChangePasswordForm) => {
     try {
-      if (newPassword !== confirmPassword) return
+      if (newPassword !== confirmPassword) {
+        return
+      }
       await changePassword({ oldPassword, newPassword })
     } catch (err) {
       console.error(err)
