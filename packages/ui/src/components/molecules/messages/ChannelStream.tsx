@@ -22,7 +22,7 @@ export const ChannelStream = ({
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
-  const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(true)
+  const [isLoadingOlderMessages, setIsLoadingOlderMessages] = useState(false)
   const [messages, setMessages] = useState<MessageDto[]>([])
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
 
@@ -88,7 +88,7 @@ export const ChannelStream = ({
   )
 
   useEffect(() => {
-    if (isLoading) {
+    if (!isLoading) {
       return
     }
 

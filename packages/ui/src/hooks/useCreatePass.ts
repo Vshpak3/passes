@@ -43,7 +43,9 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
 
   const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION
   const MIN_FILES = isLifetimePass ? MIN_FILES_LIFETIME : MIN_FILES_SUBSCRIPTION
-  const DURATION = isLifetimePass ? THIRTY_DAY_DURATION_LIFETIME : THIRTY_DAY_DURATION
+  const DURATION = isLifetimePass
+    ? THIRTY_DAY_DURATION_LIFETIME
+    : THIRTY_DAY_DURATION
 
   const maxFileError = `Maximum upload is ${MAX_FILES} file(s).`
   const minFileError = `Minimum upload is ${MIN_FILES} file(s).`
