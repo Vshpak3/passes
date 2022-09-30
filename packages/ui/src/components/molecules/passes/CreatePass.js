@@ -138,6 +138,11 @@ const PassLifetimeOptions = ({ register }) => {
       <div className="grid grid-rows-2 gap-1">
         <PassNumberInput
           register={register}
+          title="Total Supply"
+          name="totalSupply"
+        />
+        <PassNumberInput
+          register={register}
           title="Royalty Fees on re-sales"
           name="royalties"
           infoIcon

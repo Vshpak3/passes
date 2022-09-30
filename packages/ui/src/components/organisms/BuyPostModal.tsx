@@ -62,7 +62,7 @@ const BuyPostModal = ({ postInfo, setOpen, isOpen }: IBuyPostModal) => {
           </span>{" "}
           <span
             className="cursor-pointer text-[#ffff]/90 underline"
-            onClick={() => router.push("/payment/default-payin-method")}
+            onClick={() => router.push("/settings")}
           >
             Settings
           </span>

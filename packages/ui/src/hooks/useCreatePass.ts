@@ -15,9 +15,10 @@ const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES_SUBSCRIPTION = 1
 const MIN_FILES_SUBSCRIPTION = 0
 const MAX_FILES_LIFETIME = 5000
-const MIN_FILES_LIFETIME = 10
+const MIN_FILES_LIFETIME = 1
 
 const THIRTY_DAY_DURATION = 30 * 24 * 60 * 60
+const THIRTY_DAY_DURATION_LIFETIME = undefined
 
 const createPassSchema = yup.object({
   passName: yup.string().required(),
@@ -42,6 +43,7 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
 
   const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION
   const MIN_FILES = isLifetimePass ? MIN_FILES_LIFETIME : MIN_FILES_SUBSCRIPTION
+  const DURATION = isLifetimePass ? THIRTY_DAY_DURATION_LIFETIME : THIRTY_DAY_DURATION
 
   const maxFileError = `Maximum upload is ${MAX_FILES} file(s).`
   const minFileError = `Minimum upload is ${MIN_FILES} file(s).`
@@ -121,8 +123,9 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
       freetrial: data["free-dm-month-checkbox"],
       type: newPassType(router.query.passType as string),
       price: parseInt(data.price),
-      totalSupply: parseInt(data["free-dms-month"]),
-      duration: THIRTY_DAY_DURATION,
+      totalSupply: parseInt(data["totalSupply"]),
+      messages: parseInt(data["free-dms-month"]),
+      duration: DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
       royalties: 0
     }
