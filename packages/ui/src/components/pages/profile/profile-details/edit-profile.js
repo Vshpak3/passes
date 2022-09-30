@@ -13,17 +13,16 @@ import { Dialog } from "src/components/organisms"
 import FormImage from "src/components/organisms/FormImage"
 
 const bioForm = {
-  coverDescription: {
+  description: {
     type: "text-area",
-    label: "Cover Description",
+    label: "Description",
     colSpan: "col-span-6"
   }
 }
 
 const profileInformationForm = {
   displayName: { type: "text", label: "Display Name", colSpan: "col-span-6" },
-  location: { type: "text", label: "Location", colSpan: "col-span-6" },
-  website: { type: "text", label: "Website", colSpan: "col-span-6" }
+  username: { type: "text", label: "Username", colSpan: "col-span-6" }
 }
 
 const socialMediaForm = {
@@ -80,9 +79,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
   }
 
   const profileImage = watch("profileImage")
-  const profileImageUrl = watch("profileImageUrl")
   const profileCoverImage = watch("profileCoverImage")
-  const profileCoverImageUrl = watch("profileCoverImageUrl")
 
   const fields = watch()
 
@@ -139,7 +136,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                   src={
                     profileCoverImage?.length
                       ? URL.createObjectURL(profileCoverImage[0])
-                      : profileCoverImageUrl
+                      : "/pages/profile/profile-cover-photo.png"
                   }
                 />
               </div>
@@ -162,7 +159,7 @@ export const EditProfile = ({ profile, onSubmit }) => {
                 src={
                   profileImage?.length
                     ? URL.createObjectURL(profileImage[0])
-                    : profileImageUrl
+                    : "/pages/profile/profile-photo.jpeg"
                 }
               />
             </div>

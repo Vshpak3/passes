@@ -1,4 +1,3 @@
-import Image from "next/image"
 import ChatIcon from "public/icons/mail-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
@@ -7,7 +6,6 @@ import TikTok from "public/icons/profile-tiktok-icon.svg"
 import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
-import React from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import { CoverButton, RoundedIconButton } from "src/components/atoms/Button"
 import { compactNumberFormatter } from "src/helpers"
@@ -43,7 +41,8 @@ export const ProfileStatsMobile = ({ posts, likes }) => (
 export const ProfilePhoto = ({ url }) => (
   <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
     {url?.length > 0 && (
-      <Image
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
         src={url}
         className="object-cover drop-shadow-profile-photo"
         layout="fill"
