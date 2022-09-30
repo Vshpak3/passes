@@ -235,15 +235,7 @@ export class AuthService {
     // Handles deduplicating users based on email
     let user: UserDto | undefined = undefined
     if (emailVerified) {
-      user = await this.userService.findOne({ email })
-      await this.dbReader<UserEntity>(UserEntity.table)
-        .where({ email })
-        .select('*')
-        .first()
-
-      if (!user) {
-        throw new InternalServerErrorException('Unexpected missing user')
-      }
+      user = await this.userService.findOne({ email }).catch(() => undefined)
     }
 
     const id = v4()

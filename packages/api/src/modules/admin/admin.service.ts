@@ -60,10 +60,12 @@ export class AdminService {
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {
     const reqUser = await this.userService.findOne({ id })
+
     // Skip admin check in local development
     if (this.env === 'dev') {
       return reqUser
     }
+
     if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
       throw new BadRequestException('Invalid request')
     }
@@ -71,13 +73,13 @@ export class AdminService {
   }
 
   async findUser(userId?: string, username?: string): Promise<UserDto> {
-    if (userId) {
-      return await this.userService.findOne({ id: userId })
-    } else if (username) {
-      return await this.userService.findOne({ username })
-    } else {
-      throw new BadRequestException('Must provide either a userId or username')
+    if ((!userId && !username) || (userId && username)) {
+      throw new BadRequestException(
+        'Must provide either a userId or username (but not both)',
+      )
     }
+
+    return await this.userService.findOne({ id: userId, username })
   }
 
   async impersonateUser(
