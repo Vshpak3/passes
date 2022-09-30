@@ -57,6 +57,7 @@ const CreatorFlow = () => {
         step: GetCreatorVerificationStepResponseDtoStepEnum._2Kyc
       }
     })
+    setIsVerificationDialogOpen(false)
     setSelectedStep(CREATOR_STEPS.PAYMENT)
     setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
   }, [])

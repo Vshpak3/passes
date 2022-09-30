@@ -3,7 +3,7 @@ import {
   VerificationApi
 } from "@passes/api-client"
 import ms from "ms"
-import React, { FC, useCallback, useEffect } from "react"
+import React, { FC, useCallback, useEffect, useState } from "react"
 import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
@@ -18,6 +18,8 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   onFinishPersonaVerification,
   showPersonaModal
 }) => {
+  const [loadedPersonaScript, setLoadedPersonaScript] = useState(false)
+
   const personaStatusHandler = useCallback(async () => {
     const api = new VerificationApi()
     const result = await api.refreshPersonaVerifications()
@@ -66,24 +68,19 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (showPersonaModal && typeof Persona !== "undefined") {
+    if (showPersonaModal && loadedPersonaScript) {
       personaStatusHandler()
     }
+  }, [showPersonaModal, personaStatusHandler, loadedPersonaScript])
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPersonaModal, personaStatusHandler, typeof Persona])
+  useEffect(() => {
+    const scriptEl = document.createElement("script")
+    scriptEl.src = "https://cdn.withpersona.com/dist/persona-v4.2.0.js"
+    document.body.append(scriptEl)
+    scriptEl.addEventListener("load", () => setLoadedPersonaScript(true))
+  }, [])
 
-  return (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: `<script src="https://cdn.withpersona.com/dist/persona-v4.2.0.js"></script>`
-      }}
-    ></div>
-  )
+  return null
 }
 
 export default React.memo(PersonaVerification)
