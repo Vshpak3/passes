@@ -168,7 +168,8 @@ const PassRenewal = ({ register }) => (
           <FormInput
             register={register}
             type="select"
-            selectOptions={["test", "test2"]}
+            selectOptions={[]}
+            disabled
             name="royalty"
             className="w-[150px] border-passes-dark-200 bg-transparent p-0 text-left text-[#ffff]/90"
             placeholder="1 month"
