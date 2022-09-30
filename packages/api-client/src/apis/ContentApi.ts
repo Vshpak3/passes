@@ -15,14 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreateContentRequestDto,
+  DeleteContentRequestDto,
   GetContentsResponseDto,
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateContentRequestDtoFromJSON,
     CreateContentRequestDtoToJSON,
+    DeleteContentRequestDtoFromJSON,
+    DeleteContentRequestDtoToJSON,
     GetContentsResponseDtoFromJSON,
     GetContentsResponseDtoToJSON,
     GetSignedUrlResponseDtoFromJSON,
@@ -33,6 +39,10 @@ import {
 
 export interface CreateContentRequest {
     createContentRequestDto: CreateContentRequestDto;
+}
+
+export interface DeleteContentRequest {
+    deleteContentRequestDto: DeleteContentRequestDto;
 }
 
 export interface GetVaultContentRequest {
@@ -87,6 +97,44 @@ export class ContentApi extends runtime.BaseAPI {
      */
     async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.createContentRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Delete content
+     */
+    async deleteContentRaw(requestParameters: DeleteContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.deleteContentRequestDto === null || requestParameters.deleteContentRequestDto === undefined) {
+            throw new runtime.RequiredError('deleteContentRequestDto','Required parameter requestParameters.deleteContentRequestDto was null or undefined when calling deleteContent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/content`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteContentRequestDtoToJSON(requestParameters.deleteContentRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete content
+     */
+    async deleteContent(requestParameters: DeleteContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.deleteContentRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

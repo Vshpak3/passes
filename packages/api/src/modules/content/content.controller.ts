@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -10,11 +11,13 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.metadata'
 import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
+import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentsResponseDto } from './dto/get-content.dto'
 import {
   GetVaultQueryRequestDto,
@@ -41,6 +44,26 @@ export class ContentController {
     await this.contentService.createContent(
       req.user.id,
       createContentRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Delete content',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'Content was deleted',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Delete()
+  async deleteContent(
+    @Req() req: RequestWithUser,
+    @Body() deleteContentRequestDto: DeleteContentRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.contentService.deleteContent(
+        req.user.id,
+        deleteContentRequestDto,
+      ),
     )
   }
 

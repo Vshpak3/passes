@@ -67,6 +67,7 @@ models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
 models/CreatorInfoDto.ts
+models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
 models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts

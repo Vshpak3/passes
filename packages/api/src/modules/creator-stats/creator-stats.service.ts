@@ -208,7 +208,6 @@ export class CreatorStatsService {
   async refreshCreatorsStats() {
     await this.dbWriter.transaction(async (trx) => {
       await trx<ContentEntity>(ContentEntity.table).update({
-        in_message: false,
         in_post: false,
       })
       await trx<ContentEntity>(ContentEntity.table)

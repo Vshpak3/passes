@@ -20,6 +20,7 @@ import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
+import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 import { ContentEntity } from './entities/content.entity'
@@ -58,6 +59,22 @@ export class ContentService {
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
+  }
+
+  async deleteContent(
+    userId: string,
+    deleteContentDto: DeleteContentRequestDto,
+  ): Promise<boolean> {
+    const { contentId } = deleteContentDto
+    const deleted = await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .where({
+        id: contentId,
+        user_id: userId,
+        in_message: false,
+        in_post: false,
+      })
+      .delete()
+    return deleted === 1
   }
 
   async findContent(id: string): Promise<GetContentResponseDto> {

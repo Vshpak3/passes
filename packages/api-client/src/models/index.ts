@@ -41,6 +41,7 @@ export * from './CreateUserRequestDto';
 export * from './CreateWalletRequestDto';
 export * from './CreatorEarningDto';
 export * from './CreatorInfoDto';
+export * from './DeleteContentRequestDto';
 export * from './DeleteExternalPassAddressRequestDto';
 export * from './EditListNameRequestDto';
 export * from './FanWallCommentDto';

@@ -35,7 +35,7 @@ export class PassEntity extends BaseEntity {
   @Property({ type: types.bigint })
   duration: number | null
 
-  @Property()
+  @Property({ default: false })
   freetrial: boolean
 
   @Property()

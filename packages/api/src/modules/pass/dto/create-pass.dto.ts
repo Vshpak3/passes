@@ -30,7 +30,7 @@ export class CreatePassRequestDto {
   duration?: number
 
   @DtoProperty({ type: 'boolean', optional: true })
-  freetrial: boolean
+  freetrial?: boolean
 
   @DtoProperty({ type: 'number', optional: true })
   messages?: number | null
