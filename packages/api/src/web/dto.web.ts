@@ -4,15 +4,17 @@ import { Expose, Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
-  IsCurrency,
   IsDateString,
   IsEnum,
   IsInt,
   IsOptional,
   IsString,
   IsUUID,
+  registerDecorator,
   ValidateIf,
   ValidateNested,
+  ValidationArguments,
+  ValidationOptions,
 } from 'class-validator'
 import _ from 'lodash'
 
@@ -21,6 +23,29 @@ function isEnum(e: any): boolean {
   return _.isEmpty(_.xor(Object.keys(e), Object.getOwnPropertyNames(e)))
 }
 
+export function IsCurrencyNumber(
+  property: string,
+  validationOptions?: ValidationOptions,
+) {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      name: 'isCurrencyNumber',
+      target: object.constructor,
+      propertyName: propertyName,
+      constraints: [property],
+      options: validationOptions,
+      validator: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        validate(value: any, _args: ValidationArguments) {
+          return (
+            typeof value === 'number' && value >= 0 && (value * 100) % 1 === 0
+          )
+        },
+      },
+    })
+  }
+}
 // If 'any' is provided there will be no validation
 type TypeOptions =
   | 'any'
@@ -38,7 +63,7 @@ type TypeOptions =
 
 const decoratorMap = {
   boolean: IsBoolean,
-  currency: IsCurrency,
+  currency: IsCurrencyNumber,
   date: IsDateString,
   number: IsInt,
   string: IsString,
