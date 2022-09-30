@@ -2,50 +2,66 @@ import { ProfileApi, UserApi } from "@passes/api-client"
 
 import { ContentService } from "../helpers"
 
-export async function updateProfile(values: Record<string, any>) {
-  const { profileImage, profileCoverImage, isAdult, displayName, ...rest } =
-    values
+export interface ProfileUpdate {
+  username?: string
+  displayName?: string
+  description?: string
+
+  profileImage?: File
+  profileBannerImage?: File
+
+  discordUsername?: string
+  facebookUsername?: string
+  instagramUsername?: string
+  tiktokUsername?: string
+  twitchUsername?: string
+  twitterUsername?: string
+  youtubeUsername?: string
+
+  isAdult?: boolean
+}
+
+export async function updateProfile(values: ProfileUpdate): Promise<void> {
+  const {
+    profileImage,
+    profileBannerImage,
+    username,
+    displayName,
+    isAdult,
+    ...rest
+  } = values
 
   const userApi = new UserApi()
-
-  if (isAdult) {
-    await userApi.makeAdult()
-  }
-
-  if (displayName) {
-    await userApi.setDisplayName({
-      updateDisplayNameRequestDto: { displayName }
-    })
-  }
-
   const contentService = new ContentService()
+  const profileApi = new ProfileApi()
 
-  const [profileImageUrl, profileCoverImageUrl] = await Promise.all([
-    profileImage?.length
-      ? contentService.uploadProfileImage(profileImage[0])
+  await Promise.all([
+    username
+      ? userApi.setUsername({
+          updateUsernameRequestDto: { username }
+        })
       : undefined,
-    profileCoverImage?.length
-      ? contentService.uploadProfileBanner(profileCoverImage[0])
+
+    displayName
+      ? await userApi.setDisplayName({
+          updateDisplayNameRequestDto: { displayName }
+        })
+      : undefined,
+
+    isAdult ? await userApi.makeAdult() : undefined,
+
+    profileImage ? contentService.uploadProfileImage(profileImage) : undefined,
+
+    profileBannerImage
+      ? contentService.uploadProfileBanner(profileBannerImage)
+      : undefined,
+
+    Object.values(rest).some((x) => x)
+      ? profileApi.createOrUpdateProfile({
+          createOrUpdateProfileRequestDto: {
+            ...rest
+          }
+        })
       : undefined
   ])
-
-  const newValues = { ...rest }
-
-  newValues.fullName = `${values.firstName} ${values.lastName}`
-
-  if (profileImageUrl) {
-    newValues.profileImageUrl = profileImageUrl
-  }
-  if (profileCoverImageUrl) {
-    newValues.profileCoverImageUrl = profileCoverImageUrl
-  }
-
-  const api = new ProfileApi()
-  await api.createOrUpdateProfile({
-    createOrUpdateProfileRequestDto: {
-      ...rest
-    }
-  })
-
-  return newValues
 }

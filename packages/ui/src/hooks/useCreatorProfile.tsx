@@ -1,15 +1,11 @@
-import {
-  FanWallApi,
-  FeedApi,
-  GetProfileResponseDto,
-  UserApi
-} from "@passes/api-client"
+import { FanWallApi, FeedApi, GetProfileResponseDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
 
 import { updateProfile } from "../helpers"
 import { isProd } from "../helpers/env"
+import { ProfileUpdate } from "../helpers/updateProfile"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
 
@@ -53,23 +49,13 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
       })
     })
 
-  const onSubmitEditProfile = async (values: Record<string, any>) => {
-    const newProfileValues = await updateProfile(values)
-    setProfile(newProfileValues as any)
+  const onSubmitEditProfile = async (values: ProfileUpdate) => {
+    await updateProfile(values)
+    setProfile(values as GetProfileResponseDto) // TODO fix this
     setEditProfile(false)
     if (values.username !== username) {
-      await updateUsername(values.username)
+      router.replace("/" + username, undefined, { shallow: true })
     }
-  }
-
-  const updateUsername = async (username: string) => {
-    const api = new UserApi()
-    await api.setUsername({
-      updateUsernameRequestDto: {
-        username
-      }
-    })
-    router.replace("/" + username, undefined, { shallow: true })
   }
 
   return {

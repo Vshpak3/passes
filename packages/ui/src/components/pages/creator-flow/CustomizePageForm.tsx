@@ -18,10 +18,11 @@ import { useUser } from "src/hooks"
 
 interface IFormData {
   displayName: string
-  bio: string
+  description: string
+
   profileImage: File[]
-  profileCoverImage: File[]
-  "free-dm-month-checkbox": boolean
+  profileBannerImage: File[]
+
   discordUsername: string
   facebookUsername: string
   instagramUsername: string
@@ -29,6 +30,8 @@ interface IFormData {
   twitchUsername: string
   twitterUsername: string
   youtubeUsername: string
+
+  isAdult: boolean
 }
 
 interface IConnectedAccounts {
@@ -71,24 +74,24 @@ const CustomizePageForm = ({
   })
 
   const profileImage = watch("profileImage")
-  const profileCoverImage = watch("profileCoverImage")
+  const profileBannerImage = watch("profileBannerImage")
 
   const saveProfileHandler = async () => {
     const {
       displayName,
-      bio: description,
-      "free-dm-month-checkbox": isAdult,
+      description,
       profileImage,
-      profileCoverImage,
+      profileBannerImage,
+      isAdult,
       ...socialAccounts
     } = getValues()
 
     await updateProfile({
-      profileImage,
-      profileCoverImage,
-      isAdult,
       displayName,
       description,
+      profileImage: profileImage[0],
+      profileBannerImage: profileBannerImage[0],
+      isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })
     onCustomizePageFinish()
@@ -108,18 +111,8 @@ const CustomizePageForm = ({
       >
         <div className="mb-6 flex flex-col items-center justify-center px-16 sm:px-32">
           <p className="mb-3 text-2xl">Tell us about your page</p>
-          <p className="flex text-center text-slate-400 sm:hidden">
-            Every creator gets their own page, and your page name is how moments
-            will know you and search for you. You can change it at any time.
-          </p>
           <p className="hidden text-slate-400 sm:flex">
-            Every creator gets their own page, and your page
-          </p>
-          <p className="hidden text-slate-400 sm:flex">
-            name is how moments will know you and search for
-          </p>
-          <p className="hidden text-slate-400 sm:flex">
-            you. You can change it at any time.
+            All of this info you can change at any time!
           </p>
         </div>
 
@@ -127,8 +120,8 @@ const CustomizePageForm = ({
           <FormImage
             setValue={setValue}
             register={register}
-            name="profileCoverImage"
-            imgData={profileCoverImage}
+            name="profileBannerImage"
+            imgData={profileBannerImage}
             cropWidth={1500}
             cropHeight={300}
             inputUI={
@@ -139,8 +132,8 @@ const CustomizePageForm = ({
                     alt=""
                     className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                     src={
-                      profileCoverImage?.length
-                        ? URL.createObjectURL(profileCoverImage[0])
+                      profileBannerImage?.length
+                        ? URL.createObjectURL(profileBannerImage[0])
                         : "/pages/profile/profile-cover-photo.png"
                     }
                   />
@@ -190,7 +183,7 @@ const CustomizePageForm = ({
             <div className="text-[#b3bee7] opacity-[0.6]">Bio*</div>
             <FormInput
               register={register}
-              name="bio"
+              name="description"
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
               placeholder="Tell us more about yourself"
               type="text"
@@ -314,7 +307,7 @@ const CustomizePageForm = ({
           <FormInput
             register={register}
             type="checkbox"
-            name="free-dm-month-checkbox"
+            name="isAdult"
             className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             labelClassName="text-[#b3bee7] opacity-[0.6]"
           />
