@@ -347,14 +347,18 @@ const Wallets = () => {
         <span className="block">Default For</span>
         <span className="block">Delete</span>
       </div>
-      <WalletsList
-        walletsList={walletsList}
-        deleteWalletHandler={deleteWalletHandler}
-        isCreator={!!user?.isCreator}
-        defaultPayoutWalletId={payoutWalletId}
-        miningSolanaWalletId={miningSolanaWalletId}
-        miningEthereumWalletId={miningEthereumWalletId}
-      />
+      {loading ? (
+        <span>Loading...</span>
+      ) : (
+        <WalletsList
+          walletsList={walletsList}
+          deleteWalletHandler={deleteWalletHandler}
+          isCreator={!!user?.isCreator}
+          defaultPayoutWalletId={payoutWalletId}
+          miningSolanaWalletId={miningSolanaWalletId}
+          miningEthereumWalletId={miningEthereumWalletId}
+        />
+      )}
     </div>
   )
 }

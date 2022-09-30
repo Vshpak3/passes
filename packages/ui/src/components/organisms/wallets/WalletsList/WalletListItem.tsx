@@ -114,6 +114,12 @@ const WalletListItem = ({
 
   const selectWalletHandler = (value: string) => setSelectedAddress(value)
 
+  const onDeleteHandler = () => {
+    if (!custodial) {
+      deleteWalletHandler(walletId)
+    }
+  }
+
   const onSubmitHandler = () => {
     const isPayoutChecked = getValues("payouts")
     const isSolanaMintingChecked = getValues("solanaMinting")
@@ -321,10 +327,7 @@ const WalletListItem = ({
             </div>
           )}
         </form>
-        <Button
-          onClick={() => deleteWalletHandler(walletId)}
-          variant="link-purple"
-        >
+        <Button onClick={onDeleteHandler} variant="link-purple">
           <span className="ml-[39px] mr-[29px]">Delete</span>
         </Button>
       </div>
