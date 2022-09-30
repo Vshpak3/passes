@@ -1,8 +1,8 @@
 import { MessagesApi } from "@passes/api-client"
+import ms from "ms"
 import { useMemo } from "react"
 
 import { usePagination } from "./usePagination"
-import ms from "ms"
 
 const useMessages = () => {
   const api = useMemo(() => new MessagesApi(), [])
