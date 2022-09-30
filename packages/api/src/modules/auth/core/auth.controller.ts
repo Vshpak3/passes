@@ -121,7 +121,9 @@ export class AuthController {
   async getCurrentUser(
     @Req() req: RequestWithUser,
   ): Promise<GetUserResponseDto> {
-    return (await this.userService.findOne(req.user.id)) as GetUserResponseDto
+    return (await this.userService.findOne({
+      id: req.user.id,
+    })) as GetUserResponseDto
   }
 
   /**
@@ -144,7 +146,9 @@ export class AuthController {
   ): Promise<AccessTokensResponseDto> {
     const tokens = await createTokens(
       res,
-      AuthRecord.fromUserDto(await this.userService.findOne(req.user.id)),
+      AuthRecord.fromUserDto(
+        await this.userService.findOne({ id: req.user.id }),
+      ),
       this.jwtAuthService,
       this.jwtRefreshService,
       this.s3contentService,

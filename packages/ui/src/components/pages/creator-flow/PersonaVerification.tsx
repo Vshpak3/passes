@@ -3,25 +3,23 @@ import {
   VerificationApi
 } from "@passes/api-client"
 import ms from "ms"
-import { Client as PersonaClient } from "persona"
-import { useCallback, useEffect } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
 const PERSONA_HANDLER_TIMEOUT = ms("10 seconds")
-
-const api = new VerificationApi()
 
 interface IPersonaVerification {
   onFinishPersonaVerification: () => void
   showPersonaModal: boolean
 }
 
-const PersonaVerification: React.FC<IPersonaVerification> = ({
+const PersonaVerification: FC<IPersonaVerification> = ({
   onFinishPersonaVerification,
   showPersonaModal
 }) => {
   const personaStatusHandler = useCallback(async () => {
+    const api = new VerificationApi()
     const result = await api.refreshPersonaVerifications()
     const { status } = result
 
@@ -29,7 +27,9 @@ const PersonaVerification: React.FC<IPersonaVerification> = ({
       const canSubmit = await api.canSubmitPersona()
 
       if (canSubmit) {
-        const client: PersonaClient = new PersonaClient({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const client = new Persona.Client({
           templateId: PERSONA_TEMPLATE_ID,
           environment: isProd ? "production" : "sandbox",
           onReady: () => client.open(),
@@ -66,7 +66,9 @@ const PersonaVerification: React.FC<IPersonaVerification> = ({
   }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    if (showPersonaModal) personaStatusHandler()
+    if (showPersonaModal) {
+      personaStatusHandler()
+    }
   }, [showPersonaModal, personaStatusHandler])
 
   return null

@@ -12,8 +12,8 @@ export const CREATOR_STEPS_TEXT = {
   },
   [CREATOR_STEPS.VERIFICATION]: {
     number: "02",
-    title: "Complete Verification",
-    subtitle: "Verifiy it is you"
+    title: "Identity Verification",
+    subtitle: "Verify your identity"
   },
   [CREATOR_STEPS.PAYMENT]: {
     number: "03",

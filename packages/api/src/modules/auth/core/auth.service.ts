@@ -229,16 +229,37 @@ export class AuthService {
       return this.getAuthRecordFromAuthOrUser(authRecord)
     }
 
+    // If we received an email from OAuth we mark it verified
+    const emailVerified = !!email
+
+    // Handles deduplicating users based on email
+    let user: UserDto | undefined = undefined
+    if (emailVerified) {
+      user = await this.userService.findOne({ email })
+      await this.dbReader<UserEntity>(UserEntity.table)
+        .where({ email })
+        .select('*')
+        .first()
+
+      if (!user) {
+        throw new InternalServerErrorException('Unexpected missing user')
+      }
+    }
+
     const id = v4()
     await this.dbWriter<AuthEntity>(AuthEntity.table).insert({
       id,
       oauth_provider: oauthProvider,
       oauth_id: oauthId,
       email,
-      // If we received an email from OAuth we mark it verified
-      is_email_verified: !!email,
+      is_email_verified: emailVerified,
+      user_id: user?.id,
     })
 
-    return new AuthRecord({ id: id, isEmailVerified: !!email })
+    if (user) {
+      return AuthRecord.fromUserDto(user)
+    } else {
+      return new AuthRecord({ id: id, isEmailVerified: emailVerified })
+    }
   }
 }

@@ -5797,7 +5797,6 @@ __metadata:
     next-themes: 0.2.0
     nprogress: 0.2.0
     openpgp: 5.0.1
-    persona: 4.6.0
     postcss: 8.4.16
     prettier: 2.7.1
     prettier-plugin-tailwindcss: 0.1.13
@@ -10391,13 +10390,6 @@ __metadata:
   version: 2.6.12
   resolution: "core-js@npm:2.6.12"
   checksum: 44fa9934a85f8c78d61e0c8b7b22436330471ffe59ec5076fe7f324d6e8cf7f824b14b1c81ca73608b13bdb0fef035bd820989bf059767ad6fa13123bb8bd016
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.0.0":
-  version: 3.25.3
-  resolution: "core-js@npm:3.25.3"
-  checksum: 26ca0a5e575e6da03dc30099f48bc00db50a1c0a3f81299165f111cb163869ae453de5e345f2cb7bc8be85a9adcee11fca94f0fbdbdf6d483c68e1c55a9efc5a
   languageName: node
   linkType: hard
 
@@ -18665,21 +18657,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"persona@npm:4.6.0":
-  version: 4.6.0
-  resolution: "persona@npm:4.6.0"
-  dependencies:
-    core-js: ^3.0.0
-    lodash: ^4.17.21
-    qs: ^6.7.0
-  peerDependencies:
-    react: ">= 16"
-    react-dom: ">= 16"
-    styled-components: ">= 4"
-  checksum: dce2b6926552fe77ea559fa965276654e0523b10cacdd13a210b6c6dcb8dc15deca15e6647b6d9665155cc0a572d361a5f6ca6d602fbddea34c2b307a1a98034
-  languageName: node
-  linkType: hard
-
 "pg-connection-string@npm:2.5.0":
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
@@ -19467,7 +19444,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.3, qs@npm:^6.5.1, qs@npm:^6.7.0":
+"qs@npm:^6.10.3, qs@npm:^6.5.1":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:

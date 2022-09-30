@@ -11,6 +11,13 @@ import {
   USER_USERNAME_LENGTH,
 } from '../constants/schema'
 
+export class UserIndexes {
+  id?: string = undefined
+  username?: string = undefined
+  email?: string = undefined
+  display_name?: string = undefined
+}
+
 @Entity({ tableName: 'users' }) // pural because it not a good idea to have a table named "user" in mysql
 export class UserEntity extends BaseEntity {
   @Property({ length: USER_EMAIL_LENGTH })

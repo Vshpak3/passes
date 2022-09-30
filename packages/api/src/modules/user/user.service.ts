@@ -39,7 +39,7 @@ import {
   SearchCreatorResponseDto,
 } from './dto/search-creator.dto'
 import { UserDto } from './dto/user.dto'
-import { UserEntity } from './entities/user.entity'
+import { UserEntity, UserIndexes } from './entities/user.entity'
 
 @Injectable()
 export class UserService {
@@ -99,29 +99,30 @@ export class UserService {
     return new UserDto(user)
   }
 
-  async findOne(id: string): Promise<UserDto> {
+  async findOne({
+    id,
+    username,
+    email,
+    display_name,
+  }: UserIndexes): Promise<UserDto> {
+    const whereClause = {
+      ...(id && { id }),
+      ...(username && { username }),
+      ...(email && { email }),
+      ...(display_name && { display_name }),
+    }
+
     const user = await this.dbReader<UserEntity>(UserEntity.table)
-      .where({ id })
+      .where(whereClause)
       .select('*')
       .first()
+
     if (!user) {
       throw new NotFoundException('User does not exist')
     }
 
     // For some reason knex converts this to a Date but is typed as a string...
     user.birthday = new Date(user.birthday).toISOString().split('T')[0]
-
-    return new UserDto(user)
-  }
-
-  async findOneByUsername(username: string): Promise<UserDto> {
-    const user = await this.dbReader<UserEntity>(UserEntity.table)
-      .where({ username })
-      .select('*')
-      .first()
-    if (!user) {
-      throw new NotFoundException('User does not exist')
-    }
 
     return new UserDto(user)
   }
@@ -173,7 +174,7 @@ export class UserService {
 
   async isUsernameTaken(username: string): Promise<boolean> {
     try {
-      await this.findOneByUsername(username)
+      await this.findOne({ username })
       return true
     } catch (err) {
       return false
