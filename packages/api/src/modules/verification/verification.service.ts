@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { differenceInYears } from 'date-fns'
+import { Response } from 'express'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -16,6 +17,10 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createTokens } from '../../util/auth.util'
+import { AuthRecord } from '../auth/core/auth-record'
+import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
+import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
 import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { ProfileEntity } from '../profile/entities/profile.entity'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -58,6 +63,8 @@ export class VerificationService {
 
     private readonly userService: UserService,
     private readonly s3ContentService: S3ContentService,
+    private readonly jwtAuthService: JwtAuthService,
+    private readonly jwtRefreshService: JwtRefreshService,
   ) {
     this.personaConnector = new PersonaConnector(this.configService)
   }
@@ -235,9 +242,26 @@ export class VerificationService {
     }
   }
 
+  private async createAccessToken(res: Response, userId: string) {
+    const tokens = await createTokens(
+      res,
+      new AuthRecord({
+        id: userId,
+        isVerified: true,
+        isEmailVerified: true,
+        isCreator: true,
+      }),
+      this.jwtAuthService,
+      this.jwtRefreshService,
+      this.s3ContentService,
+    )
+    return tokens.accessToken
+  }
+
   async submitCreatorVerificationStep(
     userId: string,
     submitCreatorVerificationStepRequestDto: SubmitCreatorVerificationStepRequestDto,
+    res: Response,
   ): Promise<GetCreatorVerificationStepResponseDto> {
     await this.checkUserAgeForCreator(userId)
 
@@ -313,7 +337,10 @@ export class VerificationService {
         )
           .where({ id: creatorVerification.id })
           .update({ step: CreatorVerificationStepEnum.STEP_4_DONE })
-        return { step: CreatorVerificationStepEnum.STEP_4_DONE }
+        return {
+          step: CreatorVerificationStepEnum.STEP_4_DONE,
+          accessToken: await this.createAccessToken(res, userId),
+        }
 
       case CreatorVerificationStepEnum.STEP_4_DONE:
         await this.dbWriter<CreatorVerificationEntity>(
@@ -324,7 +351,10 @@ export class VerificationService {
         if (!user.is_creator) {
           await this.userService.makeCreator(userId)
         }
-        return { step: CreatorVerificationStepEnum.STEP_4_DONE }
+        return {
+          step: CreatorVerificationStepEnum.STEP_4_DONE,
+          accessToken: await this.createAccessToken(res, userId),
+        }
 
       default:
         throw new VerificationError('invalid verification step')

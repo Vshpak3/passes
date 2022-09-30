@@ -25,6 +25,12 @@ export interface GetCreatorVerificationStepResponseDto {
      * @memberof GetCreatorVerificationStepResponseDto
      */
     step: GetCreatorVerificationStepResponseDtoStepEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetCreatorVerificationStepResponseDto
+     */
+    accessToken?: string;
 }
 
 
@@ -61,6 +67,7 @@ export function GetCreatorVerificationStepResponseDtoFromJSONTyped(json: any, ig
     return {
         
         'step': json['step'],
+        'accessToken': !exists(json, 'accessToken') ? undefined : json['accessToken'],
     };
 }
 
@@ -74,6 +81,7 @@ export function GetCreatorVerificationStepResponseDtoToJSON(value?: GetCreatorVe
     return {
         
         'step': value.step,
+        'accessToken': value.accessToken,
     };
 }
 

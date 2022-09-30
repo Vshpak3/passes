@@ -1,5 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { Response } from 'express'
 
 import { RequestWithUser } from '../../types/request'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
@@ -80,10 +89,12 @@ export class VerificationController {
     @Req() req: RequestWithUser,
     @Body()
     submitCreatorVerificationStepRequestDto: SubmitCreatorVerificationStepRequestDto,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<GetCreatorVerificationStepResponseDto> {
     return await this.verificationService.submitCreatorVerificationStep(
       req.user.id,
       submitCreatorVerificationStepRequestDto,
+      res,
     )
   }
 
