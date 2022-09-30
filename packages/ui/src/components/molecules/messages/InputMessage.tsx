@@ -43,7 +43,7 @@ export const InputMessage = ({ channelId }: Props) => {
   }
 
   const submitOnEnter = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.which === 13 && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault()
       handleSubmit(submitMessage)()
     }

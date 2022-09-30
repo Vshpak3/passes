@@ -9,6 +9,8 @@ interface Props {
   message?: MessageDto
 }
 export const ChannelMessage = ({ message, isOwnMessage = false }: Props) => {
+  const messageContent = message ? message.contents : []
+
   return (
     <div
       className={classNames(
@@ -17,19 +19,14 @@ export const ChannelMessage = ({ message, isOwnMessage = false }: Props) => {
       )}
     >
       {!isOwnMessage && (
-        <div className="flex w-[35%] items-end">
+        <div className="flex items-end">
           <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
         </div>
       )}
       <div className="mx-4 flex flex-col items-end">
         <div className="rounded border border-[#363037] bg-[#1E1820] py-3 px-4">
-          <span>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Perspiciatis nulla itaque nesciunt nemo amet beatae aliquid
-            incidunt, eligendi consectetur tempore voluptatem dolorem!
-            Voluptatum quibusdam nesciunt non aperiam nemo nam aliquid.
-          </span>
-          <Content />
+          <span>{message?.text}</span>
+          {messageContent.length > 0 && <Content />}
         </div>
         {isOwnMessage && message?.pending && (
           <span className="text-md mt-2 text-gray-500">Pending...</span>

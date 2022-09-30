@@ -1,8 +1,9 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ms from "ms"
 import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
+import { useUser } from "src/hooks"
 
-import { TippedMessage } from "../direct-messages/completed-tipped-message"
+// import { TippedMessage } from "../direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "../direct-messages/free-messages-left-container"
 import { ChannelMessage } from "./index"
 
@@ -19,6 +20,7 @@ export const ChannelStream = ({
   freeMessages,
   isCreator
 }: ChannelStreamProps) => {
+  const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
@@ -158,21 +160,17 @@ export const ChannelStream = ({
       {messages.length ? (
         <>
           {!isCreator && (
-            <div className="sticky top-0 w-full">
+            <div className="sticky top-0 z-10 w-full">
               <FreeMessagesLeftContainer freeMessages={freeMessages} />
             </div>
           )}
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <ChannelMessage />
-          <ChannelMessage />
-          <ChannelMessage isOwnMessage />
-          <TippedMessage isOwnMessage tipAmount={5} />
+          {messages.map((message) => (
+            <ChannelMessage
+              message={message}
+              key={message.messageId}
+              isOwnMessage={message.senderId === user?.id}
+            />
+          ))}
         </>
       ) : (
         <div className="flex flex-1 items-center justify-center">

@@ -5,7 +5,7 @@ interface Props {
 }
 export const FreeMessagesLeftContainer = ({ freeMessages }: Props) => {
   return (
-    <div className="flex items-center justify-between gap-[10px] border-b border-[#FFFF]/10 bg-[#5f2c2f]/50 py-[10px] px-4 backdrop-blur-[25px] ">
+    <div className="flex items-center justify-between gap-[10px] border-b border-[#FFFF]/10 bg-[#5f2c2f]/50 py-[10px] px-4 backdrop-blur-[25px]">
       <div className="flex items-center gap-1">
         <span className="text-sm font-medium text-[#FBFBFB]">You have</span>
         <span className="text-base font-medium text-[#C943A8] ">
