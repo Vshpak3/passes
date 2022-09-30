@@ -265,18 +265,23 @@ export class VerificationService {
   ): Promise<GetCreatorVerificationStepResponseDto> {
     await this.checkUserAgeForCreator(userId)
 
+    const askStep = submitCreatorVerificationStepRequestDto.step
+
     const creatorVerification = await this.dbReader(
       CreatorVerificationEntity.table,
     )
-      .where({
-        user_id: userId,
-        step: submitCreatorVerificationStepRequestDto.step,
-      })
-      .select('id')
+      .where({ user_id: userId })
+      .select('id', 'step')
       .first()
-    if (!creatorVerification) {
+
+    if (
+      creatorVerification?.step !== askStep &&
+      // This condition allows for the user to skip step 3
+      creatorVerification?.step !== CreatorVerificationStepEnum.STEP_3_PAYOUT &&
+      askStep !== CreatorVerificationStepEnum.STEP_4_DONE
+    ) {
       throw new IncorrectVerificationStepError(
-        `user ${userId} is not on step ${submitCreatorVerificationStepRequestDto.step}`,
+        `user ${userId} is on step ${creatorVerification?.step} not on step ${askStep}`,
       )
     }
 
@@ -292,7 +297,7 @@ export class VerificationService {
       .select('*')
       .first()
 
-    switch (submitCreatorVerificationStepRequestDto.step) {
+    switch (askStep) {
       case CreatorVerificationStepEnum.STEP_1_PROFILE:
         if (
           !profile ||

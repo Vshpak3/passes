@@ -17,11 +17,11 @@ export interface SignInSchema {
 }
 
 const creatorFlowProfileSchema = object({
-  displayName: string().required("Please enter your name"),
-  description: string().required("Please enter bio")
-  // profileImage: array()
-  //   .min(1, "at least 1")
-  //   .required("Please upload a profile picture")
+  displayName: string().required("Please enter a display name"),
+  description: string().required("Please enter a description")
+  // TODO: add validation
+  // profileImage
+  // profileBannerImage
 })
 
 const changePasswordSchema = object({

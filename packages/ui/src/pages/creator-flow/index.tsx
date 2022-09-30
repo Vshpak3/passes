@@ -21,7 +21,7 @@ import { useUser } from "../../hooks"
 const api = new VerificationApi()
 
 const CreatorFlow = () => {
-  const { user } = useUser()
+  const { user, setAccessToken } = useUser()
   const router = useRouter()
 
   const [stepsDone, setStepsDone] = useState<string[]>([])
@@ -62,12 +62,17 @@ const CreatorFlow = () => {
   }, [])
 
   const onFinishPaymentForm = async (isSubmitedBankDetails = false) => {
-    if (isSubmitedBankDetails) {
-      await api.submitCreatorVerificationStep({
-        submitCreatorVerificationStepRequestDto: {
-          step: GetCreatorVerificationStepResponseDtoStepEnum._3Payout
-        }
-      })
+    const step = isSubmitedBankDetails
+      ? GetCreatorVerificationStepResponseDtoStepEnum._3Payout
+      : GetCreatorVerificationStepResponseDtoStepEnum._4Done
+    const { accessToken } = await api.submitCreatorVerificationStep({
+      submitCreatorVerificationStepRequestDto: { step }
+    })
+
+    if (accessToken) {
+      setAccessToken(accessToken)
+    } else {
+      console.error("Unexpected missing access token")
     }
 
     finishFormHandler()
@@ -203,11 +208,6 @@ const CreatorFlow = () => {
             )}
           </>
         )}
-        {/* {selectedStep === CREATOR_STEPS.PAYMENT &&
-          <PaymentForm
-            onFinishPaymentForm={onFinishPaymentForm}
-          />
-        } */}
       </div>
 
       {Number(width || 0) > 640 && (
