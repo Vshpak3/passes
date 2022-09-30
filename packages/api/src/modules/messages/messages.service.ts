@@ -252,7 +252,7 @@ export class MessagesService {
               tip,
             )
             if (lastId) {
-              subQuery = subQuery.andwhere(function () {
+              subQuery = subQuery.andWhere(function () {
                 return this.where(
                   `${ChannelMemberEntity.table}.unread_tip`,
                   strictOrderToSymbol[order],
