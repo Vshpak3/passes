@@ -31,7 +31,11 @@ export function authStateToRoute(state: AuthStates) {
     case AuthStates.VERIFY:
       return "/signup/info"
     case AuthStates.AUTHED:
-      return "/home"
+      if (isProd) {
+        return "/soon"
+      } else {
+        return "/home"
+      }
   }
 }
 
