@@ -1,7 +1,6 @@
 import { GetProfileResponseDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
-import { toast } from "react-toastify"
 import PassTypes from "src/components/pages/profile/passes/PassTypes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"

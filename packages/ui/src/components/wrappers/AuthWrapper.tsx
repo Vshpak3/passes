@@ -13,7 +13,7 @@ interface AuthWrapperProps {
   // isPage will handle redirecting user to /login if not logged in;
   // otherwise will conditionally render children
   isPage?: boolean
-  skipAuth: boolean
+  skipAuth?: boolean
 }
 
 const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
