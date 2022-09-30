@@ -15,7 +15,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { orderToSymbol } from '../../util/dto/page.dto'
+import { orderToSymbol, strictOrderToSymbol } from '../../util/dto/page.dto'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
@@ -219,6 +219,7 @@ export class MessagesService {
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
+        `${ChannelEntity.table}.recent`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
@@ -244,11 +245,27 @@ export class MessagesService {
           { column: `${ChannelMemberEntity.table}.id`, order },
         ])
         if (tip) {
-          query = query.andWhere(
-            `${ChannelMemberEntity.table}.unread_tip`,
-            orderToSymbol[order],
-            tip,
-          )
+          query = query.andWhere(function () {
+            let subQuery = this.where(
+              `${ChannelMemberEntity.table}.unread_tip`,
+              orderToSymbol[order],
+              tip,
+            )
+            if (lastId) {
+              subQuery = subQuery.andwhere(function () {
+                return this.where(
+                  `${ChannelMemberEntity.table}.unread_tip`,
+                  strictOrderToSymbol[order],
+                  tip,
+                ).orWhere(
+                  `${ChannelMemberEntity.table}.id`,
+                  strictOrderToSymbol[order],
+                  lastId,
+                )
+              })
+            }
+            return subQuery
+          })
         }
         break
     }

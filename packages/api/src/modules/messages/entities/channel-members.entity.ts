@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property, Unique } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
@@ -24,6 +24,7 @@ export class ChannelMemberEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   tip_received: number
 
+  @Index()
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   unread_tip: number
 

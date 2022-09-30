@@ -31,6 +31,11 @@ export const orderToSymbol = {
   asc: '>=',
 }
 
+export const strictOrderToSymbol = {
+  desc: '<',
+  asc: '>',
+}
+
 export class PageResponseDto {
   @DtoProperty({ type: 'uuid' })
   lastId: string
