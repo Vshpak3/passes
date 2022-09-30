@@ -45,11 +45,11 @@ interface IConnectedAccounts {
 }
 
 type CustomizePageFormProps = {
-  onFinishCustomizePage?: () => void
+  onCustomizePageFinish?: () => void
 }
 
 const CustomizePageForm = ({
-  onFinishCustomizePage = identity
+  onCustomizePageFinish = identity
 }: CustomizePageFormProps) => {
   const [connectedAccounts] = useState<IConnectedAccounts>({
     discord: false,
@@ -94,14 +94,15 @@ const CustomizePageForm = ({
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })
-    onFinishCustomizePage()
+    onCustomizePageFinish()
   }
 
   useEffect(() => {
+    console.log(errors)
     if (user?.displayName) {
       setValue("displayName", user.displayName)
     }
-  }, [user?.displayName, setValue])
+  }, [user?.displayName, setValue, errors])
 
   return (
     <div className="flex justify-center pb-20 text-white">
