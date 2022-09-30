@@ -14,6 +14,7 @@ import {
   Transaction,
 } from '@solana/web3.js'
 import base58 from 'bs58'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -43,7 +44,6 @@ import {
   getNftImageUri,
   getNftMetadataUri,
 } from './sol.helper'
-import ms from 'ms'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
