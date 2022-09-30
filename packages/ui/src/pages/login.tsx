@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import NextLink from "next/link"
@@ -11,12 +12,27 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
+import { object, SchemaOf, string } from "yup"
 
 import { RoundedIconButton } from "../components/atoms/Button"
 import { CssGridTiles } from "../components/molecules"
 import { authRouter } from "../helpers/authRouter"
 import { setTokens } from "../helpers/setTokens"
 import { JWTUserClaims } from "../hooks/useUser"
+
+export interface LoginPageSchema {
+  email: string
+  password: string
+}
+
+const loginPageSchema: SchemaOf<LoginPageSchema> = object({
+  email: string()
+    .required("Enter an email address")
+    .email("Email address is invalid"),
+  password: string()
+    .required("Enter a password")
+    .min(8, "Password should be at least 8 characters")
+})
 
 const LoginPage = () => {
   const router = useRouter()
@@ -26,7 +42,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm()
+  } = useForm({ resolver: yupResolver(loginPageSchema) })
 
   useEffect(() => {
     if (!router.isReady) {
@@ -110,18 +126,10 @@ const LoginPage = () => {
                 placeholder="Enter your email"
                 type="text"
                 errors={errors}
-                options={{
-                  required: true,
-                  pattern: {
-                    value:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/,
-                    message: "Invalid email address"
-                  }
-                }}
               />
               {errors.email && (
                 <Text fontSize={12} className="mt-1 text-[red]">
-                  {/* {errors.email.message} TODO aaronabf */}
+                  {errors.email.message?.toString()}
                 </Text>
               )}
             </div>
@@ -137,17 +145,10 @@ const LoginPage = () => {
                 placeholder="Enter your password"
                 type="password"
                 errors={errors}
-                options={{
-                  required: true,
-                  minLength: {
-                    value: 8,
-                    message: "Minimum eight characters"
-                  }
-                }}
               />
               {errors.password && (
                 <Text fontSize={12} className="mt-1 text-[red]">
-                  {/* {errors.password.message} TODO aaronabf */}
+                  {errors.password.message?.toString()}
                 </Text>
               )}
             </div>
@@ -175,7 +176,7 @@ const LoginPage = () => {
               <EnterIcon />
             </button>
             <div className="text-center text-red-500">
-              {/* {errors.submitError && errors.submitError.message} TODO aaronabf */}
+              {errors.submitError && errors.submitError.message?.toString()}
             </div>
           </form>
 

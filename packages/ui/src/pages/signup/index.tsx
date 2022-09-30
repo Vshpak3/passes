@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, AuthLocalApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import NextLink from "next/link"
@@ -9,8 +10,10 @@ import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
+import { object, SchemaOf, string } from "yup"
 
 import { RoundedIconButton } from "../../components/atoms/Button"
 import { CssGridTiles } from "../../components/molecules"
@@ -18,6 +21,35 @@ import { authRouter } from "../../helpers/authRouter"
 import { isDev } from "../../helpers/env"
 import { setTokens } from "../../helpers/setTokens"
 import { JWTUserClaims } from "../../hooks/useUser"
+
+export interface SignupPageSchema {
+  email: string
+  password: string
+  confirmPassword: string
+}
+
+const signupPageSchema: SchemaOf<SignupPageSchema> = object({
+  email: string()
+    .required("Enter an email address")
+    .email("Email address is invalid"),
+  password: string()
+    .required("Enter a password")
+    .min(8, "Password should be at least 8 characters")
+    .matches(
+      /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
+      "Password must contain at least one letter and number"
+    ),
+  confirmPassword: string()
+    .required("Enter a password")
+    .min(8, "Password should be at least 8 characters")
+    .matches(
+      /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
+      "Password must contain at least one letter and number"
+    )
+    .test("match", "Passwords do not match", function (confirmPassword) {
+      return confirmPassword === this?.parent?.password
+    })
+})
 
 const SignupPage = () => {
   const router = useRouter()
@@ -29,9 +61,10 @@ const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
-  } = useForm()
+  } = useForm<SignupPageSchema>({
+    resolver: yupResolver(signupPageSchema)
+  })
 
   useEffect(() => {
     if (!router.isReady || hasLoaded) {
@@ -56,7 +89,8 @@ const SignupPage = () => {
       })
       const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
-        alert("ERROR: Received no access token")
+        toast("Something went wrong, please try again later")
+        console.error("Failed to set tokens after signup")
       }
 
       // In local development we auto-verify the email
@@ -77,13 +111,14 @@ const SignupPage = () => {
         new URLSearchParams([["hasEmail", "true"]])
       )
     } catch (err) {
-      alert(err)
+      toast("Something went wrong, please try again later")
+      console.error("Error on signup", err)
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = (data: SignupPageSchema) => {
     onUserRegister(data.email, data.password)
   }
 
@@ -132,18 +167,10 @@ const SignupPage = () => {
                 placeholder="Enter your email"
                 type="text"
                 errors={errors}
-                options={{
-                  required: true,
-                  pattern: {
-                    value:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/,
-                    message: "Invalid email address"
-                  }
-                }}
               />
               {errors.email && (
                 <Text fontSize={12} className="mt-1 text-[red]">
-                  {/* {errors.email.message} TODO aaronabf */}
+                  {errors.email.message?.toString()}
                 </Text>
               )}
             </div>
@@ -159,21 +186,10 @@ const SignupPage = () => {
                 placeholder="Enter your password"
                 type="password"
                 errors={errors}
-                options={{
-                  required: true,
-                  minLength: {
-                    value: 8,
-                    message: "Minimum eight characters"
-                  },
-                  pattern: {
-                    value: /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
-                    message: "Must include at least one letter and one number "
-                  }
-                }}
               />
               {errors.password && (
                 <Text fontSize={12} className="mt-1 text-[red]">
-                  {/* {errors.password.message} TODO aaronabf */}
+                  {errors.password.message?.toString()}
                 </Text>
               )}
             </div>
@@ -189,26 +205,10 @@ const SignupPage = () => {
                 placeholder="Confirm your password"
                 type="password"
                 errors={errors}
-                options={{
-                  required: true,
-                  validate: (val: string) => {
-                    if (watch("password") != val) {
-                      return "Your passwords do not match"
-                    }
-                  },
-                  minLength: {
-                    value: 8,
-                    message: "Minimum eight characters"
-                  },
-                  pattern: {
-                    value: /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
-                    message: "Must include at least one letter and one number"
-                  }
-                }}
               />
               {errors.confirmPassword && (
                 <Text fontSize={12} className="mt-1 text-[red]">
-                  {/* {errors.confirmPassword.message} TODO aaronabf */}
+                  {errors.confirmPassword.message?.toString()}
                 </Text>
               )}
             </div>
