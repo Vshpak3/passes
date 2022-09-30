@@ -7,6 +7,7 @@ import { AppProps } from "next/app"
 import Router from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
+import { useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
@@ -37,6 +38,9 @@ const swrConfig: SWRConfiguration = {
   revalidateOnReconnect: false
 }
 
+// Try to refresh the auth token every this many milliseconds
+const CHECK_FOR_AUTH_REFRESH = 300000 // 5 minutes
+
 // Only show nprogress after 500ms (slow loading)
 const LOADING_DEBOUNCE_TIME = 500
 const start = debounce(nprogress.start, LOADING_DEBOUNCE_TIME)
@@ -53,10 +57,25 @@ Router.events.on("routeChangeError", () => {
 
 // Refresh access token on page load
 Router.events.on("routeChangeStart", async () => {
-  await refreshAccessToken()
+  if (await refreshAccessToken()) {
+    console.log("Refresh token was refreshed")
+  }
 })
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (await refreshAccessToken()) {
+        console.log("Refresh token was refreshed")
+      }
+      setRefresh(refresh + 1)
+    }, CHECK_FOR_AUTH_REFRESH)
+
+    return () => clearInterval(interval)
+  }, [refresh])
+
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"

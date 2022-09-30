@@ -11,7 +11,7 @@ import { JwtAuthPayload } from './jwt.payload'
 export class JwtAuthGuard extends AuthGuard(JWT_AUTH_NAME) {
   constructor(private reflector: Reflector) {
     super()
-  }g
+  }
 
   canActivate(context: ExecutionContext) {
     const role = this.reflector.get<RoleEnum>(ROLE_KEY, context.getHandler())
@@ -20,16 +20,16 @@ export class JwtAuthGuard extends AuthGuard(JWT_AUTH_NAME) {
     // immediately. This isn't the cleanest solution since it involves decoding
     // the JWT twice, but the docs are terrible and I couldn't figure out a
     // better method.
-    // if (role === RoleEnum.CREATOR_ONLY) {
-    //   const request = context.switchToHttp().getRequest()
-    //   if (!request.headers.authorization) {
-    //     return false
-    //   }
-    //   const jwt = jwtDecode<JwtAuthPayload>(request.headers.authorization)
-    //   if (!jwt.isCreator) {
-    //     return false
-    //   }
-    // }
+    if (role === RoleEnum.CREATOR_ONLY) {
+      const request = context.switchToHttp().getRequest()
+      if (!request.headers.authorization) {
+        return false
+      }
+      const jwt = jwtDecode<JwtAuthPayload>(request.headers.authorization)
+      if (!jwt.isCreator) {
+        return false
+      }
+    }
 
     return (
       role === RoleEnum.NO_AUTH ||
