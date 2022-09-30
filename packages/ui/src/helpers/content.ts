@@ -20,6 +20,10 @@ class ContentService {
   }
 
   static profileThumbnail(userId: string): string {
+    if (isDev) {
+      // In dev there is no lambda to generate the thumbnail so use the profile image itself
+      return ContentService.profileImage(userId)
+    }
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-thumbnail.jpeg`
   }
 
