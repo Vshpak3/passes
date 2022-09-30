@@ -4,9 +4,12 @@ import React from "react"
 import { Button } from "src/components/atoms"
 import {
   MyPassTile,
-  SelectPassFilter
+  SelectPassFilter,
+  SelectPassTab
 } from "src/components/atoms/passes/MyPass"
 import { CreatorPassTiles } from "src/components/organisms"
+
+import { classNames } from "../../../helpers"
 
 const MyPassSearchBar = ({ onChange, passSearchTerm }) => (
   <div className="ml-auto">
@@ -54,12 +57,18 @@ const MyPassGrid = ({
   modalToggle = null,
   onEditPassHandler = {},
   handleCreateNewPass = {},
-  isCreator = false
+  isCreator = false,
+  lifetimePasses = []
 }) => {
+  const SUBSCRIPTION_TYPE = "subscription"
   const renderActivePasses = activePasses?.map((pass, index) => (
     <MyPassTile key={index} passData={pass} />
   ))
   const renderExpiredPasses = expiredPasses?.map((pass, index) => (
+    <MyPassTile key={index} isExpired passData={pass} />
+  ))
+
+  const renderLifetimePasses = lifetimePasses?.map((pass, index) => (
     <MyPassTile key={index} isExpired passData={pass} />
   ))
   const renderCreatorPasses = creatorPasses?.map((pass, index) => (
@@ -75,14 +84,27 @@ const MyPassGrid = ({
   return (
     <div className="w-full px-2 md:mt-6">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
-        <div className="flex w-full items-center">
-          <span className="min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
-            {isCreator ? "Created Passes" : "Active Subscriptions"}
-          </span>
-          <SelectPassFilter setPassType={setPassType} passType={passType} />
+        <div
+          className={classNames(
+            isCreator ? "flex w-full items-center" : "w-fit"
+          )}
+        >
+          {isCreator ? (
+            <>
+              <span className="min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
+                Created Passes
+              </span>
+              <SelectPassFilter setPassType={setPassType} passType={passType} />
+            </>
+          ) : (
+            <SelectPassTab setPassType={setPassType} passType={passType} />
+          )}
           {isCreator && (
             <div className="ml-[76px] mr-[34px] h-[1px] w-full border border-[#2C282D]" />
           )}
+          <span className="mt-[24px] block min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
+            {passType === SUBSCRIPTION_TYPE && "Active subscriptions"}
+          </span>
         </div>
         {isCreator && (
           <div className="flex items-center justify-between">
@@ -100,14 +122,20 @@ const MyPassGrid = ({
         <MyPassGridContainer>{renderCreatorPasses}</MyPassGridContainer>
       ) : (
         <>
-          <MyPassGridContainer>{renderActivePasses}</MyPassGridContainer>
-          <div className="mt-10 ml-1 mb-2 flex md:ml-0">
-            <span className="text-[24px] font-bold text-[#ffff]/90">
-              Expired Subscriptions
-            </span>
-            <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
-          </div>
-          <MyPassGridContainer>{renderExpiredPasses}</MyPassGridContainer>
+          {passType === SUBSCRIPTION_TYPE ? (
+            <>
+              <MyPassGridContainer>{renderActivePasses}</MyPassGridContainer>
+              <div className="mt-10 ml-1 mb-2 flex md:ml-0">
+                <span className="text-[24px] font-bold text-[#ffff]/90">
+                  Expired Subscriptions
+                </span>
+                <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
+              </div>
+              <MyPassGridContainer>{renderExpiredPasses}</MyPassGridContainer>
+            </>
+          ) : (
+            <MyPassGridContainer>{renderLifetimePasses}</MyPassGridContainer>
+          )}
         </>
       )}
     </div>

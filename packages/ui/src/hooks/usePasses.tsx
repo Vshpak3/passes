@@ -72,6 +72,7 @@ const usePasses = (creatorId = "") => {
     })
 
   const [filteredActive, setFilteredActive] = useState(creatorPasses)
+  const [lifetimePasses, setLifetimePasses] = useState(creatorPasses)
   const [filteredExpired, setFilteredExpired] = useState(creatorPasses)
   const [filteredCreatorPassesList, setFilteredCreatorPassesList] =
     useState(creatorPasses)
@@ -99,12 +100,17 @@ const usePasses = (creatorId = "") => {
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredCreatorPassesList(filteredCreatorPasses)
+    const filteredLifetimePasses = creatorPasses
+      .filter(filterPassesByTitle(passSearchTerm))
+      .filter(filterPassesByType(passType))
+    setLifetimePasses(filteredLifetimePasses)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [passType, passSearchTerm])
 
   return {
     passType,
     filteredActive,
+    lifetimePasses,
     filteredCreatorPassesList,
     creatorPasses,
     externalPasses,

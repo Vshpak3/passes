@@ -16,7 +16,8 @@ const Passes = () => {
     filteredExpired,
     onSearchPass,
     setPassType,
-    passType
+    passType,
+    lifetimePasses
   } = usePasses(user?.id)
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const Passes = () => {
         expiredPasses={filteredExpired}
         setPassType={setPassType}
         passType={passType}
+        lifetimePasses={lifetimePasses}
       />
     </div>
   )

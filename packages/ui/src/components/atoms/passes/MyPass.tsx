@@ -56,6 +56,17 @@ const PASS_OPTIONS = [
     label: "Subscription Passes"
   }
 ]
+
+const TAB_OPTIONS = [
+  {
+    value: PassTypeEnum.SUBSCRIPTION,
+    label: "Subscription Passes"
+  },
+  {
+    value: PassTypeEnum.LIFETIME,
+    label: "Lifetime Passes"
+  }
+]
 const ONE_MONTH = 2629746 * 1000
 
 const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
@@ -164,6 +175,55 @@ const SelectPassFilter = ({ setPassType, passType }: ISelectPassFilter) => {
         </div>
       )}
     </div>
+  )
+}
+
+const SelectPassTab = ({ setPassType, passType }: ISelectPassFilter) => {
+  const [selectedValue, setSelectedValue] = useState<TComposePassOptions>(
+    TAB_OPTIONS[0]
+  )
+
+  useEffect(() => {
+    const [label] = TAB_OPTIONS.filter(({ value }) => value === passType)
+    setSelectedValue(label)
+  }, [passType])
+
+  useEffect(() => {
+    setPassType(TAB_OPTIONS[0].value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    selectedValue && (
+      <div
+        className="
+          z-[1]
+          mt-[10px]
+          box-border
+          flex
+          w-fit
+          first:bg-gray-100"
+      >
+        {TAB_OPTIONS.map(({ value, label }) => (
+          <div
+            className={classNames(
+              selectedValue.label === label
+                ? "" + "border-b-[3px] border-[#9C4DC1] px-[10px] text-white"
+                : "px-[10px] text-grayDark-gray8",
+              "block cursor-pointer justify-between pt-[10px] text-[16px] font-bold first:mr-[58px]"
+            )}
+            key={value}
+          >
+            <div
+              onClick={() => setPassType(value)}
+              className="flex w-full items-center pb-[10px]"
+            >
+              {label}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
   )
 }
 
@@ -323,4 +383,4 @@ const MyPassTile = ({
   )
 }
 
-export { MyPassTile, SelectPassFilter }
+export { MyPassTile, SelectPassFilter, SelectPassTab }
