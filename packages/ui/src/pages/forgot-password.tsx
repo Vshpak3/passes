@@ -1,4 +1,5 @@
 import { AuthLocalApi } from "@passes/api-client"
+import ms from "ms"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
@@ -54,7 +55,7 @@ const ForgotPassword = () => {
 
       // In local development we auto-verify the email
       if (isDev) {
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // sleep for a second
+        await new Promise((resolve) => setTimeout(resolve, ms("1 second"))) // sleep for a second
         router.push(
           "/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
         )

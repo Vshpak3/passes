@@ -1,11 +1,12 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
+import ms from "ms"
 import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
 
 import { TippedMessage } from "../direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "../direct-messages/free-messages-left-container"
 import { ChannelMessage } from "./index"
 
-const FETCH_NEW_MESSAGES_RATE = 3000 // 3 seconds
+const FETCH_NEW_MESSAGES_RATE = ms("3 seconds")
 
 export interface ChannelStreamProps {
   channelId?: string

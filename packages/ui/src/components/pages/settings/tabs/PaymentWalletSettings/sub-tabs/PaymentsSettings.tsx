@@ -7,6 +7,7 @@ import {
   PaymentApi,
   PayoutMethodDto
 } from "@passes/api-client"
+import ms from "ms"
 import { useRouter } from "next/router"
 import AmexCardIcon from "public/icons/amex-icon.svg"
 import CalendarIcon from "public/icons/calendar-blank-outline.svg"
@@ -29,7 +30,8 @@ import ChevronDown from "src/icons/chevron-down"
 
 import Tab from "../../../Tab"
 
-export const PAGE_SIZE = 7
+const ONE_DAY = ms("1 day")
+const PAGE_SIZE = 7
 
 const PaymentSettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
@@ -120,7 +122,7 @@ const PaymentSettings = () => {
   })
 
   const getPrevDate = (days: number) => {
-    return new Date(new Date().valueOf() - days * 1000 * 60 * 60 * 24)
+    return new Date(new Date().valueOf() - days * ONE_DAY)
   }
 
   const displayCardIcon = (cardDigit: string) => {

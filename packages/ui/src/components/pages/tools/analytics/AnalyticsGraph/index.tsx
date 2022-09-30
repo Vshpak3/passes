@@ -17,6 +17,7 @@ import {
   Tooltip
 } from "chart.js"
 import { uniqueId } from "lodash"
+import ms from "ms"
 import React from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
@@ -33,6 +34,8 @@ ChartJS.register(
   Tooltip,
   Legend
 )
+
+const ONE_DAY = ms("1 day")
 
 interface IEarningsGraph {
   userBalance?: number
@@ -74,7 +77,7 @@ const EarningsGraph: React.FC<IEarningsGraph> = ({
     // Take the difference between the dates and divide by milliseconds per day.
     // Round to nearest whole number to deal with DST.
     // add One to include endDate
-    return Math.round((second - first) / (1000 * 60 * 60 * 24)) + 1
+    return Math.round((second - first) / ONE_DAY) + 1
   }
 
   return (

@@ -1,5 +1,8 @@
+import ms from "ms"
 import React from "react"
 import { classNames } from "src/helpers"
+
+const ONE_DAY = ms("1 day")
 
 interface IFilterMenuProps {
   className?: string
@@ -7,7 +10,7 @@ interface IFilterMenuProps {
 }
 
 const getPrevDate = (days: number) => {
-  return new Date(new Date().valueOf() - days * 1000 * 60 * 60 * 24)
+  return new Date(new Date().valueOf() - days * ONE_DAY)
 }
 
 const FilterMenu: React.FC<IFilterMenuProps> = ({

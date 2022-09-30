@@ -2,11 +2,13 @@ import {
   GetPersonaStatusResponseDtoStatusEnum,
   VerificationApi
 } from "@passes/api-client"
+import ms from "ms"
+import { Client as PersonaClient } from "persona"
 import { useCallback, useEffect } from "react"
 import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
-const PERSONA_HANDLER_TIMEOUT = 10000
+const PERSONA_HANDLER_TIMEOUT = ms("10 seconds")
 
 const api = new VerificationApi()
 
@@ -27,9 +29,7 @@ const PersonaVerification: React.FC<IPersonaVerification> = ({
       const canSubmit = await api.canSubmitPersona()
 
       if (canSubmit) {
-        // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
-        // @ts-ignore: Unreachable code error
-        const client = new Persona.Client({
+        const client: PersonaClient = new PersonaClient({
           templateId: PERSONA_TEMPLATE_ID,
           environment: isProd ? "production" : "sandbox",
           onReady: () => client.open(),

@@ -20,6 +20,8 @@ import ConditionRendering from "../../../components/molecules/ConditionRendering
 
 const listApi = new ListApi()
 
+const DEBOUNCE_TIMEOUT = 500
+
 const FanLists: NextPage = () => {
   const [lists, setLists] = useState<Array<ListDto>>([])
   const [resets, setResets] = useState(0)
@@ -80,7 +82,10 @@ const FanLists: NextPage = () => {
     lists
   ])
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceChangeInputSearch = useCallback(debounce(fetchList, 1000), [])
+  const debounceChangeInputSearch = useCallback(
+    debounce(fetchList, DEBOUNCE_TIMEOUT),
+    []
+  )
 
   useEffect(() => {
     fetchList()

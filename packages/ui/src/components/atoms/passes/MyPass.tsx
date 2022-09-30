@@ -1,4 +1,5 @@
 import { PassApi, PassDto, PassHolderDto } from "@passes/api-client"
+import ms from "ms"
 import EditIcon from "public/icons/edit-pass.svg"
 import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
@@ -67,7 +68,8 @@ const TAB_OPTIONS = [
     label: "Lifetime Passes"
   }
 ]
-const ONE_MONTH = 2629746 * 1000
+
+const ONE_MONTH = ms("30 days")
 
 const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
   <button

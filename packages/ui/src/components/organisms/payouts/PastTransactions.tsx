@@ -2,6 +2,7 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
 import { PaymentApi, PayoutDto } from "@passes/api-client"
+import ms from "ms"
 import CalendarIcon from "public/icons/calendar-blank-outline.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -12,6 +13,7 @@ import { useOnClickOutside } from "src/hooks"
 import ChevronDown from "../../../icons/chevron-down"
 
 const PAGE_SIZE = 7
+const ONE_DAY = ms("1 day")
 
 const PastTransactions = () => {
   const [payouts, setPayouts] = useState<PayoutDto[]>([])
@@ -56,7 +58,7 @@ const PastTransactions = () => {
   })
 
   const getPrevDate = (days: number) => {
-    return new Date(new Date().valueOf() - days * 1000 * 60 * 60 * 24)
+    return new Date(new Date().valueOf() - days * ONE_DAY)
   }
 
   if (!payouts) return null

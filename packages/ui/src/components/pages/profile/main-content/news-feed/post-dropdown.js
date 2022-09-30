@@ -1,8 +1,11 @@
 import { Menu, Transition } from "@headlessui/react"
 import copy from "copy-to-clipboard"
+import ms from "ms"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
 import { Fragment } from "react"
 import { toast } from "react-toastify"
+
+const AUTO_CLOSE = ms("3 seconds")
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -17,7 +20,7 @@ export const PostDropdown = ({ post, items = [] }) => {
 
     toast("Link to post has been copied to clipboard!", {
       position: "bottom-left",
-      autoClose: 3000,
+      autoClose: AUTO_CLOSE,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
