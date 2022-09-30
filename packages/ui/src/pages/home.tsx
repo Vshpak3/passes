@@ -1,12 +1,13 @@
 import { PostDto } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import CreatorContentFeed from "src/components/pages/profile/main-content/news-feed/creator-content-feed"
-import { useFeed } from "src/hooks"
+import { useFeed, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Home = () => {
   const { isLoadingPosts, feed } = useFeed()
+  const { mutate } = useUser()
 
   const collatedFeed = useMemo(() => {
     const ans: PostDto[] = []
@@ -21,6 +22,10 @@ const Home = () => {
 
     return ans
   }, [feed])
+
+  useEffect(() => {
+    mutate()
+  }, [mutate])
 
   return (
     <>

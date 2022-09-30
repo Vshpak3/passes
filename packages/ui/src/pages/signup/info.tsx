@@ -36,12 +36,7 @@ export type UserInfoFormValues = {
 
 const UserInfoPage = () => {
   const router = useRouter()
-  const {
-    userClaims,
-    setAccessToken,
-    setRefreshToken,
-    mutate: refreshUser
-  } = useUser()
+  const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -106,8 +101,6 @@ const UserInfoPage = () => {
             message: "ERROR: Received no access token"
           })
         }
-
-        refreshUser()
 
         router.push(authStateToRoute(AuthStates.AUTHED))
       }
