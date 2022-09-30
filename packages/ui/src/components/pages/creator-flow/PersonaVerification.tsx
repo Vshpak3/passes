@@ -3,7 +3,7 @@ import {
   VerificationApi
 } from "@passes/api-client"
 import ms from "ms"
-import { FC, useCallback, useEffect } from "react"
+import React, { FC, useCallback, useEffect } from "react"
 import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
@@ -66,12 +66,23 @@ const PersonaVerification: FC<IPersonaVerification> = ({
   }, [onFinishPersonaVerification])
 
   useEffect(() => {
-    if (showPersonaModal) {
+    // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Unreachable code error
+    if (showPersonaModal && typeof Persona !== "undefined")
       personaStatusHandler()
-    }
-  }, [showPersonaModal, personaStatusHandler])
 
-  return null
+    // eslint-disable-next-line no-undef, @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Unreachable code error
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPersonaModal, personaStatusHandler, typeof Persona])
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: `<script src="https://cdn.withpersona.com/dist/persona-v4.2.0.js"></script>`
+      }}
+    ></div>
+  )
 }
 
-export default PersonaVerification
+export default React.memo(PersonaVerification)

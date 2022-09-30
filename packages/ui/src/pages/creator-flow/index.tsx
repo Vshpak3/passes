@@ -6,16 +6,22 @@ import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
 import CheckIcon from "public/icons/check.svg"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
-import { MouseEventHandler, useEffect, useState } from "react"
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react"
 import WelcomeToPasses from "src/components/organisms/creator-flow/WelcomePasses"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
+import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
 import { CREATOR_STEPS, CREATOR_STEPS_TEXT } from "src/configurations/constants"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
-import { MIN_CREATOR_AGE_IN_YEARS } from "../../components/organisms/sidebar/SidebarDefault"
 import { useUser } from "../../hooks"
 
 type BulletItemProps = {
@@ -112,29 +118,6 @@ const CreatorFlow = () => {
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false)
   const { width } = useWindowSize()
 
-  useEffect(() => {
-    const stepHandler = async () => {
-      const result = await api.getCreatorVerificationStep()
-      const step = result.step
-
-      if (step === GetCreatorVerificationStepResponseDtoStepEnum._2Kyc) {
-        setStepsDone([CREATOR_STEPS.CUSTOMIZE])
-        setSelectedStep(CREATOR_STEPS.VERIFICATION)
-      }
-
-      if (step === GetCreatorVerificationStepResponseDtoStepEnum._3Payout) {
-        setStepsDone([CREATOR_STEPS.CUSTOMIZE, CREATOR_STEPS.VERIFICATION])
-        setSelectedStep(CREATOR_STEPS.PAYMENT)
-      }
-
-      if (step === GetCreatorVerificationStepResponseDtoStepEnum._4Done) {
-        finishFormHandler()
-      }
-    }
-
-    stepHandler()
-  }, [])
-
   const onCustomizePageFinish = async () => {
     // Show modal
     setIsVerificationDialogOpen(true)
@@ -152,7 +135,7 @@ const CreatorFlow = () => {
     }
   }
 
-  const onFinishPersonaVerification = async () => {
+  const onFinishPersonaVerification = useCallback(async () => {
     await api.submitCreatorVerificationStep({
       submitCreatorVerificationStepRequestDto: {
         step: GetCreatorVerificationStepResponseDtoStepEnum._2Kyc
@@ -160,7 +143,7 @@ const CreatorFlow = () => {
     })
     setSelectedStep(CREATOR_STEPS.PAYMENT)
     setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
-  }
+  }, [])
 
   const onPaymentFormPageFinish = async () => {
     await api.submitCreatorVerificationStep({
@@ -177,18 +160,43 @@ const CreatorFlow = () => {
     setSelectedStep(CREATOR_STEPS.PAYMENT)
   }
 
-  const isOver18 = user?.birthday
-    ? differenceInYears(new Date(), new Date(user?.birthday)) >=
-      MIN_CREATOR_AGE_IN_YEARS
-    : false
+  useLayoutEffect(() => {
+    if (user) {
+      const userAge = user.birthday
+        ? differenceInYears(new Date(), new Date(user.birthday))
+        : 0
 
-  if (!isOver18) {
-    if (typeof window === "undefined") {
-      return null
+      const authorizeUser = userAge >= MIN_CREATOR_AGE_IN_YEARS
+
+      if (!authorizeUser && typeof window !== "undefined") {
+        router.push("/home")
+      }
+    }
+  }, [user, router])
+
+  useEffect(() => {
+    const stepHandler = async () => {
+      const result = await api.getCreatorVerificationStep()
+      const step = result.step
+
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._2Kyc) {
+        setStepsDone([CREATOR_STEPS.CUSTOMIZE])
+        setIsVerificationDialogOpen(true)
+        setSelectedStep(CREATOR_STEPS.VERIFICATION)
+      }
+
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._3Payout) {
+        setStepsDone([CREATOR_STEPS.CUSTOMIZE, CREATOR_STEPS.VERIFICATION])
+        setSelectedStep(CREATOR_STEPS.PAYMENT)
+      }
+
+      if (step === GetCreatorVerificationStepResponseDtoStepEnum._4Done) {
+        finishFormHandler()
+      }
     }
 
-    router.push("/home")
-  }
+    stepHandler()
+  }, [])
 
   return (
     <div className="relative flex min-h-screen flex-1 bg-black">
@@ -256,11 +264,6 @@ const CreatorFlow = () => {
           </>
         )}
 
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `<script src="https://cdn.withpersona.com/dist/persona-v4.2.0.js"></script>`
-          }}
-        ></div>
         <PersonaVerification
           showPersonaModal={selectedStep === CREATOR_STEPS.VERIFICATION}
           onFinishPersonaVerification={onFinishPersonaVerification}

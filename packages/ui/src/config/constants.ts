@@ -1,0 +1,1 @@
+export const MIN_CREATOR_AGE_IN_YEARS = 18

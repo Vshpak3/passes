@@ -1,12 +1,11 @@
 import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import { SidebarComponents as SB } from "src/components/molecules"
+import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
 
 import AuthWrapper from "../../../wrappers/AuthWrapper"
 import ConditionalWrap from "../../../wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
-
-export const MIN_CREATOR_AGE_IN_YEARS = 18
 
 const NewPostButton = dynamic(() =>
   import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton")
