@@ -355,7 +355,6 @@ export class VerificationService {
           step: CreatorVerificationStepEnum.STEP_4_DONE,
           accessToken: await this.createAccessToken(res, userId),
         }
-
       default:
         throw new VerificationError('invalid verification step')
     }
