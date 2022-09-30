@@ -32,9 +32,7 @@ export function authStateToRoute(state: AuthStates) {
     case AuthStates.VERIFY:
       return "/signup/info"
     case AuthStates.AUTHED:
-      console.log(isProd)
-      // eslint-disable-next-line sonarjs/no-gratuitous-expressions, no-constant-condition
-      if (true) {
+      if (isProd) {
         return "/soon"
       } else {
         return "/home"
