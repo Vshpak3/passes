@@ -29,16 +29,18 @@ import ChevronDown from "src/icons/chevron-down"
 
 import Tab from "../../../Tab"
 
+export const PAGE_SIZE = 7
+
 const PaymentSettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   const [payins, setPayins] = useState<PayinDto[]>([])
-  const [count, setCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
   const [banks, setBanks] = useState<CircleBankDto[]>([])
   const [defaultPayout, setDefaultPayout] = useState<PayoutMethodDto>()
-  const [offset, setOffset] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [showFilterDropDown, setShowFilterDropDown] = useState(false)
   const [dateRange, setDateRange] = useState({
-    startDate: new Date("2020-01-01"),
+    startDate: new Date("2022-01-01"),
     endDate: new Date(),
     key: "selection"
   })
@@ -87,11 +89,14 @@ const PaymentSettings = () => {
   const fetchPayouts = useCallback(async () => {
     const api = new PaymentApi()
     const data = await api.getPayins({
-      getPayinsRequestDto: { offset: offset, limit: 7 }
+      getPayinsRequestDto: { offset: currentPage * PAGE_SIZE, limit: PAGE_SIZE }
     })
+
     setPayins(data.payins)
-    setCount(data.count)
-  }, [offset])
+
+    // Show 1 (empty) page if no data, instead of Page 0 of 0
+    setTotalPages(data.count > 0 ? Math.ceil(data.count / PAGE_SIZE) : 1)
+  }, [currentPage])
 
   useEffect(() => {
     fetchPayouts()
@@ -370,18 +375,20 @@ const PaymentSettings = () => {
           ))}
         </div>
         <div className="flex w-full flex-row justify-between px-10">
-          <span className="text-[14px] font-[500] text-[#646464]">{`Page ${offset} of ${count}`}</span>
+          <span className="text-[14px] font-[500] text-[#646464]">{`Page ${
+            currentPage + 1
+          } of ${totalPages}`}</span>
           <div className="flex gap-4">
             <button
-              disabled={offset === 0}
-              onClick={() => setOffset(offset - 1)}
+              disabled={currentPage === 0}
+              onClick={() => setCurrentPage(currentPage - 1)}
               className="rounded-[6px] bg-[#322F33] py-[9px] px-[17px] hover:opacity-50"
             >
               Previous
             </button>
             <button
-              disabled={offset === count}
-              onClick={() => setOffset(offset + 1)}
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
               className="rounded-[6px] bg-[#322F33] py-[9px] px-[17px] hover:opacity-50"
             >
               Next

@@ -143,7 +143,7 @@ const Settings = () => {
   return (
     <>
       <Header />
-      <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
+      <div className="mx-auto flex h-full w-full max-w-[1235px] flex-1">
         <div className="min-w-[330px] max-w-[380px] border-r border-passes-dark-200 pt-6 pl-11">
           <div className="pr-[35px]">
             <h2 className="text-label-lg">Settings</h2>
