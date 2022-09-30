@@ -1,10 +1,10 @@
 import { useEffect } from "react"
 
-import { isDev, isStaging } from "../helpers/env"
+import { isDev, isStage } from "../helpers/env"
 
 const useMessageToDevelopers = (messages: string[]) => {
   useEffect(() => {
-    if (isDev || isStaging) {
+    if (isDev || isStage) {
       return
     }
 

@@ -42,6 +42,10 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     // DISABLE ALL AUTHED PAGES IN PROD
     if (isProd) {
       setAuthed(false)
+      if (isPage) {
+        authRouter(router, userClaims)
+      }
+      return
     }
 
     const _authed = authStateMachine(userClaims) === AuthStates.AUTHED
