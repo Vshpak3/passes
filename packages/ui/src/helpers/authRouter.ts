@@ -32,7 +32,7 @@ export function authStateToRoute(state: AuthStates) {
     case AuthStates.VERIFY:
       return "/signup/info"
     case AuthStates.AUTHED:
-      if (isPrgod) {
+      if (isProd) {
         return "/soon"
       } else {
         return "/home"
