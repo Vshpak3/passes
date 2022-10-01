@@ -30,7 +30,7 @@ const PersonaVerification: FC<IPersonaVerification> = ({
 
       if (canSubmit) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        //@ts-ignore
         const client = new Persona.Client({
           templateId: PERSONA_TEMPLATE_ID,
           environment: isProd ? "production" : "sandbox",

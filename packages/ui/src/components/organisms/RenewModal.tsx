@@ -36,7 +36,7 @@ const RenewModal = ({
       defaultPayinMethod.method ===
         GetPayinMethodResponseDtoMethodEnum.CircleCard
     ) {
-      getCardInfo(defaultPayinMethod.cardId).catch(({ message }) => {
+      getCardInfo(defaultPayinMethod.cardId).catch(({ message }: any) => {
         console.error(message)
         toast.error(message)
       })

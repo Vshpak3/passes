@@ -32,7 +32,7 @@ const ManageCard = () => {
   } = usePayment()
 
   const filteredDefaultPayment = cards.find(
-    (card) => card.id === defaultPayin?.cardId
+    (card: any) => card.id === defaultPayin?.cardId
   )
 
   const { user, loading } = useUser()
@@ -82,7 +82,7 @@ const ManageCard = () => {
       withBack
     >
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {cards.map((item) => (
+        {cards.map((item: any) => (
           <div
             key={item.id}
             className="m-2 flex h-[227px] w-[248px] flex-col justify-between gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4"

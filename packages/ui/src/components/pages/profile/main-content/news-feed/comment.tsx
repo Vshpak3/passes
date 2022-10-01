@@ -8,7 +8,6 @@ interface Props {
   }
   profile: {
     userId: string
-    profileImageUrl: string
     fullName: string
   }
   dropdownItems: Array<{

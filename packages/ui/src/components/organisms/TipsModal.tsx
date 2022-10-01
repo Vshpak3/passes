@@ -3,22 +3,16 @@ import { Dispatch, SetStateAction, useState } from "react"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
 import { FormInput } from "../atoms"
-import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
 import { TipPostButton } from "../payment/tip-post"
 import Modal from "./Modal"
 
 interface IQuickPayModal {
-  isOpen: PaymentModalInfo | null
-  setOpen: Dispatch<SetStateAction<PaymentModalInfo | null>>
+  isOpen: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
   postId: string
 }
 
-const TipsModal = ({
-  isOpen = null,
-  setOpen,
-  postId
-}: // passData
-IQuickPayModal) => {
+const TipsModal = ({ isOpen, setOpen, postId }: IQuickPayModal) => {
   const router = useRouter()
   const [amount, setAmount] = useState("")
   const [errors, setErrors] = useState({})
@@ -48,7 +42,7 @@ IQuickPayModal) => {
   }
 
   return (
-    <Modal isOpen={Boolean(isOpen)} setOpen={setOpen}>
+    <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         {}
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
@@ -106,7 +100,7 @@ IQuickPayModal) => {
           amount={parseInt(amount)}
           onCompleted={() => {
             setAmount("0")
-            setOpen(null)
+            setOpen(false)
           }}
         />
       </div>

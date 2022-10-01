@@ -150,8 +150,8 @@ const Settings = () => {
           </div>
           <ul className="mt-6 -mr-px">
             {tabs
-              .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
-              .map(({ name, id }) => (
+              .filter(({ creatorOnly }: any) => user?.isCreator || !creatorOnly)
+              .map(({ name, id }: any) => (
                 <li
                   key={id}
                   className={classNames(

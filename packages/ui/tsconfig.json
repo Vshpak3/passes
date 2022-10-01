@@ -16,6 +16,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
+      "src/*": ["./src/*"],
       "@passes/api-client/*": ["../api-client/src/*"],
       "@passes/api-client": ["../api-client/src/index"]
     }

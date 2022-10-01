@@ -9,7 +9,6 @@ on:
       - production
 
 jobs:
-
   # UI (frontend)
 
   ui-lint:
@@ -28,7 +27,6 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
-      - run: yarn workspace @passes/ui ts:check
 
   ui-test:
     name: Test @passes/ui package
@@ -43,6 +41,7 @@ jobs:
           node-version: 16
           cache: yarn
       - run: yarn install --frozen-lockfile
+      - run: yarn workspace @passes/ui ts:check
       - run: yarn workspace @passes/ui build
 
   # API (backend)

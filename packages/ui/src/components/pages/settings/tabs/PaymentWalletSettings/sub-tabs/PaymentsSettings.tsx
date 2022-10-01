@@ -50,7 +50,7 @@ const PaymentSettings = () => {
   const { cards, defaultPayinMethod: defaultPayin } = usePayment()
 
   const filteredDefaultPayment = cards.find(
-    (card) => card.id === defaultPayin?.cardId
+    (card: any) => card.id === defaultPayin?.cardId
   )
 
   const { user, loading } = useUser()

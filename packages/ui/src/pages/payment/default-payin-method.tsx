@@ -69,7 +69,7 @@ const DefaultPayinMethod = () => {
         <div className="col-span-12 mt-2 w-full">
           <span className="text-[#ffff]/70">Payment Methods</span>
           {/* wip */}
-          {cards.map((card) => {
+          {cards.map((card: any) => {
             return (
               <div key="card" className="flex">
                 <span>
@@ -78,7 +78,7 @@ const DefaultPayinMethod = () => {
                 <span>
                   Circle card account{" "}
                   {/* this might need to be placed in BE
-                  as a new field called "type" or something */}
+                as a new field called "type" or something */}
                 </span>
                 <PassesPinkButton
                   name="Set as default"
@@ -166,7 +166,7 @@ const DefaultPayinMethod = () => {
             ETH on Metamask
           </button>
           <br />
-          {cards?.map((card, i) => {
+          {cards?.map((card: any, i: any) => {
             return (
               <div key={i}>
                 <button
@@ -198,8 +198,8 @@ const DefaultPayinMethod = () => {
           })}
         </div>
         {/* <div onClick={() => toast.success("rewognerg")}>
-          <span className="text-white">gekjwbnfkjwbedfkj</span>
-        </div> */}
+        <span className="text-white">gekjwbnfkjwbedfkj</span>
+      </div> */}
       </div>
       {/* pass in payment method to the modal to the button */}
       <CreditCardModal

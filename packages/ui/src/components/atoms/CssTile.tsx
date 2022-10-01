@@ -1,7 +1,7 @@
 import React from "react"
 
 type CssTileProps = {
-  fill: boolean
+  fill?: boolean
 }
 
 const CssTile = ({ fill }: CssTileProps) => {

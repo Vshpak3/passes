@@ -68,9 +68,8 @@ const Wallets = () => {
         alert("Metamask is not installed!")
         return
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      await window.ethereum.send("eth_requestAccounts")
+
+      await (window.ethereum as any).send("eth_requestAccounts")
 
       const { ethers } = await import("ethers").then((mod) => mod.default)
 

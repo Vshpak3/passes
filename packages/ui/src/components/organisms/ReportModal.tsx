@@ -1,6 +1,6 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 import { Button, Text } from "src/components/atoms"
 
@@ -9,7 +9,7 @@ import Modal from "./Modal"
 interface ReportModalProps {
   isOpen: boolean
   userId: string
-  setOpen: (params: boolean) => boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const ReportModal = ({ isOpen = false, setOpen, userId }: ReportModalProps) => {

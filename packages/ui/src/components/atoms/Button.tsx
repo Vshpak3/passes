@@ -131,9 +131,7 @@ export const Button = ({
       tabIndex={tag === "a" ? 0 : undefined}
       data-focus-ring=""
       disabled={disabled}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      type={type}
+      // type={type}
       {...restOfProps}
     >
       <Text

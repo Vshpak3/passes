@@ -44,16 +44,12 @@ const ChatSettings = () => {
     if (!values.isWithoutTip) {
       data.minimumTipAmount = +values.minimumTipAmount
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       data.minimumTipAmount = null
     }
 
     if (values.showWelcomeMessageInput) {
       data.welcomeMessage = values.welcomeMessage
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       data.welcomeMessage = null
     }
 

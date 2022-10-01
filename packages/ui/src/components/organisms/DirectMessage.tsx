@@ -134,7 +134,7 @@ const DirectMessage = ({
     const messagesApi = new MessagesApi()
     const listIds = selectedLists.map((s) => s.listId)
     const content = await new ContentService().uploadContent(files)
-    const uploadedContentIds = content.map((c) => c.id)
+    const uploadedContentIds = content.map((c: any) => c.id)
     const values = getValues()
     const _contentIds = mergeContentIds(uploadedContentIds)
 
