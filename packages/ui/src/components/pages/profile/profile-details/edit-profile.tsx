@@ -138,7 +138,7 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
                   src={
                     profileCoverImage?.length
                       ? URL.createObjectURL(profileCoverImage[0])
-                      : "/pages/profile/profile-cover-photo.png"
+                      : "/img/default-banner-img.png"
                   }
                 />
               </div>
@@ -161,7 +161,7 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
                 src={
                   profileImage?.length
                     ? URL.createObjectURL(profileImage[0])
-                    : "/pages/profile/profile-photo.jpeg"
+                    : "/img/default-profile-img.png"
                 }
               />
             </div>

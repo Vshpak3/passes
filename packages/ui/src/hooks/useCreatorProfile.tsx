@@ -34,9 +34,6 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
 
   const onEditProfile = () => setEditProfile(true)
 
-  // Disable test profile on production
-  const isTestProfile: boolean = username === "test" && !isProd
-
   const { user: { username: loggedInUsername } = {} } = useUser()
 
   const ownsProfile = loggedInUsername === username
@@ -62,7 +59,6 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     creatorPasses,
     editProfile,
     isLoadingPosts,
-    isTestProfile,
     onEditProfile,
     onSubmitEditProfile,
     ownsProfile,
