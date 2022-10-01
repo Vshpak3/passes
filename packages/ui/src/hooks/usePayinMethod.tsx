@@ -2,7 +2,6 @@ import {
   CircleCardDto,
   GetCircleCardResponseDto,
   PayinMethodDto,
-  PayinMethodDtoChainEnum,
   PaymentApi
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
@@ -49,10 +48,8 @@ const usePayinMethod = () => {
       await api.setDefaultPayinMethod({
         setPayinMethodRequestDto: dto
       })
-      if (dto.chain) {
-        dto.chain = dto.chain.toUpperCase() as PayinMethodDtoChainEnum
-      }
-      setPayinMethod(dto)
+
+      await getDefaultPayinMethod()
     } catch (error: any) {
       console.error(error)
       toast.error(error)
