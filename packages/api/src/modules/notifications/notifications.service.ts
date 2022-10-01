@@ -1,4 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { EventEmitter } from 'events'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { fromEvent } from 'rxjs'
@@ -138,11 +142,13 @@ export class NotificationsService {
     )
       .where({ user_id: userId })
       .first()
+
     if (!settings) {
-      throw new NotFoundException(
-        'Notification settings does not exist for user',
+      throw new InternalServerErrorException(
+        `Unexpected missing notification settings for user: ${userId}`,
       )
     }
+
     return new NotificationSettingsDto(settings)
   }
 

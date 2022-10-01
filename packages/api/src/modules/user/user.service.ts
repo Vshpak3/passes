@@ -3,7 +3,6 @@ import {
   ConflictException,
   Inject,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { differenceInYears } from 'date-fns'
@@ -118,7 +117,7 @@ export class UserService {
       .first()
 
     if (!user) {
-      throw new NotFoundException('User does not exist')
+      throw new BadRequestException('User does not exist')
     }
 
     // For some reason knex converts this to a Date but is typed as a string...

@@ -3,6 +3,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
@@ -102,7 +103,9 @@ export class PassService {
       .select(['id', 'username'])
       .first()
     if (!user) {
-      throw new NotFoundException('User does not exist')
+      throw new InternalServerErrorException(
+        `Unexpected missing user: ${userId}`,
+      )
     }
     // TODO: check image exists
 
@@ -148,7 +151,9 @@ export class PassService {
       .select(['id', 'username'])
       .first()
     if (!user) {
-      throw new NotFoundException('User does not exist')
+      throw new InternalServerErrorException(
+        `Unexpected missing user: ${userId}`,
+      )
     }
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .where({

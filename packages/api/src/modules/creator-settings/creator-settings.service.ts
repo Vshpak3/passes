@@ -1,4 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Logger } from 'winston'
 
@@ -34,7 +38,9 @@ export class CreatorSettingsService {
       .where({ user_id: userId })
       .first()
     if (!creatorSettings) {
-      throw new NotFoundException('CreatorSettings does not exist for user')
+      throw new InternalServerErrorException(
+        `Unexpected missing creator settings for user: ${userId}`,
+      )
     }
     return new CreatorSettingsDto(creatorSettings)
   }

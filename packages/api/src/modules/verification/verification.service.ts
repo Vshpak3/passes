@@ -2,7 +2,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { differenceInYears } from 'date-fns'
@@ -361,7 +361,9 @@ export class VerificationService {
       .first()
 
     if (!user) {
-      throw new NotFoundException('User does not exist')
+      throw new InternalServerErrorException(
+        `Unexpected missing user: ${userId}`,
+      )
     }
 
     const isTooYoung =
