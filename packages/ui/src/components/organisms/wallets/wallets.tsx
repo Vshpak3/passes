@@ -1,53 +1,20 @@
-import {
-  CreateWalletRequestDto,
-  GetWalletsResponseDto,
-  PaymentApi,
-  WalletApi
-} from "@passes/api-client"
+import { CreateWalletRequestDto, WalletApi } from "@passes/api-client"
+import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import Wallet from "public/icons/wallet-manage.svg"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, Input } from "src/components/atoms"
+import { Button, ButtonTypeEnum, Input, Select } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
-import { useUser } from "src/hooks"
+import { useUser, useUserDefaultMintingWallets } from "src/hooks"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
-import { KeyedMutator } from "swr"
 
-import WalletsList from "./WalletsList/WalletsList"
-
-interface Wallet {
-  walletId: string
-  address: string
-  chain: string
-  custodial: number
-  authenticated: number
-  userId?: string
-}
-
-interface ConnectedWallets {
-  wallets: GetWalletsResponseDto | WalletsResponse
-  loading: boolean
-  mutate: KeyedMutator<GetWalletsResponseDto>
-}
-
-interface WalletsResponse {
-  wallets: GetWalletsResponseDto | unknown[]
-}
-
-interface DefaultPayoutMiningAddress {
-  payoutWalletId?: string | null
-  miningSolanaWalletId?: string
-  miningEthereumWalletId?: string
-}
+import WalletListItem from "./WalletsList/WalletListItem"
 
 const Wallets = () => {
   const { user } = useUser()
-  const [walletsList, setWalletsList] = useState<Wallet[]>([])
-  const [defaultAddress, setDefaultAddress] =
-    useState<DefaultPayoutMiningAddress>({} as DefaultPayoutMiningAddress)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const {
     register,
@@ -56,10 +23,9 @@ const Wallets = () => {
     handleSubmit,
     formState: { errors }
   } = useForm()
-  const { miningSolanaWalletId, miningEthereumWalletId, payoutWalletId } =
-    defaultAddress
-  const { wallets, loading, mutate }: ConnectedWallets =
-    useUserConnectedWallets()
+  const { ethWallet, solWallet, setDefaultWallet } =
+    useUserDefaultMintingWallets()
+  const { wallets, mutate, loading } = useUserConnectedWallets()
 
   const handleOnETHWalletConnect = async () => {
     setIsModalOpen(false)
@@ -70,8 +36,6 @@ const Wallets = () => {
       }
 
       await (window.ethereum as any).send("eth_requestAccounts")
-
-      const { ethers } = await import("ethers").then((mod) => mod.default)
 
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
@@ -162,77 +126,31 @@ const Wallets = () => {
   }
 
   const confirmNewPayoutAddressOnSubmit = async () => {
-    const walletAddress = getValues("payoutAddress")
+    const walletAddress = getValues("address")
+    const chain = getValues("chain")
+    console.log(walletAddress)
+    console.log(chain)
     const api = new WalletApi()
     await api
       .createUnauthenticatedWallet({
         createUnauthenticatedWalletRequestDto: {
           walletAddress,
-          chain: "eth"
+          chain
         }
       })
       .catch(({ message }) => toast(message))
-    setValue("payoutAddress", "")
+    setValue("address", "")
     mutate().catch(({ message }) => toast(message))
   }
 
   const deleteWalletHandler = async (id: string) => {
     const api = new WalletApi()
-    setWalletsList((prevState) =>
-      prevState.filter(({ walletId }) => walletId !== id)
-    )
     return await api.removeWallet({ walletId: id }).catch(({ message }) => {
       console.error(message)
       toast.error(message)
     })
+    mutate()
   }
-
-  useEffect(() => {
-    setWalletsList(wallets.wallets as Wallet[])
-  }, [wallets, loading])
-
-  useEffect(() => {
-    const walletApi = new WalletApi()
-    const payoutApi = new PaymentApi()
-
-    payoutApi
-      .getDefaultPayoutMethod()
-      .then(({ walletId }) => {
-        return setDefaultAddress((prevState) => ({
-          ...prevState,
-          payoutWalletId: walletId
-        }))
-      })
-      .catch(({ message }) => toast(message))
-
-    walletApi
-      .getDefaultWallet({
-        getDefaultWalletRequestDto: {
-          chain: "eth"
-        }
-      })
-      .then(({ walletId }) => {
-        return setDefaultAddress((prevState) => ({
-          ...prevState,
-          miningEthereumWalletId: walletId
-        }))
-      })
-      .catch(({ message }) => toast(message))
-
-    walletApi
-      .getDefaultWallet({
-        getDefaultWalletRequestDto: {
-          chain: "sol"
-        }
-      })
-      .then(({ walletId }) => {
-        return setDefaultAddress((prevState) => ({
-          ...prevState,
-          miningSolanaWalletId: walletId
-        }))
-      })
-      .catch(({ message }) => toast(message))
-  }, [])
 
   return (
     <div>
@@ -305,15 +223,25 @@ const Wallets = () => {
                 md:ml-4"
               icon={<Wallet />}
               type="text"
-              name="payoutAddress"
+              name="address"
               register={register}
-              placeholder="Insert Your Payout Address"
+              placeholder="Add Unchecked Address"
               iconMargin="15"
               errors={errors}
               options={{
                 required: { message: "need payout address", value: true }
               }}
             />
+            <Select
+              name="chain"
+              register={register}
+              selectOptions={["sol", "eth"]}
+              errors={errors}
+              options={{
+                required: { message: "need chain", value: true }
+              }}
+            />
+
             <Button
               type={ButtonTypeEnum.SUBMIT}
               className="ml-[25px] h-[36px] min-w-[100px] text-[14px]"
@@ -346,17 +274,33 @@ const Wallets = () => {
         <span className="block">Default For</span>
         <span className="block">Delete</span>
       </div>
-      {loading ? (
+      {loading || !wallets ? (
         <span>Loading...</span>
       ) : (
-        <WalletsList
-          walletsList={walletsList}
-          deleteWalletHandler={deleteWalletHandler}
-          isCreator={!!user?.isCreator}
-          defaultPayoutWalletId={payoutWalletId}
-          miningSolanaWalletId={miningSolanaWalletId}
-          miningEthereumWalletId={miningEthereumWalletId}
-        />
+        <div
+          className="
+            mt-[11px]
+            ml-[31px]
+            place-items-center
+            justify-center
+            gap-[40px]
+            text-center
+            text-[12px]
+            text-[#ffffffeb]"
+        >
+          {wallets.map((wallet) => {
+            return (
+              <WalletListItem
+                wallet={wallet}
+                deleteWalletHandler={deleteWalletHandler}
+                defaultSolMinting={solWallet?.walletId === wallet.walletId}
+                defaultEthMinting={ethWallet?.walletId === wallet.walletId}
+                key={wallet.walletId}
+                setDefaultMinting={setDefaultWallet}
+              />
+            )
+          })}
+        </div>
       )}
     </div>
   )

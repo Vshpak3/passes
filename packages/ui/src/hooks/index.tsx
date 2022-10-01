@@ -27,7 +27,7 @@ import useRandomInterval from "./useRandomInterval"
 import useSearch from "./useSearch"
 import useUser from "./useUser"
 import useUserConnectedWallets from "./useUserConnectedWallets"
-import useUserDefaultPayoutWallet from "./useUserDefaultPayoutWallet"
+import useUserDefaultMintingWallets from "./useUserDefaultMintingWallet"
 
 export {
   useAccountSettings,
@@ -51,15 +51,15 @@ export {
   useNotificationSettings,
   useOnClickOutside,
   usePasses,
-  usePayinMethod as usePayment,
-  usePayoutMethod as usePayout,
+  usePayinMethod,
+  usePayoutMethod,
   usePrefersReducedMotion,
   usePrivacySafetySettings,
   useRandomInterval,
   useSearch,
   useUser,
   useUserConnectedWallets,
-  useUserDefaultPayoutWallet
+  useUserDefaultMintingWallets
 }
 
 // Types

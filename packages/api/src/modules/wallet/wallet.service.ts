@@ -26,7 +26,10 @@ import { WalletDto } from './dto/wallet.dto'
 import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { ChainEnum } from './enum/chain.enum'
-import { UnsupportedDefaultWalletError } from './error/wallet.error'
+import {
+  UnsupportedDefaultWalletError,
+  WalletNotFoundError,
+} from './error/wallet.error'
 
 const WALLET_AUTH_MESSAGE_TTL = 300_000 // wallet auth messages live in redis for 5 minutes
 const MAX_WALLETS_PER_USER = 10
@@ -176,6 +179,18 @@ export class WalletService {
     walletId: string,
     chain: ChainEnum,
   ): Promise<void> {
+    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+      .where({
+        chain,
+        id: walletId,
+        user_id: userId,
+      })
+      .select('id')
+      .first()
+    if (!wallet) {
+      throw new WalletNotFoundError('no wallet found')
+    }
+
     await this.dbWriter<DefaultWalletEntity>(DefaultWalletEntity.table)
       .insert({
         user_id: userId,
@@ -308,7 +323,17 @@ export class WalletService {
       .onConflict(['address', 'chain'])
       .ignore()
     // authenticate if already exists
-    const updated = await this.dbWriter<WalletEntity>(WalletEntity.table)
+    const updated1 = await this.dbWriter<WalletEntity>(WalletEntity.table)
+      .update({
+        authenticated: true,
+        user_id: userId,
+      })
+      .where({
+        user_id: null,
+        address: walletAddress,
+        chain: createWalletDto.chain,
+      })
+    const updated2 = await this.dbWriter<WalletEntity>(WalletEntity.table)
       .update({
         authenticated: true,
       })
@@ -316,10 +341,11 @@ export class WalletService {
         user_id: userId,
         address: walletAddress,
         chain: createWalletDto.chain,
+        authenticated: false,
       })
     // insert if not exists
     //  if wallet is held by someone else return false
-    return updated === 1
+    return updated1 + updated2 === 1
   }
 
   async createUnauthenticatedWallet(
@@ -341,14 +367,14 @@ export class WalletService {
 
   async removeWallet(userId: string, walletId: string): Promise<boolean> {
     const knexResult = await this.dbWriter<WalletEntity>(WalletEntity.table)
-      .update({ user_id: undefined })
+      .update({ user_id: null })
       .where({ id: walletId })
       .andWhere({ user_id: userId })
       .andWhere({ custodial: false })
     if (knexResult === 1) {
       await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
         .where({ wallet_id: walletId })
-        .update({ holder_id: undefined })
+        .update({ holder_id: null })
     }
     return knexResult == 1
   }

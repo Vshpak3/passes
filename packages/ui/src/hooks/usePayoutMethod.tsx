@@ -3,8 +3,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 const usePayoutMethod = () => {
-  const [defaultPayoutMethod, setDefaultPayoutMethod] =
-    useState<PayoutMethodDto>()
+  const [defaultPayoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [banks, setBanks] = useState<CircleBankDto[]>([])
   const api = new PaymentApi()
@@ -15,7 +14,7 @@ const usePayoutMethod = () => {
 
       const response = await api.getDefaultPayoutMethod()
 
-      setDefaultPayoutMethod(response)
+      setPayoutMethod(response)
     } catch (error: any) {
       console.error(error)
       toast.error(error)
@@ -37,7 +36,7 @@ const usePayoutMethod = () => {
     }
   }
 
-  async function updateDefaultPayoutMethod(dto: PayoutMethodDto) {
+  async function setDefaultPayoutMethod(dto: PayoutMethodDto) {
     try {
       setIsLoading(true)
       await api.setDefaultPayoutMethod({
@@ -77,7 +76,7 @@ const usePayoutMethod = () => {
     banks,
     defaultPayoutMethod,
     isLoadingPayoutMethod: isLoading,
-    setDefaultPayoutMethod: updateDefaultPayoutMethod,
+    setDefaultPayoutMethod,
     deleteBank
   }
 }

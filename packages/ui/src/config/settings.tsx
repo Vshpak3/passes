@@ -2,8 +2,10 @@ export enum TabsEnum {
   "AccountSettings",
   "ChatSettings",
   "NotificationEmailSettings",
-  "PaymentWalletSettings",
-  "PrivacySafetySettings"
+  "PrivacySafetySettings",
+  "PaymentSettings",
+  "WalletSettings",
+  "PayoutSettings"
 }
 
 export const tabs = [
@@ -24,14 +26,24 @@ export const tabs = [
     creatorOnly: true
   },
   {
-    name: "Payment & Wallet Settings",
-    id: TabsEnum.PaymentWalletSettings,
+    name: "Payment Settings",
+    id: TabsEnum.PaymentSettings,
     creatorOnly: false
+  },
+  {
+    name: "Wallet Settings",
+    id: TabsEnum.WalletSettings,
+    creatorOnly: false
+  },
+  {
+    name: "Payout Settings",
+    id: TabsEnum.PayoutSettings,
+    creatorOnly: true
   }
 ]
 
 export enum SubTabsEnum {
-  // Account
+  // Accounts
   "AccountInformation",
   "ChangePassword",
   "DeactivateAccount",
@@ -51,9 +63,9 @@ export enum SubTabsEnum {
 
   // Payment
   "PaymentSettings",
-  "WalletManagementSettings",
-  "ManageBank",
+  "WalletSettings",
+  "PayoutSettings",
   "AddBank",
-  "ManageCard",
-  "AddCard"
+  "AddCard",
+  "PaymentHistory"
 }

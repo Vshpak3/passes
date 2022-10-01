@@ -1,22 +1,18 @@
-import { GetWalletsResponseDto, WalletApi } from "@passes/api-client"
+import { WalletApi } from "@passes/api-client"
 import useSWR from "swr"
 
 import useLocalStorage from "./useLocalStorage"
-
-interface WalletsResponse {
-  wallets: GetWalletsResponseDto | unknown[]
-}
 
 const useUserConnectedWallets = () => {
   const [accessToken] = useLocalStorage("access-token", "")
 
   const {
-    data: wallets = {} as WalletsResponse,
+    data: wallets,
     isValidating: loading,
     mutate
   } = useSWR(accessToken ? "/wallets" : null, async () => {
     const api = new WalletApi()
-    return await api.getWallets()
+    return (await api.getWallets()).wallets
   })
 
   return { wallets, loading, mutate }

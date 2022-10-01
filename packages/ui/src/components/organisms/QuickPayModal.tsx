@@ -2,7 +2,7 @@ import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
-import { usePayment, useUser } from "src/hooks"
+import { usePayinMethod, useUser } from "src/hooks"
 
 import { creditCardIcons } from "../../helpers/creditCardIcon"
 import { PassesPinkButton } from "../atoms"
@@ -23,7 +23,7 @@ const QuickPayModal = ({
 IQuickPayModal) => {
   const router = useRouter()
   const { user } = useUser()
-  const { defaultPayinMethod } = usePayment()
+  const { defaultPayinMethod } = usePayinMethod()
 
   const handlePayment = async () => {
     const passApi = new PassApi()

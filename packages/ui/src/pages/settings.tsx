@@ -58,44 +58,19 @@ const NotificationPreferences = dynamic(
       "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
     )
 )
-const PaymentWalletSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/PaymentWalletSettings")
+const PaymentSettings = dynamic(
+  () => import("../components/pages/settings/tabs/PaymentSettings/index")
 )
 const AddBank = dynamic(
   () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddBank"
-    )
+    import("../components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank")
 )
 const AddCard = dynamic(
   () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/AddCard"
-    )
+    import("../components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard")
 )
-const ManageBank = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageBank"
-    )
-)
-const ManageCard = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/ManageCard"
-    )
-)
-const PaymentsSettings = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/PaymentsSettings"
-    )
-)
-const WalletManagementSettings = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentWalletSettings/sub-tabs/WalletManagementSettings"
-    )
+const WalletSettings = dynamic(
+  () => import("../components/pages/settings/tabs/WalletSettings")
 )
 const PrivacySafetySettings = dynamic(
   () => import("src/components/pages/settings/tabs/PrivacySafetySettings")
@@ -123,6 +98,15 @@ const SafetySettings = dynamic(
     import(
       "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
     )
+)
+const PaymentHistory = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/PaymentHistory"
+    )
+)
+const PayoutSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PayoutSettings/index")
 )
 import { SubTabsEnum, tabs, TabsEnum } from "src/config/settings"
 import {
@@ -202,8 +186,12 @@ const renderTab = (tab: TabsEnum) => {
       return <NotificationEmailSettings />
     case TabsEnum.PrivacySafetySettings:
       return <PrivacySafetySettings />
-    case TabsEnum.PaymentWalletSettings:
-      return <PaymentWalletSettings />
+    case TabsEnum.PaymentSettings:
+      return <PaymentSettings />
+    case TabsEnum.WalletSettings:
+      return <WalletSettings />
+    case TabsEnum.PayoutSettings:
+      return <PayoutSettings />
   }
 }
 
@@ -218,9 +206,9 @@ const renderSubTab = (tab: SubTabsEnum) => {
     case SubTabsEnum.DeactivateAccount:
       return <DeactivateAccount />
     case SubTabsEnum.PaymentSettings:
-      return <PaymentsSettings />
-    case SubTabsEnum.WalletManagementSettings:
-      return <WalletManagementSettings />
+      return <PaymentSettings />
+    case SubTabsEnum.WalletSettings:
+      return <WalletSettings />
     case SubTabsEnum.ProfilePicture:
       return <ProfilePicture />
     case SubTabsEnum.DisplayName:
@@ -237,13 +225,11 @@ const renderSubTab = (tab: SubTabsEnum) => {
       return <SafetySettings />
     case SubTabsEnum.BlockedRestrictedAccounts:
       return <BlockedRestrictedAccounts />
-    case SubTabsEnum.ManageBank:
-      return <ManageBank />
     case SubTabsEnum.AddBank:
       return <AddBank />
-    case SubTabsEnum.ManageCard:
-      return <ManageCard />
     case SubTabsEnum.AddCard:
       return <AddCard />
+    case SubTabsEnum.PaymentHistory:
+      return <PaymentHistory />
   }
 }

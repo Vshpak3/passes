@@ -7,6 +7,7 @@ export interface ISettingsContext {
   setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum>>
   addTabToStackHandler: (tab: SubTabsEnum) => void
   popTabFromStackHandler: () => void
+  addOrPopStackHandler: (tab: SubTabsEnum) => void
 }
 
 const SettingsContext = createContext<Partial<ISettingsContext>>({})
@@ -20,6 +21,14 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const addTabToStackHandler = (tab: SubTabsEnum) => {
     if (!subTabsStack.includes(tab)) {
       setSubTabsStack((prevTabs) => [...prevTabs, tab])
+    }
+  }
+
+  const addOrPopStackHandler = (tab: SubTabsEnum) => {
+    if (subTabsStack.length > 1) {
+      popTabFromStackHandler()
+    } else {
+      addTabToStackHandler(tab)
     }
   }
 
@@ -39,7 +48,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         subTabsStack,
         setActiveTab,
         addTabToStackHandler,
-        popTabFromStackHandler
+        popTabFromStackHandler,
+        addOrPopStackHandler
       }}
     >
       {children}

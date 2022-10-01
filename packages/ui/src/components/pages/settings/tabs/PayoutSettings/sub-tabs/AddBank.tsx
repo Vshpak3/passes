@@ -2,48 +2,32 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
-import { toInteger } from "lodash"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
-import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
-import DownloadW9FormButton from "../../../../../atoms/DownloadW9FormButton"
-import UploadW9FormButton from "../../../../../atoms/UploadW9FormButton"
+import { SubTabsEnum } from "../../../../../../config/settings"
+import ConditionRendering from "../../../../../molecules/ConditionRendering"
 import Tab from "../../../Tab"
 
 enum BankTypeEnum {
-  US,
-  IBAN,
-  NON_IBAN
+  US = "us",
+  IBAN = "iban",
+  NON_IBAN = "non iban"
 }
-
-const bankTypeOptions = [
-  {
-    label: "US",
-    value: BankTypeEnum.US
-  },
-  {
-    label: "IBAN",
-    value: BankTypeEnum.IBAN
-  },
-  {
-    label: "NON_IBAN",
-    value: BankTypeEnum.NON_IBAN
-  }
-]
 
 const AddBank = () => {
   const idempotencyKey = v4()
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
 
+  const { addOrPopStackHandler } = useSettings() as ISettingsContext
+  const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const {
     handleSubmit,
     register,
@@ -62,19 +46,14 @@ const AddBank = () => {
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
-          toInteger(values["bankAccountType"]) === BankTypeEnum.US ||
-          toInteger(values["bankAccountType"]) == BankTypeEnum.NON_IBAN
+          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
             ? values["account-number"]
             : undefined,
         routingNumber:
-          toInteger(values["bankAccountType"]) === BankTypeEnum.US ||
-          toInteger(values["bankAccountType"]) == BankTypeEnum.NON_IBAN
+          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
             ? values["routing-number"]
             : undefined,
-        iban:
-          toInteger(values["bankAccountType"]) === BankTypeEnum.IBAN
-            ? values["iban"]
-            : undefined,
+        iban: bankType === BankTypeEnum.IBAN ? values["iban"] : undefined,
         billingDetails: {
           name: user?.legalFullName ?? "",
           city: values["city"],
@@ -87,16 +66,16 @@ const AddBank = () => {
         bankAddress: {
           bankName: values["bank-name"],
           city: values["bank-city"],
-          country: iso3311a2.getCode(values["country"])
+          country: iso3311a2.getCode(values["bank-country"])
         }
       }
+      console.log(payload)
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
+      addOrPopStackHandler(SubTabsEnum.PayoutSettings)
     } catch (error: any) {
       toast.error(error)
-    } finally {
-      addTabToStackHandler(SubTabsEnum.ManageBank)
     }
   }
 
@@ -109,66 +88,100 @@ const AddBank = () => {
       router.push("/login")
     }
   }, [router, user, loading])
+
   return (
     <Tab title="Add Bank" withBack>
       <span className="text-[16px] font-[500] opacity-50">
         Banking information
       </span>
-      <div className="flex items-center justify-between">
-        <span className="text-[16px] font-[500]">To download W9 form</span>
-        <DownloadW9FormButton />
-      </div>
-      <div className="mt-4 mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-[16px] font-[500]">To edit W9 form</span>
-          <div
-            className="tooltip"
-            data-tip="Please, mannually fill out the W9 Form, and upload filled out W9 Form here."
-          >
-            <InfoIcon />
-          </div>
-        </div>
-        <UploadW9FormButton text="Upload W9 Form" icon={true} />
-      </div>
+      <br />
       <span className="text-[16px] font-[500] text-[#767676]">
         Type of Bank Account
       </span>
+      <br />
+      <select
+        onChange={(event) => setBankType(event.target.value as BankTypeEnum)}
+        defaultValue={BankTypeEnum.US}
+      >
+        <option value={BankTypeEnum.US}>US Bank</option>
+        <option value={BankTypeEnum.IBAN}>International Bank - IBAN</option>
+        <option value={BankTypeEnum.NON_IBAN}>
+          International Bank - No IBAN
+        </option>
+      </select>
+      <br />
+      <ConditionRendering
+        condition={
+          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
+        }
+      >
+        <span className="text-[16px] font-[500] text-[#767676]">
+          Routing Number
+        </span>
+        <FormInput
+          register={register}
+          type="text"
+          name="routing-number"
+          placeholder="4444 1902 0192 0100"
+          errors={errors}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+
+        <span className="text-[16px] font-[500] text-[#767676]">
+          Account Number
+        </span>
+        <FormInput
+          register={register}
+          type="text"
+          name="account-number"
+          placeholder="-"
+          errors={errors}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+      </ConditionRendering>
+      <ConditionRendering condition={bankType === BankTypeEnum.IBAN}>
+        <span className="text-[16px] font-[500] text-[#767676]">Iban</span>
+        <FormInput
+          register={register}
+          type="text"
+          name="iban"
+          placeholder="IBAN"
+          errors={errors}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+      </ConditionRendering>
+      <span className="text-[16px] font-[500]">Bank Info:</span>
+      <FormInput
+        register={register}
+        type="text"
+        name="bank-name"
+        placeholder="Bank Name"
+        options={{
+          required: { message: "need a a bank name", value: true }
+        }}
+        errors={errors}
+        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+      />
+      <FormInput
+        register={register}
+        type="text"
+        name="bank-city"
+        placeholder="Bank City"
+        options={{
+          required: { message: "need a bank city", value: true }
+        }}
+        errors={errors}
+        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+      />
       <FormInput
         register={register}
         type="select"
-        selectOptions={bankTypeOptions}
-        name="bankAccountType"
+        selectOptions={COUNTRIES}
+        name="bank-country"
         errors={errors}
         className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
       />
-      <span className="text-[16px] font-[500] text-[#767676]">
-        Routing Number
-      </span>
-      <FormInput
-        register={register}
-        type="text"
-        name="routing-number"
-        placeholder="4444 1902 0192 0100"
-        errors={errors}
-        options={{
-          required: { message: "Routing number is required", value: true }
-        }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <span className="text-[16px] font-[500] text-[#767676]">
-        Account Number
-      </span>
-      <FormInput
-        register={register}
-        type="text"
-        name="account-number"
-        placeholder="-"
-        errors={errors}
-        options={{
-          required: { message: "Account number is required", value: true }
-        }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
+
       <span className="text-[16px] font-[500]">Billing address</span>
       <FormInput
         register={register}

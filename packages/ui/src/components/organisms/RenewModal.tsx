@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 import { Button, PassesPinkButton } from "src/components/atoms"
 import { PaymentModalInfo } from "src/components/pages/profile/passes/PassTypes"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethodConfig"
-import { usePayment } from "src/hooks"
+import { usePayinMethod } from "src/hooks"
 
 import Modal from "./Modal"
 
@@ -27,7 +27,7 @@ const RenewModal = ({
   externalPasses
 }: RenewModalProps) => {
   const router = useRouter()
-  const { defaultPayinMethod, cardInfo, getCardInfo } = usePayment()
+  const { defaultPayinMethod, cardInfo, getCardInfo } = usePayinMethod()
 
   useEffect(() => {
     if (

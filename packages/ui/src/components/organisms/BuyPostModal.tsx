@@ -10,7 +10,7 @@ import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethodConfig"
-import { usePasses, usePayment } from "src/hooks"
+import { usePasses, usePayinMethod } from "src/hooks"
 
 import { BuyPostButton } from "../payment/buy-post"
 
@@ -22,7 +22,7 @@ interface IBuyPostModal {
 
 const BuyPostModal = ({ postInfo, setOpen, isOpen }: IBuyPostModal) => {
   const router = useRouter()
-  const { defaultPayinMethod, cardInfo } = usePayment()
+  const { defaultPayinMethod, cardInfo } = usePayinMethod()
   const { externalPasses } = usePasses()
 
   const whitePasessList = getWhiteListedPasses(

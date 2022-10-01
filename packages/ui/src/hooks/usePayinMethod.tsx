@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 const usePayinMethod = () => {
-  const [defaultPayinMethod, setDefaultPayinMethod] = useState<PayinMethodDto>()
+  const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [cards, setCards] = useState<CircleCardDto[]>([])
   const [cardInfo, setCardInfo] = useState<GetCircleCardResponseDto | null>(
@@ -23,7 +23,7 @@ const usePayinMethod = () => {
 
       const response = await api.getDefaultPayinMethod()
 
-      setDefaultPayinMethod(response)
+      setPayinMethod(response)
     } catch (error: any) {
       console.error(error)
       toast.error(error)
@@ -45,7 +45,7 @@ const usePayinMethod = () => {
     }
   }
 
-  async function updateDefaultPayinMethod(dto: PayinMethodDto) {
+  async function setDefaultPayinMethod(dto: PayinMethodDto) {
     try {
       setIsLoading(true)
       await api.setDefaultPayinMethod({
@@ -71,7 +71,9 @@ const usePayinMethod = () => {
       console.error(error)
       toast.error(error)
     } finally {
+      getDefaultPayinMethod()
       await getCards()
+      setIsLoading(false)
     }
   }
 
@@ -99,9 +101,10 @@ const usePayinMethod = () => {
   return {
     cards,
     cardInfo,
-    defaultPayinMethod,
+    defaultPayinMethod: payinMethod,
     isLoadingPayinMethod: isLoading,
-    setDefaultPayinMethod: updateDefaultPayinMethod,
+    getDefaultPayinMethod,
+    setDefaultPayinMethod,
     getCardInfo,
     deleteCard
   }

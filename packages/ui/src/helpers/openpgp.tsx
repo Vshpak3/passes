@@ -1,4 +1,5 @@
 import { CircleEncryptionKeyResponseDto } from "@passes/api-client"
+import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
 
 /**
  * Encrypt dataToEncrypt
@@ -12,11 +13,6 @@ async function encrypt(
   dataToEncrypt: object,
   { keyId, publicKey }: CircleEncryptionKeyResponseDto
 ) {
-  const {
-    createMessage,
-    encrypt: pgpEncrypt,
-    readKey
-  } = await import("openpgp").then((mod) => mod.default)
   if (!publicKey || !keyId) {
     throw new Error("Unable to encrypt data")
   }

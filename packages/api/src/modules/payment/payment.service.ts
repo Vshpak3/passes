@@ -246,7 +246,9 @@ export class PaymentService {
       circle_id: response['id'],
       status: response['status'],
       name: createCardDto.billingDetails.name,
-      ...createCardDto,
+      idempotency_key: createCardDto.idempotencyKey,
+      exp_month: createCardDto.expMonth,
+      exp_year: createCardDto.expYear,
     }
 
     await this.dbWriter<CircleCardEntity>(CircleCardEntity.table).insert(data)

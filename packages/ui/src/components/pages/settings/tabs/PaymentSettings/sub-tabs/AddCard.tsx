@@ -1,7 +1,6 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
-import { Menu, Transition } from "@headlessui/react"
 import { CircleEncryptionKeyResponseDto, PaymentApi } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -12,17 +11,14 @@ import AmexCardIcon from "public/icons/amex-icon.svg"
 import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import InfoIcon from "public/icons/info-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
-import MetamaskIcon from "public/icons/metamask-icon.svg"
-import PhantomIcon from "public/icons/phantom-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, PassesPinkButton } from "src/components/atoms"
+import { FormInput } from "src/components/atoms"
 import { COUNTRIES } from "src/helpers/countries"
 import encrypt from "src/helpers/openpgp"
 import { useUser } from "src/hooks"
-import ChevronDown from "src/icons/chevron-down"
 import { v4 } from "uuid"
 
 import { SubTabsEnum } from "../../../../../../config/settings"
@@ -33,9 +29,7 @@ import {
 import Tab from "../../../Tab"
 
 const AddCard = () => {
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
-  const [phantomActive, setPhantomActive] = useState(false)
-  const [metamaskActive, setMetamaskActive] = useState(false)
+  const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
 
@@ -77,29 +71,29 @@ const AddCard = () => {
           metadata: {
             sessionId: SHA256(accessToken).toString().substr(0, 50),
             ipAddress: "",
-            phoneNumber: values["phone-number"],
-            email: "bangbang@gmail.com"
+            phoneNumber: values["phone-number"]
           }
         },
         cardNumber: values["card-number"]
       }
+
       const encryptedData = await encrypt(
         cardDetails,
         publicKey as CircleEncryptionKeyResponseDto
       )
       const { encryptedMessage, keyId } = encryptedData
-
+      console.log(encryptedMessage)
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
 
       const paymentApi = new PaymentApi()
+      console.log("create")
       await paymentApi.createCircleCard({
         circleCreateCardAndExtraRequestDto: payload
       })
+      addOrPopStackHandler(SubTabsEnum.PaymentSettings)
     } catch (error: any) {
       toast.error(error)
-    } finally {
-      addTabToStackHandler(SubTabsEnum.ManageCard)
     }
   }
 
@@ -119,152 +113,8 @@ const AddCard = () => {
   }, [router, user, loading])
   return (
     <>
-      <Tab withBack title="Add New Payment Method" />
+      <Tab withBack title="Add Card" />
 
-      <span className="text-[24px] font-[700]">Use Crypto</span>
-      <div className="my-4 flex flex-row gap-4">
-        <div
-          onClick={() => setMetamaskActive(!metamaskActive)}
-          className="flex cursor-pointer flex-row items-center gap-2"
-        >
-          <MetamaskIcon
-            className={metamaskActive ? "stroke-passes-pink-100 stroke-2" : ""}
-          />
-          <span className="text-[20px] font-[700]">Metamask</span>
-        </div>
-
-        <div
-          onClick={() => setPhantomActive(!phantomActive)}
-          className="flex cursor-pointer flex-row items-center gap-2"
-        >
-          <PhantomIcon
-            className={phantomActive ? "stroke-passes-pink-100 stroke-2" : ""}
-          />
-          <span className="text-[20px] font-[700]">Phantom</span>
-        </div>
-      </div>
-      <div className="flex flex-row gap-6">
-        {metamaskActive && (
-          <div
-            className={
-              (metamaskActive ? "flex" : "hidden") +
-              " h-[72px] items-center justify-center text-[#B8B8B8]"
-            }
-          >
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button>
-                <div className="flex h-[45px] cursor-pointer flex-row items-center gap-4 rounded-[6px] border border-passes-dark-100 bg-transparent p-4 text-[#ffff]/90">
-                  <span className="text-[16px] font-[400] opacity-[0.5]">
-                    Select Type
-                  </span>
-                  <ChevronDown />
-                </div>
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items
-                  static
-                  className="absolute right-0 z-10 mt-2 flex origin-top-right flex-col justify-center gap-4 rounded-[20px] border border-passes-dark-100 bg-black p-5 text-center shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                  <div className="flex flex-row items-center justify-between">
-                    <span className="text-[12px] font-[400] text-[#979797]">
-                      USDC (ETH, AVAX, POLYGON)
-                    </span>
-                    <FormInput
-                      register={register}
-                      type="checkbox"
-                      name="nftMintingCheckbox"
-                      errors={errors}
-                      className="h-[20px] w-[20px] cursor-pointer bg-transparent"
-                    />
-                  </div>
-                  <div className="flex flex-row items-center justify-between">
-                    <span className="text-[12px] font-[400] text-[#979797]">
-                      Native ETH
-                    </span>
-                    <FormInput
-                      register={register}
-                      type="checkbox"
-                      name="nftMintingCheckbox"
-                      errors={errors}
-                      className="h-[20px] w-[20px] cursor-pointer bg-transparent"
-                    />
-                  </div>
-                  <PassesPinkButton
-                    className="mt-4 w-[223px]"
-                    name="Save"
-                    onClick={console.log}
-                  />
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
-        )}
-
-        {phantomActive && (
-          <div
-            className={
-              (phantomActive ? " flex " : " hidden ") +
-              (metamaskActive ? "" : " ml-[43%] ") +
-              " h-[72px] items-center justify-center text-[#B8B8B8]"
-            }
-          >
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button>
-                <div className="flex h-[45px] cursor-pointer flex-row items-center gap-4 rounded-[6px] border border-passes-dark-100 bg-transparent p-4 text-[#ffff]/90">
-                  <span className="text-[16px] font-[400] opacity-[0.5]">
-                    Select Type
-                  </span>
-                  <ChevronDown />
-                </div>
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items
-                  static
-                  className="absolute right-0 z-10 mt-2 flex origin-top-right flex-col justify-center gap-4 rounded-[20px] border border-passes-dark-100 bg-black p-5 text-center shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                  <div className="flex flex-row items-center justify-between">
-                    <span className="text-[12px] font-[400] text-[#979797]">
-                      USDC
-                    </span>
-                    <FormInput
-                      register={register}
-                      type="checkbox"
-                      name="nftMintingCheckbox"
-                      errors={errors}
-                      className="h-[20px] w-[20px] cursor-pointer bg-transparent"
-                    />
-                  </div>
-                  <PassesPinkButton
-                    className="mt-4 w-[223px]"
-                    name="Save"
-                    onClick={console.log}
-                  />
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
-        )}
-      </div>
-      <div className="mb-4 flex flex-col gap-6">
-        <span className="text-[20px] font-[700]">or</span>
-        <span className="text-[24px] font-[700]">Add New Card</span>
-      </div>
       <span className="text-[16px] font-[500] text-[#767676]">Card Info</span>
       <FormInput
         register={register}

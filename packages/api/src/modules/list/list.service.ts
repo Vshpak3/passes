@@ -12,7 +12,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { orderToSymbol } from '../../util/dto/page.dto'
+import { orderToSymbol, strictOrderToSymbol } from '../../util/dto/page.dto'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowService } from '../follow/follow.service'
@@ -152,7 +152,6 @@ export class ListService {
     let query = this.dbReader<ListEntity>(ListEntity.table)
       .where({ user_id: userId })
       .select('*')
-
     switch (orderType) {
       case ListOrderTypeEnum.CREATED_AT:
         query = query.orderBy([
@@ -186,11 +185,27 @@ export class ListService {
           { column: `${ListEntity.table}.id`, order },
         ])
         if (name) {
-          query = query.andWhere(
-            `${ListEntity.table}.name`,
-            orderToSymbol[order],
-            name,
-          )
+          query = query.andWhere(function () {
+            let subQuery = this.where(
+              `${ListEntity.table}.name`,
+              orderToSymbol[order],
+              name,
+            )
+            if (lastId) {
+              subQuery = subQuery.andWhere(function () {
+                return this.where(
+                  `${ListEntity.table}.name`,
+                  strictOrderToSymbol[order],
+                  name,
+                ).orWhere(
+                  `${ListEntity.table}.id`,
+                  strictOrderToSymbol[order],
+                  lastId,
+                )
+              })
+            }
+            return subQuery
+          })
         }
         break
     }
