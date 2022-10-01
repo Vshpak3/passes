@@ -113,7 +113,7 @@ const WalletListItem = ({
         <ConditionRendering condition={wallet.authenticated}>
           {defaultEthMinting && <div>Default eth address</div>}
           {defaultSolMinting && <div>Default sol address</div>}
-          {!defaultEthMinting && !defaultSolMinting && (
+          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
             <button
               onClick={async () =>
                 await setDefaultMinting(wallet.walletId, wallet.chain)
@@ -121,6 +121,9 @@ const WalletListItem = ({
             >
               Set {wallet.chain} address
             </button>
+          )}
+          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
+            <div>Unauthenticated</div>
           )}
         </ConditionRendering>
         <Button
