@@ -4,7 +4,7 @@ import { Expose, Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
-  IsDateString,
+  IsDate,
   IsEnum,
   IsInt,
   IsOptional,
@@ -64,7 +64,7 @@ type TypeOptions =
 const decoratorMap = {
   boolean: IsBoolean,
   currency: IsCurrencyNumber,
-  date: IsDateString,
+  date: IsDate,
   number: IsInt,
   string: IsString,
   uuid: IsUUID,
@@ -106,6 +106,7 @@ export function DtoProperty(options: DtoOptions) {
       case 'date':
         apiProperties.type = 'string'
         apiProperties.format = 'date-time'
+        decorators.push(Type(() => Date))
         break
       case 'currency':
         apiProperties.type = 'number'
