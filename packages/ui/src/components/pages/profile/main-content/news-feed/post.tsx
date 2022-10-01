@@ -1,4 +1,4 @@
-import { CommentDto } from "@passes/api-client"
+import { CommentDto, ContentDto, PostDto } from "@passes/api-client"
 import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
@@ -209,22 +209,17 @@ export const PostTextContent = ({ post }: any) => (
   </div>
 )
 
-// TODO: make this look actually good
-export const PostMediaContent = ({ post }: any) => (
-  <>
-    {post.content ? (
-      <div className="flex flex-col items-start">
-        <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-          {post.content.map((c: any) => {
-            return c.signedUrl
-          })}
-        </p>
-      </div>
-    ) : undefined}
-  </>
-)
+interface LockedMedia {
+  postUnlocked: any
+  post: PostDto
+  setPostUnlocked: any
+}
 
-export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }: any) => {
+export const LockedMedia = ({
+  postUnlocked,
+  post,
+  setPostUnlocked
+}: LockedMedia) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState(null)
 
   const onMockedSuccess = () => {
@@ -254,8 +249,8 @@ export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }: any) => {
             </div>
           )}
         </div>
-        {post.content?.length > 0 &&
-          post.content.map((c: any) => {
+        {post?.content?.length &&
+          post.content.map((c: ContentDto) => {
             return (
               <img
                 key={c.contentId}

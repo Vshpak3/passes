@@ -7,7 +7,6 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { consoleSandbox } from '@sentry/utils'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
