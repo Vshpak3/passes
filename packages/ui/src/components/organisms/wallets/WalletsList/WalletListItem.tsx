@@ -114,13 +114,13 @@ const WalletListItem = ({
           {defaultEthMinting && <div>Default eth address</div>}
           {defaultSolMinting && <div>Default sol address</div>}
           {!defaultEthMinting && !defaultSolMinting && (
-            <span
+            <button
               onClick={async () =>
                 await setDefaultMinting(wallet.walletId, wallet.chain)
               }
             >
               Set {wallet.chain} address
-            </span>
+            </button>
           )}
         </ConditionRendering>
         <Button

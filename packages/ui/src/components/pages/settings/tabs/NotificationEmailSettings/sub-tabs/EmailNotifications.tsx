@@ -65,7 +65,7 @@ const EmailNotifications = () => {
         className="mt-[22px]"
         onSubmit={handleSubmit(saveNotificationSettingsHandler)}
       >
-        <div className="border-b border-passes-dark-200 pb-3">
+        {/*<div className="border-b border-passes-dark-200 pb-3">
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Email Notifications</span>
             <FormInput
@@ -78,10 +78,10 @@ const EmailNotifications = () => {
             Get emails to find out what’s going on when you’re not on Twitter.
             You can turn them off anytime.
           </p>
-        </div>
+  </div>*/}
 
         <div className="mt-[22px]">
-          <h4 className="text-label">Notification Types</h4>
+          <h4 className="text-label">Email Notification Types</h4>
 
           <div className="mt-[32px] space-y-[26px]">
             <label className="flex cursor-pointer items-center justify-between">
