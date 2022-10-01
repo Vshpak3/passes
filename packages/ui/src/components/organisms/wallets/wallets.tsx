@@ -145,7 +145,7 @@ const Wallets = () => {
 
   const deleteWalletHandler = async (id: string) => {
     const api = new WalletApi()
-    return await api.removeWallet({ walletId: id }).catch(({ message }) => {
+    await api.removeWallet({ walletId: id }).catch(({ message }) => {
       console.error(message)
       toast.error(message)
     })
