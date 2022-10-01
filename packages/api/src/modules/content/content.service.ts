@@ -137,10 +137,20 @@ export class ContentService {
     return result.slice(index + 1).map((content) => new ContentDto(content, ''))
   }
 
-  async preSignContent(userId: string, contentType: ContentTypeEnum) {
+  async preSignUploadContent(userId: string, contentType: ContentTypeEnum) {
     const contentId = await this.createContent(userId, { contentType })
     return this.s3contentService.preSignUrl(
       `upload/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
+    )
+  }
+
+  async preSignMediaContent(
+    userId: string,
+    contentId: string,
+    contentType: ContentTypeEnum,
+  ) {
+    return this.s3contentService.preSignUrl(
+      `media/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
     )
   }
 

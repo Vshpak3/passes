@@ -131,7 +131,7 @@ export class ContentController {
     @Req() req: RequestWithUser,
     @Param() params: CreateContentRequestDto,
   ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignContent(
+    const url = await this.contentService.preSignUploadContent(
       req.user.id,
       params.contentType,
     )

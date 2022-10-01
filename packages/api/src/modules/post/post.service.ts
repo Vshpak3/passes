@@ -4,8 +4,10 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { consoleSandbox } from '@sentry/utils'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -21,6 +23,7 @@ import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
+import { ContentTypeEnum } from '../content/enums/content-type.enum'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
 import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
@@ -39,7 +42,6 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
-import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { POST_NOT_EXIST } from './constants/errors'
 import {
@@ -82,7 +84,6 @@ export class PostService {
 
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
-    private readonly s3ContentService: S3ContentService,
     private readonly passService: PassService,
     private readonly contentService: ContentService,
   ) {
@@ -358,11 +359,11 @@ export class PostService {
         new ContentDto(
           postContent,
           accessiblePostIds.has(postContent.post_id)
-            ? (
-                await this.s3ContentService.signUrl(
-                  `${this.cloudfrontUrl}/media/${postContent.user_id}/${postContent.id}`,
-                )
-              ).url
+            ? await this.contentService.preSignMediaContent(
+                postContent.user_id,
+                postContent.id,
+                postContent.content_type,
+              )
             : undefined,
         ),
       )
@@ -776,10 +777,16 @@ export class PostService {
   }
 
   async isAllPostContentReady(postId: string): Promise<boolean> {
-    const userId = await this.dbReader<PostEntity>(PostEntity.table)
+    const user = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select('user_id')
       .first()
+
+    if (!user) {
+      throw new InternalServerErrorException(
+        `Unexpected missing user id for post ${postId}`,
+      )
+    }
 
     const contentIds = await this.dbReader<PostContentEntity>(
       PostContentEntity.table,
@@ -787,10 +794,14 @@ export class PostService {
       .where({ post_id: postId })
       .select('content_id')
 
+    // TODO: join on content entity to get type
+
     const results = await Promise.all(
       contentIds.map(async (contentId) => {
-        return await this.s3ContentService.doesObjectExist(
-          `media/${userId?.user_id}/${contentId.content_id}`,
+        return await this.contentService.preSignMediaContent(
+          user.user_id,
+          contentId.content_id,
+          ContentTypeEnum.IMAGE,
         )
       }),
     )

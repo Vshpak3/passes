@@ -3,7 +3,6 @@ import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
-import FundraiserCoinIcon from "public/icons/post-fundraiser-coin-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
@@ -98,17 +97,20 @@ export const Post = ({ profile, post }: any) => {
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
           <PostTextContent post={post} />
         </div>
+
+        <LockedMedia
+          post={post}
+          postUnlocked={postUnlocked}
+          setPostUnlocked={setPostUnlocked}
+        />
+
+        {/* No fundraising right now
         {post.fundraiser ? (
           <FundraiserMedia images={post.content} />
         ) : (
-          <LockedMedia
-            post={post}
-            postUnlocked={postUnlocked}
-            setPostUnlocked={setPostUnlocked}
-          />
         )}
         <PostEngagement post={post} postUnlocked={postUnlocked} />
-        {post.fundraiser && <FundraiserTab post={post} />}
+        {post.fundraiser && <FundraiserTab post={post} />} */}
       </FormContainer>
     </>
   )
@@ -192,7 +194,7 @@ export const PostTextContent = ({ post }: any) => (
     <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
       {post.caption ? post.caption : post.text}
     </p>
-    {post.fundraiser && (
+    {/* {post.fundraiser && (
       <div className="ml-auto flex pt-3">
         <div className="flex cursor-pointer items-center gap-[10px] rounded-md bg-[#ffff]/10 py-[7px] px-[10px] ">
           <span className="text-[12px] font-medium leading-[22px] text-[#ffff]">
@@ -203,8 +205,23 @@ export const PostTextContent = ({ post }: any) => (
           </span>
         </div>
       </div>
-    )}
+    )} */}
   </div>
+)
+
+// TODO: make this look actually good
+export const PostMediaContent = ({ post }: any) => (
+  <>
+    {post.content ? (
+      <div className="flex flex-col items-start">
+        <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
+          {post.content.map((c: any) => {
+            return c.signedUrl
+          })}
+        </p>
+      </div>
+    ) : undefined}
+  </>
 )
 
 export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }: any) => {
@@ -237,13 +254,17 @@ export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }: any) => {
             </div>
           )}
         </div>
-        {post.content?.length > 0 && (
-          <img
-            src={post.content[0].url}
-            alt=""
-            className="w-full rounded-[20px] object-cover shadow-xl"
-          />
-        )}
+        {post.content?.length > 0 &&
+          post.content.map((c: any) => {
+            return (
+              <img
+                key={c.contentId}
+                src={c.signedUrl}
+                alt=""
+                className="w-full rounded-[20px] object-cover shadow-xl"
+              />
+            )
+          })}
       </div>
       <BuyPostModal postInfo={openBuyPostModal} setOpen={onMockedSuccess} />
     </>

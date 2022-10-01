@@ -39,7 +39,6 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
-import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChannelMemberDto } from './dto/channel-member.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
@@ -95,7 +94,6 @@ export class MessagesService {
     private readonly passService: PassService,
     private readonly listService: ListService,
     private readonly contentService: ContentService,
-    private readonly s3ContentService: S3ContentService,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
   }
@@ -1051,11 +1049,11 @@ export class MessagesService {
             return new ContentDto(
               contentMap[contentId],
               paid[ind]
-                ? (
-                    await this.s3ContentService.signUrl(
-                      `${this.cloudfrontUrl}/media/${contentMap[contentId].user_id}/${contentMap[contentId].id}`,
-                    )
-                  ).url
+                ? await this.contentService.preSignMediaContent(
+                    contentMap[contentId].user_id,
+                    contentMap[contentId].id,
+                    contentMap[contentId].content_type,
+                  )
                 : undefined,
             )
           }),

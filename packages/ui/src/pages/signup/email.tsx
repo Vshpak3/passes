@@ -34,7 +34,7 @@ const UserEmailPage = () => {
 
     setHasSentEmail(router.query.hasEmail == "true")
 
-    // authRouter(router, userClaims)
+    authRouter(router, userClaims)
   }, [router, userClaims])
 
   const onUserRegister = async (email: string) => {
