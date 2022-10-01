@@ -20,7 +20,7 @@ const MIN_FILES_LIFETIME = 1
 const THIRTY_DAY_DURATION = 30 * 24 * 60 * 60
 const THIRTY_DAY_DURATION_LIFETIME = undefined
 
-const createPassSchema = yup.object({
+export const createPassSchema = yup.object({
   passName: yup.string().required(),
   passDescription: yup.string().required()
 })
@@ -53,6 +53,8 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
   const {
     handleSubmit,
     register,
+    getValues,
+    trigger,
     formState: { errors }
   } = useForm({
     resolver: yupResolver(createPassSchema)
@@ -172,7 +174,9 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
     onCreatePass,
     onDragDropChange,
     onRemoveFileUpload,
-    register
+    register,
+    getValues,
+    trigger
   }
 }
 

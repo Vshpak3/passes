@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
 import SubscriptionImg from "public/icons/subscription-pass.svg"
-import React from "react"
+import React, { useState } from "react"
 import {
   CreatePassButton,
   CreatePassHeader,
@@ -16,8 +16,9 @@ import {
   PassRenewal
 } from "src/components/molecules"
 import { useCreatePass } from "src/hooks"
-import { PassTypeEnum } from "src/hooks/useCreatePass"
+import { createPassSchema, PassTypeEnum } from "src/hooks/useCreatePass"
 
+import ConfirmationDialog from "../ConfirmationDialog"
 import FormContainer from "../FormContainer"
 
 const CREATE_PASS_URL = "/tools/manage-passes/create"
@@ -65,8 +66,12 @@ const CreatePassForm = ({ passType }: any) => {
     onCreatePass,
     onDragDropChange,
     onRemoveFileUpload,
-    register
+    register,
+    getValues,
+    trigger
   } = useCreatePass({ passType })
+  const [showCreatePassConfirmationModal, setShowCreatePassConfirmationModal] =
+    useState(false)
 
   const createPassHeader = `Create a new ${
     isSubscriptionPass ? "Subscription" : "Lifetime"
@@ -75,6 +80,13 @@ const CreatePassForm = ({ passType }: any) => {
   return (
     <div className="mx-auto -mt-[160px] grid grid-cols-10 justify-center gap-5 md:w-[653px] md:px-4 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <CreatePassHeader title={createPassHeader} />
+      <ConfirmationDialog
+        title="Are you sure?"
+        desc="This pass can not be changed after it's created"
+        isOpen={showCreatePassConfirmationModal}
+        onClose={() => setShowCreatePassConfirmationModal(false)}
+        onConfirm={onCreatePass}
+      />
       <div className="col-span-12 mx-auto w-[100%] lg:col-span-10 lg:max-w-[680px]">
         <FormContainer>
           <PassNameInput errors={errors} register={register} />
@@ -91,7 +103,19 @@ const CreatePassForm = ({ passType }: any) => {
           {isLifetimePass && <PassLifetimeOptions register={register} />}
           <PassDirectMessage register={register} />
           {isSubscriptionPass && <PassRenewal register={register} />}
-          <CreatePassButton onCreateHandler={onCreatePass} />
+          <CreatePassButton
+            onCreateHandler={() => {
+              createPassSchema
+                .validate(getValues())
+                .then(() => {
+                  setShowCreatePassConfirmationModal(true)
+                  return ""
+                })
+                .catch(() => {
+                  trigger()
+                })
+            }}
+          />
         </FormContainer>
       </div>
     </div>
