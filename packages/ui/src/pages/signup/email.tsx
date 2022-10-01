@@ -34,7 +34,7 @@ const UserEmailPage = () => {
 
     setHasSentEmail(router.query.hasEmail == "true")
 
-    authRouter(router, userClaims)
+    // authRouter(router, userClaims)
   }, [router, userClaims])
 
   const onUserRegister = async (email: string) => {
@@ -64,7 +64,8 @@ const UserEmailPage = () => {
         router.push(authStateToRoute(AuthStates.VERIFY))
       }
 
-      setHasSentEmail(true)
+      router.query.hasEmail = "true"
+      router.push(router)
     } catch (err: any) {
       console.error(err)
       toast.error(err?.message)
