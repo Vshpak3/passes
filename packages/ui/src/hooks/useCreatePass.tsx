@@ -23,7 +23,7 @@ const THIRTY_DAY_DURATION_LIFETIME = undefined
 const MIN_PASS_ROYALTY_PERCENTAGE = 6
 const MAX_PASS_ROYALTY_PERCENTAGE = 30
 
-const createPassSchema = yup.object({
+export const createPassSchema = yup.object({
   passName: yup.string().required(),
   passDescription: yup.string().required(),
   royalties: yup

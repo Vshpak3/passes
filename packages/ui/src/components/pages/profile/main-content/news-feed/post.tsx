@@ -53,7 +53,7 @@ export const Post = ({ profile, post }: any) => {
   const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
-  const [currentPost, setCurrentPost] = useState(null)
+  const [currentPost, setCurrentPost] = useState<any>(null)
 
   const getDropdownOptions = [
     {

@@ -1,5 +1,3 @@
-import React from "react"
-
 import { NewPost } from "../new-post"
 import CreatorContentFeed from "./creator-content-feed"
 import EventsFeed from "./events-feed"

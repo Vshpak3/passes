@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import _, { identity } from "lodash"
-import CameraIcon from "public/icons/profile-camera-icon.svg"
 import ProfileDiscordIcon from "public/icons/profile-discord-icon.svg"
 import ProfileFacebookIcon from "public/icons/profile-facebook-icon.svg"
 import ProfileInstagramIcon from "public/icons/profile-instagram-icon.svg"
