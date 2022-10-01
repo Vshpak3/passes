@@ -127,14 +127,13 @@ const CustomizePageForm = ({
             inputUI={
               <div className="z-10 flex w-full flex-col">
                 <div className="relative w-full">
-                  <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
                   <img // eslint-disable-line @next/next/no-img-element
                     alt=""
                     className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                     src={
                       profileBannerImage?.length
                         ? URL.createObjectURL(profileBannerImage[0])
-                        : "/pages/profile/profile-cover-photo.png"
+                        : "/img/default-banner-img.png"
                     }
                   />
                 </div>
@@ -150,15 +149,14 @@ const CustomizePageForm = ({
             cropWidth={400}
             cropHeight={400}
             inputUI={
-              <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
-                <CameraIcon className="absolute z-30 cursor-pointer" />
+              <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full  ">
                 <img // eslint-disable-line @next/next/no-img-element
                   alt=""
-                  className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
+                  className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/pages/profile/profile-photo.jpeg"
+                      : "/img/default-profile-img.png"
                   }
                 />
               </div>
