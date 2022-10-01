@@ -171,7 +171,6 @@ const CreatorFlow = () => {
                       screen...
                     </div>
                     <div className="flex max-w-full items-center justify-center p-8">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         alt=""
                         src="/pages/profile/creator-verification-loading.png"

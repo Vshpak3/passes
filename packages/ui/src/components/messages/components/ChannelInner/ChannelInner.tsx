@@ -307,7 +307,7 @@ export const GalleryMedia = ({ media, isCreator }: any) => {
       </div>
       {isCreator ? (
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
-          <img // eslint-disable-line @next/next/no-img-element
+          <img
             src="/pages/messages/example-photo-gallery.png"
             className="rounded-[20px] object-fill  backdrop-blur-[100px] "
             alt="photo"
@@ -342,7 +342,7 @@ export const GalleryMedia = ({ media, isCreator }: any) => {
                 </div>
               )}
             </div>
-            <img // eslint-disable-line @next/next/no-img-element
+            <img
               src="/pages/messages/example-photo-gallery.png"
               alt=""
               className="w-full rounded-[20px] object-cover shadow-xl"

@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @next/next/no-img-element */
 import { Fade, Popper } from "@mui/material"
 import {
   GetListMembersRequestDtoOrderEnum,

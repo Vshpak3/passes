@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @next/next/no-img-element */
 import { ListMemberDto } from "@passes/api-client"
 import React, { FC } from "react"
 import CheckVerified from "src/icons/check-verified"

@@ -7,8 +7,6 @@ import { IntercomProvider } from "react-use-intercom"
 import CardCarousel from "src/components/molecules/CardCarousel"
 import LandingIcon from "src/icons/landingIcon"
 
-import { isProd } from "../helpers/env"
-
 const HomePage = () => {
   const router = useRouter()
   const [emailAddress, setEmailAddress] = useState("")
@@ -113,17 +111,15 @@ const HomePage = () => {
             </h2>
             <CardCarousel />
           </div>
-          {!isProd && (
-            <div className="align-items mx-auto flex justify-center">
-              <button
-                type="button"
-                onClick={routeToLogin}
-                className="shadow-accent-volume hover:bg-accent-dark mt-20 w-36 rounded-full border-none bg-accent py-3 px-8 text-center font-semibold text-white transition-all"
-              >
-                Login
-              </button>
-            </div>
-          )}
+          <div className="align-items mx-auto flex justify-center">
+            <button
+              type="button"
+              onClick={routeToLogin}
+              className="shadow-accent-volume hover:bg-accent-dark mt-20 w-36 rounded-full border-none bg-accent py-3 px-8 text-center font-semibold text-white transition-all"
+            >
+              Login
+            </button>
+          </div>
           <p className="text-jacarta-700 mx-auto mt-20 max-w-2xl text-center text-lg dark:text-white">
             Join our mailing list to stay in the loop
           </p>

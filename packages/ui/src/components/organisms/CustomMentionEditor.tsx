@@ -51,7 +51,7 @@ function Entry(props: EntryComponentProps): ReactElement {
   return (
     <div {...parentProps} className="z-50 flex flex-col py-2 px-4">
       <div className={className}>
-        <img // eslint-disable-line @next/next/no-img-element
+        <img
           src={mention.avatar}
           className="h-8 w-8 rounded-full"
           role="presentation"

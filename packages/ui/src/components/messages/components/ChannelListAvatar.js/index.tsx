@@ -71,7 +71,7 @@ export const Avatar = <
       title={name}
     >
       {image && !error ? (
-        <img // eslint-disable-line @next/next/no-img-element
+        <img
           alt={initials}
           className={`str-chat__avatar-image${
             loaded ? " str-chat__avatar-image--loaded" : ""

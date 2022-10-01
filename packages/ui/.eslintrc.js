@@ -12,6 +12,7 @@ module.exports = {
     // 'plugin:tailwindcss/recommended',
   ],
   rules: {
+    "@next/next/no-img-element": "off",
     // Breaking for some reason after upgrades
     "react/no-unknown-property": "off",
     "react/prop-types": "off",

@@ -74,7 +74,6 @@ function getPassPrice(pass: PassDto) {
 export const PassCardMobile = ({ pass, setModalOpen }: IPassItem) => (
   <div className="carousel-item relative flex h-[300px] flex-col items-center justify-items-center">
     {"todo-PASS-532" && (
-      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={"todo-PASS-532"}
         alt={pass.title}
@@ -99,7 +98,7 @@ export const PassCardMobile = ({ pass, setModalOpen }: IPassItem) => (
 export const PassCardDesktop = ({ pass, setModalOpen }: IPassItem) => {
   return (
     <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
-      <img // eslint-disable-line @next/next/no-img-element
+      <img
         src={"todo-PASS-532"}
         className="rounded-[20px] object-cover"
         alt={pass.title}

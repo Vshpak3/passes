@@ -11,7 +11,7 @@ export const Avatar = ({ imageSrc, isOnline = true }: Props) => {
       {isOnline && (
         <span className="bg-green absolute top-0.5 right-2 h-[15px] w-[15px] rounded-full bg-[#7AF086]" />
       )}
-      <img // eslint-disable-line @next/next/no-img-element
+      <img
         width="50px"
         height="50px"
         className="rounded-full"

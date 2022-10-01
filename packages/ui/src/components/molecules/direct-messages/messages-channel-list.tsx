@@ -65,7 +65,7 @@ export const MessagesChannelList = ({
                 />
               </div>
               <div className="item-center flex pr-[10px]">
-                <img // eslint-disable-line @next/next/no-img-element
+                <img
                   width="50px"
                   height="50px"
                   className="rounded-full"

@@ -40,10 +40,7 @@ export const Content = () => {
             </div>
           )}
         </div>
-        <img // eslint-disable-line @next/next/no-img-element
-          src="/pages/profile/profile-post-photo.png"
-          alt=""
-        />
+        <img src="/pages/profile/profile-post-photo.png" alt="" />
       </div>
       <BuyPostModal setOpen={onSuccess} isOpen={openBuyPostModal} />
     </>

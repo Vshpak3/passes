@@ -132,7 +132,7 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
             <div className="z-10 flex w-full flex-col">
               <div className="relative w-full">
                 <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
-                <img // eslint-disable-line @next/next/no-img-element
+                <img
                   alt=""
                   className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                   src={
@@ -155,7 +155,7 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
           inputUI={
             <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
               <CameraIcon className="absolute z-30 cursor-pointer" />
-              <img // eslint-disable-line @next/next/no-img-element
+              <img
                 alt=""
                 className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                 src={

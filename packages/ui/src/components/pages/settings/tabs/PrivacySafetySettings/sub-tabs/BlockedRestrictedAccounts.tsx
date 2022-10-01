@@ -1,16 +1,15 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @next/next/no-img-element */
 import React from "react"
 import { Button, ButtonTypeEnum } from "src/components/atoms"
 
 import Tab from "../../../Tab"
 
-const accounts = [
-  { name: "Kianna Press", isBlocked: true },
-  { name: "Kianna Press", isBlocked: true },
-  { name: "Kianna Press", isBlocked: false },
-  { name: "Kianna Press", isBlocked: true },
-  { name: "Kianna Press", isBlocked: true }
+// TODO: Needs backend integration
+const accounts: { name: string; isBlocked: boolean }[] = [
+  // { name: "Kianna Press", isBlocked: true },
+  // { name: "Kianna Press", isBlocked: true },
+  // { name: "Kianna Press", isBlocked: false },
+  // { name: "Kianna Press", isBlocked: true },
+  // { name: "Kianna Press", isBlocked: true }
 ]
 
 const BlockedRestrictedAccounts = () => {
@@ -21,6 +20,7 @@ const BlockedRestrictedAccounts = () => {
       description="When you block someone, that person won’t be able to follow or message you, and you won’t see notifications from them."
     >
       <div className="mt-5 space-y-[26px] px-2.5">
+        {/* eslint-disable-next-line sonarjs/no-empty-collection */}
         {accounts.map(({ name, isBlocked }, i) => (
           <div className="flex items-center justify-between" key={i}>
             <div className="flex items-center space-x-2.5">

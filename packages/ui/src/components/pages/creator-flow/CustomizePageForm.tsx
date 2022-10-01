@@ -126,7 +126,7 @@ const CustomizePageForm = ({
             inputUI={
               <div className="z-10 flex w-full flex-col">
                 <div className="relative w-full">
-                  <img // eslint-disable-line @next/next/no-img-element
+                  <img
                     alt=""
                     className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                     src={
@@ -149,7 +149,7 @@ const CustomizePageForm = ({
             cropHeight={400}
             inputUI={
               <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full  ">
-                <img // eslint-disable-line @next/next/no-img-element
+                <img
                   alt=""
                   className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
                   src={

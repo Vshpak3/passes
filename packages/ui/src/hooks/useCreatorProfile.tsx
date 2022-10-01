@@ -4,7 +4,6 @@ import { useState } from "react"
 import useSWR from "swr"
 
 import { updateProfile } from "../helpers"
-import { isProd } from "../helpers/env"
 import { ProfileUpdate } from "../helpers/updateProfile"
 import usePasses from "./usePasses"
 import useUser from "./useUser"

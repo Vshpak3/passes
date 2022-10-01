@@ -126,7 +126,7 @@ export const PostProfileAvatar = ({
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center space-x-4">
           {profile.userId ? (
-            <img // eslint-disable-line @next/next/no-img-element
+            <img
               className="h-12 w-12 rounded-full object-cover"
               src={ContentService.profileThumbnail(profile.userId)}
               alt={profile.fullName}
@@ -238,7 +238,7 @@ export const LockedMedia = ({ postUnlocked, post, setPostUnlocked }: any) => {
           )}
         </div>
         {post.content?.length > 0 && (
-          <img // eslint-disable-line @next/next/no-img-element
+          <img
             src={post.content[0].url}
             alt=""
             className="w-full rounded-[20px] object-cover shadow-xl"
@@ -516,7 +516,7 @@ export const FundraiserMedia = ({ images }: any) => {
               key={`media_${index}`}
               className={mediaGridLayout(images.length, index)}
             >
-              <img // eslint-disable-line @next/next/no-img-element
+              <img
                 src={image.url}
                 alt={`media_${index}`}
                 className="rounded-[23px] object-cover"
