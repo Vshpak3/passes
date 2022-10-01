@@ -3,6 +3,10 @@ import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import ms from 'ms'
 import * as uuid from 'uuid'
 
+const DEFAULT_LOCK_EXPIRE = ms('1 hour')
+const DEFAULT_LOCK_RETRY_INTERVAL = 100 // ms
+const DEFAULT_LOCK_MAX_RETRY_TIMES = 100
+
 @Injectable()
 export class RedisLockService {
   private readonly uuid: string = uuid.v4()
@@ -43,9 +47,9 @@ export class RedisLockService {
    */
   async lock(
     name: string,
-    expire = ms('1 hour'),
-    retryInterval = 100,
-    maxRetryTimes = 36000,
+    expire = DEFAULT_LOCK_EXPIRE,
+    retryInterval = DEFAULT_LOCK_RETRY_INTERVAL,
+    maxRetryTimes = DEFAULT_LOCK_MAX_RETRY_TIMES,
   ): Promise<void> {
     let retryTimes = 0
     // eslint-disable-next-line no-constant-condition
