@@ -1,4 +1,4 @@
-import { UserApi } from "@passes/api-client"
+import { ProfileApi, UserApi } from "@passes/api-client"
 
 import { ContentService } from "../helpers"
 
@@ -27,13 +27,13 @@ export async function updateProfile(values: ProfileUpdate): Promise<void> {
     profileBannerImage,
     username,
     displayName,
-    isAdult
-    // ...rest
+    isAdult,
+    ...rest
   } = values
 
   const userApi = new UserApi()
   const contentService = new ContentService()
-  // const profileApi = new ProfileApi()
+  const profileApi = new ProfileApi()
 
   await Promise.all([
     username
@@ -54,15 +54,14 @@ export async function updateProfile(values: ProfileUpdate): Promise<void> {
 
     profileBannerImage
       ? contentService.uploadProfileBanner(profileBannerImage)
-      : undefined
+      : undefined,
 
-    // TODO: this is getting a bunch of junk
-    // Object.values(rest).some((x) => x)
-    //   ? profileApi.createOrUpdateProfile({
-    //       createOrUpdateProfileRequestDto: {
-    //         ...rest
-    //       }
-    //     })
-    //   : undefined
+    Object.values(rest).some((x) => x)
+      ? profileApi.createOrUpdateProfile({
+          createOrUpdateProfileRequestDto: {
+            ...rest
+          }
+        })
+      : undefined
   ])
 }
