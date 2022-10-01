@@ -158,8 +158,7 @@ const SelectPassTab = ({ setPassType, passType }: ISelectPassFilter) => {
           mt-[10px]
           box-border
           flex
-          w-fit
-          first:bg-gray-100"
+          w-fit"
       >
         {TAB_OPTIONS.map(({ value, label }) => (
           <div
