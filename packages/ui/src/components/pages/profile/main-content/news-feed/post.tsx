@@ -20,6 +20,7 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
+import { useUser } from "src/hooks"
 
 import {
   classNames,
@@ -76,7 +77,7 @@ export const Post = ({ profile, post }: any) => {
           // view={currentPost.fundraiser ? "creator" : "fan"}
         />
       )}
-      <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
+      <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
         <PostProfileAvatar
           post={post}
           profile={profile}
@@ -119,6 +120,8 @@ export const PostProfileAvatar = ({
   post,
   dropdownItems = []
 }: any) => {
+  const { user } = useUser()
+
   return (
     <>
       <div className="flex w-full items-center justify-between">
@@ -158,7 +161,7 @@ export const PostProfileAvatar = ({
               minPeriod={30}
             />
           </div>
-          <PostStaticsButton />
+          {user?.id === post.userId && <PostStaticsButton />}
 
           <div className="flex items-center gap-[15px]">
             {/* <div
