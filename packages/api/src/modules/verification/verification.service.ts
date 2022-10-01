@@ -299,16 +299,7 @@ export class VerificationService {
 
     switch (askStep) {
       case CreatorVerificationStepEnum.STEP_1_PROFILE:
-        if (
-          !profile ||
-          !profile.description ||
-          !(await this.s3ContentService.doesObjectExist(
-            `profile/upload/${userId}/profile.${ContentFormatEnum.IMAGE}`,
-          )) ||
-          !(await this.s3ContentService.doesObjectExist(
-            `profile/upload/${userId}/banner.${ContentFormatEnum.IMAGE}`,
-          ))
-        ) {
+        if (!profile || !profile.description) {
           throw new VerificationError('user has not finished profile')
         }
         await this.dbWriter<CreatorVerificationEntity>(
