@@ -123,9 +123,9 @@ const WalletListItem = ({
               Set {wallet.chain} address
             </button>
           )}
-          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
-            <div>Unauthenticated</div>
-          )}
+          {!defaultEthMinting &&
+            !defaultSolMinting &&
+            !wallet.authenticated && <div>Unauthenticated</div>}
         </ConditionRendering>
         <Button
           disabled={wallet.custodial}
