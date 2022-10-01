@@ -3,11 +3,11 @@ import ms from "ms"
 import EditIcon from "public/icons/edit-pass.svg"
 import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import RenewModal from "src/components/organisms/RenewModal"
 import { classNames } from "src/helpers"
-import { useUser } from "src/hooks"
+import { useOnClickOutside, useUser } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 
 interface IPassTileLabel {
@@ -83,98 +83,53 @@ const PassRenewalButton = ({ onRenewal }: IPassRenewalButton) => (
 )
 
 const SelectPassFilter = ({ setPassType, passType }: ISelectPassFilter) => {
-  const [isSelectOpen, setIsSelectOpen] = useState(false)
+  const [showOptions, setShowOptions] = useState(false)
+  const menuEl = useRef(null)
+
   const [selectedValue, setSelectedValue] =
     useState<TComposePassOptions | null>(null)
   const filteredOptions = PASS_OPTIONS.filter(
     ({ label }) => label !== selectedValue?.label
   )
 
-  const isSelectOpenToggle = () => setIsSelectOpen((prevState) => !prevState)
-
   useEffect(() => {
     const [label] = PASS_OPTIONS.filter(({ value }) => value === passType)
     setSelectedValue(label)
-    setIsSelectOpen(false)
+    setShowOptions(false)
   }, [passType])
 
+  useOnClickOutside(menuEl, () => setShowOptions(false))
+
   return (
-    <div
-      className="relative text-[24px]
-        text-base
-        text-sm
-        font-bold
-        text-white"
-    >
-      <input
-        value={selectedValue?.label}
-        onClick={isSelectOpenToggle}
-        readOnly
-        className="
-          relative
-          block
-          h-[45px]
-          w-[207px]
-          cursor-pointer
-          rounded-md
-          border
-          border-passes-gray-100
-          bg-black
-          p-[10px]
-          text-[16px]
-          outline-none
-          md:mt-0"
-      />
+    <div className="text-label relative inline-block" ref={menuEl}>
       <div
-        className="
-          absolute
-          top-[50%]
-          right-[16px]
-          translate-y-[-50%]
-          cursor-pointer"
+        role="button"
+        onClick={() => setShowOptions(true)}
+        className="flex cursor-pointer space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
       >
+        <span>{selectedValue?.label}</span>
         <ArrowDown />
       </div>
-      {isSelectOpen && (
-        <div
-          className="
-          absolute
-          top-[100%]
-          right-0
-          z-[1]
-          mt-[10px]
-          box-border
-          w-full
-          rounded-[6px]
-          border
-          border-[#34343A60]
-          bg-[#100C11]
-          px-[25px]
-          pt-[6px]"
-        >
-          {filteredOptions.map(({ value, label }) => (
-            <div
-              className="
-                block
-                flex
-                cursor-pointer
-                justify-between
-                pt-[10px]
-                text-left
-                text-[16px]
-                last:border-t
-                last:border-passes-gray-100"
+      {showOptions && (
+        <ul className="absolute z-10 w-full translate-y-1.5 space-y-2.5 rounded-md border border-passes-dark-200 bg-passes-dark-700 py-2.5 px-3">
+          {filteredOptions.map(({ value, label }, i) => (
+            <li
               key={value}
+              className={classNames(
+                "cursor-pointer",
+                i !== filteredOptions.length - 1
+                  ? "border-b border-passes-dark-200 pb-2.5"
+                  : ""
+              )}
+              onClick={() => {
+                setShowOptions(false)
+                setPassType(value)
+              }}
             >
-              <div
-                onClick={() => setPassType(value)}
-                className="flex w-full items-center pb-[10px]"
-              >
-                {label}
-              </div>
-            </div>
+              {label}
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   )

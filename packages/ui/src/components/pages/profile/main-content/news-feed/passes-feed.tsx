@@ -18,14 +18,19 @@ const PassesFeed = ({ profile }: any) => {
     }
   }, [passType, creatorPasses])
 
+const PassesFeed = ({ profile }: any) => {
+  const { passType, setPassType, filteredCreatorPassesList } = usePasses(
+    profile.userId
+  )
+
   return (
     <>
       <div className="mt-[34px]">
-        <SelectPassFilter passType={passType} setPassType={setPassType} />
+        <SelectPassFilter setPassType={setPassType} passType={passType} />
       </div>
       <div className="mt-[25px] grid grid-cols-2  gap-[25px] pb-20 sidebar-collapse:grid-cols-3">
-        {filteredPasses.length === 0 && <h1>No Pass to show</h1>}
-        {filteredPasses.map((pass, i) => (
+        {filteredCreatorPassesList.length === 0 && <span>No Pass to show</span>}
+        {filteredCreatorPassesList.map((pass, i) => (
           <PassCard key={i} pass={pass} />
         ))}
       </div>
