@@ -1,9 +1,14 @@
-import { CircleBankDto, PaymentApi, PayoutMethodDto } from "@passes/api-client"
+import {
+  CircleBankDto,
+  PaymentApi,
+  PayoutMethodDto,
+  PayoutMethodDtoMethodEnum
+} from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 const usePayoutMethod = () => {
-  const [defaultPayoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
+  const [payoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [banks, setBanks] = useState<CircleBankDto[]>([])
   const api = new PaymentApi()
@@ -58,6 +63,10 @@ const usePayoutMethod = () => {
       await api.deleteCircleBank({
         circleBankId: bankId
       })
+      if (payoutMethod?.bankId === bankId) {
+        setPayoutMethod({ method: PayoutMethodDtoMethodEnum.None })
+      }
+      setBanks(banks.filter((bank) => bank.id != bankId))
     } catch (error: any) {
       console.error(error)
       toast.error(error)
@@ -74,7 +83,7 @@ const usePayoutMethod = () => {
 
   return {
     banks,
-    defaultPayoutMethod,
+    defaultPayoutMethod: payoutMethod,
     isLoadingPayoutMethod: isLoading,
     setDefaultPayoutMethod,
     deleteBank

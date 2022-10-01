@@ -1252,7 +1252,7 @@ export class PaymentService {
    * @returns
    */
   async getDefaultPayinMethod(userId: string): Promise<PayinMethodDto> {
-    const defaultPayinMethod = await this.dbWriter(
+    const defaultPayinMethod = await this.dbReader(
       DefaultPayinMethodEntity.table,
     )
       .where({ user_id: userId })
