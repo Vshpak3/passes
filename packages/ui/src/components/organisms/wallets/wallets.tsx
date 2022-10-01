@@ -140,6 +140,7 @@ const Wallets = () => {
       })
       .catch(({ message }) => toast(message))
     setValue("address", "")
+    await setTimeout(() => undefined, 50)
     mutate().catch(({ message }) => toast(message))
   }
 
@@ -149,6 +150,7 @@ const Wallets = () => {
       console.error(message)
       toast.error(message)
     })
+    await setTimeout(() => undefined, 50)
     mutate()
   }
 
