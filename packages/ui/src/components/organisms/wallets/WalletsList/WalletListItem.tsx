@@ -48,14 +48,15 @@ const WalletListItem = ({
     return <DefaultIcon />
   }
 
-  const walletTypeName = (value: string) => {
-    if (value) {
-      switch (value) {
-        case "eth":
-          return "Metamask"
-        case "sol":
-          return "Phantom"
-      }
+  const walletTypeName = (value: string, isAuthWallet: boolean) => {
+    if (!isAuthWallet) {
+      return "Cold"
+    }
+    switch (value) {
+      case "eth":
+        return "Metamask"
+      case "sol":
+        return "Phantom"
     }
     return value
   }
@@ -103,7 +104,7 @@ const WalletListItem = ({
           <div className="mr-[30px] flex w-[135px] items-center">
             <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
             <span className="ml-[12px] text-[12px] font-bold">
-              {walletTypeName(wallet.chain)}
+              {walletTypeName(wallet.chain, wallet.authenticated)}
             </span>
           </div>
         </div>
