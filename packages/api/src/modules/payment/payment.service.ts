@@ -1176,8 +1176,8 @@ export class PaymentService {
   }
 
   EVM_USDC_CHAINIDS = {
-    mainnet: [1, 137, 43114],
-    testnet: [5, 80001, 43113],
+    mainnet: { 1: 'ETH', 137: 'MATIC', 43114: 'AVAX' },
+    testnet: { 5: 'ETH', 80001: 'MATIC', 43113: 'AVAX' },
   }
 
   EVM_NATIVE_CHAINIDS = {
@@ -1196,7 +1196,15 @@ export class PaymentService {
   }
 
   getEvmChainIdsUSDC(): number[] {
-    return this.EVM_USDC_CHAINIDS[this.getBlockchainSelector()]
+    return Object.keys(
+      this.EVM_USDC_CHAINIDS[this.getBlockchainSelector()],
+    ).map((key) => parseInt(key))
+  }
+
+  getEvmChain(chainId: number): ChainEnum {
+    return this.EVM_USDC_CHAINIDS[this.getBlockchainSelector()][
+      chainId
+    ] as ChainEnum
   }
 
   getEvmChainIdsNative(): number[] {
@@ -1255,6 +1263,9 @@ export class PaymentService {
       return { method: PayinMethodEnum.NONE }
     }
     const dto = new PayinMethodDto(defaultPayinMethod)
+    if (dto.chainId) {
+      dto.chain = this.getEvmChain(dto.chainId)
+    }
     if (!(await this.validatePayinMethod(userId, dto))) {
       return { method: PayinMethodEnum.NONE }
     }

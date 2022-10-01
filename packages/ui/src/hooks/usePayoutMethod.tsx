@@ -43,7 +43,7 @@ const usePayoutMethod = () => {
         setPayoutMethodRequestDto: dto
       })
 
-      getDefaultPayoutMethod()
+      setDefaultPayoutMethod(dto)
     } catch (error: any) {
       console.error(error)
       toast.error(error)

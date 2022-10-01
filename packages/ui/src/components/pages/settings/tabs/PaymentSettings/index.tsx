@@ -74,6 +74,8 @@ const PaymentSettings = () => {
           </span>
           <span className="text-[16px] font-[700]">
             {defaultPayinMethod?.method ?? "no payin method"}
+            <br />
+            {defaultPayinMethod?.chain}
           </span>
           {defaultCard && (
             <div className="flex gap-6">
