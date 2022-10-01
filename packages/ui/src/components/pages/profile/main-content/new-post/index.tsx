@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"

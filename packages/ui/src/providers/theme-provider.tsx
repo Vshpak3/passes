@@ -6,7 +6,6 @@ const ThemeProvider = ({ Component, children }: any) => (
     forcedTheme={Component.theme || null}
     disableTransitionOnChange
   >
-    propert... Remove this comment to see the full error message
     {children}
   </Provider>
 )

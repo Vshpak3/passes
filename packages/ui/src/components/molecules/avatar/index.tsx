@@ -16,13 +16,11 @@ const Avatar = ({
       (className && ` ${className}`)
     }
   >
-    bein... Remove this comment to see the full error message
     <RadixAvatar.Image
       src={src}
       className="h-full w-full overflow-hidden rounded-full border border-mauve-mauve6 object-cover dark:border-mauveDark-mauve6"
       alt=""
     />
-    is b... Remove this comment to see the full error message
     <RadixAvatar.Fallback
       className={`relative grid h-full w-full place-items-center overflow-hidden rounded-full border border-mauve-mauve6 text-mauve-mauve11 transition-colors dark:border-mauveDark-mauve6 dark:text-mauveDark-mauve11 ${
         (editing && "hover:bg-mauve-mauve5 dark:hover:bg-mauveDark-mauve5") +

@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { Menu, Transition } from "@headlessui/react"
 import copy from "copy-to-clipboard"
 import ms from "ms"
