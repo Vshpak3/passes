@@ -58,7 +58,7 @@ const AddCard = () => {
           keyId: "",
           encryptedData: "",
           billingDetails: {
-            name: user?.legalFullName ?? "",
+            name: values["card-holder"],
             city: values["city"],
             country: iso3311a2.getCode(values["country"]),
             line1: values["address1"],
@@ -134,6 +134,17 @@ const AddCard = () => {
             <VisaIcon />
           </div>
         }
+        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+      />
+      <FormInput
+        register={register}
+        type="text"
+        name="card-holder"
+        placeholder="Card holder"
+        errors={errors}
+        options={{
+          required: { message: "Name is required", value: true }
+        }}
         className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
       />
       <div className="flex flex-row gap-4">
