@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 import jwtDecode from 'jwt-decode'
 
-import { ROLE_KEY, RoleEnum } from '../core/auth.metadata'
+import { ROLE_KEY, RoleEnum, SKIP_AUTH_FOR_ROLES } from '../core/auth.metadata'
 import { JWT_AUTH_NAME } from './jwt.constants'
 import { JwtAuthPayload } from './jwt.payload'
 
@@ -31,10 +31,6 @@ export class JwtAuthGuard extends AuthGuard(JWT_AUTH_NAME) {
       }
     }
 
-    return (
-      role === RoleEnum.NO_AUTH ||
-      role === RoleEnum.UNVERIFIED ||
-      super.canActivate(context)
-    )
+    return SKIP_AUTH_FOR_ROLES.has(role) || super.canActivate(context)
   }
 }

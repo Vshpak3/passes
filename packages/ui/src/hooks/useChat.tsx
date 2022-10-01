@@ -2,8 +2,10 @@ import { MessagesApi } from "@passes/api-client"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
+import { accessTokenKey } from "../helpers/token"
+
 const useChat = (userId: string) => {
-  const [accessToken] = useLocalStorage("access-token", "")
+  const [accessToken] = useLocalStorage(accessTokenKey, "")
   const channelId = useSWR(
     accessToken ? "/messages/channel" + "/" + userId : null,
     async () => {

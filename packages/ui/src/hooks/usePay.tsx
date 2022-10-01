@@ -19,6 +19,7 @@ import {
   setUpPhantomProvider
 } from "src/helpers/payment/wallet-setup"
 
+import { accessTokenKey } from "../helpers/token"
 import useLocalStorage from "./useLocalStorage"
 
 export const usePay = (
@@ -36,7 +37,7 @@ export const usePay = (
   const [phantomProvider, setPhantomProvider] = useState<PhantomProvider>()
   const [metamaskProvider, setMetamaskProvider] = useState<EthereumProvider>()
 
-  const [accessToken] = useLocalStorage("access-token", "")
+  const [accessToken] = useLocalStorage(accessTokenKey, "")
 
   const handleCircleCard = async (
     registerResponse: RegisterPayinResponseDto,

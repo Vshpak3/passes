@@ -3,6 +3,8 @@ import jwtDecode from "jwt-decode"
 import { useLocalStorage } from "src/hooks"
 import useSWR from "swr"
 
+import { accessTokenKey, refreshTokenKey } from "../helpers/token"
+
 export interface JWTUserClaims {
   sub: string
   isVerified: boolean
@@ -15,8 +17,8 @@ export interface JWTUserClaims {
 }
 
 const useUser = () => {
-  const [accessToken, setAccessToken] = useLocalStorage("access-token", "")
-  const [, setRefreshToken] = useLocalStorage("refresh-token", "")
+  const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
+  const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
   const {
     data: user,

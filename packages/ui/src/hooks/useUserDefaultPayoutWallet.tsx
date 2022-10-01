@@ -1,10 +1,11 @@
 import { PaymentApi } from "@passes/api-client"
 import useSWR from "swr"
 
+import { accessTokenKey } from "../helpers/token"
 import useLocalStorage from "./useLocalStorage"
 
 const useUserDefaultPayoutWallet = () => {
-  const [accessToken] = useLocalStorage("access-token", "")
+  const [accessToken] = useLocalStorage(accessTokenKey, "")
 
   const {
     data: wallet = {},

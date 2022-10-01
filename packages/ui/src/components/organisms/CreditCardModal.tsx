@@ -28,6 +28,7 @@ import { creditCardSchema } from "src/helpers/validation"
 import { useLocalStorage } from "src/hooks"
 import { v4 } from "uuid"
 
+import { accessTokenKey } from "../../helpers/token"
 import Modal from "./Modal"
 
 interface ICreditCardModal {
@@ -46,7 +47,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
   } = useForm({
     resolver: yupResolver(creditCardSchema)
   })
-  const [accessToken] = useLocalStorage("access-token", "")
+  const [accessToken] = useLocalStorage(accessTokenKey, "")
 
   async function onSubmit(data: any) {
     const idempotencyKey = v4()

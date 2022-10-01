@@ -3,6 +3,9 @@ import jwtDecode from "jwt-decode"
 
 import { JWTUserClaims } from "../hooks/useUser"
 
+export const accessTokenKey = "access-token"
+export const refreshTokenKey = "refresh-token"
+
 /**
  * Checks the expiration of the token.
  *
@@ -24,13 +27,13 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
       refreshAuthTokenRequestDto: { refreshToken: JSON.parse(refreshToken) }
     })
     if (!res.accessToken) {
-      console.error("did not receive an access token")
+      console.error("Did not receive an access token")
       return false
     }
-    window.localStorage.setItem("access-token", JSON.stringify(res.accessToken))
+    window.localStorage.setItem(accessTokenKey, JSON.stringify(res.accessToken))
     return true
   } catch (err) {
-    console.error("failed to refresh access token:", err)
+    console.error("Failed to refresh access token:", err)
     return false
   }
 }
@@ -45,8 +48,8 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
 export const refreshAccessToken = async (
   timeRemaining: number = 5 * 60 // 5 minutes
 ): Promise<boolean> => {
-  const accessToken = window.localStorage.getItem("access-token")
-  const refreshToken = window.localStorage.getItem("refresh-token")
+  const accessToken = window.localStorage.getItem(accessTokenKey)
+  const refreshToken = window.localStorage.getItem(refreshTokenKey)
 
   if (!refreshToken) {
     return false

@@ -147,6 +147,7 @@ export class AuthController {
     const tokens = await createTokens(
       res,
       AuthRecord.fromUserDto(
+        // Refreshes are only valid for verified users
         await this.userService.findOne({ id: req.user.id }),
       ),
       this.jwtAuthService,

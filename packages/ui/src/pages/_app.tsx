@@ -56,21 +56,27 @@ Router.events.on("routeChangeError", () => {
   nprogress.done()
 })
 
+// Refreshes auth token
+function refreshAuth(): void {
+  refreshAccessToken()
+    .then((r) => r && console.log("Access token was refreshed"))
+    .catch(() => null)
+}
+
 // Refresh access token on page load
 Router.events.on("routeChangeStart", async () => {
-  if (await refreshAccessToken()) {
-    console.log("Access token was refreshed")
-  }
+  refreshAuth()
 })
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [refresh, setRefresh] = useState(0)
 
+  // Refresh once on page load then repeatedly
   useEffect(() => {
+    refreshAuth()
+
     const interval = setInterval(async () => {
-      if (await refreshAccessToken()) {
-        console.log("Access token was refreshed")
-      }
+      refreshAuth()
       setRefresh(refresh + 1)
     }, CHECK_FOR_AUTH_REFRESH)
 
@@ -82,17 +88,15 @@ const App = ({ Component, pageProps }: AppProps) => {
     "Have an awesome day :-)"
   ])
 
-  const loadSegment = () => {
-    return snippet.min({
-      apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY
-    })
-  }
-
   return (
     <Providers Component={Component} pageProps={pageProps}>
       <DefaultHead />
       <Script
-        dangerouslySetInnerHTML={{ __html: loadSegment() }}
+        dangerouslySetInnerHTML={{
+          __html: snippet.min({
+            apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY
+          })
+        }}
         id="segmentScript"
       />
       <SWRConfig value={swrConfig}>

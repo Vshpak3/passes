@@ -10,4 +10,11 @@ export enum RoleEnum {
   REFRESH = 'refresh',
 }
 
+// If one of these roles is set then skip normal auth
+export const SKIP_AUTH_FOR_ROLES = new Set([
+  RoleEnum.NO_AUTH,
+  RoleEnum.UNVERIFIED,
+  RoleEnum.REFRESH,
+])
+
 export const Role = (role: RoleEnum) => SetMetadata(ROLE_KEY, role)
