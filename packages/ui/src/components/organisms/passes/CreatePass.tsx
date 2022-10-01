@@ -100,7 +100,9 @@ const CreatePassForm = ({ passType }: any) => {
             register={register}
           />
           <PassDescriptionInput register={register} errors={errors} />
-          {isLifetimePass && <PassLifetimeOptions register={register} />}
+          {isLifetimePass && (
+            <PassLifetimeOptions register={register} errors={errors} />
+          )}
           <PassDirectMessage register={register} />
           {isSubscriptionPass && <PassRenewal register={register} />}
           <CreatePassButton

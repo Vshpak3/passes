@@ -20,9 +20,27 @@ const MIN_FILES_LIFETIME = 1
 const THIRTY_DAY_DURATION = 30 * 24 * 60 * 60
 const THIRTY_DAY_DURATION_LIFETIME = undefined
 
-export const createPassSchema = yup.object({
+const MIN_PASS_ROYALTY_PERCENTAGE = 6
+const MAX_PASS_ROYALTY_PERCENTAGE = 30
+
+const createPassSchema = yup.object({
   passName: yup.string().required(),
-  passDescription: yup.string().required()
+  passDescription: yup.string().required(),
+  royalties: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .required("Royalty percentage is required")
+    .integer("Royalty percentage should not be point number")
+    .min(
+      MIN_PASS_ROYALTY_PERCENTAGE,
+      `Royalty percentage should be greater than ${
+        MIN_PASS_ROYALTY_PERCENTAGE - 1
+      }%`
+    )
+    .max(
+      MAX_PASS_ROYALTY_PERCENTAGE,
+      `Royalty percentage should be less than or equal to ${MAX_PASS_ROYALTY_PERCENTAGE}%`
+    )
 })
 
 export const PassTypeEnum = {
@@ -139,7 +157,7 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
       messages: parseInt(data["free-dms-month"]),
       duration: DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
-      royalties: 0
+      royalties: data.royalties * 100
     }
 
     const passId = await passApi

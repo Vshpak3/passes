@@ -131,7 +131,7 @@ const PassFileUpload = ({
   )
 }
 
-const PassLifetimeOptions = ({ register }: any) => {
+const PassLifetimeOptions = ({ register, errors }: any) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -142,11 +142,16 @@ const PassLifetimeOptions = ({ register }: any) => {
           name="totalSupply"
         />
         <PassNumberInput
+          suffix="%"
           register={register}
           title="Royalty Fees on re-sales"
           name="royalties"
+          placeholder="10"
           infoIcon
         />
+        {errors.royalties && (
+          <PassFormError message={errors.royalties.message} />
+        )}
         <PassNumberInput
           register={register}
           title="Cost per pass"

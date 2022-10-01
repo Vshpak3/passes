@@ -24,7 +24,14 @@ const PassFormCheckbox = ({ label, name, register }: any) => (
   </div>
 )
 
-const PassNumberInput = ({ register, title, name, infoIcon = false }: any) => (
+const PassNumberInput = ({
+  register,
+  title,
+  name,
+  infoIcon = false,
+  placeholder = "340",
+  suffix
+}: any) => (
   <div className="my-2 grid w-fit auto-cols-auto grid-flow-col grid-rows-1">
     <div className="align-items flex w-[100px] items-center md:w-[200px]">
       <span className="text-[#ffff]/70">{title}</span>
@@ -33,14 +40,19 @@ const PassNumberInput = ({ register, title, name, infoIcon = false }: any) => (
       <div className="align-items mx-3 flex w-[25px] items-center md:w-[30px]">
         {infoIcon && <InfoIcon />}
       </div>
-      <div className="align-items flex w-fit items-center justify-start">
+      <div className="align-items relative flex w-fit items-center justify-start">
         <FormInput
           register={register}
           type="number"
           name={name}
-          placeholder="340"
+          placeholder={placeholder}
           className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
         />
+        {suffix && (
+          <span className="absolute top-1/2 right-5 -translate-y-1/2">
+            {suffix}
+          </span>
+        )}
       </div>
     </div>
   </div>
