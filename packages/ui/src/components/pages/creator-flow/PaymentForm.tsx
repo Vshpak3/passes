@@ -71,7 +71,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
-      onFinishPaymentForm(true)
+      onFinishPaymentForm()
     } catch (error: any) {
       toast.error(error)
       console.error(error)
@@ -370,7 +370,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   width: "100%",
                   color: "#737893"
                 }}
-                onClick={() => onFinishPaymentForm(false)}
+                onClick={() => onFinishPaymentForm()}
               >
                 Skip for now
               </Button>

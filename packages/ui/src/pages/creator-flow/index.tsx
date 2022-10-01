@@ -61,12 +61,11 @@ const CreatorFlow = () => {
     setStepsDone((prev) => [...prev, CREATOR_STEPS.VERIFICATION])
   }, [])
 
-  const onFinishPaymentForm = async (isSubmitedBankDetails = false) => {
-    const step = isSubmitedBankDetails
-      ? GetCreatorVerificationStepResponseDtoStepEnum._3Payout
-      : GetCreatorVerificationStepResponseDtoStepEnum._4Done
+  const onFinishPaymentForm = async () => {
     const { accessToken } = await api.submitCreatorVerificationStep({
-      submitCreatorVerificationStepRequestDto: { step }
+      submitCreatorVerificationStepRequestDto: {
+        step: GetCreatorVerificationStepResponseDtoStepEnum._3Payout
+      }
     })
 
     if (accessToken) {

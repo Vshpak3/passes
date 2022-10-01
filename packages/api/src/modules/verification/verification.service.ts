@@ -273,12 +273,7 @@ export class VerificationService {
       .select('id', 'step')
       .first()
 
-    if (
-      creatorVerification?.step !== askStep &&
-      // This condition allows for the user to skip step 3
-      creatorVerification?.step !== CreatorVerificationStepEnum.STEP_3_PAYOUT &&
-      askStep !== CreatorVerificationStepEnum.STEP_4_DONE
-    ) {
+    if (creatorVerification?.step !== askStep) {
       throw new IncorrectVerificationStepError(
         `user ${userId} is on step ${creatorVerification?.step} not on step ${askStep}`,
       )
@@ -320,24 +315,6 @@ export class VerificationService {
         return { step: CreatorVerificationStepEnum.STEP_3_PAYOUT }
 
       case CreatorVerificationStepEnum.STEP_3_PAYOUT: // payment information not required
-        if (
-          !(await this.s3ContentService.doesObjectExist(
-            `w9/${userId}/upload.pdf`,
-          ))
-        ) {
-          throw new VerificationError('user has not submitted w9')
-        }
-        await this.dbWriter<CreatorVerificationEntity>(
-          CreatorVerificationEntity.table,
-        )
-          .where({ id: creatorVerification.id })
-          .update({ step: CreatorVerificationStepEnum.STEP_4_DONE })
-        return {
-          step: CreatorVerificationStepEnum.STEP_4_DONE,
-          accessToken: await this.createAccessToken(res, userId),
-        }
-
-      case CreatorVerificationStepEnum.STEP_4_DONE:
         await this.dbWriter<CreatorVerificationEntity>(
           CreatorVerificationEntity.table,
         )
