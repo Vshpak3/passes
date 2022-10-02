@@ -85,7 +85,6 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
         type={input.type}
         placeholder={input.label}
         accept={input?.accept}
-        value={profile[key]}
       />
     </div>
   )
