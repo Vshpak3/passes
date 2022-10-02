@@ -54,11 +54,16 @@ const useCreatorProfile = (props: GetProfileResponseDto) => {
     }
   }
 
+  const onCloseEditProfile = () => {
+    setEditProfile(false)
+  }
+
   return {
     creatorPasses,
     editProfile,
     isLoadingPosts,
     onEditProfile,
+    onCloseEditProfile,
     onSubmitEditProfile,
     ownsProfile,
     fanWallPosts,

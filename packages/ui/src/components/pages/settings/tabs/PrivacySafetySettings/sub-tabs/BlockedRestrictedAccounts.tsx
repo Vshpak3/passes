@@ -19,6 +19,7 @@ const BlockedRestrictedAccounts = () => {
       title="Blocked & Restricted Accounts"
       description="When you block someone, that person won’t be able to follow or message you, and you won’t see notifications from them."
     >
+      Coming Soon!!
       <div className="mt-5 space-y-[26px] px-2.5">
         {/* eslint-disable-next-line sonarjs/no-empty-collection */}
         {accounts.map(({ name, isBlocked }, i) => (

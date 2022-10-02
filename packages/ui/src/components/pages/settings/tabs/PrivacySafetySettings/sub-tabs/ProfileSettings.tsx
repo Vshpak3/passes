@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-import { usePrivacySafetySettings } from "src/hooks"
-import useSWR from "swr"
 
+import { useCreatorSettings } from "../../../../../../hooks"
+import ConditionRendering from "../../../../../molecules/ConditionRendering"
 import Tab from "../../../Tab"
 
 const defaultValues = {
-  fullPrivateProfile: true,
-  showFollowerCount: true,
-  showMediaCount: true
+  // fullPrivateProfile: true,
+  showLikeCount: true,
+  showPostCount: true
 }
-
 const ProfileSettings = () => {
-  const { privateProfileHandler, getCreatorSettings, updateCreatorSettings } =
-    usePrivacySafetySettings()
-  const { data: creatorSettings, mutate } = useSWR(
-    "/creator-settings",
-    getCreatorSettings
-  )
+  const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
+    useCreatorSettings()
+
   const { register, watch, handleSubmit, setValue } = useForm<
     typeof defaultValues
   >({
@@ -28,31 +24,35 @@ const ProfileSettings = () => {
   const [isDisableBtn, setIsDisabledBtn] = useState(false)
 
   const saveProfileSettingsHandler = async (values: typeof defaultValues) => {
-    const { fullPrivateProfile, ...countSettings } = values
-    await privateProfileHandler(fullPrivateProfile)
-    await updateCreatorSettings(countSettings)
-    mutate()
+    // const { fullPrivateProfile, ...countSettings } = values
+    // await privateProfileHandler(fullPrivateProfile)
+    console.log(values)
+    await updateCreatorSettings(values)
   }
 
   useEffect(() => {
-    if (creatorSettings) {
-      const { showFollowerCount, showMediaCount } = creatorSettings
-
-      if (
-        values.fullPrivateProfile === true &&
-        values.showFollowerCount === !!showFollowerCount &&
-        values.showMediaCount === !!showMediaCount
-      ) {
-        return setIsDisabledBtn(true)
-      }
-      setIsDisabledBtn(false)
+    if (isUpdating) {
+      setIsDisabledBtn(true)
     }
-  }, [creatorSettings, values])
+    // if (creatorSettings) {
+    //   const { showLikeCount, showPostCount } = creatorSettings
+
+    //   if (
+    //     // values.fullPrivateProfile === true &&
+    //     values.showLikeCount === showLikeCount &&
+    //     values.showPostCount === showPostCount
+    //   ) {
+    //     setIsDisabledBtn(true)
+    //   } else {
+    //     setIsDisabledBtn(false)
+    //   }
+    // }
+  }, [creatorSettings, isUpdating, values])
 
   useEffect(() => {
     if (creatorSettings) {
-      setValue("showFollowerCount", !!creatorSettings.showFollowerCount)
-      setValue("showMediaCount", !!creatorSettings.showMediaCount)
+      setValue("showLikeCount", !!creatorSettings.showLikeCount)
+      setValue("showPostCount", !!creatorSettings.showPostCount)
     }
   }, [creatorSettings, setValue])
 
@@ -62,12 +62,13 @@ const ProfileSettings = () => {
       title="Profile"
       description="Manage what information you and your fans see and share on Twitter."
     >
-      <form
-        className="mt-[22px]"
-        onSubmit={handleSubmit(saveProfileSettingsHandler)}
-      >
-        <div className="mt-[32px] space-y-[32px]">
-          {/* Disable private profiles for now
+      <ConditionRendering condition={!isLoading}>
+        <form
+          className="mt-[22px]"
+          onSubmit={handleSubmit(saveProfileSettingsHandler)}
+        >
+          <div className="mt-[32px] space-y-[32px]">
+            {/* Disable private profiles for now
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Fully Private Profile</span>
             <FormInput
@@ -76,7 +77,7 @@ const ProfileSettings = () => {
               type="toggle"
             />
           </label> */}
-          <label className="flex cursor-pointer items-center justify-between">
+            {/*<label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Show fans count on your profile</span>
             <FormInput
               name="showFollowerCount"
@@ -91,20 +92,42 @@ const ProfileSettings = () => {
               register={register}
               type="toggle"
             />
-          </label>
-        </div>
+        </label>*/}
 
-        <Button
-          variant="pink"
-          className="mt-[34px] w-auto !px-[52px]"
-          tag="button"
-          disabled={isDisableBtn}
-          disabledClass="opacity-[0.5]"
-          type={ButtonTypeEnum.SUBMIT}
-        >
-          <span>Save</span>
-        </Button>
-      </form>
+            <label className="flex cursor-pointer items-center justify-between">
+              <span className="text-label">
+                Show likes count on your profile
+              </span>
+              <FormInput
+                name="showLikeCount"
+                register={register}
+                type="toggle"
+              />
+            </label>
+            <label className="flex cursor-pointer items-center justify-between">
+              <span className="text-label">
+                Show post count on your profile
+              </span>
+              <FormInput
+                name="showPostCount"
+                register={register}
+                type="toggle"
+              />
+            </label>
+          </div>
+
+          <Button
+            variant="pink"
+            className="mt-[34px] w-auto !px-[52px]"
+            tag="button"
+            disabled={isDisableBtn}
+            disabledClass="opacity-[0.5]"
+            type={ButtonTypeEnum.SUBMIT}
+          >
+            <span>Save</span>
+          </Button>
+        </form>
+      </ConditionRendering>
     </Tab>
   )
 }

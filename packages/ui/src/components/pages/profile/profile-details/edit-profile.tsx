@@ -23,8 +23,7 @@ const bioForm = {
 }
 
 const profileInformationForm = {
-  displayName: { type: "text", label: "Display Name", colSpan: "col-span-6" },
-  username: { type: "text", label: "Username", colSpan: "col-span-6" }
+  displayName: { type: "text", label: "Display Name", colSpan: "col-span-6" }
 }
 
 const socialMediaForm = {
@@ -71,7 +70,7 @@ const socialMediaForm = {
     icon: Youtube
   }
 }
-export const EditProfile = ({ profile, onSubmit }: any) => {
+export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
   const { handleSubmit, register, getValues, watch, setValue } = useForm({
     defaultValues: profile
   })
@@ -98,18 +97,17 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
         type={input.type}
         placeholder={input.label}
         accept={input?.accept}
+        value={profile[key]}
       />
     </div>
   )
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col  items-center gap-5"
-    >
+    <>
       <Dialog
         className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[20px]"
         open={true}
+        onClose={onCloseEditProfile}
         footer={
           <div className="left-20 -mb-4 flex cursor-pointer self-center ">
             <span
@@ -121,139 +119,144 @@ export const EditProfile = ({ profile, onSubmit }: any) => {
           </div>
         }
       >
-        <FormImage
-          setValue={setValue}
-          register={register}
-          name="profileCoverImage"
-          imgData={profileCoverImage}
-          cropWidth={1500}
-          cropHeight={300}
-          inputUI={
-            <div className="z-10 flex w-full flex-col">
-              <div className="relative w-full">
-                <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col  items-center gap-5"
+        >
+          <FormImage
+            setValue={setValue}
+            register={register}
+            name="profileCoverImage"
+            imgData={profileCoverImage}
+            cropWidth={1500}
+            cropHeight={300}
+            inputUI={
+              <div className="z-10 flex w-full flex-col">
+                <div className="relative w-full">
+                  <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
+                  <img
+                    alt=""
+                    className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                    src={
+                      profileCoverImage?.length
+                        ? URL.createObjectURL(profileCoverImage[0])
+                        : "/img/default-banner-img.png"
+                    }
+                  />
+                </div>
+              </div>
+            }
+          />
+          <FormImage
+            setValue={setValue}
+            register={register}
+            name="profileImage"
+            imgData={profileImage}
+            cropWidth={400}
+            cropHeight={400}
+            inputUI={
+              <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
+                <CameraIcon className="absolute z-30 cursor-pointer" />
                 <img
                   alt=""
-                  className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                  className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                   src={
-                    profileCoverImage?.length
-                      ? URL.createObjectURL(profileCoverImage[0])
-                      : "/img/default-banner-img.png"
+                    profileImage?.length
+                      ? URL.createObjectURL(profileImage[0])
+                      : "/img/default-profile-img.png"
                   }
                 />
               </div>
-            </div>
-          }
-        />
-        <FormImage
-          setValue={setValue}
-          register={register}
-          name="profileImage"
-          imgData={profileImage}
-          cropWidth={400}
-          cropHeight={400}
-          inputUI={
-            <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
-              <CameraIcon className="absolute z-30 cursor-pointer" />
-              <img
-                alt=""
-                className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
-                src={
-                  profileImage?.length
-                    ? URL.createObjectURL(profileImage[0])
-                    : "/img/default-profile-img.png"
-                }
-              />
-            </div>
-          }
-        />
-        <div>
+            }
+          />
           <div>
-            <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
-              Bio
-            </span>
-            <div className="grid w-full grid-cols-6 gap-3">
-              {Object.entries(bioForm).map(renderInput)}
+            <div>
+              <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
+                Bio
+              </span>
+              <div className="grid w-full grid-cols-6 gap-3">
+                {Object.entries(bioForm).map(renderInput)}
+              </div>
             </div>
-          </div>
-          <div className="pt-3">
-            <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
-              Profile Information
-            </span>
-            <div className="grid w-full grid-cols-6 gap-3">
-              {Object.entries(profileInformationForm).map(renderInput)}
+            <div className="pt-3">
+              <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
+                Profile Information
+              </span>
+              <div className="grid w-full grid-cols-6 gap-3">
+                {Object.entries(profileInformationForm).map(renderInput)}
+              </div>
             </div>
-          </div>
-          <div className="pt-3">
-            <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
-              Social Media
-            </span>
-            <div className="grid w-full grid-cols-6 gap-3 pb-2 ">
-              {Object.entries(socialMediaForm).map(([key, input]) => {
-                return (
-                  <div className={input.colSpan} key={key}>
-                    {fields[key] ? (
-                      <div className="flex w-full items-center pt-2">
-                        <input.icon className="h-[20px] w-[20px]" />
-                        <div className="flex w-full justify-between">
-                          <span className="pl-5 text-[16px] font-medium leading-[22px] text-white">
-                            {fields[key]}
-                          </span>
-                          <span
-                            className="float-right cursor-pointer text-end text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline"
-                            onClick={() => onDisconnectSocialMedia(key)}
-                          >
-                            Disconnect
-                          </span>
+            <div className="pt-3">
+              <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
+                Social Media
+              </span>
+              <div className="grid w-full grid-cols-6 gap-3 pb-2 ">
+                {Object.entries(socialMediaForm).map(([key, input]) => {
+                  return (
+                    <div className={input.colSpan} key={key}>
+                      {fields[key] ? (
+                        <div className="flex w-full items-center pt-2">
+                          <input.icon className="h-[20px] w-[20px]" />
+                          <div className="flex w-full justify-between">
+                            <span className="pl-5 text-[16px] font-medium leading-[22px] text-white">
+                              {fields[key]}
+                            </span>
+                            <span
+                              className="float-right cursor-pointer text-end text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline"
+                              onClick={() => onDisconnectSocialMedia(key)}
+                            >
+                              Disconnect
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div>
-                        {!fields[key] && (
-                          <div className="flex items-center justify-start pt-2">
-                            <input.icon className="h-[20px] w-[20px]" />
-                            {!enableInput ? (
-                              <span
-                                className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-white hover:underline "
-                                onClick={() => setEnableInput(true)}
-                                // htmlFor={key}
-                              >
-                                Connect
-                              </span>
-                            ) : (
-                              <div className=" flex w-full items-center justify-between pl-[18px]">
-                                <FormInput
-                                  register={register}
-                                  name={key}
-                                  className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
-                                  type={input.type as FormType}
-                                  // overwrite default onChange
-                                  options={{
-                                    onBlur: (e: any) =>
-                                      onChangeSocialMedia(e, key)
-                                  }}
-                                  placeholder={input.label}
-                                />
-
+                      ) : (
+                        <div>
+                          {!fields[key] && (
+                            <div className="flex items-center justify-start pt-2">
+                              <input.icon className="h-[20px] w-[20px]" />
+                              {!enableInput ? (
                                 <span
-                                  className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline "
-                                  onClick={() => setEnableInput(false)}
+                                  className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-white hover:underline "
+                                  onClick={() => setEnableInput(true)}
+                                  // htmlFor={key}
                                 >
                                   Connect
                                 </span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+                              ) : (
+                                <div className=" flex w-full items-center justify-between pl-[18px]">
+                                  <FormInput
+                                    register={register}
+                                    name={key}
+                                    className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
+                                    type={input.type as FormType}
+                                    // overwrite default onChange
+                                    options={{
+                                      onBlur: (e: any) =>
+                                        onChangeSocialMedia(e, key)
+                                    }}
+                                    placeholder={input.label}
+                                  />
+
+                                  <span
+                                    className="cursor-pointer pl-5 text-[16px] font-medium leading-[22px] text-passes-pink-100 hover:underline "
+                                    onClick={() => setEnableInput(false)}
+                                  >
+                                    Connect
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </Dialog>
-    </form>
+    </>
   )
 }

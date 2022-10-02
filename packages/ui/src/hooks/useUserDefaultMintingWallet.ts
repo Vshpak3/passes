@@ -40,7 +40,6 @@ const useUserDefaultMintingWallets = () => {
     chain: GetDefaultWalletRequestDtoChainEnum
   ) {
     try {
-      setIsLoading(true)
       await api.setDefaultWallet({
         setDefaultWalletRequestDto: { walletId, chain }
       })
@@ -48,8 +47,6 @@ const useUserDefaultMintingWallets = () => {
     } catch (error: any) {
       console.error(error)
       toast.error(error)
-    } finally {
-      setIsLoading(false)
     }
   }
 

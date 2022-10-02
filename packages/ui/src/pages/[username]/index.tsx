@@ -34,13 +34,13 @@ const Profile = (props: GetProfileResponseDto) => {
     ownsProfile,
     posts,
     profile,
-    username
+    username,
+    onCloseEditProfile
   } = useCreatorProfile(props)
   // when no profile is found
   if (Object.keys(profile).length === 0) {
     return <NoProfile />
   }
-
   return (
     <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
@@ -53,7 +53,11 @@ const Profile = (props: GetProfileResponseDto) => {
           />
         )}
         {editProfile && (
-          <EditProfile profile={profile} onSubmit={onSubmitEditProfile} />
+          <EditProfile
+            profile={profile}
+            onSubmit={onSubmitEditProfile}
+            onCloseEditProfile={onCloseEditProfile}
+          />
         )}
         {profile?.profileId && (
           <MainContent
@@ -94,6 +98,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const profile = await api.findProfile({
       getProfileRequestDto: { username }
     })
+    console.log(profile)
 
     // Hack to remove undefined from generated API typings
     const props = { ...JSON.parse(JSON.stringify({ ...profile })) }

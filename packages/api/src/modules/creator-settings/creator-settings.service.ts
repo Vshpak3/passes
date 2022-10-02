@@ -56,6 +56,8 @@ export class CreatorSettingsService {
       payout_frequency: updateCreatorSettingsDto.payoutFrequency,
       show_follower_count: updateCreatorSettingsDto.showFollowerCount,
       show_media_count: updateCreatorSettingsDto.showMediaCount,
+      show_like_count: updateCreatorSettingsDto.showLikeCount,
+      show_post_count: updateCreatorSettingsDto.showPostCount,
     }
     Object.keys(data).forEach((key) =>
       data[key] === undefined ? delete data[key] : {},

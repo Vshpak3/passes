@@ -1,7 +1,6 @@
 import { useAccountSettings } from "./settings/useAccountSettings"
-import { useChatSettings } from "./settings/useChatSettings"
+import useCreatorSettings from "./settings/useCreatorSettings"
 import { useNotificationSettings } from "./settings/useNotificationSettings"
-import { usePrivacySafetySettings } from "./settings/usePrivacySafetySettings"
 import useChat from "./useChat"
 import useCreatePass from "./useCreatePass"
 import useCreatePost, { CreatePostValues } from "./useCreatePost"
@@ -32,11 +31,11 @@ import useUserDefaultMintingWallets from "./useUserDefaultMintingWallet"
 export {
   useAccountSettings,
   useChat,
-  useChatSettings,
   useCreatePass,
   useCreatePost,
   useCreatorProfile,
   useCreatorSearch,
+  useCreatorSettings,
   useEventCallback,
   useEventListener,
   useFanWall,
@@ -54,7 +53,6 @@ export {
   usePayinMethod,
   usePayoutMethod,
   usePrefersReducedMotion,
-  usePrivacySafetySettings,
   useRandomInterval,
   useSearch,
   useUser,
