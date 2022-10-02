@@ -35,13 +35,12 @@ export const RenewPassButton = ({
     })
   }
 
-  const { blocked, amountUSD, submitting, loading, submit } = usePay(
+  const { blocked, submitting, loading, submit } = usePay(
     register,
     registerData,
     onSuccess
   )
 
-  const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Renew pass"
   return (
     <button
       onClick={submit}
@@ -53,7 +52,7 @@ export const RenewPassButton = ({
       type="submit"
       {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
     >
-      {loading ? "Loading" : buttonText}
+      {loading ? "Loading" : "Renew pass"}
     </button>
   )
 }

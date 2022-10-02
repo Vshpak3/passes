@@ -75,7 +75,7 @@ const MessagingInputFanPerspective = () => {
       setFreeMessages(freeMessages > 0 ? freeMessages - 1 : 0)
     }
   }
-  const { blocked, amountUSD, submitting, loading, submit, submitData } =
+  const { blocked, submitting, loading, submit, submitData } =
     usePay(registerMessage, registerMessageData, onCallback)
   const onTextChange = (_event: any, keyDownEvent: any) => {
     if (keyDownEvent.code === "Enter" && !keyDownEvent.shiftKey) {
@@ -345,7 +345,6 @@ const MessagingInputFanPerspective = () => {
               blocked={blocked}
               submitting={submitting}
               loading={loading}
-              amountUSD={amountUSD}
               isCreator={false}
               tip={tip}
             />

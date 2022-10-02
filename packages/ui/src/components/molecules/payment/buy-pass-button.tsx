@@ -35,13 +35,11 @@ export const BuyPassButton = ({
     })
   }
 
-  const { blocked, amountUSD, submitting, loading, submit } = usePay(
+  const { blocked, submitting, loading, submit } = usePay(
     register,
     registerData,
     onSuccess
   )
-
-  const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Buy pass"
 
   return (
     <button
@@ -54,7 +52,7 @@ export const BuyPassButton = ({
       type="submit"
       {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
     >
-      {loading ? "Loading" : buttonText}
+      {loading ? "Loading" : "Buy pass"}
     </button>
   )
 }

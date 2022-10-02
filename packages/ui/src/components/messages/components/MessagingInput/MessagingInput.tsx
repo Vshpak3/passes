@@ -156,7 +156,7 @@ const MessagingInput = () => {
     }
   }
 
-  const { blocked, amountUSD, submitting, loading, submit, submitData } =
+  const { blocked, submitting, loading, submit, submitData } =
     usePay(registerMessage, registerMessageData, onCallback)
 
   const onMediaHeaderChange = (event: any) => {
@@ -575,7 +575,6 @@ const MessagingInput = () => {
                 blocked={blocked}
                 submitting={submitting}
                 loading={loading}
-                amountUSD={amountUSD}
                 isCreator={isCreator}
                 blockSendMessage={text?.length < 1}
               />

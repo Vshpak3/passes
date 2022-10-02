@@ -36,13 +36,11 @@ export const TipPostButton = ({
     return { blocked: undefined, amount } as PayinDataDto
   }
 
-  const { blocked, amountUSD, submitting, loading, submit } = usePay(
+  const { blocked, submitting, loading, submit } = usePay(
     register,
     registerData,
     onSuccess
   )
-
-  const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Tip post"
 
   return (
     <button
@@ -55,7 +53,7 @@ export const TipPostButton = ({
       type="submit"
       {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
     >
-      {loading ? "Loading" : buttonText}
+      {loading ? "Loading" : "Tip post"}
     </button>
   )
 }

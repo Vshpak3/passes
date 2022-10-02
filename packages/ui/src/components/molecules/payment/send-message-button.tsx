@@ -6,7 +6,6 @@ interface ISendMessageButton {
   blocked?: boolean
   submitting?: boolean
   loading: boolean
-  amountUSD?: number
   isCreator: boolean
   blockSendMessage: boolean
   tip?: number
