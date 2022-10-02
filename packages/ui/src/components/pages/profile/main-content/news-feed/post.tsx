@@ -220,7 +220,7 @@ export const LockedMedia = ({
   post,
   setPostUnlocked
 }: LockedMedia) => {
-  const [openBuyPostModal, setOpenBuyPostModal] = useState(null)
+  const [openBuyPostModal, setOpenBuyPostModal] = useState<PostDto | null>(null)
 
   const onMockedSuccess = () => {
     setPostUnlocked(true)
