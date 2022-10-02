@@ -1,22 +1,21 @@
 import dynamic from "next/dynamic"
-import PassTypes from "src/components/pages/profile/passes/PassTypes"
-import ProfileDetails from "src/components/pages/profile/profile-details"
+import NoProfile from "src/components/organisms/NoProfile"
+import PassTypes from "src/components/organisms/profile/passes/PassTypes"
+import ProfileDetails from "src/components/organisms/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"
-
-import NoProfile from "../../components/organisms/NoProfile"
-import { withPageLayout } from "../../layout/WithPageLayout"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const EditProfile = dynamic<any>(
   () =>
-    import("src/components/pages/profile/profile-details/edit-profile").then(
-      (mod) => mod.EditProfile
-    ),
+    import(
+      "src/components/organisms/profile/profile-details/edit-profile"
+    ).then((mod) => mod.EditProfile),
   {
     ssr: false
   }
 )
 const MainContent = dynamic<any>(
-  () => import("src/components/pages/profile/main-content"),
+  () => import("src/components/organisms/profile/main-content"),
   {
     ssr: false
   }

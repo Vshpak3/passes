@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 const Post = dynamic<any>(
   () =>
-    import("src/components/pages/profile/main-content/news-feed/post").then(
+    import("src/components/organisms/profile/main-content/news-feed/post").then(
       (mod) => mod.Post
     ),
   {

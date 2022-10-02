@@ -8,11 +8,11 @@ import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { FormInput } from "src/components/atoms"
 import { List } from "src/components/organisms/DirectMessage"
-import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
+import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
   MediaFile
-} from "src/components/pages/profile/main-content/new-post/media"
+} from "src/components/organisms/profile/main-content/new-post/media"
 import { formatCurrency } from "src/helpers"
 
 import { MessagesListsDropdownDialog } from "./messages-lists-dropdown"

@@ -11,7 +11,7 @@ import {
   PassNumberInput
 } from "src/components/atoms"
 import { FormContainer } from "src/components/organisms"
-import { MediaFile } from "src/components/pages/profile/main-content/new-post/media"
+import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
 
 const PassDirectMessage = ({ register }: any) => (
   <>

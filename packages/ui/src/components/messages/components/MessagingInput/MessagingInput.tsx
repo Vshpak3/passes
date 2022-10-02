@@ -8,13 +8,13 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { GiphyContext } from "src/components/messages/index"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
+import { SendMessageButton } from "src/components/molecules/payment/send-message"
 import { Dialog } from "src/components/organisms"
-import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
+import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
   MediaFile
-} from "src/components/pages/profile/main-content/new-post/media"
-import { SendMessageButton } from "src/components/payment/send-message"
+} from "src/components/organisms/profile/main-content/new-post/media"
 import { classNames, ContentService, formatCurrency } from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"

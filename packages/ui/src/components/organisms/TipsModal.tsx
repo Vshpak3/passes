@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction, useState } from "react"
 import { FormInput } from "src/components/atoms"
-import { TipPostButton } from "src/components/payment/tip-post"
+import { TipPostButton } from "src/components/molecules/payment/tip-post"
 import { creditCardIcons } from "src/helpers/creditCardIcon"
 
 import Modal from "./Modal"

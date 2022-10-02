@@ -7,7 +7,7 @@ import WalletIcon from "public/icons/wallet.svg"
 import React, { Dispatch, SetStateAction, useEffect } from "react"
 import { toast } from "react-toastify"
 import { Button, PassesPinkButton } from "src/components/atoms"
-import { PaymentModalInfo } from "src/components/pages/profile/passes/PassTypes"
+import { PaymentModalInfo } from "src/components/organisms/profile/passes/PassTypes"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethodConfig"
 import { usePayinMethod } from "src/hooks"
 

@@ -10,10 +10,10 @@ import {
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { updateProfile } from "src/helpers"
+import { ProfileUpdate } from "src/helpers/updateProfile"
 import useSWR from "swr"
 
-import { updateProfile } from "../helpers"
-import { ProfileUpdate } from "../helpers/updateProfile"
 import useUser from "./useUser"
 
 const useCreatorProfile = () => {
