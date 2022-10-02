@@ -1,18 +1,34 @@
-import { MessagesApi } from "@passes/api-client"
+import {
+  GetChannelsRequestDtoOrderTypeEnum,
+  MessagesApi
+} from "@passes/api-client"
 import ms from "ms"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 import { usePagination } from "./usePagination"
 
-const useMessages = () => {
+interface UseMessagesProps {
+  channelOrderType: GetChannelsRequestDtoOrderTypeEnum
+}
+const useMessages = ({ channelOrderType }: UseMessagesProps) => {
   const api = useMemo(() => new MessagesApi(), [])
-  const fetcher = ({ lastId }: { lastId?: string } = {}) =>
+  const fetcher = ({
+    lastId,
+    recent,
+    tip
+  }: {
+    lastId?: string
+    recent?: Date
+    tip?: number
+  } = {}) =>
     api.getChannels({
       getChannelsRequestDto: {
         unreadOnly: false,
         order: "desc",
-        orderType: "recent",
-        lastId
+        orderType: channelOrderType,
+        lastId,
+        recent,
+        tip
       }
     })
 
@@ -26,6 +42,12 @@ const useMessages = () => {
   const { data, hasMore, next, refresh } = usePagination(fetcher, {
     refreshInterval: ms("10 seconds") // revalidate every 10 seconds
   })
+
+  useEffect(() => {
+    refresh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [channelOrderType])
+
   const channels = data ? data.map((d) => d.channelMembers).flat() : []
   return {
     createChannel,

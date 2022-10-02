@@ -6,6 +6,7 @@ import Card from "./Card"
 import CssGridTiles from "./CssGridTiles"
 import DragDropCard from "./drag-drop/Card"
 import DragDropFile from "./DragDropFile"
+import OrderDropDown from "./OrderDropDown"
 import {
   CreatePassOption,
   CreatorPasses,
@@ -37,6 +38,7 @@ export {
   DragDropCard,
   DragDropFile,
   GrainyBackground,
+  OrderDropDown,
   PassDirectMessage,
   PassFileUpload,
   PassLifetimeOptions,

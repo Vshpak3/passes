@@ -25,7 +25,7 @@ const getKey: SWRInfiniteKeyLoader = (
   }
 
   // pass the cursor to the fetcher function
-  return { lastId: previousPageData.lastId }
+  return previousPageData
 }
 
 export function usePagination<T>(

@@ -1,12 +1,20 @@
-import { ChannelMemberDto, ListMemberDto } from "@passes/api-client/models"
+import {
+  ChannelMemberDto,
+  GetChannelsRequestDtoOrderTypeEnum,
+  ListMemberDto
+} from "@passes/api-client/models"
 import React, { useState } from "react"
 import { useMessages } from "src/hooks"
 
 import { ChannelList, ChannelView } from "../molecules/messages"
 
 const MessagesV2 = () => {
+  const [channelOrderType, setChannelOrderType] =
+    useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
-  const { channels, hasMore, next, createChannel, refresh } = useMessages()
+  const { channels, hasMore, next, createChannel, refresh } = useMessages({
+    channelOrderType
+  })
   const [gallery, setGallery] = useState(false)
   const freeMessages = 20
   const handleChannelClicked = (channel: ChannelMemberDto) => {
@@ -21,6 +29,8 @@ const MessagesV2 = () => {
   return (
     <div className="flex h-full flex-row border border-gray-800">
       <ChannelList
+        channelOrderType={channelOrderType}
+        setChannelOrderType={setChannelOrderType}
         onUserSelect={onUserSelect}
         selectedChannel={selectedChannel}
         channels={channels}
