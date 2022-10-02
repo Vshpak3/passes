@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import classNames from "classnames"
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
@@ -10,7 +11,7 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
-import { classNames, ContentService } from "src/helpers"
+import { ContentService } from "src/helpers"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { Footer } from "./footer"
