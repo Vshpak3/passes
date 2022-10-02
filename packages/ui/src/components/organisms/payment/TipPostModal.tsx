@@ -21,7 +21,7 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
   const handleChange = (event: any) => {
     const value = event.target.value
     try {
-      setAmount(parseInt(value))
+      setAmount(parseFloat(value))
     } catch (err) {
       setAmount(0)
     }
