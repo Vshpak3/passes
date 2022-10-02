@@ -35,4 +35,10 @@ export class CreatorSettingsEntity extends BaseEntity {
 
   @Property({ default: true })
   show_media_count: boolean
+
+  @Property({ default: true })
+  show_like_count: boolean
+
+  @Property({ default: true })
+  show_post_count: boolean
 }

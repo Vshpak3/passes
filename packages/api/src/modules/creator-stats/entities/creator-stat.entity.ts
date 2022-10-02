@@ -15,5 +15,8 @@ export class CreatorStatEntity extends BaseEntity {
   num_likes: number
 
   @Property({ default: 0 })
+  num_posts: number
+
+  @Property({ default: 0 })
   num_media: number
 }

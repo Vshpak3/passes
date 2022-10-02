@@ -105,7 +105,6 @@ export class ContentService {
       // filter content that has been used in posts
       case VaultCategoryEnum.POSTS:
         query = query.andWhere({ in_post: true })
-
         break
       case VaultCategoryEnum.UPLOADS:
         // filter content that has not been used anywhere (uploaded directly to vault)
@@ -114,7 +113,6 @@ export class ContentService {
           in_post: false,
         })
         break
-
       default:
         break
     }

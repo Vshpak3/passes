@@ -204,6 +204,9 @@ export class PostService {
           })
           .count(),
       )
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: userId })
+      .increment('num_posts')
     return { postId }
   }
 
@@ -442,8 +445,11 @@ export class PostService {
   async removePost(userId: string, postId: string) {
     // TODO: allow admins + managers to remove posts
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId })
+      .where({ id: postId, user_id: userId, deleted_at: null })
       .update({ deleted_at: new Date() })
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: userId })
+      .decrement('num_posts', updated)
     return updated === 1
   }
 
@@ -731,6 +737,23 @@ export class PostService {
       .andWhere('created_at', '>=', start)
       .andWhere('created_at', '<=', end)
     return postHistories.map((postHistory) => new PostHistoryDto(postHistory))
+  }
+
+  async refreshNumPosts() {
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table).update(
+      'num_posts',
+      this.dbWriter<PostEntity>(PostEntity.table)
+        .where({
+          user_id: this.dbWriter.raw(`${CreatorStatEntity.table}.user_id`),
+          deleted_at: null,
+        })
+        .andWhere(function () {
+          return this.where('scheduled_at', '<', new Date()).orWhereNull(
+            'scheduled_at',
+          )
+        })
+        .count(),
+    )
   }
 
   async refreshPostsCounts() {

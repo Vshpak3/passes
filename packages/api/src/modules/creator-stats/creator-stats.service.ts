@@ -199,6 +199,8 @@ export class CreatorStatsService {
           `${CreatorStatEntity.table}.user_id`,
           'show_follower_count',
           'show_media_count',
+          'show_like_count',
+          'show_post_count',
         ])
         .first(),
       userId === creatorId,

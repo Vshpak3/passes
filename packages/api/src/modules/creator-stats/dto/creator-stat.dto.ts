@@ -9,16 +9,20 @@ export class CreatorStatDto {
   userId: string
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  numFollowers: number
+  @DtoProperty({ type: 'number', optional: true })
+  numFollowers?: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  numLikes: number
+  @DtoProperty({ type: 'number', optional: true })
+  numLikes?: number
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  numMedia: number
+  @DtoProperty({ type: 'number', optional: true })
+  numMedia?: number
+
+  @Min(0)
+  @DtoProperty({ type: 'number', optional: true })
+  numPosts?: number
 
   constructor(
     creatorStat: CreatorStatEntity & Partial<CreatorSettingsEntity>,
@@ -29,7 +33,12 @@ export class CreatorStatDto {
       if (isCreator || creatorStat.show_follower_count) {
         this.numFollowers = creatorStat.num_followers
       }
-      this.numLikes = creatorStat.num_likes
+      if (isCreator || creatorStat.show_like_count) {
+        this.numLikes = creatorStat.num_likes
+      }
+      if (isCreator || creatorStat.show_post_count) {
+        this.numPosts = creatorStat.num_posts
+      }
       if (isCreator || creatorStat.show_media_count) {
         this.numMedia = creatorStat.num_media
       }

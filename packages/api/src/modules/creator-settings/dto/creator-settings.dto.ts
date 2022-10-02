@@ -26,6 +26,12 @@ export class CreatorSettingsDto {
   @DtoProperty({ type: 'boolean' })
   showMediaCount: boolean
 
+  @DtoProperty({ type: 'boolean' })
+  showLikeCount: boolean
+
+  @DtoProperty({ type: 'boolean' })
+  showPostCount: boolean
+
   constructor(creatorSettings: CreatorSettingsEntity | undefined) {
     if (creatorSettings) {
       this.minimumTipAmount = creatorSettings.minimum_tip_amount
@@ -34,6 +40,8 @@ export class CreatorSettingsDto {
       this.allowCommentsOnPosts = creatorSettings.allow_comments_on_posts
       this.showFollowerCount = creatorSettings.show_follower_count
       this.showMediaCount = creatorSettings.show_media_count
+      this.showLikeCount = creatorSettings.show_like_count
+      this.showPostCount = creatorSettings.show_post_count
     }
   }
 }
