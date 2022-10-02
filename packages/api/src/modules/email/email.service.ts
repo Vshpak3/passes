@@ -9,11 +9,17 @@ import tailwindConfig from './tailwindConfig'
 
 @Injectable()
 export class EmailService {
+  private senderName: string
   private senderEmail: string
   private sesClient: SESClient
   private maizzleConfig: Record<string, any>
 
   constructor(private readonly configService: ConfigService) {
+    this.senderName =
+      this.configService.get('infra.env') === 'prod'
+        ? 'Passes'
+        : 'Passes Staging'
+
     this.senderEmail = this.configService.get('ses.senderEmail') as string
     this.sesClient = new SESClient(getAwsConfig(configService))
 
@@ -56,7 +62,7 @@ export class EmailService {
             Data: subject,
           },
         },
-        Source: this.senderEmail,
+        Source: `${this.senderName} <${this.senderEmail}>`,
       }),
     )
   }
