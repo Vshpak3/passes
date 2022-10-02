@@ -3,7 +3,7 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import React from "react"
 
-export const cryptoWalletsType = (value: string) => {
+export const cryptoWalletsType = (value: string, chain?: string) => {
   switch (value) {
     case GetPayinMethodResponseDtoMethodEnum.PhantomCircleUsdc:
       return (
@@ -16,7 +16,9 @@ export const cryptoWalletsType = (value: string) => {
       return (
         <>
           <MetamaskIcon />
-          <span className="ml-[20px]">Metamask AVAX USDC</span>
+          <span className="ml-[20px]">
+            Metamask {chain?.toUpperCase()} USDC
+          </span>
         </>
       )
     case GetPayinMethodResponseDtoMethodEnum.MetamaskCircleEth:

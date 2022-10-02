@@ -1,15 +1,20 @@
 import { PassApi, PayinMethodDto } from "@passes/api-client"
+import classNames from "classnames"
 import React from "react"
 import { usePay } from "src/hooks/usePay"
 
 interface IRenewPassButton {
   passHolderId: string
+  onSuccess: () => void
   payinMethod?: PayinMethodDto
+  isDisabled?: boolean
 }
 
 export const RenewPassButton = ({
   passHolderId,
-  payinMethod
+  payinMethod,
+  onSuccess,
+  isDisabled = false
 }: IRenewPassButton) => {
   const api = new PassApi()
   const register = async () => {
@@ -32,19 +37,23 @@ export const RenewPassButton = ({
 
   const { blocked, amountUSD, submitting, loading, submit } = usePay(
     register,
-    registerData
+    registerData,
+    onSuccess
   )
 
+  const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Renew pass"
   return (
     <button
-      onClick={() => {
-        submit()
-      }}
-      className="w-32 rounded-[50px] bg-passes-pink-100 p-4"
+      onClick={submit}
+      className={classNames(
+        isDisabled
+          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
+          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
+      )}
       type="submit"
-      {...(blocked || submitting ? { disabled: true } : {})}
+      {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
     >
-      {loading ? "loading" : `Pay ${amountUSD}`}
+      {loading ? "Loading" : buttonText}
     </button>
   )
 }

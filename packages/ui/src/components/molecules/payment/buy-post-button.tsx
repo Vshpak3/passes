@@ -5,7 +5,6 @@ import { usePay } from "src/hooks/usePay"
 
 interface IBuyPostButton {
   postId: string
-  fromDM: boolean
   onSuccess: () => void
   payinMethod?: PayinMethodDto
   isDisabled?: boolean

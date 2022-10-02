@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { GiphyContext } from "src/components/messages/index"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
-import { SendMessageButton } from "src/components/molecules/payment/send-message"
+import { SendMessageButton } from "src/components/molecules/payment/send-message-button"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
 import {

@@ -1,45 +1,41 @@
 import {
   GetPayinMethodResponseDtoMethodEnum,
-  GetPostResponseDto
+  PostDto
 } from "@passes/api-client"
-import { useRouter } from "next/router"
 import WalletIcon from "public/icons/wallet.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
-import { BuyPostButton } from "src/components/molecules/payment/buy-post"
+import { BuyPostButton } from "src/components/molecules/payment/buy-post-button"
+import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
-import { paymentMethodConfig } from "src/helpers/payment/paymentMethodConfig"
 import { usePasses, usePayinMethod } from "src/hooks"
 
 interface IBuyPostModal {
-  postInfo?: GetPostResponseDto | null
-  setOpen: Dispatch<SetStateAction<GetPostResponseDto | null>>
-  isOpen?: boolean
+  post: PostDto
+  setOpen: Dispatch<SetStateAction<boolean>>
+  isOpen: boolean
 }
 
-const BuyPostModal = ({ postInfo, setOpen, isOpen }: IBuyPostModal) => {
-  const router = useRouter()
-  const { defaultPayinMethod, cardInfo } = usePayinMethod()
+const BuyPostModal = ({ post, setOpen, isOpen }: IBuyPostModal) => {
+  const { defaultPayinMethod, cards } = usePayinMethod()
+  const defaultCard = cards.find(
+    (card) => card.id === defaultPayinMethod?.cardId
+  )
   const { externalPasses } = usePasses()
 
-  const whitePasessList = getWhiteListedPasses(
-    externalPasses,
-    postInfo?.passIds
-  )
+  const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
 
-  const { images, video } = contentTypeCounter(postInfo?.content)
+  const { images, video } = contentTypeCounter(post.content)
 
   return (
-    <Modal isOpen={Boolean(postInfo) || isOpen} setOpen={setOpen}>
+    <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
           Buy Post
         </span>
-        <span className="text-white">
-          ${postInfo?.price?.toFixed(2) ?? 100}
-        </span>
+        <span className="text-white">${post.price?.toFixed(2) ?? "0.00"}</span>
       </div>
       <div>
         <div className="my-4">
@@ -53,19 +49,12 @@ const BuyPostModal = ({ postInfo, setOpen, isOpen }: IBuyPostModal) => {
             purchase.
           </span>
         </div>
-        {defaultPayinMethod &&
-          paymentMethodConfig(defaultPayinMethod.method, cardInfo)}
-        <div className="my-4">
-          <span className="text-[#ffff]/90">
-            Want to update your default payment method or add a new one?
-          </span>{" "}
-          <span
-            className="cursor-pointer text-[#ffff]/90 underline"
-            onClick={() => router.push("/settings")}
-          >
-            Settings
-          </span>
-        </div>
+        {defaultPayinMethod && (
+          <PayinMethodDisplay
+            payinMethod={defaultPayinMethod}
+            card={defaultCard}
+          />
+        )}
         {whitePasessList && !!whitePasessList.length && (
           <div>
             <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
@@ -83,13 +72,11 @@ const BuyPostModal = ({ postInfo, setOpen, isOpen }: IBuyPostModal) => {
       </div>
       <BuyPostButton
         isDisabled={
-          defaultPayinMethod &&
+          !defaultPayinMethod ||
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
-        postId={postInfo?.postId as string}
-        fromDM={false}
-        payinMethod={defaultPayinMethod}
-        onSuccess={() => setOpen(null)}
+        postId={post.postId}
+        onSuccess={() => setOpen(false)}
       />
     </Modal>
   )

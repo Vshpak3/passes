@@ -16,7 +16,6 @@ import {
 } from "./payouts"
 import Popover from "./Popover"
 import ProfileNftPass from "./ProfileNftPass"
-import QuickPayModal from "./QuickPayModal"
 import ReportModal from "./ReportModal"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
@@ -40,7 +39,6 @@ export {
   PastTransactions,
   Popover,
   ProfileNftPass,
-  QuickPayModal,
   ReportModal,
   RequestPayouts,
   SelectPassType,

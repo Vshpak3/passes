@@ -7,19 +7,16 @@ import {
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
 import { useRouter } from "next/router"
-import AmexCardIcon from "public/icons/amex-icon.svg"
 import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import DiscoverCardIcon from "public/icons/discover-icon.svg"
-import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import VisaIcon from "public/icons/visa-icon.svg"
 import { Fragment, useEffect } from "react"
 import { Button } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod, useUser } from "src/hooks"
 import ChevronDown from "src/icons/chevron-down"
 
@@ -48,20 +45,6 @@ const PaymentSettings = () => {
     }
   }, [router, user, loading])
 
-  const displayCardIcon = (cardDigit: string) => {
-    switch (cardDigit) {
-      case "4":
-        return <VisaIcon width={25} height={25} />
-      case "5":
-        return <MasterCardIcon width={25} height={25} />
-      case "3":
-        return <AmexCardIcon width={25} height={25} />
-      case "6":
-        return <DiscoverCardIcon width={25} height={25} />
-      default:
-        return null
-    }
-  }
   return (
     <>
       <Tab withBack title="Payment Settings" />
@@ -81,7 +64,7 @@ const PaymentSettings = () => {
               <span className="text-[14px] font-[500] opacity-70">
                 *******{defaultCard.fourDigits}
               </span>
-              {displayCardIcon(defaultCard.firstDigit ?? "")}
+              {displayCardIcon(defaultCard.firstDigit, 25)}
             </div>
           )}
         </div>
@@ -228,7 +211,7 @@ const PaymentSettings = () => {
                   {item.expMonth}/{item.expYear.toString().slice(-2)}
                 </span>
               </div>
-              {displayCardIcon(item.firstDigit)}
+              {displayCardIcon(item.firstDigit, 25)}
             </div>
             <div className="flex flex-row gap-4">
               {item.id === defaultPayinMethod?.cardId ? (

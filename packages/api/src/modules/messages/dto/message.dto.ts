@@ -32,6 +32,9 @@ export class MessageDto {
   @DtoProperty({ type: 'boolean' })
   pending: boolean
 
+  @DtoProperty({ type: 'currency' })
+  price: number
+
   @DtoProperty({ type: 'boolean' })
   reverted: boolean
 
@@ -42,6 +45,7 @@ export class MessageDto {
     if (message) {
       this.text = message.text
       this.senderId = message.sender_id
+      this.price = message.price
       this.channelId = message.channel_id
       this.tipAmount = message.tip_amount
       this.sentAt = message.sent_at

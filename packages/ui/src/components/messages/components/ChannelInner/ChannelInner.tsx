@@ -11,7 +11,7 @@ import {
   MessagingInputFanPerspective
 } from "src/components/organisms"
 // import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
-import BuyPostModal from "src/components/organisms/BuyPostModal"
+import BuyPostModal from "src/components/organisms/payment/BuyPostModal"
 import { classNames, formatCurrency } from "src/helpers"
 import {
   ChatContext,

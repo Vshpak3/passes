@@ -31,17 +31,21 @@ import {
   ContentService,
   formatCurrency
 } from "src/helpers"
+import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { useUser } from "src/hooks"
 
 const BuyPostModal = dynamic(
-  () => import("src/components/organisms/BuyPostModal"),
+  () => import("src/components/organisms/payment/BuyPostModal"),
   {
     ssr: false
   }
 )
-const TipsModal = dynamic(() => import("src/components/organisms/TipsModal"), {
-  ssr: false
-})
+const TipPostModal = dynamic(
+  () => import("src/components/organisms/payment/TipPostModal"),
+  {
+    ssr: false
+  }
+)
 
 const PostViewModal = dynamic(
   () => import("src/components/organisms/post/ViewModal"),
@@ -229,17 +233,9 @@ interface LockedMedia {
   setPostUnlocked: any
 }
 
-export const LockedMedia = ({
-  postUnlocked,
-  post,
-  setPostUnlocked
-}: LockedMedia) => {
-  const [openBuyPostModal, setOpenBuyPostModal] = useState<PostDto | null>(null)
-
-  const onMockedSuccess = () => {
-    setPostUnlocked(true)
-    setOpenBuyPostModal(null)
-  }
+export const LockedMedia = ({ postUnlocked, post }: LockedMedia) => {
+  const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
+  const { images, video } = contentTypeCounter(post.content)
 
   return (
     <>
@@ -253,12 +249,14 @@ export const LockedMedia = ({
           {!postUnlocked && (
             <div className="flex-center h-45 flex w-[245px] flex-col ">
               <PostUnlockButton
-                onClick={() => setOpenBuyPostModal(post)}
+                onClick={() => setOpenBuyPostModal(true)}
                 value={postUnlocked.toString()}
                 name={`Unlock Post For ${formatCurrency(post.price ?? 100)}`}
               />
               <div className="flex items-center justify-center pt-4 text-[#ffffff]">
-                <span>Unlock 4 videos, 20 photos</span>
+                <span>
+                  Unlock {video} videos, {images} photos
+                </span>
               </div>
             </div>
           )}
@@ -283,7 +281,11 @@ export const LockedMedia = ({
             }
           })}
       </div>
-      <BuyPostModal postInfo={openBuyPostModal} setOpen={onMockedSuccess} />
+      <BuyPostModal
+        post={post}
+        isOpen={openBuyPostModal}
+        setOpen={setOpenBuyPostModal}
+      />
     </>
   )
 }
@@ -385,7 +387,7 @@ export const PostEngagement = ({
         visible={showCommentSection}
         updateEngagement={updateEngagement}
       />
-      <TipsModal
+      <TipPostModal
         isOpen={isTipsModalOpen}
         postId={post.postId}
         setOpen={setIsTipsModalOpen}

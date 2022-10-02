@@ -2,17 +2,8 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import { PassDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
-import React, { useState } from "react"
+import React from "react"
 import Slider from "react-slick"
-
-const QuickPayModal = dynamic<any>(
-  () => import("src/components/organisms").then((mod) => mod.QuickPayModal),
-  {
-    ssr: false
-  }
-)
-
 import { useCarousel } from "src/hooks/useCarousel"
 
 import { PassCardDesktop, PassCardMobile } from "./PassesComponents"
@@ -78,19 +69,18 @@ const PassTypesMobile = ({ creatorPasses, setModalOpen }: IPassType) => {
 }
 
 const PassTypes = ({ creatorPasses }: IPasses) => {
-  const [isModalOpen, setModalOpen] = useState<PaymentModalInfo | null>(null)
-
   return (
     <>
       <PassTypesDesktop
         creatorPasses={creatorPasses}
-        setModalOpen={setModalOpen}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        setModalOpen={() => {}}
       />
       <PassTypesMobile
         creatorPasses={creatorPasses}
-        setModalOpen={setModalOpen}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        setModalOpen={() => {}}
       />
-      <QuickPayModal isOpen={isModalOpen} setOpen={setModalOpen} />
     </>
   )
 }

@@ -1,15 +1,34 @@
 import {
-  GetCircleCardResponseDto,
+  CircleCardDto,
   GetPayinMethodResponseDtoMethodEnum
 } from "@passes/api-client"
+import AmexCardIcon from "public/icons/amex-icon.svg"
+import CardIcon from "public/icons/bank-card.svg"
+import DiscoverCardIcon from "public/icons/discover-icon.svg"
+import MasterCardIcon from "public/icons/mastercard-icon.svg"
+import VisaIcon from "public/icons/visa-icon.svg"
 import React from "react"
-import { creditCardIcons } from "src/helpers/creditCardIcon"
 
 import { cryptoWalletsType } from "./cryptoWalletsType"
 
+export const displayCardIcon = (cardDigit: string, size: number) => {
+  switch (cardDigit) {
+    case "4":
+      return <VisaIcon width={size} height={size} />
+    case "5":
+      return <MasterCardIcon width={size} height={size} />
+    case "3":
+      return <AmexCardIcon width={size} height={size} />
+    case "6":
+      return <DiscoverCardIcon width={size} height={size} />
+    default:
+      return <CardIcon width={size} height={size} />
+  }
+}
 export const paymentMethodConfig = (
   payinMethod: string,
-  cardInfo: GetCircleCardResponseDto | null
+  chain?: string,
+  cardInfo?: CircleCardDto
 ) => {
   switch (payinMethod) {
     case GetPayinMethodResponseDtoMethodEnum.None:
@@ -30,7 +49,7 @@ export const paymentMethodConfig = (
           </div>
           <div className="flex justify-evenly rounded border border-passes-dark-200 bg-[#100C11] p-2 text-left text-[#ffff]/90">
             <div className="flex flex-1 gap-4 justify-self-start">
-              {creditCardIcons["mastercard"]}
+              {displayCardIcon(cardInfo?.firstDigit as string, 25)}
               <span>• • • • ‏‎{cardInfo?.fourDigits}</span>
             </div>
             <div className="flex-1">
@@ -50,7 +69,7 @@ export const paymentMethodConfig = (
             </span>
           </div>
           <div className="flex items-center">
-            {cryptoWalletsType(payinMethod)}
+            {cryptoWalletsType(payinMethod, chain)}
           </div>
         </>
       )

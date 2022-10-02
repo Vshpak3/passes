@@ -2,9 +2,8 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
-import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
@@ -13,7 +12,6 @@ import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
-import { useUser } from "src/hooks"
 import { v4 } from "uuid"
 
 enum BankTypeEnum {
@@ -36,9 +34,6 @@ const AddBank = () => {
     defaultValues: {}
   })
 
-  const { user, loading } = useUser()
-  const router = useRouter()
-
   const onSubmit = async () => {
     try {
       const values: any = getValues()
@@ -54,7 +49,7 @@ const AddBank = () => {
             : undefined,
         iban: bankType === BankTypeEnum.IBAN ? values["iban"] : undefined,
         billingDetails: {
-          name: user?.legalFullName ?? "",
+          name: values["name"],
           city: values["city"],
           country: iso3311a2.getCode(values["country"]),
           line1: values["address1"],
@@ -77,16 +72,6 @@ const AddBank = () => {
       toast.error(error)
     }
   }
-
-  useEffect(() => {
-    if (!router.isReady || loading) {
-      return
-    }
-
-    if (!user) {
-      router.push("/login")
-    }
-  }, [router, user, loading])
 
   return (
     <Tab title="Add Bank" withBack>
@@ -182,6 +167,17 @@ const AddBank = () => {
       />
 
       <span className="text-[16px] font-[500]">Billing address</span>
+      <FormInput
+        register={register}
+        type="text"
+        name="name"
+        placeholder="Name"
+        errors={errors}
+        options={{
+          required: { message: "name is required", value: true }
+        }}
+        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+      />
       <FormInput
         register={register}
         type="text"

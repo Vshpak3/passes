@@ -1,8 +1,13 @@
 import { FollowApi } from "@passes/api-client"
+import { useRouter } from "next/router"
 import useSWR from "swr"
+
+import useUser from "./useUser"
 
 const useFollow = (creatorId: string) => {
   const api = new FollowApi()
+  const { user } = useUser()
+  const router = useRouter()
   const fetchIsFollowing = async () => {
     return await api.checkFollow({
       creatorId
@@ -14,6 +19,9 @@ const useFollow = (creatorId: string) => {
   )
 
   const follow = async () => {
+    if (!user) {
+      router.push("/login")
+    }
     await api.followCreator({
       creatorId
     })
@@ -25,6 +33,9 @@ const useFollow = (creatorId: string) => {
   }
 
   const unfollow = async () => {
+    if (!user) {
+      router.push("/login")
+    }
     await api.unfollowCreator({
       creatorId
     })

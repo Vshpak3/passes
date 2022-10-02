@@ -76,6 +76,12 @@ export interface GetMessageResponseDto {
     pending: boolean;
     /**
      * 
+     * @type {number}
+     * @memberof GetMessageResponseDto
+     */
+    price: number;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetMessageResponseDto
      */
@@ -100,6 +106,7 @@ export function instanceOfGetMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "pending" in value;
+    isInstance = isInstance && "price" in value;
     isInstance = isInstance && "reverted" in value;
     isInstance = isInstance && "sentAt" in value;
 
@@ -124,6 +131,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'paid': json['paid'],
         'pending': json['pending'],
+        'price': json['price'],
         'reverted': json['reverted'],
         'sentAt': (new Date(json['sentAt'])),
     };
@@ -146,6 +154,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'tipAmount': value.tipAmount,
         'paid': value.paid,
         'pending': value.pending,
+        'price': value.price,
         'reverted': value.reverted,
         'sentAt': (value.sentAt.toISOString()),
     };
