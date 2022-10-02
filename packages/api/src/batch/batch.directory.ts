@@ -18,6 +18,6 @@ export const TaskDirectory = {
   refresh_eth_wallet_task: RefreshEthWalletTask,
   refresh_sol_nft_task: RefreshSolNftTask,
   refresh_stats_task: RefreshStatsTask,
-  refresh_num_posts: RefreshNumPostsTask,
+  refresh_num_posts_task: RefreshNumPostsTask,
   update_subscriptions_task: UpdateSubscriptionsTask,
 }
