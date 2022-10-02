@@ -75,8 +75,11 @@ const MessagingInputFanPerspective = () => {
       setFreeMessages(freeMessages > 0 ? freeMessages - 1 : 0)
     }
   }
-  const { blocked, submitting, loading, submit, submitData } =
-    usePay(registerMessage, registerMessageData, onCallback)
+  const { blocked, submitting, loading, submit, submitData } = usePay(
+    registerMessage,
+    registerMessageData,
+    onCallback
+  )
   const onTextChange = (_event: any, keyDownEvent: any) => {
     if (keyDownEvent.code === "Enter" && !keyDownEvent.shiftKey) {
       onSubmit()

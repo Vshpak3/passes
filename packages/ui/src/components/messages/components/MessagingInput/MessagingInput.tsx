@@ -156,8 +156,11 @@ const MessagingInput = () => {
     }
   }
 
-  const { blocked, submitting, loading, submit, submitData } =
-    usePay(registerMessage, registerMessageData, onCallback)
+  const { blocked, submitting, loading, submit, submitData } = usePay(
+    registerMessage,
+    registerMessageData,
+    onCallback
+  )
 
   const onMediaHeaderChange = (event: any) => {
     if (typeof event !== "string") {
