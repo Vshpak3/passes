@@ -47,8 +47,7 @@ const usePayoutMethod = () => {
       await api.setDefaultPayoutMethod({
         setPayoutMethodRequestDto: dto
       })
-
-      await getDefaultPayoutMethod()
+      setPayoutMethod(dto)
     } catch (error: any) {
       console.error(error)
       toast.error(error)
