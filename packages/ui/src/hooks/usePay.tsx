@@ -152,7 +152,6 @@ export const usePay = (
     setSubmitting(true)
     setLoading(true)
     try {
-      console.log("asdf")
       const registerResponse = await registerPaymentFunc()
       const cancelPayinCallback = async () => {
         await paymentApi.cancelPayin({
@@ -211,5 +210,13 @@ export const usePay = (
     setAmountUSD(amount)
     setBlocked(blocked)
   }
-  return { blocked, amountUSD, submitting, loading, submit, submitData }
+  return {
+    blocked,
+    amountUSD,
+    submitting,
+    loading,
+    submit,
+    submitData,
+    setAmountUSD
+  }
 }
