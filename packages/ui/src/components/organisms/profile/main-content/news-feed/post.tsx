@@ -381,6 +381,7 @@ export const PostEngagement = ({
           <span className="text-[16px] leading-[25px]">{post.price}</span>
           <CostIcon />
         </div>
+        {post.tipAmount && "$" + post.tipAmount.toFixed(2)}
       </div>
       <CommentSection
         postId={post.postId}

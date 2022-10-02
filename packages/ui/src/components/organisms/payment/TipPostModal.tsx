@@ -30,7 +30,7 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Tip Post
+          Tip Post (Minimum $5)
         </span>
       </div>
       <input
@@ -52,7 +52,10 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
         postId={postId}
-        onSuccess={() => setOpen(false)}
+        onSuccess={() => {
+          setAmount(0)
+          setOpen(false)
+        }}
         amount={amount}
       />
     </Modal>

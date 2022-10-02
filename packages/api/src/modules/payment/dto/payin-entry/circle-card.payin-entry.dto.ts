@@ -6,7 +6,7 @@ import { CircleStatusResponseDto } from '../circle/status.dto'
 import { PayinEntryRequestDto, PayinEntryResponseDto } from './payin-entry.dto'
 
 export class CircleCardPayinEntryRequestDto extends PayinEntryRequestDto {
-  @Length(1, IP_ADDRESS_LENGTH)
+  @Length(0, IP_ADDRESS_LENGTH)
   @DtoProperty({ type: 'string' })
   ip: string
 

@@ -18,7 +18,7 @@ export const TipPostButton = ({
   onSuccess,
   isDisabled = false
 }: ITipPostButton) => {
-  if (!amount || amount < 3) {
+  if (!amount || amount < 5) {
     isDisabled = true
   }
   const api = new PostApi()
