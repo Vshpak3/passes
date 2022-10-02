@@ -11,7 +11,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import { CreatorStatsService } from './creator-stats.service'
 import {
   GetCreatorEarningResponseDto,

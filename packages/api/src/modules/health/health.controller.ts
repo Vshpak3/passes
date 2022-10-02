@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 
 @ApiTags('health')
 @Controller('health')

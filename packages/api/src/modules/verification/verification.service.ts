@@ -19,8 +19,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
 import { AuthRecord } from '../auth/core/auth-record'
-import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
-import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
+import { JwtService } from '../auth/jwt/jwt.service'
 import { ProfileEntity } from '../profile/entities/profile.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -62,8 +61,7 @@ export class VerificationService {
 
     private readonly userService: UserService,
     private readonly s3ContentService: S3ContentService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
   ) {
     this.personaConnector = new PersonaConnector(this.configService)
   }
@@ -250,8 +248,7 @@ export class VerificationService {
         isEmailVerified: true,
         isCreator: true,
       }),
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3ContentService,
     )
     return tokens.accessToken

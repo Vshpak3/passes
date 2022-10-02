@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 import { FeedService } from './feed.service'

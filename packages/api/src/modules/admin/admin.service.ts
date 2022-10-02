@@ -11,8 +11,7 @@ import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
 import { AuthRecord } from '../auth/core/auth-record'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
-import { JwtAuthService } from '../auth/jwt/jwt-auth.service'
-import { JwtRefreshService } from '../auth/jwt/jwt-refresh.service'
+import { JwtService } from '../auth/jwt/jwt.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
@@ -49,8 +48,7 @@ export class AdminService {
     private readonly dbWriter: DatabaseService['knex'],
     private readonly userService: UserService,
     private readonly profileService: ProfileService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
     private readonly s3contentService: S3ContentService,
     private readonly paymentService: PaymentService,
   ) {
@@ -90,8 +88,7 @@ export class AdminService {
     return await createTokens(
       res,
       AuthRecord.fromUserDto(await this.findUser(userId, username)),
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }

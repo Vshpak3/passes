@@ -4,21 +4,19 @@ import { Response } from 'express'
 
 import { AuthRecord } from '../modules/auth/core/auth-record'
 import { AccessTokensResponseDto } from '../modules/auth/dto/access-tokens-dto'
-import { JwtAuthService } from '../modules/auth/jwt/jwt-auth.service'
-import { JwtRefreshService } from '../modules/auth/jwt/jwt-refresh.service'
+import { JwtService } from '../modules/auth/jwt/jwt.service'
 import { S3ContentService } from '../modules/s3content/s3content.service'
 
 export async function createTokens(
   res: Response,
   authRecord: AuthRecord,
-  jwtAuthService: JwtAuthService,
-  jwtRefreshService: JwtRefreshService,
+  jwtService: JwtService,
   s3contentService: S3ContentService,
 ): Promise<AccessTokensResponseDto> {
-  const accessToken = jwtAuthService.createAccessToken(authRecord)
+  const accessToken = jwtService.createAccessToken(authRecord)
   let refreshToken: string | undefined = undefined
   if (authRecord.isVerified) {
-    refreshToken = jwtRefreshService.createRefreshToken(authRecord)
+    refreshToken = jwtService.createRefreshToken(authRecord)
   }
   if (authRecord.isCreator) {
     await s3contentService.signCookies(res, `*/${authRecord.id}`)
@@ -39,8 +37,7 @@ export async function redirectAfterOAuthLogin(
   const tokens = await createTokens(
     res,
     authRecord,
-    this.jwtAuthService,
-    this.jwtRefreshService,
+    this.jwtService,
     this.s3contentService,
   )
 

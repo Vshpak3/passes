@@ -7,3 +7,5 @@ export class JwtAuthPayload extends JwtBasePayload {
   isEmailVerified: boolean
   isCreator: boolean
 }
+
+export type JwtRefreshPayload = JwtBasePayload

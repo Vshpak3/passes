@@ -21,9 +21,8 @@ import { CreateUserRequestDto } from '../dto/create-user.dto'
 import { RefreshAuthTokenRequestDto } from '../dto/refresh-auth-token.dto'
 import { SetEmailRequestDto } from '../dto/set-email.dto'
 import { VerifyEmailDto as VerifyEmailRequestDto } from '../dto/verify-email.dto'
-import { JwtAuthService } from '../jwt/jwt-auth.service'
-import { JwtRefreshService } from '../jwt/jwt-refresh.service'
-import { RoleEnum } from './auth.metadata'
+import { JwtService } from '../jwt/jwt.service'
+import { RoleEnum } from './auth.role'
 import { AuthService } from './auth.service'
 import { AuthRecord } from './auth-record'
 
@@ -32,8 +31,7 @@ import { AuthRecord } from './auth-record'
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly s3contentService: S3ContentService,
   ) {}
@@ -75,8 +73,7 @@ export class AuthController {
     return await createTokens(
       res,
       authRecord,
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }
@@ -101,8 +98,7 @@ export class AuthController {
     return await createTokens(
       res,
       authRecord,
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }
@@ -150,8 +146,7 @@ export class AuthController {
         // Refreshes are only valid for verified users
         await this.userService.findOne({ id: req.user.id }),
       ),
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
     return {

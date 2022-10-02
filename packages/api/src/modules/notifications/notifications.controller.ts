@@ -15,7 +15,7 @@ import { EventEmitter } from 'events'
 import { RequestWithUser } from '../../types/request'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import {
   GetNotificationsRequestDto,
   GetNotificationsResponseDto,

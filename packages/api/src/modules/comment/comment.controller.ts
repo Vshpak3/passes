@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import { CommentService } from './comment.service'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import {

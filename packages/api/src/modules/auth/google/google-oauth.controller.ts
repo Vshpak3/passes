@@ -13,9 +13,8 @@ import { Request, Response } from 'express'
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { RoleEnum } from '../core/auth.metadata'
-import { JwtAuthService } from '../jwt/jwt-auth.service'
-import { JwtRefreshService } from '../jwt/jwt-refresh.service'
+import { RoleEnum } from '../core/auth.role'
+import { JwtService } from '../jwt/jwt.service'
 import { GoogleOauthGuard } from './google-oauth.guard'
 
 @Controller('auth/google')
@@ -23,8 +22,7 @@ import { GoogleOauthGuard } from './google-oauth.guard'
 export class GoogleOauthController {
   constructor(
     private readonly configService: ConfigService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
     private readonly s3contentService: S3ContentService,
   ) {}
 
@@ -33,7 +31,7 @@ export class GoogleOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Start the google oauth flow',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @UseGuards(GoogleOauthGuard)
   @Get()
@@ -46,7 +44,7 @@ export class GoogleOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Redirect from google oauth flow',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @ApiBearerAuth()
   @UseGuards(GoogleOauthGuard)

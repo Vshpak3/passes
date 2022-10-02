@@ -12,7 +12,7 @@ import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import { GetListMembersResponseDto } from '../list/dto/get-list-members.dto'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
 import { IsFollowingDto } from './dto/is-following.dto'

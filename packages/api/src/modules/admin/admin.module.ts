@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 
-import { JwtAuthModule } from '../auth/jwt/jwt-auth.module'
-import { JwtRefreshModule } from '../auth/jwt/jwt-refresh.module'
+import { JwtModule } from '../auth/jwt/jwt.module'
 import { PaymentModule } from '../payment/payment.module'
 import { ProfileModule } from '../profile/profile.module'
 import { S3ContentModule } from '../s3content/s3content.module'
@@ -11,12 +10,11 @@ import { AdminService } from './admin.service'
 
 @Module({
   imports: [
-    JwtAuthModule,
-    JwtRefreshModule,
-    S3ContentModule,
-    ProfileModule,
-    UserModule,
+    JwtModule,
     PaymentModule,
+    ProfileModule,
+    S3ContentModule,
+    UserModule,
   ],
   controllers: [AdminController],
   providers: [AdminService],

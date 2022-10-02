@@ -16,11 +16,10 @@ import { Request, Response } from 'express'
 import { redirectAfterOAuthLogin } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { RoleEnum } from '../core/auth.metadata'
+import { RoleEnum } from '../core/auth.role'
 import { FacebookDeletionConfirmationDto } from '../dto/fb/fb-deletion-confirmation.dto'
 import { RawFacebookDeletionRequestDto } from '../dto/fb/raw-fb-deletion-request.dto'
-import { JwtAuthService } from '../jwt/jwt-auth.service'
-import { JwtRefreshService } from '../jwt/jwt-refresh.service'
+import { JwtService } from '../jwt/jwt.service'
 import { FacebookComplianceService } from './facebook-compliance.service'
 import { FacebookOauthGuard } from './facebook-oauth.guard'
 
@@ -29,8 +28,7 @@ import { FacebookOauthGuard } from './facebook-oauth.guard'
 export class FacebookOauthController {
   constructor(
     private readonly configService: ConfigService,
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
     private readonly s3contentService: S3ContentService,
     private readonly fbComplianceService: FacebookComplianceService,
   ) {}
@@ -40,7 +38,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Start the facebook oauth flow',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @UseGuards(FacebookOauthGuard)
   @Get()
@@ -53,7 +51,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Redirect from facebook oauth flow',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @ApiBearerAuth()
   @UseGuards(FacebookOauthGuard)
@@ -67,7 +65,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Initiate a deletion request for a Facebook OAuth user',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @Post('deletion_callback')
   async facebookInitiateDelete(
@@ -93,7 +91,7 @@ export class FacebookOauthController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Check if a deletion request has been fulfilled',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @Get('deletion_confirmation')
   async facebookDeletionConfirmation(

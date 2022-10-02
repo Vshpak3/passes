@@ -6,23 +6,21 @@ import { RequestWithUser } from '../../../types/request'
 import { createTokens } from '../../../util/auth.util'
 import { ApiEndpoint } from '../../../web/endpoint.web'
 import { S3ContentService } from '../../s3content/s3content.service'
-import { RoleEnum } from '../core/auth.metadata'
+import { RoleEnum } from '../core/auth.role'
 import { AccessTokensResponseDto } from '../dto/access-tokens-dto'
 import { ConfirmResetPasswordRequestDto } from '../dto/local/confirm-reset-password.dto'
 import { CreateLocalUserRequestDto } from '../dto/local/create-local-user.dto'
 import { InitResetPasswordRequestDto } from '../dto/local/init-reset-password.dto'
 import { LocalUserLoginRequestDto } from '../dto/local/local-user-login.dto'
 import { UpdatePasswordRequestDto } from '../dto/local/update-password.dto'
-import { JwtAuthService } from '../jwt/jwt-auth.service'
-import { JwtRefreshService } from '../jwt/jwt-refresh.service'
+import { JwtService } from '../jwt/jwt.service'
 import { LocalAuthService } from './local.service'
 
 @Controller('auth/local')
 @ApiTags('auth/local')
 export class LocalAuthController {
   constructor(
-    private readonly jwtAuthService: JwtAuthService,
-    private readonly jwtRefreshService: JwtRefreshService,
+    private readonly jwtService: JwtService,
     private readonly localAuthService: LocalAuthService,
     private readonly s3contentService: S3ContentService,
   ) {}
@@ -45,8 +43,7 @@ export class LocalAuthController {
     return await createTokens(
       res,
       authRecord,
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }
@@ -56,7 +53,7 @@ export class LocalAuthController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access tokens for login',
-    role: RoleEnum.NO_AUTH,
+    role: RoleEnum.NO_AUTH_TRUE,
   })
   @Post('login')
   async loginWithEmailPassword(
@@ -69,8 +66,7 @@ export class LocalAuthController {
     return await createTokens(
       res,
       authRecord,
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }
@@ -109,8 +105,7 @@ export class LocalAuthController {
     return await createTokens(
       res,
       authRecord,
-      this.jwtAuthService,
-      this.jwtRefreshService,
+      this.jwtService,
       this.s3contentService,
     )
   }

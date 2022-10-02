@@ -16,7 +16,7 @@ import MessageValidator from 'sns-validator'
 
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
-import { RoleEnum } from '../auth/core/auth.metadata'
+import { RoleEnum } from '../auth/core/auth.role'
 import { ExamplePayinCallbackInput } from './callback.types'
 import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardAndExtraRequestDto } from './dto/circle/create-card.dto'

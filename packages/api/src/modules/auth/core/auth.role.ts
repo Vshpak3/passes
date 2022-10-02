@@ -8,13 +8,8 @@ export enum RoleEnum {
   GENERAL = 'general',
   CREATOR_ONLY = 'creatorOnly',
   REFRESH = 'refresh',
+  // Special: truly no auth guard at all
+  NO_AUTH_TRUE = 'noAuthTrue',
 }
-
-// If one of these roles is set then skip normal auth
-export const SKIP_AUTH_FOR_ROLES = new Set([
-  RoleEnum.NO_AUTH,
-  RoleEnum.UNVERIFIED,
-  RoleEnum.REFRESH,
-])
 
 export const Role = (role: RoleEnum) => SetMetadata(ROLE_KEY, role)

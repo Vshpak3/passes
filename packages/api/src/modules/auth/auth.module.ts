@@ -1,27 +1,25 @@
 import { Module } from '@nestjs/common'
-import { APP_GUARD } from '@nestjs/core'
 import { PassportModule } from '@nestjs/passport'
 
 import { CoreAuthModule } from './core/core-auth.module'
 import { FacebookOauthModule } from './facebook/facebook-oauth-module'
 import { GoogleOauthModule } from './google/google-oauth-module'
-import { JwtAuthGuard } from './jwt/jwt-auth.guard'
-import { JwtRefreshModule } from './jwt/jwt-refresh.module'
-import { JwtUnverifiedModule } from './jwt/jwt-unverified.module'
+import { JwtCreatorOnlyModule } from './jwt/creator-only/jwt-creator-only.module'
+import { JwtGeneralModule } from './jwt/general/jwt-general.module'
+import { JwtNoAuthModule } from './jwt/no-auth/jwt-no-auth.module'
+import { JwtRefreshModule } from './jwt/refresh/jwt-refresh.module'
+import { JwtUnverifiedModule } from './jwt/unverified/jwt-unverified.module'
 import { LocalAuthModule } from './local/local.module'
 import { TwitterOauthModule } from './twitter/twitter-oauth-module'
 
 @Module({
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
   imports: [
     CoreAuthModule,
     FacebookOauthModule,
     GoogleOauthModule,
+    JwtCreatorOnlyModule,
+    JwtGeneralModule,
+    JwtNoAuthModule,
     JwtRefreshModule,
     JwtUnverifiedModule,
     LocalAuthModule,
