@@ -1,6 +1,5 @@
 import React from "react"
-
-import { CloseThreadIcon } from "../../assets"
+import { CloseThreadIcon } from "src/components/messages/assets"
 
 const MessagingThreadHeader = ({ closeThread, thread }: any) => {
   const getReplyCount = () => {

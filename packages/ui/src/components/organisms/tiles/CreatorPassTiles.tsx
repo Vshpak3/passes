@@ -1,8 +1,7 @@
 import { PassDto } from "@passes/api-client"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
-
-import CreatorPassModal from "../CreatorPassModal"
+import CreatorPassModal from "src/components/organisms/CreatorPassModal"
 
 interface ICreatorPassTiles {
   passData: PassDto

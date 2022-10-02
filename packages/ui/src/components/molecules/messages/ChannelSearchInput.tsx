@@ -1,10 +1,9 @@
 import { Combobox } from "@headlessui/react"
 import { ListMemberDto } from "@passes/api-client"
+import classNames from "classnames"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
 import { useState } from "react"
-
-import { classNames } from "../../../helpers"
-import { useFollowSearch } from "../../../hooks"
+import { useFollowSearch } from "src/hooks"
 
 interface ISearchInputDropdown {
   onUserSelect: (user: ListMemberDto) => void

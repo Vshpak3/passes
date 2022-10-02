@@ -3,8 +3,7 @@ import AddToIcon from "public/icons/plus-square.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import { Fragment } from "react"
 import { VaultAddToItem, VaultSortItem } from "src/components/atoms"
-
-import { ISortOption } from "../../../hooks/vault/useVaultSort"
+import { ISortOption } from "src/hooks/vault/useVaultSort"
 
 interface IVaultAddToDropdown {
   onAddToPost: () => void

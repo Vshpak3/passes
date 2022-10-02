@@ -5,8 +5,8 @@ import {
 } from "@passes/api-client/models"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
+import OrderDropDown from "src/components/molecules/OrderDropDown"
 
-import OrderDropDown from "../OrderDropDown"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 import { ChannelListItem } from "./index"
 

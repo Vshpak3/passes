@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import React from "react"
-
 import {
   FormErrors,
   FormLabel,
@@ -9,7 +8,8 @@ import {
   FormPlaceholder,
   FormRegister,
   FormSelectOptions
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+
 import Label from "./Label"
 
 type SelectProps = {

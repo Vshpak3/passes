@@ -10,8 +10,7 @@ import ChevronDown from "public/icons/chevron-down-icon.svg"
 import { Fragment, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-
-import { FormInput, PassesPinkButton } from "../../atoms"
+import { FormInput, PassesPinkButton } from "src/components/atoms"
 
 const payoutFrequencyOptions = [
   {

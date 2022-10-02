@@ -1,7 +1,6 @@
 import { XCircle } from "lucide-react"
 import { useContext } from "react"
-
-import { MainContext } from "../../context/MainContext"
+import { MainContext } from "src/context/MainContext"
 
 export const PostScheduleAlert = () => {
   const { postTime, setPostTime } = useContext(MainContext)

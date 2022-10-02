@@ -1,9 +1,9 @@
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction, useState } from "react"
+import { FormInput } from "src/components/atoms"
+import { TipPostButton } from "src/components/payment/tip-post"
+import { creditCardIcons } from "src/helpers/creditCardIcon"
 
-import { creditCardIcons } from "../../helpers/creditCardIcon"
-import { FormInput } from "../atoms"
-import { TipPostButton } from "../payment/tip-post"
 import Modal from "./Modal"
 
 interface IQuickPayModal {

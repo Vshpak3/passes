@@ -13,11 +13,10 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms"
+import { refreshAccessToken } from "src/helpers/token"
 import { useMessageToDevelopers } from "src/hooks"
 import Providers from "src/providers"
 import { SWRConfig, SWRConfiguration } from "swr"
-
-import { refreshAccessToken } from "../helpers/token"
 
 const swrConfig: SWRConfiguration = {
   // enable or disable automatic revalidation when component is mounted

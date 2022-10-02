@@ -3,11 +3,10 @@ import { useRouter } from "next/router"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
-
-import { useUser } from "../../../hooks"
-import BankIcon from "../../../icons/bank-icon"
-import WalletIcon from "../../../icons/wallet-icon"
-import { Button, PassesPinkButton } from "../../atoms"
+import { Button, PassesPinkButton } from "src/components/atoms"
+import { useUser } from "src/hooks"
+import BankIcon from "src/icons/bank-icon"
+import WalletIcon from "src/icons/wallet-icon"
 
 const DefaultPayoutMethod = () => {
   const [banks, setBanks] = useState<CircleBankDto[]>([])

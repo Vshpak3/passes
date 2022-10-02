@@ -3,7 +3,10 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json"
   },
-  // plugins: ["tailwind"]
+  plugins: [
+    "no-relative-import-paths"
+    // "tailwind",
+  ],
   extends: [
     "next/core-web-vitals",
     // 'plugin:jsx-a11y/recommended',
@@ -13,6 +16,11 @@ module.exports = {
   ],
   rules: {
     "@next/next/no-img-element": "off",
+    "no-relative-import-paths/no-relative-import-paths": [
+      "error",
+      { allowSameFolder: true }
+    ],
+
     // Breaking for some reason after upgrades
     "react/no-unknown-property": "off",
     "react/prop-types": "off",

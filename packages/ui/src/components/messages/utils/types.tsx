@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react"
+import type { LoadingIndicatorProps } from "src/components/messages/components/Loading/LoadingIndicator"
 import type {
   APIErrorResponse,
   ErrorFromResponse,
@@ -7,8 +8,6 @@ import type {
   LiteralStringForUnion,
   Mute
 } from "stream-chat"
-
-import type { LoadingIndicatorProps } from "../components/Loading/LoadingIndicator"
 
 export type UnknownType = Record<string, unknown>
 export type PropsWithChildrenOnly = PropsWithChildren<Record<never, never>>

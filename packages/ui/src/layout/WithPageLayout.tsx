@@ -1,8 +1,8 @@
 import React from "react"
+import AuthWrapper from "src/components/wrappers/AuthWrapper"
+import { MainContextProvider } from "src/context/MainContext"
+import { isProd } from "src/helpers/env"
 
-import AuthWrapper from "../components/wrappers/AuthWrapper"
-import { MainContextProvider } from "../context/MainContext"
-import { isProd } from "../helpers/env"
 import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
 

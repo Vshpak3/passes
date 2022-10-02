@@ -12,16 +12,15 @@ import { useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-
 import {
   authRouter,
   AuthStates,
   authStateToRoute
-} from "../../helpers/authRouter"
-import { COUNTRIES } from "../../helpers/countries"
-import { setTokens } from "../../helpers/setTokens"
-import { checkUsername } from "../../helpers/username"
-import { useUser } from "../../hooks"
+} from "src/helpers/authRouter"
+import { COUNTRIES } from "src/helpers/countries"
+import { setTokens } from "src/helpers/setTokens"
+import { checkUsername } from "src/helpers/username"
+import { useUser } from "src/hooks"
 
 const MIN_AGE_IN_YEARS = 13
 const DATE_FORMAT = "yyyy-MM-dd"

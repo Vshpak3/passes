@@ -2,8 +2,8 @@ import { useRouter } from "next/router"
 import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import { memo, useEffect, useState } from "react"
 import { SidebarDefault, SidebarMobile } from "src/components/organisms"
+import { useUser } from "src/hooks"
 
-import { useUser } from "../../hooks"
 import { collapsedNavigation, navigation as _navigation } from "./sidebarData"
 
 const Sidebar = () => {

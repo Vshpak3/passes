@@ -4,12 +4,11 @@ import { MessagesApi } from "@passes/api-client/apis"
 import React, { useContext, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { GiphyContext } from "src/components/messages"
 import { SendMessageButton } from "src/components/payment/send-message"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
-
-import { GiphyContext } from "../.."
 
 const MessagingInputFanPerspective = () => {
   const { freeMessages, setFreeMessages } = useContext(GiphyContext)

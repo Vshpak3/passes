@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import React from "react"
-
 import {
   FormErrors,
   FormLabel,
@@ -8,7 +7,8 @@ import {
   FormOptions,
   FormRegister,
   FormType
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+
 import Label from "./Label"
 
 type CheckBoxProps = {

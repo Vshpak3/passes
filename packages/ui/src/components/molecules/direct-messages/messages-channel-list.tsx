@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import React, { Dispatch, SetStateAction } from "react"
+import { List } from "src/components/organisms/DirectMessage"
 
-import { List } from "../../organisms/DirectMessage"
 import { MessagesSearchInput } from "./messages-search-input"
 
 interface IMessagingChannelList {

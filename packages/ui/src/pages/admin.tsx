@@ -3,8 +3,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-
-import { useUser } from "../hooks"
+import { useUser } from "src/hooks"
 
 const ADMIN_EMAIL = "@passes.com"
 

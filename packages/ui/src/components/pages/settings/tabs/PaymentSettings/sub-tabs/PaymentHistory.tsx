@@ -4,10 +4,9 @@ import "react-date-range/dist/theme/default.css"
 import { PayinDto, PaymentApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react"
+import Tab from "src/components/pages/settings/Tab"
+import { useUser } from "src/hooks"
 import ChevronDown from "src/icons/chevron-down"
-
-import { useUser } from "../../../../../../hooks"
-import Tab from "../../../Tab"
 
 const PAGE_SIZE = 7
 

@@ -1,15 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
+import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
+import Tab from "src/components/pages/settings/Tab"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
-import { classNames } from "src/helpers"
 import { chatSettingsSchema } from "src/helpers/validation"
 import { useCreatorSettings } from "src/hooks"
-
-import ConditionRendering from "../../../molecules/ConditionRendering"
-import Tab from "../Tab"
 
 const defaultValues = {
   isWithoutTip: true,

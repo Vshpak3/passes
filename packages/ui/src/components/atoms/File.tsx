@@ -1,5 +1,4 @@
 import React, { useRef } from "react"
-
 import {
   FileAccept,
   FormErrors,
@@ -8,7 +7,8 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+
 import Label from "./Label"
 
 type InputProps = {

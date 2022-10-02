@@ -8,14 +8,13 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
+import Tab from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
-
-import { SubTabsEnum } from "../../../../../../config/settings"
-import ConditionRendering from "../../../../../molecules/ConditionRendering"
-import Tab from "../../../Tab"
 
 enum BankTypeEnum {
   US = "us",

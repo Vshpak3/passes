@@ -1,8 +1,7 @@
 import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import { FC } from "react"
-
-import { withPageLayout } from "../layout/WithPageLayout"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 export const NotFoundPage: FC = () => (
   <div className="flex w-full items-center justify-center pt-[60px]">

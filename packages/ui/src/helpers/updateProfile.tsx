@@ -1,6 +1,5 @@
 import { ProfileApi, UserApi } from "@passes/api-client"
-
-import { ContentService } from "../helpers"
+import { ContentService } from "src/helpers"
 
 export interface ProfileUpdate {
   username?: string

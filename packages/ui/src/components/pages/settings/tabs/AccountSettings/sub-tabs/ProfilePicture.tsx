@@ -3,9 +3,8 @@ import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
+import Tab from "src/components/pages/settings/Tab"
 import { useAccountSettings } from "src/hooks"
-
-import Tab from "../../../Tab"
 
 interface IProfileForm {
   profileImage: File[] | null

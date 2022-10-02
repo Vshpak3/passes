@@ -1,12 +1,11 @@
 import { GetProfileResponseDto, ProfileApi } from "@passes/api-client"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
+import NoProfile from "src/components/organisms/NoProfile"
 import PassTypes from "src/components/pages/profile/passes/PassTypes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import NoProfile from "../../components/organisms/NoProfile"
 
 const EditProfile = dynamic<any>(
   () =>

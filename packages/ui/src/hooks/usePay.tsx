@@ -18,8 +18,8 @@ import {
   PhantomProvider,
   setUpPhantomProvider
 } from "src/helpers/payment/wallet-setup"
+import { accessTokenKey } from "src/helpers/token"
 
-import { accessTokenKey } from "../helpers/token"
 import useLocalStorage from "./useLocalStorage"
 
 export const usePay = (

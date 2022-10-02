@@ -1,7 +1,6 @@
 import { PayinDataDto, PayinMethodDto, PostApi } from "@passes/api-client"
 import React from "react"
-
-import { usePay } from "../../hooks/usePay"
+import { usePay } from "src/hooks/usePay"
 
 interface ITipPostButton {
   postId: string

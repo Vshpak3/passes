@@ -9,9 +9,8 @@ import { forwardRef, useCallback, useContext, useState } from "react"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/pages/profile/main-content/new-post"
+import { MainContext } from "src/context/MainContext"
 import { CreatePostValues, useCreatePost } from "src/hooks"
-
-import { MainContext } from "../../../context/MainContext"
 interface CreateSchedulerPopupProps {
   onCancel: () => void
 }

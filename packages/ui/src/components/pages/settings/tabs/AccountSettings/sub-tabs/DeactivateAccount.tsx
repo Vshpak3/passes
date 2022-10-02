@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { Button } from "src/components/atoms"
 import { ConfirmationDialog } from "src/components/organisms"
-
-import Tab from "../../../Tab"
+import Tab from "src/components/pages/settings/Tab"
 
 const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =

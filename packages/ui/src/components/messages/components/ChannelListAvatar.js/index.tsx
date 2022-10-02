@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react"
+import { getWholeChar } from "src/components/messages/utils"
+import type { DefaultStreamChatGenerics } from "src/components/messages/utils/types"
 import type { UserResponse } from "stream-chat"
-
-import { getWholeChar } from "../../utils"
-import type { DefaultStreamChatGenerics } from "../../utils/types"
 
 export type AvatarProps<
   StreamChatGenerics extends DefaultStreamChatGenerics = DefaultStreamChatGenerics

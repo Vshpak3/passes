@@ -16,17 +16,13 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
+import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
 import encrypt from "src/helpers/openpgp"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
-
-import { SubTabsEnum } from "../../../../../../config/settings"
-import {
-  ISettingsContext,
-  useSettings
-} from "../../../../../../contexts/settings"
-import Tab from "../../../Tab"
 
 const AddCard = () => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext

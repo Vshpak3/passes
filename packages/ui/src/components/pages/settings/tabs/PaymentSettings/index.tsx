@@ -16,13 +16,12 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import { Fragment, useEffect } from "react"
+import { Button } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
+import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { usePayinMethod, useUser } from "src/hooks"
 import ChevronDown from "src/icons/chevron-down"
-
-import { SubTabsEnum } from "../../../../../config/settings"
-import { ISettingsContext, useSettings } from "../../../../../contexts/settings"
-import { Button } from "../../../../atoms"
-import Tab from "../../Tab"
 
 const PaymentSettings = () => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext

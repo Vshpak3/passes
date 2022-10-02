@@ -1,10 +1,9 @@
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
+import Tab from "src/components/pages/settings/Tab"
 import { useCreatorSettings } from "src/hooks"
-
-import ConditionRendering from "../../../../../molecules/ConditionRendering"
-import Tab from "../../../Tab"
 
 const defaultValues = {
   enableComments: false

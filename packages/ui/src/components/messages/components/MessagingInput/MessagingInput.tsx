@@ -6,6 +6,7 @@ import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { GiphyContext } from "src/components/messages/index"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/pages/profile/main-content/new-post/header"
@@ -19,8 +20,6 @@ import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"
 import { useSWRConfig } from "swr"
-
-import { GiphyContext } from "../../index"
 
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB

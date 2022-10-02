@@ -1,9 +1,8 @@
 import * as RadixPopover from "@radix-ui/react-popover"
 import classNames from "classnames"
 import PropTypes from "prop-types"
-
-import Cross from "../../icons/cross"
-import { Text } from "../atoms"
+import { Text } from "src/components/atoms"
+import Cross from "src/icons/cross"
 
 const Popover = ({
   avoidCollisions = true,

@@ -1,6 +1,5 @@
+import { MessagesV2 } from "src/components/organisms"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import { MessagesV2 } from "../components/organisms"
 
 const Messages2 = () => (
   <div className="flex h-screen flex-col">

@@ -1,10 +1,10 @@
 import { FanWallApi, FeedApi, GetProfileResponseDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { updateProfile } from "src/helpers"
+import { ProfileUpdate } from "src/helpers/updateProfile"
 import useSWR from "swr"
 
-import { updateProfile } from "../helpers"
-import { ProfileUpdate } from "../helpers/updateProfile"
 import usePasses from "./usePasses"
 import useUser from "./useUser"
 

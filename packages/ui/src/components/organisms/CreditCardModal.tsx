@@ -24,11 +24,11 @@ import {
 } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import encrypt from "src/helpers/openpgp"
+import { accessTokenKey } from "src/helpers/token"
 import { creditCardSchema } from "src/helpers/validation"
 import { useLocalStorage } from "src/hooks"
 import { v4 } from "uuid"
 
-import { accessTokenKey } from "../../helpers/token"
 import Modal from "./Modal"
 
 interface ICreditCardModal {

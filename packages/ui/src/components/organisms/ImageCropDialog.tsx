@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react"
 import Cropper from "react-easy-crop"
 import { toast } from "react-toastify"
+import { Button } from "src/components/atoms"
 
-import { Button } from "../atoms"
 import Dialog from "./Dialog"
 
 type CroppedArea = {

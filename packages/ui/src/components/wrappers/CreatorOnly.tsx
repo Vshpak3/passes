@@ -1,8 +1,7 @@
 import { useRouter } from "next/router"
 import { FC } from "react"
-
-import { PropsWithChildren } from "../../../types"
-import { useUser } from "../../hooks"
+import { useUser } from "src/hooks"
+import { PropsWithChildren } from "types"
 
 export interface CreatorOnlyWrapperProps {
   // isPage will handle redirecting user to /login if not logged in

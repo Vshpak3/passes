@@ -1,14 +1,13 @@
 import { useRouter } from "next/router"
 import { FC, useEffect, useState } from "react"
-
-import { PropsWithChildren } from "../../../types"
 import {
   authRouter,
   authStateMachine,
   AuthStates
-} from "../../helpers/authRouter"
-import { isProd } from "../../helpers/env"
-import { useUser } from "../../hooks"
+} from "src/helpers/authRouter"
+import { isProd } from "src/helpers/env"
+import { useUser } from "src/hooks"
+import { PropsWithChildren } from "types"
 
 interface AuthWrapperProps {
   // isPage will handle redirecting user to /login if not logged in;

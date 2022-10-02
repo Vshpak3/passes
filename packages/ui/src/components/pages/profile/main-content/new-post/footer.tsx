@@ -1,6 +1,5 @@
 import { useContext } from "react"
-
-import { MainContext } from "../../../../../context/MainContext"
+import { MainContext } from "src/context/MainContext"
 
 export const Footer = () => {
   const { postTime } = useContext(MainContext)

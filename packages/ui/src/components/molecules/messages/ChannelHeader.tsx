@@ -1,8 +1,8 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, SetStateAction } from "react"
+import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/messages-channel-gallery-header"
 
-import { MessagesChannelGalleryHeader } from "../direct-messages/messages-channel-gallery-header"
 import { Avatar } from "./index"
 
 interface Props {

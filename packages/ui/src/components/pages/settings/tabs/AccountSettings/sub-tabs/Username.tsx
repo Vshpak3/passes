@@ -1,9 +1,8 @@
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
 import { useAccountSettings, useUser } from "src/hooks"
-
-import Tab from "../../../Tab"
 
 interface IUserForm {
   username: string

@@ -1,13 +1,13 @@
+import classNames from "classnames"
 import React, { useEffect, useRef, useState } from "react"
-import { classNames } from "src/helpers"
-
 import {
   FormErrors,
   FormLabel,
   FormName,
   FormOptions,
   FormRegister
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+
 import Label from "./Label"
 
 type TextAreaProps = {

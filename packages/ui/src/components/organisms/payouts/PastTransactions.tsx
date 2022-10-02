@@ -9,8 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { DateRangePicker } from "react-date-range"
 import { getFormattedDate } from "src/helpers"
 import { useOnClickOutside } from "src/hooks"
-
-import ChevronDown from "../../../icons/chevron-down"
+import ChevronDown from "src/icons/chevron-down"
 
 const PAGE_SIZE = 7
 const ONE_DAY = ms("1 day")

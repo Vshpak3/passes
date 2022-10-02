@@ -1,8 +1,7 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
 import classNames from "classnames"
 import React from "react"
-
-import { usePay } from "../../hooks/usePay"
+import { usePay } from "src/hooks/usePay"
 
 interface IBuyPostButton {
   postId: string

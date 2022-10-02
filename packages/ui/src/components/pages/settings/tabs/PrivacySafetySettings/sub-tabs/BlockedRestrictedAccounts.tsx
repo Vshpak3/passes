@@ -1,7 +1,6 @@
 import React from "react"
 import { Button, ButtonTypeEnum } from "src/components/atoms"
-
-import Tab from "../../../Tab"
+import Tab from "src/components/pages/settings/Tab"
 
 // TODO: Needs backend integration
 const accounts: { name: string; isBlocked: boolean }[] = [

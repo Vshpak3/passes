@@ -4,9 +4,8 @@ import {
   ListMemberDto
 } from "@passes/api-client/models"
 import React, { useState } from "react"
+import { ChannelList, ChannelView } from "src/components/molecules/messages"
 import { useMessages } from "src/hooks"
-
-import { ChannelList, ChannelView } from "../molecules/messages"
 
 const MessagesV2 = () => {
   const [channelOrderType, setChannelOrderType] =

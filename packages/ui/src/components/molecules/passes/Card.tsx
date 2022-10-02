@@ -1,7 +1,6 @@
 import { PassDto } from "@passes/api-client"
 import React from "react"
-
-import { useUser } from "../../../hooks"
+import { useUser } from "src/hooks"
 
 interface IPassCardProps {
   pass: PassDto

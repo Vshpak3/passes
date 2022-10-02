@@ -3,8 +3,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { useContext } from "react"
-
-import { MainContext } from "../../context/MainContext"
+import { MainContext } from "src/context/MainContext"
 
 const popperSx = {
   "& .MuiPaper-root": {

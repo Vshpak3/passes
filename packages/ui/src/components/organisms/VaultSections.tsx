@@ -8,13 +8,12 @@ import {
   VaultSelectContainer,
   VaultSortDropdown
 } from "src/components/molecules"
-import useVaultSort from "src/hooks/vault/useVaultSort"
-
 import {
   TVaultCategory,
   TVaultData,
   TVaultType
-} from "../../hooks/vault/useVaultGallery"
+} from "src/hooks/vault/useVaultGallery"
+import useVaultSort from "src/hooks/vault/useVaultSort"
 
 interface IVaultNavigation {
   selectedItems: Array<string>

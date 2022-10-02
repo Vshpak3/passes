@@ -1,9 +1,5 @@
 import { VaultFilterOption } from "src/components/atoms"
-
-import {
-  TVaultCategory,
-  TVaultType
-} from "../../../hooks/vault/useVaultGallery"
+import { TVaultCategory, TVaultType } from "src/hooks/vault/useVaultGallery"
 
 interface ITypeFilterButton {
   id: TVaultType

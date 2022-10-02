@@ -1,10 +1,10 @@
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction, useState } from "react"
-
+import { BuyMessagesAmountDropdown } from "src/components/molecules/direct-messages/buy-messages-amount-dropdown"
+import { PaymentModalInfo } from "src/components/pages/profile/passes/PassTypes"
 // import { usePayment } from "src/hooks"
-import { creditCardIcons } from "../../helpers/creditCardIcon"
-import { BuyMessagesAmountDropdown } from "../molecules/direct-messages/buy-messages-amount-dropdown"
-import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
+import { creditCardIcons } from "src/helpers/creditCardIcon"
+
 import Modal from "./Modal"
 
 interface IBuyMessagesModal {

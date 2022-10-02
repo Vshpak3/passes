@@ -13,7 +13,8 @@ const QuickPayModal = dynamic<any>(
   }
 )
 
-import { useCarousel } from "../../../../hooks/useCarousel"
+import { useCarousel } from "src/hooks/useCarousel"
+
 import { PassCardDesktop, PassCardMobile } from "./PassesComponents"
 interface IPasses {
   creatorPasses: PassDto[] | undefined

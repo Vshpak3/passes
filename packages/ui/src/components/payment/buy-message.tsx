@@ -1,7 +1,6 @@
 import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import React from "react"
-
-import { usePay } from "../../hooks/usePay"
+import { usePay } from "src/hooks/usePay"
 
 interface IBuyMessageButton {
   messageId: string

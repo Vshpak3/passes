@@ -1,6 +1,6 @@
+import classNames from "classnames"
 import ms from "ms"
 import React from "react"
-import { classNames } from "src/helpers"
 
 const ONE_DAY = ms("1 day")
 

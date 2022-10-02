@@ -2,10 +2,9 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
 import { useNotificationSettings } from "src/hooks"
 import useSWR from "swr"
-
-import Tab from "../../../Tab"
 
 interface INotificationSettings {
   emailNotifications: boolean

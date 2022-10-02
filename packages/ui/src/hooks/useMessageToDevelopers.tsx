@@ -1,6 +1,5 @@
 import { useEffect } from "react"
-
-import { isDev, isStage } from "../helpers/env"
+import { isDev, isStage } from "src/helpers/env"
 
 const useMessageToDevelopers = (messages: string[]) => {
   useEffect(() => {

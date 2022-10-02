@@ -5,6 +5,7 @@ import {
   PostDto
 } from "@passes/api-client"
 import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
+import classNames from "classnames"
 import dynamic from "next/dynamic"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
@@ -18,21 +19,19 @@ import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
 import { Button, PostUnlockButton, Text } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
+import PostVideo from "src/components/molecules/post/PostVideo"
 import {
   BlockModal,
   CustomMentionEditor,
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import { useUser } from "src/hooks"
-
 import {
-  classNames,
   compactNumberFormatter,
   ContentService,
   formatCurrency
-} from "../../../../../helpers"
-import PostVideo from "../../../../molecules/post/PostVideo"
+} from "src/helpers"
+import { useUser } from "src/hooks"
 
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/BuyPostModal"),

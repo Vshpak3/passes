@@ -1,4 +1,4 @@
-import { CssTile } from "../atoms"
+import { CssTile } from "src/components/atoms"
 
 const CssGridTiles = () => {
   return (

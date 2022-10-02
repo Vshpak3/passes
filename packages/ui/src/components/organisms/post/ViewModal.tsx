@@ -12,10 +12,9 @@ import SharePinkIcon from "public/icons/share-outline-pink.svg"
 import React from "react"
 import TimeAgo from "react-timeago"
 import { Button } from "src/components/atoms"
+import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { Dialog } from "src/components/organisms"
 import useSWR from "swr"
-
-import PostStaticsButton from "../../molecules/post/PostStaticsButton"
 
 interface IViewProps {
   isOpen: boolean

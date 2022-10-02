@@ -2,12 +2,12 @@ import { PassApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
+import { PassesPinkButton } from "src/components/atoms"
+import { PaymentModalInfo } from "src/components/pages/profile/passes/PassTypes"
+import { BuyPassButton } from "src/components/payment/buy-pass"
+import { creditCardIcons } from "src/helpers/creditCardIcon"
 import { usePayinMethod, useUser } from "src/hooks"
 
-import { creditCardIcons } from "../../helpers/creditCardIcon"
-import { PassesPinkButton } from "../atoms"
-import { PaymentModalInfo } from "../pages/profile/passes/PassTypes"
-import { BuyPassButton } from "../payment/buy-pass"
 import Modal from "./Modal"
 
 interface IQuickPayModal {

@@ -3,10 +3,9 @@ import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
 import { changePasswordSchema } from "src/helpers/validation"
 import { useAccountSettings } from "src/hooks"
-
-import Tab from "../../../Tab"
 
 interface IChangePasswordForm {
   oldPassword: string

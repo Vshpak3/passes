@@ -2,7 +2,6 @@ import classNames from "classnames"
 import { toLower } from "lodash"
 import React from "react"
 import ReactInputMask from "react-input-mask"
-
 import {
   FormErrors,
   FormLabel,
@@ -11,7 +10,8 @@ import {
   FormPlaceholder,
   FormRegister,
   FormType
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+
 import Label from "./Label"
 
 export enum EIcon {

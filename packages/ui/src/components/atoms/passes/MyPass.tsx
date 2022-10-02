@@ -1,4 +1,5 @@
 import { PassApi, PassDto, PassHolderDto } from "@passes/api-client"
+import classNames from "classnames"
 import ms from "ms"
 import EditIcon from "public/icons/edit-pass.svg"
 import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
@@ -6,7 +7,6 @@ import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import RenewModal from "src/components/organisms/RenewModal"
-import { classNames } from "src/helpers"
 import { useOnClickOutside, useUser } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 

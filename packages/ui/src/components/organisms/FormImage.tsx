@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"
+import { FormInput } from "src/components/atoms"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
-
-import { FormInput } from "../atoms"
 
 interface IFormImageProps {
   register: UseFormRegister<any>

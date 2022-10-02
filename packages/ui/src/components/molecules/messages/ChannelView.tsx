@@ -1,7 +1,7 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import React, { Dispatch, SetStateAction, useState } from "react"
+import { ChannelGalleryView } from "src/components/molecules/direct-messages/messages-channel-gallery-view"
 
-import { ChannelGalleryView } from "../direct-messages/messages-channel-gallery-view"
 import { ChannelHeader, ChannelStream, InputMessage } from "./index"
 
 interface Props {

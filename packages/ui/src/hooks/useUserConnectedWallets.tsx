@@ -1,7 +1,7 @@
 import { WalletApi } from "@passes/api-client"
+import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
-import { accessTokenKey } from "../helpers/token"
 import useLocalStorage from "./useLocalStorage"
 
 const useUserConnectedWallets = () => {

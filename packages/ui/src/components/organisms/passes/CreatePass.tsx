@@ -15,11 +15,10 @@ import {
   PassLifetimeOptions,
   PassRenewal
 } from "src/components/molecules"
+import ConfirmationDialog from "src/components/organisms/ConfirmationDialog"
+import FormContainer from "src/components/organisms/FormContainer"
 import { useCreatePass } from "src/hooks"
 import { createPassSchema, PassTypeEnum } from "src/hooks/useCreatePass"
-
-import ConfirmationDialog from "../ConfirmationDialog"
-import FormContainer from "../FormContainer"
 
 const CREATE_PASS_URL = "/tools/manage-passes/create"
 

@@ -1,4 +1,4 @@
-import { ContentService } from "../../../helpers"
+import { ContentService } from "src/helpers"
 
 const EmptyResult = () => (
   <li className="my-4 pl-6 text-[#ffffff]/30">

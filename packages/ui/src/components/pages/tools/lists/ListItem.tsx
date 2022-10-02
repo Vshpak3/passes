@@ -1,8 +1,7 @@
 import { ListMemberDto } from "@passes/api-client"
 import React, { FC } from "react"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import CheckVerified from "src/icons/check-verified"
-
-import ConditionRendering from "../../../molecules/ConditionRendering"
 
 type ListItemProps = {
   fanInfo: ListMemberDto

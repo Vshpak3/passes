@@ -1,6 +1,6 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
+import classNames from "classnames"
 import { Fragment, ReactNode, useEffect, useState } from "react"
-import { classNames } from "src/helpers"
 
 type DialogProps = {
   triggerClassName?: string

@@ -4,9 +4,8 @@ import {
   UserApi
 } from "@passes/api-client"
 import { ContentService } from "src/helpers"
+import { checkUsername } from "src/helpers/username"
 import { useUser } from "src/hooks"
-
-import { checkUsername } from "../../helpers/username"
 
 export const useAccountSettings = () => {
   const { user } = useUser()

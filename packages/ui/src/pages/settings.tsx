@@ -108,16 +108,15 @@ const PaymentHistory = dynamic(
 const PayoutSettings = dynamic(
   () => import("src/components/pages/settings/tabs/PayoutSettings/index")
 )
+import classNames from "classnames"
 import { SubTabsEnum, tabs, TabsEnum } from "src/config/settings"
 import {
   ISettingsContext,
   SettingsProvider,
   useSettings
 } from "src/contexts/settings"
-import { classNames } from "src/helpers"
+import { useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import { useUser } from "../hooks"
 
 const Settings = () => {
   const { user } = useUser()

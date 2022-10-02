@@ -3,15 +3,14 @@ import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Text, Wordmark } from "src/components/atoms"
-
 import {
   authRouter,
   authStateMachine,
   AuthStates
-} from "../../helpers/authRouter"
-import { setTokens } from "../../helpers/setTokens"
-import { useUser } from "../../hooks"
-import { JWTUserClaims } from "../../hooks/useUser"
+} from "src/helpers/authRouter"
+import { setTokens } from "src/helpers/setTokens"
+import { useUser } from "src/hooks"
+import { JWTUserClaims } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(false)

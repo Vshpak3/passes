@@ -14,8 +14,7 @@ import React, {
   useRef,
   useState
 } from "react"
-
-import editorStyles from "../../styles/components/CustomComponentMentionEditor.module.css"
+import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 
 const MENTION_LIMIT = 5
 

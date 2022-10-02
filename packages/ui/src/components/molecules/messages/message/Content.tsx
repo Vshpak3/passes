@@ -1,7 +1,7 @@
+import classNames from "classnames"
 import dynamic from "next/dynamic"
 import React, { useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
-import { classNames } from "src/helpers"
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/BuyPostModal"),
   {

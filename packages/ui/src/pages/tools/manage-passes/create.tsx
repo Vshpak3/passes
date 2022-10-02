@@ -1,10 +1,9 @@
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { CreatePassForm, SelectPassType } from "src/components/organisms"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import CreatorOnlyWrapper from "../../../components/wrappers/CreatorOnly"
 
 const PASS_TYPES = [PassTypeEnum.LIFETIME, PassTypeEnum.SUBSCRIPTION]
 

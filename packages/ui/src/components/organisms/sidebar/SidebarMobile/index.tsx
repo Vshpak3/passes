@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
-
-import AuthWrapper from "../../../wrappers/AuthWrapper"
-import ConditionalWrap from "../../../wrappers/ConditionalWrap"
-import CreatorOnlyWrapper from "../../../wrappers/CreatorOnly"
+import AuthWrapper from "src/components/wrappers/AuthWrapper"
+import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 
 const SidebarMobile = ({
   active,

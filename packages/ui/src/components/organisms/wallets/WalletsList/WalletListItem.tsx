@@ -10,8 +10,7 @@ import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import React from "react"
 import { Button } from "src/components/atoms"
 import IconTooltip from "src/components/atoms/IconTooltip"
-
-import ConditionRendering from "../../../molecules/ConditionRendering"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 
 interface WalletListItemProps {
   wallet: WalletDto

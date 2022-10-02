@@ -4,6 +4,12 @@ import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import React, { useContext, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
+import { GiphyContext } from "src/components/messages/index"
+import {
+  MessagingChannelHeader,
+  MessagingInput,
+  MessagingInputFanPerspective
+} from "src/components/organisms"
 // import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
 import BuyPostModal from "src/components/organisms/BuyPostModal"
 import { classNames, formatCurrency } from "src/helpers"
@@ -15,13 +21,6 @@ import {
   useChatContext,
   Window
 } from "stream-chat-react"
-
-import {
-  MessagingChannelHeader,
-  MessagingInput,
-  MessagingInputFanPerspective
-} from "../../components"
-import { GiphyContext } from "../../index"
 
 const content = [
   {

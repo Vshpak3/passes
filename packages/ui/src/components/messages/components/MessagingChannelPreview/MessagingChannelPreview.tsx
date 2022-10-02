@@ -1,11 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React, { useContext } from "react"
+import { getCleanImage } from "src/components/messages/assets"
+import { Avatar } from "src/components/messages/components/ChannelListAvatar.js"
 import { formatCurrency } from "src/helpers"
 import { ChatContext } from "stream-chat-react"
-
-import { getCleanImage } from "../../assets"
-import { Avatar } from "../ChannelListAvatar.js"
 
 const getAvatarGroup = (members: any) => {
   if (members.length === 1) {

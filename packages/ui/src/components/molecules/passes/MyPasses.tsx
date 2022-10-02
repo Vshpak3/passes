@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import AddNewPassIcon from "public/icons/add-new-pass.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React from "react"
@@ -8,8 +9,6 @@ import {
   SelectPassTab
 } from "src/components/atoms/passes/MyPass"
 import { CreatorPassTiles } from "src/components/organisms"
-
-import { classNames } from "../../../helpers"
 
 const MyPassSearchBar = ({ onChange, passSearchTerm }: any) => (
   <div className="ml-auto">

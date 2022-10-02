@@ -1,7 +1,6 @@
 import { useRef } from "react"
+import { Video } from "src/components/atoms/Video"
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
-
-import { Video } from "../../atoms/Video"
 
 interface PostVideoProps {
   videoUrl: string

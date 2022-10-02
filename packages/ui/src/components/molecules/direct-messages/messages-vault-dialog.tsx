@@ -4,9 +4,8 @@ import {
   VaultMediaGrid,
   VaultNavigation
 } from "src/components/organisms"
-
-import useVaultGallery from "../../../hooks/vault/useVaultGallery"
-import CreatorOnlyWrapper from "../../wrappers/CreatorOnly"
+import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
+import useVaultGallery from "src/hooks/vault/useVaultGallery"
 
 interface IMessagesVaultDialog {
   hasVault: boolean

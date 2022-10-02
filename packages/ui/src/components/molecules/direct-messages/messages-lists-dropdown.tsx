@@ -2,10 +2,9 @@ import { Combobox } from "@headlessui/react"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
-
-import { FormInput } from "../../atoms"
-import { Dialog } from "../../organisms"
-import { List } from "../../organisms/DirectMessage"
+import { FormInput } from "src/components/atoms"
+import { Dialog } from "src/components/organisms"
+import { List } from "src/components/organisms/DirectMessage"
 
 interface IListsDropdown {
   selectedLists: List[]

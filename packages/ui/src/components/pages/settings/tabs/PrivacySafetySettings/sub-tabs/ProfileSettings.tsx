@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-
-import { useCreatorSettings } from "../../../../../../hooks"
-import ConditionRendering from "../../../../../molecules/ConditionRendering"
-import Tab from "../../../Tab"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
+import Tab from "src/components/pages/settings/Tab"
+import { useCreatorSettings } from "src/hooks"
 
 const defaultValues = {
   // fullPrivateProfile: true,

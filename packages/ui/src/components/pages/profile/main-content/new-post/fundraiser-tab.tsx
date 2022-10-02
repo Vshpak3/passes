@@ -1,10 +1,11 @@
+import classNames from "classnames"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import FundraiserWhiteIcon from "public/icons/post-fundraiser-white-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
-import { classNames, formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers"
 
 export const NewFundraiserTab = ({
   control,

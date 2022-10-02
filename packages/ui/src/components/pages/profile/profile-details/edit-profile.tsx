@@ -11,8 +11,7 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import FormImage from "src/components/organisms/FormImage"
-
-import { FormType } from "../../../types/FormTypes"
+import { FormType } from "src/components/types/FormTypes"
 
 const bioForm = {
   description: {

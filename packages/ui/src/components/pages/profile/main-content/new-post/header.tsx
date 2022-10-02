@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import dynamic from "next/dynamic"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
@@ -5,15 +6,13 @@ import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { useContext } from "react"
 import { FormInput } from "src/components/atoms"
+import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import {
   FormErrors,
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-import { classNames } from "src/helpers"
-
-import { MainContext } from "../../../../../context/MainContext"
-import { PostScheduleAlert } from "../../../../atoms/PostScheduleAlert"
+import { MainContext } from "src/context/MainContext"
 
 const DateAndTimePicker = dynamic<never>(() =>
   import("src/components/atoms/DateAndTimePicker").then(

@@ -10,14 +10,13 @@ import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { getCleanImage, HamburgerIcon } from "src/components/messages/assets"
+import { GiphyContext } from "src/components/messages/index"
 import {
   Avatar,
   useChannelStateContext,
   useChatContext
 } from "stream-chat-react"
-
-import { getCleanImage, HamburgerIcon } from "../../assets"
-import { GiphyContext } from "../../index"
 // import { TypingIndicator } from "../TypingIndicator/TypingIndicator"
 
 const getAvatarGroup = (members: any) => {

@@ -1,10 +1,9 @@
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import ListDetail from "src/components/pages/tools/lists/ListDetail"
 import { withPageLayout } from "src/layout/WithPageLayout"
-
-import ConditionRendering from "../../../components/molecules/ConditionRendering"
 
 const FanDetailLists: NextPage = () => {
   const [listId, setListId] = useState("")

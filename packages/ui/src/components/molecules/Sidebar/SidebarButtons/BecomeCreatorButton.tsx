@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
-
-import { Button } from "../../../atoms"
+import { Button } from "src/components/atoms"
 
 const BecomeCreatorButton = () => {
   const router = useRouter()

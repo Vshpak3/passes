@@ -2,8 +2,8 @@ import EditIcon from "public/icons/edit.svg"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms"
+import { ContentService } from "src/helpers"
 
-import { ContentService } from "../../helpers"
 import FormInput from "./FormInput"
 
 interface IForm {

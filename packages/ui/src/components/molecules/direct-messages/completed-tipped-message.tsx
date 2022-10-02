@@ -4,9 +4,8 @@ import DefaultStar from "public/icons/tipped-star-default-icon.svg"
 import MediumStar from "public/icons/tipped-star-medium-icon.svg"
 import SmallStar from "public/icons/tipped-star-small-icon.svg"
 import React from "react"
-
-import { formatCurrency } from "../../../helpers"
-import { Avatar } from "../messages"
+import { Avatar } from "src/components/molecules/messages"
+import { formatCurrency } from "src/helpers"
 
 export const TippedMessage = ({ isOwnMessage = true, tipAmount = 10 }) => {
   return (

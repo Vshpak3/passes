@@ -6,17 +6,16 @@ import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
 import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
 import { useCallback, useEffect, useState } from "react"
+import BulletItem from "src/components/atoms/BulletItem"
+import CreatorSteps from "src/components/molecules/creator-flow/CreatorSteps"
 import WelcomeToPasses from "src/components/organisms/creator-flow/WelcomePasses"
 import Modal from "src/components/organisms/Modal"
 import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageForm"
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
 import { CREATOR_STEPS, MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
+import { useUser } from "src/hooks"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
-
-import BulletItem from "../../components/atoms/BulletItem"
-import CreatorSteps from "../../components/molecules/creator-flow/CreatorSteps"
-import { useUser } from "../../hooks"
 
 const api = new VerificationApi()
 

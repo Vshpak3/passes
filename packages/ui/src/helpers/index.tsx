@@ -1,4 +1,3 @@
-import classNames from "./classNames"
 import ContentService from "./content"
 import { downloadFile } from "./downloadFile"
 import {
@@ -10,7 +9,6 @@ import encrypt from "./openpgp"
 import { updateProfile } from "./updateProfile"
 
 export {
-  classNames,
   compactNumberFormatter,
   ContentService,
   downloadFile,

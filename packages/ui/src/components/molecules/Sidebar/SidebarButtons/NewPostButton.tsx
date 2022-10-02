@@ -1,10 +1,9 @@
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
+import { Button } from "src/components/atoms"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/pages/profile/main-content/new-post"
 import { CreatePostValues, useCreatePost } from "src/hooks"
-
-import { Button } from "../../../atoms"
 
 const NewPostButton = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)

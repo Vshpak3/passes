@@ -5,13 +5,12 @@ import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { Button } from "src/components/atoms"
+import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { usePayoutMethod, useUser, useUserConnectedWallets } from "src/hooks"
 import BankIcon from "src/icons/bank-icon"
-
-import WalletIcon from "../../../../../icons/wallet-icon"
-import Tab from "../../Tab"
+import WalletIcon from "src/icons/wallet-icon"
 const PayoutSettings = () => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =

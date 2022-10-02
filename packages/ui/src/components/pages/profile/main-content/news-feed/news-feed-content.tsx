@@ -1,4 +1,5 @@
-import { NewPost } from "../new-post"
+import { NewPost } from "src/components/pages/profile/main-content/new-post"
+
 import CreatorContentFeed from "./creator-content-feed"
 import EventsFeed from "./events-feed"
 import FanWallFeed from "./fan-wall-feed"

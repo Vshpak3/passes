@@ -1,8 +1,7 @@
 import cn from "classnames"
 import AlertCircleIcon from "public/icons/alert-circle.svg"
 import React, { useRef, useState } from "react"
-
-import { useOnClickOutside } from "../../hooks"
+import { useOnClickOutside } from "src/hooks"
 
 interface IAlertProps {
   className?: string

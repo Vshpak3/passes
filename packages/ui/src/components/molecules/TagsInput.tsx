@@ -1,15 +1,14 @@
 import classNames from "classnames"
 import PlusSignIcon from "public/icons/plus-sign.svg"
 import React, { useRef, useState } from "react"
-import { useOnClickOutside } from "src/hooks"
-
 import {
   FormLabel,
   FormName,
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
+import { useOnClickOutside } from "src/hooks"
 
 const dummyRecentTags = ["Jett", "Yoru"]
 const dummyAllTags = ["Jett", "Yoru", "Cipher", "Reyna", "Sova", "Viper"]

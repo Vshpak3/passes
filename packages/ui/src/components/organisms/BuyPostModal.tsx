@@ -7,12 +7,11 @@ import WalletIcon from "public/icons/wallet.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
+import { BuyPostButton } from "src/components/payment/buy-post"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethodConfig"
 import { usePasses, usePayinMethod } from "src/hooks"
-
-import { BuyPostButton } from "../payment/buy-post"
 
 interface IBuyPostModal {
   postInfo?: GetPostResponseDto | null

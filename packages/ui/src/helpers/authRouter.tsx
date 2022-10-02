@@ -1,6 +1,6 @@
 import { NextRouter } from "next/router"
+import { JWTUserClaims } from "src/hooks/useUser"
 
-import { JWTUserClaims } from "../hooks/useUser"
 import { isProd } from "./env"
 import { tokenStillValid } from "./token"
 

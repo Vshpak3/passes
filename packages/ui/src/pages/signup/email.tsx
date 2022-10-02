@@ -5,15 +5,14 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
-
 import {
   authRouter,
   AuthStates,
   authStateToRoute
-} from "../../helpers/authRouter"
-import { isDev } from "../../helpers/env"
-import { setTokens } from "../../helpers/setTokens"
-import { useUser } from "../../hooks"
+} from "src/helpers/authRouter"
+import { isDev } from "src/helpers/env"
+import { setTokens } from "src/helpers/setTokens"
+import { useUser } from "src/hooks"
 
 const UserEmailPage = () => {
   const router = useRouter()

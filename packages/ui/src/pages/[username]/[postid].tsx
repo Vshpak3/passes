@@ -11,9 +11,9 @@ const Post = dynamic<any>(
   }
 )
 
-import usePost from "../../hooks/usePost"
-import { withPageLayout } from "../../layout/WithPageLayout"
-import { NotFoundPage } from "../404"
+import usePost from "src/hooks/usePost"
+import { withPageLayout } from "src/layout/WithPageLayout"
+import { NotFoundPage } from "src/pages/404"
 
 const PostByUrl = () => {
   const router = useRouter()

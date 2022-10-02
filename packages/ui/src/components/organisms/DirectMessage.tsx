@@ -13,12 +13,11 @@ import React, {
   useState
 } from "react"
 import { useForm } from "react-hook-form"
+import { MessagesChannel } from "src/components/molecules/direct-messages/messages-channel"
+import { MessagesChannelList } from "src/components/molecules/direct-messages/messages-channel-list"
+import { MessagesPriceDialog } from "src/components/molecules/direct-messages/messages-price-dialog"
 import { ContentService } from "src/helpers"
 import { useUser } from "src/hooks"
-
-import { MessagesChannel } from "../molecules/direct-messages/messages-channel"
-import { MessagesChannelList } from "../molecules/direct-messages/messages-channel-list"
-import { MessagesPriceDialog } from "../molecules/direct-messages/messages-price-dialog"
 
 export type List = {
   name: string

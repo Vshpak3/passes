@@ -3,7 +3,6 @@ import React from "react"
 import { Checkbox, File, Input, Select, TextArea } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import { DragDropFile, TagsInput } from "src/components/molecules"
-
 import {
   FileAccept,
   FormErrors,
@@ -14,7 +13,7 @@ import {
   FormRegister,
   FormSelectOptions,
   FormType
-} from "../types/FormTypes"
+} from "src/components/types/FormTypes"
 
 type FormInputProps = {
   label?: FormLabel
