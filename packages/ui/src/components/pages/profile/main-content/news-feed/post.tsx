@@ -1,4 +1,9 @@
-import { CommentDto, ContentDto, PostDto } from "@passes/api-client"
+import {
+  CommentDto,
+  ContentDto,
+  ContentDtoContentTypeEnum,
+  PostDto
+} from "@passes/api-client"
 import { CommentApi, LikeApi, PostApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
@@ -27,6 +32,7 @@ import {
   ContentService,
   formatCurrency
 } from "../../../../../helpers"
+import PostVideo from "../../../../molecules/post/PostVideo"
 
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/BuyPostModal"),
@@ -47,8 +53,14 @@ const PostViewModal = dynamic(
 
 import { PostDropdown } from "./post-dropdown"
 
-export const Post = ({ profile, post }: any) => {
-  const [postUnlocked, setPostUnlocked] = useState(!post?.locked)
+interface PostProps {
+  profile: any
+  post: PostDto
+  ownsProfile: boolean
+}
+
+export const Post = ({ profile, post, ownsProfile }: PostProps) => {
+  const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
@@ -104,13 +116,16 @@ export const Post = ({ profile, post }: any) => {
           setPostUnlocked={setPostUnlocked}
         />
 
-        {/* No fundraising right now
-        {post.fundraiser ? (
+        {/* {post.fundraiser ? (
           <FundraiserMedia images={post.content} />
         ) : (
-        )}
-        <PostEngagement post={post} postUnlocked={postUnlocked} />
-        {post.fundraiser && <FundraiserTab post={post} />} */}
+        )} */}
+        <PostEngagement
+          post={post}
+          postUnlocked={postUnlocked}
+          ownsProfile={ownsProfile}
+        />
+        {/* {post.fundraiser && <FundraiserTab post={post} />} */}
       </FormContainer>
     </>
   )
@@ -210,7 +225,7 @@ export const PostTextContent = ({ post }: any) => (
 )
 
 interface LockedMedia {
-  postUnlocked: any
+  postUnlocked: boolean
   post: PostDto
   setPostUnlocked: any
 }
@@ -240,7 +255,7 @@ export const LockedMedia = ({
             <div className="flex-center h-45 flex w-[245px] flex-col ">
               <PostUnlockButton
                 onClick={() => setOpenBuyPostModal(post)}
-                value={postUnlocked}
+                value={postUnlocked.toString()}
                 name={`Unlock Post For ${formatCurrency(post.price ?? 100)}`}
               />
               <div className="flex items-center justify-center pt-4 text-[#ffffff]">
@@ -251,14 +266,22 @@ export const LockedMedia = ({
         </div>
         {post?.content?.length &&
           post.content.map((c: ContentDto) => {
-            return (
-              <img
-                key={c.contentId}
-                src={c.signedUrl}
-                alt=""
-                className="w-full rounded-[20px] object-cover shadow-xl"
-              />
-            )
+            if (c.contentType === ContentDtoContentTypeEnum.Image) {
+              return (
+                <img
+                  key={c.contentId}
+                  src={c.signedUrl}
+                  alt=""
+                  className="w-full rounded-[20px] object-cover shadow-xl"
+                />
+              )
+            } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
+              return (
+                <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
+              )
+            } else {
+              console.error("Unsupported media type")
+            }
           })}
       </div>
       <BuyPostModal postInfo={openBuyPostModal} setOpen={onMockedSuccess} />
@@ -507,6 +530,9 @@ export const Comment = ({ comment }: any) => {
     </div>
   )
 }
+
+// Old fundraising stuff
+
 export const FundraiserMedia = ({ images }: any) => {
   const mediaGridLayout = (length: any, index: any) => {
     switch (length) {

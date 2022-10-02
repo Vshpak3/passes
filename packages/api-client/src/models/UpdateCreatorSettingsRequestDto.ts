@@ -55,6 +55,18 @@ export interface UpdateCreatorSettingsRequestDto {
      * @memberof UpdateCreatorSettingsRequestDto
      */
     showMediaCount?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateCreatorSettingsRequestDto
+     */
+    showLikeCount?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateCreatorSettingsRequestDto
+     */
+    showPostCount?: boolean;
 }
 
 
@@ -94,6 +106,8 @@ export function UpdateCreatorSettingsRequestDtoFromJSONTyped(json: any, ignoreDi
         'allowCommentsOnPosts': !exists(json, 'allowCommentsOnPosts') ? undefined : json['allowCommentsOnPosts'],
         'showFollowerCount': !exists(json, 'showFollowerCount') ? undefined : json['showFollowerCount'],
         'showMediaCount': !exists(json, 'showMediaCount') ? undefined : json['showMediaCount'],
+        'showLikeCount': !exists(json, 'showLikeCount') ? undefined : json['showLikeCount'],
+        'showPostCount': !exists(json, 'showPostCount') ? undefined : json['showPostCount'],
     };
 }
 
@@ -112,6 +126,8 @@ export function UpdateCreatorSettingsRequestDtoToJSON(value?: UpdateCreatorSetti
         'allowCommentsOnPosts': value.allowCommentsOnPosts,
         'showFollowerCount': value.showFollowerCount,
         'showMediaCount': value.showMediaCount,
+        'showLikeCount': value.showLikeCount,
+        'showPostCount': value.showPostCount,
     };
 }
 

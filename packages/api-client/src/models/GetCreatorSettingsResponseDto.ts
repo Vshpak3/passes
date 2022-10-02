@@ -55,6 +55,18 @@ export interface GetCreatorSettingsResponseDto {
      * @memberof GetCreatorSettingsResponseDto
      */
     showMediaCount: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCreatorSettingsResponseDto
+     */
+    showLikeCount: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetCreatorSettingsResponseDto
+     */
+    showPostCount: boolean;
 }
 
 
@@ -80,6 +92,8 @@ export function instanceOfGetCreatorSettingsResponseDto(value: object): boolean 
     isInstance = isInstance && "allowCommentsOnPosts" in value;
     isInstance = isInstance && "showFollowerCount" in value;
     isInstance = isInstance && "showMediaCount" in value;
+    isInstance = isInstance && "showLikeCount" in value;
+    isInstance = isInstance && "showPostCount" in value;
 
     return isInstance;
 }
@@ -100,6 +114,8 @@ export function GetCreatorSettingsResponseDtoFromJSONTyped(json: any, ignoreDisc
         'allowCommentsOnPosts': json['allowCommentsOnPosts'],
         'showFollowerCount': json['showFollowerCount'],
         'showMediaCount': json['showMediaCount'],
+        'showLikeCount': json['showLikeCount'],
+        'showPostCount': json['showPostCount'],
     };
 }
 
@@ -118,6 +134,8 @@ export function GetCreatorSettingsResponseDtoToJSON(value?: GetCreatorSettingsRe
         'allowCommentsOnPosts': value.allowCommentsOnPosts,
         'showFollowerCount': value.showFollowerCount,
         'showMediaCount': value.showMediaCount,
+        'showLikeCount': value.showLikeCount,
+        'showPostCount': value.showPostCount,
     };
 }
 

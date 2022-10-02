@@ -30,19 +30,25 @@ export interface GetCreatorStatsResponseDto {
      * @type {number}
      * @memberof GetCreatorStatsResponseDto
      */
-    numFollowers: number;
+    numFollowers?: number;
     /**
      * 
      * @type {number}
      * @memberof GetCreatorStatsResponseDto
      */
-    numLikes: number;
+    numLikes?: number;
     /**
      * 
      * @type {number}
      * @memberof GetCreatorStatsResponseDto
      */
-    numMedia: number;
+    numMedia?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetCreatorStatsResponseDto
+     */
+    numPosts?: number;
 }
 
 /**
@@ -51,9 +57,6 @@ export interface GetCreatorStatsResponseDto {
 export function instanceOfGetCreatorStatsResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "userId" in value;
-    isInstance = isInstance && "numFollowers" in value;
-    isInstance = isInstance && "numLikes" in value;
-    isInstance = isInstance && "numMedia" in value;
 
     return isInstance;
 }
@@ -69,9 +72,10 @@ export function GetCreatorStatsResponseDtoFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'userId': json['userId'],
-        'numFollowers': json['numFollowers'],
-        'numLikes': json['numLikes'],
-        'numMedia': json['numMedia'],
+        'numFollowers': !exists(json, 'numFollowers') ? undefined : json['numFollowers'],
+        'numLikes': !exists(json, 'numLikes') ? undefined : json['numLikes'],
+        'numMedia': !exists(json, 'numMedia') ? undefined : json['numMedia'],
+        'numPosts': !exists(json, 'numPosts') ? undefined : json['numPosts'],
     };
 }
 
@@ -88,6 +92,7 @@ export function GetCreatorStatsResponseDtoToJSON(value?: GetCreatorStatsResponse
         'numFollowers': value.numFollowers,
         'numLikes': value.numLikes,
         'numMedia': value.numMedia,
+        'numPosts': value.numPosts,
     };
 }
 

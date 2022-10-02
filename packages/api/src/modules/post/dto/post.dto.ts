@@ -34,7 +34,7 @@ export class PostDto {
   @DtoProperty({ type: 'string' })
   displayName: string
 
-  @Length(1, POST_TEXT_LENGTH)
+  @Length(0, POST_TEXT_LENGTH)
   @DtoProperty({ type: 'string' })
   text: string
 
