@@ -13,7 +13,7 @@ import BankIcon from "src/icons/bank-icon"
 import WalletIcon from "../../../../../icons/wallet-icon"
 import Tab from "../../Tab"
 const PayoutSettings = () => {
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
+  const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =
     usePayoutMethod()
 
@@ -79,7 +79,7 @@ const PayoutSettings = () => {
           variant="purple-light"
           tag="button"
           className="!px-4 !py-2.5"
-          onClick={() => addTabToStackHandler(SubTabsEnum.WalletSettings)}
+          onClick={() => addOrPopStackHandler(SubTabsEnum.WalletSettings)}
         >
           Manage wallets
         </Button>
@@ -131,7 +131,7 @@ const PayoutSettings = () => {
         variant="purple-light"
         tag="button"
         className="!px-4 !py-2.5"
-        onClick={() => addTabToStackHandler(SubTabsEnum.AddBank)}
+        onClick={() => addOrPopStackHandler(SubTabsEnum.AddBank)}
       >
         Add bank
       </Button>

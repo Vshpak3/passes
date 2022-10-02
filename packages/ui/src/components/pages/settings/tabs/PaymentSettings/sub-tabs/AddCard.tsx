@@ -123,8 +123,7 @@ const AddCard = () => {
         placeholder="4444 1902 0192 0100"
         errors={errors}
         options={{
-          required: { message: "Card number is required", value: true },
-          pattern: { message: "must be card number", value: /\d{16}/ }
+          required: { message: "Card number is required", value: true }
         }}
         icon={
           <div className="absolute left-[240px] top-[15px] flex h-8 w-8 flex-row gap-2">

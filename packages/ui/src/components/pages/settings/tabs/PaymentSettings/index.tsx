@@ -25,7 +25,7 @@ import { Button } from "../../../../atoms"
 import Tab from "../../Tab"
 
 const PaymentSettings = () => {
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
+  const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const {
     cards,
     defaultPayinMethod,
@@ -199,7 +199,7 @@ const PaymentSettings = () => {
             variant="purple-light"
             tag="button"
             className="!px-4 !py-2.5"
-            onClick={() => addTabToStackHandler(SubTabsEnum.AddCard)}
+            onClick={() => addOrPopStackHandler(SubTabsEnum.AddCard)}
           >
             Add card
           </Button>
