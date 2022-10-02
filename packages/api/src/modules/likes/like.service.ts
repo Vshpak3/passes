@@ -57,7 +57,7 @@ export class LikeService {
         .where({ id: postId })
         .increment('num_likes', 1)
       await trx<CreatorStatEntity>(CreatorStatEntity.table)
-        .where({ user_id: userId })
+        .where({ user_id: post.user_id })
         .increment('num_likes', 1)
     })
     await createOrThrowOnDuplicate(
@@ -93,7 +93,7 @@ export class LikeService {
           .where({ id: postId })
           .decrement('num_likes', 1)
         await trx<CreatorStatEntity>(CreatorStatEntity.table)
-          .where({ user_id: userId })
+          .where({ user_id: post.user_id })
           .decrement('num_likes', 1)
       }
     })
