@@ -3,6 +3,15 @@ import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
+import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
+
+interface SidebarMobileProps {
+  active: any
+  navigation: SidebarNavigation[]
+  setActive: any
+  router: any
+  handleLogout: any
+}
 
 const SidebarMobile = ({
   active,
@@ -10,11 +19,11 @@ const SidebarMobile = ({
   setActive,
   router,
   handleLogout
-}: any) => {
+}: SidebarMobileProps) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
 
-  const renderSidebarItems = navigation.map((item: any) => {
+  const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
       <SB.SidebarMobileItem
         key={item.id}
@@ -39,7 +48,7 @@ const SidebarMobile = ({
         wrapper={CreatorOnlyWrapper}
       >
         <ConditionalWrap
-          if={item.authOnly && !item.creatorOnly}
+          if={!item.showWithoutAuth && !item.creatorOnly}
           wrapper={AuthWrapper}
         >
           {child}

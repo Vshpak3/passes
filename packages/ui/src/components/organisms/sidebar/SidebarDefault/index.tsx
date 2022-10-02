@@ -5,10 +5,24 @@ import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
 import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
+import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
 const NewPostButton = dynamic(
   () => import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton")
 )
+
+interface SidebarDefaultProps {
+  active: any
+  navigation: SidebarNavigation[]
+  setActive: any
+  router: any
+  handleLogout: any
+  openCollapsedAdditionalSidebar: any
+  closeCollapsedAdditionalSidebar: any
+  collapsedAdditionalSidebarOpen: any
+  collapsedNavigation: any
+  user: any
+}
 
 const SidebarDefault = ({
   active,
@@ -21,8 +35,8 @@ const SidebarDefault = ({
   collapsedAdditionalSidebarOpen,
   collapsedNavigation,
   user
-}: any) => {
-  const renderSidebarItems = navigation.map((item: any) => {
+}: SidebarDefaultProps) => {
+  const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
       <SB.SidebarItem
         key={`sidebar-${item.id}`}

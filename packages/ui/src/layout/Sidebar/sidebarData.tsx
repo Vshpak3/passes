@@ -4,7 +4,7 @@ import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
 import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 
-interface Navigation {
+export interface SidebarNavigation {
   id: string
   name: string
   href: string
@@ -12,10 +12,10 @@ interface Navigation {
   current?: boolean
   creatorOnly?: boolean
   showWithoutAuth?: boolean
-  children?: Navigation[]
+  children?: SidebarNavigation[]
 }
 
-export const navigation: Navigation[] = [
+export const navigation: SidebarNavigation[] = [
   {
     id: "home",
     name: "Home",
@@ -92,7 +92,7 @@ export const navigation: Navigation[] = [
   }
 ]
 
-export const collapsedNavigation: Navigation[] = [
+export const collapsedNavigation: SidebarNavigation[] = [
   {
     id: "manage-passes",
     name: "Manage Passes",
