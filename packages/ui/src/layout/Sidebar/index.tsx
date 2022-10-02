@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from "react"
 import { SidebarDefault, SidebarMobile } from "src/components/organisms"
 import { useUser } from "src/hooks"
 
-import { navigation as _navigation } from "./sidebarData"
+import { collapsedNavigation, navigation as _navigation } from "./sidebarData"
 
 const Sidebar = () => {
   const router = useRouter()
@@ -69,7 +69,7 @@ const Sidebar = () => {
         setActive={setActive}
         router={router}
         user={user}
-        collapsedNavigation={[]}
+        collapsedNavigation={collapsedNavigation}
         collapsedAdditionalSidebarOpen={collapsedAdditionalSidebarOpen}
         openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
         closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
@@ -77,7 +77,7 @@ const Sidebar = () => {
       <SidebarMobile
         handleLogout={handleLogout}
         active={active}
-        navigation={[]}
+        navigation={navigation}
         setActive={setActive}
         router={router}
       />
