@@ -32,7 +32,6 @@ export const usePay = (
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
     undefined
   )
-  const [amountUSD, setAmountUSD] = useState(0)
 
   const paymentApi = new PaymentApi()
   const [accessToken] = useLocalStorage(accessTokenKey, "")
@@ -158,17 +157,6 @@ export const usePay = (
           payinId: registerResponse.payinId
         })
       }
-      if (
-        registerResponse.amount !== undefined &&
-        registerResponse.amount !== amountUSD
-      ) {
-        const error = new Error("sanity check: amounts don't matchup")
-        if (callback) {
-          callback(error)
-        }
-
-        console.error(error)
-      }
       switch (registerResponse.payinMethod?.method) {
         case PayinMethodDtoMethodEnum.CircleCard:
           await handleCircleCard(
@@ -206,17 +194,14 @@ export const usePay = (
   }
 
   const submitData = async () => {
-    const { amount, blocked } = await registerPaymentDataFunc()
-    setAmountUSD(amount)
+    const { blocked } = await registerPaymentDataFunc()
     setBlocked(blocked)
   }
   return {
     blocked,
-    amountUSD,
     submitting,
     loading,
     submit,
-    submitData,
-    setAmountUSD
+    submitData
   }
 }

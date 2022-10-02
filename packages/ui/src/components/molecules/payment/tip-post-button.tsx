@@ -36,10 +36,11 @@ export const TipPostButton = ({
     return { blocked: undefined, amount } as PayinDataDto
   }
 
-  const { blocked, amountUSD, submitting, loading, submit, setAmountUSD } =
-    usePay(register, registerData, onSuccess)
-
-  setAmountUSD(amount)
+  const { blocked, amountUSD, submitting, loading, submit } = usePay(
+    register,
+    registerData,
+    onSuccess
+  )
 
   const buttonText = amountUSD > 0 ? `Pay ${amountUSD}` : "Tip post"
 
