@@ -194,9 +194,9 @@ export class CreatorStatsService {
           `${CreatorSettingsEntity.table}.user_id`,
           `${CreatorStatEntity.table}.user_id`,
         )
-        .where({ user_id: creatorId })
+        .where(`${CreatorStatEntity.table}.user_id`, creatorId)
         .select([
-          `${CreatorStatEntity.table}.user_id`,
+          `${CreatorStatEntity.table}.*`,
           'show_follower_count',
           'show_media_count',
           'show_like_count',

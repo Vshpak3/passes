@@ -1,11 +1,10 @@
-import { GetProfileResponseDto, ProfileApi } from "@passes/api-client"
-import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
-import NoProfile from "src/components/organisms/NoProfile"
 import PassTypes from "src/components/pages/profile/passes/PassTypes"
 import ProfileDetails from "src/components/pages/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
+
+import NoProfile from "../../components/organisms/NoProfile"
+import { withPageLayout } from "../../layout/WithPageLayout"
 
 const EditProfile = dynamic<any>(
   () =>
@@ -23,7 +22,7 @@ const MainContent = dynamic<any>(
   }
 )
 
-const Profile = (props: GetProfileResponseDto) => {
+const Profile = () => {
   const {
     creatorPasses,
     editProfile,
@@ -34,10 +33,15 @@ const Profile = (props: GetProfileResponseDto) => {
     posts,
     profile,
     username,
-    onCloseEditProfile
-  } = useCreatorProfile(props)
+    onCloseEditProfile,
+    creatorStats,
+    isLoading
+  } = useCreatorProfile()
   // when no profile is found
-  if (Object.keys(profile).length === 0) {
+  if (isLoading) {
+    return <></>
+  }
+  if (!profile || Object.keys(profile).length === 0) {
     return <NoProfile />
   }
   return (
@@ -49,6 +53,7 @@ const Profile = (props: GetProfileResponseDto) => {
             onEditProfile={onEditProfile}
             username={username}
             ownsProfile={ownsProfile}
+            creatorStats={creatorStats}
           />
         )}
         {editProfile && (
@@ -76,41 +81,43 @@ const Profile = (props: GetProfileResponseDto) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking"
-  }
-}
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   return {
+//     paths: [],
+//     fallback: "blocking"
+//   }
+// }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params || !params.username) {
-    return { props: {} }
-  }
+// export const getStaticProps: GetStaticProps = async ({ params }) => {
+//   if (!params || !params.username) {
+//     return { props: {} }
+//   }
 
-  const username = Array.isArray(params.username)
-    ? params.username[0]
-    : params.username
+//   const username = Array.isArray(params.username)
+//     ? params.username[0]
+//     : params.username
 
-  try {
-    const api = new ProfileApi()
-    const profile = await api.findProfile({
-      getProfileRequestDto: { username }
-    })
-    console.log(profile)
+//   try {
+//     const api = new ProfileApi()
+//     const profile = await api.findProfile({
+//       getProfileRequestDto: { username }
+//     })
+//     console.log(profile)
 
-    // Hack to remove undefined from generated API typings
-    const props = { ...JSON.parse(JSON.stringify({ ...profile })) }
+//     // Hack to remove undefined from generated API typings
+//     const props = { ...JSON.parse(JSON.stringify({ ...profile })) }
 
-    return {
-      props,
-      // Next.js will attempt to re-generate the page:
-      // - When a request comes in
-      // - At most once every 5 minutes
-      revalidate: 5 * 60 // In seconds
-    }
-  } catch (err: any) {
-    return { props: {} }
-  }
-}
+//     return {
+//       props,
+//       // Next.js will attempt to re-generate the page:
+//       // - When a request comes in
+//       // - At most once every 5 minutes
+//       revalidate: 5 * 60 // In seconds
+//     }
+//   } catch (err: any) {
+//     return { props: {} }
+//   }
+// }
+// export default withPageLayout(Profile, { skipAuth: true, header: true })
+
 export default withPageLayout(Profile, { skipAuth: true, header: true })

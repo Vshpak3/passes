@@ -14,7 +14,8 @@ const ProfileDetailsDesktop = ({
   profile,
   ownsProfile,
   onEditProfile,
-  username
+  username,
+  creatorStats
 }: any) => {
   const onChat = async () => {
     const api = new MessagesApi()
@@ -29,11 +30,11 @@ const ProfileDetailsDesktop = ({
       {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
       <div className="col-span-4 flex flex-col px-5 pt-4">
         <ProfileInformation
-          displayName={profile.coverTitle}
+          displayName={profile.displayName}
           username={username}
-          quote={profile.coverDescription}
-          posts={profile.postsCount}
-          likes={profile.likes}
+          quote={profile.description}
+          posts={creatorStats?.numPosts}
+          likes={creatorStats?.numLikes}
           creatorId={profile.userId}
           discordUsername={profile.discordUsername}
           facebookUsername={profile.facebookUsername}
@@ -50,7 +51,12 @@ const ProfileDetailsDesktop = ({
   )
 }
 
-const ProfileDetailsMobile = ({ profile, username, ownsProfile }: any) => {
+const ProfileDetailsMobile = ({
+  profile,
+  username,
+  ownsProfile,
+  creatorStats
+}: any) => {
   // eslint-disable-next-line sonarjs/no-identical-functions
   const onChat = async () => {
     const api = new MessagesApi()
@@ -68,7 +74,7 @@ const ProfileDetailsMobile = ({ profile, username, ownsProfile }: any) => {
       <ProfileInformationMobile
         displayName={profile.displayName}
         username={username}
-        description={profile.coverDescription}
+        description={profile.description}
         creatorId={profile.userId}
         discordUsername={profile.discordUsername}
         facebookUsername={profile.facebookUsername}
@@ -77,8 +83,8 @@ const ProfileDetailsMobile = ({ profile, username, ownsProfile }: any) => {
         twitchUsername={profile.twitchUsername}
         twitterUsername={profile.twitterUsername}
         youtubeUsername={profile.youtubeUsername}
-        posts={profile.postsCount}
-        likes={profile.likes}
+        posts={creatorStats?.numPosts}
+        likes={creatorStats?.numLikes}
         ownsProfile={ownsProfile}
         onChat={onChat}
       />
@@ -90,7 +96,8 @@ const ProfileDetails = ({
   profile,
   onEditProfile,
   username,
-  ownsProfile
+  ownsProfile,
+  creatorStats
 }: any) => {
   return (
     <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
@@ -99,11 +106,13 @@ const ProfileDetails = ({
         onEditProfile={onEditProfile}
         profile={profile}
         username={username}
+        creatorStats={creatorStats}
       />
       <ProfileDetailsMobile
         ownsProfile={ownsProfile}
         profile={profile}
         username={username}
+        creatorStats={creatorStats}
       />
     </div>
   )

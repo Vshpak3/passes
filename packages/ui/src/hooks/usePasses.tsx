@@ -32,7 +32,7 @@ function filterPassesByType(type: string) {
   }
 }
 
-const usePasses = (creatorId = "") => {
+const usePasses = (creatorId: string) => {
   const { user } = useUser()
   const { data: creatorPasses = [], isValidating: isLoadingCreatorPasses } =
     useSWR(user ? ["/pass/created/", creatorId] : null, async () => {

@@ -78,6 +78,7 @@ export class ProfileService {
       .where(`${UserEntity.table}.is_active`, true)
       .select(
         `${ProfileEntity.table}.*`,
+        `${UserEntity.table}.display_name`,
         `${UserEntity.table}.legal_full_name`,
         `${UserEntity.table}.is_kyc_verified`,
         `${UserEntity.table}.is_adult`,

@@ -62,7 +62,7 @@ function getPassPrice(pass: PassDto) {
             {formatCurrency(pass.price)}
           </span>
           <span className="pl-[6px] text-[14px] font-medium  leading-[23px] text-[#ffff]/70">
-            (23 out of 100 left)
+            ({pass.remainingSupply} out of {pass.totalSupply} left)
           </span>
         </span>
       )

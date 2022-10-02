@@ -5,6 +5,7 @@ import {
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
 type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto
   | UpdateCreatorSettingsRequestDto
