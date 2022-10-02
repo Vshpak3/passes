@@ -204,9 +204,9 @@ export class PostService {
           })
           .count(),
       )
-    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-      .where({ user_id: userId })
-      .increment('num_posts')
+    // await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+    //   .where({ user_id: userId })
+    //   .increment('num_posts')
     return { postId }
   }
 
@@ -443,13 +443,12 @@ export class PostService {
   }
 
   async removePost(userId: string, postId: string) {
-    // TODO: allow admins + managers to remove posts
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId, deleted_at: null })
       .update({ deleted_at: new Date() })
-    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-      .where({ user_id: userId })
-      .decrement('num_posts', updated)
+    // await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+    //   .where({ user_id: userId })
+    //   .decrement('num_posts', updated)
     return updated === 1
   }
 
