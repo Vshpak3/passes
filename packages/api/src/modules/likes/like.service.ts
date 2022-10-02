@@ -39,6 +39,7 @@ export class LikeService {
   async likePost(userId: string, postId: string) {
     const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
+      .select(['user_id', 'deleted_at'])
       .first()
     if (!post) {
       throw new BadRequestException(POST_NOT_EXIST)
@@ -70,7 +71,7 @@ export class LikeService {
   async unlikePost(userId: string, postId: string) {
     const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
-      .select('deleted_at')
+      .select(['user_id', 'deleted_at'])
       .first()
 
     if (!post) {
