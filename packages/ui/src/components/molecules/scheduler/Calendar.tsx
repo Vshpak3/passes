@@ -1,5 +1,7 @@
+import { PostApi } from "@passes/api-client"
 import CalendarDates from "calendar-dates"
 import classNames from "classnames"
+import { format } from "date-fns"
 import { flatten } from "lodash"
 import { FC, useEffect, useState } from "react"
 
@@ -9,17 +11,35 @@ type CalendarProps = {
 }
 
 const calendarDates = new CalendarDates()
+const postApi = new PostApi()
 
 const Calendar: FC<CalendarProps> = ({ month, year }) => {
   const [matrixDate, setMatrixDate] = useState([])
+  const [posts, setPosts] = useState<any>([])
 
   useEffect(() => {
     ;(async function () {
       const selectionTime = new Date(year, month)
       const matrix = await calendarDates.getMatrix(selectionTime)
       setMatrixDate(flatten(matrix))
+      const scheduledPosts = await postApi.getPosts({
+        getPostsRequestDto: {
+          scheduledOnly: true
+        }
+      })
+      setPosts(scheduledPosts.posts)
     })()
   }, [month, year])
+
+  const countPostsInDate = (date: string): any => {
+    let postInThisDate: Array<any> = []
+    posts.map((post: any) => {
+      if (format(new Date(post.scheduledAt), "yyyy-MM-dd") === date) {
+        postInThisDate = [...postInThisDate, post]
+      }
+    })
+    return postInThisDate.length
+  }
 
   return (
     <div className="mb-[52px] select-none px-[15px] md:px-[30px]">
@@ -35,11 +55,12 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
       <div className="flex flex-wrap">
         {matrixDate.map((currentDate: Record<string, string>, index) => {
           const { date, iso, type } = currentDate
+          const numberPostInDate = countPostsInDate(iso)
           return (
             <div
               key={iso}
               className={classNames({
-                "h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px]":
+                "relative h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px]":
                   true,
                 "text-passes-gray-200": type === "previous" || type === "next",
                 "rounded-tl-[20px]": index === 0,
@@ -48,7 +69,14 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
                 "rounded-br-[20px]": index === 41
               })}
             >
-              {date}
+              <span className="absolute top-3 right-3">{date}</span>
+              <div className="mt-7 flex w-full">
+                {numberPostInDate > 0 && (
+                  <span className="text-l w-full rounded bg-passes-primary-color px-2 py-[2px] text-left font-bold leading-6 text-white">
+                    {numberPostInDate}
+                  </span>
+                )}
+              </div>
             </div>
           )
         })}

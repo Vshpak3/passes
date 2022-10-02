@@ -42,7 +42,9 @@ const CreateSchedulerPopup = forwardRef<
       selectionDate.setMinutes(
         selectionDate.getMinutes() + parseInt(time.format("mm"))
       )
-      setPostTime({ $d: selectionDate })
+      setPostTime({
+        $d: new Date(selectionDate)
+      })
     },
     [setPostTime]
   )
