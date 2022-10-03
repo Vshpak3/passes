@@ -648,17 +648,19 @@ export class MessagesService {
       .where({ user_id: otherUserId })
       .select('minimum_tip_amount')
       .first()
-    if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
+    if (
+      !creatorSettings ||
+      !creatorSettings.minimum_tip_amount ||
+      tipAmount > creatorSettings.minimum_tip_amount
+    ) {
       return undefined
     }
-    if (tipAmount < creatorSettings.minimum_tip_amount) {
-      return BlockedReasonEnum.INSUFFICIENT_TIP
-    }
+
     const freeMessages = await this.checkFreeMessages(userId, channelId)
-    if (!(freeMessages === null || (freeMessages > 0 && tipAmount === 0))) {
-      return BlockedReasonEnum.INSUFFICIENT_TIP
+    if (freeMessages === null || (freeMessages > 0 && tipAmount === 0)) {
+      return undefined
     }
-    return undefined
+    return BlockedReasonEnum.INSUFFICIENT_TIP
   }
 
   async createMessage(
