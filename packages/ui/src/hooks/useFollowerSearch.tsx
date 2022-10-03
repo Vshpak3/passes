@@ -16,12 +16,6 @@ const useFollowerSearch = () => {
     setFollowing(data.listMembers)
   }, [search])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceChangeInputSearch = useCallback(
-    debounce((v) => setSearch(v), DEBOUNCE_TIMEOUT),
-    []
-  )
-
   useEffect(() => {
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,10 +23,14 @@ const useFollowerSearch = () => {
 
   const [following, setFollowing] = useState<ListMemberDto[]>([])
 
-  const onChangeInput = (e: any) => {
-    debounceChangeInputSearch(e.target.value)
-  }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onChangeInput = useCallback(
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value.toLowerCase()
+      setSearch(value)
+    }, DEBOUNCE_TIMEOUT),
+    [setSearch]
+  )
   return {
     following,
     search,

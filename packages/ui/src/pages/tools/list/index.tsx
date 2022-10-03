@@ -41,54 +41,56 @@ const FanLists: NextPage = () => {
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
 
-  const fetchList = useCallback(
-    async (curResets: number) => {
-      if (!isLoadingMore) {
-        setIsLoadingMore(true)
-        try {
-          const newLists = await listApi.getLists({
-            getListsRequestsDto: {
-              order,
-              orderType,
-              lastId,
-              search: search && search.length > 0 ? search : undefined,
-              name,
-              createdAt
-            }
-          })
-          if (curResets === resets && newLists.lists.length > 0) {
-            setLists([...lists, ...newLists.lists])
-            setLastId(newLists.lastId)
-            setCreatedAt(newLists.createdAt)
-            setName(newLists.name)
+  const fetchList = useCallback(async () => {
+    const curResets = resets
+    if (!isLoadingMore) {
+      setIsLoadingMore(true)
+      console.log({
+        order,
+        orderType,
+        lastId,
+        search: search && search.length > 0 ? search : undefined,
+        name,
+        createdAt
+      })
+      console.log(lists)
+      try {
+        const newLists = await listApi.getLists({
+          getListsRequestsDto: {
+            order,
+            orderType,
+            lastId,
+            search: search && search.length > 0 ? search : undefined,
+            name,
+            createdAt
           }
-        } catch (error) {
-          console.error(error)
-        } finally {
-          setIsLoadingMore(false)
+        })
+        if (curResets === resets && newLists.lists.length > 0) {
+          setLists([...lists, ...newLists.lists])
+          setLastId(newLists.lastId)
+          setCreatedAt(newLists.createdAt)
+          setName(newLists.name)
         }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoadingMore(false)
       }
-    },
-    [
-      isLoadingMore,
-      resets,
-      order,
-      orderType,
-      lastId,
-      search,
-      name,
-      createdAt,
-      lists
-    ]
-  )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceChangeInputSearch = useCallback(
-    debounce(() => fetchList(resets), DEBOUNCE_TIMEOUT),
-    [resets]
-  )
+    }
+  }, [
+    isLoadingMore,
+    resets,
+    order,
+    orderType,
+    lastId,
+    search,
+    name,
+    createdAt,
+    lists
+  ])
 
   useEffect(() => {
-    fetchList(resets)
+    fetchList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resets])
 
@@ -97,13 +99,12 @@ const FanLists: NextPage = () => {
     debounce(async () => {
       const isToBottom =
         window.innerHeight + window.scrollY === document.body.offsetHeight
-
       // window.removeEventListener("scroll", handleScroll)
       if (isToBottom) {
-        await fetchList(resets)
+        await fetchList()
       }
     }, 50),
-    [fetchList, resets]
+    [fetchList]
   )
 
   useEffect(() => {
@@ -121,14 +122,14 @@ const FanLists: NextPage = () => {
     setResets(resets + 1)
   }, [resets])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
-      debounceChangeInputSearch()
       setSearch(value)
       reset()
-    },
-    [debounceChangeInputSearch, reset]
+    }, DEBOUNCE_TIMEOUT),
+    [reset, setSearch]
   )
 
   const handleOpenPopper = useCallback(
@@ -185,7 +186,7 @@ const FanLists: NextPage = () => {
   return (
     <div className="text-white">
       <div className="-mt-[160px] flex items-center justify-between px-7">
-        <h1 className="text-xl font-bold">Fan List</h1>
+        <h1 className="text-xl font-bold">My Lists</h1>
         <header className="flex items-center justify-end">
           <span className="relative">
             <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />

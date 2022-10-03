@@ -25,6 +25,8 @@ type ListDetailProps = {
   id: string
 }
 
+const DEBOUNCE_TIMEOUT = 500
+
 const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
@@ -70,59 +72,52 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const fetchMembers = useCallback(
-    async (curResets: number) => {
-      const listApi = new ListApi()
-      if (!isLoadingMore) {
-        setIsLoadingMore(true)
-        try {
-          const newListMembers: GetListMembersResponseDto =
-            await listApi.getListMembers({
-              getListMembersRequestDto: {
-                listId: id,
-                order,
-                orderType,
-                search: search && search.length > 0 ? search : undefined,
-                createdAt,
-                username,
-                lastId
-              }
-            })
-          if (curResets === resets && newListMembers.listMembers.length > 0) {
-            setListMembers([...listMembers, ...newListMembers.listMembers])
-            setLastId(newListMembers.lastId)
-            setCreatedAt(newListMembers.createdAt)
-            setUsername(newListMembers.username)
-          }
-        } catch (error) {
-          console.error(error)
-        } finally {
-          setIsLoadingMore(false)
-        }
-      }
-    },
-    [
-      createdAt,
-      id,
-      isLoadingMore,
-      lastId,
-      listMembers,
-      order,
-      orderType,
-      resets,
-      search,
-      username
-    ]
-  )
+  const fetchMembers = useCallback(async () => {
+    const curResets = resets
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceChangeInputSearch = useCallback(
-    debounce(() => fetchMembers(resets), 1000),
-    [resets]
-  )
+    const listApi = new ListApi()
+    if (!isLoadingMore) {
+      setIsLoadingMore(true)
+      try {
+        const newListMembers: GetListMembersResponseDto =
+          await listApi.getListMembers({
+            getListMembersRequestDto: {
+              listId: id,
+              order,
+              orderType,
+              search: search && search.length > 0 ? search : undefined,
+              createdAt,
+              username,
+              lastId
+            }
+          })
+        if (curResets === resets && newListMembers.listMembers.length > 0) {
+          setListMembers([...listMembers, ...newListMembers.listMembers])
+          setLastId(newListMembers.lastId)
+          setCreatedAt(newListMembers.createdAt)
+          setUsername(newListMembers.username)
+        }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoadingMore(false)
+      }
+    }
+  }, [
+    createdAt,
+    id,
+    isLoadingMore,
+    lastId,
+    listMembers,
+    order,
+    orderType,
+    resets,
+    search,
+    username
+  ])
 
   useEffect(() => {
-    fetchMembers(resets)
+    fetchMembers()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resets])
 
@@ -139,10 +134,10 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
       // window.removeEventListener("scroll", handleScroll)
       if (isToBottom) {
-        await fetchMembers(resets)
+        await fetchMembers()
       }
     }, 50),
-    [fetchMembers, resets]
+    [fetchMembers]
   )
 
   useEffect(() => {
@@ -160,14 +155,14 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
     setResets(resets + 1)
   }, [resets])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
-      debounceChangeInputSearch()
       setSearch(value)
       reset()
-    },
-    [debounceChangeInputSearch, reset]
+    }, DEBOUNCE_TIMEOUT),
+    [reset, setSearch]
   )
 
   const handleOpenPopper = useCallback(
@@ -283,6 +278,9 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
   return (
     <div className="text-white">
+      <div className="-mt-[160px] flex items-center justify-between px-7">
+        <h1 className="text-xl font-bold">List Members</h1>
+      </div>
       <FollowSearchModal
         isOpen={addFollowerOpen}
         setOpen={setAddFollowerOpen}
@@ -293,7 +291,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
         <li className="mb-3 flex items-center text-base font-medium leading-5 text-white">
           <span>List</span>
           <ChevronRight className="mx-[11px]" />
-          <span>Fan</span>
+          <span>Details</span>
         </li>
         <li className="flex items-center justify-between border-b-2 border-gray-500 py-5">
           <div className="flex items-center ">
