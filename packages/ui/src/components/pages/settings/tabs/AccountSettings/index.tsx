@@ -33,6 +33,7 @@ const AccountSettings: React.FC = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   return (
     <Tab
+      withBackMobile
       title="Account Settings"
       description="See information about your account, download an archive of your data, or learn about your account deactivation options"
     >
@@ -46,7 +47,7 @@ const AccountSettings: React.FC = () => {
               <Icon />
               <div className="flex-1">
                 <h4 className="text-label">{name}</h4>
-                <span className="text-base font-medium text-white/50">
+                <span className="text-xs font-medium text-white/50 sm:text-base md:text-base">
                   {subText}
                 </span>
               </div>

@@ -21,7 +21,7 @@ const AccountInformation = () => {
         >
           <div className="text-start">
             <p className="text-label">Profile Picture</p>
-            <p className="text-base font-medium text-white/50">
+            <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
               Change your profile picture.
             </p>
           </div>
@@ -35,7 +35,7 @@ const AccountInformation = () => {
           >
             <div className="text-start">
               <p className="text-label">Display Name</p>
-              <p className="text-base font-medium text-white/50">
+              <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
                 {user?.displayName}
               </p>
             </div>
@@ -49,7 +49,7 @@ const AccountInformation = () => {
         >
           <div className="text-start">
             <p className="text-label">Username</p>
-            <p className="text-base font-medium text-white/50">
+            <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
               @{user?.username}
             </p>
           </div>
@@ -59,7 +59,9 @@ const AccountInformation = () => {
         <div className="flex w-full items-center justify-between">
           <div className="text-start">
             <p className="text-label">Email</p>
-            <p className="text-base font-medium text-white/50">{user?.email}</p>
+            <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
+              {user?.email}
+            </p>
           </div>
         </div>
       </div>
@@ -67,7 +69,7 @@ const AccountInformation = () => {
       <div className="flex w-full items-center justify-between border-b border-passes-dark-200 p-2.5">
         <div className="text-start">
           <p className="text-label">Country</p>
-          <p className="text-base font-medium text-white/50">
+          <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
             {user?.countryCode}
           </p>
         </div>
@@ -76,7 +78,7 @@ const AccountInformation = () => {
       <div className="flex w-full items-center justify-between border-b border-passes-dark-200 p-2.5">
         <div className="text-start">
           <p className="text-label">Date of Birth</p>
-          <p className="text-base font-medium text-white/50">
+          <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
             {user?.birthday}
           </p>
         </div>

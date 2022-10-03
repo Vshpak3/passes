@@ -167,7 +167,7 @@ const EmailNotifications = () => {
 
         <Button
           variant="pink"
-          className="mt-[34px] w-auto !px-[52px]"
+          className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
           tag="button"
           disabled={_.isEqual(watch(), formattedNotificationSettings)}
           disabledClass="opacity-[0.5]"

@@ -39,7 +39,7 @@ const PayoutSettings = () => {
 
   return (
     <>
-      <Tab withBack title="Payout Settings" />
+      <Tab withBackMobile title="Payout Settings" />
       {/*<div className="flex items-center justify-between">
         <span className="text-[16px] font-[500]">To download W9 form</span>
         <DownloadW9FormButton />

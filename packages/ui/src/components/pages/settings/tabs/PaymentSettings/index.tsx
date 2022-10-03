@@ -47,7 +47,7 @@ const PaymentSettings = () => {
 
   return (
     <>
-      <Tab withBack title="Payment Settings" />
+      <Tab withBackMobile title="Payment Settings" />
 
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div className="flex  w-[248px] flex-col justify-center gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-6">

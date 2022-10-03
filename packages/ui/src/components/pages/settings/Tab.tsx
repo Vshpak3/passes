@@ -7,6 +7,7 @@ interface ITabProps {
   description?: string
   children?: React.ReactNode
   withBack?: boolean
+  withBackMobile?: boolean
   TitleBtn?: React.ReactNode
 }
 
@@ -15,9 +16,11 @@ const Tab: React.FC<ITabProps> = ({
   description,
   children,
   withBack,
+  withBackMobile,
   TitleBtn
 }) => {
-  const { popTabFromStackHandler } = useSettings() as ISettingsContext
+  const { popTabFromStackHandler, setShowSettingsTab } =
+    useSettings() as ISettingsContext
 
   return (
     <>
@@ -29,12 +32,20 @@ const Tab: React.FC<ITabProps> = ({
                 <ArrowRightIcon />
               </button>
             )}
+            {withBackMobile && (
+              <button
+                className="mr-3 lg:hidden"
+                onClick={() => setShowSettingsTab(false)}
+              >
+                <ArrowRightIcon />
+              </button>
+            )}
             <h3 className="text-label-lg">{title}</h3>
           </div>
           {TitleBtn}
         </div>
         {description && (
-          <p className="mt-3 text-base font-medium text-white/50">
+          <p className="mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
             {description}
           </p>
         )}

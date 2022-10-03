@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { SubTabsEnum, TabsEnum } from "src/config/settings"
 
 export interface ISettingsContext {
+  showSettingsTab: boolean
+  setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
   activeTab: TabsEnum
   subTabsStack: SubTabsEnum[]
   setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum>>
@@ -17,6 +19,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
+  const [showSettingsTab, setShowSettingsTab] = useState(false)
 
   const addTabToStackHandler = (tab: SubTabsEnum) => {
     console.log(subTabsStack)
@@ -47,6 +50,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <SettingsContext.Provider
       value={{
+        showSettingsTab,
+        setShowSettingsTab,
         activeTab,
         subTabsStack,
         setActiveTab,

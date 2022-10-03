@@ -1,3 +1,4 @@
+import cn from "classnames"
 import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import Header from "src/components/molecules/performance/Header"
@@ -108,7 +109,6 @@ const PaymentHistory = dynamic(
 const PayoutSettings = dynamic(
   () => import("src/components/pages/settings/tabs/PayoutSettings/index")
 )
-import classNames from "classnames"
 import { SubTabsEnum, tabs, TabsEnum } from "src/config/settings"
 import {
   ISettingsContext,
@@ -120,42 +120,63 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Settings = () => {
   const { user } = useUser()
-  const { activeTab, setActiveTab, subTabsStack } =
-    useSettings() as ISettingsContext
+  const {
+    activeTab,
+    setActiveTab,
+    subTabsStack,
+    showSettingsTab,
+    setShowSettingsTab
+  } = useSettings() as ISettingsContext
 
   return (
     <>
       <Header />
-      <div className="mx-auto flex h-full w-full max-w-[1235px] flex-1">
-        <div className="min-w-[330px] max-w-[380px] border-r border-passes-dark-200 pt-6 pl-11">
-          <div className="pr-[35px]">
-            <h2 className="text-label-lg">Settings</h2>
-          </div>
-          <ul className="mt-6 -mr-px">
-            {tabs
-              .filter(({ creatorOnly }: any) => user?.isCreator || !creatorOnly)
-              .map(({ name, id }: any) => (
-                <li
-                  key={id}
-                  className={classNames(
-                    "rounded-l-[4px] border-r p-2.5 pr-[13px]",
-                    id === activeTab
-                      ? "border-passes-primary-color bg-passes-primary-color/25"
-                      : "border-transparent"
-                  )}
-                >
-                  <button
-                    className="text-label flex w-full items-center justify-between"
-                    onClick={() => setActiveTab(id)}
+      <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
+        <div
+          className={cn(
+            "flex-1 flex-shrink-0 pl-[18px] pr-[25px] xs:px-8 sm:px-14 lg:block lg:min-w-[330px] lg:pl-11 lg:pr-0",
+            { hidden: showSettingsTab }
+          )}
+        >
+          <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-6">
+            <div className="pr-[35px]">
+              <h2 className="text-label-lg">Settings</h2>
+            </div>
+            <ul className="mt-6 -mr-px">
+              {tabs
+                .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
+                .map(({ name, id }) => (
+                  <li
+                    key={id}
+                    className={cn(
+                      "rounded-l-[4px] border-r p-2.5 pr-[13px]",
+                      id === activeTab
+                        ? "border-passes-primary-color bg-passes-primary-color/25"
+                        : "border-transparent"
+                    )}
                   >
-                    <span>{name}</span>
-                    <ChevronRightIcon />
-                  </button>
-                </li>
-              ))}
-          </ul>
+                    <button
+                      className="text-label flex w-full items-center justify-between"
+                      onClick={() => {
+                        setShowSettingsTab(true)
+                        setActiveTab(id)
+                      }}
+                    >
+                      <span>{name}</span>
+                      <ChevronRightIcon />
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          </div>
         </div>
-        <div className="w-full max-w-[830px] px-[29px] pt-6">
+
+        <div
+          className={cn(
+            "w-full max-w-[830px] px-5 pt-6 sm:px-[29px] lg:block",
+            { hidden: !showSettingsTab }
+          )}
+        >
           {subTabsStack.length > 0
             ? renderSubTab(subTabsStack.slice(-1)[0])
             : renderTab(activeTab)}

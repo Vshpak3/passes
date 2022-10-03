@@ -7,6 +7,16 @@ module.exports = {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
+    screens: {
+      xxs: "360px",
+      xs: "475px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      "sidebar-collapse": "1240px",
+      xl: "1280px",
+      "2xl": "1536px"
+    },
     extend: {
       backgroundImage: {
         "pass-gradient": "url('/img/gradient_pass.png')"
@@ -49,11 +59,6 @@ module.exports = {
         "sans-system": defaultTheme.fontFamily.sans,
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
         em: ["Playfair Display", "serif"]
-      },
-      screens: {
-        xxs: "360px",
-        xs: "475px",
-        "sidebar-collapse": "1240px"
       },
       keyframes: {
         "fade-in-down": {

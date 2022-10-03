@@ -4,7 +4,7 @@ import Tab from "src/components/pages/settings/Tab"
 
 const WalletSettings = () => {
   return (
-    <Tab withBack title="Wallet Management & Settings">
+    <Tab withBackMobile title="Wallet Management & Settings">
       <Wallets />
     </Tab>
   )

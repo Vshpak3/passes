@@ -34,6 +34,7 @@ const PrivacySafetySettings = () => {
   return (
     <>
       <Tab
+        withBackMobile
         title="Privacy & Safety Settings"
         description="Manage what information you and your fans see and share on Twitter."
       >
@@ -41,13 +42,13 @@ const PrivacySafetySettings = () => {
           {subTabs.map(({ Icon, id, name, subText }) => (
             <li key={id}>
               <button
-                className="flex w-full items-center space-x-6 p-2.5 text-left hover:bg-passes-primary-color/25"
+                className="flex w-full items-center space-x-4 p-2.5 text-left hover:bg-passes-primary-color/25 sm:space-x-6"
                 onClick={() => addTabToStackHandler(id)}
               >
                 <Icon />
                 <div className="flex-1">
                   <h4 className="text-label">{name}</h4>
-                  <span className="text-base font-medium text-white/50">
+                  <span className="text-xs font-medium text-white/50 sm:text-base md:text-base">
                     {subText}
                   </span>
                 </div>

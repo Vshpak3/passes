@@ -8,7 +8,7 @@ interface IBalanceProps {
 
 const Balance: React.FC<IBalanceProps> = ({ balance }) => {
   return (
-    <div className="cover-image relative mt-5 overflow-hidden rounded-[6px] border border-passes-dark-500 py-7 pl-6 pr-[34px] lg:absolute lg:right-5 lg:top-0 xs:inline-block sidebar-collapse:right-[50px]">
+    <div className="cover-image relative mt-5 overflow-hidden rounded-[6px] border border-passes-dark-500 py-7 pl-6 pr-[34px] xs:inline-block lg:absolute lg:right-5 lg:top-0 sidebar-collapse:right-[50px]">
       <span className="text-2xl font-bold leading-6">
         {formatCurrency(balance ? balance : 0)}
       </span>

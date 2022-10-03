@@ -115,6 +115,7 @@ const ChatSettings = () => {
   return (
     <>
       <Tab
+        withBackMobile
         title="Chat Settings"
         description="Setup auto welcome message, and manage messages without tips."
       />

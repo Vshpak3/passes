@@ -48,7 +48,7 @@ const PostsSettings = () => {
 
           <Button
             variant="pink"
-            className="mt-[34px] w-auto !px-[52px]"
+            className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
             disabled={isUpdating}
             disabledClass="opacity-[0.5]"
