@@ -1,11 +1,6 @@
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import Link from "next/link"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
-import CoinbaseIcon from "public/icons/coinbase-icon.svg"
-import MetamaskIcon from "public/icons/metamask-icon.svg"
-import PhantomIcon from "public/icons/phantom-icon.svg"
-import TrelloIcon from "public/icons/trello-icon.svg"
-import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -107,8 +102,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
         >
           <div className="flex w-full flex-col gap-[12px] rounded-3xl px-4 py-8 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-5 sm:backdrop-blur-3xl">
             <div className="flex flex-col">
-              <div className="text-base font-bold">
-                Your Bank Account Data for Payouts
+              <div className="text-lg font-bold">
+                Bank Account Data for Payouts
               </div>
               <div className="text-xs font-medium leading-[22px] text-[#b3bee7] opacity-[0.6]">
                 You will be able to edit it in the settings later.
@@ -121,7 +116,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 register={register}
                 name="routingNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="4444 1902 0192 0100"
+                placeholder="123456789"
                 type="text"
                 errors={errors}
                 options={{
@@ -129,14 +124,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Account Number</div>
               <FormInput
                 register={register}
                 name="accountNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="-"
+                placeholder="123456789"
                 type="text"
                 errors={errors}
                 options={{
@@ -144,7 +138,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">
                 Type of Bank Account
@@ -162,7 +155,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 selectOptions={[{ label: "US", value: "US" }]}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Country</div>
               <FormInput
@@ -178,7 +170,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 selectOptions={[{ label: "USA", value: "US" }]}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">First Name</div>
               <FormInput
@@ -193,7 +184,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Last Name</div>
               <FormInput
@@ -208,7 +198,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Business Name</div>
               <FormInput
@@ -220,14 +209,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 errors={errors}
               />
             </div>
-
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Email</div>
               <FormInput
                 register={register}
                 name="email"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder=""
+                placeholder="Email Address"
                 type="text"
                 errors={errors}
                 options={{
@@ -240,7 +228,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
             </div>
-
             <div className="flex flex-col gap-[24px]">
               <div className="text-lg font-bold">Billing Address</div>
               <FormInput
@@ -301,9 +288,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 />
               </div>
             </div>
-
             <div className="mt-2 flex flex-col gap-11">
-              <div className="text-base font-bold">
+              {/* <div className="text-base font-bold">
                 Or Use Your Crypto Wallet for Payouts
               </div>
               <div className="flex flex-row gap-5">
@@ -312,7 +298,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 <TrelloIcon className="h-[34px] w-[34px]" />
                 <PhantomIcon className="h-[34px] w-[34px]" />
                 <WalletConnectIcon className="h-[34px] w-[34px]" />
-              </div>
+              </div> */}
               <div>
                 <div className="flex flex-col gap-[6px]">
                   <div className="text-base font-bold">
@@ -356,7 +342,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 </div>
               </div>
             </div>
-
             <div className="mt-4 flex flex-col gap-3">
               <PassesPinkButton
                 name="Confirm and Save"

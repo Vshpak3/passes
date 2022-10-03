@@ -21,7 +21,7 @@ const BecomeCreatorButton = () => {
           className="mt-4 w-full max-w-sm  border-none !px-8 !py-5 text-white transition-colors"
           variant="pink"
         >
-          Creator
+          Become a Creator
         </Button>
       </div>
     </>

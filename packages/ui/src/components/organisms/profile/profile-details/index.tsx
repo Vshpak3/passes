@@ -70,7 +70,7 @@ const ProfileDetailsMobile = ({
       {/* <div className="absolute top-2 left-2">
         <Verified />
       </div> */}
-      <ProfilePhoto url={profile.profileImageUrl} />
+      <ProfilePhoto url={ContentService.profileThumbnail(profile.userId)} />
       <ProfileInformationMobile
         displayName={profile.displayName}
         username={username}

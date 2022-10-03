@@ -9,7 +9,6 @@ import {
 import { SHA256 } from "crypto-js"
 import { useState } from "react"
 import { toast } from "react-toastify"
-import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
   connectMetamask,

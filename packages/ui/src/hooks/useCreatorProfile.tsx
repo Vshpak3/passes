@@ -42,6 +42,7 @@ const useCreatorProfile = () => {
       })
       setProfile(res)
     } catch (error: any) {
+      setProfile(undefined)
       toast.error(error)
     } finally {
       setIsLoading(false)
