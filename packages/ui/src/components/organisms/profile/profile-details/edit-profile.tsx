@@ -74,7 +74,7 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
     defaultValues: profile
   })
 
-  const profileThumbnail = watch("profileThumbnail")
+  const profileImage = watch("profileImage")
   const profileCoverImage = watch("profileCoverImage")
   const renderInput = ([key, input]: any) => (
     <div className={input.colSpan} key={key}>
@@ -137,8 +137,8 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
           <FormImage
             setValue={setValue}
             register={register}
-            name="profileThumbnail"
-            imgData={profileThumbnail}
+            name="profileImage"
+            imgData={profileImage}
             cropWidth={400}
             cropHeight={400}
             inputUI={
@@ -148,8 +148,8 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
                   alt=""
                   className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                   src={
-                    profileThumbnail?.length
-                      ? URL.createObjectURL(profileThumbnail[0])
+                    profileImage?.length
+                      ? URL.createObjectURL(profileImage[0])
                       : "/img/default-profile-img.png"
                   }
                 />

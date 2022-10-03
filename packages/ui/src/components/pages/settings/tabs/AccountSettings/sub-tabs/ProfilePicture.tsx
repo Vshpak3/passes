@@ -7,28 +7,27 @@ import Tab from "src/components/pages/settings/Tab"
 import { useAccountSettings } from "src/hooks"
 
 interface IProfileForm {
-  profileThumbnail: File[] | null
+  profileImage: File[] | null
 }
 
 const ProfilePicture = () => {
   const { setProfilePicture, getProfileUrl } = useAccountSettings()
-  const [profileThumbnailCropOpen, setprofileThumbnailCropOpen] =
-    useState(false)
+  const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const { register, watch, setValue, handleSubmit } = useForm<IProfileForm>()
 
-  const profileThumbnail = watch("profileThumbnail")
+  const profileImage = watch("profileImage")
 
   const onProfileCrop = (croppedImage: any) => {
-    setValue("profileThumbnail", [croppedImage], { shouldValidate: true })
-    setprofileThumbnailCropOpen(false)
+    setValue("profileImage", [croppedImage], { shouldValidate: true })
+    setprofileImageCropOpen(false)
   }
 
   const onSaveProfile = async () => {
-    if (!profileThumbnail || !profileThumbnail.length) {
+    if (!profileImage || !profileImage.length) {
       return
     }
-    await setProfilePicture(profileThumbnail[0])
-    setValue("profileThumbnail", null)
+    await setProfilePicture(profileImage[0])
+    setValue("profileImage", null)
   }
 
   return (
@@ -44,11 +43,11 @@ const ProfilePicture = () => {
         <FormInput
           type="file"
           register={register}
-          name="profileThumbnail"
+          name="profileImage"
           accept={["image"]}
           className="hidden"
           options={{
-            onChange: () => setprofileThumbnailCropOpen(true)
+            onChange: () => setprofileImageCropOpen(true)
           }}
           trigger={
             <div className="relative flex h-[138px] w-[138px] items-center justify-center rounded-full bg-black">
@@ -57,28 +56,28 @@ const ProfilePicture = () => {
                 alt=""
                 className="z-20 h-[138px] w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                 src={
-                  profileThumbnail?.length
-                    ? URL.createObjectURL(profileThumbnail[0])
+                  profileImage?.length
+                    ? URL.createObjectURL(profileImage[0])
                     : getProfileUrl()
                 }
               />
             </div>
           }
         />
-        {profileThumbnailCropOpen && profileThumbnail?.length && (
+        {profileImageCropOpen && profileImage?.length && (
           <ImageCropDialog
             onCrop={onProfileCrop}
-            onClose={() => setprofileThumbnailCropOpen(false)}
+            onClose={() => setprofileImageCropOpen(false)}
             width={400}
             height={400}
-            src={URL.createObjectURL(profileThumbnail[0])}
+            src={URL.createObjectURL(profileImage[0])}
           />
         )}
         <Button
           variant="pink"
           className="w-auto !px-[52px]"
           tag="button"
-          disabled={!profileThumbnail || !profileThumbnail.length}
+          disabled={!profileImage || !profileImage.length}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

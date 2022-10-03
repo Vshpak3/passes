@@ -19,7 +19,7 @@ interface IFormData {
   displayName: string
   description: string
 
-  profileThumbnail: File[]
+  profileImage: File[]
   profileBannerImage: File[]
 
   discordUsername: string
@@ -72,14 +72,14 @@ const CustomizePageForm = ({
     resolver: yupResolver(creatorFlowProfileSchema)
   })
 
-  const profileThumbnail = watch("profileThumbnail")
+  const profileImage = watch("profileImage")
   const profileBannerImage = watch("profileBannerImage")
 
   const saveProfileHandler = async () => {
     const {
       displayName,
       description,
-      profileThumbnail,
+      profileImage,
       profileBannerImage,
       isAdult,
       ...socialAccounts
@@ -88,7 +88,7 @@ const CustomizePageForm = ({
     await updateProfile({
       displayName,
       description,
-      profileThumbnail: profileThumbnail[0],
+      profileImage: profileImage[0],
       profileBannerImage: profileBannerImage[0],
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
@@ -143,8 +143,8 @@ const CustomizePageForm = ({
           <FormImage
             setValue={setValue}
             register={register}
-            name="profileThumbnail"
-            imgData={profileThumbnail}
+            name="profileImage"
+            imgData={profileImage}
             cropWidth={400}
             cropHeight={400}
             inputUI={
@@ -153,8 +153,8 @@ const CustomizePageForm = ({
                   alt=""
                   className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
                   src={
-                    profileThumbnail?.length
-                      ? URL.createObjectURL(profileThumbnail[0])
+                    profileImage?.length
+                      ? URL.createObjectURL(profileImage[0])
                       : "/img/default-profile-img.png"
                   }
                 />
