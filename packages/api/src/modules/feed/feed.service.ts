@@ -88,7 +88,6 @@ export class FeedService {
       'desc',
       createdAt,
       lastId,
-      [{ column: `${PostEntity.table}.pinned_at`, order: 'desc' }],
     )
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
     return new GetFeedResponseDto(postDtos)
@@ -98,7 +97,7 @@ export class FeedService {
     userId: string,
     getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    const { creatorId, lastId, createdAt } = getProfileFeedRequestDto
+    const { creatorId, lastId, createdAt, pinned } = getProfileFeedRequestDto
     const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: creatorId })
       .select(['is_active', 'is_creator'])
@@ -152,6 +151,13 @@ export class FeedService {
         )
       })
       .limit(FEED_LIMIT)
+
+    if (pinned) {
+      query = query.whereNotNull(`${PostEntity.table}.pinned_at`)
+    } else if (pinned === false) {
+      query = query.whereNull(`${PostEntity.table}.pinned_at`)
+    }
+
     query = createPaginatedQuery(
       query,
       PostEntity.table,

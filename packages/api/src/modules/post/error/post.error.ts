@@ -13,3 +13,10 @@ export class PostNotFoundException extends BadRequestException {
     Object.setPrototypeOf(this, PostNotFoundException.prototype)
   }
 }
+
+export class BadPostPropertiesException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, BadPostPropertiesException.prototype)
+  }
+}

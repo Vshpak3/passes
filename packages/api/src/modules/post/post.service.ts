@@ -63,6 +63,7 @@ import { PostPassHolderAccessEntity } from './entities/post-passholder-access.en
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 import {
+  BadPostPropertiesException,
   ForbiddenPostException,
   PostNotFoundException,
 } from './error/post.error'
@@ -101,7 +102,7 @@ export class PostService {
       createPostDto.text.length === 0 &&
       createPostDto.contentIds.length === 0
     ) {
-      throw new BadRequestException(
+      throw new BadPostPropertiesException(
         'Must provide either text or content in a post',
       )
     }
@@ -110,6 +111,9 @@ export class PostService {
       userId,
       createPostDto.contentIds,
     )
+    if (createPostDto.scheduledAt && createPostDto.scheduledAt < new Date()) {
+      throw new BadPostPropertiesException('Cant schedule a post for the past')
+    }
     await this.dbWriter
       .transaction(async (trx) => {
         const post = {
@@ -396,6 +400,9 @@ export class PostService {
     }
     if (updatePostDto.text && updatePostDto.tags) {
       verifyTaggedText(updatePostDto.text, updatePostDto.tags)
+    }
+    if (updatePostDto.scheduledAt && updatePostDto.scheduledAt < new Date()) {
+      throw new BadPostPropertiesException('Cant schedule a post for the past')
     }
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId })

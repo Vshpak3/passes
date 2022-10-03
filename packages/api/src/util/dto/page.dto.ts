@@ -24,6 +24,9 @@ export class PageRequestDto {
 
   @DtoProperty({ custom_type: OrderEnum })
   order: OrderEnum
+
+  @DtoProperty({ type: 'boolean', optional: true })
+  pinned?: boolean
 }
 
 export const orderToSymbol = {

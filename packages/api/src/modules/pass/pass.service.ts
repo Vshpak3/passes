@@ -19,6 +19,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import {
   CreateNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackInput,
@@ -235,7 +236,7 @@ export class PassService {
     userId: string,
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
-    const { creatorId, lastId, passId } = getPassHoldingsRequestDto
+    const { creatorId, passId } = getPassHoldingsRequestDto
     let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
@@ -269,19 +270,14 @@ export class PassService {
     query = createPassHolderQuery(query, getPassHoldingsRequestDto)
     const passHolders = await query
 
-    const index = passHolders.findIndex(
-      (passHolder) => passHolder.id === lastId,
-    )
-    return passHolders
-      .slice(index + 1)
-      .map((passHolder) => new PassHolderDto(passHolder))
+    return passHolders.map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async getPassHolders(
     userId: string,
     getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
-    const { holderId, lastId, passId, activeOnly } = getPassHoldersRequest
+    const { holderId, passId, activeOnly } = getPassHoldersRequest
     let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -325,30 +321,33 @@ export class PassService {
     query = createPassHolderQuery(query, getPassHoldersRequest)
     const passHolders = await query
 
-    const index = passHolders.findIndex(
-      (passHolder) => passHolder.id === lastId,
-    )
-    return passHolders
-      .slice(index + 1)
-      .map((passHolder) => new PassHolderDto(passHolder))
+    return passHolders.map((passHolder) => new PassHolderDto(passHolder))
   }
 
   async findPassesByCreator(
     getCreatorPassesRequestDto: GetCreatorPassesRequestDto,
   ) {
-    const { lastId, createdAt, search, creatorId } = getCreatorPassesRequestDto
+    const { createdAt, search, creatorId, lastId, pinned } =
+      getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
       .whereNotNull('collection_address')
       .andWhere({ creator_id: creatorId })
       .select('*')
-      .orderBy([
-        { column: `${PassEntity.table}.pinned_at`, order: 'desc' },
-        { column: `${PassEntity.table}.created_at`, order: 'desc' },
-        { column: `${PassEntity.table}.id`, order: 'desc' },
-      ])
-    if (createdAt) {
-      query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
+    if (pinned) {
+      query = query.whereNotNull('pinned_at')
+    } else if (pinned === false) {
+      query = query.whereNull('pinned_at')
     }
+
+    query = createPaginatedQuery(
+      query,
+      PassEntity.table,
+      PassEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
@@ -361,8 +360,7 @@ export class PassService {
     }
 
     const passes = await query.limit(MAX_PASSES_PER_REQUEST)
-    const index = passes.findIndex((pass) => pass.id === lastId)
-    return passes.slice(index + 1).map((pass) => new PassDto(pass))
+    return passes.map((pass) => new PassDto(pass))
   }
 
   async getExternalPasses(
@@ -372,13 +370,16 @@ export class PassService {
     let query = this.dbReader<PassEntity>(PassEntity.table)
       .whereNull('creator_id')
       .select('*')
-      .orderBy([
-        { column: `${PassEntity.table}.created_at`, order: 'desc' },
-        { column: `${PassEntity.table}.id`, order: 'desc' },
-      ])
-    if (createdAt) {
-      query = query.andWhere(`${PassEntity.table}.created_at`, '<=', createdAt)
-    }
+
+    query = createPaginatedQuery(
+      query,
+      PassEntity.table,
+      PassEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     if (creatorId) {
       const userExternalPasses = await this.dbReader(
         UserExternalPassEntity.table,
@@ -402,8 +403,7 @@ export class PassService {
     }
 
     const passes = await query.limit(MAX_PASSES_PER_REQUEST)
-    const index = passes.findIndex((pass) => pass.id === lastId)
-    return passes.slice(index + 1).map((pass) => new PassDto(pass))
+    return passes.map((pass) => new PassDto(pass))
   }
 
   async updatePass(
