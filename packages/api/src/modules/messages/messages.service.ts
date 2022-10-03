@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'

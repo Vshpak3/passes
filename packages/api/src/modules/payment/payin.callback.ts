@@ -1,5 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import CryptoJS from 'crypto-js'
+
 import { DatabaseService } from '../../database/database.service'
 import {
   CreateNftPassPayinCallbackInput,

@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
+import CryptoJS from 'crypto-js'
 import { EventEmitter } from 'events'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { fromEvent } from 'rxjs'
