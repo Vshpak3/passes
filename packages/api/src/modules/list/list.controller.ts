@@ -69,7 +69,7 @@ export class ListController {
   @ApiEndpoint({
     summary: 'Remove ListMembers from a List',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: BooleanResponseDto,
     responseDesc: 'List Members removed',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -77,11 +77,13 @@ export class ListController {
   async removeListMembers(
     @Req() req: RequestWithUser,
     @Body() removeListMembersDto: RemoveListMembersRequestDto,
-  ): Promise<void> {
-    return await this.listService.removeListMembers(
-      req.user.id,
-      removeListMembersDto,
-      true,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.listService.removeListMembers(
+        req.user.id,
+        removeListMembersDto,
+        true,
+      ),
     )
   }
 

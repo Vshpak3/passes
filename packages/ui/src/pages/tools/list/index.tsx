@@ -43,15 +43,6 @@ const FanLists: NextPage = () => {
 
   const fetchList = useCallback(
     async (curResets: number) => {
-      console.log({
-        order,
-        orderType,
-        lastId,
-        search: search && search.length > 0 ? search : undefined,
-        name,
-        createdAt
-      })
-      // only call api when no any request is calling
       if (!isLoadingMore) {
         setIsLoadingMore(true)
         try {
@@ -71,7 +62,6 @@ const FanLists: NextPage = () => {
             setCreatedAt(newLists.createdAt)
             setName(newLists.name)
           }
-          console.log(newLists)
         } catch (error) {
           console.error(error)
         } finally {
@@ -102,18 +92,24 @@ const FanLists: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resets])
 
-  const handleScroll = useCallback(async () => {
-    const isToBottom =
-      window.innerHeight + window.scrollY === document.body.offsetHeight
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleScroll = useCallback(
+    debounce(async () => {
+      const isToBottom =
+        window.innerHeight + window.scrollY === document.body.offsetHeight
 
-    window.removeEventListener("scroll", handleScroll)
-    if (isToBottom) {
-      await fetchList(resets)
-    }
-  }, [fetchList, resets])
+      // window.removeEventListener("scroll", handleScroll)
+      if (isToBottom) {
+        await fetchList(resets)
+      }
+    }, 50),
+    [fetchList, resets]
+  )
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
+    // clean up code
+    window.addEventListener("wheel", handleScroll, { passive: true })
+    return () => window.removeEventListener("wheel", handleScroll)
   }, [handleScroll])
 
   const reset = useCallback(() => {
@@ -164,6 +160,7 @@ const FanLists: NextPage = () => {
         }
       })
       reset()
+      await new Promise((resolve) => setTimeout(resolve, 100))
     } catch (error) {
       console.error(error)
     }
@@ -173,8 +170,11 @@ const FanLists: NextPage = () => {
     event.preventDefault()
     event.stopPropagation()
     try {
-      await listApi.deleteList({ listId: event.target.value })
-      reset()
+      const deleted = (await listApi.deleteList({ listId: event.target.value }))
+        .value
+      if (deleted) {
+        setLists(lists.filter((list) => list.listId !== event.target.value))
+      }
     } catch (error) {
       console.error(error)
     }

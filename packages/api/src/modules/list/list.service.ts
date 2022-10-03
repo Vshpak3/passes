@@ -12,7 +12,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { orderToSymbol, strictOrderToSymbol } from '../../util/dto/page.dto'
+import { createPaginatedQuery } from '../../util/page.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowService } from '../follow/follow.service'
@@ -37,8 +37,8 @@ import {
 import { createGetMemberQuery } from './list.util'
 
 export const USER_LIST_LIMIT = 1000
-export const MAX_LISTS_PER_REQUEST = 20
-export const MAX_LIST_MEMBERS_PER_REQUEST = 20
+export const MAX_LISTS_PER_REQUEST = 5
+export const MAX_LIST_MEMBERS_PER_REQUEST = 5
 
 @Injectable()
 export class ListService {
@@ -152,63 +152,31 @@ export class ListService {
     let query = this.dbReader<ListEntity>(ListEntity.table)
       .where({ user_id: userId })
       .select('*')
+    let column = ''
+    let value: string | Date | undefined = undefined
     switch (orderType) {
       case ListOrderTypeEnum.CREATED_AT:
-        query = query.orderBy([
-          { column: `${ListEntity.table}.created_at`, order },
-          { column: `${ListEntity.table}.id`, order },
-        ])
-        if (createdAt) {
-          query = query.andWhere(
-            `${ListEntity.table}.created_at`,
-            orderToSymbol[order],
-            createdAt,
-          )
-        }
+        column = 'created_at'
+        value = createdAt
         break
       case ListOrderTypeEnum.UPDATED_AT:
-        query = query.orderBy([
-          { column: `${ListEntity.table}.updated_at`, order },
-          { column: `${ListEntity.table}.id`, order },
-        ])
-        if (updatedAt) {
-          query = query.andWhere(
-            `${ListEntity.table}.updated_at`,
-            orderToSymbol[order],
-            updatedAt,
-          )
-        }
+        column = 'updated_at'
+        value = updatedAt
         break
       case ListOrderTypeEnum.NAME:
-        query = query.orderBy([
-          { column: `${ListEntity.table}.name`, order },
-          { column: `${ListEntity.table}.id`, order },
-        ])
-        if (name) {
-          query = query.andWhere(function () {
-            let subQuery = this.where(
-              `${ListEntity.table}.name`,
-              orderToSymbol[order],
-              name,
-            )
-            if (lastId) {
-              subQuery = subQuery.andWhere(function () {
-                return this.where(
-                  `${ListEntity.table}.name`,
-                  strictOrderToSymbol[order],
-                  name,
-                ).orWhere(
-                  `${ListEntity.table}.id`,
-                  strictOrderToSymbol[order],
-                  lastId,
-                )
-              })
-            }
-            return subQuery
-          })
-        }
+        column = 'name'
+        value = name
         break
     }
+
+    query = createPaginatedQuery(
+      query,
+      ListEntity.table,
+      column,
+      order,
+      value,
+      lastId,
+    )
     if (search && search.length) {
       // const strippedSearch = search.replace(/\W/g, '')
       const likeClause = `%${search}%`
@@ -216,11 +184,8 @@ export class ListService {
     }
 
     const lists = await query.limit(MAX_LISTS_PER_REQUEST)
-    const index = lists.findIndex((list) => list.id === lastId)
-    const filteredLists = lists.slice(index + 1)
-
-    await this.fillAutomatedLists(filteredLists)
-    return filteredLists.map((list) => new ListDto(list))
+    await this.fillAutomatedLists(lists)
+    return lists.map((list) => new ListDto(list))
   }
 
   // TODO: put cursor pagination for names and created_at
@@ -347,14 +312,17 @@ export class ListService {
     userId: string,
     removeListMembersDto: RemoveListMembersRequestDto,
     manual: true,
-  ): Promise<void> {
+  ): Promise<boolean> {
     await this.checkList(userId, removeListMembersDto.listId, manual)
 
-    await this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
+    const updated = await this.dbWriter<ListMemberEntity>(
+      ListMemberEntity.table,
+    )
       .where({ list_id: removeListMembersDto.listId })
       .whereIn('user_id', removeListMembersDto.userIds)
       .delete()
     await this.updateCount(removeListMembersDto.listId)
+    return updated === 1
   }
 
   async editListName(

@@ -29,7 +29,6 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (!router.isReady) {
       return
     }
-
     if (typeof window === "undefined") {
       return
     }
@@ -52,9 +51,7 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isPage && !_authed) {
       authRouter(router, userClaims)
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPage, skipAuth])
+  }, [isPage, skipAuth, router, userClaims])
 
   return authed ? <>{children}</> : <div />
 }

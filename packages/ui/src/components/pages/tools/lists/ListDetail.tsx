@@ -21,10 +21,11 @@ import ListItem from "./ListItem"
 import SortListPopup from "./SortListPopup"
 
 type ListDetailProps = {
-  id?: string
+  id: string
 }
 
-const ListDetail: FC<ListDetailProps> = ({ id }) => {
+const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
+  console.log(id)
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
 
@@ -69,63 +70,60 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     }
   }, [id])
 
-  const fetchMembers = useCallback(async () => {
-    const listApi = new ListApi()
-    if (!isLoadingMore) {
-      setIsLoadingMore(true)
-      const curResets = resets
-      try {
-        if (id) {
-          try {
-            // Get list Item in a list by listId
-            const listMembers: GetListMembersResponseDto =
-              await listApi.getListMembers({
-                getListMembersRequestDto: {
-                  listId: id,
-                  order,
-                  orderType,
-                  search,
-                  createdAt,
-                  username,
-                  lastId
-                }
-              })
-            if (curResets === resets) {
-              setListMembers(listMembers.listMembers)
-              setLastId(listMembers.lastId)
-              setCreatedAt(listMembers.createdAt)
-              setUsername(listMembers.username)
-            }
-          } catch (error) {
-            console.error("error ", error)
+  const fetchMembers = useCallback(
+    async (curResets: number) => {
+      const listApi = new ListApi()
+      if (!isLoadingMore) {
+        setIsLoadingMore(true)
+        try {
+          // Get list Item in a list by listId
+          const newListMembers: GetListMembersResponseDto =
+            await listApi.getListMembers({
+              getListMembersRequestDto: {
+                listId: id,
+                order,
+                orderType,
+                search: search && search.length > 0 ? search : undefined,
+                createdAt,
+                username,
+                lastId
+              }
+            })
+          if (curResets === resets && newListMembers.listMembers.length > 0) {
+            setListMembers([...listMembers, ...newListMembers.listMembers])
+            setLastId(newListMembers.lastId)
+            setCreatedAt(newListMembers.createdAt)
+            setUsername(newListMembers.username)
           }
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setIsLoadingMore(false)
         }
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setIsLoadingMore(false)
       }
-    }
-  }, [
-    createdAt,
-    id,
-    isLoadingMore,
-    lastId,
-    order,
-    orderType,
-    resets,
-    search,
-    username
-  ])
+    },
+    [
+      createdAt,
+      id,
+      isLoadingMore,
+      lastId,
+      listMembers,
+      order,
+      orderType,
+      resets,
+      search,
+      username
+    ]
+  )
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceChangeInputSearch = useCallback(
-    debounce(fetchMembers, 1000),
-    []
+    debounce(() => fetchMembers(resets), 1000),
+    [resets]
   )
 
   useEffect(() => {
-    fetchMembers()
+    fetchMembers(resets)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resets])
 
@@ -134,18 +132,24 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleScroll = useCallback(async () => {
-    const isToBottom =
-      window.innerHeight + window.scrollY === document.body.offsetHeight
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleScroll = useCallback(
+    debounce(async () => {
+      const isToBottom =
+        window.innerHeight + window.scrollY === document.body.offsetHeight
 
-    window.removeEventListener("scroll", handleScroll)
-    if (isToBottom) {
-      await fetchMembers()
-    }
-  }, [fetchMembers])
+      // window.removeEventListener("scroll", handleScroll)
+      if (isToBottom) {
+        await fetchMembers(resets)
+      }
+    }, 50),
+    [fetchMembers, resets]
+  )
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
+    // clean up code
+    window.addEventListener("wheel", handleScroll, { passive: true })
+    return () => window.removeEventListener("wheel", handleScroll)
   }, [handleScroll])
 
   const reset = useCallback(() => {
@@ -185,28 +189,31 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     setAnchorSortPopperEl(null)
   }
 
-  const handleRemoveFan = useCallback(
-    async (event: React.MouseEvent<HTMLSpanElement>, user_id: string) => {
-      const listApi = new ListApi()
-
-      event.preventDefault()
-      event.stopPropagation()
-      if (id) {
-        try {
-          await listApi.removeListMembers({
-            removeListMembersRequestDto: {
-              listId: id,
-              userIds: [user_id]
-            }
-          })
-          reset()
-        } catch (error) {
-          console.error("Remove member from a list has error: ", error)
-        }
+  const handleRemoveFan = async (
+    event: React.MouseEvent<HTMLSpanElement>,
+    user_id: string
+  ) => {
+    const listApi = new ListApi()
+    event.preventDefault()
+    event.stopPropagation()
+    try {
+      const deleted = (
+        await listApi.removeListMembers({
+          removeListMembersRequestDto: {
+            listId: id,
+            userIds: [user_id]
+          }
+        })
+      ).value
+      if (deleted) {
+        setListMembers(
+          listMembers.filter((listMember) => listMember.userId !== user_id)
+        )
       }
-    },
-    [id, reset]
-  )
+    } catch (error) {
+      console.error("Remove member from a list has error: ", error)
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddFan = useCallback(
@@ -215,18 +222,16 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
 
       event.preventDefault()
       event.stopPropagation()
-      if (id) {
-        try {
-          await listApi.addListMembers({
-            addListMembersRequestDto: {
-              listId: id,
-              userIds: [user_id]
-            }
-          })
-          reset()
-        } catch (error) {
-          console.error("Add member to list has error: ", error)
-        }
+      try {
+        await listApi.addListMembers({
+          addListMembersRequestDto: {
+            listId: id,
+            userIds: [user_id]
+          }
+        })
+        reset()
+      } catch (error) {
+        console.error("Add member to list has error: ", error)
       }
     },
     [id, reset]
@@ -246,7 +251,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       event.preventDefault()
       const inputListNameValue = listNameRef.current?.value ?? ""
       if (
-        id &&
         isEditingListName &&
         listNameRef.current &&
         inputListNameValue.length > 0
