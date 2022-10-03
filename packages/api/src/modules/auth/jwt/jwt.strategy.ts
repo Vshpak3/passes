@@ -3,6 +3,8 @@ import Request from 'express'
 import jwt from 'jsonwebtoken'
 import { Strategy } from 'passport-strategy'
 
+import { BASE_CLAIMS } from './jwt.constants'
+
 interface JwtFromRequestFunction {
   (req: Request): string | null
 }
@@ -26,6 +28,12 @@ interface VerifiedCallback {
 
 interface VerifyCallback {
   (payload: any, done: VerifiedCallback): void
+}
+
+const JWT_VERIFY_OPTIONS = {
+  ignoreExpiration: false,
+  audience: BASE_CLAIMS.aud,
+  issuer: BASE_CLAIMS.iss,
 }
 
 export class JwtStrategy extends Strategy {
@@ -77,7 +85,7 @@ export class JwtStrategy extends Strategy {
     jwt.verify(
       token,
       self.secret,
-      { ignoreExpiration: false },
+      JWT_VERIFY_OPTIONS,
       function (jwt_err, payload) {
         if (jwt_err) {
           if (self.skipAuth) {
