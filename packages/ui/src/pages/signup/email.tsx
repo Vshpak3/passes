@@ -129,11 +129,6 @@ const UserEmailPage = () => {
                       required: true
                     }}
                   />
-                  {errors.emailAddress && (
-                    <Text fontSize={12} className="mt-1 text-[red]">
-                      {errors.emailAddress.message?.toString()}
-                    </Text>
-                  )}
                 </div>
 
                 <button

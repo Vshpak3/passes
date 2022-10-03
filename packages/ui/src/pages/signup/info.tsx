@@ -159,11 +159,6 @@ const UserInfoPage = () => {
                   }
                 }}
               />
-              {errors.legalFullName && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.legalFullName.message}
-                </Text>
-              )}
             </div>
 
             <div className="flex flex-col">
@@ -184,11 +179,6 @@ const UserInfoPage = () => {
                   }
                 }}
               />
-              {errors.username && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.username.message}
-                </Text>
-              )}
             </div>
 
             <div className="flex flex-col">
@@ -264,11 +254,6 @@ const UserInfoPage = () => {
                   }
                 }}
               />
-              {errors.countryCode && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.countryCode.message}
-                </Text>
-              )}
             </div>
 
             <button
