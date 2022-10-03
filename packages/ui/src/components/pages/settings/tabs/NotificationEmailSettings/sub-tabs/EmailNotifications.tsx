@@ -1,13 +1,17 @@
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import {
+  Button,
+  ButtonTypeEnum,
+  Checkbox,
+  FormInput
+} from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
 import { useNotificationSettings } from "src/hooks"
 import useSWR from "swr"
 
 interface INotificationSettings {
-  emailNotifications: boolean
   directMessageEmails: boolean
   passesEmails: boolean
   paymentEmails: boolean
@@ -26,8 +30,12 @@ const EmailNotifications = () => {
   const [formattedNotificationSettings, setFormattedNotificationSettings] =
     useState(null)
 
-  const { register, handleSubmit, reset, watch } =
+  const { register, handleSubmit, reset, watch, setValue } =
     useForm<INotificationSettings>()
+
+  const [isEmailAll, setIsEmailAll] = useState(false)
+
+  const allEmailNotifications = watch()
 
   const saveNotificationSettingsHandler = async (
     values: INotificationSettings
@@ -35,6 +43,21 @@ const EmailNotifications = () => {
     await updateNotificationSettings(values)
     mutate()
   }
+
+  const emailAllNotificationsHandler = (isEmailAll: boolean) => {
+    Object.keys(allEmailNotifications).forEach((field) => {
+      setValue(field as keyof INotificationSettings, isEmailAll)
+    })
+  }
+
+  useEffect(() => {
+    const isAllDisabled = Object.values(allEmailNotifications).every((n) => !n)
+    if (isAllDisabled) {
+      setIsEmailAll(false)
+    } else {
+      setIsEmailAll(true)
+    }
+  }, [allEmailNotifications])
 
   useEffect(() => {
     if (formattedNotificationSettings) {
@@ -60,26 +83,34 @@ const EmailNotifications = () => {
       title="Notification Preferences"
       description="Select your preferences by notification type."
     >
+      <div className="mt-[22px] border-b border-passes-dark-200 pb-3">
+        <label className="flex cursor-pointer items-center justify-between">
+          <span className="text-label">Email Notifications</span>
+          <Checkbox
+            name="emailAllNotifications"
+            type="toggle"
+            checked={isEmailAll}
+            onChange={(e) => {
+              emailAllNotificationsHandler(e.target.checked)
+              setIsEmailAll(e.target.checked)
+            }}
+          />
+          {/* <FormInput
+            name="emailAllNotifications"
+            register={registerEmailNotification}
+            type="toggle"
+          /> */}
+        </label>
+        <p className="mt-2.5 text-white/50">
+          Get emails to find out what’s going on when you’re not on Twitter. You
+          can turn them off anytime.
+        </p>
+      </div>
       <form
         className="mt-[22px]"
         onSubmit={handleSubmit(saveNotificationSettingsHandler)}
       >
-        {/*<div className="border-b border-passes-dark-200 pb-3">
-          <label className="flex cursor-pointer items-center justify-between">
-            <span className="text-label">Email Notifications</span>
-            <FormInput
-              name="emailNotifications"
-              register={register}
-              type="toggle"
-            />
-          </label>
-          <p className="mt-2.5 text-white/50">
-            Get emails to find out what’s going on when you’re not on Twitter.
-            You can turn them off anytime.
-          </p>
-  </div>*/}
-
-        <div className="mt-[22px]">
+        <div>
           <h4 className="text-label">Email Notification Types</h4>
 
           <div className="mt-[32px] space-y-[26px]">

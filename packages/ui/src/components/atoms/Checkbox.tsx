@@ -14,13 +14,15 @@ import Label from "./Label"
 type CheckBoxProps = {
   name: FormName
   type: FormType
-  register: FormRegister
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  register?: FormRegister
   textPosition?: string
   label?: FormLabel
   options?: FormOptions
   errors?: FormErrors
   className?: string
   labelClassName?: string
+  checked?: boolean
 }
 
 const Checkbox = ({
@@ -65,7 +67,7 @@ const Checkbox = ({
           id={`${name}-${type}`}
           name={name}
           type="checkbox"
-          {...register(name, options)}
+          {...(register && register(name, options))}
           {...rest}
           className={classNames(
             errors[name] ? "border-red-500" : "border-gray-300",
