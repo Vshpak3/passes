@@ -18,6 +18,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentService } from '../content/content.service'
@@ -270,21 +271,20 @@ export class PostService {
       .select([`${PostEntity.table}.*`])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
-      .orderBy(`${PostEntity.table}.created_at`, 'desc')
-      .orderBy([
-        { column: `${PostEntity.table}.created_at`, order: 'desc' },
-        { column: `${PostEntity.table}.id`, order: 'desc' },
-      ])
-    if (createdAt) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
-    }
+    query = createPaginatedQuery(
+      query,
+      PostEntity.table,
+      PostEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     if (scheduledOnly) {
       query = query.whereNotNull('scheduled_at')
     }
     const postDtos = await this.getPostsFromQuery(userId, query)
-    const index = postDtos.findIndex((post) => post.postId === lastId)
-    // filter out expired posts
-    return new GetPostsResponseDto(postDtos.slice(index))
+    return new GetPostsResponseDto(postDtos)
   }
 
   async getPostsFromQuery(
