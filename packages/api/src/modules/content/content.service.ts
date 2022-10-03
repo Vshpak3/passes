@@ -14,6 +14,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassService } from '../pass/pass.service'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -119,20 +120,17 @@ export class ContentService {
     if (type) {
       query = query.andWhere({ content_type: type })
     }
-    if (createdAt) {
-      query = query.andWhere(
-        `${ContentEntity.table}.created_at`,
-        '<=',
-        createdAt,
-      )
-    }
-    query = query.select('*').orderBy([
-      { column: `${ContentEntity.table}.created_at`, order: 'desc' },
-      { column: `${ContentEntity.table}.id`, order: 'desc' },
-    ])
+    query = createPaginatedQuery(
+      query,
+      ContentEntity.table,
+      ContentEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     const result = await query
-    const index = result.findIndex((content) => content.id === lastId)
-    return result.slice(index + 1).map((content) => new ContentDto(content, ''))
+    return result.map((content) => new ContentDto(content, ''))
   }
 
   async preSignUploadContent(userId: string, contentType: ContentTypeEnum) {

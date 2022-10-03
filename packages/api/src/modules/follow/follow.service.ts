@@ -186,11 +186,7 @@ export class FollowService {
 
     const followResult = await query
 
-    const index = followResult.findIndex(
-      (follow) => follow.follow === searchFanDto.lastId,
-    )
-
-    return followResult.slice(index + 1).map((follow) => {
+    return followResult.map((follow) => {
       return new ListMemberDto(follow)
     })
   }
@@ -220,11 +216,7 @@ export class FollowService {
     ).limit(MAX_FOLLOWERS_PER_REQUEST)
 
     const followResult = await query
-    const index = followResult.findIndex(
-      (follow) => follow.follow === searchFollowingDto.lastId,
-    )
-
-    return followResult.slice(index + 1).map((follow) => {
+    return followResult.map((follow) => {
       return new ListMemberDto(follow)
     })
   }

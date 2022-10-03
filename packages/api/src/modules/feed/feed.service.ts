@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Database, DB_READER } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
@@ -78,26 +79,26 @@ export class FeedService {
         )
       })
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
-      .orderBy([
-        { column: `${PostEntity.table}.pinned_at`, order: 'desc' },
-        { column: `${PostEntity.table}.created_at`, order: 'desc' },
-        { column: `${PostEntity.table}.id`, order: 'desc' },
-      ])
       .limit(FEED_LIMIT)
-
-    if (createdAt) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', createdAt)
-    }
+    query = createPaginatedQuery(
+      query,
+      PostEntity.table,
+      PostEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+      [{ column: `${PostEntity.table}.pinned_at`, order: 'desc' }],
+    )
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    const index = postDtos.findIndex((post) => post.postId === lastId)
-    return new GetFeedResponseDto(postDtos.slice(index + 1))
+    return new GetFeedResponseDto(postDtos)
   }
 
   async getFeedForCreator(
     userId: string,
     getProfileFeedRequestDto: GetProfileFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    const { creatorId, lastId, createdAt: time } = getProfileFeedRequestDto
+    const { creatorId, lastId, createdAt } = getProfileFeedRequestDto
     const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: creatorId })
       .select(['is_active', 'is_creator'])
@@ -150,17 +151,17 @@ export class FeedService {
           new Date(),
         )
       })
-      .orderBy([
-        { column: `${PostEntity.table}.created_at`, order: 'desc' },
-        { column: `${PostEntity.table}.id`, order: 'desc' },
-      ])
       .limit(FEED_LIMIT)
-
-    if (time) {
-      query = query.andWhere(`${PostEntity.table}.created_at`, '<=', time)
-    }
+    query = createPaginatedQuery(
+      query,
+      PostEntity.table,
+      PostEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    const index = postDtos.findIndex((post) => post.postId === lastId)
-    return new GetFeedResponseDto(postDtos.slice(index + 1))
+    return new GetFeedResponseDto(postDtos)
   }
 }

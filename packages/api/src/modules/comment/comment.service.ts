@@ -7,6 +7,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CommentsBlockedError } from '../creator-settings/error/creator-settings.error'
@@ -92,22 +93,18 @@ export class CommentService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
-      .orderBy([
-        { column: `${CommentEntity.table}.created_at`, order: 'desc' },
-        { column: `${CommentEntity.table}.id`, order: 'desc' },
-      ])
-    if (createdAt) {
-      query = query.andWhere(
-        `${CommentEntity.table}.created_at`,
-        '<=',
-        createdAt,
-      )
-    }
-
+    query = createPaginatedQuery(
+      query,
+      CommentEntity.table,
+      CommentEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
     const comments = await query.limit(MAX_COMMENTS_PER_REQUEST)
-    const index = comments.findIndex((comment) => comment.id === lastId)
     return new GetCommentsForPostResponseDto(
-      comments.slice(index + 1).map((c) => new CommentDto(c)),
+      comments.map((c) => new CommentDto(c)),
     )
   }
 

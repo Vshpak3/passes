@@ -7,6 +7,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
@@ -83,26 +84,21 @@ export class FanWallService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
-      .orderBy([
-        { column: `${FanWallCommentEntity.table}.created_at`, order: 'desc' },
-        { column: `${FanWallCommentEntity.table}.id`, order: 'desc' },
-      ])
 
-    if (createdAt) {
-      query = query.andWhere(
-        `${FanWallCommentEntity.table}.created_at`,
-        '<=',
-        createdAt,
-      )
-    }
+    query = createPaginatedQuery(
+      query,
+      FanWallCommentEntity.table,
+      FanWallCommentEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
+    )
 
     const comments = await query.limit(MAX_FAN_WALL_COMMENTS_PER_REQUEST)
-    const index = comments.findIndex((comment) => comment.id === lastId)
 
     return new GetFanWallResponseDto(
-      comments
-        .slice(index + 1)
-        .map((comment) => new FanWallCommentDto(comment)),
+      comments.map((comment) => new FanWallCommentDto(comment)),
     )
   }
 

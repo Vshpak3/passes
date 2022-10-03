@@ -172,6 +172,7 @@ export class ListService {
     query = createPaginatedQuery(
       query,
       ListEntity.table,
+      ListEntity.table,
       column,
       order,
       value,
@@ -243,11 +244,7 @@ export class ListService {
       ListMemberEntity.table,
     ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
 
-    const index = result.findIndex(
-      (member) => member.id === getListMembersRequestDto.lastId,
-    )
-
-    return result.slice(index + 1).map((follow) => {
+    return result.map((follow) => {
       return new ListMemberDto(follow)
     })
   }

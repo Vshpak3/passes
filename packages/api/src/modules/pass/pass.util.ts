@@ -1,6 +1,6 @@
 import { Knex } from '@mikro-orm/mysql'
 
-import { orderToSymbol } from '../../util/dto/page.dto'
+import { createPaginatedQuery } from '../../util/page.util'
 import { ListMemberOrderTypeEnum } from '../list/enum/list-member.order.enum'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetPassHoldersRequestDto } from './dto/get-pass-holders.dto'
@@ -13,47 +13,41 @@ export function createPassHolderQuery(
   query: Knex.QueryBuilder,
   requestDto: GetPassHoldersRequestDto | GetPassHoldingsRequestDto,
 ): Knex.QueryBuilder {
-  const { username, displayName, orderType, createdAt, order, search } =
+  const { username, displayName, orderType, createdAt, order, search, lastId } =
     requestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
-      query = query.orderBy([
-        { column: `${PassHolderEntity.table}.created_at`, order },
-        { column: `${PassHolderEntity.table}.id`, order },
-      ])
-      if (createdAt) {
-        query = query.andWhere(
-          `${PassHolderEntity.table}.created_at`,
-          orderToSymbol[order],
-          createdAt,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        PassHolderEntity.table,
+        PassHolderEntity.table,
+        'created_at',
+        order,
+        createdAt,
+        lastId,
+      )
       break
     case ListMemberOrderTypeEnum.USERNAME:
-      query = query.orderBy([
-        { column: `${UserEntity.table}.username`, order },
-        { column: `${PassHolderEntity.table}.id`, order },
-      ])
-      if (username) {
-        query = query.andWhere(
-          `${UserEntity.table}.username`,
-          orderToSymbol[order],
-          username,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        UserEntity.table,
+        PassHolderEntity.table,
+        'username',
+        order,
+        username,
+        lastId,
+      )
       break
     case ListMemberOrderTypeEnum.DISPLAY_NAME:
-      query = query.orderBy([
-        { column: `${UserEntity.table}.display_name`, order },
-        { column: `${PassHolderEntity.table}.id`, order },
-      ])
-      if (displayName) {
-        query = query.andWhere(
-          `${UserEntity.table}.display_name`,
-          orderToSymbol[order],
-          displayName,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        UserEntity.table,
+        PassHolderEntity.table,
+        'display_name',
+        order,
+        displayName,
+        lastId,
+      )
       break
   }
 

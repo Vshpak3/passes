@@ -15,7 +15,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { orderToSymbol, strictOrderToSymbol } from '../../util/dto/page.dto'
+import { createPaginatedQuery } from '../../util/page.util'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentEntity } from '../content/entities/content.entity'
@@ -225,46 +225,26 @@ export class MessagesService {
 
     switch (orderType) {
       case ChannelOrderTypeEnum.RECENT:
-        query = query.orderBy([
-          { column: `${ChannelEntity.table}.recent`, order },
-          { column: `${ChannelMemberEntity.table}.id`, order },
-        ])
-        if (recent) {
-          query = query.andWhere(
-            `${ChannelEntity.table}.recent`,
-            orderToSymbol[order],
-            recent,
-          )
-        }
+        query = createPaginatedQuery(
+          query,
+          ChannelEntity.table,
+          ChannelMemberEntity.table,
+          'recent',
+          order,
+          recent,
+          lastId,
+        )
         break
       case ChannelOrderTypeEnum.TIP:
-        query = query.orderBy([
-          { column: `${ChannelMemberEntity.table}.unread_tip`, order },
-          { column: `${ChannelMemberEntity.table}.id`, order },
-        ])
-        if (tip) {
-          query = query.andWhere(function () {
-            let subQuery = this.where(
-              `${ChannelMemberEntity.table}.unread_tip`,
-              orderToSymbol[order],
-              tip,
-            )
-            if (lastId) {
-              subQuery = subQuery.andWhere(function () {
-                return this.where(
-                  `${ChannelMemberEntity.table}.unread_tip`,
-                  strictOrderToSymbol[order],
-                  tip,
-                ).orWhere(
-                  `${ChannelMemberEntity.table}.id`,
-                  strictOrderToSymbol[order],
-                  lastId,
-                )
-              })
-            }
-            return subQuery
-          })
-        }
+        query = createPaginatedQuery(
+          query,
+          ChannelMemberEntity.table,
+          ChannelMemberEntity.table,
+          'unread_tip',
+          order,
+          tip,
+          lastId,
+        )
         break
     }
     if (unreadOnly) {
@@ -284,13 +264,9 @@ export class MessagesService {
 
     const channelMembers = await query.limit(MAX_CHANNELS_PER_REQUEST)
 
-    const index = channelMembers.findIndex(
-      (channelMember) => channelMember.id === lastId,
+    return channelMembers.map(
+      (channelMember) => new ChannelMemberDto(channelMember),
     )
-
-    return channelMembers
-      .slice(index + 1)
-      .map((channelMember) => new ChannelMemberDto(channelMember))
   }
 
   async createPaidMessage(
@@ -968,12 +944,17 @@ export class MessagesService {
     let query = this.dbReader<MessageEntity>(MessageEntity.table)
       .where({ channel_id: channelId, pending })
       .select(`${MessageEntity.table}.*`)
-      .orderBy([
-        { column: `${MessageEntity.table}.sent_at`, order: 'desc' },
-        { column: `${MessageEntity.table}.id`, order: 'desc' },
-      ])
       .limit(MAX_MESSAGES_PER_REQUEST)
 
+    query = createPaginatedQuery(
+      query,
+      MessageEntity.table,
+      MessageEntity.table,
+      'sent_at',
+      'desc',
+      sentAt,
+      lastId,
+    )
     if (contentOnly) {
       query = query
         .whereNotNull('paid_message_id')
@@ -984,25 +965,17 @@ export class MessagesService {
       query = query.andWhere({ sender_id: userId })
     }
 
-    if (sentAt) {
-      query = query.andWhere(`${MessageEntity.table}.sent_at`, '<=', sentAt)
-    }
-
     if (dateLimit) {
       query = query.andWhere(`${MessageEntity.table}.sent_at`, '>=', dateLimit)
     }
 
     const messages = await query
-    const index = messages.findIndex((message) => message.id === lastId)
-    const filteredMessages = messages.slice(index + 1)
     const contents = await this.getContentLookupForMessages(
-      filteredMessages.map((message) => message.sender_id),
-      filteredMessages.map((message) => JSON.parse(message.content_ids)),
-      filteredMessages.map(
-        (message) => message.paid || message.sender_id == userId,
-      ),
+      messages.map((message) => message.sender_id),
+      messages.map((message) => JSON.parse(message.content_ids)),
+      messages.map((message) => message.paid || message.sender_id == userId),
     )
-    return filteredMessages.map((message, ind) => {
+    return messages.map((message, ind) => {
       return new MessageDto(message, contents[ind])
     })
   }
@@ -1116,21 +1089,17 @@ export class MessagesService {
     let query = this.dbReader<PaidMessageEntity>(PaidMessageEntity.table)
       .where('creator_id', userId)
       .select('*')
-      .orderBy([
-        { column: 'created_at', order: 'desc' },
-        { column: 'id', order: 'desc' },
-      ])
       .limit(MAX_MESSAGES_PER_REQUEST)
-    if (createdAt) {
-      query = query.andWhere('created_at', '<=', createdAt)
-    }
-    const paidMessages = await query
-    const index = paidMessages.findIndex(
-      (paidMessage) => paidMessage.id === lastId,
+    query = createPaginatedQuery(
+      query,
+      PaidMessageEntity.table,
+      PaidMessageEntity.table,
+      'created_at',
+      'desc',
+      createdAt,
+      lastId,
     )
-
-    return paidMessages
-      .slice(index + 1)
-      .map((paidMessage) => new PaidMessageDto(paidMessage))
+    const paidMessages = await query
+    return paidMessages.map((paidMessage) => new PaidMessageDto(paidMessage))
   }
 }

@@ -1,6 +1,6 @@
 import { Knex } from '@mikro-orm/mysql'
 
-import { orderToSymbol } from '../../util/dto/page.dto'
+import { createPaginatedQuery } from '../../util/page.util'
 import { SearchFollowRequestDto } from '../follow/dto/search-follow.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetListMembersRequestDto } from './dto/get-list-members.dto'
@@ -11,47 +11,41 @@ export function createGetMemberQuery(
   getListMembersRequestDto: GetListMembersRequestDto | SearchFollowRequestDto,
   memberTable: string,
 ): Knex.QueryBuilder {
-  const { username, displayName, orderType, createdAt, order, search } =
+  const { username, displayName, orderType, createdAt, order, search, lastId } =
     getListMembersRequestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
-      query = query.orderBy([
-        { column: `${memberTable}.created_at`, order },
-        { column: `${memberTable}.id`, order },
-      ])
-      if (createdAt) {
-        query = query.andWhere(
-          `${memberTable}.created_at`,
-          orderToSymbol[order],
-          createdAt,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        memberTable,
+        memberTable,
+        'created_at',
+        order,
+        createdAt,
+        lastId,
+      )
       break
     case ListMemberOrderTypeEnum.USERNAME:
-      query = query.orderBy([
-        { column: `${UserEntity.table}.username`, order },
-        { column: `${memberTable}.id`, order },
-      ])
-      if (username) {
-        query = query.andWhere(
-          `${UserEntity.table}.username`,
-          orderToSymbol[order],
-          username,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        UserEntity.table,
+        memberTable,
+        'username',
+        order,
+        username,
+        lastId,
+      )
       break
     case ListMemberOrderTypeEnum.DISPLAY_NAME:
-      query = query.orderBy([
-        { column: `${UserEntity.table}.display_name`, order },
-        { column: `${memberTable}.id`, order },
-      ])
-      if (displayName) {
-        query = query.andWhere(
-          `${UserEntity.table}.display_name`,
-          orderToSymbol[order],
-          displayName,
-        )
-      }
+      query = createPaginatedQuery(
+        query,
+        UserEntity.table,
+        memberTable,
+        'display_name',
+        order,
+        displayName,
+        lastId,
+      )
       break
   }
 

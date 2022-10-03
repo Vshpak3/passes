@@ -5,30 +5,33 @@ import { orderToSymbol, strictOrderToSymbol } from './dto/page.dto'
 
 export function createPaginatedQuery(
   query: Knex.QueryBuilder,
-  table: string,
+  valueTable: string,
+  idTable: string,
   column: string,
   order: OrderEnum,
   value?: string | Date | number,
   lastId?: string,
+  otherOrder: any[] = [],
 ): Knex.QueryBuilder {
   query = query.orderBy([
-    { column: `${table}.${column}`, order },
-    { column: `${table}.id`, order },
+    ...otherOrder,
+    { column: `${valueTable}.${column}`, order },
+    { column: `${idTable}.id`, order },
   ])
   if (value) {
     query = query.andWhere(function () {
       let subQuery = this.where(
-        `${table}.${column}`,
+        `${valueTable}.${column}`,
         orderToSymbol[order],
         value,
       )
       if (lastId) {
         subQuery = subQuery.andWhere(function () {
           return this.where(
-            `${table}.${column}`,
+            `${valueTable}.${column}`,
             strictOrderToSymbol[order],
             value,
-          ).orWhere(`${table}.id`, strictOrderToSymbol[order], lastId)
+          ).orWhere(`${idTable}.id`, strictOrderToSymbol[order], lastId)
         })
       }
       return subQuery
