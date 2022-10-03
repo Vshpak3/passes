@@ -102,6 +102,7 @@ const UserInfoPage = () => {
         router.push(authStateToRoute(AuthStates.AUTHED))
       }
     } catch (err: unknown) {
+      console.log(err)
       setError("submitError", {
         type: "custom",
         message: String(err)

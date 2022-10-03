@@ -90,7 +90,9 @@ const AddCard = () => {
       toast.success("Credit card added succesfully")
       addOrPopStackHandler(SubTabsEnum.PaymentSettings)
     } catch (error: any) {
-      toast.error(`Failed to add credit card`)
+      const toastError = await errorMessage(error)
+
+      toast.error(toastError)
     }
   }
 

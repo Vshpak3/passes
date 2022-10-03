@@ -182,10 +182,11 @@ export const usePay = (
         callback()
       }
     } catch (error) {
+      const toastError = await errorMessage(error)
       setSubmitting(false)
       setLoading(false)
 
-      toast.error("Failed to submit payment")
+      toast.error(toastError)
 
       if (callback) {
         callback()
