@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   forwardRef,
   Inject,
@@ -72,6 +73,8 @@ export const DEFAULT_PASS_SYMBOL = 'PASS'
 export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
+export const MAX_PASSES_PER_CREATOR = 1000
+
 @Injectable()
 export class PassService {
   private env: string
@@ -105,8 +108,15 @@ export class PassService {
         `Unexpected missing user: ${userId}`,
       )
     }
-    // TODO: check image exists
 
+    const count = await this.dbReader<PassEntity>(PassEntity.table)
+      .andWhere({ creator_id: userId, minted: true })
+      .count()
+    if (count[0]['count(*)'] >= MAX_PASSES_PER_CREATOR) {
+      throw new BadRequestException(
+        `${MAX_PASSES_PER_CREATOR} pass limit reached`,
+      )
+    }
     const duration =
       createPassDto.duration === undefined &&
       createPassDto.type === PassTypeEnum.SUBSCRIPTION
