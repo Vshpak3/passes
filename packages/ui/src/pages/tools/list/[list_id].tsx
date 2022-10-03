@@ -12,7 +12,7 @@ const ListDetail = dynamic<any>(
 )
 
 const FanDetailLists: NextPage = () => {
-  const [listId, setListId] = useState("")
+  const [listId, setListId] = useState<string>()
   const router = useRouter()
 
   useEffect(() => {
@@ -20,7 +20,11 @@ const FanDetailLists: NextPage = () => {
       setListId(router.query.list_id as string)
     }
   }, [router])
-  return <>{listId !== undefined && <ListDetail id={listId} />}</>
+  return (
+    <>
+      {listId !== undefined && listId.length > 0 && <ListDetail id={listId} />}
+    </>
+  )
 }
 
 export default withPageLayout(FanDetailLists)
