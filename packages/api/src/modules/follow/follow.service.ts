@@ -120,9 +120,6 @@ export class FollowService {
       await trx<UserEntity>(UserEntity.table)
         .where({ id: userId })
         .increment('num_following', 1)
-      await trx<UserEntity>(UserEntity.table)
-        .where({ id: userId })
-        .increment('num_following', 1)
       await trx<BlockTaskEntity>(BlockTaskEntity.table).insert({
         follower_id: userId,
         creator_id: creatorId,
