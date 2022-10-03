@@ -11,9 +11,9 @@ import TwitterLogo from "public/icons/twitter-logo.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
-import { CssGridTiles } from "src/components/molecules"
+import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { setTokens } from "src/helpers/setTokens"
@@ -134,19 +134,18 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
-      <Wordmark
-        height={28}
-        width={122}
-        whiteOnly
-        className="self-center lg:self-start"
-      />
-      <div className="mt-10 flex md:mt-20 lg:my-auto">
-        <div className="hidden flex-1 justify-center lg:flex">
-          <CssGridTiles />
+    <div className="h-screen bg-black">
+      <div className="relative mx-auto flex h-full max-w-[1440px] justify-center px-4 pt-16 md:pt-[104px] lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
+        {/* bg pattern */}
+        <span className="absolute top-[136px] left-0 hidden h-[650px] w-[650px] items-center justify-center lg:flex xl:left-12 xl:h-[751px] xl:w-[751px]">
+          <span className="absolute h-full w-full bg-[conic-gradient(from_133.17deg_at_43.11%_51.11%,#F2BD6C_0deg,#BD499B_230.62deg,#A359D5_360deg)] opacity-60 blur-[125px]" />
+          <span className="absolute h-[73%] w-[73%] rounded-full border-[41px] border-white/[0.15]" />
+        </span>
+        <div className="hidden justify-center lg:flex">
+          <SignupTiles />
         </div>
 
-        <div className="flex flex-1 flex-col items-center gap-y-5">
+        <div className="flex flex-col items-center gap-y-5">
           <Text fontSize={36} className="mb-4 font-semibold text-white">
             Create an account
           </Text>
@@ -162,7 +161,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="email"
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 placeholder="Enter your email"
                 type="text"
                 errors={errors}
@@ -181,7 +180,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="password"
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 placeholder="Enter your password"
                 type="password"
                 errors={errors}
@@ -200,7 +199,7 @@ const SignupPage = () => {
               <FormInput
                 register={register}
                 name="confirmPassword"
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 placeholder="Confirm your password"
                 type="password"
                 errors={errors}
@@ -213,7 +212,7 @@ const SignupPage = () => {
             </div>
 
             <button
-              className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
+              className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[340px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9 xs:w-[360px]"
               type="submit"
               disabled={isSubmitting}
             >
@@ -237,7 +236,7 @@ const SignupPage = () => {
 
           <Text
             fontSize={13}
-            className="z-10 w-[360px] text-[#b3bee7] opacity-[0.6]"
+            className="z-10 w-[340px] text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
           >
             By signing up, you agree to Passes&apos;{" "}
             <a
@@ -262,7 +261,7 @@ const SignupPage = () => {
 
           <Text
             fontSize={13}
-            className="z-10 flex w-[360px] justify-center text-[#b3bee7] opacity-[0.6]"
+            className="z-10 flex w-[340px] justify-center text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
           >
             Have an account?
             <NextLink href="/login">

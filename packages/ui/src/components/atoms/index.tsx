@@ -12,6 +12,7 @@ import Checkbox from "./Checkbox"
 import CssTile from "./CssTile"
 import File from "./File"
 import FormInput from "./FormInput"
+import GradientBorderTile from "./GradientBorderTile"
 import DefaultHead from "./Head"
 import Input from "./Input"
 import Label from "./Label"
@@ -30,6 +31,7 @@ import Select from "./Select"
 import Separator from "./Separator"
 import Text from "./Text"
 import TextArea from "./TextArea"
+import UserTile from "./UserTile"
 import {
   VaultAddToItem,
   VaultDeselectButton,
@@ -52,6 +54,7 @@ export {
   DefaultHead,
   File,
   FormInput,
+  GradientBorderTile,
   HeaderChatButton,
   Input,
   Label,
@@ -69,6 +72,7 @@ export {
   Separator,
   Text,
   TextArea,
+  UserTile,
   VaultAddToItem,
   VaultDeselectButton,
   VaultFilterOption,

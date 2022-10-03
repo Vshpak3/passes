@@ -15,6 +15,7 @@ import {
   PassRenewal
 } from "./passes"
 import * as SidebarComponents from "./Sidebar"
+import SignupTiles from "./SignupTiles"
 import Tabs from "./Tabs"
 import TagsInput from "./TagsInput"
 import {
@@ -42,6 +43,7 @@ export {
   PassLifetimeOptions,
   PassRenewal,
   SidebarComponents,
+  SignupTiles,
   Tabs,
   TagsInput,
   VaultAddToDropdown,
