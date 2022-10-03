@@ -20,6 +20,7 @@ import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
+import { errorMessage } from "src/helpers/error"
 import encrypt from "src/helpers/openpgp"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
@@ -83,13 +84,13 @@ const AddCard = () => {
       payload.createCardDto.encryptedData = encryptedMessage
 
       const paymentApi = new PaymentApi()
-      console.log("create")
       await paymentApi.createCircleCard({
         circleCreateCardAndExtraRequestDto: payload
       })
+      toast.success("Credit card added succesfully")
       addOrPopStackHandler(SubTabsEnum.PaymentSettings)
     } catch (error: any) {
-      toast.error(error)
+      toast.error(`Failed to add credit card`)
     }
   }
 

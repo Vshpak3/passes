@@ -9,6 +9,7 @@ import {
 import { SHA256 } from "crypto-js"
 import { useState } from "react"
 import { toast } from "react-toastify"
+import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
   connectMetamask,
@@ -183,6 +184,8 @@ export const usePay = (
     } catch (error) {
       setSubmitting(false)
       setLoading(false)
+
+      toast.error("Failed to submit payment")
 
       if (callback) {
         callback()
