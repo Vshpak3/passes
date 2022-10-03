@@ -12,7 +12,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
-import { CssGridTiles } from "src/components/molecules"
+import { CssGridTiles, SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
@@ -93,19 +93,17 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
-      <Wordmark
-        height={28}
-        width={122}
-        whiteOnly
-        className="self-center lg:self-start"
-      />
-      <div className="mt-10 flex md:mt-20 lg:my-auto">
-        <div className="hidden flex-1 justify-center lg:flex">
-          <CssGridTiles />
+    <div className="flex-2 h-screen bg-black">
+      <div className="relative mx-auto flex h-full max-w-[1440px] justify-center px-4 pt-16 md:pt-[104px] lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
+        <span className="absolute top-[136px] left-0 hidden h-[650px] w-[650px] items-center justify-center lg:flex xl:left-12 xl:h-[751px] xl:w-[751px]">
+          <span className="absolute h-full w-full bg-[conic-gradient(from_133.17deg_at_43.11%_51.11%,#F2BD6C_0deg,#BD499B_230.62deg,#A359D5_360deg)] opacity-60 blur-[125px]" />
+          <span className="absolute h-[73%] w-[73%] rounded-full border-[41px] border-white/[0.15]" />
+        </span>
+        <div className="hidden justify-center lg:flex">
+          <SignupTiles />
         </div>
 
-        <div className="flex flex-1 flex-col items-center gap-y-5">
+        <div className="flex flex-col items-center gap-y-5">
           <Text fontSize={36} className="mb-4 font-semibold text-white">
             Sign In
           </Text>
