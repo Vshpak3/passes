@@ -198,7 +198,7 @@ export class ListService {
     const type = await this.checkList(userId, listId, false)
     switch (type) {
       case ListTypeEnum.NORMAL:
-        return await this.getNormalListMembers(getListMembersRequestDto)
+        return await this.getNormalListMembers(userId, getListMembersRequestDto)
       case ListTypeEnum.FOLLOWERS:
         return await this.followService.searchFansByQuery(
           userId,
@@ -215,6 +215,7 @@ export class ListService {
   }
 
   async getNormalListMembers(
+    userId: string,
     getListMembersRequestDto: GetListMembersRequestDto,
   ) {
     const result = await createGetMemberQuery(
@@ -240,7 +241,8 @@ export class ListService {
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,
-        ),
+        )
+        .andWhere(`${FollowEntity.table}.creator_id`, userId),
       getListMembersRequestDto,
       ListMemberEntity.table,
     ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
@@ -272,12 +274,14 @@ export class ListService {
   }
 
   async updateCount(listId: string) {
-    const count = await this.dbReader<ListMemberEntity>(ListMemberEntity.table)
-      .where({ list_id: listId })
-      .count()
     await this.dbWriter<ListEntity>(ListEntity.table)
       .where({ id: listId })
-      .update({ count: Number(count[0]['count(*)']) })
+      .update(
+        'count',
+        this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
+          .where({ list_id: listId })
+          .count(),
+      )
   }
 
   async addListMembers(

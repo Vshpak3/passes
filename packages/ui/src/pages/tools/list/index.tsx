@@ -45,15 +45,6 @@ const FanLists: NextPage = () => {
     const curResets = resets
     if (!isLoadingMore) {
       setIsLoadingMore(true)
-      console.log({
-        order,
-        orderType,
-        lastId,
-        search: search && search.length > 0 ? search : undefined,
-        name,
-        createdAt
-      })
-      console.log(lists)
       try {
         const newLists = await listApi.getLists({
           getListsRequestsDto: {
