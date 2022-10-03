@@ -410,6 +410,7 @@ export const CommentSection = ({
 }: any) => {
   const [isLoadingComments, setLoadingComments] = useState(false)
   const [comments, setComments] = useState<CommentDto[]>([])
+  const [isReset, setIsReset] = useState(false)
   const { getValues, setValue } = useForm()
 
   const getComments = useCallback(
@@ -463,6 +464,7 @@ export const CommentSection = ({
 
       setValue("comment", "")
       getComments(false)
+      setIsReset(true)
       updateEngagement()
     } catch (error: any) {
       console.error(error)
@@ -496,6 +498,8 @@ export const CommentSection = ({
       >
         <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
           <CustomMentionEditor
+            isReset={isReset}
+            setIsReset={setIsReset}
             placeholder="Type a comment..."
             onInputChange={(params: any) => {
               setValue("comment", params?.text)
@@ -517,7 +521,7 @@ export const CommentSection = ({
 
 export const Comment = ({ comment }: any) => {
   return (
-    <div className="flex w-full flex-row border-b-[1px] border-b-gray-300/10 py-2">
+    <div className="relative flex w-full flex-row border-b-[1px] border-b-gray-300/10 py-2">
       <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full bg-red-300" />
       <TimeAgo
         className="absolute right-5 text-[12px] text-gray-300/60"
