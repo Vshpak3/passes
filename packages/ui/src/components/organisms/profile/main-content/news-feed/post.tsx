@@ -384,7 +384,6 @@ export const PostEngagement = ({
           onClick={() => setIsTipsModalOpen((prev) => !prev)}
           className="flex cursor-pointer items-center gap-2 pr-2 text-passes-gray-100"
         >
-          <span className="text-[16px] leading-[25px]">{post.price}</span>
           <CostIcon />
         </div>
         {post.tipAmount && "$" + post.tipAmount.toFixed(2)}

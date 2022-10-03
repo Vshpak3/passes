@@ -130,9 +130,6 @@ export const NewPost = ({
       contentIds: content.map((c: any) => c.id)
     }
 
-    console.log(post)
-    console.log(values)
-
     createPost(post)
     reset()
     setIsReset(true)
@@ -189,6 +186,10 @@ export const NewPost = ({
       if (type === "video") {
         if (_containsVideo) {
           toast.error("A post can only contain a single video")
+          return
+        }
+        if (files.length > 1) {
+          toast.error("A post cannot contain both a video and images")
           return
         }
         if (file.size > MAX_VIDEO_SIZE) {

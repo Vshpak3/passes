@@ -1,4 +1,6 @@
-import { ResponseError, UserApi } from "@passes/api-client"
+import { UserApi } from "@passes/api-client"
+
+import { errorMessage } from "./error"
 
 export async function checkUsername(
   username: string,
@@ -14,8 +16,7 @@ export async function checkUsername(
       updateUsernameRequestDto: { username }
     })
   } catch (err: any) {
-    const error = await (err as ResponseError).response.json()
-    throw new Error(error.message[0])
+    throw new Error(await errorMessage(err))
   }
 
   if (usernameTaken.value) {
