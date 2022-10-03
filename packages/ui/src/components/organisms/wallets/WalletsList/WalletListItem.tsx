@@ -126,13 +126,17 @@ const WalletListItem = ({
             !defaultSolMinting &&
             !wallet.authenticated && <div>Unauthenticated</div>}
         </ConditionRendering>
-        <Button
-          disabled={wallet.custodial}
-          onClick={onDeleteHandler}
-          variant="link-purple"
-        >
-          <span className="ml-[39px] mr-[29px]">Delete</span>
-        </Button>
+        {!defaultEthMinting && !defaultSolMinting ? (
+          <Button
+            disabled={wallet.custodial}
+            onClick={onDeleteHandler}
+            variant="link-purple"
+          >
+            <span className="ml-[39px] mr-[29px]">Delete</span>
+          </Button>
+        ) : (
+          <div className="w-[60px]"></div>
+        )}
       </div>
     </>
   )
