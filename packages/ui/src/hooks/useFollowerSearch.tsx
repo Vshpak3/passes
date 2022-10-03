@@ -1,36 +1,42 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
-import { useMemo, useRef, useState } from "react"
-import { useSearch } from "src/hooks"
+import { debounce } from "lodash"
+import { useCallback, useEffect, useState } from "react"
 
+const DEBOUNCE_TIMEOUT = 100
 const useFollowerSearch = () => {
-  const api = useMemo(() => new FollowApi(), [])
-  const fetch = useMemo(
-    () => async (search: string) => {
-      const data = await api.searchFans({
-        searchFollowRequestDto: {
-          search: search ? search : undefined,
-          order: "asc",
-          orderType: "username"
-        }
-      })
-      setFollowing(data.listMembers)
-    },
-    [api]
+  const [search, setSearch] = useState<string>("")
+  const fetch = useCallback(async () => {
+    const data = await new FollowApi().searchFans({
+      searchFollowRequestDto: {
+        search: search ? search : undefined,
+        order: "asc",
+        orderType: "username"
+      }
+    })
+    setFollowing(data.listMembers)
+  }, [search])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceChangeInputSearch = useCallback(
+    debounce((v) => setSearch(v), DEBOUNCE_TIMEOUT),
+    []
   )
-  const { search, setSearch } = useSearch(fetch)
+
+  useEffect(() => {
+    fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search])
+
   const [following, setFollowing] = useState<ListMemberDto[]>([])
-  const searchRef = useRef(null)
-  console.log(following)
 
   const onChangeInput = (e: any) => {
-    setSearch(e.target.value)
+    debounceChangeInputSearch(e.target.value)
   }
 
   return {
     following,
     search,
-    onChangeInput,
-    searchRef
+    onChangeInput
   }
 }
 

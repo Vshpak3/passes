@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react"
 import classNames from "classnames"
-import { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import { Modal } from "src/components/organisms"
 import { useFollowerSearch } from "src/hooks"
 
@@ -65,4 +65,4 @@ const FollowSearchModal = ({
     </Modal>
   )
 }
-export default FollowSearchModal
+export default React.memo(FollowSearchModal)

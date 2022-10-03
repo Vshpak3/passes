@@ -88,7 +88,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
                 lastId
               }
             })
-          console.log(newListMembers, "new list")
           if (curResets === resets && newListMembers.listMembers.length > 0) {
             setListMembers([...listMembers, ...newListMembers.listMembers])
             setLastId(newListMembers.lastId)
@@ -233,7 +232,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
         console.error("Add member to list has error: ", error)
       }
     },
-    [id, reset]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [reset]
   )
 
   const handleChangeListName = useCallback(
@@ -283,6 +283,12 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
   return (
     <div className="text-white">
+      <FollowSearchModal
+        isOpen={addFollowerOpen}
+        setOpen={setAddFollowerOpen}
+        onSelect={handleAddFan}
+        fromList={true}
+      />
       <ul className="px-7 pt-[82px]">
         <li className="mb-3 flex items-center text-base font-medium leading-5 text-white">
           <span>List</span>
@@ -401,12 +407,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
           })}
         </ConditionRendering>
       </ul>
-      <FollowSearchModal
-        isOpen={addFollowerOpen}
-        setOpen={setAddFollowerOpen}
-        onSelect={handleAddFan}
-        fromList={true}
-      />
     </div>
   )
 }
