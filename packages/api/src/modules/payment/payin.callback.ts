@@ -109,7 +109,7 @@ async function tippedMessageCreationCallback(
     input.contentIds,
   )
   input.messageId = messageId
-  await this.payService.updateInputJSON(payin.id, input)
+  await payService.updateInputJSON(payin.id, input)
   return { messageId }
 }
 
@@ -144,7 +144,7 @@ async function createNftPassCreationCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<PayinCallbackOutput> {
-  await this.payService.passService.useSupply(input.passId)
+  await payService.passService.useSupply(input.passId)
   return {}
 }
 
@@ -154,7 +154,7 @@ async function createNftPassFailureCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<PayinCallbackOutput> {
-  await this.payService.passService.freeSupply(input.passId)
+  await payService.passService.freeSupply(input.passId)
   return {}
 }
 
