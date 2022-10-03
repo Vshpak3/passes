@@ -44,12 +44,10 @@ const UserInfoPage = () => {
     setError,
     setValue,
     watch
-  } = useForm<UserInfoFormValues>({
-    defaultValues: { birthday: format(new Date(), DATE_FORMAT) }
-  })
+  } = useForm<UserInfoFormValues>()
 
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
-  const [hasTouchedCalendar, setHasTouchedCalendar] = useState(false)
+  const [calendarDate, setCalendarDate] = useState(new Date())
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -215,14 +213,14 @@ const UserInfoPage = () => {
                 }}
                 onFocus={() => {
                   setIsCalendarVisible(true)
-                  setHasTouchedCalendar(true)
                 }}
               />
               {isCalendarVisible && (
                 <>
                   <Calendar
-                    date={new Date(watch("birthday"))}
-                    onChange={(e) => {
+                    date={calendarDate}
+                    onChange={(e: Date) => {
+                      setCalendarDate(e)
                       setValue("birthday", format(e, DATE_FORMAT))
                     }}
                   />
@@ -239,7 +237,8 @@ const UserInfoPage = () => {
                   {errors.birthday.message}
                 </Text>
               )}
-              {hasTouchedCalendar &&
+              {!isCalendarVisible &&
+                watch("birthday") &&
                 differenceInYears(new Date(), new Date(watch("birthday"))) <
                   MIN_AGE_IN_YEARS && (
                   <Text fontSize={12} className="mt-1 text-[red]">
