@@ -6,7 +6,7 @@ import InfoIcon from "public/icons/info-icon.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput } from "src/components/atoms"
+import { FormInput, Select } from "src/components/atoms"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
@@ -29,8 +29,9 @@ const AddBank = () => {
     handleSubmit,
     register,
     getValues,
+    setValue,
     formState: { errors }
-  } = useForm({
+  } = useForm<{ "bank-country": string }>({
     defaultValues: {}
   })
 
@@ -76,19 +77,28 @@ const AddBank = () => {
   return (
     <Tab title="Add Bank" withBack>
       <div className="mt-4 flex flex-col">
-        <span className="mb-2 text-[16px] font-[500] text-[#767676]">
+        <span className="text-[16px] font-[500] text-[#767676]">
           Type of Bank Account
         </span>
-        <select
-          onChange={(event) => setBankType(event.target.value as BankTypeEnum)}
-          defaultValue={BankTypeEnum.US}
-        >
-          <option value={BankTypeEnum.US}>US Bank</option>
-          <option value={BankTypeEnum.IBAN}>International Bank - IBAN</option>
-          <option value={BankTypeEnum.NON_IBAN}>
-            International Bank - No IBAN
-          </option>
-        </select>
+        <Select
+          register={register}
+          defaultValue={bankType}
+          selectOptions={[
+            { label: "US Bank", value: BankTypeEnum.US },
+            { label: "International Bank - IBAN", value: BankTypeEnum.IBAN },
+            {
+              label: "International Bank - No IBAN",
+              value: BankTypeEnum.NON_IBAN
+            }
+          ]}
+          onChange={(event: any) => {
+            setBankType(event.target.value as BankTypeEnum)
+            setValue("bank-country", event.target.value)
+          }}
+          name="bank-country"
+          errors={errors}
+          className="mt-4 mb-4 border-passes-dark-100 bg-transparent"
+        />
       </div>
       <ConditionRendering
         condition={
@@ -140,7 +150,7 @@ const AddBank = () => {
           required: { message: "need a a bank name", value: true }
         }}
         errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-4 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -151,7 +161,7 @@ const AddBank = () => {
           required: { message: "need a bank city", value: true }
         }}
         errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-4 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -159,88 +169,90 @@ const AddBank = () => {
         selectOptions={COUNTRIES}
         name="bank-country"
         errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-4 border-passes-dark-100 bg-transparent"
       />
 
-      <span className="text-[16px] font-[500]">Billing address</span>
-      <FormInput
-        register={register}
-        type="text"
-        name="name"
-        placeholder="Name"
-        errors={errors}
-        options={{
-          required: { message: "name is required", value: true }
-        }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="address1"
-        placeholder="Address 1"
-        errors={errors}
-        options={{
-          required: { message: "Address is required", value: true }
-        }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="address2"
-        placeholder="Address 2"
-        errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <FormInput
-        register={register}
-        type="select"
-        selectOptions={COUNTRIES}
-        name="country"
-        errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <FormInput
-        register={register}
-        type="text"
-        name="city"
-        placeholder="City"
-        errors={errors}
-        options={{
-          required: { message: "City is required", value: true }
-        }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-      />
-      <div className="flex gap-4">
+      <div className="mt-4">
+        <span className="text-[16px] font-[500]">Billing address</span>
         <FormInput
           register={register}
           type="text"
-          name="district"
-          placeholder="State/District"
-          icon={
-            <div
-              className="tooltip absolute left-[160px] top-[26px] h-4 w-4"
-              data-tip="2 letter input only (Example: “FL”)"
-            >
-              <InfoIcon />
-            </div>
-          }
-          errors={errors}
-          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-        />
-
-        <FormInput
-          register={register}
-          type="text"
-          name="postal-code"
-          placeholder="Zip"
+          name="name"
+          placeholder="Name"
           errors={errors}
           options={{
-            required: { message: "Postal Code is required", value: true }
+            required: { message: "name is required", value: true }
           }}
           className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
         />
+        <FormInput
+          register={register}
+          type="text"
+          name="address1"
+          placeholder="Address 1"
+          errors={errors}
+          options={{
+            required: { message: "Address is required", value: true }
+          }}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="address2"
+          placeholder="Address 2"
+          errors={errors}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+        <FormInput
+          register={register}
+          type="select"
+          selectOptions={COUNTRIES}
+          name="country"
+          errors={errors}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+        <FormInput
+          register={register}
+          type="text"
+          name="city"
+          placeholder="City"
+          errors={errors}
+          options={{
+            required: { message: "City is required", value: true }
+          }}
+          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        />
+        <div className="flex gap-4">
+          <FormInput
+            register={register}
+            type="text"
+            name="district"
+            placeholder="State/District"
+            icon={
+              <div
+                className="tooltip absolute left-[160px] top-[26px] h-4 w-4"
+                data-tip="2 letter input only (Example: “FL”)"
+              >
+                <InfoIcon />
+              </div>
+            }
+            errors={errors}
+            className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+          />
+
+          <FormInput
+            register={register}
+            type="text"
+            name="postal-code"
+            placeholder="Zip"
+            errors={errors}
+            options={{
+              required: { message: "Postal Code is required", value: true }
+            }}
+            className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+          />
+        </div>
       </div>
       <button
         className="mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"

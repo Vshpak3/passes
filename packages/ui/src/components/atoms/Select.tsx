@@ -18,6 +18,7 @@ type SelectProps = {
   options?: FormOptions
   register: FormRegister
   errors?: FormErrors
+  defaultValue?: string
   placeholder?: FormPlaceholder
   selectOptions: FormSelectOptions
   className?: string
@@ -33,6 +34,7 @@ const Select = ({
   selectOptions,
   placeholder,
   className = "",
+  defaultValue = "",
   onChange,
   ...rest
 }: SelectProps) => {
@@ -51,7 +53,7 @@ const Select = ({
           "block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
           className
         )}
-        defaultValue=""
+        defaultValue={defaultValue}
         {...rest}
       >
         {placeholder && (
