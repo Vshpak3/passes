@@ -84,7 +84,7 @@ export const Post = ({ post, ownsProfile }: PostProps) => {
           post={currentPost}
           isOpen
           onClose={() => setCurrentPost(null)}
-          view={currentPost.fundraiser ? "creator" : "fan"}
+          postUnlocked={postUnlocked}
         />
       )}
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">

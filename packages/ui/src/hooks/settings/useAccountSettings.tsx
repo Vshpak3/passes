@@ -7,7 +7,7 @@ import { ContentService } from "src/helpers"
 import { checkUsername } from "src/helpers/username"
 import { useUser } from "src/hooks"
 
-export const useAccountSettings = () => {
+const useAccountSettings = () => {
   const { user } = useUser()
   const userApi = new UserApi()
   const authApi = new AuthLocalApi()
@@ -45,3 +45,5 @@ export const useAccountSettings = () => {
     changePassword
   }
 }
+
+export default useAccountSettings
