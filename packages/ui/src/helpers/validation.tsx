@@ -17,7 +17,9 @@ export interface SignInSchema {
 }
 
 const creatorFlowProfileSchema = object({
-  displayName: string().required("Please enter a display name"),
+  displayName: string()
+    .transform((name) => name.trim())
+    .required("Please enter a display name"),
   description: string().required("Please enter a description")
   // TODO: add validation
   // profileImage

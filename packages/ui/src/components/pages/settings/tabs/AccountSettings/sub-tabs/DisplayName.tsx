@@ -39,7 +39,7 @@ const DisplayName = () => {
           className="mt-6 w-auto !px-[52px]"
           tag="button"
           disabled={
-            displayName.length === 0 ||
+            displayName.trim().length === 0 ||
             user?.displayName === displayName ||
             loading
           }
