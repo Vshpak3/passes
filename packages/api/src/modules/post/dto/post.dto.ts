@@ -111,6 +111,7 @@ export class PostDto {
       this.username = post.username
       this.displayName = post.display_name
       this.createdAt = post.created_at
+      this.price = post.price
       this.paywall = paywall
       this.tags = JSON.parse(post.tags)
       this.passIds = JSON.parse(post.pass_ids)

@@ -247,21 +247,27 @@ export const LockedMedia = ({ postUnlocked, post }: LockedMedia) => {
           )}
         >
           {!postUnlocked && (
-            <div className="flex-center h-45 flex w-[245px] flex-col ">
-              <PostUnlockButton
-                onClick={() => setOpenBuyPostModal(true)}
-                value={postUnlocked.toString()}
-                name={`Unlock Post For ${formatCurrency(post.price ?? 100)}`}
-              />
-              <div className="flex items-center justify-center pt-4 text-[#ffffff]">
-                <span>
-                  Unlock {video} videos, {images} photos
-                </span>
+            <>
+              <div className="flex-center h-45 flex w-[245px] flex-col ">
+                <PostUnlockButton
+                  onClick={() => setOpenBuyPostModal(true)}
+                  value={postUnlocked.toString()}
+                  name={`Unlock Post For ${formatCurrency(post.price ?? 0)}`}
+                />
+                {/* TODO: add in blurred image <img
+                  src="/img/..."
+                  alt=""
+                  className="w-full rounded-[20px] object-cover shadow-xl"
+                /> */}
+                <div className="flex items-center justify-center pt-4 text-[#ffffff]">
+                  <span>Unlock {video ? "1 video" : `${images} photos`}!</span>
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
-        {post?.content?.length &&
+        {postUnlocked &&
+          post?.content?.length &&
           post.content.map((c: ContentDto) => {
             if (c.contentType === ContentDtoContentTypeEnum.Image) {
               return (

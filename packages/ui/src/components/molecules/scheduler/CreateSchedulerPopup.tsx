@@ -1,4 +1,5 @@
 // import classNames from "classnames"
+import { CreatePostRequestDto } from "@passes/api-client"
 import moment, { Moment } from "moment"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
@@ -10,7 +11,7 @@ import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
 import { MainContext } from "src/context/MainContext"
-import { CreatePostValues, useCreatePost } from "src/hooks"
+import { useCreatePost } from "src/hooks"
 interface CreateSchedulerPopupProps {
   onCancel: () => void
 }
@@ -22,7 +23,7 @@ const CreateSchedulerPopup = forwardRef<
   const { onCancel } = props
   const [selectionDate, setSelectionDate] = useState<Date | undefined>()
   const [selectionTime, setSelectionTime] = useState<Moment>()
-  const { setPostTime } = useContext(MainContext)
+  const { postTime, setPostTime } = useContext(MainContext)
   // TODO: temporary comment out, please ignore
   // const [creatingOption, setCreatingOption] = useState("post")
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
@@ -54,8 +55,8 @@ const CreateSchedulerPopup = forwardRef<
   //   setCreatingOption(value)
   // }, [])
 
-  const handleCreatePost = (values: CreatePostValues) => {
-    createPost(values)
+  const handleCreatePost = (values: CreatePostRequestDto) => {
+    createPost({ ...values, scheduledAt: postTime })
     setIsNewPostModalOpen(false)
   }
 

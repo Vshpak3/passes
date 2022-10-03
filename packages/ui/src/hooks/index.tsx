@@ -3,7 +3,7 @@ import useCreatorSettings from "./settings/useCreatorSettings"
 import { useNotificationSettings } from "./settings/useNotificationSettings"
 import useChat from "./useChat"
 import useCreatePass from "./useCreatePass"
-import useCreatePost, { CreatePostValues } from "./useCreatePost"
+import useCreatePost from "./useCreatePost"
 import useCreatorProfile from "./useCreatorProfile"
 import useCreatorSearch from "./useCreatorSearch"
 import useEventCallback from "./useEventCallback"
@@ -59,6 +59,3 @@ export {
   useUserConnectedWallets,
   useUserDefaultMintingWallets
 }
-
-// Types
-export type { CreatePostValues }

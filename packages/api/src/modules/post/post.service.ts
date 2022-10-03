@@ -290,7 +290,7 @@ export class PostService {
     userId: string,
     query: Knex.QueryBuilder,
   ): Promise<PostDto[]> {
-    const posts = await query
+    const posts: any[] = await query
 
     const passAccesses = await this.dbReader<PostPassAccessEntity>(
       PostPassAccessEntity.table,
@@ -311,18 +311,14 @@ export class PostService {
       passAccesses.map((passAccess) => passAccess.post_id),
     )
 
-    const accessiblePosts = posts.reduce((arr, post) => {
-      if (
+    const accessiblePosts = posts.filter(
+      (post) =>
         post.access || // single post purchase
         postsFromPass.has(post.id) || // owns pass that gives access
         post.user_id === userId || // user made post
         !post.price || // no price on post
-        post.price === 0 // price of post is 0
-      ) {
-        arr.push(post)
-      }
-      return arr
-    }, [])
+        post.price === 0, // price of post is 0
+    )
 
     const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
 
@@ -335,7 +331,8 @@ export class PostService {
       (post) =>
         new PostDto(
           post,
-          !accessiblePostIds.has(post.id) && contentLookup[post.id],
+          !accessiblePostIds.has(post.id) &&
+            contentLookup[post.id] !== undefined,
           post.user_id === userId,
           contentLookup[post.id],
         ),
@@ -345,7 +342,7 @@ export class PostService {
   private async getContentLookupForPosts(
     postIds: string[],
     accessiblePostIds: Set<string>,
-  ): Promise<Map<string, ContentDto[]>> {
+  ): Promise<Record<string, ContentDto[]>> {
     const postContents = await this.dbReader<PostContentEntity>(
       PostContentEntity.table,
     )

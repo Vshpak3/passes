@@ -6,7 +6,7 @@ import { useFeed, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Home = () => {
-  const { isLoadingPosts, feed } = useFeed()
+  const { feed } = useFeed()
   const { mutate } = useUser()
 
   const collatedFeed = useMemo(() => {
@@ -29,7 +29,6 @@ const Home = () => {
 
   return (
     <>
-      {isLoadingPosts && <div className="mx-auto">Loading...</div>}
       {collatedFeed.length > 0 ? (
         <div className="w-full bg-black">
           <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20  lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">

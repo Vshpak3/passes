@@ -1,25 +1,11 @@
-import { PostApi } from "@passes/api-client"
-import { useContext } from "react"
-import { MainContext } from "src/context/MainContext"
+import { CreatePostRequestDto, PostApi } from "@passes/api-client"
 
-export interface CreatePostValues {
-  text: string
-  contentIds: Array<any>
-  mentions: Array<any>
-}
 const useCreatePost = () => {
-  const { postTime } = useContext(MainContext)
   const api = new PostApi()
-  const createPost = async (values: CreatePostValues) => {
+  const createPost = async (values: CreatePostRequestDto) => {
+    console.log(values)
     return await api.createPost({
-      createPostRequestDto: {
-        text: values.text,
-        tags: values.mentions,
-        contentIds: values.contentIds,
-        passIds: [],
-        price: 0,
-        scheduledAt: postTime?.$d
-      }
+      createPostRequestDto: { ...values }
     })
   }
 

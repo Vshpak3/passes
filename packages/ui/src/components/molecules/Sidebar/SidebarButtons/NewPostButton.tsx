@@ -1,15 +1,16 @@
+import { CreatePostRequestDto } from "@passes/api-client"
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
 import { Button } from "src/components/atoms"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
-import { CreatePostValues, useCreatePost } from "src/hooks"
+import { useCreatePost } from "src/hooks"
 
 const NewPostButton = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const { createPost } = useCreatePost()
 
-  const handleCreatePost = (values: CreatePostValues) => {
+  const handleCreatePost = (values: CreatePostRequestDto) => {
     createPost(values)
     setIsNewPostModalOpen(false)
   }

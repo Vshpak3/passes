@@ -1,4 +1,4 @@
-import { FanWallApi, FeedApi } from "@passes/api-client"
+import { CreatePostRequestDto, FanWallApi, FeedApi } from "@passes/api-client"
 import React, { useState } from "react"
 import { useCreatePost } from "src/hooks"
 import { useSWRConfig } from "swr"
@@ -17,7 +17,7 @@ const MainContent = ({
   const { mutate } = useSWRConfig()
   const { createPost } = useCreatePost()
 
-  const handleCreatePost = (values: any) => {
+  const handleCreatePost = (values: CreatePostRequestDto) => {
     mutate(["/post/creator/", username], async () => createPost(values), {
       populateCache: async (post, previousPosts) => {
         const api = new FeedApi()
@@ -42,7 +42,7 @@ const MainContent = ({
       revalidate: true
     })
   }
-  const writeToFanWall = async (values: any) => {
+  const writeToFanWall = async (values: CreatePostRequestDto) => {
     const api = new FanWallApi()
 
     mutate(
@@ -52,7 +52,7 @@ const MainContent = ({
           createFanWallCommentRequestDto: {
             creatorId: profile.userId,
             text: values.text,
-            tags: values.mentions
+            tags: values.tags
           }
         }),
       {

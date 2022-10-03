@@ -36,7 +36,6 @@ const Profile = () => {
     creatorStats,
     isLoading
   } = useCreatorProfile()
-  // when no profile is found
   if (isLoading) {
     return <></>
   }
@@ -79,44 +78,5 @@ const Profile = () => {
     </div>
   )
 }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return {
-//     paths: [],
-//     fallback: "blocking"
-//   }
-// }
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   if (!params || !params.username) {
-//     return { props: {} }
-//   }
-
-//   const username = Array.isArray(params.username)
-//     ? params.username[0]
-//     : params.username
-
-//   try {
-//     const api = new ProfileApi()
-//     const profile = await api.findProfile({
-//       getProfileRequestDto: { username }
-//     })
-//     console.log(profile)
-
-//     // Hack to remove undefined from generated API typings
-//     const props = { ...JSON.parse(JSON.stringify({ ...profile })) }
-
-//     return {
-//       props,
-//       // Next.js will attempt to re-generate the page:
-//       // - When a request comes in
-//       // - At most once every 5 minutes
-//       revalidate: 5 * 60 // In seconds
-//     }
-//   } catch (err: any) {
-//     return { props: {} }
-//   }
-// }
-// export default withPageLayout(Profile, { skipAuth: true, header: true })
 
 export default withPageLayout(Profile, { skipAuth: true, header: true })

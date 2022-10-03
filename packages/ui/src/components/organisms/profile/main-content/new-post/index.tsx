@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import { CreatePostRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
@@ -7,7 +8,7 @@ import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
@@ -52,9 +53,9 @@ export const NewPost = ({
   onlyText = false
 }: any) => {
   const [hasMounted, setHasMounted] = useState(false)
-  const [files, setFiles] = useState<Files[]>([])
+  const [files, setFiles] = useState<File[]>([])
   const [containsVideo, setContainsVideo] = useState(false)
-  const [selectedMedia, setSelectedMedia] = useState()
+  const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasSchedule, setHasSchedule] = useState(false)
@@ -118,7 +119,21 @@ export const NewPost = ({
     }
     const content = await new ContentService().uploadContent(files)
     setExtended(false)
-    createPost({ ...values, contentIds: content.map((c: any) => c.id) })
+
+    const post: CreatePostRequestDto = {
+      text: values.text,
+      tags: [], // TODO: add in values.mentions (must update to be TagDto)
+      passIds: [], // TODO: add in passes
+      scheduledAt: values.scheduledAt,
+      expiresAt: values.expiresAt,
+      price: isPaid ? parseInt(values.price) : 0,
+      contentIds: content.map((c: any) => c.id)
+    }
+
+    console.log(post)
+    console.log(values)
+
+    createPost(post)
     reset()
     setIsReset(true)
   }
@@ -161,7 +176,7 @@ export const NewPost = ({
   }
 
   const onMediaChange = (fileProps: File[]) => {
-    const _containsVideo = containsVideo
+    let _containsVideo = containsVideo
 
     // Validate properties of each file
     for (const file of fileProps) {
