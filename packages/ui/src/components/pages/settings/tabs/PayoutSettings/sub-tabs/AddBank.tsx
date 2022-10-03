@@ -75,25 +75,21 @@ const AddBank = () => {
 
   return (
     <Tab title="Add Bank" withBack>
-      <span className="text-[16px] font-[500] opacity-50">
-        Banking information
-      </span>
-      <br />
-      <span className="text-[16px] font-[500] text-[#767676]">
-        Type of Bank Account
-      </span>
-      <br />
-      <select
-        onChange={(event) => setBankType(event.target.value as BankTypeEnum)}
-        defaultValue={BankTypeEnum.US}
-      >
-        <option value={BankTypeEnum.US}>US Bank</option>
-        <option value={BankTypeEnum.IBAN}>International Bank - IBAN</option>
-        <option value={BankTypeEnum.NON_IBAN}>
-          International Bank - No IBAN
-        </option>
-      </select>
-      <br />
+      <div className="mt-4 flex flex-col">
+        <span className="mb-2 text-[16px] font-[500] text-[#767676]">
+          Type of Bank Account
+        </span>
+        <select
+          onChange={(event) => setBankType(event.target.value as BankTypeEnum)}
+          defaultValue={BankTypeEnum.US}
+        >
+          <option value={BankTypeEnum.US}>US Bank</option>
+          <option value={BankTypeEnum.IBAN}>International Bank - IBAN</option>
+          <option value={BankTypeEnum.NON_IBAN}>
+            International Bank - No IBAN
+          </option>
+        </select>
+      </div>
       <ConditionRendering
         condition={
           bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
@@ -134,7 +130,7 @@ const AddBank = () => {
           className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
         />
       </ConditionRendering>
-      <span className="text-[16px] font-[500]">Bank Info:</span>
+      <span className="text-[16px] font-[500]">Bank Info</span>
       <FormInput
         register={register}
         type="text"
