@@ -235,6 +235,7 @@ export class ListService {
           `${UserEntity.table}.display_name`,
           `${FollowEntity.table}.id as follow`,
           `${ListMemberEntity.table}.id`,
+          `${ListMemberEntity.table}.created_at`,
         ])
         .where(
           `${ListMemberEntity.table}.list_id`,

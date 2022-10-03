@@ -16,6 +16,7 @@ import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
+import FollowSearchModal from "src/components/molecules/FollowerSearchModal"
 
 import ListItem from "./ListItem"
 import SortListPopup from "./SortListPopup"
@@ -25,9 +26,9 @@ type ListDetailProps = {
 }
 
 const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
-  console.log(id)
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
+  const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
   const [listMembers, setListMembers] = useState<Array<ListMemberDto>>([])
   const [resets, setResets] = useState(0)
@@ -54,19 +55,17 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
   const fetchInfo = useCallback(async () => {
     const listApi = new ListApi()
-    if (id) {
-      try {
-        // Get list information by ID
-        const listInfoRes: GetListResponseDto = await listApi.getList({
-          listId: id
-        })
-        setListInfo(listInfoRes)
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        listNameRef.current!.value = listInfoRes.name
-        setListName(listInfoRes.name)
-      } catch (error) {
-        console.error("error ", error)
-      }
+    try {
+      // Get list information by ID
+      const listInfoRes: GetListResponseDto = await listApi.getList({
+        listId: id
+      })
+      setListInfo(listInfoRes)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      listNameRef.current!.value = listInfoRes.name
+      setListName(listInfoRes.name)
+    } catch (error) {
+      console.error("error ", error)
     }
   }, [id])
 
@@ -77,6 +76,15 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
         setIsLoadingMore(true)
         try {
           // Get list Item in a list by listId
+          console.log({
+            listId: id,
+            order,
+            orderType,
+            search: search && search.length > 0 ? search : undefined,
+            createdAt,
+            username,
+            lastId
+          })
           const newListMembers: GetListMembersResponseDto =
             await listApi.getListMembers({
               getListMembersRequestDto: {
@@ -89,6 +97,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
                 lastId
               }
             })
+          console.log(newListMembers)
           if (curResets === resets && newListMembers.listMembers.length > 0) {
             setListMembers([...listMembers, ...newListMembers.listMembers])
             setLastId(newListMembers.lastId)
@@ -217,11 +226,9 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddFan = useCallback(
-    async (event: React.MouseEvent<HTMLSpanElement>, user_id: string) => {
+    async (user_id: string) => {
       const listApi = new ListApi()
-
-      event.preventDefault()
-      event.stopPropagation()
+      setAddFollowerOpen(false)
       try {
         await listApi.addListMembers({
           addListMembersRequestDto: {
@@ -229,6 +236,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
             userIds: [user_id]
           }
         })
+        await new Promise((resolve) => setTimeout(resolve, 100))
         reset()
       } catch (error) {
         console.error("Add member to list has error: ", error)
@@ -257,12 +265,17 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
       ) {
         // Update list name
         try {
-          await listApi.editListName({
-            editListNameRequestDto: {
-              listId: id,
-              name: listNameRef.current?.value
-            }
-          })
+          const updated = (
+            await listApi.editListName({
+              editListNameRequestDto: {
+                listId: id,
+                name: listNameRef.current?.value
+              }
+            })
+          ).value
+          if (updated) {
+            setListName(listNameRef.current?.value)
+          }
           setIsEditingListName((isEditingListName) => !isEditingListName)
         } catch (error) {
           console.warn("Update list name error, status: ", error)
@@ -276,17 +289,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
 
   const sortPopperOpen = Boolean(anchorSortPopperEl)
   const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
-
-  useEffect(() => {
-    if (isEditingListName) {
-      listNameRef.current?.focus()
-    }
-
-    // Set list name
-    if (listInfo) {
-      setListName(listInfo.name)
-    }
-  }, [isEditingListName, listInfo])
 
   return (
     <div className="text-white">
@@ -334,7 +336,12 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
             condition={listInfo?.type === GetListResponseDtoTypeEnum.Normal}
           >
             <div className="flex items-center gap-7">
-              <button className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30">
+              <button
+                onClick={() => {
+                  setAddFollowerOpen(true)
+                }}
+                className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30"
+              >
                 <PlusIcon />
                 Add
               </button>
@@ -402,6 +409,12 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
           })}
         </ConditionRendering>
       </ul>
+      <FollowSearchModal
+        isOpen={addFollowerOpen}
+        setOpen={setAddFollowerOpen}
+        onSelect={handleAddFan}
+        fromList={true}
+      />
     </div>
   )
 }

@@ -11,6 +11,7 @@ import useEventListener from "./useEventListener"
 import useFanWall from "./useFanWall"
 import useFeed from "./useFeed"
 import useFollow from "./useFollow"
+import useFollowerSearch from "./useFollowerSearch"
 import useFollowSearch from "./useFollowSearch"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
 import useLocalStorage from "./useLocalStorage"
@@ -41,6 +42,7 @@ export {
   useFanWall,
   useFeed,
   useFollow,
+  useFollowerSearch,
   useFollowSearch,
   useIsomorphicLayoutEffect,
   useLocalStorage,
