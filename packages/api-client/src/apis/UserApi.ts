@@ -41,6 +41,10 @@ export interface GetUserIdRequest {
     username: string;
 }
 
+export interface GetUsernameFromIdRequest {
+    userId: string;
+}
+
 export interface IsUsernameTakenRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
@@ -156,6 +160,41 @@ export class UserApi extends runtime.BaseAPI {
      */
     async getUserId(requestParameters: GetUserIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
         const response = await this.getUserIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user id from username
+     */
+    async getUsernameFromIdRaw(requestParameters: GetUsernameFromIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling getUsernameFromId.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/user/user-id/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * Get user id from username
+     */
+    async getUsernameFromId(requestParameters: GetUsernameFromIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.getUsernameFromIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
