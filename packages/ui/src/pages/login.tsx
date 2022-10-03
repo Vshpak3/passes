@@ -126,11 +126,6 @@ const LoginPage = () => {
                 type="text"
                 errors={errors}
               />
-              {errors.email && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.email.message?.toString()}
-                </Text>
-              )}
             </div>
 
             <div className="flex flex-col">
@@ -145,11 +140,6 @@ const LoginPage = () => {
                 type="password"
                 errors={errors}
               />
-              {errors.password && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.password.message?.toString()}
-                </Text>
-              )}
             </div>
 
             <div className="flex flex-row gap-14">
