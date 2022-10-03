@@ -75,16 +75,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
       if (!isLoadingMore) {
         setIsLoadingMore(true)
         try {
-          // Get list Item in a list by listId
-          console.log({
-            listId: id,
-            order,
-            orderType,
-            search: search && search.length > 0 ? search : undefined,
-            createdAt,
-            username,
-            lastId
-          })
           const newListMembers: GetListMembersResponseDto =
             await listApi.getListMembers({
               getListMembersRequestDto: {
@@ -97,7 +87,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
                 lastId
               }
             })
-          console.log(newListMembers)
           if (curResets === resets && newListMembers.listMembers.length > 0) {
             setListMembers([...listMembers, ...newListMembers.listMembers])
             setLastId(newListMembers.lastId)
