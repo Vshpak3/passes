@@ -177,6 +177,7 @@ export class FollowService {
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${FollowEntity.table}.id as follow`,
+        `${FollowEntity.table}.created_at`,
       )
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
 
@@ -206,6 +207,7 @@ export class FollowService {
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${FollowEntity.table}.id as follow`,
+        `${FollowEntity.table}.created_at`,
       )
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
 

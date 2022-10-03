@@ -67,7 +67,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
     } catch (error) {
       console.error("error ", error)
     }
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetchMembers = useCallback(
     async (curResets: number) => {
@@ -87,6 +88,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
                 lastId
               }
             })
+          console.log(newListMembers, "new list")
           if (curResets === resets && newListMembers.listMembers.length > 0) {
             setListMembers([...listMembers, ...newListMembers.listMembers])
             setLastId(newListMembers.lastId)
@@ -296,10 +298,11 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
               className="mr-2 w-[160px] appearance-none bg-transparent text-2xl font-bold leading-6 outline-none"
               value={listName}
             />
-
-            <span className="cursor-pointer" onClick={toggleEditListName}>
-              <EditIcon />
-            </span>
+            {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
+              <span className="cursor-pointer" onClick={toggleEditListName}>
+                <EditIcon />
+              </span>
+            )}
           </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
             <span className="relative">

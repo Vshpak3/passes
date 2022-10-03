@@ -12,7 +12,7 @@ const ListDetail = dynamic<any>(
 )
 
 const FanDetailLists: NextPage = () => {
-  const [listId, setListId] = useState("")
+  const [listId, setListId] = useState<string>()
   const router = useRouter()
 
   useEffect(() => {
