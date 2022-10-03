@@ -20,8 +20,9 @@ const useMessages = ({ channelOrderType }: UseMessagesProps) => {
     lastId?: string
     recent?: Date
     tip?: number
-  } = {}) =>
-    api.getChannels({
+  } = {}) => {
+    console.log("channels")
+    return api.getChannels({
       getChannelsRequestDto: {
         unreadOnly: false,
         order: "desc",
@@ -31,6 +32,7 @@ const useMessages = ({ channelOrderType }: UseMessagesProps) => {
         tip
       }
     })
+  }
 
   const createChannel = (userId: string) => {
     return api.getOrCreateChannel({
