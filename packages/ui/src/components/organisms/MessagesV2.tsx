@@ -1,11 +1,12 @@
+import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
   GetChannelsRequestDtoOrderTypeEnum,
   ListMemberDto
 } from "@passes/api-client/models"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ChannelList, ChannelView } from "src/components/molecules/messages"
-import { useMessages } from "src/hooks"
+import { useMessages, useUser } from "src/hooks"
 
 const MessagesV2 = () => {
   const [channelOrderType, setChannelOrderType] =
@@ -15,9 +16,19 @@ const MessagesV2 = () => {
     channelOrderType
   })
   const [gallery, setGallery] = useState(false)
-  const freeMessages = 20
-  const handleChannelClicked = (channel: ChannelMemberDto) => {
+  const [isCreator, setIsCreator] = useState(true)
+
+  const { user } = useUser()
+  const [freeMessages, setFreeMessages] = useState(20)
+  const handleChannelClicked = async (channel: ChannelMemberDto) => {
     setSelectedChannel(channel)
+  }
+
+  const checkCreator = async () => {
+    if (!user?.isCreator) {
+      setIsCreator(false)
+      await getFreeMessages()
+    }
   }
 
   const onUserSelect = async (user: ListMemberDto) => {
@@ -25,6 +36,27 @@ const MessagesV2 = () => {
     await refresh()
     setSelectedChannel(channel)
   }
+
+  const getFreeMessages = async () => {
+    const api = new MessagesApi()
+    if (!selectedChannel?.channelId) {
+      return
+    }
+    const freeMessagesResponse = await api.getFreeMessages({
+      channelId: selectedChannel.channelId
+    })
+    if (freeMessagesResponse) {
+      setFreeMessages(freeMessagesResponse.messages)
+    }
+  }
+
+  useEffect(() => {
+    if (selectedChannel?.channelId) {
+      checkCreator()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChannel])
+
   return (
     <div className="flex h-full flex-row border border-gray-800">
       <ChannelList
@@ -42,6 +74,7 @@ const MessagesV2 = () => {
         gallery={gallery}
         setGallery={setGallery}
         freeMessages={freeMessages}
+        isCreator={isCreator}
       />
     </div>
   )
