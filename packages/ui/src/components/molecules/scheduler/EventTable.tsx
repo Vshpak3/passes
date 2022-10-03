@@ -1,35 +1,27 @@
+import { PostApi } from "@passes/api-client"
 import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import EventTableItem from "src/components/molecules/scheduler/EventTableItem"
 
 import DeleteEventModal from "./DeleteEventModal"
 
-const EVENTS = [
-  {
-    name: "Content - 5$",
-    content: "4 videos, 20 photos",
-    date: new Date("2022, 09, 10"),
-    actionStatus: "in queue"
-  },
-  {
-    name: "New Pass Release",
-    content: "Golden Pass",
-    date: new Date("2022, 09, 10"),
-    actionStatus: "Re-schedule"
-  },
-  {
-    name: "Mass Message",
-    content: "Mass message (402 users)",
-    date: new Date("2022, 09, 10"),
-    actionStatus: "Re-schedule"
-  }
-]
-
-// const EVENTS: any = []
+const postApi = new PostApi()
 
 const EventTable: FC = () => {
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<number>(-1)
+  const [posts, setPosts] = useState<Array<any>>([])
+
+  useEffect(() => {
+    ;(async function () {
+      const scheduledPosts = await postApi.getPosts({
+        getPostsRequestDto: {
+          scheduledOnly: true
+        }
+      })
+      setPosts(scheduledPosts.posts)
+    })()
+  }, [])
 
   const handleOnDeleteEvent = useCallback((targetId: number) => {
     setSelectEventIdDelete(targetId)
@@ -48,7 +40,7 @@ const EventTable: FC = () => {
       <div className="mb-9 select-none text-base font-bold md:text-2xl">
         Scheduled event
       </div>
-      {EVENTS.length === 0 ? (
+      {posts.length === 0 ? (
         <div className="mb-[30px] flex h-[295px] w-full flex-col items-center justify-center rounded-[20px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
           <Calendar />
           <span className="mt-3 text-white opacity-50">
@@ -70,16 +62,16 @@ const EventTable: FC = () => {
               <th className="pb-1">Date</th>
               <th className="pb-1">Action</th>
             </tr>
-            {EVENTS.map((item: any, index: number) => {
-              const { name, content, date, actionStatus } = item
+            {posts.map((item: any, index: number) => {
+              const { price, text, scheduledAt, expiresAt } = item
               return (
                 <EventTableItem
                   key={index}
                   id={index}
-                  name={name}
-                  content={content}
-                  date={format(date, "dd MMMM yyyy")}
-                  actionStatus={actionStatus}
+                  price={price}
+                  text={text}
+                  scheduledAt={format(scheduledAt, "dd MMMM yyyy")}
+                  expiresAt={expiresAt}
                   onDeleteEvent={handleOnDeleteEvent}
                 />
               )

@@ -6,45 +6,45 @@ import useWindowDimensions from "src/helpers/hooks/useWindowDimensions"
 
 interface EventTableItemProps {
   id: number
-  name: string
-  content: string
-  date: string
-  actionStatus: string
+  price: string
+  text: string
+  scheduledAt: string
+  expiresAt: string
   onDeleteEvent: (id: number) => void
 }
 
 const EventTableItem: FC<EventTableItemProps> = ({
   id,
-  name,
-  content,
-  date,
-  actionStatus,
+  price,
+  text,
+  scheduledAt,
+  expiresAt,
   onDeleteEvent
 }) => {
   const { width = 0 } = useWindowDimensions()
 
   const generateButtonName = useCallback(() => {
-    if (name.toLowerCase().includes("content")) {
+    if (parseInt(price) >= 0) {
       return (
         <button className="flex min-w-[175px] items-center justify-center gap-3 rounded-[50px] bg-passes-pink-100 py-[6px] text-white md:py-[13px]">
-          <LockedUnlockedIcon /> {name}
+          <LockedUnlockedIcon /> {price}
         </button>
       )
     }
     return (
       <button className="flex min-w-[175px] items-center justify-center gap-3 rounded-[50px] bg-passes-primary-color py-[6px] text-white md:py-[13px]">
-        {name}
+        {price}
       </button>
     )
-  }, [name])
+  }, [price])
 
   const generateActionStatus = useCallback(
     (isMobile?: boolean, type?: string) => {
       if (!isMobile) {
-        if (actionStatus === "in queue") {
+        if (!expiresAt) {
           return (
             <div className="flex items-center">
-              <span className="mr-6 text-passes-yellow">{actionStatus}</span>
+              <span className="mr-6 text-passes-yellow">In queue</span>
               <TrashIcon
                 className="mr-3 cursor-pointer"
                 onClick={() => onDeleteEvent(id)}
@@ -55,26 +55,26 @@ const EventTableItem: FC<EventTableItemProps> = ({
         }
         return (
           <div className="flex items-center">
-            <span className="mr-4 text-white">{actionStatus}</span>
+            <span className="mr-4 text-white">Re-schedule</span>
             <EditIcon />
           </div>
         )
       }
       if (type === "status") {
-        if (actionStatus === "in queue") {
+        if (!expiresAt) {
           return (
             <div className="flex items-center">
-              <span className="mr-6 text-passes-yellow">{actionStatus}</span>
+              <span className="mr-6 text-passes-yellow">In queue</span>
             </div>
           )
         }
         return (
           <div className="flex items-center">
-            <span className="mr-4 text-white">{actionStatus}</span>
+            <span className="mr-4 text-white">Re-schedule</span>
           </div>
         )
       }
-      if (actionStatus === "in queue") {
+      if (!expiresAt) {
         return (
           <div className="flex items-center">
             <TrashIcon
@@ -91,7 +91,7 @@ const EventTableItem: FC<EventTableItemProps> = ({
         </div>
       )
     },
-    [actionStatus, id, onDeleteEvent]
+    [expiresAt, id, onDeleteEvent]
   )
 
   if (width < 768) {
@@ -99,14 +99,14 @@ const EventTableItem: FC<EventTableItemProps> = ({
     return (
       <div className="mb-8 px-5">
         <div className="mb-6 flex items-center justify-between">
-          <span>{date}</span>
+          <span>{scheduledAt}</span>
           <span>{generateActionStatus(isMobile, "action")}</span>
         </div>
         <div className="flex items-start gap-2">
           <div className="mr-3 h-[125px] w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
           <div className="flex flex-col gap-2">
             <div>{generateButtonName()}</div>
-            <span>{content}</span>
+            <span>{text}</span>
             <span>{generateActionStatus(isMobile, "status")}</span>
           </div>
         </div>
@@ -120,8 +120,8 @@ const EventTableItem: FC<EventTableItemProps> = ({
         <div className="mr-3 h-[75px] w-[75px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
         {generateButtonName()}
       </td>
-      <td className="my-[6px]">{content}</td>
-      <td className="my-[6px]">{date}</td>
+      <td className="my-[6px]">{text}</td>
+      <td className="my-[6px]">{scheduledAt}</td>
       <td className="my-[6px]">{generateActionStatus()}</td>
     </tr>
   )
