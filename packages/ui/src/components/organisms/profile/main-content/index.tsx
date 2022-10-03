@@ -1,52 +1,71 @@
-import { CreatePostRequestDto, FanWallApi, FeedApi } from "@passes/api-client"
-import React, { useState } from "react"
+import {
+  CreatePostRequestDto,
+  FanWallApi,
+  FeedApi,
+  GetFanWallResponseDto,
+  GetProfileResponseDto,
+  PostDto
+} from "@passes/api-client"
+import { FC, useState } from "react"
 import { useCreatePost } from "src/hooks"
 import { useSWRConfig } from "swr"
 
 import NewsFeedNavigation from "./new-post/navigation"
 import NewsFeedContent from "./news-feed/news-feed-content"
 
-const MainContent = ({
+export interface MainContentProps {
+  profile: GetProfileResponseDto
+  profileUsername: string
+  ownsProfile: boolean
+  posts: PostDto[]
+  fanWallPosts?: GetFanWallResponseDto
+}
+
+const MainContent: FC<MainContentProps> = ({
   profile,
   ownsProfile,
   posts,
   fanWallPosts,
-  username
-}: any) => {
+  profileUsername
+}) => {
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
   const { createPost } = useCreatePost()
 
   const handleCreatePost = (values: CreatePostRequestDto) => {
-    mutate(["/post/creator/", username], async () => createPost(values), {
-      populateCache: async (post, previousPosts) => {
-        const api = new FeedApi()
-        const { posts } = await api.getFeedForCreator({
-          getProfileFeedRequestDto: { creatorId: profile.userId }
-        })
+    mutate(
+      ["/post/creator/", profileUsername],
+      async () => createPost(values),
+      {
+        populateCache: async (post, previousPosts) => {
+          const api = new FeedApi()
+          const { posts } = await api.getFeedForCreator({
+            getProfileFeedRequestDto: { creatorId: profile.userId }
+          })
 
-        if (!previousPosts) {
-          return {
-            count: 1,
-            cursor: username,
-            posts
+          if (!previousPosts) {
+            return {
+              count: 1,
+              cursor: profileUsername,
+              posts
+            }
+          } else {
+            return {
+              count: previousPosts.count + 1,
+              cursor: previousPosts.cursor,
+              posts
+            }
           }
-        } else {
-          return {
-            count: previousPosts.count + 1,
-            cursor: previousPosts.cursor,
-            posts
-          }
-        }
-      },
-      revalidate: true
-    })
+        },
+        revalidate: true
+      }
+    )
   }
   const writeToFanWall = async (values: CreatePostRequestDto) => {
     const api = new FanWallApi()
 
     mutate(
-      ["/fan-wall/creator/", username],
+      ["/fan-wall/creator/", profileUsername],
       async () =>
         await api.createFanWallComment({
           createFanWallCommentRequestDto: {
@@ -77,6 +96,7 @@ const MainContent = ({
       </div>
       <NewsFeedContent
         profile={profile}
+        profileUsername={profileUsername}
         activeTab={activeTab}
         ownsProfile={ownsProfile}
         posts={posts}

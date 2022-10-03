@@ -26,11 +26,8 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import {
-  compactNumberFormatter,
-  ContentService,
-  formatCurrency
-} from "src/helpers"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { useUser } from "src/hooks"
 
@@ -57,17 +54,17 @@ const PostViewModal = dynamic(
 import { PostDropdown } from "./post-dropdown"
 
 interface PostProps {
-  profile: any
   post: PostDto
   ownsProfile: boolean
 }
 
-export const Post = ({ profile, post, ownsProfile }: PostProps) => {
+export const Post = ({ post, ownsProfile }: PostProps) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
-  const [postPinned, setPostPinned] = useState(false)
+  // const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<any>(null)
+  const { user } = useUser()
 
   const getDropdownOptions = [
     {
@@ -93,20 +90,19 @@ export const Post = ({ profile, post, ownsProfile }: PostProps) => {
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
         <PostProfileAvatar
           post={post}
-          profile={profile}
-          postPinned={postPinned}
-          setPostPinned={setPostPinned}
+          // postPinned={postPinned}
+          // setPostPinned={setPostPinned}
           dropdownItems={getDropdownOptions}
         />
         <BlockModal
           isOpen={userBlockModal}
           setOpen={setUserBlockModal}
-          userId={profile.userId}
+          userId={user?.id ?? ""}
         />
         <ReportModal
           isOpen={userReportModal}
           setOpen={setUserReportModal}
-          userId={profile.userId}
+          userId={user?.id ?? ""}
         />
 
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
@@ -134,41 +130,36 @@ export const Post = ({ profile, post, ownsProfile }: PostProps) => {
   )
 }
 
+interface PostProfileAvatarProps {
+  post: PostDto
+  dropdownItems: Array<{
+    text: string
+    onClick: () => void
+  }>
+}
+
 export const PostProfileAvatar = ({
-  profile,
   post,
   dropdownItems = []
-}: any) => {
+}: PostProfileAvatarProps) => {
   const { user } = useUser()
 
   return (
     <>
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center space-x-4">
-          {profile.userId ? (
-            <img
-              className="h-12 w-12 rounded-full object-cover"
-              src={ContentService.profileThumbnail(profile.userId)}
-              alt={profile.fullName}
-            />
-          ) : (
-            <div className="h-12 w-12 rounded-full bg-passes-primary-color">
-              <div className="absolute flex h-12 w-12 items-center justify-center uppercase">
-                {profile.fullName && profile.fullName[0]}
-              </div>
-            </div>
-          )}
+          <ProfileThumbnail userId={post.userId} />
           <div className="space-y-1 font-medium dark:text-white">
             <div className="flex items-center gap-[6px]">
               <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                {profile.fullName}
+                {post.displayName}
               </span>
               <span className="flex items-center">
                 <VerifiedSmall />
               </span>
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              {profile.username}
+              @{post.username}
             </div>
           </div>
         </div>
@@ -176,7 +167,7 @@ export const PostProfileAvatar = ({
           <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
             <TimeAgo
               className="uppercase text-gray-300/60"
-              date={post.createdAt ? post.createdAt : post.date}
+              date={post.createdAt ? post.createdAt : ""} // TODO: post.date}
               minPeriod={30}
             />
           </div>
@@ -483,8 +474,8 @@ export const CommentSection = ({
           <span className="h-7 w-7 animate-spin rounded-[50%] border-4 border-t-4 border-gray-400 border-t-white" />
         </div>
       ) : (
-        comments.map((comment) => (
-          <Comment comment={comment} key={(comment as any).commentId} />
+        comments.map((comment: CommentDto) => (
+          <Comment comment={comment} key={comment.commentId} />
         ))
       )}
 
@@ -518,24 +509,26 @@ export const CommentSection = ({
   )
 }
 
-export const Comment = ({ comment }: any) => {
+export const Comment = ({ comment }: { comment: CommentDto }) => {
   return (
     <div className="relative flex w-full flex-row border-b-[1px] border-b-gray-300/10 py-2">
-      <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full bg-red-300" />
+      <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full bg-red-300">
+        <ProfileThumbnail userId={comment.commenterId} />
+      </div>
       <TimeAgo
         className="absolute right-5 text-[12px] text-gray-300/60"
-        date={comment?.createdAt}
+        date={comment.createdAt}
         live={false}
       />
       <div className="ml-4 flex max-w-[100%] flex-col flex-wrap">
         <Text fontSize={14} className="mb-1 font-bold">
-          {comment?.commenterDisplayName ?? "Fan"}
+          {comment.commenterDisplayName}
         </Text>
         <Text
           fontSize={14}
           className="break-normal break-all text-start font-light"
         >
-          {comment?.text}
+          {comment.text}
         </Text>
       </div>
     </div>

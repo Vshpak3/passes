@@ -1,9 +1,18 @@
-import React, { Fragment, useState } from "react"
+import { PostDto } from "@passes/api-client"
+import { Fragment, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Post } from "./post"
 
-const CreatorContentFeed = ({ posts: existingPosts, ownsProfile }: any) => {
+interface CreatorContentFeedProps {
+  posts: PostDto[]
+  ownsProfile: boolean
+}
+
+const CreatorContentFeed = ({
+  posts: existingPosts,
+  ownsProfile
+}: CreatorContentFeedProps) => {
   // TODO: implement pagination with infinite scroll, and loading state
   const [posts] = useState([...existingPosts])
 
@@ -24,11 +33,6 @@ const CreatorContentFeed = ({ posts: existingPosts, ownsProfile }: any) => {
             <div key={index} className="flex w-full py-3">
               <Post
                 key={`post_${index}`}
-                profile={{
-                  username: post.username,
-                  userId: "",
-                  fullName: post.displayName
-                }}
                 post={post}
                 ownsProfile={ownsProfile}
               />

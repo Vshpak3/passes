@@ -225,7 +225,7 @@ export class UserService {
     const strippedQuery = searchCreatorDto.query.replace(/\W/g, '')
     const likeClause = `%${strippedQuery}%`
     const creators = await this.dbReader<UserEntity>(UserEntity.table)
-      .select('id', 'username', 'display_name as displayName')
+      .select('id', 'username', 'display_name')
       .where(function () {
         return this.whereILike('username', likeClause).orWhereILike(
           'display_name',
@@ -238,7 +238,7 @@ export class UserService {
       })
       .limit(10)
 
-    return new SearchCreatorResponseDto(creators)
+    return new SearchCreatorResponseDto(creators as UserEntity[])
   }
 
   async makeAdult(userId: string): Promise<void> {

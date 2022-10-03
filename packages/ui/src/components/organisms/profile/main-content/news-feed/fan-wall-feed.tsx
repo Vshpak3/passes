@@ -1,13 +1,28 @@
-import { FanWallApi } from "@passes/api-client"
-import React, { useEffect, useState } from "react"
+import {
+  FanWallApi,
+  FanWallCommentDto,
+  GetFanWallResponseDto,
+  PostDto
+} from "@passes/api-client"
+import { FC, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { BlockModal, ReportModal } from "src/components/organisms"
 import { useSWRConfig } from "swr"
 
 import { Comment } from "./comment"
 
-const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
-  const [posts, setPosts] = useState(fanWallPosts.comments)
+interface FanWallFeedProps {
+  fanWallPosts?: GetFanWallResponseDto
+  ownsProfile: boolean
+  profileUsername: string
+}
+
+const FanWallFeed: FC<FanWallFeedProps> = ({
+  fanWallPosts,
+  ownsProfile,
+  profileUsername
+}) => {
+  const [posts, setPosts] = useState(fanWallPosts?.comments ?? [])
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const api = new FanWallApi()
@@ -15,7 +30,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
 
   const deleteComment = async (id: any) => {
     const result = await mutate(
-      ["/fan-wall/creator", profile.username],
+      ["/fan-wall/creator", profileUsername],
       api.deleteFanWallComment({ fanWallCommentId: id }),
       {
         populateCache: () => {
@@ -32,7 +47,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
   }
   const hideComment = async (id: any) => {
     const result = await mutate(
-      ["/fan-wall/creator", profile.username],
+      ["/fan-wall/creator", profileUsername],
       api.hideFanWallComment({ fanWallCommentId: id }),
       {
         populateCache: () => {
@@ -47,7 +62,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
       setPosts(result.comments)
     }
   }
-  const getDropdownOptions = (post: any) => {
+  const getDropdownOptions = (comment: FanWallCommentDto) => {
     return [
       {
         text: "Report",
@@ -57,19 +72,19 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
         text: "Block",
         onClick: () => setUserBlockModal(true)
       },
-      ...(post.commenterId === profile.userId
+      ...(comment.commenterUsername === profileUsername
         ? [
             {
               text: "Delete comment",
-              onClick: () => deleteComment(post.fanWallCommentId)
+              onClick: () => deleteComment(comment.fanWallCommentId)
             }
           ]
         : []),
-      ...(ownsProfile && post.commenterId !== profile.userId
+      ...(ownsProfile && comment.commenterUsername !== profileUsername
         ? [
             {
               text: "Hide comment",
-              onClick: () => hideComment(post.fanWallCommentId)
+              onClick: () => hideComment(comment.fanWallCommentId)
             }
           ]
         : [])
@@ -77,7 +92,7 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
   }
 
   useEffect(() => {
-    if (fanWallPosts.comments) {
+    if (fanWallPosts?.comments) {
       setPosts(fanWallPosts.comments)
     }
   }, [fanWallPosts])
@@ -87,12 +102,12 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
       <BlockModal
         isOpen={userBlockModal}
         setOpen={setUserBlockModal}
-        userId={profile.userId}
+        userId={""} // TODO: fix
       />
       <ReportModal
         isOpen={userReportModal}
         setOpen={setUserReportModal}
-        userId={profile.userId}
+        userId={""} // TODO: fix
       />
       {posts?.length > 0 && (
         <InfiniteScroll
@@ -103,16 +118,19 @@ const FanWallFeed = ({ fanWallPosts, ownsProfile, profile }: any) => {
           }}
           hasMore={false}
         >
-          {posts.map((post: any, index: any) => (
+          {posts.map((comment: FanWallCommentDto, index: number) => (
             <div key={index} className="flex py-3">
               <Comment
                 key={`post_${index}`}
-                profile={{
-                  userId: post.userId,
-                  fullName: post.commenterDisplayName
-                }}
-                post={post}
-                dropdownItems={getDropdownOptions(post)}
+                post={
+                  {
+                    text: comment.text,
+                    userId: comment.commenterId,
+                    displayName: comment.commenterDisplayName,
+                    username: comment.commenterUsername
+                  } as PostDto
+                }
+                dropdownItems={getDropdownOptions(comment)}
               />
             </div>
           ))}

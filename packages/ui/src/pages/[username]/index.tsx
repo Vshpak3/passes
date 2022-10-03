@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import NoProfile from "src/components/organisms/NoProfile"
+import { MainContentProps } from "src/components/organisms/profile/main-content"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
 import ProfileDetails from "src/components/organisms/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"
@@ -14,7 +15,7 @@ const EditProfile = dynamic<any>(
     ssr: false
   }
 )
-const MainContent = dynamic<any>(
+const MainContent = dynamic<MainContentProps>(
   () => import("src/components/organisms/profile/main-content"),
   {
     ssr: false
@@ -31,7 +32,7 @@ const Profile = () => {
     ownsProfile,
     posts,
     profile,
-    username,
+    profileUsername,
     onCloseEditProfile,
     creatorStats,
     isLoading
@@ -49,7 +50,7 @@ const Profile = () => {
           <ProfileDetails
             profile={profile}
             onEditProfile={onEditProfile}
-            username={username}
+            username={profileUsername}
             ownsProfile={ownsProfile}
             creatorStats={creatorStats}
           />
@@ -67,7 +68,7 @@ const Profile = () => {
             ownsProfile={ownsProfile}
             posts={posts}
             fanWallPosts={fanWallPosts}
-            username={username}
+            profileUsername={profileUsername ?? ""}
           />
         )}
       </div>

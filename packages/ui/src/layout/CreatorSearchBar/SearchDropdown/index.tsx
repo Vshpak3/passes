@@ -3,11 +3,11 @@ import { useRouter } from "next/router"
 
 import { EmptyResult, SearchResult } from "./SearchResults"
 
-const SearchDropdown = ({
-  creatorResults
-}: {
+interface SearchDropdownProps {
   creatorResults: CreatorInfoDto[]
-}) => {
+}
+
+const SearchDropdown = ({ creatorResults }: SearchDropdownProps) => {
   const router = useRouter()
 
   const goToProfile = (username: any) => {
@@ -16,13 +16,13 @@ const SearchDropdown = ({
 
   const resultsExist = creatorResults?.length > 0
   const renderResults = resultsExist ? (
-    creatorResults.map((creator: any) => (
+    creatorResults.map((creator: CreatorInfoDto) => (
       <SearchResult
         key={creator.id}
-        onClick={() => goToProfile(creator.username)}
         userId={creator.id}
-        fullName={creator.display_name}
+        displayName={creator?.displayName ?? ""}
         username={creator.username}
+        onClick={() => goToProfile(creator.username)}
       />
     ))
   ) : (

@@ -6,7 +6,7 @@ export interface ProfileUpdate {
   displayName?: string
   description?: string
 
-  profileImage?: File
+  profileThumbnail?: File
   profileBannerImage?: File
 
   discordUsername?: string
@@ -22,7 +22,7 @@ export interface ProfileUpdate {
 
 export async function updateProfile(values: ProfileUpdate): Promise<void> {
   const {
-    profileImage,
+    profileThumbnail,
     profileBannerImage,
     username,
     displayName,
@@ -49,7 +49,9 @@ export async function updateProfile(values: ProfileUpdate): Promise<void> {
 
     isAdult ? await userApi.makeAdult() : undefined,
 
-    profileImage ? contentService.uploadProfileImage(profileImage) : undefined,
+    profileThumbnail
+      ? contentService.uploadprofileThumbnail(profileThumbnail)
+      : undefined,
 
     profileBannerImage
       ? contentService.uploadProfileBanner(profileBannerImage)

@@ -18,7 +18,7 @@ import useUser from "./useUser"
 
 const useCreatorProfile = () => {
   const router = useRouter()
-  const [username, setUsername] = useState<string>()
+  const [profileUsername, setUsername] = useState<string>()
 
   const { user: { username: loggedInUsername } = {}, accessToken } = useUser()
   useEffect(() => {
@@ -38,7 +38,7 @@ const useCreatorProfile = () => {
     try {
       setIsLoading(true)
       const res = await profileApi.findProfile({
-        getProfileRequestDto: { username }
+        getProfileRequestDto: { username: profileUsername }
       })
       setProfile(res)
     } catch (error: any) {
@@ -71,7 +71,7 @@ const useCreatorProfile = () => {
     data: creatorPasses = [],
     isValidating: isLoadingCreatorPasses,
     mutate: mutatePasses
-  } = useSWR(profile ? ["/pass/created/", username] : null, async () => {
+  } = useSWR(profile ? ["/pass/created/", profileUsername] : null, async () => {
     if (profile) {
       const api = new PassApi()
       if (profile) {
@@ -85,27 +85,30 @@ const useCreatorProfile = () => {
   })
 
   const {
-    data: fanWallPosts = [],
+    data: fanWallPosts,
     isValidating: isLoadingFanWallPosts,
     mutate: mutateFanWall
-  } = useSWR(profile ? ["/fan-wall/creator/", username] : null, async () => {
-    const api = new FanWallApi()
-    if (profile) {
-      return await api.getFanWallForCreator({
-        getFanWallRequestDto: { creatorId: profile.userId }
-      })
+  } = useSWR(
+    profile ? ["/fan-wall/creator/", profileUsername] : null,
+    async () => {
+      const api = new FanWallApi()
+      if (profile) {
+        return await api.getFanWallForCreator({
+          getFanWallRequestDto: { creatorId: profile.userId }
+        })
+      }
     }
-  })
+  )
 
   const onEditProfile = () => setEditProfile(true)
 
-  const ownsProfile = loggedInUsername === username
+  const ownsProfile = loggedInUsername === profileUsername
 
   const {
     data: profilePosts = { posts: [] },
     isValidating: isLoadingPosts,
     mutate: mutatePosts
-  } = useSWR(profile ? ["/post/creator/", username] : null, async () => {
+  } = useSWR(profile ? ["/post/creator/", profileUsername] : null, async () => {
     const api = new FeedApi()
     if (profile?.userId) {
       return await api.getFeedForCreator({
@@ -126,11 +129,11 @@ const useCreatorProfile = () => {
   }
 
   useEffect(() => {
-    if (username) {
+    if (profileUsername) {
       getProfile()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username])
+  }, [profileUsername])
 
   useEffect(() => {
     if (profile?.userId) {
@@ -157,7 +160,7 @@ const useCreatorProfile = () => {
     isLoadingCreatorPasses,
     posts: profilePosts.posts,
     profile,
-    username
+    profileUsername
   }
 }
 

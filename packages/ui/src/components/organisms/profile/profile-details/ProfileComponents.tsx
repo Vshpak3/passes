@@ -12,7 +12,7 @@ import {
   CoverButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { compactNumberFormatter } from "src/helpers"
+import { compactNumberFormatter, ContentService } from "src/helpers"
 import { useFollow } from "src/hooks"
 
 export const Verified = ({ isVerified }: any) => (
@@ -42,15 +42,36 @@ export const ProfileStatsMobile = ({ posts, likes }: any) => (
   </div>
 )
 
-export const ProfilePhoto = ({ url }: any) => (
-  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
-    {url?.length > 0 && (
+interface ProfileImageProps {
+  userId: string
+}
+
+export const ProfileImage = ({ userId }: ProfileImageProps) => (
+  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-[#a78df0] bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
+    <img
+      src={ContentService.profileThumbnail(userId)}
+      className="object-cover drop-shadow-profile-photo"
+      alt=""
+      onError={({ currentTarget }) => {
+        currentTarget.onerror = null
+        currentTarget.src = "" // TODO: consider adding default image
+      }}
+    />
+  </div>
+)
+
+export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
+  <div className="align-items flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#a78df0] p-[10px]">
+    <p className="table-cell text-center text-[18px] font-bold no-underline ">
       <img
-        src={url}
-        className="object-cover drop-shadow-profile-photo"
-        alt="profile-image"
+        src={ContentService.profileThumbnail(userId)}
+        alt=""
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null
+          currentTarget.src = "" // TODO: consider adding default image
+        }}
       />
-    )}
+    </p>
   </div>
 )
 
