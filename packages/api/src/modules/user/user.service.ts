@@ -207,6 +207,14 @@ export class UserService {
     return user ? user.id : ''
   }
 
+  async getUsernameFromId(userId: string) {
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select('username')
+      .first()
+    return user ? user.username : ''
+  }
+
   async searchByQuery(
     searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {

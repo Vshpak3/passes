@@ -146,6 +146,18 @@ export class UserController {
   }
 
   @ApiEndpoint({
+    summary: 'Get user id from username',
+    responseStatus: HttpStatus.OK,
+    responseType: String,
+    responseDesc: 'User id retrieved',
+    role: RoleEnum.GENERAL,
+  })
+  @Get('user-id/:userId')
+  async getUsernameFromId(@Param('userId') userId: string): Promise<string> {
+    return await this.userService.getUsernameFromId(userId)
+  }
+
+  @ApiEndpoint({
     summary: 'Get if user uses a password',
     responseStatus: HttpStatus.OK,
     responseType: IsPasswordUserResponseDto,

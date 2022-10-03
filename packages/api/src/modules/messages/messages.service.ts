@@ -651,7 +651,7 @@ export class MessagesService {
     if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
       return undefined
     }
-    if (tipAmount >= creatorSettings.minimum_tip_amount) {
+    if (tipAmount < creatorSettings.minimum_tip_amount) {
       return BlockedReasonEnum.INSUFFICIENT_TIP
     }
     const freeMessages = await this.checkFreeMessages(userId, channelId)
