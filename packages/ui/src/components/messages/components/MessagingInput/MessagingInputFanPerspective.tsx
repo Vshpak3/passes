@@ -338,6 +338,28 @@ const MessagingInputFanPerspective = () => {
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
               minimum $5 tip
             </span>
+            <div
+              className="messaging-input__button w-full !p-0"
+              role="button"
+              aria-roledescription="button"
+            >
+              <button
+                disabled={blockSendMessage}
+                onClick={() => {
+                  submit()
+                }}
+                className={classNames(
+                  blockSendMessage ? " cursor-not-allowed opacity-50" : "",
+                  "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
+                )}
+              >
+                {loading
+                  ? "Sending..."
+                  : tip > 0
+                  ? " Send Message with Tip"
+                  : ` Send Message`}
+              </button>
+            </div>
           </div>
           {channelId && (
             <SendMessageButton

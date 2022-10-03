@@ -10,6 +10,7 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
   'search',
+  'pinned',
 ]) {}
 
 export class GetCreatorPassesRequestDto extends GetPassesRequestDto {

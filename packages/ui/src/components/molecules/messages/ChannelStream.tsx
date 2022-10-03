@@ -159,18 +159,21 @@ export const ChannelStream = ({
       {isLoadingOlderMessages && <div>Loading older messages...</div>}
       {messages.length ? (
         <>
-          {!isCreator && (
+          {!isCreator && freeMessages !== null && (
             <div className="sticky top-0 z-10 w-full">
               <FreeMessagesLeftContainer freeMessages={freeMessages} />
             </div>
           )}
-          {messages.map((message) => (
-            <ChannelMessage
-              message={message}
-              key={message.messageId}
-              isOwnMessage={message.senderId === user?.id}
-            />
-          ))}
+          {channelId &&
+            messages.map((message, index) => (
+              <ChannelMessage
+                key={index}
+                message={message}
+                isOwnMessage={message.senderId === user?.id}
+                lastMessage={index === 0}
+                channelId={channelId}
+              />
+            ))}
         </>
       ) : (
         <div className="flex flex-1 items-center justify-center">
