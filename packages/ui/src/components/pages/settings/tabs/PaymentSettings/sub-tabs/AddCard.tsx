@@ -114,7 +114,7 @@ const AddCard = () => {
       <span className="text-[16px] font-[500] text-[#767676]">Card Info</span>
       <FormInput
         register={register}
-        type="text"
+        type="number"
         name="card-number"
         placeholder="4444 1902 0192 0100"
         errors={errors}
@@ -129,7 +129,7 @@ const AddCard = () => {
             <VisaIcon />
           </div>
         }
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-4 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -140,44 +140,44 @@ const AddCard = () => {
         options={{
           required: { message: "Name is required", value: true }
         }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-4 border-passes-dark-100 bg-transparent"
       />
-      <div className="flex flex-row gap-4">
+      <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <FormInput
             register={register}
-            type="text"
+            type="number"
             name="exp-month"
             placeholder="08"
             errors={errors}
             options={{
               required: { message: "Month is required", value: true },
-              pattern: { message: "must be a month", value: /\d{2}/ }
+              pattern: { message: "Must be a month", value: /\d{2}/ }
             }}
-            className="mt-2 mb-4 w-[61px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[61px] border-passes-dark-100 bg-transparent"
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
           <FormInput
             register={register}
-            type="text"
+            type="number"
             name="exp-year"
             placeholder="2024"
             errors={errors}
             options={{
               required: { message: "Year is required", value: true },
-              pattern: { message: "must be a year", value: /\d{4}/ }
+              pattern: { message: "Must be a year", value: /\d{4}/ }
             }}
-            className="mt-2 mb-4 w-[81px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[81px] border-passes-dark-100 bg-transparent"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="mb-4 flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <FormInput
             register={register}
-            type="text"
+            type="number"
             name="cvv"
             placeholder="080"
             errors={errors}
@@ -185,11 +185,11 @@ const AddCard = () => {
               required: { message: "Card number is required", value: true },
               pattern: { message: "must be card number", value: /\d{3}/ }
             }}
-            className="mt-2 mb-4 w-[71px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[71px] border-passes-dark-100 bg-transparent"
           />
         </div>
       </div>
-      <span className="text-[16px] font-[500]">Billing address</span>
+      <span className="mt-4 text-[16px] font-[500]">Billing address</span>
       <FormInput
         register={register}
         type="text"
@@ -199,7 +199,7 @@ const AddCard = () => {
         options={{
           required: { message: "Address is required", value: true }
         }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-3 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -207,7 +207,7 @@ const AddCard = () => {
         name="address2"
         placeholder="Address 2"
         errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-3 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -215,7 +215,7 @@ const AddCard = () => {
         selectOptions={COUNTRIES}
         name="country"
         errors={errors}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-3 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -226,7 +226,7 @@ const AddCard = () => {
         options={{
           required: { message: "City is required", value: true }
         }}
-        className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+        className="mt-3 border-passes-dark-100 bg-transparent"
       />
       <div className="flex gap-4">
         <FormInput
@@ -243,7 +243,7 @@ const AddCard = () => {
             </div>
           }
           errors={errors}
-          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+          className="mt-3 border-passes-dark-100 bg-transparent"
         />
 
         <FormInput
@@ -255,11 +255,11 @@ const AddCard = () => {
           options={{
             required: { message: "Postal code is required", value: true }
           }}
-          className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+          className="mt-2 border-passes-dark-100 bg-transparent"
         />
       </div>
       <button
-        className="mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
+        className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
         onClick={handleSubmit(onSubmit)}
       >
         <span className="text-[16px] font-[500]">Confirm and Continue</span>

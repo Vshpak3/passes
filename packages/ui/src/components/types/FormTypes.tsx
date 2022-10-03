@@ -5,6 +5,7 @@ export type FormName = string
 export type FormType =
   | "text"
   | "email"
+  | "tel"
   | "phone"
   | "number"
   | "password"

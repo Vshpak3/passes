@@ -110,6 +110,9 @@ const Input = ({
             )}
           />
         )}
+        {errors && errors[name] && (
+          <span className="text-xs text-red-500">{errors[name].message}</span>
+        )}
       </div>
     </>
   )
