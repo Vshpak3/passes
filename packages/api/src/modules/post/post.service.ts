@@ -116,7 +116,7 @@ export class PostService {
           user_id: userId,
           text: createPostDto.text,
           tags: JSON.stringify(createPostDto.tags),
-          price: createPostDto.price,
+          price: createPostDto.price ?? 0,
           expires_at: createPostDto.expiresAt,
           scheduled_at: createPostDto.scheduledAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
