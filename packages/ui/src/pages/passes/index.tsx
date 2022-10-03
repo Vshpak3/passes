@@ -18,7 +18,7 @@ const Passes = () => {
     setPassType,
     passType,
     lifetimePasses
-  } = usePasses(user?.id)
+  } = usePasses(user?.id ?? "")
 
   useEffect(() => {
     setHasMounted(true)

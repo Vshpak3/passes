@@ -95,6 +95,14 @@ export class PostService {
   ): Promise<CreatePostResponseDto> {
     verifyTaggedText(createPostDto.text, createPostDto.tags)
     const postId = v4()
+    if (
+      createPostDto.text.length === 0 &&
+      createPostDto.contentIds.length === 0
+    ) {
+      throw new BadRequestException(
+        'Must provide either text or content in a post',
+      )
+    }
     await this.passService.validatePassIds(userId, createPostDto.passIds)
     await this.contentService.validateContentIds(
       userId,

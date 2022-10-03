@@ -18,6 +18,7 @@ import editorStyles from "src/styles/components/CustomComponentMentionEditor.mod
 
 const MENTION_LIMIT = 5
 
+// TODO: make mentions real!
 const mentions: MentionData[] = [
   {
     name: "Alex Drachnik",

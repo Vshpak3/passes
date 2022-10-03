@@ -11,6 +11,7 @@ import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { usePasses, usePayinMethod } from "src/hooks"
+import useExternalPasses from "src/hooks/useExternalPasses"
 
 interface IBuyPostModal {
   post: PostDto
@@ -23,7 +24,8 @@ const BuyPostModal = ({ post, setOpen, isOpen }: IBuyPostModal) => {
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId
   )
-  const { externalPasses } = usePasses()
+
+  const { externalPasses } = useExternalPasses()
 
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
 

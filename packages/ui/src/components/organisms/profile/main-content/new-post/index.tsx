@@ -9,6 +9,7 @@ import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import { ContentService } from "src/helpers"
@@ -38,8 +39,11 @@ const CustomMentionEditor = dynamic(
 )
 
 const MB = 1048576
-const MAX_FILE_SIZE = 10 * MB
-const MAX_FILES = 9
+const MAX_IMAGE_SIZE = 10 * MB
+const MAX_IMAGE_SIZE_NAME = "10 megabytes"
+const MAX_VIDEO_SIZE = 200 * MB
+const MAX_VIDEO_SIZE_NAME = "200 megabytes"
+export const MAX_IMAGE_COUNT = 4
 
 export const NewPost = ({
   passes = [],
@@ -48,7 +52,8 @@ export const NewPost = ({
   onlyText = false
 }: any) => {
   const [hasMounted, setHasMounted] = useState(false)
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState<Files[]>([])
+  const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState()
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
@@ -107,6 +112,10 @@ export const NewPost = ({
 
   const onSubmit = async () => {
     const values = getValues()
+    if (values.text.length === 0 && files.length === 0) {
+      toast.error("Must add either text or content")
+      return
+    }
     const content = await new ContentService().uploadContent(files)
     setExtended(false)
     createPost({ ...values, contentIds: content.map((c: any) => c.id) })
@@ -115,9 +124,7 @@ export const NewPost = ({
   }
 
   const onFileInputChange = (event: any) => {
-    const files = [...event.target.files]
-    setSelectedMedia(files[0])
-    onMediaChange(files)
+    onMediaChange([...event.target.files])
     event.target.value = ""
   }
 
@@ -149,37 +156,61 @@ export const NewPost = ({
     if (event?.target?.files) {
       return onFileInputChange(event)
     }
-    const files = [...event.target.files]
-
-    onMediaChange(files)
+    onMediaChange([...event.target.files])
     event.target.value = ""
   }
 
-  const onMediaChange = (filesProp: any) => {
-    let maxFileSizeExceeded = false
-    const _files = filesProp.filter((file: any) => {
-      if (!MAX_FILE_SIZE) {
-        return true
-      }
-      if (file.size < MAX_FILE_SIZE) {
-        return true
-      }
-      maxFileSizeExceeded = true
-      return false
-    })
+  const onMediaChange = (fileProps: File[]) => {
+    const _containsVideo = containsVideo
 
-    if (maxFileSizeExceeded) {
-      // TODO: show error message
+    // Validate properties of each file
+    for (const file of fileProps) {
+      const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)
+      if (!type || (type !== "image" && type !== "video")) {
+        toast.error(`Invalid media type ${file.type}`)
+        return
+      }
+
+      if (type === "video") {
+        if (_containsVideo) {
+          toast.error("A post can only contain a single video")
+          return
+        }
+        if (file.size > MAX_VIDEO_SIZE) {
+          toast.error(`Videos cannot be larger than ${MAX_VIDEO_SIZE_NAME}`)
+          return
+        }
+        _containsVideo = true
+      }
+
+      if (type === "image") {
+        if (containsVideo) {
+          toast.error("A post cannot contain both a video and images")
+          return
+        }
+        if (fileProps.length + files.length > MAX_IMAGE_COUNT) {
+          toast.error(`Can only have a maximum of ${MAX_IMAGE_COUNT} images`)
+          return
+        }
+        if (file.size > MAX_IMAGE_SIZE) {
+          toast.error(`Images cannot be larger than ${MAX_IMAGE_SIZE_NAME}`)
+          return
+        }
+      }
     }
 
-    if (files.length + _files.length > MAX_FILES) {
-      return
-    } // TODO: max file limit error message
-    setFiles([...files, ..._files])
+    setSelectedMedia(fileProps[0])
+    setContainsVideo(_containsVideo)
+
+    setFiles([...files, ...fileProps])
   }
 
   const onRemove = (index: any) => {
-    setFiles(files.filter((_, i) => i !== index))
+    const newFiles = files.filter((_, i) => i !== index)
+    setFiles(newFiles)
+    if (newFiles.length === 0) {
+      setContainsVideo(false)
+    }
   }
 
   const onVideoStop = (mediaBlobUrl: any, blobObject: any, isVideo: any) => {
@@ -367,28 +398,30 @@ export const NewPost = ({
                         </div>
                       ))}
                     </div>
-                    <FormInput
-                      register={register}
-                      name="drag-drop"
-                      type="file"
-                      multiple={true}
-                      trigger={
-                        <div className="box-border flex h-[92px] w-[118px] cursor-pointer items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
-                          <PlusIcon />
-                        </div>
-                      }
-                      options={{ onChange: onFileInputChange }}
-                      accept={[
-                        ".png",
-                        ".jpg",
-                        ".jpeg",
-                        ".mp4",
-                        ".mov",
-                        ".qt",
-                        ".mp3"
-                      ]}
-                      errors={errors}
-                    />
+                    {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+                      <FormInput
+                        register={register}
+                        name="drag-drop"
+                        type="file"
+                        multiple={true}
+                        trigger={
+                          <div className="box-border flex h-[92px] w-[118px] cursor-pointer items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
+                            <PlusIcon />
+                          </div>
+                        }
+                        options={{ onChange: onFileInputChange }}
+                        accept={[
+                          ".png",
+                          ".jpg",
+                          ".jpeg",
+                          ".mp4",
+                          ".mov"
+                          // ".qt"
+                          // ".mp3"
+                        ]}
+                        errors={errors}
+                      />
+                    )}
                   </div>
                 </div>
               )}
@@ -432,6 +465,7 @@ export const NewPost = ({
                       <FormInput
                         register={register}
                         type="number"
+                        min="1"
                         name="price"
                         className="w-full rounded-md border-passes-dark-200  bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
                       />
