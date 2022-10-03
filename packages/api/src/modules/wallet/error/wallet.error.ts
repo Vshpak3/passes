@@ -13,3 +13,10 @@ export class WalletNotFoundError extends BadRequestException {
     Object.setPrototypeOf(this, WalletNotFoundError.prototype)
   }
 }
+
+export class IncorrectAddressException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, IncorrectAddressException.prototype)
+  }
+}

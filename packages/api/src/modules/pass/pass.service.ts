@@ -31,6 +31,7 @@ import { PayinEntity } from '../payment/entities/payin.entity'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
+import { PayinMethodEnum } from '../payment/enum/payin-method.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
@@ -38,6 +39,7 @@ import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { S3ContentService } from '../s3content/s3content.service'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
+import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
 import { PASS_NOT_EXIST, PASS_NOT_OWNED_BY_USER } from './constants/errors'
@@ -95,6 +97,61 @@ export class PassService {
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
   ) {}
+
+  async manualPass(
+    userId: string,
+    createPassDto: CreatePassRequestDto,
+  ): Promise<CreatePassResponseDto> {
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select(['email'])
+      .first()
+    if (!user || user.email != 'patrick@passes.com') {
+      throw new InternalServerErrorException(
+        `Unexpected missing user: ${userId}`,
+      )
+    }
+    const duration =
+      createPassDto.duration === undefined &&
+      createPassDto.type === PassTypeEnum.SUBSCRIPTION
+        ? DEFAULT_PASS_DURATION_MS
+        : createPassDto.duration
+    const data = {
+      id: v4(),
+      creator_id: userId,
+      title: createPassDto.title,
+      description: createPassDto.description,
+      type: createPassDto.type,
+      price: createPassDto.price,
+      duration,
+      freetrial: createPassDto.freetrial,
+      messages: createPassDto.messages,
+      total_supply: createPassDto.totalSupply,
+      remaining_supply: createPassDto.totalSupply,
+      chain: createPassDto.chain,
+      symbol: DEFAULT_PASS_SYMBOL,
+    } as PassEntity
+    switch (data.chain) {
+      case ChainEnum.SOL:
+        data.collection_address = (
+          await this.solService.createSolNftCollection(
+            userId,
+            data.id,
+            data.title,
+            'PASS',
+            data.description,
+          )
+        ).passPubKey
+        break
+      case ChainEnum.ETH: // TODO
+      default:
+        throw new UnsupportedChainPassError(
+          `can not create a pass on chain ${data.chain}`,
+        )
+    }
+    await this.dbWriter<PassEntity>(PassEntity.table).insert(data)
+    return new CreatePassResponseDto(data.id)
+  }
 
   async createPass(
     userId: string,
@@ -438,7 +495,11 @@ export class PassService {
       .where({ id: passId })
   }
 
-  async createPassHolder(userId: string, passId: string) {
+  async createPassHolder(
+    userId: string,
+    passId: string,
+    walletAddress?: string,
+  ) {
     const id = v4()
 
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
@@ -455,16 +516,35 @@ export class PassService {
       pass.type === PassTypeEnum.SUBSCRIPTION && pass.duration
         ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
         : undefined
-
-    const userWallet = await this.walletService.getDefaultWallet(
-      userId,
-      pass.chain,
-    )
+    let walletId = ''
+    if (walletAddress) {
+      await this.walletService.createUnauthenticatedWallet(userId, {
+        walletAddress,
+        chain: pass.chain,
+      })
+      walletId =
+        (
+          await this.dbWriter<WalletEntity>(WalletEntity.table)
+            .where({
+              address: walletAddress,
+              chain: pass.chain,
+            })
+            .select('id')
+            .first()
+        )?.id ?? ''
+    } else {
+      const wallet = await this.walletService.getDefaultWallet(
+        userId,
+        pass.chain,
+      )
+      walletId = wallet.walletId
+      walletAddress = wallet.address
+    }
 
     await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert({
       id,
       pass_id: passId,
-      wallet_id: userWallet.walletId,
+      wallet_id: walletId,
       holder_id: userId,
       expires_at: expiresAt,
       messages: pass.messages,
@@ -482,7 +562,7 @@ export class PassService {
             pass.title,
             pass.symbol,
             pass.description,
-            userWallet.address,
+            walletAddress,
             pass.royalties,
           )
         ).mintPubKey
@@ -721,12 +801,11 @@ export class PassService {
   async registerBuyPass(
     userId: string,
     passId: string,
+    walletAddress?: string,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
-    const { amount, target, blocked } = await this.registerBuyPassData(
-      userId,
-      passId,
-    )
+    const { amount, target, blocked, amountEth } =
+      await this.registerBuyPassData(userId, passId)
     if (blocked) {
       throw new InvalidPayinRequestError(blocked)
     }
@@ -769,6 +848,7 @@ export class PassService {
     const callbackInput: CreateNftPassPayinCallbackInput = {
       userId,
       passId,
+      walletAddress,
     }
     if (!payinMethod) {
       payinMethod = await this.payService.getDefaultPayinMethod(userId)
@@ -777,7 +857,8 @@ export class PassService {
     return await this.payService.registerPayin({
       userId,
       target,
-      amount,
+      amount: amount,
+      amountEth: amountEth,
       payinMethod,
       callback:
         pass.type === PassTypeEnum.LIFETIME
@@ -798,7 +879,7 @@ export class PassService {
 
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .where({ id: passId })
-      .select(['price', 'remaining_supply'])
+      .select(['price', 'remaining_supply', 'eth_price'])
       .first()
     if (!pass) {
       throw new PassNotFoundException(`pass ${passId} not found`)
@@ -833,7 +914,12 @@ export class PassService {
       blocked = BlockedReasonEnum.INSUFFICIENT_SUPPLY
     }
 
-    return { amount: pass.price, target, blocked }
+    return {
+      amount: pass.price,
+      target,
+      blocked,
+      amountEth: pass.eth_price ?? undefined,
+    }
   }
 
   /**

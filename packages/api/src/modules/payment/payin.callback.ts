@@ -167,6 +167,7 @@ async function createNftPassSuccessCallback(
   const newPassHolder = await payService.passService.createPassHolder(
     input.userId,
     input.passId,
+    input.walletAddress,
   )
   const payinDto = new PayinDto(payin)
   if (newPassHolder.expiresAt) {

@@ -27,6 +27,12 @@ export interface PayinDataDto {
     amount: number;
     /**
      * 
+     * @type {number}
+     * @memberof PayinDataDto
+     */
+    amountEth?: number;
+    /**
+     * 
      * @type {string}
      * @memberof PayinDataDto
      */
@@ -79,6 +85,7 @@ export function PayinDataDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'amount': json['amount'],
+        'amountEth': !exists(json, 'amountEth') ? undefined : json['amountEth'],
         'target': !exists(json, 'target') ? undefined : json['target'],
         'blocked': !exists(json, 'blocked') ? undefined : json['blocked'],
     };
@@ -94,6 +101,7 @@ export function PayinDataDtoToJSON(value?: PayinDataDto | null): any {
     return {
         
         'amount': value.amount,
+        'amountEth': value.amountEth,
         'target': value.target,
         'blocked': value.blocked,
     };

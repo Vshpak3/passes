@@ -14,6 +14,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
+import { validateEthAddress, validateSolAddress } from '../../util/wallet.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
@@ -27,6 +28,7 @@ import { DefaultWalletEntity } from './entities/default-wallet.entity'
 import { WalletEntity } from './entities/wallet.entity'
 import { ChainEnum } from './enum/chain.enum'
 import {
+  IncorrectAddressException,
   UnsupportedDefaultWalletError,
   WalletNotFoundError,
 } from './error/wallet.error'
@@ -235,6 +237,7 @@ export class WalletService {
       )
     }
   }
+
   async authMessage(
     userId: string,
     authWalletRequestDto: AuthWalletRequestDto,
@@ -357,12 +360,31 @@ export class WalletService {
       createUnauthenticatedWalletDto.walletAddress,
       createUnauthenticatedWalletDto.chain,
     )
-    await this.dbWriter<WalletEntity>(WalletEntity.table).insert({
-      user_id: userId,
-      authenticated: false,
-      address: walletAddress,
-      chain: createUnauthenticatedWalletDto.chain,
-    })
+    if (
+      createUnauthenticatedWalletDto.chain === ChainEnum.SOL &&
+      !validateSolAddress(walletAddress)
+    ) {
+      throw new IncorrectAddressException(
+        `${walletAddress} is not a solana address`,
+      )
+    }
+    if (
+      createUnauthenticatedWalletDto.chain === ChainEnum.ETH &&
+      !validateEthAddress(walletAddress)
+    ) {
+      throw new IncorrectAddressException(
+        `${walletAddress} is not a ethereum address`,
+      )
+    }
+    await this.dbWriter<WalletEntity>(WalletEntity.table)
+      .insert({
+        user_id: userId,
+        authenticated: false,
+        address: walletAddress,
+        chain: createUnauthenticatedWalletDto.chain,
+      })
+      .onConflict(['chain', 'address'])
+      .ignore()
   }
 
   async removeWallet(userId: string, walletId: string): Promise<boolean> {

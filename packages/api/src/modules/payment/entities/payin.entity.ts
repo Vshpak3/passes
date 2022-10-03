@@ -12,6 +12,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { PayinCallbackInput, PayinCallbackOutput } from '../callback.types'
 import {
+  ETH_AMOUNT_TYPE,
   SHA256_LENGTH,
   TRANSACTION_HASH_LENGTH,
   USD_AMOUNT_TYPE,
@@ -47,8 +48,8 @@ export class PayinEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE })
   amount: number
 
-  @Property({ type: types.float })
-  converted_amoun: number | null
+  @Property({ columnType: ETH_AMOUNT_TYPE })
+  amount_eth: number | null
 
   @Enum(() => PayinStatusEnum)
   payin_status: PayinStatusEnum

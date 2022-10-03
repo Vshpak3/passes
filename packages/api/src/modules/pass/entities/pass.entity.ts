@@ -1,7 +1,10 @@
 import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
-import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
+import {
+  ETH_AMOUNT_TYPE,
+  USD_AMOUNT_TYPE,
+} from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
@@ -31,6 +34,9 @@ export class PassEntity extends BaseEntity {
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   price: number
+
+  @Property({ columnType: ETH_AMOUNT_TYPE })
+  eth_price: number | null
 
   @Property({ type: types.bigint })
   duration: number | null

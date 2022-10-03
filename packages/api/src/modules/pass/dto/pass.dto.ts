@@ -41,6 +41,10 @@ export class PassDto {
   price: number
 
   @Min(0)
+  @DtoProperty({ type: 'number', nullable: true })
+  nativePrice: number | null
+
+  @Min(0)
   @DtoProperty({ type: 'number', nullable: true, optional: true })
   duration?: number | null
 

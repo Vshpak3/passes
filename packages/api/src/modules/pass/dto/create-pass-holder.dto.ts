@@ -5,6 +5,9 @@ export class CreatePassHolderRequestDto {
   @DtoProperty({ type: 'uuid' })
   passId: string
 
+  @DtoProperty({ type: 'string' })
+  walletAddress?: string
+
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 }

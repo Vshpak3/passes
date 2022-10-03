@@ -39,6 +39,12 @@ export interface GetExternalPassesRequestDto {
     search?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetExternalPassesRequestDto
+     */
+    pinned?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetExternalPassesRequestDto
      */
@@ -67,6 +73,7 @@ export function GetExternalPassesRequestDtoFromJSONTyped(json: any, ignoreDiscri
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
+        'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
     };
 }
@@ -83,6 +90,7 @@ export function GetExternalPassesRequestDtoToJSON(value?: GetExternalPassesReque
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'search': value.search,
+        'pinned': value.pinned,
         'creatorId': value.creatorId,
     };
 }

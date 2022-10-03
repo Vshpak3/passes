@@ -930,6 +930,7 @@ export class PaymentService {
    * process updates for blockchain payin from users
    * @param transferDto
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async processCircleIncomingTransferUpdate(
     transferDto: CircleTransferDto,
   ): Promise<void> {
@@ -950,7 +951,7 @@ export class PaymentService {
       }
     }
     let query = this.dbWriter<PayinEntity>(PayinEntity.table)
-      .select('id', 'user_id')
+      .select('id', 'user_id', 'amount', 'amount_eth')
       .where({
         address: transferDto.destination.address,
         payin_method: method,
@@ -965,20 +966,43 @@ export class PaymentService {
     await this.dbWriter<PayinEntity>(PayinEntity.table)
       .update({ transaction_hash: transferDto.transactionHash })
       .where({ id: payin.id })
-    switch (transferDto.status) {
-      case CircleAccountStatusEnum.PENDING:
-        await this.dbWriter<PayinEntity>(PayinEntity.table)
-          .update({
-            payin_status: PayinStatusEnum.PENDING,
-          })
-          .where({ id: payin.id })
+
+    let correctAmount = false
+    // allow for 2 units of uncertainity for potential rounding errors
+    switch (method) {
+      case PayinMethodEnum.METAMASK_CIRCLE_USDC:
+      case PayinMethodEnum.PHANTOM_CIRCLE_USDC:
+        if (payin.amount - 0.02 <= parseFloat(transferDto.amount.amount)) {
+          correctAmount = true
+        }
         break
-      case CircleAccountStatusEnum.COMPLETE:
-        await this.completePayin(payin.id, payin.user_id)
+      case PayinMethodEnum.METAMASK_CIRCLE_ETH:
+        if (
+          payin.amount_eth &&
+          payin.amount_eth - 2 <=
+            parseFloat(transferDto.amount.amount) * 10 ** 18
+        ) {
+          correctAmount = true
+        }
         break
-      case CircleAccountStatusEnum.FAILED:
-        await this.failPayin(payin.id, payin.user_id)
-        break
+    }
+
+    if (correctAmount) {
+      switch (transferDto.status) {
+        case CircleAccountStatusEnum.PENDING:
+          await this.dbWriter<PayinEntity>(PayinEntity.table)
+            .update({
+              payin_status: PayinStatusEnum.PENDING,
+            })
+            .where({ id: payin.id })
+          break
+        case CircleAccountStatusEnum.COMPLETE:
+          await this.completePayin(payin.id, payin.user_id)
+          break
+        case CircleAccountStatusEnum.FAILED:
+          await this.failPayin(payin.id, payin.user_id)
+          break
+      }
     }
   }
 
@@ -1446,6 +1470,7 @@ export class PaymentService {
       callback: request.callback,
       callback_input_json: JSON.stringify(request.callbackInputJSON),
       amount: request.amount,
+      amount_eth: request.amountEth,
       target: request.target,
     }
 

@@ -45,6 +45,21 @@ export class PassController {
   constructor(private readonly passService: PassService) {}
 
   @ApiEndpoint({
+    summary: 'patrick  pass',
+    responseStatus: HttpStatus.OK,
+    responseType: CreatePassResponseDto,
+    responseDesc: 'patrick pass',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('patrick')
+  async patrickPass(
+    @Req() req: RequestWithUser,
+    @Body() createPassDto: CreatePassRequestDto,
+  ): Promise<CreatePassResponseDto> {
+    return await this.passService.createPass(req.user.id, createPassDto)
+  }
+
+  @ApiEndpoint({
     summary: 'Creates a pass',
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
@@ -158,6 +173,7 @@ export class PassController {
     return await this.passService.registerBuyPass(
       req.user.id,
       createPassHolderDto.passId,
+      createPassHolderDto.walletAddress,
       createPassHolderDto.payinMethod,
     )
   }

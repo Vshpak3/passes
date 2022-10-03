@@ -9,6 +9,10 @@ export class PayinDataDto {
   @DtoProperty({ type: 'currency' })
   amount: number
 
+  @Min(0)
+  @DtoProperty({ type: 'number', optional: true })
+  amountEth?: number
+
   @Length(1, SHA256_LENGTH)
   @DtoProperty({ type: 'string', optional: true })
   target?: string

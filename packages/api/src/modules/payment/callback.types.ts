@@ -12,6 +12,7 @@ export class MessagePayinCallbackInput extends PayinCallbackInput {
 export class CreateNftPassPayinCallbackInput extends PayinCallbackInput {
   userId: string
   passId: string
+  walletAddress?: string
 }
 
 export class RenewNftPassPayinCallbackInput extends PayinCallbackInput {

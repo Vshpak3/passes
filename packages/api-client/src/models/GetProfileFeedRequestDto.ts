@@ -33,6 +33,12 @@ export interface GetProfileFeedRequestDto {
     lastId?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetProfileFeedRequestDto
+     */
+    pinned?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetProfileFeedRequestDto
      */
@@ -61,6 +67,7 @@ export function GetProfileFeedRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': json['creatorId'],
     };
 }
@@ -76,6 +83,7 @@ export function GetProfileFeedRequestDtoToJSON(value?: GetProfileFeedRequestDto 
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'pinned': value.pinned,
         'creatorId': value.creatorId,
     };
 }

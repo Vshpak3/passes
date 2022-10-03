@@ -41,7 +41,7 @@ import { JsonMetadata } from './json-metadata.interface'
 import {
   getCollectionImageUri,
   getCollectionMetadataUri,
-  getNftImageUri,
+  // getNftImageUri,
   getNftMetadataUri,
 } from './sol.helper'
 
@@ -243,10 +243,10 @@ export class SolService {
     passPubKey: PublicKey,
     contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
-    const imageUrl = getNftImageUri(
+    const imageUrl = getCollectionImageUri(
+      // TODO: change to nft image uri
       this.cloudfrontUrl,
       passId,
-      passHolderId,
       contentType,
     )
 

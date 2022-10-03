@@ -11,6 +11,7 @@ export const CIRCLE_NOTIFICATION_TYPE_LENGTH = 50
 export const CIRCLE_MONEY_AMOUNT_STRING_LENGTH = 13
 export const CIRCLE_CURRENCY_LENGTH = 3
 export const USD_AMOUNT_TYPE = 'decimal(12, 2)'
+export const ETH_AMOUNT_TYPE = 'decimal(50, 0)'
 export const IP_ADDRESS_LENGTH = 39
 export const TRANSACTION_HASH_LENGTH = 88
 export const SHA256_LENGTH = 64

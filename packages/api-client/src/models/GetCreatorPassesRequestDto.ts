@@ -39,6 +39,12 @@ export interface GetCreatorPassesRequestDto {
     search?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetCreatorPassesRequestDto
+     */
+    pinned?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof GetCreatorPassesRequestDto
      */
@@ -68,6 +74,7 @@ export function GetCreatorPassesRequestDtoFromJSONTyped(json: any, ignoreDiscrim
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
+        'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': json['creatorId'],
     };
 }
@@ -84,6 +91,7 @@ export function GetCreatorPassesRequestDtoToJSON(value?: GetCreatorPassesRequest
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'search': value.search,
+        'pinned': value.pinned,
         'creatorId': value.creatorId,
     };
 }

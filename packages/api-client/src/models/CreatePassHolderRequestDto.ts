@@ -34,6 +34,12 @@ export interface CreatePassHolderRequestDto {
     passId: string;
     /**
      * 
+     * @type {string}
+     * @memberof CreatePassHolderRequestDto
+     */
+    walletAddress: string;
+    /**
+     * 
      * @type {PayinMethodDto}
      * @memberof CreatePassHolderRequestDto
      */
@@ -46,6 +52,7 @@ export interface CreatePassHolderRequestDto {
 export function instanceOfCreatePassHolderRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "passId" in value;
+    isInstance = isInstance && "walletAddress" in value;
 
     return isInstance;
 }
@@ -61,6 +68,7 @@ export function CreatePassHolderRequestDtoFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'passId': json['passId'],
+        'walletAddress': json['walletAddress'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
     };
 }
@@ -75,6 +83,7 @@ export function CreatePassHolderRequestDtoToJSON(value?: CreatePassHolderRequest
     return {
         
         'passId': value.passId,
+        'walletAddress': value.walletAddress,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
     };
 }
