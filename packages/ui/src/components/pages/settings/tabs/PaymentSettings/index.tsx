@@ -20,7 +20,14 @@ import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod, useUser } from "src/hooks"
 
-const PaymentSettings = () => {
+interface Props {
+  addCardHandler?: null | (() => void)
+  isEmbedded?: boolean
+}
+const PaymentSettings = ({
+  addCardHandler = null,
+  isEmbedded = false
+}: Props) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const {
     cards,
@@ -48,11 +55,13 @@ const PaymentSettings = () => {
 
   return (
     <>
-      <Tab
-        withBackMobile
-        title="Payment Settings"
-        description="Add and manage payment methods."
-      />
+      {!isEmbedded && (
+        <Tab
+          withBackMobile
+          title="Payment Settings"
+          description="Add and manage payment methods."
+        />
+      )}
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div
           className={classNames(
@@ -174,7 +183,11 @@ const PaymentSettings = () => {
             variant="pink"
             tag="button"
             className="mt-5 mb-6"
-            onClick={() => addOrPopStackHandler(SubTabsEnum.AddCard)}
+            onClick={
+              addCardHandler
+                ? addCardHandler
+                : () => addOrPopStackHandler(SubTabsEnum.AddCard)
+            }
           >
             Add card
           </Button>
