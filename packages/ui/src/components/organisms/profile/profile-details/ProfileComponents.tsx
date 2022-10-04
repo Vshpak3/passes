@@ -54,7 +54,7 @@ export const ProfileImage = ({ userId }: ProfileImageProps) => (
       alt=""
       onError={({ currentTarget }) => {
         currentTarget.onerror = null
-        currentTarget.src = "/img/default-profile-img.png"
+        currentTarget.src = "" // TODO: consider adding default image
       }}
     />
   </div>
@@ -68,7 +68,7 @@ export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
       alt="user profile thumbnail"
       onError={({ currentTarget }) => {
         currentTarget.onerror = null
-        currentTarget.src = "/img/default-profile-img.png"
+        currentTarget.src = "" // TODO: consider adding default image
       }}
     />
   </div>
