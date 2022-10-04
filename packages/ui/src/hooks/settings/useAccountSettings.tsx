@@ -23,10 +23,6 @@ const useAccountSettings = () => {
     return await userApi.setUsername({ updateUsernameRequestDto: { username } })
   }
 
-  const getProfileUrl = () => {
-    return ContentService.profileThumbnail(user?.id ?? "")
-  }
-
   const setProfilePicture = async (picture: File) => {
     return await new ContentService().uploadProfileImage(picture)
   }
@@ -38,10 +34,10 @@ const useAccountSettings = () => {
   }
 
   return {
+    userId: user?.id ?? "",
     setDisplayName,
     setUsername,
     setProfilePicture,
-    getProfileUrl,
     changePassword
   }
 }

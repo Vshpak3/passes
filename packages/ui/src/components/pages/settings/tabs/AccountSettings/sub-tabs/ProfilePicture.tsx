@@ -1,9 +1,10 @@
 import CameraIcon from "public/icons/profile-camera-icon.svg"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import Tab from "src/components/pages/settings/Tab"
+import { ContentService } from "src/helpers"
 import { useAccountSettings } from "src/hooks"
 
 interface IProfileForm {
@@ -11,7 +12,7 @@ interface IProfileForm {
 }
 
 const ProfilePicture = () => {
-  const { setProfilePicture, getProfileUrl } = useAccountSettings()
+  const { setProfilePicture, userId } = useAccountSettings()
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const { register, watch, setValue, handleSubmit } = useForm<IProfileForm>()
 
@@ -52,13 +53,15 @@ const ProfilePicture = () => {
           trigger={
             <div className="relative flex h-[138px] w-[138px] items-center justify-center rounded-full bg-black">
               <CameraIcon className="absolute z-30 cursor-pointer" />
+
+              {/* USE PROFILE IMAGE INSTEAD <ProfileImage userId={userId} /> */}
               <img
                 alt=""
                 className="z-20 h-[138px] w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                 src={
                   profileImage?.length
                     ? URL.createObjectURL(profileImage[0])
-                    : getProfileUrl()
+                    : ContentService.profileThumbnail(userId)
                 }
               />
             </div>

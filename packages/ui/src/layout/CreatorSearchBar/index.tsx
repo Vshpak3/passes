@@ -1,4 +1,5 @@
 import React from "react"
+import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks"
 
 import SearchDropdown from "./SearchDropdown"
@@ -15,14 +16,16 @@ const CreatorSearchBar = () => {
   } = useCreatorSearch()
 
   return (
-    <div ref={searchRef}>
-      <SearchInput
-        onChangeInput={onChangeInput}
-        onSearchFocus={onSearchFocus}
-        searchValue={searchValue}
-      />
-      {resultsVisible && <SearchDropdown creatorResults={creatorResults} />}
-    </div>
+    <AuthWrapper>
+      <div ref={searchRef}>
+        <SearchInput
+          onChangeInput={onChangeInput}
+          onSearchFocus={onSearchFocus}
+          searchValue={searchValue}
+        />
+        {resultsVisible && <SearchDropdown creatorResults={creatorResults} />}
+      </div>
+    </AuthWrapper>
   )
 }
 export default CreatorSearchBar
