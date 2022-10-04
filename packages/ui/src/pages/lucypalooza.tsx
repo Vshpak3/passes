@@ -1,6 +1,7 @@
 import {
   PassApi,
   PassDto,
+  PayinMethodDtoChainEnum,
   PayinMethodDtoMethodEnum,
   UserApi
 } from "@passes/api-client"
@@ -90,19 +91,52 @@ const Home = () => {
         </div>
         <div className="align-center mx-auto my-4 flex w-[250px] justify-center">
           <div className="px-2">
-            <button>
-              <MetamaskIcon /> ETH (native)
-            </button>
+            <Button
+              icon={<MetamaskIcon />}
+              variant="purple-light"
+              tag="button"
+              className="!px-4 !py-2.5"
+              onClick={async () => {
+                await setDefaultPayinMethod({
+                  method: PayinMethodDtoMethodEnum.MetamaskCircleEth,
+                  chain: PayinMethodDtoChainEnum.Eth
+                })
+              }}
+            >
+              Ethereum ETH
+            </Button>
           </div>
           <div className="px-2">
-            <button>
-              <MetamaskIcon /> ETH USDC
-            </button>
+            <Button
+              icon={<MetamaskIcon />}
+              variant="purple-light"
+              tag="button"
+              className="!px-4 !py-2.5"
+              onClick={async () => {
+                await setDefaultPayinMethod({
+                  method: PayinMethodDtoMethodEnum.MetamaskCircleUsdc,
+                  chain: PayinMethodDtoChainEnum.Eth
+                })
+              }}
+            >
+              Ethereum USDC
+            </Button>
           </div>
           <div className="px-2">
-            <button>
-              <PhantomIcon /> SOL USDC
-            </button>
+            <Button
+              icon={<PhantomIcon />}
+              variant="purple-light"
+              tag="button"
+              className="!px-4 !py-2.5"
+              onClick={async () => {
+                await setDefaultPayinMethod({
+                  method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
+                  chain: PayinMethodDtoChainEnum.Sol
+                })
+              }}
+            >
+              Solana USDC
+            </Button>
           </div>
         </div>
 

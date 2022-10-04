@@ -194,7 +194,7 @@ const SettingsWrapper = () => {
   )
 }
 
-export default withPageLayout(SettingsWrapper, { header: false })
+export default withPageLayout(SettingsWrapper, { header: false, sidebar: true })
 
 const renderTab = (tab: TabsEnum) => {
   switch (tab) {
