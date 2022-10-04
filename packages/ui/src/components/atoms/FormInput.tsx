@@ -16,9 +16,9 @@ import {
 } from "src/components/types/FormTypes"
 
 type FormInputProps = {
-  label?: FormLabel
   name: FormName
   type: FormType
+  label?: FormLabel
   placeholder?: FormPlaceholder
   options?: FormOptions
   register?: FormRegister
@@ -38,6 +38,8 @@ type FormInputProps = {
   onFocus?: (event: Event) => void
   value?: string
   mask?: string
+  checked?: boolean
+  iconMargin?: string
 }
 
 const FormInput = ({
@@ -57,6 +59,8 @@ const FormInput = ({
   icon,
   iconAlign,
   tagsFromServer,
+  checked,
+  iconMargin,
   ...rest
 }: FormInputProps) => {
   const input: Partial<{ [key in FormType]: JSX.Element }> = {
@@ -73,6 +77,7 @@ const FormInput = ({
         textPosition={textPosition}
         icon={icon}
         iconAlign={iconAlign}
+        iconMargin={iconMargin}
         {...rest}
       />
     ),
@@ -105,6 +110,21 @@ const FormInput = ({
         textPosition={textPosition}
         icon={icon}
         iconAlign={iconAlign}
+        {...rest}
+      />
+    ),
+    radio: (
+      <Checkbox
+        name={name}
+        type={type}
+        label={label}
+        checked={checked}
+        options={options}
+        className={className}
+        textPosition={textPosition}
+        errors={errors}
+        register={register}
+        labelClassName={labelClassName}
         {...rest}
       />
     ),

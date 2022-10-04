@@ -101,6 +101,12 @@ const DragDropFile = ({
           <p className="self-stretch text-center text-sm font-normal text-[#888689]">
             You may upload 1 video or up to {MAX_IMAGE_COUNT} photos per post
           </p>
+          <p className="self-stretch text-center text-sm font-normal text-[#888689]">
+            If no media is selected,{" "}
+            <span className="text-passes-secondr-pointer cursor-pointer text-sm font-medium">
+              Passes will provide a default art piece.
+            </span>
+          </p>
         </div>
       </div>
     </div>

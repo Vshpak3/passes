@@ -17,6 +17,7 @@ export type FormType =
   | "file"
   | "drag-drop-file"
   | "tags"
+  | "radio"
 export type FormPlaceholder = string
 export type FormOptions = Partial<{
   required: Message | ValidationRule<boolean>

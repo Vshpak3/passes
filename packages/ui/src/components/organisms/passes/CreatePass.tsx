@@ -6,7 +6,9 @@ import {
   CreatePassButton,
   CreatePassHeader,
   PassDescriptionInput,
-  PassNameInput
+  PassFormError,
+  PassNameInput,
+  PassNumberInput
 } from "src/components/atoms"
 import {
   CreatePassOption,
@@ -15,10 +17,19 @@ import {
   PassLifetimeOptions,
   PassRenewal
 } from "src/components/molecules"
+import {
+  PassFreeTrial,
+  PassPrice,
+  PassSupply
+} from "src/components/molecules/passes/CreatePass"
 import ConfirmationDialog from "src/components/organisms/ConfirmationDialog"
 import FormContainer from "src/components/organisms/FormContainer"
 import { useCreatePass } from "src/hooks"
 import { createPassSchema, PassTypeEnum } from "src/hooks/useCreatePass"
+
+interface CreatePassFormProps {
+  passType: string
+}
 
 const CREATE_PASS_URL = "/tools/manage-passes/create"
 
@@ -27,7 +38,7 @@ const SelectPassType = ({ initialCreation = false }) => {
   const createPassTitle = `Create a Pass${
     initialCreation ? " to get started" : ""
   }`
-  const redirectToCreatePass = (type: any) => () =>
+  const redirectToCreatePass = (type: string) => () =>
     router.push(`${CREATE_PASS_URL}?passType=${type}`)
 
   return (
@@ -54,7 +65,7 @@ const SelectPassType = ({ initialCreation = false }) => {
   )
 }
 
-const CreatePassForm = ({ passType }: any) => {
+const CreatePassForm = ({ passType }: CreatePassFormProps) => {
   const {
     errors,
     files,
@@ -69,6 +80,8 @@ const CreatePassForm = ({ passType }: any) => {
     getValues,
     trigger
   } = useCreatePass({ passType })
+  const [massagesValue, setMassagesValue] = useState<string | null>(null)
+  const [supplyValue, setSupplyValue] = useState<string | null>(null)
   const [showCreatePassConfirmationModal, setShowCreatePassConfirmationModal] =
     useState(false)
 
@@ -99,11 +112,44 @@ const CreatePassForm = ({ passType }: any) => {
             register={register}
           />
           <PassDescriptionInput register={register} errors={errors} />
+          <PassPrice register={register} errors={errors} />
+          {isSubscriptionPass && (
+            <PassNumberInput
+              suffix="%"
+              register={register}
+              errors={errors}
+              title="Set royalties % on re-sales"
+              name="royalties"
+              placeholder="0.00"
+              className="pl-[50px]"
+              infoIcon
+            />
+          )}
+          {errors.royalties && (
+            <PassFormError
+              message={(errors.royalties.message as string) || ""}
+            />
+          )}
+          {isSubscriptionPass && (
+            <PassFreeTrial register={register} errors={errors} />
+          )}
           {isLifetimePass && (
             <PassLifetimeOptions register={register} errors={errors} />
           )}
-          <PassDirectMessage register={register} />
-          {isSubscriptionPass && <PassRenewal register={register} />}
+          {isSubscriptionPass && (
+            <PassSupply
+              register={register}
+              errors={errors}
+              setPassValue={setSupplyValue}
+              passValue={supplyValue}
+            />
+          )}
+          <PassDirectMessage
+            register={register}
+            setPassValue={setMassagesValue}
+            passValue={massagesValue}
+          />
+          {isSubscriptionPass && <PassRenewal />}
           <CreatePassButton
             onCreateHandler={() => {
               createPassSchema

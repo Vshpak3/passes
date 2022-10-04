@@ -105,7 +105,7 @@ const SelectPassFilter = ({ setPassType, passType }: ISelectPassFilter) => {
       <div
         role="button"
         onClick={() => setShowOptions(true)}
-        className="flex cursor-pointer space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
+        className="flex w-[220px] cursor-pointer space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
       >
         <span>{selectedValue?.label}</span>
         <ArrowDown />

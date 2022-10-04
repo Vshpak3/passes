@@ -35,6 +35,7 @@ const Checkbox = ({
   errors = {},
   className = "",
   labelClassName = "",
+  checked,
   ...rest
 }: CheckBoxProps) => (
   <div>
@@ -66,7 +67,8 @@ const Checkbox = ({
         <input
           id={`${name}-${type}`}
           name={name}
-          type="checkbox"
+          type={type}
+          checked={checked}
           {...(register && register(name, options))}
           {...rest}
           className={classNames(
