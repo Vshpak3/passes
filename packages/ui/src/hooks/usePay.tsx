@@ -124,7 +124,7 @@ export const usePay = (
       provider,
       paymentApi,
       registerResponse.payinId,
-      registerResponse.amount * 10 ** 18,
+      registerResponse.amount,
       cancelPayinCallback
     )
   }
