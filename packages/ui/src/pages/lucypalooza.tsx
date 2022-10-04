@@ -75,9 +75,8 @@ const Home = () => {
     }
     const paying = payins.payins.filter(
       (payin) =>
-        payin.payinStatus === PayinDtoPayinStatusEnum.Pending ||
-        (payin.payinStatus === PayinDtoPayinStatusEnum.Created &&
-          payin.payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard)
+        payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
+        payin.payinStatus === PayinDtoPayinStatusEnum.Pending
     )
     setIsPaying(paying.length > 0)
     setIsLoading(false)
@@ -127,7 +126,12 @@ const Home = () => {
 
             <BuyPassButton
               passId={passId ?? ""}
-              isDisabled={!defaultPayinMethod || !passId || passId.length == 0}
+              isDisabled={
+                !defaultPayinMethod ||
+                defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
+                !passId ||
+                passId.length == 0
+              }
               onSuccess={function (): void {
                 toast.success("Thank you for your purchase!")
               }}
