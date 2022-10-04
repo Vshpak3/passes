@@ -15,12 +15,7 @@ function classNames(...classes: any[]) {
 
 export const PostDropdown = ({ post, items = [] }: any) => {
   const copyToClipboard = () => {
-    let baseRoute = ""
-    if (typeof window !== "undefined") {
-      baseRoute = window.location.origin
-    }
-    const linkToCopy = baseRoute + "/" + post.username + "/" + post.postId
-    copy(linkToCopy)
+    copy(window.location.origin + "/" + post.username + "/" + post.postId)
 
     toast("Link to post has been copied to clipboard!", {
       position: "bottom-left",

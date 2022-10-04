@@ -13,7 +13,7 @@ import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
-import { useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
@@ -138,10 +138,10 @@ interface PostProfileAvatarProps {
   }>
 }
 
-export const PostProfileAvatar = ({
+export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
   post,
   dropdownItems = []
-}: PostProfileAvatarProps) => {
+}) => {
   const { user } = useUser()
 
   return (
@@ -150,17 +150,20 @@ export const PostProfileAvatar = ({
         <div className="flex items-center space-x-4">
           <ProfileThumbnail userId={post.userId} />
           <div className="space-y-1 font-medium dark:text-white">
-            <div className="flex items-center gap-[6px]">
-              <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                {post.displayName}
-              </span>
-              <span className="flex items-center">
-                <VerifiedSmall />
-              </span>
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              @{post.username}
-            </div>
+            {/* TODO: consider making this not link for non-creator comments */}
+            <a href={`${window.location.origin}/${post.username}`}>
+              <div className="flex items-center gap-[6px]">
+                <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+                  {post.displayName}
+                </span>
+                <span className="flex items-center">
+                  <VerifiedSmall />
+                </span>
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                @{post.username}
+              </div>
+            </a>
           </div>
         </div>
         <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
