@@ -58,7 +58,7 @@ export const NewPost = ({
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  const [hasSchedule, setHasSchedule] = useState(false)
+  const [, setHasSchedule] = useState(false)
   const [hasFundraiser, setHasFundraiser] = useState(false)
   const [hasVideo, setHasVideo] = useState(false)
   const [hasAudio, setHasAudio] = useState(false)
@@ -141,6 +141,12 @@ export const NewPost = ({
   }
 
   const onMediaHeaderChange = (event: any) => {
+    if (new Date(event) !== "Invalid Date") {
+      setValue("scheduledAt", new Date(event), { shouldValidate: true })
+      setHasSchedule(true)
+      return
+    }
+
     if (typeof event !== "string") {
       return onFileInputChange(event)
     }
@@ -148,9 +154,6 @@ export const NewPost = ({
     switch (event) {
       case "Fundraiser":
         setHasFundraiser(true)
-        break
-      case "Schedule":
-        setHasSchedule(true)
         break
       case "Video":
         setHasVideo(true)
@@ -261,11 +264,12 @@ export const NewPost = ({
                   errors={errors}
                   onChange={onMediaHeaderChange}
                   activeMediaHeader={activeMediaHeader}
+                  postTime={getValues()?.scheduledAt}
+                  onRemovePostTime={() => unregister("scheduledAt")}
                   // hasSchedule={hasSchedule}
                   // hasFundraiser={hasFundraiser}
                 />
               )}
-              {hasSchedule && <div>Schedule</div>}
               {hasVideo && (
                 <Dialog
                   open={true}
@@ -448,7 +452,7 @@ export const NewPost = ({
               {isPaid && (
                 <div className="flex w-full flex-col items-start gap-[17px] border-b border-passes-dark-200 p-0 pt-[53px] pb-[56px] ">
                   <span className="text-base font-normal text-passes-secondary-color">
-                    Who’s is this content for?
+                    Who&apos;s is this content for?
                   </span>
                   <div className="flex flex-col items-start gap-[15px]">
                     <span className="text-base font-medium leading-[22px] text-[#FFFFFF] ">
@@ -477,7 +481,6 @@ export const NewPost = ({
                           $
                         </span>
                       </div>
-
                       <FormInput
                         register={register}
                         type="number"

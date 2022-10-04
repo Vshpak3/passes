@@ -1,24 +1,18 @@
 import classNames from "classnames"
-import dynamic from "next/dynamic"
+import ScheduledCalendar from "public/icons/calendar-scheduled-purple-icon.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
-import { useContext } from "react"
 import { FormInput } from "src/components/atoms"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
+import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import {
   FormErrors,
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-import { MainContext } from "src/context/MainContext"
-
-const DateAndTimePicker = dynamic<never>(() =>
-  import("src/components/atoms/DateAndTimePicker").then(
-    (md) => md.DateAndTimePicker
-  )
-)
+import { useCreatePost } from "src/hooks"
 
 const messagesMediaTypes = [
   {
@@ -58,8 +52,8 @@ const mediaTypes = [
   },
   {
     name: "Schedule",
-    Icon: DateAndTimePicker,
-    type: "button"
+    Icon: ScheduledCalendar,
+    type: "schedule"
   }
 ]
 type UploadPostMediaProps = {
@@ -79,55 +73,59 @@ const MediaHeader = ({
   onChange,
   activeMediaHeader
 }: UploadPostMediaProps) => {
-  const { postTime } = useContext(MainContext)
+  const { scheduledPostTime } = useCreatePost()
   let _mediaTypes = []
   if (messages) {
     _mediaTypes = messagesMediaTypes
   } else {
     _mediaTypes = mediaTypes
   }
+
   return (
     <div className="w-full pb-3">
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
         <div className="flex items-center">
           <div className="flex w-full flex-wrap justify-between gap-1">
-            {_mediaTypes.map(({ name, Icon, accept, type, multiple }, index) =>
-              type === "button" ? (
-                <button
-                  key={`${name}-${index}`}
-                  type={type}
-                  className={classNames(
-                    activeMediaHeader === name
-                      ? " bg-[rgba(191,122,240,0.1)] "
-                      : "hover:bg-[rgba(191,122,240,0.1)]",
-                    "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
-                  )}
-                  onClick={() => onChange(name)}
-                >
-                  <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
-                    <Icon className="flex flex-shrink-0" />
-                    <span
-                      className={classNames(
-                        activeMediaHeader === name
-                          ? "block"
-                          : "hidden group-hover:block",
-                        "block"
-                      )}
-                    >
-                      {name}
-                    </span>
-                  </span>
-                </button>
-              ) : (
-                <FormInput
-                  trigger={
+            {_mediaTypes.map(
+              ({ name, Icon, accept, type, multiple }, index) => {
+                if (type === "schedule") {
+                  return (
+                    <CalendarPicker key={`${name}-${index}`} onSave={onChange}>
+                      <span
+                        className={classNames(
+                          activeMediaHeader === name
+                            ? " bg-[rgba(191,122,240,0.1)] "
+                            : "hover:bg-[rgba(191,122,240,0.1)]",
+                          "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
+                        )}
+                      >
+                        <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
+                          <Icon className="flex flex-shrink-0" />
+                          <span
+                            className={classNames(
+                              activeMediaHeader === name
+                                ? "block"
+                                : "hidden group-hover:block",
+                              "block"
+                            )}
+                          >
+                            {name}
+                          </span>
+                        </span>
+                      </span>
+                    </CalendarPicker>
+                  )
+                }
+                if (type === "button") {
+                  return (
                     <button
-                      type="button"
+                      key={`${name}-${index}`}
+                      type={type}
                       className={classNames(
                         activeMediaHeader === name
                           ? " bg-[rgba(191,122,240,0.1)] "
                           : "hover:bg-[rgba(191,122,240,0.1)]",
-                        "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                        "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
                       )}
                       // onClick={() => onChange(name)}
                     >
@@ -145,23 +143,54 @@ const MediaHeader = ({
                         </span>
                       </span>
                     </button>
-                  }
-                  type={type as any}
-                  register={register}
-                  errors={errors}
-                  options={{ ...options, onChange }}
-                  key={`media-header-${name}`}
-                  name={`media-header-${name}`}
-                  accept={accept as any}
-                  multiple={multiple}
-                  className={classNames(
-                    activeMediaHeader === name
-                      ? " bg-[rgba(191,122,240,0.1)] "
-                      : "hover:bg-[rgba(191,122,240,0.1)]",
-                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
-                  )}
-                />
-              )
+                  )
+                } else {
+                  return (
+                    <FormInput
+                      trigger={
+                        <button
+                          type="button"
+                          className={classNames(
+                            activeMediaHeader === name
+                              ? " bg-[rgba(191,122,240,0.1)] "
+                              : "hover:bg-[rgba(191,122,240,0.1)]",
+                            "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                          )}
+                          // onClick={() => onChange(name)}
+                        >
+                          <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
+                            <Icon className="flex flex-shrink-0" />
+                            <span
+                              className={classNames(
+                                activeMediaHeader === name
+                                  ? "block"
+                                  : "hidden group-hover:block",
+                                "block"
+                              )}
+                            >
+                              {name}
+                            </span>
+                          </span>
+                        </button>
+                      }
+                      type={type as any}
+                      register={register}
+                      errors={errors}
+                      options={{ ...options, onChange }}
+                      key={`media-header-${name}`}
+                      name={`media-header-${name}`}
+                      accept={accept as any}
+                      multiple={multiple}
+                      className={classNames(
+                        activeMediaHeader === name
+                          ? " bg-[rgba(191,122,240,0.1)] "
+                          : "hover:bg-[rgba(191,122,240,0.1)]",
+                        "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                      )}
+                    />
+                  )
+                }
+              }
             )}
           </div>
         </div>
@@ -177,7 +206,7 @@ const MediaHeader = ({
           />
         )}
       </div>
-      {postTime && <PostScheduleAlert />}
+      {scheduledPostTime && <PostScheduleAlert />}
     </div>
   )
 }

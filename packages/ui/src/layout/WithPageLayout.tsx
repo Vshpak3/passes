@@ -1,6 +1,5 @@
 import React from "react"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
-import { MainContextProvider } from "src/context/MainContext"
 import { isProd } from "src/helpers/env"
 
 import CreatorSearchBar from "./CreatorSearchBar"
@@ -23,21 +22,19 @@ export const withPageLayout = (
   options = new WithPageLayoutOptions(options)
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
-      <MainContextProvider>
-        {options.sidebar && <Sidebar />}
-        <main className="w-full bg-[#000]">
-          {options.header && (
-            <div className="cover-image h-[300px] pr-10 pt-4">
-              <CreatorSearchBar />
-            </div>
-          )}
-          <div className="flex shrink-0 flex-col">
-            <AuthWrapper isPage skipAuth={!!options.skipAuth}>
-              <Page {...props} ref={ref} />
-            </AuthWrapper>
+      {options.sidebar && <Sidebar />}
+      <main className="w-full bg-[#000]">
+        {options.header && (
+          <div className="cover-image h-[300px] pr-10 pt-4">
+            <CreatorSearchBar />
           </div>
-        </main>
-      </MainContextProvider>
+        )}
+        <div className="flex shrink-0 flex-col">
+          <AuthWrapper isPage skipAuth={!!options.skipAuth}>
+            <Page {...props} ref={ref} />
+          </AuthWrapper>
+        </div>
+      </main>
     </div>
   ))
   WithPageLayout.displayName = `WithPageLayout(${getComponentName(Page)})`

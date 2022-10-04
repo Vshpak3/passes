@@ -1,21 +1,24 @@
+import { format } from "date-fns"
 import { XCircle } from "lucide-react"
-import { useContext } from "react"
-import { MainContext } from "src/context/MainContext"
+import { FC } from "react"
+import { useCreatePost } from "src/hooks"
 
-export const PostScheduleAlert = () => {
-  const { postTime, setPostTime } = useContext(MainContext)
-  const userTime = String(postTime?.$d).substring(0, 24)
+export const PostScheduleAlert: FC<any> = () => {
+  const { scheduledPostTime, setScheduledPostTime } = useCreatePost()
 
   return (
     <div
-      className="flex h-10 items-center justify-between rounded-md p-2.5 text-xs text-white"
+      className="mt-3 flex h-10 items-center justify-between rounded-md p-2.5 text-xs text-white"
       style={{
         backgroundColor: "#C943A8"
       }}
     >
-      <div>Scheduled At {userTime}</div>
+      <div>
+        Scheduled At:{" "}
+        {scheduledPostTime && format(scheduledPostTime, "dd mm, yyyy hh:mm")}
+      </div>
       <div style={{ cursor: "pointer" }}>
-        <div onClick={() => setPostTime(null)}>
+        <div onClick={() => setScheduledPostTime(null)}>
           <XCircle />
         </div>
       </div>

@@ -41,7 +41,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
             <NewPost
               // TODO: passes={profile?.passes}
               createPost={createPost}
-              placeholder="What’s on your mind?"
+              placeholder="What's on your mind?"
             />
           )}
           {posts?.length > 0 && (

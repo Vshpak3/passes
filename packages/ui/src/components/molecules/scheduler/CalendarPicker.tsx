@@ -9,6 +9,7 @@ import moment, { Moment } from "moment"
 import TimePicker from "rc-time-picker"
 import { FC, useCallback, useState } from "react"
 import { DayPicker } from "react-day-picker"
+import { useCreatePost } from "src/hooks"
 
 const css = `
   .rdp {
@@ -119,6 +120,7 @@ const CalendarPicker: FC<{
   const [selectionPartTime, setSelectionPartTime] = useState<string>("AM")
   const [selectionTime, setSelectionTime] = useState<Moment>(moment())
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const { setScheduledPostTime } = useCreatePost()
 
   const handleSelectToday = useCallback(() => {
     setSelectionDate(new Date())
@@ -132,8 +134,19 @@ const CalendarPicker: FC<{
 
   const handleSaveDateAndTime = useCallback(() => {
     onSave(selectionDate, selectionTime)
+    const targetDate = new Date(selectionDate || "")
+    // add hour into current selectionDate
+    targetDate.setHours(
+      targetDate.getHours() + parseInt(selectionTime.format("hh"))
+    )
+    // add min into current selectionDate
+    targetDate.setMinutes(
+      targetDate.getMinutes() + parseInt(selectionTime.format("mm"))
+    )
+    setScheduledPostTime(targetDate)
+    // setScheduledPostTime()
     setAnchorEl(null)
-  }, [onSave, selectionDate, selectionTime])
+  }, [onSave, selectionDate, selectionTime, setScheduledPostTime])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)

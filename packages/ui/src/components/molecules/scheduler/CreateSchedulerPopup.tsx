@@ -6,11 +6,10 @@ import ClockIcon from "public/icons/clock-icon.svg"
 // TODO: temporary comment out, please ignore
 // import FileIcon from "public/icons/file-icon.svg"
 // import MessageTextIcon from "public/icons/message-text-icon.svg"
-import { forwardRef, useCallback, useContext, useState } from "react"
+import { forwardRef, useCallback, useState } from "react"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import { Dialog as NewPostDialog } from "src/components/organisms"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
-import { MainContext } from "src/context/MainContext"
 import { useCreatePost } from "src/hooks"
 interface CreateSchedulerPopupProps {
   onCancel: () => void
@@ -23,17 +22,15 @@ const CreateSchedulerPopup = forwardRef<
   const { onCancel } = props
   const [selectionDate, setSelectionDate] = useState<Date | undefined>()
   const [selectionTime, setSelectionTime] = useState<Moment>()
-  const { postTime, setPostTime } = useContext(MainContext)
   // TODO: temporary comment out, please ignore
   // const [creatingOption, setCreatingOption] = useState("post")
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const { createPost } = useCreatePost()
+  const { createPost, setScheduledPostTime } = useCreatePost()
 
   const handleSaveTime = useCallback(
     (date: Date | undefined, time: Moment) => {
       setSelectionDate(date)
       setSelectionTime(time)
-      // set the post Time to global context like the way components/atoms/DateAndTimePicker.tsx:71 and /hooks/useCreatePost.ts:20 did
       const selectionDate = new Date(date || "")
       // add hour into current selectionDate
       selectionDate.setHours(
@@ -43,11 +40,9 @@ const CreateSchedulerPopup = forwardRef<
       selectionDate.setMinutes(
         selectionDate.getMinutes() + parseInt(time.format("mm"))
       )
-      setPostTime({
-        $d: new Date(selectionDate)
-      })
+      setScheduledPostTime(new Date(selectionDate))
     },
-    [setPostTime]
+    [setScheduledPostTime]
   )
 
   // TODO: temporary comment out, please ignore
@@ -56,7 +51,7 @@ const CreateSchedulerPopup = forwardRef<
   // }, [])
 
   const handleCreatePost = (values: CreatePostRequestDto) => {
-    createPost({ ...values, scheduledAt: postTime })
+    createPost({ ...values })
     setIsNewPostModalOpen(false)
   }
 
