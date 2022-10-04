@@ -46,10 +46,10 @@ const MAX_VIDEO_SIZE_NAME = "200 megabytes"
 export const MAX_IMAGE_COUNT = 4
 
 interface NewPostProps {
-  passes: any
+  passes?: any
   placeholder: any
   createPost: any
-  onlyText: boolean
+  onlyText?: boolean
 }
 
 export const NewPost: FC<NewPostProps> = ({
