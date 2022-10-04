@@ -169,6 +169,9 @@ export const usePay = (
         const toastError = await errorMessage(error)
         toast.error(toastError as string)
       }
+
+      setSubmitting(false)
+      setLoading(false)
       throw error
     } finally {
       setSubmitting(false)

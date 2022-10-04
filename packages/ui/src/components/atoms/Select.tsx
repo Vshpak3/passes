@@ -18,7 +18,7 @@ type SelectProps = {
   options?: FormOptions
   register: FormRegister
   errors?: FormErrors
-  defaultValue?: string
+  defaultValue?: string | { value: string; label: string }
   placeholder?: FormPlaceholder
   selectOptions: FormSelectOptions
   className?: string
