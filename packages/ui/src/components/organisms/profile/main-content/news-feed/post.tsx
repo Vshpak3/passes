@@ -51,7 +51,7 @@ const PostViewModal = dynamic(
   }
 )
 
-import { PostDropdown } from "./post-dropdown"
+import { copyToClipboard, PostDropdown } from "./post-dropdown"
 
 interface PostProps {
   post: PostDto
@@ -366,7 +366,7 @@ export const PostEngagement = ({
             </span>
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
-            <ShareIcon />
+            <ShareIcon onClick={() => copyToClipboard(post)} />
             {ownsProfile && (
               <span className="text-[12px] leading-[15px] text-passes-gray-100">
                 {compactNumberFormatter(post.sharesCount)}
@@ -515,7 +515,7 @@ export const CommentSection = ({
 export const Comment = ({ comment }: { comment: CommentDto }) => {
   return (
     <div className="relative flex w-full flex-row border-b-[1px] border-b-gray-300/10 py-2">
-      <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full bg-red-300">
+      <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full">
         <ProfileThumbnail userId={comment.commenterId} />
       </div>
       <TimeAgo

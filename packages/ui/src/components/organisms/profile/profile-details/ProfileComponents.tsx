@@ -47,28 +47,28 @@ interface ProfileImageProps {
 }
 
 export const ProfileImage = ({ userId }: ProfileImageProps) => (
-  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-[#a78df0] bg-gray-200 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
+  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
     <img
       src={ContentService.profileThumbnail(userId)}
       className="object-cover drop-shadow-profile-photo"
       alt=""
       onError={({ currentTarget }) => {
         currentTarget.onerror = null
-        currentTarget.src = "" // TODO: consider adding default image
+        currentTarget.src = "/img/default-profile-img.svg"
       }}
     />
   </div>
 )
 
 export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
-  <div className="h-[42px] w-[42px] overflow-hidden rounded-full">
+  <div className="h-[42px] w-[42px] overflow-hidden rounded-full bg-gray-900">
     <img
       className="h-full w-full object-cover object-center"
       src={ContentService.profileThumbnail(userId)}
       alt="user profile thumbnail"
       onError={({ currentTarget }) => {
         currentTarget.onerror = null
-        currentTarget.src = "" // TODO: consider adding default image
+        currentTarget.src = "/img/default-profile-img.svg"
       }}
     />
   </div>

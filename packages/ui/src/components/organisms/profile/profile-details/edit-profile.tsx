@@ -127,7 +127,7 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
                     src={
                       profileCoverImage?.length
                         ? URL.createObjectURL(profileCoverImage[0])
-                        : "/img/default-banner-img.png"
+                        : "/img/select-banner-img.png"
                     }
                   />
                 </div>
@@ -150,7 +150,7 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/img/default-profile-img.png"
+                      : "/img/select-profile-img.png"
                   }
                 />
               </div>

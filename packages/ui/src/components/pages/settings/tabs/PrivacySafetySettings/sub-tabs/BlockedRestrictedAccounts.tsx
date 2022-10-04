@@ -27,7 +27,7 @@ const BlockedRestrictedAccounts = () => {
               <span className="h-12 w-12 overflow-hidden rounded-full border-2 border-passes-gray-600">
                 <img
                   className="h-full w-full object-cover object-center"
-                  src="/img/default-profile-img.png"
+                  src="/img/select-profile-img.png"
                   alt="profile"
                 />
               </span>

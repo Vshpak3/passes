@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { Menu, Transition } from "@headlessui/react"
+import { PostDto } from "@passes/api-client"
 import copy from "copy-to-clipboard"
 import ms from "ms"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
@@ -13,21 +14,21 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ")
 }
 
+export const copyToClipboard = (post: PostDto): boolean => {
+  copy(window.location.origin + "/" + post.username + "/" + post.postId)
+
+  toast("Link to post has been copied to clipboard!", {
+    position: "bottom-left",
+    autoClose: AUTO_CLOSE,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined
+  })
+}
+
 export const PostDropdown = ({ post, items = [] }: any) => {
-  const copyToClipboard = () => {
-    copy(window.location.origin + "/" + post.username + "/" + post.postId)
-
-    toast("Link to post has been copied to clipboard!", {
-      position: "bottom-left",
-      autoClose: AUTO_CLOSE,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
-  }
-
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -47,7 +48,7 @@ export const PostDropdown = ({ post, items = [] }: any) => {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            <Menu.Item onClick={copyToClipboard}>
+            <Menu.Item onClick={() => copyToClipboard(post)}>
               {({ active }) => (
                 <span
                   className={classNames(

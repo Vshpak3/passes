@@ -142,7 +142,7 @@ const ViewModal: React.FC<IViewProps> = ({
               <div className="mt-[50px] flex space-x-4">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full">
                   <Image
-                    src="/img/default-profile-img.png"
+                    src="/img/select-profile-img.png"
                     layout="fill"
                     alt="profile"
                     objectFit="cover"
