@@ -31,7 +31,6 @@ import { PayinEntity } from '../payment/entities/payin.entity'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
-import { PayinMethodEnum } from '../payment/enum/payin-method.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
@@ -69,7 +68,6 @@ import {
   UnsupportedChainPassError,
 } from './error/pass.error'
 import { createPassHolderQuery } from './pass.util'
-
 export const DEFAULT_PASS_DURATION_MS = ms('30 days')
 export const DEFAULT_PASS_GRACE_MS = ms('2 days')
 export const DEFAULT_PASS_SYMBOL = 'PASS'
