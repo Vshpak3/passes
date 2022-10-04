@@ -1200,8 +1200,12 @@ export class PaymentService {
   }
 
   EVM_USDC_CHAINIDS = {
-    mainnet: { 1: 'ETH', 137: 'MATIC', 43114: 'AVAX' },
-    testnet: { 5: 'ETH', 80001: 'MATIC', 43113: 'AVAX' },
+    mainnet: { 1: ChainEnum.ETH, 137: ChainEnum.MATIC, 43114: ChainEnum.AVAX },
+    testnet: {
+      5: ChainEnum.ETH,
+      80001: ChainEnum.MATIC,
+      43113: ChainEnum.AVAX,
+    },
   }
 
   EVM_NATIVE_CHAINIDS = {
@@ -1209,7 +1213,12 @@ export class PaymentService {
     testnet: [5],
   }
 
-  VALID_PAYOUT_CHAINS = ['ETH', 'SOL', 'MATIC', 'AVAX']
+  VALID_PAYOUT_CHAINS = [
+    ChainEnum.ETH,
+    ChainEnum.SOL,
+    ChainEnum.MATIC,
+    ChainEnum.AVAX,
+  ]
 
   getBlockchainSelector() {
     return this.configService.get('blockchain.networks') as string

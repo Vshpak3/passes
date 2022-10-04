@@ -32,8 +32,7 @@ const Home = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  const { defaultPayinMethod, getCards, getDefaultPayinMethod } =
-    usePayinMethod()
+  const { defaultPayinMethod, getCards } = usePayinMethod()
 
   useEffect(() => {
     const api = new PassApi()
@@ -83,10 +82,15 @@ const Home = () => {
     setIsLoading(false)
   }, [failedMessage])
 
+  const [count, setCount] = useState(0)
+
   useEffect(() => {
-    const timer = setTimeout(() => getPayinState(), 1e3)
+    const timer = setTimeout(() => {
+      getPayinState()
+      setCount(count + 1)
+    }, 1e3)
     return () => clearTimeout(timer)
-  }, [getPayinState])
+  }, [count, getPayinState])
 
   return (
     <>

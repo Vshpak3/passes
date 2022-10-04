@@ -39,8 +39,26 @@ const PaymentSettings = ({
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId
   )
-  const { register, getValues, setValue } = useForm()
+  const { register, getValues, setValue, watch } = useForm({
+    defaultValues: {
+      metamask:
+        PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+        "." +
+        PayinMethodDtoChainEnum.Eth,
+      phantom: PayinMethodDtoChainEnum.Sol
+    }
+  })
 
+  useEffect(() => {
+    switch (defaultPayinMethod?.method) {
+      case PayinMethodDtoMethodEnum.MetamaskCircleEth:
+      case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
+        setValue(
+          "metamask",
+          defaultPayinMethod?.method + "." + defaultPayinMethod?.chain
+        )
+    }
+  }, [defaultPayinMethod, setValue])
   const { user, loading } = useUser()
   const router = useRouter()
 
@@ -90,14 +108,14 @@ const PaymentSettings = ({
       </div>
     )
   }
-  const defaultPaymentMetamask = () => {
+  const defaultPaymentMetamask = (type: string) => {
     const payInMethodChain = defaultPayinMethod?.chain
     const coin = payInMethodChain ? `(${payInMethodChain})` : ""
     return (
       <div className="mt-3 flex flex-row items-center">
         <MetamaskIcon />
         <span className="mx-3 font-[700]">Metamask Wallet</span>
-        <span>{`USDC ${coin}`}</span>
+        <span>{`${type} ${coin}`}</span>
       </div>
     )
   }
@@ -106,8 +124,10 @@ const PaymentSettings = ({
     const defaultPayment = {
       [PayinMethodDtoMethodEnum.None]: defaultPaymentNone,
       [PayinMethodDtoMethodEnum.PhantomCircleUsdc]: defaultPaymentPhantom(),
-      [PayinMethodDtoMethodEnum.MetamaskCircleEth]: defaultPaymentMetamask(),
-      [PayinMethodDtoMethodEnum.MetamaskCircleUsdc]: defaultPaymentMetamask(),
+      [PayinMethodDtoMethodEnum.MetamaskCircleEth]:
+        defaultPaymentMetamask("ETH"),
+      [PayinMethodDtoMethodEnum.MetamaskCircleUsdc]:
+        defaultPaymentMetamask("USDC"),
       [PayinMethodDtoMethodEnum.CircleCard]: defaultPaymentCard
     }
 
@@ -199,8 +219,8 @@ const PaymentSettings = ({
               className="my-4 w-[25%] border-passes-dark-100 bg-transparent"
             />
           </div>
-          {PayinMethodDtoMethodEnum.MetamaskCircleUsdc ===
-          defaultPayinMethod?.method ? (
+          {watch("metamask") ===
+          defaultPayinMethod?.method + "." + defaultPayinMethod?.chain ? (
             <Button tag="button" variant="gray">
               <span className="text-[14px] font-[700]">Default</span>
             </Button>
@@ -208,8 +228,12 @@ const PaymentSettings = ({
             <Button
               onClick={async () =>
                 await setDefaultPayinMethod({
-                  method: getValues("metamask").split(".")[0],
-                  chain: getValues("metamask").split(".")[1]
+                  method: getValues("metamask").split(
+                    "."
+                  )[0] as PayinMethodDtoMethodEnum,
+                  chain: getValues("metamask").split(
+                    "."
+                  )[1] as PayinMethodDtoChainEnum
                 })
               }
               tag="button"
@@ -251,7 +275,7 @@ const PaymentSettings = ({
               onClick={async () =>
                 await setDefaultPayinMethod({
                   method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
-                  chain: getValues("phantom")
+                  chain: getValues("phantom") as PayinMethodDtoChainEnum
                 })
               }
               tag="button"
