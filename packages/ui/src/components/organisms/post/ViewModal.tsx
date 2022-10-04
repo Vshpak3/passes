@@ -68,7 +68,7 @@ const ViewModal: React.FC<IViewProps> = ({
               {!postUnlocked && (
                 <div className="absolute top-[67px] left-4 h-[68vh] w-[80%] [filter:blur(15px)] md:left-16 lg:left-20 xl:left-[113px]">
                   <Image
-                    src={showcaseImg || "/pages/profile/post.png"}
+                    src={showcaseImg || "/img/profile/post.png"}
                     layout="fill"
                     alt="post"
                     objectFit="cover"
@@ -81,7 +81,7 @@ const ViewModal: React.FC<IViewProps> = ({
                 <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px]">
                   {postUnlocked && (
                     <Image
-                      src={showcaseImg || "/pages/profile/post.png"}
+                      src={showcaseImg || "/img/profile/post.png"}
                       layout="fill"
                       alt="post"
                       objectFit="cover"

@@ -23,7 +23,7 @@ export const Content = () => {
           )}
         </div> */}
         {/* TODO: improvements with content here here */}
-        <img src="/pages/profile/profile-post-photo.png" alt="" />
+        <img src="/img/profile/profile-post-photo.png" alt="" />
       </div>
     </>
   )

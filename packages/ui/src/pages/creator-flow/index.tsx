@@ -4,7 +4,7 @@ import {
 } from "@passes/api-client"
 import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
-import VerificationLoading from "public/pages/profile/creator-verification-loading.svg"
+import VerificationLoading from "public/img/profile/creator-verification-loading.svg"
 import { useCallback, useEffect, useState } from "react"
 import BulletItem from "src/components/atoms/BulletItem"
 import CreatorSteps from "src/components/molecules/creator-flow/CreatorSteps"
@@ -171,7 +171,7 @@ const CreatorFlow = () => {
                     <div className="flex max-w-full items-center justify-center p-8">
                       <img
                         alt=""
-                        src="/pages/profile/creator-verification-loading.png"
+                        src="/img/profile/creator-verification-loading.png"
                       />
                     </div>
                   </div>
