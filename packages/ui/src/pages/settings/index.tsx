@@ -1,6 +1,8 @@
 import cn from "classnames"
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
+import { useEffect } from "react"
 import Header from "src/components/molecules/performance/Header"
 const AccountSettings = dynamic(
   () => import("src/components/pages/settings/tabs/AccountSettings")
@@ -60,18 +62,20 @@ const NotificationPreferences = dynamic(
     )
 )
 const PaymentSettings = dynamic(
-  () => import("../components/pages/settings/tabs/PaymentSettings/index")
+  () => import("src/components/pages/settings/tabs/PaymentSettings/index")
 )
 const AddBank = dynamic(
   () =>
-    import("../components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank")
+    import("src/components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank")
 )
 const AddCard = dynamic(
   () =>
-    import("../components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard")
+    import(
+      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
+    )
 )
 const WalletSettings = dynamic(
-  () => import("../components/pages/settings/tabs/WalletSettings")
+  () => import("src/components/pages/settings/tabs/WalletSettings")
 )
 const PrivacySafetySettings = dynamic(
   () => import("src/components/pages/settings/tabs/PrivacySafetySettings")
@@ -118,8 +122,15 @@ import {
 import { useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const Settings = () => {
+import { determineTabPath } from "./[...setting]"
+
+export interface SettingsPageProps {
+  defaultTab?: TabsEnum
+}
+
+export const SettingsPage = ({ defaultTab }: SettingsPageProps) => {
   const { user } = useUser()
+  const router = useRouter()
   const {
     activeTab,
     setActiveTab,
@@ -127,6 +138,22 @@ const Settings = () => {
     showSettingsTab,
     setShowSettingsTab
   } = useSettings() as ISettingsContext
+
+  useEffect(() => {
+    if (!defaultTab) {
+      return
+    }
+
+    setActiveTab(defaultTab)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultTab])
+
+  useEffect(() => {
+    const path = determineTabPath(activeTab)
+    router.replace(`/settings/${path}`, undefined, { shallow: true })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab])
 
   return (
     <>
@@ -186,10 +213,10 @@ const Settings = () => {
   )
 }
 
-const SettingsWrapper = () => {
+export const SettingsWrapper = ({ defaultTab }: SettingsPageProps) => {
   return (
     <SettingsProvider>
-      <Settings />
+      <SettingsPage defaultTab={defaultTab} />
     </SettingsProvider>
   )
 }
