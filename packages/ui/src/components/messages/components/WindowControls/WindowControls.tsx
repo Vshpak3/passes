@@ -1,6 +1,11 @@
-import React, { useEffect } from "react"
+import { FC, useEffect } from "react"
 
-const WindowControls = ({ theme, setTheme }: any) => {
+interface WindowControlsProps {
+  theme: any
+  setTheme: any
+}
+
+const WindowControls: FC<WindowControlsProps> = ({ theme, setTheme }) => {
   const darkClick = () => {
     if (theme === "dark") {
       return

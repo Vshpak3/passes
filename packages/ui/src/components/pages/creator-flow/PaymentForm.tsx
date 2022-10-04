@@ -1,7 +1,7 @@
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import Link from "next/link"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import {
@@ -24,7 +24,7 @@ enum BankTypeEnum {
   NON_IBAN
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
+const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
 

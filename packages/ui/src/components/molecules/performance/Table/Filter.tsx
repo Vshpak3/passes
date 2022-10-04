@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import FilterLines from "public/icons/filter-lines.svg"
-import React, { useRef, useState } from "react"
+import React, { FC, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks"
 
 import { Filters } from "./types"
@@ -18,7 +18,7 @@ interface IFilterProps {
   setActiveFilter: (filter: Filters) => void
 }
 
-const Filter: React.FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
+const Filter: FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
   const [showFilterDropDown, setShowFilterDropDown] = useState(false)
 
   const filterEl = useRef(null)

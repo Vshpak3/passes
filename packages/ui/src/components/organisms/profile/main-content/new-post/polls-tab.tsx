@@ -1,12 +1,21 @@
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PollIcon from "public/icons/post-poll-icon.svg"
 import DeleteIconSmall from "public/icons/post-x-icon-small.svg"
-import { useEffect } from "react"
+import { FC, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Card } from "src/components/molecules"
+interface PollsTabProps {
+  control: any
+  register: any
+  onCloseTab: any
+}
 
-export const PollsTab = ({ control, register, onCloseTab }: any) => {
+export const PollsTab: FC<PollsTabProps> = ({
+  control,
+  register,
+  onCloseTab
+}) => {
   const { fields, append, remove } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "pollOptions" // unique name for your Field Array

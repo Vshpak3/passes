@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import AddNewPassIcon from "public/icons/add-new-pass.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React from "react"
+import React, { FC } from "react"
 import { Button } from "src/components/atoms"
 import {
   MyPassTile,
@@ -10,7 +10,15 @@ import {
 } from "src/components/atoms/passes/MyPass"
 import { CreatorPassTiles } from "src/components/organisms"
 
-const MyPassSearchBar = ({ onChange, passSearchTerm }: any) => (
+interface MyPassSearchBarProps {
+  onChange: any
+  passSearchTerm: any
+}
+
+const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
+  onChange,
+  passSearchTerm
+}) => (
   <div className="ml-auto">
     <div className="relative flex items-center">
       <SearchIcon className="pointer-events-none  absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
@@ -28,26 +36,52 @@ const MyPassSearchBar = ({ onChange, passSearchTerm }: any) => (
   </div>
 )
 
-const MyPassSearchHeader = ({
+interface MyPassSearchHeaderProps {
+  onSearchPass: any
+  passSearchTerm: any
+  headerTitle?: string
+}
+
+const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
   onSearchPass,
   passSearchTerm,
   headerTitle = "My Passes"
-}: any) => {
+}) => {
   return (
     <div className="mx-auto mb-[70px] -mt-[180px] flex w-full items-center justify-center px-2 md:px-5 sidebar-collapse:-mt-[150px]">
       <div className="text-[24px] font-bold text-white">{headerTitle}</div>
-      <MyPassSearchBar onChange={onSearchPass} value={passSearchTerm} />
+      <MyPassSearchBar
+        onChange={onSearchPass}
+        passSearchTerm={passSearchTerm}
+      />
     </div>
   )
 }
 
-const MyPassGridContainer = ({ children }: any) => (
+interface MyPassGridContainerProps {
+  children: any
+}
+
+const MyPassGridContainer: FC<MyPassGridContainerProps> = ({ children }) => (
   <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 sidebar-collapse:grid-cols-4">
     {children}
   </div>
 )
 
-const MyPassGrid = ({
+interface MyPassGridProps {
+  activePasses: any
+  expiredPasses: any
+  setPassType: any
+  passType: any
+  creatorPasses?: any[]
+  // modalToggle = null: any
+  onEditPassHandler?: any
+  handleCreateNewPass?: any
+  isCreator?: boolean
+  lifetimePasses?: any[]
+}
+
+const MyPassGrid: FC<MyPassGridProps> = ({
   activePasses,
   expiredPasses,
   setPassType,
@@ -58,7 +92,7 @@ const MyPassGrid = ({
   handleCreateNewPass = {},
   isCreator = false,
   lifetimePasses = []
-}: any) => {
+}) => {
   const SUBSCRIPTION_TYPE = "subscription"
   const renderActivePasses = activePasses?.map((pass: any, index: any) => (
     <MyPassTile key={index} passData={pass} />
@@ -141,7 +175,17 @@ const MyPassGrid = ({
   )
 }
 
-const CreatorPasses = ({ passes, title, alternateBg = false }: any) => {
+interface CreatorPassesProps {
+  passes: any
+  title: any
+  alternateBg?: boolean
+}
+
+const CreatorPasses: FC<CreatorPassesProps> = ({
+  passes,
+  title,
+  alternateBg = false
+}) => {
   const renderPassesGrid = passes?.map((pass: any, index: any) => (
     <CreatorPassTiles key={index} alternateBg={alternateBg} passData={pass} />
   ))

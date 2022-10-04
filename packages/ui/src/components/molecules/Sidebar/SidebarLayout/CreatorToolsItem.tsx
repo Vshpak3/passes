@@ -1,9 +1,17 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
-import React from "react"
+import { FC } from "react"
 
-const CreatorToolsItem = ({ active, openCollapsedAdditionalSidebar }: any) => {
+interface CreatorToolsItemProps {
+  active: any
+  openCollapsedAdditionalSidebar: any
+}
+
+const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
+  active,
+  openCollapsedAdditionalSidebar
+}) => {
   return (
     <Disclosure>
       <Disclosure.Button>

@@ -2,9 +2,19 @@ import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import Link from "next/link"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
-import React, { Fragment } from "react"
+import React, { FC, Fragment } from "react"
 
-function SidebarChildItem({ subItem, isActive, setActive }: any) {
+interface SidebarChildItemProps {
+  subItem: any
+  isActive: any
+  setActive: any
+}
+
+const SidebarChildItem: FC<SidebarChildItemProps> = ({
+  subItem,
+  isActive,
+  setActive
+}) => {
   return (
     <Link
       key={subItem.name}
@@ -26,7 +36,19 @@ function SidebarChildItem({ subItem, isActive, setActive }: any) {
   )
 }
 
-function SidebarDropdown({ active, item, setActive, router }: any) {
+interface SidebarDropdownProps {
+  active: any
+  item: any
+  setActive: any
+  router: any
+}
+
+const SidebarDropdown: FC<SidebarDropdownProps> = ({
+  active,
+  item,
+  setActive,
+  router
+}) => {
   const isItemActive = item.id === active
 
   return (
@@ -99,7 +121,17 @@ function SidebarDropdown({ active, item, setActive, router }: any) {
   )
 }
 
-function SidebarTabletItem({ isActive, item, setActive }: any) {
+interface SidebarTabletItemProps {
+  isActive: any
+  item: any
+  setActive: any
+}
+
+const SidebarTabletItem: FC<SidebarTabletItemProps> = ({
+  isActive,
+  item,
+  setActive
+}) => {
   return (
     <span
       onClick={setActive}
@@ -135,7 +167,17 @@ function SidebarTabletItem({ isActive, item, setActive }: any) {
   )
 }
 
-function SidebarDesktopItem({ isActive, item, setActive }: any) {
+interface SidebarDesktopItemProps {
+  isActive: any
+  item: any
+  setActive: any
+}
+
+const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
+  isActive,
+  item,
+  setActive
+}) => {
   return (
     <span
       onClick={setActive}
@@ -172,7 +214,13 @@ function SidebarDesktopItem({ isActive, item, setActive }: any) {
   )
 }
 
-function SidebarItem({ isActive, item, setActive }: any) {
+interface SidebarItemProps {
+  isActive: any
+  item: any
+  setActive: any
+}
+
+const SidebarItem: FC<SidebarItemProps> = ({ isActive, item, setActive }) => {
   return (
     <Fragment>
       <SidebarTabletItem

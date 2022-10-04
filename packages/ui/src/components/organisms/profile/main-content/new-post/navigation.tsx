@@ -1,7 +1,15 @@
 import classNames from "classnames"
-import React from "react"
+import { FC } from "react"
 
-const NewsFeedNavigation = ({ setActiveTab, activeTab }: any) => {
+interface NewsFeedNavigationProps {
+  setActiveTab: any
+  activeTab: any
+}
+
+const NewsFeedNavigation: FC<NewsFeedNavigationProps> = ({
+  setActiveTab,
+  activeTab
+}) => {
   const navigation = [
     {
       id: "post",

@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip
 } from "chart.js"
-import React from "react"
+import React, { FC } from "react"
 import { Line } from "react-chartjs-2"
 
 ChartJS.register(
@@ -26,7 +26,7 @@ interface IChartProps {
   graphData: CreatorEarningDto[]
 }
 
-const Chart: React.FC<IChartProps> = ({ graphData }) => {
+const Chart: FC<IChartProps> = ({ graphData }) => {
   return (
     <div className="mt-5 w-full lg:mt-[30px]">
       <Line

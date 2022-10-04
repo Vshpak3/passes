@@ -17,10 +17,10 @@ import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
 import { Modal } from "src/components/organisms"
 import AddCard from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
 import { usePayinMethod } from "src/hooks"
+import { withPageLayout } from "src/layout/WithPageLayout"
 const PaymentSettings = dynamic(
   () => import("src/components/pages/settings/tabs/PaymentSettings/index")
 )
-import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Home = () => {
   const [passes, setPasses] = useState<PassDto[]>()

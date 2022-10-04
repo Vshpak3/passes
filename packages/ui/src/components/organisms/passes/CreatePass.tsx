@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
 import SubscriptionImg from "public/icons/subscription-pass.svg"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   CreatePassButton,
   CreatePassHeader,
@@ -72,7 +72,7 @@ const CreatePassForm = ({ passType }: CreatePassFormProps) => {
     fileUploadError,
     isLifetimePass,
     isSubscriptionPass,
-    maximumLimit,
+    // maximumLimit,
     onCreatePass,
     onDragDropChange,
     onRemoveFileUpload,
@@ -106,10 +106,11 @@ const CreatePassForm = ({ passType }: CreatePassFormProps) => {
             errors={errors}
             files={files}
             fileUploadError={fileUploadError}
-            maximumLimit={maximumLimit}
+            // maximumLimit={maximumLimit}
             onDragDropChange={onDragDropChange}
             onRemoveFileUpload={onRemoveFileUpload}
             register={register}
+            isPreview={false}
           />
           <PassDescriptionInput register={register} errors={errors} />
           <PassPrice register={register} errors={errors} />
@@ -117,12 +118,12 @@ const CreatePassForm = ({ passType }: CreatePassFormProps) => {
             <PassNumberInput
               suffix="%"
               register={register}
-              errors={errors}
+              // errors={errors}
               title="Set royalties % on re-sales"
               name="royalties"
               placeholder="0.00"
               className="pl-[50px]"
-              infoIcon
+              // infoIcon
             />
           )}
           {errors.royalties && (

@@ -1,6 +1,10 @@
-import React from "react"
+import { FC } from "react"
 
-export const CloseThreadIcon = ({ closeThread }: any) => (
+interface CloseThreadIconProps {
+  closeThread: any
+}
+
+export const CloseThreadIcon: FC<CloseThreadIconProps> = ({ closeThread }) => (
   <svg
     width="40"
     height="40"

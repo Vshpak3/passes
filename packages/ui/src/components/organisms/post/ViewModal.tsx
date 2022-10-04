@@ -9,7 +9,7 @@ import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import ShareIcon from "public/icons/share-outline.svg"
 import SharePinkIcon from "public/icons/share-outline-pink.svg"
-import React, { useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
@@ -32,12 +32,7 @@ interface IViewProps {
   post: PostDto
 }
 
-const ViewModal: React.FC<IViewProps> = ({
-  isOpen,
-  onClose,
-  post,
-  postUnlocked
-}) => {
+const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
   const { images, video } = contentTypeCounter(post.content)
   const { user } = useUser()
   const { data } = useComments(post.postId)

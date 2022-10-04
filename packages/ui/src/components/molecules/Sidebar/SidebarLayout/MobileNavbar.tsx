@@ -1,8 +1,12 @@
 import { Disclosure } from "@headlessui/react"
 import MenuIcon from "public/icons/sidebar-menu-icon.svg"
-import React from "react"
+import { FC } from "react"
 
-const MobileNavbar = ({ openSidebar }: any) => {
+interface MobileNavbarProps {
+  openSidebar: any
+}
+
+const MobileNavbar: FC<MobileNavbarProps> = ({ openSidebar }) => {
   return (
     <div className="fixed top-0 left-0 z-30 flex h-16 w-full flex-1 items-center justify-between bg-[#252525]/50 backdrop-blur-lg md:hidden">
       <Disclosure>

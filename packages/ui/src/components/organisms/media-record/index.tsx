@@ -1,14 +1,21 @@
 import classNames from "classnames"
-import { useEffect, useRef } from "react"
+import { FC, useEffect, useRef } from "react"
 
 import { useReactMediaRecorder } from "./recorder"
 
-export const RecordView = ({
+interface RecordViewProps {
+  onStop: any
+  onStart: any
+  options: any
+  className: any
+}
+
+export const RecordView: FC<RecordViewProps> = ({
   onStop,
   onStart,
   options = { video: true, askPermissionOnMount: true },
   className = ""
-}: any) => {
+}) => {
   const { status, startRecording, stopRecording, previewStream } =
     useReactMediaRecorder({
       ...options,

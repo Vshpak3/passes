@@ -1,7 +1,11 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon-2.svg"
-import React, { Fragment } from "react"
+import { FC, Fragment } from "react"
 
-const LogoutButton = ({ handleLogout }: any) => {
+interface LogoutButtonProps {
+  handleLogout: any
+}
+
+const LogoutButton: FC<LogoutButtonProps> = ({ handleLogout }) => {
   return (
     <Fragment key={"sidebar-logout"}>
       <span

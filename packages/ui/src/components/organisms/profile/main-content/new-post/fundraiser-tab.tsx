@@ -2,17 +2,24 @@ import classNames from "classnames"
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import FundraiserWhiteIcon from "public/icons/post-fundraiser-white-icon.svg"
-import React, { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
 
-export const NewFundraiserTab = ({
+interface NewFundraiserTab {
+  control: any
+  register: any
+  fundraiserTarget: any
+  onCloseTab: any
+}
+
+export const NewFundraiserTab: FC<NewFundraiserTab> = ({
   control,
   register,
   fundraiserTarget,
   onCloseTab
-}: any) => {
+}) => {
   const { fields, append, remove } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "fundraiserOptions" // unique name for your Field Array

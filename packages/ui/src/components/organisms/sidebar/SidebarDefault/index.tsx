@@ -42,7 +42,7 @@ const SidebarDefault = ({
         key={`sidebar-${item.id}`}
         isActive={item.id === active}
         item={item}
-        onClick={() => setActive(item.id)}
+        setActive={() => setActive(item.id)}
       />
     ) : (
       <SB.SidebarDropdown

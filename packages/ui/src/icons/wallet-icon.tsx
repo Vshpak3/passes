@@ -1,8 +1,17 @@
 // Adapted from: https://icons.modulz.app
 
-import PropTypes from "prop-types"
+import { FC } from "react"
 
-const WalletIcon = ({ width = 15, height = 15, ...restOfProps }) => (
+interface WalletIconProps {
+  width?: number
+  height?: number
+}
+
+const WalletIcon: FC<WalletIconProps> = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}) => (
   <svg
     width={width}
     height={height}
@@ -17,10 +26,5 @@ const WalletIcon = ({ width = 15, height = 15, ...restOfProps }) => (
     />
   </svg>
 )
-
-WalletIcon.propTypes = {
-  height: PropTypes.number,
-  width: PropTypes.number
-}
 
 export default WalletIcon

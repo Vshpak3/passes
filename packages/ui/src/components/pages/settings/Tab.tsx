@@ -1,5 +1,5 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
-import React from "react"
+import React, { FC } from "react"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
 interface ITabProps {
@@ -11,7 +11,7 @@ interface ITabProps {
   TitleBtn?: React.ReactNode
 }
 
-const Tab: React.FC<ITabProps> = ({
+const Tab: FC<ITabProps> = ({
   title,
   description,
   children,

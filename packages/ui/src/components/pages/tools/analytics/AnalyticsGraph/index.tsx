@@ -18,7 +18,7 @@ import {
 } from "chart.js"
 import { uniqueId } from "lodash"
 import ms from "ms"
-import React from "react"
+import React, { FC } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
@@ -41,9 +41,7 @@ interface IEarningsGraph {
   userBalance?: number
 }
 
-const EarningsGraph: React.FC<IEarningsGraph> = ({
-  userBalance
-}: IEarningsGraph) => {
+const EarningsGraph: FC<IEarningsGraph> = ({ userBalance }: IEarningsGraph) => {
   const [activeTab, setActiveTab] = React.useState("total")
   const [dateRange, setDateRange] = React.useState({
     startDate: new Date(),

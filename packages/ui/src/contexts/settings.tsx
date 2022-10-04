@@ -1,6 +1,12 @@
 import { useRouter } from "next/router"
 import path from "path"
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useState
+} from "react"
 import {
   SubTabsEnum,
   subTabToPath,
@@ -22,7 +28,7 @@ export interface ISettingsContext {
 
 const SettingsContext = createContext<Partial<ISettingsContext>>({})
 
-export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
+export const SettingsProvider: FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)

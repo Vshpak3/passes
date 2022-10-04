@@ -1,9 +1,19 @@
-import React from "react"
+import React, { FC } from "react"
 
 // import { useChatContext } from "stream-chat-react"
 import { SkeletonLoader } from "./SkeletonLoader"
 
-const MessagingChannelList = ({ children, error = false, loading }: any) => {
+interface MessagingChannelListProps {
+  children: any
+  error: boolean
+  loading: any
+}
+
+const MessagingChannelList: FC<MessagingChannelListProps> = ({
+  children,
+  error = false,
+  loading
+}) => {
   // const { client, setActiveChannel } = useChatContext()
 
   // const { id, image = streamLogo, name = "Example User" } = client.user || {}
@@ -23,7 +33,11 @@ const MessagingChannelList = ({ children, error = false, loading }: any) => {
   //   }
   // }, [loading, client, children, setActiveChannel])
 
-  const ListHeaderWrapper = ({ children }: any) => {
+  interface ListHeaderWrapperProps {
+    children: any
+  }
+
+  const ListHeaderWrapper: FC<ListHeaderWrapperProps> = ({ children }) => {
     return (
       <div>
         <style>{`

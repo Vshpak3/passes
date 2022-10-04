@@ -1,7 +1,15 @@
-import React from "react"
+import { FC } from "react"
 import { CloseThreadIcon } from "src/components/messages/assets"
 
-const MessagingThreadHeader = ({ closeThread, thread }: any) => {
+interface MessagingThreadHeaderProps {
+  closeThread: any
+  thread: any
+}
+
+const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
+  closeThread,
+  thread
+}) => {
   const getReplyCount = () => {
     if (!thread?.reply_count) {
       return ""

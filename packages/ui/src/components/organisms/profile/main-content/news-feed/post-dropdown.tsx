@@ -1,11 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { Menu, Transition } from "@headlessui/react"
 import { PostDto } from "@passes/api-client"
 import copy from "copy-to-clipboard"
 import ms from "ms"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
-import { Fragment } from "react"
+import { FC, Fragment } from "react"
 import { toast } from "react-toastify"
 
 const AUTO_CLOSE = ms("3 seconds")
@@ -14,7 +12,7 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-export const copyToClipboard = (post: PostDto): boolean => {
+export const copyToClipboard = (post: PostDto) => {
   copy(window.location.origin + "/" + post.username + "/" + post.postId)
 
   toast("Link to post has been copied to clipboard!", {
@@ -28,7 +26,12 @@ export const copyToClipboard = (post: PostDto): boolean => {
   })
 }
 
-export const PostDropdown = ({ post, items = [] }: any) => {
+interface PostDropdownProps {
+  post: any
+  items: any
+}
+
+export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -48,6 +51,8 @@ export const PostDropdown = ({ post, items = [] }: any) => {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <Menu.Item onClick={() => copyToClipboard(post)}>
               {({ active }) => (
                 <span
@@ -61,18 +66,22 @@ export const PostDropdown = ({ post, items = [] }: any) => {
               )}
             </Menu.Item>
             {items.map((item: any, index: any) => (
-              <Menu.Item key={index} onClick={item.onClick}>
-                {({ active }) => (
-                  <span
-                    className={classNames(
-                      active ? "text-passes-primary-color" : "text-[#868487]",
-                      "block cursor-pointer px-4 py-2 text-sm"
-                    )}
-                  >
-                    {item.text}
-                  </span>
-                )}
-              </Menu.Item>
+              <>
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                {/* @ts-ignore */}
+                <Menu.Item key={index} onClick={item.onClick}>
+                  {({ active }) => (
+                    <span
+                      className={classNames(
+                        active ? "text-passes-primary-color" : "text-[#868487]",
+                        "block cursor-pointer px-4 py-2 text-sm"
+                      )}
+                    >
+                      {item.text}
+                    </span>
+                  )}
+                </Menu.Item>
+              </>
             ))}
           </div>
         </Menu.Items>

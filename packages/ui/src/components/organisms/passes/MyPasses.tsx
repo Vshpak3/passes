@@ -1,13 +1,19 @@
 import PlusSquareIcon from "public/icons/plus-square.svg"
-import React from "react"
+import React, { FC } from "react"
 import { Button } from "src/components/atoms"
 import { CreatorPasses } from "src/components/molecules"
 
-const PassesListSection = ({
+interface PassesListSectionProps {
+  onCreatePass: any
+  subscriptionPasses: any
+  lifetimePasses: any
+}
+
+const PassesListSection: FC<PassesListSectionProps> = ({
   onCreatePass,
   subscriptionPasses,
   lifetimePasses
-}: any) => {
+}) => {
   return (
     <div className="col-auto mx-auto mb-[70px] grid w-full justify-center gap-5 px-0 sm:w-[653px] md:w-[653px] lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="align-items -mt-[170px] flex grid grid-cols-2 grid-rows-2 sidebar-collapse:-mt-[150px]">

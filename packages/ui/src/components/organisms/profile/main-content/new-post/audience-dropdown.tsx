@@ -1,15 +1,23 @@
 import AudienceChevronIcon from "public/icons/post-audience-chevron-icon.svg"
 import AudienceIcon from "public/icons/post-audience-icon.svg"
-import React from "react"
+import { FC } from "react"
 import { FormInput } from "src/components/atoms"
 
-export const NewPostDropdown = ({
+interface NewPostDropdownProps {
+  register: any
+  passes: any
+  onChange: any
+  dropdownVisible: any
+  setDropdownVisible: any
+}
+
+export const NewPostDropdown: FC<NewPostDropdownProps> = ({
   register,
   passes,
   onChange,
   dropdownVisible,
   setDropdownVisible
-}: any) => {
+}) => {
   return (
     <div className="relative flex cursor-pointer flex-col gap-4">
       <div

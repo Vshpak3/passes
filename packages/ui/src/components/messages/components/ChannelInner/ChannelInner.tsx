@@ -2,7 +2,7 @@
 // @ts-nocheck
 import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
-import React, { useContext, useState } from "react"
+import React, { FC, useContext, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
 import { GiphyContext } from "src/components/messages/index"
 import {
@@ -274,7 +274,12 @@ export const ChannelInner = (props: any) => {
   )
 }
 
-export const GalleryMedia = ({ media, isCreator }: any) => {
+interface GalleryMediaProps {
+  media
+  isCreator: any
+}
+
+export const GalleryMedia: FC<GalleryMediaProps> = ({ media, isCreator }) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState(false)
 
   return (

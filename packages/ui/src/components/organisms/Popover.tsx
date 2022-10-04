@@ -1,10 +1,20 @@
 import * as RadixPopover from "@radix-ui/react-popover"
 import classNames from "classnames"
-import PropTypes from "prop-types"
+import { FC } from "react"
 import { Text } from "src/components/atoms"
 import Cross from "src/icons/cross"
 
-const Popover = ({
+interface PopoverProps {
+  avoidCollisions: any
+  children: any
+  description: any
+  title: any
+  trigger: any
+  triggerClassName: any
+  popoverClassName: any
+}
+
+const Popover: FC<PopoverProps> = ({
   avoidCollisions = true,
   children,
   description,
@@ -12,7 +22,7 @@ const Popover = ({
   trigger,
   triggerClassName = "",
   popoverClassName = ""
-}: any) => (
+}) => (
   <RadixPopover.Root>
     <RadixPopover.Trigger className={triggerClassName}>
       {trigger}
@@ -49,14 +59,5 @@ const Popover = ({
     </RadixPopover.Content>
   </RadixPopover.Root>
 )
-
-Popover.propTypes = {
-  avoidCollisions: PropTypes.bool,
-  children: PropTypes.node,
-  description: PropTypes.node,
-  title: PropTypes.node,
-  trigger: PropTypes.node,
-  triggerClassName: PropTypes.string
-}
 
 export default Popover

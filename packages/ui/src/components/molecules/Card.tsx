@@ -1,14 +1,14 @@
-import PropTypes from "prop-types"
+import { FC } from "react"
 
-const Card = ({ children, className = "" }: any) => (
+interface CardProps {
+  children: any
+  className?: string
+}
+
+const Card: FC<CardProps> = ({ children, className = "" }) => (
   <div className={"rounded-xl" + (className && ` ${className}`)}>
     {children}
   </div>
 )
-
-Card.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string
-}
 
 export default Card

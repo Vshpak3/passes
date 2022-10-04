@@ -1,13 +1,19 @@
 import { Dialog, Transition } from "@headlessui/react"
-import React, { Fragment } from "react"
+import { FC, Fragment } from "react"
 
 import SidebarMobileHeader from "./SidebarMobileHeader"
 
-const SidebarMobileContainer = ({
+interface SidebarMobileContainerProps {
+  children: any
+  mobileSidebarOpen: any
+  toggleSidebar: any
+}
+
+const SidebarMobileContainer: FC<SidebarMobileContainerProps> = ({
   children,
   mobileSidebarOpen,
   toggleSidebar
-}: any) => {
+}) => {
   return (
     <Transition.Root show={mobileSidebarOpen} as={Fragment}>
       <Dialog

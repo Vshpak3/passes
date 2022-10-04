@@ -201,7 +201,11 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
   )
 }
 
-export const PostTextContent = ({ post }: any) => (
+interface PostTextContentProps {
+  post: any
+}
+
+export const PostTextContent: FC<PostTextContentProps> = ({ post }) => (
   <div className="flex flex-col items-start">
     <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
       {post.caption ? post.caption : post.text}
@@ -290,11 +294,17 @@ export const LockedMedia = ({ postUnlocked, post }: LockedMedia) => {
   )
 }
 
-export const PostEngagement = ({
+interface PostEngagementProps {
+  post: any
+  postUnlocked: boolean
+  ownsProfile: boolean
+}
+
+export const PostEngagement: FC<PostEngagementProps> = ({
   post,
   postUnlocked = false,
   ownsProfile
-}: any) => {
+}) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
   const [numComments, setNumComments] = useState(post.numComments)
@@ -396,11 +406,17 @@ export const PostEngagement = ({
   )
 }
 
-export const CommentSection = ({
+interface CommentSectionProps {
+  postId: string
+  visible: boolean
+  updateEngagement: any
+}
+
+export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
   visible = false,
   updateEngagement
-}: any) => {
+}) => {
   const [isLoadingComments, setLoadingComments] = useState(false)
   const [comments, setComments] = useState<CommentDto[]>([])
   const [isReset, setIsReset] = useState(false)
@@ -540,7 +556,11 @@ export const Comment = ({ comment }: { comment: CommentDto }) => {
 
 // Old fundraising stuff
 
-export const FundraiserMedia = ({ images }: any) => {
+interface FundraiserMediaProps {
+  images: any
+}
+
+export const FundraiserMedia: FC<FundraiserMediaProps> = ({ images }) => {
   const mediaGridLayout = (length: any, index: any) => {
     switch (length) {
       case 1:
@@ -577,7 +597,11 @@ export const FundraiserMedia = ({ images }: any) => {
   )
 }
 
-export const FundraiserTab = ({ post }: any) => {
+interface FundraiserTabProps {
+  post: any
+}
+
+export const FundraiserTab: FC<FundraiserTabProps> = ({ post }) => {
   const [goal] = useState(post?.goal || 100)
   const [amountCollected, setAmountColleted] = useState(
     post?.collectedAmount || 0
@@ -638,7 +662,11 @@ export const FundraiserTab = ({ post }: any) => {
   )
 }
 
-export const ProgressBar = ({ progressPercentage }: any) => {
+interface ProgressBarProps {
+  progressPercentage: any
+}
+
+export const ProgressBar: FC<ProgressBarProps> = ({ progressPercentage }) => {
   return (
     <div className="h-[3px] w-full overflow-hidden rounded-[6px] bg-[#FFFFFF]">
       <div

@@ -1,6 +1,14 @@
+import { FC } from "react"
+
 import ThemeProvider from "./theme-provider"
 
-const Providers = ({ children, Component, pageProps }: any) => {
+interface ProvidersProps {
+  children: any
+  Component: any
+  pageProps: any
+}
+
+const Providers: FC<ProvidersProps> = ({ children, Component, pageProps }) => {
   const providers = [ThemeProvider]
 
   return (

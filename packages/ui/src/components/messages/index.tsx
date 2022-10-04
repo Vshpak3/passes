@@ -4,7 +4,7 @@ import "@stream-io/stream-chat-css/dist/css/index.css"
 
 // import { MessagesApi } from "@passes/api-client/apis"
 import ThreeLines from "public/icons/three-lines-icon.svg"
-import React, { useEffect, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { useChat, useUser } from "src/hooks"
 import { StreamChat } from "stream-chat"
 import { Channel, ChannelList, Chat } from "stream-chat-react"
@@ -27,7 +27,11 @@ import {
 
 export const GiphyContext = React.createContext({})
 
-const MessagesComponent = ({ username }: any) => {
+interface MessagesComponentProps {
+  username
+}
+
+const MessagesComponent: FC<MessagesComponentProps> = ({ username }) => {
   const chatClient = StreamChat.getInstance(
     process.env.NEXT_PUBLIC_STREAM_CHAT_KEY
   )

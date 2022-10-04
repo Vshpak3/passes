@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import FilterLines from "public/icons/filter-lines.svg"
-import React, { useRef, useState } from "react"
+import React, { FC, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks"
 
 export interface Order {
@@ -14,7 +14,7 @@ interface OrderDropDownProps {
   setActiveOrder: (order: Order["id"]) => void
 }
 
-const OrderDropDown: React.FC<OrderDropDownProps> = ({
+const OrderDropDown: FC<OrderDropDownProps> = ({
   orders,
   activeOrder,
   setActiveOrder

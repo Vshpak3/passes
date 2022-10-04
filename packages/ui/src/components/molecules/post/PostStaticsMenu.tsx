@@ -4,14 +4,14 @@ import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import TipsIcon from "public/icons/tips.svg"
-import React, { useRef } from "react"
+import React, { FC, useRef } from "react"
 import { useOnClickOutside } from "src/hooks"
 
 interface IPostStaticsMenu {
   onClose: () => void
 }
 
-const PostStaticsMenu: React.FC<IPostStaticsMenu> = ({ onClose }) => {
+const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
   const menuEl = useRef(null)
 
   useOnClickOutside(menuEl, onClose)

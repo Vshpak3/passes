@@ -1,6 +1,14 @@
-import React from "react"
+import { FC } from "react"
 
-export const ChannelInfoIcon = ({ isEditing, setIsEditing }: any) => (
+interface ChannelInfoIconProps {
+  isEditing: any
+  setIsEditing: any
+}
+
+export const ChannelInfoIcon: FC<ChannelInfoIconProps> = ({
+  isEditing,
+  setIsEditing
+}) => (
   <svg
     width="24"
     height="24"

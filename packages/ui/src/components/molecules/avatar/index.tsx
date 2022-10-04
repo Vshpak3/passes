@@ -1,14 +1,22 @@
 import * as RadixAvatar from "@radix-ui/react-avatar"
-import PropTypes from "prop-types"
+import { FC } from "react"
 import { Text } from "src/components/atoms"
 
-const Avatar = ({
+interface AvatarProps {
+  className: string
+  dragActive: boolean
+  editing: boolean
+  src: any
+  style: any
+}
+
+const Avatar: FC<AvatarProps> = ({
   className = "",
   dragActive = false,
   editing = false,
   src,
   style
-}: any) => (
+}) => (
   <RadixAvatar.Root
     style={style}
     className={
@@ -50,13 +58,5 @@ const Avatar = ({
     </RadixAvatar.Fallback>
   </RadixAvatar.Root>
 )
-
-Avatar.propTypes = {
-  className: PropTypes.string,
-  dragActive: PropTypes.bool,
-  preview: PropTypes.bool,
-  src: PropTypes.string,
-  style: PropTypes.object
-}
 
 export default Avatar

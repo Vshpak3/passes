@@ -1,10 +1,17 @@
 import DragDots from "public/icons/post-draggable-dots.svg"
-import { useRef } from "react"
+import { FC, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 
 import { ItemTypes } from "./item-types"
 
-const Card = ({ id, children, index, moveCard }: any) => {
+interface CardProps {
+  id: any
+  children: any
+  index: any
+  moveCard: any
+}
+
+const Card: FC<CardProps> = ({ id, children, index, moveCard }) => {
   const ref = useRef(null)
   const previewRef = useRef(null)
 

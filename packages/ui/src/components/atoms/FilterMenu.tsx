@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import ms from "ms"
-import React from "react"
+import React, { FC } from "react"
 
 const ONE_DAY = ms("1 day")
 
@@ -13,10 +13,7 @@ const getPrevDate = (days: number) => {
   return new Date(new Date().valueOf() - days * ONE_DAY)
 }
 
-const FilterMenu: React.FC<IFilterMenuProps> = ({
-  className = "",
-  onFilter
-}) => {
+const FilterMenu: FC<IFilterMenuProps> = ({ className = "", onFilter }) => {
   const lastDaysFilterHandler = (days: number) => {
     const startDate = getPrevDate(days)
     const lastDate = new Date()

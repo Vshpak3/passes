@@ -1,6 +1,6 @@
 import { CreatorEarningDto } from "@passes/api-client"
 import MediaPhoto from "public/icons/media-photos.svg"
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { getFormattedDate } from "src/helpers"
 
 import Filter from "./Filter"
@@ -10,7 +10,7 @@ interface ITableProps {
   graphData: CreatorEarningDto[]
 }
 
-const Table: React.FC<ITableProps> = ({ graphData }) => {
+const Table: FC<ITableProps> = ({ graphData }) => {
   const [activeFilter, setActiveFilter] = useState(Filters["most-recent"])
 
   return (

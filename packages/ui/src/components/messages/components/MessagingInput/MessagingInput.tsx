@@ -86,7 +86,7 @@ const MessagingInput = () => {
     // reset()
   }
 
-  const createPost = async ({ contentIds }: any) => {
+  const createPost = async ({ contentIds }) => {
     const api = new PostApi()
     const result = await mutate(
       [`/post/creator/`, user?.username],

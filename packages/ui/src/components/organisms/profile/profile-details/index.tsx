@@ -1,4 +1,5 @@
 import { MessagesApi } from "@passes/api-client/apis"
+import { FC } from "react"
 
 import {
   EditProfileAction,
@@ -8,13 +9,21 @@ import {
   // Verified
 } from "./ProfileComponents"
 
-const ProfileDetailsDesktop = ({
+interface ProfileDetailsDesktopProps {
+  profile: any
+  ownsProfile: any
+  onEditProfile: any
+  username: any
+  creatorStats: any
+}
+
+const ProfileDetailsDesktop: FC<ProfileDetailsDesktopProps> = ({
   profile,
   ownsProfile,
   onEditProfile,
   username,
   creatorStats
-}: any) => {
+}) => {
   const onChat = async () => {
     const api = new MessagesApi()
     await api.getOrCreateChannel({
@@ -49,12 +58,19 @@ const ProfileDetailsDesktop = ({
   )
 }
 
-const ProfileDetailsMobile = ({
+interface ProfileDetailsMobileProps {
+  profile: any
+  username: any
+  ownsProfile: any
+  creatorStats: any
+}
+
+const ProfileDetailsMobile: FC<ProfileDetailsMobileProps> = ({
   profile,
   username,
   ownsProfile,
   creatorStats
-}: any) => {
+}) => {
   // eslint-disable-next-line sonarjs/no-identical-functions
   const onChat = async () => {
     const api = new MessagesApi()
@@ -90,13 +106,21 @@ const ProfileDetailsMobile = ({
   )
 }
 
-const ProfileDetails = ({
+interface ProfileDetailsProps {
+  profile: any
+  onEditProfile: any
+  username: any
+  ownsProfile: any
+  creatorStats: any
+}
+
+const ProfileDetails: FC<ProfileDetailsProps> = ({
   profile,
   onEditProfile,
   username,
   ownsProfile,
   creatorStats
-}: any) => {
+}) => {
   return (
     <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
       <ProfileDetailsDesktop

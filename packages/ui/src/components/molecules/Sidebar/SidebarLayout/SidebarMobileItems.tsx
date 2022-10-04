@@ -1,9 +1,19 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
-import React, { Fragment } from "react"
+import React, { FC, Fragment } from "react"
 
-function SidebarMobileChildItem({ active, subItem, setActive }: any) {
+interface SidebarMobileChildItemProps {
+  active: any
+  subItem: any
+  setActive: any
+}
+
+const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
+  active,
+  subItem,
+  setActive
+}) => {
   const isActive = subItem.id === active
   return (
     <a
@@ -29,7 +39,19 @@ function SidebarMobileChildItem({ active, subItem, setActive }: any) {
   )
 }
 
-function SidebarMobileDropdown({ setActive, item, active, router }: any) {
+interface SidebarMobileDropdownProps {
+  setActive: any
+  item: any
+  active: any
+  router: any
+}
+
+const SidebarMobileDropdown: FC<SidebarMobileDropdownProps> = ({
+  setActive,
+  item,
+  active,
+  router
+}) => {
   return (
     <Disclosure
       as={Fragment}
@@ -91,7 +113,17 @@ function SidebarMobileDropdown({ setActive, item, active, router }: any) {
   )
 }
 
-function SidebarMobileItem({ setActive, item, active }: any) {
+interface SidebarMobileItemProps {
+  setActive: any
+  item: any
+  active: any
+}
+
+const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
+  setActive,
+  item,
+  active
+}) => {
   return (
     <span
       onClick={setActive}

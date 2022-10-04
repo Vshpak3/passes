@@ -1,7 +1,7 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import KeyIcon from "public/icons/key.svg"
 import UserIcon from "public/icons/user.svg"
-import React from "react"
+import React, { FC } from "react"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
@@ -29,7 +29,7 @@ const subTabs = [
   // }
 ]
 
-const AccountSettings: React.FC = () => {
+const AccountSettings: FC = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (

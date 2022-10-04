@@ -1,5 +1,4 @@
-import PropTypes from "prop-types"
-import React from "react"
+import React, { FC } from "react"
 import { Checkbox, File, Input, Select, TextArea } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import { DragDropFile, TagsInput } from "src/components/molecules"
@@ -42,7 +41,7 @@ type FormInputProps = {
   iconMargin?: string
 }
 
-const FormInput = ({
+const FormInput: FC<FormInputProps> = ({
   textPosition,
   label,
   name,
@@ -62,7 +61,7 @@ const FormInput = ({
   checked,
   iconMargin,
   ...rest
-}: FormInputProps) => {
+}) => {
   const input: Partial<{ [key in FormType]: JSX.Element }> = {
     text: (
       <Input
@@ -237,17 +236,6 @@ const FormInput = ({
       )}
     </>
   )
-}
-
-FormInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  register: PropTypes.func.isRequired,
-  control: PropTypes.any,
-  useFieldsArray: PropTypes.any,
-  error: PropTypes.bool,
-  placeholder: PropTypes.string,
-  options: PropTypes.any
 }
 
 export default FormInput

@@ -1,4 +1,5 @@
 import classNames from "classnames"
+import { FC } from "react"
 import { Button, FormInput } from "src/components/atoms"
 
 interface PassFormErrorProps {
@@ -6,13 +7,23 @@ interface PassFormErrorProps {
   className?: string
 }
 
-const PassFormError = ({ message, className = "" }: PassFormErrorProps) => (
+const PassFormError: FC<PassFormErrorProps> = ({ message, className = "" }) => (
   <div className={`text-md font-semibold text-[#ba3333] ${className}`}>
     {message}
   </div>
 )
 
-const PassFormCheckbox = ({ label, name, register }: any) => (
+interface PassFormCheckboxProps {
+  label: any
+  name: any
+  register: any
+}
+
+const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
+  label,
+  name,
+  register
+}) => (
   <div className="my-3 flex items-center ">
     <FormInput
       register={register}
@@ -24,14 +35,23 @@ const PassFormCheckbox = ({ label, name, register }: any) => (
   </div>
 )
 
-const PassNumberInput = ({
+interface PassNumberInputProps {
+  register: any
+  title: any
+  name: any
+  placeholder: any
+  suffix?: any
+  className: any
+}
+
+const PassNumberInput: FC<PassNumberInputProps> = ({
   register,
   title,
   name,
   placeholder = "340",
   suffix,
   className
-}: any) => (
+}) => (
   <div className="my-2 grid w-fit auto-cols-auto grid-flow-col grid-rows-1">
     <div className="align-items flex w-[100px] items-center md:w-[200px]">
       <span className="text-[#ffff]/70">{title}</span>
@@ -58,11 +78,19 @@ const PassNumberInput = ({
   </div>
 )
 
-const PassesSectionTitle = ({ title }: any) => (
+interface PassesSectionTitleProps {
+  title: any
+}
+
+const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
   <span className="mb-2 text-lg font-bold text-[#ffff]/90">{title}</span>
 )
 
-const CreatePassButton = ({ onCreateHandler }: any) => (
+interface CreatePassButtonProps {
+  onCreateHandler: any
+}
+
+const CreatePassButton: FC<CreatePassButtonProps> = ({ onCreateHandler }) => (
   <div className="align-end my-6 flex justify-end md:my-0">
     <Button
       className="w-full border-none !py-4 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white md:w-[195px]"
@@ -75,7 +103,11 @@ const CreatePassButton = ({ onCreateHandler }: any) => (
   </div>
 )
 
-const CreatePassHeader = ({ title }: any) => (
+interface CreatePassHeaderProps {
+  title: any
+}
+
+const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
   <div className="col-span-12 sidebar-collapse:col-span-10">
     <div className="mb-4 grow justify-center text-center text-[20px] font-bold leading-[25px] md:text-[24px]">
       <span className="text-[#ffff]/90">{title}</span>
@@ -83,7 +115,15 @@ const CreatePassHeader = ({ title }: any) => (
   </div>
 )
 
-const PassDescriptionInput = ({ register, errors }: any) => (
+interface PassDescriptionInputProps {
+  register: any
+  errors: any
+}
+
+const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
+  register,
+  errors
+}) => (
   <>
     <PassesSectionTitle title="Add description" />
     <FormInput
@@ -99,7 +139,12 @@ const PassDescriptionInput = ({ register, errors }: any) => (
   </>
 )
 
-const PassNameInput = ({ register, errors }: any) => (
+interface PassNameInputProps {
+  register: any
+  errors: any
+}
+
+const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <FormInput

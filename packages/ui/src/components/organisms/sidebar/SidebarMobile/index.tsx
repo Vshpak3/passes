@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { FC, useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
@@ -13,13 +13,13 @@ interface SidebarMobileProps {
   handleLogout: any
 }
 
-const SidebarMobile = ({
+const SidebarMobile: FC<SidebarMobileProps> = ({
   active,
   navigation,
   setActive,
   router,
   handleLogout
-}: SidebarMobileProps) => {
+}) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
 

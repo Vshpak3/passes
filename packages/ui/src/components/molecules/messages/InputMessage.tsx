@@ -1,13 +1,14 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
-import React, { KeyboardEvent } from "react"
+import { FC, KeyboardEvent } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms"
 
-interface Props {
+interface InputMessageProps {
   channelId?: string
 }
-export const InputMessage = ({ channelId }: Props) => {
+
+export const InputMessage: FC<InputMessageProps> = ({ channelId }) => {
   const {
     register,
     formState: { errors },

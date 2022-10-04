@@ -1,6 +1,6 @@
-import PropTypes from "prop-types"
+import { FC } from "react"
 
-interface IText {
+interface TextProps {
   children: React.ReactNode
   className?: string
   enableMarginBottom?: boolean
@@ -25,14 +25,14 @@ const dynamicTracking = (z: number) => {
   return Number((a + b * Math.pow(Math.E, c * z)).toFixed(3))
 }
 
-const Text = ({
+const Text: FC<TextProps> = ({
   children,
   className = "",
   enableMarginBottom = false,
   fontSize = 15,
   style = {},
   tag = "span"
-}: IText) => {
+}) => {
   const Tag = tag
 
   return (
@@ -52,15 +52,6 @@ const Text = ({
       {children}
     </Tag>
   )
-}
-
-Text.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  enableMarginBottom: PropTypes.bool,
-  fontSize: PropTypes.number,
-  style: PropTypes.object,
-  tag: PropTypes.string
 }
 
 export default Text

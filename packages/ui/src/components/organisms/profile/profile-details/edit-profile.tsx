@@ -6,7 +6,7 @@ import TikTok from "public/icons/profile-tiktok-icon.svg"
 import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
-import React from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
@@ -69,7 +69,18 @@ const socialMediaForm = {
     icon: Youtube
   }
 }
-export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
+
+interface EditProfileProps {
+  profile: any
+  onSubmit: any
+  onCloseEditProfile: any
+}
+
+export const EditProfile: FC<EditProfileProps> = ({
+  profile,
+  onSubmit,
+  onCloseEditProfile
+}) => {
   const { handleSubmit, register, getValues, watch, setValue } = useForm({
     defaultValues: profile
   })

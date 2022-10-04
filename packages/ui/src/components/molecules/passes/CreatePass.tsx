@@ -2,7 +2,7 @@ import { RadioGroup } from "@headlessui/react"
 import HashtagIcon from "public/icons/hashtag-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
-import React from "react"
+import React, { FC } from "react"
 import {
   DeepMap,
   FieldError,
@@ -44,11 +44,11 @@ interface PassFileProps {
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 
-const PassDirectMessage = ({
+const PassDirectMessage: FC<PassProps> = ({
   register,
   setPassValue,
   passValue
-}: PassProps) => (
+}) => (
   <>
     <hr className="border-passes-dark-200" />
     <div className="mb-2">
@@ -150,16 +150,25 @@ const PassFilePreview = ({ files, onRemove }: PassFilesProps) => {
   )
 }
 
-const PassFileUpload = ({
+interface PassFileUploadProps {
+  errors: any
+  fileUploadError: any
+  files: any
+  onDragDropChange: any
+  onRemoveFileUpload: any
+  register: any
+  isPreview: any
+}
+
+const PassFileUpload: FC<PassFileUploadProps> = ({
   errors,
   fileUploadError,
   files,
-  // maximumLimit = 1,
   onDragDropChange,
   onRemoveFileUpload,
   register,
   isPreview
-}: any) => {
+}) => {
   return (
     <div className="overflow-y-full h-full w-full items-center pb-2">
       <div className="mb-3">
@@ -204,12 +213,12 @@ const PassLifetimeOptions = ({ register, errors }: PassProps) => {
         <PassNumberInput
           suffix="%"
           register={register}
-          errors={errors}
+          // errors={errors}
           title="Set royalties % on re-sales"
           name="royalties"
           placeholder="0.00"
           className="pl-[50px]"
-          infoIcon
+          // infoIcon
         />
         <PassNumberInput
           register={register}
@@ -273,7 +282,11 @@ const PassPrice = ({ register, errors }: PassProps) => {
 const PassFreeTrial = ({ register, errors }: PassProps) => {
   return (
     <div className="align-items flex w-fit items-center justify-start">
-      <PassFormCheckbox name="free-dm-month-checkbox" register={register} />
+      <PassFormCheckbox
+        label=""
+        name="free-dm-month-checkbox"
+        register={register}
+      />
       <span className="w-[250px] text-lg font-bold text-[#ffff]/90 md:text-[15px] md:font-semibold ">
         Add free trial for first month
       </span>
@@ -337,13 +350,21 @@ const PassSupply = ({
   )
 }
 
-const CreatePassOption = ({
+interface CreatePassOptionProps {
+  icon: any
+  title: any
+  subtitle: any
+  onGetStarted: any
+  colStyle: any
+}
+
+const CreatePassOption: FC<CreatePassOptionProps> = ({
   icon,
   title,
   subtitle,
   onGetStarted,
   colStyle
-}: any) => {
+}) => {
   return (
     <div className={`col-span-12 space-y-6 ${colStyle} lg:max-w-[280px]`}>
       <FormContainer>

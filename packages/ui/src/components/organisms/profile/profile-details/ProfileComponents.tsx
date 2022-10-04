@@ -6,6 +6,7 @@ import TikTok from "public/icons/profile-tiktok-icon.svg"
 import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
+import { FC } from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import {
   ButtonTypeEnum,
@@ -15,7 +16,11 @@ import {
 import { compactNumberFormatter, ContentService } from "src/helpers"
 import { useFollow } from "src/hooks"
 
-export const Verified = ({ isVerified }: any) => (
+interface VerifiedProps {
+  isVerified: any
+}
+
+export const Verified: FC<VerifiedProps> = ({ isVerified }) => (
   <div className="align-items flex items-center justify-self-start p-4 text-passes-gray-100">
     <span className="text-[12px] font-semibold md:pl-2 md:text-sm">
       {isVerified ? "Verified" : "Not Verified"}
@@ -23,7 +28,15 @@ export const Verified = ({ isVerified }: any) => (
   </div>
 )
 
-const ProfileStatItemMobile = ({ stat, label }: any) => (
+interface ProfileStatItemMobileProps {
+  stat: any
+  label: any
+}
+
+const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
+  stat,
+  label
+}) => (
   <div className="grid grid-rows-2">
     <span className="text-[14px] font-medium text-passes-white-100">
       {stat ?? "-"}
@@ -34,7 +47,15 @@ const ProfileStatItemMobile = ({ stat, label }: any) => (
   </div>
 )
 
-export const ProfileStatsMobile = ({ posts, likes }: any) => (
+interface ProfileStatsMobileProps {
+  posts: any
+  likes: any
+}
+
+export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
+  posts,
+  likes
+}) => (
   <div className="align-center grid grid-cols-3 items-center text-center">
     <ProfileStatItemMobile stat={posts} label="POSTS" />
     <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
@@ -74,7 +95,25 @@ export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
   </div>
 )
 
-export const ProfileInformation = ({
+interface ProfileInformationProps {
+  displayName: any
+  username: any
+  quote: any
+  posts: any
+  likes: any
+  creatorId: any
+  ownsProfile: any
+  discordUsername: any
+  facebookUsername: any
+  instagramUsername: any
+  tiktokUsername: any
+  twitchUsername: any
+  twitterUsername: any
+  youtubeUsername: any
+  onChat: any
+}
+
+export const ProfileInformation: FC<ProfileInformationProps> = ({
   displayName,
   username,
   quote,
@@ -90,7 +129,7 @@ export const ProfileInformation = ({
   twitterUsername,
   youtubeUsername,
   onChat
-}: any) => {
+}) => {
   const { follow, unfollow, isFollowing } = useFollow(creatorId)
 
   return (
@@ -162,13 +201,37 @@ export const ProfileInformation = ({
   )
 }
 
-export const EditProfileAction = ({ onEditProfile }: any) => (
+interface EditProfileActionProps {
+  onEditProfile: any
+}
+
+export const EditProfileAction: FC<EditProfileActionProps> = ({
+  onEditProfile
+}) => (
   <div className="absolute top-10 right-0 items-center justify-between">
     <CoverButton className="px-4" name="Edit profile" onClick={onEditProfile} />
   </div>
 )
 
-export const ProfileInformationMobile = ({
+interface ProfileInformationMobile {
+  displayName: any
+  username: any
+  description: any
+  discordUsername: any
+  facebookUsername: any
+  instagramUsername: any
+  tiktokUsername: any
+  twitchUsername: any
+  twitterUsername: any
+  youtubeUsername: any
+  onChat: any
+  creatorId: any
+  ownsProfile: any
+  posts: any
+  likes: any
+}
+
+export const ProfileInformationMobile: FC<ProfileInformationMobile> = ({
   displayName,
   username,
   description,
@@ -184,7 +247,7 @@ export const ProfileInformationMobile = ({
   ownsProfile,
   posts,
   likes
-}: any) => {
+}) => {
   const { follow, unfollow, isFollowing } = useFollow(creatorId)
 
   return (
@@ -230,7 +293,17 @@ export const ProfileInformationMobile = ({
   )
 }
 
-export const ProfileSocialMedia = ({
+interface ProfileSocialMediaProps {
+  discordUsername: any
+  facebookUsername: any
+  instagramUsername: any
+  tiktokUsername: any
+  twitchUsername: any
+  twitterUsername: any
+  youtubeUsername: any
+}
+
+export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = ({
   discordUsername,
   facebookUsername,
   instagramUsername,
@@ -238,7 +311,7 @@ export const ProfileSocialMedia = ({
   twitchUsername,
   twitterUsername,
   youtubeUsername
-}: any) => (
+}) => (
   <div className="flex cursor-pointer items-center justify-center gap-3">
     {facebookUsername && (
       <a

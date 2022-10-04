@@ -2,7 +2,7 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import Image from "next/image"
-import React from "react"
+import React, { FC } from "react"
 import Slider from "react-slick"
 
 const backersList = [
@@ -38,7 +38,13 @@ const backersList = [
   }
 ]
 
-const Card = ({ name, img, org }: any) => (
+interface CardProps {
+  name: any
+  img: any
+  org: any
+}
+
+const Card: FC<CardProps> = ({ name, img, org }) => (
   <div className="carousel-item relative mx-2">
     <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 block rounded-3xl border bg-white p-5 transition-shadow hover:shadow-lg">
       <Image

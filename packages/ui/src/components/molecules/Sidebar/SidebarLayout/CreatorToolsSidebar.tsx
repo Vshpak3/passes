@@ -1,14 +1,22 @@
 import { Dialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import React, { Fragment } from "react"
+import React, { FC, Fragment } from "react"
 
-const CreatorToolsSidebar = ({
+interface CreatorToolsSidebarProps {
+  active: any
+  collapsedAdditionalSidebarOpen: any
+  closeCollapsedAdditionalSidebar: any
+  collapsedNavigation: any
+  setActive: any
+}
+
+const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
   active,
   collapsedAdditionalSidebarOpen,
   closeCollapsedAdditionalSidebar,
   collapsedNavigation,
   setActive
-}: any) => {
+}) => {
   return (
     <>
       <Transition.Root show={collapsedAdditionalSidebarOpen} as={Fragment}>

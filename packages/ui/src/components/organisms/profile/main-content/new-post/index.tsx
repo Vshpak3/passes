@@ -7,7 +7,7 @@ import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
@@ -45,12 +45,19 @@ const MAX_VIDEO_SIZE = 200 * MB
 const MAX_VIDEO_SIZE_NAME = "200 megabytes"
 export const MAX_IMAGE_COUNT = 4
 
-export const NewPost = ({
+interface NewPostProps {
+  passes: any
+  placeholder: any
+  createPost: any
+  onlyText: boolean
+}
+
+export const NewPost: FC<NewPostProps> = ({
   passes = [],
   placeholder,
   createPost,
   onlyText = false
-}: any) => {
+}) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const [containsVideo, setContainsVideo] = useState(false)
