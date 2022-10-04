@@ -67,7 +67,7 @@ const Checkbox = ({
         <input
           id={`${name}-${type}`}
           name={name}
-          type={type}
+          type="checkbox"
           checked={checked}
           {...(register && register(name, options))}
           {...rest}
