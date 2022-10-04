@@ -49,7 +49,7 @@ report_problem_file "${javascript_files}" \
 # Detect assets that are no longer being used.
 extra_assets=($(
   find public -type f | while read file ; do
-    echo ${file} | cut -d/ -f2- | xargs -I{} rg -q {} src/ || echo ${file}
+    echo ${file} | cut -d/ -f2- | xargs -I{} grep -r -q {} src/ || echo ${file}
   done
 ))
 report_problem_file "${extra_assets}" \
