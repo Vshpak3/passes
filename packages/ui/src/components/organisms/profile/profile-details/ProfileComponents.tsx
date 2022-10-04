@@ -54,24 +54,23 @@ export const ProfileImage = ({ userId }: ProfileImageProps) => (
       alt=""
       onError={({ currentTarget }) => {
         currentTarget.onerror = null
-        currentTarget.src = "" // TODO: consider adding default image
+        currentTarget.src = "/img/default-profile-img.png"
       }}
     />
   </div>
 )
 
 export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
-  <div className="align-items flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#a78df0] p-[10px]">
-    <p className="table-cell text-center text-[18px] font-bold no-underline ">
-      <img
-        src={ContentService.profileThumbnail(userId)}
-        alt=""
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null
-          currentTarget.src = "" // TODO: consider adding default image
-        }}
-      />
-    </p>
+  <div className="h-[42px] w-[42px] overflow-hidden rounded-full">
+    <img
+      className="h-full w-full object-cover object-center"
+      src={ContentService.profileThumbnail(userId)}
+      alt="user profile thumbnail"
+      onError={({ currentTarget }) => {
+        currentTarget.onerror = null
+        currentTarget.src = "/img/default-profile-img.png"
+      }}
+    />
   </div>
 )
 
