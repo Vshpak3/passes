@@ -29,6 +29,18 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiEndpoint({
+    summary: 'patrick  whitelisted users',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'patrick pass',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('patrick')
+  async patrickPass(@Req() req: RequestWithUser): Promise<void> {
+    await this.userService.createWhitelistedPasses(req.user.id)
+  }
+
+  @ApiEndpoint({
     summary: 'Set username for current user',
     responseStatus: HttpStatus.OK,
     responseType: undefined,

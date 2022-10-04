@@ -49,7 +49,7 @@ export class PassController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
     responseDesc: 'patrick pass',
-    role: RoleEnum.CREATOR_ONLY,
+    role: RoleEnum.GENERAL,
   })
   @Post('patrick')
   async patrickPass(

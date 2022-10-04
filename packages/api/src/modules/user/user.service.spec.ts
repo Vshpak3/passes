@@ -21,6 +21,10 @@ describe('UserService', () => {
           provide: WalletService,
           useFactory: jest.fn(() => ({})),
         },
+        {
+          provide: PassService,
+          useFactory: jest.fn(() => ({})),
+        },
       ],
     }).compile()
 

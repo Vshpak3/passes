@@ -95,7 +95,7 @@ const PaymentSettings = ({
             </div>
           ) : (
             <div className="mr-2 rounded-full border-2 border-passes-dark-200 py-2 px-4 font-[500]">
-              None
+              {defaultPayinMethod?.method}
             </div>
           )}
         </div>

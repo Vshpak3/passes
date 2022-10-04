@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
+import { PassService } from '../pass/pass.service'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { WalletService } from '../wallet/wallet.service'
 import { UserController } from './user.controller'
@@ -21,6 +22,10 @@ describe('UserController', () => {
         },
         {
           provide: WalletService,
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: PassService,
           useFactory: jest.fn(() => ({})),
         },
       ],

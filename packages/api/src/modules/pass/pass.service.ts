@@ -594,6 +594,12 @@ export class PassService {
       .decrement('remaining_supply', 1)
   }
 
+  async addSupply(passId: string) {
+    await this.dbWriter<PassEntity>(PassEntity.table)
+      .where({ id: passId })
+      .increment('total_supply', 1)
+  }
+
   async freeSupply(passId: string) {
     await this.dbWriter<PassEntity>(PassEntity.table)
       .where({ id: passId })

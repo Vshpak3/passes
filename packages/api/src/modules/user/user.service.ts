@@ -3,6 +3,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { differenceInYears } from 'date-fns'
@@ -24,6 +25,7 @@ import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
+import { PassService } from '../pass/pass.service'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
@@ -39,6 +41,7 @@ import {
 } from './dto/search-creator.dto'
 import { UserDto } from './dto/user.dto'
 import { UserEntity, UserIndexes } from './entities/user.entity'
+import { WhitelistedUserEntity } from './entities/whitelisted-users.entity'
 
 @Injectable()
 export class UserService {
@@ -54,7 +57,49 @@ export class UserService {
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
     protected readonly walletService: WalletService,
+    protected readonly passService: PassService,
   ) {}
+
+  async createWhitelistedPasses(userId: string) {
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .select(['email'])
+      .first()
+    if (!user || user.email != 'patrick@passes.com') {
+      throw new InternalServerErrorException(
+        `Unexpected missing user: ${userId}`,
+      )
+    }
+    const users = await this.dbReader<WhitelistedUserEntity>(
+      WhitelistedUserEntity.table,
+    )
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.email`,
+        `${WhitelistedUserEntity.table}.email`,
+      )
+      .distinct(`${UserEntity.table}.id`, `${UserEntity.table}.email`)
+    await Promise.all(
+      users.map(async (user) => {
+        await this.createWhitelistedPassesForUser(user.id, user.email)
+      }),
+    )
+  }
+
+  async createWhitelistedPassesForUser(userId: string, email: string) {
+    const whitelisted = await this.dbReader<WhitelistedUserEntity>(
+      WhitelistedUserEntity.table,
+    )
+      .where({ email, created: false })
+      .select('*')
+    for (let i = 0; i < whitelisted.length; ++i) {
+      await this.passService.createPassHolder(userId[i], whitelisted[i].pass_id)
+      await this.dbWriter<WhitelistedUserEntity>(WhitelistedUserEntity.table)
+        .where({ id: whitelisted[i].id })
+        .update({ created: true })
+      await this.passService.addSupply(whitelisted[i].pass_id)
+    }
+  }
 
   async createUser(
     authId: string,
@@ -94,7 +139,7 @@ export class UserService {
     // create custodial wallets on create user
     await this.walletService.getUserCustodialWallet(user.id, ChainEnum.SOL)
     await this.walletService.getUserCustodialWallet(user.id, ChainEnum.ETH)
-
+    await this.createWhitelistedPassesForUser(user.id, email)
     return new UserDto(user)
   }
 
