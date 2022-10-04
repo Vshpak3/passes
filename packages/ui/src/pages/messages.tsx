@@ -10,4 +10,4 @@ const Messages2 = () => (
   </div>
 )
 
-export default withPageLayout(Messages2, { header: false })
+export default withPageLayout(Messages2, { header: false, sidebar: true })

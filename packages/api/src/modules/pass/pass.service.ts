@@ -20,6 +20,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createPaginatedQuery } from '../../util/page.util'
+import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import {
   CreateNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackInput,
@@ -128,6 +129,7 @@ export class PassService {
       remaining_supply: createPassDto.totalSupply,
       chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
+      royalties: createPassDto.royalties,
     } as PassEntity
     switch (data.chain) {
       case ChainEnum.SOL:
@@ -138,6 +140,8 @@ export class PassService {
             data.title,
             'PASS',
             data.description,
+            'video',
+            ContentFormatEnum.VIDEO,
           )
         ).passPubKey
         break
@@ -192,6 +196,7 @@ export class PassService {
       remaining_supply: createPassDto.totalSupply,
       chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
+      royalties: createPassDto.royalties,
     }
     if (
       createPassDto.chain !== ChainEnum.SOL &&
@@ -539,7 +544,7 @@ export class PassService {
       walletAddress = wallet.address
     }
 
-    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert({
+    const data = {
       id,
       pass_id: passId,
       wallet_id: walletId,
@@ -547,13 +552,11 @@ export class PassService {
       expires_at: expiresAt,
       messages: pass.messages,
       chain: pass.chain,
-    })
+    } as PassHolderEntity
 
-    let address = ''
-    const tokenId = null
     switch (pass.chain) {
       case ChainEnum.SOL:
-        address = (
+        data.address = (
           await this.solService.createNftPass(
             pass.id,
             id,
@@ -562,6 +565,8 @@ export class PassService {
             pass.description,
             walletAddress,
             pass.royalties,
+            'video',
+            ContentFormatEnum.VIDEO,
           )
         ).mintPubKey
         break
@@ -572,12 +577,7 @@ export class PassService {
           `can not create a pass on chain ${pass.chain}`,
         )
     }
-    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
-      .where({ id: id })
-      .update({
-        address,
-        token_id: tokenId,
-      })
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
     await this.passPurchased(userId, passId)
 
     return {
@@ -811,9 +811,9 @@ export class PassService {
     // free pass or free trial
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .where({ id: passId })
-      .select('creator', 'type', 'freetrial')
+      .select('creator_id', 'type', 'freetrial')
       .first()
-    if (!pass) {
+    if (!pass || !pass.creator_id) {
       throw new PassNotFoundException(`pass ${passId} not found`)
     }
 

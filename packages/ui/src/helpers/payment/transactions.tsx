@@ -44,8 +44,7 @@ export const sendAndGenerateSolanaTokenTransactionMessage = async (
   ownerAccount: PublicKey,
   token: string,
   amount: number,
-  provider: PhantomProvider,
-  sentCallback: () => any
+  provider: PhantomProvider
 ): Promise<void> => {
   const connection = new Connection(network)
   const transaction = await generateSolanaTokenTransactionMessage(
@@ -55,11 +54,10 @@ export const sendAndGenerateSolanaTokenTransactionMessage = async (
     token,
     amount
   )
-  const { signature } = await provider.signAndSendTransaction(transaction)
-  sentCallback()
+  await provider.signAndSendTransaction(transaction)
   // TODO:
   // eslint-disable-next-line no-console
-  console.log(await connection.getSignatureStatus(signature))
+  // console.log(await connection.getSignatureStatus(signature))
 }
 
 export const sendAndGenerateEthereumTokenTransactionMessage = async (

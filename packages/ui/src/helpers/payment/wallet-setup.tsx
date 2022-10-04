@@ -54,49 +54,32 @@ export const connectMetamask = async (
   return accounts[0]
 }
 
-export const setUpPhantomProvider = (
+export const executePhantomUSDCProvider = async (
   provider: PhantomProvider,
   paymentApi: PaymentApi,
   payinId: string,
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
-  let depositAddress = ""
-  let tokenAddress = ""
-  let sent = false
-  let network = ""
-  const setSent = () => {
-    sent = true
+  const res = await window.solana.connect()
+  const response = await paymentApi.entryPhantomCircleUSDC({
+    phantomCircleUSDCEntryRequestDto: {
+      payinId
+    }
+  })
+  try {
+    await sendAndGenerateSolanaTokenTransactionMessage(
+      response.networkUrl,
+      response.depositAddress,
+      res.publicKey,
+      response.tokenAddress,
+      amount,
+      provider
+    )
+  } catch (error) {
+    cancelPayinCallback()
+    throw error
   }
-  provider.on("connect", async (publicKey: PublicKey) => {
-    const response = await paymentApi.entryPhantomCircleUSDC({
-      phantomCircleUSDCEntryRequestDto: {
-        payinId
-      }
-    })
-    depositAddress = response.depositAddress
-    tokenAddress = response.tokenAddress
-    network = response.networkUrl
-    try {
-      await sendAndGenerateSolanaTokenTransactionMessage(
-        network,
-        depositAddress,
-        publicKey,
-        tokenAddress,
-        amount,
-        provider,
-        setSent
-      )
-    } catch (error) {
-      cancelPayinCallback()
-      throw error
-    }
-  })
-  provider.on("disconnect", () => {
-    if (!sent) {
-      throw new Error("closed wallet early")
-    }
-  })
 }
 
 export const executeMetamaskUSDCProvider = async (

@@ -25,7 +25,7 @@ export class LambdaService {
 
   constructor(private readonly configService: ConfigService) {
     this.client = new LambdaClient(getAwsConfig(this.configService))
-    this.prefix = 'passes-' + configService.get('infra.env')
+    this.prefix = 'passes-stage' //+ configService.get('infra.env')
   }
 
   async invoke(command: InvokeCommand): Promise<string> {
@@ -125,7 +125,6 @@ export class LambdaService {
     const command = new InvokeCommand(input)
 
     const res = JSON.parse(await this.invoke(command))
-
     return Uint8Array.from(JSON.parse('[' + res['body'] + ']'))
   }
 }

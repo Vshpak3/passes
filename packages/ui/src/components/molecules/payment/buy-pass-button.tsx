@@ -1,6 +1,10 @@
-import { PassApi, PayinMethodDto } from "@passes/api-client"
+import {
+  PassApi,
+  PayinDataDtoBlockedEnum,
+  PayinMethodDto
+} from "@passes/api-client"
 import classNames from "classnames"
-import React from "react"
+import React, { useEffect } from "react"
 import { usePay } from "src/hooks/usePay"
 
 interface IBuyPassButton {
@@ -8,6 +12,7 @@ interface IBuyPassButton {
   walletAddress?: string
   payinMethod?: PayinMethodDto
   onSuccess: () => void
+  owns?: () => void
   isDisabled?: boolean
 }
 
@@ -16,6 +21,7 @@ export const BuyPassButton = ({
   walletAddress,
   payinMethod,
   onSuccess,
+  owns,
   isDisabled = false
 }: IBuyPassButton) => {
   const api = new PassApi()
@@ -39,12 +45,23 @@ export const BuyPassButton = ({
     })
   }
 
-  const { blocked, submitting, loading, submit } = usePay(
+  const { blocked, submitting, loading, submit, submitData } = usePay(
     register,
     registerData,
     onSuccess
   )
 
+  useEffect(() => {
+    if (passId && passId.length) {
+      submitData()
+    }
+  }, [passId, submitData])
+
+  useEffect(() => {
+    if (blocked === PayinDataDtoBlockedEnum.AlreadyOwnsPass && owns) {
+      owns()
+    }
+  }, [blocked, owns])
   return (
     <button
       onClick={submit}

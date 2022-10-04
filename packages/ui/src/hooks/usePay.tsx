@@ -16,7 +16,7 @@ import {
   EthereumProvider,
   executeMetamaskEthProvider,
   executeMetamaskUSDCProvider,
-  setUpPhantomProvider
+  executePhantomUSDCProvider
 } from "src/helpers/payment/wallet-setup"
 import { accessTokenKey } from "src/helpers/token"
 
@@ -67,20 +67,17 @@ export const usePay = (
       throw new Error("no provider exists")
     }
     try {
-      setUpPhantomProvider(
+      await executePhantomUSDCProvider(
         provider,
         paymentApi,
         registerResponse.payinId,
         registerResponse.amount * 10 ** 6,
         cancelPayinCallback
       )
-      try {
-        await provider.connect()
-      } catch (error: any) {
-        //display message to user
-        await cancelPayinCallback()
-        throw error
-      }
+    } catch (error: any) {
+      //display message to user
+      await cancelPayinCallback()
+      throw error
     } finally {
       provider.off("connect")
       provider.off("accountChanged")
@@ -165,13 +162,14 @@ export const usePay = (
       if (callback) {
         callback()
       }
-    } catch (error) {
-      const toastError = await errorMessage(error)
-      toast.error(toastError)
-
-      if (callback) {
-        callback()
+    } catch (error: any) {
+      if (error.message) {
+        toast.error(error.message)
+      } else {
+        const toastError = await errorMessage(error)
+        toast.error(toastError as string)
       }
+      throw error
     } finally {
       setSubmitting(false)
       setLoading(false)

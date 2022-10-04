@@ -1,10 +1,13 @@
 import {
+  GetPassHoldingsRequestDtoOrderEnum,
+  GetPassHoldingsResponseDtoOrderTypeEnum,
   PassApi,
   PassDto,
   PayinMethodDtoChainEnum,
   PayinMethodDtoMethodEnum,
   UserApi
 } from "@passes/api-client"
+import { useRouter } from "next/router"
 import CardIcon from "public/icons/bank-card.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
@@ -19,16 +22,14 @@ import { usePayinMethod, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 const Home = () => {
   const { mutate } = useUser()
+  const router = useRouter()
   const [passes, setPasses] = useState<PassDto[]>()
+  const [isHoldings, setIsHolding] = useState<boolean>(false)
   const [passId, setPassId] = useState<string>()
   const [open, setOpen] = useState<boolean>(false)
 
   const { cards, defaultPayinMethod, setDefaultPayinMethod, getCards } =
     usePayinMethod()
-
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
 
   useEffect(() => {
     mutate()
@@ -43,6 +44,13 @@ const Home = () => {
     const fetch = async () => {
       const userApi = new UserApi()
       const userId = await userApi.getUserId({ username: "patzhang" })
+      const passHoldings = await api.getPassHoldings({
+        getPassHoldingsRequestDto: {
+          order: GetPassHoldingsRequestDtoOrderEnum.Asc,
+          orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+        }
+      })
+      setIsHolding(passHoldings.passHolders.length > 0)
       const res = await api.getCreatorPasses({
         getCreatorPassesRequestDto: { creatorId: userId }
       })
@@ -51,16 +59,19 @@ const Home = () => {
     fetch()
   }, [])
 
+  useEffect(() => {
+    if (isHoldings) {
+      router.push("/")
+    }
+  }, [isHoldings, router])
+
   return (
     <>
       <div className="w-full bg-black">
         <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20  lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
           <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
             {passes?.map((pass) => (
-              <div
-                key={pass.passId}
-                className="m-2 flex h-[227px] w-[248px] flex-col justify-between gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4"
-              >
+              <div key={pass.passId}>
                 <button onClick={() => setPassId(pass.passId)}>
                   {pass.title}
                   <br />
@@ -74,19 +85,11 @@ const Home = () => {
         <div className="my-8 flex flex-col gap-6 xl:flex-row">
           <div className="flex  w-[248px] flex-col justify-center gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-6">
             <span className="text-[14px] font-[400] opacity-90">
-              Payment Methods:
+              Payment Method:
             </span>
             <span className="text-[16px] font-[700]">
               {defaultPayinMethod?.method ?? "Please select a payment method"}
             </span>
-            {defaultCard && (
-              <div className="flex gap-6">
-                <span className="text-[14px] font-[500] opacity-70">
-                  *******{defaultCard.fourDigits}
-                </span>
-                {displayCardIcon(defaultCard.firstDigit, 25)}
-              </div>
-            )}
           </div>
         </div>
         <div className="align-center mx-auto my-4 flex w-[250px] justify-center">
@@ -96,6 +99,10 @@ const Home = () => {
               variant="purple-light"
               tag="button"
               className="!px-4 !py-2.5"
+              disabled={
+                defaultPayinMethod?.method ===
+                PayinMethodDtoMethodEnum.MetamaskCircleEth
+              }
               onClick={async () => {
                 await setDefaultPayinMethod({
                   method: PayinMethodDtoMethodEnum.MetamaskCircleEth,
@@ -112,6 +119,10 @@ const Home = () => {
               variant="purple-light"
               tag="button"
               className="!px-4 !py-2.5"
+              disabled={
+                defaultPayinMethod?.method ===
+                PayinMethodDtoMethodEnum.MetamaskCircleUsdc
+              }
               onClick={async () => {
                 await setDefaultPayinMethod({
                   method: PayinMethodDtoMethodEnum.MetamaskCircleUsdc,
@@ -128,6 +139,10 @@ const Home = () => {
               variant="purple-light"
               tag="button"
               className="!px-4 !py-2.5"
+              disabled={
+                defaultPayinMethod?.method ===
+                PayinMethodDtoMethodEnum.PhantomCircleUsdc
+              }
               onClick={async () => {
                 await setDefaultPayinMethod({
                   method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
@@ -206,17 +221,17 @@ const Home = () => {
             toast.success("Thank you for your purchase!")
           }}
         />
+        <Modal isOpen={open} setOpen={setOpen}>
+          <AddCard
+            callback={() => {
+              setOpen(false)
+              setTimeout(async () => {
+                await getCards()
+              }, 250)
+            }}
+          />
+        </Modal>
       </div>
-      <Modal isOpen={open} setOpen={setOpen}>
-        <AddCard
-          callback={() => {
-            setOpen(false)
-            setTimeout(async () => {
-              await getCards()
-            }, 250)
-          }}
-        />
-      </Modal>
     </>
   )
 }

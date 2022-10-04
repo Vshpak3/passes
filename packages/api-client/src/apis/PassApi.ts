@@ -333,7 +333,7 @@ export class PassApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/api/pass/passholdings`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: GetPassHoldingsRequestDtoToJSON(requestParameters.getPassHoldingsRequestDto),

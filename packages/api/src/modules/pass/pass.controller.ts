@@ -56,7 +56,7 @@ export class PassController {
     @Req() req: RequestWithUser,
     @Body() createPassDto: CreatePassRequestDto,
   ): Promise<CreatePassResponseDto> {
-    return await this.passService.createPass(req.user.id, createPassDto)
+    return await this.passService.manualPass(req.user.id, createPassDto)
   }
 
   @ApiEndpoint({
@@ -128,7 +128,7 @@ export class PassController {
     responseDesc: 'A list of pass holdings was retrieved',
     role: RoleEnum.GENERAL,
   })
-  @Get('passholdings')
+  @Post('passholdings')
   async getPassHoldings(
     @Req() req: RequestWithUser,
     @Body() getPassHoldingsRequestDto: GetPassHoldingsRequestDto,

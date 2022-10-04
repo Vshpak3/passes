@@ -1,8 +1,8 @@
 import {
   Collection,
   createCreateMasterEditionV3Instruction,
-  createCreateMetadataAccountV2Instruction,
-  createVerifyCollectionInstruction,
+  createCreateMetadataAccountV3Instruction,
+  createVerifySizedCollectionItemInstruction,
   DataV2,
   UseMethod,
   Uses,
@@ -25,7 +25,11 @@ import {
 } from '@solana/web3.js'
 
 import { JsonMetadata } from './json-metadata.interface'
-import { findMasterEditionV2Pda, findMetadataPda } from './pda-helper'
+import {
+  findCollectionAuthorityRecordPda,
+  findMasterEditionV2Pda,
+  findMetadataPda,
+} from './pda-helper'
 import { Creator } from './types'
 
 // /**
@@ -139,8 +143,12 @@ export const createCollectionTransaction = async (
     collectionPubKey,
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [collectionAuthorityRecordPda, collectionAuthorityRecordPdaBump] =
+    await findCollectionAuthorityRecordPda(collectionPubKey, walletPubKey)
+
   const metaplexInstructions: TransactionInstruction[] = [
-    createCreateMetadataAccountV2Instruction(
+    createCreateMetadataAccountV3Instruction(
       {
         metadata: metadataPda,
         mint: collectionPubKey,
@@ -149,9 +157,10 @@ export const createCollectionTransaction = async (
         updateAuthority: updateAuthority,
       },
       {
-        createMetadataAccountArgsV2: {
+        createMetadataAccountArgsV3: {
           data: metadata,
           isMutable: true,
+          collectionDetails: { __kind: 'V1', size: 0 },
         },
       },
     ),
@@ -260,10 +269,14 @@ export const createNftTransaction = async (
     await findMetadataPda(collectionPubKey)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collectionMasterEditionPda, collectionMasterEditionPdaBump] =
-    await findMasterEditionV2Pda(mintPubKey)
+    await findMasterEditionV2Pda(collectionPubKey)
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [collectionAuthorityRecordPda, collectionAuthorityRecordPdaBump] =
+    await findCollectionAuthorityRecordPda(collectionPubKey, walletPubKey)
 
   const metaplexInstructions: TransactionInstruction[] = [
-    createCreateMetadataAccountV2Instruction(
+    createCreateMetadataAccountV3Instruction(
       {
         metadata: metadataPda,
         mint: mintPubKey,
@@ -272,7 +285,7 @@ export const createNftTransaction = async (
         updateAuthority: updateAuthority,
       },
       {
-        createMetadataAccountArgsV2: {
+        createMetadataAccountArgsV3: {
           data: {
             name: JsonMetadata.name,
             symbol: JsonMetadata.symbol,
@@ -283,6 +296,7 @@ export const createNftTransaction = async (
             uses: usesFormatted,
           },
           isMutable: true,
+          collectionDetails: null,
         },
       },
     ),
@@ -301,7 +315,7 @@ export const createNftTransaction = async (
         },
       },
     ),
-    createVerifyCollectionInstruction({
+    createVerifySizedCollectionItemInstruction({
       metadata: metadataPda,
       collectionAuthority: walletPubKey,
       payer: walletPubKey,

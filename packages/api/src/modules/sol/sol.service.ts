@@ -41,7 +41,6 @@ import { JsonMetadata } from './json-metadata.interface'
 import {
   getCollectionImageUri,
   getCollectionMetadataUri,
-  // getNftImageUri,
   getNftMetadataUri,
 } from './sol.helper'
 
@@ -228,8 +227,9 @@ export class SolService {
       transaction.serialize(),
       {
         ...blockhash,
-        signature: transaction.signature?.toString() as string,
+        signature: base58.encode(transaction.signature as Buffer),
       },
+      // { skipPreflight: true },
     )
   }
 
@@ -241,6 +241,7 @@ export class SolService {
     description: string,
     royalties: number,
     passPubKey: PublicKey,
+    contentString: 'image' | 'video' = 'image',
     contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
     const imageUrl = getCollectionImageUri(
@@ -259,11 +260,11 @@ export class SolService {
       properties: {
         files: [
           {
-            type: `image/${contentType}`,
+            type: `${contentString}/${contentType}`,
             uri: imageUrl,
           },
         ],
-        category: 'image',
+        category: contentString,
         creators: [
           {
             address: passPubKey.toString(),
@@ -293,13 +294,15 @@ export class SolService {
     description: string,
     ownerAddress: string,
     royalties: number,
+    contentString: 'image' | 'video' = 'image',
+    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ): Promise<GetSolNftResponseDto> {
     if (localMockedAwsDev()) {
       return { mintPubKey: uuid.v4(), transactionHash: '' }
     }
 
     const passPubKey = new PublicKey(
-      await this.lambdaService.blockchainSignCreateAddress(
+      await this.lambdaService.blockchainSignGetPublicAddress(
         `${SIGNER_ID_PREFIX_PASS}.${passId}`,
         ChainEnum.SOL,
       ),
@@ -327,6 +330,8 @@ export class SolService {
       description,
       royalties,
       passPubKey,
+      contentString,
+      contentType,
     )
 
     const transaction = await createNftTransaction(
@@ -356,6 +361,7 @@ export class SolService {
     symbol: string,
     description: string,
     walletPubKey: PublicKey,
+    contentString: 'image' | 'video' = 'image',
     contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
     const username = (
@@ -387,10 +393,10 @@ export class SolService {
         files: [
           {
             uri: imageUrl,
-            type: `image/${contentType}`,
+            type: `${contentString}/${contentType}`,
           },
         ],
-        category: 'image',
+        category: contentString,
       },
     }
 
@@ -409,6 +415,8 @@ export class SolService {
     name: string,
     symbol: string,
     description: string,
+    contentString: 'image' | 'video' = 'image',
+    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ): Promise<GetSolNftCollectionResponseDto> {
     if (localMockedAwsDev()) {
       return {
@@ -438,6 +446,8 @@ export class SolService {
       symbol,
       description,
       walletPubKey,
+      contentString,
+      contentType,
     )
 
     const metadata: DataV2 = {
