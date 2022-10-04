@@ -42,6 +42,23 @@ export const tabs = [
   }
 ]
 
+export const tabToPath: Record<TabsEnum, string> = {
+  [TabsEnum.AccountSettings]: "account",
+  [TabsEnum.ChatSettings]: "chat",
+  [TabsEnum.NotificationEmailSettings]: "notifications",
+  [TabsEnum.PrivacySafetySettings]: "privacy",
+  [TabsEnum.PaymentSettings]: "payment",
+  [TabsEnum.WalletSettings]: "wallet",
+  [TabsEnum.PayoutSettings]: "payout"
+}
+
+export const pathToTab = Object.keys(tabToPath).reduce((result, key) => {
+  result[tabToPath[key as unknown as TabsEnum]] = parseInt(
+    key as unknown as string
+  )
+  return result
+}, {} as Record<string, TabsEnum>)
+
 export enum SubTabsEnum {
   // Accounts
   "AccountInformation",
@@ -69,3 +86,38 @@ export enum SubTabsEnum {
   "AddCard",
   "PaymentHistory"
 }
+
+export const subTabToPath = {
+  // Accounts
+  [SubTabsEnum.AccountInformation]: "information",
+  [SubTabsEnum.ChangePassword]: "password",
+  [SubTabsEnum.DeactivateAccount]: "deactivate",
+  [SubTabsEnum.ProfilePicture]: "picture",
+  [SubTabsEnum.DisplayName]: "display",
+  [SubTabsEnum.Username]: "username",
+
+  // Notification
+  [SubTabsEnum.NotificationPreferences]: "preferences",
+  [SubTabsEnum.EmailNotifications]: "email",
+
+  // PrivacySafety
+  [SubTabsEnum.ProfileSettings]: "profile",
+  [SubTabsEnum.PostsSettings]: "posts",
+  [SubTabsEnum.SafetySettings]: "safety",
+  [SubTabsEnum.BlockedRestrictedAccounts]: "blocked",
+
+  // Payment
+  [SubTabsEnum.PaymentSettings]: "payment",
+  [SubTabsEnum.WalletSettings]: "wallet",
+  [SubTabsEnum.PayoutSettings]: "payout",
+  [SubTabsEnum.AddBank]: "bank",
+  [SubTabsEnum.AddCard]: "card",
+  [SubTabsEnum.PaymentHistory]: "history"
+}
+
+export const pathToSubTab = Object.keys(subTabToPath).reduce((result, key) => {
+  result[subTabToPath[key as unknown as SubTabsEnum]] = parseInt(
+    key as unknown as string
+  )
+  return result
+}, {} as Record<string, SubTabsEnum>)

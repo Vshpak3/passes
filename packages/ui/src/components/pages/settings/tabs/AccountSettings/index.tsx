@@ -31,6 +31,7 @@ const subTabs = [
 
 const AccountSettings: React.FC = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
+
   return (
     <Tab
       withBackMobile

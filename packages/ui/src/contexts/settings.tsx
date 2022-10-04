@@ -1,5 +1,12 @@
+import { useRouter } from "next/router"
+import path from "path"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { SubTabsEnum, TabsEnum } from "src/config/settings"
+import {
+  SubTabsEnum,
+  subTabToPath,
+  TabsEnum,
+  tabToPath
+} from "src/config/settings"
 
 export interface ISettingsContext {
   showSettingsTab: boolean
@@ -7,6 +14,7 @@ export interface ISettingsContext {
   activeTab: TabsEnum
   subTabsStack: SubTabsEnum[]
   setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum>>
+  setSubTabsStack: React.Dispatch<React.SetStateAction<SubTabsEnum[]>>
   addTabToStackHandler: (tab: SubTabsEnum) => void
   popTabFromStackHandler: () => void
   addOrPopStackHandler: (tab: SubTabsEnum) => void
@@ -20,11 +28,17 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
   const [showSettingsTab, setShowSettingsTab] = useState(false)
+  const router = useRouter()
 
   const addTabToStackHandler = (tab: SubTabsEnum) => {
     if (!subTabsStack.includes(tab)) {
       setSubTabsStack((prevTabs) => [...prevTabs, tab])
     }
+  }
+
+  const popTabFromStackHandler = () => {
+    const updatedStack = subTabsStack.slice(0, -1)
+    setSubTabsStack(updatedStack)
   }
 
   const addOrPopStackHandler = (tab: SubTabsEnum) => {
@@ -37,14 +51,28 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const popTabFromStackHandler = () => {
-    const updatedStack = subTabsStack.slice(0, -1)
-    setSubTabsStack(updatedStack)
-  }
+  useEffect(() => {
+    router.replace(`/settings/${tabToPath[activeTab]}`, undefined, {
+      shallow: true
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab])
 
   useEffect(() => {
-    setSubTabsStack([])
-  }, [activeTab])
+    router.replace(
+      path.join(
+        "/settings",
+        tabToPath[activeTab],
+        subTabsStack.map((t) => subTabToPath[t]).join("/")
+      ),
+      undefined,
+      {
+        shallow: true
+      }
+    )
+    // Leave out the activeTab and router
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subTabsStack])
 
   return (
     <SettingsContext.Provider
@@ -54,6 +82,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         activeTab,
         subTabsStack,
         setActiveTab,
+        setSubTabsStack,
         addTabToStackHandler,
         popTabFromStackHandler,
         addOrPopStackHandler
