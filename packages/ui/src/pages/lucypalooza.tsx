@@ -32,7 +32,8 @@ const Home = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  const { defaultPayinMethod, getCards } = usePayinMethod()
+  const { defaultPayinMethod, getCards, getDefaultPayinMethod } =
+    usePayinMethod()
 
   useEffect(() => {
     const api = new PassApi()

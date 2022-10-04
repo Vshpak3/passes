@@ -150,11 +150,48 @@ const PaymentSettings = ({
             </span>
             <Select
               register={register}
-              selectOptions={[
-                { label: "USDC (ETH)", value: PayinMethodDtoChainEnum.Eth },
-                { label: "USDC (AVAX)", value: PayinMethodDtoChainEnum.Avax },
-                { label: "USDC (MATIC)", value: PayinMethodDtoChainEnum.Matic }
-              ]}
+              selectOptions={
+                isEmbedded
+                  ? [
+                      {
+                        label: "USDC (ETH)",
+                        value:
+                          PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+                          "." +
+                          PayinMethodDtoChainEnum.Eth
+                      },
+                      {
+                        label: "ETH (ETH)",
+                        value:
+                          PayinMethodDtoMethodEnum.MetamaskCircleEth +
+                          "." +
+                          PayinMethodDtoChainEnum.Eth
+                      }
+                    ]
+                  : [
+                      {
+                        label: "USDC (ETH)",
+                        value:
+                          PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+                          "." +
+                          PayinMethodDtoChainEnum.Eth
+                      },
+                      {
+                        label: "USDC (AVAX)",
+                        value:
+                          PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+                          "." +
+                          PayinMethodDtoChainEnum.Avax
+                      },
+                      {
+                        label: "USDC (MATIC)",
+                        value:
+                          PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+                          "." +
+                          PayinMethodDtoChainEnum.Matic
+                      }
+                    ]
+              }
               onChange={async (event: any) => {
                 setValue("metamask", event.target.value)
               }}
@@ -171,8 +208,8 @@ const PaymentSettings = ({
             <Button
               onClick={async () =>
                 await setDefaultPayinMethod({
-                  method: PayinMethodDtoMethodEnum.MetamaskCircleUsdc,
-                  chain: getValues("metamask")
+                  method: getValues("metamask").split(".")[0],
+                  chain: getValues("metamask").split(".")[1]
                 })
               }
               tag="button"
