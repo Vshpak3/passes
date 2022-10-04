@@ -53,7 +53,7 @@ export const InputMessage: FC<InputMessageProps> = ({ channelId }) => {
 
   return (
     <form
-      className="flex flex-col items-end border-t border-gray-800 p-6"
+      className="flex flex-col items-end border-t border-[#fff]/10 p-6"
       onSubmit={handleSubmit(submitMessage)}
     >
       <textarea

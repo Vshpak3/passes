@@ -36,7 +36,7 @@ export const ChannelList = ({
     { id: "tip", name: "Most tips" }
   ]
   return (
-    <div className="min-w-[20vw] overflow-y-auto border-r border-gray-800">
+    <div className="min-w-[20vw] overflow-y-auto border-r border-[#fff]/10">
       <div className="px-[10px] py-[7px]">
         <div className="flex justify-between">
           <span className="text-base font-medium">Find people</span>

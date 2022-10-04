@@ -58,7 +58,7 @@ const MessagesV2 = () => {
   }, [selectedChannel])
 
   return (
-    <div className="flex h-full flex-row border border-gray-800">
+    <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
       <ChannelList
         channelOrderType={channelOrderType}
         setChannelOrderType={setChannelOrderType}

@@ -31,6 +31,7 @@ export const ChannelView = ({
             selectedChannel={selectedChannel}
             activeContent={activeContent}
             setActiveContent={setActiveContent}
+            isCreator={isCreator}
           />
           {gallery ? (
             <ChannelGalleryView activeContent={activeContent} />

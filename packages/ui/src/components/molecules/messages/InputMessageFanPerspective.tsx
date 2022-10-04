@@ -99,7 +99,7 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
 
   return (
     <form
-      className="grid w-full grid-cols-3 border-t border-gray-800"
+      className="grid w-full grid-cols-3 border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
       <div className=" order-2 col-span-3 sm:order-1 sm:col-span-2">
