@@ -52,7 +52,6 @@ export const usePay = (
       })
     } catch (error: any) {
       await cancelPayinCallback()
-      toast.error(error)
       throw error
     }
   }
@@ -80,7 +79,6 @@ export const usePay = (
       } catch (error: any) {
         //display message to user
         await cancelPayinCallback()
-        toast.error(error)
         throw error
       }
     } finally {
@@ -101,14 +99,7 @@ export const usePay = (
       throw new Error("no provider exists")
     }
     let account = ""
-    try {
-      account = await connectMetamask(provider)
-    } catch (error) {
-      //display message to user
-      console.error("connection was refused")
-      toast.error("connection was refused")
-      throw error
-    }
+    account = await connectMetamask(provider)
     await executeMetamaskUSDCProvider(
       account,
       provider,
@@ -130,14 +121,7 @@ export const usePay = (
       throw new Error("no provider exists")
     }
     let account = ""
-    try {
-      account = await connectMetamask(provider)
-    } catch (error) {
-      //display message to user
-      console.error("connection was refused")
-      toast.error("connection was refused")
-      throw error
-    }
+    account = await connectMetamask(provider)
     await executeMetamaskEthProvider(
       account,
       provider,
@@ -183,9 +167,6 @@ export const usePay = (
       }
     } catch (error) {
       const toastError = await errorMessage(error)
-      setSubmitting(false)
-      setLoading(false)
-
       toast.error(toastError)
 
       if (callback) {

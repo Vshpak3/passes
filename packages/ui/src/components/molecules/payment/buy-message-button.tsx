@@ -49,7 +49,7 @@ export const BuyMessageButton = ({
           : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       )}
       type="submit"
-      {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
+      disabled={!!blocked || submitting || isDisabled}
     >
       {loading ? "Loading" : "Buy message"}
     </button>

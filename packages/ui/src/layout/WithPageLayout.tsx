@@ -9,16 +9,21 @@ import Sidebar from "./Sidebar"
 type WithPageLayoutOptions = {
   skipAuth?: boolean
   header?: boolean
+  sidebar?: boolean
 }
 
 export const withPageLayout = (
   Page: any,
-  options: WithPageLayoutOptions = { skipAuth: false, header: true }
+  options: WithPageLayoutOptions = {
+    skipAuth: false,
+    header: true,
+    sidebar: true
+  }
 ) => {
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
       <MainContextProvider>
-        <Sidebar />
+        {options.sidebar && <Sidebar />}
         <main className="w-full bg-[#000]">
           {options.header && (
             <div className="cover-image h-[300px] pr-10 pt-4">

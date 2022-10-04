@@ -66,7 +66,7 @@ export interface PassDto {
      * @type {number}
      * @memberof PassDto
      */
-    nativePrice: number | null;
+    ethPrice: number | null;
     /**
      * 
      * @type {number}
@@ -163,7 +163,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "symbol" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "price" in value;
-    isInstance = isInstance && "nativePrice" in value;
+    isInstance = isInstance && "ethPrice" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "remainingSupply" in value;
     isInstance = isInstance && "chain" in value;
@@ -191,7 +191,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'symbol': json['symbol'],
         'type': json['type'],
         'price': json['price'],
-        'nativePrice': json['nativePrice'],
+        'ethPrice': json['ethPrice'],
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'totalSupply': json['totalSupply'],
         'remainingSupply': json['remainingSupply'],
@@ -221,7 +221,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'symbol': value.symbol,
         'type': value.type,
         'price': value.price,
-        'nativePrice': value.nativePrice,
+        'ethPrice': value.ethPrice,
         'duration': value.duration,
         'totalSupply': value.totalSupply,
         'remainingSupply': value.remainingSupply,

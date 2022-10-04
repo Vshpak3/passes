@@ -5,6 +5,7 @@ import { usePay } from "src/hooks/usePay"
 
 interface IBuyPassButton {
   passId: string
+  walletAddress?: string
   payinMethod?: PayinMethodDto
   onSuccess: () => void
   isDisabled?: boolean
@@ -12,6 +13,7 @@ interface IBuyPassButton {
 
 export const BuyPassButton = ({
   passId,
+  walletAddress,
   payinMethod,
   onSuccess,
   isDisabled = false
@@ -21,6 +23,7 @@ export const BuyPassButton = ({
     return await api.registerBuyPass({
       createPassHolderRequestDto: {
         passId,
+        walletAddress,
         payinMethod
       }
     })
@@ -30,6 +33,7 @@ export const BuyPassButton = ({
     return await api.registerBuyPassData({
       createPassHolderRequestDto: {
         passId,
+        walletAddress,
         payinMethod
       }
     })
@@ -50,7 +54,7 @@ export const BuyPassButton = ({
           : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       )}
       type="submit"
-      {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
+      disabled={!!blocked || submitting || isDisabled}
     >
       {loading ? "Loading" : "Buy pass"}
     </button>

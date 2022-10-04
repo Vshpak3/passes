@@ -56,7 +56,6 @@ const usePayinMethod = () => {
       }
       setPayinMethod(dto)
     } catch (error: any) {
-      console.error(error)
       toast.error(error)
     } finally {
       setIsLoading(false)
@@ -74,7 +73,6 @@ const usePayinMethod = () => {
       }
       setCards(cards.filter((card) => card.id != cardId))
     } catch (error: any) {
-      console.error(error)
       toast.error(error)
     } finally {
       setIsLoading(false)
@@ -89,7 +87,6 @@ const usePayinMethod = () => {
       })
       setCardInfo(response)
     } catch (error: any) {
-      console.error(error)
       toast.error(error)
     } finally {
       setIsLoading(false)
@@ -110,7 +107,8 @@ const usePayinMethod = () => {
     getDefaultPayinMethod,
     setDefaultPayinMethod,
     getCardInfo,
-    deleteCard
+    deleteCard,
+    getCards
   }
 }
 

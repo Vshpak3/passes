@@ -24,8 +24,10 @@ import { errorMessage } from "src/helpers/error"
 import encrypt from "src/helpers/openpgp"
 import { useUser } from "src/hooks"
 import { v4 } from "uuid"
-
-const AddCard = () => {
+interface IAddCard {
+  callback?: () => void
+}
+const AddCard = ({ callback }: IAddCard) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
@@ -88,7 +90,11 @@ const AddCard = () => {
         circleCreateCardAndExtraRequestDto: payload
       })
       toast.success("Credit card added succesfully")
-      addOrPopStackHandler(SubTabsEnum.PaymentSettings)
+      if (callback) {
+        callback()
+      } else {
+        addOrPopStackHandler(SubTabsEnum.PaymentSettings)
+      }
     } catch (error: any) {
       const toastError = await errorMessage(error)
 

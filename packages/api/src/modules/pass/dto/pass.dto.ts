@@ -42,7 +42,7 @@ export class PassDto {
 
   @Min(0)
   @DtoProperty({ type: 'number', nullable: true })
-  nativePrice: number | null
+  ethPrice: number | null
 
   @Min(0)
   @DtoProperty({ type: 'number', nullable: true, optional: true })
@@ -105,6 +105,7 @@ export class PassDto {
       this.createdAt = pass.created_at
       this.chain = pass.chain
       this.collectionAddress = pass.collection_address
+      this.ethPrice = pass.eth_price
 
       this.creatorUsername = pass.creator_username
       this.creatorDisplayName = pass.creator_display_name
