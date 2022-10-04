@@ -37,7 +37,7 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
     return await api.registerTipPost({
       tipPostRequestDto: {
         postId,
-        amount: getValues("tip-value"),
+        amount: Number(getValues("tip-value")),
         payinMethod: defaultPayinMethod
       }
     })
@@ -46,7 +46,7 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
   const registerData = async () => {
     return {
       blocked: undefined,
-      amount: getValues("tip-value")
+      amount: Number(getValues("tip-value"))
     } as PayinDataDto
   }
 
