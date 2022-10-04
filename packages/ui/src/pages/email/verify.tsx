@@ -2,6 +2,7 @@ import { AuthApi } from "@passes/api-client/apis"
 import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { Text, Wordmark } from "src/components/atoms"
 import {
   authRouter,
@@ -47,7 +48,7 @@ const VerifyEmailPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          alert("ERROR: Received no access token")
+          toast.error("Error: Received no access token")
         }
 
         authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))

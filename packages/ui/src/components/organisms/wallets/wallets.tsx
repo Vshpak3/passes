@@ -31,7 +31,7 @@ const Wallets = () => {
     setIsModalOpen(false)
     try {
       if (!window.ethereum) {
-        alert("Metamask is not installed!")
+        toast.error("Metamask is not installed!")
         return
       }
 
@@ -43,7 +43,7 @@ const Wallets = () => {
       const rawMessage = await getMessageToSign(walletAddress, "eth")
 
       if (!rawMessage) {
-        alert("Failed to get message to sign from API")
+        toast.error("Failed to get message to sign from API")
         return
       }
 
@@ -68,7 +68,7 @@ const Wallets = () => {
     setIsModalOpen(false)
     try {
       if (!window.solana) {
-        alert("Phantom is not installed!")
+        toast.error("Phantom is not installed!")
         return
       }
 
@@ -77,7 +77,7 @@ const Wallets = () => {
       const rawMessage = await getMessageToSign(walletAddress, "sol")
 
       if (!rawMessage) {
-        alert("Failed to get message to sign from API")
+        toast.error("Failed to get message to sign from API")
         return
       }
 
@@ -136,10 +136,10 @@ const Wallets = () => {
           chain
         }
       })
-      .catch(({ message }) => toast(message))
+      .catch(({ message }) => toast.error(message))
     setValue("address", "")
     await setTimeout(() => undefined, 50)
-    mutate().catch(({ message }) => toast(message))
+    mutate().catch(({ message }) => toast.error(message))
   }
 
   const deleteWalletHandler = async (id: string) => {

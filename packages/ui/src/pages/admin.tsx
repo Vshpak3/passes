@@ -2,6 +2,7 @@ import { AdminApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useUser } from "src/hooks"
 
@@ -41,8 +42,8 @@ const AdminPage = () => {
       refreshUser()
 
       router.push("/home")
-    } catch (err: unknown) {
-      alert(err)
+    } catch (err: any) {
+      toast.error(err)
     }
   }
 
@@ -56,8 +57,8 @@ const AdminPage = () => {
       await api.flagAsAdult({
         adminDto: { userId, username, secret }
       })
-    } catch (err: unknown) {
-      alert(err)
+    } catch (err: any) {
+      toast.error(err)
     }
   }
 
@@ -66,17 +67,17 @@ const AdminPage = () => {
     data: Record<string, string | undefined>
   ) => {
     if (!data.secret) {
-      alert("Secret is required")
+      toast.error("Secret is required")
       return
     }
 
     if (!data.userId && !data.username) {
-      alert("User ID or Username is required")
+      toast.error("User ID or Username is required")
       return
     }
 
     if (data.userId && data.username) {
-      alert("Cannot set both User ID and Username")
+      toast.error("Cannot set both User ID and Username")
       return
     }
 

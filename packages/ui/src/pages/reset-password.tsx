@@ -64,7 +64,7 @@ const NewPassword = () => {
 
       const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
-        alert("ERROR: Received no access token")
+        toast.error("ERROR: Received no access token")
         return
       }
 

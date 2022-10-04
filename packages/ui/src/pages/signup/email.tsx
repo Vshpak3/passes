@@ -57,7 +57,7 @@ const UserEmailPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          alert("ERROR: Received no access token")
+          toast.error("Error: Received no access token")
         }
 
         router.push(authStateToRoute(AuthStates.VERIFY))
