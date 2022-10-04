@@ -41,11 +41,7 @@ const securityHeaders = [
 
 const nextConfig = {
   images: {
-    domains: [
-      process.env.NEXT_PUBLIC_CDN_URL,
-      "localhost",
-      "upload.wikimedia.org"
-    ]
+    domains: [process.env.NEXT_PUBLIC_CDN_URL, "localhost"]
   },
   reactStrictMode: false,
   i18n: {

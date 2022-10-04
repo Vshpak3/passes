@@ -18,13 +18,10 @@ interface IGetVaultData {
   category: TVaultCategory
 }
 
-async function fetchVaultData({ type, category }: IGetVaultData) {
-  const data = await api.getVaultContent({
-    getVaultQueryRequestDto: {
-      category,
-      type
-    }
-  })
+async function fetchVaultData({
+  type,
+  category
+}: IGetVaultData): Promise<ContentDto[]> {
   /**
    * TODO: We are mapping the data to include mocked data that is not yet
    * available from the API. Once the data is available, we can
@@ -36,14 +33,14 @@ async function fetchVaultData({ type, category }: IGetVaultData) {
    * - totalLikes: number
    * - totalTips: number
    */
-  const MOCKED: ContentDto[] = data.contents.map((data: any) => ({
-    ...data,
-
-    // move this placeholder image in-house
-    signedUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-  }))
-  return MOCKED
+  return (
+    await api.getVaultContent({
+      getVaultQueryRequestDto: {
+        category,
+        type
+      }
+    })
+  ).contents
 
   // return data.contents
 }

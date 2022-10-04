@@ -130,7 +130,19 @@ export class ContentService {
       lastId,
     )
     const result = await query
-    return result.map((content) => new ContentDto(content, ''))
+    return Promise.all(
+      result.map(
+        async (content) =>
+          new ContentDto(
+            content,
+            await this.preSignMediaContent(
+              content.user_id,
+              content.id,
+              content.content_type,
+            ),
+          ),
+      ),
+    )
   }
 
   async preSignMediaContent(

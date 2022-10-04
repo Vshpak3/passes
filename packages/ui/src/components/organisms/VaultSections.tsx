@@ -117,10 +117,10 @@ const VaultMediaGrid = ({
   vaultContent
 }: IVaultMediaGrid) => {
   const emptyGrid = new Array(3).fill(0).map(composeEmptyGrid)
-  const mediaGrid = vaultContent?.map((item) => (
+  const mediaGrid = vaultContent?.map((content) => (
     <VaultMediaItem
-      key={item.contentId}
-      itemData={item}
+      key={content.contentId}
+      content={content}
       selectedItems={selectedItems}
       setSelectedItems={setSelectedItems}
     />

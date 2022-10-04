@@ -28,25 +28,25 @@ const INITIAL_DATE = { day: "1", month: "Jan" }
 interface IUseVaultSelect {
   selectedItems: Array<string>
   setSelectedItems: Dispatch<SetStateAction<Array<string>>>
-  itemData: ContentDto
+  content: ContentDto
 }
 
 const useVaultSelect = ({
   selectedItems = [],
   setSelectedItems,
-  itemData
+  content
 }: IUseVaultSelect) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [date, setDate] = useState(INITIAL_DATE)
 
-  const isSelected = selectedItems.includes(itemData.contentId)
+  const isSelected = selectedItems.includes(content.contentId)
 
   const handleSelectItem = () => {
-    setSelectedItems([...selectedItems, itemData.contentId])
+    setSelectedItems([...selectedItems, content.contentId])
   }
   const handleRemoveItem = () => {
     const itemsArr = selectedItems.slice()
-    itemsArr.splice(itemsArr.indexOf(itemData.contentId), 1)
+    itemsArr.splice(itemsArr.indexOf(content.contentId), 1)
     setSelectedItems(itemsArr)
   }
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
