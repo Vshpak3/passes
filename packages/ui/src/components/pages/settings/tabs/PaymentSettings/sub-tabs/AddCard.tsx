@@ -81,7 +81,6 @@ const AddCard = ({ callback }: IAddCard) => {
         publicKey as CircleEncryptionKeyResponseDto
       )
       const { encryptedMessage, keyId } = encryptedData
-      console.log(encryptedMessage)
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
 

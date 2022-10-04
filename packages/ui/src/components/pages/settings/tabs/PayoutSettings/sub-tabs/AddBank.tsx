@@ -64,7 +64,6 @@ const AddBank = () => {
           country: iso3311a2.getCode(values["bank-country"])
         }
       }
-      console.log(payload)
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })

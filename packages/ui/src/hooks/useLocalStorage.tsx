@@ -25,7 +25,7 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
       const item = window.localStorage.getItem(key)
       return item ? (parseJSON(item) as T) : initialValue
     } catch (error) {
-      console.warn(`Error reading localStorage key “${key}”:`, error)
+      console.error(`Error reading localStorage key “${key}”:`, error)
       return initialValue
     }
   }, [initialValue, key])
@@ -34,7 +34,7 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
 
   const setValue: SetValue<T> = useEventCallback((value: any) => {
     if (typeof window == "undefined") {
-      console.warn(
+      console.error(
         `Tried setting localStorage key “${key}” even though environment is not a client`
       )
     }
@@ -51,7 +51,7 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
 
       window.dispatchEvent(new Event("local-storage"))
     } catch (error) {
-      console.warn(`Error setting localStorage key "${key}":`, error)
+      console.error(`Error setting localStorage key "${key}":`, error)
     }
   })
 

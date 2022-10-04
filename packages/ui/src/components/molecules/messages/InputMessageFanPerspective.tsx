@@ -59,7 +59,6 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
 
       reset()
     } catch (error) {
-      console.log(error, "message error")
       setError("submitError", {
         type: "custom",
         message: "There was an error sending the message"
@@ -91,7 +90,6 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
   useDebouncedEffect(
     () => {
       if (channelId && tip !== null) {
-        console.log("rendered TIP")
         submitData()
       }
     },

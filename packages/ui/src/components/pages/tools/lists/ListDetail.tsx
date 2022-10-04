@@ -264,7 +264,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
           }
           setIsEditingListName((isEditingListName) => !isEditingListName)
         } catch (error) {
-          console.warn("Update list name error, status: ", error)
+          console.error("Update list name error, status: ", error)
         }
       } else {
         setIsEditingListName((isEditingListName) => !isEditingListName)

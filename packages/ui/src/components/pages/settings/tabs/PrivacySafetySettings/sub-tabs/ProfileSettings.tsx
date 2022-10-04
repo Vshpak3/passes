@@ -25,7 +25,6 @@ const ProfileSettings = () => {
   const saveProfileSettingsHandler = async (values: typeof defaultValues) => {
     // const { fullPrivateProfile, ...countSettings } = values
     // await privateProfileHandler(fullPrivateProfile)
-    console.log(values)
     await updateCreatorSettings(values)
   }
 

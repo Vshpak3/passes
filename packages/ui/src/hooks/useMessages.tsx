@@ -21,7 +21,6 @@ const useMessages = ({ channelOrderType }: UseMessagesProps) => {
     recent?: Date
     tip?: number
   } = {}) => {
-    console.log("channels")
     return api.getChannels({
       getChannelsRequestDto: {
         unreadOnly: false,

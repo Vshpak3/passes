@@ -72,6 +72,7 @@ const VaultNavigation = ({
                   // TODO: connect with API to get selected items and add to new message
                   onAddToMessage={() => pushToMessages()}
                   // TODO: connect with API to get selected items and add to new post
+                  // eslint-disable-next-line no-console
                   onAddToPost={() => console.log("add to post")}
                 />
               </>
@@ -100,6 +101,7 @@ const VaultNavigation = ({
         toggleDeleteModal={toggleDeleteModal}
         deleteModalActive={deleteModalActive}
         // TODO: connect with API to get selected items and delete items
+        // eslint-disable-next-line no-console
         onDeleteVaultItems={() => console.log("delete items")}
         setDeleteModalActive={setDeleteModalActive}
       />

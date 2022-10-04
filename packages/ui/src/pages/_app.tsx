@@ -58,6 +58,7 @@ Router.events.on("routeChangeError", () => {
 // Refreshes auth token
 function refreshAuth(): void {
   refreshAccessToken()
+    // eslint-disable-next-line no-console
     .then((r) => r && console.log("Access token was refreshed"))
     .catch(() => null)
 }

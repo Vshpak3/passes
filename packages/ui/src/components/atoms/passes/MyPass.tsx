@@ -324,6 +324,8 @@ const MyPassTile = ({
               </div>
             ) : (
               <PassTileLabel
+                // TODO:
+                // eslint-disable-next-line no-console
                 onRenewal={() => console.log("on renewal")}
                 expiryDate={expiryDate}
                 willExpireSoon={willExpireSoon}

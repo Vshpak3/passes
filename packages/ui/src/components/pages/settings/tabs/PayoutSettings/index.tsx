@@ -111,7 +111,6 @@ const PayoutSettings = () => {
                 <button
                   disabled={payoutWallet?.walletId === wallet.walletId}
                   onClick={async () => {
-                    console.log("setting")
                     await setDefaultPayoutMethod({
                       walletId: wallet.walletId,
                       method: PayoutMethodDtoMethodEnum.CircleUsdc
