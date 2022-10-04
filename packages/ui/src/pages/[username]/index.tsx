@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic"
+import { useEffect, useState } from "react"
 import NoProfile from "src/components/organisms/NoProfile"
 import { MainContentProps } from "src/components/organisms/profile/main-content"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
@@ -35,8 +36,19 @@ const Profile = () => {
     profileUsername,
     onCloseEditProfile,
     creatorStats,
+    mutatePosts,
     isLoading
   } = useCreatorProfile()
+  const [isDeletedPost, setIsDeletedPost] = useState(false)
+
+  useEffect(() => {
+    if (isDeletedPost) {
+      mutatePosts()
+      return setIsDeletedPost(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDeletedPost])
+
   if (isLoading) {
     return <></>
   }
@@ -67,6 +79,7 @@ const Profile = () => {
             profile={profile}
             ownsProfile={ownsProfile}
             posts={posts}
+            setIsDeletedPost={setIsDeletedPost}
             fanWallPosts={fanWallPosts}
             profileUsername={profileUsername ?? ""}
           />

@@ -56,11 +56,11 @@ import { copyToClipboard, PostDropdown } from "./post-dropdown"
 interface PostProps {
   post: PostDto
   ownsProfile: boolean
+  removePost?: (postId: string) => void
 }
 
-export const Post = ({ post, ownsProfile }: PostProps) => {
+export const Post = ({ post, ownsProfile, removePost }: PostProps) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
-  // const [postPinned, setPostPinned] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<any>(null)
@@ -74,7 +74,17 @@ export const Post = ({ post, ownsProfile }: PostProps) => {
     {
       text: "Block",
       onClick: () => setUserBlockModal(true)
-    }
+    },
+    ...(post.userId === user?.id
+      ? [
+          {
+            text: "Delete",
+            onClick: () => {
+              removePost && removePost(post.postId)
+            }
+          }
+        ]
+      : [])
   ]
 
   return (
@@ -88,12 +98,7 @@ export const Post = ({ post, ownsProfile }: PostProps) => {
         />
       )}
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
-        <PostProfileAvatar
-          post={post}
-          // postPinned={postPinned}
-          // setPostPinned={setPostPinned}
-          dropdownItems={getDropdownOptions}
-        />
+        <PostProfileAvatar post={post} dropdownItems={getDropdownOptions} />
         <BlockModal
           isOpen={userBlockModal}
           setOpen={setUserBlockModal}

@@ -7,11 +7,13 @@ import { Post } from "./post"
 interface CreatorContentFeedProps {
   posts: PostDto[]
   ownsProfile: boolean
+  removePost?: (postId: string) => void
 }
 
 const CreatorContentFeed = ({
   posts: existingPosts,
-  ownsProfile
+  ownsProfile,
+  removePost
 }: CreatorContentFeedProps) => {
   // TODO: implement pagination with infinite scroll, and loading state
   const [posts] = useState([...existingPosts])
@@ -35,6 +37,7 @@ const CreatorContentFeed = ({
                 key={`post_${index}`}
                 post={post}
                 ownsProfile={ownsProfile}
+                removePost={removePost}
               />
             </div>
           ))}

@@ -21,6 +21,7 @@ export interface NewsFeedContentProps {
   fanWallPosts?: GetFanWallResponseDto
   createPost: (values: CreatePostRequestDto) => void
   writeToFanWall: (values: CreatePostRequestDto) => Promise<void>
+  removePost?: (postId: string) => void
 }
 
 const NewsFeedContent: FC<NewsFeedContentProps> = ({
@@ -31,6 +32,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
   posts,
   fanWallPosts,
   createPost,
+  removePost,
   writeToFanWall
 }) => {
   switch (activeTab) {
@@ -45,7 +47,11 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
             />
           )}
           {posts?.length > 0 && (
-            <CreatorContentFeed posts={posts} ownsProfile={ownsProfile} />
+            <CreatorContentFeed
+              posts={posts}
+              removePost={removePost}
+              ownsProfile={ownsProfile}
+            />
           )}
         </>
       )

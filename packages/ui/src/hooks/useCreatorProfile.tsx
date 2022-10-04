@@ -159,6 +159,7 @@ const useCreatorProfile = () => {
     isLoadingFanWallPosts,
     isLoadingCreatorPasses,
     posts: profilePosts.posts,
+    mutatePosts,
     profile,
     profileUsername
   }
