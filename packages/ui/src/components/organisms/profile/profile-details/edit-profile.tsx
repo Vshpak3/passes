@@ -101,7 +101,7 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
               className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
               onClick={handleSubmit(() => onSubmit(getValues()))}
             >
-              Confirm and Continue
+              Save
             </span>
           </div>
         }
@@ -175,7 +175,7 @@ export const EditProfile = ({ profile, onSubmit, onCloseEditProfile }: any) => {
             </div>
             <div className="pt-3">
               <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
-                Social Media (username)
+                Social Media Usernames
               </span>
               <div className="grid w-full grid-cols-6 gap-3 pb-2 ">
                 {Object.entries(socialMediaForm).map(([key, input]) => {
