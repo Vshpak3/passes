@@ -133,25 +133,25 @@ export class ContentService {
     return result.map((content) => new ContentDto(content, ''))
   }
 
-  async preSignUploadContent(userId: string, contentType: ContentTypeEnum) {
-    const contentId = await this.createContent(userId, { contentType })
-    return this.s3contentService.preSignUrl(
-      `upload/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
-    )
-  }
-
   async preSignMediaContent(
     userId: string,
     contentId: string,
     contentType: ContentTypeEnum,
   ) {
-    return this.s3contentService.preSignUrl(
+    return this.s3contentService.signUrlForContentViewing(
       `media/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
     )
   }
 
+  async preSignUploadContent(userId: string, contentType: ContentTypeEnum) {
+    const contentId = await this.createContent(userId, { contentType })
+    return this.s3contentService.signUrlForContentUpload(
+      `upload/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
+    )
+  }
+
   async preSignProfileImage(userId: string, type: 'profile' | 'banner') {
-    return this.s3contentService.preSignUrl(
+    return this.s3contentService.signUrlForContentUpload(
       `profile/upload/${userId}/${type}.${ContentFormatEnum.IMAGE}`,
     )
   }
@@ -162,13 +162,15 @@ export class ContentService {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }
 
-    return this.s3contentService.preSignUrl(
+    return this.s3contentService.signUrlForContentUpload(
       `pass/upload/${userId}/${pass.passId}.${ContentFormatEnum.IMAGE}`,
     )
   }
 
   async preSignW9(userId: string) {
-    return this.s3contentService.preSignUrl(`w9/${userId}/upload.pdf`)
+    return this.s3contentService.signUrlForContentUpload(
+      `w9/${userId}/upload.pdf`,
+    )
   }
 
   async validateContentIds(userId: string, contentIds: string[]) {

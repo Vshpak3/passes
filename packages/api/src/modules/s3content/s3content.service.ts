@@ -144,13 +144,11 @@ export class S3ContentService {
    * @param path
    * @returns
    */
-  async signUrl(path: string) {
+  async signUrlForContentViewing(path: string): Promise<string> {
     const url = this.cloudfrontUrl + '/' + path
 
     if (this.env === 'dev') {
-      return {
-        url,
-      }
+      return url
     }
 
     const expirationTime = new Date(
@@ -164,9 +162,7 @@ export class S3ContentService {
       privateKey: this.privateKey,
     })
 
-    return {
-      url: signedUrl,
-    }
+    return signedUrl
   }
 
   /**
@@ -176,7 +172,7 @@ export class S3ContentService {
    * @param path path where file will be uploaded to. Starts with one of the upstream directories (profile | pass | nft | upload)
    * @returns signed url used to upload files to
    */
-  async preSignUrl(path: string) {
+  async signUrlForContentUpload(path: string): Promise<string> {
     const folder = this.getFolderFromPath(path)
     const rest = path.split(folder + '/')[1]
     const Bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
@@ -201,7 +197,7 @@ export class S3ContentService {
    * @param path object path
    * @returns true if object exists. false if status code is 404
    */
-  async doesObjectExist(path: string) {
+  async doesObjectExist(path: string): Promise<boolean> {
     if (this.env === 'dev') {
       return true
     }
