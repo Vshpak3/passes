@@ -6,20 +6,21 @@ import { isProd } from "src/helpers/env"
 import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
 
-type WithPageLayoutOptions = {
-  skipAuth?: boolean
-  header?: boolean
-  sidebar?: boolean
+class WithPageLayoutOptions {
+  skipAuth?: boolean = false
+  header?: boolean = true
+  sidebar?: boolean = true
+
+  constructor(init?: Partial<WithPageLayoutOptions>) {
+    Object.assign(this, init)
+  }
 }
 
 export const withPageLayout = (
   Page: any,
-  options: WithPageLayoutOptions = {
-    skipAuth: false,
-    header: true,
-    sidebar: true
-  }
+  options: WithPageLayoutOptions = {}
 ) => {
+  options = new WithPageLayoutOptions(options)
   const WithPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
       <MainContextProvider>

@@ -80,8 +80,4 @@ const Profile = () => {
   )
 }
 
-export default withPageLayout(Profile, {
-  skipAuth: true,
-  header: true,
-  sidebar: true
-})
+export default withPageLayout(Profile, { skipAuth: true })

@@ -149,4 +149,4 @@ const Performance = () => {
   )
 }
 
-export default withPageLayout(Performance, { header: false, sidebar: true })
+export default withPageLayout(Performance, { header: false })

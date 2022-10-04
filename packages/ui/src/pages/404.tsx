@@ -25,8 +25,4 @@ export const NotFoundPage: FC = () => (
   </div>
 )
 
-export default withPageLayout(NotFoundPage, {
-  skipAuth: true,
-  header: true,
-  sidebar: true
-})
+export default withPageLayout(NotFoundPage, { skipAuth: true })

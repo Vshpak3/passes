@@ -35,4 +35,4 @@ const CreatePass = () => {
   )
 }
 
-export default withPageLayout(CreatePass, { header: true, sidebar: true })
+export default withPageLayout(CreatePass)
