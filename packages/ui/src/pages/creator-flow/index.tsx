@@ -128,7 +128,7 @@ const CreatorFlow = () => {
             <div className="flex h-16">{/* Moment Logo Here */}</div>
             <div className="flex flex-col items-center">
               <div className="text-4xl text-white ">Become a creator</div>
-              <div className="wrap mt-6 flex w-4/5 max-w-screen-lg flex-row rounded-full bg-black">
+              <div className="mt-6 flex w-4/5 max-w-screen-lg flex-row items-center rounded-full bg-black">
                 {Object.values(CREATOR_STEPS).map((step: string) => {
                   return (
                     <CreatorSteps

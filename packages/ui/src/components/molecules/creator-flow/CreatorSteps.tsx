@@ -12,11 +12,11 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
     <>
       {/* small screens */}
       <div
-        className={`flex flex-row items-center  gap-3 rounded-full py-3 text-white sm:hidden
+        className={`flex flex-row items-center  gap-3 rounded-full py-3 text-white md:hidden
         ${
           isSelected
             ? "flex-1 pl-6"
-            : "w-[66px] items-center justify-center border border-gray-700"
+            : "h-12 w-12 flex-shrink-0 items-center justify-center border border-gray-700 xs:aspect-1 xs:h-full xs:w-auto"
         }`}
       >
         <div
@@ -37,7 +37,7 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
       </div>
       {/* md and up Screen */}
       <div
-        className={`hidden flex-1 flex-row items-center gap-3 rounded-full py-3 pl-6 text-white sm:flex
+        className={`hidden flex-1 flex-row items-center gap-3 rounded-full py-3 pl-6 text-white md:flex
         ${isSelected ? "border border-gray-700" : ""}`}
       >
         <div

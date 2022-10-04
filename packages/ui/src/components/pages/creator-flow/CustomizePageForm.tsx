@@ -106,16 +106,16 @@ const CustomizePageForm = ({
     <div className="flex justify-center pb-20 text-white">
       <form
         onSubmit={handleSubmit(saveProfileHandler)}
-        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-40"
+        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 sidebar-collapse:px-40"
       >
-        <div className="mb-6 flex flex-col items-center justify-center px-16 sm:px-32">
+        <div className="mb-6 flex flex-col items-center justify-center">
           <p className="mb-3 text-2xl">Tell us about your page</p>
           <p className="hidden text-slate-400 sm:flex">
             All of this info you can change at any time!
           </p>
         </div>
 
-        <div className="mb-6 flex flex-col px-12 sm:px-20">
+        <div className="mb-6 flex flex-col">
           <FormImage
             setValue={setValue}
             register={register}
@@ -148,10 +148,10 @@ const CustomizePageForm = ({
             cropWidth={400}
             cropHeight={400}
             inputUI={
-              <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full  ">
+              <div className="relative -mt-20 ml-[26px] flex h-28 w-28 items-center justify-center rounded-full sm:-mt-24 sm:h-[138px] sm:w-[138px]  ">
                 <img
                   alt=""
-                  className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
+                  className="z-20 h-full w-full cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
@@ -163,7 +163,7 @@ const CustomizePageForm = ({
           />
         </div>
 
-        <div className="mb-6 flex flex-col gap-6 px-12 sm:px-28">
+        <div className="mb-6 flex flex-col gap-6">
           <div className="flex flex-col gap-[6px]">
             <div className="text-[#b3bee7] opacity-[0.6]">Display Name</div>
             <FormInput
@@ -300,7 +300,7 @@ const CustomizePageForm = ({
           </div>
         </div>
 
-        <div className="mb-6 flex gap-[6px] px-12 sm:px-20">
+        <div className="mb-6 flex gap-[6px]">
           <FormInput
             register={register}
             type="checkbox"
@@ -314,7 +314,7 @@ const CustomizePageForm = ({
           </div>
         </div>
 
-        <div className="mb-6 flex flex-col px-12 sm:px-20">
+        <div className="mb-6 flex flex-col">
           <PassesPinkButton
             name="Continue"
             type={ButtonTypeEnum.SUBMIT}
