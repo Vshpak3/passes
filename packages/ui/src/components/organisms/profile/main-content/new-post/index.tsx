@@ -6,7 +6,6 @@ import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
-import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -455,8 +454,9 @@ export const NewPost = ({
                     Who&apos;s is this content for?
                   </span>
                   <div className="flex flex-col items-start gap-[15px]">
-                    <span className="text-base font-medium leading-[22px] text-[#FFFFFF] ">
-                      Free content for
+                    <span className="text-small leading-[22px] text-[#FFFFFF] ">
+                      These pass holders will be able to view your content for
+                      free
                     </span>
                     <NewPostDropdown
                       register={register}
@@ -472,9 +472,8 @@ export const NewPost = ({
                 <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
                   <div className="flex flex-1 items-center gap-1 pb-5 sm:gap-4">
                     <span className="text-xs text-[#ffff] sm:text-base">
-                      Paid for (if not in the audience list)
+                      Price (if not an above pass holder)
                     </span>
-                    <InfoIcon />
                     <div className="relative flex max-w-[140px] justify-between rounded-md shadow-sm">
                       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                         <span className="text-base font-bold text-[#ffffff]/40">

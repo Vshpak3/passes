@@ -19,7 +19,7 @@ export const NewPostDropdown = ({
         <div className="flex items-center gap-[10px] ">
           <AudienceIcon />
           <span className="text-base font-bold text-[#FFFFFF]/90">
-            Select Audience
+            Select Pass
           </span>
         </div>
         <AudienceChevronIcon className="ml-[77px]" />
