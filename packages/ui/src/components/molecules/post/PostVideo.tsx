@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import { Video } from "src/components/atoms/Video"
 import { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
@@ -7,10 +6,8 @@ interface PostVideoProps {
 }
 
 const PostVideo = ({ videoUrl }: PostVideoProps) => {
-  const playerRef = useRef<VideoJsPlayer | null>(null)
-
   const videoJsOptions: VideoJsPlayerOptions = {
-    autoplay: true,
+    autoplay: false,
     controls: true,
     responsive: true,
     fluid: true,
@@ -22,9 +19,9 @@ const PostVideo = ({ videoUrl }: PostVideoProps) => {
     ]
   }
 
-  const handlePlayerReady = (player: VideoJsPlayer) => {
-    playerRef.current = player
-  }
+  // TODO: add this callback
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  const handlePlayerReady = (player: VideoJsPlayer) => {}
 
   return <Video options={videoJsOptions} onReady={handlePlayerReady} />
 }

@@ -7,7 +7,7 @@ const SidebarHeader = () => {
       <div className="">
         <LogoSmall className="flex-no-shrink fill-current sidebar-collapse:hidden" />
         {/* <UpdatedPassesLogo className="ml-10 hidden h-[26px] w-[136px] fill-current sidebar-collapse:block " /> */}
-        <h1 className="font-display ml-2 mt-2 hidden fill-current text-[46px] font-semibold tracking-tight text-white sidebar-collapse:block">
+        <h1 className="font-display ml-2 mt-2 hidden select-none fill-current text-[46px] font-semibold tracking-tight text-white sidebar-collapse:block">
           {/* TODO: replace with new logo passes */}
           Passes
         </h1>
