@@ -28,7 +28,7 @@ import {
 export const GiphyContext = React.createContext({})
 
 interface MessagesComponentProps {
-  username
+  username: any
 }
 
 const MessagesComponent: FC<MessagesComponentProps> = ({ username }) => {

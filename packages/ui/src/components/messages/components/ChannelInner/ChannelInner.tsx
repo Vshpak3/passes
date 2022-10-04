@@ -275,7 +275,7 @@ export const ChannelInner = (props: any) => {
 }
 
 interface GalleryMediaProps {
-  media
+  media: any
   isCreator: any
 }
 
