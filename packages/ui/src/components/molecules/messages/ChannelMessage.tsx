@@ -1,6 +1,7 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import classNames from "classnames"
 import React, { useEffect } from "react"
+import { SentStatus } from "src/components/messages/assets/SentStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 
 import { Avatar, Content } from "./index"
@@ -49,6 +50,7 @@ export const ChannelMessage = ({
       {message && message?.tipAmount !== undefined && message?.tipAmount > 0 ? (
         <div className="mx-4 flex flex-col items-start">
           <TippedMessage tipAmount={message?.tipAmount} />
+          <SentStatus />
         </div>
       ) : (
         <div className="mx-4 flex flex-col items-end">

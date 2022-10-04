@@ -1,6 +1,8 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ms from "ms"
 import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
+import { PendingStatus } from "src/components/messages/assets/PendingStatus"
+import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 // import { TippedMessage } from "../direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/free-messages-left-container"
 import { useUser } from "src/hooks"
@@ -181,7 +183,19 @@ export const ChannelStream = ({
         </div>
       )}
       {pendingMessages.length > 0 &&
-        pendingMessages.map((m) => <div key={m.messageId}>{m.messageId}</div>)}
+        pendingMessages.map((m, i) => {
+          return (
+            <div
+              key={i}
+              className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
+            >
+              <div className="mx-4 flex flex-col items-start">
+                <TippedMessage tipAmount={m?.tipAmount} />
+                <PendingStatus />
+              </div>
+            </div>
+          )
+        })}
 
       {/* Dummy ref to allow scrolling to bottom of chat */}
       <div ref={bottomOfChatRef} />

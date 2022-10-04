@@ -66,11 +66,12 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
     }
   }
 
-  // TODO: sendMessageData
-  // TODO: Dealing with certain BlockedReasonEnum
   const onCallback = (error: any) => {
-    if (!error) {
-      // setValue("text", "", { shouldValidate: true })
+    if (error) {
+      setError("submitError", {
+        type: "custom",
+        message: "There was an error sending the message"
+      })
     }
   }
 
@@ -167,6 +168,7 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
                 {String(submitError.message)}
               </span>
             )}
+            {blocked && <span className="text-red-500">{String(blocked)}</span>}
           </div>
         </div>
       </div>
