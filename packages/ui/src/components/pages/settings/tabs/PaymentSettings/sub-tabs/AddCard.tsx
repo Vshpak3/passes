@@ -7,15 +7,11 @@ import { SHA256 } from "crypto-js"
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
-import AmexCardIcon from "public/icons/amex-icon.svg"
-import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import InfoIcon from "public/icons/info-icon.svg"
-import MasterCardIcon from "public/icons/mastercard-icon.svg"
-import VisaIcon from "public/icons/visa-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, Select } from "src/components/atoms"
+import { CreditCardInput, FormInput, Select } from "src/components/atoms"
 import { EIcon } from "src/components/atoms/Input"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
@@ -37,10 +33,11 @@ const AddCard = ({ callback }: IAddCard) => {
   const {
     handleSubmit,
     register,
+    control,
     watch,
     getValues,
     formState: { errors }
-  } = useForm<{ country: string }>({
+  } = useForm<{ country: string; "card-number": string }>({
     defaultValues: {}
   })
 
@@ -52,7 +49,10 @@ const AddCard = ({ callback }: IAddCard) => {
     try {
       const values: any = getValues()
       const cardDetails = {
-        number: values["card-number"].trim().replace(/\D/g, ""),
+        number: values["card-number"]
+          .trim()
+          .replace(/\D/g, "")
+          .replace(/\s/g, ""),
         cvv: values["cvv"]
       }
       const payload = {
@@ -126,24 +126,12 @@ const AddCard = ({ callback }: IAddCard) => {
       <span className="mt-3 block text-[16px] font-[500] text-white">
         Card Info
       </span>
-      <FormInput
-        register={register}
-        type="number"
+      <CreditCardInput
+        control={control}
         name="card-number"
-        placeholder="4444 1902 0192 0100"
-        errors={errors}
-        options={{
+        rules={{
           required: { message: "Card number is required", value: true }
         }}
-        icon={
-          <div className="absolute left-[240px] top-[15px] flex h-8 w-8 flex-row gap-2">
-            <DiscoverCardIcon />
-            <AmexCardIcon />
-            <MasterCardIcon />
-            <VisaIcon />
-          </div>
-        }
-        className="mt-4 border-passes-dark-100 bg-transparent"
       />
       <FormInput
         register={register}
@@ -207,7 +195,10 @@ const AddCard = ({ callback }: IAddCard) => {
             placeholder="080"
             errors={errors}
             options={{
-              required: { message: "Card number is required", value: true },
+              required: {
+                message: "CVV is required",
+                value: true
+              },
               pattern: { message: "must be card number", value: /\d{3}/ }
             }}
             className="mt-2 w-[71px] border-passes-dark-100 bg-transparent"

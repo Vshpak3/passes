@@ -9,6 +9,7 @@ import {
   PostUnlockButton
 } from "./Button"
 import Checkbox from "./Checkbox"
+import { CreditCardInput } from "./CreditCardInput"
 import CssTile from "./CssTile"
 import File from "./File"
 import FormInput from "./FormInput"
@@ -50,6 +51,7 @@ export {
   CoverButton,
   CreatePassButton,
   CreatePassHeader,
+  CreditCardInput,
   CssTile,
   DefaultHead,
   File,

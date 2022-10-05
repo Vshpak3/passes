@@ -100,10 +100,10 @@ const Input = ({
             {...register(name, options)}
             {...rest}
             className={classNames(
-              `block w-full appearance-none rounded-md border p-2 ${
+              `block w-full appearance-none rounded-md border p-3 ${
                 textPosition === "RIGHT" ? "text-right" : "text-left"
               } min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${
-                icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
+                icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3"
               }`,
               className,
               errors[name] !== undefined ? "!border-red-500" : "border-gray-300"

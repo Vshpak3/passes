@@ -40,7 +40,7 @@ const Select = ({
 }: SelectProps) => {
   const customChange = () => (onChange ? { onChange } : {})
   return (
-    <>
+    <div>
       {label && (
         <Label name={name} label={label} errors={errors} options={options} />
       )}
@@ -75,7 +75,7 @@ const Select = ({
       {errors && errors[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
-    </>
+    </div>
   )
 }
 
