@@ -4,6 +4,7 @@ import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
+import { useEffect, useState } from "react"
 import { FormInput } from "src/components/atoms"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
@@ -12,7 +13,6 @@ import {
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-import { useCreatePost } from "src/hooks"
 
 const messagesMediaTypes = [
   {
@@ -63,6 +63,7 @@ type UploadPostMediaProps = {
   errors: FormErrors
   options?: FormOptions
   onChange: (event: any) => void
+  postTime: Date | null
 }
 
 const MediaHeader = ({
@@ -71,15 +72,27 @@ const MediaHeader = ({
   errors,
   options = {},
   onChange,
-  activeMediaHeader
+  activeMediaHeader,
+  postTime
 }: UploadPostMediaProps) => {
-  const { scheduledPostTime } = useCreatePost()
+  const [scheduledPostTime, setScheduledPostTime] = useState<Date | null>(
+    postTime
+  )
+
   let _mediaTypes = []
   if (messages) {
     _mediaTypes = messagesMediaTypes
   } else {
     _mediaTypes = mediaTypes
   }
+
+  const handleRemoveScheduledPostTime = () => {
+    setScheduledPostTime(null)
+  }
+
+  useEffect(() => {
+    setScheduledPostTime(postTime)
+  }, [postTime])
 
   return (
     <div className="w-full pb-3">
@@ -206,7 +219,12 @@ const MediaHeader = ({
           />
         )}
       </div>
-      {scheduledPostTime && <PostScheduleAlert />}
+      {scheduledPostTime && (
+        <PostScheduleAlert
+          scheduledPostTime={scheduledPostTime}
+          onRemoveScheduledPostTime={handleRemoveScheduledPostTime}
+        />
+      )}
     </div>
   )
 }

@@ -5819,7 +5819,6 @@ __metadata:
     extendable-media-recorder-wav-encoder: 7.0.74
     framer-motion: 7.1.1
     iso-3166-1-alpha-2: 1.0.0
-    jotai: 1.8.4
     jwt-decode: 3.1.2
     lodash: 4.17.21
     lodash.debounce: 4.0.8
@@ -15741,43 +15740,6 @@ __metadata:
     "@sideway/formula": ^3.0.0
     "@sideway/pinpoint": ^2.0.0
   checksum: 4a29330e0be35f5c8b754b0c0e900936e083901643c09764028605c7beea937e73231bad7425c9d0168998584d2a96d5f05c8d54194d58b7166c9ba4db47eba2
-  languageName: node
-  linkType: hard
-
-"jotai@npm:1.8.4":
-  version: 1.8.4
-  resolution: "jotai@npm:1.8.4"
-  peerDependencies:
-    "@babel/core": "*"
-    "@babel/template": "*"
-    "@tanstack/query-core": "*"
-    "@urql/core": "*"
-    immer: "*"
-    optics-ts: "*"
-    react: ">=16.8"
-    valtio: "*"
-    wonka: "*"
-    xstate: "*"
-  peerDependenciesMeta:
-    "@babel/core":
-      optional: true
-    "@babel/template":
-      optional: true
-    "@tanstack/query-core":
-      optional: true
-    "@urql/core":
-      optional: true
-    immer:
-      optional: true
-    optics-ts:
-      optional: true
-    valtio:
-      optional: true
-    wonka:
-      optional: true
-    xstate:
-      optional: true
-  checksum: a3e9ffe9d1dad088bc965702fb2ae6f14162282d950bcb149f423ca7e8738466892b8b8652b65dda11d26e481056105170b961e4b19caa34400c3402d4e16157
   languageName: node
   linkType: hard
 

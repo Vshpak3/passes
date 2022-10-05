@@ -42,13 +42,15 @@ interface NewPostProps {
   placeholder: any
   createPost: any
   onlyText?: boolean
+  initScheduledTime: Date | null
 }
 
 export const NewPost: FC<NewPostProps> = ({
   passes = [],
   placeholder,
   createPost,
-  onlyText = false
+  onlyText = false,
+  initScheduledTime
 }) => {
   const [hasMounted, setHasMounted] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -94,7 +96,8 @@ export const NewPost: FC<NewPostProps> = ({
 
   useEffect(() => {
     setHasMounted(true)
-  }, [])
+    setValue("scheduledAt", initScheduledTime, { shouldValidate: true })
+  }, [initScheduledTime, setValue])
 
   const onPassSelect = () => {
     const { passes: _passes } = getValues()

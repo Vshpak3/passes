@@ -1,11 +1,7 @@
-// import classNames from "classnames"
 import { CreatePostRequestDto } from "@passes/api-client"
-import moment, { Moment } from "moment"
+import { format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
-// TODO: temporary comment out, please ignore
-// import FileIcon from "public/icons/file-icon.svg"
-// import MessageTextIcon from "public/icons/message-text-icon.svg"
 import { forwardRef, useCallback, useState } from "react"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import { Dialog as NewPostDialog } from "src/components/organisms"
@@ -20,35 +16,15 @@ const CreateSchedulerPopup = forwardRef<
   CreateSchedulerPopupProps
 >((props, ref) => {
   const { onCancel } = props
-  const [selectionDate, setSelectionDate] = useState<Date | undefined>()
-  const [selectionTime, setSelectionTime] = useState<Moment>()
-  // TODO: temporary comment out, please ignore
-  // const [creatingOption, setCreatingOption] = useState("post")
+  const [selectionDate, setSelectionDate] = useState<Date | null>(null)
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const { createPost, setScheduledPostTime } = useCreatePost()
+  const { createPost } = useCreatePost()
 
-  const handleSaveTime = useCallback(
-    (date: Date | undefined, time: Moment) => {
+  const handleSaveTime = useCallback((date: Date | null) => {
+    if (date) {
       setSelectionDate(date)
-      setSelectionTime(time)
-      const selectionDate = new Date(date || "")
-      // add hour into current selectionDate
-      selectionDate.setHours(
-        selectionDate.getHours() + parseInt(time.format("hh"))
-      )
-      // add min into current selectionDate
-      selectionDate.setMinutes(
-        selectionDate.getMinutes() + parseInt(time.format("mm"))
-      )
-      setScheduledPostTime(new Date(selectionDate))
-    },
-    [setScheduledPostTime]
-  )
-
-  // TODO: temporary comment out, please ignore
-  // const handleChangeCreatingOption = useCallback((value: string) => {
-  //   setCreatingOption(value)
-  // }, [])
+    }
+  }, [])
 
   const handleCreatePost = (values: CreatePostRequestDto) => {
     createPost({ ...values })
@@ -67,7 +43,7 @@ const CreateSchedulerPopup = forwardRef<
         <div className="flex items-center gap-4">
           <div className="relative flex h-[45px] flex-1 items-center rounded-md border border-passes-dark-200 bg-passes-dark-700 p-2 text-white">
             <span>
-              {selectionDate ? moment(selectionDate).format("MM/DD/YYYY") : ""}
+              {selectionDate ? format(selectionDate, "MM/dd/yyyy") : ""}
             </span>
             <span className="absolute right-[10px]">
               <CalendarIcon />
@@ -75,7 +51,7 @@ const CreateSchedulerPopup = forwardRef<
           </div>
           <div className="relative flex h-[45px] flex-1 items-center rounded-md border border-passes-dark-200 bg-passes-dark-700 p-2 text-white">
             <span>{`${
-              selectionTime ? selectionTime.format("hh:mm A") : ""
+              selectionDate ? format(selectionDate, "hh:mm a") : ""
             }`}</span>
             <span className="absolute right-[10px]">
               <ClockIcon />
@@ -83,34 +59,6 @@ const CreateSchedulerPopup = forwardRef<
           </div>
         </div>
       </CalendarPicker>
-      {/* TODO: temporary comment out, please ignore */}
-      {/* <span className="my-4 text-base font-medium leading-6 text-white">
-        Choose
-      </span>
-      <div className="flex flex-col gap-3">
-        <div
-          onClick={() => handleChangeCreatingOption("post")}
-          className={classNames({
-            "duration-400 flex h-[45px] w-full flex-1 cursor-pointer items-center gap-3 rounded-md border border-passes-dark-200 bg-passes-dark-700 p-2 font-bold text-white transition-all hover:bg-passes-primary-color":
-              true,
-            "bg-passes-primary-color": creatingOption === "post"
-          })}
-        >
-          <FileIcon />
-          <span>Post</span>
-        </div>
-         <div
-          onClick={() => handleChangeCreatingOption("mass")}
-          className={classNames({
-            "duration-400 flex h-[45px] w-full flex-1 cursor-pointer items-center gap-3 rounded-md border border-passes-dark-200 bg-passes-dark-700 p-2 font-bold text-white transition-all hover:bg-passes-primary-color":
-              true,
-            "bg-passes-primary-color": creatingOption === "mass"
-          })}
-        >
-          <MessageTextIcon />
-          <span>Mass Message</span>
-        </div>
-      </div> */}
       <div className="mt-7 flex items-end justify-end">
         <button
           onClick={onCancel}
@@ -131,6 +79,7 @@ const CreateSchedulerPopup = forwardRef<
         >
           <NewPost
             passes={[]}
+            initScheduledTime={selectionDate}
             createPost={handleCreatePost}
             placeholder="What's on your mind?"
           />

@@ -9,7 +9,6 @@ import moment, { Moment } from "moment"
 import TimePicker from "rc-time-picker"
 import { FC, useCallback, useState } from "react"
 import { DayPicker } from "react-day-picker"
-import { useCreatePost } from "src/hooks"
 
 const css = `
   .rdp {
@@ -113,14 +112,13 @@ const css = `
 
 const CalendarPicker: FC<{
   children: React.ReactNode
-  onSave: (date: Date | undefined, time: Moment) => void
+  onSave: (date: Date | null) => void
 }> = ({ children, onSave }) => {
   const today = new Date()
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(today)
   const [selectionPartTime, setSelectionPartTime] = useState<string>("AM")
   const [selectionTime, setSelectionTime] = useState<Moment>(moment())
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { setScheduledPostTime } = useCreatePost()
 
   const handleSelectToday = useCallback(() => {
     setSelectionDate(new Date())
@@ -133,7 +131,6 @@ const CalendarPicker: FC<{
   }, [])
 
   const handleSaveDateAndTime = useCallback(() => {
-    onSave(selectionDate, selectionTime)
     const targetDate = new Date(selectionDate || "")
     // add hour into current selectionDate
     targetDate.setHours(
@@ -143,10 +140,9 @@ const CalendarPicker: FC<{
     targetDate.setMinutes(
       targetDate.getMinutes() + parseInt(selectionTime.format("mm"))
     )
-    setScheduledPostTime(targetDate)
-    // setScheduledPostTime()
+    onSave(targetDate)
     setAnchorEl(null)
-  }, [onSave, selectionDate, selectionTime, setScheduledPostTime])
+  }, [onSave, selectionDate, selectionTime])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -165,6 +161,8 @@ const CalendarPicker: FC<{
         open={open}
         anchorEl={anchorEl}
         transition
+        disablePortal={false}
+        style={{ zIndex: 10000 }}
         modifiers={[
           {
             name: "offset",

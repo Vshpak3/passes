@@ -45,6 +45,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
         <>
           {ownsProfile && (
             <NewPost
+              initScheduledTime={null}
               // TODO: passes={profile?.passes}
               createPost={createPost}
               placeholder="What's on your mind?"
@@ -64,6 +65,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
       return (
         <>
           <NewPost
+            initScheduledTime={null}
             // TODO: passes={profile?.passes}
             placeholder={`Write something${
               profile?.displayName ? ` to ${profile?.displayName}...` : "..."

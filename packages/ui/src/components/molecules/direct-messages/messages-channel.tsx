@@ -184,6 +184,7 @@ export const MessagesChannel = ({
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-shrink-0 items-center px-6">
             <MediaHeader
+              postTime={null}
               messages={true}
               activeMediaHeader={activeMediaHeader}
               register={register}
