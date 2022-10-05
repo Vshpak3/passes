@@ -95,7 +95,7 @@ export class UserService {
       .where({ email, created: false })
       .select('*')
     for (let i = 0; i < whitelisted.length; ++i) {
-      await this.passService.createPassHolder(userId[i], whitelisted[i].pass_id)
+      await this.passService.createPassHolder(userId, whitelisted[i].pass_id)
       await this.dbWriter<WhitelistedUserEntity>(WhitelistedUserEntity.table)
         .where({ id: whitelisted[i].id })
         .update({ created: true })
