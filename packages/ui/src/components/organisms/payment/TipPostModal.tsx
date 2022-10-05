@@ -24,7 +24,7 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
     register,
     getValues,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<{
     "tip-value": number
   }>()
@@ -85,7 +85,9 @@ const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
       <TipPostButton
         isDisabled={
           !defaultPayinMethod ||
-          defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
+          defaultPayinMethod.method ===
+            GetPayinMethodResponseDtoMethodEnum.None ||
+          isSubmitSuccessful
         }
         onClick={handleSubmit(submit)}
         isLoading={loading}

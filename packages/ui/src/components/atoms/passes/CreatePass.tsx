@@ -88,15 +88,20 @@ const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
 
 interface CreatePassButtonProps {
   onCreateHandler: any
+  isDisabled?: boolean
 }
 
-const CreatePassButton: FC<CreatePassButtonProps> = ({ onCreateHandler }) => (
+const CreatePassButton: FC<CreatePassButtonProps> = ({
+  onCreateHandler,
+  isDisabled
+}) => (
   <div className="align-end my-6 flex justify-end md:my-0">
     <Button
       className="w-full border-none !py-4 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white md:w-[195px]"
       variant="pink"
       fontSize={16}
       onClick={onCreateHandler}
+      disabled={isDisabled}
     >
       Create Pass
     </Button>

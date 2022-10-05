@@ -68,7 +68,7 @@ export const NewPost: FC<NewPostProps> = ({
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     getValues,
     setValue,
     watch,
@@ -509,7 +509,7 @@ export const NewPost: FC<NewPostProps> = ({
                   </div>
                 </div>
               )}
-              <Footer />
+              <Footer isSubmitSuccessful={isSubmitSuccessful} />
             </>
           )}
         </div>

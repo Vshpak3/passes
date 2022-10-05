@@ -43,7 +43,7 @@ const MessagingInput = () => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     setValue,
     watch
   } = useForm({
@@ -56,7 +56,7 @@ const MessagingInput = () => {
   const api = new MessagesApi()
 
   const onSubmit = async () => {
-    if (text?.length < 1) {
+    if (text?.length < 1 || isSubmitSuccessful) {
       return null
     }
     if (files.length > 0 || contentIds.length > 0) {

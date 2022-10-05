@@ -19,7 +19,12 @@ const MessagingInputFanPerspective = () => {
     ({ user }) => user?.id !== client.userID
   )
   const { channelId } = useChat(members[0]?.user.name)
-  const { register, setValue, watch } = useForm()
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { isSubmitSuccessful }
+  } = useForm()
   const text = watch("text")
   const tip = watch("tipAmount")
   const payinMethod = undefined
@@ -35,7 +40,7 @@ const MessagingInputFanPerspective = () => {
   }, [channelId])
 
   const onSubmit = async () => {
-    if (text?.length > 0 && freeMessages !== 0) {
+    if (text?.length > 0 && freeMessages !== 0 && !isSubmitSuccessful) {
       submit()
       setValue("text", "", { shouldValidate: true })
     } else if (text?.length < 1 || (freeMessages === 0 && tip < 6)) {

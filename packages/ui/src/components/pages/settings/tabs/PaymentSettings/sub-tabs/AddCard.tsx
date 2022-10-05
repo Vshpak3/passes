@@ -37,7 +37,7 @@ const AddCard = ({ callback }: IAddCard) => {
     control,
     watch,
     getValues,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<{ country: string; "card-number": string }>({
     defaultValues: {}
   })
@@ -45,6 +45,8 @@ const AddCard = ({ callback }: IAddCard) => {
   const { user, loading, accessToken } = useUser()
   const router = useRouter()
   const countrySelected = watch("country")
+
+  const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
 
   const onSubmit = async () => {
     try {
@@ -302,7 +304,7 @@ const AddCard = ({ callback }: IAddCard) => {
       </div>
       <button
         className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
-        onClick={handleSubmit(onSubmit)}
+        onClick={onSubmitHandler}
       >
         <span className="text-[16px] font-[500]">Confirm and Continue</span>
       </button>

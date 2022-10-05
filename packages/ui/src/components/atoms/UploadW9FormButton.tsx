@@ -15,7 +15,13 @@ interface W9Button {
 }
 
 const UploadW9FormButton = ({ text, icon }: W9Button) => {
-  const { register, handleSubmit, watch, reset } = useForm<IForm>()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { isSubmitSuccessful }
+  } = useForm<IForm>()
 
   const { form } = watch()
 
@@ -40,6 +46,7 @@ const UploadW9FormButton = ({ text, icon }: W9Button) => {
       {form && form[0] ? (
         <button
           type="submit"
+          disabled={isSubmitSuccessful}
           className="w-full rounded-full bg-passes-green py-1 font-semibold text-black"
         >
           Upload

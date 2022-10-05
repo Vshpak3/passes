@@ -436,7 +436,11 @@ export const CommentSection: FC<CommentSectionProps> = ({
   const [isLoadingComments, setLoadingComments] = useState(false)
   const [comments, setComments] = useState<CommentDto[]>([])
   const [isReset, setIsReset] = useState(false)
-  const { getValues, setValue } = useForm()
+  const {
+    getValues,
+    setValue,
+    formState: { isSubmitSuccessful }
+  } = useForm()
 
   const getComments = useCallback(
     async (withLoadingState = true) => {
@@ -535,6 +539,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
         <Button
           tag="button"
           variant="pink"
+          disabled={isSubmitSuccessful}
           className="ml-4 h-[40px] w-[10%] min-w-[70px]"
         >
           Post

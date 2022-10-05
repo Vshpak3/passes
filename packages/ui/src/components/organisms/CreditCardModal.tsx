@@ -41,7 +41,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
     // getValues,
     // setValue
   } = useForm({
@@ -295,6 +295,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
         <PassesPinkButton
           name="Confirm and Continue"
           type={ButtonTypeEnum.SUBMIT}
+          isDisabled={isSubmitSuccessful}
         />
       </form>
     </Modal>

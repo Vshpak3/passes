@@ -21,7 +21,7 @@ const Wallets = () => {
     getValues,
     setValue,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm()
   const { ethWallet, solWallet, setDefaultWallet } =
     useUserDefaultMintingWallets()
@@ -219,7 +219,12 @@ const Wallets = () => {
               }}
             />
 
-            <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
+            <Button
+              type={ButtonTypeEnum.SUBMIT}
+              variant="pink"
+              tag="button"
+              disabled={isSubmitSuccessful}
+            >
               Confirm
             </Button>
           </form>

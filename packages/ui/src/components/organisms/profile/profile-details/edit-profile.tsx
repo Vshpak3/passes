@@ -81,7 +81,14 @@ export const EditProfile: FC<EditProfileProps> = ({
   onSubmit,
   onCloseEditProfile
 }) => {
-  const { handleSubmit, register, getValues, watch, setValue } = useForm({
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    watch,
+    setValue,
+    formState: { isSubmitSuccessful }
+  } = useForm({
     defaultValues: profile
   })
 
@@ -111,7 +118,9 @@ export const EditProfile: FC<EditProfileProps> = ({
           <div className="left-20 mx-0 -mb-4 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
             <span
               className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
-              onClick={handleSubmit(() => onSubmit(getValues()))}
+              onClick={handleSubmit(
+                () => !isSubmitSuccessful && onSubmit(getValues())
+              )}
             >
               Save
             </span>

@@ -30,7 +30,7 @@ const RequestPayouts = () => {
     getValues,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm()
 
   const fetchCreatorBalance = useCallback(async () => {
@@ -133,6 +133,7 @@ const RequestPayouts = () => {
                       className="w-[223px]"
                       name="Save"
                       onClick={handleSubmit(onScheduleSave)}
+                      isDisabled={isSubmitSuccessful}
                     />
                   </Menu.Items>
                 </Transition>

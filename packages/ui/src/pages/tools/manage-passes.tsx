@@ -35,7 +35,7 @@ const ManagePasses = () => {
     handleSubmit,
     getValues,
     setValue,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm()
 
   useOnClickOutside(editWindow, () => {
@@ -143,6 +143,7 @@ const ManagePasses = () => {
                   tag="button"
                   type={ButtonTypeEnum.SUBMIT}
                   variant="pink"
+                  disabled={isSubmitSuccessful}
                 >
                   Create
                 </Button>

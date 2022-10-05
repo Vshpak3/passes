@@ -19,7 +19,7 @@ const DisplayName = () => {
     watch,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<IDisplayNameForm>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(
@@ -64,7 +64,8 @@ const DisplayName = () => {
           disabled={
             displayName.trim().length === 0 ||
             user?.displayName === displayName ||
-            loading
+            loading ||
+            isSubmitSuccessful
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

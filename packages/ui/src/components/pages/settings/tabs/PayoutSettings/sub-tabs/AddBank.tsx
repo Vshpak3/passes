@@ -30,10 +30,12 @@ const AddBank = () => {
     register,
     getValues,
     setValue,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<{ "bank-country": string }>({
     defaultValues: {}
   })
+
+  const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
 
   const onSubmit = async () => {
     try {
@@ -255,7 +257,7 @@ const AddBank = () => {
       </div>
       <button
         className="mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
-        onClick={handleSubmit(onSubmit)}
+        onClick={onSubmitHandler}
       >
         <span className="text-[16px] font-[500]">Confirm and Continue</span>
       </button>

@@ -14,7 +14,7 @@ const AdminPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm()
 
   useEffect(() => {
@@ -162,6 +162,7 @@ const AdminPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
               type="submit"
+              disabled={isSubmitSuccessful}
             >
               <Text fontSize={16} className="font-medium">
                 Impersonate

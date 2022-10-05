@@ -32,7 +32,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm()
 
   const onSubmit = async () => {
@@ -347,6 +347,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 name="Confirm and Save"
                 type={ButtonTypeEnum.SUBMIT}
                 className="font-normal"
+                isDisabled={isSubmitSuccessful}
               />
               <Button
                 variant="primary"

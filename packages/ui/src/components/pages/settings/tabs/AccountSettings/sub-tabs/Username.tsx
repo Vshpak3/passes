@@ -19,7 +19,7 @@ const Username = () => {
     watch,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<IUserForm>({
     defaultValues: { username: user?.username || "" },
     resolver: yupResolver(getYupRequiredStringSchema({ name: "username" }))
@@ -68,7 +68,8 @@ const Username = () => {
           disabled={
             username.trim().length === 0 ||
             username === user?.username ||
-            loading
+            loading ||
+            isSubmitSuccessful
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

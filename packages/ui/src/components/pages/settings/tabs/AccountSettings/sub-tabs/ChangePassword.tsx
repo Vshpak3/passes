@@ -27,7 +27,7 @@ const ChangePassword = () => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<IChangePasswordForm>({
     defaultValues,
     resolver: yupResolver(changePasswordSchema)
@@ -111,7 +111,7 @@ const ChangePassword = () => {
           variant="pink"
           className="mt-6 w-auto !px-[52px]"
           tag="button"
-          disabled={isDisableBtn}
+          disabled={isDisableBtn || isSubmitSuccessful}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

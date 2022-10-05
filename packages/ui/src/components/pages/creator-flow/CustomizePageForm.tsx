@@ -66,7 +66,7 @@ const CustomizePageForm = ({
     setValue,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<IFormData>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(creatorFlowProfileSchema)
@@ -319,6 +319,7 @@ const CustomizePageForm = ({
             name="Continue"
             type={ButtonTypeEnum.SUBMIT}
             className="rounded-xl font-normal"
+            isDisabled={isSubmitSuccessful}
           />
         </div>
       </form>

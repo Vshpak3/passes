@@ -16,7 +16,13 @@ interface IProfileForm {
 const ProfilePicture = () => {
   const { setProfilePicture, userId } = useAccountSettings()
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
-  const { register, watch, setValue, handleSubmit } = useForm<IProfileForm>()
+  const {
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitSuccessful }
+  } = useForm<IProfileForm>()
 
   const profileImage = watch("profileImage")
 
@@ -88,7 +94,7 @@ const ProfilePicture = () => {
           variant="pink"
           className="w-auto !px-[52px]"
           tag="button"
-          disabled={!profileImage || !profileImage.length}
+          disabled={!profileImage || !profileImage.length || isSubmitSuccessful}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

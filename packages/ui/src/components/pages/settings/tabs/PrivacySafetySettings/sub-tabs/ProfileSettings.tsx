@@ -14,9 +14,13 @@ const ProfileSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
 
-  const { register, watch, handleSubmit, setValue } = useForm<
-    typeof defaultValues
-  >({
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitSuccessful }
+  } = useForm<typeof defaultValues>({
     defaultValues
   })
   const values = watch()
@@ -118,7 +122,7 @@ const ProfileSettings = () => {
             variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
-            disabled={isDisableBtn}
+            disabled={isDisableBtn || isSubmitSuccessful}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

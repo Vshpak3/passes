@@ -12,7 +12,12 @@ const defaultValues = {
 const PostsSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
-  const { register, setValue, handleSubmit } = useForm<typeof defaultValues>({
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitSuccessful }
+  } = useForm<typeof defaultValues>({
     defaultValues
   })
 
@@ -55,7 +60,7 @@ const PostsSettings = () => {
             variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
-            disabled={isUpdating}
+            disabled={isUpdating || isSubmitSuccessful}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

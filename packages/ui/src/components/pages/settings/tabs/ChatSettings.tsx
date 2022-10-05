@@ -25,7 +25,7 @@ const ChatSettings = () => {
     watch,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm<typeof defaultValues>({
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
@@ -184,7 +184,7 @@ const ChatSettings = () => {
             variant="pink"
             className="mt-6 w-auto !px-[52px]"
             tag="button"
-            disabled={isDisableBtn}
+            disabled={!isDisableBtn || isSubmitSuccessful}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

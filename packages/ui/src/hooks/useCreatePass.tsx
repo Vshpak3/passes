@@ -73,7 +73,7 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
     register,
     getValues,
     trigger,
-    formState: { errors }
+    formState: { errors, isSubmitSuccessful }
   } = useForm({
     resolver: yupResolver(createPassSchema)
   })
@@ -194,7 +194,8 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
     onRemoveFileUpload,
     register,
     getValues,
-    trigger
+    trigger,
+    isSubmitSuccessful
   }
 }
 

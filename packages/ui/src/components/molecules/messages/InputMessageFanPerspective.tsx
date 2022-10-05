@@ -11,7 +11,7 @@ interface Props {
 export const InputMessageFanPerspective = ({ channelId }: Props) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
     setError,
     clearErrors,
@@ -51,7 +51,7 @@ export const InputMessageFanPerspective = ({ channelId }: Props) => {
     })
   }
   const submitMessage = async () => {
-    if (!channelId) {
+    if (!channelId || isSubmitSuccessful) {
       return false
     }
     try {

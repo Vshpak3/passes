@@ -11,7 +11,7 @@ interface InputMessageProps {
 export const InputMessage: FC<InputMessageProps> = ({ channelId }) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
     reset,
     setError,
@@ -20,7 +20,7 @@ export const InputMessage: FC<InputMessageProps> = ({ channelId }) => {
   const api = new MessagesApi()
 
   const submitMessage = async ({ message }: any) => {
-    if (!channelId) {
+    if (!channelId || isSubmitSuccessful) {
       return false
     }
 
