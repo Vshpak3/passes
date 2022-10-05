@@ -3,7 +3,7 @@ import {
   InvokeCommandInput,
   LambdaClient,
 } from '@aws-sdk/client-lambda'
-import { Injectable } from '@nestjs/common'
+import { HttpStatus, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ethers } from 'ethers'
 
@@ -31,7 +31,7 @@ export class LambdaService {
   async invoke(command: InvokeCommand): Promise<string> {
     const res = await this.client.send(command)
 
-    if (res.StatusCode != 200) {
+    if (res.StatusCode != HttpStatus.OK) {
       throw new LambdaResponseStatusError('', res.StatusCode)
     }
     if (res.FunctionError) {

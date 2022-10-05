@@ -2,7 +2,12 @@ import { Length, Max, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
-import { PASS_DESCRIPTION_LENGTH, PASS_TITLE_LENGTH } from '../constants/schema'
+import {
+  PASS_DESCRIPTION_LENGTH,
+  PASS_MAX_ROYALTIES,
+  PASS_MIN_ROYALTIES,
+  PASS_TITLE_LENGTH,
+} from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
 
 export class CreatePassRequestDto {
@@ -38,8 +43,8 @@ export class CreatePassRequestDto {
   @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @Min(500)
-  @Max(3000)
+  @Min(PASS_MIN_ROYALTIES)
+  @Max(PASS_MAX_ROYALTIES)
   @DtoProperty({ type: 'number' })
   royalties: number
 }

@@ -1,3 +1,6 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable no-magic-numbers */
+
 // maps a given chainId and contract name to address in checksum format
 export const EVM_ADDRESS = {
   1: {

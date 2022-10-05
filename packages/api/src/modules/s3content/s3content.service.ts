@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedCookies, getSignedUrl } from '@aws-sdk/cloudfront-signer'
 import { getSignedUrl as getPresignedUrl } from '@aws-sdk/s3-request-presigner'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { CookieOptions, Response } from 'express'
 
@@ -207,7 +207,7 @@ export class S3ContentService {
       await this.s3Client.send(new HeadObjectCommand({ Bucket, Key: path }))
       return true
     } catch (error) {
-      if (error?.$metadata?.httpStatusCode === 404) {
+      if (error?.$metadata?.httpStatusCode === HttpStatus.NOT_FOUND) {
         return false
       }
       throw error

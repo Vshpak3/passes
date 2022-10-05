@@ -11,5 +11,6 @@ export const formatDateTimeToDbDateTime = (input: Date | string | number) => {
       throw new Error('invalid date: ' + input)
     }
   }
+  // eslint-disable-next-line no-magic-numbers
   return date.toISOString().slice(0, 19).replace('T', ' ')
 }

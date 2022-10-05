@@ -43,6 +43,8 @@ import { UserDto } from './dto/user.dto'
 import { UserEntity, UserIndexes } from './entities/user.entity'
 import { WhitelistedUserEntity } from './entities/whitelisted-users.entity'
 
+const CREATOR_SEARCH_LIMIT = 10
+
 @Injectable()
 export class UserService {
   constructor(
@@ -281,7 +283,7 @@ export class UserService {
         is_creator: true,
         is_active: true,
       })
-      .limit(10)
+      .limit(CREATOR_SEARCH_LIMIT)
 
     return new SearchCreatorResponseDto(creators as UserEntity[])
   }

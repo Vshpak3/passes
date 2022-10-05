@@ -166,6 +166,7 @@ export class SolService {
     connection: Connection,
     passMint: PublicKey,
   ): Promise<null | PublicKey> {
+    // eslint-disable-next-line no-magic-numbers
     const amount = Buffer.alloc(8)
     amount.writeBigUInt64LE(BigInt(1))
 

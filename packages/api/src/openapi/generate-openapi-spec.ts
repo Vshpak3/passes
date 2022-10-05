@@ -12,6 +12,7 @@ const OUTPUT_PATH = 'src/openapi/specs'
 
   // Check for optional filename argument
   let filename = 'openapi.json'
+  // eslint-disable-next-line no-magic-numbers
   if (process.argv.length === 3) {
     filename = process.argv[2]
   }
