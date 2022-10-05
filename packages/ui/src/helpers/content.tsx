@@ -101,12 +101,17 @@ class ContentService {
   }
 
   private async uploadFile(url: string, file: File): Promise<string> {
-    await fetch(url, {
+    const response = await fetch(url, {
       method: "PUT",
       // omit cookies in dev
       credentials: !isDev ? "include" : undefined,
       body: file
     })
+
+    if (!response.status.toString().startsWith("2")) {
+      console.error(await response.text())
+      throw new Error("There was an error uploading the file")
+    }
 
     // remove signatures from uploaded file
     return url.split("?")[0]

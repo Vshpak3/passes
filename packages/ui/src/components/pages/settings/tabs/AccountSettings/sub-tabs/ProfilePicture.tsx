@@ -10,7 +10,7 @@ import { errorMessage } from "src/helpers/error"
 import { useAccountSettings } from "src/hooks"
 
 interface IProfileForm {
-  profileImage: File[] | null
+  profileImage: File[]
 }
 
 const ProfilePicture = () => {
@@ -22,7 +22,9 @@ const ProfilePicture = () => {
     setValue,
     handleSubmit,
     formState: { isSubmitSuccessful }
-  } = useForm<IProfileForm>()
+  } = useForm<IProfileForm>({
+    defaultValues: { profileImage: [] }
+  })
 
   const profileImage = watch("profileImage")
 
@@ -32,14 +34,14 @@ const ProfilePicture = () => {
   }
 
   const onSaveProfile = async () => {
-    if (!profileImage || !profileImage.length) {
+    if (!profileImage.length) {
       toast.error("Please upload profile image")
       return
     }
     try {
       await setProfilePicture(profileImage[0])
       toast.success("Your profile picture has been changed successfully")
-      setValue("profileImage", null)
+      // setValue("profileImage", [])
     } catch (err) {
       errorMessage(err, true)
     }
@@ -73,7 +75,7 @@ const ProfilePicture = () => {
                 alt=""
                 className="z-20 h-[138px] w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                 src={
-                  profileImage?.length
+                  profileImage.length
                     ? URL.createObjectURL(profileImage[0])
                     : ContentService.profileThumbnail(userId)
                 }
@@ -81,7 +83,7 @@ const ProfilePicture = () => {
             </div>
           }
         />
-        {profileImageCropOpen && profileImage?.length && (
+        {profileImageCropOpen && profileImage.length && (
           <ImageCropDialog
             onCrop={onProfileCrop}
             onClose={() => setprofileImageCropOpen(false)}

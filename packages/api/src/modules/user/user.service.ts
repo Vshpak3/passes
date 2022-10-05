@@ -177,6 +177,7 @@ export class UserService {
     timeframe: number,
     maxCount: number,
     key: string,
+    onFailure: () => void,
     fn: () => void,
   ) {
     let redisKey = ''
@@ -194,7 +195,7 @@ export class UserService {
       }
       throw err
     }
-    throw new BadRequestException('Maximum username reset limit hit')
+    onFailure()
   }
 
   async setUsername(userId: string, username: string): Promise<void> {
@@ -202,6 +203,11 @@ export class UserService {
       USERNAME_RESET_TIMEFRAME_MS,
       MAX_USERNAME_RESET_COUNT_PER_TIMEFRAME,
       `setUsername:${userId}`,
+      () => {
+        throw new BadRequestException(
+          'You have updated your username the max number of times for today',
+        )
+      },
       async () => {
         const query = () =>
           this.dbWriter<UserEntity>(UserEntity.table)

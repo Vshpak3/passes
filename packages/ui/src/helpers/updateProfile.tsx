@@ -1,23 +1,24 @@
-import { ProfileApi, UserApi } from "@passes/api-client"
+import { GetProfileResponseDto, ProfileApi, UserApi } from "@passes/api-client"
+import { pickBy } from "lodash"
 import { ContentService } from "src/helpers"
 
-export interface ProfileUpdate {
+export interface ProfileUpdate
+  extends Pick<
+    GetProfileResponseDto,
+    | "displayName"
+    | "description"
+    | "discordUsername"
+    | "facebookUsername"
+    | "instagramUsername"
+    | "tiktokUsername"
+    | "twitchUsername"
+    | "twitterUsername"
+    | "youtubeUsername"
+    | "isAdult"
+  > {
   username?: string
-  displayName?: string
-  description?: string
-
-  profileImage?: File[]
-  profileBannerImage?: File[]
-
-  discordUsername?: string
-  facebookUsername?: string
-  instagramUsername?: string
-  tiktokUsername?: string
-  twitchUsername?: string
-  twitterUsername?: string
-  youtubeUsername?: string
-
-  isAdult?: boolean
+  profileImage: File[]
+  profileBannerImage: File[]
 }
 
 export async function updateProfile(values: ProfileUpdate): Promise<void> {
@@ -57,10 +58,10 @@ export async function updateProfile(values: ProfileUpdate): Promise<void> {
       ? contentService.uploadProfileBanner(profileBannerImage[0])
       : undefined,
 
-    Object.values(rest).some((x) => x)
+    Object.values(rest).some((x) => x?.trim())
       ? profileApi.createOrUpdateProfile({
           createOrUpdateProfileRequestDto: {
-            ...rest
+            ...pickBy(rest, (v) => v && v.trim())
           }
         })
       : undefined

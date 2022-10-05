@@ -1,3 +1,4 @@
+import { GetProfileResponseDto } from "@passes/api-client"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
@@ -12,6 +13,8 @@ import { FormInput } from "src/components/atoms"
 import { Dialog } from "src/components/organisms"
 import FormImage from "src/components/organisms/FormImage"
 import { FormType } from "src/components/types/FormTypes"
+import { ContentService } from "src/helpers"
+import { ProfileUpdate } from "src/helpers/updateProfile"
 
 const bioForm = {
   description: {
@@ -71,9 +74,9 @@ const socialMediaForm = {
 }
 
 interface EditProfileProps {
-  profile: any
-  onSubmit: any
-  onCloseEditProfile: any
+  profile: GetProfileResponseDto
+  onSubmit: (values: ProfileUpdate) => Promise<void>
+  onCloseEditProfile: () => void
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
@@ -88,12 +91,28 @@ export const EditProfile: FC<EditProfileProps> = ({
     watch,
     setValue,
     formState: { isSubmitSuccessful }
-  } = useForm({
-    defaultValues: profile
+  } = useForm<ProfileUpdate>({
+    defaultValues: {
+      ...Object.fromEntries(
+        [
+          "displayName",
+          "description",
+          "discordUsername",
+          "facebookUsername",
+          "instagramUsername",
+          "tiktokUsername",
+          "twitchUsername",
+          "twitterUsername",
+          "youtubeUsername"
+        ].map((k) => [k, (profile as any)[k]])
+      ),
+      profileImage: [],
+      profileBannerImage: []
+    }
   })
 
   const profileImage: File[] = watch("profileImage")
-  const profileCoverImage: File[] = watch("profileCoverImage")
+  const profileBannerImage: File[] = watch("profileBannerImage")
 
   const renderInput = ([key, input]: any) => (
     <div className={input.colSpan} key={key}>
@@ -134,8 +153,8 @@ export const EditProfile: FC<EditProfileProps> = ({
           <FormImage
             setValue={setValue}
             register={register}
-            name="profileCoverImage"
-            imgData={profileCoverImage}
+            name="profileBannerImage"
+            imgData={profileBannerImage}
             cropWidth={1500}
             cropHeight={300}
             inputUI={
@@ -146,10 +165,14 @@ export const EditProfile: FC<EditProfileProps> = ({
                     alt=""
                     className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                     src={
-                      profileCoverImage?.length
-                        ? URL.createObjectURL(profileCoverImage[0])
-                        : "/img/profile/select-banner-img.png"
+                      profileBannerImage.length
+                        ? URL.createObjectURL(profileBannerImage[0])
+                        : ContentService.profileBanner(profile.userId)
                     }
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null
+                      currentTarget.src = "/img/profile/select-banner-img.png"
+                    }}
                   />
                 </div>
               </div>
@@ -169,10 +192,14 @@ export const EditProfile: FC<EditProfileProps> = ({
                   alt=""
                   className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                   src={
-                    profileImage?.length
+                    profileImage.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/img/profile/select-profile-img.png"
+                      : ContentService.profileThumbnail(profile.userId)
                   }
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null
+                    currentTarget.src = "/img/profile/default-profile-img.svg"
+                  }}
                 />
               </div>
             }
