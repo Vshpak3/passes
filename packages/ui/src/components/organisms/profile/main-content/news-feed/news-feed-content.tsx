@@ -1,11 +1,13 @@
 import {
   CreatePostRequestDto,
   GetFanWallResponseDto,
+  GetFeedResponseDto,
   GetProfileResponseDto,
   PostDto
 } from "@passes/api-client"
 import { FC } from "react"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
+import { KeyedMutator } from "swr"
 
 import CreatorContentFeed from "./creator-content-feed"
 import EventsFeed from "./events-feed"
@@ -22,6 +24,7 @@ export interface NewsFeedContentProps {
   createPost: (values: CreatePostRequestDto) => void
   writeToFanWall: (values: CreatePostRequestDto) => Promise<void>
   removePost?: (postId: string) => void
+  mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
 const NewsFeedContent: FC<NewsFeedContentProps> = ({
@@ -33,7 +36,8 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
   fanWallPosts,
   createPost,
   removePost,
-  writeToFanWall
+  writeToFanWall,
+  mutatePosts
 }) => {
   switch (activeTab) {
     case "post":
@@ -49,6 +53,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
           {posts?.length > 0 && (
             <CreatorContentFeed
               posts={posts}
+              mutatePosts={mutatePosts}
               removePost={removePost}
               ownsProfile={ownsProfile}
             />

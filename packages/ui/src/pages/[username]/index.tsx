@@ -71,6 +71,7 @@ const Profile = () => {
             profile={profile}
             ownsProfile={ownsProfile}
             posts={posts}
+            mutatePosts={mutatePosts}
             setIsDeletedPost={setIsDeletedPost}
             fanWallPosts={fanWallPosts}
             profileUsername={profileUsername ?? ""}

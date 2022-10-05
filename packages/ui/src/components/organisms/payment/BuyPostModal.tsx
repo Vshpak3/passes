@@ -17,9 +17,10 @@ interface IBuyPostModal {
   post: PostDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
+  setIsPayed?: (value: boolean) => void
 }
 
-const BuyPostModal = ({ post, setOpen, isOpen }: IBuyPostModal) => {
+const BuyPostModal = ({ post, setOpen, isOpen, setIsPayed }: IBuyPostModal) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId
@@ -30,6 +31,11 @@ const BuyPostModal = ({ post, setOpen, isOpen }: IBuyPostModal) => {
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
 
   const { images, video } = contentTypeCounter(post.content)
+
+  const onSuccessHandler = () => {
+    setIsPayed && setIsPayed(true)
+    setOpen(false)
+  }
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
@@ -78,7 +84,7 @@ const BuyPostModal = ({ post, setOpen, isOpen }: IBuyPostModal) => {
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
         postId={post.postId}
-        onSuccess={() => setOpen(false)}
+        onSuccess={onSuccessHandler}
       />
     </Modal>
   )

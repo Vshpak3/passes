@@ -3,6 +3,7 @@ import {
   FanWallApi,
   FeedApi,
   GetFanWallResponseDto,
+  GetFeedResponseDto,
   GetProfileResponseDto,
   PostDto
 } from "@passes/api-client"
@@ -10,7 +11,7 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { useCreatePost } from "src/hooks"
 import usePost from "src/hooks/usePost"
-import { useSWRConfig } from "swr"
+import { KeyedMutator, useSWRConfig } from "swr"
 
 import NewsFeedNavigation from "./new-post/navigation"
 import NewsFeedContent from "./news-feed/news-feed-content"
@@ -22,6 +23,7 @@ export interface MainContentProps {
   posts: PostDto[]
   fanWallPosts?: GetFanWallResponseDto
   setIsDeletedPost?: (value: boolean) => void
+  mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
 const MainContent: FC<MainContentProps> = ({
@@ -30,7 +32,8 @@ const MainContent: FC<MainContentProps> = ({
   posts,
   fanWallPosts,
   profileUsername,
-  setIsDeletedPost
+  setIsDeletedPost,
+  mutatePosts
 }) => {
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
@@ -114,6 +117,7 @@ const MainContent: FC<MainContentProps> = ({
         fanWallPosts={fanWallPosts}
         createPost={handleCreatePost}
         removePost={removePostHandler}
+        mutatePosts={mutatePosts}
         writeToFanWall={writeToFanWall}
       />
     </>

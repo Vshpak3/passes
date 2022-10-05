@@ -53,9 +53,15 @@ interface PostProps {
   post: PostDto
   ownsProfile: boolean
   removePost?: (postId: string) => void
+  setIsPayed?: (value: boolean) => void
 }
 
-export const Post = ({ post, ownsProfile, removePost }: PostProps) => {
+export const Post = ({
+  post,
+  ownsProfile,
+  removePost,
+  setIsPayed
+}: PostProps) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
@@ -114,6 +120,7 @@ export const Post = ({ post, ownsProfile, removePost }: PostProps) => {
           post={post}
           postUnlocked={postUnlocked}
           setPostUnlocked={setPostUnlocked}
+          setIsPayed={setIsPayed}
         />
 
         {/* {post.fundraiser ? (
@@ -232,9 +239,14 @@ interface LockedMedia {
   postUnlocked: boolean
   post: PostDto
   setPostUnlocked: any
+  setIsPayed?: (value: boolean) => void
 }
 
-export const LockedMedia = ({ postUnlocked, post }: LockedMedia) => {
+export const LockedMedia = ({
+  postUnlocked,
+  post,
+  setIsPayed
+}: LockedMedia) => {
   const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const { images, video } = contentTypeCounter(post.content)
 
@@ -292,6 +304,7 @@ export const LockedMedia = ({ postUnlocked, post }: LockedMedia) => {
         post={post}
         isOpen={openBuyPostModal}
         setOpen={setOpenBuyPostModal}
+        setIsPayed={setIsPayed}
       />
     </>
   )
