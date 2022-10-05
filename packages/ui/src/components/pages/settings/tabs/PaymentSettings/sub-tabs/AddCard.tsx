@@ -120,6 +120,7 @@ const AddCard = ({ callback }: IAddCard) => {
     }
     fetchData()
   }, [router, user, loading])
+
   return (
     <>
       <Tab withBack title="Add Card" />
@@ -137,7 +138,7 @@ const AddCard = ({ callback }: IAddCard) => {
               const numberValidation = cardValidator.number(value)
 
               return numberValidation.isValid
-                ? ""
+                ? true
                 : "Credit card number is invalid"
             }
           }
