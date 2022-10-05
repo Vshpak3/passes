@@ -16,6 +16,10 @@ export class RegisterPayinResponseDto {
   @Min(0)
   @DtoProperty({ type: 'currency' })
   amount: number
+
+  @Min(0)
+  @DtoProperty({ type: 'number', optional: true })
+  amountEth?: number
 }
 
 export class RegisterPayinRequestDto {

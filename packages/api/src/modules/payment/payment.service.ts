@@ -1498,6 +1498,7 @@ export class PaymentService {
       payinId: data.id,
       payinMethod,
       amount: request.amount,
+      amountEth: request.amountEth,
     }
   }
 

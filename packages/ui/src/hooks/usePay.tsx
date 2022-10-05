@@ -95,8 +95,7 @@ export const usePay = (
       cancelPayinCallback()
       throw new Error("no provider exists")
     }
-    let account = ""
-    account = await connectMetamask(provider)
+    const account = await connectMetamask(provider)
     await executeMetamaskUSDCProvider(
       account,
       provider,
@@ -112,19 +111,23 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = (await detectEthereumProvider()) as EthereumProvider
-    if (provider == undefined) {
+    if (provider === undefined) {
       //display message to user
       cancelPayinCallback()
       throw new Error("no provider exists")
     }
-    let account = ""
-    account = await connectMetamask(provider)
+    if (registerResponse.amountEth == undefined) {
+      //display message to user
+      cancelPayinCallback()
+      throw new Error("can't purchase with Eth")
+    }
+    const account = await connectMetamask(provider)
     await executeMetamaskEthProvider(
       account,
       provider,
       paymentApi,
       registerResponse.payinId,
-      registerResponse.amount,
+      registerResponse.amountEth,
       cancelPayinCallback
     )
   }

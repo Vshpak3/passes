@@ -44,6 +44,12 @@ export interface RegisterPayinResponseDto {
      * @memberof RegisterPayinResponseDto
      */
     amount: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof RegisterPayinResponseDto
+     */
+    amountEth?: number;
 }
 
 /**
@@ -71,6 +77,7 @@ export function RegisterPayinResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
         'payinId': json['payinId'],
         'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'amount': json['amount'],
+        'amountEth': !exists(json, 'amountEth') ? undefined : json['amountEth'],
     };
 }
 
@@ -86,6 +93,7 @@ export function RegisterPayinResponseDtoToJSON(value?: RegisterPayinResponseDto 
         'payinId': value.payinId,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'amount': value.amount,
+        'amountEth': value.amountEth,
     };
 }
 
