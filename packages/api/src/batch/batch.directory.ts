@@ -1,4 +1,5 @@
 import { CreateEarningHistoryTask } from './tasks/create-earning-history.batch'
+import { FailStalePayinsTask } from './tasks/fail-stale-payins.batch'
 import { PayoutCreatorsTask } from './tasks/payout-creators.batch'
 import { ProcessBlocksTask } from './tasks/process-blocks.batch'
 import { RefreshEthWalletTask } from './tasks/refresh-eth-wallet.batch'
@@ -20,4 +21,5 @@ export const TaskDirectory = {
   refresh_stats_task: RefreshStatsTask,
   refresh_num_posts_task: RefreshNumPostsTask,
   update_subscriptions_task: UpdateSubscriptionsTask,
+  fail_stale_payins_task: FailStalePayinsTask,
 }

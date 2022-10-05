@@ -139,6 +139,8 @@ const EXPIRING_DURATION_MS = ms('3 days')
 
 const ONE_WEEK_MS = ms('1 week')
 
+const MAX_TIME_STALE_PAYMENT = ms('1 day')
+
 const MIN_PAYOUT_AMOUNT = 25.0
 
 const MAX_CHARGEBACKS = 3
@@ -1728,6 +1730,26 @@ export class PaymentService {
     return {
       count: count[0]['count(*)'] as number,
       payins: payinsDto,
+    }
+  }
+
+  async failStalePayins() {
+    const payins = await this.dbReader<PayinEntity>(PayinEntity.table)
+      .whereIn('payin_method', [
+        PayinMethodEnum.METAMASK_CIRCLE_ETH,
+        PayinMethodEnum.METAMASK_CIRCLE_USDC,
+        PayinMethodEnum.PHANTOM_CIRCLE_USDC,
+      ])
+      .andWhere('payin_status', PayinStatusEnum.CREATED)
+      .andWhere(
+        'created_at',
+        '<',
+        new Date(Date.now() - MAX_TIME_STALE_PAYMENT),
+      )
+      .select('*')
+
+    for (let i = 0; i < payins.length; ++i) {
+      await this.failPayin(payins[i].id, payins[i].user_id)
     }
   }
 
