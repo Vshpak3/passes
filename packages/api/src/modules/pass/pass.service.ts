@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import CryptoJS from 'crypto-js'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -84,6 +85,7 @@ export class PassService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    private readonly configService: ConfigService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -95,7 +97,9 @@ export class PassService {
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
-  ) {}
+  ) {
+    this.env = this.configService.get('infra.env') as string
+  }
 
   async manualPass(
     userId: string,
@@ -242,27 +246,32 @@ export class PassService {
     // ) {
     //   throw new NotFoundException('Image is not uploaded')
     // }
+
     if (!pass || pass.collection_address) {
       throw new NotFoundException('Pass can not be minted')
     }
     let collectionAddress: string | undefined = undefined
-    switch (pass.chain) {
-      case ChainEnum.SOL:
-        collectionAddress = (
-          await this.solService.createSolNftCollection(
-            user.id,
-            pass.id,
-            pass.title,
-            'PASS',
-            pass.description,
+    if (this.env === 'dev') {
+      collectionAddress = '123456789'
+    } else {
+      switch (pass.chain) {
+        case ChainEnum.SOL:
+          collectionAddress = (
+            await this.solService.createSolNftCollection(
+              user.id,
+              pass.id,
+              pass.title,
+              'PASS',
+              pass.description,
+            )
+          ).passPubKey
+          break
+        case ChainEnum.ETH: // TODO
+        default:
+          throw new UnsupportedChainPassError(
+            `can not create a pass on chain ${pass.chain}`,
           )
-        ).passPubKey
-        break
-      case ChainEnum.ETH: // TODO
-      default:
-        throw new UnsupportedChainPassError(
-          `can not create a pass on chain ${pass.chain}`,
-        )
+      }
     }
     await this.dbWriter<PassEntity>(PassEntity.table)
       .update({ collection_address: collectionAddress })
