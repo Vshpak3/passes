@@ -24,6 +24,9 @@ import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ETH_MASTER_WALLET_LAMBDA_KEY_ID = 'eth-master-wallet'
+
 const MAX_TIME_WALLET_REFRESH = ms('30 minutes')
 const MAX_TIME_PASS_REFRESH = ms('1 week')
 

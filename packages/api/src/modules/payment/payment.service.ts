@@ -139,7 +139,7 @@ const EXPIRING_DURATION_MS = ms('3 days')
 
 const ONE_WEEK_MS = ms('1 week')
 
-const MAX_TIME_STALE_PAYMENT = ms('1 day')
+const MAX_TIME_STALE_PAYMENT = ms('6 hours')
 
 const MIN_PAYOUT_AMOUNT = 25.0
 
