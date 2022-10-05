@@ -15,7 +15,11 @@ interface CommentProps {
 export const Comment: FC<CommentProps> = ({ post, dropdownItems }) => {
   return (
     <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
-      <PostProfileAvatar post={post} dropdownItems={dropdownItems} />
+      <PostProfileAvatar
+        post={post}
+        dropdownItems={dropdownItems}
+        hideStaticsBtn
+      />
       <div className="flex flex-col items-start">
         <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
           {post.text}

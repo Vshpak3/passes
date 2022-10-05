@@ -137,11 +137,13 @@ interface PostProfileAvatarProps {
     text: string
     onClick: () => void
   }>
+  hideStaticsBtn?: boolean
 }
 
 export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
   post,
-  dropdownItems = []
+  dropdownItems = [],
+  hideStaticsBtn = false
 }) => {
   const { user } = useUser()
 
@@ -175,7 +177,7 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
               minPeriod={30}
             />
           </div>
-          {user?.id === post.userId && <PostStaticsButton />}
+          {user?.id === post.userId && !hideStaticsBtn && <PostStaticsButton />}
 
           <div className="flex items-center gap-[15px]">
             {/* <div
