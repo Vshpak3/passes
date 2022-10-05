@@ -111,18 +111,15 @@ export const Post = ({
           setOpen={setUserReportModal}
           userId={user?.id ?? ""}
         />
-
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
           <PostTextContent post={post} />
+          <LockedMedia
+            post={post}
+            postUnlocked={postUnlocked}
+            setPostUnlocked={setPostUnlocked}
+            setIsPayed={setIsPayed}
+          />
         </div>
-
-        <LockedMedia
-          post={post}
-          postUnlocked={postUnlocked}
-          setPostUnlocked={setPostUnlocked}
-          setIsPayed={setIsPayed}
-        />
-
         {/* {post.fundraiser ? (
           <FundraiserMedia images={post.content} />
         ) : (
