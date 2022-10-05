@@ -152,7 +152,7 @@ const AddCard = ({ callback }: IAddCard) => {
         options={{
           required: { message: "Name is required", value: true }
         }}
-        className="mt-4 border-passes-dark-100 bg-transparent"
+        className="mt-4"
       />
       <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
@@ -179,7 +179,7 @@ const AddCard = ({ callback }: IAddCard) => {
             }}
             errors={errors}
             name="exp-month"
-            className="mt-2 w-[100px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[100px]"
           />
         </div>
         <div className="flex flex-col">
@@ -193,7 +193,7 @@ const AddCard = ({ callback }: IAddCard) => {
             }}
             errors={errors}
             name="exp-year"
-            className="mt-2 w-[100px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[100px]"
           />
         </div>
         <div className="mb-4 flex flex-col">
@@ -211,7 +211,7 @@ const AddCard = ({ callback }: IAddCard) => {
               },
               pattern: { message: "must be CVV number", value: /\d{3}/ }
             }}
-            className="mt-2 w-[71px] border-passes-dark-100 bg-transparent"
+            className="mt-2 w-[71px]"
           />
         </div>
       </div>
@@ -225,7 +225,7 @@ const AddCard = ({ callback }: IAddCard) => {
         options={{
           required: { message: "Address is required", value: true }
         }}
-        className="mt-3 border-passes-dark-100 bg-transparent"
+        className="mt-3"
       />
       <FormInput
         register={register}
@@ -233,7 +233,7 @@ const AddCard = ({ callback }: IAddCard) => {
         name="address2"
         placeholder="Address 2"
         errors={errors}
-        className="mt-3 border-passes-dark-100 bg-transparent"
+        className="mt-3"
       />
       <FormInput
         register={register}
@@ -241,7 +241,7 @@ const AddCard = ({ callback }: IAddCard) => {
         selectOptions={COUNTRIES}
         name="country"
         errors={errors}
-        className="mt-3 border-passes-dark-100 bg-transparent"
+        className="mt-3"
       />
       <FormInput
         register={register}
@@ -252,7 +252,7 @@ const AddCard = ({ callback }: IAddCard) => {
         options={{
           required: { message: "City is required", value: true }
         }}
-        className="mt-3 border-passes-dark-100 bg-transparent"
+        className="mt-3"
       />
       <div className="flex gap-4">
         {countrySelected === COUNTRIES[0] ? (
@@ -265,7 +265,7 @@ const AddCard = ({ callback }: IAddCard) => {
               required: { message: "State is required", value: true }
             }}
             name="district"
-            className="mt-3 w-[120px] border-passes-dark-100 bg-transparent"
+            className="mt-3 w-[120px]"
           />
         ) : (
           <FormInput
@@ -283,7 +283,7 @@ const AddCard = ({ callback }: IAddCard) => {
               </div>
             }
             errors={errors}
-            className="mt-3 border-passes-dark-100 bg-transparent"
+            className="mt-3"
           />
         )}
 
@@ -296,7 +296,7 @@ const AddCard = ({ callback }: IAddCard) => {
           options={{
             required: { message: "Postal code is required", value: true }
           }}
-          className="mt-3 border-passes-dark-100 bg-transparent"
+          className="mt-3"
         />
       </div>
       <button

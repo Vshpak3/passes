@@ -6,7 +6,7 @@ import Wallet from "public/icons/wallet-manage.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, Input, Select } from "src/components/atoms"
+import { Button, ButtonTypeEnum, FormInput, Select } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
 import { useUser, useUserDefaultMintingWallets } from "src/hooks"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
@@ -164,33 +164,26 @@ const Wallets = () => {
             Choose Wallet to Connect
           </h4>
           <div className="mt-10 flex items-center justify-center space-x-7">
-            <div className="flex items-center space-x-4">
-              <Metamask
-                width="34px"
-                className="cursor-pointer"
-                onClick={handleOnETHWalletConnect}
-              />
+            <div
+              className="flex cursor-pointer items-center space-x-4 rounded-full px-3 py-2 hover:bg-gray-700"
+              onClick={handleOnETHWalletConnect}
+            >
+              <Metamask width="34px" className="cursor-pointer" />
               <span className="text-xl font-bold">Metamask</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <Phantom
-                className="h-[34px] w-[34px] cursor-pointer"
-                onClick={handleOnSolanaWalletConnect}
-              />
+            <div
+              className="flex cursor-pointer items-center space-x-4 rounded-full px-3 py-2 hover:bg-gray-700"
+              onClick={handleOnSolanaWalletConnect}
+            >
+              <Phantom className="h-[34px] w-[34px]" />
               <span className="text-xl font-bold">Phantom</span>
             </div>
           </div>
         </div>
       </Modal>
-      <div className="mt-[50px] flex items-center justify-start">
+      <div className="mt-4 flex items-center justify-start">
         <div className="flex items-center">
-          <Phantom className="ml-[25px]" />
-          <Metamask className="ml-[30px] mr-[25px]" />
-          <Button
-            className="h-[36px] border-none"
-            variant="purple"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <Button variant="purple-light" onClick={() => setIsModalOpen(true)}>
             <div className="flex items-center justify-center">
               <Wallet className="block h-[24px] w-[24px]" />
               <span className="ml-[10px] block">Connect New Wallet</span>
@@ -200,34 +193,16 @@ const Wallets = () => {
         {!!user?.isCreator && (
           <form
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
-            className="ml-[25px] flex w-fit items-center"
+            className="ml-1 flex items-center"
           >
-            <span className="block text-[16px] font-bold">or</span>
-            <Input
-              className="
-                mt-5
-                block
-                h-[36px]
-                w-[215px]
-                cursor-pointer
-                rounded-[6px]
-                border
-                border-passes-gray-100
-                bg-black
-                pl-[45px]
-                text-[12px]
-                text-base
-                font-bold
-                text-white
-                outline-none
-                md:mt-0
-                md:ml-4"
+            <span className="mx-4 block text-[16px] font-bold">or</span>
+            <FormInput
               icon={<Wallet />}
               type="text"
               name="address"
               register={register}
-              placeholder="Add Unchecked Address"
-              iconMargin="15"
+              className="mr-3 w-[250px] pl-[45px]"
+              placeholder="Insert your Payout Address"
               errors={errors}
               options={{
                 required: { message: "need payout address", value: true }
@@ -236,19 +211,15 @@ const Wallets = () => {
             <Select
               name="chain"
               register={register}
-              selectOptions={["sol", "eth"]}
+              className="mr-3 w-[80px]"
+              selectOptions={["SOL", "ETH"]}
               errors={errors}
               options={{
                 required: { message: "need chain", value: true }
               }}
             />
 
-            <Button
-              type={ButtonTypeEnum.SUBMIT}
-              className="ml-[25px] h-[36px] min-w-[100px] text-[14px]"
-              variant="pink"
-              tag="button"
-            >
+            <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
               Confirm
             </Button>
           </form>
@@ -257,8 +228,7 @@ const Wallets = () => {
       <div
         className="
           ml-[40px]
-          mr-[120px]
-          mt-[83px]
+          mt-6
           flex
           w-full
           items-center
