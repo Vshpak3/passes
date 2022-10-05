@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { authRouter } from "src/helpers/authRouter"
+import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
@@ -74,9 +75,8 @@ const NewPassword = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err?.message)
+    } catch (error: any) {
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }

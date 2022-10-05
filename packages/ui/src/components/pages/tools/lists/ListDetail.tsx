@@ -17,6 +17,7 @@ import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import FollowSearchModal from "src/components/molecules/FollowerSearchModal"
+import { errorMessage } from "src/helpers/error"
 
 import ListItem from "./ListItem"
 import SortListPopup from "./SortListPopup"
@@ -67,7 +68,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
       listNameRef.current!.value = listInfoRes.name
       setListName(listInfoRes.name)
     } catch (error) {
-      console.error("error ", error)
+      errorMessage(error, true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -98,7 +99,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
           setUsername(newListMembers.username)
         }
       } catch (error) {
-        console.error(error)
+        errorMessage(error, true)
       } finally {
         setIsLoadingMore(false)
       }
@@ -205,7 +206,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
         )
       }
     } catch (error) {
-      console.error("Remove member from a list has error: ", error)
+      errorMessage(error, true)
     }
   }
 
@@ -224,7 +225,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
         await new Promise((resolve) => setTimeout(resolve, 100))
         reset()
       } catch (error) {
-        console.error("Add member to list has error: ", error)
+        errorMessage(error, true)
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -264,7 +265,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
           }
           setIsEditingListName((isEditingListName) => !isEditingListName)
         } catch (error) {
-          console.error("Update list name error, status: ", error)
+          errorMessage(error, true)
         }
       } else {
         setIsEditingListName((isEditingListName) => !isEditingListName)

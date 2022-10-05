@@ -9,8 +9,8 @@ import {
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { updateProfile } from "src/helpers"
+import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
 import useSWR from "swr"
 
@@ -43,7 +43,7 @@ const useCreatorProfile = () => {
       setProfile(res)
     } catch (error: any) {
       setProfile(undefined)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -62,7 +62,7 @@ const useCreatorProfile = () => {
         setCreatorStats(res)
       }
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoadingStats(false)
     }

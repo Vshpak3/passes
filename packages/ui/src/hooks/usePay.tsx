@@ -8,7 +8,6 @@ import {
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
 import { useState } from "react"
-import { toast } from "react-toastify"
 import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
@@ -52,7 +51,7 @@ export const usePay = (
       })
     } catch (error: any) {
       await cancelPayinCallback()
-      throw error
+      errorMessage(error, true)
     }
   }
 
@@ -75,9 +74,8 @@ export const usePay = (
         cancelPayinCallback
       )
     } catch (error: any) {
-      //display message to user
       await cancelPayinCallback()
-      throw error
+      errorMessage(error, true)
     } finally {
       provider.off("connect")
       provider.off("accountChanged")
@@ -166,13 +164,7 @@ export const usePay = (
         callback()
       }
     } catch (error: any) {
-      if (error.message) {
-        toast.error(error.message)
-      } else {
-        const toastError = await errorMessage(error)
-        toast.error(toastError as string)
-      }
-      throw error
+      errorMessage(error, true)
     } finally {
       setSubmitting(false)
       setLoading(false)

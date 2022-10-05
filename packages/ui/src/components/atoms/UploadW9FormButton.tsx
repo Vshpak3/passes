@@ -3,6 +3,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms"
 import { ContentService } from "src/helpers"
+import { errorMessage } from "src/helpers/error"
 
 import FormInput from "./FormInput"
 
@@ -36,8 +37,8 @@ const UploadW9FormButton = ({ text, icon }: W9Button) => {
       await contentService.uploadW9(file)
 
       reset({})
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 

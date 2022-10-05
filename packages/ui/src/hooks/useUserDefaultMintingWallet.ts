@@ -4,7 +4,7 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { errorMessage } from "src/helpers/error"
 
 const useUserDefaultMintingWallets = () => {
   const api = new WalletApi()
@@ -28,8 +28,7 @@ const useUserDefaultMintingWallets = () => {
           break
       }
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -45,8 +44,7 @@ const useUserDefaultMintingWallets = () => {
       })
       await getDefaultWallet(chain)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 

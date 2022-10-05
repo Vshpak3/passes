@@ -16,6 +16,7 @@ import { RoundedIconButton } from "src/components/atoms/Button"
 import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
+import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
@@ -109,9 +110,8 @@ const SignupPage = () => {
         false,
         new URLSearchParams([["hasEmail", "true"]])
       )
-    } catch (err) {
-      toast("Something went wrong, please try again later")
-      console.error("Error on signup", err)
+    } catch (error) {
+      errorMessage(error, true)
     } finally {
       setIsSubmitting(false)
     }

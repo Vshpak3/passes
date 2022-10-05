@@ -1,8 +1,8 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import { Dispatch, SetStateAction, useState } from "react"
-import { toast } from "react-toastify"
 import { Button, Text } from "src/components/atoms"
+import { errorMessage } from "src/helpers/error"
 
 import Modal from "./Modal"
 
@@ -24,7 +24,7 @@ const BlockModal = ({ isOpen = false, setOpen, userId }: BlockModalProps) => {
       await api.blockFollower(followBlockRequest)
       setOpen(false)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 

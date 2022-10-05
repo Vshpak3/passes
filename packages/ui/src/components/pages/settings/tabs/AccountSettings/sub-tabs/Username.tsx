@@ -33,8 +33,8 @@ const Username = () => {
       await setUsername(username)
       toast.success("Username has been changed successfully.")
       mutate()
-    } catch (err) {
-      const message = await errorMessage(err, true)
+    } catch (error) {
+      const message = await errorMessage(error, true)
 
       setError("username", { type: "value", message }, { shouldFocus: true })
     }

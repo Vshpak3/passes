@@ -1,8 +1,8 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import React, { Dispatch, SetStateAction, useState } from "react"
-import { toast } from "react-toastify"
 import { Button, Text } from "src/components/atoms"
+import { errorMessage } from "src/helpers/error"
 
 import Modal from "./Modal"
 
@@ -25,8 +25,7 @@ const ReportModal = ({ isOpen = false, setOpen, userId }: ReportModalProps) => {
       await api.reportFollower(followReportRequest)
       setOpen(false)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 

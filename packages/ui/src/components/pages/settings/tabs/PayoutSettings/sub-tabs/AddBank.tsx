@@ -5,13 +5,13 @@ import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Select } from "src/components/atoms"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES } from "src/helpers/countries"
+import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
 
 enum BankTypeEnum {
@@ -71,7 +71,7 @@ const AddBank = () => {
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       addOrPopStackHandler(SubTabsEnum.PayoutSettings)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 

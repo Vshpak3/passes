@@ -2,8 +2,8 @@ import { CircleBankDto, PaymentApi, PayoutMethodDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import { useCallback, useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { Button, PassesPinkButton } from "src/components/atoms"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
 import BankIcon from "src/icons/bank-icon"
 import WalletIcon from "src/icons/wallet-icon"
@@ -19,7 +19,7 @@ const DefaultPayoutMethod = () => {
     try {
       setDefaultPayout(await api.getDefaultPayoutMethod())
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
       setDefaultPayout(undefined)
     }
   }, [])
@@ -37,7 +37,7 @@ const DefaultPayoutMethod = () => {
     try {
       await paymentApi.deleteCircleBank({ circleBankId: bankId })
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       await getBanks(paymentApi)
       await getDefaultPayout(paymentApi)
@@ -54,7 +54,7 @@ const DefaultPayoutMethod = () => {
         }
       })
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       await getBanks(paymentApi)
       await getDefaultPayout(paymentApi)

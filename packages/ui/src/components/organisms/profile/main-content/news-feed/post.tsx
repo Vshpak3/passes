@@ -16,7 +16,6 @@ import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
-import { toast } from "react-toastify"
 import { Button, PostUnlockButton, Text } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import {
@@ -28,6 +27,7 @@ import {
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
 
 const PostVideo = dynamic(
@@ -335,8 +335,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
       setNumComments(response.numComments)
       setLiked(response.isLiked)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 
@@ -359,8 +358,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
       }
       updateEngagement()
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 
@@ -455,8 +453,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
         setComments(response.comments)
       } catch (error: any) {
-        console.error(error)
-        toast.error(error)
+        errorMessage(error, true)
       } finally {
         setLoadingComments(false)
       }
@@ -493,8 +490,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
       setIsReset(true)
       updateEngagement()
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     }
   }
 

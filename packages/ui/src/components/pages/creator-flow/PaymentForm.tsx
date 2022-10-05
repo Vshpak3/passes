@@ -12,6 +12,7 @@ import {
 } from "src/components/atoms"
 import DownloadW9FormButton from "src/components/atoms/DownloadW9FormButton"
 import UploadW9FormButton from "src/components/atoms/UploadW9FormButton"
+import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
@@ -68,8 +69,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       onFinishPaymentForm()
     } catch (error: any) {
-      toast.error(error)
-      console.error(error)
+      errorMessage(error, true)
     }
   }
   return (

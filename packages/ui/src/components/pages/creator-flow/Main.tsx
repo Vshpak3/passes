@@ -14,6 +14,7 @@ import CustomizePageForm from "src/components/pages/creator-flow/CustomizePageFo
 import PaymentForm from "src/components/pages/creator-flow/PaymentForm"
 import PersonaVerification from "src/components/pages/creator-flow/PersonaVerification"
 import { CREATOR_STEPS, MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
@@ -44,8 +45,8 @@ const CreatorFlow = () => {
         }
       })
       setSelectedStep(CREATOR_STEPS.VERIFICATION)
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 

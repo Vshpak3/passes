@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
 
 const ADMIN_EMAIL = "@passes.com"
@@ -42,8 +43,8 @@ const AdminPage = () => {
       refreshUser()
 
       router.push("/home")
-    } catch (err: any) {
-      toast.error(err)
+    } catch (error: any) {
+      errorMessage(error, true)
     }
   }
 
@@ -57,8 +58,8 @@ const AdminPage = () => {
       await api.flagAsAdult({
         adminDto: { userId, username, secret }
       })
-    } catch (err: any) {
-      toast.error(err)
+    } catch (error: any) {
+      errorMessage(error, true)
     }
   }
 

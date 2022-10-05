@@ -9,8 +9,8 @@ import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down-icon.svg"
 import { Fragment, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, PassesPinkButton } from "src/components/atoms"
+import { errorMessage } from "src/helpers/error"
 
 const payoutFrequencyOptions = [
   {
@@ -44,7 +44,7 @@ const RequestPayouts = () => {
     try {
       await api.payout()
     } catch (error: any) {
-      toast(error)
+      errorMessage(error, true)
     }
   }, [])
 
@@ -61,7 +61,7 @@ const RequestPayouts = () => {
         }
       })
     } catch (error: any) {
-      toast(error)
+      errorMessage(error, true)
     }
   }, [getValues])
 

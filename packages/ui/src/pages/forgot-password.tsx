@@ -4,10 +4,10 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
 
 export interface ForgotPasswordFormProps {
@@ -59,9 +59,8 @@ const ForgotPassword = () => {
           "/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
         )
       }
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err?.message)
+    } catch (error: any) {
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }

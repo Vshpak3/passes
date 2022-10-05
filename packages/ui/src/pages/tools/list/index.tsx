@@ -15,6 +15,7 @@ import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { useCallback, useEffect, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import SortListPopup from "src/components/pages/tools/lists/SortListPopup"
+import { errorMessage } from "src/helpers/error"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const listApi = new ListApi()
@@ -63,7 +64,7 @@ const FanLists: NextPage = () => {
           setName(newLists.name)
         }
       } catch (error) {
-        console.error(error)
+        errorMessage(error, true)
       } finally {
         setIsLoadingMore(false)
       }
@@ -154,7 +155,7 @@ const FanLists: NextPage = () => {
       reset()
       await new Promise((resolve) => setTimeout(resolve, 100))
     } catch (error) {
-      console.error(error)
+      errorMessage(error, true)
     }
   }
 
@@ -168,7 +169,7 @@ const FanLists: NextPage = () => {
         setLists(lists.filter((list) => list.listId !== event.target.value))
       }
     } catch (error) {
-      console.error(error)
+      errorMessage(error, true)
     }
   }
   const sortPopperOpen = Boolean(anchorSortPopperEl)

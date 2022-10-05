@@ -11,6 +11,7 @@ import {
   authStateToRoute
 } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
+import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 
@@ -65,9 +66,8 @@ const UserEmailPage = () => {
 
       router.query.hasEmail = "true"
       router.push(router)
-    } catch (err: any) {
-      console.error(err)
-      toast.error(err?.message)
+    } catch (error: any) {
+      errorMessage(error, true)
     } finally {
       setIsSubmitting(false)
     }

@@ -42,8 +42,8 @@ const ProfilePicture = () => {
       await setProfilePicture(profileImage[0])
       toast.success("Your profile picture has been changed successfully")
       // setValue("profileImage", [])
-    } catch (err) {
-      errorMessage(err, true)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 

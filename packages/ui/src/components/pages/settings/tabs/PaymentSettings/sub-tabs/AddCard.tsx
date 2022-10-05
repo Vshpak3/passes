@@ -102,9 +102,7 @@ const AddCard = ({ callback }: IAddCard) => {
         addOrPopStackHandler(SubTabsEnum.PaymentSettings)
       }
     } catch (error: any) {
-      const toastError = await errorMessage(error)
-
-      toast.error(toastError)
+      errorMessage(error, true)
     }
   }
 

@@ -6,7 +6,7 @@ import {
   PaymentApi
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { errorMessage } from "src/helpers/error"
 
 const usePayinMethod = () => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
@@ -25,7 +25,7 @@ const usePayinMethod = () => {
       const response = await api.getDefaultPayinMethod()
       setPayinMethod(response)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -37,7 +37,7 @@ const usePayinMethod = () => {
       const response = await api.getCircleCards()
       setCards(response.cards)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -51,7 +51,7 @@ const usePayinMethod = () => {
       })
       setPayinMethod(dto)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -68,7 +68,7 @@ const usePayinMethod = () => {
       }
       setCards(cards.filter((card) => card.id != cardId))
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -82,7 +82,7 @@ const usePayinMethod = () => {
       })
       setCardInfo(response)
     } catch (error: any) {
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }

@@ -22,8 +22,7 @@ const useCreatorSettings = () => {
       const response = await api.getCreatorSettings()
       setCreatorSettings(response)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -48,7 +47,7 @@ const useCreatorSettings = () => {
         toast.error("Failed to update")
       }
     } catch (error: any) {
-      return await errorMessage(error, true)
+      errorMessage(error, true)
     } finally {
       setIsUpdating(false)
     }

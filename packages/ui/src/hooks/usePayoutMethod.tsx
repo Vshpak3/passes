@@ -5,7 +5,7 @@ import {
   PayoutMethodDtoMethodEnum
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { errorMessage } from "src/helpers/error"
 
 const usePayoutMethod = () => {
   const [payoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
@@ -21,8 +21,7 @@ const usePayoutMethod = () => {
 
       setPayoutMethod(response)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -34,8 +33,7 @@ const usePayoutMethod = () => {
       const response = await api.getCircleBanks()
       setBanks(response.banks)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -49,8 +47,7 @@ const usePayoutMethod = () => {
       })
       setPayoutMethod(dto)
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       setIsLoading(false)
     }
@@ -67,8 +64,7 @@ const usePayoutMethod = () => {
       }
       setBanks(banks.filter((bank) => bank.id != bankId))
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      errorMessage(error, true)
     } finally {
       await getBanks()
     }

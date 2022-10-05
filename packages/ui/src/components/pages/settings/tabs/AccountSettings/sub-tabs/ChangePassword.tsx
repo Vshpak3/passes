@@ -48,8 +48,8 @@ const ChangePassword = () => {
       await changePassword({ oldPassword, newPassword })
       toast.success("Your password has been changed successfully")
       reset(defaultValues)
-    } catch (err) {
-      errorMessage(err, true)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 
