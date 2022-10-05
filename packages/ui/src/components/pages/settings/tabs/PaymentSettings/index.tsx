@@ -102,7 +102,7 @@ const PaymentSettings = ({
     const coin = payInMethodChain ? `(${payInMethodChain})` : ""
     return (
       <div className="mt-3 flex flex-row items-center">
-        <PhantomIcon />
+        <PhantomIcon width="40px" />
         <span className="mx-3 font-[700]">Phantom Wallet</span>
         <span>{`USDC ${coin}`}</span>
       </div>
@@ -113,7 +113,7 @@ const PaymentSettings = ({
     const coin = payInMethodChain ? `(${payInMethodChain})` : ""
     return (
       <div className="mt-3 flex flex-row items-center">
-        <MetamaskIcon />
+        <MetamaskIcon width="40px" />
         <span className="mx-3 font-[700]">Metamask Wallet</span>
         <span>{`${type} ${coin}`}</span>
       </div>
@@ -159,12 +159,12 @@ const PaymentSettings = ({
         </div>
       </div>
       <div className="flex flex-col">
-        <span className="text-[18px] font-bold text-white">
+        <span className="mb-3 text-[18px] font-bold text-white">
           Add Crypto Wallet as a Payment method
         </span>
         <div className="flex items-center justify-start">
           <div className="flex flex-1 flex-row items-center">
-            <MetamaskIcon />
+            <MetamaskIcon width="40px" />
             <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
               Metamask
             </span>
@@ -245,7 +245,7 @@ const PaymentSettings = ({
         </div>
         <div className="flex items-center justify-start">
           <div className="flex flex-1 flex-row items-center">
-            <PhantomIcon />
+            <PhantomIcon width="40px" />
             <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
               Phantom
             </span>

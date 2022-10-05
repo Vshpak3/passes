@@ -2,6 +2,7 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
 import { CircleEncryptionKeyResponseDto, PaymentApi } from "@passes/api-client"
+import cardValidator from "card-validator"
 import { SHA256 } from "crypto-js"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -130,7 +131,16 @@ const AddCard = ({ callback }: IAddCard) => {
         control={control}
         name="card-number"
         rules={{
-          required: { message: "Card number is required", value: true }
+          required: { message: "Card number is required", value: true },
+          validate: {
+            value: (value: any) => {
+              const numberValidation = cardValidator.number(value)
+
+              return numberValidation.isValid
+                ? ""
+                : "Credit card number is invalid"
+            }
+          }
         }}
       />
       <FormInput
@@ -199,7 +209,7 @@ const AddCard = ({ callback }: IAddCard) => {
                 message: "CVV is required",
                 value: true
               },
-              pattern: { message: "must be card number", value: /\d{3}/ }
+              pattern: { message: "must be CVV number", value: /\d{3}/ }
             }}
             className="mt-2 w-[71px] border-passes-dark-100 bg-transparent"
           />
