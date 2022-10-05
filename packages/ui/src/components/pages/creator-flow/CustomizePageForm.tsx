@@ -88,8 +88,8 @@ const CustomizePageForm = ({
     await updateProfile({
       displayName,
       description,
-      profileImage: profileImage[0],
-      profileBannerImage: profileBannerImage[0],
+      profileImage: profileImage,
+      profileBannerImage: profileBannerImage,
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })

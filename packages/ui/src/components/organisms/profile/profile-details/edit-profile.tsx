@@ -85,8 +85,9 @@ export const EditProfile: FC<EditProfileProps> = ({
     defaultValues: profile
   })
 
-  const profileImage = watch("profileImage")
-  const profileCoverImage = watch("profileCoverImage")
+  const profileImage: File[] = watch("profileImage")
+  const profileCoverImage: File[] = watch("profileCoverImage")
+
   const renderInput = ([key, input]: any) => (
     <div className={input.colSpan} key={key}>
       <FormInput

@@ -6,8 +6,8 @@ export interface ProfileUpdate {
   displayName?: string
   description?: string
 
-  profileImage?: File
-  profileBannerImage?: File
+  profileImage?: File[]
+  profileBannerImage?: File[]
 
   discordUsername?: string
   facebookUsername?: string
@@ -49,10 +49,12 @@ export async function updateProfile(values: ProfileUpdate): Promise<void> {
 
     isAdult ? await userApi.makeAdult() : undefined,
 
-    profileImage ? contentService.uploadProfileImage(profileImage) : undefined,
+    profileImage?.length === 1
+      ? contentService.uploadProfileImage(profileImage[0])
+      : undefined,
 
-    profileBannerImage
-      ? contentService.uploadProfileBanner(profileBannerImage)
+    profileBannerImage?.length === 1
+      ? contentService.uploadProfileBanner(profileBannerImage[0])
       : undefined,
 
     Object.values(rest).some((x) => x)
