@@ -19,7 +19,12 @@ const PostsSettings = () => {
   // const values = watch()
 
   const savePostsSettingsHandler = async (values: typeof defaultValues) => {
-    await updateCreatorSettings({ allowCommentsOnPosts: values.enableComments })
+    await updateCreatorSettings(
+      { allowCommentsOnPosts: values.enableComments },
+      `comments has been ${
+        values.enableComments ? "allowed" : "disallowed"
+      } for post`
+    )
   }
 
   useEffect(() => {

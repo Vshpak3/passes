@@ -48,7 +48,10 @@ const ChatSettings = () => {
       data.welcomeMessage = null
     }
 
-    await updateCreatorSettings(data)
+    await updateCreatorSettings(
+      data,
+      "chat settings have been changed successfully"
+    )
   }
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const ChatSettings = () => {
   useEffect(() => {
     // all of the below code is just for validation and disable save button
     if (isUpdating) {
-      setIsDisabledBtn(true)
+      setIsDisabledBtn(false)
       return
     }
     // if (creatorSettings) {
@@ -96,7 +99,7 @@ const ChatSettings = () => {
     //   }
 
     //   if (_.isEqual(savedData, formattedValues)) {
-    //     setIsDisabledBtn(false)
+    //     setIsDisabledBtn(true)
     //     return
     //   }
     // }
@@ -105,10 +108,10 @@ const ChatSettings = () => {
     chatSettingsSchema
       .validate(values)
       .then(() => {
-        return setIsDisabledBtn(true)
+        return setIsDisabledBtn(false)
       })
       .catch(() => {
-        setIsDisabledBtn(false)
+        setIsDisabledBtn(true)
       })
   }, [values, creatorSettings, isUpdating])
 
@@ -181,7 +184,7 @@ const ChatSettings = () => {
             variant="pink"
             className="mt-6 w-auto !px-[52px]"
             tag="button"
-            disabled={!isDisableBtn}
+            disabled={isDisableBtn}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

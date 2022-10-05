@@ -2,6 +2,7 @@ import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { getFormattedDate } from "src/helpers"
 import { useUser } from "src/hooks"
 
 const AccountInformation = () => {
@@ -78,9 +79,11 @@ const AccountInformation = () => {
       <div className="flex w-full items-center justify-between border-b border-passes-dark-200 p-2.5">
         <div className="text-start">
           <p className="text-label">Date of Birth</p>
-          <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
-            {user?.birthday}
-          </p>
+          {user?.birthday && (
+            <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
+              {getFormattedDate(new Date(user.birthday))}
+            </p>
+          )}
         </div>
       </div>
     </Tab>

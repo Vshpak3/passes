@@ -1,7 +1,11 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import React from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
+import { errorMessage } from "src/helpers/error"
+import { getYupRequiredStringSchema } from "src/helpers/validation"
 import { useAccountSettings, useUser } from "src/hooks"
 
 interface IUserForm {
@@ -17,7 +21,8 @@ const Username = () => {
     setError,
     formState: { errors }
   } = useForm<IUserForm>({
-    defaultValues: { username: user?.username || "" }
+    defaultValues: { username: user?.username || "" },
+    resolver: yupResolver(getYupRequiredStringSchema({ name: "username" }))
   })
   const { setUsername } = useAccountSettings()
 
@@ -26,18 +31,12 @@ const Username = () => {
   const onSaveUserName = async ({ username }: IUserForm) => {
     try {
       await setUsername(username)
+      toast.success("Username has been changed successfully.")
       mutate()
     } catch (err) {
-      let errorMessage = "Something went wrong"
-      if (err instanceof Error) {
-        errorMessage = err.message
-      }
+      const message = await errorMessage(err, true)
 
-      setError(
-        "username",
-        { type: "custom", message: errorMessage },
-        { shouldFocus: true }
-      )
+      setError("username", { type: "value", message }, { shouldFocus: true })
     }
   }
 
@@ -53,7 +52,6 @@ const Username = () => {
               type="text"
               register={register}
               className="mt-1.5 border-passes-gray-700/80 bg-transparent !py-4 !pl-[26px] !pr-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-              errors={errors}
             />
           </div>
         </label>
@@ -68,7 +66,9 @@ const Username = () => {
           className="mt-6 w-auto !px-[52px]"
           tag="button"
           disabled={
-            username.length === 0 || username === user?.username || loading
+            username.trim().length === 0 ||
+            username === user?.username ||
+            loading
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

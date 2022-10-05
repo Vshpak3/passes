@@ -2,8 +2,10 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
+import { errorMessage } from "src/helpers/error"
 import { changePasswordSchema } from "src/helpers/validation"
 import { useAccountSettings } from "src/hooks"
 
@@ -24,12 +26,13 @@ const ChangePassword = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors }
   } = useForm<IChangePasswordForm>({
     defaultValues,
     resolver: yupResolver(changePasswordSchema)
   })
-  const [isValidate, setIsValidate] = useState(false)
+  const [isDisableBtn, setIsDisabledBtn] = useState(false)
   const { changePassword } = useAccountSettings()
   const values = watch()
 
@@ -40,11 +43,13 @@ const ChangePassword = () => {
   }: IChangePasswordForm) => {
     try {
       if (newPassword !== confirmPassword) {
-        return
+        return toast.error("passwords does not match")
       }
       await changePassword({ oldPassword, newPassword })
+      toast.success("your password has been changed successfully")
+      reset(defaultValues)
     } catch (err) {
-      console.error(err)
+      errorMessage(err, true)
     }
   }
 
@@ -52,10 +57,10 @@ const ChangePassword = () => {
     changePasswordSchema
       .validate(values)
       .then(() => {
-        return setIsValidate(true)
+        return setIsDisabledBtn(false)
       })
       .catch(() => {
-        setIsValidate(false)
+        setIsDisabledBtn(true)
       })
   }, [values])
 
@@ -106,7 +111,7 @@ const ChangePassword = () => {
           variant="pink"
           className="mt-6 w-auto !px-[52px]"
           tag="button"
-          disabled={!isValidate}
+          disabled={isDisableBtn}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

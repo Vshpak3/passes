@@ -1,6 +1,7 @@
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import {
   Button,
   ButtonTypeEnum,
@@ -8,6 +9,7 @@ import {
   FormInput
 } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
+import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks"
 import useSWR from "swr"
 
@@ -40,8 +42,13 @@ const EmailNotifications = () => {
   const saveNotificationSettingsHandler = async (
     values: INotificationSettings
   ) => {
-    await updateNotificationSettings(values)
-    mutate()
+    try {
+      await updateNotificationSettings(values)
+      toast.success("email notifications has been changed")
+      mutate()
+    } catch (err) {
+      errorMessage(err, true)
+    }
   }
 
   const emailAllNotificationsHandler = (isEmailAll: boolean) => {
@@ -95,11 +102,6 @@ const EmailNotifications = () => {
               setIsEmailAll(e.target.checked)
             }}
           />
-          {/* <FormInput
-            name="emailAllNotifications"
-            register={registerEmailNotification}
-            type="toggle"
-          /> */}
         </label>
         <p className="mt-2.5 text-white/50">
           Get emails to find out what’s going on when you’re not on Twitter. You

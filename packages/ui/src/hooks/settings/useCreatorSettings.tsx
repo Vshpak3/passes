@@ -5,6 +5,7 @@ import {
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { errorMessage } from "src/helpers/error"
 
 type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto
@@ -28,21 +29,26 @@ const useCreatorSettings = () => {
     }
   }
 
-  async function updateCreatorSettings(newSettings: CreatorSettingsDto) {
+  async function updateCreatorSettings(
+    newSettings: CreatorSettingsDto,
+    successToastMessage = ""
+  ) {
     try {
       setIsUpdating(true)
       const result = await api.updateCreatorSettings({
         updateCreatorSettingsRequestDto: newSettings
       })
       if (result.value) {
+        if (successToastMessage) {
+          toast.success(successToastMessage)
+        }
         await new Promise((resolve) => setTimeout(resolve, 100))
         await getCreatorSettings()
       } else {
         toast.error("failed to update")
       }
     } catch (error: any) {
-      console.error(error)
-      toast.error(error)
+      return await errorMessage(error, true)
     } finally {
       setIsUpdating(false)
     }

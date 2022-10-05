@@ -25,7 +25,7 @@ const ProfileSettings = () => {
   const saveProfileSettingsHandler = async (values: typeof defaultValues) => {
     // const { fullPrivateProfile, ...countSettings } = values
     // await privateProfileHandler(fullPrivateProfile)
-    await updateCreatorSettings(values)
+    await updateCreatorSettings(values, "email notifications has been changed")
   }
 
   useEffect(() => {

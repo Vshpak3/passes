@@ -1,10 +1,26 @@
 import { ResponseError } from "@passes/api-client"
-export async function errorMessage(err: any) {
-  const messageError = await (err as ResponseError).response.json()
+import { toast } from "react-toastify"
 
-  if (messageError.message) {
-    return messageError.message
+export async function errorMessage(err: any, withToast = false) {
+  let errorMessage: string | string[] = "Something went wrong"
+
+  if (err instanceof ResponseError) {
+    const error = await err.response.json()
+
+    if (error.message) {
+      errorMessage = error.message
+    }
+  } else if (err instanceof Error) {
+    errorMessage = err.message
   }
 
-  return "Error"
+  const messageStr = Array.isArray(errorMessage)
+    ? errorMessage[0]
+    : errorMessage
+
+  if (withToast) {
+    toast.error(messageStr)
+  }
+
+  return messageStr
 }

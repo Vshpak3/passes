@@ -1,10 +1,12 @@
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import Tab from "src/components/pages/settings/Tab"
 import { ContentService } from "src/helpers"
+import { errorMessage } from "src/helpers/error"
 import { useAccountSettings } from "src/hooks"
 
 interface IProfileForm {
@@ -25,10 +27,16 @@ const ProfilePicture = () => {
 
   const onSaveProfile = async () => {
     if (!profileImage || !profileImage.length) {
+      toast.error("please upload profile image")
       return
     }
-    await setProfilePicture(profileImage[0])
-    setValue("profileImage", null)
+    try {
+      await setProfilePicture(profileImage[0])
+      toast.success("your profile picture has been changed successfully")
+      setValue("profileImage", null)
+    } catch (err) {
+      errorMessage(err, true)
+    }
   }
 
   return (

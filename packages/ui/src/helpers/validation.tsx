@@ -16,6 +16,20 @@ export interface SignInSchema {
   password: string
 }
 
+const getYupRequiredStringSchema = ({
+  name,
+  errorMessage
+}: {
+  name: string
+  errorMessage?: string
+}) => {
+  return object({
+    [name]: string()
+      .transform((value) => value.trim())
+      .required(errorMessage || `please enter a ${name}`)
+  })
+}
+
 const creatorFlowProfileSchema = object({
   displayName: string()
     .transform((name) => name.trim())
@@ -170,6 +184,7 @@ export {
   creatorFlowProfileSchema,
   creditCardSchema,
   digitsOnly,
+  getYupRequiredStringSchema,
   passwordRegex,
   phoneRegex,
   sanitizeString,
