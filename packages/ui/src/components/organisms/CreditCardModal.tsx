@@ -136,7 +136,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
         </div>
         <div className="align-center mx-auto my-4 flex w-[250px] justify-center">
           <div className="px-2">
-            <MetamaskIcon />
+            <MetamaskIcon width="40px" />
           </div>
           <div className="px-2">
             <CoinbaseIcon />
@@ -145,7 +145,7 @@ const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
             <TrelloIcon />
           </div>
           <div className="px-2">
-            <PhantomIcon />
+            <PhantomIcon width="40px" />
           </div>
           <div className="px-2">
             <WalletConnectIcon />

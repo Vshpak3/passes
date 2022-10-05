@@ -166,7 +166,8 @@ const Wallets = () => {
           <div className="mt-10 flex items-center justify-center space-x-7">
             <div className="flex items-center space-x-4">
               <Metamask
-                className="h-[34px] w-[34px] cursor-pointer"
+                width="34px"
+                className="cursor-pointer"
                 onClick={handleOnETHWalletConnect}
               />
               <span className="text-xl font-bold">Metamask</span>

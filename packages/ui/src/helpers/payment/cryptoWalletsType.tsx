@@ -8,14 +8,14 @@ export const cryptoWalletsType = (value: string, chain?: string) => {
     case GetPayinMethodResponseDtoMethodEnum.PhantomCircleUsdc:
       return (
         <>
-          <PhantomIcon />
+          <PhantomIcon width="40px" />
           <span className="ml-[20px]">Phantom</span>
         </>
       )
     case GetPayinMethodResponseDtoMethodEnum.MetamaskCircleUsdc:
       return (
         <>
-          <MetamaskIcon />
+          <MetamaskIcon width="40px" />
           <span className="ml-[20px]">
             Metamask {chain?.toUpperCase()} USDC
           </span>
@@ -24,7 +24,7 @@ export const cryptoWalletsType = (value: string, chain?: string) => {
     case GetPayinMethodResponseDtoMethodEnum.MetamaskCircleEth:
       return (
         <>
-          <MetamaskIcon />
+          <MetamaskIcon width="40px" />
           <span className="ml-[20px]">Metamask ETH USDC</span>
         </>
       )

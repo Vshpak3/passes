@@ -39,9 +39,9 @@ const WalletListItem = ({
     if (isAuthWallet) {
       switch (value) {
         case "eth":
-          return <Metamask />
+          return <Metamask width="40px" />
         case "sol":
-          return <Phantom />
+          return <Phantom width="40px" />
       }
     }
     return <DefaultIcon />
