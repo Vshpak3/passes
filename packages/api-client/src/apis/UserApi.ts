@@ -293,6 +293,36 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
+     * patrick whitelisted users
+     */
+    async patrickWhitelistRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/user/patrick`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * patrick whitelisted users
+     */
+    async patrickWhitelist(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.patrickWhitelistRaw(initOverrides);
+    }
+
+    /**
      * Search for creators by query
      */
     async searchCreatorByUsernameRaw(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {

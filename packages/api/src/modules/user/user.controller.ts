@@ -36,7 +36,7 @@ export class UserController {
     role: RoleEnum.GENERAL,
   })
   @Post('patrick')
-  async patrickPass(@Req() req: RequestWithUser): Promise<void> {
+  async patrickWhitelist(@Req() req: RequestWithUser): Promise<void> {
     await this.userService.createWhitelistedPasses(req.user.id)
   }
 
