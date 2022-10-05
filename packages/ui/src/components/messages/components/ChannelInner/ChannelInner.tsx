@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import classNames from "classnames"
 import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import React, { FC, useContext, useState } from "react"
@@ -12,7 +13,7 @@ import {
 } from "src/components/organisms"
 // import BuyMessagesModal from "src/components/organisms/BuyMessagesModal"
 import BuyPostModal from "src/components/organisms/payment/BuyPostModal"
-import { classNames, formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers"
 import {
   ChatContext,
   MessageInput,

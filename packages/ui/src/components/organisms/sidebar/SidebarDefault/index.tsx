@@ -8,7 +8,8 @@ import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
 import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
 const NewPostButton = dynamic(
-  () => import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton")
+  () => import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton"),
+  { ssr: false }
 )
 
 interface SidebarDefaultProps {

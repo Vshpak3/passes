@@ -1,26 +1,18 @@
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 import NoProfile from "src/components/organisms/NoProfile"
-import { MainContentProps } from "src/components/organisms/profile/main-content"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
 import ProfileDetails from "src/components/organisms/profile/profile-details"
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const EditProfile = dynamic<any>(
-  () =>
-    import(
-      "src/components/organisms/profile/profile-details/edit-profile"
-    ).then((mod) => mod.EditProfile),
-  {
-    ssr: false
-  }
+const EditProfile = dynamic(
+  () => import("src/components/organisms/profile/profile-details/edit-profile"),
+  { ssr: false }
 )
-const MainContent = dynamic<MainContentProps>(
+const MainContent = dynamic(
   () => import("src/components/organisms/profile/main-content"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 
 const Profile = () => {

@@ -22,20 +22,12 @@ import { MediaFile } from "./media"
 import { PollsTab } from "./polls-tab"
 
 const RecordView = dynamic(
-  () =>
-    import("src/components/organisms/media-record").then(
-      (mod) => mod.RecordView
-    ),
-  {
-    ssr: false
-  }
+  () => import("src/components/organisms/media-record"),
+  { ssr: false }
 )
 const CustomMentionEditor = dynamic(
-  () =>
-    import("src/components/organisms").then((mod) => mod.CustomMentionEditor),
-  {
-    ssr: false
-  }
+  () => import("src/components/organisms/CustomMentionEditor"),
+  { ssr: false }
 )
 
 const MB = 1048576

@@ -16,11 +16,10 @@ import Header from "src/components/molecules/performance/Header"
 import Table from "src/components/molecules/performance/Table"
 import { withPageLayout } from "src/layout/WithPageLayout"
 import useSWR from "swr"
-const Chart = dynamic<any>(
+
+const Chart = dynamic(
   () => import("src/components/molecules/performance/Chart"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 const PERFORMANCE_OPTIONS = [
   {

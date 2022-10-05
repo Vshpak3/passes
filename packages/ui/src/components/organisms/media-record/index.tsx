@@ -70,3 +70,5 @@ export const RecordView: FC<RecordViewProps> = ({
     </div>
   )
 }
+
+export default RecordView

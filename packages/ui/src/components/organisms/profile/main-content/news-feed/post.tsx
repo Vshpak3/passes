@@ -33,22 +33,15 @@ import { useUser } from "src/hooks"
 
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/payment/BuyPostModal"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 const TipPostModal = dynamic(
   () => import("src/components/organisms/payment/TipPostModal"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
-
 const PostViewModal = dynamic(
   () => import("src/components/organisms/post/ViewModal"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 
 import { copyToClipboard, PostDropdown } from "./post-dropdown"

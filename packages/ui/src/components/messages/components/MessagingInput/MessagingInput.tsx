@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { MessagesApi, PostApi } from "@passes/api-client/apis"
+import classNames from "classnames"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, { useContext, useState } from "react"
@@ -15,7 +16,7 @@ import {
   Media,
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/media"
-import { classNames, ContentService, formatCurrency } from "src/helpers"
+import { ContentService, formatCurrency } from "src/helpers"
 import { useChat } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 import { ChatContext, useChatContext } from "stream-chat-react"

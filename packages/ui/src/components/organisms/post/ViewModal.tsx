@@ -20,9 +20,7 @@ import { useComments, useUser } from "src/hooks"
 
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/payment/BuyPostModal"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 
 interface IViewProps {

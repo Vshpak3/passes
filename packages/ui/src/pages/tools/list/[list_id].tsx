@@ -4,11 +4,9 @@ import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
-const ListDetail = dynamic<any>(
+const ListDetail = dynamic(
   () => import("src/components/pages/tools/lists/ListDetail"),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 
 const FanDetailLists: NextPage = () => {

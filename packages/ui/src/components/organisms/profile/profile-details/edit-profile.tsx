@@ -214,3 +214,5 @@ export const EditProfile: FC<EditProfileProps> = ({
     </>
   )
 }
+
+export default EditProfile
