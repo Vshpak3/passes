@@ -108,7 +108,7 @@ export const EditProfile: FC<EditProfileProps> = ({
         open={true}
         onClose={onCloseEditProfile}
         footer={
-          <div className="left-20 -mb-4 flex cursor-pointer self-center ">
+          <div className="left-20 mx-0 -mb-4 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
             <span
               className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
               onClick={handleSubmit(() => onSubmit(getValues()))}
@@ -120,7 +120,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-5"
+          className="flex flex-col gap-5 px-0 xs:px-5 sm:px-12 md:px-0"
         >
           <FormImage
             setValue={setValue}
@@ -173,7 +173,7 @@ export const EditProfile: FC<EditProfileProps> = ({
               <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
                 Bio
               </span>
-              <div className="grid w-full grid-cols-6 gap-3">
+              <div className="mt-3 grid w-full grid-cols-6 gap-3">
                 {Object.entries(bioForm).map(renderInput)}
               </div>
             </div>
@@ -181,7 +181,7 @@ export const EditProfile: FC<EditProfileProps> = ({
               <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
                 Display Name
               </span>
-              <div className="grid w-full grid-cols-6 gap-3">
+              <div className="mt-3 grid w-full grid-cols-6 gap-3">
                 {Object.entries(profileInformationForm).map(renderInput)}
               </div>
             </div>
@@ -189,12 +189,12 @@ export const EditProfile: FC<EditProfileProps> = ({
               <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
                 Social Media Usernames
               </span>
-              <div className="grid w-full grid-cols-6 gap-3 pb-2 ">
+              <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2 ">
                 {Object.entries(socialMediaForm).map(([key, input]) => {
                   return (
                     <div className={input.colSpan} key={key}>
                       <div>
-                        <div className=" flex w-full items-center justify-between pl-[18px]">
+                        <div className=" flex w-full items-center justify-between">
                           <FormInput
                             register={register}
                             name={key}
