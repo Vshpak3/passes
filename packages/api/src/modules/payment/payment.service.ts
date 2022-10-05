@@ -319,7 +319,7 @@ export class PaymentService {
         .first()
       if (checkPayin) {
         await this.failPayin(payin.id, payin.userId)
-        throw new BadRequestException('Card payment already in progress')
+        throw new BadRequestException('Payment for item already in progress')
       }
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
         .where({ target: payin.target, user_id: payin.userId })
