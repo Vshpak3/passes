@@ -15,11 +15,13 @@ import VisaIcon from "public/icons/visa-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput } from "src/components/atoms"
+import { FormInput, Select } from "src/components/atoms"
+import { EIcon } from "src/components/atoms/Input"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
-import { COUNTRIES } from "src/helpers/countries"
+import { COUNTRIES, US_STATES } from "src/helpers/countries"
+import { getExpirationYears } from "src/helpers/dates"
 import { errorMessage } from "src/helpers/error"
 import encrypt from "src/helpers/openpgp"
 import { useUser } from "src/hooks"
@@ -35,14 +37,16 @@ const AddCard = ({ callback }: IAddCard) => {
   const {
     handleSubmit,
     register,
+    watch,
     getValues,
     formState: { errors }
-  } = useForm({
+  } = useForm<{ country: string }>({
     defaultValues: {}
   })
 
   const { user, loading, accessToken } = useUser()
   const router = useRouter()
+  const countrySelected = watch("country")
 
   const onSubmit = async () => {
     try {
@@ -119,7 +123,9 @@ const AddCard = ({ callback }: IAddCard) => {
     <>
       <Tab withBack title="Add Card" />
 
-      <span className="text-[16px] font-[500] text-[#767676]">Card Info</span>
+      <span className="mt-3 block text-[16px] font-[500] text-white">
+        Card Info
+      </span>
       <FormInput
         register={register}
         type="number"
@@ -153,32 +159,43 @@ const AddCard = ({ callback }: IAddCard) => {
       <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
-          <FormInput
+          <Select
             register={register}
-            type="number"
-            name="exp-month"
-            placeholder="08"
-            errors={errors}
+            placeholder=" "
+            selectOptions={[
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]}
             options={{
-              required: { message: "Month is required", value: true },
-              pattern: { message: "Must be a month", value: /\d{2}/ }
+              required: { message: "Month is required", value: true }
             }}
-            className="mt-2 w-[61px] border-passes-dark-100 bg-transparent"
+            errors={errors}
+            name="exp-month"
+            className="mt-2 w-[100px] border-passes-dark-100 bg-transparent"
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
-          <FormInput
+          <Select
             register={register}
-            type="number"
-            name="exp-year"
-            placeholder="2024"
-            errors={errors}
+            selectOptions={getExpirationYears()}
+            placeholder=" "
             options={{
-              required: { message: "Year is required", value: true },
-              pattern: { message: "Must be a year", value: /\d{4}/ }
+              required: { message: "Year is required", value: true }
             }}
-            className="mt-2 w-[81px] border-passes-dark-100 bg-transparent"
+            errors={errors}
+            name="exp-year"
+            className="mt-2 w-[100px] border-passes-dark-100 bg-transparent"
           />
         </div>
         <div className="mb-4 flex flex-col">
@@ -237,22 +254,37 @@ const AddCard = ({ callback }: IAddCard) => {
         className="mt-3 border-passes-dark-100 bg-transparent"
       />
       <div className="flex gap-4">
-        <FormInput
-          register={register}
-          type="text"
-          name="district"
-          placeholder="State/District"
-          icon={
-            <div
-              className="tooltip absolute left-[165px] top-[26px] h-4 w-4"
-              data-tip="2 letter input only (Example: “FL”)"
-            >
-              <InfoIcon />
-            </div>
-          }
-          errors={errors}
-          className="mt-3 border-passes-dark-100 bg-transparent"
-        />
+        {countrySelected === COUNTRIES[0] ? (
+          <Select
+            register={register}
+            selectOptions={US_STATES}
+            errors={errors}
+            placeholder="State"
+            options={{
+              required: { message: "State is required", value: true }
+            }}
+            name="district"
+            className="mt-3 w-[120px] border-passes-dark-100 bg-transparent"
+          />
+        ) : (
+          <FormInput
+            register={register}
+            type="text"
+            name="district"
+            placeholder="State/District"
+            iconAlign={EIcon.Right}
+            icon={
+              <div
+                className="tooltip absolute right-[15px] top-[30px] h-4 w-4"
+                data-tip="2 letter input only (Example: “FL”)"
+              >
+                <InfoIcon />
+              </div>
+            }
+            errors={errors}
+            className="mt-3 border-passes-dark-100 bg-transparent"
+          />
+        )}
 
         <FormInput
           register={register}
@@ -263,7 +295,7 @@ const AddCard = ({ callback }: IAddCard) => {
           options={{
             required: { message: "Postal code is required", value: true }
           }}
-          className="mt-2 border-passes-dark-100 bg-transparent"
+          className="mt-3 border-passes-dark-100 bg-transparent"
         />
       </div>
       <button

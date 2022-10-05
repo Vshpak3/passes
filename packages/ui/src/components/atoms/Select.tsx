@@ -50,7 +50,7 @@ const Select = ({
         {...customChange()}
         className={classNames(
           errors[name] !== undefined ? "border-red-500" : "",
-          "block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
+          "my-1 block min-h-[50px] w-full appearance-none rounded-md border p-2 px-4 py-3 text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
           className
         )}
         defaultValue={defaultValue}
@@ -72,6 +72,9 @@ const Select = ({
           )
         })}
       </select>
+      {errors && errors[name] && (
+        <span className="text-xs text-red-500">{errors[name].message}</span>
+      )}
     </>
   )
 }
