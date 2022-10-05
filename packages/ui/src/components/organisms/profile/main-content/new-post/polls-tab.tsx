@@ -64,7 +64,7 @@ export const PollsTab: FC<PollsTabProps> = ({
           <span className="pr-2">
             <PollIcon className="h-6 w-6" />
           </span>
-          <span className="text-base font-medium  text-[#ffff]">Poll</span>
+          <span className="text-base font-medium text-[#ffff]">Poll</span>
         </div>
         <div className="flex items-center">
           <span>

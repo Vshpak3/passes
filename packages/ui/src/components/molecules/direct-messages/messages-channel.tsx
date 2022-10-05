@@ -193,7 +193,7 @@ export const MessagesChannel = ({
           </div>
           {targetAcquired && (
             <div className="flex h-full w-full cursor-pointer items-start justify-end gap-2 pt-4 pr-2">
-              <span className="text-base font-medium  text-[#ffff]">
+              <span className="text-base font-medium text-[#ffff]">
                 Price {formatCurrency(postPrice)}
               </span>
               <DeleteIcon
@@ -214,7 +214,7 @@ export const MessagesChannel = ({
             cols={40}
           />
         </div>
-        <div className="flex w-full justify-end border border-l-0 border-r-0 border-[#ffffff]/10  py-5">
+        <div className="flex w-full justify-end border border-l-0 border-r-0 border-[#ffffff]/10 py-5">
           <div
             className="pr-3 opacity-80 transition-opacity ease-in-out hover:opacity-100 "
             role="button"

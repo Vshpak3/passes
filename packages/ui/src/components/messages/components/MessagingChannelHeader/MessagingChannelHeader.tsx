@@ -335,7 +335,7 @@ const MessagingChannelHeader = (props: any) => {
         `}
       </style>
       {gallery ? (
-        <div className="messaging__channel-header mt-16  gap-3 border-b border-[#ffffff]/10 sm:mt-0">
+        <div className="messaging__channel-header mt-16 gap-3 border-b border-[#ffffff]/10 sm:mt-0">
           <div
             id="mobile-nav-icon"
             className={`${props.theme}`}
@@ -374,7 +374,7 @@ const MessagingChannelHeader = (props: any) => {
               </div>
             </div>
           </div>
-          <div className="messaging__channel-header__left justify-end  py-4 pr-10">
+          <div className="messaging__channel-header__left justify-end py-4 pr-10">
             <div
               onClick={() => setActiveContent("All")}
               className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
@@ -401,7 +401,7 @@ const MessagingChannelHeader = (props: any) => {
         <div
           className={classNames(
             !props.isCreator ? "border-b border-[#ffffff]/10" : "",
-            "messaging__channel-header mt-16  gap-3 sm:mt-0"
+            "messaging__channel-header mt-16 gap-3 sm:mt-0"
           )}
         >
           <div
@@ -419,7 +419,7 @@ const MessagingChannelHeader = (props: any) => {
           )}
           <div className="messaging__channel-header__left py-4">
             {props.isCreator ? (
-              <div className="hidden items-center gap-3  sm:flex">
+              <div className="hidden items-center gap-3 sm:flex">
                 <div className="flex h-[31px] w-[94px] items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color">
                   <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
                     Vip Pass
@@ -445,7 +445,7 @@ const MessagingChannelHeader = (props: any) => {
               <div className="flex items-center gap-8 pl-3">
                 <div
                   onClick={() => setGallery(!gallery)}
-                  className="flex h-full cursor-pointer  items-center gap-1 pl-1 pr-2 opacity-80 hover:opacity-100 "
+                  className="flex h-full cursor-pointer items-center gap-1 pl-1 pr-2 opacity-80 hover:opacity-100 "
                 >
                   <PhotosIcon className="flex flex-shrink-0" />
                   <span className="text-sm text-passes-secondary-color">
@@ -469,7 +469,7 @@ const MessagingChannelHeader = (props: any) => {
                     register={register}
                     type="text"
                     name="search"
-                    className="w-full items-center  border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
+                    className="w-full items-center border-none border-passes-dark-200 bg-transparent pl-10 text-[#ffff]/90 outline-0 ring-0 focus:outline-0 focus:ring-0"
                     placeholder="Find.."
                     icon={<SearchIcon className="mt-[5px]" />}
                   />

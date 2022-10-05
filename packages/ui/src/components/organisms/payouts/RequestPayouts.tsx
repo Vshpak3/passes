@@ -69,7 +69,7 @@ const RequestPayouts = () => {
     <div>
       <div className="mb-5 text-[24px] font-[700]">Request Payouts</div>
       <div className="flex flex-col gap-5 md:flex-row">
-        <div className="min-w-[200px] flex-[0.2] rounded-[20px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50  to-[#441E25] p-5">
+        <div className="min-w-[200px] flex-[0.2] rounded-[20px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50 to-[#441E25] p-5">
           <div className="mb-4 text-[16px] opacity-[50%]">
             Balance Available
           </div>

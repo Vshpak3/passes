@@ -45,7 +45,7 @@ export const MessagesChannelList = ({
         <span>Exclude people</span>
       </div>
       <MessagesSearchInput placeholder="Exclude people" />
-      <div className="flex h-full w-full flex-col  overflow-auto pt-5">
+      <div className="flex h-full w-full flex-col overflow-auto pt-5">
         {activeList &&
           activeList.members &&
           activeList?.members.map((member, index) => (

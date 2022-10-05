@@ -69,7 +69,7 @@ export const MessagesListsDropdownDialog = ({
             </div>
             <Combobox.Input
               placeholder="Find Audience.."
-              className="box-border flex w-full items-start justify-between gap-[10px] rounded-md border border-passes-dark-200 bg-transparent p-[10px] text-sm outline-0  ring-0 focus:border-passes-dark-200  focus:outline-none focus:ring-0"
+              className="box-border flex w-full items-start justify-between gap-[10px] rounded-md border border-passes-dark-200 bg-transparent p-[10px] text-sm outline-0 ring-0 focus:border-passes-dark-200 focus:outline-none focus:ring-0"
               onChange={(event) => setQuery(event.target.value)}
             />
           </div>

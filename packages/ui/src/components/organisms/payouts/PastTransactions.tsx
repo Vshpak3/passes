@@ -69,7 +69,7 @@ const PastTransactions = () => {
         <span className="mb-6 text-[20px] font-[700]">Payout History</span>
         <div className="flex flex-col justify-between gap-2 md:flex-row">
           <div className="relative flex items-center gap-3">
-            <SearchIcon className="pointer-events-none  absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
             <input
               type="search"
               name="search"

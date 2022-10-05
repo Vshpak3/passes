@@ -45,7 +45,7 @@ export class PassController {
   constructor(private readonly passService: PassService) {}
 
   @ApiEndpoint({
-    summary: 'patrick  pass',
+    summary: 'patrick pass',
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
     responseDesc: 'patrick pass',

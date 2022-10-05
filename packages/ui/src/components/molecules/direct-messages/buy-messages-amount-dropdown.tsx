@@ -16,7 +16,7 @@ export const BuyMessagesAmountDropdown = ({
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-[10px] rounded-md border border-[#2C282D] bg-transparent px-[10px]  py-[10px] text-xl font-medium  text-[#C943A8] shadow-sm outline-0 ring-0 hover:bg-transparent focus:outline-none focus:ring-0 ">
+        <Menu.Button className="inline-flex w-full justify-center gap-[10px] rounded-md border border-[#2C282D] bg-transparent px-[10px]  py-[10px] text-xl font-medium text-[#C943A8] shadow-sm outline-0 ring-0 hover:bg-transparent focus:outline-none focus:ring-0 ">
           {selectedAmount}
           <ChevronDown className=" h-6 w-6" />
         </Menu.Button>

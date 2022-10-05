@@ -40,16 +40,14 @@ export const NewFundraiserTab: FC<NewFundraiserTab> = ({
           <span className="pr-2">
             <FundraiserWhiteIcon className="h-6 w-6" />
           </span>
-          <span className="text-base font-medium  text-[#ffff]">
-            Fundraiser
-          </span>
+          <span className="text-base font-medium text-[#ffff]">Fundraiser</span>
         </div>
         <div
           className="flex cursor-pointer items-center gap-2"
           onClick={() => setTargetAcquired(!targetAcquired)}
         >
           {targetAcquired && (
-            <span className="text-base font-medium  text-[#ffff]">
+            <span className="text-base font-medium text-[#ffff]">
               Target {formatCurrency(fundraiserTarget)}
             </span>
           )}

@@ -314,7 +314,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({ media, isCreator }) => {
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
           <img
             src="/pages/messages/example-photo-gallery.png"
-            className="rounded-[20px] object-fill  backdrop-blur-[100px] "
+            className="rounded-[20px] object-fill backdrop-blur-[100px] "
             alt="photo"
             // TODO: use crop images when images come from our db
           />

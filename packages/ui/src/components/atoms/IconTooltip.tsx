@@ -57,7 +57,7 @@ const IconTooltip = ({
         <div
           role="tooltip"
           className={classNames(
-            "absolute z-20 mb-[11px] w-[200px] rounded  bg-[#2A242B] p-4 px-[8px] py-[12px] text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
+            "absolute z-20 mb-[11px] w-[200px] rounded bg-[#2A242B] p-4 px-[8px] py-[12px] text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
             tooltipPositionDefinition(position)
           )}
         >

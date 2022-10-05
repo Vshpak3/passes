@@ -268,7 +268,7 @@ const MyPassTile = ({
   }
 
   return (
-    <div className="col-span-1  w-full">
+    <div className="col-span-1 w-full">
       {isEdit ? (
         <div
           className={classNames(

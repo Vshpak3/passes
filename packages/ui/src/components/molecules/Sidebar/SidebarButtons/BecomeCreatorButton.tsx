@@ -18,7 +18,7 @@ const BecomeCreatorButton = () => {
       <div className="hidden sidebar-collapse:flex sidebar-collapse:items-center sidebar-collapse:justify-center sidebar-collapse:self-center">
         <Button
           onClick={() => router.push("/creator-flow")}
-          className="mt-4 w-full max-w-sm  border-none !px-8 !py-5 text-white transition-colors"
+          className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
           variant="pink"
         >
           Become a Creator

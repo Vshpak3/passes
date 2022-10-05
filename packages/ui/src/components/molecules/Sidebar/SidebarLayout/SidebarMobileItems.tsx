@@ -30,7 +30,7 @@ const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
       <span
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
-          "group  flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
+          "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
         )}
       >
         {subItem.name}

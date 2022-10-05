@@ -12,7 +12,7 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
     <>
       {/* small screens */}
       <div
-        className={`flex flex-row items-center  gap-3 rounded-full py-3 text-white md:hidden
+        className={`flex flex-row items-center gap-3 rounded-full py-3 text-white md:hidden
         ${
           isSelected
             ? "flex-1 pl-6"

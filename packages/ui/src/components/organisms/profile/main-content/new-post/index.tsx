@@ -273,7 +273,7 @@ export const NewPost: FC<NewPostProps> = ({
                   open={true}
                   media
                   title={
-                    <div className="absolute top-3 left-1 z-30 flex  items-center">
+                    <div className="absolute top-3 left-1 z-30 flex items-center">
                       <span
                         className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
                         onClick={() => setHasVideo(false)}
@@ -300,7 +300,7 @@ export const NewPost: FC<NewPostProps> = ({
                   className="bg-transparent"
                   media
                   title={
-                    <div className="absolute top-3 left-1 z-30 flex  items-center">
+                    <div className="absolute top-3 left-1 z-30 flex items-center">
                       <span
                         className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
                         onClick={() => setHasAudio(false)}
@@ -372,7 +372,7 @@ export const NewPost: FC<NewPostProps> = ({
                   errors={errors}
                 />
               ) : (
-                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color  md:h-[480px] md:p-9">
+                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-[480px] md:p-9">
                   <div className="relative flex h-[300px] w-full items-center justify-center rounded-[6px]">
                     {selectedMedia ? (
                       <MediaFile
@@ -389,7 +389,7 @@ export const NewPost: FC<NewPostProps> = ({
                         )}
                       />
                     ) : (
-                      <div className=" flex h-[232px] items-center justify-center  rounded-[6px] border-[1px] border-solid border-passes-secondary-color "></div>
+                      <div className=" flex h-[232px] items-center justify-center rounded-[6px] border-[1px] border-solid border-passes-secondary-color "></div>
                     )}
                   </div>
                   <div className="flex items-center justify-start gap-6">
@@ -484,7 +484,7 @@ export const NewPost: FC<NewPostProps> = ({
                         type="number"
                         min="1"
                         name="price"
-                        className="w-full rounded-md border-passes-dark-200  bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
+                        className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
                       />
                     </div>
                   </div>

@@ -43,7 +43,7 @@ function getPassPrice(pass: PassDto) {
           <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
             {formatCurrency(pass.price)}
           </span>
-          <span className="pl-[6px] text-[14px] font-medium  leading-[23px] text-[#ffff]/70">
+          <span className="pl-[6px] text-[14px] font-medium leading-[23px] text-[#ffff]/70">
             /month
           </span>
         </span>
@@ -61,7 +61,7 @@ function getPassPrice(pass: PassDto) {
           <span className="text-[16px] font-medium leading-[19px]  text-[#ffff]">
             {formatCurrency(pass.price)}
           </span>
-          <span className="pl-[6px] text-[14px] font-medium  leading-[23px] text-[#ffff]/70">
+          <span className="pl-[6px] text-[14px] font-medium leading-[23px] text-[#ffff]/70">
             ({pass.remainingSupply} out of {pass.totalSupply} left)
           </span>
         </span>

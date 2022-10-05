@@ -21,7 +21,7 @@ const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
 }) => (
   <div className="ml-auto">
     <div className="relative flex items-center">
-      <SearchIcon className="pointer-events-none  absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
+      <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
       <input
         type="search"
         name="search-passes"

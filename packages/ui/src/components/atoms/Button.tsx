@@ -86,7 +86,7 @@ export const Button = ({
       break
     case "purple-light":
       variantClassName =
-        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-passes-primary-color  dark:border-passes-primary-color border"
+        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-passes-primary-color dark:border-passes-primary-color border"
       break
     case "white":
       variantClassName =

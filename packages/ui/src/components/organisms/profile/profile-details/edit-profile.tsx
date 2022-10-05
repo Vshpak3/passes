@@ -119,7 +119,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col  items-center gap-5"
+          className="flex flex-col items-center gap-5"
         >
           <FormImage
             setValue={setValue}

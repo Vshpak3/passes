@@ -458,7 +458,7 @@ const MessagingInput = () => {
             className="flex w-full cursor-pointer items-center justify-end gap-2"
             onClick={() => setTargetAcquired(!targetAcquired)}
           >
-            <span className="text-base font-medium  text-[#ffff]">
+            <span className="text-base font-medium text-[#ffff]">
               Post Price {formatCurrency(postPrice)}
             </span>
 

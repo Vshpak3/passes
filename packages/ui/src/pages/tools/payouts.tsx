@@ -9,7 +9,7 @@ import { withPageLayout } from "src/layout/WithPageLayout"
 const Payouts = () => {
   return (
     <CreatorOnlyWrapper isPage>
-      <div className="-mt-[212px] flex flex-col  gap-[24px] overflow-hidden bg-black p-6">
+      <div className="-mt-[212px] flex flex-col gap-[24px] overflow-hidden bg-black p-6">
         <RequestPayouts />
         <DefaultPayoutMethod />
         <PastTransactions />

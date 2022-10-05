@@ -79,7 +79,7 @@ const Card: FC<CardProps> = ({ id, children, index, moveCard }) => {
       <div
         data-handler-id={handlerId}
         ref={ref}
-        className="absolute inset-y-0 left-0  top-1 z-10 flex cursor-move items-center pl-[5px]"
+        className="absolute inset-y-0 left-0 top-1 z-10 flex cursor-move items-center pl-[5px]"
       >
         <DragDots />
       </div>

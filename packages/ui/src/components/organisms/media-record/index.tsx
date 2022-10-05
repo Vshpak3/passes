@@ -39,7 +39,7 @@ export const RecordView: FC<RecordViewProps> = ({
     <div className={classNames(className)}>
       <div className="absolute bottom-10 z-20 flex w-full items-center justify-center">
         <span
-          className="flex cursor-pointer  rounded-full border-4 border-[#ffff]/30 p-[2px]"
+          className="flex cursor-pointer rounded-full border-4 border-[#ffff]/30 p-[2px]"
           onClick={() =>
             status === "idle"
               ? startRecording()

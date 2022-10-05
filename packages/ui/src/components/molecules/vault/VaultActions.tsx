@@ -46,7 +46,7 @@ const VaultAddToDropdown = ({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 top-10 z-10 mt-2 box-border flex w-[250px] origin-top-right flex-col items-start  justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
+        <Menu.Items className="absolute right-0 top-10 z-10 mt-2 box-border flex w-[250px] origin-top-right flex-col items-start justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
           <Menu.Item>
             <VaultAddToItem onClick={onAddToPost} label="Add to a new post" />
           </Menu.Item>

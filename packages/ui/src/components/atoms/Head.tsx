@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 const TITLE = "Passes"
 const DESCRIPTION =
-  "A platform for creators to  scale their content and own their audiences."
+  "A platform for creators to scale their content and own their audiences."
 const CLIENT_URL = process.env.NEXT_PUBLIC_UI_BASE_URL
 
 const DefaultHead = () => {

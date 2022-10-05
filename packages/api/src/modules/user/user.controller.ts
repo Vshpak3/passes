@@ -29,7 +29,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiEndpoint({
-    summary: 'patrick  whitelisted users',
+    summary: 'patrick whitelisted users',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'patrick pass',
