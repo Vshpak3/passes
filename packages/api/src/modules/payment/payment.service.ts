@@ -256,24 +256,12 @@ export class PaymentService {
     return { id: data.id, circleId: response['id'], status: response['status'] }
   }
 
-  /**
-   * delete existing card
-   *
-   * @param id
-   * @returns
-   */
   async deleteCircleCard(userId: string, cardId: string): Promise<void> {
     await this.dbWriter<CircleCardEntity>(CircleCardEntity.table)
       .update({ deleted_at: this.dbWriter.fn.now() })
       .where({ user_id: userId, id: cardId })
   }
 
-  /**
-   * get all undeleted cards
-   *
-   * @param userid
-   * @returns
-   */
   async getCircleCards(userId: string): Promise<CircleCardDto[]> {
     return (
       await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
@@ -283,12 +271,6 @@ export class PaymentService {
     ).map((card) => new CircleCardDto(card))
   }
 
-  /**
-   * get all undeleted cards
-   *
-   * @param userid
-   * @returns
-   */
   async getCircleCard(userId: string, cardId: string): Promise<CircleCardDto> {
     return new CircleCardDto(
       await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
@@ -316,17 +298,29 @@ export class PaymentService {
     payin: PayinDto,
   ): Promise<CircleStatusResponseDto> {
     if (!payin.payinMethod.cardId) {
-      throw new NoPayinMethodError('card not selected')
+      throw new NoPayinMethodError('Card not selected')
     }
     const card = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
       .where({ id: payin.payinMethod.cardId })
       .select('id', 'circle_id')
       .first()
     if (!card || !card.circle_id) {
-      throw new BadRequestException('bank not found')
+      throw new BadRequestException('Bank not found')
     }
     // save metadata into subscription for repeat purchases
     if (payin.target) {
+      const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
+        .whereIn('payin_status', [
+          PayinStatusEnum.CREATED,
+          PayinStatusEnum.PENDING,
+        ])
+        .andWhere({ target: payin.target })
+        .select('id')
+        .first()
+      if (checkPayin) {
+        await this.failPayin(payin.id, payin.userId)
+        throw new BadRequestException('Card payment already in progress')
+      }
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
         .where({ target: payin.target, user_id: payin.userId })
         .update({
@@ -340,7 +334,7 @@ export class PaymentService {
       .first()
 
     if (!user) {
-      throw new BadRequestException('user not found')
+      throw new BadRequestException('User not found')
     }
 
     const createCardPaymentDto: CircleCreateCardPaymentRequestDto = {
