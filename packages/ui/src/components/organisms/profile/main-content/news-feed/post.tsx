@@ -19,7 +19,6 @@ import TimeAgo from "react-timeago"
 import { toast } from "react-toastify"
 import { Button, PostUnlockButton, Text } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
-import PostVideo from "src/components/molecules/post/PostVideo"
 import {
   BlockModal,
   CustomMentionEditor,
@@ -31,6 +30,10 @@ import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { useUser } from "src/hooks"
 
+const PostVideo = dynamic(
+  () => import("src/components/molecules/post/PostVideo"),
+  { ssr: false }
+)
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/payment/BuyPostModal"),
   { ssr: false }

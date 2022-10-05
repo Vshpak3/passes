@@ -1,13 +1,11 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
+import { format } from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import moment from "moment"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useRef, useState } from "react"
 import MonthYearPicker from "react-month-year-picker"
 import CreateSchedulerPopup from "src/components/molecules/scheduler/CreateSchedulerPopup"
-
-const today = new Date()
 
 const css = `
   .month-year-picker {
@@ -42,8 +40,8 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   onChangeTime,
   availableFrom
 }) => {
-  const [month, setMonth] = useState<number>(today.getMonth())
-  const [year, setYear] = useState<number>(today.getFullYear())
+  const [month, setMonth] = useState<number>(new Date().getMonth())
+  const [year, setYear] = useState<number>(new Date().getFullYear())
   const popperContainerRef = useRef<HTMLDivElement | null>(null)
 
   const [monthYearPopperOpen, setMonthYearPopperOpen] = useState(false)
@@ -137,7 +135,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
           onClick={handleShowMonthYearPopper}
         >
           <span className="w-[100px] select-none">
-            {`${moment().month(month).format("MMMM")} ${year}`}
+            {`${format(new Date(2000, month - 1, 1), "MMMM")} ${year}`}
           </span>
         </button>
         <ChevronRight

@@ -15,7 +15,7 @@ const css = `
   .rdp {
     margin: 0px;
   }
-  .rdp-caption { 
+  .rdp-caption {
     position: relative!important;
   }
   .rdp-caption_label {
