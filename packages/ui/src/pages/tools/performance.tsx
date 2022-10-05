@@ -21,6 +21,7 @@ const Chart = dynamic(
   () => import("src/components/molecules/performance/Chart"),
   { ssr: false }
 )
+
 const PERFORMANCE_OPTIONS = [
   {
     label: "All",
