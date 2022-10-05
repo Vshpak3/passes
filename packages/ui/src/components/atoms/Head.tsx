@@ -33,7 +33,7 @@ const DefaultHead = () => {
       <meta
         key="twitter-image"
         property="twitter:image"
-        content={`${CLIENT_URL}/img/open-graph/og-image-300x300.png`}
+        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
       />
       <meta
         key="twitter-image-alt"
@@ -87,21 +87,21 @@ const DefaultHead = () => {
         key="favicon"
         rel="shortcut icon"
         sizes="any"
-        href="/icons/favicon.ico"
+        href="/other/favicon/favicon.ico"
       />
       <link
         key="favicon-32"
         rel="icon"
         type="image/png"
         sizes="32x32"
-        href="/icons/favicon-32x32.png"
+        href="/other/favicon/favicon-32x32.png"
       />
       <link
         key="favicon-16"
         rel="icon"
         type="image/png"
         sizes="16x16"
-        href="/icons/favicon-16x16.png"
+        href="/other/favicon/favicon-16x16.png"
       />
     </NextHead>
   )
