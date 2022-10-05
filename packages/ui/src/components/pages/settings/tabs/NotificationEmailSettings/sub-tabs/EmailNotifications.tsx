@@ -44,7 +44,7 @@ const EmailNotifications = () => {
   ) => {
     try {
       await updateNotificationSettings(values)
-      toast.success("email notifications has been changed")
+      toast.success("Email notifications has been changed")
       mutate()
     } catch (err) {
       errorMessage(err, true)

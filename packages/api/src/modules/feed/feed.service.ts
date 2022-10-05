@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Database, DB_READER } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -85,7 +86,7 @@ export class FeedService {
       PostEntity.table,
       PostEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )
@@ -163,7 +164,7 @@ export class FeedService {
       PostEntity.table,
       PostEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

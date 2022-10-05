@@ -42,31 +42,31 @@ export class ProfileDto {
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   description?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   discordUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   facebookUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   instagramUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   tiktokUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   twitchUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   twitterUsername?: string | null
 
-  @Length(0, EXTERNAL_USERNAME_LENGTH)
+  @Length(1, EXTERNAL_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   youtubeUsername?: string | null
 

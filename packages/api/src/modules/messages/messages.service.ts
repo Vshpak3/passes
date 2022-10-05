@@ -16,6 +16,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
@@ -952,7 +953,7 @@ export class MessagesService {
       MessageEntity.table,
       MessageEntity.table,
       'sent_at',
-      'desc',
+      OrderEnum.DESC,
       sentAt,
       lastId,
     )
@@ -1096,7 +1097,7 @@ export class MessagesService {
       PaidMessageEntity.table,
       PaidMessageEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

@@ -43,10 +43,10 @@ const ChangePassword = () => {
   }: IChangePasswordForm) => {
     try {
       if (newPassword !== confirmPassword) {
-        return toast.error("passwords does not match")
+        return toast.error("Passwords does not match")
       }
       await changePassword({ oldPassword, newPassword })
-      toast.success("your password has been changed successfully")
+      toast.success("Your password has been changed successfully")
       reset(defaultValues)
     } catch (err) {
       errorMessage(err, true)

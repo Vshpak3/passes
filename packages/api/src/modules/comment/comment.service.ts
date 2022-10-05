@@ -7,6 +7,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
@@ -98,7 +99,7 @@ export class CommentService {
       CommentEntity.table,
       CommentEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

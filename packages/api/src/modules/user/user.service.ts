@@ -213,6 +213,9 @@ export class UserService {
   }
 
   async setDisplayName(userId: string, displayName: string): Promise<void> {
+    if (displayName.trim().length === 0) {
+      throw new BadRequestException('The display name must contain characters')
+    }
     await this.dbWriter<UserEntity>(UserEntity.table)
       .update({ display_name: displayName })
       .where({ id: userId })

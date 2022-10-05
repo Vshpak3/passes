@@ -50,7 +50,7 @@ const ChatSettings = () => {
 
     await updateCreatorSettings(
       data,
-      "chat settings have been changed successfully"
+      "Chat settings have been updated successfully"
     )
   }
 

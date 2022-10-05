@@ -45,7 +45,7 @@ const useCreatorSettings = () => {
         await new Promise((resolve) => setTimeout(resolve, 100))
         await getCreatorSettings()
       } else {
-        toast.error("failed to update")
+        toast.error("Failed to update")
       }
     } catch (error: any) {
       return await errorMessage(error, true)

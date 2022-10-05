@@ -14,6 +14,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassService } from '../pass/pass.service'
@@ -125,7 +126,7 @@ export class ContentService {
       ContentEntity.table,
       ContentEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

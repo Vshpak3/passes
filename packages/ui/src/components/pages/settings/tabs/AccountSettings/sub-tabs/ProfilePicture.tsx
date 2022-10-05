@@ -33,12 +33,12 @@ const ProfilePicture = () => {
 
   const onSaveProfile = async () => {
     if (!profileImage || !profileImage.length) {
-      toast.error("please upload profile image")
+      toast.error("Please upload profile image")
       return
     }
     try {
       await setProfilePicture(profileImage[0])
-      toast.success("your profile picture has been changed successfully")
+      toast.success("Your profile picture has been changed successfully")
       setValue("profileImage", null)
     } catch (err) {
       errorMessage(err, true)

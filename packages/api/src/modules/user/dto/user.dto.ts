@@ -39,7 +39,6 @@ export class UserDto {
   @DtoProperty({ type: 'string', forceLower: true })
   username: string
 
-  // Sensitive fields (when viewing own profile)
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
   @DtoProperty({ type: 'string', forceLower: true })
   legalFullName: string

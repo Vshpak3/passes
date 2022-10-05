@@ -1,7 +1,16 @@
 import { Knex } from '@mikro-orm/mysql'
-import { OrderEnum } from 'aws-sdk/clients/codecommit'
 
-import { orderToSymbol, strictOrderToSymbol } from './dto/page.dto'
+import { OrderEnum } from './dto/page.dto'
+
+const orderToSymbol: Record<OrderEnum, string> = {
+  desc: '<=',
+  asc: '>=',
+}
+
+const strictOrderToSymbol: Record<OrderEnum, string> = {
+  desc: '<',
+  asc: '>',
+}
 
 export function createPaginatedQuery(
   query: Knex.QueryBuilder,

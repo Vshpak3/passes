@@ -6,7 +6,6 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -18,6 +17,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
@@ -72,12 +72,9 @@ export const MINIMUM_POST_TIP_AMOUNT = 5.0
 
 @Injectable()
 export class PostService {
-  private cloudfrontUrl: string
-
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-    private readonly configService: ConfigService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -88,9 +85,7 @@ export class PostService {
     private readonly payService: PaymentService,
     private readonly passService: PassService,
     private readonly contentService: ContentService,
-  ) {
-    this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
-  }
+  ) {}
 
   async createPost(
     userId: string,
@@ -280,7 +275,7 @@ export class PostService {
       PostEntity.table,
       PostEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

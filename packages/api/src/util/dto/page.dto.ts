@@ -8,6 +8,7 @@ export enum OrderEnum {
   ASC = 'asc',
   DESC = 'desc',
 }
+
 export class PageRequestDto {
   @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
@@ -27,16 +28,6 @@ export class PageRequestDto {
 
   @DtoProperty({ type: 'boolean', optional: true })
   pinned?: boolean
-}
-
-export const orderToSymbol = {
-  desc: '<=',
-  asc: '>=',
-}
-
-export const strictOrderToSymbol = {
-  desc: '<',
-  asc: '>',
 }
 
 export class PageResponseDto {

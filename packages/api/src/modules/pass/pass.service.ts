@@ -20,6 +20,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import {
@@ -413,7 +414,7 @@ export class PassService {
       PassEntity.table,
       PassEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )
@@ -445,7 +446,7 @@ export class PassService {
       PassEntity.table,
       PassEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )

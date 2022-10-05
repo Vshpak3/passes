@@ -7,6 +7,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
@@ -90,7 +91,7 @@ export class FanWallService {
       FanWallCommentEntity.table,
       FanWallCommentEntity.table,
       'created_at',
-      'desc',
+      OrderEnum.DESC,
       createdAt,
       lastId,
     )
