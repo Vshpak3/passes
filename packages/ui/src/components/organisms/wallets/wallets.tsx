@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput, Select } from "src/components/atoms"
 import Modal from "src/components/organisms/Modal"
+import { errorMessage } from "src/helpers/error"
 import { useUser, useUserDefaultMintingWallets } from "src/hooks"
 import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
 
@@ -21,7 +22,7 @@ const Wallets = () => {
     getValues,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors }
   } = useForm()
   const { ethWallet, solWallet, setDefaultWallet } =
     useUserDefaultMintingWallets()
@@ -59,8 +60,8 @@ const Wallets = () => {
       const api = new WalletApi()
       await api.createWallet({ createWalletRequestDto: createWalletDto })
       mutate()
-    } catch ({ type, message }) {
-      toast.error(message as string)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 
@@ -102,8 +103,8 @@ const Wallets = () => {
       const api = new WalletApi()
       await api.createWallet({ createWalletRequestDto: createWalletDto })
       mutate()
-    } catch ({ type, message }) {
-      toast.error(message as string)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 
@@ -120,8 +121,8 @@ const Wallets = () => {
         }
       })
       return res.rawMessage
-    } catch ({ type, message }) {
-      toast.error(message as string)
+    } catch (error) {
+      errorMessage(error, true)
     }
   }
 
@@ -136,17 +137,16 @@ const Wallets = () => {
           chain
         }
       })
-      .catch(({ message }) => toast.error(message))
+      .catch((error) => errorMessage(error, true))
     setValue("address", "")
     await setTimeout(() => undefined, 50)
-    mutate().catch(({ message }) => toast.error(message))
+    mutate().catch((error) => errorMessage(error, true))
   }
 
   const deleteWalletHandler = async (id: string) => {
     const api = new WalletApi()
-    await api.removeWallet({ walletId: id }).catch(({ message }) => {
-      console.error(message)
-      toast.error(message)
+    await api.removeWallet({ walletId: id }).catch((error) => {
+      errorMessage(error, true)
     })
     await setTimeout(() => undefined, 50)
     mutate()
@@ -181,21 +181,24 @@ const Wallets = () => {
           </div>
         </div>
       </Modal>
-      <div className="mt-4 flex items-center justify-start">
-        <div className="flex items-center">
-          <Button variant="purple-light" onClick={() => setIsModalOpen(true)}>
-            <div className="flex items-center justify-center">
-              <Wallet className="block h-[24px] w-[24px]" />
-              <span className="ml-[10px] block">Connect New Wallet</span>
-            </div>
-          </Button>
-        </div>
+      <div className="mt-4 flex items-start justify-start">
+        <Button
+          variant="purple-light"
+          tag="button"
+          onClick={() => setIsModalOpen(true)}
+          className="mt-1"
+        >
+          <div className="flex items-center justify-center">
+            <Wallet className="block h-[24px] w-[24px]" />
+            <span className="ml-[10px] block">Connect New Wallet</span>
+          </div>
+        </Button>
         {!!user?.isCreator && (
           <form
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
-            className="ml-1 flex items-center"
+            className="flex items-start"
           >
-            <span className="mx-4 block text-[16px] font-bold">or</span>
+            <span className="mx-4 mt-3 block text-[16px] font-bold">or</span>
             <FormInput
               icon={<Wallet />}
               type="text"
@@ -205,63 +208,53 @@ const Wallets = () => {
               placeholder="Insert your Payout Address"
               errors={errors}
               options={{
-                required: { message: "need payout address", value: true }
+                required: { message: "Payout Address is required", value: true }
               }}
             />
             <Select
               name="chain"
               register={register}
-              className="mr-3 w-[80px]"
+              className="mr-3 mt-0 w-[80px]"
               selectOptions={["SOL", "ETH"]}
               errors={errors}
               options={{
-                required: { message: "need chain", value: true }
+                required: { message: "Chain is required", value: true }
               }}
             />
-
-            <Button
-              type={ButtonTypeEnum.SUBMIT}
-              variant="pink"
-              tag="button"
-              disabled={isSubmitSuccessful}
-            >
-              Confirm
-            </Button>
+            <div className="mt-2">
+              <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
+                Confirm
+              </Button>
+            </div>
           </form>
         )}
       </div>
       <div
         className="
-          ml-[40px]
           mt-6
           flex
           w-full
-          items-center
-          justify-around
-          pr-[35px]
-          pl-[20px]
-          pt-[11px]
+          gap-[40px]
+          pl-8
+          pt-1
           text-center
-          text-[12px]
           text-[#ffffffeb]"
       >
-        <span className="block">Wallet Type</span>
-        <span className="mx-[135px] block">Address</span>
-        <span className="block">Default For</span>
-        <span className="block">Delete</span>
+        <span className="block flex w-[120px]">Wallet Type</span>
+        <span className="block w-[30%]">Address</span>
+        <span className="block w-[20%]">Default For</span>
+        <span className="block w-[20%]">Delete</span>
       </div>
       {loading || !wallets ? (
         <span>Loading...</span>
       ) : (
         <div
           className="
-            mt-[11px]
-            ml-[31px]
+            mt-1
             place-items-center
             justify-center
             gap-[40px]
             text-center
-            text-[12px]
             text-[#ffffffeb]"
         >
           {wallets.map((wallet) => {

@@ -10,7 +10,6 @@ import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import React from "react"
 import { Button } from "src/components/atoms"
 import IconTooltip from "src/components/atoms/IconTooltip"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
 
 interface WalletListItemProps {
   wallet: WalletDto
@@ -23,6 +22,12 @@ interface WalletListItemProps {
   ) => Promise<void>
 }
 
+const formatWalletAddress = (wallet: string, amountOfDigits: number) => {
+  const firstDigits = wallet.slice(0, amountOfDigits)
+  const lastDigits = wallet.slice(wallet.length - amountOfDigits, wallet.length)
+
+  return `${firstDigits}...${lastDigits}`
+}
 const WalletListItem = ({
   wallet,
   deleteWalletHandler,
@@ -70,13 +75,12 @@ const WalletListItem = ({
     <>
       <div
         className="
-          mb-[11px]
           flex
           items-center
           justify-between
           border-t
           border-[#2C282D]
-          pt-[11px]
+          py-3
           pl-[20px]"
         key={wallet.walletId}
       >
@@ -100,43 +104,54 @@ const WalletListItem = ({
               />
             )}
           </div>
-          <div className="mr-[30px] flex w-[135px] items-center">
+          <div className="flex w-[120px] items-center">
             <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
-            <span className="ml-[12px] text-[12px] font-bold">
+            <span className="ml-[12px] font-bold">
               {walletTypeName(wallet.chain, wallet.authenticated)}
             </span>
           </div>
         </div>
-        <div className='text-[#ffffffeb]" min-w-[330px] text-left text-[12px]'>
-          {wallet.address}
+        <div className='text-[#ffffffeb]" w-[30%] text-center'>
+          {formatWalletAddress(wallet.address, 7)}
         </div>
-        <ConditionRendering condition={wallet.authenticated}>
-          {defaultEthMinting && <div>Default eth address</div>}
-          {defaultSolMinting && <div>Default sol address</div>}
-          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
-            <button
-              onClick={async () =>
-                await setDefaultMinting(wallet.walletId, wallet.chain)
-              }
-            >
-              Set {wallet.chain} address
-            </button>
-          )}
-          {!defaultEthMinting &&
-            !defaultSolMinting &&
-            !wallet.authenticated && <div>Unauthenticated</div>}
-        </ConditionRendering>
-        {!defaultEthMinting && !defaultSolMinting ? (
+        {wallet.authenticated && (
+          <div className="w-[20%]">
+            {defaultEthMinting && (
+              <Button className="cursor-default" variant="gray">
+                ETH NFT Minting
+              </Button>
+            )}
+            {defaultSolMinting && (
+              <Button className="cursor-default" variant="gray">
+                SOL NFT Minting
+              </Button>
+            )}
+            {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
+              <Button
+                variant="purple-light"
+                tag="button"
+                onClick={async () =>
+                  await setDefaultMinting(wallet.walletId, wallet.chain)
+                }
+              >
+                Set {wallet.chain} default
+              </Button>
+            )}
+            {!defaultEthMinting &&
+              !defaultSolMinting &&
+              !wallet.authenticated && <div>Unauthenticated</div>}
+          </div>
+        )}
+        <div className="w-[20%]">
           <Button
             disabled={wallet.custodial}
             onClick={onDeleteHandler}
             variant="link-purple"
+            tag="button"
           >
-            <span className="ml-[39px] mr-[29px]">Delete</span>
+            Delete
           </Button>
-        ) : (
-          <div className="w-[60px]"></div>
-        )}
+        </div>
       </div>
     </>
   )

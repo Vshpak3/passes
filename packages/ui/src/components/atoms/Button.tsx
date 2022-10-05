@@ -121,7 +121,7 @@ export const Button = ({
       href={href}
       style={style}
       className={
-        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors xs:px-3 xs:py-2" +
+        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
         (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
         (className && ` ${className} `) +
