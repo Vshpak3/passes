@@ -1,6 +1,7 @@
 import "video.js/dist/video-js.css"
 
-import React, { FC, useEffect, useRef } from "react"
+import React, { FC, LegacyRef, useEffect, useRef } from "react"
+import { useOnScreen } from "src/hooks/useOnScreen"
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
 interface VideoProps {
@@ -8,8 +9,14 @@ interface VideoProps {
   onReady: (player: VideoJsPlayer) => void
 }
 
+type VideRefType = LegacyRef<HTMLVideoElement> | undefined
+
 export const Video: FC<VideoProps> = ({ options, onReady }) => {
-  const videoRef = useRef(null)
+  const intersectionOptions = {
+    threshold: 0.7
+  }
+  const [ref, visible] = useOnScreen(intersectionOptions)
+  const videoRef = ref
   const playerRef = useRef<VideoJsPlayer | null>(null)
 
   useEffect(() => {
@@ -22,15 +29,16 @@ export const Video: FC<VideoProps> = ({ options, onReady }) => {
 
       const player = (playerRef.current = videojs(videoElement, options, () => {
         onReady && onReady(player)
-        player.on("error", function () {
-          // TODO: add in a custom error
-          player.errorDisplay.close()
-        })
       }))
-    }
-  }, [onReady, options, videoRef])
+    } else {
+      const player = playerRef.current
 
-  // Dispose the Video.js player when the functional component unmounts
+      player?.autoplay(visible)
+      options?.sources && player?.src(options?.sources[0].src)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options, videoRef, visible, ref])
+
   useEffect(() => {
     const player = playerRef.current
 
@@ -41,10 +49,12 @@ export const Video: FC<VideoProps> = ({ options, onReady }) => {
       }
     }
   }, [playerRef])
-
   return (
     <div data-vjs-player>
-      <video ref={videoRef} className="video-js vjs-big-play-centered" />
+      <video
+        ref={videoRef as VideRefType}
+        className="video-js vjs-big-play-centered"
+      />
     </div>
   )
 }

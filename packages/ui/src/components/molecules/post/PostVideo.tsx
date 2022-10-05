@@ -7,7 +7,6 @@ interface PostVideoProps {
 
 const PostVideo = ({ videoUrl }: PostVideoProps) => {
   const videoJsOptions: VideoJsPlayerOptions = {
-    autoplay: false,
     controls: true,
     responsive: true,
     fluid: true,
@@ -19,9 +18,11 @@ const PostVideo = ({ videoUrl }: PostVideoProps) => {
     ]
   }
 
-  // TODO: add this callback
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  const handlePlayerReady = (player: VideoJsPlayer) => {}
+  const handlePlayerReady = (player: VideoJsPlayer) => {
+    player.on("error", function () {
+      player.errorDisplay.close()
+    })
+  }
 
   return <Video options={videoJsOptions} onReady={handlePlayerReady} />
 }
