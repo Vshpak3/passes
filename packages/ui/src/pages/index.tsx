@@ -91,7 +91,7 @@ const HomePage = () => {
                 <div className="relative select-none text-center md:ml-28 md:pl-4 md:text-right">
                   <LandingIcon />
                   <Image
-                    src="/img/hero/3D_elements.png"
+                    src="/img/homepage/hero/3D_elements.png"
                     alt=""
                     layout="fill"
                     className="animate-fly absolute top-0 md:-right-[10%]"

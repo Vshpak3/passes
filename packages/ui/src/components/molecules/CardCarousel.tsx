@@ -7,32 +7,32 @@ import Slider from "react-slick"
 
 const backersList = [
   {
-    image: "/img/investors/kyle.jpg",
+    image: "/img/homepage/investors/kyle.jpg",
     name: "Kyle Samani",
     org: "Multicoin Capital"
   },
   {
-    image: "/img/investors/david.jpg",
+    image: "/img/homepage/investors/david.jpg",
     name: "David Sacks",
     org: "Craft Ventures"
   },
   {
-    image: "/img/investors/wenwen.jpg",
+    image: "/img/homepage/investors/wenwen.jpg",
     name: "Wen-Wen Lam",
     org: "Gradient Ventures"
   },
   {
-    image: "/img/investors/jake.jpg",
+    image: "/img/homepage/investors/jake.jpg",
     name: "Jake Paul",
     org: "Antifund"
   },
   {
-    image: "/img/investors/ryan.jpg",
+    image: "/img/homepage/investors/ryan.jpg",
     name: "Ryan Wilson",
     org: "ThankYouX"
   },
   {
-    image: "/img/investors/kevin.jpg",
+    image: "/img/homepage/investors/kevin.jpg",
     name: "Kevin Hartz",
     org: "CEO Eventbrite"
   }

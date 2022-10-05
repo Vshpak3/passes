@@ -138,7 +138,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                     src={
                       profileCoverImage?.length
                         ? URL.createObjectURL(profileCoverImage[0])
-                        : "/img/select-banner-img.png"
+                        : "/img/profile/select-banner-img.png"
                     }
                   />
                 </div>
@@ -161,7 +161,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/img/select-profile-img.png"
+                      : "/img/profile/select-profile-img.png"
                   }
                 />
               </div>

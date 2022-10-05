@@ -61,7 +61,7 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
               {!postUnlocked && (
                 <div className="absolute top-[67px] left-4 h-[68vh] w-[80%] [filter:blur(15px)] md:left-16 lg:left-20 xl:left-[113px]">
                   <Image
-                    src={showcaseImg || "/img/profile/post.png"}
+                    src={showcaseImg || ""}
                     layout="fill"
                     alt="post"
                     objectFit="cover"
@@ -74,7 +74,7 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
                 <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px]">
                   {postUnlocked && (
                     <Image
-                      src={showcaseImg || "/img/profile/post.png"}
+                      src={showcaseImg || ""}
                       layout="fill"
                       alt="post"
                       objectFit="cover"
@@ -135,7 +135,7 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
               <div className="mt-[50px] flex space-x-4">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full">
                   <Image
-                    src="/img/select-profile-img.png"
+                    src="/img/profile/select-profile-img.png"
                     layout="fill"
                     alt="profile"
                     objectFit="cover"

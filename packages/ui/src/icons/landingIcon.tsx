@@ -20,7 +20,7 @@ const LandingIcon = () => (
     </defs>
     <g clipPath="url(#clipping)">
       <image
-        href="img/hero/lucypalooza.jpg"
+        href="img/homepage/hero/lucypalooza.jpg"
         width="200"
         height="200"
         clipPath="url(#clipping)"

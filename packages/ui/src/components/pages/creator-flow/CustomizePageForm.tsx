@@ -132,7 +132,7 @@ const CustomizePageForm = ({
                     src={
                       profileBannerImage?.length
                         ? URL.createObjectURL(profileBannerImage[0])
-                        : "/img/select-banner-img.png"
+                        : "/img/profile/select-banner-img.png"
                     }
                   />
                 </div>
@@ -155,7 +155,7 @@ const CustomizePageForm = ({
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/img/select-profile-img.png"
+                      : "/img/profile/select-profile-img.png"
                   }
                 />
               </div>
