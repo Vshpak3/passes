@@ -62,6 +62,11 @@ export const navigation: SidebarNavigation[] = [
         href: "/tools/vault"
       },
       {
+        id: "performance",
+        name: "Performance Dashboard",
+        href: "/performance"
+      },
+      {
         id: "analytics",
         name: "Analytics",
         href: "/tools/analytics"
