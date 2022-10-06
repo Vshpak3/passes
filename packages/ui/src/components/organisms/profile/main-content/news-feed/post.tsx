@@ -13,7 +13,7 @@ import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import TimeAgo from "react-timeago"
 import { Button, PostUnlockButton, Text } from "src/components/atoms"
@@ -66,6 +66,7 @@ export const Post = ({
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { user } = useUser()
 
   const getDropdownOptions = [
@@ -118,6 +119,7 @@ export const Post = ({
             postUnlocked={postUnlocked}
             setPostUnlocked={setPostUnlocked}
             setIsPayed={setIsPayed}
+            setIsLoading={setIsLoading}
           />
         </div>
         {/* {post.fundraiser ? (
@@ -129,6 +131,9 @@ export const Post = ({
           postUnlocked={postUnlocked}
           ownsProfile={ownsProfile}
         />
+        {isLoading && post?.content?.length && (
+          <span>Please wait! Your content is being uploaded</span>
+        )}
         {/* {post.fundraiser && <FundraiserTab post={post} />} */}
       </FormContainer>
     </>
@@ -237,15 +242,33 @@ interface LockedMedia {
   post: PostDto
   setPostUnlocked: any
   setIsPayed?: (value: boolean) => void
+  setIsLoading?: (value: boolean) => void
 }
 
 export const LockedMedia = ({
   postUnlocked,
   post,
-  setIsPayed
+  setIsPayed,
+  setIsLoading
 }: LockedMedia) => {
+  const imgRef = useRef<HTMLImageElement>(null)
   const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const { images, video } = contentTypeCounter(post.content)
+  const [isLoadingStart, setIsLoadingStart] = useState(false)
+
+  const startLoadingHandler = () => () => setIsLoadingStart(true)
+
+  const onLoadingHandler = () => {
+    if (imgRef.current && imgRef.current.complete && setIsLoading) {
+      setIsLoadingStart(false)
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    onLoadingHandler()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingStart, setIsLoading, post])
 
   return (
     <>
@@ -288,6 +311,8 @@ export const LockedMedia = ({
             if (c.contentType === ContentDtoContentTypeEnum.Image) {
               return (
                 <img
+                  ref={imgRef}
+                  onLoad={startLoadingHandler}
                   key={c.contentId}
                   src={c.signedUrl}
                   alt=""
