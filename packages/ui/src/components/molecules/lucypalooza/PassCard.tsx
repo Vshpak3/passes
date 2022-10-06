@@ -1,6 +1,8 @@
 import DOMPurify from "dompurify"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
+import { Video } from "src/components/atoms/Video"
+import { VideoJsPlayer } from "video.js"
 
 interface IPassCard {
   img: {
@@ -20,6 +22,11 @@ const PassCard: React.FC<IPassCard> = ({
   onSelect,
   isSelected
 }) => {
+  const handlePlayerReady = (player: VideoJsPlayer) => {
+    player.on("error", function () {
+      player.errorDisplay.close()
+    })
+  }
   return (
     <div className="relative flex-1 rounded-[20px] bg-black/25">
       <img
@@ -29,8 +36,11 @@ const PassCard: React.FC<IPassCard> = ({
       />
 
       <div className="relative z-10 p-8 pt-[30px]">
-        <img src={img.url} alt={img.alt} className="h-[415px] w-full" />
-
+        {/* <img src={img.url} alt={img.alt} className="h-[415px] w-full" /> */}
+        <Video
+          options={{ controls: false, loop: true, src: img.url }}
+          onReady={handlePlayerReady}
+        />
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
         <p className="mt-4 text-sm leading-[18px]">What you get:</p>
         <div
