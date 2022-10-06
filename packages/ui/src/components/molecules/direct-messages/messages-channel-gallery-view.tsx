@@ -1,5 +1,4 @@
-import React from "react"
-import { GalleryMedia } from "src/components/messages/components/ChannelInner/ChannelInner"
+import { GalleryMedia } from "src/components/messages/components/ChannelInner/GalleryMedia"
 
 export type Content = {
   price: number
