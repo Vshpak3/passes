@@ -8,7 +8,6 @@ import MenuIcon from "public/icons/menu.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import ShareIcon from "public/icons/share-outline.svg"
-import SharePinkIcon from "public/icons/share-outline-pink.svg"
 import React, { FC, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
@@ -185,13 +184,6 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
                       <p className="mt-2.5 text-start text-sm leading-6 text-white/60">
                         {text}
                       </p>
-
-                      <button className="ml-auto mt-[-11px] flex items-center space-x-0.5">
-                        <SharePinkIcon />
-                        <span className="text-xs font-medium leading-[22px] text-passes-pink-100">
-                          Reply
-                        </span>
-                      </button>
                     </div>
                   )
                 )}
