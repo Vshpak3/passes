@@ -117,7 +117,7 @@ const Passes = () => {
               title={pass.title}
               img={{
                 url: pass.creatorId
-                  ? ContentService.passVideo(pass.creatorId, pass.passId)
+                  ? ContentService.passVideo(pass.passId)
                   : "",
                 alt: "pass card"
               }}

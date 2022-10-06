@@ -31,12 +31,12 @@ class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
   }
 
-  static passImage(userId: string, passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.jpeg`
+  static passImage(passId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/image.jpeg`
   }
 
-  static passVideo(userId: string, passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.mp4`
+  static passVideo(passId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${passId}/image.mp4`
   }
 
   static w9Pdf(userId: string): string {
