@@ -75,6 +75,7 @@ const MessagesV2 = () => {
         setGallery={setGallery}
         freeMessages={freeMessages}
         isCreator={isCreator}
+        user={user}
       />
     </div>
   )

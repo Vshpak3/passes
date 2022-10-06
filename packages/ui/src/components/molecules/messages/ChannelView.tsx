@@ -12,6 +12,7 @@ interface Props {
   setGallery: Dispatch<SetStateAction<any>>
   freeMessages?: number
   isCreator: boolean
+  user: any
 }
 
 export const ChannelView = ({
@@ -19,7 +20,8 @@ export const ChannelView = ({
   gallery,
   setGallery,
   freeMessages,
-  isCreator
+  isCreator,
+  user
 }: Props) => {
   const [activeContent, setActiveContent] = useState("All")
   return (
@@ -46,6 +48,7 @@ export const ChannelView = ({
               {isCreator ? (
                 <InputMessageCreatorPerspective
                   channelId={selectedChannel.channelId}
+                  user={user}
                 />
               ) : selectedChannel.channelId ? (
                 <InputMessageFanPerspective

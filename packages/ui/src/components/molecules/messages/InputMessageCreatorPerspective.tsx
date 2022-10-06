@@ -1,28 +1,35 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
-import DeleteIcon from "public/icons/post-audience-x-icon.svg"
-// import PlusIcon from "public/icons/post-plus-icon.svg"
+import PlusIcon from "public/icons/post-plus-icon.svg"
 import { FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
+import { MessagePriceAlert } from "src/components/atoms/MessagePriceAlert"
+import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
 import { Dialog } from "src/components/organisms"
 import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
-import { formatCurrency } from "src/helpers"
+import {
+  Media,
+  MediaFile
+} from "src/components/organisms/profile/main-content/new-post/media"
+import { ContentService } from "src/helpers"
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9
 
 interface InputMessageProps {
   channelId?: string
+  user: any
 }
 
 export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
-  channelId
+  channelId,
+  user
 }) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
     reset,
     setError,
@@ -32,31 +39,25 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
   const api = new MessagesApi()
   const [files, setFiles] = useState<any[]>([])
   const [contentIds, setContentIds] = useState<any[]>([])
-  // TODO: Deal with contentIds coming from vault
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
   const [hasPrice, setHasPrice] = useState(false)
-  // const [scheduled, setScheduled] = useState()
-  // TODO: Add schedule to the  messages
+  const [scheduled, setScheduled] = useState<any>()
 
-  // const [attachments, setAttachments] = useState([])
-  // TODO: Deal with attachements
   const [targetAcquired, setTargetAcquired] = useState(false)
-  // const payinMethod = undefined
   const [loading, setLoading] = useState(false)
   const postPrice = watch("postPrice")
 
-  const onMediaHeaderChange = (event: any) => {
-    if (typeof event === "object") {
-      // setScheduled(event)
-      setContentIds(contentIds)
-      // dummy line
+  const onMediaHeaderChange = (prop: any) => {
+    if (Object.prototype.toString.call(prop) === "[object Date]") {
+      setScheduled(prop)
       return
     }
-    if (typeof event !== "string") {
-      return onFileInputChange(event)
+
+    if (prop?.target?.files.length > 0) {
+      return onFileInputChange(prop)
     }
-    switch (event) {
+    switch (prop) {
       case "Vault":
         setHasVault(true)
         break
@@ -64,7 +65,7 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
         setHasPrice(true)
         break
       default:
-        setActiveMediaHeader(event)
+        setActiveMediaHeader(prop)
         break
     }
   }
@@ -108,26 +109,42 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
     setFiles([...files, ..._files])
   }
 
-  // const onRemove = (index: any) => {
-  //   setFiles(files.filter((_: any, i: any) => i !== index))
-  // }
-  // TODO: Add ability to remove content
+  const onRemove = (index: any) => {
+    setFiles(files.filter((_: any, i: any) => i !== index))
+  }
+  const handleRemoveScheduledMessageTime = () => {
+    setScheduled(null)
+  }
 
   const submitMessage = async ({ message }: any) => {
-    if (!channelId) {
+    if (!channelId || isSubmitSuccessful) {
       return false
     }
     setLoading(true)
+    let contentIdsToUpload: any[] = []
+    if (files.length > 0) {
+      const content = await new ContentService().uploadContent(files)
+      const uploadedContentIds = content.map((c: any) => c.id)
+      contentIdsToUpload = [...uploadedContentIds, ...contentIds]
+    }
+    if (contentIds.length > 0) {
+      contentIdsToUpload = [...contentIds, ...contentIdsToUpload]
+    }
     try {
       await api.sendMessage({
         sendMessageRequestDto: {
           text: message,
-          contentIds: [],
+          contentIds: contentIdsToUpload,
           channelId,
-          tipAmount: 0
+          tipAmount: 0,
+          price: postPrice == null ? 0 : parseInt(postPrice)
         }
       })
       setLoading(false)
+      setFiles([])
+      onDeletePostPrice()
+      setContentIds([])
+      setScheduled(false)
       reset()
     } catch (error) {
       setError("submitError", {
@@ -151,16 +168,89 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
       className="flex flex-col items-end border-t border-[#fff]/10 p-5 pb-0"
       onSubmit={handleSubmit(submitMessage)}
     >
-      {targetAcquired && (
-        <div
-          className="flex w-full cursor-pointer items-center justify-end gap-2"
-          onClick={() => setTargetAcquired(!targetAcquired)}
-        >
-          <span className="text-base font-medium text-[#ffff]">
-            Post Price {formatCurrency(postPrice)}
-          </span>
+      <div className="flex w-full  items-center justify-end gap-3">
+        {targetAcquired && (
+          <MessagePriceAlert
+            price={postPrice}
+            onRemovePrice={onDeletePostPrice}
+          />
+        )}
+        {scheduled && (
+          <div className="-mt-3 flex items-center justify-end">
+            <PostScheduleAlert
+              scheduledPostTime={scheduled}
+              onRemoveScheduledPostTime={handleRemoveScheduledMessageTime}
+            />
+          </div>
+        )}
+      </div>
 
-          <DeleteIcon className="" onClick={() => onDeletePostPrice()} />
+      {(files.length > 0 || contentIds.length > 0) && (
+        <div className=" w-full items-center self-start overflow-y-auto pt-1">
+          <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1">
+            <div className="flex items-center justify-start gap-6">
+              <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto md:max-w-[550px]">
+                {contentIds.map((contentId, index) => (
+                  <div
+                    key={index}
+                    className="relative flex h-[66px] w-[79px] flex-shrink-0 items-center justify-center rounded-[6px]"
+                  >
+                    <Media
+                      onRemove={() => onRemove(index)}
+                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${user?.id}/${contentId}.jpeg`}
+                      type="image"
+                      // TODO:this logic should be done on backend
+                    />
+                  </div>
+                ))}
+                {files.map((file: any, index: any) => (
+                  <div
+                    key={index}
+                    className="relative flex h-[66px] w-[79px] flex-shrink-0 items-center justify-center rounded-[6px]"
+                  >
+                    <MediaFile
+                      onRemove={() => onRemove(index)}
+                      file={file}
+                      className={classNames(
+                        file.type.startsWith("image/")
+                          ? "cursor-pointer rounded-[6px] object-contain"
+                          : file.type.startsWith("video/")
+                          ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : file.type.startsWith("aduio/")
+                          ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : null
+                      )}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {(files.length > 0 || contentIds.length > 0) && (
+                <FormInput
+                  register={register}
+                  name="drag-drop"
+                  type="file"
+                  multiple={true}
+                  trigger={
+                    <div className="box-border flex h-[66px] w-[79px]  items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
+                      <PlusIcon />
+                    </div>
+                  }
+                  options={{ onChange: onFileInputChange }}
+                  accept={[
+                    ".png",
+                    ".jpg",
+                    ".jpeg",
+                    ".mp4",
+                    ".mov",
+                    ".qt",
+                    ".mp3"
+                  ]}
+                  errors={errors}
+                />
+              )}
+            </div>
+          </div>
         </div>
       )}
       <textarea
