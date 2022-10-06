@@ -38,18 +38,8 @@ const Passes = () => {
     const fetch = async () => {
       const userApi = new UserApi()
       const userId = await userApi.getUserId({ username: "patzhang" })
-      const passHoldings = await api.getPassHoldings({
-        getPassHoldingsRequestDto: {
-          order: GetPassHoldingsRequestDtoOrderEnum.Asc,
-          orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
-        }
-      })
       getCards()
-      setPassHolder(
-        passHoldings.passHolders.length > 0
-          ? passHoldings.passHolders[0]
-          : undefined
-      )
+
       const res = await api.getCreatorPasses({
         getCreatorPassesRequestDto: { creatorId: userId }
       })
@@ -61,6 +51,18 @@ const Passes = () => {
 
   const getPayinState = useCallback(async () => {
     const api = new PaymentApi()
+    const passApi = new PassApi()
+    const passHoldings = await passApi.getPassHoldings({
+      getPassHoldingsRequestDto: {
+        order: GetPassHoldingsRequestDtoOrderEnum.Asc,
+        orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+      }
+    })
+    setPassHolder(
+      passHoldings.passHolders.length > 0
+        ? passHoldings.passHolders[0]
+        : undefined
+    )
     const payins = await api.getPayins({
       getPayinsRequestDto: { limit: 10, offset: 0 }
     })
@@ -68,8 +70,12 @@ const Passes = () => {
       (payin) =>
         payin.payinStatus === PayinDtoPayinStatusEnum.Failed && !!payin.card
     )
-    if (failed.length > 0 && !failedMessage) {
-      toast.error("A previous card payment failed, please try again")
+    if (
+      passHoldings.passHolders.length === 0 &&
+      failed.length > 0 &&
+      !failedMessage
+    ) {
+      toast.error("A previous payment failed, please try again")
       setFaileddMessage(true)
     }
     const paying = payins.payins.filter(

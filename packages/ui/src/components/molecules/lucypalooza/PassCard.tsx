@@ -38,7 +38,16 @@ const PassCard: React.FC<IPassCard> = ({
       <div className="relative z-10 p-8 pt-[30px]">
         {/* <img src={img.url} alt={img.alt} className="h-[415px] w-full" /> */}
         <Video
-          options={{ controls: false, loop: true, src: img.url }}
+          options={{
+            controls: false,
+            loop: true,
+            fluid: true,
+            responsive: true,
+            sources: [
+              { src: img.url, type: "video/mp4" },
+              { src: img.alt, type: "video/mp4" }
+            ]
+          }}
           onReady={handlePlayerReady}
         />
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
