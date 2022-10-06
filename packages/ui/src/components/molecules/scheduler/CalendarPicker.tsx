@@ -4,7 +4,7 @@ import "rc-time-picker/assets/index.css"
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import classNames from "classnames"
-import { format } from "date-fns"
+import { format, isSameMonth } from "date-fns"
 import moment, { Moment } from "moment"
 import TimePicker from "rc-time-picker"
 import { FC, useCallback, useState } from "react"
@@ -61,19 +61,6 @@ const css = `
     transition-duration: 400ms;
     outline: none;
   }
-  .rdp-day_today {
-    background: #F9FAFB;
-    border-radius: 20px;
-    color: #0E0A0F;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    border: none;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 400ms;
-    outline: none;
-  }
   .rc-time-picker {
     background: #0E0A0F;
     border-radius: 8px;
@@ -109,12 +96,13 @@ const css = `
     color: white;
   }
 `
+const today = new Date()
 
 const CalendarPicker: FC<{
   children: React.ReactNode
   onSave: (date: Date | null) => void
 }> = ({ children, onSave }) => {
-  const today = new Date()
+  const [month, setMonth] = useState<Date>(today)
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(today)
   const [selectionPartTime, setSelectionPartTime] = useState<string>("AM")
   const [selectionTime, setSelectionTime] = useState<Moment>(moment())
@@ -122,6 +110,7 @@ const CalendarPicker: FC<{
 
   const handleSelectToday = useCallback(() => {
     setSelectionDate(new Date())
+    setMonth(today)
   }, [])
 
   const handleChangeTime = useCallback((value: Moment) => {
@@ -182,7 +171,8 @@ const CalendarPicker: FC<{
                     {selectionDate ? format(selectionDate, "MMM dd, yyyy") : ""}
                   </span>
                   <button
-                    className="cursor-pointer rounded-lg border-none bg-white py-[10px] px-[16px] text-passes-gray-200"
+                    className="cursor-pointer select-none rounded-lg border-none bg-white py-[10px] px-[16px] text-passes-gray-200"
+                    disabled={isSameMonth(today, month)}
                     onClick={handleSelectToday}
                   >
                     Today
@@ -194,6 +184,9 @@ const CalendarPicker: FC<{
                   required
                   selected={selectionDate}
                   onSelect={setSelectionDate}
+                  onMonthChange={setMonth}
+                  fromDate={new Date()}
+                  month={month}
                 />
                 <div className="mt-3 flex w-full items-center justify-between">
                   <span className="text-base font-normal leading-6 text-white">
