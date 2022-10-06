@@ -115,6 +115,8 @@ const Passes = () => {
             <PassCard
               key={pass.passId}
               title={pass.title}
+              price={pass.price}
+              ethPrice={pass.ethPrice ?? 0}
               img={{
                 url: pass.creatorId
                   ? ContentService.passVideo(pass.passId)

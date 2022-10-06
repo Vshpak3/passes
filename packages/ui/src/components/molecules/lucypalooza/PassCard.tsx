@@ -2,7 +2,6 @@ import DOMPurify from "dompurify"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 import { Video } from "src/components/atoms/Video"
-import passes from "src/pages/passes"
 import { VideoJsPlayer } from "video.js"
 
 interface IPassCard {
