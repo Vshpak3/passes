@@ -123,9 +123,9 @@ const Passes = () => {
         payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
         payin.payinStatus === PayinDtoPayinStatusEnum.Pending
     )
-    setIsPaying(paying.length > 0)
+    setIsPaying(isPaying || paying.length > 0)
     setIsLoading(false)
-  }, [failedMessage])
+  }, [failedMessage, isPaying])
   const [count, setCount] = useState(0)
   const handleDefaultPaymentSet = async () => {
     await getDefaultPayinMethod()
@@ -137,6 +137,7 @@ const Passes = () => {
     }, 1e3)
     return () => clearTimeout(timer)
   }, [count, getPayinState])
+
   useEffect(() => {
     setPassId(passHolder?.passId)
   }, [passHolder])
@@ -185,7 +186,7 @@ const Passes = () => {
                 setOpen(false)
                 setTimeout(async () => {
                   await getCards()
-                }, 250)
+                }, 500)
               }}
             />
           </Modal>
