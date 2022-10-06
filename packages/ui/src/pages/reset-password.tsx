@@ -4,8 +4,8 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
@@ -21,14 +21,15 @@ const NewPassword = () => {
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
-  const [passwordReset, setPasswordReset] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors, isSubmitting }
   } = useForm<NewPasswordFormProps>()
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+
+  const [passwordReset, setPasswordReset] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -46,13 +47,7 @@ const NewPassword = () => {
   }, [router])
 
   const onSubmit = async (data: NewPasswordFormProps) => {
-    if (isLoading) {
-      return
-    }
-
     try {
-      setIsLoading(true)
-
       const verificationToken = router.query.token as string
 
       const api = new AuthLocalApi()
@@ -65,7 +60,6 @@ const NewPassword = () => {
 
       const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
-        toast.error("ERROR: Received no access token")
         return
       }
 
@@ -77,8 +71,6 @@ const NewPassword = () => {
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
     } catch (error: any) {
       errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -193,7 +185,7 @@ const NewPassword = () => {
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                 type="submit"
-                disabled={isLoading || isSubmitSuccessful}
+                disabled={disableForm}
               >
                 <Text fontSize={16} className="font-medium">
                   Reset Password

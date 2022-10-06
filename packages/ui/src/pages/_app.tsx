@@ -63,7 +63,7 @@ function refreshAuth(): void {
     .catch(() => null)
 }
 
-// Refresh access token on page load
+// Refresh access token on route change (TODO: consider removing this)
 Router.events.on("routeChangeStart", async () => {
   refreshAuth()
 })

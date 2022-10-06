@@ -1,10 +1,11 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import {
   authRouter,
   AuthStates,
@@ -14,18 +15,32 @@ import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
+import { object, SchemaOf, string } from "yup"
 
-const UserEmailPage = () => {
+export interface SignupEmailPageSchema {
+  email: string
+}
+
+const signupPageEmailSchema: SchemaOf<SignupEmailPageSchema> = object({
+  email: string()
+    .required("Enter your email address")
+    .email("Email address is invalid")
+})
+
+const SignupEmailPage: FC = () => {
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm()
+    formState: { errors, isSubmitting }
+  } = useForm<SignupEmailPageSchema>({
+    resolver: yupResolver(signupPageEmailSchema)
+  })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+
   const [hasSentEmail, setHasSentEmail] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -38,13 +53,7 @@ const UserEmailPage = () => {
   }, [router, userClaims])
 
   const onUserRegister = async (email: string) => {
-    if (isSubmitting) {
-      return
-    }
-
     try {
-      setIsSubmitting(true)
-
       const api = new AuthApi()
       await api.setUserEmail({ setEmailRequestDto: { email } })
 
@@ -58,7 +67,7 @@ const UserEmailPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          toast.error("Error: Received no access token")
+          return
         }
 
         router.push(authStateToRoute(AuthStates.VERIFY))
@@ -68,17 +77,15 @@ const UserEmailPage = () => {
       router.push(router)
     } catch (error: any) {
       errorMessage(error, true)
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = (data: SignupEmailPageSchema) => {
     onUserRegister(data.email)
   }
 
   return (
-    <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
+    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
         height={28}
         width={122}
@@ -134,7 +141,7 @@ const UserEmailPage = () => {
                 <button
                   className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={disableForm}
                 >
                   <Text fontSize={16} className="font-medium">
                     Register account
@@ -150,4 +157,4 @@ const UserEmailPage = () => {
   )
 }
 
-export default UserEmailPage
+export default SignupEmailPage

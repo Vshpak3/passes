@@ -5,6 +5,7 @@ import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
@@ -18,14 +19,14 @@ const ForgotPassword = () => {
   const router = useRouter()
   const { userClaims } = useUser()
 
-  const [emailSent, setEmailSent] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors, isSubmitting }
   } = useForm<ForgotPasswordFormProps>()
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+
+  const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -36,13 +37,7 @@ const ForgotPassword = () => {
   }, [router, userClaims])
 
   const onSubmit = async (data: ForgotPasswordFormProps) => {
-    if (isLoading) {
-      return
-    }
-
     try {
-      setIsLoading(true)
-
       const api = new AuthLocalApi()
       await api.initPasswordReset({
         initResetPasswordRequestDto: {
@@ -61,8 +56,6 @@ const ForgotPassword = () => {
       }
     } catch (error: any) {
       errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -127,7 +120,7 @@ const ForgotPassword = () => {
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                 type="submit"
-                disabled={isLoading || isSubmitSuccessful}
+                disabled={disableForm}
               >
                 <Text fontSize={16} className="font-medium">
                   Reset Password

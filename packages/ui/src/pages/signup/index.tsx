@@ -8,11 +8,11 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
@@ -20,15 +20,18 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
+import { PASSWORD_MIN_LENGTH } from "src/pages/login"
 import { object, SchemaOf, string } from "yup"
 
-export interface SignupPageSchema {
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/
+
+export interface SignupInitialPageSchema {
   email: string
   password: string
   confirmPassword: string
 }
 
-const signupPageSchema: SchemaOf<SignupPageSchema> = object({
+const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
   email: string()
     .required("Enter an email address")
     .email("Email address is invalid"),
@@ -36,14 +39,14 @@ const signupPageSchema: SchemaOf<SignupPageSchema> = object({
     .required("Enter a password")
     .min(8, "Password should be at least 8 characters")
     .matches(
-      /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
+      PASSWORD_REGEX,
       "Password must contain at least one letter and number"
     ),
   confirmPassword: string()
     .required("Enter a password")
-    .min(8, "Password should be at least 8 characters")
+    .min(PASSWORD_MIN_LENGTH, "Password should be at least 8 characters")
     .matches(
-      /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
+      PASSWORD_REGEX,
       "Password must contain at least one letter and number"
     )
     .test("match", "Passwords do not match", function (confirmPassword) {
@@ -51,20 +54,20 @@ const signupPageSchema: SchemaOf<SignupPageSchema> = object({
     })
 })
 
-const SignupPage = () => {
+const SignupInitialPage: FC = () => {
   const router = useRouter()
-  const { setAccessToken, setRefreshToken, userClaims } = useUser()
+  const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasLoaded, setHasLoaded] = useState(false)
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
-  } = useForm<SignupPageSchema>({
-    resolver: yupResolver(signupPageSchema)
+    formState: { errors, isSubmitting }
+  } = useForm<SignupInitialPageSchema>({
+    resolver: yupResolver(signupInitialPageSchema)
   })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   useEffect(() => {
     if (!router.isReady || hasLoaded) {
@@ -76,21 +79,15 @@ const SignupPage = () => {
   }, [router, userClaims, hasLoaded])
 
   const onUserRegister = async (email: string, password: string) => {
-    if (isSubmitting) {
-      return
-    }
-
     try {
-      setIsSubmitting(true)
-
       const api = new AuthLocalApi()
       const res = await api.createEmailPasswordUser({
         createLocalUserRequestDto: { email, password }
       })
+
       const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
-        toast("Something went wrong, please try again later")
-        console.error("Failed to set tokens after signup")
+        return
       }
 
       // In local development we auto-verify the email
@@ -110,14 +107,12 @@ const SignupPage = () => {
         false,
         new URLSearchParams([["hasEmail", "true"]])
       )
-    } catch (error) {
+    } catch (error: any) {
       errorMessage(error, true)
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
-  const onSubmit = (data: SignupPageSchema) => {
+  const onSubmit = (data: SignupInitialPageSchema) => {
     onUserRegister(data.email, data.password)
   }
 
@@ -198,7 +193,7 @@ const SignupPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[340px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9 xs:w-[360px]"
               type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
+              disabled={disableForm}
             >
               <Text fontSize={16} className="font-medium">
                 Register account
@@ -261,4 +256,4 @@ const SignupPage = () => {
   )
 }
 
-export default SignupPage
+export default SignupInitialPage

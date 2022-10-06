@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { FC, useEffect } from "react"
 import {
   authRouter,
   AuthStates,
@@ -10,7 +10,7 @@ import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
 
-const AuthSuccess = () => {
+const AuthSuccess: FC = () => {
   const router = useRouter()
   const { setAccessToken, setRefreshToken } = useUser()
 
@@ -34,19 +34,13 @@ const AuthSuccess = () => {
       setAccessToken,
       setRefreshToken
     )
-
     if (!setRes) {
-      console.error("Unexpected missing access token after auth success")
       router.push(authStateToRoute(AuthStates.LOGIN))
       return
     }
 
     authRouter(router, jwtDecode<JWTUserClaims>(accessToken))
   }, [router, setAccessToken, setRefreshToken])
-
-  if (typeof window === "undefined") {
-    return null
-  }
 
   return null
 }

@@ -1,6 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, UserApi } from "@passes/api-client/apis"
 import { differenceInYears, format } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -8,11 +9,11 @@ import { differenceInYears, format } from "date-fns"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import {
   authRouter,
   AuthStates,
@@ -23,18 +24,35 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
 import { useUser } from "src/hooks"
+import { object, SchemaOf, string } from "yup"
 
-const MIN_AGE_IN_YEARS = 13
-const DATE_FORMAT = "yyyy-MM-dd"
+const BIRTHDAY_MIN_AGE_IN_YEARS = 13
+const BIRTHDAY_DATE_FORMAT = "yyyy-MM-dd"
 
-export type UserInfoFormValues = {
+export type SignupInfoPageSchema = {
   legalFullName: string
   username: string
   countryCode: string
   birthday: string
 }
 
-const UserInfoPage = () => {
+const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
+  legalFullName: string().required("Enter your full name"),
+  username: string().required("Enter a username"),
+  birthday: string()
+    .required("Enter your birthday")
+    .test(
+      "birthday-age",
+      `You must be at least ${BIRTHDAY_MIN_AGE_IN_YEARS} to sign up`,
+      (value) =>
+        value !== undefined &&
+        differenceInYears(new Date(), new Date(value)) >=
+          BIRTHDAY_MIN_AGE_IN_YEARS
+    ),
+  countryCode: string().required("Enter your coutnry")
+})
+
+const SignupInfoPage: FC = () => {
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
@@ -45,7 +63,10 @@ const UserInfoPage = () => {
     setError,
     setValue,
     watch
-  } = useForm<UserInfoFormValues>()
+  } = useForm<SignupInfoPageSchema>({
+    resolver: yupResolver(signupInfoPageSchema)
+  })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarDate, setCalendarDate] = useState(new Date())
@@ -87,7 +108,7 @@ const UserInfoPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          toast.error("Error: received no access token")
+          return
         }
 
         router.push(authStateToRoute(AuthStates.AUTHED))
@@ -97,7 +118,7 @@ const UserInfoPage = () => {
     }
   }
 
-  const onSubmit = (data: Record<string, string>) => {
+  const onSubmit = (data: SignupInfoPageSchema) => {
     onUserRegister(
       data.legalFullName,
       data.username,
@@ -107,7 +128,7 @@ const UserInfoPage = () => {
   }
 
   return (
-    <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
+    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
         height={28}
         width={122}
@@ -197,7 +218,7 @@ const UserInfoPage = () => {
                     date={calendarDate}
                     onChange={(e: Date) => {
                       setCalendarDate(e)
-                      setValue("birthday", format(e, DATE_FORMAT))
+                      setValue("birthday", format(e, BIRTHDAY_DATE_FORMAT))
                     }}
                   />
                   <button
@@ -208,19 +229,6 @@ const UserInfoPage = () => {
                   </button>
                 </>
               )}
-              {errors.birthday && (
-                <Text fontSize={12} className="mt-1 text-[red]">
-                  {errors.birthday.message}
-                </Text>
-              )}
-              {!isCalendarVisible &&
-                watch("birthday") &&
-                differenceInYears(new Date(), new Date(watch("birthday"))) <
-                  MIN_AGE_IN_YEARS && (
-                  <Text fontSize={12} className="mt-1 text-[red]">
-                    You must be at least {MIN_AGE_IN_YEARS} to sign up.
-                  </Text>
-                )}
             </div>
 
             <div className="flex flex-col">
@@ -245,7 +253,7 @@ const UserInfoPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
               type="submit"
-              disabled={isSubmitting}
+              disabled={disableForm}
             >
               <Text fontSize={16} className="font-medium">
                 Register account
@@ -259,4 +267,4 @@ const UserInfoPage = () => {
   )
 }
 
-export default UserInfoPage
+export default SignupInfoPage

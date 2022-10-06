@@ -8,16 +8,21 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { useEffect } from "react"
+import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
+import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
 import { object, SchemaOf, string } from "yup"
+
+export const PASSWORD_MIN_LENGTH = 8
 
 export interface LoginPageSchema {
   email: string
@@ -30,18 +35,19 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
     .email("Email address is invalid"),
   password: string()
     .required("Enter a password")
-    .min(8, "Password should be at least 8 characters")
+    .min(PASSWORD_MIN_LENGTH, "Password should be at least 8 characters")
 })
 
-const LoginPage = () => {
+const LoginPage: FC = () => {
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
-    setError
-  } = useForm({ resolver: yupResolver(loginPageSchema) })
+    formState: { errors, isSubmitting }
+  } = useForm<LoginPageSchema>({ resolver: yupResolver(loginPageSchema) })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -50,6 +56,29 @@ const LoginPage = () => {
 
     authRouter(router, userClaims)
   }, [router, userClaims])
+
+  const onUserLogin = async (email: string, password: string) => {
+    try {
+      const api = new AuthLocalApi()
+      const res = await api.loginWithEmailPassword({
+        localUserLoginRequestDto: { email, password }
+      })
+
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
+      if (!setRes) {
+        return
+      }
+
+      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+    } catch (error: any) {
+      toast.error("Invalid credentials")
+      console.error(await errorMessage(error))
+    }
+  }
+
+  const onSubmit = async (data: LoginPageSchema) => {
+    await onUserLogin(data.email, data.password)
+  }
 
   const handleLoginWithGoogle = async () => {
     router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/google")
@@ -61,35 +90,6 @@ const LoginPage = () => {
 
   const handleLoginWithFacebook = async () => {
     router.push(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/auth/facebook")
-  }
-
-  const onUserLogin = async (email: string, password: string) => {
-    try {
-      const api = new AuthLocalApi()
-      const res = await api.loginWithEmailPassword({
-        localUserLoginRequestDto: { email, password }
-      })
-
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        setError("submitError", {
-          type: "custom",
-          message: "ERROR: Received no access token"
-        })
-        return
-      }
-
-      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
-    } catch (error) {
-      setError("submitError", {
-        type: "custom",
-        message: "Invalid credentials"
-      })
-    }
-  }
-
-  const onSubmit = async (data: Record<string, string>) => {
-    await onUserLogin(data.email, data.password)
   }
 
   return (
@@ -156,16 +156,13 @@ const LoginPage = () => {
             <button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
               type="submit"
-              disabled={isSubmitSuccessful}
+              disabled={disableForm}
             >
               <Text fontSize={16} className="font-medium">
                 Login
               </Text>
               <EnterIcon />
             </button>
-            <div className="text-center text-red-500">
-              {errors.submitError && errors.submitError.message?.toString()}
-            </div>
           </form>
 
           <div className="z-10 flex gap-[17px]">

@@ -1,9 +1,7 @@
 import { AuthApi } from "@passes/api-client/apis"
-import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import PassesLongLogo from "public/icons/passes-long-logo.svg"
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { Text, Wordmark } from "src/components/atoms"
 import {
   authRouter,
@@ -12,7 +10,6 @@ import {
 } from "src/helpers/authRouter"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
-import { JWTUserClaims } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -49,10 +46,8 @@ const VerifyEmailPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          toast.error("Error: Received no access token")
+          return
         }
-
-        authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
       } catch (err: any) {
         console.error(err)
         setError(
@@ -65,8 +60,10 @@ const VerifyEmailPage = () => {
 
     verify()
 
+    // We cannot add userClaims here since then this would trigger during the
+    // update and we won't have time to show the confirmation screen
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
+  }, [router, setAccessToken, setRefreshToken])
 
   return (
     <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
@@ -118,7 +115,7 @@ const VerifyEmailPage = () => {
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                 type="submit"
-                onClick={() => router.push("/home")}
+                onClick={() => authRouter(router, userClaims)}
               >
                 <Text fontSize={16} className="font-medium">
                   Continue
