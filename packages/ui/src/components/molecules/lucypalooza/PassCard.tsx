@@ -52,9 +52,10 @@ const PassCard: React.FC<IPassCard> = ({
         />
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
         <p className="mt-4 text-sm leading-[18px]">What you get:</p>
-        <div
+        <ul
+          className="list-inside list-disc pl-2 text-sm leading-[18px]"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }}
-        ></div>
+        />
 
         {isSelected ? (
           <GradientBorderTile
