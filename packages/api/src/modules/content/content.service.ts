@@ -136,10 +136,9 @@ export class ContentService {
         async (content) =>
           new ContentDto(
             content,
-            await this.preSignMediaContent(
+            await this.preSignMediaContentThumbnail(
               content.user_id,
               content.id,
-              content.content_type,
             ),
           ),
       ),
@@ -153,6 +152,12 @@ export class ContentService {
   ) {
     return this.s3contentService.signUrlForContentViewing(
       `media/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
+    )
+  }
+
+  async preSignMediaContentThumbnail(userId: string, contentId: string) {
+    return this.s3contentService.signUrlForContentViewing(
+      `media/${userId}/${contentId}_thumbnail.jpeg`, // all thumbnails are jpeg
     )
   }
 
