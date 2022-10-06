@@ -52,9 +52,11 @@ const PassCard: React.FC<IPassCard> = ({
         alt="gradient frame"
         className="absolute inset-0 h-full w-full"
       />
-
       <div className="relative z-10 flex h-full flex-col p-8 pt-[30px]">
         <div className="relative">
+          <div className="absolute left-0 rounded-full bg-red-500 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 px-5 py-1 font-medium">
+            <span>{`$${price} (${ethPrice} ETH)`}</span>
+          </div>
           <MemoPassVideo img={img} />
           <div className="absolute bottom-2 flex w-full justify-center">
             <div className="flex w-fit rounded-full bg-black/50 px-4 py-2">
@@ -64,10 +66,6 @@ const PassCard: React.FC<IPassCard> = ({
         </div>
         <div className="flex-1">
           <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
-
-          <p className="mt-4 text-sm leading-[18px]">
-            ${price} (USD/USDC) or {ethPrice / 10 ** 18} eth
-          </p>
           <p className="mt-4 text-sm leading-[18px]">What you get:</p>
           <ul
             className="list-inside list-disc pl-2 text-sm leading-[18px]"

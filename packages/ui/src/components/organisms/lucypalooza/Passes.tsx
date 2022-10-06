@@ -19,6 +19,7 @@ import React, {
   useState
 } from "react"
 import { toast } from "react-toastify"
+import { Button } from "src/components/atoms"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import PassCard from "src/components/molecules/lucypalooza/PassCard"
 import PassSuccess from "src/components/molecules/lucypalooza/PassSuccess"
@@ -89,6 +90,10 @@ const Passes = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleCancel = () => {
+    // const api = new PassApi()
+    // await
+  }
   const getPayinState = useCallback(async () => {
     const api = new PaymentApi()
     const passApi = new PassApi()
@@ -196,7 +201,33 @@ const Passes = () => {
           // instead of a new render
         }
         <ConditionRendering condition={!passHolder && isPaying}>
-          Processing Payment
+          <div className="flex h-[50vh] w-full flex-col items-center justify-center">
+            <span className="text-xl font-bold">
+              We are processing your payment and minting your pass!
+            </span>
+            <div className="my-5">
+              <Button tag="button" variant="pink">
+                <span className="px-20 text-xl">Processing...</span>
+              </Button>
+            </div>
+            <span>
+              Please wait. This might take a few minutes, do not go back or
+              refresh this page.
+            </span>
+            <span>
+              If you paid with card, please verify your payment with your
+              provider.
+            </span>
+            <div className="mt-5">
+              <Button
+                onClick={handleCancel}
+                tag="button"
+                variant="purple-light"
+              >
+                <span className="px-20 text-lg">Cancel</span>
+              </Button>
+            </div>
+          </div>
         </ConditionRendering>
         <ConditionRendering condition={!!passHolder}>
           <PassSuccess
