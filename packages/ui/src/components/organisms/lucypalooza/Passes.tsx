@@ -127,20 +127,22 @@ const Passes = () => {
         <ConditionRendering
           condition={!!passId && !passHolder && isPaying === false}
         >
-          <PaymentSettings addCardHandler={() => setOpen(true)} isEmbedded />
-          <BuyPassButton
-            passId={passId ?? ""}
-            isDisabled={
-              !defaultPayinMethod ||
-              defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
-              !passId ||
-              passId.length == 0
-            }
-            onSuccess={() => {
-              toast.success("Thank you for your purchase!")
-              setIsPaying(true)
-            }}
-          />
+          <div className="mx-auto w-full max-w-[480px] bg-black">
+            <PaymentSettings addCardHandler={() => setOpen(true)} isEmbedded />
+            <BuyPassButton
+              passId={passId ?? ""}
+              isDisabled={
+                !defaultPayinMethod ||
+                defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
+                !passId ||
+                passId.length == 0
+              }
+              onSuccess={() => {
+                toast.success("Thank you for your purchase!")
+                setIsPaying(true)
+              }}
+            />
+          </div>
           <Modal isOpen={open} setOpen={setOpen}>
             <AddCard
               callback={() => {
