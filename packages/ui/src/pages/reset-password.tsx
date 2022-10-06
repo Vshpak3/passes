@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
@@ -11,11 +12,18 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
+import { object, SchemaOf } from "yup"
 
-export interface NewPasswordFormProps {
+import { passwordFormSchema } from "./signup"
+
+export interface ResetPasswordFormProps {
   password: string
   confirmPassword: string
 }
+
+const resetPasswordFormSchema: SchemaOf<ResetPasswordFormProps> = object({
+  ...passwordFormSchema
+})
 
 const NewPassword = () => {
   const router = useRouter()
@@ -24,9 +32,10 @@ const NewPassword = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting }
-  } = useForm<NewPasswordFormProps>()
+  } = useForm<ResetPasswordFormProps>({
+    resolver: yupResolver(resetPasswordFormSchema)
+  })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const [passwordReset, setPasswordReset] = useState(false)
@@ -41,12 +50,13 @@ const NewPassword = () => {
     if (!authRedirect && !router.query.token) {
       router.push("/login")
     }
+
     // We cannot add userClaims here since then this would trigger during the
     // update and we won't have time to show the confirmation screen
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  const onSubmit = async (data: NewPasswordFormProps) => {
+  const onSubmit = async (data: ResetPasswordFormProps) => {
     try {
       const verificationToken = router.query.token as string
 
@@ -71,17 +81,6 @@ const NewPassword = () => {
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
     } catch (error: any) {
       errorMessage(error, true)
-    }
-  }
-
-  const passwordValidation = {
-    minLength: {
-      value: 8,
-      message: "Minimum eight characters"
-    },
-    pattern: {
-      value: /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/,
-      message: "Must include at least one letter and one number"
     }
   }
 
@@ -142,16 +141,7 @@ const NewPassword = () => {
                   placeholder="Enter your password"
                   type="password"
                   errors={errors}
-                  options={{
-                    required: true,
-                    ...passwordValidation
-                  }}
                 />
-                {errors.password && (
-                  <Text fontSize={12} className="mt-1 text-[red]">
-                    {errors.password.message}
-                  </Text>
-                )}
               </div>
 
               <div className="flex flex-col">
@@ -165,21 +155,7 @@ const NewPassword = () => {
                   placeholder="Confirm your password"
                   type="password"
                   errors={errors}
-                  options={{
-                    required: true,
-                    ...passwordValidation,
-                    validate: (val: string) => {
-                      if (watch("password") != val) {
-                        return "Your passwords do not match"
-                      }
-                    }
-                  }}
                 />
-                {errors.confirmPassword && (
-                  <Text fontSize={12} className="mt-1 text-[red]">
-                    {errors.confirmPassword.message}
-                  </Text>
-                )}
               </div>
 
               <button

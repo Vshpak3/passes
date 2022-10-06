@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
 import ms from "ms"
 import { useRouter } from "next/router"
@@ -10,10 +11,17 @@ import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks"
+import { object, SchemaOf } from "yup"
+
+import { emailFormSchema } from "./signup"
 
 export interface ForgotPasswordFormProps {
   email: string
 }
+
+const forgotPasswordFormSchema: SchemaOf<ForgotPasswordFormProps> = object({
+  ...emailFormSchema
+})
 
 const ForgotPassword = () => {
   const router = useRouter()
@@ -23,7 +31,9 @@ const ForgotPassword = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<ForgotPasswordFormProps>()
+  } = useForm<ForgotPasswordFormProps>({
+    resolver: yupResolver(forgotPasswordFormSchema)
+  })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const [emailSent, setEmailSent] = useState(false)
@@ -101,20 +111,7 @@ const ForgotPassword = () => {
                   placeholder="Enter your email"
                   type="text"
                   errors={errors}
-                  options={{
-                    required: true,
-                    pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/,
-                      message: "Invalid email address"
-                    }
-                  }}
                 />
-                {errors.email && (
-                  <Text fontSize={12} className="mt-1 text-[red]">
-                    {errors.email.message}
-                  </Text>
-                )}
               </div>
 
               <button

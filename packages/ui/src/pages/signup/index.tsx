@@ -20,10 +20,10 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
-import { PASSWORD_MIN_LENGTH } from "src/pages/login"
 import { object, SchemaOf, string } from "yup"
 
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/
+export const PASSWORD_MIN_LENGTH = 8
+export const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/
 
 export interface SignupInitialPageSchema {
   email: string
@@ -31,10 +31,15 @@ export interface SignupInitialPageSchema {
   confirmPassword: string
 }
 
-const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
+// To be re-used by the forgot password page
+export const emailFormSchema = {
   email: string()
     .required("Enter an email address")
-    .email("Email address is invalid"),
+    .email("Email address is invalid")
+}
+
+// To be re-used by the reset password page
+export const passwordFormSchema = {
   password: string()
     .required("Enter a password")
     .min(8, "Password should be at least 8 characters")
@@ -52,6 +57,11 @@ const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
     .test("match", "Passwords do not match", function (confirmPassword) {
       return confirmPassword === this?.parent?.password
     })
+}
+
+const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
+  ...emailFormSchema,
+  ...passwordFormSchema
 })
 
 const SignupInitialPage: FC = () => {

@@ -22,7 +22,7 @@ import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
 import { object, SchemaOf, string } from "yup"
 
-export const PASSWORD_MIN_LENGTH = 8
+import { PASSWORD_MIN_LENGTH } from "./signup"
 
 export interface LoginPageSchema {
   email: string
