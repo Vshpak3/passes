@@ -11,6 +11,7 @@ import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import {
   authRouter,
@@ -18,6 +19,7 @@ import {
   authStateToRoute
 } from "src/helpers/authRouter"
 import { COUNTRIES } from "src/helpers/countries"
+import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
 import { useUser } from "src/hooks"
@@ -30,7 +32,6 @@ export type UserInfoFormValues = {
   username: string
   countryCode: string
   birthday: string
-  submitError: string
 }
 
 const UserInfoPage = () => {
@@ -40,7 +41,7 @@ const UserInfoPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
     setValue,
     watch
@@ -48,7 +49,6 @@ const UserInfoPage = () => {
 
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarDate, setCalendarDate] = useState(new Date())
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -64,13 +64,7 @@ const UserInfoPage = () => {
     countryCode: string,
     birthday: string
   ) => {
-    if (isSubmitting) {
-      return
-    }
-
     try {
-      setIsSubmitting(true)
-
       const api = new AuthApi()
       const userApi = new UserApi()
 
@@ -93,21 +87,13 @@ const UserInfoPage = () => {
 
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
-          setError("submitError", {
-            type: "custom",
-            message: "ERROR: Received no access token"
-          })
+          toast.error("Error: received no access token")
         }
 
         router.push(authStateToRoute(AuthStates.AUTHED))
       }
-    } catch (err: unknown) {
-      setError("submitError", {
-        type: "custom",
-        message: String(err)
-      })
-    } finally {
-      setIsSubmitting(false)
+    } catch (err: any) {
+      errorMessage(err, true)
     }
   }
 
@@ -266,11 +252,6 @@ const UserInfoPage = () => {
               </Text>
               <EnterIcon />
             </button>
-            {errors.submitError && (
-              <Text fontSize={12} className="mt-1 text-[red]">
-                {errors.submitError.message}
-              </Text>
-            )}
           </form>
         </div>
       </div>
