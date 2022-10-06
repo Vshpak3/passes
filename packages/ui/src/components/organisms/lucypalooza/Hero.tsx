@@ -1,5 +1,4 @@
 import PassesLogo from "public/icons/passes-logo.svg"
-import { Button } from "src/components/atoms"
 
 const Hero = () => {
   return (
@@ -12,7 +11,7 @@ const Hero = () => {
 
         <nav>
           <ul className="flex items-center space-x-[58px] text-base font-semibold leading-[22px]">
-            <li>
+            {/**<li>
               <a href="#">Preview</a>
             </li>
             <li>
@@ -29,7 +28,7 @@ const Hero = () => {
               >
                 Sign up
               </Button>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

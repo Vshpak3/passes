@@ -35,6 +35,10 @@ class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.jpeg`
   }
 
+  static passVideo(userId: string, passId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${userId}/${passId}.mp4`
+  }
+
   static w9Pdf(userId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/w9/${userId}/upload.pdf`
   }

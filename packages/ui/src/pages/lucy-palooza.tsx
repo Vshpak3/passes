@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Faq from "src/components/molecules/lucypalooza/Faq"
 import Hero from "src/components/organisms/lucypalooza/Hero"
 import Passes from "src/components/organisms/lucypalooza/Passes"
@@ -26,7 +27,9 @@ const LucyPalooza = () => {
         </div>
 
         <Hero />
-        <Passes />
+        <Suspense fallback={`Loading...`}>
+          <Passes />
+        </Suspense>
         <Faq />
 
         <section className="mt-[226px]">

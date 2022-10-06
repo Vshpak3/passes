@@ -1,33 +1,97 @@
+import {
+  GetPassHoldingsRequestDtoOrderEnum,
+  GetPassHoldingsResponseDtoOrderTypeEnum,
+  PassApi,
+  PassDto,
+  PassDtoChainEnum,
+  PassHolderDto,
+  PayinDtoPayinStatusEnum,
+  PayinMethodDtoMethodEnum,
+  PaymentApi,
+  UserApi
+} from "@passes/api-client"
 import classNames from "classnames"
-import dynamic from "next/dynamic"
-import { Suspense, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import PassCard from "src/components/molecules/lucypalooza/PassCard"
-
-const PassPayment = dynamic(
-  () => import("src/components/molecules/lucypalooza/PassPayment"),
-  {
-    suspense: true,
-    ssr: false
-  }
-)
+import PassSuccess from "src/components/molecules/lucypalooza/PassSuccess"
+import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
+import Modal from "src/components/organisms/Modal"
+import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
+import AddCard from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
+import { ContentService } from "src/helpers"
+import { usePayinMethod } from "src/hooks"
 
 const Passes = () => {
-  const [selectedPass, setSelectedPass] = useState<"pass" | "vip-pass" | null>(
-    null
-  )
-  const [purchasePassStep, setPurchasePassStep] = useState<
-    "selection" | "payment" | "success"
-  >("selection")
+  const [passes, setPasses] = useState<PassDto[]>()
+  const [passHolder, setPassHolder] = useState<PassHolderDto>()
+  const [isPaying, setIsPaying] = useState<boolean>(false)
+  const [passId, setPassId] = useState<string>()
+  const [open, setOpen] = useState<boolean>(false)
+  const [failedMessage, setFaileddMessage] = useState<boolean>(false)
 
-  const onPaymentSuccess = () => {
-    setPurchasePassStep("success")
-  }
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { defaultPayinMethod, getCards } = usePayinMethod()
+  useEffect(() => {
+    const api = new PassApi()
+    const fetch = async () => {
+      const userApi = new UserApi()
+      const userId = await userApi.getUserId({ username: "patzhang" })
+      const passHoldings = await api.getPassHoldings({
+        getPassHoldingsRequestDto: {
+          order: GetPassHoldingsRequestDtoOrderEnum.Asc,
+          orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+        }
+      })
+      getCards()
+      setPassHolder(
+        passHoldings.passHolders.length > 0
+          ? passHoldings.passHolders[0]
+          : undefined
+      )
+      const res = await api.getCreatorPasses({
+        getCreatorPassesRequestDto: { creatorId: userId }
+      })
+      setPasses(res.passes)
+    }
+    fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getPayinState = useCallback(async () => {
+    const api = new PaymentApi()
+    const payins = await api.getPayins({
+      getPayinsRequestDto: { limit: 10, offset: 0 }
+    })
+    const failed = payins.payins.filter(
+      (payin) =>
+        payin.payinStatus === PayinDtoPayinStatusEnum.Failed && !!payin.card
+    )
+    if (failed.length > 0 && !failedMessage) {
+      toast.error("A previous card payment failed, please try again")
+      setFaileddMessage(true)
+    }
+    const paying = payins.payins.filter(
+      (payin) =>
+        payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
+        payin.payinStatus === PayinDtoPayinStatusEnum.Pending
+    )
+    setIsPaying(paying.length > 0)
+    setIsLoading(false)
+  }, [failedMessage])
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
-    if (selectedPass) {
-      setPurchasePassStep("payment")
-    }
-  }, [selectedPass])
+    const timer = setTimeout(() => {
+      getPayinState()
+      setCount(count + 1)
+    }, 1e3)
+    return () => clearTimeout(timer)
+  }, [count, getPayinState])
+  useEffect(() => {
+    setPassId(passHolder?.passId)
+  }, [passHolder])
 
   return (
     <section className="relative mt-[264px] px-5">
@@ -36,44 +100,69 @@ const Passes = () => {
 
       <div
         className={classNames("mx-auto flex max-w-[1008px] space-x-12", {
-          "pointer-events-none opacity-50": purchasePassStep === "success"
+          "pointer-events-none opacity-50": !!passHolder
         })}
       >
-        <PassCard
-          title="Pass"
-          img={{
-            url: "/img/lucyplooza/pass.png",
-            alt: "pass card"
-          }}
-          features={[
-            "HUIbandk qjdbkn qjklf",
-            "qBIKnwdb qwhdnfjklq jlas",
-            "bujlnksfdahjkq"
-          ]}
-          onSelect={() => {
-            setSelectedPass("pass")
-          }}
-          isSelected={selectedPass === "pass"}
-        />
-        <PassCard
-          title="Pass"
-          img={{ url: "/img/lucyplooza/vip-pass.png", alt: "vip pass card" }}
-          features={[
-            "HUIbandk qjdbkn qjklf cfygulhi cfgvhbijo fcgvhbji fdghj",
-            "qBIKnwdb qwhdnfjklq jlas",
-            "bujlnksfdahjkq xgfchj cfghuij cfgvhj ghjkl"
-          ]}
-          onSelect={() => {
-            setSelectedPass("vip-pass")
-          }}
-          isSelected={selectedPass === "vip-pass"}
-        />
+        {passes
+          ?.filter((pass) => pass.chain === PassDtoChainEnum.Eth)
+          .map((pass) => (
+            <PassCard
+              key={pass.passId}
+              title={pass.title}
+              img={{
+                url: pass.creatorId
+                  ? ContentService.passImage(pass.creatorId, pass.passId)
+                  : "",
+                alt: "pass card"
+              }}
+              description={pass.description}
+              onSelect={() => {
+                setPassId(pass.passId)
+              }}
+              isSelected={passId === pass.passId}
+            />
+          ))}
       </div>
-      {(purchasePassStep === "payment" || purchasePassStep === "success") && (
-        <Suspense fallback={`Loading...`}>
-          <PassPayment onPaymentSuccess={onPaymentSuccess} />
-        </Suspense>
-      )}
+      <ConditionRendering condition={!isLoading}>
+        <ConditionRendering
+          condition={!!passId && !passHolder && isPaying === false}
+        >
+          <PaymentSettings addCardHandler={() => setOpen(true)} isEmbedded />
+          <BuyPassButton
+            passId={passId ?? ""}
+            isDisabled={
+              !defaultPayinMethod ||
+              defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
+              !passId ||
+              passId.length == 0
+            }
+            onSuccess={() => {
+              toast.success("Thank you for your purchase!")
+              setIsPaying(true)
+            }}
+          />
+          <Modal isOpen={open} setOpen={setOpen}>
+            <AddCard
+              callback={() => {
+                setOpen(false)
+                setTimeout(async () => {
+                  await getCards()
+                }, 250)
+              }}
+            />
+          </Modal>
+        </ConditionRendering>
+        {
+          // Oleh TODO: use the same condition to disable the whole Payment part (the above part^)
+          // instead of a new render
+        }
+        <ConditionRendering condition={!passHolder && isPaying}>
+          Processing Payment
+        </ConditionRendering>
+        <ConditionRendering condition={!!passHolder}>
+          <PassSuccess />
+        </ConditionRendering>
+      </ConditionRendering>
     </section>
   )
 }

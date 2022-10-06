@@ -7,7 +7,7 @@ interface IPassCard {
     alt: string
   }
   title: string
-  features: string[]
+  description: string
   onSelect: () => void
   isSelected: boolean
 }
@@ -15,7 +15,7 @@ interface IPassCard {
 const PassCard: React.FC<IPassCard> = ({
   img,
   title,
-  features,
+  description,
   onSelect,
   isSelected
 }) => {
@@ -33,11 +33,7 @@ const PassCard: React.FC<IPassCard> = ({
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
 
         <p className="mt-4 text-sm leading-[18px]">What you get:</p>
-        <ul className="list-inside list-disc pl-2 text-sm leading-[18px]">
-          {features.map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
+        {description}
 
         {isSelected ? (
           <GradientBorderTile
