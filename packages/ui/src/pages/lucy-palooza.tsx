@@ -1,9 +1,23 @@
-import { Suspense } from "react"
+import { useRouter } from "next/router"
+import { Suspense, useEffect } from "react"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Faq from "src/components/molecules/lucypalooza/Faq"
 import Hero from "src/components/organisms/lucypalooza/Hero"
 import Passes from "src/components/organisms/lucypalooza/Passes"
+import { useUser } from "src/hooks"
 
 const LucyPalooza = () => {
+  const { user, loading } = useUser()
+  const router = useRouter()
+  useEffect(() => {
+    if (!router.isReady || loading) {
+      return
+    }
+    if (!user) {
+      router.push("/login")
+    }
+  }, [router, user, loading])
+
   return (
     <div className="min-h-screen overflow-hidden bg-black">
       <div className="relative mx-auto max-w-[1440px] pb-[94px]">
@@ -27,9 +41,11 @@ const LucyPalooza = () => {
         </div>
 
         <Hero />
-        <Suspense fallback={`Loading...`}>
-          <Passes />
-        </Suspense>
+        <ConditionRendering condition={!!user}>
+          <Suspense fallback={`Loading...`}>
+            <Passes />
+          </Suspense>
+        </ConditionRendering>
         <Faq />
 
         <section className="mt-[226px] text-center">
