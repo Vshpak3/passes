@@ -157,7 +157,7 @@ export class ContentService {
 
   async preSignMediaContentThumbnail(userId: string, contentId: string) {
     return this.s3contentService.signUrlForContentViewing(
-      `media/${userId}/${contentId}_thumbnail.jpeg`, // all thumbnails are jpeg
+      `media/${userId}/${contentId}-thumbnail.jpeg`, // all thumbnails are jpeg
     )
   }
 
