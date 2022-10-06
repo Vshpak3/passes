@@ -4,6 +4,13 @@ import { Button, GradientBorderTile } from "src/components/atoms"
 import { Video } from "src/components/atoms/Video"
 import { VideoJsPlayer } from "video.js"
 
+interface IPassVideo {
+  img: {
+    url: string
+    alt: string
+  }
+}
+
 interface IPassCard {
   img: {
     url: string
@@ -17,6 +24,31 @@ interface IPassCard {
   ethPrice: number
 }
 
+const PassVideo = ({ img }: IPassVideo) => {
+  const handlePlayerReady = (player: VideoJsPlayer) => {
+    player.on("error", function () {
+      player.errorDisplay.close()
+    })
+  }
+  return (
+    <Video
+      options={{
+        controls: false,
+        loop: true,
+        fluid: true,
+        responsive: true,
+        sources: [
+          { src: img.url, type: "video/mp4" },
+          { src: img.alt, type: "video/mp4" }
+        ]
+      }}
+      onReady={handlePlayerReady}
+    />
+  )
+}
+
+const MemoPassVideo = React.memo(PassVideo)
+
 const PassCard: React.FC<IPassCard> = ({
   img,
   title,
@@ -26,11 +58,6 @@ const PassCard: React.FC<IPassCard> = ({
   price,
   ethPrice
 }) => {
-  const handlePlayerReady = (player: VideoJsPlayer) => {
-    player.on("error", function () {
-      player.errorDisplay.close()
-    })
-  }
   return (
     <div className="relative flex-1 rounded-[20px] bg-black/25">
       <img
@@ -41,19 +68,7 @@ const PassCard: React.FC<IPassCard> = ({
 
       <div className="relative z-10 p-8 pt-[30px]">
         {/* <img src={img.url} alt={img.alt} className="h-[415px] w-full" /> */}
-        <Video
-          options={{
-            controls: false,
-            loop: true,
-            fluid: true,
-            responsive: true,
-            sources: [
-              { src: img.url, type: "video/mp4" },
-              { src: img.alt, type: "video/mp4" }
-            ]
-          }}
-          onReady={handlePlayerReady}
-        />
+        <MemoPassVideo img={img} />
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
 
         <p className="mt-4 text-sm leading-[18px]">
@@ -89,4 +104,4 @@ const PassCard: React.FC<IPassCard> = ({
   )
 }
 
-export default PassCard
+export default React.memo(PassCard)
