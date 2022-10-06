@@ -2,6 +2,8 @@ import {
   GetDefaultWalletRequestDtoChainEnum,
   WalletDto
 } from "@passes/api-client"
+import copy from "copy-to-clipboard"
+import Clipboard from "public/icons/clipboard.svg"
 import DefaultIcon from "public/icons/defaultWalletTypeIcon.svg"
 import InfoIcon from "public/icons/infoIcon.svg"
 import Metamask from "public/icons/metamask-icon.svg"
@@ -71,6 +73,10 @@ const WalletListItem = ({
     }
   }
 
+  const handleCopyToClipboard = () => {
+    copy(wallet.address)
+  }
+
   return (
     <>
       <div
@@ -86,7 +92,7 @@ const WalletListItem = ({
       >
         <div className="relative flex items-center">
           <div className="absolute left-[-30px] top-[50%] translate-y-[-50%]">
-            {wallet.custodial && (
+            {Boolean(wallet.custodial) && (
               <IconTooltip
                 Icon={InfoIcon}
                 position="top"
@@ -111,8 +117,15 @@ const WalletListItem = ({
             </span>
           </div>
         </div>
-        <div className='text-[#ffffffeb]" w-[30%] text-center'>
+        <div
+          className='text-[#ffffffeb]" group flex w-[30%] cursor-pointer flex-row justify-center'
+          onClick={handleCopyToClipboard}
+        >
           {formatWalletAddress(wallet.address, 7)}
+          <Clipboard
+            width="12px"
+            className="invisible ml-2 group-hover:visible"
+          />
         </div>
         {wallet.authenticated && (
           <div className="w-[20%]">

@@ -23,7 +23,7 @@ export const TipPostButton = ({
       )}
       type="submit"
     >
-      {isLoading ? "Loading" : "Tip post"}
+      {isLoading ? "Loading..." : "Tip post"}
     </button>
   )
 }
