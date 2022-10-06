@@ -159,11 +159,11 @@ const Wallets = () => {
         isOpen={isModalOpen}
         setOpen={setIsModalOpen}
       >
-        <div className="px-10 pb-10">
+        <div className="md:px-10 md:pb-10">
           <h4 className="mt-5 text-center text-2xl font-bold dark:text-white">
             Choose Wallet to Connect
           </h4>
-          <div className="mt-10 flex items-center justify-center space-x-7">
+          <div className="mt-6 flex flex-col items-center justify-start md:mt-10 md:flex-row md:justify-center md:space-x-7">
             <div
               className="flex cursor-pointer items-center space-x-4 rounded-full px-3 py-2 hover:bg-gray-700"
               onClick={handleOnETHWalletConnect}
@@ -181,46 +181,53 @@ const Wallets = () => {
           </div>
         </div>
       </Modal>
-      <div className="mt-4 flex items-start justify-start">
-        <Button
-          variant="purple-light"
-          tag="button"
-          onClick={() => setIsModalOpen(true)}
-          className="mt-1"
-        >
-          <div className="flex items-center justify-center">
-            <Wallet className="block h-[24px] w-[24px]" />
-            <span className="ml-[10px] block">Connect New Wallet</span>
-          </div>
-        </Button>
+      <div className="mt-4 flex flex-col items-start justify-start md:flex-row">
+        <div>
+          <Button
+            variant="purple-light"
+            tag="button"
+            onClick={() => setIsModalOpen(true)}
+            className="mt-1"
+          >
+            <div className="flex items-center justify-center">
+              <Wallet className="block h-[24px] w-[24px]" />
+              <span className="ml-[10px] block">Connect New Wallet</span>
+            </div>
+          </Button>
+        </div>
         {!!user?.isCreator && (
           <form
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
-            className="flex items-start"
+            className="flex flex-col items-start md:flex-row"
           >
             <span className="mx-4 mt-3 block text-[16px] font-bold">or</span>
-            <FormInput
-              icon={<Wallet />}
-              type="text"
-              name="address"
-              register={register}
-              className="mr-3 w-[250px] pl-[45px]"
-              placeholder="Insert your Payout Address"
-              errors={errors}
-              options={{
-                required: { message: "Payout Address is required", value: true }
-              }}
-            />
-            <Select
-              name="chain"
-              register={register}
-              className="mr-3 mt-0 w-[80px]"
-              selectOptions={["SOL", "ETH"]}
-              errors={errors}
-              options={{
-                required: { message: "Chain is required", value: true }
-              }}
-            />
+            <div className="flex flex-row">
+              <FormInput
+                icon={<Wallet />}
+                type="text"
+                name="address"
+                register={register}
+                className="mr-3 flex-1 pl-[45px] md:w-[250px]"
+                placeholder="Insert your Payout Address"
+                errors={errors}
+                options={{
+                  required: {
+                    message: "Payout Address is required",
+                    value: true
+                  }
+                }}
+              />
+              <Select
+                name="chain"
+                register={register}
+                className="mr-3 mt-0 md:w-[80px]"
+                selectOptions={["SOL", "ETH"]}
+                errors={errors}
+                options={{
+                  required: { message: "Chain is required", value: true }
+                }}
+              />
+            </div>
             <div className="mt-2">
               <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
                 Confirm
@@ -235,10 +242,10 @@ const Wallets = () => {
           flex
           w-full
           gap-[40px]
-          pl-8
           pt-1
           text-center
-          text-[#ffffffeb]"
+          text-[#ffffffeb]
+          md:pl-8"
       >
         <span className="block flex w-[120px]">Wallet Type</span>
         <span className="block w-[30%]">Address</span>

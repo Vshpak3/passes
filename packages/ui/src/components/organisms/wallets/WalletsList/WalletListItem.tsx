@@ -24,9 +24,12 @@ interface WalletListItemProps {
   ) => Promise<void>
 }
 
-const formatWalletAddress = (wallet: string, amountOfDigits: number) => {
-  const firstDigits = wallet.slice(0, amountOfDigits)
-  const lastDigits = wallet.slice(wallet.length - amountOfDigits, wallet.length)
+const formatWalletAddress = (
+  wallet: string,
+  { amountFirst, amountLast }: { amountFirst: number; amountLast: number }
+) => {
+  const firstDigits = wallet.slice(0, amountFirst)
+  const lastDigits = wallet.slice(wallet.length - amountLast, wallet.length)
 
   return `${firstDigits}...${lastDigits}`
 }
@@ -112,7 +115,7 @@ const WalletListItem = ({
           </div>
           <div className="flex w-[120px] items-center">
             <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
-            <span className="ml-[12px] font-bold">
+            <span className="invisible ml-[12px] font-bold md:visible">
               {walletTypeName(wallet.chain, wallet.authenticated)}
             </span>
           </div>
@@ -121,7 +124,10 @@ const WalletListItem = ({
           className='text-[#ffffffeb]" group flex w-[30%] cursor-pointer flex-row justify-center'
           onClick={handleCopyToClipboard}
         >
-          {formatWalletAddress(wallet.address, 7)}
+          {formatWalletAddress(wallet.address, {
+            amountFirst: 6,
+            amountLast: 7
+          })}
           <Clipboard
             width="12px"
             className="invisible ml-2 group-hover:visible"
