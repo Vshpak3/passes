@@ -1,41 +1,54 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import React from "react"
+import { GetUserResponseDto, UserApi } from "@passes/api-client"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import Tab from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
+import { checkUsername } from "src/helpers/username"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
-import { useAccountSettings, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 
-interface IUserForm {
+interface UsernameProps {
+  user: GetUserResponseDto
+}
+
+interface UserForm {
   username: string
 }
 
-const Username = () => {
-  const { user, mutate, loading } = useUser()
+const Username: FC<UsernameProps> = ({ user }) => {
+  const { loading, mutateManual } = useUser(false)
+
   const {
     register,
     watch,
     handleSubmit,
     setError,
-    formState: { errors }
-  } = useForm<IUserForm>({
+    formState: { errors, isSubmitting }
+  } = useForm<UserForm>({
     defaultValues: { username: user?.username || "" },
     resolver: yupResolver(getYupRequiredStringSchema({ name: "username" }))
   })
-  const { setUsername } = useAccountSettings()
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const username = watch("username")
 
-  const onSaveUserName = async ({ username }: IUserForm) => {
+  const setUsername = async (username: string) => {
+    const userApi = new UserApi()
+    await checkUsername(username, userApi)
+    return await userApi.setUsername({ updateUsernameRequestDto: { username } })
+  }
+
+  const onSaveUserName = async ({ username }: UserForm) => {
     try {
       await setUsername(username)
       toast.success("Username has been changed successfully.")
-      mutate()
+      mutateManual({ username })
     } catch (error) {
       const message = await errorMessage(error, true)
-
       setError("username", { type: "value", message }, { shouldFocus: true })
     }
   }
@@ -66,9 +79,10 @@ const Username = () => {
           className="mt-6 w-auto !px-[52px]"
           tag="button"
           disabled={
+            loading ||
             username.trim().length === 0 ||
             username === user?.username ||
-            loading
+            disableForm
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
