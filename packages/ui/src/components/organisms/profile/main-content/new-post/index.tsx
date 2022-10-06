@@ -11,6 +11,7 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { Dialog } from "src/components/organisms"
 import { ContentService } from "src/helpers"
 
@@ -68,7 +69,7 @@ export const NewPost: FC<NewPostProps> = ({
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     getValues,
     setValue,
     watch,
@@ -77,6 +78,8 @@ export const NewPost: FC<NewPostProps> = ({
   } = useForm({
     defaultValues: {}
   })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+
   const isPaid = watch("isPaid")
   const fundraiserTarget = watch("fundraiserTarget")
 
@@ -510,7 +513,7 @@ export const NewPost: FC<NewPostProps> = ({
                   </div>
                 </div>
               )}
-              <Footer />
+              <Footer disableForm={disableForm} />
             </>
           )}
         </div>
