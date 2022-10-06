@@ -8,7 +8,8 @@ export default {
   inlineCSS: false,
   removeUnusedCSS: false,
   websiteUrl: 'https://www.passes.com',
-  updateEmailPreferenceUrl: 'https://www.passes.com/settings',
+  updateEmailPreferenceUrl:
+    'https://www.passes.com/settings/notifications/preferences/email',
   termsUrl: 'https://www.passes.com/terms',
   privacyUrl: 'https://www.passes.com/privacy',
   supportEmail: 'support@passes.com',

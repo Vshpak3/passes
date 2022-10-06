@@ -21,7 +21,7 @@ const PayinMethodDisplay = ({ payinMethod, card }: IPayinMethodDisplay) => {
         </span>{" "}
         <span
           className="cursor-pointer text-[#ffff]/90 underline"
-          onClick={() => router.push("/settings")}
+          onClick={() => router.push("/settings/wallet")}
         >
           Settings
         </span>
