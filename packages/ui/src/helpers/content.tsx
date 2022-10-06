@@ -36,7 +36,7 @@ class ContentService {
   }
 
   static passVideo(passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/pass/${passId}/image.mp4`
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/image.mp4`
   }
 
   static w9Pdf(userId: string): string {
