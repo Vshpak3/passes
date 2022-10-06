@@ -33,7 +33,7 @@ export const Video: FC<VideoProps> = ({ options, onReady }) => {
     } else {
       const player = playerRef.current
 
-      player?.autoplay(visible)
+      player?.autoplay(true)
       options?.sources && player?.src(options?.sources[0].src)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

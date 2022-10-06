@@ -37,8 +37,12 @@ const PassVideo = ({ img }: IPassVideo) => {
         loop: true,
         fluid: true,
         responsive: true,
+        autoplay: true,
         sources: [
-          { src: img.url, type: "video/mp4" },
+          {
+            src: "https://cdn.passes-staging.com/nft/22e4875d-fd9c-4b8a-b2f7-8ba9221544a9/image.mp4",
+            type: "video/mp4"
+          },
           { src: img.alt, type: "video/mp4" }
         ]
       }}

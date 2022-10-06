@@ -11,7 +11,13 @@ import {
   UserApi
 } from "@passes/api-client"
 import classNames from "classnames"
-import { useCallback, useEffect, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState
+} from "react"
 import { toast } from "react-toastify"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import PassCard from "src/components/molecules/lucypalooza/PassCard"
@@ -22,7 +28,35 @@ import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
 import AddCard from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
 import { ContentService } from "src/helpers"
 import { usePayinMethod } from "src/hooks"
-
+interface IPassList {
+  passes: PassDto[]
+  setPassId: Dispatch<SetStateAction<string | undefined>>
+  passId?: string
+}
+const PassList = ({ passes, setPassId, passId }: IPassList) => {
+  return (
+    <>
+      {passes?.map((pass) => (
+        <PassCard
+          key={pass.passId}
+          title={pass.title}
+          price={pass.price}
+          ethPrice={pass.ethPrice ?? 0}
+          img={{
+            url: pass.creatorId ? ContentService.passVideo(pass.passId) : "",
+            alt: "pass card"
+          }}
+          description={pass.description}
+          onSelect={() => {
+            setPassId(pass.passId)
+          }}
+          isSelected={passId === pass.passId}
+        />
+      ))}
+    </>
+  )
+}
+const MemoPassList = React.memo(PassList)
 const Passes = () => {
   const [passes, setPasses] = useState<PassDto[]>()
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
@@ -43,7 +77,9 @@ const Passes = () => {
       const res = await api.getCreatorPasses({
         getCreatorPassesRequestDto: { creatorId: userId }
       })
-      setPasses(res.passes)
+      setPasses(
+        res.passes.filter((pass) => pass.chain === PassDtoChainEnum.Eth)
+      )
     }
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,27 +145,9 @@ const Passes = () => {
           "pointer-events-none opacity-50": !!passHolder
         })}
       >
-        {passes
-          ?.filter((pass) => pass.chain === PassDtoChainEnum.Eth)
-          .map((pass) => (
-            <PassCard
-              key={pass.passId}
-              title={pass.title}
-              price={pass.price}
-              ethPrice={pass.ethPrice ?? 0}
-              img={{
-                url: pass.creatorId
-                  ? ContentService.passVideo(pass.passId)
-                  : "",
-                alt: "pass card"
-              }}
-              description={pass.description}
-              onSelect={() => {
-                setPassId(pass.passId)
-              }}
-              isSelected={passId === pass.passId}
-            />
-          ))}
+        {!!passes && (
+          <MemoPassList passes={passes} setPassId={setPassId} passId={passId} />
+        )}
       </div>
       <ConditionRendering condition={!isLoading}>
         <ConditionRendering
