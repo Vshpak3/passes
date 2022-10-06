@@ -1,5 +1,5 @@
 import { GetFeedResponseDto, PostDto } from "@passes/api-client"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
@@ -37,32 +37,30 @@ const CreatorContentFeed = ({
   }, [isPayed, mutatePosts])
 
   return (
-    <Fragment>
-      <div className="w-full">
-        <InfiniteScroll
-          dataLength={posts.length}
-          className="w-full"
-          style={{ width: "100%" }}
-          next={function () {
-            throw new Error("Function not implemented.")
-          }}
-          hasMore={false}
-          loader={undefined}
-        >
-          {posts.map((post, index) => (
-            <div key={post.postId} className="flex w-full py-3">
-              <Post
-                key={`post_${index}`}
-                post={post}
-                ownsProfile={ownsProfile}
-                removePost={removePost}
-                setIsPayed={setIsPayed}
-              />
-            </div>
-          ))}
-        </InfiniteScroll>
-      </div>
-    </Fragment>
+    <div className="w-full">
+      <InfiniteScroll
+        dataLength={posts.length}
+        className="w-full"
+        style={{ width: "100%" }}
+        next={function () {
+          throw new Error("Function not implemented.")
+        }}
+        hasMore={false}
+        loader={undefined}
+      >
+        {posts.map((post, index) => (
+          <div key={post.postId} className="flex w-full py-3">
+            <Post
+              key={`post_${index}`}
+              post={post}
+              ownsProfile={ownsProfile}
+              removePost={removePost}
+              setIsPayed={setIsPayed}
+            />
+          </div>
+        ))}
+      </InfiniteScroll>
+    </div>
   )
 }
 

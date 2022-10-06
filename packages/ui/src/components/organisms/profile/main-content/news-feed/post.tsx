@@ -100,7 +100,7 @@ export const Post = ({
           postUnlocked={postUnlocked}
         />
       )}
-      <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
+      <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
         <PostProfileAvatar post={post} dropdownItems={getDropdownOptions} />
         <BlockModal
           isOpen={userBlockModal}

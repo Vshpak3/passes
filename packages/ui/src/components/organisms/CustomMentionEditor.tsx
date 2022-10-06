@@ -5,6 +5,7 @@ import createMentionPlugin, {
   Popover
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
+import classNames from "classnames"
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
 import React, {
   ReactElement,
@@ -38,33 +39,31 @@ const mentions: MentionData[] = [
   }
 ]
 
-function Entry(props: EntryComponentProps): ReactElement {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mention, isFocused, searchValue, selectMention, ...parentProps } =
-    props
-  let className =
-    "flex cursor-pointer flex-row items-center gap-2 text-sm font-bold text-[#868487] hover:text-[#9c4dc1]"
-
-  if (isFocused) {
-    className += " text-[#9c4dc1]"
-  }
-  return (
-    <div {...parentProps} className="z-50 flex flex-col py-2 px-4">
-      <div className={className}>
-        <img
-          src={mention.avatar}
-          className="h-8 w-8 rounded-full"
-          role="presentation"
-          alt=""
-        />
-        <div>
-          <div>{mention.name}</div>
-          <div>@{mention.userName}</div>
-        </div>
+const Entry: React.FC<EntryComponentProps> = ({
+  mention,
+  isFocused,
+  ...parentProps
+}) => (
+  <div {...parentProps} className="z-50 flex flex-col py-2 px-4">
+    <div
+      className={classNames(
+        "flex cursor-pointer flex-row items-center gap-2 text-sm font-bold text-[#868487] hover:text-[#9c4dc1]",
+        { "text-[#9c4dc1]": isFocused }
+      )}
+    >
+      <img
+        src={mention.avatar}
+        className="h-8 w-8 rounded-full"
+        role="presentation"
+        alt=""
+      />
+      <div>
+        <div>{mention.name}</div>
+        <div>@{mention.userName}</div>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 interface CustomMentionProps {
   placeholder?: string
