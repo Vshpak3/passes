@@ -270,7 +270,13 @@ export const LockedMedia = ({
                   className="w-full rounded-[20px] object-cover shadow-xl"
                 /> */}
                 <div className="flex items-center justify-center pt-4 text-[#ffffff]">
-                  <span>Unlock {video ? "1 video" : `${images} photos`}!</span>
+                  <span>
+                    Unlock{" "}
+                    {video
+                      ? "1 video"
+                      : `${images} photo${images > 1 ? "s" : ""}`}
+                    !
+                  </span>
                 </div>
               </div>
             </>
