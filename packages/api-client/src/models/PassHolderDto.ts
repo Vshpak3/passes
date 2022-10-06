@@ -180,7 +180,7 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
-    tokenId?: string;
+    tokenId?: string | null;
 }
 
 

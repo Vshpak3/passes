@@ -42,8 +42,8 @@ export class PassHolderDto extends PassDto {
   @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum
 
-  @DtoProperty({ type: 'uuid', optional: true })
-  tokenId?: string
+  @DtoProperty({ type: 'uuid', nullable: true, optional: true })
+  tokenId?: string | null
 
   constructor(
     passHolder:
@@ -61,6 +61,7 @@ export class PassHolderDto extends PassDto {
       this.walletId = passHolder.wallet_id
       this.expiresAt = passHolder.expires_at
       this.messages = passHolder.messages
+      this.tokenId = passHolder.token_id
 
       this.holderUsername = passHolder.holder_username
       this.holderDisplayName = passHolder.holder_display_name

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import React from "react"
-import { Button, GradientBorderTile } from "src/components/atoms"
+import { Button } from "src/components/atoms"
 
 interface IPassSuccess {
   passId: string
@@ -29,7 +29,7 @@ const PassSuccess = ({ passId, tokenId }: IPassSuccess) => {
                 "https://etherscan.io/nft/" +
                   passId +
                   "/" +
-                  parseInt(tokenId, 16)
+                  parseInt(tokenId, 16).toString()
               )
             }
           >
