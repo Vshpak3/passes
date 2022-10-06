@@ -79,7 +79,6 @@ export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
 export const MAX_PASSES_PER_CREATOR = 1000
-export const MINT_RETRIES = 5
 @Injectable()
 export class PassService {
   private env: string
