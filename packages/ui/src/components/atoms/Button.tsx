@@ -76,6 +76,12 @@ export const Button = ({
       variantInnerClassName =
         "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-full group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
       break
+    case "inner-gradient-2":
+      variantClassName =
+        "bg-[linear-gradient(to_right_bottom,#F2BD6C_100%,#BD499B_100%,#A359D5_100%)]"
+      variantInnerClassName =
+        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-full group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
+      break
     case "pink":
       variantClassName =
         "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"

@@ -34,6 +34,7 @@ module.exports = {
           "blue-200": "#b3bee799",
           "purple-100": "#B53BEC",
           "purple-200": "#1A131C",
+          "pink-50": "#FF60DC",
           "pink-100": "#C943A8",
           "dark-100": "#28282C",
           "dark-200": "#2C282D",
@@ -58,6 +59,7 @@ module.exports = {
       fontFamily: {
         "sans-system": defaultTheme.fontFamily.sans,
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        prompt: ["Prompt", ...defaultTheme.fontFamily.sans],
         em: ["Playfair Display", "serif"]
       },
       keyframes: {

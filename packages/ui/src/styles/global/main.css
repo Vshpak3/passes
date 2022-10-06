@@ -45,6 +45,10 @@
   .text-label-lg {
     @apply text-xl font-bold leading-6;
   }
+
+  .text-label-xl {
+    @apply text-2xl font-bold leading-9;
+  }
 }
 
 /* Global Reset */
@@ -115,6 +119,12 @@ i {
   font-family: DM Sans, sans-serif;
 }
 
+@font-face {
+  font-family: Prompt;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/Prompt-Regular.ttf) format("truetype");
+}
 @font-face {
   font-display: swap;
   font-family: CalSans-SemiBold;
