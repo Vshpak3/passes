@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import classNames from "classnames"
 import _, { identity } from "lodash"
 import ProfileDiscordIcon from "public/icons/profile-discord-icon.svg"
 import ProfileFacebookIcon from "public/icons/profile-facebook-icon.svg"
@@ -6,6 +7,7 @@ import ProfileInstagramIcon from "public/icons/profile-instagram-icon.svg"
 import ProfileTiktokIcon from "public/icons/profile-tiktok-icon.svg"
 import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
 import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
+import ProfileYoutubeIcon from "public/icons/profile-youtube-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
@@ -66,7 +68,7 @@ const CustomizePageForm = ({
     setValue,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors, isSubmitSuccessful, submitCount }
   } = useForm<IFormData>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(creatorFlowProfileSchema)
@@ -128,7 +130,12 @@ const CustomizePageForm = ({
                 <div className="relative w-full">
                   <img
                     alt=""
-                    className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                    className={classNames(
+                      submitCount && !errors.profileBannerImage
+                        ? "border-2 !border-red-500"
+                        : "",
+                      "h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                    )}
                     src={
                       profileBannerImage?.length
                         ? URL.createObjectURL(profileBannerImage[0])
@@ -151,7 +158,12 @@ const CustomizePageForm = ({
               <div className="relative -mt-20 ml-[26px] flex h-28 w-28 items-center justify-center rounded-full sm:-mt-24 sm:h-[138px] sm:w-[138px]  ">
                 <img
                   alt=""
-                  className="z-20 h-full w-full cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
+                  className={classNames(
+                    submitCount && !errors.profileBannerImage
+                      ? "border-2 !border-red-500"
+                      : "",
+                    "z-20 h-full w-full cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
+                  )}
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
@@ -225,7 +237,7 @@ const CustomizePageForm = ({
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTwitterIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.twitter ? (
-                <span>@twtername</span>
+                <span>@twittername</span>
               ) : (
                 <FormInput
                   register={register}
@@ -240,7 +252,7 @@ const CustomizePageForm = ({
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileDiscordIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.discord ? (
-                <span>@discordnam</span>
+                <span>@discordname</span>
               ) : (
                 <FormInput
                   register={register}
@@ -255,7 +267,7 @@ const CustomizePageForm = ({
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTiktokIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.tiktok ? (
-                <span>@tiktoknam</span>
+                <span>@tiktokname</span>
               ) : (
                 <FormInput
                   register={register}
@@ -270,7 +282,7 @@ const CustomizePageForm = ({
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
               <ProfileTwitchIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.twitch ? (
-                <span>@twitchnam</span>
+                <span>@twitchname</span>
               ) : (
                 <FormInput
                   register={register}
@@ -283,9 +295,9 @@ const CustomizePageForm = ({
               )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
-              <ProfileTwitchIcon className="h-[17px] w-[17px]" />
+              <ProfileYoutubeIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.youtube ? (
-                <span>@youtubenam</span>
+                <span>@youtubename</span>
               ) : (
                 <FormInput
                   register={register}
