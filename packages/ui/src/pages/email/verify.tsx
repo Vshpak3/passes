@@ -63,7 +63,7 @@ const VerifyEmailPage = () => {
     // We cannot add userClaims here since then this would trigger during the
     // update and we won't have time to show the confirmation screen
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, setAccessToken, setRefreshToken])
+  }, [router])
 
   return (
     <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
