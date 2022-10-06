@@ -486,6 +486,7 @@ export const NewPost: FC<NewPostProps> = ({
                         register={register}
                         type="number"
                         min="1"
+                        max="5000"
                         name="price"
                         className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
                       />

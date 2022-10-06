@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   Length,
+  Max,
   Min,
 } from 'class-validator'
 
@@ -13,7 +14,11 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { POST_TAG_MAX_COUNT, POST_TEXT_LENGTH } from '../constants/schema'
+import {
+  POST_PRICE_MAX_PRICE,
+  POST_TAG_MAX_COUNT,
+  POST_TEXT_LENGTH,
+} from '../constants/schema'
 import { PostEntity } from '../entities/post.entity'
 
 export class PostDto {
@@ -81,6 +86,7 @@ export class PostDto {
   expiresAt?: Date | null
 
   @Min(0)
+  @Max(POST_PRICE_MAX_PRICE)
   @DtoProperty({ type: 'currency', optional: true })
   price?: number
 
