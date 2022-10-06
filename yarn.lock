@@ -5757,6 +5757,7 @@ __metadata:
     "@tailwindcss/forms": 0.5.3
     "@tailwindcss/line-clamp": 0.4.2
     "@types/crypto-js": 4.1.1
+    "@types/dompurify": 2.3.4
     "@types/draft-js": 0.11.9
     "@types/lodash": 4.14.185
     "@types/lodash.debounce": 4.0.7
@@ -5791,6 +5792,7 @@ __metadata:
     date-fns: 2.29.3
     dayjs: 1.11.5
     depcheck: 1.4.3
+    dompurify: 2.4.0
     draft-js: 0.11.7
     eslint: 8.23.1
     eslint-config-next: 12.3.1
@@ -6887,6 +6889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dompurify@npm:2.3.4":
+  version: 2.3.4
+  resolution: "@types/dompurify@npm:2.3.4"
+  dependencies:
+    "@types/trusted-types": "*"
+  checksum: ea55678bc9fd32fcdae904ca191f2b8cc5b475277937e5e4c024690b0c3b9c73accfb7391f56d26d0f53fcff496a013773293e189a07a79afdd2b2ed4efacd5f
+  languageName: node
+  linkType: hard
+
 "@types/draft-js@npm:0.11.9":
   version: 0.11.9
   resolution: "@types/draft-js@npm:0.11.9"
@@ -7428,6 +7439,13 @@ __metadata:
   dependencies:
     "@types/superagent": "*"
   checksum: f0e2b44f86bec2f708d6a3d0cb209055b487922040773049b0f8c6b557af52d4b5fa904e17dfaa4ce6e610172206bbec7b62420d158fa57b6ffc2de37b1730d3
+  languageName: node
+  linkType: hard
+
+"@types/trusted-types@npm:*":
+  version: 2.0.2
+  resolution: "@types/trusted-types@npm:2.0.2"
+  checksum: 3371eef5f1c50e1c3c07a127c1207b262ba65b83dd167a1c460fc1b135a3fb0c97b9f508efebd383f239cc5dd5b7169093686a692a501fde9c3f7208657d9b0d
   languageName: node
   linkType: hard
 
@@ -11193,6 +11211,13 @@ __metadata:
   dependencies:
     domelementtype: ^2.2.0
   checksum: 4c665ceed016e1911bf7d1dadc09dc888090b64dee7851cccd2fcf5442747ec39c647bb1cb8c8919f8bbdd0f0c625a6bafeeed4b2d656bbecdbae893f43ffaaa
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:2.4.0":
+  version: 2.4.0
+  resolution: "dompurify@npm:2.4.0"
+  checksum: c93ea73cf8e3ba044588450198563e56ce6902e36d0e16e3699df2fa59e82c4fdd11d4ad04ef5024569ce96a35b46f29d0bbea522516add33cd39a7f56a8a675
   languageName: node
   linkType: hard
 
