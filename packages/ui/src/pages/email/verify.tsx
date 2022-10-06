@@ -1,6 +1,7 @@
 import { AuthApi } from "@passes/api-client/apis"
 import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
+import PassesLongLogo from "public/icons/passes-long-logo.svg"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Text, Wordmark } from "src/components/atoms"
@@ -14,7 +15,7 @@ import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
 
   const router = useRouter()
@@ -55,7 +56,7 @@ const VerifyEmailPage = () => {
       } catch (err: any) {
         console.error(err)
         setError(
-          "Is the email verification link valid? Or perhaps it has expired?"
+          "Error occurred verifying your email address. The link is wrong or has been expired."
         )
       } finally {
         setIsLoading(false)
@@ -75,22 +76,30 @@ const VerifyEmailPage = () => {
         whiteOnly
         className="z-10 self-center lg:self-start"
       />
-      <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]"></div>
-      <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
-        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
+      <div className="z-10 my-auto flex justify-center">
+        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24  lg:py-16 lg:px-48">
+          <div className="p-4">
+            <PassesLongLogo />
+          </div>
           {isLoading ? (
-            <>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
-                Loading...
-              </Text>
-            </>
-          ) : error ? (
             <>
               <Text
                 fontSize={36}
                 className="mb-4 w-[360px] text-center font-semibold text-white"
               >
-                Failed to verify email!
+                Verifying...
+              </Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                Please wait, while we verify your email address.
+              </Text>
+            </>
+          ) : !error ? (
+            <>
+              <Text
+                fontSize={36}
+                className="mb-4 w-[360px] text-center font-semibold text-white"
+              >
+                Verification Failed.
               </Text>
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">{error}</Text>
             </>
@@ -98,13 +107,23 @@ const VerifyEmailPage = () => {
             <>
               <Text
                 fontSize={36}
-                className="mb-4 w-[360px] text-center font-semibold text-white"
+                className="mb-4 w-[420px] text-center font-semibold text-white"
               >
-                Email verified!
+                Thank you for verifying!
               </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
-                Thank you for verifying your email!
+              <Text className="mb-1 w-[420px] text-center text-[#b3bee7] opacity-[0.6]">
+                Your email address has been successfully verified. You may now
+                proceed to the website.
               </Text>
+              <button
+                className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
+                type="submit"
+                onClick={() => router.push("/home")}
+              >
+                <Text fontSize={16} className="font-medium">
+                  Continue
+                </Text>
+              </button>
             </>
           )}
         </div>
