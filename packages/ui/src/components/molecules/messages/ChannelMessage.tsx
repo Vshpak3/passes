@@ -42,7 +42,7 @@ export const ChannelMessage = ({
       )}
     >
       {!isOwnMessage && (
-        <div className="flex items-end">
+        <div className="flex flex-shrink-0 items-end">
           <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
         </div>
       )}
@@ -55,7 +55,7 @@ export const ChannelMessage = ({
       ) : (
         <div className="mx-4 flex flex-col items-end">
           <div className="rounded border border-[#363037] bg-[#1E1820] py-3 px-4">
-            <span>{message?.text}</span>
+            <span className="break-all">{message?.text}</span>
             {messageContent.length > 0 && <Content />}
           </div>
           {isOwnMessage && message?.pending && (

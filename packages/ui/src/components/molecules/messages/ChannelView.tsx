@@ -2,7 +2,8 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/messages-channel-gallery-view"
 
-import { ChannelHeader, ChannelStream, InputMessage } from "./index"
+import { ChannelHeader, ChannelStream } from "./index"
+import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
 import { InputMessageFanPerspective } from "./InputMessageFanPerspective"
 
 interface Props {
@@ -43,7 +44,9 @@ export const ChannelView = ({
                 isCreator={isCreator}
               />
               {isCreator ? (
-                <InputMessage channelId={selectedChannel.channelId} />
+                <InputMessageCreatorPerspective
+                  channelId={selectedChannel.channelId}
+                />
               ) : selectedChannel.channelId ? (
                 <InputMessageFanPerspective
                   channelId={selectedChannel.channelId}

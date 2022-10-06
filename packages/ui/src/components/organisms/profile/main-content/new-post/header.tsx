@@ -39,6 +39,11 @@ const messagesMediaTypes = [
     Icon: PaidIcon,
     accept: [".mp4", ".mov", ".qt"],
     type: "button"
+  },
+  {
+    name: "Schedule",
+    Icon: ScheduledCalendar,
+    type: "schedule"
   }
 ]
 
@@ -95,7 +100,7 @@ const MediaHeader = ({
   }, [postTime])
 
   return (
-    <div className="w-full pb-3">
+    <div className="w-full">
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
         <div className="flex items-center">
           <div className="flex w-full flex-wrap justify-between gap-1">
@@ -140,7 +145,7 @@ const MediaHeader = ({
                           : "hover:bg-[rgba(191,122,240,0.1)]",
                         "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
                       )}
-                      // onClick={() => onChange(name)}
+                      onClick={() => onChange(name)}
                     >
                       <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
                         <Icon className="flex flex-shrink-0" />
