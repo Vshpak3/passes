@@ -2,6 +2,7 @@ import DOMPurify from "dompurify"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 import { Video } from "src/components/atoms/Video"
+import passes from "src/pages/passes"
 import { VideoJsPlayer } from "video.js"
 
 interface IPassCard {
@@ -13,6 +14,8 @@ interface IPassCard {
   description: string
   onSelect: () => void
   isSelected: boolean
+  price: number
+  ethPrice: number
 }
 
 const PassCard: React.FC<IPassCard> = ({
@@ -20,7 +23,9 @@ const PassCard: React.FC<IPassCard> = ({
   title,
   description,
   onSelect,
-  isSelected
+  isSelected,
+  price,
+  ethPrice
 }) => {
   const handlePlayerReady = (player: VideoJsPlayer) => {
     player.on("error", function () {
@@ -51,6 +56,10 @@ const PassCard: React.FC<IPassCard> = ({
           onReady={handlePlayerReady}
         />
         <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
+
+        <p className="mt-4 text-sm leading-[18px]">
+          ${price} (USD/USDC) or {ethPrice / 10 ** 18} eth
+        </p>
         <p className="mt-4 text-sm leading-[18px]">What you get:</p>
         <ul
           className="list-inside list-disc pl-2 text-sm leading-[18px]"
