@@ -4,7 +4,7 @@ import Passes from "src/components/organisms/lucypalooza/Passes"
 
 const LucyPalooza = () => {
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden bg-black">
       <div className="relative mx-auto max-w-[1440px] pb-[94px]">
         <div className="absolute right-0 top-0 h-[894px] w-[856px]">
           <img

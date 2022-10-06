@@ -32,7 +32,6 @@ const AddCard = ({ callback }: IAddCard) => {
   const idempotencyKey = v4()
 
   const {
-    handleSubmit,
     register,
     control,
     watch,
@@ -46,7 +45,7 @@ const AddCard = ({ callback }: IAddCard) => {
   const router = useRouter()
   const countrySelected = watch("country")
 
-  const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
+  const onSubmitHandler = () => !isSubmitSuccessful && onSubmit()
 
   const onSubmit = async () => {
     try {
