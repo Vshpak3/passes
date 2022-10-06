@@ -37,10 +37,13 @@ const PassList = ({ passes, setPassId, passId }: IPassList) => {
   return (
     <>
       {passes?.map((pass) => (
+        // TODO: rework this to use the pass object as a prop
         <PassCard
           key={pass.passId}
           title={pass.title}
           price={pass.price}
+          totalSupply={pass.totalSupply}
+          remainingSupply={pass.remainingSupply}
           ethPrice={pass.ethPrice ?? 0}
           img={{
             url: pass.creatorId ? ContentService.passVideo(pass.passId) : "",

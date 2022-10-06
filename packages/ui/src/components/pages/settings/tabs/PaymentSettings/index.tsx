@@ -216,7 +216,7 @@ const PaymentSettings = ({
                 setValue("metamask", event.target.value)
               }}
               name="metamask"
-              className="my-4 w-[25%] border-passes-dark-100 bg-transparent"
+              className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
             />
           </div>
           {watch("metamask") ===
@@ -262,7 +262,7 @@ const PaymentSettings = ({
                 setValue("phantom", event.target.value)
               }}
               name="phantom"
-              className="my-4 w-[25%] border-passes-dark-100 bg-transparent"
+              className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
             />
           </div>
           {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===

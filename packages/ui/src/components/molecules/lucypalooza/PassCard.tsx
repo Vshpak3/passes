@@ -20,6 +20,8 @@ interface IPassCard {
   isSelected: boolean
   price: number
   ethPrice: number
+  totalSupply: number
+  remainingSupply: number
 }
 
 const PassVideo = ({ img }: IPassVideo) => {
@@ -39,7 +41,9 @@ const PassCard: React.FC<IPassCard> = ({
   onSelect,
   isSelected,
   price,
-  ethPrice
+  ethPrice,
+  totalSupply,
+  remainingSupply
 }) => {
   return (
     <div className="relative flex-1 rounded-[20px] bg-black/25">
@@ -50,7 +54,14 @@ const PassCard: React.FC<IPassCard> = ({
       />
 
       <div className="relative z-10 flex h-full flex-col p-8 pt-[30px]">
-        <MemoPassVideo img={img} />
+        <div className="relative">
+          <MemoPassVideo img={img} />
+          <div className="absolute bottom-2 flex w-full justify-center">
+            <div className="flex w-fit rounded-full bg-black/50 px-4 py-2">
+              {`${remainingSupply}/${totalSupply} AVAILABLE`}
+            </div>
+          </div>
+        </div>
         <div className="flex-1">
           <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
 
