@@ -30,6 +30,10 @@ describe('WalletController', () => {
           provide: LambdaService,
           useFactory: jest.fn(() => ({})),
         },
+        {
+          provide: EthService,
+          useFactory: jest.fn(() => ({})),
+        },
       ],
     }).compile()
 

@@ -105,13 +105,6 @@ export class PassService {
     this.env = this.configService.get('infra.env') as string
   }
 
-  async onModuleInit() {
-    await this.createPassHolder(
-      'a4c563d6-0697-4be7-a475-2828e89d3470',
-      '83ef0eaa-013f-49d2-8179-5d683828df84',
-    )
-  }
-
   async manualPass(
     userId: string,
     createPassDto: CreatePassRequestDto,
