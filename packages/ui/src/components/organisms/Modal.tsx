@@ -42,7 +42,7 @@ const Modal = ({
       <div
         id="popup-modal"
         className={classNames(
-          "m-auto w-full rounded bg-[#1b141d] p-4 md:min-w-[500px] md:border-[#ffffff]/10",
+          "m-auto w-full rounded bg-[#1b141d] p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
           modalContainerClassname
         )}
       >
