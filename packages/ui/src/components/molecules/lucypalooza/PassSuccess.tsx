@@ -17,7 +17,7 @@ const PassSuccess = ({ passId, tokenId }: IPassSuccess) => {
         </h4>
         <p className="text-[17px] leading-[22px]">
           Thank you! We will see you at Lucypalooza on Wednesday, October 12.
-          You can also see your NFT on etherscan - OpenSea.
+          You can also see your NFT on etherscan.
         </p>
         <div className="w-full px-[19px]">
           <Button
@@ -26,7 +26,10 @@ const PassSuccess = ({ passId, tokenId }: IPassSuccess) => {
             className="w-full"
             onClick={() =>
               router.push(
-                "https://etherscan.io/nft/" + passId + parseInt(tokenId, 16)
+                "https://etherscan.io/nft/" +
+                  passId +
+                  "/" +
+                  parseInt(tokenId, 16)
               )
             }
           >
@@ -34,16 +37,17 @@ const PassSuccess = ({ passId, tokenId }: IPassSuccess) => {
           </Button>
         </div>
       </div>
-      <GradientBorderTile
-        className="!h-[415px] !w-[415px] flex-shrink-0 !rounded-[20px]"
-        innerClass="!rounded-[20px] overflow-hidden"
-      >
-        <img
-          src="/img/lucyplooza/vip-pass.png"
-          alt="vip pass card"
-          className="h-full w-full object-cover object-center"
-        />
-      </GradientBorderTile>
+      {/*
+        <GradientBorderTile
+          className="!h-[415px] !w-[415px] flex-shrink-0 !rounded-[20px]"
+          innerClass="!rounded-[20px] overflow-hidden"
+        >
+          <img
+            src="/img/lucyplooza/vip-pass.png"
+            alt="vip pass card"
+            className="h-full w-full object-cover object-center"
+          />
+        </GradientBorderTile>*/}
     </div>
   )
 }
