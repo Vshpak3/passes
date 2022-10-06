@@ -1,8 +1,6 @@
 import DOMPurify from "dompurify"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
-import { Video } from "src/components/atoms/Video"
-import { VideoJsPlayer } from "video.js"
 
 interface IPassVideo {
   img: {
@@ -25,29 +23,10 @@ interface IPassCard {
 }
 
 const PassVideo = ({ img }: IPassVideo) => {
-  const handlePlayerReady = (player: VideoJsPlayer) => {
-    player.on("error", function () {
-      player.errorDisplay.close()
-    })
-  }
   return (
-    <Video
-      options={{
-        controls: false,
-        loop: true,
-        fluid: true,
-        responsive: true,
-        autoplay: true,
-        sources: [
-          {
-            src: "https://cdn.passes-staging.com/nft/22e4875d-fd9c-4b8a-b2f7-8ba9221544a9/image.mp4",
-            type: "video/mp4"
-          },
-          { src: img.alt, type: "video/mp4" }
-        ]
-      }}
-      onReady={handlePlayerReady}
-    />
+    <video autoPlay loop muted poster={img.alt}>
+      <source src={img.alt} type="video/mp4" />
+    </video>
   )
 }
 
@@ -70,19 +49,22 @@ const PassCard: React.FC<IPassCard> = ({
         className="absolute inset-0 h-full w-full"
       />
 
-      <div className="relative z-10 p-8 pt-[30px]">
-        {/* <img src={img.url} alt={img.alt} className="h-[415px] w-full" /> */}
+      <div className="relative z-10 flex h-full flex-col p-8 pt-[30px]">
         <MemoPassVideo img={img} />
-        <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
+        <div className="flex-1">
+          <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
 
-        <p className="mt-4 text-sm leading-[18px]">
-          ${price} (USD/USDC) or {ethPrice / 10 ** 18} eth
-        </p>
-        <p className="mt-4 text-sm leading-[18px]">What you get:</p>
-        <ul
-          className="list-inside list-disc pl-2 text-sm leading-[18px]"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }}
-        />
+          <p className="mt-4 text-sm leading-[18px]">
+            ${price} (USD/USDC) or {ethPrice / 10 ** 18} eth
+          </p>
+          <p className="mt-4 text-sm leading-[18px]">What you get:</p>
+          <ul
+            className="list-inside list-disc pl-2 text-sm leading-[18px]"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(description)
+            }}
+          />
+        </div>
 
         {isSelected ? (
           <GradientBorderTile
