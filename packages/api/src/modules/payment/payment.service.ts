@@ -1627,7 +1627,7 @@ export class PaymentService {
         .andWhere({ user_id: userId })
         .select(['id', 'callback', 'callback_input_json'])
         .first()
-      await handleFailedCallback(payin, this, this.dbReader)
+      await handleFailedCallback(payin, this, this.dbWriter)
     }
   }
 
