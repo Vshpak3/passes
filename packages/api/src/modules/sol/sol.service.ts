@@ -30,6 +30,11 @@ import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
+import {
+  getCollectionImageUri,
+  getCollectionMetadataUri,
+  getNftMetadataUri,
+} from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
@@ -38,11 +43,6 @@ import { createCollectionTransaction, createNftTransaction } from './chain'
 import { GetSolNftResponseDto } from './dto/get-sol-nft.dto'
 import { GetSolNftCollectionResponseDto } from './dto/get-sol-nft-collection.dto'
 import { JsonMetadata } from './json-metadata.interface'
-import {
-  getCollectionImageUri,
-  getCollectionMetadataUri,
-  getNftMetadataUri,
-} from './sol.helper'
 
 const SOL_MASTER_WALLET_LAMBDA_KEY_ID = 'sol-master-wallet'
 
@@ -208,15 +208,13 @@ export class SolService {
     transaction.recentBlockhash = blockhash.blockhash
     transaction.feePayer = walletPubKey
 
-    const walletSignature = await this.lambdaService.blockchainSignSignMessage(
+    const walletSignature = await this.lambdaService.blockchainSignSolMessage(
       SOL_MASTER_WALLET_LAMBDA_KEY_ID,
-      ChainEnum.SOL,
       Uint8Array.from(transaction.serializeMessage()),
     )
 
-    const signerSignature = await this.lambdaService.blockchainSignSignMessage(
+    const signerSignature = await this.lambdaService.blockchainSignSolMessage(
       signerId,
-      ChainEnum.SOL,
       Uint8Array.from(transaction.serializeMessage()),
     )
 

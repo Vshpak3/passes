@@ -5,7 +5,7 @@ import {
 } from '@aws-sdk/client-lambda'
 import { HttpStatus, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ethers } from 'ethers'
+import { Signature } from 'ethers'
 
 import { getAwsConfig } from '../../util/aws.util'
 import { ChainEnum } from '../wallet/enum/chain.enum'
@@ -106,19 +106,32 @@ export class LambdaService {
    * @param keyId
    * @param message
    */
-  async blockchainSignSignMessage(
+  async blockchainSignEthMessage(
     keyId: string,
-    chain: ChainEnum,
-    message: Uint8Array,
-  ): Promise<Uint8Array> {
-    const messageStr =
-      chain === ChainEnum.SOL
-        ? message.toString()
-        : ethers.utils.hexlify(message)
+    message: string,
+  ): Promise<Signature> {
     const input: InvokeCommandInput = {
       FunctionName: `${this.prefix}-${LAMBDA_SIGN_MESSAGE}`,
       Payload: new TextEncoder().encode(
-        `{"body":{"keyId":"${keyId}", "chain":"${chain}","message":"${messageStr}"}}`,
+        `{"body":{"keyId":"${keyId}", "chain":"${ChainEnum.ETH}","message":"${message}"}}`,
+      ),
+    }
+
+    const command = new InvokeCommand(input)
+
+    const res = JSON.parse(await this.invoke(command))
+    return JSON.parse(res['body'])
+  }
+
+  async blockchainSignSolMessage(
+    keyId: string,
+    message: Uint8Array,
+  ): Promise<Uint8Array> {
+    const messageStr = message.toString()
+    const input: InvokeCommandInput = {
+      FunctionName: `${this.prefix}-${LAMBDA_SIGN_MESSAGE}`,
+      Payload: new TextEncoder().encode(
+        `{"body":{"keyId":"${keyId}", "chain":"${ChainEnum.SOL}","message":"${messageStr}"}}`,
       ),
     }
 

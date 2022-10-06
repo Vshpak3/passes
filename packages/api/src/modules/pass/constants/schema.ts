@@ -1,4 +1,4 @@
-export const PASS_TITLE_LENGTH = 100
+export const PASS_TITLE_LENGTH = 50
 export const PASS_DESCRIPTION_LENGTH = 500
 export const PASS_SYMBOL_LENGTH = 5
 

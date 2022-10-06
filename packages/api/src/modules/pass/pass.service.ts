@@ -23,6 +23,7 @@ import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { ContentFormatEnum } from '../content/enums/content-format.enum'
+import { EthService } from '../eth/eth.service'
 import {
   CreateNftPassPayinCallbackInput,
   RenewNftPassPayinCallbackInput,
@@ -78,7 +79,7 @@ export const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
 export const MAX_PASSES_PER_CREATOR = 1000
-
+export const MINT_RETRIES = 5
 @Injectable()
 export class PassService {
   private env: string
@@ -94,12 +95,21 @@ export class PassService {
     private readonly dbWriter: DatabaseService['knex'],
 
     private readonly solService: SolService,
+    private readonly ethService: EthService,
+
     private readonly walletService: WalletService,
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
   ) {
     this.env = this.configService.get('infra.env') as string
+  }
+
+  async onModuleInit() {
+    await this.createPassHolder(
+      'a4c563d6-0697-4be7-a475-2828e89d3470',
+      '83ef0eaa-013f-49d2-8179-5d683828df84',
+    )
   }
 
   async manualPass(
@@ -150,7 +160,14 @@ export class PassService {
           )
         ).passPubKey
         break
-      case ChainEnum.ETH: // TODO
+      case ChainEnum.ETH:
+        data.collection_address = await this.ethService.createEthNftCollection(
+          data.id,
+          data.title,
+          'PASS',
+          data.royalties,
+        )
+        break
       default:
         throw new UnsupportedChainPassError(
           `can not create a pass on chain ${data.chain}`,
@@ -518,6 +535,7 @@ export class PassService {
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .select('*')
       .whereNotNull('collection_address')
+      .whereNotNull('creator_id')
       .andWhere({ id: passId })
       .first()
 
@@ -575,18 +593,46 @@ export class PassService {
             pass.description,
             walletAddress,
             pass.royalties,
-            'video',
+            'video', // TODO: be dynamic
             ContentFormatEnum.VIDEO,
           )
         ).mintPubKey
         break
       case ChainEnum.ETH:
+        data.address = pass.collection_address as string
+        // DEPRECRATED: Randomized tokenId
+        // for (let i = 0; i < MINT_RETRIES; ++i) {
+        //   try {
+        //     const tokenId = CryptoJS.SHA256(`${data.id}-${i}`).toString(
+        //       CryptoJS.enc.Hex,
+        //     )
+        //     data.token_id = tokenId
+        //     await this.dbWriter<PassHolderEntity>(
+        //       PassHolderEntity.table,
+        //     ).insert(data)
+        //   } catch (err) {
+        //     continue
+        //   }
+        //   break
+        // }
+        data.token_id = await this.ethService.createEthNft(
+          pass.creator_id ?? '',
+          pass.id,
+          data.id,
+          pass.title,
+          pass.symbol,
+          pass.description,
+          pass.collection_address ?? '',
+          walletAddress,
+          ContentFormatEnum.VIDEO, // TODO: be dynamic
+        )
         break
       default:
         throw new UnsupportedChainPassError(
           `can not create a pass on chain ${pass.chain}`,
         )
     }
+
     await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
     await this.passPurchased(userId, passId)
 
