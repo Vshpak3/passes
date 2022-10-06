@@ -1,7 +1,14 @@
+import { useRouter } from "next/router"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 
-const PassSuccess = () => {
+interface IPassSuccess {
+  passId: string
+  tokenId: string
+}
+
+const PassSuccess = ({ passId, tokenId }: IPassSuccess) => {
+  const router = useRouter()
   return (
     <div className="mx-auto mt-[93px] flex max-w-[960px] items-center justify-between space-x-[93px]">
       <div className="flex flex-col items-center space-y-9 text-center">
@@ -10,12 +17,20 @@ const PassSuccess = () => {
         </h4>
         <p className="text-[17px] leading-[22px]">
           Thank you! We will see you at Lucypalooza on Wednesday, October 12.
-          Check your e-mail for the confirmation letter and detailes on your
-          purchase. You can also see your NFT on secondary market - OpenSea.
+          You can also see your NFT on etherscan - OpenSea.
         </p>
         <div className="w-full px-[19px]">
-          <Button tag="button" variant="purple-light" className="w-full">
-            View on OpenSea
+          <Button
+            tag="button"
+            variant="purple-light"
+            className="w-full"
+            onClick={() =>
+              router.push(
+                "https://etherscan.io/nft/" + passId + parseInt(tokenId, 16)
+              )
+            }
+          >
+            View on ether scan
           </Button>
         </div>
       </div>

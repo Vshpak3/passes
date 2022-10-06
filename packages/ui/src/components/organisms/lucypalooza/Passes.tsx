@@ -170,7 +170,10 @@ const Passes = () => {
           Processing Payment
         </ConditionRendering>
         <ConditionRendering condition={!!passHolder}>
-          <PassSuccess />
+          <PassSuccess
+            passId={passHolder?.passId ?? ""}
+            tokenId={passHolder?.tokenId ?? ""}
+          />
         </ConditionRendering>
       </ConditionRendering>
     </section>
