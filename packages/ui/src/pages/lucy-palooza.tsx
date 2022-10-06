@@ -32,10 +32,18 @@ const LucyPalooza = () => {
         </Suspense>
         <Faq />
 
-        <section className="mt-[226px]">
+        <section className="mt-[226px] text-center">
           <h3 className="text-center text-2xl font-bold leading-9">
             Contact Us
           </h3>
+          <a
+            href="mailto:support@passes.com"
+            target="_blank"
+            className="text-center text-sm leading-9"
+            rel="noreferrer"
+          >
+            support@passes.com
+          </a>
         </section>
 
         <footer className="mt-[398px] text-center">

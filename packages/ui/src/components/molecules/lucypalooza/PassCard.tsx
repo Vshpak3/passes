@@ -26,7 +26,7 @@ interface IPassCard {
 
 const PassVideo = ({ img }: IPassVideo) => {
   return (
-    <video autoPlay loop muted poster={img.alt}>
+    <video autoPlay loop muted>
       <source src={img.url} type="video/mp4" />
     </video>
   )

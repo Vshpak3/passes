@@ -23,10 +23,12 @@ import { usePayinMethod, useUser } from "src/hooks"
 interface Props {
   addCardHandler?: null | (() => void)
   isEmbedded?: boolean
+  onSetDefaultPayment?: () => void
 }
 const PaymentSettings = ({
   addCardHandler = null,
-  isEmbedded = false
+  isEmbedded = false,
+  onSetDefaultPayment
 }: Props) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const {
@@ -48,6 +50,14 @@ const PaymentSettings = ({
       phantom: PayinMethodDtoChainEnum.Sol
     }
   })
+
+  const handleSetDefaultPayInMethod = async (value: any) => {
+    await setDefaultPayinMethod(value)
+
+    if (onSetDefaultPayment) {
+      onSetDefaultPayment()
+    }
+  }
 
   useEffect(() => {
     switch (defaultPayinMethod?.method) {
@@ -227,7 +237,7 @@ const PaymentSettings = ({
           ) : (
             <Button
               onClick={async () =>
-                await setDefaultPayinMethod({
+                handleSetDefaultPayInMethod({
                   method: getValues("metamask").split(
                     "."
                   )[0] as PayinMethodDtoMethodEnum,
@@ -273,7 +283,7 @@ const PaymentSettings = ({
           ) : (
             <Button
               onClick={async () =>
-                await setDefaultPayinMethod({
+                handleSetDefaultPayInMethod({
                   method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
                   chain: getValues("phantom") as PayinMethodDtoChainEnum
                 })
@@ -345,7 +355,7 @@ const PaymentSettings = ({
                   ) : (
                     <Button
                       onClick={async () =>
-                        await setDefaultPayinMethod({
+                        handleSetDefaultPayInMethod({
                           cardId: item.id,
                           method: PayinMethodDtoMethodEnum.CircleCard
                         })

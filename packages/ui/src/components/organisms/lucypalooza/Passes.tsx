@@ -69,7 +69,8 @@ const Passes = () => {
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { defaultPayinMethod, getCards } = usePayinMethod()
+  const { defaultPayinMethod, getCards, getDefaultPayinMethod } =
+    usePayinMethod()
   useEffect(() => {
     const api = new PassApi()
     const fetch = async () => {
@@ -126,7 +127,9 @@ const Passes = () => {
     setIsLoading(false)
   }, [failedMessage])
   const [count, setCount] = useState(0)
-
+  const handleDefaultPaymentSet = async () => {
+    await getDefaultPayinMethod()
+  }
   useEffect(() => {
     const timer = setTimeout(() => {
       getPayinState()
@@ -157,7 +160,11 @@ const Passes = () => {
           condition={!!passId && !passHolder && isPaying === false}
         >
           <div className="mx-auto w-full max-w-[480px] bg-black">
-            <PaymentSettings addCardHandler={() => setOpen(true)} isEmbedded />
+            <PaymentSettings
+              addCardHandler={() => setOpen(true)}
+              isEmbedded
+              onSetDefaultPayment={handleDefaultPaymentSet}
+            />
             <BuyPassButton
               passId={passId ?? ""}
               isDisabled={
