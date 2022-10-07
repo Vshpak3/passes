@@ -3,7 +3,7 @@ import "react-date-range/dist/theme/default.css"
 
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, UserApi } from "@passes/api-client/apis"
-import { differenceInYears, format } from "date-fns"
+import { differenceInYears, format, subYears } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
@@ -231,6 +231,8 @@ const SignupInfoPage: FC = () => {
                 <>
                   <Calendar
                     date={calendarDate}
+                    minDate={subYears(new Date(), 100)}
+                    maxDate={new Date()}
                     onChange={(e: Date) => {
                       setCalendarDate(e)
                       setValue("birthday", format(e, BIRTHDAY_DATE_FORMAT))
