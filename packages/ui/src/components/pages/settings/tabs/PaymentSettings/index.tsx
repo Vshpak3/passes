@@ -179,14 +179,14 @@ const PaymentSettings = ({
           )}
         >
           <span className="text-[15px] font-bold text-white">
-            Default Payment Method:
+            {isEmbedded ? "Select" : "Default"} Payment Method:
           </span>
           {renderDefaultPayment()}
         </div>
       </div>
       <div className="flex flex-col">
         <span className="mb-3 text-[18px] font-bold text-white">
-          Add Crypto Wallet as a Payment method
+          Use Crypto as a Payment method
         </span>
         <div className="flex items-center justify-start">
           <div className="flex flex-1 flex-row items-center">
@@ -314,7 +314,7 @@ const PaymentSettings = ({
       </div>
       <div className="mt-8 flex flex-col">
         <span className="text-[18px] font-bold text-white">
-          Add Card as a Payment Method
+          Use Card as a Payment Method
         </span>
         <div className="w-[130px]">
           <Button
