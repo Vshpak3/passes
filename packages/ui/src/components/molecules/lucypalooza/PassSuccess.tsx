@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import React from "react"
-import { Button } from "src/components/atoms"
+import { Button, GradientBorderTile } from "src/components/atoms"
 
 interface IPassSuccess {
   title: string
@@ -10,6 +10,7 @@ interface IPassSuccess {
 
 const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
   const router = useRouter()
+
   return (
     <div className="mx-auto mt-[93px] flex max-w-[960px] items-center justify-between space-x-[93px]">
       <div className="flex flex-col items-center space-y-9 text-center">
@@ -18,11 +19,11 @@ const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
         </h4>
         <p className="text-[17px] leading-[22px]">
           Thank you! We will see you at Lucypalooza on Wednesday, October 12.
-          You can also see your NFT on etherscan.
+          You can also see your NFT on EtherScan.
         </p>
         <div className="w-full px-[19px]">
           <Button
-            tag="button"
+            tag="a"
             variant="purple-light"
             className="w-full"
             onClick={() =>
@@ -34,21 +35,20 @@ const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
               )
             }
           >
-            View on ether scan
+            View on EtherScan
           </Button>
         </div>
       </div>
-      {/*
-        <GradientBorderTile
-          className="!h-[415px] !w-[415px] flex-shrink-0 !rounded-[20px]"
-          innerClass="!rounded-[20px] overflow-hidden"
-        >
-          <img
-            src="/img/lucyplooza/vip-pass.png"
-            alt="vip pass card"
-            className="h-full w-full object-cover object-center"
-          />
-        </GradientBorderTile>*/}
+      <GradientBorderTile
+        className="!h-[415px] !w-[415px] flex-shrink-0 !rounded-[20px]"
+        innerClass="!rounded-[20px] overflow-hidden"
+      >
+        <img
+          src="/img/lucyplooza/vip-pass.png"
+          alt="vip pass card"
+          className="h-full w-full object-cover object-center"
+        />
+      </GradientBorderTile>
     </div>
   )
 }
