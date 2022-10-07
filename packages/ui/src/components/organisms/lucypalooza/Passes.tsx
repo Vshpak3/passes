@@ -186,7 +186,20 @@ const Passes = () => {
                 passId.length == 0
               }
               onSuccess={() => {
-                toast.success("Thank you for your purchase!")
+                switch (defaultPayinMethod?.method) {
+                  case PayinMethodDtoMethodEnum.CircleCard:
+                    toast.success("Thank you for your purchase!")
+                    break
+                  case PayinMethodDtoMethodEnum.MetamaskCircleEth:
+                  case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
+                  case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
+                    toast.info(
+                      "Transaction sent, please monitor for success or failure"
+                    )
+                    break
+                  default:
+                    toast.error("No method selected while trying to pay")
+                }
                 setIsPaying(true)
               }}
             />
