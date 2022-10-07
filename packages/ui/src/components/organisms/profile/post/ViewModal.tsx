@@ -6,7 +6,6 @@ import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
-import ShareIcon from "public/icons/share-outline.svg"
 import React, { FC, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
@@ -156,18 +155,10 @@ const ViewModal: FC<ViewModalProps> = ({
               <p className="mt-7 text-justify text-base font-medium">
                 {post.text}
               </p>
-
-              <div className="mt-8 flex items-center justify-between border-b border-[#727272] pb-6 text-xs font-medium leading-[15px] text-passes-gray-100">
-                <div className="flex items-center space-x-1.5">
-                  <MessageIcon />
-                  <span>{compactNumberFormatter(post.numComments)}</span>
-                </div>
-                <div className="flex items-center space-x-1.5">
-                  <ShareIcon />
-                  <span>338</span>
-                </div>
+              <div className="mt-8 flex items-center justify-start space-x-1.5 border-b border-[#727272] pb-6 text-xs font-medium text-passes-gray-100">
+                <MessageIcon />
+                <span>{compactNumberFormatter(post.numComments)}</span>
               </div>
-
               <div className="mt-8 max-h-[380px] space-y-[34px] overflow-y-scroll">
                 {data?.comments.map(
                   ({ commentId, commenterDisplayName, text }) => (
