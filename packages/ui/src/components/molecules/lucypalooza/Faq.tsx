@@ -119,7 +119,7 @@ const Faq = () => {
                 )}
                 onClick={() => setExpandedQuestion(id)}
               >
-                <h5 className="text-[22px] font-medium leading-8">
+                <h5 className="text-md font-medium leading-8 md:text-[22px]">
                   {question}
                 </h5>
                 {id === expandedQuestion ? (

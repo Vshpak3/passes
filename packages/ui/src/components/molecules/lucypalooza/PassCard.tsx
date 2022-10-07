@@ -44,7 +44,7 @@ const PassCard: React.FC<IPassCard> = ({
   remainingSupply
 }) => {
   return (
-    <div className="relative flex-1 rounded-[20px] bg-black/25">
+    <div className="relative mb-10 flex-1 rounded-[20px] bg-black/25 md:mb-0">
       <img
         src="/img/lucyplooza/gradient-boder-frame.png"
         alt="gradient frame"

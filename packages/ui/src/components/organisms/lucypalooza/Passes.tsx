@@ -160,9 +160,12 @@ const Passes = () => {
       <div className="absolute top-[-106px] left-[31px] h-[790px] w-[1354px] bg-[linear-gradient(107.68deg,#F2BD6C_2.58%,#BD499B_56.98%,#A359D5_87.5%)] opacity-[0.25] blur-[125px]" />
 
       <div
-        className={classNames("mx-auto flex max-w-[1008px] space-x-12", {
-          "pointer-events-none opacity-50": !!passHolder
-        })}
+        className={classNames(
+          "mx-auto flex max-w-[1008px] flex-col md:flex-row md:space-x-12",
+          {
+            "pointer-events-none opacity-50": !!passHolder
+          }
+        )}
       >
         {!!passes && (
           <MemoPassList passes={passes} setPassId={setPassId} passId={passId} />
