@@ -107,7 +107,9 @@ export class PostService {
       createPostDto.contentIds,
     )
     if (createPostDto.scheduledAt && createPostDto.scheduledAt < new Date()) {
-      throw new BadPostPropertiesException('Cant schedule a post for the past')
+      throw new BadPostPropertiesException(
+        'Cannot schedule a post for the past',
+      )
     }
     await this.dbWriter
       .transaction(async (trx) => {
@@ -396,8 +398,11 @@ export class PostService {
     if (updatePostDto.text && updatePostDto.tags) {
       verifyTaggedText(updatePostDto.text, updatePostDto.tags)
     }
+    // TODO: consider blocking users from removint the scheduled at
     if (updatePostDto.scheduledAt && updatePostDto.scheduledAt < new Date()) {
-      throw new BadPostPropertiesException('Cant schedule a post for the past')
+      throw new BadPostPropertiesException(
+        'Cannot schedule a post for the past',
+      )
     }
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId })
@@ -406,6 +411,7 @@ export class PostService {
         tags: JSON.stringify(updatePostDto.tags),
         price: updatePostDto.price,
         expires_at: updatePostDto.expiresAt,
+        scheduled_at: updatePostDto.scheduledAt,
       })
     return updated === 1
   }
