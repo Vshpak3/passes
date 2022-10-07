@@ -18,25 +18,47 @@ import useUser from "./useUser"
 
 const useCreatorProfile = () => {
   const router = useRouter()
-  const [profileUsername, setUsername] = useState<string>()
-
-  const { user: { username: loggedInUsername } = {}, accessToken } = useUser()
-  useEffect(() => {
-    if (router.isReady) {
-      setUsername(router.query.username as string)
-    }
-  }, [router])
-  const profileApi = new ProfileApi()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [isLoadingStats, setIsLoadingStats] = useState<boolean>(false)
-
+  const { user: { username: loggedInUsername } = {} } = useUser()
   const [editProfile, setEditProfile] = useState<boolean>(false)
+  const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(true)
+  const [isLoadingStats, setIsLoadingStats] = useState<boolean>(false)
+  const [profileUsername, setProfileUsername] = useState<string>()
   const [creatorStats, setCreatorStats] = useState<GetCreatorStatsResponseDto>()
   const [profile, setProfile] = useState<GetProfileResponseDto>()
 
+  // Initial useEffect to get username from the route
+  useEffect(() => {
+    if (router.isReady) {
+      setProfileUsername(router.query.username as string)
+    }
+  }, [router])
+
+  // Next useEffect to get the profile
+  useEffect(() => {
+    if (profileUsername) {
+      getProfile()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileUsername])
+
+  // Final useEffect to get all other info
+  useEffect(() => {
+    if (profile?.userId) {
+      getCreatorStats()
+      mutatePasses()
+      mutatePosts()
+      mutateFanWall()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile])
+
+  // APIs to retrieve content
+
   async function getProfile() {
+    const profileApi = new ProfileApi()
+
     try {
-      setIsLoading(true)
+      setIsLoadingProfile(true)
       const res = await profileApi.findProfile({
         getProfileRequestDto: { username: profileUsername }
       })
@@ -45,20 +67,19 @@ const useCreatorProfile = () => {
       setProfile(undefined)
       errorMessage(error, true)
     } finally {
-      setIsLoading(false)
+      setIsLoadingProfile(false)
     }
   }
 
   async function getCreatorStats() {
+    const creatorStatsApi = new CreatorStatsApi()
+
     try {
       setIsLoadingStats(true)
       if (profile) {
-        const res = await new CreatorStatsApi().getCreatorStats(
-          {
-            creatorId: profile.userId
-          },
-          { headers: [["Authorization", "Bearer " + accessToken]] }
-        )
+        const res = await creatorStatsApi.getCreatorStats({
+          creatorId: profile.userId
+        })
         setCreatorStats(res)
       }
     } catch (error: any) {
@@ -67,6 +88,9 @@ const useCreatorProfile = () => {
       setIsLoadingStats(false)
     }
   }
+
+  // SWRs
+
   const {
     data: creatorPasses = [],
     isValidating: isLoadingCreatorPasses,
@@ -100,10 +124,6 @@ const useCreatorProfile = () => {
     }
   )
 
-  const onEditProfile = () => setEditProfile(true)
-
-  const ownsProfile = loggedInUsername === profileUsername
-
   const {
     data: profilePosts = { posts: [] },
     isValidating: isLoadingPosts,
@@ -117,10 +137,20 @@ const useCreatorProfile = () => {
     }
   })
 
+  // Other
+
+  const ownsProfile = loggedInUsername === profileUsername
+
+  const onEditProfile = () => setEditProfile(true)
+
   const onSubmitEditProfile = async (values: ProfileUpdate) => {
+    if (!profile) {
+      return
+    }
+
     await updateProfile(values)
-    await new Promise((resolve) => setTimeout(resolve, 100))
-    await getProfile()
+    // TODO: fix since this sets extra properties to the profile like prof image
+    setProfile(Object.assign(profile, values))
     setEditProfile(false)
   }
 
@@ -128,38 +158,22 @@ const useCreatorProfile = () => {
     setEditProfile(false)
   }
 
-  useEffect(() => {
-    if (profileUsername) {
-      getProfile()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileUsername])
-
-  useEffect(() => {
-    if (profile?.userId) {
-      getCreatorStats()
-      mutatePasses()
-      mutatePosts()
-      mutateFanWall()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile])
   return {
     creatorPasses,
-    editProfile,
-    isLoadingPosts,
-    isLoading,
-    isLoadingStats,
     creatorStats,
-    onEditProfile,
+    editProfile,
+    fanWallPosts,
+    isLoadingCreatorPasses,
+    isLoadingFanWallPosts,
+    isLoadingPosts,
+    isLoadingProfile,
+    isLoadingStats,
+    mutatePosts,
     onCloseEditProfile,
+    onEditProfile,
     onSubmitEditProfile,
     ownsProfile,
-    fanWallPosts,
-    isLoadingFanWallPosts,
-    isLoadingCreatorPasses,
     posts: profilePosts.posts,
-    mutatePosts,
     profile,
     profileUsername
   }

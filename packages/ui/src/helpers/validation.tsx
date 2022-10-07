@@ -31,8 +31,9 @@ const creatorFlowProfileSchema = object({
   description: string()
     .transform((name) => name.trim())
     .required("Please enter a bio"),
-  profileImage: string().required("Please upload a profile image"),
-  profileBannerImage: string().required("Please upload a profile banner image"),
+  // TODO: fix this
+  // profileImage: string().required("Please upload a profile image"),
+  // profileBannerImage: string().optional(),
   facebookUsername: string()
     .optional()
     .transform((value) => value.trim())

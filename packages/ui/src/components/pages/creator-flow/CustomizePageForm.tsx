@@ -14,6 +14,7 @@ import { FormInput } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import FormImage from "src/components/organisms/FormImage"
 import { updateProfile } from "src/helpers"
+import { errorMessage } from "src/helpers/error"
 import { creatorFlowProfileSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
 
@@ -64,20 +65,20 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
   const { user } = useUser()
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitSuccessful, submitCount }
+    formState: { errors, submitCount }
   } = useForm<CreatorFlowCustomizeFormProps>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(creatorFlowProfileSchema)
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const profileImage = watch("profileImage")
   const profileBannerImage = watch("profileBannerImage")
 
-  const saveProfileHandler = async () => {
+  const saveProfileHandler = async (data: CreatorFlowCustomizeFormProps) => {
     const {
       displayName,
       description,
@@ -85,7 +86,7 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
       profileBannerImage,
       isAdult,
       ...socialAccounts
-    } = getValues()
+    } = data
 
     await updateProfile({
       displayName,
@@ -98,6 +99,16 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
     onFinishCustomizePage()
   }
 
+  const onSubmit = async (data: CreatorFlowCustomizeFormProps) => {
+    try {
+      setIsSubmitting(true)
+      await saveProfileHandler(data)
+    } catch (error: any) {
+      await errorMessage(error, true)
+      setIsSubmitting(false)
+    }
+  }
+
   useEffect(() => {
     if (user?.displayName) {
       setValue("displayName", user.displayName)
@@ -107,7 +118,7 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
   return (
     <div className="flex justify-center pb-20 text-white">
       <form
-        onSubmit={handleSubmit(saveProfileHandler)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 sidebar-collapse:px-40"
       >
         <div className="mb-6 flex flex-col items-center justify-center">
@@ -189,7 +200,9 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
           </div>
 
           <div className="flex flex-col gap-[6px]">
-            <div className="text-[#b3bee7] opacity-[0.6]">Bio*</div>
+            <div className="text-[#b3bee7] opacity-[0.6]">
+              Profile Description
+            </div>
             <FormInput
               register={register}
               name="description"
@@ -331,7 +344,7 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
             name="Continue"
             type={ButtonTypeEnum.SUBMIT}
             className="rounded-xl font-normal"
-            isDisabled={isSubmitSuccessful}
+            isDisabled={isSubmitting}
           />
         </div>
       </form>
