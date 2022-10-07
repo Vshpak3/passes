@@ -63,6 +63,7 @@ export class PassHolderDto extends PassDto {
       this.expiresAt = passHolder.expires_at
       this.messages = passHolder.messages
       this.tokenId = passHolder.token_id
+      this.address = passHolder.address
 
       this.holderUsername = passHolder.holder_username
       this.holderDisplayName = passHolder.holder_display_name
