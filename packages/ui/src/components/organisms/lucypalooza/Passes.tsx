@@ -176,6 +176,14 @@ const Passes = () => {
           condition={!!passId && !passHolder && isPaying === false}
         >
           <div className="mx-auto w-full max-w-[480px] bg-black">
+            <br />
+            <span>
+              <b>
+                Paying with crypto will mint directly to the paying address. If
+                you pay with card, we will keep it for you in a custodial wallet
+                that you can transfer later!
+              </b>
+            </span>
             <PaymentSettings
               isEmbedded
               onSetDefaultPayment={onSetDefaultPayment}

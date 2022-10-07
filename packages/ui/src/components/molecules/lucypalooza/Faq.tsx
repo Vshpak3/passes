@@ -53,8 +53,7 @@ const Faq = () => {
         <>
           <p className="mb-4">
             We’re accepting payments in USD through card payments. We are also
-            accepting native ETH, USDC (ETH) and USDC (SOL) as forms of crypto
-            payment.
+            accepting native ETH and USDC (ETH) as forms of crypto payment.
           </p>
           <p className="mb-4">
             For card payments, please enter all your card details and select it
@@ -94,6 +93,19 @@ const Faq = () => {
           <p className="mb-4">
             At the event space, you will be asked to verify your identity and
             provide proof of pass purchase before you are allowed in.
+          </p>
+        </>
+      ),
+      id: useId()
+    },
+    {
+      question: "Why is the ETH price so much cheaper than USD?",
+      answer: (
+        <>
+          <p className="mb-4">
+            We want to support blockchain technology and believe the future is
+            Web3. Hence, we&apos;ve decided to encourage everyone to pay in ETH
+            by making the prices cheaper.
           </p>
         </>
       ),

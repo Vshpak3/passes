@@ -273,52 +273,54 @@ const PaymentSettings = ({
             </Button>
           )}
         </div>
-        <div className="flex items-center justify-start">
-          <div className="flex flex-1 flex-row items-center">
-            <PhantomIcon width="40px" />
-            <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
-              Phantom
-            </span>
-            <Select
-              register={register}
-              defaultValue={{
-                label: "USDC (SOL)",
-                value: PayinMethodDtoChainEnum.Sol
-              }}
-              selectOptions={[
-                { label: "USDC (SOL)", value: PayinMethodDtoChainEnum.Sol }
-              ]}
-              onChange={async (event: any) => {
-                setValue("phantom", event.target.value)
-              }}
-              name="phantom"
-              className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
-            />
+        {!isEmbedded && (
+          <div className="flex items-center justify-start">
+            <div className="flex flex-1 flex-row items-center">
+              <PhantomIcon width="40px" />
+              <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
+                Phantom
+              </span>
+              <Select
+                register={register}
+                defaultValue={{
+                  label: "USDC (SOL)",
+                  value: PayinMethodDtoChainEnum.Sol
+                }}
+                selectOptions={[
+                  { label: "USDC (SOL)", value: PayinMethodDtoChainEnum.Sol }
+                ]}
+                onChange={async (event: any) => {
+                  setValue("phantom", event.target.value)
+                }}
+                name="phantom"
+                className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
+              />
+            </div>
+            {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
+            defaultPayinMethod?.method ? (
+              <Button tag="button" variant="gray">
+                <span className="text-[14px] font-[700]">
+                  {isEmbedded ? "Selected" : "Default"}
+                </span>
+              </Button>
+            ) : (
+              <Button
+                onClick={async () =>
+                  handleSetDefaultPayInMethod({
+                    method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
+                    chain: getValues("phantom") as PayinMethodDtoChainEnum
+                  })
+                }
+                tag="button"
+                variant="purple-light"
+              >
+                <span className="font-[700]">
+                  {isEmbedded ? "Use" : "Set Default"}
+                </span>
+              </Button>
+            )}
           </div>
-          {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
-          defaultPayinMethod?.method ? (
-            <Button tag="button" variant="gray">
-              <span className="text-[14px] font-[700]">
-                {isEmbedded ? "Selected" : "Default"}
-              </span>
-            </Button>
-          ) : (
-            <Button
-              onClick={async () =>
-                handleSetDefaultPayInMethod({
-                  method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
-                  chain: getValues("phantom") as PayinMethodDtoChainEnum
-                })
-              }
-              tag="button"
-              variant="purple-light"
-            >
-              <span className="font-[700]">
-                {isEmbedded ? "Use" : "Set Default"}
-              </span>
-            </Button>
-          )}
-        </div>
+        )}
       </div>
       <div className="mt-8 flex flex-col">
         <span className="text-[18px] font-bold text-white">
