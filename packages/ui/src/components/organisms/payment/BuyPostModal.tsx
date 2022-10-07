@@ -10,6 +10,7 @@ import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
+import { plural } from "src/helpers/plural"
 import { usePayinMethod } from "src/hooks"
 import useExternalPasses from "src/hooks/useExternalPasses"
 
@@ -53,7 +54,7 @@ const BuyPostModal: FC<IBuyPostModal> = ({
       <div>
         <div className="my-4">
           <span className="text-[#ffff]/70">
-            {!!video && `${video} videos`} {!!images && `${images} photos`}
+            {!!video && `${video} videos`} {!!images && plural("photo", images)}
           </span>
         </div>
         <div>

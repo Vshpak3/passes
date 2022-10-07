@@ -4,6 +4,7 @@ import { FC, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { plural } from "src/helpers/plural"
 
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/payment/BuyPostModal"),
@@ -44,7 +45,7 @@ export const LockedMedia: FC<LockedMedia> = ({
             className="w-auto !px-[30px] !py-2.5"
           />
           <p className="mt-[17px] text-base font-medium">
-            <span>UNLOCK {video ? "1 video" : `${images} photos`}!</span>
+            <span>Unlock {video ? "1 video" : plural("photo", images)}!</span>
           </p>
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Dialog } from "src/components/organisms"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { plural } from "src/helpers/plural"
 import { useComments, useUser } from "src/hooks"
 
 import { DropdownOption } from "./Post"
@@ -92,7 +93,7 @@ const ViewModal: FC<ViewModalProps> = ({
                       />
                       <p className="mt-[17px] text-base font-medium">
                         <span>
-                          UNLOCK {video ? "1 video" : `${images} photos`}!
+                          UNLOCK {video ? "1 video" : plural("photo", images)}!
                         </span>
                       </p>
                     </>
