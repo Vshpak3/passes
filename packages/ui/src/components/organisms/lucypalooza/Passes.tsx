@@ -63,7 +63,7 @@ const PassList = ({ passes, setPassId, passId }: IPassList) => {
 }
 const MemoPassList = React.memo(PassList)
 const Passes = () => {
-  const [passes, setPasses] = useState<PassDto[]>()
+  const [passes, setPasses] = useState<PassDto[]>([])
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
   const [isPaying, setIsPaying] = useState<boolean>(false)
   const [payin, setPayin] = useState<PayinDto>()
@@ -106,17 +106,22 @@ const Passes = () => {
   const getPayinState = useCallback(async () => {
     const api = new PaymentApi()
     const passApi = new PassApi()
-    const passHoldings = await passApi.getPassHoldings({
-      getPassHoldingsRequestDto: {
-        order: GetPassHoldingsRequestDtoOrderEnum.Asc,
-        orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+    const passHoldings = (
+      await passApi.getPassHoldings({
+        getPassHoldingsRequestDto: {
+          order: GetPassHoldingsRequestDtoOrderEnum.Asc,
+          orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+        }
+      })
+    ).passHolders.filter((passHolder) => {
+      for (let i = 0; i < passes.length; i++) {
+        if (passHolder.passId === passes[i].passId) {
+          return true
+        }
       }
+      return false
     })
-    setPassHolder(
-      passHoldings.passHolders.length > 0
-        ? passHoldings.passHolders[0]
-        : undefined
-    )
+    setPassHolder(passHoldings.length > 0 ? passHoldings[0] : undefined)
     const payins = await api.getPayins({
       getPayinsRequestDto: { limit: 10, offset: 0 }
     })
@@ -133,7 +138,7 @@ const Passes = () => {
       setLastUpdated(new Date())
     }
     setIsLoading(false)
-  }, [lastUpdated])
+  }, [lastUpdated, passes])
   const [count, setCount] = useState(0)
   useEffect(() => {
     const timer = setTimeout(() => {
