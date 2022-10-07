@@ -27,7 +27,7 @@ export class EmailService {
       ...maizzleConfig,
       logoUrl: `${this.configService.get(
         'cloudfront.baseUrl',
-      )}/assets/logo_200x200.png`,
+      )}/assets/logo_color_200x200.png`,
     }
   }
 
