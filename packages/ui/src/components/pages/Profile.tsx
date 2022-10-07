@@ -21,25 +21,12 @@ const Profile: FC = () => {
     profile,
     profileUsername
   } = useCreatorProfile()
-  const [isDeletedPost, setIsDeletedPost] = useState(false)
-
-  // return <></>
-
-  useEffect(() => {
-    if (isDeletedPost) {
-      mutatePosts()
-      return setIsDeletedPost(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDeletedPost])
-
-  if (isLoadingProfile) {
-    return <></>
-  }
 
   return (
     <>
-      {!profile ? (
+      {isLoadingProfile ? (
+        <></>
+      ) : !profile ? (
         <NoProfile />
       ) : (
         <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
@@ -61,7 +48,6 @@ const Profile: FC = () => {
               ownsProfile={ownsProfile}
               posts={posts}
               mutatePosts={mutatePosts}
-              setIsDeletedPost={setIsDeletedPost}
               fanWallPosts={fanWallPosts}
               profileUsername={profileUsername ?? ""}
             />

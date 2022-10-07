@@ -7,7 +7,7 @@ import {
   GetProfileResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { useCreatePost } from "src/hooks"
 import usePost from "src/hooks/usePost"
@@ -22,8 +22,7 @@ export interface MainContentProps {
   ownsProfile: boolean
   posts: PostDto[]
   fanWallPosts?: GetFanWallResponseDto
-  setIsDeletedPost?: (value: boolean) => void
-  mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
+  mutatePosts: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
 const MainContent: FC<MainContentProps> = ({
@@ -32,13 +31,21 @@ const MainContent: FC<MainContentProps> = ({
   posts,
   fanWallPosts,
   profileUsername,
-  setIsDeletedPost,
   mutatePosts
 }) => {
   const [activeTab, setActiveTab] = useState("post")
   const { mutate } = useSWRConfig()
   const { createPost } = useCreatePost()
   const { removePost } = usePost()
+  const [isDeletedPost, setIsDeletedPost] = useState(false)
+
+  useEffect(() => {
+    if (isDeletedPost) {
+      mutatePosts()
+      return setIsDeletedPost(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDeletedPost])
 
   const removePostHandler = (postId: string) => {
     removePost(postId)
