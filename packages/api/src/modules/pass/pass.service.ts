@@ -22,6 +22,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
+import { validateAddress } from '../../util/wallet.util'
 import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { EthService } from '../eth/eth.service'
 import {
@@ -540,6 +541,11 @@ export class PassService {
         ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
         : undefined
     let walletId = ''
+
+    if (walletAddress && !validateAddress(walletAddress, pass.chain)) {
+      walletAddress = undefined
+    }
+
     if (walletAddress) {
       await this.walletService.createUnauthenticatedWallet(userId, {
         walletAddress,

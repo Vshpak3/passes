@@ -14,7 +14,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
-import { validateEthAddress, validateSolAddress } from '../../util/wallet.util'
+import { validateAddress } from '../../util/wallet.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { AuthWalletRequestDto } from './dto/auth-wallet-request.dto'
@@ -360,20 +360,9 @@ export class WalletService {
       createUnauthenticatedWalletDto.walletAddress,
       createUnauthenticatedWalletDto.chain,
     )
-    if (
-      createUnauthenticatedWalletDto.chain === ChainEnum.SOL &&
-      !validateSolAddress(walletAddress)
-    ) {
+    if (!validateAddress(walletAddress, createUnauthenticatedWalletDto.chain)) {
       throw new IncorrectAddressException(
-        `${walletAddress} is not a solana address`,
-      )
-    }
-    if (
-      createUnauthenticatedWalletDto.chain === ChainEnum.ETH &&
-      !validateEthAddress(walletAddress)
-    ) {
-      throw new IncorrectAddressException(
-        `${walletAddress} is not a ethereum address`,
+        `${walletAddress} is not a valid ${createUnauthenticatedWalletDto.chain} address`,
       )
     }
     await this.dbWriter<WalletEntity>(WalletEntity.table)

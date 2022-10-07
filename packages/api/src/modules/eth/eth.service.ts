@@ -243,6 +243,12 @@ export class EthService {
     const imageUrl = getCollectionImageUri(
       this.cloudfrontUrl,
       passId,
+      ContentFormatEnum.IMAGE,
+    )
+
+    const videoUrl = getCollectionImageUri(
+      this.cloudfrontUrl,
+      passId,
       contentType,
     )
 
@@ -251,7 +257,7 @@ export class EthService {
       symbol,
       description,
       image: imageUrl,
-      animation_url: imageUrl,
+      animation_url: videoUrl,
       // external_url: `https://www.passes.com/${username}`,
     }
 

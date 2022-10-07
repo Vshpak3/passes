@@ -33,6 +33,7 @@ import { WalletDto } from '../wallet/dto/wallet.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletNotFoundError } from '../wallet/error/wallet.error'
+import { CreateNftPassPayinCallbackInput } from './callback.types'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -146,6 +147,7 @@ const MIN_PAYOUT_AMOUNT = 25.0
 const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
 
+export const MINT_TO_PAYMENT = true
 @Injectable()
 export class PaymentService {
   private circleConnector: CircleConnector
@@ -950,12 +952,21 @@ export class PaymentService {
         method = PayinMethodEnum.METAMASK_CIRCLE_USDC
       }
     }
+
     let query = this.dbWriter<PayinEntity>(PayinEntity.table)
-      .select('id', 'user_id', 'amount', 'amount_eth')
+      .select(
+        'id',
+        'user_id',
+        'amount',
+        'amount_eth',
+        'callback',
+        'callback_input_json',
+      )
       .where({
         address: transferDto.destination.address,
         payin_method: method,
       })
+
     if (chainId !== undefined) {
       query = query.where({ chain_id: chainId })
     }
@@ -963,8 +974,21 @@ export class PaymentService {
     if (!payin) {
       throw new PayinNotFoundError('payin not found')
     }
+
+    let newJson: CreateNftPassPayinCallbackInput | undefined = undefined
+    if (
+      MINT_TO_PAYMENT &&
+      payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS
+    ) {
+      newJson = payin.callback_input_json as CreateNftPassPayinCallbackInput
+      newJson.walletAddress = transferDto.source.address
+    }
+
     await this.dbWriter<PayinEntity>(PayinEntity.table)
-      .update({ transaction_hash: transferDto.transactionHash })
+      .update({
+        transaction_hash: transferDto.transactionHash,
+        callback_input_json: newJson,
+      })
       .where({ id: payin.id })
 
     let correctAmount = false
