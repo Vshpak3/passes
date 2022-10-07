@@ -45,7 +45,7 @@ export class CircleCardDto {
       this.circleId = card.circle_id
       this.status = card.status
       this.firstDigit = card.card_number.slice(0, 1)
-      this.fourDigits = card.card_number.slice(12)
+      this.fourDigits = card.card_number.slice(card.card_number.length - 4)
       this.expMonth = card.exp_month
       this.expYear = card.exp_year
       this.name = card.name
