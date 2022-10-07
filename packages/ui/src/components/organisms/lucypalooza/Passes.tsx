@@ -13,6 +13,7 @@ import {
   UserApi
 } from "@passes/api-client"
 import classNames from "classnames"
+import ms from "ms"
 import React, {
   Dispatch,
   SetStateAction,
@@ -67,10 +68,10 @@ const Passes = () => {
   const [isPaying, setIsPaying] = useState<boolean>(false)
   const [payin, setPayin] = useState<PayinDto>()
   const [passId, setPassId] = useState<string>()
-  const [failedMessage, setFaileddMessage] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { defaultPayinMethod, setPayinMethod } = usePayinMethod()
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
   useEffect(() => {
     const api = new PassApi()
     const fetch = async () => {
@@ -99,9 +100,7 @@ const Passes = () => {
       await api.cancelPayin({
         payinId: payin.id
       })
-      setTimeout(() => {
-        setIsPaying(false)
-      }, 500)
+      setIsPaying(false)
     }
   }
   const getPayinState = useCallback(async () => {
@@ -121,32 +120,20 @@ const Passes = () => {
     const payins = await api.getPayins({
       getPayinsRequestDto: { limit: 10, offset: 0 }
     })
-    const failed = payins.payins.filter(
-      (payin) =>
-        payin.payinStatus === PayinDtoPayinStatusEnum.Failed && !!payin.card
-    )
-    if (
-      passHoldings.passHolders.length === 0 &&
-      failed.length > 0 &&
-      !failedMessage
-    ) {
-      toast.error("A previous payment failed, please try again")
-      setFaileddMessage(true)
-    }
     const paying = payins.payins.filter(
       (payin) =>
         payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
         payin.payinStatus === PayinDtoPayinStatusEnum.Pending
     )
-    if (
-      paying[0] &&
-      paying[0].payinStatus === PayinDtoPayinStatusEnum.Pending
-    ) {
+    if (paying[0]) {
       setPayin(payins.payins[0])
     }
-    setIsPaying(isPaying || paying.length > 0)
+    if (Date.now() - lastUpdated.valueOf() > ms("1 second")) {
+      setIsPaying(paying.length > 0)
+      setLastUpdated(new Date())
+    }
     setIsLoading(false)
-  }, [failedMessage, isPaying])
+  }, [lastUpdated])
   const [count, setCount] = useState(0)
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -208,7 +195,7 @@ const Passes = () => {
               We are processing your payment and minting your pass!
             </span>
             <div className="my-5">
-              <Button tag="button" variant="pink">
+              <Button tag="button" variant="pink" disabled={true}>
                 <span className="px-20 text-xl">Processing...</span>
               </Button>
             </div>
