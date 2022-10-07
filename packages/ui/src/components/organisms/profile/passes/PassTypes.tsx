@@ -2,15 +2,17 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 
 import { PassDto } from "@passes/api-client"
-import React from "react"
+import React, { FC } from "react"
 import Slider from "react-slick"
 import { useCarousel } from "src/hooks/useCarousel"
 
 import { PassCardDesktop, PassCardMobile } from "./PassesComponents"
-interface IPasses {
+
+interface PassesProps {
   creatorPasses: PassDto[] | undefined
 }
-interface IPassType {
+
+interface PassTypeProps {
   creatorPasses: PassDto[] | undefined
   setModalOpen: React.Dispatch<React.SetStateAction<PaymentModalInfo | null>>
 }
@@ -21,7 +23,10 @@ export interface PaymentModalInfo {
   title: string
 }
 
-const PassTypesDesktop = ({ creatorPasses, setModalOpen }: IPassType) => {
+const PassTypesDesktop: FC<PassTypeProps> = ({
+  creatorPasses,
+  setModalOpen
+}) => {
   return (
     <div className="hidden items-center rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:m-0 lg:flex lg:flex-col lg:items-center">
       <span className="mb-5 text-base font-bold text-[#ffff]/90 lg:mb-0 lg:self-start">
@@ -40,7 +45,10 @@ const PassTypesDesktop = ({ creatorPasses, setModalOpen }: IPassType) => {
   )
 }
 
-const PassTypesMobile = ({ creatorPasses, setModalOpen }: IPassType) => {
+const PassTypesMobile: FC<PassTypeProps> = ({
+  creatorPasses,
+  setModalOpen
+}) => {
   const length = creatorPasses?.length ?? 0
   const { settings } = useCarousel({ length })
 
@@ -68,7 +76,7 @@ const PassTypesMobile = ({ creatorPasses, setModalOpen }: IPassType) => {
   )
 }
 
-const PassTypes = ({ creatorPasses }: IPasses) => {
+const PassTypes: FC<PassesProps> = ({ creatorPasses }) => {
   return (
     <>
       <PassTypesDesktop

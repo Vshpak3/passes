@@ -3,7 +3,7 @@ import {
   PayinDataDto,
   PostApi
 } from "@passes/api-client"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "src/components/atoms"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
@@ -12,13 +12,13 @@ import Modal from "src/components/organisms/Modal"
 import { usePayinMethod } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 
-interface ITipPostModal {
+interface TipPostModalProps {
   postId: string
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const TipPostModal = ({ postId, setOpen, isOpen }: ITipPostModal) => {
+const TipPostModal: FC<TipPostModalProps> = ({ postId, setOpen, isOpen }) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
   const {
     register,

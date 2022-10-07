@@ -1,6 +1,6 @@
 import { PassApi, PassHolderDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, Input } from "src/components/atoms"

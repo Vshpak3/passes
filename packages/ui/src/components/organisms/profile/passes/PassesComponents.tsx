@@ -1,5 +1,5 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
-import React from "react"
+import React, { FC } from "react"
 import { Button } from "src/components/atoms"
 import { formatCurrency } from "src/helpers"
 
@@ -95,7 +95,7 @@ export const PassCardMobile = ({ pass, setModalOpen }: IPassItem) => (
   </div>
 )
 
-export const PassCardDesktop = ({ pass, setModalOpen }: IPassItem) => {
+export const PassCardDesktop: FC<IPassItem> = ({ pass, setModalOpen }) => {
   return (
     <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
       <img

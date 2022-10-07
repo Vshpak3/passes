@@ -1,11 +1,11 @@
 import { CSSProperties, useState } from "react"
 import { Settings } from "react-slick"
 
-interface IUseCarousel {
+interface UseCarouselProps {
   length: number
 }
 
-export const useCarousel = ({ length }: IUseCarousel) => {
+export const useCarousel = ({ length }: UseCarouselProps) => {
   const [slideIndex, setSlideIndex] = useState(0)
   const settings: Settings = {
     dots: true,

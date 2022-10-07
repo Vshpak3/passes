@@ -1,13 +1,12 @@
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, PropsWithChildren } from "react"
 
-interface IGradientBorderTile {
-  children?: React.ReactNode
+interface GradientBorderTileProps {
   className?: string
   innerClass?: string
 }
 
-const GradientBorderTile: FC<IGradientBorderTile> = ({
+const GradientBorderTile: FC<PropsWithChildren<GradientBorderTileProps>> = ({
   children,
   className,
   innerClass

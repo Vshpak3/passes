@@ -1,3 +1,4 @@
+import { FC } from "react"
 import { GalleryMedia } from "src/components/messages/components/ChannelInner/GalleryMedia"
 
 export type Content = {
@@ -98,7 +99,7 @@ interface Props {
   activeContent: string
 }
 
-export const ChannelGalleryView = ({ activeContent }: Props) => {
+export const ChannelGalleryView: FC<Props> = ({ activeContent }) => {
   // const api = new MessagesApi()
   // const [_content, setContent] = useState([])
 

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
 import SubscriptionImg from "public/icons/subscription-pass.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import {
   CreatePassButton,
   CreatePassHeader,
@@ -65,7 +65,7 @@ const SelectPassType = ({ initialCreation = false }) => {
   )
 }
 
-const CreatePassForm = ({ passType }: CreatePassFormProps) => {
+const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
   const {
     errors,
     files,

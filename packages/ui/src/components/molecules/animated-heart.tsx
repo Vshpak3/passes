@@ -1,16 +1,20 @@
 import { motion } from "framer-motion"
 import { throttle } from "lodash"
-import { useState } from "react"
+import { FC, useState } from "react"
 import HeartIcon from "src/icons/heart"
 
-type Props = {
+type AnimatedHeartProps = {
   height: number
   width: number
   pagename?: string
   alreadyLiked?: boolean
 }
 
-const AnimatedHeart = ({ height, width, alreadyLiked }: Props) => {
+const AnimatedHeart: FC<AnimatedHeartProps> = ({
+  height,
+  width,
+  alreadyLiked
+}) => {
   const [liked, setLiked] = useState(alreadyLiked)
 
   const handleLike = throttle(async (event: any) => {

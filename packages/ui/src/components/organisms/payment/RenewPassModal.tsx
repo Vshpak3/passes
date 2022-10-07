@@ -2,7 +2,7 @@ import {
   GetPayinMethodResponseDtoMethodEnum,
   PassHolderDto
 } from "@passes/api-client"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import { RenewPassButton } from "src/components/molecules/payment/renew-pass-button"
 import Modal from "src/components/organisms/Modal"
@@ -14,7 +14,11 @@ interface IBuyMessageModal {
   isOpen: boolean
 }
 
-const BuyPostModal = ({ passHolder, setOpen, isOpen }: IBuyMessageModal) => {
+const BuyPostModal: FC<IBuyMessageModal> = ({
+  passHolder,
+  setOpen,
+  isOpen
+}) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId

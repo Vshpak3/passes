@@ -1,9 +1,9 @@
-import React from "react"
+import React, { FC } from "react"
 interface Props {
   freeMessages?: number
   isCreator?: boolean
 }
-export const FreeMessagesLeftContainer = ({ freeMessages }: Props) => {
+export const FreeMessagesLeftContainer: FC<Props> = ({ freeMessages }) => {
   return (
     <div className="flex items-center justify-between gap-[10px] border-b border-[#FFFF]/10 bg-[#5f2c2f]/50 py-[10px] px-4 backdrop-blur-[25px]">
       <div className="flex items-center gap-1">

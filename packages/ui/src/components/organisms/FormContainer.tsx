@@ -1,12 +1,14 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC, PropsWithChildren } from "react"
 
 interface IFormContainer {
-  children: React.ReactNode
   className?: string
 }
 
-const FormContainer = ({ children, className = "" }: IFormContainer) => {
+const FormContainer: FC<PropsWithChildren<IFormContainer>> = ({
+  children,
+  className = ""
+}) => {
   // items-center -> items-start
   return (
     <div

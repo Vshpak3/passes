@@ -8,7 +8,7 @@ import { AppProps } from "next/app"
 import Router from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
@@ -68,7 +68,7 @@ Router.events.on("routeChangeStart", async () => {
   refreshAuth()
 })
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [refresh, setRefresh] = useState(0)
 
   // Refresh once on page load then repeatedly

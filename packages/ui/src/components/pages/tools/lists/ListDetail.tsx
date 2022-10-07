@@ -28,7 +28,7 @@ type ListDetailProps = {
 
 const DEBOUNCE_TIMEOUT = 500
 
-const ListDetail: FC<ListDetailProps> = ({ id }: ListDetailProps) => {
+const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
   const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)

@@ -1,6 +1,6 @@
 import { CircleCardDto, PayinMethodDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { FC } from "react"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 
 interface IPayinMethodDisplay {
@@ -8,7 +8,7 @@ interface IPayinMethodDisplay {
   card?: CircleCardDto
 }
 
-const PayinMethodDisplay = ({ payinMethod, card }: IPayinMethodDisplay) => {
+const PayinMethodDisplay: FC<IPayinMethodDisplay> = ({ payinMethod, card }) => {
   const router = useRouter()
 
   return (

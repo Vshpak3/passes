@@ -1,6 +1,6 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import { Fragment, ReactNode, useEffect, useState } from "react"
+import { FC, Fragment, PropsWithChildren, useEffect, useState } from "react"
 
 type DialogProps = {
   triggerClassName?: string
@@ -9,13 +9,12 @@ type DialogProps = {
   onClose?: () => void
   title?: JSX.Element | string
   footer?: JSX.Element | string
-  children?: ReactNode
   className?: string
   media?: boolean
   onTriggerClick?: () => void
 }
 
-const Dialog = ({
+const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   triggerClassName = "",
   trigger,
   open = false,
@@ -26,7 +25,7 @@ const Dialog = ({
   media,
   children,
   onTriggerClick
-}: DialogProps) => {
+}) => {
   const [isOpen, setIsOpen] = useState(open)
 
   const handleOnClose = () => {

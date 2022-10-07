@@ -1,23 +1,28 @@
 import classNames from "classnames"
 import Image from "next/image"
-import React, { Dispatch, SetStateAction, useEffect } from "react"
+import React, {
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  SetStateAction,
+  useEffect
+} from "react"
 import ReactModal from "react-modal"
 
-interface IModal {
+interface ModalProps {
   isOpen: any
   setOpen: Dispatch<SetStateAction<any>>
-  children: React.ReactNode
   closable?: boolean
   modalContainerClassname?: string
 }
 
-const Modal = ({
+const Modal: FC<PropsWithChildren<ModalProps>> = ({
   isOpen = false,
   setOpen,
   children,
   closable = true,
   modalContainerClassname
-}: IModal) => {
+}) => {
   useEffect(() => {
     ReactModal.setAppElement("body")
   }, [])

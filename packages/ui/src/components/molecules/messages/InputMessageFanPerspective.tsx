@@ -1,6 +1,6 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
-import React, { KeyboardEvent, useState } from "react"
+import React, { FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDebouncedEffect } from "src/components/messages/utils/useDebounceEffect"
 import { usePay } from "src/hooks/usePay"
@@ -8,7 +8,7 @@ import { usePay } from "src/hooks/usePay"
 interface Props {
   channelId: string
 }
-export const InputMessageFanPerspective = ({ channelId }: Props) => {
+export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
   const {
     register,
     formState: { errors, isSubmitSuccessful },

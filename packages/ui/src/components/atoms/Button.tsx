@@ -3,6 +3,7 @@ import clsx from "clsx"
 import HeaderChatIcon from "public/icons/header-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
+import { FC, PropsWithChildren } from "react"
 
 import Text from "./Text"
 
@@ -11,9 +12,8 @@ export enum ButtonTypeEnum {
   SUBMIT = "submit",
   RESET = "reset"
 }
-interface IButton {
+interface ButtonProps {
   bigger?: boolean
-  children: React.ReactNode
   className?: string
   disabled?: boolean
   icon?: React.ReactNode
@@ -29,7 +29,7 @@ interface IButton {
   disabledClass?: string
 }
 
-interface IGenericButton {
+interface GenericButtonProps {
   name: string
   onClick?: () => void
   value?: string
@@ -38,7 +38,7 @@ interface IGenericButton {
   isDisabled?: boolean
 }
 
-export const Button = ({
+export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   bigger = false,
   children,
   className = "",
@@ -54,7 +54,7 @@ export const Button = ({
   type,
   disabledClass,
   ...restOfProps
-}: IButton) => {
+}) => {
   let variantClassName
   let variantInnerClassName
   switch (variant) {
@@ -170,7 +170,7 @@ export const Button = ({
   )
 }
 
-export const PassesPurpleButton = ({ name }: IGenericButton) => (
+export const PassesPurpleButton = ({ name }: GenericButtonProps) => (
   <button className="flex w-full items-center justify-center rounded-full border border-solid border-passes-secondary-color bg-passes-secondary-color py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
     <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />
     {name}
@@ -183,7 +183,7 @@ export const PassesPinkButton = ({
   onClick,
   className = "",
   isDisabled = false
-}: IGenericButton) => {
+}: GenericButtonProps) => {
   return (
     <button
       disabled={isDisabled}
@@ -205,7 +205,7 @@ export const CoverButton = ({
   name,
   onClick,
   className = ""
-}: IGenericButton) => (
+}: GenericButtonProps) => (
   <button
     className={classNames(
       className,
@@ -225,7 +225,7 @@ export const PostUnlockButton = ({
   onClick,
   value,
   className = ""
-}: IGenericButton) => (
+}: GenericButtonProps) => (
   <button
     className={classNames(
       className,
@@ -239,18 +239,18 @@ export const PostUnlockButton = ({
   </button>
 )
 
-export const HeaderChatButton = ({ name }: IGenericButton) => (
+export const HeaderChatButton = ({ name }: GenericButtonProps) => (
   <button className="flex h-[49px] w-full min-w-[105px] items-center justify-center gap-[10px] rounded-md border border-transparent bg-[#1b141d]/50 text-base font-semibold text-white ">
     <HeaderChatIcon className="" />
     {name}
   </button>
 )
 
-export const RoundedIconButton = ({
+export const RoundedIconButton: FC<PropsWithChildren<ButtonProps>> = ({
   children,
   onClick,
   className = ""
-}: IButton) => (
+}) => (
   <button
     className={classNames(
       "flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-full bg-white p-4",
@@ -262,12 +262,12 @@ export const RoundedIconButton = ({
   </button>
 )
 
-export const TabButton = ({
+export const TabButton: FC<PropsWithChildren<ButtonProps>> = ({
   children,
   onClick,
   active,
   className
-}: IButton) => (
+}) => (
   <button
     className={clsx(
       className,

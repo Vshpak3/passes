@@ -2,7 +2,7 @@ import { GetUserResponseDto } from "@passes/api-client"
 import cn from "classnames"
 import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
-import { useEffect } from "react"
+import { FC, useEffect } from "react"
 import Header from "src/components/molecules/performance/Header"
 import {
   pathToSubTab,
@@ -132,7 +132,7 @@ export interface SettingsPageProps {
   settingsPath?: string[]
 }
 
-export const SettingsPage = ({ settingsPath }: SettingsPageProps) => {
+export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   const { user } = useUser()
   const {
     activeTab,
@@ -218,7 +218,7 @@ export const SettingsPage = ({ settingsPath }: SettingsPageProps) => {
   )
 }
 
-export const SettingsWrapper = ({ settingsPath }: SettingsPageProps) => {
+export const SettingsWrapper: FC<SettingsPageProps> = ({ settingsPath }) => {
   return (
     <SettingsProvider>
       <SettingsPage settingsPath={settingsPath} />

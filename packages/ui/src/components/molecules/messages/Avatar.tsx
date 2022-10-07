@@ -1,11 +1,11 @@
-import React from "react"
+import React, { FC } from "react"
 
 interface Props {
   imageSrc: string
   isOnline?: boolean
 }
 
-export const Avatar = ({ imageSrc, isOnline = true }: Props) => {
+export const Avatar: FC<Props> = ({ imageSrc, isOnline = true }) => {
   return (
     <div className="item-center relative flex pr-[10px]">
       {isOnline && (

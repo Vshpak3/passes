@@ -2,14 +2,16 @@ import { Combobox } from "@headlessui/react"
 import { ListMemberDto } from "@passes/api-client"
 import classNames from "classnames"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { useFollowSearch } from "src/hooks"
 
 interface ISearchInputDropdown {
   onUserSelect: (user: ListMemberDto) => void
 }
 
-export const ChannelSearchInput = ({ onUserSelect }: ISearchInputDropdown) => {
+export const ChannelSearchInput: FC<ISearchInputDropdown> = ({
+  onUserSelect
+}) => {
   const { onChangeInput, following } = useFollowSearch()
   const [selectedUser, setSelectedUser] = useState<ListMemberDto>()
   return (

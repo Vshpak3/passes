@@ -14,7 +14,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import TrelloIcon from "public/icons/trello-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import {
@@ -37,7 +37,7 @@ interface ICreditCardModal {
   defaultPayin: PayinMethodDto | undefined
 }
 
-const CreditCardModal = ({ isOpen = false, setOpen }: ICreditCardModal) => {
+const CreditCardModal: FC<ICreditCardModal> = ({ isOpen = false, setOpen }) => {
   const {
     register,
     handleSubmit,

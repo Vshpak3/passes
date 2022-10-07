@@ -127,7 +127,7 @@ const composeMediaGridLayout = (length: number, index: number) => {
   }
 }
 
-const PassFilePreview = ({ files, onRemove }: PassFilesProps) => {
+const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
   const renderFilePreview = files.map((file: File, index: number) => {
     const gridLayout = composeMediaGridLayout(files.length, index)
     const onRemoveFile = () => onRemove(index)
@@ -205,7 +205,7 @@ const PassFileUpload: FC<PassFileUploadProps> = ({
   )
 }
 
-const PassLifetimeOptions = ({ register, errors }: PassProps) => {
+const PassLifetimeOptions: FC<PassProps> = ({ register, errors }) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -254,7 +254,7 @@ const PassRenewal = () => (
   </div>
 )
 
-const PassPrice = ({ register, errors }: PassProps) => {
+const PassPrice: FC<PassProps> = ({ register, errors }) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -279,7 +279,7 @@ const PassPrice = ({ register, errors }: PassProps) => {
   )
 }
 
-const PassFreeTrial = ({ register, errors }: PassProps) => {
+const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
   return (
     <div className="align-items flex w-fit items-center justify-start">
       <PassFormCheckbox

@@ -1,6 +1,6 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 import { Button, Text } from "src/components/atoms"
 import { errorMessage } from "src/helpers/error"
 
@@ -12,7 +12,11 @@ interface BlockModalProps {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const BlockModal = ({ isOpen = false, setOpen, userId }: BlockModalProps) => {
+const BlockModal: FC<BlockModalProps> = ({
+  isOpen = false,
+  setOpen,
+  userId
+}) => {
   const [blockValue, setBlockValue] = useState("")
 
   const onFanBlock = async () => {

@@ -3,6 +3,7 @@ import path from "path"
 import React, {
   createContext,
   FC,
+  PropsWithChildren,
   useContext,
   useEffect,
   useState
@@ -28,9 +29,7 @@ export interface ISettingsContext {
 
 const SettingsContext = createContext<Partial<ISettingsContext>>({})
 
-export const SettingsProvider: FC<{ children: React.ReactNode }> = ({
-  children
-}) => {
+export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
   const [showSettingsTab, setShowSettingsTab] = useState(false)

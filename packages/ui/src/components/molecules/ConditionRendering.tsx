@@ -1,6 +1,10 @@
-import { FC, ReactNode } from "react"
+import { FC, PropsWithChildren } from "react"
 
-const ConditionRendering: FC<{ condition: boolean; children: ReactNode }> = ({
+interface ConditionRenderingProps {
+  condition: boolean
+}
+
+const ConditionRendering: FC<PropsWithChildren<ConditionRenderingProps>> = ({
   condition,
   children
 }): any => {

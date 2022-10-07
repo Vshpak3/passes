@@ -1,17 +1,16 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
-import React, { FC } from "react"
+import React, { FC, PropsWithChildren } from "react"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
-interface ITabProps {
+interface TabProps {
   title: string
   description?: string
-  children?: React.ReactNode
   withBack?: boolean
   withBackMobile?: boolean
   TitleBtn?: React.ReactNode
 }
 
-const Tab: FC<ITabProps> = ({
+const Tab: FC<PropsWithChildren<TabProps>> = ({
   title,
   description,
   children,

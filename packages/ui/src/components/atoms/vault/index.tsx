@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
+import { FC } from "react"
 import { MdDelete } from "react-icons/md"
 
 const filterStyles = {
@@ -119,7 +120,7 @@ const VaultSortItem = ({
   </div>
 )
 
-const VaultDeleteButton = ({ toggleDeleteModal }: IVaultDeleteButton) => {
+const VaultDeleteButton: FC<IVaultDeleteButton> = ({ toggleDeleteModal }) => {
   return (
     <div
       onClick={toggleDeleteModal}

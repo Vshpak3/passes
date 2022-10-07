@@ -9,7 +9,7 @@ import { SHA256 } from "crypto-js"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { CreditCardInput, FormInput, Select } from "src/components/atoms"
@@ -26,7 +26,7 @@ import { v4 } from "uuid"
 interface IAddCard {
   callback?: () => void
 }
-const AddCard = ({ callback }: IAddCard) => {
+const AddCard: FC<IAddCard> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()

@@ -16,6 +16,7 @@ import classNames from "classnames"
 import ms from "ms"
 import React, {
   Dispatch,
+  FC,
   SetStateAction,
   useCallback,
   useEffect,
@@ -35,7 +36,7 @@ interface IPassList {
   setPassId: Dispatch<SetStateAction<string | undefined>>
   passId?: string
 }
-const PassList = ({ passes, setPassId, passId }: IPassList) => {
+const PassList: FC<IPassList> = ({ passes, setPassId, passId }) => {
   return (
     <>
       {passes?.map((pass) => (

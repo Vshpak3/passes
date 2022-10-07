@@ -3,7 +3,7 @@ import {
   PostDto
 } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
 import { BuyPostButton } from "src/components/molecules/payment/buy-post-button"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
@@ -20,7 +20,12 @@ interface IBuyPostModal {
   setIsPayed?: (value: boolean) => void
 }
 
-const BuyPostModal = ({ post, setOpen, isOpen, setIsPayed }: IBuyPostModal) => {
+const BuyPostModal: FC<IBuyPostModal> = ({
+  post,
+  setOpen,
+  isOpen,
+  setIsPayed
+}) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId

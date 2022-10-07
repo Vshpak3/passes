@@ -1,7 +1,6 @@
-import { FC } from "react"
+import { FC, PropsWithChildren } from "react"
 
 interface TextProps {
-  children: React.ReactNode
   className?: string
   enableMarginBottom?: boolean
   fontSize?: number
@@ -25,7 +24,7 @@ const dynamicTracking = (z: number) => {
   return Number((a + b * Math.pow(Math.E, c * z)).toFixed(3))
 }
 
-const Text: FC<TextProps> = ({
+const Text: FC<PropsWithChildren<TextProps>> = ({
   children,
   className = "",
   enableMarginBottom = false,

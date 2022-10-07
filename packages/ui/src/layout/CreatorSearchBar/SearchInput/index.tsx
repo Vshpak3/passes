@@ -1,12 +1,16 @@
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React from "react"
+import React, { FC } from "react"
 
 interface Props {
   onChangeInput: (value: any) => void
   onSearchFocus: () => void
   searchValue: string
 }
-const SearchInput = ({ onChangeInput, onSearchFocus, searchValue }: Props) => {
+const SearchInput: FC<Props> = ({
+  onChangeInput,
+  onSearchFocus,
+  searchValue
+}) => {
   return (
     <div className="hidden items-center justify-end gap-2 md:flex">
       <div className="relative flex items-center gap-3">

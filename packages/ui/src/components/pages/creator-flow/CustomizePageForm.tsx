@@ -8,7 +8,7 @@ import ProfileTiktokIcon from "public/icons/profile-tiktok-icon.svg"
 import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
 import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
 import ProfileYoutubeIcon from "public/icons/profile-youtube-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
@@ -17,7 +17,7 @@ import { updateProfile } from "src/helpers"
 import { creatorFlowProfileSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
 
-interface IFormData {
+interface CreatorFlowCustomizeFormProps {
   displayName: string
   description: string
 
@@ -49,9 +49,9 @@ type CustomizePageFormProps = {
   onFinishCustomizePage?: () => void
 }
 
-const CustomizePageForm = ({
+const CustomizePageForm: FC<CustomizePageFormProps> = ({
   onFinishCustomizePage = identity
-}: CustomizePageFormProps) => {
+}) => {
   const [connectedAccounts] = useState<IConnectedAccounts>({
     discord: false,
     facebook: false,
@@ -69,7 +69,7 @@ const CustomizePageForm = ({
     handleSubmit,
     watch,
     formState: { errors, isSubmitSuccessful, submitCount }
-  } = useForm<IFormData>({
+  } = useForm<CreatorFlowCustomizeFormProps>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(creatorFlowProfileSchema)
   })

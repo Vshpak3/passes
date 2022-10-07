@@ -37,11 +37,11 @@ ChartJS.register(
 
 const ONE_DAY = ms("1 day")
 
-interface IEarningsGraph {
+interface EarningsGraphProps {
   userBalance?: number
 }
 
-const EarningsGraph: FC<IEarningsGraph> = ({ userBalance }: IEarningsGraph) => {
+const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const [activeTab, setActiveTab] = React.useState("total")
   const [dateRange, setDateRange] = React.useState({
     startDate: new Date(),

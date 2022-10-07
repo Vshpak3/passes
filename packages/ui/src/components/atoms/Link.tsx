@@ -1,5 +1,5 @@
 import NextLink from "next/link"
-import { forwardRef, useEffect, useState } from "react"
+import { FC, forwardRef, PropsWithChildren, useEffect, useState } from "react"
 
 type AProps = {
   children?: React.ReactNode
@@ -46,13 +46,17 @@ const A = forwardRef<any, AProps>(
 A.displayName = "A"
 
 type LinkProps = {
-  children?: React.ReactNode
   className?: string
   href: string
   variant?: string
 }
 
-const Link = ({ children, className = "", href, variant }: LinkProps) => {
+const Link: FC<PropsWithChildren<LinkProps>> = ({
+  children,
+  className = "",
+  href,
+  variant
+}) => {
   const [isExternalURL, setIsExternalURL] = useState(true)
 
   useEffect(() => {

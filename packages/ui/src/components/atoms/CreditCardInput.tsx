@@ -2,7 +2,7 @@ import AmexCardIcon from "public/icons/amex-icon.svg"
 import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { Controller, RegisterOptions } from "react-hook-form"
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   control: any
   rules: RegisterOptions
 }
-export const CreditCardInput = ({ control, name, rules }: Props) => {
+export const CreditCardInput: FC<Props> = ({ control, name, rules }) => {
   const [visibleValue, setVisibleValue] = useState("")
 
   const handleChange = (event: any, onChange: any) => {

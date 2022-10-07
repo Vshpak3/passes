@@ -1,6 +1,6 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import React, { Dispatch, SetStateAction, useState } from "react"
+import React, { Dispatch, FC, SetStateAction, useState } from "react"
 import { Button, Text } from "src/components/atoms"
 import { errorMessage } from "src/helpers/error"
 
@@ -12,7 +12,11 @@ interface ReportModalProps {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const ReportModal = ({ isOpen = false, setOpen, userId }: ReportModalProps) => {
+const ReportModal: FC<ReportModalProps> = ({
+  isOpen = false,
+  setOpen,
+  userId
+}) => {
   const [reportValue, setReportValue] = useState("")
 
   const onFanReport = async () => {

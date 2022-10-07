@@ -1,5 +1,6 @@
 import { CreatorInfoDto } from "@passes/api-client"
 import { useRouter } from "next/router"
+import { FC } from "react"
 
 import { EmptyResult, SearchResult } from "./SearchResults"
 
@@ -7,7 +8,7 @@ interface SearchDropdownProps {
   creatorResults: CreatorInfoDto[]
 }
 
-const SearchDropdown = ({ creatorResults }: SearchDropdownProps) => {
+const SearchDropdown: FC<SearchDropdownProps> = ({ creatorResults }) => {
   const router = useRouter()
 
   const goToProfile = (username: any) => {

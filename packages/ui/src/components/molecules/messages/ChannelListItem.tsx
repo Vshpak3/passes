@@ -1,6 +1,6 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 
 import { Avatar } from "./index"
 
@@ -10,7 +10,11 @@ interface Props {
   isSelected?: boolean
 }
 
-export const ChannelListItem = ({ onClick, channel, isSelected }: Props) => {
+export const ChannelListItem: FC<Props> = ({
+  onClick,
+  channel,
+  isSelected
+}) => {
   return (
     <div
       onClick={onClick}

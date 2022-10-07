@@ -1,5 +1,5 @@
 import DOMPurify from "dompurify"
-import React from "react"
+import React, { FC } from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 
 interface IPassVideo {
@@ -24,7 +24,7 @@ interface IPassCard {
   remainingSupply: number
 }
 
-const PassVideo = ({ img }: IPassVideo) => {
+const PassVideo: FC<IPassVideo> = ({ img }) => {
   return (
     <video autoPlay loop muted>
       <source src={img.url} type="video/mp4" />

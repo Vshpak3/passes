@@ -1,6 +1,6 @@
 import { PassHolderDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { FC } from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 import { ContentService } from "src/helpers"
 
@@ -8,7 +8,7 @@ interface IPassSuccess {
   pass: PassHolderDto
 }
 
-const PassSuccess = ({ pass }: IPassSuccess) => {
+const PassSuccess: FC<IPassSuccess> = ({ pass }) => {
   const { passId, address, tokenId, title } = pass ?? {}
   const router = useRouter()
 

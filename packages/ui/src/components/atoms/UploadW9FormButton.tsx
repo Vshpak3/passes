@@ -1,5 +1,5 @@
 import EditIcon from "public/icons/edit.svg"
-import React from "react"
+import React, { FC } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms"
 import { ContentService } from "src/helpers"
@@ -7,26 +7,27 @@ import { errorMessage } from "src/helpers/error"
 
 import FormInput from "./FormInput"
 
-interface IForm {
+interface UploadW9FormProps {
   form: File[]
 }
-interface W9Button {
+
+interface W9ButtonProps {
   text: string
   icon: boolean
 }
 
-const UploadW9FormButton = ({ text, icon }: W9Button) => {
+const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
   const {
     register,
     handleSubmit,
     watch,
     reset,
     formState: { isSubmitSuccessful }
-  } = useForm<IForm>()
+  } = useForm<UploadW9FormProps>()
 
   const { form } = watch()
 
-  const uploadW9FormHandler = async ({ form }: IForm) => {
+  const uploadW9FormHandler = async ({ form }: UploadW9FormProps) => {
     if (!form || !form[0]) {
       return
     }

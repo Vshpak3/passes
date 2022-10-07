@@ -1,3 +1,4 @@
+import { FC } from "react"
 import { Video } from "src/components/atoms/Video"
 import { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
@@ -5,7 +6,7 @@ interface PostVideoProps {
   videoUrl: string
 }
 
-const PostVideo = ({ videoUrl }: PostVideoProps) => {
+const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
   const videoJsOptions: VideoJsPlayerOptions = {
     controls: true,
     responsive: true,

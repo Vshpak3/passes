@@ -1,14 +1,14 @@
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 
-interface ITabsElement {
+interface TabsElement {
   tabName: string
   icon: React.ReactNode
 }
-interface ITabs {
-  tabsArray: ITabsElement[]
+interface TabsProps {
+  tabsArray: TabsElement[]
 }
 
-const Tabs = ({ tabsArray }: ITabs) => {
+const Tabs: FC<TabsProps> = ({ tabsArray }) => {
   const [activeTab, setActiveTab] = useState(tabsArray[0].tabName)
   return (
     <>
