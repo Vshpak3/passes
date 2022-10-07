@@ -20,7 +20,8 @@ export const PostScheduleAlert: FC<PostScheduleAlertProps> = ({
     >
       <div>
         Scheduled at:{" "}
-        {scheduledPostTime && format(scheduledPostTime, "dd MMM yyyy, hh:mm")}
+        {scheduledPostTime &&
+          format(scheduledPostTime, "EEEE, LLLL do, yyyy 'at' hh:mm a")}
       </div>
       <div style={{ cursor: "pointer" }}>
         <div onClick={onRemoveScheduledPostTime}>
