@@ -12,6 +12,7 @@ import { Alchemy, AlchemyProvider, Network, Nft, OwnedNft } from 'alchemy-sdk'
 import { Contract, ContractFactory } from 'ethers'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
 import {
@@ -35,6 +36,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { contractSpec } from './contracts/ERC721Passes'
+import { EthNonceEntity } from './entities/eth.nonce.entity'
 import { InternalSigner } from './signer'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,7 +46,6 @@ const MAX_TIME_WALLET_REFRESH = ms('30 minutes')
 const MAX_TIME_PASS_REFRESH = ms('1 week')
 
 const SIGNER_ID_PREFIX_PASS = 'pass'
-const MAX_DEPLOY_ATTEMPTS = 1
 
 const TOPIC_TOKEN_ID_INDEX = 3
 @Injectable()
@@ -306,18 +307,16 @@ export class EthService {
       description,
       contentType,
     )
-    let error: Error | undefined = undefined
-    for (let i = 0; i < MAX_DEPLOY_ATTEMPTS; ++i) {
-      try {
-        const receipt = await (
-          await contract.mintUri(ownerAddress, path)
-        ).wait()
-        return receipt.logs[0].topics[TOPIC_TOKEN_ID_INDEX]
-      } catch (err) {
-        error = err
-      }
+    const nonce = await this.getNewNonce(ETH_MASTER_WALLET_LAMBDA_KEY_ID)
+    try {
+      const receipt = await (
+        await contract.mintUri(ownerAddress, path, { nonce })
+      ).wait()
+      return receipt.logs[0].topics[TOPIC_TOKEN_ID_INDEX]
+    } catch (err) {
+      await this.cancelTransaction(masterWallet, nonce)
+      throw new InternalServerErrorException('could not mint eth' + err)
     }
-    throw new InternalServerErrorException('could not mint eth' + error)
   }
 
   async createEthNftCollection(
@@ -345,23 +344,57 @@ export class EthService {
     )
 
     // console.log(contract.address)
-    const contract = await factory.deploy(
-      name,
-      symbol,
-      this.cloudfrontUrl + '/',
-      await royaltyWallet.getAddress(),
-      royalties,
-      { gasLimit: 5000000 },
-    )
-    let error: Error | undefined = undefined
-    for (let i = 0; i < MAX_DEPLOY_ATTEMPTS; ++i) {
-      try {
-        const receipt = await contract.deployTransaction.wait()
-        return receipt.contractAddress
-      } catch (err) {
-        error = err
-      }
+    const nonce = await this.getNewNonce(ETH_MASTER_WALLET_LAMBDA_KEY_ID)
+    try {
+      const contract = await factory.deploy(
+        name,
+        symbol,
+        this.cloudfrontUrl + '/',
+        await royaltyWallet.getAddress(),
+        royalties,
+        {
+          gasLimit: 5000000,
+          nonce,
+        },
+      )
+      const receipt = await contract.deployTransaction.wait()
+      return receipt.contractAddress
+    } catch (err) {
+      await this.cancelTransaction(masterWallet, nonce)
+      throw new InternalServerErrorException('could not mint eth' + err)
     }
-    throw new InternalServerErrorException('could not mint eth' + error)
+  }
+
+  async cancelTransaction(signer: InternalSigner, nonce: number) {
+    try {
+      await signer.sendTransaction({
+        to: signer.getAddress(),
+        value: 0,
+        nonce,
+      })
+    } catch (err2) {
+      this.logger.error(err2)
+    }
+  }
+
+  async getNewNonce(key: string): Promise<number> {
+    const id = v4()
+
+    await this.dbWriter.raw(
+      `insert into ${EthNonceEntity.table}(nonce, key_identifier, id) 
+      select (max(nonce)+1) as nonce, key_identifier, '${id}' as id 
+      from ${EthNonceEntity.table} where key_identifier = ?`,
+      key,
+    )
+    return (
+      (
+        await this.dbWriter<EthNonceEntity>(EthNonceEntity.table)
+          .where({
+            id,
+          })
+          .select('nonce')
+          .first()
+      )?.nonce ?? 0
+    )
   }
 }
