@@ -1,7 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { useEffect, useMemo } from "react"
-import CreatorContentFeed from "src/components/organisms/profile/main-content/news-feed/CreatorContentFeed"
+import GeneralContentFeed from "src/components/organisms/profile/main-content/feed/CreatorContentFeed"
 import { useFeed, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
@@ -33,7 +33,7 @@ const Home = () => {
         <div className="w-full bg-black">
           <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
             <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-              <CreatorContentFeed posts={collatedFeed} ownsProfile={false} />
+              <GeneralContentFeed posts={collatedFeed} ownsProfile={false} />
             </div>
           </div>
         </div>

@@ -13,8 +13,8 @@ import { useCreatePost } from "src/hooks"
 import usePost from "src/hooks/usePost"
 import { KeyedMutator, useSWRConfig } from "swr"
 
+import ProfileContentFeed from "./feed/ProfileContentFeed"
 import NewsFeedNavigation from "./new-post/navigation"
-import NewsFeedContent from "./news-feed/NewsFeedContent"
 
 export interface MainContentProps {
   profile: GetProfileResponseDto
@@ -25,7 +25,7 @@ export interface MainContentProps {
   mutatePosts: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
-const MainContent: FC<MainContentProps> = ({
+const ProfileContent: FC<MainContentProps> = ({
   profile,
   ownsProfile,
   posts,
@@ -115,7 +115,7 @@ const MainContent: FC<MainContentProps> = ({
       <div className="flex md:min-h-12">
         <NewsFeedNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
-      <NewsFeedContent
+      <ProfileContentFeed
         profile={profile}
         profileUsername={profileUsername}
         activeTab={activeTab}
@@ -131,4 +131,4 @@ const MainContent: FC<MainContentProps> = ({
   )
 }
 
-export default MainContent
+export default ProfileContent

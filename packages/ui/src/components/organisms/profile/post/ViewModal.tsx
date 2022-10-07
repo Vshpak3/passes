@@ -1,4 +1,3 @@
-import { PostDto } from "@passes/api-client"
 import classnames from "classnames"
 import dynamic from "next/dynamic"
 import Image from "next/image"
@@ -6,11 +5,12 @@ import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
-import React, { FC, useState } from "react"
+import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { Dialog } from "src/components/organisms"
+import { BuyPostProps } from "src/components/organisms/payment/BuyPostModal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -25,21 +25,23 @@ const BuyPostModal = dynamic(
   { ssr: false }
 )
 
-interface ViewModalProps {
+interface ViewModalProps extends BuyPostProps {
   isOpen: boolean
   onClose: () => void
   postUnlocked: boolean
-  post: PostDto
   dropdownItems: DropdownOption[]
   showcaseImg: string | null
 }
 
 const ViewModal: FC<ViewModalProps> = ({
+  cards,
+  defaultPayinMethod,
+  dropdownItems,
   isOpen,
   onClose,
   post,
   postUnlocked,
-  dropdownItems,
+  setIsPayed,
   showcaseImg
 }) => {
   const { images, video } = contentTypeCounter(post.content)
@@ -50,8 +52,11 @@ const ViewModal: FC<ViewModalProps> = ({
   return (
     <>
       <BuyPostModal
-        post={post}
+        cards={cards}
+        defaultPayinMethod={defaultPayinMethod}
         isOpen={openBuyPostModal}
+        post={post}
+        setIsPayed={setIsPayed}
         setOpen={setOpenBuyPostModal}
       />
       {!openBuyPostModal && (

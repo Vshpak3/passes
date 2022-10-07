@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
 import NoProfile from "src/components/organisms/NoProfile"
-import MainContent from "src/components/organisms/profile/main-content"
+import ProfileContent from "src/components/organisms/profile/main-content"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
 import ProfileDetails from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { useCreatorProfile } from "src/hooks"
@@ -43,7 +43,7 @@ const Profile: FC = () => {
               onCloseEditProfile={onCloseEditProfile}
               onSubmitEditProfile={onSubmitEditProfile}
             />
-            <MainContent
+            <ProfileContent
               profile={profile}
               ownsProfile={ownsProfile}
               posts={posts}

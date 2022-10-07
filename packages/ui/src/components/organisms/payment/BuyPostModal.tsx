@@ -1,5 +1,7 @@
 import {
+  CircleCardDto,
   GetPayinMethodResponseDtoMethodEnum,
+  PayinMethodDto,
   PostDto
 } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
@@ -11,23 +13,28 @@ import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
-import { usePayinMethod } from "src/hooks"
 import useExternalPasses from "src/hooks/useExternalPasses"
 
-interface IBuyPostModal {
+export interface BuyPostProps {
+  cards: CircleCardDto[]
+  defaultPayinMethod: PayinMethodDto | undefined
   post: PostDto
-  setOpen: Dispatch<SetStateAction<boolean>>
-  isOpen: boolean
   setIsPayed?: (value: boolean) => void
 }
 
-const BuyPostModal: FC<IBuyPostModal> = ({
-  post,
-  setOpen,
+interface BuyPostModalProps extends BuyPostProps {
+  isOpen: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+}
+
+const BuyPostModal: FC<BuyPostModalProps> = ({
+  cards,
+  defaultPayinMethod,
   isOpen,
-  setIsPayed
+  post,
+  setIsPayed,
+  setOpen
 }) => {
-  const { defaultPayinMethod, cards } = usePayinMethod()
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId
   )

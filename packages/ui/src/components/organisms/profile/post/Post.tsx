@@ -6,7 +6,7 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import { useUser } from "src/hooks"
+import { BuyPostProps } from "src/components/organisms/payment/BuyPostModal"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
@@ -24,24 +24,25 @@ export interface DropdownOption {
   readonly onClick: () => void
 }
 
-interface PostProps {
-  post: PostDto
+interface PostProps extends BuyPostProps {
   ownsProfile: boolean
   removePost?: (postId: string) => void
-  setIsPayed?: (value: boolean) => void
+  userId: string | undefined
 }
 
 export const Post = ({
-  post,
+  cards,
+  defaultPayinMethod,
   ownsProfile,
+  post,
   removePost,
-  setIsPayed
+  setIsPayed,
+  userId
 }: PostProps) => {
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<PostDto | null>(null)
-  const { user } = useUser()
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
 
   const dropdownOptions: DropdownOption[] = [
@@ -53,7 +54,7 @@ export const Post = ({
       text: "Block",
       onClick: () => setUserBlockModal(true)
     },
-    ...(post.userId === user?.id
+    ...(post.userId === userId
       ? [
           {
             text: "Delete",
@@ -76,11 +77,14 @@ export const Post = ({
     <>
       {currentPost && (
         <PostViewModal
-          post={currentPost}
+          cards={cards}
+          defaultPayinMethod={defaultPayinMethod}
+          dropdownItems={dropdownOptions}
           isOpen
           onClose={() => setCurrentPost(null)}
+          post={currentPost}
           postUnlocked={!postUnlocked}
-          dropdownItems={dropdownOptions}
+          setIsPayed={setIsPayed}
           showcaseImg={showcaseImg}
         />
       )}
@@ -89,20 +93,22 @@ export const Post = ({
         <BlockModal
           isOpen={userBlockModal}
           setOpen={setUserBlockModal}
-          userId={user?.id ?? ""}
+          userId={userId ?? ""}
         />
         <ReportModal
           isOpen={userReportModal}
           setOpen={setUserReportModal}
-          userId={user?.id ?? ""}
+          userId={userId ?? ""}
         />
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
           <PostTextContent post={post} />
           {!postUnlocked && (
             <LockedMedia
+              cards={cards}
+              defaultPayinMethod={defaultPayinMethod}
               post={post}
-              setPostUnlocked={setPostUnlocked}
               setIsPayed={setIsPayed}
+              setPostUnlocked={setPostUnlocked}
               showcaseImg={showcaseImg}
             />
           )}

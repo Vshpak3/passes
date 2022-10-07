@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { toast } from "react-toastify"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { usePayinMethod, useUser } from "src/hooks"
 import { KeyedMutator } from "swr"
 
 interface CreatorContentFeedProps {
@@ -12,13 +13,15 @@ interface CreatorContentFeedProps {
   mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
-const CreatorContentFeed = ({
+// TODO: implement pagination with infinite scroll, and loading state
+const GeneralContentFeed = ({
   posts: existingPosts,
   ownsProfile,
   removePost,
   mutatePosts
 }: CreatorContentFeedProps) => {
-  // TODO: implement pagination with infinite scroll, and loading state
+  const { user } = useUser()
+  const { defaultPayinMethod, cards } = usePayinMethod()
 
   const [posts, setPosts] = useState([...existingPosts])
   const [isPayed, setIsPayed] = useState(false)
@@ -51,10 +54,13 @@ const CreatorContentFeed = ({
           <div key={post.postId} className="flex w-full py-3">
             <Post
               key={`post_${index}`}
-              post={post}
+              cards={cards}
+              defaultPayinMethod={defaultPayinMethod}
               ownsProfile={ownsProfile}
+              post={post}
               removePost={removePost}
               setIsPayed={setIsPayed}
+              userId={user?.id}
             />
           </div>
         ))}
@@ -63,4 +69,4 @@ const CreatorContentFeed = ({
   )
 }
 
-export default CreatorContentFeed
+export default GeneralContentFeed

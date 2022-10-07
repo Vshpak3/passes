@@ -9,11 +9,11 @@ import { FC } from "react"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
 import { KeyedMutator } from "swr"
 
-import CreatorContentFeed from "./CreatorContentFeed"
+import GeneralContentFeed from "./CreatorContentFeed"
 import FanWallFeed from "./FanWallFeed"
-import PassesFeed from "./passes-feed"
+import PassesFeed from "./PassesFeed"
 
-export interface NewsFeedContentProps {
+export interface ProfileContentFeedProps {
   profile: GetProfileResponseDto
   profileUsername: string
   ownsProfile: boolean
@@ -26,7 +26,7 @@ export interface NewsFeedContentProps {
   mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
 }
 
-const NewsFeedContent: FC<NewsFeedContentProps> = ({
+const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   profile,
   profileUsername,
   activeTab,
@@ -51,7 +51,7 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
             />
           )}
           {posts?.length > 0 && (
-            <CreatorContentFeed
+            <GeneralContentFeed
               posts={posts}
               mutatePosts={mutatePosts}
               removePost={removePost}
@@ -86,4 +86,4 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
   }
 }
 
-export default NewsFeedContent
+export default ProfileContentFeed
