@@ -3,6 +3,7 @@ import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import { Keypair } from '@solana/web3.js'
 import base58 from 'bs58'
 import dedent from 'dedent'
+import { ethers } from 'ethers'
 import nacl from 'tweetnacl'
 import { v4 } from 'uuid'
 import Web3 from 'web3'
@@ -217,7 +218,7 @@ export class WalletService {
       chain == ChainEnum.MATIC ||
       chain == ChainEnum.AVAX
     ) {
-      return address.toLowerCase()
+      return ethers.utils.getAddress(address)
     }
     return address
   }
