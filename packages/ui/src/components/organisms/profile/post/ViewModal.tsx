@@ -6,7 +6,7 @@ import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
@@ -30,6 +30,7 @@ interface ViewModalProps {
   postUnlocked: boolean
   post: PostDto
   dropdownItems: DropdownOption[]
+  showcaseImg: string | null
 }
 
 const ViewModal: FC<ViewModalProps> = ({
@@ -37,20 +38,13 @@ const ViewModal: FC<ViewModalProps> = ({
   onClose,
   post,
   postUnlocked,
-  dropdownItems
+  dropdownItems,
+  showcaseImg
 }) => {
   const { images, video } = contentTypeCounter(post.content)
   const { user } = useUser()
   const { data } = useComments(post.postId)
   const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
-  const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
-
-  // Set image if it exists in post
-  useEffect(() => {
-    if (post.content?.[0]?.contentType === "image") {
-      setShowcaseImg(post.content[0].signedUrl as string)
-    }
-  }, [post.content])
 
   return (
     <>
@@ -91,7 +85,6 @@ const ViewModal: FC<ViewModalProps> = ({
                     <>
                       <PostUnlockButton
                         onClick={() => setOpenBuyPostModal(true)}
-                        value={postUnlocked.toString()}
                         name={`Unlock Post For ${formatCurrency(
                           post.price ?? 0
                         )}`}

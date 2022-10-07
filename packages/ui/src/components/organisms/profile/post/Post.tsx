@@ -1,6 +1,6 @@
 import { PostDto } from "@passes/api-client"
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   BlockModal,
   FormContainer,
@@ -10,6 +10,7 @@ import { useUser } from "src/hooks"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
+import PostMedia from "./PostMedia"
 import { PostProfileAvatar } from "./PostProfileAvatar"
 import { PostTextContent } from "./PostTextContent"
 
@@ -41,6 +42,7 @@ export const Post = ({
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<PostDto | null>(null)
   const { user } = useUser()
+  const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
 
   const dropdownOptions: DropdownOption[] = [
     {
@@ -63,6 +65,13 @@ export const Post = ({
       : [])
   ]
 
+  // Set image if it exists in post
+  useEffect(() => {
+    if (post.content?.[0]?.contentType === "image") {
+      setShowcaseImg(post.content[0].signedUrl as string)
+    }
+  }, [post.content])
+
   return (
     <>
       {currentPost && (
@@ -70,8 +79,9 @@ export const Post = ({
           post={currentPost}
           isOpen
           onClose={() => setCurrentPost(null)}
-          postUnlocked={postUnlocked}
+          postUnlocked={!postUnlocked}
           dropdownItems={dropdownOptions}
+          showcaseImg={showcaseImg}
         />
       )}
       <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
@@ -88,12 +98,15 @@ export const Post = ({
         />
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
           <PostTextContent post={post} />
-          <LockedMedia
-            post={post}
-            postUnlocked={postUnlocked}
-            setPostUnlocked={setPostUnlocked}
-            setIsPayed={setIsPayed}
-          />
+          {!postUnlocked && (
+            <LockedMedia
+              post={post}
+              setPostUnlocked={setPostUnlocked}
+              setIsPayed={setIsPayed}
+              showcaseImg={showcaseImg}
+            />
+          )}
+          {postUnlocked && <PostMedia post={post} />}
         </div>
         <PostEngagement
           post={post}
