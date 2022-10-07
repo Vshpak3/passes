@@ -992,7 +992,7 @@ export class PaymentService {
     await this.dbWriter<PayinEntity>(PayinEntity.table)
       .update({
         transaction_hash: transferDto.transactionHash,
-        callback_input_json: newJson,
+        callback_input_json: JSON.stringify(newJson),
       })
       .where({ id: payin.id })
 
