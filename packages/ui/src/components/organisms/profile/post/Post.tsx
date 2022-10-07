@@ -39,7 +39,7 @@ export const Post = ({
   setIsPayed,
   userId
 }: PostProps) => {
-  const [postUnlocked, setPostUnlocked] = useState(false)
+  const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<PostDto | null>(null)

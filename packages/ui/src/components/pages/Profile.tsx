@@ -1,6 +1,6 @@
 import { FC } from "react"
 import NoProfile from "src/components/organisms/NoProfile"
-import ProfileContent from "src/components/organisms/profile/main-content"
+import ProfileContent from "src/components/organisms/profile/main-content/ProfileContent"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
 import ProfileDetails from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { useCreatorProfile } from "src/hooks"
@@ -33,11 +33,9 @@ const Profile: FC = () => {
           <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
             <ProfileDetails
               profile={profile}
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              username={profileUsername!}
+              username={profileUsername!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
               ownsProfile={ownsProfile}
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              creatorStats={creatorStats!}
+              creatorStats={creatorStats!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
               editProfile={editProfile}
               onEditProfile={onEditProfile}
               onCloseEditProfile={onCloseEditProfile}
@@ -49,12 +47,11 @@ const Profile: FC = () => {
               posts={posts}
               mutatePosts={mutatePosts}
               fanWallPosts={fanWallPosts}
-              profileUsername={profileUsername ?? ""}
+              profileUsername={profileUsername!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
             />
           </div>
           <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
-            {/* pass types here */}
-            {profile?.profileId && <PassTypes creatorPasses={creatorPasses} />}
+            <PassTypes creatorPasses={creatorPasses} />
           </div>
         </div>
       )}

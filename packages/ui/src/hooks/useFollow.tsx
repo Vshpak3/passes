@@ -4,6 +4,8 @@ import useSWR from "swr"
 
 import useUser from "./useUser"
 
+const CACHE_KEY_FOLLOW = "/profile/follow/creator/"
+
 const useFollow = (creatorId: string) => {
   const api = new FollowApi()
   const { user } = useUser()
@@ -14,7 +16,7 @@ const useFollow = (creatorId: string) => {
     })
   }
   const { data, error, mutate } = useSWR(
-    ["/fan-wall/creator/", creatorId],
+    [CACHE_KEY_FOLLOW, creatorId],
     fetchIsFollowing
   )
 
