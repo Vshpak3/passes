@@ -13,6 +13,7 @@ import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { Dialog } from "src/components/organisms"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { useComments, useUser } from "src/hooks"
@@ -132,15 +133,7 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
                 </button>
               </div>
               <div className="mt-[50px] flex space-x-4">
-                <div className="relative h-12 w-12 overflow-hidden rounded-full">
-                  <Image
-                    src="/img/profile/select-profile-img.png"
-                    layout="fill"
-                    alt="profile"
-                    objectFit="cover"
-                    objectPosition="center"
-                  />
-                </div>
+                <ProfileThumbnail userId={post.userId} />
                 <div>
                   <div className="flex items-center">
                     <h4 className="mr-1.5 text-base font-medium leading-[22px]">
