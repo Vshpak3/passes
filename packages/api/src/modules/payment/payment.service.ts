@@ -1,6 +1,11 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-magic-numbers */
-import { BadRequestException, Inject, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ModuleRef } from '@nestjs/core'
 import ms from 'ms'
@@ -972,7 +977,7 @@ export class PaymentService {
     }
     const payin = await query.first()
     if (!payin) {
-      throw new PayinNotFoundError('payin not found')
+      throw new InternalServerErrorException('payin not found')
     }
 
     let newJson: CreateNftPassPayinCallbackInput | undefined = undefined
