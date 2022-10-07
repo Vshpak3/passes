@@ -1016,6 +1016,12 @@ export class PaymentService {
         break
     }
 
+    if (!correctAmount) {
+      throw new InternalServerErrorException(
+        'received payment of incorrect amount',
+      )
+    }
+
     if (correctAmount) {
       switch (transferDto.status) {
         case CircleAccountStatusEnum.PENDING:
