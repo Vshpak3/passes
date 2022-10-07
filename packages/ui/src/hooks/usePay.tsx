@@ -75,7 +75,7 @@ export const usePay = (
       )
     } catch (error: any) {
       await cancelPayinCallback()
-      errorMessage(error, true)
+      throw error
     } finally {
       provider.off("connect")
       provider.off("accountChanged")
