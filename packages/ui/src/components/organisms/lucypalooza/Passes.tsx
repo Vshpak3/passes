@@ -65,6 +65,7 @@ const Passes = () => {
   const [passes, setPasses] = useState<PassDto[]>()
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
   const [isPaying, setIsPaying] = useState<boolean>(false)
+  const [payinId, setPayinId] = useState<string>("")
   const [passId, setPassId] = useState<string>()
   const [open, setOpen] = useState<boolean>(false)
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
@@ -90,9 +91,14 @@ const Passes = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleCancel = () => {
-    // const api = new PassApi()
-    // await
+  const handleCancel = async () => {
+    const api = new PaymentApi()
+
+    if (payinId.length > 0) {
+      await api.cancelPayin({
+        payinId
+      })
+    }
   }
   const getPayinState = useCallback(async () => {
     const api = new PaymentApi()
@@ -128,6 +134,13 @@ const Passes = () => {
         payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
         payin.payinStatus === PayinDtoPayinStatusEnum.Pending
     )
+    if (
+      payins &&
+      payins.payins[0] &&
+      payins.payins[0].payinStatus === PayinDtoPayinStatusEnum.Pending
+    ) {
+      setPayinId(payins.payins[0].id)
+    }
     setIsPaying(isPaying || paying.length > 0)
     setIsLoading(false)
   }, [failedMessage, isPaying])
