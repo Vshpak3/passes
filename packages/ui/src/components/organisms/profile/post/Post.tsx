@@ -39,7 +39,7 @@ export const Post = ({
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
-  const [currentPost, setCurrentPost] = useState<any>(null)
+  const [currentPost, setCurrentPost] = useState<PostDto | null>(null)
   const { user } = useUser()
 
   const dropdownOptions: DropdownOption[] = [
