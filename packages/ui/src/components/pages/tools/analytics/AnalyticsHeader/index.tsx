@@ -10,17 +10,7 @@ const AnalyticsHeader: FC<IAnalyticsHeader> = ({
   return (
     <div className="flex flex-col bg-black md:flex-row ">
       <div className="flex flex-1 flex-col justify-between pt-2">
-        <h2 className="text-2xl font-bold">Analytics</h2>
-        <div className="breadcrumbs text-sm">
-          <ul>
-            <li className="text-base font-medium">
-              <a>Creator</a>
-            </li>
-            <li>
-              <a className="text-base">Data Analytics</a>
-            </li>
-          </ul>
-        </div>
+        <h2 className="text-2xl font-bold">Earnings</h2>
       </div>
       <div className="cover-image card flex h-[137px] w-full flex-col justify-between rounded-md border border-gray-800 p-4 md:w-[373px]">
         <h4 className="card-title text-3xl">
