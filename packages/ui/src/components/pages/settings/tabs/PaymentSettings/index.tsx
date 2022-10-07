@@ -248,7 +248,9 @@ const PaymentSettings = ({
           {watch("metamask") ===
           defaultPayinMethod?.method + "." + defaultPayinMethod?.chain ? (
             <Button tag="button" variant="gray">
-              <span className="text-[14px] font-[700]">Default</span>
+              <span className="text-[14px] font-[700]">
+                {isEmbedded ? "Selected" : "Default"}
+              </span>
             </Button>
           ) : (
             <Button
@@ -265,7 +267,9 @@ const PaymentSettings = ({
               tag="button"
               variant="purple-light"
             >
-              <span className="font-[700]">Set Default</span>
+              <span className="font-[700]">
+                {isEmbedded ? "Use" : "Set Default"}
+              </span>
             </Button>
           )}
         </div>
@@ -294,7 +298,9 @@ const PaymentSettings = ({
           {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
           defaultPayinMethod?.method ? (
             <Button tag="button" variant="gray">
-              <span className="text-[14px] font-[700]">Default</span>
+              <span className="text-[14px] font-[700]">
+                {isEmbedded ? "Selected" : "Default"}
+              </span>
             </Button>
           ) : (
             <Button
@@ -307,7 +313,9 @@ const PaymentSettings = ({
               tag="button"
               variant="purple-light"
             >
-              <span className="font-[700]">Set Default</span>
+              <span className="font-[700]">
+                {isEmbedded ? "Use" : "Set Default"}
+              </span>
             </Button>
           )}
         </div>
@@ -366,7 +374,9 @@ const PaymentSettings = ({
                 <div>
                   {item.id === defaultPayinMethod?.cardId ? (
                     <Button tag="button" variant="gray">
-                      <span className="text-[14px] font-[700]">Default</span>
+                      <span className="text-[14px] font-[700]">
+                        {isEmbedded ? "Selected" : "Default"}
+                      </span>
                     </Button>
                   ) : (
                     <Button
@@ -379,7 +389,9 @@ const PaymentSettings = ({
                       tag="button"
                       variant="purple-light"
                     >
-                      <span className="font-[700]">Set Default</span>
+                      <span className="font-[700]">
+                        {isEmbedded ? "Use" : "Set Default"}
+                      </span>
                     </Button>
                   )}
                 </div>

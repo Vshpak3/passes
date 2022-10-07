@@ -905,7 +905,9 @@ export class MessagesService {
     const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.PENDING,
+        PayinStatusEnum.SUCCESSFUL_READY,
       ])
       .where({ target: target })
       .select('id')

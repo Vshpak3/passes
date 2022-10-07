@@ -8,6 +8,7 @@ async function handleCallback(
   payin,
   payService: PaymentService,
   db: DatabaseService['knex'],
+  successfulCallbackStatus: PayinStatusEnum,
   failedCallbackStatus: PayinStatusEnum,
   selector: string,
 ): Promise<void> {
@@ -24,7 +25,8 @@ async function handleCallback(
     if (output) {
       await db<PayinEntity>(PayinEntity.table)
         .update({
-          callback_output_json: JSON.stringify(output),
+          payin_status: successfulCallbackStatus,
+          callback_output_json: output ? JSON.stringify(output) : undefined,
         })
         .where({ id: payin.id })
     }
@@ -48,6 +50,7 @@ export const handleSuccesfulCallback = async (
     payin,
     payService,
     db,
+    PayinStatusEnum.SUCCESSFUL,
     PayinStatusEnum.SUCCESS_CALLBACK_FAILED,
     'success',
   )
@@ -62,6 +65,7 @@ export const handleFailedCallback = async (
     payin,
     payService,
     db,
+    PayinStatusEnum.FAILED,
     PayinStatusEnum.FAIL_CALLBACK_FAILED,
     'failure',
   )
@@ -76,6 +80,7 @@ export const handleCreationCallback = async (
     payin,
     payService,
     db,
+    PayinStatusEnum.CREATED,
     PayinStatusEnum.CREATE_CALLBACK_FAILED,
     'creation',
   )

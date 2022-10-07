@@ -811,7 +811,9 @@ export class PassService {
     const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.PENDING,
+        PayinStatusEnum.SUCCESSFUL_READY,
       ])
       .andWhere({ target: target })
       .select('id')
@@ -940,7 +942,9 @@ export class PassService {
     const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
       .whereIn('payin_status', [
         PayinStatusEnum.CREATED,
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.PENDING,
+        PayinStatusEnum.SUCCESSFUL_READY,
       ])
       .andWhere({ target: target })
       .select('id')

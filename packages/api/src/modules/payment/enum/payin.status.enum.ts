@@ -1,10 +1,14 @@
 export enum PayinStatusEnum {
   REGISTERED = 'registered',
+
+  CREATED_READY = 'created_ready',
   CREATED = 'created',
   PENDING = 'pending',
 
+  SUCCESSFUL_READY = 'successful_ready',
   SUCCESSFUL = 'successful',
 
+  FAILED_READY = 'failed_ready',
   FAILED = 'failed',
   UNREGISTERED = 'unregistered',
 

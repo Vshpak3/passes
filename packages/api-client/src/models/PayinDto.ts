@@ -112,9 +112,12 @@ export interface PayinDto {
  */
 export const PayinDtoPayinStatusEnum = {
     Registered: 'registered',
+    CreatedReady: 'created_ready',
     Created: 'created',
     Pending: 'pending',
+    SuccessfulReady: 'successful_ready',
     Successful: 'successful',
+    FailedReady: 'failed_ready',
     Failed: 'failed',
     Unregistered: 'unregistered',
     ActionRequired: 'action_required',

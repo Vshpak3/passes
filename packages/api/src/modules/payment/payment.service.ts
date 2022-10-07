@@ -316,7 +316,9 @@ export class PaymentService {
       const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .whereIn('payin_status', [
           PayinStatusEnum.CREATED,
+          PayinStatusEnum.CREATED_READY,
           PayinStatusEnum.PENDING,
+          PayinStatusEnum.SUCCESSFUL_READY,
         ])
         .andWhere({ target: payin.target })
         .select('id')
@@ -1110,7 +1112,7 @@ export class PaymentService {
       }
 
       await this.dbWriter<PayinEntity>(PayinEntity.table)
-        .update({ payin_status: PayinStatusEnum.CREATED })
+        .update({ payin_status: PayinStatusEnum.CREATED_READY })
         .where({ id: entryDto.payinId })
     } catch (err) {
       await this.unregisterPayin(payinDto.id, userId)
@@ -1614,11 +1616,12 @@ export class PaymentService {
       .where({ id: payinId })
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
       .update({
-        payin_status: PayinStatusEnum.FAILED,
+        payin_status: PayinStatusEnum.FAILED_READY,
       })
     // check for completed update
     if (rows == 1) {
@@ -1640,7 +1643,7 @@ export class PaymentService {
         PayinStatusEnum.PENDING,
       ])
       .update({
-        payin_status: PayinStatusEnum.SUCCESSFUL,
+        payin_status: PayinStatusEnum.SUCCESSFUL_READY,
       })
     // check for completed update
     if (rows == 1) {

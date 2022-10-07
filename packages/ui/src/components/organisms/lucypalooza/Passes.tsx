@@ -127,8 +127,10 @@ const Passes = () => {
     })
     const paying = payins.payins.filter(
       (payin) =>
+        payin.payinStatus === PayinDtoPayinStatusEnum.CreatedReady ||
         payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
-        payin.payinStatus === PayinDtoPayinStatusEnum.Pending
+        payin.payinStatus === PayinDtoPayinStatusEnum.Pending ||
+        payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
     )
     if (paying[0]) {
       setPayin(payins.payins[0])
