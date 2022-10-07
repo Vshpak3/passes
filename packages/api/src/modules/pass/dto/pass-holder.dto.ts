@@ -56,6 +56,7 @@ export class PassHolderDto extends PassDto {
   ) {
     super(passHolder)
     if (passHolder) {
+      this.passId = passHolder.pass_id
       this.passHolderId = passHolder.id
       this.holderId = passHolder.holder_id
       this.walletId = passHolder.wallet_id
