@@ -1,8 +1,10 @@
+import { FC } from "react"
+
 interface FooterProps {
   disableForm?: boolean
 }
 
-export const Footer = ({ disableForm }: FooterProps) => {
+export const Footer: FC<FooterProps> = ({ disableForm }) => {
   return (
     <div className="flex w-full items-center justify-end gap-[10px] p-0 pt-6">
       <span>

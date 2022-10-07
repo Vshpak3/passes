@@ -1,7 +1,6 @@
 import { FOOTER } from '../components/footer'
 
-export const CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT =
-  '[Passes] Password Reset Successful'
+export const CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT = 'Password Reset Successful'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ConfirmPasswordResetTemplateVariables {}

@@ -1,4 +1,4 @@
-export const CONFIRM_EMAIL_SUBJECT = '[Passes] Verify Email'
+export const CONFIRM_EMAIL_SUBJECT = 'Verify Email'
 
 export interface ConfirmEmailTemplateVariables {
   verifyEmailUrl: string

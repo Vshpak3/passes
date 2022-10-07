@@ -1,5 +1,4 @@
-export const INIT_PASSWORD_RESET_EMAIL_SUBJECT =
-  '[Passes] Confirm Password Reset'
+export const INIT_PASSWORD_RESET_EMAIL_SUBJECT = 'Confirm Password Reset'
 
 export interface InitPasswordResetEmailTemplateVariables {
   passwordResetLink: string
