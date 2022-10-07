@@ -15,7 +15,6 @@ import {
   RequestPayouts
 } from "./payouts"
 import Popover from "./Popover"
-import ProfileNftPass from "./ProfileNftPass"
 import ReportModal from "./ReportModal"
 import { SidebarDefault, SidebarMobile } from "./sidebar"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
@@ -38,7 +37,6 @@ export {
   PassesListSection,
   PastTransactions,
   Popover,
-  ProfileNftPass,
   ReportModal,
   RequestPayouts,
   SelectPassType,

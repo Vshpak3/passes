@@ -9,9 +9,8 @@ import { FC } from "react"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post"
 import { KeyedMutator } from "swr"
 
-import CreatorContentFeed from "./creator-content-feed"
-import EventsFeed from "./events-feed"
-import FanWallFeed from "./fan-wall-feed"
+import CreatorContentFeed from "./CreatorContentFeed"
+import FanWallFeed from "./FanWallFeed"
 import PassesFeed from "./passes-feed"
 
 export interface NewsFeedContentProps {
@@ -80,8 +79,6 @@ const NewsFeedContent: FC<NewsFeedContentProps> = ({
           />
         </>
       )
-    case "events":
-      return <EventsFeed />
     case "passes":
       return <PassesFeed profile={profile} />
     default:

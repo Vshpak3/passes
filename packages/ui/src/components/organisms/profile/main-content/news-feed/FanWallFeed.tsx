@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { BlockModal, ReportModal } from "src/components/organisms"
 import { useSWRConfig } from "swr"
 
-import { Comment } from "./fan-wall-comment"
+import { FanWallComment } from "./FanWallComment"
 
 interface FanWallFeedProps {
   fanWallPosts?: GetFanWallResponseDto
@@ -120,7 +120,7 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
         >
           {posts.map((comment: FanWallCommentDto, index: number) => (
             <div key={index} className="flex py-3">
-              <Comment
+              <FanWallComment
                 key={`post_${index}`}
                 post={
                   {

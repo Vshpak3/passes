@@ -3,7 +3,7 @@ import { FC } from "react"
 import { FormContainer } from "src/components/organisms"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 
-interface CommentProps {
+interface FanWallCommentProps {
   post: PostDto
   dropdownItems: Array<{
     text: string
@@ -11,7 +11,10 @@ interface CommentProps {
   }>
 }
 
-export const Comment: FC<CommentProps> = ({ post, dropdownItems }) => {
+export const FanWallComment: FC<FanWallCommentProps> = ({
+  post,
+  dropdownItems
+}) => {
   return (
     <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
       <PostProfileAvatar

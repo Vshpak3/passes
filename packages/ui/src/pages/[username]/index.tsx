@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import NoProfile from "src/components/organisms/NoProfile"
 import PassTypes from "src/components/organisms/profile/passes/PassTypes"
-import ProfileDetails from "src/components/organisms/profile/profile-details"
+import ProfileDetails from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { useCreatorProfile } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const EditProfile = dynamic(
-  () => import("src/components/organisms/profile/profile-details/edit-profile"),
+  () => import("src/components/organisms/profile/profile-details/EditProfile"),
   { ssr: false }
 )
 const MainContent = dynamic(
@@ -15,7 +15,7 @@ const MainContent = dynamic(
   { ssr: false }
 )
 
-const Profile = () => {
+const Profile: FC = () => {
   const {
     creatorPasses,
     editProfile,
@@ -47,6 +47,7 @@ const Profile = () => {
   if (!profile || Object.keys(profile).length === 0) {
     return <NoProfile />
   }
+
   return (
     <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
       <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">

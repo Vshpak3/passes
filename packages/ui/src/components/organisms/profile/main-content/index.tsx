@@ -14,7 +14,7 @@ import usePost from "src/hooks/usePost"
 import { KeyedMutator, useSWRConfig } from "swr"
 
 import NewsFeedNavigation from "./new-post/navigation"
-import NewsFeedContent from "./news-feed/news-feed-content"
+import NewsFeedContent from "./news-feed/NewsFeedContent"
 
 export interface MainContentProps {
   profile: GetProfileResponseDto
