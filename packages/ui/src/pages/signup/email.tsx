@@ -4,8 +4,13 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
+import {
+  Button,
+  ButtonTypeEnum,
+  FormInput,
+  Text,
+  Wordmark
+} from "src/components/atoms"
 import {
   authRouter,
   AuthStates,
@@ -34,11 +39,11 @@ const SignupEmailPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<SignupEmailPageSchema>({
     resolver: yupResolver(signupPageEmailSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [hasSentEmail, setHasSentEmail] = useState(false)
 
@@ -52,36 +57,38 @@ const SignupEmailPage: FC = () => {
     authRouter(router, userClaims)
   }, [router, userClaims])
 
-  const onUserRegister = async (email: string) => {
-    try {
-      const api = new AuthApi()
-      await api.setUserEmail({ setEmailRequestDto: { email } })
+  const verifyEmail = async (email: string) => {
+    const api = new AuthApi()
+    await api.setUserEmail({ setEmailRequestDto: { email } })
 
-      // In local development (dev) we auto-verify the email
-      if (isDev) {
-        const res = await api.verifyUserEmail({
-          verifyEmailDto: {
-            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-          }
-        })
-
-        const setRes = setTokens(res, setAccessToken, setRefreshToken)
-        if (!setRes) {
-          return
+    // In local development (dev) we auto-verify the email
+    if (isDev) {
+      const res = await api.verifyUserEmail({
+        verifyEmailDto: {
+          verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
         }
+      })
 
-        router.push(authStateToRoute(AuthStates.VERIFY))
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
+      if (!setRes) {
+        return
       }
 
-      router.query.hasEmail = "true"
-      router.push(router)
-    } catch (error: any) {
-      errorMessage(error, true)
+      router.push(authStateToRoute(AuthStates.VERIFY))
     }
+
+    router.query.hasEmail = "true"
+    router.push(router)
   }
 
   const onSubmit = (data: SignupEmailPageSchema) => {
-    onUserRegister(data.email)
+    try {
+      setIsSubmitting(true)
+      verifyEmail(data.email)
+    } catch (error: any) {
+      errorMessage(error, true)
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -138,16 +145,18 @@ const SignupEmailPage: FC = () => {
                   />
                 </div>
 
-                <button
+                <Button
                   className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                  type="submit"
-                  disabled={disableForm}
+                  tag="button"
+                  type={ButtonTypeEnum.SUBMIT}
+                  disabled={isSubmitting}
+                  disabledClass="opacity-[0.5]"
                 >
                   <Text fontSize={16} className="font-medium">
                     Register account
                   </Text>
                   <EnterIcon />
-                </button>
+                </Button>
               </form>
             </>
           )}

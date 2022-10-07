@@ -10,9 +10,8 @@ import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Text } from "src/components/atoms"
+import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
@@ -73,11 +72,11 @@ const SignupInitialPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<SignupInitialPageSchema>({
     resolver: yupResolver(signupInitialPageSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady || hasLoaded) {
@@ -88,42 +87,44 @@ const SignupInitialPage: FC = () => {
     setHasLoaded(true)
   }, [router, userClaims, hasLoaded])
 
-  const onUserRegister = async (email: string, password: string) => {
-    try {
-      const api = new AuthLocalApi()
-      const res = await api.createEmailPasswordUser({
-        createLocalUserRequestDto: { email, password }
-      })
+  const initiateSignup = async (email: string, password: string) => {
+    const api = new AuthLocalApi()
+    const res = await api.createEmailPasswordUser({
+      createLocalUserRequestDto: { email, password }
+    })
 
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
-      }
-
-      // In local development we auto-verify the email
-      if (isDev) {
-        const authApi = new AuthApi()
-        const res = await authApi.verifyUserEmail({
-          verifyEmailDto: {
-            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-          }
-        })
-        setTokens(res, setAccessToken, setRefreshToken)
-      }
-
-      authRouter(
-        router,
-        jwtDecode<JWTUserClaims>(res.accessToken),
-        false,
-        new URLSearchParams([["hasEmail", "true"]])
-      )
-    } catch (error: any) {
-      errorMessage(error, true)
+    const setRes = setTokens(res, setAccessToken, setRefreshToken)
+    if (!setRes) {
+      return
     }
+
+    // In local development we auto-verify the email
+    if (isDev) {
+      const authApi = new AuthApi()
+      const res = await authApi.verifyUserEmail({
+        verifyEmailDto: {
+          verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+        }
+      })
+      setTokens(res, setAccessToken, setRefreshToken)
+    }
+
+    authRouter(
+      router,
+      jwtDecode<JWTUserClaims>(res.accessToken),
+      false,
+      new URLSearchParams([["hasEmail", "true"]])
+    )
   }
 
-  const onSubmit = (data: SignupInitialPageSchema) => {
-    onUserRegister(data.email, data.password)
+  const onSubmit = async (data: SignupInitialPageSchema) => {
+    try {
+      setIsSubmitting(true)
+      await initiateSignup(data.email, data.password)
+    } catch (error: any) {
+      errorMessage(error, true)
+      setIsSubmitting(false)
+    }
   }
 
   const handleLoginWithGoogle = async () => {
@@ -200,16 +201,18 @@ const SignupInitialPage: FC = () => {
               />
             </div>
 
-            <button
+            <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[340px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9 xs:w-[360px]"
-              type="submit"
-              disabled={disableForm}
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
+              disabled={isSubmitting}
+              disabledClass="opacity-[0.5]"
             >
               <Text fontSize={16} className="font-medium">
                 Register account
               </Text>
               <EnterIcon />
-            </button>
+            </Button>
           </form>
           <div className="z-10 flex gap-[17px]">
             <RoundedIconButton onClick={handleLoginWithGoogle}>

@@ -8,12 +8,11 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, Text } from "src/components/atoms"
+import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { SignupTiles } from "src/components/molecules"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
@@ -45,9 +44,9 @@ const LoginPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<LoginPageSchema>({ resolver: yupResolver(loginPageSchema) })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -57,27 +56,29 @@ const LoginPage: FC = () => {
     authRouter(router, userClaims)
   }, [router, userClaims])
 
-  const onUserLogin = async (email: string, password: string) => {
-    try {
-      const api = new AuthLocalApi()
-      const res = await api.loginWithEmailPassword({
-        localUserLoginRequestDto: { email, password }
-      })
+  const loginUser = async (email: string, password: string) => {
+    const api = new AuthLocalApi()
+    const res = await api.loginWithEmailPassword({
+      localUserLoginRequestDto: { email, password }
+    })
 
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
-      }
-
-      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
-    } catch (error: any) {
-      toast.error("Invalid credentials")
-      console.error(await errorMessage(error))
+    const setRes = setTokens(res, setAccessToken, setRefreshToken)
+    if (!setRes) {
+      return
     }
+
+    authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
   }
 
   const onSubmit = async (data: LoginPageSchema) => {
-    await onUserLogin(data.email, data.password)
+    try {
+      setIsSubmitting(true)
+      await loginUser(data.email, data.password)
+    } catch (error: any) {
+      toast.error("Invalid credentials")
+      console.error(await errorMessage(error))
+      setIsSubmitting(false)
+    }
   }
 
   const handleLoginWithGoogle = async () => {
@@ -153,16 +154,18 @@ const LoginPage: FC = () => {
               </Text>
             </div>
 
-            <button
+            <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-              type="submit"
-              disabled={disableForm}
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
+              disabled={isSubmitting}
+              disabledClass="opacity-[0.5]"
             >
               <Text fontSize={16} className="font-medium">
                 Login
               </Text>
               <EnterIcon />
-            </button>
+            </Button>
           </form>
 
           <div className="z-10 flex gap-[17px]">

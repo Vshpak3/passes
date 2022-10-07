@@ -13,8 +13,13 @@ import { FC, useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
+import {
+  Button,
+  ButtonTypeEnum,
+  FormInput,
+  Text,
+  Wordmark
+} from "src/components/atoms"
 import {
   authRouter,
   AuthStates,
@@ -60,15 +65,14 @@ const SignupInfoPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     setError,
     setValue,
     watch
   } = useForm<SignupInfoPageSchema>({
     resolver: yupResolver(signupInfoPageSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarDate, setCalendarDate] = useState(new Date())
 
@@ -80,7 +84,7 @@ const SignupInfoPage: FC = () => {
     authRouter(router, userClaims)
   }, [router, userClaims])
 
-  const onUserRegister = async (
+  const createNewUser = async (
     name: string,
     username: string,
     countryCode: string,
@@ -98,6 +102,7 @@ const SignupInfoPage: FC = () => {
         })
 
       if (!validUsername) {
+        setIsSubmitting(false)
         return
       }
 
@@ -121,12 +126,15 @@ const SignupInfoPage: FC = () => {
 
       router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: any) {
+      toast.dismiss()
       errorMessage(err, true)
+      setIsSubmitting(false)
     }
   }
 
   const onSubmit = (data: SignupInfoPageSchema) => {
-    onUserRegister(
+    setIsSubmitting(true)
+    createNewUser(
       data.legalFullName,
       data.username,
       iso3311a2.getCode(data.countryCode),
@@ -257,16 +265,18 @@ const SignupInfoPage: FC = () => {
               />
             </div>
 
-            <button
+            <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-              type="submit"
-              disabled={disableForm}
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
+              disabled={isSubmitting}
+              disabledClass="opacity-[0.5]"
             >
               <Text fontSize={16} className="font-medium">
                 Register account
               </Text>
               <EnterIcon />
-            </button>
+            </Button>
           </form>
         </div>
       </div>

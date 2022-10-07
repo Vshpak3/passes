@@ -5,8 +5,13 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
+import {
+  Button,
+  ButtonTypeEnum,
+  FormInput,
+  Text,
+  Wordmark
+} from "src/components/atoms"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
@@ -30,12 +35,11 @@ const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<ForgotPasswordFormProps>({
     resolver: yupResolver(forgotPasswordFormSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
@@ -46,26 +50,28 @@ const ForgotPassword = () => {
     authRouter(router, userClaims, true)
   }, [router, userClaims])
 
+  const resetPassword = async (email: string) => {
+    const api = new AuthLocalApi()
+    await api.initPasswordReset({
+      initResetPasswordRequestDto: { email }
+    })
+
+    setEmailSent(true)
+
+    // In local development we auto-verify the email
+    if (isDev) {
+      await new Promise((resolve) => setTimeout(resolve, ms("1 second"))) // sleep for a second
+      router.push("/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+    }
+  }
+
   const onSubmit = async (data: ForgotPasswordFormProps) => {
     try {
-      const api = new AuthLocalApi()
-      await api.initPasswordReset({
-        initResetPasswordRequestDto: {
-          email: data.email
-        }
-      })
-
-      setEmailSent(true)
-
-      // In local development we auto-verify the email
-      if (isDev) {
-        await new Promise((resolve) => setTimeout(resolve, ms("1 second"))) // sleep for a second
-        router.push(
-          "/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-        )
-      }
+      setIsSubmitting(true)
+      await resetPassword(data.email)
     } catch (error: any) {
       errorMessage(error, true)
+      setIsSubmitting(false)
     }
   }
 
@@ -114,16 +120,18 @@ const ForgotPassword = () => {
                 />
               </div>
 
-              <button
+              <Button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                type="submit"
-                disabled={disableForm}
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
+                disabled={isSubmitting}
+                disabledClass="opacity-[0.5]"
               >
                 <Text fontSize={16} className="font-medium">
                   Reset Password
                 </Text>
                 <EnterIcon />
-              </button>
+              </Button>
             </form>
           )}
         </div>

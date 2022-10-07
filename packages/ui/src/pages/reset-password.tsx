@@ -6,8 +6,13 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
+import {
+  Button,
+  ButtonTypeEnum,
+  FormInput,
+  Text,
+  Wordmark
+} from "src/components/atoms"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
@@ -33,11 +38,11 @@ const NewPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<ResetPasswordFormProps>({
     resolver: yupResolver(resetPasswordFormSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [passwordReset, setPasswordReset] = useState(false)
 
@@ -57,31 +62,34 @@ const NewPassword = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
+  const resetPassword = async (password: string) => {
+    const verificationToken = router.query.token as string
+
+    const api = new AuthLocalApi()
+    const res = await api.confirmPasswordReset({
+      confirmResetPasswordRequestDto: { password, verificationToken }
+    })
+
+    const setRes = setTokens(res, setAccessToken, setRefreshToken)
+    if (!setRes) {
+      return
+    }
+
+    setPasswordReset(true)
+
+    // sleep for 2 seconds so the confirmation screen is visible before we redirect
+    await new Promise((resolve) => setTimeout(resolve, ms("2 seconds")))
+
+    authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+  }
+
   const onSubmit = async (data: ResetPasswordFormProps) => {
     try {
-      const verificationToken = router.query.token as string
-
-      const api = new AuthLocalApi()
-      const res = await api.confirmPasswordReset({
-        confirmResetPasswordRequestDto: {
-          password: data.password,
-          verificationToken
-        }
-      })
-
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
-      }
-
-      setPasswordReset(true)
-
-      // sleep for 2 seconds so the confirmation screen is visible before we redirect
-      await new Promise((resolve) => setTimeout(resolve, ms("2 seconds")))
-
-      authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+      setIsSubmitting(true)
+      await resetPassword(data.password)
     } catch (error: any) {
       errorMessage(error, true)
+      setIsSubmitting(false)
     }
   }
 
@@ -159,16 +167,18 @@ const NewPassword = () => {
                 />
               </div>
 
-              <button
+              <Button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                type="submit"
-                disabled={disableForm}
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
+                disabled={isSubmitting}
+                disabledClass="opacity-[0.5]"
               >
                 <Text fontSize={16} className="font-medium">
                   Reset Password
                 </Text>
                 <EnterIcon />
-              </button>
+              </Button>
             </form>
           )}
         </div>
