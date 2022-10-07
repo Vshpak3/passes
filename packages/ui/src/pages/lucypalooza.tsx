@@ -67,7 +67,7 @@ const LucyPalooza = () => {
             Building in 🗽 NYC + 🌴 Miami.
           </h6>
           <p className="mt-[9px] leading-[22px] text-white/50">
-            © Moment HQ Inc. All Rights Reserved.
+            © Passes Inc. All Rights Reserved.
           </p>
         </footer>
       </div>
