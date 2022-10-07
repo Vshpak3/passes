@@ -39,7 +39,7 @@ export const Post = ({
   setIsPayed,
   userId
 }: PostProps) => {
-  const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
+  const [postUnlocked, setPostUnlocked] = useState(false)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<PostDto | null>(null)
@@ -102,18 +102,18 @@ export const Post = ({
         />
         <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
           <PostTextContent post={post} />
-          {!postUnlocked && (
-            <LockedMedia
-              cards={cards}
-              defaultPayinMethod={defaultPayinMethod}
-              post={post}
-              setIsPayed={setIsPayed}
-              setPostUnlocked={setPostUnlocked}
-              showcaseImg={showcaseImg}
-            />
-          )}
           {postUnlocked && <PostMedia post={post} />}
         </div>
+        {!postUnlocked && (
+          <LockedMedia
+            cards={cards}
+            defaultPayinMethod={defaultPayinMethod}
+            post={post}
+            setIsPayed={setIsPayed}
+            setPostUnlocked={setPostUnlocked}
+            showcaseImg={showcaseImg}
+          />
+        )}
         <PostEngagement
           post={post}
           postUnlocked={postUnlocked}
