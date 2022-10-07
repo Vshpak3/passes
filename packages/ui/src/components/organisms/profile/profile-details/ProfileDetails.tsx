@@ -10,7 +10,7 @@ import { EditProfile } from "./EditProfile"
 import {
   EditProfileAction,
   ProfileImage,
-  ProfileInformation,
+  ProfileInformationDesktop,
   ProfileInformationMobile
 } from "./ProfileComponents"
 
@@ -48,7 +48,7 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
       {editProfile && (
         <EditProfile
           profile={profile}
-          onSubmit={onSubmitEditProfile}
+          onSubmitEditProfile={onSubmitEditProfile}
           onCloseEditProfile={onCloseEditProfile}
         />
       )}
@@ -58,13 +58,15 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
           <ProfileImage userId={profile.userId} />
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
           <div className="col-span-4 flex flex-col px-5 pt-4">
-            <ProfileInformation
-              displayName={profile.displayName}
-              username={username}
-              quote={profile.description}
-              posts={creatorStats?.numPosts}
-              likes={creatorStats?.numLikes}
+            <ProfileInformationDesktop
               creatorId={profile.userId}
+              description={profile.description}
+              displayName={profile.displayName}
+              likes={creatorStats?.numLikes}
+              numPosts={creatorStats?.numPosts}
+              onChat={onChat}
+              ownsProfile={ownsProfile}
+              username={username}
               discordUsername={profile.discordUsername}
               facebookUsername={profile.facebookUsername}
               instagramUsername={profile.instagramUsername}
@@ -72,23 +74,24 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
               twitchUsername={profile.twitchUsername}
               twitterUsername={profile.twitterUsername}
               youtubeUsername={profile.youtubeUsername}
-              ownsProfile={ownsProfile}
-              onChat={onChat}
             />
           </div>
         </div>
 
         {/* Mobile */}
         <div className="align-center my-4 -mt-[220px] flex grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
-          {/* <div className="absolute top-2 left-2">
-            <Verified />
-          </div> */}
           <ProfileImage userId={profile.userId} />
+          {/* TODO: fix styling for mobile */}
+          {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
           <ProfileInformationMobile
-            displayName={profile.displayName}
-            username={username}
-            description={profile.description}
             creatorId={profile.userId}
+            description={profile.description}
+            displayName={profile.displayName}
+            likes={creatorStats?.numLikes}
+            numPosts={creatorStats?.numPosts}
+            onChat={onChat}
+            ownsProfile={ownsProfile}
+            username={username}
             discordUsername={profile.discordUsername}
             facebookUsername={profile.facebookUsername}
             instagramUsername={profile.instagramUsername}
@@ -96,10 +99,6 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
             twitchUsername={profile.twitchUsername}
             twitterUsername={profile.twitterUsername}
             youtubeUsername={profile.youtubeUsername}
-            posts={creatorStats?.numPosts}
-            likes={creatorStats?.numLikes}
-            ownsProfile={ownsProfile}
-            onChat={onChat}
           />
         </div>
       </div>

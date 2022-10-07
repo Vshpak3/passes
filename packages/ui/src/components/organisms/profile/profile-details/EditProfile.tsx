@@ -14,6 +14,7 @@ import { Dialog } from "src/components/organisms"
 import FormImage from "src/components/organisms/FormImage"
 import { FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers"
+import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
 
 const bioForm = {
@@ -75,13 +76,13 @@ const socialMediaForm = {
 
 interface EditProfileProps {
   profile: GetProfileResponseDto
-  onSubmit: (values: ProfileUpdate) => Promise<void>
+  onSubmitEditProfile: (values: ProfileUpdate) => Promise<void>
   onCloseEditProfile: () => void
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
   profile,
-  onSubmit,
+  onSubmitEditProfile,
   onCloseEditProfile
 }) => {
   const {
@@ -90,7 +91,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     getValues,
     watch,
     setValue,
-    formState: { isSubmitSuccessful }
+    formState: { dirtyFields, isSubmitSuccessful }
   } = useForm<ProfileUpdate>({
     defaultValues: {
       ...Object.fromEntries(
@@ -126,6 +127,24 @@ export const EditProfile: FC<EditProfileProps> = ({
       />
     </div>
   )
+
+  const onSubmit = async (values: ProfileUpdate) => {
+    try {
+      // Filter out non-dirty fields
+      const changes = Object.fromEntries(
+        Object.keys(dirtyFields).map((f) => [
+          f,
+          values[f as keyof ProfileUpdate]
+        ])
+      )
+
+      if (changes) {
+        await onSubmitEditProfile(values)
+      }
+    } catch (error: any) {
+      await errorMessage(error, true)
+    }
+  }
 
   return (
     <>

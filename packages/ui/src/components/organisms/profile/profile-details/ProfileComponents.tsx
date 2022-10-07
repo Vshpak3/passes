@@ -1,11 +1,4 @@
 import ChatIcon from "public/icons/mail-icon.svg"
-import Discord from "public/icons/profile-discord-icon.svg"
-import Facebook from "public/icons/profile-facebook-icon.svg"
-import Instagram from "public/icons/profile-instagram-icon.svg"
-import TikTok from "public/icons/profile-tiktok-icon.svg"
-import Twitch from "public/icons/profile-twitch-icon.svg"
-import Twitter from "public/icons/profile-twitter-icon.svg"
-import Youtube from "public/icons/profile-youtube-icon.svg"
 import { FC } from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import {
@@ -15,6 +8,11 @@ import {
 } from "src/components/atoms/Button"
 import { compactNumberFormatter, ContentService } from "src/helpers"
 import { useFollow } from "src/hooks"
+
+import {
+  ProfileSocialMedia,
+  ProfileSocialMediaProps
+} from "./ProfileSocialMedia"
 
 interface VerifiedProps {
   isVerified: any
@@ -48,16 +46,16 @@ const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
 )
 
 interface ProfileStatsMobileProps {
-  posts: any
-  likes: any
+  numPosts: number
+  likes: number
 }
 
 export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
-  posts,
+  numPosts,
   likes
 }) => (
   <div className="align-center grid grid-cols-3 items-center text-center">
-    <ProfileStatItemMobile stat={posts} label="POSTS" />
+    <ProfileStatItemMobile stat={numPosts} label="POSTS" />
     <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
     <ProfileStatItemMobile stat={compactNumberFormatter(likes)} label="LIKES" />
   </div>
@@ -95,32 +93,25 @@ export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
   </div>
 )
 
-interface ProfileInformationProps {
-  displayName: any
-  username: any
-  quote: any
-  posts: any
-  likes: any
-  creatorId: any
-  ownsProfile: any
-  discordUsername: any
-  facebookUsername: any
-  instagramUsername: any
-  tiktokUsername: any
-  twitchUsername: any
-  twitterUsername: any
-  youtubeUsername: any
-  onChat: any
+interface ProfileInformationProps extends ProfileSocialMediaProps {
+  creatorId: string
+  description: string | undefined | null
+  displayName: string | undefined | null
+  likes: number | undefined
+  numPosts: number | undefined
+  onChat: () => Promise<void>
+  ownsProfile: boolean
+  username: string
 }
 
-export const ProfileInformation: FC<ProfileInformationProps> = ({
-  displayName,
-  username,
-  quote,
-  posts,
-  likes,
+export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   creatorId,
+  description,
+  displayName,
+  likes,
+  numPosts,
   ownsProfile,
+  username,
   discordUsername,
   facebookUsername,
   instagramUsername,
@@ -164,13 +155,13 @@ export const ProfileInformation: FC<ProfileInformationProps> = ({
         )}
       </div>
       <span className="text-md my-3 font-semibold leading-[22px] text-white">
-        {quote}
+        {description}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {posts ?? "-"}
+              {numPosts ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
@@ -179,7 +170,7 @@ export const ProfileInformation: FC<ProfileInformationProps> = ({
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(likes) ?? "-"}
+              {compactNumberFormatter(likes || 0) ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
@@ -213,40 +204,22 @@ export const EditProfileAction: FC<EditProfileActionProps> = ({
   </div>
 )
 
-interface ProfileInformationMobile {
-  displayName: any
-  username: any
-  description: any
-  discordUsername: any
-  facebookUsername: any
-  instagramUsername: any
-  tiktokUsername: any
-  twitchUsername: any
-  twitterUsername: any
-  youtubeUsername: any
-  onChat: any
-  creatorId: any
-  ownsProfile: any
-  posts: any
-  likes: any
-}
-
-export const ProfileInformationMobile: FC<ProfileInformationMobile> = ({
-  displayName,
-  username,
+export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
+  creatorId,
   description,
+  displayName,
+  likes,
+  numPosts,
+  onChat,
+  ownsProfile,
+  username,
   discordUsername,
   facebookUsername,
   instagramUsername,
   tiktokUsername,
   twitchUsername,
   twitterUsername,
-  youtubeUsername,
-  onChat,
-  creatorId,
-  ownsProfile,
-  posts,
-  likes
+  youtubeUsername
 }) => {
   const { follow, unfollow, isFollowing } = useFollow(creatorId)
 
@@ -272,7 +245,7 @@ export const ProfileInformationMobile: FC<ProfileInformationMobile> = ({
         twitterUsername={twitterUsername}
         youtubeUsername={youtubeUsername}
       />
-      <ProfileStatsMobile posts={posts} likes={likes} />
+      <ProfileStatsMobile numPosts={numPosts || 0} likes={likes || 0} />
       {!ownsProfile && (
         <div className="flex space-x-3">
           <RoundedIconButton
@@ -292,89 +265,3 @@ export const ProfileInformationMobile: FC<ProfileInformationMobile> = ({
     </>
   )
 }
-
-interface ProfileSocialMediaProps {
-  discordUsername: any
-  facebookUsername: any
-  instagramUsername: any
-  tiktokUsername: any
-  twitchUsername: any
-  twitterUsername: any
-  youtubeUsername: any
-}
-
-export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = ({
-  discordUsername,
-  facebookUsername,
-  instagramUsername,
-  tiktokUsername,
-  twitchUsername,
-  twitterUsername,
-  youtubeUsername
-}) => (
-  <div className="flex cursor-pointer items-center justify-center gap-3">
-    {facebookUsername && (
-      <a
-        href={`https://www.facebook.com/${facebookUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Facebook className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {instagramUsername && (
-      <a
-        href={`https://www.instagram.com/${instagramUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Instagram className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {twitterUsername && (
-      <a
-        href={`https://www.twitter.com/${twitterUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Twitter className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {discordUsername && (
-      <a
-        href={`https://www.discord.gg/${discordUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Discord className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {youtubeUsername && (
-      <a
-        href={`https://www.youtube.com/c/${youtubeUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Youtube className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {twitchUsername && (
-      <a
-        href={`https://www.twitch.com/${twitchUsername}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Twitch className="h-[22px] w-[22px]" />
-      </a>
-    )}
-    {tiktokUsername && (
-      <a
-        href={`https://www.tiktok.com/${tiktokUsername}?lang=en`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <TikTok className="h-[22px] w-[22px]" />
-      </a>
-    )}
-  </div>
-)
