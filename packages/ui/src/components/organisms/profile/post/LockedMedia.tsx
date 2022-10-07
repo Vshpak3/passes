@@ -24,19 +24,18 @@ interface LockedMedia {
   post: PostDto
   setPostUnlocked: any
   setIsPayed?: (value: boolean) => void
-  setIsLoading?: (value: boolean) => void
 }
 
 export const LockedMedia: FC<LockedMedia> = ({
   postUnlocked,
   post,
-  setIsPayed,
-  setIsLoading
+  setIsPayed
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const { images, video } = contentTypeCounter(post.content)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const startLoadingHandler = () => () => setIsLoadingStart(true)
 
@@ -49,7 +48,6 @@ export const LockedMedia: FC<LockedMedia> = ({
 
   useEffect(() => {
     onLoadingHandler()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingStart, setIsLoading, post])
 
   return (
@@ -87,28 +85,32 @@ export const LockedMedia: FC<LockedMedia> = ({
             </>
           )}
         </div>
-        {postUnlocked &&
-          post?.content?.length &&
-          post.content.map((c: ContentDto) => {
-            if (c.contentType === ContentDtoContentTypeEnum.Image) {
-              return (
-                <img
-                  ref={imgRef}
-                  onLoad={startLoadingHandler}
-                  key={c.contentId}
-                  src={c.signedUrl}
-                  alt=""
-                  className="w-full rounded-[20px] object-cover shadow-xl"
-                />
-              )
-            } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
-              return (
-                <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
-              )
-            } else {
-              console.error("Unsupported media type")
-            }
-          })}
+        {post?.content?.length &&
+          (isLoading ? (
+            <span>Please wait! Your content is being uploaded</span>
+          ) : (
+            postUnlocked &&
+            post.content.map((c: ContentDto) => {
+              if (c.contentType === ContentDtoContentTypeEnum.Image) {
+                return (
+                  <img
+                    ref={imgRef}
+                    onLoad={startLoadingHandler}
+                    key={c.contentId}
+                    src={c.signedUrl}
+                    alt=""
+                    className="w-full rounded-[20px] object-cover shadow-xl"
+                  />
+                )
+              } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
+                return (
+                  <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
+                )
+              } else {
+                console.error("Unsupported media type")
+              }
+            })
+          ))}
       </div>
       <BuyPostModal
         post={post}

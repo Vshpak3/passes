@@ -40,7 +40,6 @@ export const Post = ({
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const [currentPost, setCurrentPost] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const { user } = useUser()
 
   const dropdownOptions: DropdownOption[] = [
@@ -94,22 +93,13 @@ export const Post = ({
             postUnlocked={postUnlocked}
             setPostUnlocked={setPostUnlocked}
             setIsPayed={setIsPayed}
-            setIsLoading={setIsLoading}
           />
         </div>
-        {/* {post.fundraiser ? (
-          <FundraiserMedia images={post.content} />
-        ) : (
-        )} */}
         <PostEngagement
           post={post}
           postUnlocked={postUnlocked}
           ownsProfile={ownsProfile}
         />
-        {isLoading && post?.content?.length && (
-          <span>Please wait! Your content is being uploaded</span>
-        )}
-        {/* {post.fundraiser && <FundraiserTab post={post} />} */}
       </FormContainer>
     </>
   )
