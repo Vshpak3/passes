@@ -1,26 +1,33 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import React from "react"
+import { GetUserResponseDto, UserApi } from "@passes/api-client"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import Tab from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
-import { useAccountSettings, useUser } from "src/hooks"
+import { useUser } from "src/hooks"
 
-interface IDisplayNameForm {
+interface DisplayNameProps {
+  user: GetUserResponseDto
+}
+
+interface DisplayNameFormProps {
   displayName: string
 }
 
-const DisplayName = () => {
-  const { user, mutate, loading } = useUser()
+const DisplayName: FC<DisplayNameProps> = ({ user }) => {
+  const { loading, mutateManual } = useUser(false)
+
   const {
     register,
     watch,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitSuccessful }
-  } = useForm<IDisplayNameForm>({
+    formState: { errors, isSubmitting }
+  } = useForm<DisplayNameFormProps>({
     defaultValues: { displayName: user?.displayName || "" },
     resolver: yupResolver(
       getYupRequiredStringSchema({
@@ -29,14 +36,21 @@ const DisplayName = () => {
       })
     )
   })
-  const { setDisplayName } = useAccountSettings()
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const displayName = watch("displayName")
 
-  const onSaveDisplayName = async ({ displayName }: IDisplayNameForm) => {
+  const setDisplayName = async (displayName: string) => {
+    const userApi = new UserApi()
+    return await userApi.setDisplayName({
+      updateDisplayNameRequestDto: { displayName }
+    })
+  }
+
+  const onSaveDisplayName = async ({ displayName }: DisplayNameFormProps) => {
     try {
       await setDisplayName(displayName)
-      mutate()
+      mutateManual({ displayName })
       toast.success("Your display name has been updated successfully")
     } catch (error) {
       const message = await errorMessage(error, true)
@@ -62,10 +76,10 @@ const DisplayName = () => {
           className="mt-6 w-auto !px-[52px]"
           tag="button"
           disabled={
-            displayName.trim().length === 0 ||
-            user?.displayName === displayName ||
             loading ||
-            isSubmitSuccessful
+            displayName.trim().length === 0 ||
+            displayName === user?.displayName ||
+            disableForm
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

@@ -13,7 +13,7 @@ import { useUser } from "src/hooks"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState("")
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
@@ -43,7 +43,6 @@ const VerifyEmailPage = () => {
         const res = await api.verifyUserEmail({
           verifyEmailDto: { verificationToken }
         })
-
         const setRes = setTokens(res, setAccessToken, setRefreshToken)
         if (!setRes) {
           return
@@ -63,7 +62,7 @@ const VerifyEmailPage = () => {
     // We cannot add userClaims here since then this would trigger during the
     // update and we won't have time to show the confirmation screen
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
+  }, [router, setAccessToken, setRefreshToken, userClaims])
 
   return (
     <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
@@ -90,7 +89,7 @@ const VerifyEmailPage = () => {
                 Please wait, while we verify your email address.
               </Text>
             </>
-          ) : !error ? (
+          ) : error ? (
             <>
               <Text
                 fontSize={36}

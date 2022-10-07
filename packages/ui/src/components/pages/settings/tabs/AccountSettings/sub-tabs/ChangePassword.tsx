@@ -1,23 +1,28 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import { AuthLocalApi, UpdatePasswordRequestDto } from "@passes/api-client"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { changePasswordSchema } from "src/helpers/validation"
-import { useAccountSettings } from "src/hooks"
+import { passwordFormSchema } from "src/pages/signup"
+import { object, SchemaOf, string } from "yup"
 
-interface IChangePasswordForm {
+interface ChangePasswordFormProps {
   oldPassword: string
-  newPassword: string
+  password: string
   confirmPassword: string
 }
 
+const changePasswordFormSchema: SchemaOf<ChangePasswordFormProps> = object({
+  oldPassword: string().required("Please enter your current password"),
+  ...passwordFormSchema
+})
+
 const defaultValues = {
   oldPassword: "",
-  newPassword: "",
+  password: "",
   confirmPassword: ""
 }
 
@@ -25,44 +30,36 @@ const ChangePassword = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    formState: { errors, isSubmitSuccessful }
-  } = useForm<IChangePasswordForm>({
+    formState: { errors, isSubmitting }
+  } = useForm<ChangePasswordFormProps>({
     defaultValues,
-    resolver: yupResolver(changePasswordSchema)
+    resolver: yupResolver(changePasswordFormSchema)
   })
-  const [isDisableBtn, setIsDisabledBtn] = useState(false)
-  const { changePassword } = useAccountSettings()
-  const values = watch()
+
+  const changePassword = async (password: UpdatePasswordRequestDto) => {
+    const authApi = new AuthLocalApi()
+    await authApi.changePassword({
+      updatePasswordRequestDto: password
+    })
+  }
 
   const onChangePassword = async ({
     oldPassword,
     confirmPassword,
-    newPassword
-  }: IChangePasswordForm) => {
+    password
+  }: ChangePasswordFormProps) => {
     try {
-      if (newPassword !== confirmPassword) {
+      if (password !== confirmPassword) {
         return toast.error("Passwords does not match")
       }
-      await changePassword({ oldPassword, newPassword })
+      await changePassword({ oldPassword, newPassword: password })
       toast.success("Your password has been changed successfully")
       reset(defaultValues)
     } catch (error) {
       errorMessage(error, true)
     }
   }
-
-  useEffect(() => {
-    changePasswordSchema
-      .validate(values)
-      .then(() => {
-        return setIsDisabledBtn(false)
-      })
-      .catch(() => {
-        setIsDisabledBtn(true)
-      })
-  }, [values])
 
   return (
     <>
@@ -91,7 +88,7 @@ const ChangePassword = () => {
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
           <FormInput
             placeholder="New Password"
-            name="newPassword"
+            name="password"
             type="password"
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
@@ -111,7 +108,7 @@ const ChangePassword = () => {
           variant="pink"
           className="mt-6 w-auto !px-[52px]"
           tag="button"
-          disabled={isDisableBtn || isSubmitSuccessful}
+          disabled={isSubmitting}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

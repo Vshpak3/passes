@@ -12,6 +12,7 @@ import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput, Text, Wordmark } from "src/components/atoms"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import {
@@ -96,23 +97,29 @@ const SignupInfoPage: FC = () => {
           return false
         })
 
-      if (validUsername) {
-        const res = await api.createUser({
-          createUserRequestDto: {
-            legalFullName: name,
-            username: username,
-            countryCode: countryCode,
-            birthday: birthday
-          }
-        })
-
-        const setRes = setTokens(res, setAccessToken, setRefreshToken)
-        if (!setRes) {
-          return
-        }
-
-        router.push(authStateToRoute(AuthStates.AUTHED))
+      if (!validUsername) {
+        return
       }
+
+      toast.info("Please wait a moment while we create your account")
+
+      const res = await api.createUser({
+        createUserRequestDto: {
+          legalFullName: name,
+          username: username,
+          countryCode: countryCode,
+          birthday: birthday
+        }
+      })
+
+      toast.dismiss()
+
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
+      if (!setRes) {
+        return
+      }
+
+      router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: any) {
       errorMessage(err, true)
     }

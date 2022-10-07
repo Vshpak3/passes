@@ -1,4 +1,3 @@
-import useAccountSettings from "./settings/useAccountSettings"
 import useCreatorSettings from "./settings/useCreatorSettings"
 import useNotificationSettings from "./settings/useNotificationSettings"
 import useChat from "./useChat"
@@ -31,7 +30,6 @@ import useUserConnectedWallets from "./useUserConnectedWallets"
 import useUserDefaultMintingWallets from "./useUserDefaultMintingWallet"
 
 export {
-  useAccountSettings,
   useChat,
   useComments,
   useCreatePass,

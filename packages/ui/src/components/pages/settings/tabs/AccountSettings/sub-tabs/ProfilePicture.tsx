@@ -1,32 +1,41 @@
+import { GetUserResponseDto } from "@passes/api-client"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import Tab from "src/components/pages/settings/Tab"
 import { ContentService } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
-import { useAccountSettings } from "src/hooks"
 
-interface IProfileForm {
+interface ProfilePictureProps {
+  user: GetUserResponseDto
+}
+
+interface ProfileFormProps {
   profileImage: File[]
 }
 
-const ProfilePicture = () => {
-  const { setProfilePicture, userId } = useAccountSettings()
+const ProfilePicture: FC<ProfilePictureProps> = ({ user }) => {
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const {
     register,
     watch,
     setValue,
     handleSubmit,
-    formState: { isSubmitSuccessful }
-  } = useForm<IProfileForm>({
+    formState: { isSubmitting }
+  } = useForm<ProfileFormProps>({
     defaultValues: { profileImage: [] }
   })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const profileImage = watch("profileImage")
+
+  const setProfilePicture = async (picture: File) => {
+    return await new ContentService().uploadProfileImage(picture)
+  }
 
   const onProfileCrop = (croppedImage: any) => {
     setValue("profileImage", [croppedImage], { shouldValidate: true })
@@ -35,13 +44,13 @@ const ProfilePicture = () => {
 
   const onSaveProfile = async () => {
     if (!profileImage.length) {
-      toast.error("Please upload profile image")
+      toast.error("Please upload a profile image")
       return
     }
     try {
       await setProfilePicture(profileImage[0])
-      toast.success("Your profile picture has been changed successfully")
-      // setValue("profileImage", [])
+      toast.success("Your profile picture has been updated successfully")
+      setValue("profileImage", [])
     } catch (error) {
       errorMessage(error, true)
     }
@@ -77,7 +86,7 @@ const ProfilePicture = () => {
                 src={
                   profileImage.length
                     ? URL.createObjectURL(profileImage[0])
-                    : ContentService.profileThumbnail(userId)
+                    : ContentService.profileThumbnail(user?.id || "")
                 }
               />
             </div>
@@ -96,7 +105,7 @@ const ProfilePicture = () => {
           variant="pink"
           className="w-auto !px-[52px]"
           tag="button"
-          disabled={!profileImage || !profileImage.length || isSubmitSuccessful}
+          disabled={!profileImage?.length || disableForm}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

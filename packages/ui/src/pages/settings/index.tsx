@@ -262,9 +262,9 @@ const renderSubTab = (tab: SubTabsEnum, user: GetUserResponseDto) => {
     case SubTabsEnum.WalletSettings:
       return <WalletSettings />
     case SubTabsEnum.ProfilePicture:
-      return <ProfilePicture />
+      return <ProfilePicture user={user} />
     case SubTabsEnum.DisplayName:
-      return <DisplayName />
+      return <DisplayName user={user} />
     case SubTabsEnum.Username:
       return <Username user={user} />
     case SubTabsEnum.EmailNotifications:

@@ -1,20 +1,4 @@
-import { boolean, mixed, number, object, ref, SchemaOf, string } from "yup"
-
-// eslint-disable-next-line regexp/optimal-lookaround-quantifier
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/
-const phoneRegex =
-  // eslint-disable-next-line regexp/no-super-linear-backtracking, regexp/no-dupe-disjunctions
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\(\d{2,3}\\)[ \\-]*)|(\d{2,4})[ \\-]*)*?\d{3,4}?[ \\-]*\d{3,4}$/
-
-const digitsOnly = (value: string | any) => /^\d+$/.test(value)
-
-const sanitizeString = (txt: string) =>
-  txt.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/g, "")
-
-export interface SignInSchema {
-  email: string
-  password: string
-}
+import { boolean, mixed, number, object, SchemaOf, string } from "yup"
 
 const getYupRequiredStringSchema = ({
   name,
@@ -125,20 +109,6 @@ const creatorFlowProfileSchema = object({
     })
 })
 
-const changePasswordSchema = object({
-  oldPassword: string().required("Please enter your current password"),
-  newPassword: string()
-    .required("Please enter a new password")
-    .matches(
-      passwordRegex,
-      "Your password must include:\n* At least 8 characters\n* A number\n* An uppercase and a lowercase character\n* A special character (!, @, #, $, etc.)"
-    ),
-  confirmPassword: string().oneOf(
-    [ref("newPassword"), null],
-    "Passwords must match"
-  )
-})
-
 const chatSettingsSchema = object({
   isWithoutTip: boolean(),
   showWelcomeMessageInput: boolean(),
@@ -152,34 +122,6 @@ const chatSettingsSchema = object({
     is: true,
     then: string().required("Please enter welcome message")
   })
-})
-
-const signInSchema: SchemaOf<SignInSchema> = object({
-  email: string()
-    .email("Please enter a valid email")
-    .required("Please enter an email"),
-  password: string().required("Please enter a password")
-})
-
-export interface SignUpSchema {
-  email: string
-  givenName: string
-  familyName: string
-  password: string
-}
-
-const signUpSchema: SchemaOf<SignUpSchema> = object({
-  email: string()
-    .email("Please enter a valid email")
-    .required("Please enter an email"),
-  givenName: string().required("Please enter a first name"),
-  familyName: string().required("Please enter a last name"),
-  password: string()
-    .required("Please enter a password")
-    .matches(
-      passwordRegex,
-      "Your password must include:\n* At least 8 characters\n* A number\n* An uppercase and a lowercase character\n* A special character (!, @, #, $, etc.)"
-    )
 })
 
 export interface CreditCardSchema {
@@ -264,16 +206,9 @@ const walletSchema: SchemaOf<WalletSchema> = object({
 
 export {
   bankingSchema,
-  changePasswordSchema,
   chatSettingsSchema,
   creatorFlowProfileSchema,
   creditCardSchema,
-  digitsOnly,
   getYupRequiredStringSchema,
-  passwordRegex,
-  phoneRegex,
-  sanitizeString,
-  signInSchema,
-  signUpSchema,
   walletSchema
 }

@@ -15,7 +15,7 @@ interface UsernameProps {
   user: GetUserResponseDto
 }
 
-interface UserForm {
+interface UsernameFormProps {
   username: string
 }
 
@@ -28,7 +28,7 @@ const Username: FC<UsernameProps> = ({ user }) => {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting }
-  } = useForm<UserForm>({
+  } = useForm<UsernameFormProps>({
     defaultValues: { username: user?.username || "" },
     resolver: yupResolver(getYupRequiredStringSchema({ name: "username" }))
   })
@@ -42,7 +42,7 @@ const Username: FC<UsernameProps> = ({ user }) => {
     return await userApi.setUsername({ updateUsernameRequestDto: { username } })
   }
 
-  const onSaveUserName = async ({ username }: UserForm) => {
+  const onSaveUserName = async ({ username }: UsernameFormProps) => {
     try {
       await setUsername(username)
       toast.success("Username has been changed successfully.")
