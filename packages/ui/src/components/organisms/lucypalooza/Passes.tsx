@@ -45,7 +45,6 @@ const PassList: FC<IPassList> = ({ passes, setPassId, passId }) => {
           key={pass.passId}
           title={pass.title}
           price={pass.price}
-          totalSupply={pass.totalSupply}
           remainingSupply={pass.remainingSupply}
           ethPrice={pass.ethPrice ?? 0}
           img={{
