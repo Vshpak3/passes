@@ -62,10 +62,22 @@ const css = `
   }
 `
 
-export type Time = { minutes: number; hours: number; hours24: number }
+const hoursTo24Hours = (hours: number, timeShift: TimeShiftEnum) => {
+  if (timeShift === TimeShiftEnum.PM) {
+    return 12 + (hours === 12 ? 0 : hours)
+  }
+
+  return hours
+}
+
+export enum TimeShiftEnum {
+  "AM",
+  "PM"
+}
+export type Time = { minutes: number; hours: number; timeShift: TimeShiftEnum }
 
 const today = new Date()
-const defaultTime = { hours: 1, minutes: 0, hours24: 1 }
+const defaultTime = { hours: 1, minutes: 0, timeShift: TimeShiftEnum.AM }
 
 const CalendarPicker: FC<{
   children: React.ReactNode
@@ -79,19 +91,25 @@ const CalendarPicker: FC<{
   const calenderRef = useRef(null)
 
   const handleSelectToday = useCallback(() => {
-    const date = new Date(1665226217878)
+    const date = new Date()
     const hours = date.getHours()
     const minutes = date.getMinutes()
     date.setHours(0, 0, 0, 0)
     setSelectionDate(date)
     setMonth(today)
-    setTime({ hours: hours % 12 || 12, minutes, hours24: hours })
+    setTime({
+      hours: hours % 12 || 12,
+      minutes,
+      timeShift: hours >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
+    })
   }, [])
 
   const handleSaveDateAndTime = useCallback(() => {
     const targetDate = new Date(selectionDate || "")
     // add hour into current selectionDate
-    targetDate.setHours(targetDate.getHours() + time.hours24)
+    targetDate.setHours(
+      targetDate.getHours() + hoursTo24Hours(time.hours, time.timeShift)
+    )
     // add min into current selectionDate
     targetDate.setMinutes(targetDate.getMinutes() + time.minutes)
     onSave(targetDate)

@@ -1,10 +1,12 @@
 import classNames from "classnames"
 import React, { Dispatch, SetStateAction, useRef, useState } from "react"
-import { Time } from "src/components/molecules/scheduler/CalendarPicker"
+import {
+  Time,
+  TimeShiftEnum
+} from "src/components/molecules/scheduler/CalendarPicker"
 import { useOnClickOutside } from "src/hooks"
 
 const padZero = (n: number) => n.toString().padStart(2, "0")
-const hoursTo24Hours = (hours: number) => 12 + (hours === 12 ? 0 : hours)
 
 export interface ITimePicker {
   time: Time
@@ -13,7 +15,6 @@ export interface ITimePicker {
 }
 
 const TimePicker: React.FC<ITimePicker> = ({ time, setTime }) => {
-  const [timeFormat, setTimeFormat] = useState<"AM" | "PM">("AM")
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownEl = useRef(null)
 
@@ -35,11 +36,17 @@ const TimePicker: React.FC<ITimePicker> = ({ time, setTime }) => {
         <span className="flex rounded-lg border border-white bg-[#0E0A0F]">
           <button
             tabIndex={1}
-            onClick={() => setTimeFormat("AM")}
+            onClick={() =>
+              setTime((prevTime) => ({
+                ...prevTime,
+                timeShift: TimeShiftEnum.AM
+              }))
+            }
             className={classNames(
               "duration-400 cursor-pointer rounded-bl-lg rounded-tl-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
-                "bg-white text-passes-gray-200": timeFormat === "AM"
+                "bg-white text-passes-gray-200":
+                  time.timeShift === TimeShiftEnum.AM
               }
             )}
           >
@@ -47,11 +54,17 @@ const TimePicker: React.FC<ITimePicker> = ({ time, setTime }) => {
           </button>
           <button
             tabIndex={1}
-            onClick={() => setTimeFormat("PM")}
+            onClick={() =>
+              setTime((prevTime) => ({
+                ...prevTime,
+                timeShift: TimeShiftEnum.PM
+              }))
+            }
             className={classNames(
               "duration-400 cursor-pointer rounded-tr-lg rounded-br-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
-                "bg-white text-passes-gray-200": timeFormat === "PM"
+                "bg-white text-passes-gray-200":
+                  time.timeShift === TimeShiftEnum.PM
               }
             )}
           >
@@ -71,8 +84,7 @@ const TimePicker: React.FC<ITimePicker> = ({ time, setTime }) => {
                 onClick={() =>
                   setTime((prevTime) => ({
                     ...prevTime,
-                    hours: i + 1,
-                    hours24: timeFormat === "AM" ? i + 1 : hoursTo24Hours(i + 1)
+                    hours: i + 1
                   }))
                 }
                 role="button"
