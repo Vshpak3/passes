@@ -19,6 +19,8 @@ const useUser = (revalidateOnMount = true) => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
+  const api = new AuthApi()
+
   const {
     data: user,
     isValidating: loading,
@@ -31,7 +33,6 @@ const useUser = (revalidateOnMount = true) => {
         return
       }
 
-      const api = new AuthApi()
       return await api.getCurrentUser()
     },
     { revalidateOnMount: revalidateOnMount }

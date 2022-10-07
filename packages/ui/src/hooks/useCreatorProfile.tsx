@@ -1,10 +1,7 @@
 import {
   CreatorStatsApi,
-  FanWallApi,
-  FeedApi,
   GetCreatorStatsResponseDto,
   GetProfileResponseDto,
-  PassApi,
   ProfileApi
 } from "@passes/api-client"
 import { useRouter } from "next/router"
@@ -12,7 +9,6 @@ import { useEffect, useState } from "react"
 import { updateProfile } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
-import useSWR from "swr"
 
 import useUser from "./useUser"
 
@@ -45,9 +41,6 @@ const useCreatorProfile = () => {
   useEffect(() => {
     if (profile?.userId) {
       getCreatorStats()
-      mutatePasses()
-      mutatePosts()
-      mutateFanWall()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
@@ -89,54 +82,6 @@ const useCreatorProfile = () => {
     }
   }
 
-  // SWRs
-
-  const {
-    data: creatorPasses = [],
-    isValidating: isLoadingCreatorPasses,
-    mutate: mutatePasses
-  } = useSWR(profile ? ["/pass/created/", profileUsername] : null, async () => {
-    if (profile) {
-      const api = new PassApi()
-      if (profile) {
-        return (
-          await api.getCreatorPasses({
-            getCreatorPassesRequestDto: { creatorId: profile.userId }
-          })
-        ).passes
-      }
-    }
-  })
-
-  const {
-    data: fanWallPosts,
-    isValidating: isLoadingFanWallPosts,
-    mutate: mutateFanWall
-  } = useSWR(
-    profile ? ["/fan-wall/creator/", profileUsername] : null,
-    async () => {
-      const api = new FanWallApi()
-      if (profile) {
-        return await api.getFanWallForCreator({
-          getFanWallRequestDto: { creatorId: profile.userId }
-        })
-      }
-    }
-  )
-
-  const {
-    data: profilePosts = { posts: [] },
-    isValidating: isLoadingPosts,
-    mutate: mutatePosts
-  } = useSWR(profile ? ["/post/creator/", profileUsername] : null, async () => {
-    const api = new FeedApi()
-    if (profile?.userId) {
-      return await api.getFeedForCreator({
-        getProfileFeedRequestDto: { creatorId: profile.userId }
-      })
-    }
-  })
-
   // Other
 
   const ownsProfile = loggedInUsername === profileUsername
@@ -159,21 +104,14 @@ const useCreatorProfile = () => {
   }
 
   return {
-    creatorPasses,
     creatorStats,
     editProfile,
-    fanWallPosts,
-    isLoadingCreatorPasses,
-    isLoadingFanWallPosts,
-    isLoadingPosts,
     isLoadingProfile,
     isLoadingStats,
-    mutatePosts,
     onCloseEditProfile,
     onEditProfile,
     onSubmitEditProfile,
     ownsProfile,
-    posts: profilePosts.posts,
     profile,
     profileUsername
   }

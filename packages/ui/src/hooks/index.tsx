@@ -8,7 +8,6 @@ import useCreatorProfile from "./useCreatorProfile"
 import useCreatorSearch from "./useCreatorSearch"
 import useEventCallback from "./useEventCallback"
 import useEventListener from "./useEventListener"
-import useFanWall from "./useFanWall"
 import useFeed from "./useFeed"
 import useFollow from "./useFollow"
 import useFollowerSearch from "./useFollowerSearch"
@@ -39,7 +38,6 @@ export {
   useCreatorSettings,
   useEventCallback,
   useEventListener,
-  useFanWall,
   useFeed,
   useFollow,
   useFollowerSearch,

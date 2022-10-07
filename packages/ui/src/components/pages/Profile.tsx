@@ -7,17 +7,13 @@ import { useCreatorProfile } from "src/hooks"
 
 const Profile: FC = () => {
   const {
-    creatorPasses,
     creatorStats,
     editProfile,
-    fanWallPosts,
     isLoadingProfile,
-    mutatePosts,
     onCloseEditProfile,
     onEditProfile,
     onSubmitEditProfile,
     ownsProfile,
-    posts,
     profile,
     profileUsername
   } = useCreatorProfile()
@@ -44,14 +40,11 @@ const Profile: FC = () => {
             <ProfileContent
               profile={profile}
               ownsProfile={ownsProfile}
-              posts={posts}
-              mutatePosts={mutatePosts}
-              fanWallPosts={fanWallPosts}
               profileUsername={profileUsername!} // eslint-disable-line @typescript-eslint/no-non-null-assertion
             />
           </div>
           <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
-            <PassTypes creatorPasses={creatorPasses} />
+            <PassTypes />
           </div>
         </div>
       )}

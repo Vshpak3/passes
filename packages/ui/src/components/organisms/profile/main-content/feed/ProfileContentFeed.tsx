@@ -1,4 +1,5 @@
 import {
+  CreateFanWallCommentRequestDto,
   CreatePostRequestDto,
   GetFanWallResponseDto,
   GetFeedResponseDto,
@@ -21,9 +22,9 @@ export interface ProfileContentFeedProps {
   posts: PostDto[]
   fanWallPosts?: GetFanWallResponseDto
   createPost: (values: CreatePostRequestDto) => void
-  writeToFanWall: (values: CreatePostRequestDto) => Promise<void>
+  writeToFanWall: (values: CreateFanWallCommentRequestDto) => Promise<void>
   removePost?: (postId: string) => void
-  mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
+  mutatePosts?: KeyedMutator<GetFeedResponseDto>
 }
 
 const ProfileContentFeed: FC<ProfileContentFeedProps> = ({

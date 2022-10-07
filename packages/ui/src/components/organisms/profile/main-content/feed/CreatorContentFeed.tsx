@@ -10,7 +10,7 @@ interface CreatorContentFeedProps {
   posts: PostDto[]
   ownsProfile: boolean
   removePost?: (postId: string) => void
-  mutatePosts?: KeyedMutator<GetFeedResponseDto | undefined>
+  mutatePosts?: KeyedMutator<GetFeedResponseDto>
 }
 
 // TODO: implement pagination with infinite scroll, and loading state

@@ -1,5 +1,5 @@
-import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
+import "slick-carousel/slick/slick.css"
 
 import { PassDto } from "@passes/api-client"
 import React, { FC } from "react"
@@ -8,9 +8,7 @@ import { useCarousel } from "src/hooks/useCarousel"
 
 import { PassCardDesktop, PassCardMobile } from "./PassesComponents"
 
-interface PassesProps {
-  creatorPasses: PassDto[] | undefined
-}
+interface PassesProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
 interface PassTypeProps {
   creatorPasses: PassDto[] | undefined
@@ -76,16 +74,32 @@ const PassTypesMobile: FC<PassTypeProps> = ({
   )
 }
 
-const PassTypes: FC<PassesProps> = ({ creatorPasses }) => {
+const PassTypes: FC<PassesProps> = () => {
+  // TODO
+  // const {
+  //   data: creatorPasses = [],
+  //   isValidating: isLoadingCreatorPasses,
+  //   mutate: mutatePasses
+  // } = useSWR(profile ? ["/pass/created/", profileUsername] : null, async () => {
+  //   if (profile) {
+  //     const api = new PassApi()
+  //     return (
+  //       await api.getCreatorPasses({
+  //         getCreatorPassesRequestDto: { creatorId: profile.userId }
+  //       })
+  //     ).passes
+  //   }
+  // })
+
   return (
     <>
       <PassTypesDesktop
-        creatorPasses={creatorPasses}
+        creatorPasses={[]}
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         setModalOpen={() => {}}
       />
       <PassTypesMobile
-        creatorPasses={creatorPasses}
+        creatorPasses={[]}
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         setModalOpen={() => {}}
       />
