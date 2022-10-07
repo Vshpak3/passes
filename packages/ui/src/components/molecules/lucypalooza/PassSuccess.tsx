@@ -9,7 +9,7 @@ interface IPassSuccess {
 }
 
 const PassSuccess = ({ pass }: IPassSuccess) => {
-  const { passId, tokenId, title } = pass ?? {}
+  const { passId, address, tokenId, title } = pass ?? {}
   const router = useRouter()
 
   return (
@@ -31,7 +31,7 @@ const PassSuccess = ({ pass }: IPassSuccess) => {
               if (tokenId) {
                 router.push(
                   "https://etherscan.io/nft/" +
-                    passId +
+                    address +
                     "/" +
                     parseInt(tokenId, 16).toString()
                 )
