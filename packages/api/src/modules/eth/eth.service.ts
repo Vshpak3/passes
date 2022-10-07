@@ -220,7 +220,7 @@ export class EthService {
               holder_id: userId,
             })
             .where({
-              address: nft.contract.address.toLowerCase(),
+              address: nft.contract.address,
               chain: ChainEnum.ETH,
               token_id: nft.tokenId,
             })

@@ -128,7 +128,7 @@ const Wallets = () => {
 
   const confirmNewPayoutAddressOnSubmit = async () => {
     const walletAddress = getValues("address")
-    const chain = getValues("chain")
+    const chain = getValues("chain").toLowerCase()
     const api = new WalletApi()
     await api
       .createUnauthenticatedWallet({

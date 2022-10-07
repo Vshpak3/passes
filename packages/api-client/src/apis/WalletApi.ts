@@ -123,7 +123,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Creates unchecked wallet for a user
      */
-    async createUnauthenticatedWalletRaw(requestParameters: CreateUnauthenticatedWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateWalletRequestDto>> {
+    async createUnauthenticatedWalletRaw(requestParameters: CreateUnauthenticatedWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.createUnauthenticatedWalletRequestDto === null || requestParameters.createUnauthenticatedWalletRequestDto === undefined) {
             throw new runtime.RequiredError('createUnauthenticatedWalletRequestDto','Required parameter requestParameters.createUnauthenticatedWalletRequestDto was null or undefined when calling createUnauthenticatedWallet.');
         }
@@ -147,15 +147,14 @@ export class WalletApi extends runtime.BaseAPI {
             body: CreateUnauthenticatedWalletRequestDtoToJSON(requestParameters.createUnauthenticatedWalletRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateWalletRequestDtoFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Creates unchecked wallet for a user
      */
-    async createUnauthenticatedWallet(requestParameters: CreateUnauthenticatedWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateWalletRequestDto> {
-        const response = await this.createUnauthenticatedWalletRaw(requestParameters, initOverrides);
-        return await response.value();
+    async createUnauthenticatedWallet(requestParameters: CreateUnauthenticatedWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.createUnauthenticatedWalletRaw(requestParameters, initOverrides);
     }
 
     /**

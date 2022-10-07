@@ -182,7 +182,7 @@ export class WalletService {
     walletId: string,
     chain: ChainEnum,
   ): Promise<void> {
-    const wallet = await this.dbReader<WalletEntity>(WalletEntity.table)
+    const wallet = await this.dbWriter<WalletEntity>(WalletEntity.table)
       .where({
         chain,
         id: walletId,
@@ -298,9 +298,10 @@ export class WalletService {
     switch (createWalletDto.chain) {
       case ChainEnum.ETH:
         if (
-          this.web3.eth.accounts
-            .recover(createWalletDto.rawMessage, createWalletDto.signedMessage)
-            .toLowerCase() !== walletAddress
+          this.web3.eth.accounts.recover(
+            createWalletDto.rawMessage,
+            createWalletDto.signedMessage,
+          ) !== walletAddress
         ) {
           throw new BadRequestException(
             'recovered address does not match input',

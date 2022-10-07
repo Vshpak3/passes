@@ -162,7 +162,7 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Creates unchecked wallet for a user',
     responseStatus: HttpStatus.CREATED,
-    responseType: CreateWalletRequestDto,
+    responseType: undefined,
     responseDesc: 'Unchecked wallet was created',
     role: RoleEnum.CREATOR_ONLY,
   })
