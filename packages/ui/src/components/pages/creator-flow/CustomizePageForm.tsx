@@ -15,8 +15,9 @@ import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import FormImage from "src/components/organisms/FormImage"
 import { updateProfile } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
-import { creatorFlowProfileSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
+
+import { creatorFlowProfileSchema } from "./helper/creatorFlowProfileSchema"
 
 interface CreatorFlowCustomizeFormProps {
   displayName: string
@@ -68,9 +69,14 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
     setValue,
     handleSubmit,
     watch,
-    formState: { errors, submitCount }
+    formState: { errors }
   } = useForm<CreatorFlowCustomizeFormProps>({
-    defaultValues: { displayName: user?.displayName || "" },
+    defaultValues: {
+      displayName: user?.displayName || "",
+      // TODO: the profile image might already be set
+      profileImage: [],
+      profileBannerImage: []
+    },
     resolver: yupResolver(creatorFlowProfileSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -142,7 +148,7 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
                   <img
                     alt=""
                     className={classNames(
-                      submitCount && !errors.profileBannerImage
+                      errors.profileBannerImage
                         ? "border-2 !border-red-500"
                         : "",
                       "h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
@@ -170,9 +176,7 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <img
                   alt=""
                   className={classNames(
-                    submitCount && !errors.profileBannerImage
-                      ? "border-2 !border-red-500"
-                      : "",
+                    errors.profileImage ? "border-2 !border-red-500" : "",
                     "z-20 h-full w-full cursor-pointer rounded-full border-transparent object-cover drop-shadow-profile-photo"
                   )}
                   src={
