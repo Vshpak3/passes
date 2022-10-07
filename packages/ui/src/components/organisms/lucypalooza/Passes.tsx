@@ -231,6 +231,7 @@ const Passes = () => {
         </ConditionRendering>
         <ConditionRendering condition={!!passHolder}>
           <PassSuccess
+            title={passHolder?.title ?? ""}
             passId={passHolder?.passId ?? ""}
             tokenId={passHolder?.tokenId ?? ""}
           />
