@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { BlockModal, ReportModal } from "src/components/organisms"
 import { useSWRConfig } from "swr"
 
-import { Comment } from "./comment"
+import { Comment } from "./fan-wall-comment"
 
 interface FanWallFeedProps {
   fanWallPosts?: GetFanWallResponseDto

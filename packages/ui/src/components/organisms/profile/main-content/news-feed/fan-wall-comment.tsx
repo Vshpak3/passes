@@ -1,8 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import { FC } from "react"
 import { FormContainer } from "src/components/organisms"
-
-import { PostProfileAvatar } from "./post"
+import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 
 interface CommentProps {
   post: PostDto

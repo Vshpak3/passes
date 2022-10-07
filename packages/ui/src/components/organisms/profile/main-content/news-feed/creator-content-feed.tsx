@@ -2,9 +2,8 @@ import { GetFeedResponseDto, PostDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { toast } from "react-toastify"
+import { Post } from "src/components/organisms/profile/post/Post"
 import { KeyedMutator } from "swr"
-
-import { Post } from "./post"
 
 interface CreatorContentFeedProps {
   posts: PostDto[]
