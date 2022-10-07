@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
+import ms from "ms"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
@@ -75,8 +76,8 @@ const NewPassword = () => {
 
       setPasswordReset(true)
 
-      // sleep for 1.5 seconds so the confirmation screen is visible before we redirect
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      // sleep for 2 seconds so the confirmation screen is visible before we redirect
+      await new Promise((resolve) => setTimeout(resolve, ms("2 seconds")))
 
       authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
     } catch (error: any) {
