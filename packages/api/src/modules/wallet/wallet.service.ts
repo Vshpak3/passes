@@ -213,6 +213,11 @@ export class WalletService {
   }
 
   fixAddress(address: string, chain: ChainEnum): string {
+    if (!validateAddress(address, chain)) {
+      throw new IncorrectAddressException(
+        `${address} is not a valid ${chain} address`,
+      )
+    }
     if (
       chain == ChainEnum.ETH ||
       chain == ChainEnum.MATIC ||
@@ -357,20 +362,13 @@ export class WalletService {
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
   ): Promise<void> {
     await this.checkWallets(userId)
-    const walletAddress = this.fixAddress(
-      createUnauthenticatedWalletDto.walletAddress,
-      createUnauthenticatedWalletDto.chain,
-    )
-    if (!validateAddress(walletAddress, createUnauthenticatedWalletDto.chain)) {
-      throw new IncorrectAddressException(
-        `${walletAddress} is not a valid ${createUnauthenticatedWalletDto.chain} address`,
-      )
-    }
+    const { walletAddress, chain } = createUnauthenticatedWalletDto
+    const fixedWalletAddress = this.fixAddress(walletAddress, chain)
     await this.dbWriter<WalletEntity>(WalletEntity.table)
       .insert({
         user_id: userId,
         authenticated: false,
-        address: walletAddress,
+        address: fixedWalletAddress,
         chain: createUnauthenticatedWalletDto.chain,
       })
       .onConflict(['chain', 'address'])
