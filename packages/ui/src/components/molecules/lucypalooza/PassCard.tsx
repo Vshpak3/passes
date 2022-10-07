@@ -54,7 +54,7 @@ const PassCard: React.FC<IPassCard> = ({
       />
       <div className="relative z-10 flex h-full flex-col p-8 pt-[30px]">
         <div className="relative">
-          <div className="absolute left-0 rounded-full bg-red-500 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 px-5 py-1 font-medium">
+          <div className="absolute -left-3 -top-3 rounded-full bg-red-500 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 px-5 py-1 font-medium">
             <span>{`$${price} (${ethPrice} ETH)`}</span>
           </div>
           <MemoPassVideo img={img} />

@@ -1,14 +1,15 @@
+import { PassHolderDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
+import { ContentService } from "src/helpers"
 
 interface IPassSuccess {
-  title: string
-  passId: string
-  tokenId: string
+  pass: PassHolderDto
 }
 
-const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
+const PassSuccess = ({ pass }: IPassSuccess) => {
+  const { passId, tokenId, title } = pass ?? {}
   const router = useRouter()
 
   return (
@@ -26,14 +27,16 @@ const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
             tag="a"
             variant="purple-light"
             className="w-full"
-            onClick={() =>
-              router.push(
-                "https://etherscan.io/nft/" +
-                  passId +
-                  "/" +
-                  parseInt(tokenId, 16).toString()
-              )
-            }
+            onClick={() => {
+              if (tokenId) {
+                router.push(
+                  "https://etherscan.io/nft/" +
+                    passId +
+                    "/" +
+                    parseInt(tokenId, 16).toString()
+                )
+              }
+            }}
           >
             View on EtherScan
           </Button>
@@ -43,11 +46,14 @@ const PassSuccess = ({ title, passId, tokenId }: IPassSuccess) => {
         className="!h-[415px] !w-[415px] flex-shrink-0 !rounded-[20px]"
         innerClass="!rounded-[20px] overflow-hidden"
       >
-        <img
-          src="/img/lucyplooza/vip-pass.png"
-          alt="vip pass card"
-          className="h-full w-full object-cover object-center"
-        />
+        {passId && (
+          <video autoPlay loop muted>
+            <source
+              src={passId && ContentService.passVideo(passId)}
+              type="video/mp4"
+            />
+          </video>
+        )}
       </GradientBorderTile>
     </div>
   )

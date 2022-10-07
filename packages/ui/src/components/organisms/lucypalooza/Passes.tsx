@@ -252,11 +252,7 @@ const Passes = () => {
           </div>
         </ConditionRendering>
         <ConditionRendering condition={!!passHolder}>
-          <PassSuccess
-            title={passHolder?.title ?? ""}
-            passId={passHolder?.passId ?? ""}
-            tokenId={passHolder?.tokenId ?? ""}
-          />
+          {passHolder && <PassSuccess pass={passHolder} />}
         </ConditionRendering>
       </ConditionRendering>
     </section>
