@@ -306,7 +306,7 @@ export class EthService {
         error = err
       }
     }
-    throw error
+    throw new InternalServerErrorException('could not mint eth' + error)
   }
 
   async createEthNftCollection(
