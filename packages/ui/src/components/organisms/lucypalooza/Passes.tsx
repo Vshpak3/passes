@@ -5,6 +5,7 @@ import {
   PassDto,
   PassDtoChainEnum,
   PassHolderDto,
+  PayinDto,
   PayinDtoPayinStatusEnum,
   PayinMethodDtoMethodEnum,
   PaymentApi,
@@ -65,7 +66,7 @@ const Passes = () => {
   const [passes, setPasses] = useState<PassDto[]>()
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
   const [isPaying, setIsPaying] = useState<boolean>(false)
-  const [payinId, setPayinId] = useState<string>()
+  const [payin, setPayin] = useState<PayinDto>()
   const [passId, setPassId] = useState<string>()
   const [open, setOpen] = useState<boolean>(false)
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
@@ -94,9 +95,9 @@ const Passes = () => {
   const handleCancel = async () => {
     const api = new PaymentApi()
 
-    if (payinId && payinId.length) {
+    if (payin) {
       await api.cancelPayin({
-        payinId
+        payinId: payin.id
       })
       setTimeout(() => {
         setIsPaying(false)
@@ -141,7 +142,7 @@ const Passes = () => {
       paying[0] &&
       paying[0].payinStatus === PayinDtoPayinStatusEnum.Pending
     ) {
-      setPayinId(payins.payins[0].id)
+      setPayin(payins.payins[0])
     }
     setIsPaying(isPaying || paying.length > 0)
     setIsLoading(false)
@@ -229,19 +230,33 @@ const Passes = () => {
               Please wait. This might take a few minutes, do not go back or
               refresh this page.
             </span>
-            <span>
-              If you paid with card, please verify your payment with your
-              provider.
-            </span>
-            <div className="mt-5">
-              <Button
-                onClick={handleCancel}
-                tag="button"
-                variant="purple-light"
-              >
-                <span className="px-20 text-lg">Cancel</span>
-              </Button>
-            </div>
+            {payin &&
+              payin.payinMethod.method ===
+                PayinMethodDtoMethodEnum.CircleCard && (
+                <span>
+                  For card payments, please verify your payment with your
+                  provider.
+                </span>
+              )}
+            {payin &&
+              payin.payinMethod.method !==
+                PayinMethodDtoMethodEnum.CircleCard && (
+                <>
+                  <span>
+                    We are waiting for your crypto payment. If the transaction
+                    was cancelled or failed, please cancel payemnt.
+                  </span>
+                  <div className="mt-5">
+                    <Button
+                      onClick={handleCancel}
+                      tag="button"
+                      variant="purple-light"
+                    >
+                      <span className="px-20 text-lg">Cancel</span>
+                    </Button>
+                  </div>
+                </>
+              )}
           </div>
         </ConditionRendering>
         <ConditionRendering condition={!!passHolder}>
