@@ -16,7 +16,6 @@ const usePayinMethod = () => {
     null
   )
   const api = new PaymentApi()
-  // const { user } = useUser()
 
   async function getDefaultPayinMethod() {
     try {

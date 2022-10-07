@@ -25,9 +25,7 @@ import ConditionRendering from "src/components/molecules/ConditionRendering"
 import PassCard from "src/components/molecules/lucypalooza/PassCard"
 import PassSuccess from "src/components/molecules/lucypalooza/PassSuccess"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
-import Modal from "src/components/organisms/Modal"
 import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
-import AddCard from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
 import { ContentService } from "src/helpers"
 import { usePayinMethod } from "src/hooks"
 interface IPassList {
@@ -68,17 +66,15 @@ const Passes = () => {
   const [isPaying, setIsPaying] = useState<boolean>(false)
   const [payin, setPayin] = useState<PayinDto>()
   const [passId, setPassId] = useState<string>()
-  const [open, setOpen] = useState<boolean>(false)
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { defaultPayinMethod, getCards } = usePayinMethod()
+  const { defaultPayinMethod } = usePayinMethod()
   useEffect(() => {
     const api = new PassApi()
     const fetch = async () => {
       const userApi = new UserApi()
       const userId = await userApi.getUserId({ username: "patzhang" })
-      getCards()
 
       const res = await api.getCreatorPasses({
         getCreatorPassesRequestDto: { creatorId: userId }
@@ -178,7 +174,7 @@ const Passes = () => {
           condition={!!passId && !passHolder && isPaying === false}
         >
           <div className="mx-auto w-full max-w-[480px] bg-black">
-            <PaymentSettings addCardHandler={() => setOpen(true)} isEmbedded />
+            <PaymentSettings isEmbedded />
             <BuyPassButton
               passId={passId ?? ""}
               isDisabled={
@@ -193,16 +189,6 @@ const Passes = () => {
               }}
             />
           </div>
-          <Modal isOpen={open} setOpen={setOpen}>
-            <AddCard
-              callback={() => {
-                setOpen(false)
-                setTimeout(() => {
-                  getCards()
-                }, 500)
-              }}
-            />
-          </Modal>
         </ConditionRendering>
         {
           // Oleh TODO: use the same condition to disable the whole Payment part (the above part^)

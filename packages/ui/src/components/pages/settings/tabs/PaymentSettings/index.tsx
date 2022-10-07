@@ -11,14 +11,17 @@ import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, Select } from "src/components/atoms"
+import { Modal } from "src/components/organisms"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod, useUser } from "src/hooks"
+
+import AddCard from "./sub-tabs/AddCard"
 
 interface Props {
   addCardHandler?: null | (() => void)
@@ -26,7 +29,6 @@ interface Props {
   onSetDefaultPayment?: () => void
 }
 const PaymentSettings = ({
-  addCardHandler = null,
   isEmbedded = false,
   onSetDefaultPayment
 }: Props) => {
@@ -36,7 +38,8 @@ const PaymentSettings = ({
     defaultPayinMethod,
     setDefaultPayinMethod,
     getDefaultPayinMethod,
-    deleteCard
+    deleteCard,
+    getCards
   } = usePayinMethod()
   const defaultCard = cards.find(
     (card) => card.id === defaultPayinMethod?.cardId
@@ -144,8 +147,20 @@ const PaymentSettings = ({
     return payInMethod ? defaultPayment[payInMethod] : null
   }
 
+  const [open, setOpen] = useState<boolean>(false)
+
   return (
     <>
+      {isEmbedded && (
+        <Modal isOpen={open} setOpen={setOpen}>
+          <AddCard
+            callback={() => {
+              setOpen(false)
+              setTimeout(() => getCards(), 500)
+            }}
+          />
+        </Modal>
+      )}
       {!isEmbedded && (
         <Tab
           withBackMobile
@@ -307,8 +322,8 @@ const PaymentSettings = ({
             tag="button"
             className="mt-5 mb-6"
             onClick={
-              addCardHandler
-                ? addCardHandler
+              isEmbedded
+                ? () => setOpen(true)
                 : () => addOrPopStackHandler(SubTabsEnum.AddCard)
             }
           >
