@@ -102,7 +102,8 @@ const usePayinMethod = () => {
     setDefaultPayinMethod,
     getCardInfo,
     deleteCard,
-    getCards
+    getCards,
+    setPayinMethod
   }
 }
 

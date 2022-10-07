@@ -7,6 +7,7 @@ import {
   PassHolderDto,
   PayinDto,
   PayinDtoPayinStatusEnum,
+  PayinMethodDto,
   PayinMethodDtoMethodEnum,
   PaymentApi,
   UserApi
@@ -69,7 +70,7 @@ const Passes = () => {
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { defaultPayinMethod } = usePayinMethod()
+  const { defaultPayinMethod, setPayinMethod } = usePayinMethod()
   useEffect(() => {
     const api = new PassApi()
     const fetch = async () => {
@@ -86,6 +87,10 @@ const Passes = () => {
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onSetDefaultPayment = (value: PayinMethodDto) => {
+    setPayinMethod(value)
+  }
 
   const handleCancel = async () => {
     const api = new PaymentApi()
@@ -174,7 +179,10 @@ const Passes = () => {
           condition={!!passId && !passHolder && isPaying === false}
         >
           <div className="mx-auto w-full max-w-[480px] bg-black">
-            <PaymentSettings isEmbedded />
+            <PaymentSettings
+              isEmbedded
+              onSetDefaultPayment={onSetDefaultPayment}
+            />
             <BuyPassButton
               passId={passId ?? ""}
               isDisabled={

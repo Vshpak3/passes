@@ -2,6 +2,7 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
 import {
+  PayinMethodDto,
   PayinMethodDtoChainEnum,
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
@@ -26,7 +27,7 @@ import AddCard from "./sub-tabs/AddCard"
 interface Props {
   addCardHandler?: null | (() => void)
   isEmbedded?: boolean
-  onSetDefaultPayment?: () => void
+  onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
 const PaymentSettings = ({
   isEmbedded = false,
@@ -54,11 +55,11 @@ const PaymentSettings = ({
     }
   })
 
-  const handleSetDefaultPayInMethod = async (value: any) => {
+  const handleSetDefaultPayInMethod = async (value: PayinMethodDto) => {
     await setDefaultPayinMethod(value)
 
     if (onSetDefaultPayment) {
-      onSetDefaultPayment()
+      onSetDefaultPayment(value)
     }
   }
 
