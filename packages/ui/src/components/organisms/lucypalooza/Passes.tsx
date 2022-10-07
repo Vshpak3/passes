@@ -65,7 +65,7 @@ const Passes = () => {
   const [passes, setPasses] = useState<PassDto[]>()
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
   const [isPaying, setIsPaying] = useState<boolean>(false)
-  const [payinId, setPayinId] = useState<string>("")
+  const [payinId, setPayinId] = useState<string>()
   const [passId, setPassId] = useState<string>()
   const [open, setOpen] = useState<boolean>(false)
   const [failedMessage, setFaileddMessage] = useState<boolean>(false)
@@ -94,10 +94,13 @@ const Passes = () => {
   const handleCancel = async () => {
     const api = new PaymentApi()
 
-    if (payinId.length > 0) {
+    if (payinId && payinId.length) {
       await api.cancelPayin({
         payinId
       })
+      setTimeout(() => {
+        setIsPaying(false)
+      }, 500)
     }
   }
   const getPayinState = useCallback(async () => {
@@ -135,9 +138,8 @@ const Passes = () => {
         payin.payinStatus === PayinDtoPayinStatusEnum.Pending
     )
     if (
-      payins &&
-      payins.payins[0] &&
-      payins.payins[0].payinStatus === PayinDtoPayinStatusEnum.Pending
+      paying[0] &&
+      paying[0].payinStatus === PayinDtoPayinStatusEnum.Pending
     ) {
       setPayinId(payins.payins[0].id)
     }
@@ -202,8 +204,8 @@ const Passes = () => {
             <AddCard
               callback={() => {
                 setOpen(false)
-                setTimeout(async () => {
-                  await getCards()
+                setTimeout(() => {
+                  getCards()
                 }, 500)
               }}
             />
