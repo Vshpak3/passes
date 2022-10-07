@@ -85,6 +85,11 @@ export class EthService {
     this.alchemyProvider = await this.alchemy.config.getProvider()
   }
 
+  async getSenderOfTransaction(txHash: string) {
+    const receipt = await this.alchemyProvider.getTransactionReceipt(txHash)
+    return receipt ? receipt.from : undefined
+  }
+
   async refreshEthNfts(): Promise<void> {
     const passes = await this.dbReader<PassEntity>(PassEntity.table)
       .whereNotNull('collection_address')

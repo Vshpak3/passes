@@ -24,6 +24,7 @@ import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.e
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
 import { EmailService } from '../email/email.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
+import { EthService } from '../eth/eth.service'
 import { MessagesService } from '../messages/messages.service'
 import { PassDto } from '../pass/dto/pass.dto'
 import { PassHolderDto } from '../pass/dto/pass-holder.dto'
@@ -152,7 +153,7 @@ const MIN_PAYOUT_AMOUNT = 25.0
 const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
 
-export const MINT_TO_PAYMENT = true
+const MINT_TO_PAYMENT = true
 @Injectable()
 export class PaymentService {
   private circleConnector: CircleConnector
@@ -178,6 +179,7 @@ export class PaymentService {
 
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
+    private readonly ethService: EthService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -986,7 +988,9 @@ export class PaymentService {
       payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS
     ) {
       newJson = payin.callback_input_json as CreateNftPassPayinCallbackInput
-      newJson.walletAddress = transferDto.source.address
+      newJson.walletAddress = await this.ethService.getSenderOfTransaction(
+        transferDto.transactionHash,
+      )
     }
 
     await this.dbWriter<PayinEntity>(PayinEntity.table)

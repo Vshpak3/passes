@@ -3,12 +3,13 @@ import { text } from 'body-parser'
 
 import { CreatorStatsModule } from '../creator-stats/creator-stats.module'
 import { EmailModule } from '../email/email.module'
+import { EthModule } from '../eth/eth.module'
 import { RedisLockModule } from '../redis-lock/redis-lock.module'
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
 
 @Module({
-  imports: [CreatorStatsModule, RedisLockModule, EmailModule],
+  imports: [CreatorStatsModule, RedisLockModule, EmailModule, EthModule],
   controllers: [PaymentController],
   providers: [PaymentService],
   exports: [PaymentService],
