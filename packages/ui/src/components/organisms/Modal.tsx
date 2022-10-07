@@ -40,7 +40,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           display: "flex"
         },
         overlay: {
-          background: "rgba(0, 0, 0, 0.5)"
+          background: "rgba(0, 0, 0, 0.5)",
+          zIndex: 11
         }
       }}
     >

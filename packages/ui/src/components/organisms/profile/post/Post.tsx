@@ -18,6 +18,11 @@ const PostViewModal = dynamic(
   { ssr: false }
 )
 
+export interface DropdownOption {
+  readonly text: string
+  readonly onClick: () => void
+}
+
 interface PostProps {
   post: PostDto
   ownsProfile: boolean
@@ -38,7 +43,7 @@ export const Post = ({
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useUser()
 
-  const getDropdownOptions = [
+  const dropdownOptions: DropdownOption[] = [
     {
       text: "Report",
       onClick: () => setUserReportModal(true)
@@ -67,10 +72,11 @@ export const Post = ({
           isOpen
           onClose={() => setCurrentPost(null)}
           postUnlocked={postUnlocked}
+          dropdownItems={dropdownOptions}
         />
       )}
       <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
-        <PostProfileAvatar post={post} dropdownItems={getDropdownOptions} />
+        <PostProfileAvatar post={post} dropdownItems={dropdownOptions} />
         <BlockModal
           isOpen={userBlockModal}
           setOpen={setUserBlockModal}

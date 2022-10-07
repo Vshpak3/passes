@@ -4,7 +4,6 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
-import MenuIcon from "public/icons/menu.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import ShareIcon from "public/icons/share-outline.svg"
@@ -18,31 +17,38 @@ import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { useComments, useUser } from "src/hooks"
 
+import { DropdownOption } from "./Post"
+import { PostDropdown } from "./PostDropdown"
+
 const BuyPostModal = dynamic(
   () => import("src/components/organisms/payment/BuyPostModal"),
   { ssr: false }
 )
 
-interface IViewProps {
+interface ViewModalProps {
   isOpen: boolean
   onClose: () => void
   postUnlocked: boolean
   post: PostDto
+  dropdownItems: DropdownOption[]
 }
 
-const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
+const ViewModal: FC<ViewModalProps> = ({
+  isOpen,
+  onClose,
+  post,
+  postUnlocked,
+  dropdownItems
+}) => {
   const { images, video } = contentTypeCounter(post.content)
   const { user } = useUser()
   const { data } = useComments(post.postId)
   const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
 
+  // Set image if it exists in post
   useEffect(() => {
-    if (
-      post.content &&
-      post.content[0] &&
-      post.content[0].contentType === "image"
-    ) {
+    if (post.content?.[0]?.contentType === "image") {
       setShowcaseImg(post.content[0].signedUrl as string)
     }
   }, [post.content])
@@ -128,9 +134,7 @@ const ViewModal: FC<IViewProps> = ({ isOpen, onClose, post, postUnlocked }) => {
                   )}
                   {user?.id === post.userId && <PostStaticsButton />}
                 </div>
-                <button>
-                  <MenuIcon color="#868487" />
-                </button>
+                <PostDropdown post={post} items={dropdownItems} />
               </div>
               <div className="mt-[50px] flex space-x-4">
                 <ProfileThumbnail userId={post.userId} />
