@@ -87,7 +87,7 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className="col-span-6 xl:col-span-8">
+              {/* <div className="col-span-6 xl:col-span-8">
                 <div className="relative select-none text-center md:ml-28 md:pl-4 md:text-right">
                   <LandingIcon />
                   <Image
@@ -98,7 +98,7 @@ const HomePage = () => {
                     loading="lazy"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
