@@ -120,4 +120,5 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     </Providers>
   )
 }
-export default App
+
+export default App // no withPageLayout

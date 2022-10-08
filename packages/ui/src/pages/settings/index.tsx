@@ -226,8 +226,6 @@ export const SettingsWrapper: FC<SettingsPageProps> = ({ settingsPath }) => {
   )
 }
 
-export default withPageLayout(SettingsWrapper, { header: false })
-
 const renderTab = (tab: TabsEnum) => {
   switch (tab) {
     case TabsEnum.AccountSettings:
@@ -285,3 +283,5 @@ const renderSubTab = (tab: SubTabsEnum, user: GetUserResponseDto) => {
       return <PaymentHistory />
   }
 }
+
+export default withPageLayout(SettingsWrapper, { header: false })

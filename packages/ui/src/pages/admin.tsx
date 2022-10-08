@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Admin = dynamic(() => import("src/components/pages/admin"), {
   suspense: true,
@@ -14,4 +15,4 @@ const AdminPage = () => {
   )
 }
 
-export default AdminPage
+export default withPageLayout(AdminPage, { header: false, sidebar: false })

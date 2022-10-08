@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Tab from "src/components/pages/settings/Tab"
-import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
+import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import { chatSettingsSchema } from "src/helpers/validation"
 import { useCreatorSettings } from "src/hooks"
 
@@ -198,9 +198,9 @@ const ChatSettings = () => {
 
 const ChatSettingsCreatorWrapper = () => {
   return (
-    <CreatorOnlyWrapper isPage>
+    <AuthWrapper isPage creatorOnly={true}>
       <ChatSettings />
-    </CreatorOnlyWrapper>
+    </AuthWrapper>
   )
 }
 

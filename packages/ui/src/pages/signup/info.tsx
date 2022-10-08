@@ -286,4 +286,4 @@ const SignupInfoPage: FC = () => {
   )
 }
 
-export default SignupInfoPage
+export default SignupInfoPage // no withPageLayout

@@ -187,4 +187,4 @@ const NewPassword = () => {
   )
 }
 
-export default NewPassword
+export default NewPassword // no withPageLayout

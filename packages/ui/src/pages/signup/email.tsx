@@ -166,4 +166,4 @@ const SignupEmailPage: FC = () => {
   )
 }
 
-export default SignupEmailPage
+export default SignupEmailPage // no withPageLayout

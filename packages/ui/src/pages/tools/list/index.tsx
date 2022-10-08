@@ -286,4 +286,4 @@ const FanLists: NextPage = () => {
   )
 }
 
-export default withPageLayout(FanLists)
+export default withPageLayout(FanLists, { creatorOnly: true })

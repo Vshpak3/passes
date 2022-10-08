@@ -269,4 +269,4 @@ const SignupInitialPage: FC = () => {
   )
 }
 
-export default SignupInitialPage
+export default SignupInitialPage // no withPageLayout

@@ -45,4 +45,4 @@ const AuthSuccess: FC = () => {
   return null
 }
 
-export default AuthSuccess
+export default AuthSuccess // no withPageLayout

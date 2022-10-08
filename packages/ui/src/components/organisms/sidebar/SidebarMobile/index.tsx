@@ -1,8 +1,6 @@
 import { FC, useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
-import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
-import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
 interface SidebarMobileProps {
@@ -42,18 +40,13 @@ const SidebarMobile: FC<SidebarMobileProps> = ({
     )
 
     return (
-      <ConditionalWrap
+      <AuthWrapper
         key={`sidebar-${item.id}`}
-        if={item.creatorOnly}
-        wrapper={CreatorOnlyWrapper}
+        skipAuth={item.showWithoutAuth}
+        creatorOnly={item.creatorOnly !== false}
       >
-        <ConditionalWrap
-          if={!item.showWithoutAuth && !item.creatorOnly}
-          wrapper={AuthWrapper}
-        >
-          {child}
-        </ConditionalWrap>
-      </ConditionalWrap>
+        {child}
+      </AuthWrapper>
     )
   })
 

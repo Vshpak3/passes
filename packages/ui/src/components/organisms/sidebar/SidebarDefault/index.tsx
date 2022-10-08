@@ -2,8 +2,6 @@ import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
-import ConditionalWrap from "src/components/wrappers/ConditionalWrap"
-import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
 import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
@@ -56,18 +54,13 @@ const SidebarDefault = ({
     )
 
     return (
-      <ConditionalWrap
+      <AuthWrapper
         key={`sidebar-${item.id}`}
-        if={item.creatorOnly !== false}
-        wrapper={CreatorOnlyWrapper}
+        skipAuth={item.showWithoutAuth}
+        creatorOnly={item.creatorOnly !== false}
       >
-        <ConditionalWrap
-          if={!item.showWithoutAuth && !item.creatorOnly}
-          wrapper={AuthWrapper}
-        >
-          {child}
-        </ConditionalWrap>
-      </ConditionalWrap>
+        {child}
+      </AuthWrapper>
     )
   })
 
@@ -83,12 +76,12 @@ const SidebarDefault = ({
           <SB.SidebarHeader />
           <nav className="flex flex-col items-center gap-3 pt-[50px] sidebar-collapse:items-start sidebar-collapse:gap-[0px]">
             {renderSidebarItems}
-            <CreatorOnlyWrapper>
+            <AuthWrapper creatorOnly={true}>
               <SB.CreatorToolsItem
                 active={active}
                 openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
               />
-            </CreatorOnlyWrapper>
+            </AuthWrapper>
             {user ? (
               <AuthWrapper>
                 {user?.isCreator ? (

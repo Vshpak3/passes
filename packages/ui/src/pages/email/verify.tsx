@@ -128,4 +128,4 @@ const VerifyEmailPage = () => {
   )
 }
 
-export default VerifyEmailPage
+export default VerifyEmailPage // no withPageLayout

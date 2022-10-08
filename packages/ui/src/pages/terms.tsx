@@ -14,4 +14,4 @@ const TermsOfServicePage = () => {
   )
 }
 
-export default TermsOfServicePage
+export default TermsOfServicePage // no withPageLayout

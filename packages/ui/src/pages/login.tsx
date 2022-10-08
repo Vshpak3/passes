@@ -198,4 +198,4 @@ const LoginPage: FC = () => {
   )
 }
 
-export default LoginPage
+export default LoginPage // no withPageLayout

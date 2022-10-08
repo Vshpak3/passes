@@ -2,7 +2,6 @@ import { useCallback, useState } from "react"
 import Calendar from "src/components/molecules/scheduler/Calendar"
 import EventTable from "src/components/molecules/scheduler/EventTable"
 import SchedulerHeader from "src/components/molecules/scheduler/SchedulerHeader"
-import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const today = new Date()
@@ -17,17 +16,15 @@ const SchedulerPage = () => {
   }, [])
 
   return (
-    <CreatorOnlyWrapper isPage>
-      <div className="bg-black">
-        <SchedulerHeader
-          onChangeTime={handleChangeTime}
-          availableFrom={{ month: 6, year: 2021 }}
-        />
-        <Calendar month={month} year={year} />
-        <EventTable />
-      </div>
-    </CreatorOnlyWrapper>
+    <div className="bg-black">
+      <SchedulerHeader
+        onChangeTime={handleChangeTime}
+        availableFrom={{ month: 6, year: 2021 }}
+      />
+      <Calendar month={month} year={year} />
+      <EventTable />
+    </div>
   )
 }
 
-export default withPageLayout(SchedulerPage)
+export default withPageLayout(SchedulerPage, { creatorOnly: true })

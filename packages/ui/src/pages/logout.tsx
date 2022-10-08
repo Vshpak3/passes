@@ -22,4 +22,4 @@ const Logout = () => {
   return null
 }
 
-export default Logout
+export default Logout // no withPageLayout

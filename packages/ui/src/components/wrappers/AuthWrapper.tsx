@@ -14,14 +14,16 @@ interface AuthWrapperProps {
   // otherwise will conditionally render children
   isPage?: boolean
   skipAuth?: boolean
+  creatorOnly?: boolean
 }
 
 const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   children,
   isPage,
-  skipAuth
+  skipAuth,
+  creatorOnly
 }) => {
-  const { userClaims } = useUser()
+  const { user, userClaims } = useUser()
   const router = useRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
@@ -46,12 +48,16 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
       return
     }
 
-    const _authed = authStateMachine(userClaims) === AuthStates.AUTHED
+    let _authed = authStateMachine(userClaims) === AuthStates.AUTHED
+    if (creatorOnly && !user?.isCreator) {
+      _authed = false
+    }
+
     setAuthed(_authed)
     if (isPage && !_authed) {
       authRouter(router, userClaims)
     }
-  }, [isPage, skipAuth, router, userClaims])
+  }, [isPage, skipAuth, creatorOnly, router, user, userClaims])
 
   return authed ? <>{children}</> : <div />
 }

@@ -4,7 +4,7 @@ import {
   VaultMediaGrid,
   VaultNavigation
 } from "src/components/organisms"
-import CreatorOnlyWrapper from "src/components/wrappers/CreatorOnly"
+import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import useVaultGallery from "src/hooks/vault/useVaultGallery"
 
 interface IMessagesVaultDialog {
@@ -71,7 +71,7 @@ export const MessagesVaultDialog = ({
         </div>
       }
     >
-      <CreatorOnlyWrapper isPage>
+      <AuthWrapper isPage creatorOnly={true}>
         <div className="mx-auto w-full px-2 md:px-5 sidebar-collapse:max-w-[1100px]">
           <VaultNavigation
             vaultContent={vaultContent}
@@ -91,7 +91,7 @@ export const MessagesVaultDialog = ({
             setSelectedItems={setSelectedItems}
           />
         </div>
-      </CreatorOnlyWrapper>
+      </AuthWrapper>
     </Dialog>
   )
 }

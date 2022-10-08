@@ -19,4 +19,4 @@ class Document extends NextDocument {
   }
 }
 
-export default Document
+export default Document // no withPageLayout

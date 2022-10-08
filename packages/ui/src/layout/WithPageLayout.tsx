@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar"
 
 class WithPageLayoutOptions {
   skipAuth?: boolean = false
+  creatorOnly?: boolean = false
   header?: boolean = true
   sidebar?: boolean = true
 
@@ -30,7 +31,11 @@ export const withPageLayout = (
           </div>
         )}
         <div className="flex shrink-0 flex-col">
-          <AuthWrapper isPage skipAuth={!!options.skipAuth}>
+          <AuthWrapper
+            isPage
+            skipAuth={!!options.skipAuth}
+            creatorOnly={!!options.creatorOnly}
+          >
             <Page {...props} ref={ref} />
           </AuthWrapper>
         </div>

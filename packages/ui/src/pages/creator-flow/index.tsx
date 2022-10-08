@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import AuthWrapper from "src/components/wrappers/AuthWrapper"
+import { withPageLayout } from "src/layout/WithPageLayout"
 
 const CreatorFlowMain = dynamic(
   () => import("src/components/pages/creator-flow/Main"),
@@ -10,11 +10,12 @@ const CreatorFlowMain = dynamic(
 const CreatorFlowPage = () => {
   return (
     <Suspense fallback={`Loading...`}>
-      <AuthWrapper isPage>
-        <CreatorFlowMain />
-      </AuthWrapper>
+      <CreatorFlowMain />
     </Suspense>
   )
 }
 
-export default CreatorFlowPage
+export default withPageLayout(CreatorFlowPage, {
+  header: false,
+  sidebar: false
+})
