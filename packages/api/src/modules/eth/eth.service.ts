@@ -379,22 +379,18 @@ export class EthService {
 
   async getNewNonce(key: string): Promise<number> {
     const id = v4()
-
-    await this.dbWriter.raw(
-      `insert into ${EthNonceEntity.table}(nonce, key_identifier, id) 
-      select (max(nonce)+1) as nonce, key_identifier, '${id}' as id 
-      from ${EthNonceEntity.table} where key_identifier = ?`,
-      key,
-    )
-    return (
-      (
-        await this.dbWriter<EthNonceEntity>(EthNonceEntity.table)
-          .where({
-            id,
-          })
-          .select('nonce')
-          .first()
-      )?.nonce ?? 0
-    )
+    let nonce = 0
+    await this.dbWriter.transaction(async (trx) => {
+      const row = await trx<EthNonceEntity>(EthNonceEntity.table)
+        .where({ key_identifier: key })
+        .select('*')
+        .forUpdate()
+        .first()
+      nonce = row?.nonce ?? 0
+      await trx<EthNonceEntity>(EthNonceEntity.table)
+        .where({ key_identifier: key })
+        .increment('nonce')
+    })
+    return nonce
   }
 }
