@@ -33,7 +33,7 @@ export function authStateToRoute(state: AuthStates) {
       return "/signup/info"
     case AuthStates.AUTHED:
       if (isProd) {
-        return "/soon"
+        return "/lucypalooza"
       } else {
         return "/home"
       }
