@@ -53,7 +53,7 @@ export class ProfileController {
     responseDesc: 'A profile was retrieved',
     role: RoleEnum.NO_AUTH,
   })
-  @Post('search')
+  @Post('find')
   async findProfile(
     @Req() req: RequestWithUser,
     @Body() getProfileRequestDto: GetProfileRequestDto,

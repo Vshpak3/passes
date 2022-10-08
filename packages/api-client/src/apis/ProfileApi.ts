@@ -159,7 +159,7 @@ export class ProfileApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/profile/search`,
+            path: `/api/profile/find`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

@@ -81,16 +81,13 @@ export class ProfileDto {
 
   constructor(
     profile: ProfileEntity & {
-      legal_full_name?: string
       display_name?: string
-      is_kyc_verified: boolean
       is_adult: boolean
     },
   ) {
     this.profileId = profile.id
     this.userId = profile.user_id
     this.description = profile.description
-    this.legalFullName = profile.legal_full_name
     this.displayName = profile.display_name
 
     this.coverTitle = profile.cover_title
@@ -104,7 +101,6 @@ export class ProfileDto {
     this.twitterUsername = profile.twitter_username
     this.youtubeUsername = profile.youtube_username
 
-    this.isKYCVerified = profile.is_kyc_verified
     this.isActive = profile.is_active
     this.isAdult = profile.is_adult
   }
