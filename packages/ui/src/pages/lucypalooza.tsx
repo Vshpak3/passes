@@ -22,7 +22,7 @@ const LucyPalooza = () => {
     <div className="min-h-screen overflow-hidden bg-black">
       <div className="relative mx-auto max-w-[1440px] pb-[94px]">
         <div className="absolute top-60 right-0 h-[894px] md:top-0 md:w-[856px]">
-          <img src="/img/lucyplooza/hero.jpg" alt="" className="w-full" />
+          {/* <img src="/img/lucyplooza/hero.jpg" alt="" className="w-full" /> */}
           {/* right blur ellipse */}
           <span className="absolute top-0 right-[-391px] z-10 h-[555px] w-[555px] rounded-full bg-[#351544] blur-[150px]"></span>
 
