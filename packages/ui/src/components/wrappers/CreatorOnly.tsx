@@ -13,18 +13,13 @@ const CreatorOnlyWrapper: FC<PropsWithChildren<CreatorOnlyWrapperProps>> = ({
   children,
   isPage
 }) => {
-  const { loading, user } = useUser()
+  const { user } = useUser()
   const router = useRouter()
-
-  if (loading) {
-    return null
-  }
 
   if (!user || !user.isCreator) {
     if (isPage && typeof window !== "undefined") {
       router.push("/")
     }
-
     return null
   }
 
