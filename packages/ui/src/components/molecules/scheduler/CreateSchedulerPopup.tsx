@@ -5,7 +5,7 @@ import ClockIcon from "public/icons/clock-icon.svg"
 import { forwardRef, useCallback, useState } from "react"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 import { Dialog as NewPostDialog } from "src/components/organisms"
-import { NewPost } from "src/components/organisms/profile/main-content/new-post"
+import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import { useCreatePost } from "src/hooks"
 interface CreateSchedulerPopupProps {
   onCancel: () => void

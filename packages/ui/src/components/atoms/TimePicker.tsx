@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { Dispatch, SetStateAction, useRef, useState } from "react"
+import { Dispatch, FC, SetStateAction, useRef, useState } from "react"
 import {
   Time,
   TimeShiftEnum
@@ -8,13 +8,13 @@ import { useOnClickOutside } from "src/hooks"
 
 const padZero = (n: number) => n.toString().padStart(2, "0")
 
-export interface ITimePicker {
+export interface TimePickerProps {
   time: Time
   setTime: Dispatch<SetStateAction<Time>>
   defualtTime?: { hours: number; minutes: number }
 }
 
-const TimePicker: React.FC<ITimePicker> = ({ time, setTime }) => {
+const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownEl = useRef(null)
 

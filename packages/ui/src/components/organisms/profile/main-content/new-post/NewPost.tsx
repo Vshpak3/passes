@@ -1,31 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { CreatePostRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
-import CameraBackIcon from "public/icons/post-camera-back-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import { Dialog } from "src/components/organisms"
+import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
+import PostHeader from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers"
 
 import { NewPostDropdown } from "./audience-dropdown"
-import { NewFundraiserTab } from "./fundraiser-tab"
 import { MediaFile } from "./media"
-import { PollsTab } from "./polls-tab"
-import { PostFooter } from "./PostFooter"
-import PostHeader from "./PostHeader"
 
-const RecordView = dynamic(
-  () => import("src/components/organisms/media-record"),
-  { ssr: false }
-)
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
   { ssr: false }
@@ -37,6 +27,16 @@ const MAX_IMAGE_SIZE_NAME = "10 megabytes"
 const MAX_VIDEO_SIZE = 200 * MB
 const MAX_VIDEO_SIZE_NAME = "200 megabytes"
 export const MAX_IMAGE_COUNT = 4
+
+interface NewPostFormProps {
+  expiresAt: Date | null
+  isPaid: boolean
+  mentions: any[] // TODO
+  passes: any[] // TODO
+  price: string
+  scheduledAt: Date | null
+  text: string
+}
 
 interface NewPostProps {
   passes?: any
@@ -58,14 +58,10 @@ export const NewPost: FC<NewPostProps> = ({
   const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  const [, setHasSchedule] = useState(false)
-  const [hasFundraiser, setHasFundraiser] = useState(false)
-  const [hasVideo, setHasVideo] = useState(false)
-  const [hasAudio, setHasAudio] = useState(false)
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
+
   const {
     handleSubmit,
     register,
@@ -73,46 +69,35 @@ export const NewPost: FC<NewPostProps> = ({
     getValues,
     setValue,
     watch,
-    control,
     reset
-  } = useForm({
+  } = useForm<NewPostFormProps>({
     defaultValues: {}
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const isPaid = watch("isPaid")
-  const fundraiserTarget = watch("fundraiserTarget")
-
-  const onCloseTab = (tab: any) => {
-    switch (tab) {
-      case "Fundraiser":
-        setHasFundraiser(false)
-        break
-      case "Schedule":
-        setHasSchedule(false)
-        break
-      default:
-        setActiveMediaHeader("Media")
-        break
-    }
-  }
 
   useEffect(() => {
     setHasMounted(true)
     setValue("scheduledAt", initScheduledTime, { shouldValidate: true })
   }, [initScheduledTime, setValue])
 
+  const setScheduledTime = (date: Date | null) => {
+    setValue("scheduledAt", date, { shouldValidate: true })
+  }
+
   const onPassSelect = () => {
-    const { passes: _passes } = getValues()
-    const result = Object.keys(_passes)
-      .filter((id) => _passes[id])
-      .map((id) => passes.find((pass) => pass.id === id))
-    setSelectedPasses(result)
+    //   const { passes: _passes } = getValues()
+    //   const result = Object.keys(_passes)
+    //     .filter((id) => _passes[id])
+    //     .map((id) => passes.find((pass) => pass.id === id))
+    //   setSelectedPasses(result)
+    setSelectedPasses([])
   }
 
   const removePasses = (id: any) => {
-    setValue(`passes[${id}]`, false, { shouldValidate: true })
-    setSelectedPasses(selectedPasses.filter((pass) => pass.id !== id))
+    // setValue(`passes[${id}]`, false, { shouldValidate: true })
+    setSelectedPasses(selectedPasses.filter((pass: any) => pass.id !== id))
   }
 
   const onSubmit = async () => {
@@ -136,39 +121,13 @@ export const NewPost: FC<NewPostProps> = ({
 
     createPost(post)
     reset()
+    setFiles([])
     setIsReset(true)
   }
 
   const onFileInputChange = (event: any) => {
     onMediaChange([...event.target.files])
     event.target.value = ""
-  }
-
-  const onMediaHeaderChange = (event: any) => {
-    if (new Date(event) !== "Invalid Date") {
-      setValue("scheduledAt", new Date(event), { shouldValidate: true })
-      setHasSchedule(true)
-      return
-    }
-
-    if (typeof event !== "string") {
-      return onFileInputChange(event)
-    }
-
-    switch (event) {
-      case "Fundraiser":
-        setHasFundraiser(true)
-        break
-      case "Video":
-        setHasVideo(true)
-        break
-      case "Audio":
-        setHasAudio(true)
-        break
-      default:
-        setActiveMediaHeader(event)
-        break
-    }
   }
 
   const onDragDropChange = (event: any) => {
@@ -236,21 +195,6 @@ export const NewPost: FC<NewPostProps> = ({
     }
   }
 
-  const onVideoStop = (mediaBlobUrl: any, blobObject: any, isVideo: any) => {
-    const file = new File([blobObject], isVideo ? "test.mp4" : "test.wav", {
-      type: isVideo ? "video/mp4" : "audio/wav",
-      lastModified: new Date().getTime(),
-      url: mediaBlobUrl
-    })
-    setSelectedMedia(file)
-    setFiles([...files, file])
-    if (hasVideo) {
-      setHasVideo(false)
-    } else {
-      setHasAudio(false)
-    }
-  }
-
   if (!hasMounted) {
     return null
   } else {
@@ -263,78 +207,7 @@ export const NewPost: FC<NewPostProps> = ({
                 onClose={() => setExtended(false)}
                 register={register}
                 errors={errors}
-                onChange={onMediaHeaderChange}
               />
-              {hasVideo && (
-                <Dialog
-                  open={true}
-                  media
-                  title={
-                    <div className="absolute top-3 left-1 z-30 flex items-center">
-                      <span
-                        className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
-                        onClick={() => setHasVideo(false)}
-                      >
-                        <CameraBackIcon />
-                      </span>
-                      <span className="pl-1 text-xl font-bold text-[#FFFF]">
-                        RECORD A VIDEO MESSAGE
-                      </span>
-                    </div>
-                  }
-                >
-                  <div className="h-screen w-screen">
-                    <RecordView
-                      onStop={onVideoStop}
-                      className="h-full w-full"
-                    />
-                  </div>
-                </Dialog>
-              )}
-              {hasAudio && (
-                <Dialog
-                  open={true}
-                  className="bg-transparent"
-                  media
-                  title={
-                    <div className="absolute top-3 left-1 z-30 flex items-center">
-                      <span
-                        className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[#FFFF]/10"
-                        onClick={() => setHasAudio(false)}
-                      >
-                        <CameraBackIcon />
-                      </span>
-                      <span className="pl-1 text-xl font-bold text-[#FFFF]">
-                        RECORD AN AUDIO MESSAGE
-                      </span>
-                    </div>
-                  }
-                >
-                  <div className="h-screen w-screen">
-                    <RecordView
-                      onStop={onVideoStop}
-                      className="h-full w-full"
-                      options={{ video: false }}
-                    />
-                  </div>
-                </Dialog>
-              )}
-
-              {hasFundraiser && (
-                <NewFundraiserTab
-                  control={control}
-                  register={register}
-                  fundraiserTarget={fundraiserTarget}
-                  onCloseTab={onCloseTab}
-                />
-              )}
-              {activeMediaHeader === "Polls" && (
-                <PollsTab
-                  control={control}
-                  register={register}
-                  onCloseTab={onCloseTab}
-                />
-              )}
             </>
           )}
 
@@ -481,6 +354,8 @@ export const NewPost: FC<NewPostProps> = ({
                         <FormInput
                           register={register}
                           type="number"
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          //@ts-ignore
                           min="1"
                           max="5000"
                           name="price"
@@ -509,12 +384,8 @@ export const NewPost: FC<NewPostProps> = ({
               )}
               <PostFooter
                 disableForm={disableForm}
-                register={register}
-                errors={errors}
-                onChange={onMediaHeaderChange}
-                activeMediaHeader={activeMediaHeader}
-                postTime={getValues()?.scheduledAt}
-                onRemovePostTime={() => unregister("scheduledAt")}
+                setScheduledTime={setScheduledTime}
+                scheduledTime={getValues()?.scheduledAt}
               />
             </>
           )}

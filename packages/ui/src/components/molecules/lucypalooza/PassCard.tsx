@@ -2,14 +2,14 @@ import DOMPurify from "dompurify"
 import React, { FC } from "react"
 import { Button, GradientBorderTile } from "src/components/atoms"
 
-interface IPassVideo {
+interface PassVideoProps {
   img: {
     url: string
     alt: string
   }
 }
 
-interface IPassCard {
+interface PassCardProps {
   img: {
     url: string
     alt: string
@@ -23,7 +23,7 @@ interface IPassCard {
   remainingSupply: number
 }
 
-const PassVideo: FC<IPassVideo> = ({ img }) => {
+const PassVideo: FC<PassVideoProps> = ({ img }) => {
   return (
     <video autoPlay loop muted>
       <source src={img.url} type="video/mp4" />
@@ -33,7 +33,7 @@ const PassVideo: FC<IPassVideo> = ({ img }) => {
 
 const MemoPassVideo = React.memo(PassVideo)
 
-const PassCard: React.FC<IPassCard> = ({
+const PassCard: FC<PassCardProps> = ({
   img,
   title,
   description,

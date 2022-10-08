@@ -1,7 +1,7 @@
 import UploadIcon from "public/icons/upload.svg"
 import { useState } from "react"
 import { File } from "src/components/atoms"
-import { MAX_IMAGE_COUNT } from "src/components/organisms/profile/main-content/new-post"
+import { MAX_IMAGE_COUNT } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import {
   FileAccept,
   FormErrors,

@@ -4,18 +4,18 @@ import {
   PostDto
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 
 const PostVideo = dynamic(
   () => import("src/components/molecules/post/PostVideo"),
   { ssr: false }
 )
 
-interface PostMedia {
+interface PostMediaProps {
   post: PostDto
 }
 
-const PostMedia: React.FC<PostMedia> = ({ post }) => {
+const PostMedia: FC<PostMediaProps> = ({ post }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

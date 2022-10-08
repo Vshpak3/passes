@@ -1,7 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { useEffect, useMemo } from "react"
-import GeneralContentFeed from "src/components/organisms/profile/main-content/feed/CreatorContentFeed"
+import GeneralContentFeed from "src/components/organisms/profile/main-content/feed/GeneralContentFeed"
 import { useFeed, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 

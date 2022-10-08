@@ -1,4 +1,5 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
+import { FC } from "react"
 import { FormInput } from "src/components/atoms"
 import {
   FormErrors,
@@ -6,7 +7,7 @@ import {
   FormRegister
 } from "src/components/types/FormTypes"
 
-interface IPostHeader {
+interface PostHeaderProps {
   onClose: () => void
   messages?: boolean
   register: FormRegister
@@ -14,7 +15,7 @@ interface IPostHeader {
   options?: FormOptions
 }
 
-const PostHeader: React.FC<IPostHeader> = ({
+const PostHeader: FC<PostHeaderProps> = ({
   onClose,
   messages,
   register,

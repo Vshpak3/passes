@@ -7,11 +7,11 @@ import {
   PostDto
 } from "@passes/api-client"
 import { FC } from "react"
-import { NewPost } from "src/components/organisms/profile/main-content/new-post"
+import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import { KeyedMutator } from "swr"
 
-import GeneralContentFeed from "./CreatorContentFeed"
 import FanWallFeed from "./FanWallFeed"
+import GeneralContentFeed from "./GeneralContentFeed"
 import PassesFeed from "./PassesFeed"
 
 export interface ProfileContentFeedProps {

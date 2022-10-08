@@ -8,6 +8,7 @@ import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSugges
 import classNames from "classnames"
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
 import React, {
+  FC,
   ReactElement,
   useCallback,
   useEffect,
@@ -39,7 +40,7 @@ const mentions: MentionData[] = [
   }
 ]
 
-const Entry: React.FC<EntryComponentProps> = ({
+const Entry: FC<EntryComponentProps> = ({
   mention,
   isFocused,
   ...parentProps
