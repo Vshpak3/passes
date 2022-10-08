@@ -3,23 +3,28 @@ import {
   PayinDataDto,
   PostApi
 } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "src/components/atoms"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import { TipPostButton } from "src/components/molecules/payment/tip-post-button"
 import Modal from "src/components/organisms/Modal"
-import { usePayinMethod } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 
-interface TipPostModalProps {
-  postId: string
+import { PostPaymentProps } from "./PaymentProps"
+
+interface TipPostModalProps extends PostPaymentProps {
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const TipPostModal: FC<TipPostModalProps> = ({ postId, setOpen, isOpen }) => {
-  const { defaultPayinMethod, cards } = usePayinMethod()
+const TipPostModal: FC<TipPostModalProps> = ({
+  cards,
+  defaultPayinMethod,
+  isOpen,
+  post,
+  setOpen
+}) => {
   const {
     register,
     getValues,
@@ -36,7 +41,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ postId, setOpen, isOpen }) => {
   const registerTip = async () => {
     return await api.registerTipPost({
       tipPostRequestDto: {
-        postId,
+        postId: post.postId,
         amount: Number(getValues("tip-value")),
         payinMethod: defaultPayinMethod
       }

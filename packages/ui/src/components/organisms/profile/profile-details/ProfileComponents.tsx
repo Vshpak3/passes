@@ -129,7 +129,6 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         <span className="text-[32px] font-medium leading-9 text-passes-white-100">
           {displayName}
         </span>
-        {/* <Verified /> */}
       </div>
       <div className="flex w-full justify-between">
         <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">

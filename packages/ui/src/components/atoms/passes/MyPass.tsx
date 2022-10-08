@@ -241,7 +241,6 @@ const MyPassTile = ({
   passOnEditHandler
 }: MyPassTileProps) => {
   const { user } = useUser()
-  const [hasMounted, setHasMounted] = useState(false)
   const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
   const expiryInMilSeconds = Number(passData.expiresAt)
   const expiryDate = new Date(expiryInMilSeconds)
@@ -253,7 +252,6 @@ const MyPassTile = ({
     expiryInMilSeconds - dateNow < ONE_MONTH && expiryInMilSeconds > dateNow
 
   useEffect(() => {
-    setHasMounted(true)
     const api = new PassApi()
     api
       .getExternalPasses({
@@ -268,10 +266,6 @@ const MyPassTile = ({
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  if (!hasMounted) {
-    return null
-  }
 
   return (
     <div className="col-span-1 w-full">

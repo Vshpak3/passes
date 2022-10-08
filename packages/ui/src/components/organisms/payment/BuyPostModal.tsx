@@ -1,9 +1,4 @@
-import {
-  CircleCardDto,
-  GetPayinMethodResponseDtoMethodEnum,
-  PayinMethodDto,
-  PostDto
-} from "@passes/api-client"
+import { GetPayinMethodResponseDtoMethodEnum } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
@@ -15,14 +10,9 @@ import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
 import useExternalPasses from "src/hooks/useExternalPasses"
 
-export interface BuyPostProps {
-  cards: CircleCardDto[]
-  defaultPayinMethod: PayinMethodDto | undefined
-  post: PostDto
-  setIsPayed?: (value: boolean) => void
-}
+import { PostPaymentProps } from "./PaymentProps"
 
-interface BuyPostModalProps extends BuyPostProps {
+interface BuyPostModalProps extends PostPaymentProps {
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }

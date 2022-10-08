@@ -1,31 +1,31 @@
 import { LikeApi, PostApi } from "@passes/api-client/apis"
-import copyToClipboard from "copy-to-clipboard"
 import dynamic from "next/dynamic"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useState } from "react"
+import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 import { compactNumberFormatter } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
 
 import { CommentSection } from "./CommentSection"
+import { copyToClipboard } from "./PostDropdown"
 
 const TipPostModal = dynamic(
   () => import("src/components/organisms/payment/TipPostModal"),
   { ssr: false }
 )
 
-interface PostEngagementProps {
-  post: any
+interface PostEngagementProps extends PostPaymentProps {
   postUnlocked: boolean
-  ownsProfile: boolean
 }
 
 export const PostEngagement: FC<PostEngagementProps> = ({
+  cards,
+  defaultPayinMethod,
   post,
-  postUnlocked = false,
-  ownsProfile
+  postUnlocked = false
 }) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
@@ -97,11 +97,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
             <ShareIcon onClick={() => copyToClipboard(post)} />
-            {ownsProfile && (
-              <span className="text-[12px] leading-[15px] text-passes-gray-100">
-                {compactNumberFormatter(post.sharesCount)}
-              </span>
-            )}
           </div>
         </div>
         <div
@@ -110,7 +105,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({
         >
           <CostIcon />
         </div>
-        {post.tipAmount && "$" + post.tipAmount.toFixed(2)}
       </div>
       <CommentSection
         postId={post.postId}
@@ -118,8 +112,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({
         updateEngagement={updateEngagement}
       />
       <TipPostModal
+        cards={cards}
+        defaultPayinMethod={defaultPayinMethod}
         isOpen={isTipsModalOpen}
-        postId={post.postId}
+        post={post}
         setOpen={setIsTipsModalOpen}
       />
     </div>

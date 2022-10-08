@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react"
 import {
   MyPassGrid,
   MyPassSearchHeader
@@ -7,7 +6,6 @@ import { usePasses, useUser } from "src/hooks"
 import { withPageLayout } from "src/layout/WithPageLayout"
 
 const Passes = () => {
-  const [hasMounted, setHasMounted] = useState(false)
   const { user } = useUser()
 
   const {
@@ -19,14 +17,6 @@ const Passes = () => {
     passType,
     lifetimePasses
   } = usePasses(user?.id ?? "")
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) {
-    return null
-  }
 
   return (
     <div

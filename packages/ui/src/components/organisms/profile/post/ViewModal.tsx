@@ -10,7 +10,7 @@ import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { Dialog } from "src/components/organisms"
-import { BuyPostProps } from "src/components/organisms/payment/BuyPostModal"
+import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -25,7 +25,7 @@ const BuyPostModal = dynamic(
   { ssr: false }
 )
 
-interface ViewModalProps extends BuyPostProps {
+interface ViewModalProps extends PostPaymentProps {
   isOpen: boolean
   onClose: () => void
   postUnlocked: boolean

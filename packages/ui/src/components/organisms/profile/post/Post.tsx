@@ -6,7 +6,7 @@ import {
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import { BuyPostProps } from "src/components/organisms/payment/BuyPostModal"
+import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
@@ -24,7 +24,7 @@ export interface DropdownOption {
   readonly onClick: () => void
 }
 
-interface PostProps extends BuyPostProps {
+interface PostProps extends PostPaymentProps {
   ownsProfile: boolean
   removePost?: (postId: string) => void
   userId: string | undefined
@@ -33,6 +33,7 @@ interface PostProps extends BuyPostProps {
 export const Post = ({
   cards,
   defaultPayinMethod,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ownsProfile,
   post,
   removePost,
@@ -115,9 +116,10 @@ export const Post = ({
           />
         )}
         <PostEngagement
+          cards={cards}
+          defaultPayinMethod={defaultPayinMethod}
           post={post}
           postUnlocked={postUnlocked}
-          ownsProfile={ownsProfile}
         />
       </FormContainer>
     </>

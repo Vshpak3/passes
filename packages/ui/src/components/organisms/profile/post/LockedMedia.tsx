@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms"
-import { BuyPostProps } from "src/components/organisms/payment/BuyPostModal"
+import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 import { formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
@@ -11,7 +11,7 @@ const BuyPostModal = dynamic(
   { ssr: false }
 )
 
-interface LockedMedia extends BuyPostProps {
+interface LockedMedia extends PostPaymentProps {
   setPostUnlocked: Dispatch<SetStateAction<boolean>>
   showcaseImg: string | null
 }
