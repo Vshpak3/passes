@@ -52,6 +52,7 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
           )}
           {feed?.posts?.length && (
             <GeneralContentFeed
+              creatorId={profile.userId}
               feed={feed}
               mutatePosts={mutatePosts}
               removePost={removePost}
