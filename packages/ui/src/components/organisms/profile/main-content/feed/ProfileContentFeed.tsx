@@ -73,11 +73,14 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
             onlyText
             createPost={writeToFanWall}
           />
-          <FanWallFeed
-            fanWallPosts={fanWallPosts}
-            profileUsername={profileUsername}
-            ownsProfile={ownsProfile}
-          />
+          {fanWallPosts?.comments?.length && (
+            <FanWallFeed
+              creatorId={profile.userId}
+              fanWallPosts={fanWallPosts}
+              profileUsername={profileUsername}
+              ownsProfile={ownsProfile}
+            />
+          )}
         </>
       )
     case "passes":

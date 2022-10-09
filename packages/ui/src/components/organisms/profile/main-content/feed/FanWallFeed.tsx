@@ -5,24 +5,29 @@ import {
   PostDto
 } from "@passes/api-client"
 import { FC, useEffect, useState } from "react"
-import InfiniteScroll from "react-infinite-scroll-component"
+import {
+  FetchResultProps,
+  InfiniteScrollComponent
+} from "src/components/atoms/InfiniteScroll"
 import { BlockModal, ReportModal } from "src/components/organisms"
 import { useSWRConfig } from "swr"
 
 import { FanWallComment } from "./FanWallComment"
 
 interface FanWallFeedProps {
-  fanWallPosts?: GetFanWallResponseDto
+  creatorId: string
+  fanWallPosts: GetFanWallResponseDto
   ownsProfile: boolean
   profileUsername: string
 }
 
 const FanWallFeed: FC<FanWallFeedProps> = ({
+  creatorId,
   fanWallPosts,
   ownsProfile,
   profileUsername
 }) => {
-  const [posts, setPosts] = useState(fanWallPosts?.comments ?? [])
+  const [comments, setComments] = useState(fanWallPosts.comments)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const api = new FanWallApi()
@@ -35,14 +40,16 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
       {
         populateCache: () => {
           return {
-            comments: posts.filter((post: any) => post.fanWallCommentId !== id)
+            comments: comments.filter(
+              (post: any) => post.fanWallCommentId !== id
+            )
           }
         }
       }
     )
 
     if (result.comments) {
-      setPosts(result.comments)
+      setComments(result.comments)
     }
   }
   const hideComment = async (id: any) => {
@@ -52,14 +59,16 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
       {
         populateCache: () => {
           return {
-            comments: posts.filter((post: any) => post.fanWallCommentId !== id)
+            comments: comments.filter(
+              (post: any) => post.fanWallCommentId !== id
+            )
           }
         }
       }
     )
 
     if (result.comments) {
-      setPosts(result.comments)
+      setComments(result.comments)
     }
   }
   const getDropdownOptions = (comment: FanWallCommentDto) => {
@@ -93,9 +102,24 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
 
   useEffect(() => {
     if (fanWallPosts?.comments) {
-      setPosts(fanWallPosts.comments)
+      setComments(fanWallPosts.comments)
     }
   }, [fanWallPosts])
+
+  const fetchPosts = async (
+    lastId?: string,
+    createdAt?: Date
+  ): Promise<FetchResultProps> => {
+    const res = await api.getFanWallForCreator({
+      getFanWallRequestDto: { creatorId, lastId, createdAt }
+    })
+    setComments([...comments, ...res.comments])
+    return {
+      lastId: res.lastId,
+      createdAt: res.createdAt,
+      count: res.comments.length
+    }
+  }
 
   return (
     <div>
@@ -109,16 +133,18 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
         setOpen={setUserReportModal}
         userId={""} // TODO: fix
       />
-      {posts?.length > 0 && (
-        <InfiniteScroll
-          dataLength={posts.length}
-          loader={<h3> Loading...</h3>}
-          next={function () {
-            throw new Error("Function not implemented.")
+      {comments?.length > 0 && (
+        <InfiniteScrollComponent
+          initialFetch={{
+            lastId: fanWallPosts.lastId,
+            createdAt: fanWallPosts.createdAt,
+            count: fanWallPosts.comments.length
           }}
-          hasMore={false}
+          fetch={fetchPosts}
+          loader={<h3>Loading...</h3>} // TODO: add a better message
+          endMessage={<h3>No more comments</h3>} // TODO: add a better message
         >
-          {posts.map((comment: FanWallCommentDto, index: number) => (
+          {comments.map((comment, index) => (
             <div key={index} className="flex py-3">
               <FanWallComment
                 key={`post_${index}`}
@@ -134,7 +160,7 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
               />
             </div>
           ))}
-        </InfiniteScroll>
+        </InfiniteScrollComponent>
       )}
     </div>
   )

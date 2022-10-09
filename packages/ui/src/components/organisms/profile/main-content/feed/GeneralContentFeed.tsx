@@ -10,7 +10,7 @@ import { usePayinMethod, useUser } from "src/hooks"
 import { KeyedMutator } from "swr"
 
 interface CreatorContentFeedProps {
-  creatorId: string
+  creatorId?: string
   feed: GetFeedResponseDto
   ownsProfile: boolean
   removePost?: (postId: string) => void
@@ -48,9 +48,13 @@ const GeneralContentFeed: FC<CreatorContentFeedProps> = ({
     lastId?: string,
     createdAt?: Date
   ): Promise<FetchResultProps> => {
-    const res = await api.getFeedForCreator({
-      getProfileFeedRequestDto: { creatorId, lastId, createdAt }
-    })
+    const res = creatorId
+      ? await api.getFeedForCreator({
+          getProfileFeedRequestDto: { creatorId, lastId, createdAt }
+        })
+      : await api.getFeed({
+          getFeedRequestDto: { lastId, createdAt }
+        })
     setPosts([...posts, ...res.posts])
     return {
       lastId: res.lastId,

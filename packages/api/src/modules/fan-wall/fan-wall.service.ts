@@ -22,6 +22,7 @@ import {
 import { FanWallCommentEntity } from './entities/fan-wall-comment.entity'
 
 export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 20
+
 @Injectable()
 export class FanWallService {
   constructor(
