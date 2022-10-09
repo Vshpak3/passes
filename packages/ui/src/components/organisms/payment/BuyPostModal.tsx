@@ -66,7 +66,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({
             card={defaultCard}
           />
         )}
-        {whitePasessList && !!whitePasessList.length && (
+        {!!whitePasessList?.length && (
           <div>
             <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
               or <br />

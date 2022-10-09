@@ -35,7 +35,7 @@ const PostMedia: FC<PostMediaProps> = ({ post }) => {
 
   return (
     <div className="relative mt-3 w-full bg-transparent">
-      {post?.content?.length &&
+      {!!post?.content?.length &&
         (isLoading ? (
           <span>Please wait! Your content is being uploaded</span>
         ) : (

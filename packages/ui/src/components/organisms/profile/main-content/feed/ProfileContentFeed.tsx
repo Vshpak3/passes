@@ -50,7 +50,7 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
               placeholder="What's on your mind?"
             />
           )}
-          {feed?.posts?.length && (
+          {!!feed?.posts?.length && (
             <GeneralContentFeed
               creatorId={profile.userId}
               feed={feed}
@@ -73,7 +73,7 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
             onlyText
             createPost={writeToFanWall}
           />
-          {fanWallPosts?.comments?.length && (
+          {!!fanWallPosts?.comments?.length && (
             <FanWallFeed
               creatorId={profile.userId}
               fanWallPosts={fanWallPosts}
