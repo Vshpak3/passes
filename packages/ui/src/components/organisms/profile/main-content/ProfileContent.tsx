@@ -20,8 +20,13 @@ const ProfileContent: FC<MainContentProps> = ({
   profileUsername
 }) => {
   const [activeTab, setActiveTab] = useState("post")
-  const { removePost } = usePost()
   const [isDeletedPost, setIsDeletedPost] = useState(false)
+
+  const { removePost } = usePost()
+  const { fanWallPosts, writeToFanWall } = useFanWall(profile.userId)
+  const { profilePost, mutatePosts, createPost } = useProfileFeed(
+    profile.userId
+  )
 
   useEffect(() => {
     if (isDeletedPost) {
@@ -37,11 +42,6 @@ const ProfileContent: FC<MainContentProps> = ({
       .catch((error) => toast(error))
   }
 
-  const { fanWallPosts, writeToFanWall } = useFanWall(profile.userId)
-  const { profilePost, mutatePosts, createPost } = useProfileFeed(
-    profile.userId
-  )
-
   return (
     <>
       <ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -50,7 +50,7 @@ const ProfileContent: FC<MainContentProps> = ({
         profileUsername={profileUsername}
         activeTab={activeTab}
         ownsProfile={ownsProfile}
-        posts={profilePost?.posts || []}
+        feed={profilePost}
         fanWallPosts={fanWallPosts}
         createPost={createPost}
         removePost={removePostHandler}

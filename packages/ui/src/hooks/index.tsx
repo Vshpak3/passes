@@ -8,7 +8,6 @@ import useCreatorProfile from "./useCreatorProfile"
 import useCreatorSearch from "./useCreatorSearch"
 import useEventCallback from "./useEventCallback"
 import useEventListener from "./useEventListener"
-import useFeed from "./useFeed"
 import useFollow from "./useFollow"
 import useFollowerSearch from "./useFollowerSearch"
 import useFollowSearch from "./useFollowSearch"
@@ -38,7 +37,6 @@ export {
   useCreatorSettings,
   useEventCallback,
   useEventListener,
-  useFeed,
   useFollow,
   useFollowerSearch,
   useFollowSearch,

@@ -3,8 +3,7 @@ import {
   CreatePostRequestDto,
   GetFanWallResponseDto,
   GetFeedResponseDto,
-  GetProfileResponseDto,
-  PostDto
+  GetProfileResponseDto
 } from "@passes/api-client"
 import { FC } from "react"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
@@ -19,7 +18,7 @@ export interface ProfileContentFeedProps {
   profileUsername: string
   ownsProfile: boolean
   activeTab: string
-  posts: PostDto[]
+  feed?: GetFeedResponseDto
   fanWallPosts?: GetFanWallResponseDto
   createPost: (values: CreatePostRequestDto) => void
   writeToFanWall: (values: CreateFanWallCommentRequestDto) => Promise<void>
@@ -32,7 +31,7 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   profileUsername,
   activeTab,
   ownsProfile,
-  posts,
+  feed,
   fanWallPosts,
   createPost,
   removePost,
@@ -51,9 +50,9 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
               placeholder="What's on your mind?"
             />
           )}
-          {posts?.length > 0 && (
+          {feed?.posts?.length && (
             <GeneralContentFeed
-              posts={posts}
+              feed={feed}
               mutatePosts={mutatePosts}
               removePost={removePost}
               ownsProfile={ownsProfile}
