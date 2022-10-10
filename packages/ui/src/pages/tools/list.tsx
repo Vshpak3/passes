@@ -1,19 +1,22 @@
 import { Fade } from "@mui/material"
 import Popper from "@mui/material/Popper"
 import {
+  GetListsRequestsDto,
   GetListsRequestsDtoOrderEnum,
   GetListsRequestsDtoOrderTypeEnum,
-  ListDto,
-  ListDtoTypeEnum
+  GetListsResponseDto,
+  ListDto
 } from "@passes/api-client"
 import { ListApi } from "@passes/api-client/apis"
 import { debounce } from "lodash"
 import { NextPage } from "next"
-import Link from "next/link"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
-import React, { useCallback, useEffect, useState } from "react"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
+import React, { useCallback, useState } from "react"
+import InfiniteScrollPagination, {
+  ComponentArg
+} from "src/components/atoms/InfiniteScroll"
+import { List } from "src/components/organisms/creator-tools/List"
 import SortListPopup from "src/components/pages/tools/lists/SortListPopup"
 import { errorMessage } from "src/helpers/error"
 import { withPageLayout } from "src/layout/WithPageLayout"
@@ -23,7 +26,6 @@ const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
 const FanLists: NextPage = () => {
-  const [lists, setLists] = useState<Array<ListDto>>([])
   const [resets, setResets] = useState(0)
 
   const [orderType, setOrderType] = useState<GetListsRequestsDtoOrderTypeEnum>(
@@ -32,96 +34,19 @@ const FanLists: NextPage = () => {
   const [order, setOrder] = useState<GetListsRequestsDtoOrderEnum>(
     GetListsRequestsDtoOrderEnum.Asc
   )
-  const [lastId, setLastId] = useState<string | undefined>(undefined)
   const [search, setSearch] = useState<string>("")
-  const [createdAt, setCreatedAt] = useState<Date | undefined>(undefined)
-  const [name, setName] = useState<string | undefined>(undefined)
 
   const [listName, setListName] = useState<string>("")
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
-
-  const fetchList = useCallback(async () => {
-    const curResets = resets
-    if (!isLoadingMore) {
-      setIsLoadingMore(true)
-      try {
-        const newLists = await listApi.getLists({
-          getListsRequestsDto: {
-            order,
-            orderType,
-            lastId,
-            search: search && search.length > 0 ? search : undefined,
-            name,
-            createdAt
-          }
-        })
-        if (curResets === resets && newLists.data.length > 0) {
-          setLists([...lists, ...newLists.data])
-          setLastId(newLists.lastId)
-          setCreatedAt(newLists.createdAt)
-          setName(newLists.name)
-        }
-      } catch (error) {
-        errorMessage(error, true)
-      } finally {
-        setIsLoadingMore(false)
-      }
-    }
-  }, [
-    isLoadingMore,
-    resets,
-    order,
-    orderType,
-    lastId,
-    search,
-    name,
-    createdAt,
-    lists
-  ])
-
-  useEffect(() => {
-    fetchList()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resets])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleScroll = useCallback(
-    debounce(async () => {
-      const isToBottom =
-        window.innerHeight + window.scrollY === document.body.offsetHeight
-      // window.removeEventListener("scroll", handleScroll)
-      if (isToBottom) {
-        await fetchList()
-      }
-    }, 50),
-    [fetchList]
-  )
-
-  useEffect(() => {
-    // clean up code
-    window.addEventListener("wheel", handleScroll, { passive: true })
-    return () => window.removeEventListener("wheel", handleScroll)
-  }, [handleScroll])
-
-  const reset = useCallback(() => {
-    setLastId(undefined)
-    setIsLoadingMore(false)
-    setName(undefined)
-    setCreatedAt(undefined)
-    setLists([])
-    setResets(resets + 1)
-  }, [resets])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
       setSearch(value)
-      reset()
     }, DEBOUNCE_TIMEOUT),
-    [reset, setSearch]
+    [setSearch]
   )
 
   const handleOpenPopper = useCallback(
@@ -138,13 +63,10 @@ const FanLists: NextPage = () => {
 
     setOrderType(orderTypeInner)
     setOrder(orderInner)
-    reset()
     setAnchorSortPopperEl(null)
   }
 
   const handleCreateNewList = async (event: any) => {
-    event.preventDefault()
-    event.stopPropagation()
     try {
       await listApi.createList({
         createListRequestDto: {
@@ -152,26 +74,13 @@ const FanLists: NextPage = () => {
           userIds: []
         }
       })
-      reset()
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      setResets(resets + 1)
     } catch (error) {
       errorMessage(error, true)
     }
   }
 
-  const handleDelete = async (event: any) => {
-    event.preventDefault()
-    event.stopPropagation()
-    try {
-      const deleted = (await listApi.deleteList({ listId: event.target.value }))
-        .value
-      if (deleted) {
-        setLists(lists.filter((list) => list.listId !== event.target.value))
-      }
-    } catch (error) {
-      errorMessage(error, true)
-    }
-  }
   const sortPopperOpen = Boolean(anchorSortPopperEl)
   const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
 
@@ -260,27 +169,16 @@ const FanLists: NextPage = () => {
             </div>
           </div>
         </li>
-        {lists &&
-          lists.map((list) => (
-            <Link href={`/tools/list/${list.listId}`} key={list.listId}>
-              <li className="duration-400 cursor-pointer border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
-                <h1 className="text-xl font-bold">
-                  {list.name || list.listId}
-                </h1>
-                <span className="text-base font-bold text-gray-500">
-                  &nbsp; {list.count}
-                </span>
-
-                <ConditionRendering
-                  condition={list.type === ListDtoTypeEnum.Normal}
-                >
-                  <button value={list.listId} onClick={handleDelete}>
-                    delete
-                  </button>
-                </ConditionRendering>
-              </li>
-            </Link>
-          ))}
+        <InfiniteScrollPagination<ListDto, GetListsResponseDto>
+          fetch={async (req: GetListsRequestsDto) => {
+            return await listApi.getLists({ getListsRequestsDto: req })
+          }}
+          initProps={{ order, orderType, search }}
+          KeyedComponent={({ arg }: ComponentArg<ListDto>) => {
+            return <List list={arg} removable={true} />
+          }}
+          resets={resets}
+        />
       </ul>
     </div>
   )

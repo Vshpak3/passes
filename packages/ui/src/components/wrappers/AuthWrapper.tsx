@@ -49,7 +49,7 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
 
     let _authed = authStateMachine(userClaims) === AuthStates.AUTHED
-    if (creatorOnly && !user?.isCreator) {
+    if (creatorOnly && user && !user.isCreator) {
       _authed = false
     }
 

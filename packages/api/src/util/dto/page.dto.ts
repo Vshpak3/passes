@@ -19,7 +19,7 @@ export class PageRequestDto {
   @DtoProperty({ type: 'uuid', optional: true })
   lastId?: string
 
-  @Length(1, MAX_SEARCH_LENGTH)
+  @Length(0, MAX_SEARCH_LENGTH)
   @DtoProperty({ type: 'string', optional: true })
   search?: string
 

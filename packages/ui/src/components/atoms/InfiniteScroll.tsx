@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import useSWRInfinite from "swr/infinite"
 
 export interface PagedData<A> {
@@ -11,12 +12,17 @@ export interface ComponentArg<A> {
   arg: A
 }
 
+interface Key<T> {
+  key: Partial<T>
+  resets: number
+}
 interface InfiniteScrollProps<A, T extends PagedData<A>> {
   fetch: (data: Omit<T, "data">) => Promise<T>
   initProps: Partial<T>
   loader?: JSX.Element
   endMessage?: JSX.Element
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
+  resets: number // increment to manually reset list
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -30,17 +36,22 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   loader,
   endMessage,
   KeyedComponent,
-  children
+  children,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resets = 0
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
-  const getKey = (pageIndex: number, response: T) => {
+  const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
-      return initProps
+      return { key: initProps, resets }
     }
     const request: Partial<T> = { ...response }
     request.data = undefined
-    return request
+    return { key: request, resets: resets }
   }
-  const { data, size, setSize } = useSWRInfinite(getKey, fetch, {
+  const fetcher = async ({ key }: Key<T>) => {
+    return await fetch(key as Omit<T, "data">)
+  }
+  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetcher, {
     revalidateOnMount: true
   })
   const [flattenedData, setFlattenedData] = useState<A[]>([])
@@ -57,22 +68,24 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (
-    <InfiniteScroll
-      dataLength={flattenedData.length}
-      className="w-full"
-      style={{ width: "100%" }}
-      next={() => {
-        setSize(size + 1)
-      }}
-      hasMore={!data || !!data[data.length - 1].lastId}
-      loader={loader}
-      endMessage={endMessage}
-    >
-      {children}
-      {flattenedData.map((data, index) => (
-        <KeyedComponent key={index} arg={data} />
-      ))}
-    </InfiniteScroll>
+    <>
+      <InfiniteScroll
+        dataLength={flattenedData.length}
+        className="w-full"
+        style={{ width: "100%" }}
+        next={() => {
+          setSize(size + 1)
+        }}
+        hasMore={!data || !!data[data.length - 1].lastId}
+        loader={loader}
+        endMessage={endMessage}
+      >
+        {children}
+        {flattenedData.map((data, index) => (
+          <KeyedComponent key={index} arg={data} />
+        ))}
+      </InfiniteScroll>
+    </>
   )
 }
 
