@@ -4,23 +4,17 @@ import { useUser } from "src/hooks"
 
 const Logout = () => {
   const router = useRouter()
-  const { user, logout } = useUser()
+  const { logout } = useUser(false)
 
   useEffect(() => {
     if (!router.isReady) {
       return
     }
 
-    if (user) {
-      logout()
-    }
+    logout()
 
     router.push("/login")
-  }, [router, user, logout])
-
-  if (typeof window === "undefined") {
-    return null
-  }
+  }, [router, logout])
 
   return null
 }
