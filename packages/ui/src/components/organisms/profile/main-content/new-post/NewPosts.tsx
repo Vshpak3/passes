@@ -56,9 +56,11 @@ export const NewPosts = ({ profile, username }: NewPostsProps) => {
         createPost={createPost}
         placeholder="What's on your mind?"
       />
-      {newPosts.map((post) => (
-        <Post key={post.postId} post={post} removable={true} />
-      ))}
+      <div className="mt-9 space-y-6">
+        {newPosts.map((post) => (
+          <Post key={post.postId} post={post} removable={true} />
+        ))}
+      </div>
     </>
   )
 }

@@ -34,7 +34,11 @@ const ContentFeed: FC<PropsWithChildren<ContentFeedProps>> = ({
           endMessage={<h3>No more posts</h3>} // TODO: add a better message
           initProps={{ creatorId }}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return <Post post={arg} removable={true} />
+            return (
+              <div className="mt-6">
+                <Post post={arg} removable={true} />
+              </div>
+            )
           }}
         >
           {children}
@@ -51,7 +55,11 @@ const ContentFeed: FC<PropsWithChildren<ContentFeedProps>> = ({
           endMessage={<h3>No more posts</h3>} // TODO: add a better message
           initProps={{}}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return <Post post={arg} removable={true} />
+            return (
+              <div className="mt-6">
+                <Post post={arg} removable={true} />
+              </div>
+            )
           }}
         >
           {children}

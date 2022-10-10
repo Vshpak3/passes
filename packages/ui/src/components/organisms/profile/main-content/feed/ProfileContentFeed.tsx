@@ -4,7 +4,7 @@ import {
   GetProfileResponseDto
 } from "@passes/api-client"
 import { FC } from "react"
-import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
+import { NewFanwallPost } from "src/components/organisms/profile/main-content/new-post/NewFanwallPost"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 
 import ContentFeed from "./ContentFeed"
@@ -42,13 +42,10 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
     case "fanWall":
       return (
         <>
-          <NewPost
-            initScheduledTime={null}
-            // TODO: passes={profile?.passes}
+          <NewFanwallPost
             placeholder={`Write something${
               profile?.displayName ? ` to ${profile?.displayName}...` : "..."
             }`}
-            onlyText
             createPost={writeToFanWall}
           />
           {!!fanWallPosts?.data?.length && (
