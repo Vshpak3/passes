@@ -66,7 +66,7 @@ const FanLists: NextPage = () => {
     setAnchorSortPopperEl(null)
   }
 
-  const handleCreateNewList = async (event: any) => {
+  const handleCreateNewList = async () => {
     try {
       await listApi.createList({
         createListRequestDto: {
