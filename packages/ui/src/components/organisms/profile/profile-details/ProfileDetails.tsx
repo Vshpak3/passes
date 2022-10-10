@@ -3,7 +3,9 @@ import {
   GetProfileResponseDto
 } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
-import { FC } from "react"
+import { FC, useState } from "react"
+import Modal from "src/components/organisms/Modal"
+import { ContentService } from "src/helpers"
 import { ProfileUpdate } from "src/helpers/updateProfile"
 
 import { EditProfile } from "./EditProfile"
@@ -36,6 +38,8 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
   onCloseEditProfile,
   onSubmitEditProfile
 }) => {
+  const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
+
   const onChat = async () => {
     const api = new MessagesApi()
     await api.getOrCreateChannel({
@@ -52,10 +56,26 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
           onCloseEditProfile={onCloseEditProfile}
         />
       )}
+      <Modal isOpen={isProfilePicModalOpen} setOpen={setIsProfilePicModalOpen}>
+        <div className="">
+          <img
+            src={ContentService.profileImage(profile.userId)}
+            className="object-cover drop-shadow-profile-photo"
+            alt=""
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null
+              currentTarget.src = "/img/profile/default-profile-img.svg"
+            }}
+          />
+        </div>
+      </Modal>
       <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
-          <ProfileImage userId={profile.userId} />
+          <ProfileImage
+            userId={profile.userId}
+            onClick={() => setIsProfilePicModalOpen(true)}
+          />
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
           <div className="col-span-4 flex flex-col px-5 pt-4">
             <ProfileInformationDesktop

@@ -63,10 +63,14 @@ export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
 
 interface ProfileImageProps {
   userId: string
+  onClick?: () => void
 }
 
-export const ProfileImage = ({ userId }: ProfileImageProps) => (
-  <div className="align-items relative h-[116px] w-[116px] overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center">
+export const ProfileImage = ({ userId, onClick }: ProfileImageProps) => (
+  <div
+    className="align-items relative h-[116px] w-[116px] cursor-pointer overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center"
+    onClick={onClick}
+  >
     <img
       src={ContentService.profileThumbnail(userId)}
       className="object-cover drop-shadow-profile-photo"
