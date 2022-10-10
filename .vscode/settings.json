@@ -22,9 +22,12 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": ["javascript"],
+  "eslint.validate": [
+    "javascript"
+  ],
   "git.ignoreLimitWarning": true,
   "cSpell.words": [
     "Giphy"
-  ]
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
