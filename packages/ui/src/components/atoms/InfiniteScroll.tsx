@@ -21,7 +21,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   loader?: JSX.Element
   endMessage?: JSX.Element
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
-  resets: number // increment to manually reset list
+  resets?: number // increment to manually reset list
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -36,7 +36,6 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   endMessage,
   KeyedComponent,
   children,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resets = 0
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
