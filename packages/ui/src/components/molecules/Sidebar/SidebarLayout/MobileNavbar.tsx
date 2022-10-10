@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react"
 import MenuIcon from "public/icons/sidebar-menu-icon.svg"
 import { FC } from "react"
+import CreatorSearchBar from "src/layout/CreatorSearchBar"
 
 interface MobileNavbarProps {
   openSidebar: any
@@ -17,14 +18,14 @@ const MobileNavbar: FC<MobileNavbarProps> = ({ openSidebar }) => {
           >
             <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
               <MenuIcon
-                className="mx-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-white stroke-2 "
+                className="mx-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2 "
                 aria-hidden="true"
               />
-              Passes
             </div>
           </span>
         </Disclosure.Button>
       </Disclosure>
+      <CreatorSearchBar isDesktop={false} />
     </div>
   )
 }

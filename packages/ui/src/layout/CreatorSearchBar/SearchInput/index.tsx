@@ -1,18 +1,27 @@
+import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
-interface Props {
+interface SearchInputProps {
   onChangeInput: (value: any) => void
   onSearchFocus: () => void
   searchValue: string
+  isDesktop?: boolean
 }
-const SearchInput: FC<Props> = ({
+
+const SearchInput: FC<SearchInputProps> = ({
   onChangeInput,
   onSearchFocus,
-  searchValue
+  searchValue,
+  isDesktop = true
 }) => {
   return (
-    <div className="hidden items-center justify-end gap-2 md:flex">
+    <div
+      className={classNames(
+        isDesktop ? "hidden md:flex" : "mx-2 flex-grow",
+        "flex items-center justify-end gap-2"
+      )}
+    >
       <div className="relative flex items-center gap-3">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
         <input

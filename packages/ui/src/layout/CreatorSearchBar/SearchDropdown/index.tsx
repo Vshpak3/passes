@@ -1,4 +1,5 @@
 import { CreatorInfoDto } from "@passes/api-client"
+import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC } from "react"
 
@@ -6,9 +7,13 @@ import { EmptyResult, SearchResult } from "./SearchResults"
 
 interface SearchDropdownProps {
   creatorResults: CreatorInfoDto[]
+  isDesktop?: boolean
 }
 
-const SearchDropdown: FC<SearchDropdownProps> = ({ creatorResults }) => {
+const SearchDropdown: FC<SearchDropdownProps> = ({
+  creatorResults,
+  isDesktop = true
+}) => {
   const router = useRouter()
 
   const goToProfile = (username: any) => {
@@ -31,9 +36,25 @@ const SearchDropdown: FC<SearchDropdownProps> = ({ creatorResults }) => {
   )
 
   return (
-    <div className="hidden items-center justify-end gap-2 md:flex">
-      <div className="relative flex items-center gap-3">
-        <ul className="z-10 max-h-[165px] min-w-[360px] overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none">
+    <div
+      className={classNames(
+        isDesktop ? "hidden md:flex" : "",
+        "items-center justify-end gap-2"
+      )}
+    >
+      <div
+        className={
+          isDesktop
+            ? "relative flex items-center gap-3"
+            : "absolute top-[64px] left-0 flex w-full"
+        }
+      >
+        <ul
+          className={
+            (classNames(isDesktop ? "max-h-[165px]" : "h-full w-full"),
+            "z-10 w-full min-w-[360px] overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none")
+          }
+        >
           {renderResults}
         </ul>
       </div>

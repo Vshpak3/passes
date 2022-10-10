@@ -5,7 +5,11 @@ import { useCreatorSearch } from "src/hooks"
 import SearchDropdown from "./SearchDropdown"
 import SearchInput from "./SearchInput"
 
-const CreatorSearchBar = () => {
+export interface CreatorSearchBarProps {
+  isDesktop?: boolean
+}
+
+const CreatorSearchBar = ({ isDesktop = true }: CreatorSearchBarProps) => {
   const {
     creatorResults,
     searchValue,
@@ -22,10 +26,17 @@ const CreatorSearchBar = () => {
           onChangeInput={onChangeInput}
           onSearchFocus={onSearchFocus}
           searchValue={searchValue}
+          isDesktop={isDesktop}
         />
-        {resultsVisible && <SearchDropdown creatorResults={creatorResults} />}
+        {resultsVisible && (
+          <SearchDropdown
+            creatorResults={creatorResults}
+            isDesktop={isDesktop}
+          />
+        )}
       </div>
     </AuthWrapper>
   )
 }
+
 export default CreatorSearchBar
