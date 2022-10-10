@@ -8,7 +8,7 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
 import { RoundedIconButton } from "src/components/atoms/Button"
@@ -19,6 +19,7 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
 export const PASSWORD_MIN_LENGTH = 8
@@ -65,9 +66,7 @@ const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
 
 const SignupInitialPage: FC = () => {
   const router = useRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
-
-  const [hasLoaded, setHasLoaded] = useState(false)
+  const { setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -77,15 +76,6 @@ const SignupInitialPage: FC = () => {
     resolver: yupResolver(signupInitialPageSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  useEffect(() => {
-    if (!router.isReady || hasLoaded) {
-      return
-    }
-
-    authRouter(router, userClaims, true)
-    setHasLoaded(true)
-  }, [router, userClaims, hasLoaded])
 
   const initiateSignup = async (email: string, password: string) => {
     const api = new AuthLocalApi()
@@ -269,4 +259,4 @@ const SignupInitialPage: FC = () => {
   )
 }
 
-export default SignupInitialPage // no withPageLayout
+export default WithLoginPageLayout(SignupInitialPage, { routeOnlyIfAuth: true })

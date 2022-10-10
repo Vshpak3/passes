@@ -10,7 +10,7 @@ import {
   MyPassSearchHeader
 } from "src/components/molecules/passes/MyPasses"
 import { useOnClickOutside, usePasses, useUser } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ManagePasses = () => {
   const { user } = useUser()
@@ -163,4 +163,4 @@ const ManagePasses = () => {
   )
 }
 
-export default withPageLayout(ManagePasses, { creatorOnly: true })
+export default WithNormalPageLayout(ManagePasses, { creatorOnly: true })

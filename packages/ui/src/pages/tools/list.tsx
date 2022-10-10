@@ -19,7 +19,7 @@ import InfiniteScrollPagination, {
 import { List } from "src/components/organisms/creator-tools/List"
 import SortListPopup from "src/components/pages/tools/lists/SortListPopup"
 import { errorMessage } from "src/helpers/error"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const listApi = new ListApi()
 
@@ -184,4 +184,4 @@ const FanLists: NextPage = () => {
   )
 }
 
-export default withPageLayout(FanLists, { creatorOnly: true })
+export default WithNormalPageLayout(FanLists, { creatorOnly: true })

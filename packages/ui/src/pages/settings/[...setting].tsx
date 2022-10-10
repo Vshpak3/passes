@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 import { SettingsWrapper } from "./index"
 
@@ -15,4 +15,4 @@ const SettingPageWithParam = () => {
   return <SettingsWrapper settingsPath={path} />
 }
 
-export default withPageLayout(SettingPageWithParam, { header: false })
+export default WithNormalPageLayout(SettingPageWithParam, { header: false })

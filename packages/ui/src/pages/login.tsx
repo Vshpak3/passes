@@ -8,7 +8,7 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
@@ -19,6 +19,7 @@ import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
 import { JWTUserClaims } from "src/hooks/useUser"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
 import { PASSWORD_MIN_LENGTH } from "./signup"
@@ -39,7 +40,7 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 
 const LoginPage: FC = () => {
   const router = useRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+  const { setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -47,14 +48,6 @@ const LoginPage: FC = () => {
     formState: { errors }
   } = useForm<LoginPageSchema>({ resolver: yupResolver(loginPageSchema) })
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    authRouter(router, userClaims)
-  }, [router, userClaims])
 
   const loginUser = async (email: string, password: string) => {
     const api = new AuthLocalApi()
@@ -198,4 +191,4 @@ const LoginPage: FC = () => {
   )
 }
 
-export default LoginPage // no withPageLayout
+export default WithLoginPageLayout(LoginPage)

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { VaultMediaGrid, VaultNavigation } from "src/components/organisms"
 import useVaultGallery from "src/hooks/vault/useVaultGallery"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Vault = () => {
   const {
@@ -48,4 +48,4 @@ const Vault = () => {
   )
 }
 
-export default withPageLayout(Vault, { creatorOnly: true })
+export default WithNormalPageLayout(Vault, { creatorOnly: true })

@@ -1,6 +1,0 @@
-.separator[data-orientation="horizontal"] {
-  @apply h-px w-full;
-}
-.separator[data-orientation="vertical"] {
-  @apply h-full w-px;
-}

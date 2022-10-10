@@ -4,7 +4,7 @@ import { useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
 import EarningsGraph from "src/components/pages/tools/analytics/AnalyticsGraph"
 import AnalyticsHeader from "src/components/pages/tools/analytics/AnalyticsHeader"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import useSWR from "swr"
 
 const Analytics: NextPage = () => {
@@ -52,4 +52,4 @@ const ANALYTICS_OPTIONS = [
   }
 ]
 
-export default withPageLayout(Analytics, { creatorOnly: true })
+export default WithNormalPageLayout(Analytics, { creatorOnly: true })

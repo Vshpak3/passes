@@ -181,4 +181,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage // no withPageLayout
+export default HomePage // no WithNormalPageLayout

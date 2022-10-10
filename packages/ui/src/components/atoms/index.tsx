@@ -29,7 +29,6 @@ import {
   PassNumberInput
 } from "./passes/CreatePass"
 import Select from "./Select"
-import Separator from "./Separator"
 import Text from "./Text"
 import TextArea from "./TextArea"
 import UserTile from "./UserTile"
@@ -71,7 +70,6 @@ export {
   PassNumberInput,
   PostUnlockButton,
   Select,
-  Separator,
   Text,
   TextArea,
   UserTile,

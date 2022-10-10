@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ListDetail = dynamic(
   () => import("src/components/pages/tools/lists/ListDetail"),
@@ -25,4 +25,4 @@ const FanDetailLists: NextPage = () => {
   )
 }
 
-export default withPageLayout(FanDetailLists, { creatorOnly: true })
+export default WithNormalPageLayout(FanDetailLists, { creatorOnly: true })

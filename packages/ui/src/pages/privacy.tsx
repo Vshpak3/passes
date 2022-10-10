@@ -14,4 +14,4 @@ const PrivacyPolicyPage = () => {
   )
 }
 
-export default PrivacyPolicyPage // no withPageLayout
+export default PrivacyPolicyPage // no WithNormalPageLayout

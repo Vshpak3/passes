@@ -27,42 +27,42 @@ const VerifyEmailPage = () => {
       authRouter(router, userClaims)
     }
 
-    const verify = async () => {
-      try {
-        const id = router.query.id
-
-        // Needs to match /email/verify?id=${id}
-        if (!id) {
-          authRouter(router, userClaims)
-          return
-        }
-
-        const verificationToken = Array.isArray(id) ? id[0] : (id as string)
-
-        const api = new AuthApi()
-        const res = await api.verifyUserEmail({
-          verifyEmailDto: { verificationToken }
-        })
-        const setRes = setTokens(res, setAccessToken, setRefreshToken)
-        if (!setRes) {
-          return
-        }
-      } catch (err: any) {
-        console.error(err)
-        setError(
-          "Error occurred verifying your email address. The link is wrong or has been expired."
-        )
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    verify()
+    verifyEmail()
 
     // We cannot add userClaims here since then this would trigger during the
     // update and we won't have time to show the confirmation screen
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
+
+  const verifyEmail = async () => {
+    try {
+      const id = router.query.id
+
+      // Needs to match /email/verify?id=${id}
+      if (!id) {
+        authRouter(router, userClaims)
+        return
+      }
+
+      const verificationToken = Array.isArray(id) ? id[0] : (id as string)
+
+      const api = new AuthApi()
+      const res = await api.verifyUserEmail({
+        verifyEmailDto: { verificationToken }
+      })
+      const setRes = setTokens(res, setAccessToken, setRefreshToken)
+      if (!setRes) {
+        return
+      }
+    } catch (err: any) {
+      console.error(err)
+      setError(
+        "Error occurred verifying your email address. The link is wrong or has been expired."
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
@@ -128,4 +128,4 @@ const VerifyEmailPage = () => {
   )
 }
 
-export default VerifyEmailPage // no withPageLayout
+export default VerifyEmailPage // no WithNormalPageLayout

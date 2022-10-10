@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
 import usePost from "src/hooks/usePost"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import { NotFoundPage } from "src/pages/404"
 
 const PostByUrlPage = () => {
@@ -14,4 +14,4 @@ const PostByUrlPage = () => {
   )
 }
 
-export default withPageLayout(PostByUrlPage)
+export default WithNormalPageLayout(PostByUrlPage)

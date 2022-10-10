@@ -11,15 +11,12 @@ import {
   Text,
   Wordmark
 } from "src/components/atoms"
-import {
-  authRouter,
-  AuthStates,
-  authStateToRoute
-} from "src/helpers/authRouter"
+import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { useUser } from "src/hooks"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
 export interface SignupEmailPageSchema {
@@ -34,7 +31,7 @@ const signupPageEmailSchema: SchemaOf<SignupEmailPageSchema> = object({
 
 const SignupEmailPage: FC = () => {
   const router = useRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+  const { setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -48,14 +45,8 @@ const SignupEmailPage: FC = () => {
   const [hasSentEmail, setHasSentEmail] = useState(false)
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
     setHasSentEmail(router.query.hasEmail == "true")
-
-    authRouter(router, userClaims)
-  }, [router, userClaims])
+  }, [router])
 
   const verifyEmail = async (email: string) => {
     const api = new AuthApi()
@@ -166,4 +157,4 @@ const SignupEmailPage: FC = () => {
   )
 }
 
-export default SignupEmailPage // no withPageLayout
+export default WithLoginPageLayout(SignupEmailPage)

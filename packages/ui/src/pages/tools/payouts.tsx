@@ -3,7 +3,7 @@ import {
   PastTransactions,
   RequestPayouts
 } from "src/components/organisms"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Payouts = () => {
   return (
@@ -14,4 +14,4 @@ const Payouts = () => {
     </div>
   )
 }
-export default withPageLayout(Payouts, { creatorOnly: true })
+export default WithNormalPageLayout(Payouts, { creatorOnly: true })

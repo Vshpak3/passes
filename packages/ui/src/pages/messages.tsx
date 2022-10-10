@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
   suspense: true,
@@ -20,4 +20,7 @@ const MessagesPage = () => {
   )
 }
 
-export default withPageLayout(MessagesPage, { header: false, sidebar: true })
+export default WithNormalPageLayout(MessagesPage, {
+  header: false,
+  sidebar: true
+})

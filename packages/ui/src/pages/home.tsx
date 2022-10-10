@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import HomeContentFeed from "src/components/organisms/HomeContentFeed"
 import { useUser } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Home = () => {
   const { mutate } = useUser()
@@ -14,4 +14,4 @@ const Home = () => {
   return <HomeContentFeed />
 }
 
-export default withPageLayout(Home)
+export default WithNormalPageLayout(Home)

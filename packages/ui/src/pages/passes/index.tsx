@@ -3,7 +3,7 @@ import {
   MyPassSearchHeader
 } from "src/components/molecules/passes/MyPasses"
 import { usePasses, useUser } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Passes = () => {
   const { user } = useUser()
@@ -44,4 +44,4 @@ const Passes = () => {
     </div>
   )
 }
-export default withPageLayout(Passes)
+export default WithNormalPageLayout(Passes)

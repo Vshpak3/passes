@@ -1,7 +1,7 @@
 import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import { FC } from "react"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 export const NotFoundPage: FC = () => (
   <div className="flex w-full items-center justify-center pt-[60px]">
@@ -25,4 +25,4 @@ export const NotFoundPage: FC = () => (
   </div>
 )
 
-export default withPageLayout(NotFoundPage, { skipAuth: true })
+export default WithNormalPageLayout(NotFoundPage, { skipAuth: true })

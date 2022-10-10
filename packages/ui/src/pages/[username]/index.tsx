@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Profile = dynamic(() => import("src/components/pages/Profile"), {
   suspense: true,
@@ -15,4 +15,4 @@ const ProfilePage = () => {
   )
 }
 
-export default withPageLayout(ProfilePage, { skipAuth: true })
+export default WithNormalPageLayout(ProfilePage, { skipAuth: true })

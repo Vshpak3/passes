@@ -3,7 +3,7 @@ import { AuthLocalApi } from "@passes/api-client"
 import ms from "ms"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -12,10 +12,9 @@ import {
   Text,
   Wordmark
 } from "src/components/atoms"
-import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf } from "yup"
 
 import { emailFormSchema } from "./signup"
@@ -30,7 +29,6 @@ const forgotPasswordFormSchema: SchemaOf<ForgotPasswordFormProps> = object({
 
 const ForgotPassword = () => {
   const router = useRouter()
-  const { userClaims } = useUser()
 
   const {
     register,
@@ -41,14 +39,6 @@ const ForgotPassword = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
-
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    authRouter(router, userClaims, true)
-  }, [router, userClaims])
 
   const resetPassword = async (email: string) => {
     const api = new AuthLocalApi()
@@ -140,4 +130,4 @@ const ForgotPassword = () => {
   )
 }
 
-export default ForgotPassword // no withPageLayout
+export default WithLoginPageLayout(ForgotPassword, { routeOnlyIfAuth: true })

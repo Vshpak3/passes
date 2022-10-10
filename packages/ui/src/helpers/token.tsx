@@ -19,7 +19,9 @@ export const tokenStillValid = (
   return token.exp - Date.now() / 1000 > timeRemaining
 }
 
-const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
+const _refreshAccessToken = async (
+  refreshToken: string
+): Promise<string | undefined> => {
   try {
     const authApi = new AuthApi()
     const res = await authApi.refreshAccessToken({
@@ -27,13 +29,13 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
     })
     if (!res.accessToken) {
       console.error("Did not receive an access token")
-      return false
+      return undefined
     }
-    window.localStorage.setItem(accessTokenKey, JSON.stringify(res.accessToken))
-    return true
+    console.log("Access token was refreshed") // eslint-disable-line no-console
+    return res.accessToken
   } catch (err) {
     console.error("Failed to refresh access token:", err)
-    return false
+    return undefined
   }
 }
 
@@ -46,19 +48,19 @@ const _refreshAccessToken = async (refreshToken: string): Promise<boolean> => {
  */
 export const refreshAccessToken = async (
   timeRemaining: number = 5 * 60 // 5 minutes
-): Promise<boolean> => {
+): Promise<string | undefined> => {
   const accessToken = window.localStorage.getItem(accessTokenKey)
   const refreshToken = window.localStorage.getItem(refreshTokenKey)
 
   if (!refreshToken) {
-    return false
+    return undefined
   }
 
   if (
     accessToken &&
     tokenStillValid(jwtDecode<JWTUserClaims>(accessToken), timeRemaining)
   ) {
-    return false
+    return undefined
   }
 
   return await _refreshAccessToken(refreshToken)

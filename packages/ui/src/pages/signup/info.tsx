@@ -9,7 +9,7 @@ import { differenceInYears, format, subYears } from "date-fns"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -20,16 +20,13 @@ import {
   Text,
   Wordmark
 } from "src/components/atoms"
-import {
-  authRouter,
-  AuthStates,
-  authStateToRoute
-} from "src/helpers/authRouter"
+import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
 import { useUser } from "src/hooks"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
 const BIRTHDAY_MIN_AGE_IN_YEARS = 13
@@ -60,7 +57,7 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
 
 const SignupInfoPage: FC = () => {
   const router = useRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+  const { setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -75,14 +72,6 @@ const SignupInfoPage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarDate, setCalendarDate] = useState(new Date())
-
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    authRouter(router, userClaims)
-  }, [router, userClaims])
 
   const createNewUser = async (
     name: string,
@@ -286,4 +275,4 @@ const SignupInfoPage: FC = () => {
   )
 }
 
-export default SignupInfoPage // no withPageLayout
+export default WithLoginPageLayout(SignupInfoPage)

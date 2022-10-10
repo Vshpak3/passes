@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const CreatorFlowMain = dynamic(
   () => import("src/components/pages/creator-flow/Main"),
@@ -15,7 +15,7 @@ const CreatorFlowPage = () => {
   )
 }
 
-export default withPageLayout(CreatorFlowPage, {
+export default WithNormalPageLayout(CreatorFlowPage, {
   header: false,
   sidebar: false
 })

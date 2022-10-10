@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { CreatePassForm, SelectPassType } from "src/components/organisms"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const PASS_TYPES = [PassTypeEnum.LIFETIME, PassTypeEnum.SUBSCRIPTION]
 
@@ -24,4 +24,4 @@ const CreatePass = () => {
   )
 }
 
-export default withPageLayout(CreatePass, { creatorOnly: true })
+export default WithNormalPageLayout(CreatePass, { creatorOnly: true })

@@ -71,4 +71,4 @@ const LucyPalooza = () => {
   )
 }
 
-export default LucyPalooza // no withPageLayout
+export default LucyPalooza // no WithNormalPageLayout

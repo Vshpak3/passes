@@ -14,7 +14,7 @@ import Balance from "src/components/atoms/performance/Balance"
 import FilterByDays from "src/components/molecules/performance/FilterByDays"
 import Header from "src/components/molecules/performance/Header"
 import Table from "src/components/molecules/performance/Table"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import useSWR from "swr"
 
 const Chart = dynamic(
@@ -149,7 +149,7 @@ const Performance = () => {
   )
 }
 
-export default withPageLayout(Performance, {
+export default WithNormalPageLayout(Performance, {
   creatorOnly: false,
   header: false
 })

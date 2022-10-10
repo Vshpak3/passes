@@ -17,7 +17,7 @@ import {
   useSettings
 } from "src/contexts/settings"
 import { useUser } from "src/hooks"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 const AccountSettings = dynamic(
   () => import("src/components/pages/settings/tabs/AccountSettings")
 )
@@ -284,4 +284,4 @@ const renderSubTab = (tab: SubTabsEnum, user: GetUserResponseDto) => {
   }
 }
 
-export default withPageLayout(SettingsWrapper, { header: false })
+export default WithNormalPageLayout(SettingsWrapper, { header: false })

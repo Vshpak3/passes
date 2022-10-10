@@ -5,7 +5,7 @@ import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
 import ms from "ms"
 import { AppProps } from "next/app"
-import Router from "next/router"
+import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
 import { FC, useEffect, useState } from "react"
@@ -14,7 +14,7 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms"
 import { refreshAccessToken } from "src/helpers/token"
-import { useMessageToDevelopers } from "src/hooks"
+import { useMessageToDevelopers, useUser } from "src/hooks"
 import Providers from "src/providers"
 import { SWRConfig, SWRConfiguration } from "swr"
 
@@ -55,33 +55,32 @@ Router.events.on("routeChangeError", () => {
   nprogress.done()
 })
 
-// Refreshes auth token
-function refreshAuth(): void {
-  refreshAccessToken()
-    // eslint-disable-next-line no-console
-    .then((r) => r && console.log("Access token was refreshed"))
-    .catch(() => null)
-}
-
-// Refresh access token on route change (TODO: consider removing this)
-Router.events.on("routeChangeStart", async () => {
-  refreshAuth()
-})
-
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [refresh, setRefresh] = useState(0)
+  const router = useRouter()
+  const { setAccessToken } = useUser(false)
 
   // Refresh once on page load then repeatedly
   useEffect(() => {
-    refreshAuth()
+    const refreshAuth = () => {
+      refreshAccessToken()
+        .then((r) => {
+          if (r) {
+            setAccessToken(r)
+          }
+          return r
+        })
+        .catch(() => undefined)
+    }
 
+    refreshAuth()
     const interval = setInterval(async () => {
       refreshAuth()
       setRefresh(refresh + 1)
     }, CHECK_FOR_AUTH_REFRESH)
 
     return () => clearInterval(interval)
-  }, [refresh])
+  }, [refresh, router, setAccessToken])
 
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
@@ -121,4 +120,4 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   )
 }
 
-export default App // no withPageLayout
+export default App // no WithNormalPageLayout

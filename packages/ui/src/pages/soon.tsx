@@ -8,4 +8,4 @@ export const ComingSoon = () => (
   </div>
 )
 
-export default ComingSoon // no withPageLayout
+export default ComingSoon // no WithNormalPageLayout

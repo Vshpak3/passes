@@ -1,27 +1,27 @@
-import React from "react"
+import React, { FC } from "react"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
 
 import CreatorSearchBar from "./CreatorSearchBar"
 import Sidebar from "./Sidebar"
 
-class WithPageLayoutOptions {
+class WithNormalPageLayoutOptions {
   skipAuth?: boolean = false
   creatorOnly?: boolean = false
   header?: boolean = true
   sidebar?: boolean = true
 
-  constructor(init?: Partial<WithPageLayoutOptions>) {
+  constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
   }
 }
 
-export const withPageLayout = (
+export const WithNormalPageLayout = (
   Page: any,
-  options: WithPageLayoutOptions = {}
+  options: WithNormalPageLayoutOptions = {}
 ) => {
-  options = new WithPageLayoutOptions(options)
-  const WithPageLayout = React.forwardRef((props, ref) => (
+  options = new WithNormalPageLayoutOptions(options)
+  const WithNormalPageLayout = React.forwardRef((props, ref) => (
     <div className="relative flex min-h-screen w-full bg-black">
       {options.sidebar && <Sidebar />}
       <main className="w-full bg-[#000]">
@@ -42,15 +42,12 @@ export const withPageLayout = (
       </main>
     </div>
   ))
-  WithPageLayout.displayName = `WithPageLayout(${getComponentName(Page)})`
-  return WithPageLayout
+  WithNormalPageLayout.displayName = `WithNormalPageLayout(${getComponentName(
+    Page
+  )})`
+  return WithNormalPageLayout
 }
 
-function getComponentName(target: any) {
-  return (
-    (!isProd ? typeof target === "string" && target : false) ||
-    target.displayName ||
-    target.name ||
-    "Component"
-  )
+function getComponentName(target: FC) {
+  return isProd ? "Component" : target.displayName || target.name
 }

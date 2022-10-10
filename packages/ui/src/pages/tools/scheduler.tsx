@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import Calendar from "src/components/molecules/scheduler/Calendar"
 import EventTable from "src/components/molecules/scheduler/EventTable"
 import SchedulerHeader from "src/components/molecules/scheduler/SchedulerHeader"
-import { withPageLayout } from "src/layout/WithPageLayout"
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const today = new Date()
 
@@ -27,4 +27,4 @@ const SchedulerPage = () => {
   )
 }
 
-export default withPageLayout(SchedulerPage, { creatorOnly: true })
+export default WithNormalPageLayout(SchedulerPage, { creatorOnly: true })
