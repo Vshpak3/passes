@@ -239,6 +239,9 @@ export class PostController {
     @Req() req: RequestWithUser,
     @Body() getPostsRequestDto: GetPostsRequestDto,
   ): Promise<GetPostsResponseDto> {
-    return await this.postService.getPosts(req.user.id, getPostsRequestDto)
+    return new GetPostsResponseDto(
+      await this.postService.getPosts(req.user.id, getPostsRequestDto),
+      getPostsRequestDto,
+    )
   }
 }

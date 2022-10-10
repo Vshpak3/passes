@@ -13,59 +13,72 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PassDto } from './PassDto';
+import {
+    PassDtoFromJSON,
+    PassDtoFromJSONTyped,
+    PassDtoToJSON,
+} from './PassDto';
+
 /**
  * 
  * @export
- * @interface GetCreatorPassesRequestDto
+ * @interface GetExternalPassesResponseDto
  */
-export interface GetCreatorPassesRequestDto {
+export interface GetExternalPassesResponseDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetCreatorPassesRequestDto
+     * @memberof GetExternalPassesResponseDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetCreatorPassesRequestDto
+     * @memberof GetExternalPassesResponseDto
      */
     lastId?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetCreatorPassesRequestDto
+     * @memberof GetExternalPassesResponseDto
      */
     search?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof GetCreatorPassesRequestDto
+     * @memberof GetExternalPassesResponseDto
      */
     pinned?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof GetCreatorPassesRequestDto
+     * @memberof GetExternalPassesResponseDto
      */
-    creatorId: string;
+    creatorId?: string;
+    /**
+     * 
+     * @type {Array<PassDto>}
+     * @memberof GetExternalPassesResponseDto
+     */
+    data: Array<PassDto>;
 }
 
 /**
- * Check if a given object implements the GetCreatorPassesRequestDto interface.
+ * Check if a given object implements the GetExternalPassesResponseDto interface.
  */
-export function instanceOfGetCreatorPassesRequestDto(value: object): boolean {
+export function instanceOfGetExternalPassesResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
 
-export function GetCreatorPassesRequestDtoFromJSON(json: any): GetCreatorPassesRequestDto {
-    return GetCreatorPassesRequestDtoFromJSONTyped(json, false);
+export function GetExternalPassesResponseDtoFromJSON(json: any): GetExternalPassesResponseDto {
+    return GetExternalPassesResponseDtoFromJSONTyped(json, false);
 }
 
-export function GetCreatorPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetCreatorPassesRequestDto {
+export function GetExternalPassesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetExternalPassesResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -75,11 +88,12 @@ export function GetCreatorPassesRequestDtoFromJSONTyped(json: any, ignoreDiscrim
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
-        'creatorId': json['creatorId'],
+        'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'data': ((json['data'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
 
-export function GetCreatorPassesRequestDtoToJSON(value?: GetCreatorPassesRequestDto | null): any {
+export function GetExternalPassesResponseDtoToJSON(value?: GetExternalPassesResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -93,6 +107,7 @@ export function GetCreatorPassesRequestDtoToJSON(value?: GetCreatorPassesRequest
         'search': value.search,
         'pinned': value.pinned,
         'creatorId': value.creatorId,
+        'data': ((value.data as Array<any>).map(PassDtoToJSON)),
     };
 }
 

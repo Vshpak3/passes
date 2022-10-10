@@ -33,10 +33,10 @@ const useFanWall = (creatorId: string) => {
         }),
       {
         populateCache: async () => {
-          const { comments } = await api.getFanWallForCreator({
+          const { data } = await api.getFanWallForCreator({
             getFanWallRequestDto: { creatorId }
           })
-          return { comments }
+          return { comments: data }
         },
         revalidate: true
       }

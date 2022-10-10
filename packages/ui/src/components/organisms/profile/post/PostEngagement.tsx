@@ -1,11 +1,11 @@
 import { LikeApi, PostApi } from "@passes/api-client/apis"
+import { PostDto } from "@passes/api-client/src/models/PostDto"
 import dynamic from "next/dynamic"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useState } from "react"
-import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 import { compactNumberFormatter } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
 
@@ -17,13 +17,12 @@ const TipPostModal = dynamic(
   { ssr: false }
 )
 
-interface PostEngagementProps extends PostPaymentProps {
+interface PostEngagementProps {
+  post: PostDto
   postUnlocked: boolean
 }
 
 export const PostEngagement: FC<PostEngagementProps> = ({
-  cards,
-  defaultPayinMethod,
   post,
   postUnlocked = false
 }) => {
@@ -111,13 +110,13 @@ export const PostEngagement: FC<PostEngagementProps> = ({
         visible={showCommentSection}
         updateEngagement={updateEngagement}
       />
-      <TipPostModal
-        cards={cards}
-        defaultPayinMethod={defaultPayinMethod}
-        isOpen={isTipsModalOpen}
-        post={post}
-        setOpen={setIsTipsModalOpen}
-      />
+      {isTipsModalOpen && (
+        <TipPostModal
+          isOpen={isTipsModalOpen}
+          post={post}
+          setOpen={setIsTipsModalOpen}
+        />
+      )}
     </div>
   )
 }

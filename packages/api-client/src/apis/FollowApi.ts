@@ -15,23 +15,29 @@
 
 import * as runtime from '../runtime';
 import type {
+  GetBlockedResponseDto,
   GetFollowResponseDto,
-  GetListMembersResponseDto,
   IsFollowingDto,
   ReportFanDto,
+  SearchFansResponseDto,
   SearchFollowRequestDto,
+  SearchFollowingResponseDto,
 } from '../models';
 import {
+    GetBlockedResponseDtoFromJSON,
+    GetBlockedResponseDtoToJSON,
     GetFollowResponseDtoFromJSON,
     GetFollowResponseDtoToJSON,
-    GetListMembersResponseDtoFromJSON,
-    GetListMembersResponseDtoToJSON,
     IsFollowingDtoFromJSON,
     IsFollowingDtoToJSON,
     ReportFanDtoFromJSON,
     ReportFanDtoToJSON,
+    SearchFansResponseDtoFromJSON,
+    SearchFansResponseDtoToJSON,
     SearchFollowRequestDtoFromJSON,
     SearchFollowRequestDtoToJSON,
+    SearchFollowingResponseDtoFromJSON,
+    SearchFollowingResponseDtoToJSON,
 } from '../models';
 
 export interface BlockFollowerRequest {
@@ -183,7 +189,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Get blocked followers
      */
-    async getBlockedRaw(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+    async getBlockedRaw(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBlockedResponseDto>> {
         if (requestParameters.searchFollowRequestDto === null || requestParameters.searchFollowRequestDto === undefined) {
             throw new runtime.RequiredError('searchFollowRequestDto','Required parameter requestParameters.searchFollowRequestDto was null or undefined when calling getBlocked.');
         }
@@ -207,13 +213,13 @@ export class FollowApi extends runtime.BaseAPI {
             body: SearchFollowRequestDtoToJSON(requestParameters.searchFollowRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetBlockedResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get blocked followers
      */
-    async getBlocked(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
+    async getBlocked(requestParameters: GetBlockedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBlockedResponseDto> {
         const response = await this.getBlockedRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -262,7 +268,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Search for followers by query
      */
-    async searchFansRaw(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+    async searchFansRaw(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchFansResponseDto>> {
         if (requestParameters.searchFollowRequestDto === null || requestParameters.searchFollowRequestDto === undefined) {
             throw new runtime.RequiredError('searchFollowRequestDto','Required parameter requestParameters.searchFollowRequestDto was null or undefined when calling searchFans.');
         }
@@ -286,13 +292,13 @@ export class FollowApi extends runtime.BaseAPI {
             body: SearchFollowRequestDtoToJSON(requestParameters.searchFollowRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SearchFansResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Search for followers by query
      */
-    async searchFans(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
+    async searchFans(requestParameters: SearchFansRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchFansResponseDto> {
         const response = await this.searchFansRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -300,7 +306,7 @@ export class FollowApi extends runtime.BaseAPI {
     /**
      * Search for following by query
      */
-    async searchFollowingRaw(requestParameters: SearchFollowingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetListMembersResponseDto>> {
+    async searchFollowingRaw(requestParameters: SearchFollowingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchFollowingResponseDto>> {
         if (requestParameters.searchFollowRequestDto === null || requestParameters.searchFollowRequestDto === undefined) {
             throw new runtime.RequiredError('searchFollowRequestDto','Required parameter requestParameters.searchFollowRequestDto was null or undefined when calling searchFollowing.');
         }
@@ -324,13 +330,13 @@ export class FollowApi extends runtime.BaseAPI {
             body: SearchFollowRequestDtoToJSON(requestParameters.searchFollowRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetListMembersResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => SearchFollowingResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Search for following by query
      */
-    async searchFollowing(requestParameters: SearchFollowingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetListMembersResponseDto> {
+    async searchFollowing(requestParameters: SearchFollowingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchFollowingResponseDto> {
         const response = await this.searchFollowingRaw(requestParameters, initOverrides);
         return await response.value();
     }

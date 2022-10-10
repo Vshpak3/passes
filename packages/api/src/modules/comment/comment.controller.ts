@@ -55,8 +55,11 @@ export class CommentController {
     @Req() req: RequestWithUser,
     @Body() getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
   ): Promise<GetCommentsForPostResponseDto> {
-    return await this.commentService.findCommentsForPost(
-      req.user.id,
+    return new GetCommentsForPostResponseDto(
+      await this.commentService.findCommentsForPost(
+        req.user.id,
+        getCommentsForPostRequestDto,
+      ),
       getCommentsForPostRequestDto,
     )
   }

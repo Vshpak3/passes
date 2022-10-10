@@ -28,34 +28,22 @@ import {
 export interface GetPaidMessagesResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetPaidMessagesResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetPaidMessagesResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetPaidMessagesResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
     /**
      * 
      * @type {Array<PaidMessageDto>}
      * @memberof GetPaidMessagesResponseDto
      */
-    paidMessages: Array<PaidMessageDto>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GetPaidMessagesResponseDto
-     */
-    sentAt: Date;
+    data: Array<PaidMessageDto>;
 }
 
 /**
@@ -63,9 +51,7 @@ export interface GetPaidMessagesResponseDto {
  */
 export function instanceOfGetPaidMessagesResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "paidMessages" in value;
-    isInstance = isInstance && "sentAt" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -80,11 +66,9 @@ export function GetPaidMessagesResponseDtoFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'paidMessages': ((json['paidMessages'] as Array<any>).map(PaidMessageDtoFromJSON)),
-        'sentAt': (new Date(json['sentAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'data': ((json['data'] as Array<any>).map(PaidMessageDtoFromJSON)),
     };
 }
 
@@ -97,11 +81,9 @@ export function GetPaidMessagesResponseDtoToJSON(value?: GetPaidMessagesResponse
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'paidMessages': ((value.paidMessages as Array<any>).map(PaidMessageDtoToJSON)),
-        'sentAt': (value.sentAt.toISOString()),
+        'lastId': value.lastId,
+        'data': ((value.data as Array<any>).map(PaidMessageDtoToJSON)),
     };
 }
 

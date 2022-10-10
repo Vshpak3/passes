@@ -5,7 +5,10 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
-import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
+import {
+  GetProfileFeedRequestDto,
+  GetProfileFeedResponseDto,
+} from './dto/get-profile-feed.dto'
 import { FeedService } from './feed.service'
 
 @ApiTags('feed')
@@ -25,13 +28,16 @@ export class FeedController {
     @Req() req: RequestWithUser,
     @Body() getFeedRequestDto: GetFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
-    return await this.feedService.getFeed(req.user.id, getFeedRequestDto)
+    return new GetFeedResponseDto(
+      await this.feedService.getFeed(req.user.id, getFeedRequestDto),
+      getFeedRequestDto,
+    )
   }
 
   @ApiEndpoint({
     summary: 'Gets a feed for a given creator',
     responseStatus: HttpStatus.OK,
-    responseType: GetFeedResponseDto,
+    responseType: GetProfileFeedResponseDto,
     responseDesc: 'A feed was retrieved',
     role: RoleEnum.GENERAL,
   })
@@ -39,9 +45,12 @@ export class FeedController {
   async getFeedForCreator(
     @Req() req: RequestWithUser,
     @Body() getProfileFeedRequestDto: GetProfileFeedRequestDto,
-  ): Promise<GetFeedResponseDto> {
-    return await this.feedService.getFeedForCreator(
-      req.user.id,
+  ): Promise<GetProfileFeedResponseDto> {
+    return new GetProfileFeedResponseDto(
+      await this.feedService.getFeedForCreator(
+        req.user.id,
+        getProfileFeedRequestDto,
+      ),
       getProfileFeedRequestDto,
     )
   }

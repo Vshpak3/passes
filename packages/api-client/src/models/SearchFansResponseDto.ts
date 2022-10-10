@@ -13,93 +13,114 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ListMemberDto } from './ListMemberDto';
+import {
+    ListMemberDtoFromJSON,
+    ListMemberDtoFromJSONTyped,
+    ListMemberDtoToJSON,
+} from './ListMemberDto';
+
 /**
  * 
  * @export
- * @interface SearchFollowRequestDto
+ * @interface SearchFansResponseDto
  */
-export interface SearchFollowRequestDto {
+export interface SearchFansResponseDto {
     /**
      * 
      * @type {Date}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
     lastId?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
     search?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
-    order: SearchFollowRequestDtoOrderEnum;
+    order: SearchFansResponseDtoOrderEnum;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
+     */
+    listId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchFansResponseDto
      */
     username?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
     displayName?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof SearchFansResponseDto
      */
-    orderType: SearchFollowRequestDtoOrderTypeEnum;
+    orderType: SearchFansResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {Array<ListMemberDto>}
+     * @memberof SearchFansResponseDto
+     */
+    data: Array<ListMemberDto>;
 }
 
 
 /**
  * @export
  */
-export const SearchFollowRequestDtoOrderEnum = {
+export const SearchFansResponseDtoOrderEnum = {
     Asc: 'asc',
     Desc: 'desc'
 } as const;
-export type SearchFollowRequestDtoOrderEnum = typeof SearchFollowRequestDtoOrderEnum[keyof typeof SearchFollowRequestDtoOrderEnum];
+export type SearchFansResponseDtoOrderEnum = typeof SearchFansResponseDtoOrderEnum[keyof typeof SearchFansResponseDtoOrderEnum];
 
 /**
  * @export
  */
-export const SearchFollowRequestDtoOrderTypeEnum = {
+export const SearchFansResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at'
 } as const;
-export type SearchFollowRequestDtoOrderTypeEnum = typeof SearchFollowRequestDtoOrderTypeEnum[keyof typeof SearchFollowRequestDtoOrderTypeEnum];
+export type SearchFansResponseDtoOrderTypeEnum = typeof SearchFansResponseDtoOrderTypeEnum[keyof typeof SearchFansResponseDtoOrderTypeEnum];
 
 
 /**
- * Check if a given object implements the SearchFollowRequestDto interface.
+ * Check if a given object implements the SearchFansResponseDto interface.
  */
-export function instanceOfSearchFollowRequestDto(value: object): boolean {
+export function instanceOfSearchFansResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "listId" in value;
     isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
 
-export function SearchFollowRequestDtoFromJSON(json: any): SearchFollowRequestDto {
-    return SearchFollowRequestDtoFromJSONTyped(json, false);
+export function SearchFansResponseDtoFromJSON(json: any): SearchFansResponseDto {
+    return SearchFansResponseDtoFromJSONTyped(json, false);
 }
 
-export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchFollowRequestDto {
+export function SearchFansResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchFansResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -109,13 +130,15 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
+        'data': ((json['data'] as Array<any>).map(ListMemberDtoFromJSON)),
     };
 }
 
-export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | null): any {
+export function SearchFansResponseDtoToJSON(value?: SearchFansResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -128,9 +151,11 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,
+        'data': ((value.data as Array<any>).map(ListMemberDtoToJSON)),
     };
 }
 

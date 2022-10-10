@@ -60,7 +60,7 @@ export interface GetListMembersRequestDto {
      * @type {string}
      * @memberof GetListMembersRequestDto
      */
-    displayName?: string;
+    displayName?: string | null;
     /**
      * 
      * @type {string}

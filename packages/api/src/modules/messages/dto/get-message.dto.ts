@@ -25,16 +25,19 @@ export class GetMessagesRequestDto extends PickType(PageRequestDto, [
   pending: boolean
 }
 
-export class GetMessagesResponseDto extends PageResponseDto {
+export class GetMessagesResponseDto
+  extends GetMessagesRequestDto
+  implements PageResponseDto<MessageDto>
+{
   @DtoProperty({ custom_type: [MessageDto] })
-  messages: MessageDto[]
+  data: MessageDto[]
 
-  @DtoProperty({ type: 'date' })
-  sentAt: Date
-
-  constructor(messages: MessageDto[]) {
+  constructor(messages: MessageDto[], requestDto: GetMessagesRequestDto) {
     super()
-    this.messages = messages
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = messages
 
     if (messages.length > 0) {
       this.lastId = messages[messages.length - 1].messageId

@@ -40,11 +40,10 @@ const PaymentSettings = ({
     setDefaultPayinMethod,
     getDefaultPayinMethod,
     deleteCard,
-    getCards
+    getCards,
+    defaultCard
   } = usePayinMethod()
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
+
   const { register, getValues, setValue, watch } = useForm({
     defaultValues: {
       metamask:
@@ -157,7 +156,7 @@ const PaymentSettings = ({
           <AddCard
             callback={() => {
               setOpen(false)
-              setTimeout(() => getCards(), 500)
+              getCards()
             }}
           />
         </Modal>
@@ -342,7 +341,7 @@ const PaymentSettings = ({
           </Button>
         </div>
         <div>
-          {cards.map((item) => (
+          {cards?.map((item) => (
             <div
               key={item.id}
               className="my-5 flex rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"

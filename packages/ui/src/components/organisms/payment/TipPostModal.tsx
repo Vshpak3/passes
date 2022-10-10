@@ -3,28 +3,25 @@ import {
   PayinDataDto,
   PostApi
 } from "@passes/api-client"
+import { PostDto } from "@passes/api-client/src/models/PostDto"
 import { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "src/components/atoms"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import { TipPostButton } from "src/components/molecules/payment/tip-post-button"
 import Modal from "src/components/organisms/Modal"
+import { usePayinMethod } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
 
-import { PostPaymentProps } from "./PaymentProps"
-
-interface TipPostModalProps extends PostPaymentProps {
+interface TipPostModalProps {
+  post: PostDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const TipPostModal: FC<TipPostModalProps> = ({
-  cards,
-  defaultPayinMethod,
-  isOpen,
-  post,
-  setOpen
-}) => {
+const TipPostModal: FC<TipPostModalProps> = ({ isOpen, post, setOpen }) => {
+  const { defaultPayinMethod, defaultCard } = usePayinMethod()
+
   const {
     register,
     getValues,
@@ -33,17 +30,12 @@ const TipPostModal: FC<TipPostModalProps> = ({
   } = useForm<{
     "tip-value": number
   }>()
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
-
   const api = new PostApi()
   const registerTip = async () => {
     return await api.registerTipPost({
       tipPostRequestDto: {
         postId: post.postId,
-        amount: Number(getValues("tip-value")),
-        payinMethod: defaultPayinMethod
+        amount: Number(getValues("tip-value"))
       }
     })
   }

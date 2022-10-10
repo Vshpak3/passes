@@ -13,7 +13,7 @@ const useFollowerSearch = () => {
         orderType: "username"
       }
     })
-    setFollowing(data.listMembers)
+    setFollowing(data.data)
   }, [search])
 
   useEffect(() => {

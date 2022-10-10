@@ -16,7 +16,8 @@ import {
 } from "./payouts"
 import Popover from "./Popover"
 import ReportModal from "./ReportModal"
-import { SidebarDefault, SidebarMobile } from "./sidebar"
+import SidebarDefault from "./sidebar/SideBarDefault"
+import SidebarMobile from "./sidebar/SideBarMobile"
 import CreatorPassTiles from "./tiles/CreatorPassTiles"
 import { VaultMediaGrid, VaultNavigation } from "./VaultSections"
 

@@ -15,10 +15,7 @@ import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
 import { FanWallCommentDto } from './dto/fan-wall-comment.dto'
-import {
-  GetFanWallRequestDto,
-  GetFanWallResponseDto,
-} from './dto/get-fan-wall-comments.dto'
+import { GetFanWallRequestDto } from './dto/get-fan-wall-comments.dto'
 import { FanWallCommentEntity } from './entities/fan-wall-comment.entity'
 
 export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 20
@@ -65,7 +62,7 @@ export class FanWallService {
   async getFanWallForCreator(
     userId: string,
     getFanWallRequestDto: GetFanWallRequestDto,
-  ): Promise<GetFanWallResponseDto> {
+  ): Promise<FanWallCommentDto[]> {
     const { creatorId, lastId, createdAt } = getFanWallRequestDto
     await this.checkBlock(userId, creatorId)
     let query = this.dbReader<FanWallCommentEntity>(FanWallCommentEntity.table)
@@ -99,9 +96,7 @@ export class FanWallService {
 
     const comments = await query.limit(MAX_FAN_WALL_COMMENTS_PER_REQUEST)
 
-    return new GetFanWallResponseDto(
-      comments.map((comment) => new FanWallCommentDto(comment)),
-    )
+    return comments.map((comment) => new FanWallCommentDto(comment))
   }
 
   async hideFanWallCommment(

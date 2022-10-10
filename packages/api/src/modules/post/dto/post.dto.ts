@@ -94,6 +94,9 @@ export class PostDto {
   @DtoProperty({ type: 'currency', optional: true })
   totalTipAmount?: number
 
+  @DtoProperty({ type: 'boolean' })
+  isOwner: boolean
+
   constructor(
     post: PostEntity & {
       is_liked: boolean
@@ -101,7 +104,7 @@ export class PostDto {
       display_name: string
     },
     paywall,
-    isCreator,
+    isOwner,
     content?: ContentDto[],
   ) {
     if (post) {
@@ -121,12 +124,13 @@ export class PostDto {
       this.paywall = paywall
       this.tags = JSON.parse(post.tags)
       this.passIds = JSON.parse(post.pass_ids)
-      if (isCreator) {
+      if (isOwner) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount
         this.earningsPurchases = post.earnings_purchases
         this.numPurchases = post.num_purchases
       }
+      this.isOwner = isOwner
       if (content) {
         this.content = content
       }

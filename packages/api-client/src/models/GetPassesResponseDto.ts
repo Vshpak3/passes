@@ -28,28 +28,40 @@ import {
 export interface GetPassesResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetPassesResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetPassesResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetPassesResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassesResponseDto
+     */
+    search?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPassesResponseDto
+     */
+    pinned?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassesResponseDto
+     */
+    creatorId?: string;
     /**
      * 
      * @type {Array<PassDto>}
      * @memberof GetPassesResponseDto
      */
-    passes: Array<PassDto>;
+    data: Array<PassDto>;
 }
 
 /**
@@ -57,8 +69,7 @@ export interface GetPassesResponseDto {
  */
 export function instanceOfGetPassesResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "passes" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -73,10 +84,12 @@ export function GetPassesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'passes': ((json['passes'] as Array<any>).map(PassDtoFromJSON)),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
+        'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'data': ((json['data'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
 
@@ -89,10 +102,12 @@ export function GetPassesResponseDtoToJSON(value?: GetPassesResponseDto | null):
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'passes': ((value.passes as Array<any>).map(PassDtoToJSON)),
+        'lastId': value.lastId,
+        'search': value.search,
+        'pinned': value.pinned,
+        'creatorId': value.creatorId,
+        'data': ((value.data as Array<any>).map(PassDtoToJSON)),
     };
 }
 

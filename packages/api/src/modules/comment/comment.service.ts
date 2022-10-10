@@ -19,10 +19,7 @@ import { PostEntity } from '../post/entities/post.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { CommentDto } from './dto/comment.dto'
 import { CreateCommentRequestDto } from './dto/create-comment.dto'
-import {
-  GetCommentsForPostRequestDto,
-  GetCommentsForPostResponseDto,
-} from './dto/get-comments-for-post-dto'
+import { GetCommentsForPostRequestDto } from './dto/get-comments-for-post-dto'
 import { CommentEntity } from './entities/comment.entity'
 
 export const MAX_COMMENTS_PER_REQUEST = 20
@@ -72,7 +69,7 @@ export class CommentService {
   async findCommentsForPost(
     userId: string,
     getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
-  ): Promise<GetCommentsForPostResponseDto> {
+  ): Promise<CommentDto[]> {
     const { postId, lastId, createdAt } = getCommentsForPostRequestDto
     await this.checkPost(userId, postId)
 
@@ -104,9 +101,7 @@ export class CommentService {
       lastId,
     )
     const comments = await query.limit(MAX_COMMENTS_PER_REQUEST)
-    return new GetCommentsForPostResponseDto(
-      comments.map((c) => new CommentDto(c)),
-    )
+    return comments.map((c) => new CommentDto(c))
   }
 
   async hideComment(userId: string, postId: string, commentId: string) {

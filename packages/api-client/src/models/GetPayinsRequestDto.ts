@@ -31,6 +31,12 @@ export interface GetPayinsRequestDto {
      * @memberof GetPayinsRequestDto
      */
     limit: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPayinsRequestDto
+     */
+    inProgress?: boolean;
 }
 
 /**
@@ -56,6 +62,7 @@ export function GetPayinsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
         
         'offset': json['offset'],
         'limit': json['limit'],
+        'inProgress': !exists(json, 'inProgress') ? undefined : json['inProgress'],
     };
 }
 
@@ -70,6 +77,7 @@ export function GetPayinsRequestDtoToJSON(value?: GetPayinsRequestDto | null): a
         
         'offset': value.offset,
         'limit': value.limit,
+        'inProgress': value.inProgress,
     };
 }
 

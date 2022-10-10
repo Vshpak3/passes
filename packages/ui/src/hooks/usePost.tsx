@@ -2,7 +2,8 @@ import { PostApi } from "@passes/api-client"
 import { toast } from "react-toastify"
 import useSWR from "swr"
 
-const usePost = (postId?: string) => {
+const usePost = (postId: string) => {
+  // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
   const {
     data: post,
     isValidating: loading,

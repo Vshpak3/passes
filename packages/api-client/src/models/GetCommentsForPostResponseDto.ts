@@ -28,28 +28,28 @@ import {
 export interface GetCommentsForPostResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetCommentsForPostResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetCommentsForPostResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetCommentsForPostResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetCommentsForPostResponseDto
+     */
+    postId: string;
     /**
      * 
      * @type {Array<CommentDto>}
      * @memberof GetCommentsForPostResponseDto
      */
-    comments: Array<CommentDto>;
+    data: Array<CommentDto>;
 }
 
 /**
@@ -57,8 +57,8 @@ export interface GetCommentsForPostResponseDto {
  */
 export function instanceOfGetCommentsForPostResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "comments" in value;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -73,10 +73,10 @@ export function GetCommentsForPostResponseDtoFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'comments': ((json['comments'] as Array<any>).map(CommentDtoFromJSON)),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'postId': json['postId'],
+        'data': ((json['data'] as Array<any>).map(CommentDtoFromJSON)),
     };
 }
 
@@ -89,10 +89,10 @@ export function GetCommentsForPostResponseDtoToJSON(value?: GetCommentsForPostRe
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'comments': ((value.comments as Array<any>).map(CommentDtoToJSON)),
+        'lastId': value.lastId,
+        'postId': value.postId,
+        'data': ((value.data as Array<any>).map(CommentDtoToJSON)),
     };
 }
 

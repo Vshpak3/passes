@@ -20,7 +20,7 @@ import { SWRConfig, SWRConfiguration } from "swr"
 
 const swrConfig: SWRConfiguration = {
   // enable or disable automatic revalidation when component is mounted
-  revalidateOnMount: true,
+  revalidateOnMount: false,
 
   // automatically revalidate when window gets focused
   revalidateOnFocus: true,

@@ -18,6 +18,7 @@ import type {
   GetFeedRequestDto,
   GetFeedResponseDto,
   GetProfileFeedRequestDto,
+  GetProfileFeedResponseDto,
 } from '../models';
 import {
     GetFeedRequestDtoFromJSON,
@@ -26,6 +27,8 @@ import {
     GetFeedResponseDtoToJSON,
     GetProfileFeedRequestDtoFromJSON,
     GetProfileFeedRequestDtoToJSON,
+    GetProfileFeedResponseDtoFromJSON,
+    GetProfileFeedResponseDtoToJSON,
 } from '../models';
 
 export interface GetFeedRequest {
@@ -82,7 +85,7 @@ export class FeedApi extends runtime.BaseAPI {
     /**
      * Gets a feed for a given creator
      */
-    async getFeedForCreatorRaw(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFeedResponseDto>> {
+    async getFeedForCreatorRaw(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetProfileFeedResponseDto>> {
         if (requestParameters.getProfileFeedRequestDto === null || requestParameters.getProfileFeedRequestDto === undefined) {
             throw new runtime.RequiredError('getProfileFeedRequestDto','Required parameter requestParameters.getProfileFeedRequestDto was null or undefined when calling getFeedForCreator.');
         }
@@ -106,13 +109,13 @@ export class FeedApi extends runtime.BaseAPI {
             body: GetProfileFeedRequestDtoToJSON(requestParameters.getProfileFeedRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFeedResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetProfileFeedResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a feed for a given creator
      */
-    async getFeedForCreator(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFeedResponseDto> {
+    async getFeedForCreator(requestParameters: GetFeedForCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetProfileFeedResponseDto> {
         const response = await this.getFeedForCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }

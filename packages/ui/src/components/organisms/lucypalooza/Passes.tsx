@@ -1,6 +1,6 @@
 import {
   GetPassHoldingsRequestDtoOrderEnum,
-  GetPassHoldingsResponseDtoOrderTypeEnum,
+  GetPassHoldingsRequestDtoOrderTypeEnum,
   PassApi,
   PassDto,
   PassDtoChainEnum,
@@ -70,7 +70,7 @@ const Passes = () => {
   const [passId, setPassId] = useState<string>()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { defaultPayinMethod, setPayinMethod } = usePayinMethod()
+  const { defaultPayinMethod, setDefaultPayinMethod } = usePayinMethod()
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
   useEffect(() => {
     const api = new PassApi()
@@ -79,18 +79,16 @@ const Passes = () => {
       const userId = await userApi.getUserId({ username: "patzhang" })
 
       const res = await api.getCreatorPasses({
-        getCreatorPassesRequestDto: { creatorId: userId }
+        getPassesRequestDto: { creatorId: userId }
       })
-      setPasses(
-        res.passes.filter((pass) => pass.chain === PassDtoChainEnum.Eth)
-      )
+      setPasses(res.data.filter((pass) => pass.chain === PassDtoChainEnum.Eth))
     }
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSetDefaultPayment = (value: PayinMethodDto) => {
-    setPayinMethod(value)
+    setDefaultPayinMethod(value)
   }
 
   const handleCancel = async () => {
@@ -110,10 +108,10 @@ const Passes = () => {
       await passApi.getPassHoldings({
         getPassHoldingsRequestDto: {
           order: GetPassHoldingsRequestDtoOrderEnum.Asc,
-          orderType: GetPassHoldingsResponseDtoOrderTypeEnum.CreatedAt
+          orderType: GetPassHoldingsRequestDtoOrderTypeEnum.CreatedAt
         }
       })
-    ).passHolders.filter((passHolder) => {
+    ).data.filter((passHolder) => {
       for (let i = 0; i < passes.length; i++) {
         if (passHolder.passId === passes[i].passId) {
           return true

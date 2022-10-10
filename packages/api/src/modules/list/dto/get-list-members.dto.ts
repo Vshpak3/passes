@@ -24,38 +24,36 @@ export class GetListMembersRequestDto extends PickType(PageRequestDto, [
   username?: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  displayName?: string
+  @DtoProperty({ type: 'string', optional: true, nullable: true })
+  displayName?: string | null
 
   @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
 }
 
-export class GetListMembersResponseDto extends PageResponseDto {
+export class GetListMembersResponseDto
+  extends GetListMembersRequestDto
+  implements PageResponseDto<ListMemberDto>
+{
   @DtoProperty({ custom_type: [ListMemberDto] })
-  listMembers: ListMemberDto[]
-
-  @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  username?: string
-
-  @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', nullable: true, optional: true })
-  displayName?: string | null
+  data: ListMemberDto[]
 
   constructor(
     listMembers: ListMemberDto[],
-    orderType: ListMemberOrderTypeEnum,
+    requestDto: Partial<GetListMembersRequestDto>,
   ) {
     super()
-    this.listMembers = listMembers
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = listMembers
 
     if (listMembers.length > 0) {
       this.lastId = listMembers[listMembers.length - 1].listMemberId
       if (!this.lastId) {
         this.lastId = listMembers[listMembers.length - 1].follow as string
       }
-      switch (orderType) {
+      switch (requestDto.orderType) {
         case ListMemberOrderTypeEnum.CREATED_AT:
           this.createdAt = listMembers[listMembers.length - 1].createdAt
           break

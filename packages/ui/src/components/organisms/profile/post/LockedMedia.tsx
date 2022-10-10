@@ -1,29 +1,21 @@
-import dynamic from "next/dynamic"
-import { Dispatch, FC, SetStateAction, useState } from "react"
+import { PostDto } from "@passes/api-client/src/models/PostDto"
+import { Dispatch, FC, SetStateAction } from "react"
 import { PostUnlockButton } from "src/components/atoms"
-import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
 import { formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
 
-const BuyPostModal = dynamic(
-  () => import("src/components/organisms/payment/BuyPostModal"),
-  { ssr: false }
-)
-
-interface LockedMedia extends PostPaymentProps {
-  setPostUnlocked: Dispatch<SetStateAction<boolean>>
+interface LockedMedia {
+  post: PostDto
   showcaseImg: string | null
+  setOpenBuyPostModal: Dispatch<SetStateAction<boolean>>
 }
 
 export const LockedMedia: FC<LockedMedia> = ({
-  cards,
-  defaultPayinMethod,
   post,
-  setIsPayed,
-  showcaseImg
+  showcaseImg,
+  setOpenBuyPostModal
 }) => {
-  const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const { images, video } = contentTypeCounter(post.content)
 
   return (
@@ -49,14 +41,6 @@ export const LockedMedia: FC<LockedMedia> = ({
           </p>
         </div>
       </div>
-      <BuyPostModal
-        cards={cards}
-        defaultPayinMethod={defaultPayinMethod}
-        isOpen={openBuyPostModal}
-        post={post}
-        setIsPayed={setIsPayed}
-        setOpen={setOpenBuyPostModal}
-      />
     </>
   )
 }

@@ -31,25 +31,25 @@ export interface GetChannelsResponseDto {
      * @type {string}
      * @memberof GetChannelsResponseDto
      */
-    lastId: string;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChannelsResponseDto
+     */
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChannelsResponseDto
+     */
+    order: GetChannelsResponseDtoOrderEnum;
     /**
      * 
      * @type {Date}
      * @memberof GetChannelsResponseDto
      */
-    createdAt?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GetChannelsResponseDto
-     */
-    updatedAt?: Date;
-    /**
-     * 
-     * @type {Array<ChannelMemberDto>}
-     * @memberof GetChannelsResponseDto
-     */
-    channelMembers: Array<ChannelMemberDto>;
+    recent?: Date;
     /**
      * 
      * @type {number}
@@ -58,19 +58,53 @@ export interface GetChannelsResponseDto {
     tip?: number;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetChannelsResponseDto
      */
-    recent?: Date;
+    orderType: GetChannelsResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetChannelsResponseDto
+     */
+    unreadOnly: boolean;
+    /**
+     * 
+     * @type {Array<ChannelMemberDto>}
+     * @memberof GetChannelsResponseDto
+     */
+    data: Array<ChannelMemberDto>;
 }
+
+
+/**
+ * @export
+ */
+export const GetChannelsResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetChannelsResponseDtoOrderEnum = typeof GetChannelsResponseDtoOrderEnum[keyof typeof GetChannelsResponseDtoOrderEnum];
+
+/**
+ * @export
+ */
+export const GetChannelsResponseDtoOrderTypeEnum = {
+    Recent: 'recent',
+    Tip: 'tip'
+} as const;
+export type GetChannelsResponseDtoOrderTypeEnum = typeof GetChannelsResponseDtoOrderTypeEnum[keyof typeof GetChannelsResponseDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetChannelsResponseDto interface.
  */
 export function instanceOfGetChannelsResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "channelMembers" in value;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "unreadOnly" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -85,12 +119,14 @@ export function GetChannelsResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'channelMembers': ((json['channelMembers'] as Array<any>).map(ChannelMemberDtoFromJSON)),
-        'tip': !exists(json, 'tip') ? undefined : json['tip'],
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
         'recent': !exists(json, 'recent') ? undefined : (new Date(json['recent'])),
+        'tip': !exists(json, 'tip') ? undefined : json['tip'],
+        'orderType': json['orderType'],
+        'unreadOnly': json['unreadOnly'],
+        'data': ((json['data'] as Array<any>).map(ChannelMemberDtoFromJSON)),
     };
 }
 
@@ -104,11 +140,13 @@ export function GetChannelsResponseDtoToJSON(value?: GetChannelsResponseDto | nu
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'channelMembers': ((value.channelMembers as Array<any>).map(ChannelMemberDtoToJSON)),
-        'tip': value.tip,
+        'search': value.search,
+        'order': value.order,
         'recent': value.recent === undefined ? undefined : (value.recent.toISOString()),
+        'tip': value.tip,
+        'orderType': value.orderType,
+        'unreadOnly': value.unreadOnly,
+        'data': ((value.data as Array<any>).map(ChannelMemberDtoToJSON)),
     };
 }
 

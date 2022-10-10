@@ -12,13 +12,22 @@ export class GetCommentsForPostRequestDto extends PickType(PageRequestDto, [
   postId: string
 }
 
-export class GetCommentsForPostResponseDto extends PageResponseDto {
+export class GetCommentsForPostResponseDto
+  extends GetCommentsForPostRequestDto
+  implements PageResponseDto<CommentDto>
+{
   @DtoProperty({ custom_type: [CommentDto] })
-  comments: CommentDto[]
+  data: CommentDto[]
 
-  constructor(comments: CommentDto[]) {
+  constructor(
+    comments: CommentDto[],
+    requestDto: GetCommentsForPostRequestDto,
+  ) {
     super()
-    this.comments = comments
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = comments
     if (comments.length > 0) {
       this.lastId = comments[comments.length - 1].commentId
       this.createdAt = comments[comments.length - 1].createdAt

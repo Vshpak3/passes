@@ -50,7 +50,7 @@ import {
   CreatePostResponseDto,
 } from './dto/create-post.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
-import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
+import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -266,7 +266,7 @@ export class PostService {
   async getPosts(
     userId: string,
     getPostsRequestDto: GetPostsRequestDto,
-  ): Promise<GetPostsResponseDto> {
+  ): Promise<PostDto[]> {
     const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
     let query = this.dbReader<PostEntity>(PostEntity.table)
       .select([`${PostEntity.table}.*`])
@@ -284,8 +284,7 @@ export class PostService {
     if (scheduledOnly) {
       query = query.whereNotNull('scheduled_at')
     }
-    const postDtos = await this.getPostsFromQuery(userId, query)
-    return new GetPostsResponseDto(postDtos)
+    return await this.getPostsFromQuery(userId, query)
   }
 
   async getPostsFromQuery(

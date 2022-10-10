@@ -9,16 +9,22 @@ export class GetPaidMessagesRequestDto extends PickType(PageRequestDto, [
   'createdAt',
 ]) {}
 
-export class GetPaidMessagesResponseDto extends PageResponseDto {
+export class GetPaidMessagesResponseDto
+  extends GetPaidMessagesRequestDto
+  implements PageResponseDto<PaidMessageDto>
+{
   @DtoProperty({ custom_type: [PaidMessageDto] })
-  paidMessages: PaidMessageDto[]
+  data: PaidMessageDto[]
 
-  @DtoProperty({ type: 'date' })
-  sentAt: Date
-
-  constructor(paidMessages: PaidMessageDto[]) {
+  constructor(
+    paidMessages: PaidMessageDto[],
+    requestDto: GetPaidMessagesRequestDto,
+  ) {
     super()
-    this.paidMessages = paidMessages
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = paidMessages
 
     if (paidMessages.length > 0) {
       this.lastId = paidMessages[paidMessages.length - 1].paidMessageId

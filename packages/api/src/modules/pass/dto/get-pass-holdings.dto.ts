@@ -36,30 +36,25 @@ export class GetPassHoldingsRequestDto extends PickType(PageRequestDto, [
 
 export class GetPassHoldingResponseDto extends PassHolderDto {}
 
-export class GetPassHoldingsResponseDto extends PageResponseDto {
+export class GetPassHoldingsResponseDto
+  extends GetPassHoldingsRequestDto
+  implements PageResponseDto<PassHolderDto>
+{
   @DtoProperty({ custom_type: [PassHolderDto] })
-  passHolders: PassHolderDto[]
-
-  @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
-  orderType: ListMemberOrderTypeEnum
-
-  @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  username?: string
-
-  @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  displayName?: string
+  data: PassHolderDto[]
 
   constructor(
     passHolders: PassHolderDto[],
-    orderType: ListMemberOrderTypeEnum,
+    requestDto: GetPassHoldingsRequestDto,
   ) {
     super()
-    this.passHolders = passHolders
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = passHolders
     if (passHolders.length > 0) {
       this.lastId = passHolders[passHolders.length - 1].passHolderId
-      switch (orderType) {
+      switch (requestDto.orderType) {
         case ListMemberOrderTypeEnum.CREATED_AT:
           this.createdAt = passHolders[passHolders.length - 1].createdAt
           break

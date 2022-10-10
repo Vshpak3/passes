@@ -116,7 +116,7 @@ export class ListController {
   ): Promise<GetListsResponseDto> {
     return new GetListsResponseDto(
       await this.listService.getListsForUser(req.user.id, getListsRequestsDto),
-      getListsRequestsDto.orderType,
+      getListsRequestsDto,
     )
   }
 
@@ -137,7 +137,7 @@ export class ListController {
         req.user.id,
         getListMembersRequestDto,
       ),
-      getListMembersRequestDto.orderType,
+      getListMembersRequestDto,
     )
   }
 

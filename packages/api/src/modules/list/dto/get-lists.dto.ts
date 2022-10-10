@@ -22,21 +22,23 @@ export class GetListsRequestsDto extends PickType(PageRequestDto, [
   orderType: ListOrderTypeEnum
 }
 
-export class GetListsResponseDto extends PageResponseDto {
+export class GetListsResponseDto
+  extends GetListsRequestsDto
+  implements PageResponseDto<ListDto>
+{
   @DtoProperty({ custom_type: [ListDto] })
-  lists: ListDto[]
+  data: ListDto[]
 
-  @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  name?: string
-
-  constructor(lists: ListDto[], orderType: ListOrderTypeEnum) {
+  constructor(lists: ListDto[], requestDto: GetListsRequestsDto) {
     super()
-    this.lists = lists
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = lists
 
     if (lists.length > 0) {
       this.lastId = lists[lists.length - 1].listId
-      switch (orderType) {
+      switch (requestDto.orderType) {
         case ListOrderTypeEnum.CREATED_AT:
           this.createdAt = lists[lists.length - 1].createdAt
           break

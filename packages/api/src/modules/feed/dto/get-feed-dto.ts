@@ -9,17 +9,19 @@ export class GetFeedRequestDto extends PickType(PageRequestDto, [
   'createdAt',
 ]) {}
 
-export class GetFeedResponseDto extends PageResponseDto {
+export class GetFeedResponseDto
+  extends GetFeedRequestDto
+  implements PageResponseDto<PostDto>
+{
   @DtoProperty({ custom_type: [PostDto] })
-  posts: PostDto[]
+  data: PostDto[]
 
-  @DtoProperty({ type: 'number' })
-  count: number
-
-  constructor(posts: PostDto[]) {
+  constructor(posts: PostDto[], requestDto: GetFeedRequestDto) {
     super()
-    this.posts = posts
-    this.count = posts.length
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = posts
     if (posts.length > 0) {
       this.lastId = posts[posts.length - 1].postId
       this.createdAt = posts[posts.length - 1].createdAt

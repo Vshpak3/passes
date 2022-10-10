@@ -16,55 +16,55 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetExternalPassesRequestDto
+ * @interface GetPassesRequestDto
  */
-export interface GetExternalPassesRequestDto {
+export interface GetPassesRequestDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetExternalPassesRequestDto
+     * @memberof GetPassesRequestDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetExternalPassesRequestDto
+     * @memberof GetPassesRequestDto
      */
     lastId?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetExternalPassesRequestDto
+     * @memberof GetPassesRequestDto
      */
     search?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof GetExternalPassesRequestDto
+     * @memberof GetPassesRequestDto
      */
     pinned?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof GetExternalPassesRequestDto
+     * @memberof GetPassesRequestDto
      */
     creatorId?: string;
 }
 
 /**
- * Check if a given object implements the GetExternalPassesRequestDto interface.
+ * Check if a given object implements the GetPassesRequestDto interface.
  */
-export function instanceOfGetExternalPassesRequestDto(value: object): boolean {
+export function instanceOfGetPassesRequestDto(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function GetExternalPassesRequestDtoFromJSON(json: any): GetExternalPassesRequestDto {
-    return GetExternalPassesRequestDtoFromJSONTyped(json, false);
+export function GetPassesRequestDtoFromJSON(json: any): GetPassesRequestDto {
+    return GetPassesRequestDtoFromJSONTyped(json, false);
 }
 
-export function GetExternalPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetExternalPassesRequestDto {
+export function GetPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPassesRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -78,7 +78,7 @@ export function GetExternalPassesRequestDtoFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function GetExternalPassesRequestDtoToJSON(value?: GetExternalPassesRequestDto | null): any {
+export function GetPassesRequestDtoToJSON(value?: GetPassesRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

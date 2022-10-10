@@ -57,8 +57,8 @@ const FanLists: NextPage = () => {
             createdAt
           }
         })
-        if (curResets === resets && newLists.lists.length > 0) {
-          setLists([...lists, ...newLists.lists])
+        if (curResets === resets && newLists.data.length > 0) {
+          setLists([...lists, ...newLists.data])
           setLastId(newLists.lastId)
           setCreatedAt(newLists.createdAt)
           setName(newLists.name)

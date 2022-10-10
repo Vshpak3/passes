@@ -19,10 +19,7 @@ const BuyPostModal: FC<IBuyMessageModal> = ({
   setOpen,
   isOpen
 }) => {
-  const { defaultPayinMethod, cards } = usePayinMethod()
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
+  const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>

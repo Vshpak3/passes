@@ -18,9 +18,9 @@ import type {
   BooleanResponseDto,
   CreateContentRequestDto,
   DeleteContentRequestDto,
-  GetContentsResponseDto,
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
+  GetVaultQueryResponseDto,
 } from '../models';
 import {
     BooleanResponseDtoFromJSON,
@@ -29,12 +29,12 @@ import {
     CreateContentRequestDtoToJSON,
     DeleteContentRequestDtoFromJSON,
     DeleteContentRequestDtoToJSON,
-    GetContentsResponseDtoFromJSON,
-    GetContentsResponseDtoToJSON,
     GetSignedUrlResponseDtoFromJSON,
     GetSignedUrlResponseDtoToJSON,
     GetVaultQueryRequestDtoFromJSON,
     GetVaultQueryRequestDtoToJSON,
+    GetVaultQueryResponseDtoFromJSON,
+    GetVaultQueryResponseDtoToJSON,
 } from '../models';
 
 export interface CreateContentRequest {
@@ -140,7 +140,7 @@ export class ContentApi extends runtime.BaseAPI {
     /**
      * Gets all content associated with the current authenticated user
      */
-    async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetContentsResponseDto>> {
+    async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetVaultQueryResponseDto>> {
         if (requestParameters.getVaultQueryRequestDto === null || requestParameters.getVaultQueryRequestDto === undefined) {
             throw new runtime.RequiredError('getVaultQueryRequestDto','Required parameter requestParameters.getVaultQueryRequestDto was null or undefined when calling getVaultContent.');
         }
@@ -164,13 +164,13 @@ export class ContentApi extends runtime.BaseAPI {
             body: GetVaultQueryRequestDtoToJSON(requestParameters.getVaultQueryRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetContentsResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetVaultQueryResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets all content associated with the current authenticated user
      */
-    async getVaultContent(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetContentsResponseDto> {
+    async getVaultContent(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetVaultQueryResponseDto> {
         const response = await this.getVaultContentRaw(requestParameters, initOverrides);
         return await response.value();
     }

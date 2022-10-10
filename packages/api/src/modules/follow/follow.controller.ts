@@ -13,11 +13,15 @@ import { ApiTags } from '@nestjs/swagger'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
-import { GetListMembersResponseDto } from '../list/dto/get-list-members.dto'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
 import { IsFollowingDto } from './dto/is-following.dto'
 import { ReportFanDto } from './dto/report-fan.dto'
-import { SearchFollowRequestDto } from './dto/search-follow.dto'
+import {
+  GetBlockedResponseDto,
+  SearchFansResponseDto,
+  SearchFollowingResponseDto,
+  SearchFollowRequestDto,
+} from './dto/search-follow.dto'
 import { FollowService } from './follow.service'
 
 @ApiTags('follow')
@@ -73,7 +77,7 @@ export class FollowController {
   @ApiEndpoint({
     summary: 'Search for followers by query',
     responseStatus: HttpStatus.CREATED,
-    responseType: GetListMembersResponseDto,
+    responseType: SearchFansResponseDto,
     responseDesc: 'A list of followers was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -81,17 +85,17 @@ export class FollowController {
   async searchFans(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFollowRequestDto,
-  ): Promise<GetListMembersResponseDto> {
-    return new GetListMembersResponseDto(
+  ): Promise<SearchFansResponseDto> {
+    return new SearchFansResponseDto(
       await this.followService.searchFansByQuery(req.user.id, searchFanDto),
-      searchFanDto.orderType,
+      searchFanDto,
     )
   }
 
   @ApiEndpoint({
     summary: 'Search for following by query',
     responseStatus: HttpStatus.CREATED,
-    responseType: GetListMembersResponseDto,
+    responseType: SearchFollowingResponseDto,
     responseDesc: 'A list of following was retrieved',
     role: RoleEnum.GENERAL,
   })
@@ -99,13 +103,13 @@ export class FollowController {
   async searchFollowing(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFollowRequestDto,
-  ): Promise<GetListMembersResponseDto> {
-    return new GetListMembersResponseDto(
+  ): Promise<SearchFollowingResponseDto> {
+    return new SearchFollowingResponseDto(
       await this.followService.searchFollowingByQuery(
         req.user.id,
         searchFanDto,
       ),
-      searchFanDto.orderType,
+      searchFanDto,
     )
   }
 
@@ -162,7 +166,7 @@ export class FollowController {
   @ApiEndpoint({
     summary: 'Get blocked followers',
     responseStatus: HttpStatus.OK,
-    responseType: GetListMembersResponseDto,
+    responseType: GetBlockedResponseDto,
     responseDesc: 'A list of blocked followers was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -170,10 +174,10 @@ export class FollowController {
   async getBlocked(
     @Req() req: RequestWithUser,
     @Body() searchFanDto: SearchFollowRequestDto,
-  ): Promise<GetListMembersResponseDto> {
-    return new GetListMembersResponseDto(
+  ): Promise<GetBlockedResponseDto> {
+    return new GetBlockedResponseDto(
       await this.followService.getBlocked(req.user.id),
-      searchFanDto.orderType,
+      searchFanDto,
     )
   }
 }

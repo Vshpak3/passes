@@ -19,7 +19,7 @@ const EventTable: FC = () => {
           scheduledOnly: true
         }
       })
-      setPosts(scheduledPosts.posts)
+      setPosts(scheduledPosts.data)
     })()
   }, [])
 

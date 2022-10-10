@@ -28,28 +28,28 @@ import {
 export interface GetFanWallResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetFanWallResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetFanWallResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetFanWallResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetFanWallResponseDto
+     */
+    creatorId: string;
     /**
      * 
      * @type {Array<FanWallCommentDto>}
      * @memberof GetFanWallResponseDto
      */
-    comments: Array<FanWallCommentDto>;
+    data: Array<FanWallCommentDto>;
 }
 
 /**
@@ -57,8 +57,8 @@ export interface GetFanWallResponseDto {
  */
 export function instanceOfGetFanWallResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "comments" in value;
+    isInstance = isInstance && "creatorId" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -73,10 +73,10 @@ export function GetFanWallResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'comments': ((json['comments'] as Array<any>).map(FanWallCommentDtoFromJSON)),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'creatorId': json['creatorId'],
+        'data': ((json['data'] as Array<any>).map(FanWallCommentDtoFromJSON)),
     };
 }
 
@@ -89,10 +89,10 @@ export function GetFanWallResponseDtoToJSON(value?: GetFanWallResponseDto | null
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'comments': ((value.comments as Array<any>).map(FanWallCommentDtoToJSON)),
+        'lastId': value.lastId,
+        'creatorId': value.creatorId,
+        'data': ((value.data as Array<any>).map(FanWallCommentDtoToJSON)),
     };
 }
 

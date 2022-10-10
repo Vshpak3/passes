@@ -102,7 +102,7 @@ const DirectMessage = ({
       return
     }
     try {
-      const activeListMembers: any = await listApi.getListMembers({
+      const activeListMembers = await listApi.getListMembers({
         getListMembersRequestDto: {
           order: "desc",
           orderType: GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
@@ -112,7 +112,7 @@ const DirectMessage = ({
 
       setActiveList({
         ...activeList,
-        members: [...activeListMembers.listMembers]
+        members: [...activeListMembers.data]
       })
     } catch (error) {
       console.error(error)

@@ -28,34 +28,22 @@ import {
 export interface GetFeedResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetFeedResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetFeedResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetFeedResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
     /**
      * 
      * @type {Array<PostDto>}
      * @memberof GetFeedResponseDto
      */
-    posts: Array<PostDto>;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetFeedResponseDto
-     */
-    count: number;
+    data: Array<PostDto>;
 }
 
 /**
@@ -63,9 +51,7 @@ export interface GetFeedResponseDto {
  */
 export function instanceOfGetFeedResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "posts" in value;
-    isInstance = isInstance && "count" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -80,11 +66,9 @@ export function GetFeedResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'posts': ((json['posts'] as Array<any>).map(PostDtoFromJSON)),
-        'count': json['count'],
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'data': ((json['data'] as Array<any>).map(PostDtoFromJSON)),
     };
 }
 
@@ -97,11 +81,9 @@ export function GetFeedResponseDtoToJSON(value?: GetFeedResponseDto | null): any
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'posts': ((value.posts as Array<any>).map(PostDtoToJSON)),
-        'count': value.count,
+        'lastId': value.lastId,
+        'data': ((value.data as Array<any>).map(PostDtoToJSON)),
     };
 }
 

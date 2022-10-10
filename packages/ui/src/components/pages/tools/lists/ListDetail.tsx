@@ -92,8 +92,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               lastId
             }
           })
-        if (curResets === resets && newListMembers.listMembers.length > 0) {
-          setListMembers([...listMembers, ...newListMembers.listMembers])
+        if (curResets === resets && newListMembers.data.length > 0) {
+          setListMembers([...listMembers, ...newListMembers.data])
           setLastId(newListMembers.lastId)
           setCreatedAt(newListMembers.createdAt)
           setUsername(newListMembers.username)

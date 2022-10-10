@@ -152,6 +152,12 @@ export interface PostDto {
      * @memberof PostDto
      */
     totalTipAmount?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostDto
+     */
+    isOwner: boolean;
 }
 
 /**
@@ -173,6 +179,7 @@ export function instanceOfPostDto(value: object): boolean {
     isInstance = isInstance && "earningsPurchases" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "isOwner" in value;
 
     return isInstance;
 }
@@ -207,6 +214,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
+        'isOwner': json['isOwner'],
     };
 }
 
@@ -239,6 +247,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
+        'isOwner': value.isOwner,
     };
 }
 

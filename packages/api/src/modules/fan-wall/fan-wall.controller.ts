@@ -56,11 +56,13 @@ export class FanWallController {
   @Post('profile')
   async getFanWallForCreator(
     @Req() req: RequestWithUser,
-    @Body()
-    getFanWallRequestDto: GetFanWallRequestDto,
+    @Body() getFanWallRequestDto: GetFanWallRequestDto,
   ): Promise<GetFanWallResponseDto> {
-    return await this.fanWallService.getFanWallForCreator(
-      req.user.id,
+    return new GetFanWallResponseDto(
+      await this.fanWallService.getFanWallForCreator(
+        req.user.id,
+        getFanWallRequestDto,
+      ),
       getFanWallRequestDto,
     )
   }

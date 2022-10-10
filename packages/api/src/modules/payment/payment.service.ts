@@ -1731,7 +1731,7 @@ export class PaymentService {
     userId: string,
     getPayinsRequest: GetPayinsRequestDto,
   ): Promise<GetPayinsResponseDto> {
-    const payins = await this.dbReader<PayinEntity>(PayinEntity.table)
+    let query = this.dbReader<PayinEntity>(PayinEntity.table)
       .where({ user_id: userId })
       .andWhere('payin_status', 'not in', [
         PayinStatusEnum.REGISTERED,
@@ -1741,6 +1741,14 @@ export class PaymentService {
       .orderBy('created_at', 'desc')
       .offset(getPayinsRequest.offset)
       .limit(getPayinsRequest.limit)
+    if (getPayinsRequest.inProgress) {
+      query = query.whereIn('payin_status', [
+        PayinStatusEnum.CREATED,
+        PayinStatusEnum.PENDING,
+        PayinStatusEnum.SUCCESSFUL_READY,
+      ])
+    }
+    const payins = await query
     const count = await this.dbReader<PayinEntity>(PayinEntity.table)
       .where({ user_id: userId })
       .andWhere('payin_status', 'not in', [

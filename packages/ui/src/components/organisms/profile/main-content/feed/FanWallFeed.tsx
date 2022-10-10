@@ -1,13 +1,13 @@
 import {
   FanWallApi,
   FanWallCommentDto,
+  GetFanWallRequestDto,
   GetFanWallResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, useEffect, useState } from "react"
-import {
-  FetchResultProps,
-  InfiniteScrollComponent
+import { FC, useState } from "react"
+import InfiniteScrollPagination, {
+  ComponentArg
 } from "src/components/atoms/InfiniteScroll"
 import { BlockModal, ReportModal } from "src/components/organisms"
 import { useSWRConfig } from "swr"
@@ -22,12 +22,11 @@ interface FanWallFeedProps {
 }
 
 const FanWallFeed: FC<FanWallFeedProps> = ({
-  creatorId,
   fanWallPosts,
   ownsProfile,
   profileUsername
 }) => {
-  const [comments, setComments] = useState(fanWallPosts.comments)
+  const [comments, setComments] = useState(fanWallPosts.data)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
   const api = new FanWallApi()
@@ -99,28 +98,6 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
         : [])
     ]
   }
-
-  useEffect(() => {
-    if (fanWallPosts?.comments) {
-      setComments(fanWallPosts.comments)
-    }
-  }, [fanWallPosts])
-
-  const fetchPosts = async (
-    lastId?: string,
-    createdAt?: Date
-  ): Promise<FetchResultProps> => {
-    const res = await api.getFanWallForCreator({
-      getFanWallRequestDto: { creatorId, lastId, createdAt }
-    })
-    setComments([...comments, ...res.comments])
-    return {
-      lastId: res.lastId,
-      createdAt: res.createdAt,
-      count: res.comments.length
-    }
-  }
-
   return (
     <div>
       <BlockModal
@@ -134,33 +111,32 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
         userId={""} // TODO: fix
       />
       {comments?.length > 0 && (
-        <InfiniteScrollComponent
-          initialFetch={{
-            lastId: fanWallPosts.lastId,
-            createdAt: fanWallPosts.createdAt,
-            count: fanWallPosts.comments.length
+        <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
+          fetch={async (req: GetFanWallRequestDto) => {
+            const api = new FanWallApi()
+            return await api.getFanWallForCreator({ getFanWallRequestDto: req })
           }}
-          fetch={fetchPosts}
           loader={<h3>Loading...</h3>} // TODO: add a better message
           endMessage={<h3>No more comments</h3>} // TODO: add a better message
-        >
-          {comments.map((comment, index) => (
-            <div key={index} className="flex py-3">
-              <FanWallComment
-                key={`post_${index}`}
-                post={
-                  {
-                    text: comment.text,
-                    userId: comment.commenterId,
-                    displayName: comment.commenterDisplayName,
-                    username: comment.commenterUsername
-                  } as PostDto
-                }
-                dropdownItems={getDropdownOptions(comment)}
-              />
-            </div>
-          ))}
-        </InfiniteScrollComponent>
+          KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
+            return (
+              <div className="flex py-3">
+                <FanWallComment
+                  post={
+                    {
+                      text: arg.text,
+                      userId: arg.commenterId,
+                      displayName: arg.commenterDisplayName,
+                      username: arg.commenterUsername
+                    } as PostDto
+                  }
+                  dropdownItems={getDropdownOptions(arg)}
+                />
+              </div>
+            )
+          }}
+          initProps={{}}
+        />
       )}
     </div>
   )

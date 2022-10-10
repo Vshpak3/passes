@@ -44,42 +44,49 @@ export const navigation: SidebarNavigation[] = [
     name: "Creator Tools",
     href: "",
     icon: CreatorToolsIcon,
+    creatorOnly: true,
     children: [
       {
         id: "manage-passes",
         name: "Manage Passes",
-        href: "/tools/manage-passes"
+        href: "/tools/manage-passes",
+        creatorOnly: true
       },
       {
         id: "list",
         name: "List",
-        href: "/tools/list"
+        href: "/tools/list",
+        creatorOnly: true
       },
-
       {
         id: "vault",
         name: "Vault",
-        href: "/tools/vault"
+        href: "/tools/vault",
+        creatorOnly: true
       },
       {
         id: "performance",
         name: "Performance",
-        href: "/tools/performance"
+        href: "/tools/performance",
+        creatorOnly: true
       },
       {
         id: "earnings",
         name: "Earnings",
-        href: "/tools/earnings"
+        href: "/tools/earnings",
+        creatorOnly: true
       },
       {
         id: "payouts",
         name: "Payouts",
-        href: "/tools/payouts"
+        href: "/tools/payouts",
+        creatorOnly: true
       },
       {
         id: "scheduler",
         name: "Scheduler",
-        href: "/tools/scheduler"
+        href: "/tools/scheduler",
+        creatorOnly: true
       }
     ]
   },

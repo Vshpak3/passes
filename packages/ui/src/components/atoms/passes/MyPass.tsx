@@ -255,7 +255,7 @@ const MyPassTile = ({
     const api = new PassApi()
     api
       .getExternalPasses({
-        getExternalPassesRequestDto: {
+        getPassesRequestDto: {
           creatorId: user?.id
         }
       })

@@ -7,14 +7,15 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { LikeEntity } from '../likes/entities/like.entity'
+import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
-import { GetFeedRequestDto, GetFeedResponseDto } from './dto/get-feed-dto'
+import { GetFeedRequestDto } from './dto/get-feed-dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 
-export const FEED_LIMIT = 10
+export const FEED_LIMIT = 5
 
 @Injectable()
 export class FeedService {
@@ -28,7 +29,7 @@ export class FeedService {
   async getFeed(
     userId: string,
     getFeedRequestDto: GetFeedRequestDto,
-  ): Promise<GetFeedResponseDto> {
+  ): Promise<PostDto[]> {
     const { lastId, createdAt } = getFeedRequestDto
     const dbReader = this.dbReader
     let query = this.dbReader<FollowEntity>(FollowEntity.table)
@@ -90,14 +91,13 @@ export class FeedService {
       createdAt,
       lastId,
     )
-    const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(postDtos)
+    return await this.postService.getPostsFromQuery(userId, query)
   }
 
   async getFeedForCreator(
     userId: string,
     getProfileFeedRequestDto: GetProfileFeedRequestDto,
-  ): Promise<GetFeedResponseDto> {
+  ): Promise<PostDto[]> {
     const { creatorId, lastId, createdAt, pinned } = getProfileFeedRequestDto
     const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: creatorId })
@@ -168,7 +168,6 @@ export class FeedService {
       createdAt,
       lastId,
     )
-    const postDtos = await this.postService.getPostsFromQuery(userId, query)
-    return new GetFeedResponseDto(postDtos)
+    return await this.postService.getPostsFromQuery(userId, query)
   }
 }

@@ -18,7 +18,6 @@ import { GetSignedUrlResponseDto } from '../s3content/dto/get-signed-url.dto'
 import { ContentService } from './content.service'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
-import { GetContentsResponseDto } from './dto/get-content.dto'
 import {
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
@@ -156,7 +155,7 @@ export class ContentController {
   @ApiEndpoint({
     summary: 'Gets all content associated with the current authenticated user',
     responseStatus: HttpStatus.OK,
-    responseType: GetContentsResponseDto,
+    responseType: GetVaultQueryResponseDto,
     responseDesc: 'Creator vault was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -164,9 +163,10 @@ export class ContentController {
   async getVaultContent(
     @Req() req: RequestWithUser,
     @Body() getVaultQueryRequestDto: GetVaultQueryRequestDto,
-  ): Promise<GetContentsResponseDto> {
+  ): Promise<GetVaultQueryResponseDto> {
     return new GetVaultQueryResponseDto(
       await this.contentService.getVault(req.user.id, getVaultQueryRequestDto),
+      getVaultQueryRequestDto,
     )
   }
 }

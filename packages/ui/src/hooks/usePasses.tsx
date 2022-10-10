@@ -40,9 +40,9 @@ const usePasses = (creatorId: string) => {
         const api = new PassApi()
         return (
           await api.getCreatorPasses({
-            getCreatorPassesRequestDto: { creatorId }
+            getPassesRequestDto: { creatorId }
           })
-        ).passes
+        ).data
       }
     })
 
@@ -57,7 +57,7 @@ const usePasses = (creatorId: string) => {
             orderType: GetPassHoldingsRequestDtoOrderTypeEnum.CreatedAt
           }
         })
-      ).passHolders
+      ).data
     }
   )
 

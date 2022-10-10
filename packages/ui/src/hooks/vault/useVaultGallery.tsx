@@ -40,7 +40,7 @@ async function fetchVaultData({
         type
       }
     })
-  ).contents
+  ).data
 
   // return data.contents
 }

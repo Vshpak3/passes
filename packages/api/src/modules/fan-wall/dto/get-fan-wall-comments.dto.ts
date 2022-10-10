@@ -12,13 +12,19 @@ export class GetFanWallRequestDto extends PickType(PageRequestDto, [
   creatorId: string
 }
 
-export class GetFanWallResponseDto extends PageResponseDto {
+export class GetFanWallResponseDto
+  extends GetFanWallRequestDto
+  implements PageResponseDto<FanWallCommentDto>
+{
   @DtoProperty({ custom_type: [FanWallCommentDto] })
-  comments: FanWallCommentDto[]
+  data: FanWallCommentDto[]
 
-  constructor(comments: FanWallCommentDto[]) {
+  constructor(comments: FanWallCommentDto[], requestDto: GetFanWallRequestDto) {
     super()
-    this.comments = comments
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = comments
     if (comments.length > 0) {
       this.lastId = comments[comments.length - 1].fanWallCommentId
       this.createdAt = comments[comments.length - 1].createdAt

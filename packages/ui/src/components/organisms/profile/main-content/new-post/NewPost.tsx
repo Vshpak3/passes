@@ -47,7 +47,7 @@ interface NewPostProps {
 }
 
 export const NewPost: FC<NewPostProps> = ({
-  passes = [],
+  passes = [], // TODO: use passes search bar
   placeholder,
   createPost,
   onlyText = false,
@@ -117,7 +117,7 @@ export const NewPost: FC<NewPostProps> = ({
       contentIds: content.map((c: any) => c.id)
     }
 
-    createPost(post)
+    await createPost(post)
     reset()
     setFiles([])
     setIsReset(true)

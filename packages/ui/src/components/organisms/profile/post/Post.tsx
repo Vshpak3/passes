@@ -1,12 +1,15 @@
-import { PostDto } from "@passes/api-client"
+import { PostApi } from "@passes/api-client"
+import { PostDto } from "@passes/api-client/src/models/PostDto"
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import ConditionRendering from "src/components/molecules/ConditionRendering"
 import {
   BlockModal,
   FormContainer,
   ReportModal
 } from "src/components/organisms"
-import { PostPaymentProps } from "src/components/organisms/payment/PaymentProps"
+import BuyPostModal from "src/components/organisms/payment/BuyPostModal"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
@@ -24,27 +27,26 @@ export interface DropdownOption {
   readonly onClick: () => void
 }
 
-interface PostProps extends PostPaymentProps {
-  ownsProfile: boolean
-  removePost?: (postId: string) => void
-  userId: string | undefined
+interface PostProps {
+  post: PostDto
+  removable?: boolean
 }
 
 export const Post = ({
-  cards,
-  defaultPayinMethod,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ownsProfile,
   post,
-  removePost,
-  setIsPayed,
-  userId
+  removable
 }: PostProps) => {
+  const [currentPost, setCurrentPost] = useState(true)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [postUnlocked, setPostUnlocked] = useState(!post.paywall)
   const [userBlockModal, setUserBlockModal] = useState(false)
   const [userReportModal, setUserReportModal] = useState(false)
-  const [currentPost, setCurrentPost] = useState<PostDto | null>(null)
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
+  const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
+  const [removed, setRemoved] = useState<boolean>(false)
+  //TODO: grab whether or not you are currentl paying for post from global pending payments hook
+  // const [isPayin, setIsPayin] = useState(false)
 
   const dropdownOptions: DropdownOption[] = [
     {
@@ -55,12 +57,18 @@ export const Post = ({
       text: "Block",
       onClick: () => setUserBlockModal(true)
     },
-    ...(post.userId === userId
+    ...(post.isOwner
       ? [
           {
             text: "Delete",
-            onClick: () => {
-              removePost && removePost(post.postId)
+            onClick: async () => {
+              const api = new PostApi()
+              await api
+                .removePost({ postId: post.postId })
+                .catch((error) => toast(error))
+              if (removable) {
+                setRemoved(true)
+              }
             }
           }
         ]
@@ -75,18 +83,16 @@ export const Post = ({
   }, [post.content])
 
   return (
-    <>
-      {currentPost && (
+    <ConditionRendering condition={!removed}>
+      {currentPost && openBuyPostModal && (
         <PostViewModal
-          cards={cards}
-          defaultPayinMethod={defaultPayinMethod}
           dropdownItems={dropdownOptions}
           isOpen
-          onClose={() => setCurrentPost(null)}
-          post={currentPost}
-          postUnlocked={!postUnlocked}
-          setIsPayed={setIsPayed}
+          onClose={() => setCurrentPost(false)}
+          post={post}
+          postUnlocked={!postUnlocked} // TODO: change
           showcaseImg={showcaseImg}
+          setOpenBuyPostModal={setOpenBuyPostModal}
         />
       )}
       <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
@@ -94,34 +100,33 @@ export const Post = ({
         <BlockModal
           isOpen={userBlockModal}
           setOpen={setUserBlockModal}
-          userId={userId ?? ""}
+          userId={post.userId ?? ""}
         />
         <ReportModal
           isOpen={userReportModal}
           setOpen={setUserReportModal}
-          userId={userId ?? ""}
+          userId={post.userId ?? ""}
         />
-        <div className="cursor-pointer" onClick={() => setCurrentPost(post)}>
+        <div className="cursor-pointer" onClick={() => setCurrentPost(true)}>
           <PostTextContent post={post} />
           {postUnlocked && <PostMedia post={post} />}
         </div>
         {!postUnlocked && (
           <LockedMedia
-            cards={cards}
-            defaultPayinMethod={defaultPayinMethod}
             post={post}
-            setIsPayed={setIsPayed}
-            setPostUnlocked={setPostUnlocked}
             showcaseImg={showcaseImg}
+            setOpenBuyPostModal={setOpenBuyPostModal}
           />
         )}
-        <PostEngagement
-          cards={cards}
-          defaultPayinMethod={defaultPayinMethod}
-          post={post}
-          postUnlocked={postUnlocked}
-        />
+        <PostEngagement post={post} postUnlocked={postUnlocked} />
+        {!openBuyPostModal && (
+          <BuyPostModal
+            isOpen={openBuyPostModal}
+            post={post}
+            setOpen={setOpenBuyPostModal}
+          />
+        )}
       </FormContainer>
-    </>
+    </ConditionRendering>
   )
 }

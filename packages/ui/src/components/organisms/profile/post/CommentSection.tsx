@@ -42,7 +42,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
           }
         })
 
-        setComments(response.comments)
+        setComments(response.data)
       } catch (error: any) {
         errorMessage(error, true)
       } finally {

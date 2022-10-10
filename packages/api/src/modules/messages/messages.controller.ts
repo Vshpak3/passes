@@ -227,7 +227,7 @@ export class MessagesController {
         req.user.id,
         getChannelsRequestDto,
       ),
-      getChannelsRequestDto.orderType,
+      getChannelsRequestDto,
     )
   }
 
@@ -285,6 +285,7 @@ export class MessagesController {
         req.user.id,
         getMessagesRequestDto,
       ),
+      getMessagesRequestDto,
     )
   }
 
@@ -340,6 +341,7 @@ export class MessagesController {
         req.user.id,
         getPaidMessagesRequestDto,
       ),
+      getPaidMessagesRequestDto,
     )
   }
 }

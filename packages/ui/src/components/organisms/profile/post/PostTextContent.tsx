@@ -7,7 +7,7 @@ interface PostTextContentProps {
 export const PostTextContent: FC<PostTextContentProps> = ({ post }) => (
   <div className="flex flex-col items-start">
     <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-      {post.caption ? post.caption : post.text}
+      {post.text}
     </p>
     {/* {post.fundraiser && (
       <div className="ml-auto flex pt-3">

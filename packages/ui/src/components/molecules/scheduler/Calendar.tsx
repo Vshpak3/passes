@@ -27,7 +27,7 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
           scheduledOnly: true
         }
       })
-      setPosts(scheduledPosts.posts)
+      setPosts(scheduledPosts.data)
     })()
   }, [month, year])
 

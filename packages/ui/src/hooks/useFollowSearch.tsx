@@ -13,7 +13,7 @@ const useFollowSearch = () => {
           orderType: "username"
         }
       })
-      setFollowing(data.listMembers)
+      setFollowing(data.data)
     },
     [api]
   )

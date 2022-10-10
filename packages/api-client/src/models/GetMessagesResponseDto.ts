@@ -31,31 +31,43 @@ export interface GetMessagesResponseDto {
      * @type {string}
      * @memberof GetMessagesResponseDto
      */
-    lastId: string;
+    lastId?: string;
     /**
      * 
      * @type {Date}
      * @memberof GetMessagesResponseDto
      */
-    createdAt?: Date;
+    sentAt?: Date;
     /**
      * 
      * @type {Date}
      * @memberof GetMessagesResponseDto
      */
-    updatedAt?: Date;
+    dateLimit?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMessagesResponseDto
+     */
+    channelId: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessagesResponseDto
+     */
+    contentOnly: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessagesResponseDto
+     */
+    pending: boolean;
     /**
      * 
      * @type {Array<MessageDto>}
      * @memberof GetMessagesResponseDto
      */
-    messages: Array<MessageDto>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GetMessagesResponseDto
-     */
-    sentAt: Date;
+    data: Array<MessageDto>;
 }
 
 /**
@@ -63,9 +75,10 @@ export interface GetMessagesResponseDto {
  */
 export function instanceOfGetMessagesResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "messages" in value;
-    isInstance = isInstance && "sentAt" in value;
+    isInstance = isInstance && "channelId" in value;
+    isInstance = isInstance && "contentOnly" in value;
+    isInstance = isInstance && "pending" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -80,11 +93,13 @@ export function GetMessagesResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'lastId': json['lastId'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'messages': ((json['messages'] as Array<any>).map(MessageDtoFromJSON)),
-        'sentAt': (new Date(json['sentAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'sentAt': !exists(json, 'sentAt') ? undefined : (new Date(json['sentAt'])),
+        'dateLimit': !exists(json, 'dateLimit') ? undefined : (new Date(json['dateLimit'])),
+        'channelId': json['channelId'],
+        'contentOnly': json['contentOnly'],
+        'pending': json['pending'],
+        'data': ((json['data'] as Array<any>).map(MessageDtoFromJSON)),
     };
 }
 
@@ -98,10 +113,12 @@ export function GetMessagesResponseDtoToJSON(value?: GetMessagesResponseDto | nu
     return {
         
         'lastId': value.lastId,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'messages': ((value.messages as Array<any>).map(MessageDtoToJSON)),
-        'sentAt': (value.sentAt.toISOString()),
+        'sentAt': value.sentAt === undefined ? undefined : (value.sentAt.toISOString()),
+        'dateLimit': value.dateLimit === undefined ? undefined : (value.dateLimit.toISOString()),
+        'channelId': value.channelId,
+        'contentOnly': value.contentOnly,
+        'pending': value.pending,
+        'data': ((value.data as Array<any>).map(MessageDtoToJSON)),
     };
 }
 

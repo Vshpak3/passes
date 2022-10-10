@@ -17,10 +17,7 @@ interface IBuyMessageModal {
 }
 
 const BuyPostModal: FC<IBuyMessageModal> = ({ message, setOpen, isOpen }) => {
-  const { defaultPayinMethod, cards } = usePayinMethod()
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
+  const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   const { images, video } = contentTypeCounter(message.contents)
 

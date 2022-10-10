@@ -30,13 +30,6 @@ export class PageRequestDto {
   pinned?: boolean
 }
 
-export class PageResponseDto {
-  @DtoProperty({ type: 'uuid' })
-  lastId: string
-
-  @DtoProperty({ type: 'date', optional: true })
-  createdAt?: Date
-
-  @DtoProperty({ type: 'date', optional: true })
-  updatedAt?: Date
+export interface PageResponseDto<DataDto> {
+  data: DataDto[]
 }

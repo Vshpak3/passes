@@ -1,109 +1,68 @@
-import {
-  CircleCardDto,
-  GetCircleCardResponseDto,
-  PayinMethodDto,
-  PayinMethodDtoMethodEnum,
-  PaymentApi
-} from "@passes/api-client"
+import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { errorMessage } from "src/helpers/error"
+import useSWR from "swr"
 
 const usePayinMethod = () => {
-  const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [cards, setCards] = useState<CircleCardDto[]>([])
-  const [cardInfo, setCardInfo] = useState<GetCircleCardResponseDto | null>(
-    null
-  )
   const api = new PaymentApi()
+  // TODO: use SWR
+  const {
+    data: payinMethod,
+    isValidating: isLoadingPayinMethod,
+    mutate: mutatePayin
+  } = useSWR<PayinMethodDto>("/payment/default-payin-method", async () => {
+    setTimeout(() => undefined, 500)
+    return await api.getDefaultPayinMethod()
+  })
 
-  async function getDefaultPayinMethod() {
-    try {
-      setIsLoading(true)
+  const {
+    data: cards,
+    isValidating: isLoadingCards,
+    mutate: mutateCards
+  } = useSWR<CircleCardDto[]>("/payment/cards", async () => {
+    setTimeout(() => undefined, 500)
+    return (await api.getCircleCards()).cards
+  })
 
-      const response = await api.getDefaultPayinMethod()
-      setPayinMethod(response)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function getCards() {
-    try {
-      setIsLoading(true)
-      const response = await api.getCircleCards()
-      setCards(response.cards)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [defaultCard, setDefaultCard] = useState<CircleCardDto>()
 
   async function setDefaultPayinMethod(dto: PayinMethodDto) {
-    try {
-      setIsLoading(true)
-      await api.setDefaultPayinMethod({
-        setPayinMethodRequestDto: dto
-      })
-      setPayinMethod(dto)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
+    await api.setDefaultPayinMethod({
+      setPayinMethodRequestDto: dto
+    })
+    mutatePayin()
   }
 
   async function deleteCard(cardId: string) {
-    try {
-      setIsLoading(true)
-      await api.deleteCircleCard({
-        circleCardId: cardId
-      })
-      if (payinMethod?.cardId === cardId) {
-        setPayinMethod({ method: PayinMethodDtoMethodEnum.None })
-      }
-      setCards(cards.filter((card) => card.id != cardId))
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function getCardInfo(cardId: string) {
-    try {
-      setIsLoading(true)
-      const response = await api.getCircleCard({
-        cardId
-      })
-      setCardInfo(response)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
+    await api.deleteCircleCard({
+      circleCardId: cardId
+    })
+    mutateCards()
   }
 
   useEffect(() => {
-    getDefaultPayinMethod()
-    getCards()
+    setDefaultCard(cards?.find((card) => card.id === payinMethod?.cardId))
+  }, [cards, payinMethod])
+
+  useEffect(() => {
+    if (!payinMethod) {
+      mutatePayin()
+    }
+    if (!cards) {
+      mutateCards()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
     cards,
-    cardInfo,
     defaultPayinMethod: payinMethod,
-    isLoadingPayinMethod: isLoading,
-    getDefaultPayinMethod,
+    isLoadingPayinMethod,
+    isLoadingCards,
+    getDefaultPayinMethod: mutatePayin,
     setDefaultPayinMethod,
-    getCardInfo,
     deleteCard,
-    getCards,
-    setPayinMethod
+    getCards: mutateCards,
+    defaultCard
   }
 }
 

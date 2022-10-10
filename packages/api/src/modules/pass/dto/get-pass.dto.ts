@@ -11,25 +11,24 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
   'createdAt',
   'search',
   'pinned',
-]) {}
-
-export class GetCreatorPassesRequestDto extends GetPassesRequestDto {
-  @DtoProperty({ type: 'uuid' })
-  creatorId: string
-}
-
-export class GetExternalPassesRequestDto extends GetPassesRequestDto {
+]) {
   @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 }
 
-export class GetPassesResponseDto extends PageResponseDto {
+export class GetPassesResponseDto
+  extends GetPassesRequestDto
+  implements PageResponseDto<PassDto>
+{
   @DtoProperty({ custom_type: [PassDto] })
-  passes: PassDto[]
+  data: PassDto[]
 
-  constructor(passes: PassDto[]) {
+  constructor(passes: PassDto[], requestDto: GetPassesRequestDto) {
     super()
-    this.passes = passes
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = passes
 
     if (passes.length > 0) {
       this.lastId = passes[passes.length - 1].passId
@@ -37,3 +36,5 @@ export class GetPassesResponseDto extends PageResponseDto {
     }
   }
 }
+
+export class GetExternalPassesResponseDto extends GetPassesResponseDto {}

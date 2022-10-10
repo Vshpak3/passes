@@ -28,28 +28,34 @@ import {
 export interface GetListMembersResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetListMembersResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetListMembersResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetListMembersResponseDto
      */
-    updatedAt?: Date;
+    lastId?: string;
     /**
      * 
-     * @type {Array<ListMemberDto>}
+     * @type {string}
      * @memberof GetListMembersResponseDto
      */
-    listMembers: Array<ListMemberDto>;
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    order: GetListMembersResponseDtoOrderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    listId: string;
     /**
      * 
      * @type {string}
@@ -62,15 +68,50 @@ export interface GetListMembersResponseDto {
      * @memberof GetListMembersResponseDto
      */
     displayName?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListMembersResponseDto
+     */
+    orderType: GetListMembersResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {Array<ListMemberDto>}
+     * @memberof GetListMembersResponseDto
+     */
+    data: Array<ListMemberDto>;
 }
+
+
+/**
+ * @export
+ */
+export const GetListMembersResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetListMembersResponseDtoOrderEnum = typeof GetListMembersResponseDtoOrderEnum[keyof typeof GetListMembersResponseDtoOrderEnum];
+
+/**
+ * @export
+ */
+export const GetListMembersResponseDtoOrderTypeEnum = {
+    Username: 'username',
+    DisplayName: 'display name',
+    CreatedAt: 'created at'
+} as const;
+export type GetListMembersResponseDtoOrderTypeEnum = typeof GetListMembersResponseDtoOrderTypeEnum[keyof typeof GetListMembersResponseDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetListMembersResponseDto interface.
  */
 export function instanceOfGetListMembersResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "listMembers" in value;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "listId" in value;
+    isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -85,12 +126,15 @@ export function GetListMembersResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'listMembers': ((json['listMembers'] as Array<any>).map(ListMemberDtoFromJSON)),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
+        'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'orderType': json['orderType'],
+        'data': ((json['data'] as Array<any>).map(ListMemberDtoFromJSON)),
     };
 }
 
@@ -103,12 +147,15 @@ export function GetListMembersResponseDtoToJSON(value?: GetListMembersResponseDt
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'listMembers': ((value.listMembers as Array<any>).map(ListMemberDtoToJSON)),
+        'lastId': value.lastId,
+        'search': value.search,
+        'order': value.order,
+        'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
+        'orderType': value.orderType,
+        'data': ((value.data as Array<any>).map(ListMemberDtoToJSON)),
     };
 }
 

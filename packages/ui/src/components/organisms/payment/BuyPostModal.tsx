@@ -1,4 +1,5 @@
 import { GetPayinMethodResponseDtoMethodEnum } from "@passes/api-client"
+import { PostDto } from "@passes/api-client/src/models/PostDto"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
@@ -8,27 +9,17 @@ import Modal from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
+import { usePayinMethod } from "src/hooks"
 import useExternalPasses from "src/hooks/useExternalPasses"
 
-import { PostPaymentProps } from "./PaymentProps"
-
-interface BuyPostModalProps extends PostPaymentProps {
+interface BuyPostModalProps {
+  post: PostDto
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const BuyPostModal: FC<BuyPostModalProps> = ({
-  cards,
-  defaultPayinMethod,
-  isOpen,
-  post,
-  setIsPayed,
-  setOpen
-}) => {
-  const defaultCard = cards.find(
-    (card) => card.id === defaultPayinMethod?.cardId
-  )
-
+const BuyPostModal: FC<BuyPostModalProps> = ({ isOpen, post, setOpen }) => {
+  const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const { externalPasses } = useExternalPasses()
 
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
@@ -36,7 +27,6 @@ const BuyPostModal: FC<BuyPostModalProps> = ({
   const { images, video } = contentTypeCounter(post.content)
 
   const onSuccessHandler = () => {
-    setIsPayed && setIsPayed(true)
     setOpen(false)
   }
 

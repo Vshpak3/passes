@@ -11,6 +11,9 @@ export class GetPayinsRequestDto {
   @Min(1)
   @DtoProperty({ type: 'number' })
   limit: number
+
+  @DtoProperty({ type: 'boolean', optional: true })
+  inProgress?: boolean
 }
 
 export class GetPayinsResponseDto {

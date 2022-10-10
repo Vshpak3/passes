@@ -28,34 +28,40 @@ import {
 export interface GetPassHoldingsResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetPassHoldingsResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetPassHoldingsResponseDto
      */
     createdAt?: Date;
     /**
      * 
-     * @type {Date}
+     * @type {string}
      * @memberof GetPassHoldingsResponseDto
      */
-    updatedAt?: Date;
-    /**
-     * 
-     * @type {Array<PassHolderDto>}
-     * @memberof GetPassHoldingsResponseDto
-     */
-    passHolders: Array<PassHolderDto>;
+    lastId?: string;
     /**
      * 
      * @type {string}
      * @memberof GetPassHoldingsResponseDto
      */
-    orderType: GetPassHoldingsResponseDtoOrderTypeEnum;
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    order: GetPassHoldingsResponseDtoOrderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    creatorId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    passId?: string;
     /**
      * 
      * @type {string}
@@ -68,8 +74,29 @@ export interface GetPassHoldingsResponseDto {
      * @memberof GetPassHoldingsResponseDto
      */
     displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    orderType: GetPassHoldingsResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {Array<PassHolderDto>}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    data: Array<PassHolderDto>;
 }
 
+
+/**
+ * @export
+ */
+export const GetPassHoldingsResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetPassHoldingsResponseDtoOrderEnum = typeof GetPassHoldingsResponseDtoOrderEnum[keyof typeof GetPassHoldingsResponseDtoOrderEnum];
 
 /**
  * @export
@@ -87,9 +114,9 @@ export type GetPassHoldingsResponseDtoOrderTypeEnum = typeof GetPassHoldingsResp
  */
 export function instanceOfGetPassHoldingsResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "passHolders" in value;
+    isInstance = isInstance && "order" in value;
     isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -104,13 +131,16 @@ export function GetPassHoldingsResponseDtoFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'passHolders': ((json['passHolders'] as Array<any>).map(PassHolderDtoFromJSON)),
-        'orderType': json['orderType'],
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
+        'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'passId': !exists(json, 'passId') ? undefined : json['passId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'orderType': json['orderType'],
+        'data': ((json['data'] as Array<any>).map(PassHolderDtoFromJSON)),
     };
 }
 
@@ -123,13 +153,16 @@ export function GetPassHoldingsResponseDtoToJSON(value?: GetPassHoldingsResponse
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'passHolders': ((value.passHolders as Array<any>).map(PassHolderDtoToJSON)),
-        'orderType': value.orderType,
+        'lastId': value.lastId,
+        'search': value.search,
+        'order': value.order,
+        'creatorId': value.creatorId,
+        'passId': value.passId,
         'username': value.username,
         'displayName': value.displayName,
+        'orderType': value.orderType,
+        'data': ((value.data as Array<any>).map(PassHolderDtoToJSON)),
     };
 }
 

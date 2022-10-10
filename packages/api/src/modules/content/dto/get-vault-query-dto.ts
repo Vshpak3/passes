@@ -17,13 +17,19 @@ export class GetVaultQueryRequestDto extends PickType(PageRequestDto, [
   type?: ContentTypeEnum
 }
 
-export class GetVaultQueryResponseDto extends PageResponseDto {
+export class GetVaultQueryResponseDto
+  extends GetVaultQueryRequestDto
+  implements PageResponseDto<ContentDto>
+{
   @DtoProperty({ custom_type: [ContentDto] })
-  contents: ContentDto[]
+  data: ContentDto[]
 
-  constructor(contents: ContentDto[]) {
+  constructor(contents: ContentDto[], requestDto: GetVaultQueryRequestDto) {
     super()
-    this.contents = contents
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = contents
     if (contents.length > 0) {
       this.lastId = contents[contents.length - 1].contentId
       this.createdAt = contents[contents.length - 1].createdAt

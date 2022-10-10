@@ -23,44 +23,57 @@ import {
 /**
  * 
  * @export
- * @interface GetPostsResponseDto
+ * @interface GetProfileFeedResponseDto
  */
-export interface GetPostsResponseDto {
+export interface GetProfileFeedResponseDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetPostsResponseDto
+     * @memberof GetProfileFeedResponseDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof GetPostsResponseDto
+     * @memberof GetProfileFeedResponseDto
      */
     lastId?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof GetProfileFeedResponseDto
+     */
+    pinned?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileFeedResponseDto
+     */
+    creatorId: string;
+    /**
+     * 
      * @type {Array<PostDto>}
-     * @memberof GetPostsResponseDto
+     * @memberof GetProfileFeedResponseDto
      */
     data: Array<PostDto>;
 }
 
 /**
- * Check if a given object implements the GetPostsResponseDto interface.
+ * Check if a given object implements the GetProfileFeedResponseDto interface.
  */
-export function instanceOfGetPostsResponseDto(value: object): boolean {
+export function instanceOfGetProfileFeedResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "creatorId" in value;
     isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
 
-export function GetPostsResponseDtoFromJSON(json: any): GetPostsResponseDto {
-    return GetPostsResponseDtoFromJSONTyped(json, false);
+export function GetProfileFeedResponseDtoFromJSON(json: any): GetProfileFeedResponseDto {
+    return GetProfileFeedResponseDtoFromJSONTyped(json, false);
 }
 
-export function GetPostsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPostsResponseDto {
+export function GetProfileFeedResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetProfileFeedResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -68,11 +81,13 @@ export function GetPostsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator:
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
+        'creatorId': json['creatorId'],
         'data': ((json['data'] as Array<any>).map(PostDtoFromJSON)),
     };
 }
 
-export function GetPostsResponseDtoToJSON(value?: GetPostsResponseDto | null): any {
+export function GetProfileFeedResponseDtoToJSON(value?: GetProfileFeedResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -83,6 +98,8 @@ export function GetPostsResponseDtoToJSON(value?: GetPostsResponseDto | null): a
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'pinned': value.pinned,
+        'creatorId': value.creatorId,
         'data': ((value.data as Array<any>).map(PostDtoToJSON)),
     };
 }

@@ -51,10 +51,7 @@ import {
   CreatePassRequestDto,
   CreatePassResponseDto,
 } from './dto/create-pass.dto'
-import {
-  GetCreatorPassesRequestDto,
-  GetExternalPassesRequestDto,
-} from './dto/get-pass.dto'
+import { GetPassesRequestDto } from './dto/get-pass.dto'
 import { GetPassHoldersRequestDto } from './dto/get-pass-holders.dto'
 import { GetPassHoldingsRequestDto } from './dto/get-pass-holdings.dto'
 import { MintPassRequestDto, MintPassResponseDto } from './dto/mint-pass.dto'
@@ -404,9 +401,7 @@ export class PassService {
     return passHolders.map((passHolder) => new PassHolderDto(passHolder))
   }
 
-  async findPassesByCreator(
-    getCreatorPassesRequestDto: GetCreatorPassesRequestDto,
-  ) {
+  async getPassesByCreator(getCreatorPassesRequestDto: GetPassesRequestDto) {
     const { createdAt, search, creatorId, lastId, pinned } =
       getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
@@ -443,9 +438,7 @@ export class PassService {
     return passes.map((pass) => new PassDto(pass))
   }
 
-  async getExternalPasses(
-    getExternalPassesRequestDto: GetExternalPassesRequestDto,
-  ) {
+  async getExternalPasses(getExternalPassesRequestDto: GetPassesRequestDto) {
     const { lastId, createdAt, search, creatorId } = getExternalPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
       .whereNull('creator_id')

@@ -18,7 +18,7 @@ export function createPaginatedQuery(
   idTable: string,
   column: string,
   order: OrderEnum,
-  value?: string | Date | number,
+  value?: string | Date | number | null,
   lastId?: string,
   otherOrder: any[] = [],
 ): Knex.QueryBuilder {

@@ -13,93 +13,114 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ListMemberDto } from './ListMemberDto';
+import {
+    ListMemberDtoFromJSON,
+    ListMemberDtoFromJSONTyped,
+    ListMemberDtoToJSON,
+} from './ListMemberDto';
+
 /**
  * 
  * @export
- * @interface SearchFollowRequestDto
+ * @interface GetBlockedResponseDto
  */
-export interface SearchFollowRequestDto {
+export interface GetBlockedResponseDto {
     /**
      * 
      * @type {Date}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
     createdAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
     lastId?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
     search?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
-    order: SearchFollowRequestDtoOrderEnum;
+    order: GetBlockedResponseDtoOrderEnum;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
+     */
+    listId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetBlockedResponseDto
      */
     username?: string;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
     displayName?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof SearchFollowRequestDto
+     * @memberof GetBlockedResponseDto
      */
-    orderType: SearchFollowRequestDtoOrderTypeEnum;
+    orderType: GetBlockedResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {Array<ListMemberDto>}
+     * @memberof GetBlockedResponseDto
+     */
+    data: Array<ListMemberDto>;
 }
 
 
 /**
  * @export
  */
-export const SearchFollowRequestDtoOrderEnum = {
+export const GetBlockedResponseDtoOrderEnum = {
     Asc: 'asc',
     Desc: 'desc'
 } as const;
-export type SearchFollowRequestDtoOrderEnum = typeof SearchFollowRequestDtoOrderEnum[keyof typeof SearchFollowRequestDtoOrderEnum];
+export type GetBlockedResponseDtoOrderEnum = typeof GetBlockedResponseDtoOrderEnum[keyof typeof GetBlockedResponseDtoOrderEnum];
 
 /**
  * @export
  */
-export const SearchFollowRequestDtoOrderTypeEnum = {
+export const GetBlockedResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at'
 } as const;
-export type SearchFollowRequestDtoOrderTypeEnum = typeof SearchFollowRequestDtoOrderTypeEnum[keyof typeof SearchFollowRequestDtoOrderTypeEnum];
+export type GetBlockedResponseDtoOrderTypeEnum = typeof GetBlockedResponseDtoOrderTypeEnum[keyof typeof GetBlockedResponseDtoOrderTypeEnum];
 
 
 /**
- * Check if a given object implements the SearchFollowRequestDto interface.
+ * Check if a given object implements the GetBlockedResponseDto interface.
  */
-export function instanceOfSearchFollowRequestDto(value: object): boolean {
+export function instanceOfGetBlockedResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "listId" in value;
     isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
 
-export function SearchFollowRequestDtoFromJSON(json: any): SearchFollowRequestDto {
-    return SearchFollowRequestDtoFromJSONTyped(json, false);
+export function GetBlockedResponseDtoFromJSON(json: any): GetBlockedResponseDto {
+    return GetBlockedResponseDtoFromJSONTyped(json, false);
 }
 
-export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): SearchFollowRequestDto {
+export function GetBlockedResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetBlockedResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -109,13 +130,15 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
+        'data': ((json['data'] as Array<any>).map(ListMemberDtoFromJSON)),
     };
 }
 
-export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | null): any {
+export function GetBlockedResponseDtoToJSON(value?: GetBlockedResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -128,9 +151,11 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,
+        'data': ((value.data as Array<any>).map(ListMemberDtoToJSON)),
     };
 }
 

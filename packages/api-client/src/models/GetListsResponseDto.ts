@@ -28,12 +28,6 @@ import {
 export interface GetListsResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetListsResponseDto
-     */
-    lastId: string;
-    /**
-     * 
      * @type {Date}
      * @memberof GetListsResponseDto
      */
@@ -46,25 +40,71 @@ export interface GetListsResponseDto {
     updatedAt?: Date;
     /**
      * 
-     * @type {Array<ListDto>}
+     * @type {string}
      * @memberof GetListsResponseDto
      */
-    lists: Array<ListDto>;
+    lastId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListsResponseDto
+     */
+    search?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListsResponseDto
+     */
+    order: GetListsResponseDtoOrderEnum;
     /**
      * 
      * @type {string}
      * @memberof GetListsResponseDto
      */
     name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetListsResponseDto
+     */
+    orderType: GetListsResponseDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {Array<ListDto>}
+     * @memberof GetListsResponseDto
+     */
+    data: Array<ListDto>;
 }
+
+
+/**
+ * @export
+ */
+export const GetListsResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetListsResponseDtoOrderEnum = typeof GetListsResponseDtoOrderEnum[keyof typeof GetListsResponseDtoOrderEnum];
+
+/**
+ * @export
+ */
+export const GetListsResponseDtoOrderTypeEnum = {
+    Name: 'name',
+    UpdatedAt: 'updated at',
+    CreatedAt: 'created at'
+} as const;
+export type GetListsResponseDtoOrderTypeEnum = typeof GetListsResponseDtoOrderTypeEnum[keyof typeof GetListsResponseDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetListsResponseDto interface.
  */
 export function instanceOfGetListsResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lastId" in value;
-    isInstance = isInstance && "lists" in value;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "orderType" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -79,11 +119,14 @@ export function GetListsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'lastId': json['lastId'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
-        'lists': ((json['lists'] as Array<any>).map(ListDtoFromJSON)),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
         'name': !exists(json, 'name') ? undefined : json['name'],
+        'orderType': json['orderType'],
+        'data': ((json['data'] as Array<any>).map(ListDtoFromJSON)),
     };
 }
 
@@ -96,11 +139,14 @@ export function GetListsResponseDtoToJSON(value?: GetListsResponseDto | null): a
     }
     return {
         
-        'lastId': value.lastId,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'lists': ((value.lists as Array<any>).map(ListDtoToJSON)),
+        'lastId': value.lastId,
+        'search': value.search,
+        'order': value.order,
         'name': value.name,
+        'orderType': value.orderType,
+        'data': ((value.data as Array<any>).map(ListDtoToJSON)),
     };
 }
 

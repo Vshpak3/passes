@@ -63,9 +63,9 @@ export const ChannelStream = ({
         }
       })
 
-      setEarliestSentAt(nonPendingMessagesRes.sentAt)
+      setEarliestSentAt(nonPendingMessagesRes.sentAt ?? new Date())
       setMessages((m) => {
-        const messages = [...nonPendingMessagesRes.messages, ...m]
+        const messages = [...nonPendingMessagesRes.data, ...m]
 
         latestMessageTimestamp.current = messages.length
           ? messages[messages.length - 1].sentAt
@@ -85,7 +85,7 @@ export const ChannelStream = ({
           }
         })
 
-        setPendingMessages(pendingMessagesRes.messages)
+        setPendingMessages(pendingMessagesRes.data)
       }
     },
     [channelId, earliestSentAt]
@@ -123,8 +123,8 @@ export const ChannelStream = ({
 
       const existingIds = new Set(messages.map((m) => m.messageId))
       const newMessages = [...messages]
-      for (let i = 0; i < nonPendingMessagesRes.messages.length; ++i) {
-        const message = nonPendingMessagesRes.messages[i]
+      for (let i = 0; i < nonPendingMessagesRes.data.length; ++i) {
+        const message = nonPendingMessagesRes.data[i]
         if (!existingIds.has(message.messageId)) {
           newMessages.push(message)
         }
@@ -144,7 +144,7 @@ export const ChannelStream = ({
           pending: true
         }
       })
-      setPendingMessages(pendingMessagesRes.messages)
+      setPendingMessages(pendingMessagesRes.data)
     }, FETCH_NEW_MESSAGES_RATE)
 
     return () => clearTimeout(loadNewMessages)

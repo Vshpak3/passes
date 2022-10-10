@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
 
-const PrivacyPolicy = dynamic(() => import("src/component/pages/privacy"), {
+const PrivacyPolicy = dynamic(() => import("src/components/pages/Privacy"), {
   suspense: true,
   ssr: false
 })

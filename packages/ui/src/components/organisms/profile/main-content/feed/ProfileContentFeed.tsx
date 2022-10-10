@@ -1,16 +1,14 @@
 import {
   CreateFanWallCommentRequestDto,
-  CreatePostRequestDto,
   GetFanWallResponseDto,
-  GetFeedResponseDto,
   GetProfileResponseDto
 } from "@passes/api-client"
 import { FC } from "react"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import { KeyedMutator } from "swr"
+import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 
+import ContentFeed from "./ContentFeed"
 import FanWallFeed from "./FanWallFeed"
-import GeneralContentFeed from "./GeneralContentFeed"
 import PassesFeed from "./PassesFeed"
 
 export interface ProfileContentFeedProps {
@@ -18,12 +16,8 @@ export interface ProfileContentFeedProps {
   profileUsername: string
   ownsProfile: boolean
   activeTab: string
-  feed?: GetFeedResponseDto
   fanWallPosts?: GetFanWallResponseDto
-  createPost: (values: CreatePostRequestDto) => void
   writeToFanWall: (values: CreateFanWallCommentRequestDto) => Promise<void>
-  removePost?: (postId: string) => void
-  mutatePosts?: KeyedMutator<GetFeedResponseDto>
 }
 
 const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
@@ -31,34 +25,18 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   profileUsername,
   activeTab,
   ownsProfile,
-  feed,
   fanWallPosts,
-  createPost,
-  removePost,
-  writeToFanWall,
-  mutatePosts
+  writeToFanWall
 }) => {
   switch (activeTab) {
     case "post":
       return (
         <>
-          {ownsProfile && (
-            <NewPost
-              initScheduledTime={null}
-              // TODO: passes={profile?.passes}
-              createPost={createPost}
-              placeholder="What's on your mind?"
-            />
-          )}
-          {!!feed?.posts?.length && (
-            <GeneralContentFeed
-              creatorId={profile.userId}
-              feed={feed}
-              mutatePosts={mutatePosts}
-              removePost={removePost}
-              ownsProfile={ownsProfile}
-            />
-          )}
+          <ContentFeed creatorId={profile.userId}>
+            {ownsProfile && (
+              <NewPosts profile={profile} username={profileUsername} />
+            )}
+          </ContentFeed>
         </>
       )
     case "fanWall":
@@ -73,7 +51,7 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
             onlyText
             createPost={writeToFanWall}
           />
-          {!!fanWallPosts?.comments?.length && (
+          {!!fanWallPosts?.data?.length && (
             <FanWallFeed
               creatorId={profile.userId}
               fanWallPosts={fanWallPosts}

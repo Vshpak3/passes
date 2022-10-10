@@ -30,26 +30,25 @@ export class GetChannelsRequestDto extends PickType(PageRequestDto, [
   unreadOnly: boolean
 }
 
-export class GetChannelsResponseDto extends PageResponseDto {
+export class GetChannelsResponseDto
+  extends GetChannelsRequestDto
+  implements PageResponseDto<ChannelMemberDto>
+{
   @DtoProperty({ custom_type: [ChannelMemberDto] })
-  channelMembers: ChannelMemberDto[]
-
-  @DtoProperty({ type: 'currency', optional: true })
-  tip?: number
-
-  @DtoProperty({ type: 'date', optional: true })
-  recent?: Date
+  data: ChannelMemberDto[]
 
   constructor(
     channelMembers: ChannelMemberDto[],
-    orderType: ChannelOrderTypeEnum,
+    requestDto: GetChannelsRequestDto,
   ) {
     super()
-    this.channelMembers = channelMembers
-
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.data = channelMembers
     if (channelMembers.length > 0) {
       this.lastId = channelMembers[channelMembers.length - 1].channelMemberId
-      switch (orderType) {
+      switch (requestDto.orderType) {
         case ChannelOrderTypeEnum.RECENT:
           this.recent = channelMembers[channelMembers.length - 1].recent
           break
