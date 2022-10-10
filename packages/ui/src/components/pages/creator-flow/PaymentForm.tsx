@@ -16,7 +16,7 @@ import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
 
 type PaymentFormProps = {
-  onFinishPaymentForm: (isSubmitedBankDetails?: boolean) => void
+  onFinishPaymentForm: (isSubmittedBankDetails?: boolean) => void
 }
 
 enum BankTypeEnum {
@@ -302,7 +302,7 @@ const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div>
                 <div className="flex flex-col gap-[6px]">
                   <div className="text-base font-bold">
-                    Send email recipents to
+                    Send email receipts to
                   </div>
                   <FormInput
                     register={register}
