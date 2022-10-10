@@ -1,4 +1,5 @@
 import ChatIcon from "public/icons/mail-icon.svg"
+import EditIcon from "public/icons/profile-edit-icon.svg"
 import { FC } from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import {
@@ -202,8 +203,15 @@ interface EditProfileActionProps {
 export const EditProfileAction: FC<EditProfileActionProps> = ({
   onEditProfile
 }) => (
-  <div className="absolute top-10 right-0 items-center justify-between">
-    <CoverButton className="px-4" name="Edit profile" onClick={onEditProfile} />
+  <div className="absolute top-5 right-5 items-center justify-between md:top-10 md:right-0">
+    <CoverButton
+      className="hidden px-4 md:block"
+      name="Edit profile"
+      onClick={onEditProfile}
+    />
+    <button className="block md:hidden" onClick={onEditProfile}>
+      <EditIcon />
+    </button>
   </div>
 )
 
