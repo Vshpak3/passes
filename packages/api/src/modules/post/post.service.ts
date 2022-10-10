@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
+import { addMonths } from 'date-fns'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -69,6 +70,7 @@ import {
 } from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
+const MAX_SCHEDULED_AT_MONTHS = 6
 
 @Injectable()
 export class PostService {
@@ -86,6 +88,22 @@ export class PostService {
     private readonly passService: PassService,
     private readonly contentService: ContentService,
   ) {}
+
+  private checkScheduledAt(scheduledAt?: Date | null) {
+    if (!scheduledAt) {
+      return
+    }
+    if (scheduledAt < new Date()) {
+      throw new BadPostPropertiesException(
+        'Cannot schedule a post for the past',
+      )
+    }
+    if (scheduledAt > addMonths(new Date(), MAX_SCHEDULED_AT_MONTHS)) {
+      throw new BadPostPropertiesException(
+        `Cannot schedule a post more than ${MAX_SCHEDULED_AT_MONTHS} months in advance`,
+      )
+    }
+  }
 
   async createPost(
     userId: string,
@@ -106,11 +124,7 @@ export class PostService {
       userId,
       createPostDto.contentIds,
     )
-    if (createPostDto.scheduledAt && createPostDto.scheduledAt < new Date()) {
-      throw new BadPostPropertiesException(
-        'Cannot schedule a post for the past',
-      )
-    }
+    this.checkScheduledAt(createPostDto.scheduledAt)
     await this.dbWriter
       .transaction(async (trx) => {
         const post = {
@@ -397,12 +411,8 @@ export class PostService {
     if (updatePostDto.text && updatePostDto.tags) {
       verifyTaggedText(updatePostDto.text, updatePostDto.tags)
     }
-    // TODO: consider blocking users from removint the scheduled at
-    if (updatePostDto.scheduledAt && updatePostDto.scheduledAt < new Date()) {
-      throw new BadPostPropertiesException(
-        'Cannot schedule a post for the past',
-      )
-    }
+    // TODO: consider blocking users from removing the scheduled at
+    this.checkScheduledAt(updatePostDto.scheduledAt)
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId })
       .update({
