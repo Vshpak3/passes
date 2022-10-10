@@ -155,8 +155,6 @@ export class FeedService {
 
     if (pinned) {
       query = query.whereNotNull(`${PostEntity.table}.pinned_at`)
-    } else if (pinned === false) {
-      query = query.whereNull(`${PostEntity.table}.pinned_at`)
     }
 
     query = createPaginatedQuery(

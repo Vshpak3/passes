@@ -411,10 +411,9 @@ export class PassService {
       .whereNotNull('collection_address')
       .andWhere({ creator_id: creatorId })
       .select('*')
+
     if (pinned) {
       query = query.whereNotNull('pinned_at')
-    } else if (pinned === false) {
-      query = query.whereNull('pinned_at')
     }
 
     query = createPaginatedQuery(
