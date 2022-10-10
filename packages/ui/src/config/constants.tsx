@@ -23,3 +23,5 @@ export const CREATOR_STEPS_TEXT = {
     subtitle: "Banking information"
   }
 }
+
+export const MAX_POST_SCHEDULE_DURATION_IN_MONTHS = 6

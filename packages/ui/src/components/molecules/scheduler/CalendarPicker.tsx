@@ -77,12 +77,17 @@ export enum TimeShiftEnum {
 export type Time = { minutes: number; hours: number; timeShift: TimeShiftEnum }
 
 const today = new Date()
-const defaultTime = { hours: 1, minutes: 0, timeShift: TimeShiftEnum.AM }
+const defaultTime = {
+  hours: new Date().getHours() % 12 || 12,
+  minutes: new Date().getMinutes(),
+  timeShift: new Date().getHours() ? TimeShiftEnum.PM : TimeShiftEnum.AM
+}
 
 const CalendarPicker: FC<{
   children: React.ReactNode
   onSave: (date: Date | null) => void
-}> = ({ children, onSave }) => {
+  toDate?: Date
+}> = ({ children, onSave, toDate }) => {
   const [month, setMonth] = useState<Date>(today)
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(today)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -175,6 +180,7 @@ const CalendarPicker: FC<{
                   onSelect={setSelectionDate}
                   onMonthChange={setMonth}
                   fromDate={new Date()}
+                  toDate={toDate}
                   month={month}
                 />
                 <div className="mt-3 flex w-full items-center justify-between">
