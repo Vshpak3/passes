@@ -1,3 +1,4 @@
+import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import { FC, useState } from "react"
 import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
@@ -8,15 +9,13 @@ interface SidebarMobileProps {
   navigation: SidebarNavigation[]
   setActive: any
   router: any
-  handleLogout: any
 }
 
 const SidebarMobile: FC<SidebarMobileProps> = ({
   active,
   navigation,
   setActive,
-  router,
-  handleLogout
+  router
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
@@ -59,7 +58,18 @@ const SidebarMobile: FC<SidebarMobileProps> = ({
       >
         {renderSidebarItems}
         <AuthWrapper>
-          <SB.MobileLogoutButton handleLogout={handleLogout} />
+          <SB.SidebarMobileItem
+            key={`sidebar-logout`}
+            item={{
+              name: "Logout",
+              id: "logout",
+              icon: LogoutIcon,
+              href: "/logout"
+            }}
+            active={false}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            setActive={() => {}}
+          />
         </AuthWrapper>
       </SB.SidebarMobileContainer>
     </>

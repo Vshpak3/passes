@@ -7,11 +7,14 @@ const Logout = () => {
   const { user, logout } = useUser()
 
   useEffect(() => {
-    if (!router.isReady || user) {
+    if (!router.isReady) {
       return
     }
 
-    logout()
+    if (user) {
+      logout()
+    }
+
     router.push("/login")
   }, [router, user, logout])
 

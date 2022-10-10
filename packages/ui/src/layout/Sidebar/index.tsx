@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   const [hasMounted, setHasMounted] = useState(false)
   const [active, setActive] = useState(router.asPath.split("/").pop())
-  const { user, logout } = useUser()
+  const { user } = useUser()
   const [navigation, setNavigation] = useState(_navigation)
 
   useEffect(() => {
@@ -51,11 +51,6 @@ const Sidebar = () => {
     setCollapsedAdditionalSidebarOpen(false)
   }
 
-  const handleLogout = () => {
-    logout()
-    router.push("/login")
-  }
-
   if (!hasMounted) {
     return null
   }
@@ -63,7 +58,6 @@ const Sidebar = () => {
   return (
     <>
       <SidebarDefault
-        handleLogout={handleLogout}
         active={active}
         navigation={navigation}
         setActive={setActive}
@@ -75,7 +69,6 @@ const Sidebar = () => {
         closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
       />
       <SidebarMobile
-        handleLogout={handleLogout}
         active={active}
         navigation={navigation}
         setActive={setActive}

@@ -1,9 +1,4 @@
-import {
-  BecomeCreatorButton,
-  LogoutButton,
-  MobileLogoutButton,
-  NewPostButton
-} from "./SidebarButtons"
+import { BecomeCreatorButton, NewPostButton } from "./SidebarButtons"
 import {
   CreatorToolsItem,
   CreatorToolsSidebar,
@@ -21,8 +16,6 @@ export {
   BecomeCreatorButton,
   CreatorToolsItem,
   CreatorToolsSidebar,
-  LogoutButton,
-  MobileLogoutButton,
   MobileNavbar,
   NewPostButton,
   SidebarContainer,

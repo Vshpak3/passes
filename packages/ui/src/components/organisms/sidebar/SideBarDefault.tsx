@@ -1,5 +1,6 @@
 import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
+import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import { SidebarComponents as SB } from "src/components/molecules"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
@@ -15,7 +16,6 @@ interface SidebarDefaultProps {
   navigation: SidebarNavigation[]
   setActive: any
   router: any
-  handleLogout: any
   openCollapsedAdditionalSidebar: any
   closeCollapsedAdditionalSidebar: any
   collapsedAdditionalSidebarOpen: any
@@ -28,7 +28,6 @@ const SidebarDefault = ({
   navigation,
   setActive,
   router,
-  handleLogout,
   openCollapsedAdditionalSidebar,
   closeCollapsedAdditionalSidebar,
   collapsedAdditionalSidebarOpen,
@@ -94,7 +93,20 @@ const SidebarDefault = ({
           </nav>
         </div>
         <AuthWrapper>
-          <SB.LogoutButton handleLogout={handleLogout} />
+          <div className="flex flex-col items-center gap-3 sidebar-collapse:items-start sidebar-collapse:gap-[0px]">
+            <SB.SidebarItem
+              key={`sidebar-logout`}
+              item={{
+                name: "Logout",
+                id: "logout",
+                icon: LogoutIcon,
+                href: "/logout"
+              }}
+              isActive={false}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              setActive={() => {}}
+            />
+          </div>
         </AuthWrapper>
       </SB.SidebarContainer>
       <SB.CreatorToolsSidebar
