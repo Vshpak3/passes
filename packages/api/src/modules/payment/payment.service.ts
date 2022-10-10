@@ -235,7 +235,7 @@ export class PaymentService {
       throw new CircleRequestError('reused idempotency key')
     }
 
-    const count = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+    const count = await this.dbWriter<CircleCardEntity>(CircleCardEntity.table)
       .whereNull('deleted_at')
       .andWhere({ user_id: userId })
       .count()
@@ -437,7 +437,7 @@ export class PaymentService {
       throw new CircleRequestError('reused idempotency key')
     }
 
-    const count = await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
+    const count = await this.dbWriter<CircleBankEntity>(CircleBankEntity.table)
       .whereNull('deleted_at')
       .andWhere({ user_id: userId })
       .count()

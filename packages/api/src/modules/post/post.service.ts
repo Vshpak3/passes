@@ -71,7 +71,7 @@ import {
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 const MAX_SCHEDULED_AT_MONTHS = 6
-
+const MAX_PINNED_POST = 3
 @Injectable()
 export class PostService {
   constructor(
@@ -700,6 +700,16 @@ export class PostService {
   }
 
   async pinPost(userId: string, postId: string): Promise<boolean> {
+    if (
+      (
+        await this.dbWriter<PostEntity>(PostEntity.table)
+          .whereNotNull('pinned_at')
+          .andWhere('user_id', userId)
+          .count('*')
+      )[0]['count(*)'] >= MAX_PINNED_POST
+    ) {
+      throw new BadPostPropertiesException('Too many pinned posts')
+    }
     return (
       (await this.dbWriter<PostEntity>(PostEntity.table)
         .where({ user_id: userId, id: postId })

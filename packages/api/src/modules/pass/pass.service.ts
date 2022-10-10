@@ -64,19 +64,22 @@ import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { PassTypeEnum } from './enum/pass.enum'
 import {
+  BadPassPropertiesException,
   ForbiddenPassException,
   PassHolderNotFoundException,
   PassNotFoundException,
   UnsupportedChainPassError,
 } from './error/pass.error'
 import { createPassHolderQuery } from './pass.util'
-export const DEFAULT_PASS_DURATION_MS = ms('30 days')
-export const DEFAULT_PASS_GRACE_MS = ms('2 days')
-export const DEFAULT_PASS_SYMBOL = 'PASS'
-export const MAX_PASSES_PER_REQUEST = 20
+
+const DEFAULT_PASS_DURATION_MS = ms('30 days')
+const DEFAULT_PASS_GRACE_MS = ms('2 days')
+const DEFAULT_PASS_SYMBOL = 'PASS'
+const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
-export const MAX_PASSES_PER_CREATOR = 1000
+const MAX_PASSES_PER_CREATOR = 1000
+const MAX_PINNED_PASSES = 3
 @Injectable()
 export class PassService {
   private env: string
@@ -1027,6 +1030,16 @@ export class PassService {
   }
 
   async pinPass(userId: string, passId: string): Promise<boolean> {
+    if (
+      (
+        await this.dbWriter<PassEntity>(PassEntity.table)
+          .whereNotNull('pinned_at')
+          .andWhere('creator_id', userId)
+          .count('*')
+      )[0]['count(*)'] >= MAX_PINNED_PASSES
+    ) {
+      throw new BadPassPropertiesException('Too many pinned passes')
+    }
     return (
       (await this.dbWriter<PassEntity>(PassEntity.table)
         .where({ creator_id: userId, id: passId })

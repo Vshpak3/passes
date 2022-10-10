@@ -14,6 +14,13 @@ export class PassNotFoundException extends BadRequestException {
   }
 }
 
+export class BadPassPropertiesException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, BadPassPropertiesException.prototype)
+  }
+}
+
 export class PassHolderNotFoundException extends BadRequestException {
   constructor(msg: string) {
     super(msg)

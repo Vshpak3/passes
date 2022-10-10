@@ -233,7 +233,7 @@ export class WalletService {
 
   async checkWallets(userId: string) {
     const numWallets = (
-      await this.dbReader<WalletEntity>(WalletEntity.table).where({
+      await this.dbWriter<WalletEntity>(WalletEntity.table).where({
         user_id: userId,
       })
     ).length

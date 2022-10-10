@@ -51,6 +51,8 @@ export class MessageDto {
       this.sentAt = message.sent_at
       this.messageId = message.id
       this.reverted = message.reverted
+      this.paid = message.paid
+      this.pending = message.pending
     }
     this.contents = contents
   }

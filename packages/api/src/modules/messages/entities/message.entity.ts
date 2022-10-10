@@ -19,6 +19,9 @@ export class MessageEntity extends BaseEntity {
   @Property({ length: CONTENT_IDS_LENGTH, default: '[]' })
   content_ids: string
 
+  @Property()
+  has_content: boolean
+
   @ManyToOne({ entity: () => ChannelEntity })
   channel_id: string
 

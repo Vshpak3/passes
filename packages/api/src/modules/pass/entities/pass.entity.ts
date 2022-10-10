@@ -1,4 +1,11 @@
-import { Entity, Enum, ManyToOne, Property, types } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  Property,
+  types,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import {
@@ -44,6 +51,7 @@ export class PassEntity extends BaseEntity {
   @Property({ default: false })
   freetrial: boolean
 
+  @Index()
   @Property()
   pinned_at: Date | null
 

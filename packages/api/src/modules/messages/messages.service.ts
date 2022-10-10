@@ -679,9 +679,10 @@ export class MessagesService {
       channel_id: channelId,
       tip_amount: tipAmount,
       pending,
-      price,
-      paid_message_id: paidMessageId,
+      price: price ?? 0,
+      paid_message_id: paidMessageId ?? null,
       content_ids: JSON.stringify(contentIds ? contentIds : []),
+      has_content: (contentIds?.length ?? 0) > 0,
     }
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
@@ -960,9 +961,7 @@ export class MessagesService {
       lastId,
     )
     if (contentOnly) {
-      query = query
-        .whereNotNull('paid_message_id')
-        .andWhereNot('sender_id', userId)
+      query = query.where('has_content', true).andWhereNot('sender_id', userId)
     }
 
     if (pending) {
