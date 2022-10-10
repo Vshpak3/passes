@@ -1,3 +1,5 @@
+import { PostDto } from "@passes/api-client"
+import { format } from "date-fns"
 import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import DollarGrayIcon from "public/icons/dollar-gray.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
@@ -9,13 +11,26 @@ import { useOnClickOutside } from "src/hooks"
 
 interface IPostStaticsMenu {
   onClose: () => void
+  post: PostDto
 }
 
-const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
+const PostStaticsMenu: FC<IPostStaticsMenu> = ({
+  onClose,
+  post: {
+    numLikes,
+    earningsPurchases,
+    createdAt,
+    numPurchases,
+    numComments,
+    totalTipAmount
+  }
+}) => {
   const menuEl = useRef(null)
-
+  const formatDate = format(new Date(createdAt), "MMM dd, yyyy h:mm aaa")
   useOnClickOutside(menuEl, onClose)
 
+  const purchasesPercentCounter = (total: number, earned: number) =>
+    earned ? (earned * 100) / total : 0
   return (
     <div
       ref={menuEl}
@@ -24,16 +39,18 @@ const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-1.5 text-sm leading-6">
           <span className="font-medium text-passes-gray-200">Date & Time</span>
-          <span className="font-bold">Aug 29, 2022 5:53pm</span>
+          <span className="font-bold">{formatDate}</span>
         </div>
         <button onClick={onClose}>
           <CloseIcon />
         </button>
       </div>
       <div className="mt-3 flex items-center space-x-3">
-        <h4 className="text-2xl font-bold leading-6">$20,001.89</h4>
+        <h4 className="text-2xl font-bold leading-6">${numPurchases}</h4>
         <div className="text-label flex items-center space-x-[3px] rounded-[56px] bg-passes-green/[0.17] py-1.5 px-3 text-passes-green">
-          <span>3%</span>
+          <span>
+            {purchasesPercentCounter(numPurchases, earningsPurchases)}%
+          </span>
           <ArrowUpRight />
         </div>
       </div>
@@ -45,7 +62,7 @@ const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
               Purchased
             </p>
           </div>
-          <p className="text-xs font-bold leading-6">609</p>
+          <p className="text-xs font-bold leading-6">{earningsPurchases}</p>
         </div>
 
         <div className="mb-2 flex justify-between border-b border-[#727272] pb-2">
@@ -55,7 +72,7 @@ const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
               Likes
             </p>
           </div>
-          <p className="text-xs font-bold leading-6">$5.00</p>
+          <p className="text-xs font-bold leading-6">{numLikes}</p>
         </div>
 
         <div className="mb-2 flex justify-between border-b border-[#727272] pb-2">
@@ -65,7 +82,7 @@ const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
               Comments
             </p>
           </div>
-          <p className="text-xs font-bold leading-6">$3045.00</p>
+          <p className="text-xs font-bold leading-6">{numComments}</p>
         </div>
 
         <div className="mb-2 flex justify-between">
@@ -75,7 +92,7 @@ const PostStaticsMenu: FC<IPostStaticsMenu> = ({ onClose }) => {
               Tips
             </p>
           </div>
-          <p className="text-xs font-bold leading-6">$3045.00</p>
+          <p className="text-xs font-bold leading-6">${totalTipAmount}</p>
         </div>
       </div>
     </div>

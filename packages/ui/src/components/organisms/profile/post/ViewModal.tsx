@@ -114,7 +114,7 @@ const ViewModal: FC<ViewModalProps> = ({
                     <TimeAgo date={post.createdAt} minPeriod={30} />
                   </span>
                 )}
-                {user?.id === post.userId && <PostStaticsButton />}
+                {user?.id === post.userId && <PostStaticsButton post={post} />}
               </div>
               <PostDropdown post={post} items={dropdownItems} />
             </div>

@@ -54,7 +54,9 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
               minPeriod={30}
             />
           </div>
-          {user?.id === post.userId && !hideStaticsBtn && <PostStaticsButton />}
+          {user?.id === post.userId && !hideStaticsBtn && (
+            <PostStaticsButton post={post} />
+          )}
 
           <div className="flex items-center gap-[15px]">
             {/* <div

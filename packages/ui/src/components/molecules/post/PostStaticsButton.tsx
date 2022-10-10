@@ -1,10 +1,17 @@
+import { PostDto } from "@passes/api-client"
 import GraphIcon from "public/icons/graph.svg"
 import React, { useState } from "react"
 
 import PostStaticsMenu from "./PostStaticsMenu"
 
-const PostStaticsButton = () => {
+interface PostStaticsButtonProps {
+  post: PostDto
+}
+
+const PostStaticsButton = ({ post }: PostStaticsButtonProps) => {
   const [showPostStaticsMenu, setShowPostStaticsMenu] = useState(false)
+
+  const onCloseHandler = () => setShowPostStaticsMenu(false)
 
   return (
     <div className="relative flex-shrink-0">
@@ -21,7 +28,7 @@ const PostStaticsButton = () => {
       </button>
 
       {showPostStaticsMenu && (
-        <PostStaticsMenu onClose={() => setShowPostStaticsMenu(false)} />
+        <PostStaticsMenu onClose={onCloseHandler} post={post} />
       )}
     </div>
   )
