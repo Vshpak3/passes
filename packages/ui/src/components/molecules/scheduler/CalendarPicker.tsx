@@ -9,59 +9,6 @@ import { DayPicker } from "react-day-picker"
 import TimePicker from "src/components/atoms/TimePicker"
 import { useOnClickOutside } from "src/hooks"
 
-const css = `
-  .rdp {
-    margin: 0px;
-  }
-  .rdp-caption {
-    position: relative!important;
-  }
-  .rdp-caption_label {
-    width: 100%!important;
-    text-align: center!important;
-    display: block!important;
-    font-weight: 500!important;
-    font-size: 16px!important;
-    line-height: 24px!important;
-  }
-  .rdp-nav {
-    position: absolute!important;
-    width: 100%!important;
-    display: flex!important;
-    justify-content: space-between!important;
-    z-index: 100!important
-  }
-  .rdp-table {
-    margin-top: 68px!important;
-  }
-  .rdp-day_selected:not([disabled]), .rdp-day_selected:focus:not([disabled]), .rdp-day_selected:active:not([disabled]), .rdp-day_selected:hover:not([disabled]) {
-    background: #F9FAFB;
-    border-radius: 20px;
-    color: #0E0A0F;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    border: none;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 400ms;
-    outline: none;
-  }
-  .rdp-button:hover:not([disabled]) {
-    background: #F9FAFB;
-    border-radius: 20px;
-    color: #0E0A0F;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    border: none;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 400ms;
-    outline: none;
-  }
-`
-
 const hoursTo24Hours = (hours: number, timeShift: TimeShiftEnum) => {
   if (timeShift === TimeShiftEnum.PM) {
     return 12 + (hours === 12 ? 0 : hours)
@@ -80,7 +27,7 @@ const today = new Date()
 const defaultTime = {
   hours: new Date().getHours() % 12 || 12,
   minutes: new Date().getMinutes(),
-  timeShift: new Date().getHours() ? TimeShiftEnum.PM : TimeShiftEnum.AM
+  timeShift: new Date().getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
 }
 
 const CalendarPicker: FC<{
@@ -159,8 +106,7 @@ const CalendarPicker: FC<{
               ref={calenderRef}
               className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
             >
-              <style>{css}</style>
-              <div className="relative w-full">
+              <div className="calendar relative w-full">
                 <div className="absolute top-11 flex w-full items-center gap-3 bg-[rgba(27,20,29,0.5)]">
                   <span className="z-10 flex-1 rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-[6px] px-[14px] text-base font-normal leading-6 text-white">
                     {selectionDate ? format(selectionDate, "MMM dd, yyyy") : ""}

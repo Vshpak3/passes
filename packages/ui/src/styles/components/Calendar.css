@@ -1,0 +1,59 @@
+.calendar .rdp {
+  margin: 0px;
+}
+
+.calendar .rdp-caption {
+  position: relative !important;
+}
+
+.calendar .rdp-caption_label {
+  width: 100% !important;
+  text-align: center !important;
+  display: block !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+.calendar .rdp-nav {
+  position: absolute !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  z-index: 100 !important;
+}
+
+.calendar .rdp-table {
+  margin-top: 68px !important;
+}
+
+.calendar .rdp-day_selected:not([disabled]),
+.calendar .rdp-day_selected:focus:not([disabled]),
+.calendar .rdp-day_selected:active:not([disabled]),
+.calendar .rdp-day_selected:hover:not([disabled]) {
+  background: #f9fafb;
+  border-radius: 20px;
+  color: #0e0a0f;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 400ms;
+  outline: none;
+}
+
+.calendar .rdp-button:hover:not([disabled]) {
+  background: #f9fafb;
+  border-radius: 20px;
+  color: #0e0a0f;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 400ms;
+  outline: none;
+}
