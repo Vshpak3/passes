@@ -6,6 +6,7 @@ import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
+import { RenewPassModal } from "src/components/organisms/payment/RenewPassModal"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useUser } from "src/hooks/useUser"
@@ -246,7 +247,7 @@ export const MyPassTile: FC<MyPassTileProps> = ({
   passOnEditHandler
 }) => {
   const { user } = useUser()
-  const [, setIsRenewModalOpen] = useState(false)
+  const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
   const expiryInMilSeconds = Number(passData.expiresAt)
   const expiryDate = new Date(expiryInMilSeconds)
   const dateNow = Date.now()
@@ -313,11 +314,11 @@ export const MyPassTile: FC<MyPassTileProps> = ({
             {isExpired ? (
               <div className="align-items flex items-center justify-center">
                 <PassRenewalButton onRenewal={toggleRenewModal} />
-                {/* <RenewPassModal
+                <RenewPassModal
                   isOpen={isRenewModalOpen}
                   setOpen={setIsRenewModalOpen}
                   passHolder={passData}
-                /> */}
+                />
               </div>
             ) : (
               <PassTileLabel

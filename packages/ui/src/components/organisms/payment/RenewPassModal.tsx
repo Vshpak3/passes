@@ -8,13 +8,13 @@ import { RenewPassButton } from "src/components/molecules/payment/renew-pass-but
 import { Modal } from "src/components/organisms/Modal"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-interface BuyMessageModalProps {
+interface RenewPassModalProps {
   passHolder: PassHolderDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-export const BuyPostModal: FC<BuyMessageModalProps> = ({
+export const RenewPassModal: FC<RenewPassModalProps> = ({
   passHolder,
   setOpen,
   isOpen

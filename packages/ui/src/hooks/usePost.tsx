@@ -1,4 +1,5 @@
 import { PostApi } from "@passes/api-client"
+import { useEffect } from "react"
 import { toast } from "react-toastify"
 import useSWR from "swr"
 
@@ -23,6 +24,12 @@ export const usePost = (postId: string) => {
     const api = new PostApi()
     await api.removePost({ postId }).catch((error) => toast(error))
   }
+
+  useEffect(() => {
+    if (post === undefined) {
+      mutate()
+    }
+  }, [mutate, post])
 
   return { post, loading, mutate, removePost }
 }
