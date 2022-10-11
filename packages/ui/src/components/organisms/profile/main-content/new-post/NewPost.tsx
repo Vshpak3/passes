@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
@@ -43,7 +43,8 @@ interface NewPostProps {
   placeholder: any
   createPost: any
   onlyText?: boolean
-  initScheduledTime: Date | null
+  initialData: Record<string, any>
+  isExtended?: boolean
 }
 
 export const NewPost: FC<NewPostProps> = ({
@@ -51,13 +52,14 @@ export const NewPost: FC<NewPostProps> = ({
   placeholder,
   createPost,
   onlyText = false,
-  initScheduledTime
+  initialData = {},
+  isExtended = false
 }) => {
   const [files, setFiles] = useState<File[]>([])
   const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [extended, setExtended] = useState(false)
+  const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
 
@@ -70,15 +72,11 @@ export const NewPost: FC<NewPostProps> = ({
     watch,
     reset
   } = useForm<NewPostFormProps>({
-    defaultValues: {}
+    defaultValues: { ...initialData }
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const isPaid = watch("isPaid")
-
-  useEffect(() => {
-    setValue("scheduledAt", initScheduledTime, { shouldValidate: true })
-  }, [initScheduledTime, setValue])
 
   const setScheduledTime = (date: Date | null) => {
     setValue("scheduledAt", date, { shouldValidate: true })
@@ -199,6 +197,9 @@ export const NewPost: FC<NewPostProps> = ({
         {extended && (
           <>
             <PostHeader
+              title={
+                Object.keys(initialData).length > 0 ? "Update Post" : "New post"
+              }
               onClose={() => setExtended(false)}
               register={register}
               errors={errors}
@@ -213,9 +214,14 @@ export const NewPost: FC<NewPostProps> = ({
         >
           <div
             className={classNames({ "mt-4": extended }, "w-full")}
-            onClick={() => setExtended(true)}
+            onClick={() => {
+              if (!isExtended) {
+                setExtended(true)
+              }
+            }}
           >
             <CustomMentionEditor
+              defaultText={initialData.text}
               isReset={isReset}
               setIsReset={setIsReset}
               placeholder={placeholder}

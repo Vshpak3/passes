@@ -71,31 +71,34 @@ interface CustomMentionProps {
   onInputChange: (params: object) => any
   isReset?: boolean
   setIsReset?: (value: boolean) => void
+  defaultText?: string
 }
 
-const emptyContentState = convertFromRaw({
-  entityMap: {},
-  blocks: [
-    {
-      text: "",
-      key: "foo",
-      type: "unstyled",
-      entityRanges: [],
-      depth: 0,
-      inlineStyleRanges: []
-    }
-  ]
-})
+const emptyContentState = (text: string) =>
+  convertFromRaw({
+    entityMap: {},
+    blocks: [
+      {
+        text,
+        key: "foo",
+        type: "unstyled",
+        entityRanges: [],
+        depth: 0,
+        inlineStyleRanges: []
+      }
+    ]
+  })
 
 export default function CustomComponentMentionEditor({
   placeholder,
   onInputChange,
   isReset,
-  setIsReset
+  setIsReset,
+  defaultText = ""
 }: CustomMentionProps): ReactElement {
   const ref = useRef<Editor>(null)
   const [editorState, setEditorState] = useState(() =>
-    EditorState.createWithContent(emptyContentState)
+    EditorState.createWithContent(emptyContentState(defaultText))
   )
 
   const [open, setOpen] = useState(false)

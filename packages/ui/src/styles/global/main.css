@@ -63,6 +63,9 @@
 /* Calendar styling */
 @import "../components/Calendar.css";
 
+/* Month Year Picker styling */
+@import "../components/MonthYearPicker.css";
+
 /* Global Styles */
 body {
   @apply bg-mauve-mauve1 p-0 text-[0.9375rem] font-normal leading-[calc(0.9375rem_*_1.4)] tracking-[-0.009em] text-white dark:bg-black dark:text-white;

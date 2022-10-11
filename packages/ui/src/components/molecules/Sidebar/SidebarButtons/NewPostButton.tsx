@@ -39,7 +39,7 @@ const NewPostButton = () => {
     >
       <NewPost
         passes={[]}
-        initScheduledTime={null}
+        initialData={{}}
         createPost={handleCreatePost}
         placeholder="What's on your mind?"
       />

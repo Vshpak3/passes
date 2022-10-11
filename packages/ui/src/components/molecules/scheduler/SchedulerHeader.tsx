@@ -6,30 +6,9 @@ import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useRef, useState } from "react"
 import MonthYearPicker from "react-month-year-picker"
 import CreateSchedulerPopup from "src/components/molecules/scheduler/CreateSchedulerPopup"
+import { useOnClickOutside } from "src/hooks"
 
-const css = `
-  .month-year-picker {
-    margin-top: 0px;
-  }
-  .year-picker > span {
-    color: #9C4DC1!important;
-    font-weight: 700;
-  }
-  .month-year-picker .month-picker > div > div {
-    border-radius: 8px!important;
-    color: white!important;
-    font-weight: bold;
-    background-color: #2C282D!important;
-  }
-  .month-year-picker .month-picker > div > div:not(selected):hover {
-    background-color: #4f4d4f!important;
-    transition: 0.1s all linear;
-  }
-  .month-year-picker .month-picker > div > div.selected {
-    color: white!important;
-    background: #9C4DC1!important;
-  }
-`
+import NewPostPopup from "./NewPostPopup"
 
 interface SchedulerHeaderProps {
   onChangeTime: (month: number, year: number) => void
@@ -43,6 +22,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   const [month, setMonth] = useState<number>(new Date().getMonth())
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const popperContainerRef = useRef<HTMLDivElement | null>(null)
+  const popperMonthYearPickerRef = useRef<HTMLDivElement | null>(null)
 
   const [monthYearPopperOpen, setMonthYearPopperOpen] = useState(false)
   const [createScheduleOpen, setCreateScheduleOpen] = useState(false)
@@ -50,18 +30,19 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   const [buttonCreateSchedulerEl, setButtonCreateSchedulerEl] =
     useState<null | HTMLElement>(null)
 
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
+  const [selectionDate, setSelectionDate] = useState<Date | null>(null)
+
   const handleShowMonthYearPopper = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
-    setMonthYearPopperOpen((previousOpen) => !previousOpen)
+    setMonthYearPopperOpen(true)
   }
 
   const handleShowCreateSchedulerPopper = (
     event: React.MouseEvent<HTMLElement>
   ) => {
-    setButtonCreateSchedulerEl(
-      buttonCreateSchedulerEl ? null : event.currentTarget
-    )
-    setCreateScheduleOpen((previousOpen) => !previousOpen)
+    setButtonCreateSchedulerEl(event.currentTarget)
+    setCreateScheduleOpen(true)
   }
 
   const canBeMonthYearPopperOpen = monthYearPopperOpen && Boolean(anchorEl)
@@ -117,6 +98,7 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
 
   const dismissCreateSchedulerPopper = useCallback(() => {
     buttonCreateSchedulerEl && setButtonCreateSchedulerEl(null)
+    setCreateScheduleOpen(false)
   }, [buttonCreateSchedulerEl])
 
   const DateTimeSelected = () => {
@@ -149,16 +131,100 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
 
   const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
 
+  useOnClickOutside(popperMonthYearPickerRef, () => {
+    setMonthYearPopperOpen(false)
+  })
+
   return (
     <>
-      <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
-        {buttonCreateSchedulerEl && (
-          <div
-            className="bg-black-100 fixed top-0 left-0 h-screen w-full"
-            onClick={dismissCreateSchedulerPopper}
-          />
+      {/* create new schedule popup */}
+      <Popper
+        id={createSchedulerPopperId}
+        open={createScheduleOpen}
+        anchorEl={buttonCreateSchedulerEl}
+        transition
+        placement="bottom-end"
+        modifiers={[
+          {
+            name: "offset",
+            options: {
+              offset: [0, 17]
+            }
+          }
+        ]}
+      >
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <div
+              ref={popperContainerRef}
+              className="mr-[25px] w-[320px] rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md md:mr-0 md:w-[480px]"
+            >
+              <CreateSchedulerPopup
+                onCancel={dismissCreateSchedulerPopper}
+                setIsNewPostModalOpen={setIsNewPostModalOpen}
+                setSelectionDate={setSelectionDate}
+                selectionDate={selectionDate}
+              />
+            </div>
+          </Fade>
         )}
-        <style>{`${css}`}</style>
+      </Popper>
+
+      {/* month year picker */}
+      <Popper
+        id={monthYearPopperId}
+        open={monthYearPopperOpen}
+        anchorEl={anchorEl}
+        transition
+        modifiers={[
+          {
+            name: "offset",
+            options: {
+              offset: [0, 10]
+            }
+          }
+        ]}
+      >
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <div
+              ref={popperMonthYearPickerRef}
+              className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
+            >
+              <MonthYearPicker
+                minYear={new Date().getFullYear() - 1}
+                maxYear={new Date().getFullYear() + 1}
+                caption="Pick your month and year"
+                selectedMonth={month}
+                selectedYear={year}
+                onChangeYear={(year: number) => handleChangeTime("year", year)}
+                onChangeMonth={(month: number) =>
+                  handleChangeTime("month", month)
+                }
+              />
+            </div>
+          </Fade>
+        )}
+      </Popper>
+
+      {/* clicking on background hide scheduler popup */}
+      {buttonCreateSchedulerEl && (
+        <div
+          className="bg-black-100 fixed top-0 left-0 z-50 h-screen w-full"
+          onClick={() => dismissCreateSchedulerPopper()}
+        />
+      )}
+
+      {/* Create new post */}
+      <NewPostPopup
+        isOpen={isNewPostModalOpen && !!selectionDate}
+        onCancel={() => {
+          setIsNewPostModalOpen(false)
+        }}
+        selectionDate={selectionDate as Date}
+      />
+
+      <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
         <div className="select-none text-base font-bold md:text-2xl">
           Scheduler
         </div>
@@ -167,67 +233,6 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
             <div className="hidden md:flex">
               <DateTimeSelected />
             </div>
-            <Popper
-              id={createSchedulerPopperId}
-              open={createScheduleOpen}
-              anchorEl={buttonCreateSchedulerEl}
-              transition
-              placement="bottom-end"
-              modifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 17]
-                  }
-                }
-              ]}
-            >
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                  <div
-                    ref={popperContainerRef}
-                    className="ounded mr-[25px] w-[320px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md md:mr-0 md:w-[480px]"
-                  >
-                    <CreateSchedulerPopup
-                      onCancel={dismissCreateSchedulerPopper}
-                    />
-                  </div>
-                </Fade>
-              )}
-            </Popper>
-            <Popper
-              id={monthYearPopperId}
-              open={monthYearPopperOpen}
-              anchorEl={anchorEl}
-              transition
-              modifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, 10]
-                  }
-                }
-              ]}
-            >
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                  <div className="rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md">
-                    <MonthYearPicker
-                      minYear={2000}
-                      caption="Pick your month and year"
-                      selectedMonth={month}
-                      selectedYear={year}
-                      onChangeYear={(year: number) =>
-                        handleChangeTime("year", year)
-                      }
-                      onChangeMonth={(month: number) =>
-                        handleChangeTime("month", month)
-                      }
-                    />
-                  </div>
-                </Fade>
-              )}
-            </Popper>
           </div>
         </div>
         <button

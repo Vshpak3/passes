@@ -8,6 +8,7 @@ import {
 } from "src/components/types/FormTypes"
 
 interface PostHeaderProps {
+  title?: string
   onClose: () => void
   messages?: boolean
   register?: FormRegister
@@ -16,6 +17,7 @@ interface PostHeaderProps {
 }
 
 const PostHeader: FC<PostHeaderProps> = ({
+  title,
   onClose,
   messages,
   register,
@@ -28,7 +30,7 @@ const PostHeader: FC<PostHeaderProps> = ({
         <button onClick={onClose} type="button">
           <CloseIcon />
         </button>
-        <h4 className="text-xl font-bold leading-4">New Post</h4>
+        <h4 className="text-xl font-bold leading-4">{title || "New Post"}</h4>
       </div>
 
       {!messages && register && (

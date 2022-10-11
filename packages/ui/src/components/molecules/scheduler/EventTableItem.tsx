@@ -1,30 +1,71 @@
+import { PostApi, PostDto } from "@passes/api-client"
+import { compareAsc, format } from "date-fns"
 import EditIcon from "public/icons/edit.svg"
 import LockedUnlockedIcon from "public/icons/lock-unlocked.svg"
 import TrashIcon from "public/icons/trash.svg"
-import { FC, useCallback } from "react"
+import { FC, useCallback, useState } from "react"
+import { Dialog as NewPostDialog } from "src/components/organisms"
+import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import useWindowDimensions from "src/helpers/hooks/useWindowDimensions"
+import { mutate } from "swr"
+
+import { CACHE_KEY_SCHEDULED_EVENTS } from "./EventTable"
 
 interface EventTableItemProps {
-  id: number
-  price: string
+  id: string
+  price?: number
   text: string
-  scheduledAt: string
-  expiresAt: string
-  onDeleteEvent: (id: number) => void
+  scheduledAt: Date
+  onDeleteEvent: (id: string) => void
+  data: PostDto
 }
+
+const postAPI = new PostApi()
+
+const EditButtonGroup: FC<any> = ({ id, data }) => {
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
+
+  const handleUpdatePost = async (values: any) => {
+    await postAPI.updatePost({
+      postId: id,
+      updatePostRequestDto: values
+    })
+    setIsNewPostModalOpen(false)
+    mutate(CACHE_KEY_SCHEDULED_EVENTS)
+  }
+
+  return (
+    <NewPostDialog
+      open={isNewPostModalOpen}
+      triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-0"
+      className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
+      trigger={<EditIcon onClick={() => setIsNewPostModalOpen(true)} />}
+    >
+      <NewPost
+        isExtended
+        passes={[]}
+        initialData={data}
+        createPost={handleUpdatePost}
+        placeholder="What's on your mind?"
+      />
+    </NewPostDialog>
+  )
+}
+
+const today = new Date()
 
 const EventTableItem: FC<EventTableItemProps> = ({
   id,
   price,
   text,
+  data,
   scheduledAt,
-  expiresAt,
   onDeleteEvent
 }) => {
   const { width = 0 } = useWindowDimensions()
 
   const generateButtonName = useCallback(() => {
-    if (parseInt(price) >= 0) {
+    if (price && price >= 0) {
       return (
         <button className="flex min-w-[175px] items-center justify-center gap-3 rounded-[50px] bg-passes-pink-100 py-[6px] text-white md:py-[13px]">
           <LockedUnlockedIcon /> {price}
@@ -38,76 +79,41 @@ const EventTableItem: FC<EventTableItemProps> = ({
     )
   }, [price])
 
-  const generateActionStatus = useCallback(
-    (isMobile?: boolean, type?: string) => {
-      if (!isMobile) {
-        if (!expiresAt) {
-          return (
-            <div className="flex items-center">
-              <span className="mr-6 text-passes-yellow">In queue</span>
-              <TrashIcon
-                className="mr-3 cursor-pointer"
-                onClick={() => onDeleteEvent(id)}
-              />
-              <EditIcon />
-            </div>
-          )
-        }
-        return (
-          <div className="flex items-center">
-            <span className="mr-4 text-white">Re-schedule</span>
-            <EditIcon />
-          </div>
-        )
-      }
-      if (type === "status") {
-        if (!expiresAt) {
-          return (
-            <div className="flex items-center">
-              <span className="mr-6 text-passes-yellow">In queue</span>
-            </div>
-          )
-        }
-        return (
-          <div className="flex items-center">
-            <span className="mr-4 text-white">Re-schedule</span>
-          </div>
-        )
-      }
-      if (!expiresAt) {
-        return (
-          <div className="flex items-center">
-            <TrashIcon
-              className="mr-3 cursor-pointer"
-              onClick={() => onDeleteEvent(id)}
-            />
-            <EditIcon />
-          </div>
-        )
-      }
+  const generateActionStatus = useCallback(() => {
+    const isPosted = compareAsc(new Date(scheduledAt), today) === -1
+
+    if (isPosted) {
       return (
         <div className="flex items-center">
-          <EditIcon />
+          <span className="mr-6 text-passes-green-100">Posted</span>
         </div>
       )
-    },
-    [expiresAt, id, onDeleteEvent]
-  )
+    }
+    return (
+      <div className="flex items-center">
+        <span className="mr-6 text-passes-yellow">In queue</span>
+        <TrashIcon
+          className="mr-3 cursor-pointer"
+          onClick={() => onDeleteEvent(id)}
+        />
+        <EditButtonGroup id={id} data={data} />
+      </div>
+    )
+  }, [data, id, onDeleteEvent, scheduledAt])
 
   if (width < 768) {
-    const isMobile = true
     return (
       <div className="mb-8 px-5">
         <div className="mb-6 flex items-center justify-between">
-          <span>{scheduledAt}</span>
-          <span>{generateActionStatus(isMobile, "action")}</span>
+          <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
+          <span>{generateActionStatus()}</span>
         </div>
         <div className="flex items-start gap-2">
           <div className="mr-3 h-[125px] w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
           <div className="flex flex-col gap-2">
             <div>{generateButtonName()}</div>
             <span>{text}</span>
-            <span>{generateActionStatus(isMobile, "status")}</span>
+            <span>{generateActionStatus()}</span>
           </div>
         </div>
       </div>
@@ -121,7 +127,7 @@ const EventTableItem: FC<EventTableItemProps> = ({
         {generateButtonName()}
       </td>
       <td className="my-[6px]">{text}</td>
-      <td className="my-[6px]">{scheduledAt}</td>
+      <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
       <td className="my-[6px]">{generateActionStatus()}</td>
     </tr>
   )
