@@ -51,9 +51,11 @@ models/ConfirmResetPasswordRequestDto.ts
 models/ContentDto.ts
 models/CreateBatchMessageRequestDto.ts
 models/CreateCommentRequestDto.ts
+models/CreateCommentResponseDto.ts
 models/CreateContentRequestDto.ts
 models/CreateExternalPassRequestDto.ts
 models/CreateFanWallCommentRequestDto.ts
+models/CreateFanWallCommentResponseDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
 models/CreateOrUpdateProfileRequestDto.ts

@@ -14,7 +14,10 @@ import { RequestWithUser } from '../../types/request'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
-import { CreateFanWallCommentRequestDto } from './dto/create-fan-wall-comment.dto'
+import {
+  CreateFanWallCommentRequestDto,
+  CreateFanWallCommentResponseDto,
+} from './dto/create-fan-wall-comment.dto'
 import {
   GetFanWallRequestDto,
   GetFanWallResponseDto,
@@ -29,7 +32,7 @@ export class FanWallController {
   @ApiEndpoint({
     summary: 'Creates a fan wall comment',
     responseStatus: HttpStatus.OK,
-    responseType: BooleanResponseDto,
+    responseType: CreateFanWallCommentResponseDto,
     responseDesc: 'A fan wall comment was created',
     role: RoleEnum.GENERAL,
   })
@@ -37,8 +40,8 @@ export class FanWallController {
   async createFanWallComment(
     @Req() req: RequestWithUser,
     @Body() createFanWallCommentDto: CreateFanWallCommentRequestDto,
-  ): Promise<BooleanResponseDto> {
-    return new BooleanResponseDto(
+  ): Promise<CreateFanWallCommentResponseDto> {
+    return new CreateFanWallCommentResponseDto(
       await this.fanWallService.createFanWallComment(
         req.user.id,
         createFanWallCommentDto,

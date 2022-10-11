@@ -15,3 +15,12 @@ export class CreateCommentRequestDto {
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 }
+
+export class CreateCommentResponseDto {
+  @DtoProperty({ type: 'uuid' })
+  commentId: string
+
+  constructor(commentId: string) {
+    this.commentId = commentId
+  }
+}

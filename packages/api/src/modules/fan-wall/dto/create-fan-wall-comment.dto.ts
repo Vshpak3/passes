@@ -15,3 +15,12 @@ export class CreateFanWallCommentRequestDto {
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 }
+
+export class CreateFanWallCommentResponseDto {
+  @DtoProperty({ type: 'uuid' })
+  fanWallCommentId: string
+
+  constructor(fanWallCommentId: string) {
+    this.fanWallCommentId = fanWallCommentId
+  }
+}

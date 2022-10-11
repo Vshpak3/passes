@@ -32,7 +32,7 @@ export class FanWallService {
   async createFanWallComment(
     userId: string,
     createFanWallCommentDto: CreateFanWallCommentRequestDto,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const { creatorId, text, tags } = createFanWallCommentDto
     verifyTaggedText(text, tags)
     await this.checkBlock(userId, creatorId)
@@ -56,7 +56,7 @@ export class FanWallService {
       FanWallCommentEntity.table,
     ).insert(data)
 
-    return true
+    return data.id
   }
 
   async getFanWallForCreator(

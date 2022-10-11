@@ -102,6 +102,7 @@ export const PostEngagement: FC = () => {
         postId={post.postId}
         visible={showCommentSection}
         updateEngagement={updateEngagement}
+        ownsPost={post.isOwner}
       />
       {isTipsModalOpen && (
         <TipPostModal isOpen={isTipsModalOpen} setOpen={setIsTipsModalOpen} />

@@ -36,7 +36,7 @@ export class CommentService {
   async createComment(
     userId: string,
     createCommentDto: CreateCommentRequestDto,
-  ): Promise<boolean> {
+  ): Promise<string> {
     const { postId, text, tags } = createCommentDto
     verifyTaggedText(text, tags)
     await this.checkPost(userId, postId)
@@ -63,7 +63,7 @@ export class CommentService {
         .where({ id: data.id })
         .update({ blocked: true })
     }
-    return true
+    return data.id
   }
 
   async findCommentsForPost(
@@ -103,7 +103,7 @@ export class CommentService {
       lastId,
     )
     const comments = await query.limit(MAX_COMMENTS_PER_REQUEST)
-    return comments.map((c) => new CommentDto(c))
+    return comments.map((c) => new CommentDto(c, c.commenter_id === userId))
   }
 
   async hideComment(userId: string, postId: string, commentId: string) {

@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   BooleanResponseDto,
   CreateFanWallCommentRequestDto,
+  CreateFanWallCommentResponseDto,
   GetFanWallRequestDto,
   GetFanWallResponseDto,
 } from '../models';
@@ -25,6 +26,8 @@ import {
     BooleanResponseDtoToJSON,
     CreateFanWallCommentRequestDtoFromJSON,
     CreateFanWallCommentRequestDtoToJSON,
+    CreateFanWallCommentResponseDtoFromJSON,
+    CreateFanWallCommentResponseDtoToJSON,
     GetFanWallRequestDtoFromJSON,
     GetFanWallRequestDtoToJSON,
     GetFanWallResponseDtoFromJSON,
@@ -55,7 +58,7 @@ export class FanWallApi extends runtime.BaseAPI {
     /**
      * Creates a fan wall comment
      */
-    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+    async createFanWallCommentRaw(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateFanWallCommentResponseDto>> {
         if (requestParameters.createFanWallCommentRequestDto === null || requestParameters.createFanWallCommentRequestDto === undefined) {
             throw new runtime.RequiredError('createFanWallCommentRequestDto','Required parameter requestParameters.createFanWallCommentRequestDto was null or undefined when calling createFanWallComment.');
         }
@@ -79,13 +82,13 @@ export class FanWallApi extends runtime.BaseAPI {
             body: CreateFanWallCommentRequestDtoToJSON(requestParameters.createFanWallCommentRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFanWallCommentResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates a fan wall comment
      */
-    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+    async createFanWallComment(requestParameters: CreateFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateFanWallCommentResponseDto> {
         const response = await this.createFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }

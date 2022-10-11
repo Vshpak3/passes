@@ -15,7 +15,10 @@ import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { CommentService } from './comment.service'
-import { CreateCommentRequestDto } from './dto/create-comment.dto'
+import {
+  CreateCommentRequestDto,
+  CreateCommentResponseDto,
+} from './dto/create-comment.dto'
 import {
   GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
@@ -29,7 +32,7 @@ export class CommentController {
   @ApiEndpoint({
     summary: 'Creates a comment',
     responseStatus: HttpStatus.OK,
-    responseType: BooleanResponseDto,
+    responseType: CreateCommentResponseDto,
     responseDesc: 'A comment was created',
     role: RoleEnum.GENERAL,
   })
@@ -37,8 +40,8 @@ export class CommentController {
   async createComment(
     @Req() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentRequestDto,
-  ): Promise<BooleanResponseDto> {
-    return new BooleanResponseDto(
+  ): Promise<CreateCommentResponseDto> {
+    return new CreateCommentResponseDto(
       await this.commentService.createComment(req.user.id, createCommentDto),
     )
   }

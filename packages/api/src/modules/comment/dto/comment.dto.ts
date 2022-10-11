@@ -38,6 +38,9 @@ export class CommentDto {
   createdAt: Date
 
   @DtoProperty({ type: 'boolean' })
+  isOwner: boolean
+
+  @DtoProperty({ type: 'boolean' })
   isHidden: boolean
 
   constructor(
@@ -45,6 +48,7 @@ export class CommentDto {
       commenter_username: string
       commenter_display_name: string
     },
+    isOwner?: boolean,
   ) {
     this.commentId = comment.id
     this.postId = comment.post_id
@@ -54,6 +58,7 @@ export class CommentDto {
     this.commenterDisplayName = comment.commenter_display_name
     this.createdAt = comment.created_at
     this.tags = JSON.parse(comment.tags)
+    this.isOwner = !!isOwner
     this.isHidden = comment.hidden
   }
 }

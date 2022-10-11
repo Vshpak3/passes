@@ -1,25 +1,33 @@
-import { CommentDto } from "@passes/api-client"
+import {
+  CommentDto,
+  GetCommentsForPostRequestDto,
+  GetCommentsForPostResponseDto
+} from "@passes/api-client"
 import { CommentApi } from "@passes/api-client/apis"
 import classNames from "classnames"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
+import InfiniteLoad, { ComponentArg } from "src/components/atoms/InfiniteLoad"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
+import { useUser } from "src/hooks"
 
 interface CommentSectionProps {
   postId: string
+  ownsPost: boolean
   visible: boolean
   updateEngagement: any
 }
 
+const api = new CommentApi()
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
   visible = false,
-  updateEngagement
+  updateEngagement,
+  ownsPost
 }) => {
-  const [isLoadingComments, setLoadingComments] = useState(false)
   const [comments, setComments] = useState<CommentDto[]>([])
   const [isReset, setIsReset] = useState(false)
   const {
@@ -27,36 +35,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
     setValue,
     formState: { isSubmitSuccessful }
   } = useForm()
-
-  const getComments = useCallback(
-    async (withLoadingState = true) => {
-      try {
-        if (withLoadingState) {
-          setLoadingComments(true)
-        }
-        const api = new CommentApi()
-
-        const response = await api.findCommentsForPost({
-          getCommentsForPostRequestDto: {
-            postId
-          }
-        })
-
-        setComments(response.data)
-      } catch (error: any) {
-        errorMessage(error, true)
-      } finally {
-        setLoadingComments(false)
-      }
-    },
-    [postId]
-  )
-
-  useEffect(() => {
-    if (visible) {
-      getComments()
-    }
-  }, [getComments, visible])
+  const { user } = useUser()
 
   async function postComment() {
     try {
@@ -66,18 +45,28 @@ export const CommentSection: FC<CommentSectionProps> = ({
         return
       }
 
-      const api = new CommentApi()
+      const commentId = (
+        await api.createComment({
+          createCommentRequestDto: {
+            text,
+            tags,
+            postId
+          }
+        })
+      ).commentId
 
-      await api.createComment({
-        createCommentRequestDto: {
-          text,
-          tags,
-          postId
-        }
-      })
-
-      setValue("comment", "")
-      getComments(false)
+      const comment: CommentDto = {
+        commentId,
+        postId,
+        text,
+        tags,
+        commenterId: user?.userId ?? "",
+        commenterDisplayName: user?.displayName ?? "",
+        commenterUsername: user?.username ?? "",
+        createdAt: new Date(),
+        isHidden: false
+      }
+      setComments([comment, ...comments])
       setIsReset(true)
       updateEngagement()
     } catch (error: any) {
@@ -92,15 +81,33 @@ export const CommentSection: FC<CommentSectionProps> = ({
         !visible ? "hidden" : ""
       )}
     >
-      {isLoadingComments ? (
-        <div className="flex w-full items-center justify-center">
-          <span className="h-7 w-7 animate-spin rounded-[50%] border-4 border-t-4 border-gray-400 border-t-white" />
-        </div>
-      ) : (
-        comments.map((comment: CommentDto) => (
-          <Comment key={comment.commentId} comment={comment} />
-        ))
-      )}
+      {comments.map((comment) => {
+        return (
+          <Comment
+            key={comment.commentId}
+            comment={comment}
+            removable={true}
+            ownsPost={ownsPost}
+          />
+        )
+      })}
+
+      <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
+        fetch={async (req: GetCommentsForPostRequestDto) => {
+          return await api.findCommentsForPost({
+            getCommentsForPostRequestDto: req
+          })
+        }}
+        KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
+          return <Comment comment={arg} removable={true} ownsPost={ownsPost} />
+        }}
+        loadingElement={
+          <div className="flex w-full items-center justify-center">
+            <span className="h-7 w-7 animate-spin rounded-[50%] border-4 border-t-4 border-gray-400 border-t-white" />
+          </div>
+        }
+        fetchProps={{ postId }}
+      ></InfiniteLoad>
 
       <form
         onSubmit={(e) => {
@@ -126,7 +133,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
           disabled={isSubmitSuccessful}
           className="ml-4 h-[40px] w-[10%] min-w-[70px]"
         >
-          Post
+          Comment
         </Button>
       </form>
     </div>
