@@ -90,7 +90,7 @@ const ProfilePicture: FC = () => {
             </div>
           }
         />
-        {profileImageCropOpen && profileImage.length && (
+        {profileImageCropOpen && !!profileImage.length && (
           <ImageCropDialog
             onCrop={onProfileCrop}
             onClose={() => setprofileImageCropOpen(false)}

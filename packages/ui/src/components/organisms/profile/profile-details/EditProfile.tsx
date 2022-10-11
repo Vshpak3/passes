@@ -1,3 +1,5 @@
+import { GetProfileResponseDto } from "@passes/api-client"
+import { on } from "events"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
@@ -6,7 +8,7 @@ import TikTok from "public/icons/profile-tiktok-icon.svg"
 import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
-import { FC } from "react"
+import { FC, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
@@ -15,7 +17,7 @@ import { FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 
 const bioForm = {
   description: {
@@ -75,8 +77,12 @@ const socialMediaForm = {
 }
 
 export const EditProfile: FC = () => {
-  const { onCloseEditProfile, onSubmitEditProfile, profile } =
-    useCreatorProfile()
+  const {
+    onCloseEditProfile,
+    onSubmitEditProfile,
+    profileInfo,
+    profileUserId
+  } = useProfile()
 
   const {
     handleSubmit,
@@ -84,26 +90,33 @@ export const EditProfile: FC = () => {
     getValues,
     watch,
     setValue,
+    reset,
     formState: { dirtyFields, isSubmitSuccessful }
   } = useForm<ProfileUpdate>({
-    defaultValues: {
-      ...Object.fromEntries(
-        [
-          "displayName",
-          "description",
-          "discordUsername",
-          "facebookUsername",
-          "instagramUsername",
-          "tiktokUsername",
-          "twitchUsername",
-          "twitterUsername",
-          "youtubeUsername"
-        ].map((k) => [k, (profile as any)?.[k]])
-      ),
-      profileImage: [],
-      profileBannerImage: []
-    }
+    defaultValues: useMemo(() => {
+      return {
+        ...Object.fromEntries(
+          [
+            "displayName",
+            "description",
+            "discordUsername",
+            "facebookUsername",
+            "instagramUsername",
+            "tiktokUsername",
+            "twitchUsername",
+            "twitterUsername",
+            "youtubeUsername"
+          ].map((k) => [k, profileInfo?.[k as keyof GetProfileResponseDto]])
+        ),
+        profileImage: [],
+        profileBannerImage: []
+      }
+    }, [profileInfo])
   })
+
+  useEffect(() => {
+    reset(profileInfo)
+  }, [profileInfo, reset])
 
   const profileImage: File[] = watch("profileImage")
   const profileBannerImage: File[] = watch("profileBannerImage")
@@ -132,7 +145,9 @@ export const EditProfile: FC = () => {
       )
 
       if (changes) {
-        await onSubmitEditProfile(values)
+        await onSubmitEditProfile(changes)
+      } else {
+        onCloseEditProfile()
       }
     } catch (error: any) {
       await errorMessage(error, true)
@@ -177,9 +192,9 @@ export const EditProfile: FC = () => {
                     alt=""
                     className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
                     src={
-                      profileBannerImage.length
+                      profileBannerImage?.length
                         ? URL.createObjectURL(profileBannerImage[0])
-                        : ContentService.profileBanner(profile?.userId || "")
+                        : ContentService.profileBanner(profileUserId || "")
                     }
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null
@@ -204,9 +219,9 @@ export const EditProfile: FC = () => {
                   alt=""
                   className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
                   src={
-                    profileImage.length
+                    profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : ContentService.profileThumbnail(profile?.userId || "")
+                      : ContentService.profileThumbnail(profileUserId || "")
                   }
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null

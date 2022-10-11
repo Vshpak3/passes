@@ -1,12 +1,12 @@
 import { CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 
 import { NewPost } from "./NewPost"
 
 export const NewPosts: React.FC = () => {
-  const { profile, profileUsername } = useCreatorProfile()
+  const { profileInfo, profileUsername } = useProfile()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
   const createPost = async (
@@ -16,9 +16,9 @@ export const NewPosts: React.FC = () => {
     const post: PostDto = {
       postId,
       paywall: false,
-      userId: profile?.userId || "",
+      userId: profileInfo?.userId || "",
       username: profileUsername || "",
-      displayName: profile?.displayName ?? "",
+      displayName: profileInfo?.displayName ?? "",
       text: createPost.text,
       tags: createPost.tags,
       content: undefined, // TODO: grab content through swr or endpoint
@@ -44,7 +44,7 @@ export const NewPosts: React.FC = () => {
   return (
     <>
       <NewPost
-        // TODO: passes={profile?.passes}
+        // TODO: passes={profileInfo?.passes}
         createPost={createPost}
         placeholder="What's on your mind?"
         initialData={{}}

@@ -109,12 +109,13 @@ export const PostEngagement: FC<PostEngagementProps> = ({
           <CostIcon />
         </div>
       </div>
-      <CommentSection
-        postId={postId}
-        visible={showCommentSection}
-        updateEngagement={updateEngagement}
-        ownsPost={isOwner}
-      />
+      {showCommentSection && (
+        <CommentSection
+          postId={postId}
+          updateEngagement={updateEngagement}
+          ownsPost={isOwner}
+        />
+      )}
       {isTipsModalOpen && (
         <TipPostModal
           isOpen={isTipsModalOpen}

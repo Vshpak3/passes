@@ -13,17 +13,17 @@ import CustomComponentMentionEditor from "src/components/organisms/CustomMention
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
+
+const api = new CommentApi()
+
 interface CommentSectionProps {
   postId: string
   ownsPost: boolean
-  visible: boolean
   updateEngagement: any
 }
 
-const api = new CommentApi()
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
-  visible = false,
   updateEngagement,
   ownsPost
 }) => {
@@ -76,10 +76,9 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
   return (
     <div
-      className={classNames(
-        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10",
-        !visible ? "hidden" : ""
-      )}
+      className={
+        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10"
+      }
     >
       {comments.map((comment) => {
         return (

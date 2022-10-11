@@ -5,7 +5,7 @@ import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/post/PostDropdown"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 import { useBlockModal } from "src/hooks/useBlockModal"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
@@ -17,7 +17,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   comment,
   removable
 }) => {
-  const { ownsProfile } = useCreatorProfile()
+  const { ownsProfile } = useProfile()
   const api = new FanWallApi()
 
   const { setIsReportModalOpen } = useReportModal()

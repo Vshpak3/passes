@@ -5,7 +5,7 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
@@ -28,7 +28,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   createPost,
   creatorId
 }: NewFanwallPostProps) => {
-  const { profile } = useCreatorProfile()
+  const { profileInfo } = useProfile()
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
 
@@ -85,7 +85,9 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
               isReset={isReset}
               setIsReset={setIsReset}
               placeholder={`Write something${
-                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
+                profileInfo?.displayName
+                  ? ` to ${profileInfo?.displayName}...`
+                  : "..."
               }`}
               onInputChange={(params: any) => {
                 setValue("text", params?.text)

@@ -9,8 +9,8 @@ import {
 } from "src/components/atoms/Button"
 import { ContentService } from "src/helpers/content"
 import { compactNumberFormatter } from "src/helpers/formatters"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 import { useFollow } from "src/hooks/useFollow"
+import { useProfile } from "src/hooks/useProfile"
 
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 
@@ -104,16 +104,21 @@ export interface ProfileInformationProps {
 export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   onChat
 }) => {
-  const { creatorStats, ownsProfile, profile, profileUsername } =
-    useCreatorProfile()
+  const {
+    profileStats,
+    ownsProfile,
+    profileInfo,
+    profileUsername,
+    profileUserId
+  } = useProfile()
 
-  const { follow, unfollow, isFollowing } = useFollow(profile?.userId || "")
+  const { follow, unfollow, isFollowing } = useFollow(profileUserId || "")
 
   return (
     <div className="flex flex-col items-start gap-[6px]">
       <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
         <span className="text-[32px] font-medium leading-9 text-passes-white-100">
-          {profile?.displayName}
+          {profileInfo?.displayName}
         </span>
       </div>
       <div className="flex w-full justify-between">
@@ -140,13 +145,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         )}
       </div>
       <span className="text-md my-3 font-semibold leading-[22px] text-white">
-        {profile?.description}
+        {profileInfo?.description}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {creatorStats?.numPosts ?? "-"}
+              {profileStats?.numPosts ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
@@ -155,7 +160,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(creatorStats?.numLikes || 0) ?? "-"}
+              {compactNumberFormatter(profileStats?.numLikes || 0) ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
@@ -164,13 +169,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         </div>
 
         <ProfileSocialMedia
-          discordUsername={profile?.discordUsername}
-          facebookUsername={profile?.facebookUsername}
-          instagramUsername={profile?.instagramUsername}
-          tiktokUsername={profile?.tiktokUsername}
-          twitchUsername={profile?.twitchUsername}
-          twitterUsername={profile?.twitterUsername}
-          youtubeUsername={profile?.youtubeUsername}
+          discordUsername={profileInfo?.discordUsername}
+          facebookUsername={profileInfo?.facebookUsername}
+          instagramUsername={profileInfo?.instagramUsername}
+          tiktokUsername={profileInfo?.tiktokUsername}
+          twitchUsername={profileInfo?.twitchUsername}
+          twitterUsername={profileInfo?.twitterUsername}
+          youtubeUsername={profileInfo?.youtubeUsername}
         />
       </div>
     </div>
@@ -178,7 +183,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 }
 
 interface EditProfileActionProps {
-  onEditProfile: any
+  onEditProfile: () => void
 }
 
 export const EditProfileAction: FC<EditProfileActionProps> = ({
@@ -199,15 +204,15 @@ export const EditProfileAction: FC<EditProfileActionProps> = ({
 export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
   onChat
 }) => {
-  const { creatorStats, ownsProfile, profile, profileUsername } =
-    useCreatorProfile()
+  const { profileStats, ownsProfile, profileInfo, profileUsername } =
+    useProfile()
 
-  const { follow, unfollow, isFollowing } = useFollow(profile?.userId || "")
+  const { follow, unfollow, isFollowing } = useFollow(profileInfo?.userId || "")
 
   return (
     <>
       <span className="text-[18px] font-semibold text-passes-white-100">
-        {profile?.displayName}
+        {profileInfo?.displayName}
       </span>
       <div className="align-items flex h-[23px] w-[62px] items-center justify-center rounded-xl bg-passes-white-100/5">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
@@ -215,20 +220,20 @@ export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
         </span>
       </div>
       <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
-        {profile?.description}
+        {profileInfo?.description}
       </span>
       <ProfileSocialMedia
-        discordUsername={profile?.discordUsername}
-        facebookUsername={profile?.facebookUsername}
-        instagramUsername={profile?.instagramUsername}
-        tiktokUsername={profile?.tiktokUsername}
-        twitchUsername={profile?.twitchUsername}
-        twitterUsername={profile?.twitterUsername}
-        youtubeUsername={profile?.youtubeUsername}
+        discordUsername={profileInfo?.discordUsername}
+        facebookUsername={profileInfo?.facebookUsername}
+        instagramUsername={profileInfo?.instagramUsername}
+        tiktokUsername={profileInfo?.tiktokUsername}
+        twitchUsername={profileInfo?.twitchUsername}
+        twitterUsername={profileInfo?.twitterUsername}
+        youtubeUsername={profileInfo?.youtubeUsername}
       />
       <ProfileStatsMobile
-        numPosts={creatorStats?.numPosts || 0}
-        likes={creatorStats?.numLikes || 0}
+        numPosts={profileStats?.numPosts || 0}
+        likes={profileStats?.numLikes || 0}
       />
       {!ownsProfile && (
         <div className="flex space-x-3">

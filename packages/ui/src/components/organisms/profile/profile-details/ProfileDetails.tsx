@@ -2,7 +2,7 @@ import { MessagesApi } from "@passes/api-client/apis"
 import { FC, useState } from "react"
 import { Modal } from "src/components/organisms/Modal"
 import { ContentService } from "src/helpers/content"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 
 import { EditProfile } from "./EditProfile"
 import {
@@ -15,13 +15,13 @@ import {
 export const ProfileDetails: FC = () => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
-  const { editProfile, ownsProfile, profile, onEditProfile } =
-    useCreatorProfile()
+  const { editProfile, ownsProfile, onEditProfile, profileUserId } =
+    useProfile()
 
   const onChat = async () => {
     const api = new MessagesApi()
     await api.getOrCreateChannel({
-      getChannelRequestDto: { userId: profile?.userId || "" }
+      getChannelRequestDto: { userId: profileUserId || "" }
     })
   }
 
@@ -31,7 +31,7 @@ export const ProfileDetails: FC = () => {
       <Modal isOpen={isProfilePicModalOpen} setOpen={setIsProfilePicModalOpen}>
         <div className="flex flex-row justify-center">
           <img
-            src={ContentService.profileImage(profile?.userId || "")}
+            src={ContentService.profileImage(profileUserId || "")}
             className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
             alt=""
             onError={({ currentTarget }) => {
@@ -45,7 +45,7 @@ export const ProfileDetails: FC = () => {
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
-            userId={profile?.userId || ""}
+            userId={profileUserId || ""}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
@@ -57,10 +57,9 @@ export const ProfileDetails: FC = () => {
         {/* Mobile */}
         <div className="align-center my-4 -mt-[220px] flex grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
           <ProfileImage
-            userId={profile?.userId || ""}
+            userId={profileUserId || ""}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
-          {/* TODO: fix styling for mobile */}
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
           <ProfileInformationMobile onChat={onChat} />
         </div>

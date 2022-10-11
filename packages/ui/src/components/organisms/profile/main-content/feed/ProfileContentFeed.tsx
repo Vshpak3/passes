@@ -16,7 +16,7 @@ import {
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useProfile } from "src/hooks/useProfile"
 
 import { FanWallComment } from "./FanWallComment"
 import { PassesFeed } from "./PassesFeed"
@@ -40,7 +40,7 @@ export interface ProfileContentFeedProps {
 export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   activeTab
 }) => {
-  const { profile, ownsProfile } = useCreatorProfile()
+  const { profileUserId, ownsProfile } = useProfile()
   const api = new FeedApi()
 
   switch (activeTab) {
@@ -52,7 +52,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
               getProfileFeedRequestDto: req
             })
           }}
-          fetchProps={{ creatorId: profile?.userId || "" }}
+          fetchProps={{ creatorId: profileUserId || "" }}
           emptyElement={ContentFeedEmpty}
           loadingElement={ContentFeedLoading}
           endElement={ContentFeedEnd}
@@ -77,7 +77,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
                 getFanWallRequestDto: req
               })
             }}
-            fetchProps={{ creatorId: profile?.userId }}
+            fetchProps={{ creatorId: profileUserId }}
             emptyElement={ContentFeedEmpty}
             loadingElement={ContentFeedLoading}
             endElement={ContentFeedEnd}

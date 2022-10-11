@@ -21,7 +21,9 @@ export interface ProfileUpdate
   profileBannerImage: File[]
 }
 
-export async function updateProfile(values: ProfileUpdate): Promise<void> {
+export async function updateProfile(
+  values: Partial<ProfileUpdate>
+): Promise<void> {
   const {
     profileImage,
     profileBannerImage,
