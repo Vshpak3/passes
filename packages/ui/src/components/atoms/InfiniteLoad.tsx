@@ -52,7 +52,6 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     return { key: request, resets: resets }
   }
   const [hasMore, setHasMore] = useState<boolean>(true)
-
   const fetchData = async ({ key }: Key<T>) => {
     return await fetch(key as Omit<T, "data">)
   }
@@ -61,18 +60,17 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     getKey,
     fetchData,
     {
-      revalidateOnMount: true
+      revalidateOnMount: true,
+      revalidateAll: false,
+      revalidateFirstPage: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
     }
   )
 
-  const triggerFetch = useMemo(
-    () =>
-      debounce(async (_size: number) => {
-        setSize(_size)
-      }, SCROLL_DEBOUNCE_MS),
-    [setSize]
-  )
-
+  const triggerFetch = () => {
+    setSize(size + 1)
+  }
   const [flattenedData, setFlattenedData] = useState<A[]>([])
 
   useEffect(() => {
@@ -95,9 +93,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
       {flattenedData.map((data, index) => (
         <KeyedComponent key={index} arg={data} />
       ))}
-      {hasMore && (
-        <button onClick={() => triggerFetch(size + 1)}>Load more</button>
-      )}
+      {hasMore && <button onClick={triggerFetch}>Load more</button>}
       {!hasMore && flattenedData.length && endElement}
       {!hasMore && !flattenedData.length && emptyElement}
       {isValidating && loadingElement}

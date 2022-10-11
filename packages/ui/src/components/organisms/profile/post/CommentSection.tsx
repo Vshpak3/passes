@@ -12,6 +12,7 @@ import { ComponentArg, InfiniteLoad } from "src/components/atoms/InfiniteLoad"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
+import { useUser } from "src/hooks/useUser"
 interface CommentSectionProps {
   postId: string
   ownsPost: boolean
@@ -26,13 +27,14 @@ export const CommentSection: FC<CommentSectionProps> = ({
   updateEngagement,
   ownsPost
 }) => {
+  const [comments, setComments] = useState<CommentDto[]>([])
   const [isReset, setIsReset] = useState(false)
   const {
     getValues,
     setValue,
     formState: { isSubmitSuccessful }
   } = useForm()
-  const [resets, setResets] = useState<number>(0)
+  const { user } = useUser()
 
   async function postComment() {
     try {
@@ -42,15 +44,29 @@ export const CommentSection: FC<CommentSectionProps> = ({
         return
       }
 
-      await api.createComment({
-        createCommentRequestDto: {
-          text,
-          tags,
-          postId
-        }
-      })
+      const commentId = (
+        await api.createComment({
+          createCommentRequestDto: {
+            text,
+            tags,
+            postId
+          }
+        })
+      ).commentId
 
-      setResets(resets + 1)
+      const comment: CommentDto = {
+        commentId,
+        postId,
+        text,
+        tags,
+        commenterId: user?.userId ?? "",
+        commenterDisplayName: user?.displayName ?? "",
+        commenterUsername: user?.username ?? "",
+        createdAt: new Date(),
+        isHidden: false,
+        isOwner: true
+      }
+      setComments([comment, ...comments])
       setIsReset(true)
       updateEngagement()
     } catch (error: any) {
@@ -65,9 +81,19 @@ export const CommentSection: FC<CommentSectionProps> = ({
         !visible ? "hidden" : ""
       )}
     >
+      {comments.map((comment) => {
+        return (
+          <Comment
+            key={comment.commentId}
+            comment={comment}
+            removable={true}
+            ownsPost={ownsPost}
+          />
+        )
+      })}
+
       <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
         fetch={async (req: GetCommentsForPostRequestDto) => {
-          setTimeout(() => undefined, 500)
           return await api.findCommentsForPost({
             getCommentsForPostRequestDto: req
           })
@@ -81,7 +107,6 @@ export const CommentSection: FC<CommentSectionProps> = ({
           </div>
         }
         fetchProps={{ postId }}
-        resets={resets}
       ></InfiniteLoad>
 
       <form

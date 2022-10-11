@@ -22,7 +22,7 @@ import { CreateCommentRequestDto } from './dto/create-comment.dto'
 import { GetCommentsForPostRequestDto } from './dto/get-comments-for-post-dto'
 import { CommentEntity } from './entities/comment.entity'
 
-export const MAX_COMMENTS_PER_REQUEST = 20
+export const MAX_COMMENTS_PER_REQUEST = 5
 
 @Injectable()
 export class CommentService {
