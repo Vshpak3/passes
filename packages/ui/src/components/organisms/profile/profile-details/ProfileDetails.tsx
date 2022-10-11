@@ -60,7 +60,7 @@ const ProfileDetails: FC<ProfileDetailsProps> = ({
         <div className="flex flex-row justify-center">
           <img
             src={ContentService.profileImage(profile.userId)}
-            className="max-w-[500px] object-cover drop-shadow-profile-photo"
+            className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
             alt=""
             onError={({ currentTarget }) => {
               currentTarget.onerror = null

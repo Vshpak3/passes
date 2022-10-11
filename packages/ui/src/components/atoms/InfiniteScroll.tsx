@@ -89,7 +89,7 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         className="w-full"
         style={{ width: "100%" }}
         next={() => triggerFetch(size + 1)}
-        hasMore={!data || data[data.length - 1].data.length !== 0}
+        hasMore={!data || !!data[data.length - 1].lastId}
         loader={loadingElement}
         endMessage={size !== 1 && endElement}
       >

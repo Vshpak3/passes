@@ -83,7 +83,7 @@ const ProfilePicture: FC = () => {
                 src={
                   profileImage.length
                     ? URL.createObjectURL(profileImage[0])
-                    : ContentService.profileThumbnail(user?.id || "")
+                    : ContentService.profileThumbnail(user?.userId || "")
                 }
               />
             </div>
