@@ -24,10 +24,7 @@ const ContentFeedEnd = (
 )
 
 interface FanWallFeedProps {
-  creatorId: string
-  fanWallPosts: GetFanWallResponseDto
   ownsProfile: boolean
-  profileUsername: string
 }
 
 const FanWallFeed: FC<FanWallFeedProps> = ({ ownsProfile }) => {

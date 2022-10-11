@@ -73,7 +73,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
       return (
         <>
           <NewFanwallPost />
-          <FanWallFeed />
+          <FanWallFeed ownsProfile={ownsProfile} />
         </>
       )
     case "passes":
