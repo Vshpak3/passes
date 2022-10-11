@@ -247,10 +247,10 @@ const Wallets = () => {
           text-[#ffffffeb]
           md:pl-8"
       >
-        <span className="block flex w-[120px]">Wallet Type</span>
-        <span className="block w-[30%]">Address</span>
-        <span className="block w-[20%]">Default For</span>
-        <span className="block w-[20%]">Delete</span>
+        <span className="block basis-1">Wallet Type</span>
+        <span className="block basis-1">Address</span>
+        <span className="block basis-1">Default For</span>
+        <span className="block basis-1">Delete</span>
       </div>
       {loading || !wallets ? (
         <span>Loading...</span>

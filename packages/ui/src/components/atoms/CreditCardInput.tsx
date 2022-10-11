@@ -1,4 +1,3 @@
-import AmexCardIcon from "public/icons/amex-icon.svg"
 import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
@@ -32,7 +31,6 @@ export const CreditCardInput: FC<Props> = ({ control, name, rules }) => {
           <div className="relative mt-4">
             <span className="absolute right-3 top-4 flex flex-row">
               <VisaIcon />
-              <AmexCardIcon />
               <DiscoverCardIcon />
               <MasterCardIcon />
             </span>

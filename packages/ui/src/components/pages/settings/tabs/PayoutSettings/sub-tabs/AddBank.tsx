@@ -6,11 +6,12 @@ import InfoIcon from "public/icons/info-icon.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput, Select } from "src/components/atoms"
+import { EIcon } from "src/components/atoms/Input"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
-import { COUNTRIES } from "src/helpers/countries"
+import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
 
@@ -30,11 +31,12 @@ const AddBank = () => {
     register,
     getValues,
     setValue,
+    watch,
     formState: { errors, isSubmitSuccessful }
-  } = useForm<{ "bank-country": string }>({
+  } = useForm<{ "bank-country": string; country: string }>({
     defaultValues: {}
   })
-
+  const countrySelected = watch("country")
   const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
 
   const onSubmit = async () => {
@@ -225,23 +227,37 @@ const AddBank = () => {
           className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
         />
         <div className="flex gap-4">
-          <FormInput
-            register={register}
-            type="text"
-            name="district"
-            placeholder="State/District"
-            icon={
-              <div
-                className="tooltip absolute left-[160px] top-[26px] h-4 w-4"
-                data-tip="2 letter input only (Example: “FL”)"
-              >
-                <InfoIcon />
-              </div>
-            }
-            errors={errors}
-            className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
-          />
-
+          {countrySelected === COUNTRIES[0] ? (
+            <Select
+              register={register}
+              selectOptions={US_STATES}
+              errors={errors}
+              placeholder="State"
+              options={{
+                required: { message: "State is required", value: true }
+              }}
+              name="district"
+              className="mt-3 w-[120px]"
+            />
+          ) : (
+            <FormInput
+              register={register}
+              type="text"
+              name="district"
+              placeholder="State/District"
+              iconAlign={EIcon.Right}
+              icon={
+                <div
+                  className="tooltip absolute right-[15px] top-6 h-4 w-4"
+                  data-tip="2 letter input only (Example: “FL”)"
+                >
+                  <InfoIcon />
+                </div>
+              }
+              errors={errors}
+              className="mt-2 mb-4 border-passes-dark-100 bg-transparent"
+            />
+          )}
           <FormInput
             register={register}
             type="text"
