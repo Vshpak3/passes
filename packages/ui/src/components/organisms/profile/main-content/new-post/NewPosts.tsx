@@ -1,4 +1,4 @@
-import { CreatePostRequestDto, PostApi, PostDto } from "@passes/api-client"
+import { CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { PostDataContext } from "src/contexts/PostData"
@@ -27,13 +27,10 @@ export const NewPosts: React.FC = () => {
   const { profile, profileUsername } = useCreatorProfile()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
-  const createPost = async (createPost: CreatePostRequestDto) => {
-    const api = new PostApi()
-    const response = await api.createPost({
-      createPostRequestDto: createPost
-    })
-    const postId = response.postId
-
+  const createPost = async (
+    createPost: CreatePostRequestDto,
+    postId: string
+  ) => {
     const post: PostDto = {
       postId,
       paywall: false,

@@ -1,4 +1,4 @@
-import { CreatePostRequestDto } from "@passes/api-client"
+import { CreatePostRequestDto, PostApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
@@ -53,7 +53,10 @@ interface NewPostFormProps {
 interface NewPostProps {
   passes?: any
   placeholder: any
-  createPost: any
+  createPost: (
+    arg: CreatePostRequestDto,
+    postId: string
+  ) => void | Promise<void>
   onlyText?: boolean
   initialData: Record<string, any>
   isExtended?: boolean
@@ -134,7 +137,13 @@ export const NewPost: FC<NewPostProps> = ({
       contentIds: content.map((c: any) => c.id)
     }
 
-    await createPost(post)
+    const api = new PostApi()
+    const response = await api.createPost({
+      createPostRequestDto: post
+    })
+    const postId = response.postId
+
+    await createPost(post, postId)
     reset()
     setFiles([])
     setIsReset(true)

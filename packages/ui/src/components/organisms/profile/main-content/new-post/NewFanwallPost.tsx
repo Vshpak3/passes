@@ -1,4 +1,4 @@
-import { CreateFanWallCommentRequestDto } from "@passes/api-client"
+import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import { FC, useState } from "react"
@@ -6,21 +6,29 @@ import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { useCreatorProfile } from "src/hooks/useCreatorProfile"
-import { useFanWall } from "src/hooks/useFanWall"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
   { ssr: false }
 )
 
-interface NewPostFormProps {
+interface NewFanwallPostProps {
+  createPost: (
+    arg: CreateFanWallCommentRequestDto,
+    fanWallCommentId: string
+  ) => void | Promise<void>
+  creatorId: string
+}
+interface NewFanwallPostFormProps {
   mentions: any[] // TODO
   text: string
 }
 
-export const NewFanwallPost: FC = () => {
+export const NewFanwallPost: FC<NewFanwallPostProps> = ({
+  createPost,
+  creatorId
+}: NewFanwallPostProps) => {
   const { profile } = useCreatorProfile()
-  const { writeToFanWall } = useFanWall(profile?.userId || "")
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
 
@@ -30,7 +38,7 @@ export const NewFanwallPost: FC = () => {
     getValues,
     setValue,
     reset
-  } = useForm<NewPostFormProps>({
+  } = useForm<NewFanwallPostFormProps>({
     defaultValues: {}
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
@@ -39,12 +47,18 @@ export const NewFanwallPost: FC = () => {
     const values = getValues()
     setExtended(false)
 
-    const post: Omit<CreateFanWallCommentRequestDto, "creatorId"> = {
+    const post: CreateFanWallCommentRequestDto = {
+      creatorId,
       text: values.text,
       tags: [] // TODO: add in values.mentions (must update to be TagDto)
     }
-
-    await writeToFanWall(post as CreateFanWallCommentRequestDto)
+    const api = new FanWallApi()
+    const fanWallCommentId = (
+      await api.createFanWallComment({
+        createFanWallCommentRequestDto: post
+      })
+    ).fanWallCommentId
+    await createPost(post, fanWallCommentId)
     reset()
     setIsReset(true)
   }

@@ -4,14 +4,11 @@ import { useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import { useCreatePost } from "src/hooks/useCreatePost"
 
 export const NewPostButton = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const { createPost } = useCreatePost()
 
-  const handleCreatePost = (values: CreatePostRequestDto) => {
-    createPost(values)
+  const handleCreatePost = () => {
     setIsNewPostModalOpen(false)
   }
 

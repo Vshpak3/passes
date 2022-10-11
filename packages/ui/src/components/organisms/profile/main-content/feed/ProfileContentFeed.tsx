@@ -1,5 +1,9 @@
 import {
+  FanWallApi,
+  FanWallCommentDto,
   FeedApi,
+  GetFanWallRequestDto,
+  GetFanWallResponseDto,
   GetProfileFeedRequestDto,
   GetProfileFeedResponseDto,
   PostDto
@@ -9,13 +13,13 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { NewFanwallPost } from "src/components/organisms/profile/main-content/new-post/NewFanwallPost"
+import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { PostDataContext } from "src/contexts/PostData"
 import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
-import { FanWallFeed } from "./FanWallFeed"
+import { FanWallComment } from "./FanWallComment"
 import { PassesFeed } from "./PassesFeed"
 
 const PostKeyedComponent = ({ arg }: ComponentArg<PostDto>) => {
@@ -73,8 +77,34 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
     case "fanWall":
       return (
         <>
-          <NewFanwallPost />
-          <FanWallFeed ownsProfile={ownsProfile} />
+          <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
+            fetch={async (req: GetFanWallRequestDto) => {
+              const api = new FanWallApi()
+              return await api.getFanWallForCreator({
+                getFanWallRequestDto: req
+              })
+            }}
+            fetchProps={{}}
+            emptyElement={ContentFeedEmpty}
+            loadingElement={ContentFeedLoading}
+            endElement={ContentFeedEnd}
+            KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
+              return (
+                <div className="flex py-3">
+                  <FanWallComment
+                    comment={arg}
+                    removable={true}
+                    ownsProfile={ownsProfile}
+                  />
+                </div>
+              )
+            }}
+          >
+            <NewFanwallPosts
+              ownsProfile={ownsProfile}
+              creatorId={profile?.userId ?? ""}
+            />
+          </InfiniteScrollPagination>
         </>
       )
     case "passes":
