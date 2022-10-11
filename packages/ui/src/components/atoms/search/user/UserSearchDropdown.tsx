@@ -43,13 +43,13 @@ export const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
         className={
           isDesktop
             ? "relative flex items-center gap-3"
-            : "absolute inset-x-4 top-[68px] flex sm:inset-x-8"
+            : "absolute top-[68px] right-2 max-w-[300px] xs:max-w-[360px]"
         }
       >
         <ul
           className={
             (classNames(isDesktop ? "max-h-[165px]" : "h-full w-full"),
-            "z-10 w-full min-w-[360px] overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none")
+            "z-10 w-full min-w-[300px] overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none xs:min-w-[360px]")
           }
         >
           {renderResults}
