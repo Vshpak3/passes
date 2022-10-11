@@ -283,9 +283,8 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
               getListMembersRequestDto: req
             })
           }}
-          initProps={{ order, orderType, search, listId: id }}
+          fetchProps={{ order, orderType, search, listId: id }}
           KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
-            console.log(arg, "list-member")
             return (
               <ListMember
                 fanInfo={arg}
