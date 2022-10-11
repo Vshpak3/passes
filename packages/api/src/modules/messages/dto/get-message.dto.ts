@@ -34,6 +34,7 @@ export class GetMessagesResponseDto
 
   constructor(messages: MessageDto[], requestDto: GetMessagesRequestDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

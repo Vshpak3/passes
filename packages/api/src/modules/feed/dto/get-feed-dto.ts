@@ -18,6 +18,7 @@ export class GetFeedResponseDto
 
   constructor(posts: PostDto[], requestDto: GetFeedRequestDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

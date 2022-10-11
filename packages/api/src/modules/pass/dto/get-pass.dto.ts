@@ -25,6 +25,7 @@ export class GetPassesResponseDto
 
   constructor(passes: PassDto[], requestDto: GetPassesRequestDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

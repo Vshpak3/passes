@@ -42,6 +42,7 @@ export class GetChannelsResponseDto
     requestDto: GetChannelsRequestDto,
   ) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

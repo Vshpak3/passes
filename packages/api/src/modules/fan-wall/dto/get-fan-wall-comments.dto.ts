@@ -21,6 +21,7 @@ export class GetFanWallResponseDto
 
   constructor(comments: FanWallCommentDto[], requestDto: GetFanWallRequestDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

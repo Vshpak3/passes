@@ -31,6 +31,7 @@ export class GetListsResponseDto
 
   constructor(lists: ListDto[], requestDto: GetListsRequestsDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

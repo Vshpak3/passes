@@ -26,6 +26,7 @@ export class GetVaultQueryResponseDto
 
   constructor(contents: ContentDto[], requestDto: GetVaultQueryRequestDto) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }

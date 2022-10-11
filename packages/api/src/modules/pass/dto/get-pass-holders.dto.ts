@@ -51,6 +51,7 @@ export class GetPassHoldersResponseDto
     requestDto: GetPassHoldersRequestDto,
   ) {
     super()
+    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
