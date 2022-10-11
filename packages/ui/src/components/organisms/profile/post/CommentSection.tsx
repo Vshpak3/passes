@@ -8,12 +8,11 @@ import classNames from "classnames"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
-import InfiniteLoad, { ComponentArg } from "src/components/atoms/InfiniteLoad"
+import { ComponentArg, InfiniteLoad } from "src/components/atoms/InfiniteLoad"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
-
+import { useUser } from "src/hooks/useUser"
 interface CommentSectionProps {
   postId: string
   ownsPost: boolean
@@ -64,7 +63,8 @@ export const CommentSection: FC<CommentSectionProps> = ({
         commenterDisplayName: user?.displayName ?? "",
         commenterUsername: user?.username ?? "",
         createdAt: new Date(),
-        isHidden: false
+        isHidden: false,
+        isOwner: true
       }
       setComments([comment, ...comments])
       setIsReset(true)
