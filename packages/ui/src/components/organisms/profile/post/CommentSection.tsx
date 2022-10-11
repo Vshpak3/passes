@@ -4,7 +4,6 @@ import {
   GetCommentsForPostResponseDto
 } from "@passes/api-client"
 import { CommentApi } from "@passes/api-client/apis"
-import classNames from "classnames"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"

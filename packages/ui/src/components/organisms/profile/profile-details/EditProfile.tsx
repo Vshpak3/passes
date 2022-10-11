@@ -1,5 +1,4 @@
 import { GetProfileResponseDto } from "@passes/api-client"
-import { on } from "events"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"

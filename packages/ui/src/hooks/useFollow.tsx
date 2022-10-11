@@ -1,39 +1,45 @@
 import { FollowApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
 import { useUser } from "./useUser"
 
-const CACHE_KEY_FOLLOW = "/profile/follow/creator/"
+const CACHE_KEY_FOLLOW = "/profile/follow/"
 
-export const useFollow = (creatorId: string) => {
+export const useFollow = (creatorId?: string) => {
   const api = new FollowApi()
   const { user } = useUser()
   const router = useRouter()
 
-  const fetchIsFollowing = async () => {
-    return await api.checkFollow({ creatorId })
-  }
-
-  const { data, error, mutate } = useSWR(
-    [CACHE_KEY_FOLLOW, creatorId],
-    fetchIsFollowing
+  const { data: isFollowing, mutate } = useSWR(
+    creatorId ? [CACHE_KEY_FOLLOW, creatorId] : null,
+    async () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return (await api.checkFollow({ creatorId: creatorId! })).isFollowing
+    }
   )
+
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: boolean) =>
+    _mutateManual([CACHE_KEY_FOLLOW, creatorId], update, {
+      populateCache: (update: boolean) => {
+        return update
+      },
+      revalidate: false
+    })
 
   const follow = async () => {
     if (!user) {
       router.push("/login")
       return
     }
-    await api.followCreator({
-      creatorId
-    })
+    if (!creatorId) {
+      return
+    }
+    await api.followCreator({ creatorId })
 
-    mutate(fetchIsFollowing, {
-      optimisticData: { isFollowing: true },
-      rollbackOnError: true
-    })
+    mutateManual(true)
   }
 
   const unfollow = async () => {
@@ -41,25 +47,22 @@ export const useFollow = (creatorId: string) => {
       router.push("/login")
       return
     }
-    await api.unfollowCreator({
-      creatorId
-    })
+    if (!creatorId) {
+      return
+    }
+    await api.unfollowCreator({ creatorId })
 
-    mutate(fetchIsFollowing, {
-      optimisticData: { isFollowing: false },
-      rollbackOnError: true
-    })
+    mutateManual(false)
   }
 
   useEffect(() => {
-    if (data === undefined) {
+    if (isFollowing === undefined && creatorId) {
       mutate()
     }
-  }, [data, mutate])
+  }, [isFollowing, creatorId, mutate])
 
   return {
-    isFollowing: data?.isFollowing,
-    error,
+    isFollowing,
     follow,
     unfollow,
     loadFollow: mutate

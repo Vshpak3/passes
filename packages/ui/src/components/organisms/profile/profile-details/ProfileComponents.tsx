@@ -112,7 +112,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
     profileUserId
   } = useProfile()
 
-  const { follow, unfollow, isFollowing } = useFollow(profileUserId || "")
+  const { follow, unfollow, isFollowing } = useFollow(profileUserId)
 
   return (
     <div className="flex flex-col items-start gap-[6px]">
