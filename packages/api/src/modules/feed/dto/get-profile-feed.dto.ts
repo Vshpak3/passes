@@ -22,10 +22,10 @@ export class GetProfileFeedResponseDto
 
   constructor(posts: PostDto[], requestDto: GetProfileFeedRequestDto) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = posts
     if (posts.length > 0) {
       this.lastId = posts[posts.length - 1].postId

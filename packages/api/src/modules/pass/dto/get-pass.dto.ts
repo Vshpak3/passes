@@ -25,10 +25,10 @@ export class GetPassesResponseDto
 
   constructor(passes: PassDto[], requestDto: GetPassesRequestDto) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = passes
 
     if (passes.length > 0) {

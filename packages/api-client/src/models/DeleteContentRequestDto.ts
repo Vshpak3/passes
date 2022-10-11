@@ -21,10 +21,10 @@ import { exists, mapValues } from '../runtime';
 export interface DeleteContentRequestDto {
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof DeleteContentRequestDto
      */
-    contentId: string;
+    contentIds: Array<string>;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface DeleteContentRequestDto {
  */
 export function instanceOfDeleteContentRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "contentId" in value;
+    isInstance = isInstance && "contentIds" in value;
 
     return isInstance;
 }
@@ -47,7 +47,7 @@ export function DeleteContentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'contentId': json['contentId'],
+        'contentIds': json['contentIds'],
     };
 }
 
@@ -60,7 +60,7 @@ export function DeleteContentRequestDtoToJSON(value?: DeleteContentRequestDto | 
     }
     return {
         
-        'contentId': value.contentId,
+        'contentIds': value.contentIds,
     };
 }
 

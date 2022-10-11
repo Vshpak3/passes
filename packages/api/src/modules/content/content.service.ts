@@ -29,7 +29,7 @@ import { ContentEntity } from './entities/content.entity'
 import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
-import { NoContentError } from './error/content.error'
+import { ContentDeleteError, NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
 export const MAX_CONTENT_PER_REQUeST = 10
@@ -49,12 +49,15 @@ export class ContentService {
     userId: string,
     createContentDto: CreateContentRequestDto,
   ): Promise<string> {
+    const { contentType, inPost, inMessage } = createContentDto
     try {
       const id = uuid.v4()
       const data = {
         id,
         user_id: userId,
-        content_type: createContentDto.contentType,
+        content_type: contentType,
+        in_post: inPost,
+        in_message: inMessage,
       }
       await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
       return id
@@ -67,16 +70,21 @@ export class ContentService {
     userId: string,
     deleteContentDto: DeleteContentRequestDto,
   ): Promise<boolean> {
-    const { contentId } = deleteContentDto
-    const deleted = await this.dbWriter<ContentEntity>(ContentEntity.table)
-      .where({
-        id: contentId,
-        user_id: userId,
-        in_message: false,
-        in_post: false,
-      })
-      .delete()
-    return deleted === 1
+    const { contentIds } = deleteContentDto
+    await this.dbWriter.transaction(async (trx) => {
+      const count = await trx<ContentEntity>(ContentEntity.table)
+        .whereIn('id', contentIds)
+        .andWhere({
+          user_id: userId,
+          in_message: false,
+          in_post: false,
+        })
+        .delete()
+      if (count != contentIds.length) {
+        throw new ContentDeleteError('could not delete all contents')
+      }
+    })
+    return true
   }
 
   async findContent(id: string): Promise<GetContentResponseDto> {
@@ -161,10 +169,15 @@ export class ContentService {
     )
   }
 
-  async preSignUploadContent(userId: string, contentType: ContentTypeEnum) {
-    const contentId = await this.createContent(userId, { contentType })
+  async preSignUploadContent(
+    userId: string,
+    createContentDto: CreateContentRequestDto,
+  ) {
+    const contentId = await this.createContent(userId, createContentDto)
     return this.s3contentService.signUrlForContentUpload(
-      `upload/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
+      `upload/${userId}/${contentId}.${getContentTypeFormat(
+        createContentDto.contentType,
+      )}`,
     )
   }
 

@@ -25,6 +25,18 @@ export interface CreateContentRequestDto {
      * @memberof CreateContentRequestDto
      */
     contentType: CreateContentRequestDtoContentTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateContentRequestDto
+     */
+    inPost: CreateContentRequestDtoInPostEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateContentRequestDto
+     */
+    inMessage: CreateContentRequestDtoInMessageEnum;
 }
 
 
@@ -39,6 +51,28 @@ export const CreateContentRequestDtoContentTypeEnum = {
 } as const;
 export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequestDtoContentTypeEnum[keyof typeof CreateContentRequestDtoContentTypeEnum];
 
+/**
+ * @export
+ */
+export const CreateContentRequestDtoInPostEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type CreateContentRequestDtoInPostEnum = typeof CreateContentRequestDtoInPostEnum[keyof typeof CreateContentRequestDtoInPostEnum];
+
+/**
+ * @export
+ */
+export const CreateContentRequestDtoInMessageEnum = {
+    Image: 'image',
+    Video: 'video',
+    Gif: 'gif',
+    Audio: 'audio'
+} as const;
+export type CreateContentRequestDtoInMessageEnum = typeof CreateContentRequestDtoInMessageEnum[keyof typeof CreateContentRequestDtoInMessageEnum];
+
 
 /**
  * Check if a given object implements the CreateContentRequestDto interface.
@@ -46,6 +80,8 @@ export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequest
 export function instanceOfCreateContentRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "contentType" in value;
+    isInstance = isInstance && "inPost" in value;
+    isInstance = isInstance && "inMessage" in value;
 
     return isInstance;
 }
@@ -61,6 +97,8 @@ export function CreateContentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'contentType': json['contentType'],
+        'inPost': json['inPost'],
+        'inMessage': json['inMessage'],
     };
 }
 
@@ -74,6 +112,8 @@ export function CreateContentRequestDtoToJSON(value?: CreateContentRequestDto | 
     return {
         
         'contentType': value.contentType,
+        'inPost': value.inPost,
+        'inMessage': value.inMessage,
     };
 }
 

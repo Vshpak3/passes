@@ -34,10 +34,10 @@ export class GetMessagesResponseDto
 
   constructor(messages: MessageDto[], requestDto: GetMessagesRequestDto) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = messages
 
     if (messages.length > 0) {

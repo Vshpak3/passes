@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 
 export class DeleteContentRequestDto {
-  @DtoProperty({ type: 'uuid' })
-  contentId: string
+  @DtoProperty({ type: 'uuid[]' })
+  contentIds: string[]
 }

@@ -25,6 +25,12 @@ export class ContentDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  inPost: boolean
+
+  @DtoProperty({ type: 'boolean' })
+  inMessage: boolean
+
   constructor(
     content: ContentEntity & Partial<PostContentEntity>,
     signedUrl?: string,
@@ -35,6 +41,8 @@ export class ContentDto {
       this.contentType = content.content_type
       this.signedUrl = signedUrl
       this.createdAt = content.created_at
+      this.inPost = content.in_post
+      this.inMessage = content.in_message
       if (content.index) {
         this.index = content.index
       }

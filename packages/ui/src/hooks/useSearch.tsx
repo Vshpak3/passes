@@ -5,7 +5,10 @@ import useOnClickOutside from "./useOnClickOutside"
 
 const DEBOUNCE_DELAY = 300
 
-const useSearch = <T,>(fetcher: (searchValue: string) => Promise<T[]>) => {
+const useSearch = <T,>(
+  fetcher: (searchValue: string) => Promise<T[]>,
+  debounceDelay = DEBOUNCE_DELAY
+) => {
   const [searchValue, setSearchValue] = useState("")
   const [results, setResults] = useState<T[]>([])
   const [resultsVisible, setResultsVisible] = useState(false)
@@ -31,8 +34,8 @@ const useSearch = <T,>(fetcher: (searchValue: string) => Promise<T[]>) => {
         } else {
           setResults([])
         }
-      }, DEBOUNCE_DELAY),
-    [fetcher]
+      }, debounceDelay),
+    [debounceDelay, fetcher]
   )
 
   useEffect(() => {

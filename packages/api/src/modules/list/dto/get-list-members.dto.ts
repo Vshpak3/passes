@@ -43,10 +43,10 @@ export class GetListMembersResponseDto
     requestDto: Partial<GetListMembersRequestDto>,
   ) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = listMembers
 
     if (listMembers.length > 0) {

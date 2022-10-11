@@ -52,6 +52,7 @@ import {
 } from './dto/create-post.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
+import { GetPostsRangeRequestDto } from './dto/get-posts-range.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -298,6 +299,21 @@ export class PostService {
     if (scheduledOnly) {
       query = query.whereNotNull('scheduled_at')
     }
+    return await this.getPostsFromQuery(userId, query)
+  }
+
+  async getPostsRange(
+    userId: string,
+    getPostsRangeRequestDto: GetPostsRangeRequestDto,
+  ): Promise<PostDto[]> {
+    const { startDate, endDate } = getPostsRangeRequestDto
+    const query = this.dbReader<PostEntity>(PostEntity.table)
+      .select([`${PostEntity.table}.*`])
+      .whereNull(`${PostEntity.table}.deleted_at`)
+      .andWhere('scheduled_at', '>=', startDate)
+      .andWhere('scheduled_at', '<', endDate)
+      .andWhere(`${PostEntity.table}.user_id`, userId)
+
     return await this.getPostsFromQuery(userId, query)
   }
 

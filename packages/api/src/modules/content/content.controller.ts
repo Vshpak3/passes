@@ -125,14 +125,14 @@ export class ContentController {
     responseDesc: 'Content url was signed',
     role: RoleEnum.GENERAL,
   })
-  @Get('sign/content/:contentType')
+  @Post('sign/content')
   async preSignContent(
     @Req() req: RequestWithUser,
-    @Param() params: CreateContentRequestDto,
+    @Body() createContentRequestDto: CreateContentRequestDto,
   ): Promise<GetSignedUrlResponseDto> {
     const url = await this.contentService.preSignUploadContent(
       req.user.id,
-      params.contentType,
+      createContentRequestDto,
     )
     return { url }
   }

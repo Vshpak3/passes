@@ -55,6 +55,18 @@ export interface ContentDto {
      * @memberof ContentDto
      */
     createdAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ContentDto
+     */
+    inPost: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ContentDto
+     */
+    inMessage: boolean;
 }
 
 
@@ -80,6 +92,8 @@ export function instanceOfContentDto(value: object): boolean {
     isInstance = isInstance && "contentType" in value;
     isInstance = isInstance && "index" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "inPost" in value;
+    isInstance = isInstance && "inMessage" in value;
 
     return isInstance;
 }
@@ -100,6 +114,8 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'contentType': json['contentType'],
         'index': json['index'],
         'createdAt': (new Date(json['createdAt'])),
+        'inPost': json['inPost'],
+        'inMessage': json['inMessage'],
     };
 }
 
@@ -118,6 +134,8 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'contentType': value.contentType,
         'index': value.index,
         'createdAt': (value.createdAt.toISOString()),
+        'inPost': value.inPost,
+        'inMessage': value.inMessage,
     };
 }
 

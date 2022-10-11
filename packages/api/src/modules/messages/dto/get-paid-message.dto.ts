@@ -21,10 +21,10 @@ export class GetPaidMessagesResponseDto
     requestDto: GetPaidMessagesRequestDto,
   ) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = paidMessages
 
     if (paidMessages.length > 0) {

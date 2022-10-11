@@ -102,6 +102,8 @@ export * from './GetPersonaStatusResponseDto';
 export * from './GetPostHistoryRequestDto';
 export * from './GetPostHistoryResponseDto';
 export * from './GetPostResponseDto';
+export * from './GetPostsRangeRequestDto';
+export * from './GetPostsRangeResponseDto';
 export * from './GetPostsRequestDto';
 export * from './GetPostsResponseDto';
 export * from './GetProfileFeedRequestDto';

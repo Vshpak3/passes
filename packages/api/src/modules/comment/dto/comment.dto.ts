@@ -37,6 +37,9 @@ export class CommentDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  isHidden: boolean
+
   constructor(
     comment: CommentEntity & {
       commenter_username: string
@@ -51,5 +54,6 @@ export class CommentDto {
     this.commenterDisplayName = comment.commenter_display_name
     this.createdAt = comment.created_at
     this.tags = JSON.parse(comment.tags)
+    this.isHidden = comment.hidden
   }
 }

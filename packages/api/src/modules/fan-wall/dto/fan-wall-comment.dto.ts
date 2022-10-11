@@ -37,11 +37,18 @@ export class FanWallCommentDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  isOwner: boolean
+
+  @DtoProperty({ type: 'boolean' })
+  isHidden: boolean
+
   constructor(
     fanWallPost: FanWallCommentEntity & {
       commenter_username: string
       commenter_display_name: string
     },
+    isOwner?: boolean,
   ) {
     this.fanWallCommentId = fanWallPost.id
     this.creatorId = fanWallPost.creator_id
@@ -51,5 +58,7 @@ export class FanWallCommentDto {
     this.commenterDisplayName = fanWallPost.commenter_display_name
     this.createdAt = fanWallPost.created_at
     this.tags = JSON.parse(fanWallPost.tags)
+    this.isOwner = !!isOwner
+    this.isHidden = fanWallPost.hidden
   }
 }

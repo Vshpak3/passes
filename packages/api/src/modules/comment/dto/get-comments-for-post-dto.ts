@@ -24,10 +24,10 @@ export class GetCommentsForPostResponseDto
     requestDto: GetCommentsForPostRequestDto,
   ) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = comments
     if (comments.length > 0) {
       this.lastId = comments[comments.length - 1].commentId

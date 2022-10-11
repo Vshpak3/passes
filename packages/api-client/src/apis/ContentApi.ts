@@ -50,7 +50,7 @@ export interface GetVaultContentRequest {
 }
 
 export interface PreSignContentRequest {
-    contentType: PreSignContentContentTypeEnum;
+    createContentRequestDto: CreateContentRequestDto;
 }
 
 export interface PreSignPassRequest {
@@ -179,13 +179,15 @@ export class ContentApi extends runtime.BaseAPI {
      * Get signed url for content
      */
     async preSignContentRaw(requestParameters: PreSignContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
-        if (requestParameters.contentType === null || requestParameters.contentType === undefined) {
-            throw new runtime.RequiredError('contentType','Required parameter requestParameters.contentType was null or undefined when calling preSignContent.');
+        if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
+            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling preSignContent.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
 
@@ -193,10 +195,11 @@ export class ContentApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/content/sign/content/{contentType}`.replace(`{${"contentType"}}`, encodeURIComponent(String(requestParameters.contentType))),
-            method: 'GET',
+            path: `/api/content/sign/content`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: CreateContentRequestDtoToJSON(requestParameters.createContentRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));
@@ -339,14 +342,3 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
 }
-
-/**
- * @export
- */
-export const PreSignContentContentTypeEnum = {
-    Image: 'image',
-    Video: 'video',
-    Gif: 'gif',
-    Audio: 'audio'
-} as const;
-export type PreSignContentContentTypeEnum = typeof PreSignContentContentTypeEnum[keyof typeof PreSignContentContentTypeEnum];

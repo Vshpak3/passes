@@ -74,6 +74,18 @@ export interface FanWallCommentDto {
      * @memberof FanWallCommentDto
      */
     createdAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FanWallCommentDto
+     */
+    isOwner: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FanWallCommentDto
+     */
+    isHidden: boolean;
 }
 
 /**
@@ -89,6 +101,8 @@ export function instanceOfFanWallCommentDto(value: object): boolean {
     isInstance = isInstance && "commenterUsername" in value;
     isInstance = isInstance && "commenterDisplayName" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "isOwner" in value;
+    isInstance = isInstance && "isHidden" in value;
 
     return isInstance;
 }
@@ -111,6 +125,8 @@ export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
         'createdAt': (new Date(json['createdAt'])),
+        'isOwner': json['isOwner'],
+        'isHidden': json['isHidden'],
     };
 }
 
@@ -131,6 +147,8 @@ export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
         'createdAt': (value.createdAt.toISOString()),
+        'isOwner': value.isOwner,
+        'isHidden': value.isHidden,
     };
 }
 

@@ -71,7 +71,7 @@ export class CommentService {
     getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
   ): Promise<CommentDto[]> {
     const { postId, lastId, createdAt } = getCommentsForPostRequestDto
-    await this.checkPost(userId, postId)
+    const creatorId = await this.checkPost(userId, postId)
 
     let query = this.dbReader<CommentEntity>(CommentEntity.table)
       .leftJoin(
@@ -81,7 +81,6 @@ export class CommentService {
       )
       .where({
         post_id: postId,
-        hidden: false,
         blocked: false,
         deactivated: false,
         deleted_at: null,
@@ -91,6 +90,9 @@ export class CommentService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
+    if (creatorId !== userId) {
+      query = query.andWhere('hidden', false)
+    }
     query = createPaginatedQuery(
       query,
       CommentEntity.table,
@@ -223,7 +225,7 @@ export class CommentService {
     return updated === 1
   }
 
-  async checkPost(userId: string, postId: string) {
+  async checkPost(userId: string, postId: string): Promise<string> {
     const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select(['deleted_at', 'user_id'])
@@ -256,5 +258,6 @@ export class CommentService {
     if (!creatorSettings || !creatorSettings.allow_comments_on_posts) {
       throw new CommentsBlockedError(COMMENTS_DISABLED)
     }
+    return post.user_id
   }
 }

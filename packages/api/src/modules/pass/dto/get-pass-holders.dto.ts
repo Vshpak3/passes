@@ -51,10 +51,10 @@ export class GetPassHoldersResponseDto
     requestDto: GetPassHoldersRequestDto,
   ) {
     super()
-    this.lastId = undefined
     for (const key in requestDto) {
       this[key] = requestDto[key]
     }
+    this.lastId = undefined
     this.data = passHolders
     if (passHolders.length > 0) {
       this.lastId = passHolders[passHolders.length - 1].passHolderId

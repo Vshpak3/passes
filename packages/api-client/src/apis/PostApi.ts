@@ -21,8 +21,8 @@ import type {
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
   GetPostResponseDto,
-  GetPostsRequestDto,
-  GetPostsResponseDto,
+  GetPostsRangeRequestDto,
+  GetPostsRangeResponseDto,
   PayinDataDto,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
@@ -42,10 +42,10 @@ import {
     GetPostHistoryResponseDtoToJSON,
     GetPostResponseDtoFromJSON,
     GetPostResponseDtoToJSON,
-    GetPostsRequestDtoFromJSON,
-    GetPostsRequestDtoToJSON,
-    GetPostsResponseDtoFromJSON,
-    GetPostsResponseDtoToJSON,
+    GetPostsRangeRequestDtoFromJSON,
+    GetPostsRangeRequestDtoToJSON,
+    GetPostsRangeResponseDtoFromJSON,
+    GetPostsRangeResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchasePostRequestDtoFromJSON,
@@ -70,8 +70,8 @@ export interface GetPostHistoryRequest {
     getPostHistoryRequestDto: GetPostHistoryRequestDto;
 }
 
-export interface GetPostsRequest {
-    getPostsRequestDto: GetPostsRequestDto;
+export interface GetPostsScheduledRequest {
+    getPostsRangeRequestDto: GetPostsRangeRequestDto;
 }
 
 export interface IsAllPostContentReadyRequest {
@@ -226,9 +226,9 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets posts
      */
-    async getPostsRaw(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsResponseDto>> {
-        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
-            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPosts.');
+    async getPostsScheduledRaw(requestParameters: GetPostsScheduledRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsRangeResponseDto>> {
+        if (requestParameters.getPostsRangeRequestDto === null || requestParameters.getPostsRangeRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostsRangeRequestDto','Required parameter requestParameters.getPostsRangeRequestDto was null or undefined when calling getPostsScheduled.');
         }
 
         const queryParameters: any = {};
@@ -247,17 +247,17 @@ export class PostApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
+            body: GetPostsRangeRequestDtoToJSON(requestParameters.getPostsRangeRequestDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostsResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostsRangeResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets posts
      */
-    async getPosts(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
-        const response = await this.getPostsRaw(requestParameters, initOverrides);
+    async getPostsScheduled(requestParameters: GetPostsScheduledRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsRangeResponseDto> {
+        const response = await this.getPostsScheduledRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

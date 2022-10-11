@@ -73,7 +73,6 @@ export class FanWallService {
       )
       .where({
         creator_id: creatorId,
-        hidden: false,
         blocked: false,
         deactivated: false,
         deleted_at: null,
@@ -83,6 +82,10 @@ export class FanWallService {
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
       )
+
+    if (userId !== getFanWallRequestDto.creatorId) {
+      query = query.andWhere('hidden', false)
+    }
 
     query = createPaginatedQuery(
       query,
@@ -96,7 +99,10 @@ export class FanWallService {
 
     const comments = await query.limit(MAX_FAN_WALL_COMMENTS_PER_REQUEST)
 
-    return comments.map((comment) => new FanWallCommentDto(comment))
+    return comments.map(
+      (comment) =>
+        new FanWallCommentDto(comment, comment.commenter_id === userId),
+    )
   }
 
   async hideFanWallCommment(
