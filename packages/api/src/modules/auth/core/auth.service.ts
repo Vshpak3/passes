@@ -245,7 +245,7 @@ export class AuthService {
       oauth_id: oauthId,
       email,
       is_email_verified: emailVerified,
-      user_id: user?.id,
+      user_id: user?.userId,
     })
 
     if (user) {

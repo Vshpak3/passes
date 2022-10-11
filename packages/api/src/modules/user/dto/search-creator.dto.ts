@@ -1,6 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 import { UserEntity } from '../entities/user.entity'
-import { CreatorInfoDto } from './creator-info.dto'
+import { UserDisplayInfoDto } from './user-display-info.dto'
 
 export class SearchCreatorRequestDto {
   @DtoProperty({ type: 'string' })
@@ -8,12 +8,12 @@ export class SearchCreatorRequestDto {
 }
 
 export class SearchCreatorResponseDto {
-  @DtoProperty({ custom_type: [CreatorInfoDto] })
-  creators: CreatorInfoDto[]
+  @DtoProperty({ custom_type: [UserDisplayInfoDto] })
+  creators: UserDisplayInfoDto[]
 
   constructor(creators: UserEntity[]) {
     this.creators = creators.map((c) => ({
-      id: c.id,
+      userId: c.id,
       username: c.username,
       displayName: c.display_name,
     }))

@@ -20,8 +20,8 @@ export class ListMemberDto {
   username: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', nullable: true })
-  displayName: string | null
+  @DtoProperty({ type: 'string', nullable: true, optional: true })
+  displayName?: string | null
 
   @DtoProperty({ type: 'uuid', optional: true })
   follow?: string

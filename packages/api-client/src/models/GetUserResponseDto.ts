@@ -24,7 +24,7 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    id: string;
+    userId: string;
     /**
      * 
      * @type {string}
@@ -80,7 +80,7 @@ export interface GetUserResponseDto {
  */
 export function instanceOfGetUserResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "email" in value;
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "legalFullName" in value;
@@ -100,7 +100,7 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'id': json['id'],
+        'userId': json['userId'],
         'email': json['email'],
         'username': json['username'],
         'legalFullName': json['legalFullName'],
@@ -121,7 +121,7 @@ export function GetUserResponseDtoToJSON(value?: GetUserResponseDto | null): any
     }
     return {
         
-        'id': value.id,
+        'userId': value.userId,
         'email': value.email,
         'username': value.username,
         'legalFullName': value.legalFullName,

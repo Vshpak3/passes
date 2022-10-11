@@ -42,7 +42,7 @@ export interface ListMemberDto {
      * @type {string}
      * @memberof ListMemberDto
      */
-    displayName: string | null;
+    displayName?: string | null;
     /**
      * 
      * @type {string}
@@ -65,7 +65,6 @@ export function instanceOfListMemberDto(value: object): boolean {
     isInstance = isInstance && "listMemberId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
@@ -84,7 +83,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'listMemberId': json['listMemberId'],
         'userId': json['userId'],
         'username': json['username'],
-        'displayName': json['displayName'],
+        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'follow': !exists(json, 'follow') ? undefined : json['follow'],
         'createdAt': (new Date(json['createdAt'])),
     };

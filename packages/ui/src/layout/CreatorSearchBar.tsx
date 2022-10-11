@@ -1,9 +1,10 @@
+import { UserDisplayInfoDto } from "@passes/api-client"
+import { useRouter } from "next/router"
 import React from "react"
+import UserSearchDropdown from "src/components/atoms/search/user/UserSearchDropdown"
+import UserSearchInput from "src/components/atoms/search/user/UserSearchInput"
 import AuthWrapper from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks"
-
-import SearchDropdown from "./SearchDropdown"
-import SearchInput from "./SearchInput"
 
 export interface CreatorSearchBarProps {
   isDesktop?: boolean
@@ -11,7 +12,7 @@ export interface CreatorSearchBarProps {
 
 const CreatorSearchBar = ({ isDesktop = true }: CreatorSearchBarProps) => {
   const {
-    creatorResults,
+    results,
     searchValue,
     onChangeInput,
     onSearchFocus,
@@ -19,19 +20,27 @@ const CreatorSearchBar = ({ isDesktop = true }: CreatorSearchBarProps) => {
     searchRef
   } = useCreatorSearch()
 
+  const router = useRouter()
+
+  const goToProfile = (user: UserDisplayInfoDto) => {
+    router.push(`/${user.username}`)
+  }
   return (
     <AuthWrapper>
       <div ref={searchRef}>
-        <SearchInput
+        <UserSearchInput
           onChangeInput={onChangeInput}
           onSearchFocus={onSearchFocus}
           searchValue={searchValue}
           isDesktop={isDesktop}
+          placeholder={"Find creator"}
         />
         {resultsVisible && (
-          <SearchDropdown
-            creatorResults={creatorResults}
+          <UserSearchDropdown
+            results={results}
             isDesktop={isDesktop}
+            emptyText={"creators"}
+            onClick={goToProfile}
           />
         )}
       </div>

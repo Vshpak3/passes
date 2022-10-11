@@ -1,38 +1,35 @@
-import { CreatorInfoDto } from "@passes/api-client"
+import { UserDisplayInfoDto } from "@passes/api-client"
 import classNames from "classnames"
-import { useRouter } from "next/router"
 import { FC } from "react"
 
-import { EmptyResult, SearchResult } from "./SearchResults"
+import { EmptyResult, SearchResult } from "./UserSearchResults"
 
-interface SearchDropdownProps {
-  creatorResults: CreatorInfoDto[]
+interface UserSearchDropdownProps {
+  results: UserDisplayInfoDto[]
   isDesktop?: boolean
+  emptyText: string
+  onClick: (user: UserDisplayInfoDto) => void | Promise<void>
 }
 
-const SearchDropdown: FC<SearchDropdownProps> = ({
-  creatorResults,
-  isDesktop = true
+const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
+  results,
+  isDesktop = true,
+  emptyText,
+  onClick
 }) => {
-  const router = useRouter()
-
-  const goToProfile = (username: any) => {
-    router.push(`/${username}`)
-  }
-
-  const resultsExist = creatorResults?.length > 0
+  const resultsExist = results?.length > 0
   const renderResults = resultsExist ? (
-    creatorResults.map((creator: CreatorInfoDto) => (
+    results.map((user: UserDisplayInfoDto) => (
       <SearchResult
-        key={creator.id}
-        userId={creator.id}
-        displayName={creator?.displayName ?? ""}
-        username={creator.username}
-        onClick={() => goToProfile(creator.username)}
+        key={user.userId}
+        userId={user.userId}
+        displayName={user?.displayName ?? ""}
+        username={user.username}
+        onClick={async () => await onClick(user)}
       />
     ))
   ) : (
-    <EmptyResult />
+    <EmptyResult text={emptyText} />
   )
 
   return (
@@ -62,4 +59,4 @@ const SearchDropdown: FC<SearchDropdownProps> = ({
   )
 }
 
-export default SearchDropdown
+export default UserSearchDropdown

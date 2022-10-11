@@ -16,8 +16,8 @@ import React, { useCallback, useState } from "react"
 import InfiniteScrollPagination, {
   ComponentArg
 } from "src/components/atoms/InfiniteScroll"
-import { List } from "src/components/organisms/creator-tools/List"
-import SortListPopup from "src/components/pages/tools/lists/SortListPopup"
+import { List } from "src/components/organisms/creator-tools/lists/List"
+import SortListPopup from "src/components/organisms/creator-tools/lists/SortListPopup"
 import { errorMessage } from "src/helpers/error"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

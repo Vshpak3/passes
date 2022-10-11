@@ -17,7 +17,7 @@ export class AuthRecord extends OmitType(JwtAuthPayload, ['sub'] as const) {
 
   static fromUserDto(userDto: UserDto): AuthRecord {
     return new AuthRecord({
-      id: userDto.id,
+      id: userDto.userId,
       isVerified: true,
       isEmailVerified: true,
       isCreator: userDto.isCreator,

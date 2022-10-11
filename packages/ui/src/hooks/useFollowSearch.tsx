@@ -1,45 +1,20 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
-import { useMemo, useRef, useState } from "react"
-import { useOnClickOutside, useSearch } from "src/hooks"
+import { useMemo } from "react"
+import { useSearch } from "src/hooks"
 
 const useFollowSearch = () => {
   const api = useMemo(() => new FollowApi(), [])
-  const fetcher = useMemo(
-    () => async (search: string) => {
-      const data = await api.searchFollowing({
+  return useSearch<ListMemberDto>(async (searchValue: string) => {
+    return (
+      await api.searchFollowing({
         searchFollowRequestDto: {
-          search: search ? search : undefined,
+          search: searchValue ? searchValue : undefined,
           order: "asc",
           orderType: "username"
         }
       })
-      setFollowing(data.data)
-    },
-    [api]
-  )
-  const { search, setSearch } = useSearch(fetcher)
-  const [following, setFollowing] = useState<ListMemberDto[]>([])
-  const [resultsVisible, setResultsVisible] = useState(false)
-  const searchRef = useRef(null)
-
-  useOnClickOutside(searchRef, () => setResultsVisible(false))
-
-  const onChangeInput = (e: any) => {
-    setSearch(e.target.value)
-  }
-
-  const onSearchFocus = () => {
-    setResultsVisible(true)
-  }
-
-  return {
-    following,
-    search,
-    resultsVisible,
-    onChangeInput,
-    onSearchFocus,
-    searchRef
-  }
+    ).data
+  })
 }
 
 export default useFollowSearch

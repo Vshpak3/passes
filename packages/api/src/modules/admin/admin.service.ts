@@ -95,7 +95,7 @@ export class AdminService {
 
   async makeAdult(userId?: string, username?: string): Promise<void> {
     if (!userId) {
-      userId = (await this.findUser(userId, username)).id
+      userId = (await this.findUser(userId, username)).userId
     }
 
     await this.userService.makeAdult(userId)
@@ -103,7 +103,7 @@ export class AdminService {
 
   async makeCreator(userId?: string, username?: string): Promise<void> {
     if (!userId) {
-      userId = (await this.findUser(userId, username)).id
+      userId = (await this.findUser(userId, username)).userId
     }
 
     await this.userService.makeCreator(userId)

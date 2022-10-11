@@ -66,7 +66,6 @@ models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
 models/CreatorEarningDto.ts
-models/CreatorInfoDto.ts
 models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
 models/EditListNameRequestDto.ts
@@ -204,6 +203,7 @@ models/UpdatePassRequestDto.ts
 models/UpdatePasswordRequestDto.ts
 models/UpdatePostRequestDto.ts
 models/UpdateUsernameRequestDto.ts
+models/UserDisplayInfoDto.ts
 models/UserExternalPassRequestDto.ts
 models/VerifyEmailDto.ts
 models/WalletDto.ts

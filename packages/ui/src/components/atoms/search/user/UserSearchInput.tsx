@@ -2,17 +2,19 @@ import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
-interface SearchInputProps {
+interface UserSearchInputProps {
   onChangeInput: (value: any) => void
   onSearchFocus: () => void
   searchValue: string
+  placeholder: string
   isDesktop?: boolean
 }
 
-const SearchInput: FC<SearchInputProps> = ({
+const UserSearchInput: FC<UserSearchInputProps> = ({
   onChangeInput,
   onSearchFocus,
   searchValue,
+  placeholder,
   isDesktop = true
 }) => {
   return (
@@ -32,7 +34,7 @@ const SearchInput: FC<SearchInputProps> = ({
           onFocus={onSearchFocus}
           value={searchValue}
           autoComplete="off"
-          placeholder="Find creator"
+          placeholder={placeholder}
           className="form-input h-[51px] w-full min-w-[360px] rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
         />
       </div>
@@ -40,4 +42,4 @@ const SearchInput: FC<SearchInputProps> = ({
   )
 }
 
-export default SearchInput
+export default UserSearchInput

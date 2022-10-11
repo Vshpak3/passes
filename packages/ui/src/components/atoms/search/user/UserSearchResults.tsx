@@ -1,16 +1,20 @@
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 
-const EmptyResult = () => (
+interface EmptyResultProps {
+  text: string
+}
+
+const EmptyResult = ({ text }: EmptyResultProps) => (
   <li className="my-4 pl-6 text-[#ffffff]/30">
-    <div>Try searching for creators.</div>
+    <div>Try searching for {text}.</div>
   </li>
 )
 
 interface SearchResultProps {
   userId: string
   username: string
-  displayName: string
-  onClick: any
+  displayName: string | null
+  onClick: () => void
 }
 
 const SearchResult = ({
@@ -31,7 +35,9 @@ const SearchResult = ({
         </div>
       </div>
       <div className="col-start-2 row-span-2 w-full content-start">
-        <div className="text-[16px] font-medium">{displayName}</div>
+        {displayName && (
+          <div className="text-[16px] font-medium">{displayName}</div>
+        )}
         <div className="text-[12px] text-[#ffffff]/60">{formattedUsername}</div>
       </div>
     </li>

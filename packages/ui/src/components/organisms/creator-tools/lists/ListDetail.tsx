@@ -1,5 +1,6 @@
 import { Fade, Popper } from "@mui/material"
 import {
+  GetListMembersRequestDto,
   GetListMembersRequestDtoOrderEnum,
   GetListMembersRequestDtoOrderTypeEnum,
   GetListMembersResponseDto,
@@ -11,30 +12,32 @@ import {
 import { debounce } from "lodash"
 import ChevronRight from "public/icons/chevron-right-icon.svg"
 import EditIcon from "public/icons/edit-icon.svg"
-import PlusIcon from "public/icons/plus-sign.svg"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
+import InfiniteScrollPagination, {
+  ComponentArg
+} from "src/components/atoms/InfiniteScroll"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
-import FollowSearchModal from "src/components/molecules/FollowerSearchModal"
+import FollowerSearchBar from "src/components/molecules/FollowerSearchBar"
 import { errorMessage } from "src/helpers/error"
 
-import ListItem from "./ListItem"
+import ListMember from "./ListMember"
 import SortListPopup from "./SortListPopup"
 
 type ListDetailProps = {
   id: string
 }
-
+const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
 const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
-  const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
+  // const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
-  const [listMembers, setListMembers] = useState<Array<ListMemberDto>>([])
   const [resets, setResets] = useState(0)
+  const [search, setSearch] = useState<string>("")
 
   const [orderType, setOrderType] =
     useState<GetListMembersRequestDtoOrderTypeEnum>(
@@ -44,20 +47,14 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [order, setOrder] = useState<GetListMembersRequestDtoOrderEnum>(
     GetListMembersRequestDtoOrderEnum.Asc
   )
-  const [lastId, setLastId] = useState<string | undefined>(undefined)
-  const [search, setSearch] = useState<string>("")
-  const [createdAt, setCreatedAt] = useState<Date | undefined>(undefined)
-  const [username, setUsername] = useState<string | undefined>(undefined)
 
   const [isEditingListName, setIsEditingListName] = useState<boolean>(false)
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false)
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
 
   const listNameRef = useRef<HTMLInputElement>(null)
 
   const fetchInfo = useCallback(async () => {
-    const listApi = new ListApi()
     try {
       // Get list information by ID
       const listInfoRes: GetListResponseDto = await listApi.getList({
@@ -73,97 +70,19 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const fetchMembers = useCallback(async () => {
-    const curResets = resets
-
-    const listApi = new ListApi()
-    if (!isLoadingMore) {
-      setIsLoadingMore(true)
-      try {
-        const newListMembers: GetListMembersResponseDto =
-          await listApi.getListMembers({
-            getListMembersRequestDto: {
-              listId: id,
-              order,
-              orderType,
-              search: search && search.length > 0 ? search : undefined,
-              createdAt,
-              username,
-              lastId
-            }
-          })
-        if (curResets === resets && newListMembers.data.length > 0) {
-          setListMembers([...listMembers, ...newListMembers.data])
-          setLastId(newListMembers.lastId)
-          setCreatedAt(newListMembers.createdAt)
-          setUsername(newListMembers.username)
-        }
-      } catch (error) {
-        errorMessage(error, true)
-      } finally {
-        setIsLoadingMore(false)
-      }
-    }
-  }, [
-    createdAt,
-    id,
-    isLoadingMore,
-    lastId,
-    listMembers,
-    order,
-    orderType,
-    resets,
-    search,
-    username
-  ])
-
-  useEffect(() => {
-    fetchMembers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resets])
-
   useEffect(() => {
     fetchInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleScroll = useCallback(
-    debounce(async () => {
-      const isToBottom =
-        window.innerHeight + window.scrollY === document.body.offsetHeight
-
-      // window.removeEventListener("scroll", handleScroll)
-      if (isToBottom) {
-        await fetchMembers()
-      }
-    }, 50),
-    [fetchMembers]
-  )
-
-  useEffect(() => {
-    // clean up code
-    window.addEventListener("wheel", handleScroll, { passive: true })
-    return () => window.removeEventListener("wheel", handleScroll)
-  }, [handleScroll])
-
-  const reset = useCallback(() => {
-    setLastId(undefined)
-    setIsLoadingMore(false)
-    setUsername(undefined)
-    setCreatedAt(undefined)
-    setListMembers([])
-    setResets(resets + 1)
-  }, [resets])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
       setSearch(value)
-      reset()
+      setResets(resets + 1)
     }, DEBOUNCE_TIMEOUT),
-    [reset, setSearch]
+    [resets, setSearch]
   )
 
   const handleOpenPopper = useCallback(
@@ -180,31 +99,17 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
 
     setOrderType(orderTypeInner)
     setOrder(orderInner)
-    reset()
     setAnchorSortPopperEl(null)
   }
 
-  const handleRemoveFan = async (
-    event: React.MouseEvent<HTMLSpanElement>,
-    user_id: string
-  ) => {
-    const listApi = new ListApi()
-    event.preventDefault()
-    event.stopPropagation()
+  const handleRemoveFan = async (user_id: string) => {
     try {
-      const deleted = (
-        await listApi.removeListMembers({
-          removeListMembersRequestDto: {
-            listId: id,
-            userIds: [user_id]
-          }
-        })
-      ).value
-      if (deleted) {
-        setListMembers(
-          listMembers.filter((listMember) => listMember.userId !== user_id)
-        )
-      }
+      await listApi.removeListMembers({
+        removeListMembersRequestDto: {
+          listId: id,
+          userIds: [user_id]
+        }
+      })
     } catch (error) {
       errorMessage(error, true)
     }
@@ -213,8 +118,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddFan = useCallback(
     async (user_id: string) => {
-      const listApi = new ListApi()
-      setAddFollowerOpen(false)
       try {
         await listApi.addListMembers({
           addListMembersRequestDto: {
@@ -223,13 +126,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
           }
         })
         await new Promise((resolve) => setTimeout(resolve, 100))
-        reset()
+        setResets(resets + 1)
       } catch (error) {
         errorMessage(error, true)
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reset]
+    [resets, setResets]
   )
 
   const handleChangeListName = useCallback(
@@ -241,8 +144,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
 
   const toggleEditListName = useCallback(
     async (event: React.MouseEvent<HTMLDivElement>) => {
-      const listApi = new ListApi()
-
       event.preventDefault()
       const inputListNameValue = listNameRef.current?.value ?? ""
       if (
@@ -282,12 +183,6 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       <div className="-mt-[160px] flex items-center justify-between px-7">
         <h1 className="text-xl font-bold">List Members</h1>
       </div>
-      <FollowSearchModal
-        isOpen={addFollowerOpen}
-        setOpen={setAddFollowerOpen}
-        onSelect={handleAddFan}
-        fromList={true}
-      />
       <ul className="px-7 pt-[82px]">
         <li className="mb-3 flex items-center text-base font-medium leading-5 text-white">
           <span>List</span>
@@ -332,17 +227,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
           <ConditionRendering
             condition={listInfo?.type === GetListResponseDtoTypeEnum.Normal}
           >
-            <div className="flex items-center gap-7">
-              <button
-                onClick={() => {
-                  setAddFollowerOpen(true)
-                }}
-                className="duration-400 flex gap-2 transition-all hover:bg-white hover:bg-opacity-30"
-              >
-                <PlusIcon />
-                Add
-              </button>
-            </div>
+            <FollowerSearchBar onSelect={handleAddFan} />
           </ConditionRendering>
         </li>
         <Popper
@@ -392,19 +277,25 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
           )}
         </Popper>
 
-        <ConditionRendering condition={listMembers.length > 0}>
-          {listMembers.map((item: ListMemberDto) => {
-            const { userId } = item
+        <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
+          fetch={async (req: GetListMembersRequestDto) => {
+            return await listApi.getListMembers({
+              getListMembersRequestDto: req
+            })
+          }}
+          initProps={{ order, orderType, search, listId: id }}
+          KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
+            console.log(arg, "list-member")
             return (
-              <ListItem
-                key={userId}
-                fanInfo={item}
-                onRemoveFan={handleRemoveFan}
+              <ListMember
+                fanInfo={arg}
                 removable={true}
+                onRemoveFan={handleRemoveFan}
               />
             )
-          })}
-        </ConditionRendering>
+          }}
+          resets={resets}
+        />
       </ul>
     </div>
   )

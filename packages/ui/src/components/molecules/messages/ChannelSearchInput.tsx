@@ -12,7 +12,7 @@ interface ISearchInputDropdown {
 export const ChannelSearchInput: FC<ISearchInputDropdown> = ({
   onUserSelect
 }) => {
-  const { onChangeInput, following } = useFollowSearch()
+  const { onChangeInput, results } = useFollowSearch()
   const [selectedUser, setSelectedUser] = useState<ListMemberDto>()
   return (
     <Combobox
@@ -33,13 +33,13 @@ export const ChannelSearchInput: FC<ISearchInputDropdown> = ({
           <ChevronDown className="child:stroke-[#767676]" />
         </Combobox.Button>
 
-        {following.length > 0 && (
+        {results.length > 0 && (
           <Combobox.Options
             className="absolute top-14 z-10 mt-1 box-border flex max-h-60 w-full flex-col items-start justify-start gap-[10px] overflow-auto
          rounded-md border border-passes-dark-200 bg-[#100C11] p-[10px] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm
           "
           >
-            {following.map((user) => (
+            {results.map((user) => (
               <Combobox.Option
                 key={user.userId}
                 value={user}

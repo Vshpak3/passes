@@ -18,7 +18,7 @@ export const List = ({
   const [removed, setRemoved] = useState<boolean>(false)
   return (
     <ConditionRendering condition={!removed}>
-      <Link href={`/tools/list/${list.listId}`} key={list.listId}>
+      <Link href={`/tools/list-members/${list.listId}`} key={list.listId}>
         <li className="duration-400 cursor-pointer border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
           <h1 className="text-xl font-bold">{list.name || list.listId}</h1>
           <span className="text-base font-bold text-gray-500">

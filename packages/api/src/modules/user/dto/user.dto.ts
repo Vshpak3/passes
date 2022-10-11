@@ -23,7 +23,7 @@ import { UserEntity } from '../entities/user.entity'
 
 export class UserDto {
   @DtoProperty({ type: 'uuid' })
-  id: string
+  userId: string
 
   @IsEmail()
   @Length(1, USER_EMAIL_LENGTH)
@@ -66,7 +66,7 @@ export class UserDto {
 
   constructor(userEntity: UserEntity | undefined) {
     if (userEntity) {
-      this.id = userEntity.id
+      this.userId = userEntity.id
       this.email = userEntity.email
       this.username = userEntity.username
       this.displayName = userEntity.display_name

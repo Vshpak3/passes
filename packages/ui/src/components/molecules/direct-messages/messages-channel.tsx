@@ -124,7 +124,7 @@ export const MessagesChannel = ({
                     >
                       <Media
                         onRemove={() => onRemove(index)}
-                        src={`${process.env.NEXT_PUBLIC_CDN_URL}media/${user?.id}/${contentId}.jpeg`}
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL}media/${user?.userId}/${contentId}.jpeg`}
                         // className="cursor-pointer rounded-[6px] object-contain"
                         type="image"
                         // TODO:this logic should be done on backend
