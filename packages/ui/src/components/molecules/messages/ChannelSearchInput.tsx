@@ -23,10 +23,10 @@ export const ChannelSearchInput: FC<ISearchInputDropdown> = ({
         onUserSelect(user)
       }}
     >
-      <div className="relative mt-1">
+      <div className="relative">
         <Combobox.Input
           placeholder="Search people.."
-          className="box-border flex w-full items-start justify-between gap-[10px] rounded-md border border-passes-dark-200 bg-[#100C11] p-[10px] text-sm outline-0 ring-0 focus:border-passes-dark-200 focus:outline-none focus:ring-0"
+          className="box-border flex w-full items-start justify-between gap-[10px] rounded-md border border-passes-dark-200 bg-[#100C11] p-[12px] text-sm outline-0 ring-0 focus:border-passes-dark-200 focus:outline-none focus:ring-0"
           onChange={onChangeInput}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">

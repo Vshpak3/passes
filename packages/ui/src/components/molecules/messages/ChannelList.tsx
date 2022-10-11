@@ -36,9 +36,9 @@ export const ChannelList = ({
     { id: "tip", name: "Most tips" }
   ]
   return (
-    <div className="min-w-[20vw] overflow-y-auto border-r border-[#fff]/10">
-      <div className="px-[10px] py-[7px]">
-        <div className="flex justify-between">
+    <div className="min-w-[35%] overflow-y-auto border-r border-[#fff]/10 p-[30px] ">
+      <div className="border-b border-[#fff]/10 pb-6">
+        <div className="flex justify-between pb-6">
           <span className="text-base font-medium">Find people</span>
           <OrderDropDown
             orders={channelOrders}
@@ -49,21 +49,23 @@ export const ChannelList = ({
         <ChannelSearchInput onUserSelect={onUserSelect} />
       </div>
       {channels.length > 0 && (
-        <InfiniteScroll
-          dataLength={channels.length}
-          next={next}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>} // TODO: loader
-        >
-          {channels.map((channel, index) => (
-            <ChannelListItem
-              onClick={() => onChannelClicked(channel)}
-              channel={channel}
-              key={index}
-              isSelected={selectedChannel?.channelId === channel.channelId}
-            />
-          ))}
-        </InfiniteScroll>
+        <div className="pt-6">
+          <InfiniteScroll
+            dataLength={channels.length}
+            next={next}
+            hasMore={hasMore}
+            loader={<h4>Loading...</h4>} // TODO: loader
+          >
+            {channels.map((channel, index) => (
+              <ChannelListItem
+                onClick={() => onChannelClicked(channel)}
+                channel={channel}
+                key={index}
+                isSelected={selectedChannel?.channelId === channel.channelId}
+              />
+            ))}
+          </InfiniteScroll>
+        </div>
       )}
     </div>
   )

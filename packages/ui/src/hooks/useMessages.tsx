@@ -49,7 +49,7 @@ export const useMessages = ({ channelOrderType }: UseMessagesProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelOrderType])
 
-  const channels = data ? data.map((d) => d.channelMembers).flat() : []
+  const channels = data ? data.map((d) => d.data).flat() : []
   return {
     createChannel,
     channels,
