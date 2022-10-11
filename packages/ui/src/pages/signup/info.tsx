@@ -57,7 +57,7 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
 
 const SignupInfoPage: FC = () => {
   const router = useRouter()
-  const { setAccessToken, setRefreshToken } = useUser()
+  const { mutate, setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -112,6 +112,8 @@ const SignupInfoPage: FC = () => {
       if (!setRes) {
         return
       }
+
+      mutate()
 
       router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: any) {

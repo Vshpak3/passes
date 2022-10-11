@@ -1,6 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from "react"
+import { debounce } from "lodash"
+import React, { PropsWithChildren, useEffect, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import useSWRInfinite from "swr/infinite"
+
+const SCROLL_DEBOUNCE_MS = 500
 
 export interface PagedData<A> {
   data: A[]
@@ -15,11 +18,13 @@ interface Key<T> {
   key: Partial<T>
   resets: number
 }
+
 interface InfiniteScrollProps<A, T extends PagedData<A>> {
   fetch: (data: Omit<T, "data">) => Promise<T>
-  initProps: Partial<T>
-  loader?: JSX.Element
-  endMessage?: JSX.Element
+  fetchProps: Partial<T>
+  emptyElement?: JSX.Element
+  loadingElement?: JSX.Element
+  endElement?: JSX.Element
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
 }
@@ -30,29 +35,42 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
 // Inserts should reset the list
 //   unless inserts are at beginning, then just append
 const InfiniteScrollPagination = <A, T extends PagedData<A>>({
-  initProps,
   fetch,
-  loader,
-  endMessage,
+  fetchProps,
+  emptyElement,
+  loadingElement,
+  endElement,
   KeyedComponent,
-  children,
-  resets = 0
+  resets = 0,
+  children
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
-      return { key: initProps, resets }
+      return { key: fetchProps, resets }
     }
     const request: Partial<T> = { ...response }
     request.data = undefined
     return { key: request, resets: resets }
   }
-  const fetcher = async ({ key }: Key<T>) => {
+
+  const fetchData = async ({ key }: Key<T>) => {
     return await fetch(key as Omit<T, "data">)
   }
-  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetcher, {
+
+  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, {
     revalidateOnMount: true
   })
+
+  const triggerFetch = useMemo(
+    () =>
+      debounce(async (_size: number) => {
+        setSize(_size)
+      }, SCROLL_DEBOUNCE_MS),
+    [setSize]
+  )
+
   const [flattenedData, setFlattenedData] = useState<A[]>([])
+
   useEffect(() => {
     setFlattenedData(
       data
@@ -64,21 +82,19 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (
     <>
       <InfiniteScroll
         dataLength={flattenedData.length}
         className="w-full"
         style={{ width: "100%" }}
-        next={() => {
-          setSize(size + 1)
-        }}
-        hasMore={!data || !!data[data.length - 1].lastId}
-        loader={loader}
-        endMessage={endMessage}
+        next={() => triggerFetch(size + 1)}
+        hasMore={!data || data[data.length - 1].data.length !== 0}
+        loader={loadingElement}
+        endMessage={size !== 1 && endElement}
       >
         {children}
+        {data?.length === 1 && data[0].data.length === 0 && emptyElement}
         {flattenedData.map((data, index) => (
           <KeyedComponent key={index} arg={data} />
         ))}

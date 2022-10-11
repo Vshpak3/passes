@@ -27,8 +27,11 @@ export const copyToClipboard = (post: PostDto) => {
 }
 
 interface PostDropdownProps {
-  post: any
-  items: any
+  post: PostDto
+  items: Array<{
+    text: string
+    onClick: () => void
+  }>
 }
 
 export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
@@ -65,8 +68,8 @@ export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
                 </span>
               )}
             </Menu.Item>
-            {items.map((item: any, index: any) => (
-              <>
+            {items.map((item, index) => (
+              <div key={index}>
                 {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                 {/* @ts-ignore */}
                 <Menu.Item key={index} onClick={item.onClick}>
@@ -81,7 +84,7 @@ export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
                     </span>
                   )}
                 </Menu.Item>
-              </>
+              </div>
             ))}
           </div>
         </Menu.Items>

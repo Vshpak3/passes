@@ -14,6 +14,18 @@ import { useSWRConfig } from "swr"
 
 import { FanWallComment } from "./FanWallComment"
 
+const ContentFeedEmpty = (
+  <h3>No fan wall comments</h3> // TODO: add a better message
+)
+
+const ContentFeedLoading = (
+  <h3>Loading...</h3> // TODO: add a better message
+)
+
+const ContentFeedEnd = (
+  <h3>No more posts</h3> // TODO: add a better message
+)
+
 interface FanWallFeedProps {
   creatorId: string
   fanWallPosts: GetFanWallResponseDto
@@ -116,8 +128,10 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
             const api = new FanWallApi()
             return await api.getFanWallForCreator({ getFanWallRequestDto: req })
           }}
-          loader={<h3>Loading...</h3>} // TODO: add a better message
-          endMessage={<h3>No more comments</h3>} // TODO: add a better message
+          fetchProps={{}}
+          emptyElement={ContentFeedEmpty}
+          loadingElement={ContentFeedLoading}
+          endElement={ContentFeedEnd}
           KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
             return (
               <div className="flex py-3">
@@ -135,7 +149,6 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
               </div>
             )
           }}
-          initProps={{}}
         />
       )}
     </div>

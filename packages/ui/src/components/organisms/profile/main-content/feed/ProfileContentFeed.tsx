@@ -1,15 +1,34 @@
 import {
   CreateFanWallCommentRequestDto,
+  FeedApi,
   GetFanWallResponseDto,
-  GetProfileResponseDto
+  GetProfileFeedRequestDto,
+  GetProfileFeedResponseDto,
+  GetProfileResponseDto,
+  PostDto
 } from "@passes/api-client"
 import { FC } from "react"
+import InfiniteScrollPagination, {
+  ComponentArg
+} from "src/components/atoms/InfiniteScroll"
 import { NewFanwallPost } from "src/components/organisms/profile/main-content/new-post/NewFanwallPost"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
+import { Post } from "src/components/organisms/profile/post/Post"
 
-import ContentFeed from "./ContentFeed"
 import FanWallFeed from "./FanWallFeed"
 import PassesFeed from "./PassesFeed"
+
+const ContentFeedEmpty = (
+  <h3>No posts</h3> // TODO: add a better message
+)
+
+const ContentFeedLoading = (
+  <h3>Loading...</h3> // TODO: add a better message
+)
+
+const ContentFeedEnd = (
+  <h3>No more posts</h3> // TODO: add a better message
+)
 
 export interface ProfileContentFeedProps {
   profile: GetProfileResponseDto
@@ -28,16 +47,33 @@ const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   fanWallPosts,
   writeToFanWall
 }) => {
+  const api = new FeedApi()
+
   switch (activeTab) {
     case "post":
       return (
-        <>
-          <ContentFeed creatorId={profile.userId}>
-            {ownsProfile && (
-              <NewPosts profile={profile} username={profileUsername} />
-            )}
-          </ContentFeed>
-        </>
+        <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+          fetch={async (req: GetProfileFeedRequestDto) => {
+            return await api.getFeedForCreator({
+              getProfileFeedRequestDto: req
+            })
+          }}
+          fetchProps={{ creatorId: profile.userId }}
+          emptyElement={ContentFeedEmpty}
+          loadingElement={ContentFeedLoading}
+          endElement={ContentFeedEnd}
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <div className="mt-6">
+                <Post post={arg} removable={true} />
+              </div>
+            )
+          }}
+        >
+          {ownsProfile && (
+            <NewPosts profile={profile} username={profileUsername} />
+          )}
+        </InfiniteScrollPagination>
       )
     case "fanWall":
       return (

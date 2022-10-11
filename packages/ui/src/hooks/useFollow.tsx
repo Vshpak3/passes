@@ -10,11 +10,11 @@ const useFollow = (creatorId: string) => {
   const api = new FollowApi()
   const { user } = useUser()
   const router = useRouter()
+
   const fetchIsFollowing = async () => {
-    return await api.checkFollow({
-      creatorId
-    })
+    return await api.checkFollow({ creatorId })
   }
+
   const { data, error, mutate } = useSWR(
     [CACHE_KEY_FOLLOW, creatorId],
     fetchIsFollowing
@@ -23,6 +23,7 @@ const useFollow = (creatorId: string) => {
   const follow = async () => {
     if (!user) {
       router.push("/login")
+      return
     }
     await api.followCreator({
       creatorId
@@ -37,6 +38,7 @@ const useFollow = (creatorId: string) => {
   const unfollow = async () => {
     if (!user) {
       router.push("/login")
+      return
     }
     await api.unfollowCreator({
       creatorId
@@ -52,7 +54,8 @@ const useFollow = (creatorId: string) => {
     isFollowing: data?.isFollowing,
     error,
     follow,
-    unfollow
+    unfollow,
+    loadFollow: mutate
   }
 }
 

@@ -1,6 +1,6 @@
 import ChatIcon from "public/icons/mail-icon.svg"
 import EditIcon from "public/icons/profile-edit-icon.svg"
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { PassesPinkButton } from "src/components/atoms"
 import {
   ButtonTypeEnum,
@@ -126,7 +126,16 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   youtubeUsername,
   onChat
 }) => {
-  const { follow, unfollow, isFollowing } = useFollow(creatorId)
+  const { follow, unfollow, isFollowing, loadFollow } = useFollow(creatorId)
+
+  const [hasLoaded, setHasLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!hasLoaded && isFollowing === undefined) {
+      loadFollow()
+    }
+    setHasLoaded(true)
+  }, [hasLoaded, isFollowing, loadFollow])
 
   return (
     <div className="flex flex-col items-start gap-[6px]">

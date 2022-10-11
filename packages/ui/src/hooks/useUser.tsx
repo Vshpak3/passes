@@ -15,7 +15,9 @@ export interface JWTUserClaims {
   exp: number
 }
 
-const useUser = (revalidateOnMount = true) => {
+const CACHE_KEY_USER = "/user"
+
+const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
@@ -25,18 +27,14 @@ const useUser = (revalidateOnMount = true) => {
     data: user,
     isValidating: loading,
     mutate
-  } = useSWR(
-    accessToken ? "/user" : null,
-    async () => {
-      // When this flag is false there is not yet a user to retrieve
-      if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
-        return
-      }
+  } = useSWR(accessToken ? CACHE_KEY_USER : null, async () => {
+    // When this flag is false there is not yet a user to retrieve
+    if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+      return
+    }
 
-      return await api.getCurrentUser()
-    },
-    { revalidateOnMount: revalidateOnMount }
-  )
+    return await api.getCurrentUser()
+  })
 
   const { mutate: mutateManual } = useSWRConfig()
 
@@ -50,7 +48,7 @@ const useUser = (revalidateOnMount = true) => {
     loading,
     mutate,
     mutateManual: (update: Partial<GetUserResponseDto>) =>
-      mutateManual("/user", update, {
+      mutateManual(CACHE_KEY_USER, update, {
         populateCache: (
           update: Partial<GetUserResponseDto>,
           original: GetUserResponseDto

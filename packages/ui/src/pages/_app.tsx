@@ -58,7 +58,7 @@ Router.events.on("routeChangeError", () => {
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [refresh, setRefresh] = useState(0)
   const router = useRouter()
-  const { setAccessToken } = useUser(false)
+  const { setAccessToken } = useUser()
 
   // Refresh once on page load then repeatedly
   useEffect(() => {

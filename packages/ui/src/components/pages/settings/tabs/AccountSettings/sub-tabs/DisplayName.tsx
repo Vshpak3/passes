@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { GetUserResponseDto, UserApi } from "@passes/api-client"
+import { UserApi } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -10,16 +10,12 @@ import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks"
 
-interface DisplayNameProps {
-  user: GetUserResponseDto
-}
-
 interface DisplayNameFormProps {
   displayName: string
 }
 
-const DisplayName: FC<DisplayNameProps> = ({ user }) => {
-  const { loading, mutateManual } = useUser(false)
+const DisplayName: FC = () => {
+  const { user, loading, mutateManual } = useUser()
 
   const {
     register,

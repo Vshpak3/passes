@@ -12,7 +12,7 @@ import { JWTUserClaims } from "src/hooks/useUser"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
-  const { setAccessToken, setRefreshToken } = useUser()
+  const { mutate, setAccessToken, setRefreshToken } = useUser()
 
   useEffect(() => {
     if (!router.isReady) {
@@ -39,8 +39,10 @@ const AuthSuccess: FC = () => {
       return
     }
 
+    mutate()
+
     authRouter(router, jwtDecode<JWTUserClaims>(accessToken))
-  }, [router, setAccessToken, setRefreshToken])
+  }, [router, mutate, setAccessToken, setRefreshToken])
 
   return null
 }

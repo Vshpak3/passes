@@ -173,7 +173,7 @@ const FanLists: NextPage = () => {
           fetch={async (req: GetListsRequestsDto) => {
             return await listApi.getLists({ getListsRequestsDto: req })
           }}
-          initProps={{ order, orderType, search }}
+          fetchProps={{ order, orderType, search }}
           KeyedComponent={({ arg }: ComponentArg<ListDto>) => {
             return <List list={arg} removable={true} />
           }}

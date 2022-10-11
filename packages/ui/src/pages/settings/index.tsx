@@ -1,4 +1,3 @@
-import { GetUserResponseDto } from "@passes/api-client"
 import cn from "classnames"
 import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
@@ -209,8 +208,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
           )}
         >
           {subTabsStack.length > 0
-            ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              renderSubTab(subTabsStack.slice(-1)[0], user!)
+            ? renderSubTab(subTabsStack.slice(-1)[0])
             : renderTab(activeTab)}
         </div>
       </div>
@@ -245,7 +243,7 @@ const renderTab = (tab: TabsEnum) => {
   }
 }
 
-const renderSubTab = (tab: SubTabsEnum, user: GetUserResponseDto) => {
+const renderSubTab = (tab: SubTabsEnum) => {
   switch (tab) {
     case SubTabsEnum.NotificationPreferences:
       return <NotificationPreferences />
@@ -260,11 +258,11 @@ const renderSubTab = (tab: SubTabsEnum, user: GetUserResponseDto) => {
     case SubTabsEnum.WalletSettings:
       return <WalletSettings />
     case SubTabsEnum.ProfilePicture:
-      return <ProfilePicture user={user} />
+      return <ProfilePicture />
     case SubTabsEnum.DisplayName:
-      return <DisplayName user={user} />
+      return <DisplayName />
     case SubTabsEnum.Username:
-      return <Username user={user} />
+      return <Username />
     case SubTabsEnum.EmailNotifications:
       return <EmailNotifications />
     case SubTabsEnum.ProfileSettings:

@@ -1,4 +1,3 @@
-import { GetUserResponseDto } from "@passes/api-client"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -9,16 +8,14 @@ import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import Tab from "src/components/pages/settings/Tab"
 import { ContentService } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
-
-interface ProfilePictureProps {
-  user: GetUserResponseDto
-}
+import { useUser } from "src/hooks"
 
 interface ProfileFormProps {
   profileImage: File[]
 }
 
-const ProfilePicture: FC<ProfilePictureProps> = ({ user }) => {
+const ProfilePicture: FC = () => {
+  const { user } = useUser()
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const {
     register,

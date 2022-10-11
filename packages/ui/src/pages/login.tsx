@@ -40,7 +40,7 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 
 const LoginPage: FC = () => {
   const router = useRouter()
-  const { setAccessToken, setRefreshToken } = useUser()
+  const { mutate, setAccessToken, setRefreshToken } = useUser()
 
   const {
     register,
@@ -59,6 +59,8 @@ const LoginPage: FC = () => {
     if (!setRes) {
       return
     }
+
+    mutate()
 
     authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
   }
