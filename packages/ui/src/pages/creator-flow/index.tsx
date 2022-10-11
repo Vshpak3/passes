@@ -3,8 +3,7 @@ import { Suspense } from "react"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const CreatorFlowMain = dynamic(
-  () =>
-    import("src/components/pages/creator-flow/Main").then((m) => m.CreatorFlow),
+  () => import("src/components/pages/creator-flow/Main"),
   { suspense: true, ssr: false }
 )
 

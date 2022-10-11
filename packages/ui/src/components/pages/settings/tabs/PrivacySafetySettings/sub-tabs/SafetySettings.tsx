@@ -4,7 +4,7 @@ import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
-export const SafetySettings = () => {
+const SafetySettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (
@@ -23,3 +23,5 @@ export const SafetySettings = () => {
     </Tab>
   )
 }
+
+export default SafetySettings // eslint-disable-line import/no-default-export

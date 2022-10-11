@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
-import { CustomComponentMentionEditor } from "src/components/organisms/CustomMentionEditor"
+import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
 

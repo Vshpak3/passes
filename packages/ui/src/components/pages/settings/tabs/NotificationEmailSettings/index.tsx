@@ -14,7 +14,7 @@ const subTabs = [
   }
 ]
 
-export const NotificationEmailSettings = () => {
+const NotificationEmailSettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   return (
     <Tab
@@ -44,3 +44,5 @@ export const NotificationEmailSettings = () => {
     </Tab>
   )
 }
+
+export default NotificationEmailSettings // eslint-disable-line import/no-default-export

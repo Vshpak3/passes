@@ -1,7 +1,7 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 
-interface ISendMessageButton {
+interface SendMessageButtonProps {
   submit: () => void
   blocked?: boolean
   submitting?: boolean
@@ -11,13 +11,13 @@ interface ISendMessageButton {
   tip?: number
 }
 
-export const SendMessageButton = ({
+export const SendMessageButton: FC<SendMessageButtonProps> = ({
   submit,
   loading,
   isCreator,
   blockSendMessage,
   tip = 0
-}: ISendMessageButton) => {
+}) => {
   return (
     <>
       {isCreator ? (

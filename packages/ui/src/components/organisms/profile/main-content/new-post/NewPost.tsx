@@ -21,10 +21,7 @@ import { NewPostDropdown } from "./audience-dropdown"
 import { MediaFile } from "./media"
 
 const CustomMentionEditor = dynamic(
-  () =>
-    import("src/components/organisms/CustomMentionEditor").then(
-      (m) => m.CustomComponentMentionEditor
-    ),
+  () => import("src/components/organisms/CustomMentionEditor"),
   { ssr: false }
 )
 

@@ -11,7 +11,7 @@ const accounts: { name: string; isBlocked: boolean }[] = [
   // { name: "Kianna Press", isBlocked: true }
 ]
 
-export const BlockedRestrictedAccounts = () => {
+const BlockedRestrictedAccounts = () => {
   return (
     <Tab
       withBack
@@ -50,3 +50,5 @@ export const BlockedRestrictedAccounts = () => {
     </Tab>
   )
 }
+
+export default BlockedRestrictedAccounts // eslint-disable-line import/no-default-export

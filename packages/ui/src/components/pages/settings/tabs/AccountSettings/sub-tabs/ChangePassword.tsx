@@ -27,7 +27,7 @@ const defaultValues = {
   confirmPassword: ""
 }
 
-export const ChangePassword = () => {
+const ChangePassword = () => {
   const {
     register,
     handleSubmit,
@@ -119,3 +119,5 @@ export const ChangePassword = () => {
     </>
   )
 }
+
+export default ChangePassword // eslint-disable-line import/no-default-export

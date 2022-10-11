@@ -13,10 +13,7 @@ import { usePostData } from "src/hooks/usePostData"
 import { CommentSection } from "./CommentSection"
 
 const TipPostModal = dynamic(
-  () =>
-    import("src/components/organisms/payment/TipPostModal").then(
-      (m) => m.TipPostModal
-    ),
+  () => import("src/components/organisms/payment/TipPostModal"),
   { ssr: false }
 )
 

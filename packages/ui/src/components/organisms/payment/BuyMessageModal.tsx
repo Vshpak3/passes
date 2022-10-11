@@ -16,7 +16,7 @@ interface BuyMessageModalProps {
   isOpen: boolean
 }
 
-export const BuyPostModal: FC<BuyMessageModalProps> = ({
+export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   message,
   setOpen,
   isOpen

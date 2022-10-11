@@ -46,3 +46,5 @@ export const NewPostButton = () => {
     </Dialog>
   )
 }
+
+export default NewPostButton // eslint-disable-line import/no-default-export

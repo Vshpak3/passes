@@ -2,13 +2,10 @@ import dynamic from "next/dynamic"
 import { Suspense } from "react"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const Messages = dynamic(
-  () => import("src/components/organisms/MessagesV2").then((m) => m.MessagesV2),
-  {
-    suspense: true,
-    ssr: false
-  }
-)
+const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
+  suspense: true,
+  ssr: false
+})
 
 const MessagesPage = () => {
   return (

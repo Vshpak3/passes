@@ -19,7 +19,7 @@ interface NotificationSettingsFormProps {
   mentionEmails: boolean
 }
 
-export const EmailNotifications = () => {
+const EmailNotifications = () => {
   const { getNotificationSettings, updateNotificationSettings } =
     useNotificationSettings()
   const { data: notificationSettings, mutate } = useSWR(
@@ -178,3 +178,5 @@ export const EmailNotifications = () => {
     </Tab>
   )
 }
+
+export default EmailNotifications // eslint-disable-line import/no-default-export

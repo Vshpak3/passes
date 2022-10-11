@@ -87,3 +87,5 @@ export const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
     </Modal>
   )
 }
+
+export default TipPostModal // eslint-disable-line import/no-default-export

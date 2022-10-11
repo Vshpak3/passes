@@ -11,7 +11,8 @@ const defaultValues = {
   showLikeCount: true,
   showPostCount: true
 }
-export const ProfileSettings = () => {
+
+const ProfileSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
 
@@ -134,3 +135,5 @@ export const ProfileSettings = () => {
     </Tab>
   )
 }
+
+export default ProfileSettings // eslint-disable-line import/no-default-export

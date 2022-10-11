@@ -1,21 +1,21 @@
 import { PassApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import { usePay } from "src/hooks/usePay"
 
-interface IRenewPassButton {
+interface RenewPassButtonProps {
   passHolderId: string
   onSuccess: () => void
   payinMethod?: PayinMethodDto
   isDisabled?: boolean
 }
 
-export const RenewPassButton = ({
+export const RenewPassButton: FC<RenewPassButtonProps> = ({
   passHolderId,
   payinMethod,
   onSuccess,
   isDisabled = false
-}: IRenewPassButton) => {
+}) => {
   const api = new PassApi()
   const register = async () => {
     return await api.registerRenewPass({

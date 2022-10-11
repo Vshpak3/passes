@@ -9,10 +9,7 @@ import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 import { useFanWall } from "src/hooks/useFanWall"
 
 const CustomMentionEditor = dynamic(
-  () =>
-    import("src/components/organisms/CustomMentionEditor").then(
-      (m) => m.CustomComponentMentionEditor
-    ),
+  () => import("src/components/organisms/CustomMentionEditor"),
   { ssr: false }
 )
 

@@ -3,7 +3,7 @@ import { Button } from "src/components/atoms/Button"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { Tab } from "src/components/pages/settings/Tab"
 
-export const DeactivateAccount = () => {
+const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =
     useState(false)
 
@@ -39,3 +39,5 @@ export const DeactivateAccount = () => {
     </>
   )
 }
+
+export default DeactivateAccount // eslint-disable-line import/no-default-export

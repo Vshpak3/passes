@@ -18,115 +18,114 @@ import {
 import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const AccountSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/AccountSettings").then(
-    (m) => m.AccountSettings
-  )
+const AccountSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/AccountSettings")
 )
-const AccountInformation = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
-  ).then((m) => m.AccountInformation)
+const AccountInformation = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
+    )
 )
-const ChangePassword = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
-  ).then((m) => m.ChangePassword)
+const ChangePassword = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
+    )
 )
-const DeactivateAccount = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
-  ).then((m) => m.DeactivateAccount)
+const DeactivateAccount = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
+    )
 )
-const DisplayName = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
-  ).then((m) => m.DisplayName)
+const DisplayName = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
+    )
 )
-const ProfilePicture = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
-  ).then((m) => m.ProfilePicture)
+const ProfilePicture = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
+    )
 )
-const Username = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
-  ).then((m) => m.Username)
+const Username = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
+    )
 )
-const ChatSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/ChatSettings").then(
-    (m) => m.ChatSettings
-  )
+const ChatSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/ChatSettings")
 )
-const NotificationEmailSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/NotificationEmailSettings").then(
-    (m) => m.NotificationEmailSettings
-  )
+const NotificationEmailSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/NotificationEmailSettings")
 )
-const EmailNotifications = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
-  ).then((m) => m.EmailNotifications)
+const EmailNotifications = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
+    )
 )
-const NotificationPreferences = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
-  ).then((m) => m.NotificationPreferences)
+const NotificationPreferences = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
+    )
 )
-const PaymentSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/PaymentSettings/index").then(
-    (m) => m.PaymentSettings
-  )
+const PaymentSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PaymentSettings/index")
 )
-const AddBank = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank"
-  ).then((m) => m.AddBank)
+const AddBank = dynamic(
+  () =>
+    import("src/components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank")
 )
-const AddCard = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
-  ).then((m) => m.AddCard)
+const AddCard = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
+    )
 )
-const WalletSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/WalletSettings").then(
-    (m) => m.WalletSettings
-  )
+const WalletSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/WalletSettings")
 )
-const PrivacySafetySettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/PrivacySafetySettings").then(
-    (m) => m.PrivacySafetySettings
-  )
+const PrivacySafetySettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PrivacySafetySettings")
 )
-const BlockedRestrictedAccounts = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
-  ).then((m) => m.BlockedRestrictedAccounts)
+const BlockedRestrictedAccounts = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
+    )
 )
-const PostsSettings = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
-  ).then((m) => m.PostsSettings)
+const PostsSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
+    )
 )
-const ProfileSettings = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
-  ).then((m) => m.ProfileSettings)
+const ProfileSettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
+    )
 )
-const SafetySettings = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
-  ).then((m) => m.SafetySettings)
+const SafetySettings = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
+    )
 )
-const PaymentHistory = dynamic(() =>
-  import(
-    "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/PaymentHistory"
-  ).then((m) => m.PaymentHistory)
+const PaymentHistory = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/PaymentHistory"
+    )
 )
-const PayoutSettings = dynamic(() =>
-  import("src/components/pages/settings/tabs/PayoutSettings/index").then(
-    (m) => m.PayoutSettings
-  )
+const PayoutSettings = dynamic(
+  () => import("src/components/pages/settings/tabs/PayoutSettings/index")
 )
 export interface SettingsPageProps {
   settingsPath?: string[]

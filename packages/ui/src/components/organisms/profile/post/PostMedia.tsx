@@ -4,8 +4,7 @@ import { FC, useEffect, useRef, useState } from "react"
 import { usePostData } from "src/hooks/usePostData"
 
 const PostVideo = dynamic(
-  () =>
-    import("src/components/molecules/post/PostVideo").then((m) => m.PostVideo),
+  () => import("src/components/molecules/post/PostVideo"),
   { ssr: false }
 )
 

@@ -1,5 +1,6 @@
 import { FollowApi } from "@passes/api-client"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 import useSWR from "swr"
 
 import { useUser } from "./useUser"
@@ -49,6 +50,12 @@ export const useFollow = (creatorId: string) => {
       rollbackOnError: true
     })
   }
+
+  useEffect(() => {
+    if (data === undefined) {
+      mutate()
+    }
+  }, [data, mutate])
 
   return {
     isFollowing: data?.isFollowing,

@@ -1,6 +1,6 @@
 import ChatIcon from "public/icons/mail-icon.svg"
 import EditIcon from "public/icons/profile-edit-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
 import {
   ButtonTypeEnum,
   CoverButton,
@@ -107,18 +107,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   const { creatorStats, ownsProfile, profile, profileUsername } =
     useCreatorProfile()
 
-  const { follow, unfollow, isFollowing, loadFollow } = useFollow(
-    profile?.userId || ""
-  )
-
-  const [hasLoaded, setHasLoaded] = useState(false)
-
-  useEffect(() => {
-    if (!hasLoaded && isFollowing === undefined) {
-      loadFollow()
-    }
-    setHasLoaded(true)
-  }, [hasLoaded, isFollowing, loadFollow])
+  const { follow, unfollow, isFollowing } = useFollow(profile?.userId || "")
 
   return (
     <div className="flex flex-col items-start gap-[6px]">

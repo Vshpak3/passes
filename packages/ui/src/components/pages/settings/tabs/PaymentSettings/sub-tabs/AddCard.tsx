@@ -25,10 +25,12 @@ import { errorMessage } from "src/helpers/error"
 import { encrypt } from "src/helpers/openpgp"
 import { useUser } from "src/hooks/useUser"
 import { v4 } from "uuid"
-interface IAddCard {
+
+interface AddCardProps {
   callback?: () => void
 }
-export const AddCard: FC<IAddCard> = ({ callback }) => {
+
+const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
@@ -310,3 +312,5 @@ export const AddCard: FC<IAddCard> = ({ callback }) => {
     </>
   )
 }
+
+export default AddCard // eslint-disable-line import/no-default-export

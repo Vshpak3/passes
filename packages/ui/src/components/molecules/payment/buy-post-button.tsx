@@ -1,21 +1,21 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import { usePay } from "src/hooks/usePay"
 
-interface IBuyPostButton {
+interface BuyPostButtonProps {
   postId: string
   onSuccess: () => void
   payinMethod?: PayinMethodDto
   isDisabled?: boolean
 }
 
-export const BuyPostButton = ({
+export const BuyPostButton: FC<BuyPostButtonProps> = ({
   postId,
   payinMethod,
   onSuccess,
   isDisabled = false
-}: IBuyPostButton) => {
+}) => {
   const api = new PostApi()
   const register = async () => {
     return await api.registerPurchasePost({

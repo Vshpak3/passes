@@ -239,3 +239,5 @@ export const CreatorFlow = () => {
     </div>
   )
 }
+
+export default CreatorFlow // eslint-disable-line import/no-default-export

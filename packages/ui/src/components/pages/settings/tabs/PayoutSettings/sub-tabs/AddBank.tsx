@@ -22,7 +22,7 @@ enum BankTypeEnum {
   NON_IBAN = "non iban"
 }
 
-export const AddBank = () => {
+const AddBank = () => {
   const idempotencyKey = v4()
 
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
@@ -281,3 +281,5 @@ export const AddBank = () => {
     </Tab>
   )
 }
+
+export default AddBank // eslint-disable-line import/no-default-export

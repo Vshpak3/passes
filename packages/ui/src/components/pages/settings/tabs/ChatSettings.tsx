@@ -18,7 +18,7 @@ const defaultValues = {
   welcomeMessage: ""
 }
 
-export const ChatSettings = () => {
+const ChatSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
   const {
@@ -197,10 +197,12 @@ export const ChatSettings = () => {
   )
 }
 
-export const ChatSettingsCreatorWrapper = () => {
+const ChatSettingsCreatorWrapper = () => {
   return (
     <AuthWrapper isPage creatorOnly={true}>
       <ChatSettings />
     </AuthWrapper>
   )
 }
+
+export default ChatSettingsCreatorWrapper // eslint-disable-line import/no-default-export

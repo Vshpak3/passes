@@ -26,7 +26,7 @@ interface ChartProps {
   graphData: CreatorEarningDto[]
 }
 
-export const Chart: FC<ChartProps> = ({ graphData }) => {
+const Chart: FC<ChartProps> = ({ graphData }) => {
   return (
     <div className="mt-5 w-full lg:mt-[30px]">
       <Line
@@ -76,3 +76,5 @@ export const Chart: FC<ChartProps> = ({ graphData }) => {
     </div>
   )
 }
+
+export default Chart // eslint-disable-line import/no-default-export

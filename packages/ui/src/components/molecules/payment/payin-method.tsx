@@ -3,12 +3,12 @@ import { useRouter } from "next/router"
 import React, { FC } from "react"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 
-interface IPayinMethodDisplay {
+interface PayinMethodDisplayProps {
   payinMethod: PayinMethodDto
   card?: CircleCardDto
 }
 
-export const PayinMethodDisplay: FC<IPayinMethodDisplay> = ({
+export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
   payinMethod,
   card
 }) => {

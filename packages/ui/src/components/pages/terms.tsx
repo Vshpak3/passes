@@ -748,3 +748,5 @@ export const TermsOfService = () => {
     </div>
   )
 }
+
+export default TermsOfService // eslint-disable-line import/no-default-export

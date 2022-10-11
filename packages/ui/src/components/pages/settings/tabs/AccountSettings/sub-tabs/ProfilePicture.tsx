@@ -15,7 +15,7 @@ interface ProfileFormProps {
   profileImage: File[]
 }
 
-export const ProfilePicture: FC = () => {
+const ProfilePicture: FC = () => {
   const { user } = useUser()
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const {
@@ -113,3 +113,5 @@ export const ProfilePicture: FC = () => {
     </Tab>
   )
 }
+
+export default ProfilePicture // eslint-disable-line import/no-default-export

@@ -82,3 +82,5 @@ export const MessagesV2 = () => {
     </div>
   )
 }
+
+export default MessagesV2 // eslint-disable-line import/no-default-export

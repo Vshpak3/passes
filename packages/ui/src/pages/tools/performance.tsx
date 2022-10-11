@@ -18,8 +18,7 @@ import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import useSWR from "swr"
 
 const Chart = dynamic(
-  () =>
-    import("src/components/molecules/performance/Chart").then((m) => m.Chart),
+  () => import("src/components/molecules/performance/Chart"),
   { ssr: false }
 )
 

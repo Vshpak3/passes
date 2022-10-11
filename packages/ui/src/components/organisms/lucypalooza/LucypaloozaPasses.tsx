@@ -28,7 +28,7 @@ import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { PassCard } from "src/components/molecules/lucypalooza/PassCard"
 import { PassSuccess } from "src/components/molecules/lucypalooza/PassSuccess"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
-import { PaymentSettings } from "src/components/pages/settings/tabs/PaymentSettings"
+import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
 import { ContentService } from "src/helpers/content"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 

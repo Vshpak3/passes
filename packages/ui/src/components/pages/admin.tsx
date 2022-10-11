@@ -177,3 +177,5 @@ export const AdminPage = () => {
     </div>
   )
 }
+
+export default AdminPage // eslint-disable-line import/no-default-export

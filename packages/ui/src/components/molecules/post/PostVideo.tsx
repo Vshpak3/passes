@@ -27,3 +27,5 @@ export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
 
   return <Video options={videoJsOptions} onReady={handlePlayerReady} />
 }
+
+export default PostVideo // eslint-disable-line import/no-default-export

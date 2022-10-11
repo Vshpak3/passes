@@ -91,3 +91,5 @@ export const Username: FC = () => {
     </Tab>
   )
 }
+
+export default Username // eslint-disable-line import/no-default-export

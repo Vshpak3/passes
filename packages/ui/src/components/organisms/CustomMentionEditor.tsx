@@ -89,7 +89,7 @@ const emptyContentState = (text: string) =>
     ]
   })
 
-export const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
+const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   placeholder,
   onInputChange,
   isReset,
@@ -184,3 +184,5 @@ export const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
     </div>
   )
 }
+
+export default CustomComponentMentionEditor // eslint-disable-line import/no-default-export

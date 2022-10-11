@@ -4,10 +4,10 @@ import {
   PayinMethodDto
 } from "@passes/api-client"
 import classNames from "classnames"
-import React, { useEffect } from "react"
+import React, { useEffect, FC } from "react"
 import { usePay } from "src/hooks/usePay"
 
-interface IBuyPassButton {
+interface BuyPassButtonProps {
   passId: string
   walletAddress?: string
   payinMethod?: PayinMethodDto
@@ -16,14 +16,14 @@ interface IBuyPassButton {
   isDisabled?: boolean
 }
 
-export const BuyPassButton = ({
+export const BuyPassButton: FC<BuyPassButtonProps> = ({
   passId,
   walletAddress,
   payinMethod,
   onSuccess,
   owns,
   isDisabled = false
-}: IBuyPassButton) => {
+}) => {
   const api = new PassApi()
   const register = async () => {
     return await api.registerBuyPass({

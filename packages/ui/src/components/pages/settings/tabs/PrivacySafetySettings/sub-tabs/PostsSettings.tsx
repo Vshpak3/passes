@@ -10,7 +10,7 @@ const defaultValues = {
   enableComments: false
 }
 
-export const PostsSettings = () => {
+const PostsSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
   const {
@@ -72,3 +72,5 @@ export const PostsSettings = () => {
     </Tab>
   )
 }
+
+export default PostsSettings // eslint-disable-line import/no-default-export

@@ -28,7 +28,7 @@ const subTabs = [
   }
 ]
 
-export const PrivacySafetySettings = () => {
+const PrivacySafetySettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (
@@ -61,3 +61,5 @@ export const PrivacySafetySettings = () => {
     </>
   )
 }
+
+export default PrivacySafetySettings // eslint-disable-line import/no-default-export

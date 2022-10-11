@@ -24,3 +24,5 @@ export const Profile: FC = () => {
     </div>
   )
 }
+
+export default Profile // eslint-disable-line import/no-default-export

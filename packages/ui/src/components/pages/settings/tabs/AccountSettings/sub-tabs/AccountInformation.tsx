@@ -4,7 +4,7 @@ import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { useUser } from "src/hooks/useUser"
 
-export const AccountInformation = () => {
+const AccountInformation = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   const { user } = useUser()
 
@@ -86,3 +86,5 @@ export const AccountInformation = () => {
     </Tab>
   )
 }
+
+export default AccountInformation // eslint-disable-line import/no-default-export

@@ -10,7 +10,7 @@ import { ChevronDown } from "src/icons/chevron-down"
 
 const PAGE_SIZE = 7
 
-export const PaymentHistory = () => {
+const PaymentHistory = () => {
   const [payins, setPayins] = useState<PayinDto[]>([])
   const [totalPages, setTotalPages] = useState(1)
   const [currentPage, setCurrentPage] = useState(0)
@@ -149,3 +149,5 @@ export const PaymentHistory = () => {
     </>
   )
 }
+
+export default PaymentHistory // eslint-disable-line import/no-default-export

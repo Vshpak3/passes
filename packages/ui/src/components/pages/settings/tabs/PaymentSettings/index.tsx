@@ -24,7 +24,7 @@ import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { useUser } from "src/hooks/useUser"
 
-import { AddCard } from "./sub-tabs/AddCard"
+import AddCard from "./sub-tabs/AddCard"
 
 interface Props {
   addCardHandler?: null | (() => void)
@@ -32,7 +32,7 @@ interface Props {
   onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
 
-export const PaymentSettings = ({
+const PaymentSettings = ({
   isEmbedded = false,
   onSetDefaultPayment
 }: Props) => {
@@ -416,3 +416,5 @@ export const PaymentSettings = ({
     </>
   )
 }
+
+export default PaymentSettings // eslint-disable-line import/no-default-export

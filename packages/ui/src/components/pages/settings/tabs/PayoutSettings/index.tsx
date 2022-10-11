@@ -17,7 +17,7 @@ import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { BankIcon } from "src/icons/bank-icon"
 import { WalletIcon } from "src/icons/wallet-icon"
 
-export const PayoutSettings = () => {
+const PayoutSettings = () => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =
     usePayoutMethod()
@@ -257,3 +257,5 @@ export const PayoutSettings = () => {
     </>
   )
 }
+
+export default PayoutSettings // eslint-disable-line import/no-default-export

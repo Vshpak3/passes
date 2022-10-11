@@ -4,7 +4,7 @@ import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
-export const NotificationPreferences = () => {
+const NotificationPreferences = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (
@@ -27,3 +27,5 @@ export const NotificationPreferences = () => {
     </>
   )
 }
+
+export default NotificationPreferences // eslint-disable-line import/no-default-export

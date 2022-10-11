@@ -15,7 +15,7 @@ interface DisplayNameFormProps {
   displayName: string
 }
 
-export const DisplayName: FC = () => {
+const DisplayName: FC = () => {
   const { user, loading, mutateManual } = useUser()
 
   const {
@@ -87,3 +87,5 @@ export const DisplayName: FC = () => {
     </Tab>
   )
 }
+
+export default DisplayName // eslint-disable-line import/no-default-export
