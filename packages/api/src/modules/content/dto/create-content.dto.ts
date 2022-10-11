@@ -5,9 +5,9 @@ export class CreateContentRequestDto {
   @DtoProperty({ custom_type: ContentTypeEnum })
   contentType: ContentTypeEnum
 
-  @DtoProperty({ custom_type: ContentTypeEnum })
+  @DtoProperty({ type: 'boolean' })
   inPost: boolean
 
-  @DtoProperty({ custom_type: ContentTypeEnum })
+  @DtoProperty({ type: 'boolean' })
   inMessage: boolean
 }

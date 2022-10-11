@@ -27,16 +27,16 @@ export interface CreateContentRequestDto {
     contentType: CreateContentRequestDtoContentTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof CreateContentRequestDto
      */
-    inPost: CreateContentRequestDtoInPostEnum;
+    inPost: boolean;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof CreateContentRequestDto
      */
-    inMessage: CreateContentRequestDtoInMessageEnum;
+    inMessage: boolean;
 }
 
 
@@ -50,28 +50,6 @@ export const CreateContentRequestDtoContentTypeEnum = {
     Audio: 'audio'
 } as const;
 export type CreateContentRequestDtoContentTypeEnum = typeof CreateContentRequestDtoContentTypeEnum[keyof typeof CreateContentRequestDtoContentTypeEnum];
-
-/**
- * @export
- */
-export const CreateContentRequestDtoInPostEnum = {
-    Image: 'image',
-    Video: 'video',
-    Gif: 'gif',
-    Audio: 'audio'
-} as const;
-export type CreateContentRequestDtoInPostEnum = typeof CreateContentRequestDtoInPostEnum[keyof typeof CreateContentRequestDtoInPostEnum];
-
-/**
- * @export
- */
-export const CreateContentRequestDtoInMessageEnum = {
-    Image: 'image',
-    Video: 'video',
-    Gif: 'gif',
-    Audio: 'audio'
-} as const;
-export type CreateContentRequestDtoInMessageEnum = typeof CreateContentRequestDtoInMessageEnum[keyof typeof CreateContentRequestDtoInMessageEnum];
 
 
 /**

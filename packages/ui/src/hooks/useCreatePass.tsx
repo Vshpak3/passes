@@ -4,6 +4,7 @@ import {
   CreatePassRequestDtoTypeEnum,
   PassApi
 } from "@passes/api-client"
+import ms from "ms"
 import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
@@ -18,7 +19,7 @@ const MIN_FILES_SUBSCRIPTION = 0
 const MAX_FILES_LIFETIME = 5000
 const MIN_FILES_LIFETIME = 1
 
-const THIRTY_DAY_DURATION = 30 * 24 * 60 * 60
+const THIRTY_DAY_DURATION = ms("30 days")
 const THIRTY_DAY_DURATION_LIFETIME = undefined
 
 const MIN_PASS_ROYALTY_PERCENTAGE = 6
