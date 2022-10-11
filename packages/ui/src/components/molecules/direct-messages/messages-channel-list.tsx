@@ -1,21 +1,22 @@
 import classNames from "classnames"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import { List } from "src/components/organisms/DirectMessage"
 
 import { MessagesSearchInput } from "./messages-search-input"
 
-interface IMessagingChannelList {
+interface MessagingChannelListProps {
   lists: List[]
   activeList: List
   setActiveList: Dispatch<SetStateAction<any>>
   onToggleUser: (e: any, member: any) => void
 }
-export const MessagesChannelList = ({
+
+export const MessagesChannelList: FC<MessagingChannelListProps> = ({
   lists,
   activeList,
   setActiveList,
   onToggleUser
-}: IMessagingChannelList) => {
+}) => {
   return (
     <div className="flex min-w-[370px] max-w-[370px] flex-col border-r border-[#FFFF]/10 p-[30px]">
       <span className="text-[16px] font-medium leading-[24px] text-white">

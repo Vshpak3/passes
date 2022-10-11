@@ -1,8 +1,8 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
-import React, { FC } from "react"
+import { FC } from "react"
 import TimeAgo from "react-timeago"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
 

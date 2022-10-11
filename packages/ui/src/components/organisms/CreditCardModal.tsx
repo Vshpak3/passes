@@ -28,13 +28,13 @@ import { v4 } from "uuid"
 
 import { Modal } from "./Modal"
 
-interface ICreditCardModal {
+interface CreditCardModalProps {
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   defaultPayin: PayinMethodDto | undefined
 }
 
-export const CreditCardModal: FC<ICreditCardModal> = ({
+export const CreditCardModal: FC<CreditCardModalProps> = ({
   isOpen = false,
   setOpen
 }) => {

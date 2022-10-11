@@ -1,18 +1,18 @@
 import { Menu, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
-import React, { Dispatch, Fragment, SetStateAction } from "react"
+import React, { Dispatch, FC, Fragment, SetStateAction } from "react"
 
-interface IAmountsDropdown {
+interface AmountsDropdownProps {
   selectedAmount: number
   amounts: any
   onSelectAmount: Dispatch<SetStateAction<any>>
 }
-export const BuyMessagesAmountDropdown = ({
+export const BuyMessagesAmountDropdown: FC<AmountsDropdownProps> = ({
   selectedAmount,
   amounts,
   onSelectAmount
-}: IAmountsDropdown) => {
+}) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>

@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import { toLower } from "lodash"
-import React from "react"
+import React, { FC } from "react"
 import ReactInputMask from "react-input-mask"
 import {
   FormErrors,
@@ -35,7 +35,7 @@ type InputProps = {
   mask?: string
 }
 
-export const Input = ({
+export const Input: FC<InputProps> = ({
   name,
   type,
   label,
@@ -50,7 +50,7 @@ export const Input = ({
   mask,
   iconMargin = "0",
   ...rest
-}: InputProps) => {
+}) => {
   return (
     <>
       {label && (

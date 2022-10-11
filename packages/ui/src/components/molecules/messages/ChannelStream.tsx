@@ -1,6 +1,13 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ms from "ms"
-import { UIEventHandler, useCallback, useEffect, useRef, useState } from "react"
+import {
+  FC,
+  UIEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react"
 import { PendingStatus } from "src/components/messages/assets/PendingStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/free-messages-left-container"
@@ -16,11 +23,11 @@ export interface ChannelStreamProps {
   isCreator?: boolean
 }
 
-export const ChannelStream = ({
+export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
   isCreator
-}: ChannelStreamProps) => {
+}) => {
   const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [earliestSentAt, setEarliestSentAt] = useState(new Date())

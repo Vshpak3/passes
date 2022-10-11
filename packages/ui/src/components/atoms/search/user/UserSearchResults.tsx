@@ -1,3 +1,4 @@
+import { FC } from "react"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 
 interface EmptyResultProps {
@@ -17,12 +18,12 @@ interface SearchResultProps {
   onClick: () => void
 }
 
-export const SearchResult = ({
+export const SearchResult: FC<SearchResultProps> = ({
   userId,
   displayName,
   username,
   onClick
-}: SearchResultProps) => {
+}) => {
   const formattedUsername = `@${username}`
   return (
     <li

@@ -18,7 +18,7 @@ import { EIcon } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
 import { errorMessage } from "src/helpers/error"
@@ -31,7 +31,7 @@ interface AddCardProps {
 }
 
 const AddCard: FC<AddCardProps> = ({ callback }) => {
-  const { addOrPopStackHandler } = useSettings() as ISettingsContext
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
 

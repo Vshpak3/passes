@@ -1,6 +1,7 @@
 import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
+import { FC } from "react"
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { CreatorToolsItem } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsItem"
 import { CreatorToolsSidebar } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsSidebar"
@@ -31,7 +32,7 @@ interface SidebarDefaultProps {
   user: any
 }
 
-export const SidebarDefault = ({
+export const SidebarDefault: FC<SidebarDefaultProps> = ({
   active,
   navigation,
   setActive,
@@ -41,7 +42,7 @@ export const SidebarDefault = ({
   collapsedAdditionalSidebarOpen,
   collapsedNavigation,
   user
-}: SidebarDefaultProps) => {
+}) => {
   const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
       <SidebarItem

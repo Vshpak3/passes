@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import PlusSignIcon from "public/icons/plus-sign.svg"
-import React, { useRef, useState } from "react"
+import React, { FC, useRef, useState } from "react"
 import {
   FormLabel,
   FormName,
@@ -23,7 +23,7 @@ type InputProps = {
   className?: string
 }
 
-export function TagsInput({
+export const TagsInput: FC<InputProps> = ({
   name,
   label,
   placeholder,
@@ -32,7 +32,7 @@ export function TagsInput({
   className = "",
   tagsFromServer = [],
   ...rest
-}: InputProps) {
+}) => {
   const [tags, setTags] = useState([...tagsFromServer])
   const [popoverVisibility, setPopoverVisibility] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)

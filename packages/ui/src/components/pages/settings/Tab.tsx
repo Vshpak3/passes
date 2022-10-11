@@ -1,6 +1,6 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
 import React, { FC, PropsWithChildren } from "react"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 
 interface TabProps {
   title: string
@@ -19,7 +19,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
   TitleBtn
 }) => {
   const { popTabFromStackHandler, setShowSettingsTab } =
-    useSettings() as ISettingsContext
+    useSettings() as SettingsContextProps
 
   return (
     <>

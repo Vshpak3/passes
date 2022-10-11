@@ -9,7 +9,7 @@ import { useEffect } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { useUser } from "src/hooks/useUser"
@@ -18,7 +18,7 @@ import { BankIcon } from "src/icons/bank-icon"
 import { WalletIcon } from "src/icons/wallet-icon"
 
 const PayoutSettings = () => {
-  const { addOrPopStackHandler } = useSettings() as ISettingsContext
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =
     usePayoutMethod()
 

@@ -11,7 +11,7 @@ import {
   TabsEnum
 } from "src/config/settings"
 import {
-  ISettingsContext,
+  SettingsContextProps,
   SettingsProvider,
   useSettings
 } from "src/contexts/settings"
@@ -140,7 +140,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     setSubTabsStack,
     showSettingsTab,
     setShowSettingsTab
-  } = useSettings() as ISettingsContext
+  } = useSettings() as SettingsContextProps
 
   useEffect(() => {
     if (!settingsPath) {

@@ -13,12 +13,12 @@ const filters = [
   { name: "Highest Price", id: Filters["highest-price"] }
 ]
 
-interface IFilterProps {
+interface FilterProps {
   activeFilter: Filters
   setActiveFilter: (filter: Filters) => void
 }
 
-export const Filter: FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
+export const Filter: FC<FilterProps> = ({ activeFilter, setActiveFilter }) => {
   const [showFilterDropDown, setShowFilterDropDown] = useState(false)
 
   const filterEl = useRef(null)

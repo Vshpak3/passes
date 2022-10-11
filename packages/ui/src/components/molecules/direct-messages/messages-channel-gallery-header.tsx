@@ -1,20 +1,17 @@
 import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 
-interface Props {
+interface MessagesChannelGalleryHeaderProps {
   gallery: boolean
   setGallery: Dispatch<SetStateAction<any>>
   activeContent: string
   setActiveContent: Dispatch<SetStateAction<any>>
 }
 
-export const MessagesChannelGalleryHeader = ({
-  gallery,
-  setGallery,
-  activeContent,
-  setActiveContent
-}: Props) => {
+export const MessagesChannelGalleryHeader: FC<
+  MessagesChannelGalleryHeaderProps
+> = ({ gallery, setGallery, activeContent, setActiveContent }) => {
   const channelName = "TestAccount"
   return (
     <div className="flex w-full  items-center justify-between">

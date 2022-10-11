@@ -1,21 +1,21 @@
 import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import { usePay } from "src/hooks/usePay"
 
-interface IBuyMessageButton {
+interface BuyMessageButtonProps {
   messageId: string
   payinMethod?: PayinMethodDto
   onSuccess: () => void
   isDisabled?: boolean
 }
 
-export const BuyMessageButton = ({
+export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
   messageId,
   payinMethod,
   onSuccess,
   isDisabled = false
-}: IBuyMessageButton) => {
+}) => {
   const api = new MessagesApi()
   const register = async () => {
     return await api.registerPurchaseMessage({

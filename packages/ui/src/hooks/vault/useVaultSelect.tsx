@@ -25,7 +25,7 @@ import { Dispatch, SetStateAction, useState } from "react"
 // }
 const INITIAL_DATE = { day: "1", month: "Jan" }
 
-interface IUseVaultSelect {
+interface UseVaultSelectProps {
   selectedItems: Array<string>
   setSelectedItems: Dispatch<SetStateAction<Array<string>>>
   content: ContentDto
@@ -35,7 +35,7 @@ export const useVaultSelect = ({
   selectedItems = [],
   setSelectedItems,
   content
-}: IUseVaultSelect) => {
+}: UseVaultSelectProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [date, setDate] = useState(INITIAL_DATE)
 

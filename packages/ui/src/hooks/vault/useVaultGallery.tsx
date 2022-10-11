@@ -13,7 +13,7 @@ export type TSelectedVaultData = ContentDto[]
 export type TVaultType = GetVaultQueryRequestDtoTypeEnum | undefined
 export type TVaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
 
-interface IGetVaultData {
+interface GetVaultDataProps {
   type: TVaultType
   category: TVaultCategory
 }
@@ -21,7 +21,7 @@ interface IGetVaultData {
 async function fetchVaultData({
   type,
   category
-}: IGetVaultData): Promise<ContentDto[]> {
+}: GetVaultDataProps): Promise<ContentDto[]> {
   /**
    * TODO: We are mapping the data to include mocked data that is not yet
    * available from the API. Once the data is available, we can
@@ -58,7 +58,7 @@ export const useVaultGallery = () => {
   >(undefined)
 
   const fetchVaultItems = useCallback(
-    async ({ type = undefined, category = undefined }: IGetVaultData) => {
+    async ({ type = undefined, category = undefined }: GetVaultDataProps) => {
       const data = await fetchVaultData({
         type,
         category

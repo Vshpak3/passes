@@ -1,12 +1,11 @@
 import React, { FC } from "react"
 import { formatCurrency } from "src/helpers/formatters"
 import { Caret } from "src/icons/caret"
-interface IAnalyticsHeader {
+
+interface AnalyticsHeaderProps {
   balance?: number
 }
-export const AnalyticsHeader: FC<IAnalyticsHeader> = ({
-  balance
-}: IAnalyticsHeader) => {
+export const AnalyticsHeader: FC<AnalyticsHeaderProps> = ({ balance }) => {
   return (
     <div className="flex flex-col bg-black md:flex-row ">
       <div className="flex flex-1 flex-col justify-between pt-2">

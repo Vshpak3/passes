@@ -2,10 +2,10 @@ import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import React from "react"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 
 const NotificationPreferences = () => {
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
+  const { addTabToStackHandler } = useSettings() as SettingsContextProps
 
   return (
     <>

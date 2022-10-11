@@ -1,9 +1,13 @@
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import React from "react"
-interface ISearchInputMessages {
+import React, { FC } from "react"
+
+interface SearchInputMessagesProps {
   placeholder?: string
 }
-export const MessagesSearchInput = ({ placeholder }: ISearchInputMessages) => (
+
+export const MessagesSearchInput: FC<SearchInputMessagesProps> = ({
+  placeholder
+}) => (
   <div>
     <div className="relative rounded-md shadow-sm">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

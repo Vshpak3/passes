@@ -3,14 +3,14 @@ import {
   GetChannelsRequestDtoOrderTypeEnum,
   ListMemberDto
 } from "@passes/api-client/models"
-import React from "react"
+import React, { FC } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { OrderDropDown } from "src/components/molecules/OrderDropDown"
 
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 
-interface Props {
+interface ChannelListProps {
   channelOrderType: GetChannelsRequestDtoOrderTypeEnum
   setChannelOrderType: (order: GetChannelsRequestDtoOrderTypeEnum) => void
   onUserSelect: (user: ListMemberDto) => void
@@ -21,7 +21,7 @@ interface Props {
   next: () => void
 }
 
-export const ChannelList = ({
+export const ChannelList: FC<ChannelListProps> = ({
   channelOrderType,
   setChannelOrderType,
   onUserSelect,
@@ -30,7 +30,7 @@ export const ChannelList = ({
   onChannelClicked,
   hasMore,
   next
-}: Props) => {
+}) => {
   const channelOrders = [
     { id: "recent", name: "Most recent" },
     { id: "tip", name: "Most tips" }

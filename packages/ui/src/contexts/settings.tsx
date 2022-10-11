@@ -15,7 +15,7 @@ import {
   tabToPath
 } from "src/config/settings"
 
-export interface ISettingsContext {
+export interface SettingsContextProps {
   showSettingsTab: boolean
   setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
   activeTab: TabsEnum
@@ -27,7 +27,7 @@ export interface ISettingsContext {
   addOrPopStackHandler: (tab: SubTabsEnum) => void
 }
 
-const SettingsContext = createContext<Partial<ISettingsContext>>({})
+const SettingsContext = createContext<Partial<SettingsContextProps>>({})
 
 export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)

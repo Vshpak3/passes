@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import Cropper from "react-easy-crop"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
@@ -69,13 +69,13 @@ async function getCroppedImg(
   })
 }
 
-export const ImageCropDialog = ({
+export const ImageCropDialog: FC<ImageCropDialogProp> = ({
   onCrop,
   onClose,
   src,
   height,
   width
-}: ImageCropDialogProp) => {
+}) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedArea, setCroppedArea] = useState<CroppedArea>({

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import { Modal } from "src/components/organisms/Modal"
 import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
 
@@ -10,13 +10,13 @@ interface NewPostModalProps {
   childrenClassname?: string
 }
 
-export const NewPostModal = ({
+export const NewPostModal: FC<NewPostModalProps> = ({
   isOpen,
   setOpen,
   file,
   modalContainerClassname,
   childrenClassname
-}: NewPostModalProps) => {
+}) => {
   return (
     <Modal
       isNewPost

@@ -70,7 +70,7 @@ export const MessagesV2 = () => {
         next={next}
         onChannelClicked={handleChannelClicked}
       />
-      {user && user.id && (
+      {user && user.userId && (
         <ChannelView
           selectedChannel={selectedChannel}
           gallery={gallery}

@@ -1,11 +1,14 @@
-import { MouseEventHandler } from "react"
+import { FC, MouseEventHandler } from "react"
 
 type BulletItemProps = {
   isSelected: boolean
   setSelectedStep: MouseEventHandler
 }
 
-export function BulletItem({ isSelected, setSelectedStep }: BulletItemProps) {
+export const BulletItem: FC<BulletItemProps> = ({
+  isSelected,
+  setSelectedStep
+}) => {
   return (
     <div
       onClick={setSelectedStep}

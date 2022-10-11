@@ -37,7 +37,7 @@ interface CreatorFlowCustomizeFormProps {
   isAdult: boolean
 }
 
-interface IConnectedAccounts {
+interface ConnectedAccountsProps {
   discord: boolean
   facebook: boolean
   instagram: boolean
@@ -54,7 +54,7 @@ type CustomizePageFormProps = {
 export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   onFinishCustomizePage = identity
 }) => {
-  const [connectedAccounts] = useState<IConnectedAccounts>({
+  const [connectedAccounts] = useState<ConnectedAccountsProps>({
     discord: false,
     facebook: false,
     instagram: false,

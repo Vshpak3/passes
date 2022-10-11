@@ -8,18 +8,18 @@ import { FilterMenu } from "src/components/atoms/FilterMenu"
 import { getFormattedDate } from "src/helpers/formatters"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-interface IRange {
+interface RangeProps {
   startDate: Date
   endDate: Date
   key: string
 }
 
-interface IFilterByDays {
-  dateRange: IRange
-  setDateRange: Dispatch<SetStateAction<IRange>>
+interface FilterByDaysProps {
+  dateRange: RangeProps
+  setDateRange: Dispatch<SetStateAction<RangeProps>>
 }
 
-export const FilterByDays: FC<IFilterByDays> = ({
+export const FilterByDays: FC<FilterByDaysProps> = ({
   dateRange,
   setDateRange
 }) => {

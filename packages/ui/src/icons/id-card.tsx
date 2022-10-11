@@ -1,4 +1,4 @@
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 export interface IdCardProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -6,11 +6,11 @@ export interface IdCardProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-export const IdCard = ({
+export const IdCard: FC<IdCardProps> = ({
   width = 15,
   height = 15,
   ...restOfProps
-}: IdCardProps) => (
+}) => (
   <svg
     width={width}
     height={height}

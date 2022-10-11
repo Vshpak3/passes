@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { Dialog } from "src/components/organisms/Dialog"
 
-interface IConfirmationDialogProps {
+interface ConfirmationDialogProps {
   isOpen: boolean
   onClose: () => void
   onConfirm: () => void
@@ -11,7 +11,7 @@ interface IConfirmationDialogProps {
   cancelString?: string
 }
 
-export const ConfirmationDialog: FC<IConfirmationDialogProps> = ({
+export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   isOpen,
   onClose,
   onConfirm,

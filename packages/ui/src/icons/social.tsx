@@ -1,4 +1,4 @@
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 export interface SocialProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -8,12 +8,12 @@ export interface SocialProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-export const Social = ({
+export const Social: FC<SocialProps> = ({
   width = 15,
   height = 15,
   variant,
   fill = "white"
-}: SocialProps) => {
+}) => {
   const fillColor = fill || "currentColor"
 
   return (

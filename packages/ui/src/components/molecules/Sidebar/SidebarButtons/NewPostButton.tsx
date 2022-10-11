@@ -1,4 +1,3 @@
-import { CreatePostRequestDto } from "@passes/api-client"
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
 import { Button } from "src/components/atoms/Button"

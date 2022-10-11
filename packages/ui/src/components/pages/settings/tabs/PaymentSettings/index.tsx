@@ -12,31 +12,31 @@ import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
 import { Select } from "src/components/atoms/Select"
 import { Modal } from "src/components/organisms/Modal"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { useUser } from "src/hooks/useUser"
 
 import AddCard from "./sub-tabs/AddCard"
 
-interface Props {
+interface PaymentSettingsProps {
   addCardHandler?: null | (() => void)
   isEmbedded?: boolean
   onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
 
-const PaymentSettings = ({
+const PaymentSettings: FC<PaymentSettingsProps> = ({
   isEmbedded = false,
   onSetDefaultPayment
-}: Props) => {
-  const { addOrPopStackHandler } = useSettings() as ISettingsContext
+}) => {
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const {
     cards,
     defaultPayinMethod,

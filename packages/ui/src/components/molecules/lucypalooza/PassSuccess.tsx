@@ -5,11 +5,11 @@ import { Button } from "src/components/atoms/Button"
 import { GradientBorderTile } from "src/components/atoms/GradientBorderTile"
 import { ContentService } from "src/helpers/content"
 
-interface IPassSuccess {
+interface PassSuccessProps {
   pass: PassHolderDto
 }
 
-export const PassSuccess: FC<IPassSuccess> = ({ pass }) => {
+export const PassSuccess: FC<PassSuccessProps> = ({ pass }) => {
   const { passId, address, tokenId, title } = pass ?? {}
   const router = useRouter()
 

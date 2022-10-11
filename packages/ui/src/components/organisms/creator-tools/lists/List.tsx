@@ -1,6 +1,6 @@
 import { ListApi, ListDto, ListDtoTypeEnum } from "@passes/api-client"
 import Link from "next/link"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
@@ -10,11 +10,11 @@ interface ListProps {
   removable?: boolean
 }
 
-export const List = ({
+export const List: FC<ListProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   list,
   removable
-}: ListProps) => {
+}) => {
   const [removed, setRemoved] = useState<boolean>(false)
   return (
     <ConditionRendering condition={!removed}>

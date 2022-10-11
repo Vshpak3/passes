@@ -4,7 +4,7 @@ import UserIcon from "public/icons/user.svg"
 import React, { FC } from "react"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 
 const subTabs = [
   {
@@ -30,7 +30,7 @@ const subTabs = [
 ]
 
 export const AccountSettings: FC = () => {
-  const { addTabToStackHandler } = useSettings() as ISettingsContext
+  const { addTabToStackHandler } = useSettings() as SettingsContextProps
 
   return (
     <Tab

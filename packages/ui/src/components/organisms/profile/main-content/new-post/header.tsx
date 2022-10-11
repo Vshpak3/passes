@@ -4,7 +4,7 @@ import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FormInput } from "src/components/atoms/FormInput"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
@@ -71,7 +71,7 @@ type UploadPostMediaProps = {
   postTime: Date | null
 }
 
-export const MediaHeader = ({
+export const MediaHeader: FC<UploadPostMediaProps> = ({
   messages,
   register,
   errors,
@@ -79,7 +79,7 @@ export const MediaHeader = ({
   onChange,
   activeMediaHeader,
   postTime
-}: UploadPostMediaProps) => {
+}) => {
   const [scheduledPostTime, setScheduledPostTime] = useState<Date | null>(
     postTime
   )

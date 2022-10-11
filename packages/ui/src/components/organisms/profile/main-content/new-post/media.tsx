@@ -2,6 +2,7 @@ import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import Image from "next/image"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
+import { FC } from "react"
 import { Cross } from "src/icons/cross"
 
 type MediaFileProp = {
@@ -29,7 +30,7 @@ type MediaProp = {
   isPassUpload?: boolean
 }
 
-export const MediaFile = ({
+export const MediaFile: FC<MediaFileProp> = ({
   file,
   className,
   iconClassName,
@@ -39,7 +40,7 @@ export const MediaFile = ({
   contentHeight,
   contentWidth,
   isPassUpload
-}: MediaFileProp) => {
+}) => {
   const src = URL.createObjectURL(file)
   let type!: ContentDtoContentTypeEnum
   if (file.type.startsWith("image/")) {
@@ -67,7 +68,7 @@ export const MediaFile = ({
   )
 }
 
-export const Media = ({
+export const Media: FC<MediaProp> = ({
   src,
   type,
   className,
@@ -78,7 +79,7 @@ export const Media = ({
   contentHeight = 300,
   contentWidth = 300,
   isPassUpload
-}: MediaProp) => {
+}) => {
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
       <>

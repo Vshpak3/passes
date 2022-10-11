@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { FC, SVGProps, useState } from "react"
+import { FC, SVGProps, useState } from "react"
 
 interface IconTooltipProps {
   Icon: FC<SVGProps<SVGSVGElement>>
@@ -8,12 +8,12 @@ interface IconTooltipProps {
   className?: string
 }
 
-export const IconTooltip = ({
+export const IconTooltip: FC<IconTooltipProps> = ({
   Icon,
   position,
   tooltipText,
   className
-}: IconTooltipProps) => {
+}) => {
   const [tooltipStatus, setTooltipStatus] = useState<boolean>(false)
 
   const tooltipPositionDefinition = (position: string) => {

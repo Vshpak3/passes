@@ -1,7 +1,8 @@
 import { CircleBankDto, WalletDto } from "@passes/api-client"
+import { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 
-interface IAccountCard {
+interface AccountCardProps {
   account?: CircleBankDto
   handleClick: () => void
   isDefault?: boolean
@@ -10,14 +11,14 @@ interface IAccountCard {
   wallet?: WalletDto
 }
 
-export const AccountCard = ({
+export const AccountCard: FC<AccountCardProps> = ({
   account,
   handleClick,
   isDefault,
   deleteBank,
   deleteWallet,
   wallet
-}: IAccountCard) => {
+}) => {
   return (
     <div className="mb-16 text-base font-medium leading-[19px] lg:h-full">
       {account && (

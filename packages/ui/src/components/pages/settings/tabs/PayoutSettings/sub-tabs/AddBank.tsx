@@ -11,7 +11,7 @@ import { Select } from "src/components/atoms/Select"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
@@ -25,7 +25,7 @@ enum BankTypeEnum {
 const AddBank = () => {
   const idempotencyKey = v4()
 
-  const { addOrPopStackHandler } = useSettings() as ISettingsContext
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const {
     handleSubmit,

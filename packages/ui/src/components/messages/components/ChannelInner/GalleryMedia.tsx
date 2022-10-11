@@ -1,19 +1,11 @@
-import {
-  ContentDto,
-  ContentDtoContentTypeEnum
-  // PassHolderDto
-} from "@passes/api-client"
+import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
-// import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import TimeAgo from "react-timeago"
-import { PostUnlockButton } from "src/components/atoms"
-import PostVideo from "src/components/molecules/post/PostVideo"
-import { formatCurrency } from "src/helpers"
-import { contentTypeCounter } from "src/helpers/contentTypeCounter"
-import { FC, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
+import { PostVideo } from "src/components/molecules/post/PostVideo"
+import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface GalleryMediaProps {

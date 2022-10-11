@@ -1,11 +1,11 @@
 import classNames from "classnames"
 import React, { FC, PropsWithChildren } from "react"
 
-interface IFormContainer {
+interface FormContainerProps {
   className?: string
 }
 
-export const FormContainer: FC<PropsWithChildren<IFormContainer>> = ({
+export const FormContainer: FC<PropsWithChildren<FormContainerProps>> = ({
   children,
   className = ""
 }) => {

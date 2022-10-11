@@ -1,5 +1,5 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
-import React, { Dispatch, SetStateAction, useState } from "react"
+import React, { Dispatch, FC, SetStateAction, useState } from "react"
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/messages-channel-gallery-view"
 
 import { ChannelHeader } from "./ChannelHeader"
@@ -7,7 +7,7 @@ import { ChannelStream } from "./ChannelStream"
 import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
 import { InputMessageFanPerspective } from "./InputMessageFanPerspective"
 
-interface Props {
+interface ChannelViewProps {
   selectedChannel?: ChannelMemberDto
   gallery: boolean
   setGallery: Dispatch<SetStateAction<any>>
@@ -16,14 +16,14 @@ interface Props {
   user: any
 }
 
-export const ChannelView = ({
+export const ChannelView: FC<ChannelViewProps> = ({
   selectedChannel,
   gallery,
   setGallery,
   freeMessages,
   isCreator,
   user
-}: Props) => {
+}) => {
   const [activeContent, setActiveContent] = useState("All")
   return (
     <div className="flex max-h-[90vh] flex-1 flex-col">

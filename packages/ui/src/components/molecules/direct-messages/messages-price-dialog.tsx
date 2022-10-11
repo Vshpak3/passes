@@ -1,20 +1,21 @@
 import classNames from "classnames"
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 
-interface IMessagesPriceDialog {
+interface MessagesPriceDialogProps {
   register: any
   setHasPrice: Dispatch<SetStateAction<any>>
   onTargetAcquired: () => void
   postPrice: any
 }
-export const MessagesPriceDialog = ({
+
+export const MessagesPriceDialog: FC<MessagesPriceDialogProps> = ({
   register,
   setHasPrice,
   onTargetAcquired,
   postPrice
-}: IMessagesPriceDialog) => {
+}) => {
   return (
     <Dialog
       className="flex w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"

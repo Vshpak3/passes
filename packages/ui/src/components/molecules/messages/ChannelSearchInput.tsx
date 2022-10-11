@@ -5,11 +5,11 @@ import ChevronDown from "public/icons/header-chevron-down-icon.svg"
 import { FC, useState } from "react"
 import { useFollowSearch } from "src/hooks/useFollowSearch"
 
-interface ISearchInputDropdown {
+interface SearchInputDropdownProps {
   onUserSelect: (user: ListMemberDto) => void
 }
 
-export const ChannelSearchInput: FC<ISearchInputDropdown> = ({
+export const ChannelSearchInput: FC<SearchInputDropdownProps> = ({
   onUserSelect
 }) => {
   const { onChangeInput, results } = useFollowSearch()
