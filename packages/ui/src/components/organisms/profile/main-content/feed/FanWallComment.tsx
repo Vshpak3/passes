@@ -5,7 +5,6 @@ import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/post/PostDropdown"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 import { useBlockModal } from "src/hooks/useBlockModal"
-import { usePostData } from "src/hooks/usePostData"
 import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
@@ -19,7 +18,6 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   comment,
   removable
 }) => {
-  const postData = usePostData()
   const api = new FanWallApi()
 
   const { setIsReportModalOpen } = useReportModal()
@@ -72,7 +70,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-            {postData.text}
+            {comment.text}
           </p>
         </div>
       </FormContainer>

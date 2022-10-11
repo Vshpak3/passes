@@ -76,14 +76,16 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   const [flattenedData, setFlattenedData] = useState<A[]>([])
 
   useEffect(() => {
-    setFlattenedData(
-      data
-        ?.map((d) => {
-          return d.data
-        })
-        .flat() ?? []
-    )
-    setHasMore(!data || !!data[data.length - 1].lastId)
+    if (data) {
+      setFlattenedData(
+        data
+          ?.map((d) => {
+            return d.data
+          })
+          .flat() ?? []
+      )
+      setHasMore(!data || !!data[data.length - 1].lastId)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
