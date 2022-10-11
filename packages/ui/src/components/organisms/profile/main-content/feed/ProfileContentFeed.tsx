@@ -84,7 +84,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
                 getFanWallRequestDto: req
               })
             }}
-            fetchProps={{}}
+            fetchProps={{ creatorId: profile?.userId }}
             emptyElement={ContentFeedEmpty}
             loadingElement={ContentFeedLoading}
             endElement={ContentFeedEnd}
