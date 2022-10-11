@@ -43,7 +43,7 @@ const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
         className={
           isDesktop
             ? "relative flex items-center gap-3"
-            : "absolute top-[64px] left-0 flex w-full"
+            : "absolute inset-x-4 top-[68px] flex sm:inset-x-8"
         }
       >
         <ul
