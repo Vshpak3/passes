@@ -20,7 +20,7 @@ interface PassCardProps {
   isSelected: boolean
   price: number
   ethPrice: number
-  remainingSupply: number
+  remainingSupply: number | null
 }
 
 const PassVideo: FC<PassVideoProps> = ({ img }) => {

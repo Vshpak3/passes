@@ -2,7 +2,6 @@ import {
   GetDefaultWalletRequestDtoChainEnum,
   WalletDto
 } from "@passes/api-client"
-import copy from "copy-to-clipboard"
 import Clipboard from "public/icons/clipboard.svg"
 import DefaultIcon from "public/icons/defaultWalletTypeIcon.svg"
 import InfoIcon from "public/icons/infoIcon.svg"
@@ -12,6 +11,7 @@ import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import React from "react"
 import { Button } from "src/components/atoms"
 import IconTooltip from "src/components/atoms/IconTooltip"
+import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 
 interface WalletListItemProps {
   wallet: WalletDto
@@ -24,15 +24,6 @@ interface WalletListItemProps {
   ) => Promise<void>
 }
 
-const formatWalletAddress = (
-  wallet: string,
-  { amountFirst, amountLast }: { amountFirst: number; amountLast: number }
-) => {
-  const firstDigits = wallet.slice(0, amountFirst)
-  const lastDigits = wallet.slice(wallet.length - amountLast, wallet.length)
-
-  return `${firstDigits}...${lastDigits}`
-}
 const WalletListItem = ({
   wallet,
   deleteWalletHandler,
@@ -74,10 +65,6 @@ const WalletListItem = ({
     if (!wallet.custodial) {
       deleteWalletHandler(wallet.walletId)
     }
-  }
-
-  const handleCopyToClipboard = () => {
-    copy(wallet.address)
   }
 
   return (
@@ -122,7 +109,7 @@ const WalletListItem = ({
         </div>
         <div
           className='text-[#ffffffeb]" group flex w-[30%] cursor-pointer flex-row justify-center'
-          onClick={handleCopyToClipboard}
+          onClick={() => copyWalletToClipboard(wallet.address)}
         >
           {formatWalletAddress(wallet.address, {
             amountFirst: 6,

@@ -15,7 +15,12 @@ const CreateSchedulerPopup = forwardRef<
   CreateSchedulerPopupProps
 >(
   (
-    { onCancel, setIsNewPostModalOpen, setSelectionDate, selectionDate },
+    {
+      onCancel,
+      setIsNewPostModalOpen = () => null,
+      setSelectionDate = () => null,
+      selectionDate
+    },
     ref
   ) => {
     const [selectedDateError, setSelectedDateError] = useState<string | null>(

@@ -57,7 +57,11 @@ export const SchedulerPageHeader: FC = () => {
               ref={popperContainerRef}
               className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
             >
-              <CreateSchedulerPopup onCancel={dismissPopper} />
+              {/* TODO: add missing props */}
+              <CreateSchedulerPopup
+                onCancel={dismissPopper}
+                selectionDate={null}
+              />
             </div>
           </Fade>
         )}

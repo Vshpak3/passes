@@ -4,11 +4,13 @@ import "react-date-range/dist/theme/default.css"
 import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
+import Clipboard from "public/icons/clipboard.svg"
 import { useEffect } from "react"
 import { Button } from "src/components/atoms"
 import Tab from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
+import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod, useUser, useUserConnectedWallets } from "src/hooks"
 import BankIcon from "src/icons/bank-icon"
 import WalletIcon from "src/icons/wallet-icon"
@@ -117,8 +119,18 @@ const PayoutSettings = () => {
                   key={wallet.walletId}
                 >
                   <span className="basis-1/4 text-center">{wallet.chain}</span>
-                  <span className="basis-1/2 text-center">
-                    {wallet.address}
+                  <span
+                    className="group flex basis-1/2 cursor-pointer flex-row justify-center text-center"
+                    onClick={() => copyWalletToClipboard(wallet.address)}
+                  >
+                    {formatWalletAddress(wallet.address, {
+                      amountFirst: 6,
+                      amountLast: 7
+                    })}
+                    <Clipboard
+                      width="12px"
+                      className="invisible ml-2 group-hover:visible group-hover:visible"
+                    />
                   </span>
                   <span className="basis-1/4 text-center">
                     <Button
