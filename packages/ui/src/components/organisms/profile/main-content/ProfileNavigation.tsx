@@ -21,7 +21,7 @@ interface ProfileNavigationProps {
   activeTab: string
 }
 
-const ProfileNavigation: FC<ProfileNavigationProps> = ({
+export const ProfileNavigation: FC<ProfileNavigationProps> = ({
   setActiveTab,
   activeTab
 }) => {
@@ -55,5 +55,3 @@ const ProfileNavigation: FC<ProfileNavigationProps> = ({
     </div>
   )
 }
-
-export default ProfileNavigation

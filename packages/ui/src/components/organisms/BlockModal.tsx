@@ -1,31 +1,20 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction, useState } from "react"
+import { FC, useState } from "react"
 import { Button, Text } from "src/components/atoms"
 import { errorMessage } from "src/helpers/error"
+import { useUser } from "src/hooks"
 
-import Modal from "./Modal"
+import Modal, { ModalProps } from "./Modal"
 
-interface BlockModalProps {
-  isOpen: boolean
-  userId: string
-  setOpen: Dispatch<SetStateAction<boolean>>
-}
-
-const BlockModal: FC<BlockModalProps> = ({
-  isOpen = false,
-  setOpen,
-  userId
-}) => {
+const BlockModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
+  const { user } = useUser()
   const [blockValue, setBlockValue] = useState("")
 
   const onFanBlock = async () => {
     try {
-      const followBlockRequest = {
-        followerId: userId
-      }
       const api = new FollowApi()
-      await api.blockFollower(followBlockRequest)
+      await api.blockFollower({ followerId: user?.userId || "" })
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)
@@ -34,7 +23,7 @@ const BlockModal: FC<BlockModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
-      <h2 className="mb-5 font-semibold text-white">BLOCK {userId}</h2>
+      <h2 className="mb-5 font-semibold text-white">BLOCK {user?.userId}</h2>
       <RadioGroup
         value={blockValue}
         onChange={setBlockValue}

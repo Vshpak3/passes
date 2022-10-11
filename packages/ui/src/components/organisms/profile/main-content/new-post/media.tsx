@@ -2,14 +2,13 @@ import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import Image from "next/image"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
-import React, { MouseEvent } from "react"
 import Cross from "src/icons/cross"
 
 type MediaFileProp = {
   file: File
   className?: string
   iconClassName?: string
-  onRemove?: (e: MouseEvent<HTMLDivElement> | number) => void
+  onRemove?: any
   onSelect?: any
   preview?: boolean
   contentHeight?: number
@@ -21,7 +20,7 @@ type MediaProp = {
   type: ContentDtoContentTypeEnum
   className?: string
   iconClassName?: string
-  onRemove?: (e: MouseEvent<HTMLDivElement> | number) => void
+  onRemove?: any
   onSelect?: any
   preview?: boolean
   contentHeight?: number

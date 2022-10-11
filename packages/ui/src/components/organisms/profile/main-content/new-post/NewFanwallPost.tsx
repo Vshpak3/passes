@@ -5,6 +5,8 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import PostHeader from "src/components/organisms/profile/new-post/PostHeader"
+import { useCreatorProfile } from "src/hooks"
+import useFanWall from "src/hooks/useFanWall"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
@@ -16,15 +18,9 @@ interface NewPostFormProps {
   text: string
 }
 
-interface NewPostProps {
-  placeholder: any
-  createPost: any
-}
-
-export const NewFanwallPost: FC<NewPostProps> = ({
-  placeholder,
-  createPost
-}) => {
+export const NewFanwallPost: FC = () => {
+  const { profile } = useCreatorProfile()
+  const { writeToFanWall } = useFanWall(profile?.userId || "")
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
 
@@ -48,7 +44,7 @@ export const NewFanwallPost: FC<NewPostProps> = ({
       tags: [] // TODO: add in values.mentions (must update to be TagDto)
     }
 
-    await createPost(post)
+    await writeToFanWall(post as CreateFanWallCommentRequestDto)
     reset()
     setIsReset(true)
   }
@@ -74,7 +70,9 @@ export const NewFanwallPost: FC<NewPostProps> = ({
             <CustomMentionEditor
               isReset={isReset}
               setIsReset={setIsReset}
-              placeholder={placeholder}
+              placeholder={`Write something${
+                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
+              }`}
               onInputChange={(params: any) => {
                 setValue("text", params?.text)
                 setValue("mentions", params?.mentions)

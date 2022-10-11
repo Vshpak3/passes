@@ -3,24 +3,19 @@ import {
   PayinDataDto,
   PostApi
 } from "@passes/api-client"
-import { PostDto } from "@passes/api-client/src/models/PostDto"
-import { Dispatch, FC, SetStateAction } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { Input } from "src/components/atoms"
 import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
 import { TipPostButton } from "src/components/molecules/payment/tip-post-button"
-import Modal from "src/components/organisms/Modal"
+import Modal, { ModalProps } from "src/components/organisms/Modal"
 import { usePayinMethod } from "src/hooks"
 import { usePay } from "src/hooks/usePay"
+import { usePostData } from "src/hooks/usePostData"
 
-interface TipPostModalProps {
-  post: PostDto
-  setOpen: Dispatch<SetStateAction<boolean>>
-  isOpen: boolean
-}
-
-const TipPostModal: FC<TipPostModalProps> = ({ isOpen, post, setOpen }) => {
+const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
+  const post = usePostData()
 
   const {
     register,

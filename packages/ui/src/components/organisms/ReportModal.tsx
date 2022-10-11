@@ -1,32 +1,23 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction, useState } from "react"
+import { FC, useState } from "react"
 import { Button, Text } from "src/components/atoms"
 import { errorMessage } from "src/helpers/error"
+import { useUser } from "src/hooks"
 
-import Modal from "./Modal"
+import Modal, { ModalProps } from "./Modal"
 
-interface ReportModalProps {
-  isOpen: boolean
-  userId: string
-  setOpen: Dispatch<SetStateAction<boolean>>
-}
-
-const ReportModal: FC<ReportModalProps> = ({
-  isOpen = false,
-  setOpen,
-  userId
-}) => {
+const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
+  const { user } = useUser()
   const [reportValue, setReportValue] = useState("")
 
   const onFanReport = async () => {
     try {
-      const followReportRequest = {
-        followerId: userId,
-        reportFanDto: { reason: reportValue }
-      }
       const api = new FollowApi()
-      await api.reportFollower(followReportRequest)
+      await api.reportFollower({
+        followerId: user?.userId || "",
+        reportFanDto: { reason: reportValue }
+      })
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)

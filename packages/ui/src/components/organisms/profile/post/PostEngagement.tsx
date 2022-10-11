@@ -1,5 +1,4 @@
 import { LikeApi, PostApi } from "@passes/api-client/apis"
-import { PostDto } from "@passes/api-client/src/models/PostDto"
 import dynamic from "next/dynamic"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import HeartIcon from "public/icons/post-heart-icon.svg"
@@ -7,25 +6,19 @@ import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useState } from "react"
 import { compactNumberFormatter } from "src/helpers"
+import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { errorMessage } from "src/helpers/error"
+import { usePostData } from "src/hooks/usePostData"
 
 import { CommentSection } from "./CommentSection"
-import { copyToClipboard } from "./PostDropdown"
 
 const TipPostModal = dynamic(
   () => import("src/components/organisms/payment/TipPostModal"),
   { ssr: false }
 )
 
-interface PostEngagementProps {
-  post: PostDto
-  postUnlocked: boolean
-}
-
-export const PostEngagement: FC<PostEngagementProps> = ({
-  post,
-  postUnlocked = false
-}) => {
+export const PostEngagement: FC = () => {
+  const post = usePostData()
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numLikes, setNumLikes] = useState(post.numLikes)
   const [numComments, setNumComments] = useState(post.numComments)
@@ -49,7 +42,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
 
   const likePost = async () => {
     try {
-      if (!postUnlocked) {
+      if (post.paywall) {
         return
       }
 
@@ -85,7 +78,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
           </div>
           <div
             onClick={() => {
-              postUnlocked && setShowCommentSection((prev) => !prev)
+              !post.paywall && setShowCommentSection((prev) => !prev)
             }}
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >
@@ -95,7 +88,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
             </span>
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
-            <ShareIcon onClick={() => copyToClipboard(post)} />
+            <ShareIcon onClick={() => copyLinkToClipboard(post)} />
           </div>
         </div>
         <div
@@ -111,11 +104,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
         updateEngagement={updateEngagement}
       />
       {isTipsModalOpen && (
-        <TipPostModal
-          isOpen={isTipsModalOpen}
-          post={post}
-          setOpen={setIsTipsModalOpen}
-        />
+        <TipPostModal isOpen={isTipsModalOpen} setOpen={setIsTipsModalOpen} />
       )}
     </div>
   )

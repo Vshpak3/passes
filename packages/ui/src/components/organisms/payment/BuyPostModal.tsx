@@ -1,5 +1,7 @@
-import { GetPayinMethodResponseDtoMethodEnum } from "@passes/api-client"
-import { PostDto } from "@passes/api-client/src/models/PostDto"
+import {
+  GetPayinMethodResponseDtoMethodEnum,
+  PostDto
+} from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 import { Button } from "src/components/atoms"
@@ -12,31 +14,28 @@ import { plural } from "src/helpers/plural"
 import { usePayinMethod } from "src/hooks"
 import useExternalPasses from "src/hooks/useExternalPasses"
 
-interface BuyPostModalProps {
-  post: PostDto
-  isOpen: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+export interface BuyPostModalProps {
+  post: PostDto | null
+  setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
-const BuyPostModal: FC<BuyPostModalProps> = ({ isOpen, post, setOpen }) => {
+export const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const { externalPasses } = useExternalPasses()
-
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
-
-  const { images, video } = contentTypeCounter(post.content)
+  const { images, video } = contentTypeCounter(post?.content)
 
   const onSuccessHandler = () => {
-    setOpen(false)
+    setPost(null)
   }
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={true} setOpen={() => setPost(null)}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
           Buy Post
         </span>
-        <span className="text-white">${post.price?.toFixed(2) ?? "0.00"}</span>
+        <span className="text-white">${post?.price?.toFixed(2) ?? "0.00"}</span>
       </div>
       <div>
         <div className="my-4">
@@ -76,11 +75,9 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ isOpen, post, setOpen }) => {
           !defaultPayinMethod ||
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
-        postId={post.postId}
+        postId={post?.postId || ""}
         onSuccess={onSuccessHandler}
       />
     </Modal>
   )
 }
-
-export default BuyPostModal

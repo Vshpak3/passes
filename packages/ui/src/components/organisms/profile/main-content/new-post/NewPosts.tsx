@@ -1,21 +1,32 @@
-import {
-  CreatePostRequestDto,
-  GetProfileResponseDto,
-  PostApi,
-  PostDto
-} from "@passes/api-client"
+import { CreatePostRequestDto, PostApi, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { PostDataContext } from "src/contexts/PostData"
+import { useCreatorProfile } from "src/hooks"
 
 import { NewPost } from "./NewPost"
 
-interface NewPostsProps {
-  profile: GetProfileResponseDto
-  username: string
+interface PostWrapperProps {
+  readonly post: PostDto
 }
 
-export const NewPosts = ({ profile, username }: NewPostsProps) => {
+const PostWrapper: React.FC<PostWrapperProps> = ({ post }) => {
+  const [isRemoved, setIsRemoved] = useState(false)
+
+  return (
+    <PostDataContext.Provider
+      key={post.postId}
+      value={{ ...post, isRemoved, setIsRemoved }}
+    >
+      <Post key={post.postId} />
+    </PostDataContext.Provider>
+  )
+}
+
+export const NewPosts: React.FC = () => {
+  const { profile, profileUsername } = useCreatorProfile()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
+
   const createPost = async (createPost: CreatePostRequestDto) => {
     const api = new PostApi()
     const response = await api.createPost({
@@ -26,9 +37,9 @@ export const NewPosts = ({ profile, username }: NewPostsProps) => {
     const post: PostDto = {
       postId,
       paywall: false,
-      userId: profile.userId,
-      username,
-      displayName: profile.displayName ?? "",
+      userId: profile?.userId || "",
+      username: profileUsername || "",
+      displayName: profile?.displayName ?? "",
       text: createPost.text,
       tags: createPost.tags,
       content: undefined, // TODO: grab content through swr or endpoint
@@ -48,6 +59,9 @@ export const NewPosts = ({ profile, username }: NewPostsProps) => {
     }
     setNewPosts([post, ...newPosts])
   }
+
+  // TODO: Missing the state to remove the post optimistically
+
   return (
     <>
       <NewPost
@@ -58,7 +72,7 @@ export const NewPosts = ({ profile, username }: NewPostsProps) => {
       />
       <div className="mt-9 space-y-6">
         {newPosts.map((post) => (
-          <Post key={post.postId} post={post} removable={true} />
+          <PostWrapper key={post.postId} post={post} />
         ))}
       </div>
     </>

@@ -1,40 +1,22 @@
 import { Menu, Transition } from "@headlessui/react"
-import { PostDto } from "@passes/api-client"
-import copy from "copy-to-clipboard"
-import ms from "ms"
+import classNames from "classnames"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
 import { FC, Fragment } from "react"
-import { toast } from "react-toastify"
+import { copyLinkToClipboard } from "src/helpers/clipboard"
+import { usePostData } from "src/hooks/usePostData"
 
-const AUTO_CLOSE = ms("3 seconds")
-
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ")
-}
-
-export const copyToClipboard = (post: PostDto) => {
-  copy(window.location.origin + "/" + post.username + "/" + post.postId)
-
-  toast("Link to post has been copied to clipboard!", {
-    position: "bottom-left",
-    autoClose: AUTO_CLOSE,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined
-  })
+export interface DropdownOption {
+  readonly text: string
+  readonly onClick: () => void
 }
 
 interface PostDropdownProps {
-  post: PostDto
-  items: Array<{
-    text: string
-    onClick: () => void
-  }>
+  readonly items: DropdownOption[]
 }
 
-export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
+export const PostDropdown: FC<PostDropdownProps> = ({ items }) => {
+  const post = usePostData()
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -56,7 +38,7 @@ export const PostDropdown: FC<PostDropdownProps> = ({ post, items = [] }) => {
           <div className="py-1">
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-ignore */}
-            <Menu.Item onClick={() => copyToClipboard(post)}>
+            <Menu.Item onClick={() => copyLinkToClipboard(post)}>
               {({ active }) => (
                 <span
                   className={classNames(

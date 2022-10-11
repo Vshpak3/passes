@@ -45,7 +45,7 @@ const PassList: FC<IPassList> = ({ passes, setPassId, passId }) => {
           key={pass.passId}
           title={pass.title}
           price={pass.price}
-          remainingSupply={pass.remainingSupply}
+          remainingSupply={pass.remainingSupply || 0}
           ethPrice={pass.ethPrice ?? 0}
           img={{
             url: pass.creatorId ? ContentService.passVideo(pass.passId) : "",

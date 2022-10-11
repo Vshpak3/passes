@@ -8,12 +8,9 @@ import {
   RoundedIconButton
 } from "src/components/atoms/Button"
 import { compactNumberFormatter, ContentService } from "src/helpers"
-import { useFollow } from "src/hooks"
+import { useCreatorProfile, useFollow } from "src/hooks"
 
-import {
-  ProfileSocialMedia,
-  ProfileSocialMediaProps
-} from "./ProfileSocialMedia"
+import { ProfileSocialMedia } from "./ProfileSocialMedia"
 
 interface VerifiedProps {
   isVerified: any
@@ -98,35 +95,19 @@ export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
   </div>
 )
 
-interface ProfileInformationProps extends ProfileSocialMediaProps {
-  creatorId: string
-  description: string | undefined | null
-  displayName: string | undefined | null
-  likes: number | undefined
-  numPosts: number | undefined
-  onChat: () => Promise<void>
-  ownsProfile: boolean
-  username: string
+export interface ProfileInformationProps {
+  onChat: () => void
 }
 
 export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
-  creatorId,
-  description,
-  displayName,
-  likes,
-  numPosts,
-  ownsProfile,
-  username,
-  discordUsername,
-  facebookUsername,
-  instagramUsername,
-  tiktokUsername,
-  twitchUsername,
-  twitterUsername,
-  youtubeUsername,
   onChat
 }) => {
-  const { follow, unfollow, isFollowing, loadFollow } = useFollow(creatorId)
+  const { creatorStats, ownsProfile, profile, profileUsername } =
+    useCreatorProfile()
+
+  const { follow, unfollow, isFollowing, loadFollow } = useFollow(
+    profile?.userId || ""
+  )
 
   const [hasLoaded, setHasLoaded] = useState(false)
 
@@ -141,13 +122,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
     <div className="flex flex-col items-start gap-[6px]">
       <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
         <span className="text-[32px] font-medium leading-9 text-passes-white-100">
-          {displayName}
+          {profile?.displayName}
         </span>
       </div>
       <div className="flex w-full justify-between">
         <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
           <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
-            @{username}
+            @{profileUsername}
           </span>
         </div>
         {!ownsProfile && (
@@ -168,13 +149,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         )}
       </div>
       <span className="text-md my-3 font-semibold leading-[22px] text-white">
-        {description}
+        {profile?.description}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {numPosts ?? "-"}
+              {creatorStats?.numPosts ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
@@ -183,7 +164,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(likes || 0) ?? "-"}
+              {compactNumberFormatter(creatorStats?.numLikes || 0) ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
@@ -192,13 +173,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         </div>
 
         <ProfileSocialMedia
-          discordUsername={discordUsername}
-          facebookUsername={facebookUsername}
-          instagramUsername={instagramUsername}
-          tiktokUsername={tiktokUsername}
-          twitchUsername={twitchUsername}
-          twitterUsername={twitterUsername}
-          youtubeUsername={youtubeUsername}
+          discordUsername={profile?.discordUsername}
+          facebookUsername={profile?.facebookUsername}
+          instagramUsername={profile?.instagramUsername}
+          tiktokUsername={profile?.tiktokUsername}
+          twitchUsername={profile?.twitchUsername}
+          twitterUsername={profile?.twitterUsername}
+          youtubeUsername={profile?.youtubeUsername}
         />
       </div>
     </div>
@@ -224,48 +205,40 @@ export const EditProfileAction: FC<EditProfileActionProps> = ({
   </div>
 )
 
-export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
-  creatorId,
-  description,
-  displayName,
-  likes,
-  numPosts,
-  onChat,
-  ownsProfile,
-  username,
-  discordUsername,
-  facebookUsername,
-  instagramUsername,
-  tiktokUsername,
-  twitchUsername,
-  twitterUsername,
-  youtubeUsername
+export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
+  onChat
 }) => {
-  const { follow, unfollow, isFollowing } = useFollow(creatorId)
+  const { creatorStats, ownsProfile, profile, profileUsername } =
+    useCreatorProfile()
+
+  const { follow, unfollow, isFollowing } = useFollow(profile?.userId || "")
 
   return (
     <>
       <span className="text-[18px] font-semibold text-passes-white-100">
-        {displayName}
+        {profile?.displayName}
       </span>
       <div className="align-items flex h-[23px] w-[62px] items-center justify-center rounded-xl bg-passes-white-100/5">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
-          @{username}
+          @{profileUsername}
         </span>
       </div>
       <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
-        {description}
+        {profile?.description}
       </span>
       <ProfileSocialMedia
-        discordUsername={discordUsername}
-        facebookUsername={facebookUsername}
-        instagramUsername={instagramUsername}
-        tiktokUsername={tiktokUsername}
-        twitchUsername={twitchUsername}
-        twitterUsername={twitterUsername}
-        youtubeUsername={youtubeUsername}
+        discordUsername={profile?.discordUsername}
+        facebookUsername={profile?.facebookUsername}
+        instagramUsername={profile?.instagramUsername}
+        tiktokUsername={profile?.tiktokUsername}
+        twitchUsername={profile?.twitchUsername}
+        twitterUsername={profile?.twitterUsername}
+        youtubeUsername={profile?.youtubeUsername}
       />
-      <ProfileStatsMobile numPosts={numPosts || 0} likes={likes || 0} />
+      <ProfileStatsMobile
+        numPosts={creatorStats?.numPosts || 0}
+        likes={creatorStats?.numLikes || 0}
+      />
       {!ownsProfile && (
         <div className="flex space-x-3">
           <RoundedIconButton

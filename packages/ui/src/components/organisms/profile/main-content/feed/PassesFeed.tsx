@@ -1,15 +1,12 @@
 import { FC } from "react"
 import { SelectPassFilter } from "src/components/atoms/passes/MyPass"
 import PassCard from "src/components/molecules/pass/Card"
-import { usePasses } from "src/hooks"
+import { useCreatorProfile, usePasses } from "src/hooks"
 
-interface PassesFeedProps {
-  profile: any
-}
-
-const PassesFeed: FC<PassesFeedProps> = ({ profile }) => {
+const PassesFeed: FC = () => {
+  const { profile } = useCreatorProfile()
   const { passType, setPassType, filteredCreatorPassesList } = usePasses(
-    profile.userId
+    profile?.userId || ""
   )
 
   return (

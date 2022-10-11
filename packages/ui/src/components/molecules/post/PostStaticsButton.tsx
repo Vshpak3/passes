@@ -1,14 +1,9 @@
-import { PostDto } from "@passes/api-client"
 import GraphIcon from "public/icons/graph.svg"
-import React, { useState } from "react"
+import { useState } from "react"
 
 import PostStaticsMenu from "./PostStaticsMenu"
 
-interface PostStaticsButtonProps {
-  post: PostDto
-}
-
-const PostStaticsButton = ({ post }: PostStaticsButtonProps) => {
+const PostStaticsButton = () => {
   const [showPostStaticsMenu, setShowPostStaticsMenu] = useState(false)
 
   const onCloseHandler = () => setShowPostStaticsMenu(false)
@@ -27,9 +22,7 @@ const PostStaticsButton = ({ post }: PostStaticsButtonProps) => {
         </span>
       </button>
 
-      {showPostStaticsMenu && (
-        <PostStaticsMenu onClose={onCloseHandler} post={post} />
-      )}
+      {showPostStaticsMenu && <PostStaticsMenu onClose={onCloseHandler} />}
     </div>
   )
 }

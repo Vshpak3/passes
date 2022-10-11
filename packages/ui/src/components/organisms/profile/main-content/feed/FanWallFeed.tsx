@@ -9,7 +9,11 @@ import { FC, useState } from "react"
 import InfiniteScrollPagination, {
   ComponentArg
 } from "src/components/atoms/InfiniteScroll"
-import { BlockModal, ReportModal } from "src/components/organisms"
+import { PostDataContext } from "src/contexts/PostData"
+import { useCreatorProfile } from "src/hooks"
+import { useBlockModal } from "src/hooks/useBlockModal"
+import useFanWall from "src/hooks/useFanWall"
+import { useReportModal } from "src/hooks/useReportModal"
 import { useSWRConfig } from "swr"
 
 import { FanWallComment } from "./FanWallComment"
@@ -26,24 +30,14 @@ const ContentFeedEnd = (
   <h3>No more posts</h3> // TODO: add a better message
 )
 
-interface FanWallFeedProps {
-  creatorId: string
-  fanWallPosts: GetFanWallResponseDto
-  ownsProfile: boolean
-  profileUsername: string
-}
-
-const FanWallFeed: FC<FanWallFeedProps> = ({
-  fanWallPosts,
-  ownsProfile,
-  profileUsername
-}) => {
-  const [comments, setComments] = useState(fanWallPosts.data)
-  const [userBlockModal, setUserBlockModal] = useState(false)
-  const [userReportModal, setUserReportModal] = useState(false)
+const FanWallFeed: FC = () => {
+  const { ownsProfile, profile, profileUsername } = useCreatorProfile()
+  const { fanWallPosts } = useFanWall(profile?.userId || "")
+  const [comments, setComments] = useState(fanWallPosts?.data || [])
+  const { setIsReportModalOpen } = useReportModal()
+  const { setIsBlockModalOpen } = useBlockModal()
   const api = new FanWallApi()
   const { mutate } = useSWRConfig()
-
   const deleteComment = async (id: any) => {
     const result = await mutate(
       ["/fan-wall/creator", profileUsername],
@@ -86,11 +80,11 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
     return [
       {
         text: "Report",
-        onClick: () => setUserReportModal(true)
+        onClick: () => setIsReportModalOpen(true)
       },
       {
         text: "Block",
-        onClick: () => setUserBlockModal(true)
+        onClick: () => setIsBlockModalOpen(true)
       },
       ...(comment.commenterUsername === profileUsername
         ? [
@@ -112,16 +106,6 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
   }
   return (
     <div>
-      <BlockModal
-        isOpen={userBlockModal}
-        setOpen={setUserBlockModal}
-        userId={""} // TODO: fix
-      />
-      <ReportModal
-        isOpen={userReportModal}
-        setOpen={setUserReportModal}
-        userId={""} // TODO: fix
-      />
       {comments?.length > 0 && (
         <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
           fetch={async (req: GetFanWallRequestDto) => {
@@ -135,8 +119,8 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
           KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
             return (
               <div className="flex py-3">
-                <FanWallComment
-                  post={
+                <PostDataContext.Provider
+                  value={
                     {
                       text: arg.text,
                       userId: arg.commenterId,
@@ -144,8 +128,9 @@ const FanWallFeed: FC<FanWallFeedProps> = ({
                       username: arg.commenterUsername
                     } as PostDto
                   }
-                  dropdownItems={getDropdownOptions(arg)}
-                />
+                >
+                  <FanWallComment dropdownOptions={getDropdownOptions(arg)} />
+                </PostDataContext.Provider>
               </div>
             )
           }}

@@ -9,7 +9,7 @@ import React, {
 } from "react"
 import ReactModal from "react-modal"
 
-interface ModalProps {
+export interface ModalProps {
   isOpen: any
   setOpen: Dispatch<SetStateAction<any>>
   closable?: boolean

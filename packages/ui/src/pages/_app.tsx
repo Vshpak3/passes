@@ -1,6 +1,7 @@
 import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
 
+import { PostDto } from "@passes/api-client"
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
 import ms from "ms"
@@ -13,6 +14,13 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms"
+import { BlockModal, ReportModal } from "src/components/organisms"
+import { BuyPostModal } from "src/components/organisms/payment/BuyPostModal"
+import { ViewPostModal } from "src/components/organisms/profile/post/ViewPostModal"
+import { BlockModalContext } from "src/contexts/BlockModal"
+import { BuyPostModalContext } from "src/contexts/BuyPostModal"
+import { ReportModalContext } from "src/contexts/ReportModal"
+import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { refreshAccessToken } from "src/helpers/token"
 import { useMessageToDevelopers, useUser } from "src/hooks"
 import Providers from "src/providers"
@@ -57,6 +65,10 @@ Router.events.on("routeChangeError", () => {
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [refresh, setRefresh] = useState(0)
+  const [viewPost, setViewPost] = useState<PostDto | null>(null)
+  const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
   const router = useRouter()
   const { setAccessToken } = useUser()
 
@@ -100,21 +112,47 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       />
       <SWRConfig value={swrConfig}>
         <DndProvider backend={HTML5Backend}>
-          <Component {...pageProps} />
-          <ToastContainer
-            position="bottom-center"
-            autoClose={5000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable={false}
-            pauseOnHover
-            limit={3}
-            theme="colored"
-          />
-        </DndProvider>{" "}
+          <ViewPostModalContext.Provider value={{ setPost: setViewPost }}>
+            <ReportModalContext.Provider value={{ setIsReportModalOpen }}>
+              <BlockModalContext.Provider value={{ setIsBlockModalOpen }}>
+                <BuyPostModalContext.Provider value={{ setPost: setBuyPost }}>
+                  <Component {...pageProps} />
+                  {viewPost && (
+                    <ViewPostModal post={viewPost} setPost={setViewPost} />
+                  )}
+                  {buyPost && (
+                    <BuyPostModal post={buyPost} setPost={setBuyPost} />
+                  )}
+                  {isReportModalOpen && (
+                    <ReportModal
+                      isOpen={isReportModalOpen}
+                      setOpen={setIsReportModalOpen}
+                    />
+                  )}
+                  {isBlockModalOpen && (
+                    <BlockModal
+                      isOpen={isBlockModalOpen}
+                      setOpen={setIsBlockModalOpen}
+                    />
+                  )}
+                  <ToastContainer
+                    position="bottom-center"
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover
+                    limit={3}
+                    theme="colored"
+                  />
+                </BuyPostModalContext.Provider>
+              </BlockModalContext.Provider>
+            </ReportModalContext.Provider>
+          </ViewPostModalContext.Provider>
+        </DndProvider>
       </SWRConfig>
     </Providers>
   )

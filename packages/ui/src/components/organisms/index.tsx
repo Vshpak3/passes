@@ -6,6 +6,7 @@ import CustomMentionEditor from "./CustomMentionEditor"
 import Dialog from "./Dialog"
 import DirectMessage from "./DirectMessage"
 import FormContainer from "./FormContainer"
+import { HomeContentFeed } from "./HomeContentFeed"
 import MessagesV2 from "./MessagesV2"
 import Modal from "./Modal"
 import NewPostModal from "./NewPostModal"
@@ -34,6 +35,7 @@ export {
   Dialog,
   DirectMessage,
   FormContainer,
+  HomeContentFeed,
   MessagesV2,
   Modal,
   NewPostModal,

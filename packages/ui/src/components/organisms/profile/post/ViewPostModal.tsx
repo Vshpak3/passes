@@ -1,49 +1,77 @@
-import { PostDto } from "@passes/api-client/src/models/PostDto"
+import { PostDto } from "@passes/api-client"
 import classnames from "classnames"
 import Image from "next/image"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { Dialog } from "src/components/organisms"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { PostDataContext } from "src/contexts/PostData"
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
 import { useComments } from "src/hooks"
+import { useBlockModal } from "src/hooks/useBlockModal"
+import { useBuyPostModal } from "src/hooks/useBuyPostModal"
+import usePost from "src/hooks/usePost"
+import { useReportModal } from "src/hooks/useReportModal"
 
-import { DropdownOption } from "./Post"
-import { PostDropdown } from "./PostDropdown"
+import { DropdownOption, PostDropdown } from "./PostDropdown"
 
-interface ViewModalProps {
-  post: PostDto
-  isOpen: boolean
-  onClose: () => void
-  postUnlocked: boolean
-  dropdownItems: DropdownOption[]
-  showcaseImg: string | null
-  setOpenBuyPostModal: Dispatch<SetStateAction<boolean>>
+export interface ViewPostModalProps {
+  post: PostDto & { setIsRemoved?: Dispatch<SetStateAction<boolean>> }
+  setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
-const ViewModal: FC<ViewModalProps> = ({
-  dropdownItems,
-  isOpen,
-  onClose,
-  post,
-  postUnlocked,
-  showcaseImg,
-  setOpenBuyPostModal
-}) => {
+export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.content)
   const { data } = useComments(post.postId)
+  const { setPost: setBuyPost } = useBuyPostModal()
+  const { setIsReportModalOpen } = useReportModal()
+  const { setIsBlockModalOpen } = useBlockModal()
+  const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
+  const { removePost } = usePost(post.postId)
+
+  // Set image if it exists in post
+  useEffect(() => {
+    if (post.content?.[0]?.contentType === "image") {
+      setShowcaseImg(post.content[0].signedUrl as string)
+    }
+  }, [post.content])
+
+  const postUnlocked = !post.paywall
+
+  const dropdownOptions: DropdownOption[] = [
+    {
+      text: "Report",
+      onClick: () => setIsReportModalOpen(true)
+    },
+    {
+      text: "Block",
+      onClick: () => setIsBlockModalOpen(true)
+    },
+    ...(post.isOwner
+      ? [
+          {
+            text: "Delete",
+            onClick: async () => {
+              removePost(post.postId)
+              post.setIsRemoved?.(true)
+              setPost(null)
+            }
+          }
+        ]
+      : [])
+  ]
 
   return (
-    <>
-      <Dialog open={isOpen} onClose={onClose} className="z-10">
+    <Dialog open={true} className="z-10" onClose={() => setPost(null)}>
+      <PostDataContext.Provider value={post}>
         <div className="relative flex min-h-[85vh] w-[90vw] max-w-[1285px] rounded-[20px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-[50px]">
           <div className="relative flex flex-1">
             {!postUnlocked && (
@@ -73,7 +101,7 @@ const ViewModal: FC<ViewModalProps> = ({
                 {!postUnlocked && (
                   <>
                     <PostUnlockButton
-                      onClick={() => setOpenBuyPostModal(true)}
+                      onClick={() => setBuyPost(post)}
                       name={`Unlock Post For ${formatCurrency(
                         post.price ?? 0
                       )}`}
@@ -113,9 +141,9 @@ const ViewModal: FC<ViewModalProps> = ({
                     <TimeAgo date={post.createdAt} minPeriod={30} />
                   </span>
                 )}
-                {post.isOwner && <PostStaticsButton post={post} />}
+                {post.isOwner && <PostStaticsButton />}
               </div>
-              <PostDropdown post={post} items={dropdownItems} />
+              <PostDropdown items={dropdownOptions} />
             </div>
             <div className="mt-[50px] flex space-x-4">
               <ProfileThumbnail userId={post.userId} />
@@ -158,9 +186,7 @@ const ViewModal: FC<ViewModalProps> = ({
             </div>
           </div>
         </div>
-      </Dialog>
-    </>
+      </PostDataContext.Provider>
+    </Dialog>
   )
 }
-
-export default ViewModal

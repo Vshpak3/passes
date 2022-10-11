@@ -1,4 +1,3 @@
-import { GetProfileResponseDto } from "@passes/api-client"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
@@ -16,6 +15,7 @@ import { FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
+import { useCreatorProfile } from "src/hooks"
 
 const bioForm = {
   description: {
@@ -74,17 +74,10 @@ const socialMediaForm = {
   }
 }
 
-interface EditProfileProps {
-  profile: GetProfileResponseDto
-  onSubmitEditProfile: (values: ProfileUpdate) => Promise<void>
-  onCloseEditProfile: () => void
-}
+export const EditProfile: FC = () => {
+  const { onCloseEditProfile, onSubmitEditProfile, profile } =
+    useCreatorProfile()
 
-export const EditProfile: FC<EditProfileProps> = ({
-  profile,
-  onSubmitEditProfile,
-  onCloseEditProfile
-}) => {
   const {
     handleSubmit,
     register,
@@ -105,7 +98,7 @@ export const EditProfile: FC<EditProfileProps> = ({
           "twitchUsername",
           "twitterUsername",
           "youtubeUsername"
-        ].map((k) => [k, (profile as any)[k]])
+        ].map((k) => [k, (profile as any)?.[k]])
       ),
       profileImage: [],
       profileBannerImage: []
@@ -186,7 +179,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                     src={
                       profileBannerImage.length
                         ? URL.createObjectURL(profileBannerImage[0])
-                        : ContentService.profileBanner(profile.userId)
+                        : ContentService.profileBanner(profile?.userId || "")
                     }
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null
@@ -213,7 +206,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                   src={
                     profileImage.length
                       ? URL.createObjectURL(profileImage[0])
-                      : ContentService.profileThumbnail(profile.userId)
+                      : ContentService.profileThumbnail(profile?.userId || "")
                   }
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null
