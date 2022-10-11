@@ -23,6 +23,8 @@ import type {
   GetPostResponseDto,
   GetPostsRangeRequestDto,
   GetPostsRangeResponseDto,
+  GetPostsRequestDto,
+  GetPostsResponseDto,
   PayinDataDto,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
@@ -46,6 +48,10 @@ import {
     GetPostsRangeRequestDtoToJSON,
     GetPostsRangeResponseDtoFromJSON,
     GetPostsRangeResponseDtoToJSON,
+    GetPostsRequestDtoFromJSON,
+    GetPostsRequestDtoToJSON,
+    GetPostsResponseDtoFromJSON,
+    GetPostsResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchasePostRequestDtoFromJSON,
@@ -68,6 +74,10 @@ export interface FindPostRequest {
 
 export interface GetPostHistoryRequest {
     getPostHistoryRequestDto: GetPostHistoryRequestDto;
+}
+
+export interface GetPostsRequest {
+    getPostsRequestDto: GetPostsRequestDto;
 }
 
 export interface GetPostsScheduledRequest {
@@ -226,6 +236,44 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Gets posts
      */
+    async getPostsRaw(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsResponseDto>> {
+        if (requestParameters.getPostsRequestDto === null || requestParameters.getPostsRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostsRequestDto','Required parameter requestParameters.getPostsRequestDto was null or undefined when calling getPosts.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/post/posts`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPostsRequestDtoToJSON(requestParameters.getPostsRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostsResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets posts
+     */
+    async getPosts(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
+        const response = await this.getPostsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets posts
+     */
     async getPostsScheduledRaw(requestParameters: GetPostsScheduledRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostsRangeResponseDto>> {
         if (requestParameters.getPostsRangeRequestDto === null || requestParameters.getPostsRangeRequestDto === undefined) {
             throw new runtime.RequiredError('getPostsRangeRequestDto','Required parameter requestParameters.getPostsRangeRequestDto was null or undefined when calling getPostsScheduled.');
@@ -243,7 +291,7 @@ export class PostApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/post/posts`,
+            path: `/api/post/post-range`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

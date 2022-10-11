@@ -15,7 +15,6 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 }
-
 export class GetPassesResponseDto
   extends GetPassesRequestDto
   implements PageResponseDto<PassDto>

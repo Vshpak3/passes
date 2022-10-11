@@ -256,7 +256,7 @@ export class PostController {
     responseDesc: 'A list of posts in date range was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Post('posts')
+  @Post('post-range')
   async getPostsScheduled(
     @Req() req: RequestWithUser,
     @Body() getPostsRangeRequestDto: GetPostsRangeRequestDto,

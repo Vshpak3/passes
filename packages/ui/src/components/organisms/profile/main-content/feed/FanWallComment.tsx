@@ -1,13 +1,12 @@
 import { FanWallApi, FanWallCommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
-import {
-  BlockModal,
-  FormContainer,
-  ReportModal
-} from "src/components/organisms"
+import { FormContainer } from "src/components/organisms"
+import { DropdownOption } from "src/components/organisms/profile/post/PostDropdown"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
+import { useBlockModal } from "src/hooks/useBlockModal"
 import { usePostData } from "src/hooks/usePostData"
+import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
   removable: boolean
@@ -23,18 +22,18 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   const postData = usePostData()
   const api = new FanWallApi()
 
-  const [userBlockModal, setUserBlockModal] = useState(false)
-  const [userReportModal, setUserReportModal] = useState(false)
+  const { setIsReportModalOpen } = useReportModal()
+  const { setIsBlockModalOpen } = useBlockModal()
 
   const [removed, setRemoved] = useState<boolean>(false)
-  const dropdownItems = [
+  const dropdownItems: DropdownOption[] = [
     {
       text: "Report",
-      onClick: () => setUserReportModal(true)
+      onClick: () => setIsReportModalOpen(true)
     },
     {
       text: "Block",
-      onClick: () => setUserBlockModal(true)
+      onClick: () => setIsBlockModalOpen(true)
     },
     ...(ownsProfile || comment.isOwner
       ? [
@@ -66,25 +65,10 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   ]
   return (
     <ConditionRendering condition={!removed}>
-      {userBlockModal && (
-        <BlockModal
-          isOpen={userBlockModal}
-          setOpen={setUserBlockModal}
-          userId={""} // TODO: fix
-        />
-      )}
-      {userReportModal && (
-        <ReportModal
-          isOpen={userReportModal}
-          setOpen={setUserReportModal}
-          userId={""} // TODO: fix
-        />
-      )}
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
         <PostProfileAvatar
-          post={postData}
-          dropdownItems={dropdownItems}
-          hideStaticsBtn
+          dropdownOptions={dropdownItems}
+          hideStatisticsBtn={true}
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
