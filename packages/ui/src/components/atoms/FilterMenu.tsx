@@ -13,7 +13,10 @@ const getPrevDate = (days: number) => {
   return new Date(new Date().valueOf() - days * ONE_DAY)
 }
 
-const FilterMenu: FC<FilterMenuProps> = ({ className = "", onFilter }) => {
+export const FilterMenu: FC<FilterMenuProps> = ({
+  className = "",
+  onFilter
+}) => {
   const lastDaysFilterHandler = (days: number) => {
     const startDate = getPrevDate(days)
     const lastDate = new Date()
@@ -64,5 +67,3 @@ const FilterMenu: FC<FilterMenuProps> = ({ className = "", onFilter }) => {
     </ul>
   )
 }
-
-export default FilterMenu

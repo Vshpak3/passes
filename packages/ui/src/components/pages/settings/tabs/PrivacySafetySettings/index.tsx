@@ -3,7 +3,7 @@ import PostIcon from "public/icons/post.svg"
 import SafetyIcon from "public/icons/safety.svg"
 import UserIcon from "public/icons/user.svg"
 import React from "react"
-import Tab from "src/components/pages/settings/Tab"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
@@ -28,7 +28,7 @@ const subTabs = [
   }
 ]
 
-const PrivacySafetySettings = () => {
+export const PrivacySafetySettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
 
   return (
@@ -61,5 +61,3 @@ const PrivacySafetySettings = () => {
     </>
   )
 }
-
-export default PrivacySafetySettings

@@ -1,11 +1,11 @@
 import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
 
-import useOnClickOutside from "./useOnClickOutside"
+import { useOnClickOutside } from "./useOnClickOutside"
 
 const DEBOUNCE_DELAY = 300
 
-const useSearch = <T,>(
+export const useSearch = <T,>(
   fetcher: (searchValue: string) => Promise<T[]>,
   debounceDelay = DEBOUNCE_DELAY
 ) => {
@@ -52,5 +52,3 @@ const useSearch = <T,>(
     searchRef
   }
 }
-
-export default useSearch

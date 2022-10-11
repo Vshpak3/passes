@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import NextLink from "next/link"
 
-const Wordmark = ({
+export const Wordmark = ({
   className = "",
   height = 24,
   width = 124,
@@ -17,5 +17,3 @@ const Wordmark = ({
     </a>
   </NextLink>
 )
-
-export default Wordmark

@@ -5,9 +5,9 @@ import VaultIcon from "public/icons/messages-vault-icon.svg"
 import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { useEffect, useState } from "react"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
-import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
+import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
 import {
   FormErrors,
   FormOptions,
@@ -71,7 +71,7 @@ type UploadPostMediaProps = {
   postTime: Date | null
 }
 
-const MediaHeader = ({
+export const MediaHeader = ({
   messages,
   register,
   errors,
@@ -233,5 +233,3 @@ const MediaHeader = ({
     </div>
   )
 }
-
-export default MediaHeader

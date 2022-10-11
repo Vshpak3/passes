@@ -1,7 +1,8 @@
 import Image from "next/image"
-import { GradientBorderTile, UserTile } from "src/components/atoms"
+import { GradientBorderTile } from "src/components/atoms/GradientBorderTile"
+import { UserTile } from "src/components/atoms/UserTile"
 
-const SignupTiles = () => {
+export const SignupTiles = () => {
   return (
     <div className="grid grid-cols-3 gap-5 xl:gap-[25px]">
       <GradientBorderTile>
@@ -68,5 +69,3 @@ const SignupTiles = () => {
     </div>
   )
 }
-
-export default SignupTiles

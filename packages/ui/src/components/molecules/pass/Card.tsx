@@ -1,8 +1,8 @@
 import { PassDto } from "@passes/api-client"
 import React, { FC } from "react"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
-interface IPassCardProps {
+interface PassCardProps {
   pass: PassDto
 }
 
@@ -12,7 +12,7 @@ const passType: Record<string, string> = {
   external: "External"
 }
 
-const Card: FC<IPassCardProps> = ({ pass }) => {
+export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
 
@@ -45,5 +45,3 @@ const Card: FC<IPassCardProps> = ({ pass }) => {
     </div>
   )
 }
-
-export default Card

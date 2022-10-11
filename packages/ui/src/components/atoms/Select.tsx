@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import {
   FormErrors,
   FormLabel,
@@ -10,7 +10,7 @@ import {
   FormSelectOptions
 } from "src/components/types/FormTypes"
 
-import Label from "./Label"
+import { Label } from "./Label"
 
 type SelectProps = {
   label?: FormLabel
@@ -25,7 +25,8 @@ type SelectProps = {
   onChange?: (e: Event) => void
   placeholderClass?: string
 }
-const Select = ({
+
+export const Select: FC<SelectProps> = ({
   name,
   label,
   register,
@@ -37,7 +38,7 @@ const Select = ({
   defaultValue = "",
   onChange,
   ...rest
-}: SelectProps) => {
+}) => {
   const customChange = () => (onChange ? { onChange } : {})
   return (
     <div className="w-full">
@@ -78,5 +79,3 @@ const Select = ({
     </div>
   )
 }
-
-export default Select

@@ -1,14 +1,16 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import { FC, useState } from "react"
-import { Button, Text } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
+import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
-import Modal, { ModalProps } from "./Modal"
+import { Modal, ModalProps } from "./Modal"
 
-const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
+export const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
   const { user } = useUser()
+
   const [reportValue, setReportValue] = useState("")
 
   const onFanReport = async () => {
@@ -105,4 +107,3 @@ const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
     </Modal>
   )
 }
-export default ReportModal

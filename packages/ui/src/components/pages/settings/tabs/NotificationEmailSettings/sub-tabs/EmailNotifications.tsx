@@ -2,18 +2,15 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import {
-  Button,
-  ButtonTypeEnum,
-  Checkbox,
-  FormInput
-} from "src/components/atoms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/Checkbox"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { useNotificationSettings } from "src/hooks"
+import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"
 import useSWR from "swr"
 
-interface INotificationSettings {
+interface NotificationSettingsFormProps {
   directMessageEmails: boolean
   passesEmails: boolean
   paymentEmails: boolean
@@ -22,7 +19,7 @@ interface INotificationSettings {
   mentionEmails: boolean
 }
 
-const EmailNotifications = () => {
+export const EmailNotifications = () => {
   const { getNotificationSettings, updateNotificationSettings } =
     useNotificationSettings()
   const { data: notificationSettings, mutate } = useSWR(
@@ -33,14 +30,14 @@ const EmailNotifications = () => {
     useState(null)
 
   const { register, handleSubmit, reset, watch, setValue } =
-    useForm<INotificationSettings>()
+    useForm<NotificationSettingsFormProps>()
 
   const [isEmailAll, setIsEmailAll] = useState(false)
 
   const allEmailNotifications = watch()
 
   const saveNotificationSettingsHandler = async (
-    values: INotificationSettings
+    values: NotificationSettingsFormProps
   ) => {
     try {
       await updateNotificationSettings(values)
@@ -53,7 +50,7 @@ const EmailNotifications = () => {
 
   const emailAllNotificationsHandler = (isEmailAll: boolean) => {
     Object.keys(allEmailNotifications).forEach((field) => {
-      setValue(field as keyof INotificationSettings, isEmailAll)
+      setValue(field as keyof NotificationSettingsFormProps, isEmailAll)
     })
   }
 
@@ -181,5 +178,3 @@ const EmailNotifications = () => {
     </Tab>
   )
 }
-
-export default EmailNotifications

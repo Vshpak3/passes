@@ -7,7 +7,7 @@ export interface ArrowProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Arrow = ({
+export const Arrow = ({
   width = 15,
   height = 15,
   variant,
@@ -35,5 +35,3 @@ const Arrow = ({
     />
   </svg>
 )
-
-export default Arrow

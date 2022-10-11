@@ -3,7 +3,7 @@ import MinusIcon from "public/icons/minus-icon.svg"
 import PlusIcon from "public/icons/plus-icon.svg"
 import React, { useId, useState } from "react"
 
-const Faq = () => {
+export const Faq = () => {
   const faqs = [
     {
       question: "What is Lucypalooza?",
@@ -150,5 +150,3 @@ const Faq = () => {
     </section>
   )
 }
-
-export default Faq

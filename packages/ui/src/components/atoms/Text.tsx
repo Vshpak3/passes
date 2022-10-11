@@ -24,7 +24,7 @@ const dynamicTracking = (z: number) => {
   return Number((a + b * Math.pow(Math.E, c * z)).toFixed(3))
 }
 
-const Text: FC<PropsWithChildren<TextProps>> = ({
+export const Text: FC<PropsWithChildren<TextProps>> = ({
   children,
   className = "",
   enableMarginBottom = false,
@@ -52,5 +52,3 @@ const Text: FC<PropsWithChildren<TextProps>> = ({
     </Tag>
   )
 }
-
-export default Text

@@ -4,19 +4,23 @@ import {
 } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { BuyMessageButton } from "src/components/molecules/payment/buy-message-button"
-import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
-import Modal from "src/components/organisms/Modal"
+import { PayinMethodDisplay } from "src/components/molecules/payment/payin-method"
+import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
-import { usePayinMethod } from "src/hooks"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-interface IBuyMessageModal {
+interface BuyMessageModalProps {
   message: MessageDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const BuyPostModal: FC<IBuyMessageModal> = ({ message, setOpen, isOpen }) => {
+export const BuyPostModal: FC<BuyMessageModalProps> = ({
+  message,
+  setOpen,
+  isOpen
+}) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   const { images, video } = contentTypeCounter(message.contents)
@@ -59,5 +63,3 @@ const BuyPostModal: FC<IBuyMessageModal> = ({ message, setOpen, isOpen }) => {
     </Modal>
   )
 }
-
-export default BuyPostModal

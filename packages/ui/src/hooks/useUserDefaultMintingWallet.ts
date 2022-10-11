@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from "react"
 import { errorMessage } from "src/helpers/error"
 
-const useUserDefaultMintingWallets = () => {
+export const useUserDefaultMintingWallets = () => {
   const api = new WalletApi()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -62,5 +62,3 @@ const useUserDefaultMintingWallets = () => {
     setDefaultWallet
   }
 }
-
-export default useUserDefaultMintingWallets

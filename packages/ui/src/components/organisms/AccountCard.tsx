@@ -1,5 +1,5 @@
 import { CircleBankDto, WalletDto } from "@passes/api-client"
-import { Button } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
 
 interface IAccountCard {
   account?: CircleBankDto
@@ -10,7 +10,7 @@ interface IAccountCard {
   wallet?: WalletDto
 }
 
-const AccountCard = ({
+export const AccountCard = ({
   account,
   handleClick,
   isDefault,
@@ -133,4 +133,3 @@ const AccountCard = ({
     </div>
   )
 }
-export default AccountCard

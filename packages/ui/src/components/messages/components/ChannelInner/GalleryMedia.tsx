@@ -2,8 +2,8 @@ import classNames from "classnames"
 import ImageIcon from "public/icons/messages-image-icon.svg"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import { FC, useState } from "react"
-import { PostUnlockButton } from "src/components/atoms"
-import { formatCurrency } from "src/helpers"
+import { PostUnlockButton } from "src/components/atoms/Button"
+import { formatCurrency } from "src/helpers/formatters"
 
 interface GalleryMediaProps {
   media: any

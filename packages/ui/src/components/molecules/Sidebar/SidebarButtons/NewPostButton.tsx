@@ -1,12 +1,12 @@
 import { CreatePostRequestDto } from "@passes/api-client"
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
-import { Button } from "src/components/atoms"
-import { Dialog as NewPostDialog } from "src/components/organisms"
+import { Button } from "src/components/atoms/Button"
+import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import { useCreatePost } from "src/hooks"
+import { useCreatePost } from "src/hooks/useCreatePost"
 
-const NewPostButton = () => {
+export const NewPostButton = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const { createPost } = useCreatePost()
 
@@ -16,7 +16,7 @@ const NewPostButton = () => {
   }
 
   return (
-    <NewPostDialog
+    <Dialog
       open={isNewPostModalOpen}
       triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-8"
       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
@@ -43,8 +43,6 @@ const NewPostButton = () => {
         createPost={handleCreatePost}
         placeholder="What's on your mind?"
       />
-    </NewPostDialog>
+    </Dialog>
   )
 }
-
-export default NewPostButton

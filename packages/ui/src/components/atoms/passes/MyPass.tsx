@@ -6,9 +6,9 @@ import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
-import RenewPassModal from "src/components/organisms/payment/RenewPassModal"
-import { useOnClickOutside, useUser } from "src/hooks"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { useUser } from "src/hooks/useUser"
 
 interface PassTileLabelProps {
   expiryDate: Date
@@ -16,23 +16,28 @@ interface PassTileLabelProps {
   willExpireSoon: boolean
   onRenewal: () => void
 }
+
 interface PassRenewalButtonProps {
   onRenewal: () => void
 }
+
 interface SelectPassFilterProps {
   setPassType: React.Dispatch<React.SetStateAction<string>>
   passType: string
 }
+
 interface PassTileContentProps {
   title: string
   price?: number
 }
+
 interface MyPassTileProps {
   passData: PassHolderDto
   isExpired?: boolean
   isEdit?: boolean
   passOnEditHandler?: (value: PassHolderDto) => void
 }
+
 type TComposePassOptions = {
   value: string
   label: string
@@ -70,7 +75,9 @@ const TAB_OPTIONS = [
 
 const ONE_MONTH = ms("30 days")
 
-const PassRenewalButton: FC<PassRenewalButtonProps> = ({ onRenewal }) => (
+export const PassRenewalButton: FC<PassRenewalButtonProps> = ({
+  onRenewal
+}) => (
   <button
     className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-passes-pink-100 py-[10px] text-base font-semibold text-white shadow-sm"
     value="renew-pass"
@@ -81,7 +88,7 @@ const PassRenewalButton: FC<PassRenewalButtonProps> = ({ onRenewal }) => (
   </button>
 )
 
-const SelectPassFilter: FC<SelectPassFilterProps> = ({
+export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   setPassType,
   passType
 }) => {
@@ -137,7 +144,7 @@ const SelectPassFilter: FC<SelectPassFilterProps> = ({
   )
 }
 
-const SelectPassTab: FC<SelectPassFilterProps> = ({
+export const SelectPassTab: FC<SelectPassFilterProps> = ({
   setPassType,
   passType
 }) => {
@@ -188,12 +195,12 @@ const SelectPassTab: FC<SelectPassFilterProps> = ({
   )
 }
 
-const PassTileLabel = ({
+const PassTileLabel: FC<PassTileLabelProps> = ({
   willExpireSoon,
   passType,
   expiryDate,
   onRenewal
-}: PassTileLabelProps) => (
+}) => (
   <>
     {willExpireSoon ? (
       <div className="align-items mx-1 justify-between text-[14px] md:flex">
@@ -232,14 +239,14 @@ const PassTileContent = ({ title, price }: PassTileContentProps) => (
   </div>
 )
 
-const MyPassTile = ({
+export const MyPassTile: FC<MyPassTileProps> = ({
   passData,
   isExpired = false,
   isEdit = false,
   passOnEditHandler
-}: MyPassTileProps) => {
+}) => {
   const { user } = useUser()
-  const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
+  const [, setIsRenewModalOpen] = useState(false)
   const expiryInMilSeconds = Number(passData.expiresAt)
   const expiryDate = new Date(expiryInMilSeconds)
   const dateNow = Date.now()
@@ -306,11 +313,11 @@ const MyPassTile = ({
             {isExpired ? (
               <div className="align-items flex items-center justify-center">
                 <PassRenewalButton onRenewal={toggleRenewModal} />
-                <RenewPassModal
+                {/* <RenewPassModal
                   isOpen={isRenewModalOpen}
                   setOpen={setIsRenewModalOpen}
                   passHolder={passData}
-                />
+                /> */}
               </div>
             ) : (
               <PassTileLabel
@@ -328,5 +335,3 @@ const MyPassTile = ({
     </div>
   )
 }
-
-export { MyPassTile, SelectPassFilter, SelectPassTab }

@@ -6,13 +6,12 @@ import {
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { updateProfile } from "src/helpers"
 import { errorMessage } from "src/helpers/error"
-import { ProfileUpdate } from "src/helpers/updateProfile"
+import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 
-import useUser from "./useUser"
+import { useUser } from "./useUser"
 
-const useCreatorProfile = () => {
+export const useCreatorProfile = () => {
   const router = useRouter()
   const { user: { username: loggedInUsername } = {} } = useUser()
   const [editProfile, setEditProfile] = useState<boolean>(false)
@@ -116,5 +115,3 @@ const useCreatorProfile = () => {
     profileUsername
   }
 }
-
-export default useCreatorProfile

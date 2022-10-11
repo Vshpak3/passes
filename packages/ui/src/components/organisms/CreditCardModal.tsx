@@ -17,19 +17,16 @@ import WalletConnectIcon from "public/icons/wallet-connect-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import {
-  ButtonTypeEnum,
-  FormInput,
-  PassesPinkButton
-} from "src/components/atoms"
+import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
-import encrypt from "src/helpers/openpgp"
+import { encrypt } from "src/helpers/openpgp"
 import { accessTokenKey } from "src/helpers/token"
 import { creditCardSchema } from "src/helpers/validation"
-import { useLocalStorage } from "src/hooks"
+import { useLocalStorage } from "src/hooks/useLocalStorage"
 import { v4 } from "uuid"
 
-import Modal from "./Modal"
+import { Modal } from "./Modal"
 
 interface ICreditCardModal {
   isOpen: boolean
@@ -37,7 +34,10 @@ interface ICreditCardModal {
   defaultPayin: PayinMethodDto | undefined
 }
 
-const CreditCardModal: FC<ICreditCardModal> = ({ isOpen = false, setOpen }) => {
+export const CreditCardModal: FC<ICreditCardModal> = ({
+  isOpen = false,
+  setOpen
+}) => {
   const {
     register,
     handleSubmit,
@@ -301,5 +301,3 @@ const CreditCardModal: FC<ICreditCardModal> = ({ isOpen = false, setOpen }) => {
     </Modal>
   )
 }
-
-export default CreditCardModal

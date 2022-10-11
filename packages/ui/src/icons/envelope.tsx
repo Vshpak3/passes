@@ -7,7 +7,7 @@ export interface EnvelopeProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Envelope = ({
+export const Envelope = ({
   width = 15,
   height = 15,
   variant,
@@ -52,5 +52,3 @@ const Envelope = ({
     )}
   </svg>
 )
-
-export default Envelope

@@ -1,14 +1,14 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React, { FC } from "react"
-import { Button } from "src/components/atoms"
-import { formatCurrency } from "src/helpers"
+import { Button } from "src/components/atoms/Button"
+import { formatCurrency } from "src/helpers/formatters"
 
 import { PaymentModalInfo } from "./PassTypes"
 
 type TOpenPassModal = React.Dispatch<
   React.SetStateAction<PaymentModalInfo | null>
 >
-interface IPassItem {
+interface PassItemProps {
   pass: PassDto
   setModalOpen: TOpenPassModal
 }
@@ -71,7 +71,7 @@ function getPassPrice(pass: PassDto) {
   }
 }
 
-export const PassCardMobile = ({ pass, setModalOpen }: IPassItem) => (
+export const PassCardMobile: FC<PassItemProps> = ({ pass, setModalOpen }) => (
   <div className="carousel-item relative flex h-[300px] flex-col items-center justify-items-center">
     {"todo-PASS-532" && (
       <img
@@ -95,7 +95,7 @@ export const PassCardMobile = ({ pass, setModalOpen }: IPassItem) => (
   </div>
 )
 
-export const PassCardDesktop: FC<IPassItem> = ({ pass, setModalOpen }) => {
+export const PassCardDesktop: FC<PassItemProps> = ({ pass, setModalOpen }) => {
   return (
     <div className="flex max-w-[280px] flex-shrink-0 flex-col items-start justify-center gap-3 p-0 py-5 md:max-w-[235px] md:py-0 md:pt-5">
       <img

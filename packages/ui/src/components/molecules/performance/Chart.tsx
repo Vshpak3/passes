@@ -22,11 +22,11 @@ ChartJS.register(
   Legend
 )
 
-interface IChartProps {
+interface ChartProps {
   graphData: CreatorEarningDto[]
 }
 
-const Chart: FC<IChartProps> = ({ graphData }) => {
+export const Chart: FC<ChartProps> = ({ graphData }) => {
   return (
     <div className="mt-5 w-full lg:mt-[30px]">
       <Line
@@ -76,5 +76,3 @@ const Chart: FC<IChartProps> = ({ graphData }) => {
     </div>
   )
 }
-
-export default Chart

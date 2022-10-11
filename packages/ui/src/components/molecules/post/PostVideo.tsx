@@ -6,7 +6,7 @@ interface PostVideoProps {
   videoUrl: string
 }
 
-const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
+export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
   const videoJsOptions: VideoJsPlayerOptions = {
     controls: true,
     responsive: true,
@@ -27,5 +27,3 @@ const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
 
   return <Video options={videoJsOptions} onReady={handlePlayerReady} />
 }
-
-export default PostVideo

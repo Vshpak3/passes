@@ -1,9 +1,9 @@
 import { UserApi, UserDisplayInfoDto } from "@passes/api-client"
-import { useSearch } from "src/hooks"
+import { useSearch } from "src/hooks/useSearch"
 
 const api = new UserApi()
 
-const useCreatorSearch = () =>
+export const useCreatorSearch = () =>
   useSearch<UserDisplayInfoDto>(async (searchValue: string) => {
     return (
       await api.searchCreatorByUsername({
@@ -11,5 +11,3 @@ const useCreatorSearch = () =>
       })
     ).creators
   })
-
-export default useCreatorSearch

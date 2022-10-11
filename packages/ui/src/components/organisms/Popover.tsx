@@ -1,8 +1,8 @@
 import * as RadixPopover from "@radix-ui/react-popover"
 import classNames from "classnames"
 import { FC } from "react"
-import { Text } from "src/components/atoms"
-import Cross from "src/icons/cross"
+import { Text } from "src/components/atoms/Text"
+import { Cross } from "src/icons/cross"
 
 interface PopoverProps {
   avoidCollisions: any
@@ -14,7 +14,7 @@ interface PopoverProps {
   popoverClassName: any
 }
 
-const Popover: FC<PopoverProps> = ({
+export const Popover: FC<PopoverProps> = ({
   avoidCollisions = true,
   children,
   description,
@@ -59,5 +59,3 @@ const Popover: FC<PopoverProps> = ({
     </RadixPopover.Content>
   </RadixPopover.Root>
 )
-
-export default Popover

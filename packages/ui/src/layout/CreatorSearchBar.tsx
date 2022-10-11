@@ -1,16 +1,18 @@
 import { UserDisplayInfoDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import React from "react"
-import UserSearchDropdown from "src/components/atoms/search/user/UserSearchDropdown"
-import UserSearchInput from "src/components/atoms/search/user/UserSearchInput"
-import AuthWrapper from "src/components/wrappers/AuthWrapper"
-import { useCreatorSearch } from "src/hooks"
+import { UserSearchDropdown } from "src/components/atoms/search/user/UserSearchDropdown"
+import { UserSearchInput } from "src/components/atoms/search/user/UserSearchInput"
+import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
+import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 
 export interface CreatorSearchBarProps {
   isDesktop?: boolean
 }
 
-const CreatorSearchBar = ({ isDesktop = true }: CreatorSearchBarProps) => {
+export const CreatorSearchBar = ({
+  isDesktop = true
+}: CreatorSearchBarProps) => {
   const {
     results,
     searchValue,
@@ -47,5 +49,3 @@ const CreatorSearchBar = ({ isDesktop = true }: CreatorSearchBarProps) => {
     </AuthWrapper>
   )
 }
-
-export default CreatorSearchBar

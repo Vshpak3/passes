@@ -4,18 +4,22 @@ import {
 } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
-import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
-import Modal from "src/components/organisms/Modal"
-import { usePayinMethod } from "src/hooks"
+import { PayinMethodDisplay } from "src/components/molecules/payment/payin-method"
+import { Modal } from "src/components/organisms/Modal"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-interface IBuyMessageModal {
+interface BuyMessageModalProps {
   pass: PassDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const BuyPostModal: FC<IBuyMessageModal> = ({ pass, setOpen, isOpen }) => {
+export const BuyPostModal: FC<BuyMessageModalProps> = ({
+  pass,
+  setOpen,
+  isOpen
+}) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   return (
@@ -50,5 +54,3 @@ const BuyPostModal: FC<IBuyMessageModal> = ({ pass, setOpen, isOpen }) => {
     </Modal>
   )
 }
-
-export default BuyPostModal

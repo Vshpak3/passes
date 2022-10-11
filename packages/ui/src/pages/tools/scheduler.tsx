@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react"
-import Calendar from "src/components/molecules/scheduler/Calendar"
-import EventTable from "src/components/molecules/scheduler/EventTable"
-import SchedulerHeader from "src/components/molecules/scheduler/SchedulerHeader"
+import { Calendar } from "src/components/molecules/scheduler/Calendar"
+import { EventTable } from "src/components/molecules/scheduler/EventTable"
+import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHeader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const today = new Date()

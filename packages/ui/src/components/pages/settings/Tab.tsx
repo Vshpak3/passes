@@ -10,7 +10,7 @@ interface TabProps {
   TitleBtn?: React.ReactNode
 }
 
-const Tab: FC<PropsWithChildren<TabProps>> = ({
+export const Tab: FC<PropsWithChildren<TabProps>> = ({
   title,
   description,
   children,
@@ -53,5 +53,3 @@ const Tab: FC<PropsWithChildren<TabProps>> = ({
     </>
   )
 }
-
-export default Tab

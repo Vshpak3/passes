@@ -5,8 +5,9 @@ import {
   GetFanWallResponseDto
 } from "@passes/api-client"
 import { FC } from "react"
-import InfiniteScrollPagination, {
-  ComponentArg
+import {
+  ComponentArg,
+  InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 
 import { FanWallComment } from "./FanWallComment"
@@ -27,7 +28,7 @@ interface FanWallFeedProps {
   ownsProfile: boolean
 }
 
-const FanWallFeed: FC<FanWallFeedProps> = ({ ownsProfile }) => {
+export const FanWallFeed: FC<FanWallFeedProps> = ({ ownsProfile }) => {
   return (
     <div>
       <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
@@ -54,5 +55,3 @@ const FanWallFeed: FC<FanWallFeedProps> = ({ ownsProfile }) => {
     </div>
   )
 }
-
-export default FanWallFeed

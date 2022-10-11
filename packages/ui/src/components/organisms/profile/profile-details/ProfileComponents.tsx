@@ -1,14 +1,16 @@
 import ChatIcon from "public/icons/mail-icon.svg"
 import EditIcon from "public/icons/profile-edit-icon.svg"
 import { FC, useEffect, useState } from "react"
-import { PassesPinkButton } from "src/components/atoms"
 import {
   ButtonTypeEnum,
   CoverButton,
+  PassesPinkButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { compactNumberFormatter, ContentService } from "src/helpers"
-import { useCreatorProfile, useFollow } from "src/hooks"
+import { ContentService } from "src/helpers/content"
+import { compactNumberFormatter } from "src/helpers/formatters"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useFollow } from "src/hooks/useFollow"
 
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 
@@ -29,7 +31,7 @@ interface ProfileStatItemMobileProps {
   label: any
 }
 
-const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
+export const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
   stat,
   label
 }) => (

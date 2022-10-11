@@ -1,15 +1,16 @@
 import { CreatePostRequestDto } from "@passes/api-client"
-import { Dialog as NewPostDialog } from "src/components/organisms"
+import { FC } from "react"
+import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import { useCreatePost } from "src/hooks"
+import { useCreatePost } from "src/hooks/useCreatePost"
 
-interface INewPostPopup {
+interface NewPostPopupProps {
   isOpen: boolean
   onCancel: () => void
   selectionDate: Date
 }
 
-const NewPostPopup: React.FC<INewPostPopup> = ({
+export const NewPostPopup: FC<NewPostPopupProps> = ({
   isOpen,
   onCancel,
   selectionDate
@@ -22,7 +23,7 @@ const NewPostPopup: React.FC<INewPostPopup> = ({
   }
 
   return (
-    <NewPostDialog
+    <Dialog
       open={isOpen}
       onClose={onCancel}
       triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-8"
@@ -36,8 +37,6 @@ const NewPostPopup: React.FC<INewPostPopup> = ({
         placeholder="What's on your mind?"
         isExtended
       />
-    </NewPostDialog>
+    </Dialog>
   )
 }
-
-export default NewPostPopup

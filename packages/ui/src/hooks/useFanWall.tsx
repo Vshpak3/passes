@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_FAN_WALL = "/profile/fan-wall/creator/"
 
-const useFanWall = (creatorId: string) => {
+export const useFanWall = (creatorId: string) => {
   const api = new FanWallApi()
 
   const { mutate } = useSWRConfig()
@@ -45,5 +45,3 @@ const useFanWall = (creatorId: string) => {
 
   return { fanWallPosts, isLoadingFanWallPosts, mutateFanWall, writeToFanWall }
 }
-
-export default useFanWall

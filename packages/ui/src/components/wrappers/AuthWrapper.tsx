@@ -6,7 +6,7 @@ import {
   AuthStates
 } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 import { PropsWithChildren } from "types"
 
 interface AuthWrapperProps {
@@ -17,7 +17,7 @@ interface AuthWrapperProps {
   creatorOnly?: boolean
 }
 
-const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
+export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   children,
   isPage,
   skipAuth,
@@ -61,5 +61,3 @@ const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
 
   return authed ? <>{children}</> : <div />
 }
-
-export default AuthWrapper

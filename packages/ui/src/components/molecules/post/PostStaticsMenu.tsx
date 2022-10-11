@@ -6,14 +6,14 @@ import MessageIcon from "public/icons/message-dots-square.svg"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import TipsIcon from "public/icons/tips.svg"
 import { FC, useRef } from "react"
-import { useOnClickOutside } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { usePostData } from "src/hooks/usePostData"
 
 interface PostStaticsMenuProps {
   onClose: () => void
 }
 
-const PostStaticsMenu: FC<PostStaticsMenuProps> = ({ onClose }) => {
+export const PostStaticsMenu: FC<PostStaticsMenuProps> = ({ onClose }) => {
   const {
     numLikes,
     earningsPurchases,
@@ -95,5 +95,3 @@ const PostStaticsMenu: FC<PostStaticsMenuProps> = ({ onClose }) => {
     </div>
   )
 }
-
-export default PostStaticsMenu

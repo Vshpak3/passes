@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react"
 import { errorMessage } from "src/helpers/error"
 
-const usePayoutMethod = () => {
+export const usePayoutMethod = () => {
   const [payoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [banks, setBanks] = useState<CircleBankDto[]>([])
@@ -84,5 +84,3 @@ const usePayoutMethod = () => {
     deleteBank
   }
 }
-
-export default usePayoutMethod

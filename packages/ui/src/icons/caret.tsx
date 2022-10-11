@@ -6,7 +6,11 @@ export interface CaretProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Caret = ({ width = 15, height = 15, ...restOfProps }: CaretProps) => (
+export const Caret = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: CaretProps) => (
   <svg
     width={width}
     height={height}
@@ -24,5 +28,3 @@ const Caret = ({ width = 15, height = 15, ...restOfProps }: CaretProps) => (
     />
   </svg>
 )
-
-export default Caret

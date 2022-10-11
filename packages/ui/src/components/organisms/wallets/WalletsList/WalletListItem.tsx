@@ -8,9 +8,8 @@ import InfoIcon from "public/icons/infoIcon.svg"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import TooltipStar from "public/icons/tooltip-star-icon.svg"
-import React from "react"
-import { Button } from "src/components/atoms"
-import IconTooltip from "src/components/atoms/IconTooltip"
+import { Button } from "src/components/atoms/Button"
+import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 
 interface WalletListItemProps {
@@ -24,7 +23,7 @@ interface WalletListItemProps {
   ) => Promise<void>
 }
 
-const WalletListItem = ({
+export const WalletListItem = ({
   wallet,
   deleteWalletHandler,
   defaultSolMinting,
@@ -162,5 +161,3 @@ const WalletListItem = ({
     </>
   )
 }
-
-export default WalletListItem

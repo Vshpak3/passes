@@ -1,7 +1,12 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import { FC, useState } from "react"
-import { SidebarComponents as SB } from "src/components/molecules"
-import AuthWrapper from "src/components/wrappers/AuthWrapper"
+import { MobileNavbar } from "src/components/molecules/Sidebar/SidebarLayout/MobileNavbar"
+import { SidebarMobileContainer } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileContainer"
+import {
+  SidebarMobileDropdown,
+  SidebarMobileItem
+} from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileItems"
+import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
 interface SidebarMobileProps {
@@ -11,7 +16,7 @@ interface SidebarMobileProps {
   router: any
 }
 
-const SidebarMobile: FC<SidebarMobileProps> = ({
+export const SidebarMobile: FC<SidebarMobileProps> = ({
   active,
   navigation,
   setActive,
@@ -22,14 +27,14 @@ const SidebarMobile: FC<SidebarMobileProps> = ({
 
   const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
-      <SB.SidebarMobileItem
+      <SidebarMobileItem
         key={item.id}
         item={item}
         active={active}
         setActive={setActive}
       />
     ) : (
-      <SB.SidebarMobileDropdown
+      <SidebarMobileDropdown
         key={item.id}
         item={item}
         active={active}
@@ -51,14 +56,14 @@ const SidebarMobile: FC<SidebarMobileProps> = ({
 
   return (
     <>
-      <SB.MobileNavbar openSidebar={toggleSidebar} />
-      <SB.SidebarMobileContainer
+      <MobileNavbar openSidebar={toggleSidebar} />
+      <SidebarMobileContainer
         mobileSidebarOpen={mobileSidebarOpen}
         toggleSidebar={toggleSidebar}
       >
         {renderSidebarItems}
         <AuthWrapper>
-          <SB.SidebarMobileItem
+          <SidebarMobileItem
             key={`sidebar-logout`}
             item={{
               name: "Logout",
@@ -71,9 +76,7 @@ const SidebarMobile: FC<SidebarMobileProps> = ({
             setActive={() => {}}
           />
         </AuthWrapper>
-      </SB.SidebarMobileContainer>
+      </SidebarMobileContainer>
     </>
   )
 }
-
-export default SidebarMobile

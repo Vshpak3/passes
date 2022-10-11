@@ -2,19 +2,20 @@ import CameraIcon from "public/icons/profile-camera-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
-import Tab from "src/components/pages/settings/Tab"
-import { ContentService } from "src/helpers"
+import { Tab } from "src/components/pages/settings/Tab"
+import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
 interface ProfileFormProps {
   profileImage: File[]
 }
 
-const ProfilePicture: FC = () => {
+export const ProfilePicture: FC = () => {
   const { user } = useUser()
   const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
   const {
@@ -112,5 +113,3 @@ const ProfilePicture: FC = () => {
     </Tab>
   )
 }
-
-export default ProfilePicture

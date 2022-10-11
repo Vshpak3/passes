@@ -12,21 +12,23 @@ import InfoIcon from "public/icons/info-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { CreditCardInput, FormInput, Select } from "src/components/atoms"
+import { CreditCardInput } from "src/components/atoms/CreditCardInput"
+import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
-import Tab from "src/components/pages/settings/Tab"
+import { Select } from "src/components/atoms/Select"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
 import { errorMessage } from "src/helpers/error"
-import encrypt from "src/helpers/openpgp"
-import { useUser } from "src/hooks"
+import { encrypt } from "src/helpers/openpgp"
+import { useUser } from "src/hooks/useUser"
 import { v4 } from "uuid"
 interface IAddCard {
   callback?: () => void
 }
-const AddCard: FC<IAddCard> = ({ callback }) => {
+export const AddCard: FC<IAddCard> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
@@ -308,5 +310,3 @@ const AddCard: FC<IAddCard> = ({ callback }) => {
     </>
   )
 }
-
-export default AddCard

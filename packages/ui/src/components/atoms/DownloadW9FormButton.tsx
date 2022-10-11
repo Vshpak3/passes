@@ -1,8 +1,8 @@
 import React from "react"
-import { Button } from "src/components/atoms"
-import { downloadFile } from "src/helpers"
+import { Button } from "src/components/atoms/Button"
+import { downloadFile } from "src/helpers/downloadFile"
 
-const DownloadW9FormButton = () => {
+export const DownloadW9FormButton = () => {
   return (
     <Button
       onClick={() =>
@@ -23,5 +23,3 @@ const DownloadW9FormButton = () => {
     </Button>
   )
 }
-
-export default DownloadW9FormButton

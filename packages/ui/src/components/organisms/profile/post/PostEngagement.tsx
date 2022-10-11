@@ -5,15 +5,18 @@ import HeartIcon from "public/icons/post-heart-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useState } from "react"
-import { compactNumberFormatter } from "src/helpers"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { errorMessage } from "src/helpers/error"
+import { compactNumberFormatter } from "src/helpers/formatters"
 import { usePostData } from "src/hooks/usePostData"
 
 import { CommentSection } from "./CommentSection"
 
 const TipPostModal = dynamic(
-  () => import("src/components/organisms/payment/TipPostModal"),
+  () =>
+    import("src/components/organisms/payment/TipPostModal").then(
+      (m) => m.TipPostModal
+    ),
   { ssr: false }
 )
 

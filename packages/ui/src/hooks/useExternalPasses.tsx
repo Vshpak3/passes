@@ -1,8 +1,8 @@
 import { PassApi } from "@passes/api-client"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
 
-const useExternalPasses = () => {
+export const useExternalPasses = () => {
   const { user } = useUser()
 
   const { data: externalPasses = [], isValidating: isLoadingExternalPasses } =
@@ -22,5 +22,3 @@ const useExternalPasses = () => {
     isLoadingExternalPasses
   }
 }
-
-export default useExternalPasses

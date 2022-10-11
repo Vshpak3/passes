@@ -4,15 +4,15 @@ import {
 } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
-import { Button } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
 import { BuyPostButton } from "src/components/molecules/payment/buy-post-button"
-import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
-import Modal from "src/components/organisms/Modal"
+import { PayinMethodDisplay } from "src/components/molecules/payment/payin-method"
+import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
-import { usePayinMethod } from "src/hooks"
-import useExternalPasses from "src/hooks/useExternalPasses"
+import { useExternalPasses } from "src/hooks/useExternalPasses"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 export interface BuyPostModalProps {
   post: PostDto | null

@@ -5,7 +5,9 @@ import {
   useEffect,
   useState
 } from "react"
-import { useEventCallback, useEventListener } from "src/hooks"
+import { useEventListener } from "src/hooks/useEventListener"
+
+import { useEventCallback } from "./useEventCallback"
 
 declare global {
   interface WindowEventMap {
@@ -15,7 +17,10 @@ declare global {
 
 type SetValue<T> = Dispatch<SetStateAction<T | undefined>>
 
-function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, SetValue<T>] {
   const readValue = useCallback((): T => {
     if (typeof window === "undefined") {
       return initialValue
@@ -75,8 +80,6 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
 
   return [storedValue, setValue]
 }
-
-export default useLocalStorage
 
 function parseJSON<T>(value: string | null): T | undefined {
   try {

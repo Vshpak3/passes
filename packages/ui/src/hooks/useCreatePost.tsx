@@ -1,6 +1,6 @@
 import { CreatePostRequestDto, PostApi } from "@passes/api-client"
 
-const useCreatePost = () => {
+export const useCreatePost = () => {
   const api = new PostApi()
 
   const createPost = async (values: CreatePostRequestDto) => {
@@ -11,5 +11,3 @@ const useCreatePost = () => {
 
   return { createPost }
 }
-
-export default useCreatePost

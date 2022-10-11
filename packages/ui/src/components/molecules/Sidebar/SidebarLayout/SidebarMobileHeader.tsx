@@ -6,7 +6,7 @@ interface SidebarMobileHeaderProps {
   toggleSidebar: any
 }
 
-const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
+export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
   toggleSidebar
 }) => {
   return (
@@ -28,5 +28,3 @@ const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
     </Disclosure>
   )
 }
-
-export default SidebarMobileHeader

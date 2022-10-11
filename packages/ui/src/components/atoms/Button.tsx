@@ -5,7 +5,7 @@ import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, PropsWithChildren } from "react"
 
-import Text from "./Text"
+import { Text } from "./Text"
 
 export enum ButtonTypeEnum {
   BUTTON = "button",
@@ -170,20 +170,20 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   )
 }
 
-export const PassesPurpleButton = ({ name }: GenericButtonProps) => (
+export const PassesPurpleButton: FC<GenericButtonProps> = ({ name }) => (
   <button className="flex w-full items-center justify-center rounded-full border border-solid border-passes-secondary-color bg-passes-secondary-color py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
     <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />
     {name}
   </button>
 )
 
-export const PassesPinkButton = ({
+export const PassesPinkButton: FC<GenericButtonProps> = ({
   type,
   name,
   onClick,
   className = "",
   isDisabled = false
-}: GenericButtonProps) => {
+}) => {
   return (
     <button
       disabled={isDisabled}
@@ -201,11 +201,11 @@ export const PassesPinkButton = ({
   )
 }
 
-export const CoverButton = ({
+export const CoverButton: FC<GenericButtonProps> = ({
   name,
   onClick,
   className = ""
-}: GenericButtonProps) => (
+}) => (
   <button
     className={classNames(
       className,
@@ -220,12 +220,12 @@ export const CoverButton = ({
   </button>
 )
 
-export const PostUnlockButton = ({
+export const PostUnlockButton: FC<GenericButtonProps> = ({
   name,
   onClick,
   value,
   className = ""
-}: GenericButtonProps) => (
+}) => (
   <button
     className={classNames(
       className,

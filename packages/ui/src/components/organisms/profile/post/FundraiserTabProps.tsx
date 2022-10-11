@@ -1,6 +1,6 @@
 import FundraiserDollarIcon from "public/icons/fundraiser-dollar-icon.svg"
 import { FC, useState } from "react"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
 import { ProgressBar } from "./ProgressBarProps"
 

@@ -23,20 +23,21 @@ import React, {
   useState
 } from "react"
 import { toast } from "react-toastify"
-import { Button } from "src/components/atoms"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import PassCard from "src/components/molecules/lucypalooza/PassCard"
-import PassSuccess from "src/components/molecules/lucypalooza/PassSuccess"
+import { Button } from "src/components/atoms/Button"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { PassCard } from "src/components/molecules/lucypalooza/PassCard"
+import { PassSuccess } from "src/components/molecules/lucypalooza/PassSuccess"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
-import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
-import { ContentService } from "src/helpers"
-import { usePayinMethod } from "src/hooks"
-interface IPassList {
+import { PaymentSettings } from "src/components/pages/settings/tabs/PaymentSettings"
+import { ContentService } from "src/helpers/content"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
+
+interface PassListProps {
   passes: PassDto[]
   setPassId: Dispatch<SetStateAction<string | undefined>>
   passId?: string
 }
-const PassList: FC<IPassList> = ({ passes, setPassId, passId }) => {
+export const PassList: FC<PassListProps> = ({ passes, setPassId, passId }) => {
   return (
     <>
       {passes?.map((pass) => (
@@ -61,8 +62,10 @@ const PassList: FC<IPassList> = ({ passes, setPassId, passId }) => {
     </>
   )
 }
+
 const MemoPassList = React.memo(PassList)
-const Passes = () => {
+
+export const Passes = () => {
   const [passes, setPasses] = useState<PassDto[]>([])
   const [passHolder, setPassHolder] = useState<PassHolderDto>()
   const [isPaying, setIsPaying] = useState<boolean>(false)
@@ -268,5 +271,3 @@ const Passes = () => {
     </section>
   )
 }
-
-export default Passes

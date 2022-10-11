@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react"
-import Modal from "src/components/organisms/Modal"
+import { Modal } from "src/components/organisms/Modal"
 import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
 
 interface NewPostModalProps {
@@ -10,7 +10,7 @@ interface NewPostModalProps {
   childrenClassname?: string
 }
 
-const NewPostModal = ({
+export const NewPostModal = ({
   isOpen,
   setOpen,
   file,
@@ -35,5 +35,3 @@ const NewPostModal = ({
     </Modal>
   )
 }
-
-export default NewPostModal

@@ -3,7 +3,7 @@ import useSWR from "swr"
 
 const CACHE_KEY_COMMENT = "/profile/comments/post/"
 
-const useComments = (postId: string) => {
+export const useComments = (postId: string) => {
   const api = new CommentApi()
   return useSWR([CACHE_KEY_COMMENT, postId], () =>
     api.findCommentsForPost({
@@ -13,5 +13,3 @@ const useComments = (postId: string) => {
     })
   )
 }
-
-export default useComments

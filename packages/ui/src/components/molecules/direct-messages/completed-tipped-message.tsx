@@ -3,7 +3,7 @@ import DefaultStar from "public/icons/tipped-star-default-icon.svg"
 import MediumStar from "public/icons/tipped-star-medium-icon.svg"
 import SmallStar from "public/icons/tipped-star-small-icon.svg"
 import React from "react"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
 export const TippedMessage = ({ tipAmount = 10 }) => {
   return (

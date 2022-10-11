@@ -1,5 +1,8 @@
 import { useRouter } from "next/router"
-import { CreatePassForm, SelectPassType } from "src/components/organisms"
+import {
+  CreatePassForm,
+  SelectPassType
+} from "src/components/organisms/passes/CreatePass"
 import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

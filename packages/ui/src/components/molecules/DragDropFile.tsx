@@ -1,6 +1,6 @@
 import UploadIcon from "public/icons/upload.svg"
-import { useState } from "react"
-import { File } from "src/components/atoms"
+import { FC, useState } from "react"
+import { File } from "src/components/atoms/File"
 import { MAX_IMAGE_COUNT } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import {
   FileAccept,
@@ -20,7 +20,7 @@ type DragDropFileProps = {
   multiple?: boolean
 }
 
-const DragDropFile = ({
+export const DragDropFile: FC<DragDropFileProps> = ({
   name,
   options = {},
   register,
@@ -28,7 +28,7 @@ const DragDropFile = ({
   multiple,
   className,
   accept
-}: DragDropFileProps) => {
+}) => {
   const [dragActive, setDragActive] = useState(false)
   const { onChange, onBlur, name: registerName, ref } = register(name, options)
 
@@ -114,5 +114,3 @@ const DragDropFile = ({
     </div>
   )
 }
-
-export default DragDropFile

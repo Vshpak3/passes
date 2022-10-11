@@ -5,15 +5,15 @@ import {
 } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
-import { Input } from "src/components/atoms"
-import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
+import { Input } from "src/components/atoms/Input"
+import { PayinMethodDisplay } from "src/components/molecules/payment/payin-method"
 import { TipPostButton } from "src/components/molecules/payment/tip-post-button"
-import Modal, { ModalProps } from "src/components/organisms/Modal"
-import { usePayinMethod } from "src/hooks"
+import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { usePay } from "src/hooks/usePay"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { usePostData } from "src/hooks/usePostData"
 
-const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
+export const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const post = usePostData()
 
@@ -87,5 +87,3 @@ const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
     </Modal>
   )
 }
-
-export default TipPostModal

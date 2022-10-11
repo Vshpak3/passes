@@ -1,11 +1,11 @@
 import { FC } from "react"
-import NoProfile from "src/components/organisms/NoProfile"
+import { NoProfile } from "src/components/organisms/NoProfile"
 import { ProfileContent } from "src/components/organisms/profile/main-content/ProfileContent"
-import PassTypes from "src/components/organisms/profile/passes/PassTypes"
+import { PassTypes } from "src/components/organisms/profile/passes/PassTypes"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
-import { useCreatorProfile } from "src/hooks"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
-const Profile: FC = () => {
+export const Profile: FC = () => {
   const { isLoadingProfile, profile } = useCreatorProfile()
 
   return isLoadingProfile ? (
@@ -24,5 +24,3 @@ const Profile: FC = () => {
     </div>
   )
 }
-
-export default Profile

@@ -1,7 +1,11 @@
 import React, { FC } from "react"
-import { Checkbox, File, Input, Select, TextArea } from "src/components/atoms"
-import { EIcon } from "src/components/atoms/Input"
-import { DragDropFile, TagsInput } from "src/components/molecules"
+import { Checkbox } from "src/components/atoms/Checkbox"
+import { File } from "src/components/atoms/File"
+import { EIcon, Input } from "src/components/atoms/Input"
+import { Select } from "src/components/atoms/Select"
+import { TextArea } from "src/components/atoms/TextArea"
+import { DragDropFile } from "src/components/molecules/DragDropFile"
+import { TagsInput } from "src/components/molecules/TagsInput"
 import {
   FileAccept,
   FormErrors,
@@ -41,7 +45,7 @@ type FormInputProps = {
   iconMargin?: string
 }
 
-const FormInput: FC<FormInputProps> = ({
+export const FormInput: FC<FormInputProps> = ({
   textPosition,
   label,
   name,
@@ -237,5 +241,3 @@ const FormInput: FC<FormInputProps> = ({
     </>
   )
 }
-
-export default FormInput

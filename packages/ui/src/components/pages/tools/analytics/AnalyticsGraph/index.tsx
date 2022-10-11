@@ -22,8 +22,8 @@ import React, { FC } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
-import { formatCurrency, getFormattedDate } from "src/helpers"
-import Caret from "src/icons/caret"
+import { formatCurrency, getFormattedDate } from "src/helpers/formatters"
+import { Caret } from "src/icons/caret"
 
 ChartJS.register(
   CategoryScale,
@@ -41,7 +41,7 @@ interface EarningsGraphProps {
   userBalance?: number
 }
 
-const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
+export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const [activeTab, setActiveTab] = React.useState("total")
   const [dateRange, setDateRange] = React.useState({
     startDate: new Date(),
@@ -201,5 +201,3 @@ const EARNINGS_GRAPH_TABS = [
     value: "messages"
   }
 ]
-
-export default EarningsGraph

@@ -51,7 +51,7 @@ type LinkProps = {
   variant?: string
 }
 
-const Link: FC<PropsWithChildren<LinkProps>> = ({
+export const Link: FC<PropsWithChildren<LinkProps>> = ({
   children,
   className = "",
   href,
@@ -85,5 +85,3 @@ const Link: FC<PropsWithChildren<LinkProps>> = ({
     </>
   )
 }
-
-export default Link

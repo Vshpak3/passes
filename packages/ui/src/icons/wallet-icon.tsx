@@ -7,7 +7,7 @@ interface WalletIconProps {
   height?: number
 }
 
-const WalletIcon: FC<WalletIconProps> = ({
+export const WalletIcon: FC<WalletIconProps> = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -26,5 +26,3 @@ const WalletIcon: FC<WalletIconProps> = ({
     />
   </svg>
 )
-
-export default WalletIcon

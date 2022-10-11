@@ -1,17 +1,17 @@
 import { PassDto } from "@passes/api-client"
 import classNames from "classnames"
-import { useState } from "react"
-import CreatorPassModal from "src/components/organisms/CreatorPassModal"
+import { FC, useState } from "react"
+import { CreatorPassModal } from "src/components/organisms/CreatorPassModal"
 
-interface ICreatorPassTiles {
+interface CreatorPassTilesProps {
   passData: PassDto
   alternateBg?: boolean
 }
 
-const CreatorPassTiles = ({
+export const CreatorPassTiles: FC<CreatorPassTilesProps> = ({
   passData,
   alternateBg = false
-}: ICreatorPassTiles) => {
+}) => {
   const [isModalOpen, setModalOpen] = useState(false)
 
   const handleClick = () => {
@@ -48,5 +48,3 @@ const CreatorPassTiles = ({
     </>
   )
 }
-
-export default CreatorPassTiles

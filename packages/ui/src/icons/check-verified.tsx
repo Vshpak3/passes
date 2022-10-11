@@ -6,7 +6,7 @@ export interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://help.twitter.com/en/managing-your-account/about-twitter-verified-accounts
-const CheckVerified = ({
+export const CheckVerified = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -38,5 +38,3 @@ const CheckVerified = ({
     />
   </svg>
 )
-
-export default CheckVerified

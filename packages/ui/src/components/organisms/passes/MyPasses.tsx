@@ -1,7 +1,7 @@
 import PlusSquareIcon from "public/icons/plus-square.svg"
 import React, { FC } from "react"
-import { Button } from "src/components/atoms"
-import { CreatorPasses } from "src/components/molecules"
+import { Button } from "src/components/atoms/Button"
+import { CreatorPasses } from "src/components/molecules/pass/MyPasses"
 
 interface PassesListSectionProps {
   onCreatePass: any
@@ -9,7 +9,7 @@ interface PassesListSectionProps {
   lifetimePasses: any
 }
 
-const PassesListSection: FC<PassesListSectionProps> = ({
+export const PassesListSection: FC<PassesListSectionProps> = ({
   onCreatePass,
   subscriptionPasses,
   lifetimePasses
@@ -40,5 +40,3 @@ const PassesListSection: FC<PassesListSectionProps> = ({
     </div>
   )
 }
-
-export { PassesListSection }

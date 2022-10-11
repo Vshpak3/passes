@@ -2,7 +2,7 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import React, { FC } from "react"
 
-import { Avatar } from "./index"
+import { Avatar } from "./Avatar"
 
 interface Props {
   onClick: () => void

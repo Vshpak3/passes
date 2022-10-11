@@ -13,7 +13,7 @@ type CalendarProps = {
 const calendarDates = new CalendarDates()
 const postApi = new PostApi()
 
-const Calendar: FC<CalendarProps> = ({ month, year }) => {
+export const Calendar: FC<CalendarProps> = ({ month, year }) => {
   const [matrixDate, setMatrixDate] = useState([])
   const [posts, setPosts] = useState<any>([])
 
@@ -84,5 +84,3 @@ const Calendar: FC<CalendarProps> = ({ month, year }) => {
     </div>
   )
 }
-
-export default Calendar

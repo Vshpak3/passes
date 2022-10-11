@@ -45,7 +45,7 @@ async function fetchVaultData({
   // return data.contents
 }
 
-const useVaultGallery = () => {
+export const useVaultGallery = () => {
   const [isMounted, setMounted] = useState(false)
   const [vaultContent, setVaultContent] = useState<TVaultData>(null)
   const [selectedItems, setSelectedItems] = useState<Array<string>>([])
@@ -104,5 +104,3 @@ const useVaultGallery = () => {
     setSelectedItems
   }
 }
-
-export default useVaultGallery

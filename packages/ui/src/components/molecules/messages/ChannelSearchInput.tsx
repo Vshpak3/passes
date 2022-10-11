@@ -3,7 +3,7 @@ import { ListMemberDto } from "@passes/api-client"
 import classNames from "classnames"
 import ChevronDown from "public/icons/header-chevron-down-icon.svg"
 import { FC, useState } from "react"
-import { useFollowSearch } from "src/hooks"
+import { useFollowSearch } from "src/hooks/useFollowSearch"
 
 interface ISearchInputDropdown {
   onUserSelect: (user: ListMemberDto) => void

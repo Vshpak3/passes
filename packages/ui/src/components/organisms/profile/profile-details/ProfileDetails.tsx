@@ -1,8 +1,8 @@
 import { MessagesApi } from "@passes/api-client/apis"
 import { FC, useState } from "react"
-import Modal from "src/components/organisms/Modal"
-import { ContentService } from "src/helpers"
-import { useCreatorProfile } from "src/hooks"
+import { Modal } from "src/components/organisms/Modal"
+import { ContentService } from "src/helpers/content"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
 import { EditProfile } from "./EditProfile"
 import {

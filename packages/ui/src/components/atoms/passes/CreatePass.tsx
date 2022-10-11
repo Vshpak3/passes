@@ -1,13 +1,17 @@
 import classNames from "classnames"
 import { FC } from "react"
-import { Button, FormInput } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
 
 interface PassFormErrorProps {
   message: string
   className?: string
 }
 
-const PassFormError: FC<PassFormErrorProps> = ({ message, className = "" }) => (
+export const PassFormError: FC<PassFormErrorProps> = ({
+  message,
+  className = ""
+}) => (
   <div className={`text-md font-semibold text-[#ba3333] ${className}`}>
     {message}
   </div>
@@ -19,7 +23,7 @@ interface PassFormCheckboxProps {
   register: any
 }
 
-const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
+export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
   label,
   name,
   register
@@ -44,7 +48,7 @@ interface PassNumberInputProps {
   className: any
 }
 
-const PassNumberInput: FC<PassNumberInputProps> = ({
+export const PassNumberInput: FC<PassNumberInputProps> = ({
   register,
   title,
   name,
@@ -82,7 +86,7 @@ interface PassesSectionTitleProps {
   title: any
 }
 
-const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
+export const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
   <span className="mb-2 text-lg font-bold text-[#ffff]/90">{title}</span>
 )
 
@@ -91,7 +95,7 @@ interface CreatePassButtonProps {
   isDisabled?: boolean
 }
 
-const CreatePassButton: FC<CreatePassButtonProps> = ({
+export const CreatePassButton: FC<CreatePassButtonProps> = ({
   onCreateHandler,
   isDisabled
 }) => (
@@ -112,7 +116,7 @@ interface CreatePassHeaderProps {
   title: any
 }
 
-const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
+export const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
   <div className="col-span-12 sidebar-collapse:col-span-10">
     <div className="mb-4 grow justify-center text-center text-[20px] font-bold leading-[25px] md:text-[24px]">
       <span className="text-[#ffff]/90">{title}</span>
@@ -125,7 +129,7 @@ interface PassDescriptionInputProps {
   errors: any
 }
 
-const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
+export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
   register,
   errors
 }) => (
@@ -149,7 +153,7 @@ interface PassNameInputProps {
   errors: any
 }
 
-const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
+export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <FormInput
@@ -164,14 +168,3 @@ const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
     )}
   </>
 )
-
-export {
-  CreatePassButton,
-  CreatePassHeader,
-  PassDescriptionInput,
-  PassesSectionTitle,
-  PassFormCheckbox,
-  PassFormError,
-  PassNameInput,
-  PassNumberInput
-}

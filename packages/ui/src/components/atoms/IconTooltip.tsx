@@ -8,7 +8,7 @@ interface IconTooltipProps {
   className?: string
 }
 
-const IconTooltip = ({
+export const IconTooltip = ({
   Icon,
   position,
   tooltipText,
@@ -73,5 +73,3 @@ const IconTooltip = ({
     </div>
   )
 }
-
-export default IconTooltip

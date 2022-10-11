@@ -10,12 +10,12 @@ import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
 import ProfileYoutubeIcon from "public/icons/profile-youtube-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
-import FormImage from "src/components/organisms/FormImage"
-import { updateProfile } from "src/helpers"
+import { FormInput } from "src/components/atoms/FormInput"
+import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
+import { updateProfile } from "src/helpers/updateProfile"
+import { useUser } from "src/hooks/useUser"
 
 import { creatorFlowProfileSchema } from "./helper/creatorFlowProfileSchema"
 
@@ -51,7 +51,7 @@ type CustomizePageFormProps = {
   onFinishCustomizePage?: () => void
 }
 
-const CustomizePageForm: FC<CustomizePageFormProps> = ({
+export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   onFinishCustomizePage = identity
 }) => {
   const [connectedAccounts] = useState<IConnectedAccounts>({
@@ -355,5 +355,3 @@ const CustomizePageForm: FC<CustomizePageFormProps> = ({
     </div>
   )
 }
-
-export default CustomizePageForm

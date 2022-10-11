@@ -1,11 +1,11 @@
 import EditIcon from "public/icons/edit.svg"
 import React, { FC } from "react"
 import { useForm } from "react-hook-form"
-import { Button } from "src/components/atoms"
-import { ContentService } from "src/helpers"
+import { Button } from "src/components/atoms/Button"
+import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 
-import FormInput from "./FormInput"
+import { FormInput } from "./FormInput"
 
 interface UploadW9FormProps {
   form: File[]
@@ -16,7 +16,7 @@ interface W9ButtonProps {
   icon: boolean
 }
 
-const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
+export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
   const {
     register,
     handleSubmit,
@@ -79,5 +79,3 @@ const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
     </form>
   )
 }
-
-export default UploadW9FormButton

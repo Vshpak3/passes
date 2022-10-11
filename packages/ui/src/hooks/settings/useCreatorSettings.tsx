@@ -10,7 +10,8 @@ import { errorMessage } from "src/helpers/error"
 type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto
   | UpdateCreatorSettingsRequestDto
-const useCreatorSettings = () => {
+
+export const useCreatorSettings = () => {
   const api = new CreatorSettingsApi()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isUpdating, setIsUpdating] = useState<boolean>(false)
@@ -66,5 +67,3 @@ const useCreatorSettings = () => {
     updateCreatorSettings
   }
 }
-
-export default useCreatorSettings

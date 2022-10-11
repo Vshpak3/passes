@@ -8,7 +8,7 @@ interface TabsProps {
   tabsArray: TabsElement[]
 }
 
-const Tabs: FC<TabsProps> = ({ tabsArray }) => {
+export const Tabs: FC<TabsProps> = ({ tabsArray }) => {
   const [activeTab, setActiveTab] = useState(tabsArray[0].tabName)
   return (
     <>
@@ -31,5 +31,3 @@ const Tabs: FC<TabsProps> = ({ tabsArray }) => {
     </>
   )
 }
-
-export default Tabs

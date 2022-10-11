@@ -7,7 +7,7 @@ interface DeleteEventModalProps {
   isDeleting: boolean
 }
 
-const DeleteEventModal: FC<DeleteEventModalProps> = ({
+export const DeleteEventModal: FC<DeleteEventModalProps> = ({
   onCancel,
   onDelete,
   isDeleting
@@ -46,5 +46,3 @@ const DeleteEventModal: FC<DeleteEventModalProps> = ({
     </div>
   )
 }
-
-export default DeleteEventModal

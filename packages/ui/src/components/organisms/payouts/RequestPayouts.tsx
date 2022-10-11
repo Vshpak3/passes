@@ -9,7 +9,8 @@ import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down-icon.svg"
 import { Fragment, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, PassesPinkButton } from "src/components/atoms"
+import { PassesPinkButton } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
 import { errorMessage } from "src/helpers/error"
 
 const payoutFrequencyOptions = [
@@ -23,7 +24,7 @@ const payoutFrequencyOptions = [
   }
 ]
 
-const RequestPayouts = () => {
+export const RequestPayouts = () => {
   const [balance, setBalance] = useState(0)
   const {
     register,
@@ -151,5 +152,3 @@ const RequestPayouts = () => {
     </div>
   )
 }
-
-export default RequestPayouts

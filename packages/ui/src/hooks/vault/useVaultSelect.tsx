@@ -31,7 +31,7 @@ interface IUseVaultSelect {
   content: ContentDto
 }
 
-const useVaultSelect = ({
+export const useVaultSelect = ({
   selectedItems = [],
   setSelectedItems,
   content
@@ -62,5 +62,3 @@ const useVaultSelect = ({
 
   return { date, isSelected, onSelectItem, opacityStyle }
 }
-
-export default useVaultSelect

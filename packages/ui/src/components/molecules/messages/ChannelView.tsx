@@ -2,7 +2,8 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import React, { Dispatch, SetStateAction, useState } from "react"
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/messages-channel-gallery-view"
 
-import { ChannelHeader, ChannelStream } from "./index"
+import { ChannelHeader } from "./ChannelHeader"
+import { ChannelStream } from "./ChannelStream"
 import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
 import { InputMessageFanPerspective } from "./InputMessageFanPerspective"
 

@@ -1,7 +1,7 @@
 import { CommentDto } from "@passes/api-client"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
-import { Text } from "src/components/atoms"
+import { Text } from "src/components/atoms/Text"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 
 interface CommentProps {

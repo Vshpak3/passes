@@ -10,15 +10,16 @@ import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import ChevronLeft from "public/icons/chevron-left-bold-icon.svg"
 import { useEffect, useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
-import Balance from "src/components/atoms/performance/Balance"
-import FilterByDays from "src/components/molecules/performance/FilterByDays"
-import Header from "src/components/molecules/performance/Header"
-import Table from "src/components/molecules/performance/Table"
+import { Balance } from "src/components/atoms/performance/Balance"
+import { FilterByDays } from "src/components/molecules/performance/FilterByDays"
+import { Header } from "src/components/molecules/performance/Header"
+import { Table } from "src/components/molecules/performance/Table"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import useSWR from "swr"
 
 const Chart = dynamic(
-  () => import("src/components/molecules/performance/Chart"),
+  () =>
+    import("src/components/molecules/performance/Chart").then((m) => m.Chart),
   { ssr: false }
 )
 

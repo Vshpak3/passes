@@ -3,12 +3,13 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput, Select } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import Tab from "src/components/pages/settings/Tab"
+import { Select } from "src/components/atoms/Select"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
@@ -21,7 +22,7 @@ enum BankTypeEnum {
   NON_IBAN = "non iban"
 }
 
-const AddBank = () => {
+export const AddBank = () => {
   const idempotencyKey = v4()
 
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
@@ -280,5 +281,3 @@ const AddBank = () => {
     </Tab>
   )
 }
-
-export default AddBank

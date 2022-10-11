@@ -1,4 +1,5 @@
 import CheckIcon from "public/icons/check.svg"
+import { FC } from "react"
 import { CREATOR_STEPS_TEXT } from "src/config/constants"
 
 type CreatorStepsProps = {
@@ -7,7 +8,11 @@ type CreatorStepsProps = {
   isSelected: boolean
 }
 
-function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
+export const CreatorSteps: FC<CreatorStepsProps> = ({
+  creatorStep,
+  isDone,
+  isSelected
+}) => {
   return (
     <>
       {/* small screens */}
@@ -61,5 +66,3 @@ function CreatorSteps({ creatorStep, isDone, isSelected }: CreatorStepsProps) {
     </>
   )
 }
-
-export default CreatorSteps

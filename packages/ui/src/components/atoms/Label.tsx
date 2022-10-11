@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import {
   FormErrors,
   FormLabel,
@@ -15,13 +15,13 @@ type LabelProps = {
   className?: string
 }
 
-const Label = ({
+export const Label: FC<LabelProps> = ({
   name,
   label,
   errors = {},
   options = {},
   className
-}: LabelProps) => {
+}) => {
   return (
     <label
       htmlFor={name}
@@ -35,5 +35,3 @@ const Label = ({
     </label>
   )
 }
-
-export default Label

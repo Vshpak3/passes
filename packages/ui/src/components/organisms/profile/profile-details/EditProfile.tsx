@@ -8,14 +8,14 @@ import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/organisms"
-import FormImage from "src/components/organisms/FormImage"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Dialog } from "src/components/organisms/Dialog"
+import { FormImage } from "src/components/organisms/FormImage"
 import { FormType } from "src/components/types/FormTypes"
-import { ContentService } from "src/helpers"
+import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate } from "src/helpers/updateProfile"
-import { useCreatorProfile } from "src/hooks"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
 const bioForm = {
   description: {
@@ -263,5 +263,3 @@ export const EditProfile: FC = () => {
     </>
   )
 }
-
-export default EditProfile

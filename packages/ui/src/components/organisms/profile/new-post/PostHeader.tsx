@@ -1,6 +1,6 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import {
   FormErrors,
   FormOptions,
@@ -16,7 +16,7 @@ interface PostHeaderProps {
   options?: FormOptions
 }
 
-const PostHeader: FC<PostHeaderProps> = ({
+export const PostHeader: FC<PostHeaderProps> = ({
   title,
   onClose,
   messages,
@@ -47,5 +47,3 @@ const PostHeader: FC<PostHeaderProps> = ({
     </div>
   )
 }
-
-export default PostHeader

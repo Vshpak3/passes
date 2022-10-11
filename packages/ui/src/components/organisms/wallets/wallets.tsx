@@ -6,15 +6,18 @@ import Wallet from "public/icons/wallet-manage.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, FormInput, Select } from "src/components/atoms"
-import Modal from "src/components/organisms/Modal"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Select } from "src/components/atoms/Select"
+import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
-import { useUser, useUserDefaultMintingWallets } from "src/hooks"
-import useUserConnectedWallets from "src/hooks/useUserConnectedWallets"
+import { useUser } from "src/hooks/useUser"
+import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
+import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
 
-import WalletListItem from "./WalletsList/WalletListItem"
+import { WalletListItem } from "./WalletsList/WalletListItem"
 
-const Wallets = () => {
+export const Wallets = () => {
   const { user } = useUser()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const {
@@ -281,5 +284,3 @@ const Wallets = () => {
     </div>
   )
 }
-
-export default Wallets

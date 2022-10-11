@@ -1,12 +1,13 @@
 import { useRouter } from "next/router"
 import ProfileIcon from "public/icons/profile-edit-icon.svg"
-import { memo, useEffect, useState } from "react"
-import { SidebarDefault, SidebarMobile } from "src/components/organisms"
-import { useUser } from "src/hooks"
+import { useEffect, useState } from "react"
+import { SidebarDefault } from "src/components/organisms/sidebar/SideBarDefault"
+import { SidebarMobile } from "src/components/organisms/sidebar/SideBarMobile"
+import { useUser } from "src/hooks/useUser"
 
 import { collapsedNavigation, navigation as _navigation } from "./sidebarData"
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const router = useRouter()
 
   const [hasMounted, setHasMounted] = useState(false)
@@ -77,4 +78,3 @@ const Sidebar = () => {
     </>
   )
 }
-export default memo(Sidebar)

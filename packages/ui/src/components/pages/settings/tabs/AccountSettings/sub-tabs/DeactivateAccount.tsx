@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import { Button } from "src/components/atoms"
-import { ConfirmationDialog } from "src/components/organisms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button } from "src/components/atoms/Button"
+import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
+import { Tab } from "src/components/pages/settings/Tab"
 
-const DeactivateAccount = () => {
+export const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =
     useState(false)
 
@@ -39,5 +39,3 @@ const DeactivateAccount = () => {
     </>
   )
 }
-
-export default DeactivateAccount

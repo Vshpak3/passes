@@ -6,7 +6,7 @@ export interface BankIconProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const BankIcon = ({
+export const BankIcon = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -43,5 +43,3 @@ const BankIcon = ({
     />
   </svg>
 )
-
-export default BankIcon

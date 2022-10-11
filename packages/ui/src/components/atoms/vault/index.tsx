@@ -11,40 +11,46 @@ const filterStyles = {
   activeLabel: "text-[#000000]"
 }
 
-interface IVaultDeselectButton {
+interface VaultDeselectButtonProps {
   isVisible: boolean
   deselectAll: () => void
 }
-interface IVaultItemDate {
+
+interface VaultItemDateProps {
   date: string
 }
-interface IVaultSelectLabel {
+
+interface VaultSelectLabelProps {
   selectedItemsLength: number
 }
-interface IVaultFilterOption {
+
+interface VaultFilterOptionProps {
   buttonStyle: string
   isActive: boolean
   label: string
   onClick: () => void
 }
-interface IVaultAddToItem {
+
+interface VaultAddToItemProps {
   label: string
   onClick: () => void
 }
-interface IVaultDeleteButton {
+
+interface VaultDeleteButtonProps {
   toggleDeleteModal: () => void
 }
-interface IVaultSortItem {
+
+interface VaultSortItemProps {
   label?: string
   onClick?: () => void
   sortedItem: string
   name: string
 }
 
-const VaultDeselectButton = ({
+export const VaultDeselectButton = ({
   isVisible,
   deselectAll
-}: IVaultDeselectButton) => (
+}: VaultDeselectButtonProps) => (
   <div
     className="h-[18px] w-[18px] cursor-pointer items-center justify-center text-[#000000]"
     onClick={deselectAll}
@@ -53,7 +59,7 @@ const VaultDeselectButton = ({
   </div>
 )
 
-const VaultItemDate = ({ date }: IVaultItemDate) => (
+export const VaultItemDate: FC<VaultItemDateProps> = ({ date }) => (
   <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
     <div className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block">
       {date}
@@ -61,12 +67,12 @@ const VaultItemDate = ({ date }: IVaultItemDate) => (
   </div>
 )
 
-const VaultFilterOption = ({
+export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
   buttonStyle,
   isActive,
   label,
   onClick
-}: IVaultFilterOption) => {
+}) => {
   const buttonClass = classNames(
     isActive ? filterStyles.activeButton : filterStyles.button,
     `group mr-1 flex h-[32px] min-w-[65px] cursor-pointer place-items-start items-center justify-center ${buttonStyle}`
@@ -82,7 +88,9 @@ const VaultFilterOption = ({
   )
 }
 
-const VaultSelectLabel = ({ selectedItemsLength }: IVaultSelectLabel) => (
+export const VaultSelectLabel: FC<VaultSelectLabelProps> = ({
+  selectedItemsLength
+}) => (
   <div className="align-items flex">
     <div className="text-md font-semibold text-white">
       {selectedItemsLength > 0 &&
@@ -93,7 +101,7 @@ const VaultSelectLabel = ({ selectedItemsLength }: IVaultSelectLabel) => (
   </div>
 )
 
-const VaultAddToItem = ({ label, onClick }: IVaultAddToItem) => (
+export const VaultAddToItem: FC<VaultAddToItemProps> = ({ label, onClick }) => (
   <div
     onClick={onClick}
     className="align-items flex w-full cursor-pointer items-center rounded p-2 text-base text-[#FFFF] ring-0 hover:bg-[#9C4DC1] focus:shadow-none focus:ring-0 focus:ring-offset-0"
@@ -103,12 +111,12 @@ const VaultAddToItem = ({ label, onClick }: IVaultAddToItem) => (
   </div>
 )
 
-const VaultSortItem = ({
+export const VaultSortItem = ({
   sortedItem,
   onClick,
   name,
   label
-}: IVaultSortItem) => (
+}: VaultSortItemProps) => (
   <div
     onClick={onClick}
     className={classNames(
@@ -120,7 +128,9 @@ const VaultSortItem = ({
   </div>
 )
 
-const VaultDeleteButton: FC<IVaultDeleteButton> = ({ toggleDeleteModal }) => {
+export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
+  toggleDeleteModal
+}) => {
   return (
     <div
       onClick={toggleDeleteModal}
@@ -129,14 +139,4 @@ const VaultDeleteButton: FC<IVaultDeleteButton> = ({ toggleDeleteModal }) => {
       <MdDelete size={23} />
     </div>
   )
-}
-
-export {
-  VaultAddToItem,
-  VaultDeleteButton,
-  VaultDeselectButton,
-  VaultFilterOption,
-  VaultItemDate,
-  VaultSelectLabel,
-  VaultSortItem
 }

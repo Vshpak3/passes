@@ -1,8 +1,6 @@
-import {
-  DefaultPayoutMethod,
-  PastTransactions,
-  RequestPayouts
-} from "src/components/organisms"
+import { DefaultPayoutMethod } from "src/components/organisms/payouts/DefaultPayoutMethod"
+import { PastTransactions } from "src/components/organisms/payouts/PastTransactions"
+import { RequestPayouts } from "src/components/organisms/payouts/RequestPayouts"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Payouts = () => {

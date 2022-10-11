@@ -6,7 +6,7 @@ export interface ChatBubbleProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const ChatBubble = ({
+export const ChatBubble = ({
   height = 15,
   width = 15,
   ...restOfProps
@@ -27,5 +27,3 @@ const ChatBubble = ({
     />
   </svg>
 )
-
-export default ChatBubble

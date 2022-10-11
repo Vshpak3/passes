@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import React, { Dispatch, SetStateAction } from "react"
-import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/organisms"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Dialog } from "src/components/organisms/Dialog"
 
 interface IMessagesPriceDialog {
   register: any

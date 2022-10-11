@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const useMounted = () => {
+export const useMounted = () => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -11,5 +11,3 @@ const useMounted = () => {
 
   return mounted
 }
-
-export default useMounted

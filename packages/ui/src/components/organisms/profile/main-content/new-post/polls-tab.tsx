@@ -3,8 +3,8 @@ import PollIcon from "public/icons/post-poll-icon.svg"
 import DeleteIconSmall from "public/icons/post-x-icon-small.svg"
 import { FC, useEffect } from "react"
 import { useFieldArray } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
-import { Card } from "src/components/molecules"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Card } from "src/components/molecules/Card"
 interface PollsTabProps {
   control: any
   register: any

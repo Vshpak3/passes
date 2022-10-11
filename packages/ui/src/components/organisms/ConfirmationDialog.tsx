@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { Dialog } from "src/components/organisms"
+import { Dialog } from "src/components/organisms/Dialog"
 
 interface IConfirmationDialogProps {
   isOpen: boolean
@@ -11,7 +11,7 @@ interface IConfirmationDialogProps {
   cancelString?: string
 }
 
-const ConfirmationDialog: FC<IConfirmationDialogProps> = ({
+export const ConfirmationDialog: FC<IConfirmationDialogProps> = ({
   isOpen,
   onClose,
   onConfirm,
@@ -55,5 +55,3 @@ const ConfirmationDialog: FC<IConfirmationDialogProps> = ({
     </Dialog>
   )
 }
-
-export default ConfirmationDialog

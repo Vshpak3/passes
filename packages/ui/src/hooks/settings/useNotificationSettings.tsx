@@ -3,7 +3,7 @@ import {
   UpdateNotificationSettingsRequestDto
 } from "@passes/api-client"
 
-const useNotificationSettings = () => {
+export const useNotificationSettings = () => {
   const notificationApi = new NotificationsApi()
 
   const getNotificationSettings = async () => {
@@ -20,5 +20,3 @@ const useNotificationSettings = () => {
 
   return { getNotificationSettings, updateNotificationSettings }
 }
-
-export default useNotificationSettings

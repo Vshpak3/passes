@@ -2,7 +2,7 @@ import classNames from "classnames"
 import { addMonths } from "date-fns"
 import ScheduledCalendar from "public/icons/calendar-scheduled-purple-icon.svg"
 import { FC } from "react"
-import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
+import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
 import { MAX_POST_SCHEDULE_DURATION_IN_MONTHS } from "src/config/constants"
 
 interface CalendarSelectorProps {

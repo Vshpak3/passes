@@ -89,13 +89,13 @@ const emptyContentState = (text: string) =>
     ]
   })
 
-export default function CustomComponentMentionEditor({
+export const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   placeholder,
   onInputChange,
   isReset,
   setIsReset,
   defaultText = ""
-}: CustomMentionProps): ReactElement {
+}): ReactElement => {
   const ref = useRef<Editor>(null)
   const [editorState, setEditorState] = useState(() =>
     EditorState.createWithContent(emptyContentState(defaultText))

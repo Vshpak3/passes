@@ -8,7 +8,7 @@ interface CreatorToolsItemProps {
   openCollapsedAdditionalSidebar: any
 }
 
-const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
+export const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
   active,
   openCollapsedAdditionalSidebar
 }) => {
@@ -38,5 +38,3 @@ const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
     </Disclosure>
   )
 }
-
-export default CreatorToolsItem

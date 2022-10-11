@@ -8,7 +8,7 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/types/FormTypes"
-import { useOnClickOutside } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const dummyRecentTags = ["Jett", "Yoru"]
 const dummyAllTags = ["Jett", "Yoru", "Cipher", "Reyna", "Sova", "Viper"]
@@ -23,7 +23,7 @@ type InputProps = {
   className?: string
 }
 
-function TagsInput({
+export function TagsInput({
   name,
   label,
   placeholder,
@@ -127,5 +127,3 @@ function TagsInput({
     </div>
   )
 }
-
-export default TagsInput

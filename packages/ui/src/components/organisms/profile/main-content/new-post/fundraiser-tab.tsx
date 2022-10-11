@@ -4,8 +4,8 @@ import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import FundraiserWhiteIcon from "public/icons/post-fundraiser-white-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
-import { formatCurrency } from "src/helpers"
+import { FormInput } from "src/components/atoms/FormInput"
+import { formatCurrency } from "src/helpers/formatters"
 
 interface NewFundraiserTab {
   control: any

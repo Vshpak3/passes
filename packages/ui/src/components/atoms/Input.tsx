@@ -12,7 +12,7 @@ import {
   FormType
 } from "src/components/types/FormTypes"
 
-import Label from "./Label"
+import { Label } from "./Label"
 
 export enum EIcon {
   Left = "LEFT",
@@ -35,7 +35,7 @@ type InputProps = {
   mask?: string
 }
 
-const Input = ({
+export const Input = ({
   name,
   type,
   label,
@@ -117,5 +117,3 @@ const Input = ({
     </>
   )
 }
-
-export default Input

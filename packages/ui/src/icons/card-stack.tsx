@@ -6,7 +6,7 @@ export interface CardStackProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const CardStack = ({
+export const CardStack = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -27,5 +27,3 @@ const CardStack = ({
     />
   </svg>
 )
-
-export default CardStack

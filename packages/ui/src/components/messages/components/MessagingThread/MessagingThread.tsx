@@ -6,7 +6,7 @@ interface MessagingThreadHeaderProps {
   thread: any
 }
 
-const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
+export const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
   closeThread,
   thread
 }) => {
@@ -167,5 +167,3 @@ const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
     </div>
   )
 }
-
-export default MessagingThreadHeader

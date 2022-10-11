@@ -11,7 +11,7 @@ interface CardProps {
   moveCard: any
 }
 
-const Card: FC<CardProps> = ({ id, children, index, moveCard }) => {
+export const Card: FC<CardProps> = ({ id, children, index, moveCard }) => {
   const ref = useRef(null)
   const previewRef = useRef(null)
 
@@ -87,5 +87,3 @@ const Card: FC<CardProps> = ({ id, children, index, moveCard }) => {
     </div>
   )
 }
-
-export default Card

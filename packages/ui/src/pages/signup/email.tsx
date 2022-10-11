@@ -4,18 +4,15 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import {
-  Button,
-  ButtonTypeEnum,
-  FormInput,
-  Text,
-  Wordmark
-} from "src/components/atoms"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Text } from "src/components/atoms/Text"
+import { Wordmark } from "src/components/atoms/Wordmark"
 import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 

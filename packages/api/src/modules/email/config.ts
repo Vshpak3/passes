@@ -1,5 +1,6 @@
 import path from 'path'
 
+// eslint-disable-next-line import/no-default-export
 export default {
   build: {},
   mainLayoutPath: path

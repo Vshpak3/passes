@@ -2,7 +2,7 @@ import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 
-const usePayinMethod = () => {
+export const usePayinMethod = () => {
   const api = new PaymentApi()
   // TODO: use SWR
   const {
@@ -65,5 +65,3 @@ const usePayinMethod = () => {
     defaultCard
   }
 }
-
-export default usePayinMethod

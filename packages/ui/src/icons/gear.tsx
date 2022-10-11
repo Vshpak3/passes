@@ -7,7 +7,7 @@ export interface GearProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Gear = ({
+export const Gear = ({
   width = 15,
   height = 15,
   variant,
@@ -38,5 +38,3 @@ const Gear = ({
     )}
   </svg>
 )
-
-export default Gear

@@ -2,7 +2,8 @@ import { addMinutes, compareAsc, format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
 import { Dispatch, forwardRef, SetStateAction, useState } from "react"
-import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
+import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
+
 interface CreateSchedulerPopupProps {
   onCancel: () => void
   setIsNewPostModalOpen?: Dispatch<SetStateAction<boolean>>
@@ -10,7 +11,7 @@ interface CreateSchedulerPopupProps {
   selectionDate?: Date | null
 }
 
-const CreateSchedulerPopup = forwardRef<
+export const CreateSchedulerPopup = forwardRef<
   HTMLDivElement,
   CreateSchedulerPopupProps
 >(
@@ -123,5 +124,3 @@ const CreateSchedulerPopup = forwardRef<
 )
 
 CreateSchedulerPopup.displayName = "CreateSchedulerPopup"
-
-export default CreateSchedulerPopup

@@ -6,7 +6,7 @@ export interface RowProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Rows = ({ width = 15, height = 15, ...restOfProps }: RowProps) => (
+export const Rows = ({ width = 15, height = 15, ...restOfProps }: RowProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +23,3 @@ const Rows = ({ width = 15, height = 15, ...restOfProps }: RowProps) => (
     />
   </svg>
 )
-
-export default Rows

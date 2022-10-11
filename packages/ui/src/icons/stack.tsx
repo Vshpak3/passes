@@ -6,7 +6,11 @@ export interface StackProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Stack = ({ width = 15, height = 15, ...restOfProps }: StackProps) => (
+export const Stack = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: StackProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const Stack = ({ width = 15, height = 15, ...restOfProps }: StackProps) => (
     />
   </svg>
 )
-
-export default Stack

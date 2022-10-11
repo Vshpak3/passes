@@ -9,16 +9,16 @@ import {
   FieldValues,
   UseFormRegister
 } from "react-hook-form"
+import { PassesPinkButton } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { IconTooltip } from "src/components/atoms/IconTooltip"
 import {
-  FormInput,
-  PassesPinkButton,
   PassesSectionTitle,
   PassFormCheckbox,
   PassFormError,
   PassNumberInput
-} from "src/components/atoms"
-import IconTooltip from "src/components/atoms/IconTooltip"
-import { FormContainer } from "src/components/organisms"
+} from "src/components/atoms/passes/CreatePass"
+import { FormContainer } from "src/components/organisms/FormContainer"
 import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
 
 type FieldErrors<TFieldValues extends FieldValues = FieldValues> = DeepMap<
@@ -44,7 +44,7 @@ interface PassFileProps {
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 
-const PassDirectMessage: FC<PassProps> = ({
+export const PassDirectMessage: FC<PassProps> = ({
   register,
   setPassValue,
   passValue
@@ -127,7 +127,7 @@ const composeMediaGridLayout = (length: number, index: number) => {
   }
 }
 
-const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
+export const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
   const renderFilePreview = files.map((file: File, index: number) => {
     const gridLayout = composeMediaGridLayout(files.length, index)
     const onRemoveFile = () => onRemove(index)
@@ -160,7 +160,7 @@ interface PassFileUploadProps {
   isPreview: any
 }
 
-const PassFileUpload: FC<PassFileUploadProps> = ({
+export const PassFileUpload: FC<PassFileUploadProps> = ({
   errors,
   fileUploadError,
   files,
@@ -205,7 +205,7 @@ const PassFileUpload: FC<PassFileUploadProps> = ({
   )
 }
 
-const PassLifetimeOptions: FC<PassProps> = ({ register, errors }) => {
+export const PassLifetimeOptions: FC<PassProps> = ({ register, errors }) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -238,7 +238,7 @@ const PassLifetimeOptions: FC<PassProps> = ({ register, errors }) => {
   )
 }
 
-const PassRenewal = () => (
+export const PassRenewal = () => (
   <div>
     <hr className="border-passes-dark-200" />
     <div className="my-4 flex items-center gap-4">
@@ -254,7 +254,7 @@ const PassRenewal = () => (
   </div>
 )
 
-const PassPrice: FC<PassProps> = ({ register, errors }) => {
+export const PassPrice: FC<PassProps> = ({ register, errors }) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -279,7 +279,7 @@ const PassPrice: FC<PassProps> = ({ register, errors }) => {
   )
 }
 
-const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
+export const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
   return (
     <div className="align-items flex w-fit items-center justify-start">
       <PassFormCheckbox
@@ -297,12 +297,12 @@ const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
   )
 }
 
-const PassSupply = ({
+export const PassSupply: FC<PassProps> = ({
   register,
   errors,
   passValue,
   setPassValue
-}: PassProps) => {
+}) => {
   return (
     <>
       <hr className="border-passes-dark-200" />
@@ -358,7 +358,7 @@ interface CreatePassOptionProps {
   colStyle: any
 }
 
-const CreatePassOption: FC<CreatePassOptionProps> = ({
+export const CreatePassOption: FC<CreatePassOptionProps> = ({
   icon,
   title,
   subtitle,
@@ -381,15 +381,4 @@ const CreatePassOption: FC<CreatePassOptionProps> = ({
       </FormContainer>
     </div>
   )
-}
-
-export {
-  CreatePassOption,
-  PassDirectMessage,
-  PassFileUpload,
-  PassFreeTrial,
-  PassLifetimeOptions,
-  PassPrice,
-  PassRenewal,
-  PassSupply
 }

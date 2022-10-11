@@ -5,22 +5,23 @@ import DeleteIcon from "public/icons/messages-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
-import React, { Dispatch, SetStateAction } from "react"
-import { FormInput } from "src/components/atoms"
+import React, { Dispatch, FC, SetStateAction } from "react"
+import { FormInput } from "src/components/atoms/FormInput"
 import { List } from "src/components/organisms/DirectMessage"
-import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
+import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/media"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
 import { MessagesListsDropdownDialog } from "./messages-lists-dropdown"
 
 interface File {
   type: string
 }
-interface IMessagesChanel {
+
+interface MessagesChanelProps {
   lists: List[]
   onSaveLists: (selectedList: any) => void
   selectedLists: List[]
@@ -42,7 +43,8 @@ interface IMessagesChanel {
   listDropdownVisible: boolean
   setListDropdownVisible: Dispatch<SetStateAction<any>>
 }
-export const MessagesChannel = ({
+
+export const MessagesChannel: FC<MessagesChanelProps> = ({
   lists,
   onSaveLists,
   selectedLists,
@@ -63,7 +65,7 @@ export const MessagesChannel = ({
   user,
   listDropdownVisible,
   setListDropdownVisible
-}: IMessagesChanel) => {
+}) => {
   return (
     <div className="flex w-full flex-col items-center justify-between ">
       <div className="flex w-full items-center justify-start gap-5 border-b border-[#FFFF]/10 py-[18px] pl-5">

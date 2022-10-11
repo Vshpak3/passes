@@ -7,7 +7,7 @@ export interface HeartProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Heart = ({
+export const Heart = ({
   height = 15,
   width = 15,
   variant,
@@ -40,5 +40,3 @@ const Heart = ({
     )}
   </svg>
 )
-
-export default Heart

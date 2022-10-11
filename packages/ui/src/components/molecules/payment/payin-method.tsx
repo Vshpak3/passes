@@ -8,7 +8,10 @@ interface IPayinMethodDisplay {
   card?: CircleCardDto
 }
 
-const PayinMethodDisplay: FC<IPayinMethodDisplay> = ({ payinMethod, card }) => {
+export const PayinMethodDisplay: FC<IPayinMethodDisplay> = ({
+  payinMethod,
+  card
+}) => {
   const router = useRouter()
 
   return (
@@ -29,5 +32,3 @@ const PayinMethodDisplay: FC<IPayinMethodDisplay> = ({ payinMethod, card }) => {
     </>
   )
 }
-
-export default PayinMethodDisplay

@@ -11,14 +11,18 @@ import TwitterLogo from "public/icons/twitter-logo.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, FormInput, Text } from "src/components/atoms"
-import { RoundedIconButton } from "src/components/atoms/Button"
-import { SignupTiles } from "src/components/molecules"
+import {
+  Button,
+  ButtonTypeEnum,
+  RoundedIconButton
+} from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Text } from "src/components/atoms/Text"
+import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
-import { useUser } from "src/hooks"
-import { JWTUserClaims } from "src/hooks/useUser"
+import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 

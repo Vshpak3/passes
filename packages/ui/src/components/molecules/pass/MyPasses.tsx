@@ -2,20 +2,20 @@ import classNames from "classnames"
 import AddNewPassIcon from "public/icons/add-new-pass.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
-import { Button } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
 import {
   MyPassTile,
   SelectPassFilter,
   SelectPassTab
 } from "src/components/atoms/passes/MyPass"
-import { CreatorPassTiles } from "src/components/organisms"
+import { CreatorPassTiles } from "src/components/organisms/tiles/CreatorPassTiles"
 
 interface MyPassSearchBarProps {
   onChange: any
   passSearchTerm: any
 }
 
-const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
+export const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
   onChange,
   passSearchTerm
 }) => (
@@ -42,7 +42,7 @@ interface MyPassSearchHeaderProps {
   headerTitle?: string
 }
 
-const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
+export const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
   onSearchPass,
   passSearchTerm,
   headerTitle = "My Passes"
@@ -62,7 +62,9 @@ interface MyPassGridContainerProps {
   children: any
 }
 
-const MyPassGridContainer: FC<MyPassGridContainerProps> = ({ children }) => (
+export const MyPassGridContainer: FC<MyPassGridContainerProps> = ({
+  children
+}) => (
   <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 sidebar-collapse:grid-cols-4">
     {children}
   </div>
@@ -81,7 +83,7 @@ interface MyPassGridProps {
   lifetimePasses?: any[]
 }
 
-const MyPassGrid: FC<MyPassGridProps> = ({
+export const MyPassGrid: FC<MyPassGridProps> = ({
   activePasses,
   expiredPasses,
   setPassType,
@@ -181,7 +183,7 @@ interface CreatorPassesProps {
   alternateBg?: boolean
 }
 
-const CreatorPasses: FC<CreatorPassesProps> = ({
+export const CreatorPasses: FC<CreatorPassesProps> = ({
   passes,
   title,
   alternateBg = false
@@ -202,5 +204,3 @@ const CreatorPasses: FC<CreatorPassesProps> = ({
     </>
   )
 }
-
-export { CreatorPasses, MyPassGrid, MyPassSearchHeader }

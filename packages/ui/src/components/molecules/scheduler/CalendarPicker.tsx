@@ -6,8 +6,8 @@ import Popper from "@mui/material/Popper"
 import { format } from "date-fns"
 import { FC, useCallback, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
-import TimePicker from "src/components/atoms/TimePicker"
-import { useOnClickOutside } from "src/hooks"
+import { TimePicker } from "src/components/atoms/TimePicker"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const hoursTo24Hours = (hours: number, timeShift: TimeShiftEnum) => {
   if (timeShift === TimeShiftEnum.PM) {
@@ -30,7 +30,7 @@ const defaultTime = {
   timeShift: new Date().getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
 }
 
-const CalendarPicker: FC<{
+export const CalendarPicker: FC<{
   children: React.ReactNode
   onSave: (date: Date | null) => void
   toDate?: Date
@@ -153,5 +153,3 @@ const CalendarPicker: FC<{
     </>
   )
 }
-
-export default CalendarPicker

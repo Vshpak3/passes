@@ -11,7 +11,7 @@ interface UserSearchDropdownProps {
   onClick: (user: UserDisplayInfoDto) => void | Promise<void>
 }
 
-const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
+export const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
   results,
   isDesktop = true,
   emptyText,
@@ -58,5 +58,3 @@ const UserSearchDropdown: FC<UserSearchDropdownProps> = ({
     </div>
   )
 }
-
-export default UserSearchDropdown

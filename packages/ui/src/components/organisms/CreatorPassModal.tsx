@@ -1,23 +1,23 @@
 import { PassDto } from "@passes/api-client"
 import Image from "next/image"
-import React, { Dispatch, SetStateAction } from "react"
-import { Button } from "src/components/atoms"
+import React, { Dispatch, FC, SetStateAction } from "react"
+import { Button } from "src/components/atoms/Button"
 
-import Modal from "./Modal"
+import { Modal } from "./Modal"
 
-interface ICreatorPassModal {
+interface CreatorPassModalProps {
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   passData: PassDto
   imageUrl?: string
 }
 
-const CreatorPassModal = ({
+export const CreatorPassModal: FC<CreatorPassModalProps> = ({
   isOpen = false,
   setOpen,
   passData: { title, price, description },
   imageUrl
-}: ICreatorPassModal) => {
+}) => {
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="flex flex-wrap gap-4">
@@ -59,5 +59,3 @@ const CreatorPassModal = ({
     </Modal>
   )
 }
-
-export default CreatorPassModal

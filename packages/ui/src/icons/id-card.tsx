@@ -6,7 +6,11 @@ export interface IdCardProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const IdCard = ({ width = 15, height = 15, ...restOfProps }: IdCardProps) => (
+export const IdCard = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: IdCardProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const IdCard = ({ width = 15, height = 15, ...restOfProps }: IdCardProps) => (
     />
   </svg>
 )
-
-export default IdCard

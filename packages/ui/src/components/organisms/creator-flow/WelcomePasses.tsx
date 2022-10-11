@@ -3,7 +3,7 @@ import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
 import SubscriptionIcon from "public/icons/subscription-pass.svg"
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 
-function WelcomeToPasses() {
+export function WelcomeToPasses() {
   const router = useRouter()
 
   return (
@@ -59,5 +59,3 @@ function WelcomeToPasses() {
     </div>
   )
 }
-
-export default WelcomeToPasses

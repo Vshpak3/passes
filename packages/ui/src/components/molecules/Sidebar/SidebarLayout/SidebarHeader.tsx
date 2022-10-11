@@ -1,7 +1,7 @@
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import React from "react"
 
-const SidebarHeader = () => {
+export const SidebarHeader = () => {
   return (
     <div className="flex flex-shrink-0 items-center justify-center">
       <div className="">
@@ -15,5 +15,3 @@ const SidebarHeader = () => {
     </div>
   )
 }
-
-export default SidebarHeader

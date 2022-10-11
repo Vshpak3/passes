@@ -7,7 +7,7 @@ export interface StarProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Star = ({
+export const Star = ({
   width = 15,
   height = 15,
   variant,
@@ -33,5 +33,3 @@ const Star = ({
     />
   </svg>
 )
-
-export default Star

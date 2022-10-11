@@ -6,15 +6,18 @@ import classNames from "classnames"
 import { useRouter } from "next/router"
 import Clipboard from "public/icons/clipboard.svg"
 import { useEffect } from "react"
-import { Button } from "src/components/atoms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button } from "src/components/atoms/Button"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
-import { usePayoutMethod, useUser, useUserConnectedWallets } from "src/hooks"
-import BankIcon from "src/icons/bank-icon"
-import WalletIcon from "src/icons/wallet-icon"
-const PayoutSettings = () => {
+import { usePayoutMethod } from "src/hooks/usePayoutMethod"
+import { useUser } from "src/hooks/useUser"
+import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
+import { BankIcon } from "src/icons/bank-icon"
+import { WalletIcon } from "src/icons/wallet-icon"
+
+export const PayoutSettings = () => {
   const { addOrPopStackHandler } = useSettings() as ISettingsContext
   const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =
     usePayoutMethod()
@@ -254,5 +257,3 @@ const PayoutSettings = () => {
     </>
   )
 }
-
-export default PayoutSettings

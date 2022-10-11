@@ -5,10 +5,10 @@ import {
 } from "@passes/api-client/models"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
-import OrderDropDown from "src/components/molecules/OrderDropDown"
+import { OrderDropDown } from "src/components/molecules/OrderDropDown"
 
+import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
-import { ChannelListItem } from "./index"
 
 interface Props {
   channelOrderType: GetChannelsRequestDtoOrderTypeEnum

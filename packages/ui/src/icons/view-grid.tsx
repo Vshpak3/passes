@@ -6,7 +6,7 @@ export interface ViewGridProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const ViewGrid = ({
+export const ViewGrid = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -27,5 +27,3 @@ const ViewGrid = ({
     />
   </svg>
 )
-
-export default ViewGrid

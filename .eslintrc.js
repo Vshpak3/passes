@@ -6,10 +6,7 @@ module.exports = {
     node: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint/eslint-plugin',
-    'simple-import-sort'
-  ],
+  plugins: ['@typescript-eslint/eslint-plugin', 'simple-import-sort'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -28,13 +25,11 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'curly': 'error',
+    curly: 'error',
+    'import/no-default-export': 'error',
     'no-trailing-spaces': 'error',
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',
   },
-  ignorePatterns: [
-    '.eslintrc.js',
-    '**/coverage/*',
-  ]
+  ignorePatterns: ['.eslintrc.js', '**/coverage/*'],
 }

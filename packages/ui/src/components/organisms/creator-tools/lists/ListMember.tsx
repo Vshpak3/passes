@@ -1,7 +1,7 @@
 import { ListMemberDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import CheckVerified from "src/icons/check-verified"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { CheckVerified } from "src/icons/check-verified"
 
 type ListMemberProps = {
   fanInfo: ListMemberDto
@@ -9,7 +9,7 @@ type ListMemberProps = {
   removable: boolean
 }
 
-const ListMember: FC<ListMemberProps> = ({
+export const ListMember: FC<ListMemberProps> = ({
   fanInfo,
   onRemoveFan,
   removable
@@ -50,5 +50,3 @@ const ListMember: FC<ListMemberProps> = ({
     </ConditionRendering>
   )
 }
-
-export default ListMember

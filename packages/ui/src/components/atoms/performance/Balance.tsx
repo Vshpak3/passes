@@ -1,12 +1,12 @@
 import ChevronLeft from "public/icons/chevron-left-bold-icon.svg"
 import React, { FC } from "react"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
-interface IBalanceProps {
+interface BalanceProps {
   balance?: number
 }
 
-const Balance: FC<IBalanceProps> = ({ balance }) => {
+export const Balance: FC<BalanceProps> = ({ balance }) => {
   return (
     <div className="cover-image relative mt-5 overflow-hidden rounded-[6px] border border-passes-dark-500 py-7 pl-6 pr-[34px] xs:inline-block lg:absolute lg:right-5 lg:top-0 sidebar-collapse:right-[50px]">
       <span className="text-2xl font-bold leading-6">
@@ -25,5 +25,3 @@ const Balance: FC<IBalanceProps> = ({ balance }) => {
     </div>
   )
 }
-
-export default Balance

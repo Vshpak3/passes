@@ -1,9 +1,9 @@
 import GraphIcon from "public/icons/graph.svg"
 import { useState } from "react"
 
-import PostStaticsMenu from "./PostStaticsMenu"
+import { PostStaticsMenu } from "./PostStaticsMenu"
 
-const PostStaticsButton = () => {
+export const PostStaticsButton = () => {
   const [showPostStaticsMenu, setShowPostStaticsMenu] = useState(false)
 
   const onCloseHandler = () => setShowPostStaticsMenu(false)
@@ -26,5 +26,3 @@ const PostStaticsButton = () => {
     </div>
   )
 }
-
-export default PostStaticsButton

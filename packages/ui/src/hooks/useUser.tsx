@@ -1,7 +1,7 @@
 import { AuthApi, GetUserResponseDto } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
-import { useLocalStorage } from "src/hooks"
+import { useLocalStorage } from "src/hooks/useLocalStorage"
 import useSWR, { useSWRConfig } from "swr"
 
 export interface JWTUserClaims {
@@ -17,7 +17,7 @@ export interface JWTUserClaims {
 
 const CACHE_KEY_USER = "/user"
 
-const useUser = () => {
+export const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
@@ -64,5 +64,3 @@ const useUser = () => {
     logout
   }
 }
-
-export default useUser

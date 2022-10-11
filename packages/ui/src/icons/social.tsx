@@ -8,7 +8,7 @@ export interface SocialProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Social = ({
+export const Social = ({
   width = 15,
   height = 15,
   variant,
@@ -64,5 +64,3 @@ const Social = ({
     </svg>
   )
 }
-
-export default Social

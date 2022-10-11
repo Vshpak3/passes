@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 
 interface IFormImageProps {
@@ -13,7 +13,7 @@ interface IFormImageProps {
   cropHeight: number
 }
 
-const FormImage: FC<IFormImageProps> = ({
+export const FormImage: FC<IFormImageProps> = ({
   register,
   name,
   imgData,
@@ -51,5 +51,3 @@ const FormImage: FC<IFormImageProps> = ({
     </>
   )
 }
-
-export default FormImage

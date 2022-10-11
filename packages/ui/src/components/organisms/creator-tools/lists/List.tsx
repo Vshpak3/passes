@@ -2,8 +2,8 @@ import { ListApi, ListDto, ListDtoTypeEnum } from "@passes/api-client"
 import Link from "next/link"
 import { useState } from "react"
 import { toast } from "react-toastify"
-import { Button } from "src/components/atoms"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
+import { Button } from "src/components/atoms/Button"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 
 interface ListProps {
   list: ListDto

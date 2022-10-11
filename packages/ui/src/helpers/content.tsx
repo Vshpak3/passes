@@ -12,7 +12,7 @@ class Content {
   }
 }
 
-class ContentService {
+export class ContentService {
   private readonly contentApi = new ContentApi()
 
   static profileImage(userId: string): string {
@@ -170,5 +170,3 @@ class ContentService {
     )
   }
 }
-
-export default ContentService

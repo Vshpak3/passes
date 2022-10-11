@@ -4,7 +4,7 @@ import {
   PassDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
 
 function filterPasses(expired = true) {
@@ -32,7 +32,7 @@ function filterPassesByType(type: string) {
   }
 }
 
-const usePasses = (creatorId: string) => {
+export const usePasses = (creatorId: string) => {
   const { user } = useUser()
   const { data: creatorPasses = [], isValidating: isLoadingCreatorPasses } =
     useSWR(user ? ["/pass/created/", creatorId] : null, async () => {
@@ -112,5 +112,3 @@ const usePasses = (creatorId: string) => {
     setPassType
   }
 }
-
-export default usePasses

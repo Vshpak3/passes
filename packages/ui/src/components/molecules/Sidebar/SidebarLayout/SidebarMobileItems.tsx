@@ -9,7 +9,7 @@ interface SidebarMobileChildItemProps {
   setActive: any
 }
 
-const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
+export const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
   active,
   subItem,
   setActive
@@ -46,7 +46,7 @@ interface SidebarMobileDropdownProps {
   router: any
 }
 
-const SidebarMobileDropdown: FC<SidebarMobileDropdownProps> = ({
+export const SidebarMobileDropdown: FC<SidebarMobileDropdownProps> = ({
   setActive,
   item,
   active,
@@ -119,7 +119,7 @@ interface SidebarMobileItemProps {
   active: any
 }
 
-const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
+export const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
   setActive,
   item,
   active
@@ -158,5 +158,3 @@ const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
     </span>
   )
 }
-
-export { SidebarMobileDropdown, SidebarMobileItem }

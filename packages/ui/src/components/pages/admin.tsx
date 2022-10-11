@@ -3,13 +3,15 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { FormInput, Text, Wordmark } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Text } from "src/components/atoms/Text"
+import { Wordmark } from "src/components/atoms/Wordmark"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
 const ADMIN_EMAIL = "@passes.com"
 
-const AdminPage = () => {
+export const AdminPage = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
   const {
@@ -175,5 +177,3 @@ const AdminPage = () => {
     </div>
   )
 }
-
-export default AdminPage

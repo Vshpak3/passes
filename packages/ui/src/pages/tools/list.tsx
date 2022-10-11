@@ -13,11 +13,12 @@ import { NextPage } from "next"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { useCallback, useState } from "react"
-import InfiniteScrollPagination, {
-  ComponentArg
+import {
+  ComponentArg,
+  InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { List } from "src/components/organisms/creator-tools/lists/List"
-import SortListPopup from "src/components/organisms/creator-tools/lists/SortListPopup"
+import { SortListPopup } from "src/components/organisms/creator-tools/lists/SortListPopup"
 import { errorMessage } from "src/helpers/error"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

@@ -1,35 +1,38 @@
 import { Dialog, Menu, Transition } from "@headlessui/react"
 import AddToIcon from "public/icons/plus-square.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
-import { Fragment } from "react"
-import { VaultAddToItem, VaultSortItem } from "src/components/atoms"
-import { ISortOption } from "src/hooks/vault/useVaultSort"
+import { FC, Fragment } from "react"
+import { VaultAddToItem, VaultSortItem } from "src/components/atoms/vault"
+import { SortOptionProps } from "src/hooks/vault/useVaultSort"
 
-interface IVaultAddToDropdown {
+interface VaultAddToDropdownProps {
   onAddToPost: () => void
   onAddToMessage: () => void
 }
-interface IVaultSortDropdown {
+
+interface VaultSortDropdownProps {
   sortOrder: any
   sortKey: any
   sortKeyOptions: any
   sortByOrderOptions: any
 }
-interface IVaultDeleteDialog {
+
+interface VaultDeleteDialogProps {
   onDeleteVaultItems: any
   toggleDeleteModal: any
 }
-interface IVaultDeleteModal {
+
+interface VaultDeleteModalProps {
   onDeleteVaultItems: any
   toggleDeleteModal: any
   deleteModalActive: any
   setDeleteModalActive: any
 }
 
-const VaultAddToDropdown = ({
+export const VaultAddToDropdown: FC<VaultAddToDropdownProps> = ({
   onAddToPost,
   onAddToMessage
-}: IVaultAddToDropdown) => {
+}) => {
   return (
     <Menu as="div" className="relative px-2 md:px-3">
       <div className="flex items-center justify-center gap-3">
@@ -62,12 +65,12 @@ const VaultAddToDropdown = ({
   )
 }
 
-const VaultSortDropdown = ({
+export const VaultSortDropdown: FC<VaultSortDropdownProps> = ({
   sortOrder,
   sortKey,
   sortKeyOptions,
   sortByOrderOptions
-}: IVaultSortDropdown) => {
+}) => {
   return (
     <Menu as="div" className="relative px-3">
       <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
@@ -85,7 +88,7 @@ const VaultSortDropdown = ({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 top-10 z-10 mt-2 box-border flex w-36 origin-top-right flex-col items-start justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
-          {sortKeyOptions.map((item: ISortOption) => (
+          {sortKeyOptions.map((item: SortOptionProps) => (
             <Menu.Item key={item.name}>
               <VaultSortItem
                 name={item.name}
@@ -96,7 +99,7 @@ const VaultSortDropdown = ({
             </Menu.Item>
           ))}
           <hr />
-          {sortByOrderOptions.map((item: ISortOption) => (
+          {sortByOrderOptions.map((item: SortOptionProps) => (
             <Menu.Item key={item.name}>
               <VaultSortItem
                 name={item.name}
@@ -112,10 +115,10 @@ const VaultSortDropdown = ({
   )
 }
 
-const VaultDeleteDialog = ({
+const VaultDeleteDialog: FC<VaultDeleteDialogProps> = ({
   onDeleteVaultItems,
   toggleDeleteModal
-}: IVaultDeleteDialog) => (
+}) => (
   <>
     <div className="sm:flex sm:items-start">
       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -123,7 +126,7 @@ const VaultDeleteDialog = ({
           as="h3"
           className="text-lg font-medium leading-6 text-gray-900"
         >
-          Delete Vault Item
+          Delete Vault temProps
         </Dialog.Title>
         <div className="mt-2">
           <p className="text-sm text-gray-500">
@@ -151,12 +154,12 @@ const VaultDeleteDialog = ({
   </>
 )
 
-const VaultDeleteModal = ({
+export const VaultDeleteModal: FC<VaultDeleteModalProps> = ({
   onDeleteVaultItems,
   toggleDeleteModal,
   deleteModalActive,
   setDeleteModalActive
-}: IVaultDeleteModal) => (
+}) => (
   <Transition.Root show={deleteModalActive} as={Fragment}>
     <Dialog as="div" className="relative z-10" onClose={setDeleteModalActive}>
       <Transition.Child
@@ -194,5 +197,3 @@ const VaultDeleteModal = ({
     </Dialog>
   </Transition.Root>
 )
-
-export { VaultAddToDropdown, VaultDeleteModal, VaultSortDropdown }

@@ -9,23 +9,24 @@ import {
   PassFormError,
   PassNameInput,
   PassNumberInput
-} from "src/components/atoms"
+} from "src/components/atoms/passes/CreatePass"
 import {
   CreatePassOption,
   PassDirectMessage,
   PassFileUpload,
-  PassLifetimeOptions,
-  PassRenewal
-} from "src/components/molecules"
-import {
   PassFreeTrial,
+  PassLifetimeOptions,
   PassPrice,
+  PassRenewal,
   PassSupply
 } from "src/components/molecules/pass/CreatePass"
-import ConfirmationDialog from "src/components/organisms/ConfirmationDialog"
-import FormContainer from "src/components/organisms/FormContainer"
-import { useCreatePass } from "src/hooks"
-import { createPassSchema, PassTypeEnum } from "src/hooks/useCreatePass"
+import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
+import { FormContainer } from "src/components/organisms/FormContainer"
+import {
+  createPassSchema,
+  PassTypeEnum,
+  useCreatePass
+} from "src/hooks/useCreatePass"
 
 interface CreatePassFormProps {
   passType: string
@@ -33,7 +34,7 @@ interface CreatePassFormProps {
 
 const CREATE_PASS_URL = "/tools/manage-passes/create"
 
-const SelectPassType = ({ initialCreation = false }) => {
+export const SelectPassType = ({ initialCreation = false }) => {
   const router = useRouter()
   const createPassTitle = `Create a Pass${
     initialCreation ? " to get started" : ""
@@ -65,7 +66,7 @@ const SelectPassType = ({ initialCreation = false }) => {
   )
 }
 
-const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
+export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
   const {
     errors,
     files,
@@ -173,5 +174,3 @@ const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
     </div>
   )
 }
-
-export { CreatePassForm, SelectPassType }

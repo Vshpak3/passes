@@ -28,7 +28,7 @@ const orderOptionToText = ({ orderType, order }: SortOption) => {
   return text
 }
 
-const SortListPopup: FC<SortListPopupProps> = ({
+export const SortListPopup: FC<SortListPopupProps> = ({
   defaultOption,
   options,
   onSave
@@ -76,5 +76,3 @@ const SortListPopup: FC<SortListPopupProps> = ({
     </div>
   )
 }
-
-export default SortListPopup

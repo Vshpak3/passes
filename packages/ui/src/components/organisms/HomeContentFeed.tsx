@@ -6,8 +6,9 @@ import {
 } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC, useState } from "react"
-import InfiniteScrollPagination, {
-  ComponentArg
+import {
+  ComponentArg,
+  InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { PostDataContext } from "src/contexts/PostData"

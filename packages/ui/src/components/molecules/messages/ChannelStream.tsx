@@ -5,9 +5,9 @@ import { PendingStatus } from "src/components/messages/assets/PendingStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 // import { TippedMessage } from "../direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/free-messages-left-container"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
-import { ChannelMessage } from "./index"
+import { ChannelMessage } from "./ChannelMessage"
 
 const FETCH_NEW_MESSAGES_RATE = ms("3 seconds")
 

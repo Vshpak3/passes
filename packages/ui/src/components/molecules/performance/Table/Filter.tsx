@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import FilterLines from "public/icons/filter-lines.svg"
 import React, { FC, useRef, useState } from "react"
-import { useOnClickOutside } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 import { Filters } from "./types"
 
@@ -18,7 +18,7 @@ interface IFilterProps {
   setActiveFilter: (filter: Filters) => void
 }
 
-const Filter: FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
+export const Filter: FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
   const [showFilterDropDown, setShowFilterDropDown] = useState(false)
 
   const filterEl = useRef(null)
@@ -68,5 +68,3 @@ const Filter: FC<IFilterProps> = ({ activeFilter, setActiveFilter }) => {
     </div>
   )
 }
-
-export default Filter

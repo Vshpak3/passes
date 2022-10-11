@@ -1,7 +1,7 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import NotificationIcon from "public/icons/notification.svg"
 import React from "react"
-import Tab from "src/components/pages/settings/Tab"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 
@@ -14,7 +14,7 @@ const subTabs = [
   }
 ]
 
-const NotificationEmailSettings = () => {
+export const NotificationEmailSettings = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   return (
     <Tab
@@ -44,5 +44,3 @@ const NotificationEmailSettings = () => {
     </Tab>
   )
 }
-
-export default NotificationEmailSettings

@@ -5,10 +5,8 @@ interface CardProps {
   className?: string
 }
 
-const Card: FC<CardProps> = ({ children, className = "" }) => (
+export const Card: FC<CardProps> = ({ children, className = "" }) => (
   <div className={"rounded-xl" + (className && ` ${className}`)}>
     {children}
   </div>
 )
-
-export default Card

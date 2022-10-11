@@ -1,10 +1,10 @@
 import React, { FC } from "react"
-import { formatCurrency } from "src/helpers"
-import Caret from "src/icons/caret"
+import { formatCurrency } from "src/helpers/formatters"
+import { Caret } from "src/icons/caret"
 interface IAnalyticsHeader {
   balance?: number
 }
-const AnalyticsHeader: FC<IAnalyticsHeader> = ({
+export const AnalyticsHeader: FC<IAnalyticsHeader> = ({
   balance
 }: IAnalyticsHeader) => {
   return (
@@ -26,4 +26,3 @@ const AnalyticsHeader: FC<IAnalyticsHeader> = ({
     </div>
   )
 }
-export default AnalyticsHeader

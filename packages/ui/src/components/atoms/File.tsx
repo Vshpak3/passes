@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { FC, useRef } from "react"
 import {
   FileAccept,
   FormErrors,
@@ -9,9 +9,9 @@ import {
   FormRegister
 } from "src/components/types/FormTypes"
 
-import Label from "./Label"
+import { Label } from "./Label"
 
-type InputProps = {
+type FileProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
@@ -40,7 +40,7 @@ const acceptProp = (accept?: FileAccept) =>
     return acc
   }, "")
 
-const File = ({
+export const File: FC<FileProps> = ({
   name,
   label,
   register,
@@ -51,7 +51,7 @@ const File = ({
   trigger,
   className,
   ...rest
-}: InputProps) => {
+}) => {
   const uploadRef = useRef<HTMLInputElement | null>(null)
   const { ref, ...reg } = register(name, options)
 
@@ -81,5 +81,3 @@ const File = ({
     </>
   )
 }
-
-export default File

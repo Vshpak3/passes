@@ -1,8 +1,8 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
 import { useMemo } from "react"
-import { useSearch } from "src/hooks"
+import { useSearch } from "src/hooks/useSearch"
 
-const useFollowSearch = () => {
+export const useFollowSearch = () => {
   const api = useMemo(() => new FollowApi(), [])
   return useSearch<ListMemberDto>(async (searchValue: string) => {
     return (
@@ -16,5 +16,3 @@ const useFollowSearch = () => {
     ).data
   })
 }
-
-export default useFollowSearch

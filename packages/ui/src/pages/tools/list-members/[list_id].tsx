@@ -5,7 +5,10 @@ import React, { useEffect, useState } from "react"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ListDetail = dynamic(
-  () => import("../../../components/organisms/creator-tools/lists/ListDetail"),
+  () =>
+    import("src/components/organisms/creator-tools/lists/ListDetail").then(
+      (m) => m.ListDetail
+    ),
   { ssr: false }
 )
 

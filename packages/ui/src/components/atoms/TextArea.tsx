@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { useEffect, useRef, useState } from "react"
+import React, { FC, useEffect, useRef, useState } from "react"
 import {
   FormErrors,
   FormLabel,
@@ -8,7 +8,7 @@ import {
   FormRegister
 } from "src/components/types/FormTypes"
 
-import Label from "./Label"
+import { Label } from "./Label"
 
 type TextAreaProps = {
   label?: FormLabel
@@ -22,7 +22,7 @@ type TextAreaProps = {
   placeholder?: string
 }
 
-const TextArea = ({
+export const TextArea: FC<TextAreaProps> = ({
   name,
   label,
   register,
@@ -33,7 +33,7 @@ const TextArea = ({
   cols,
   placeholder,
   ...rest
-}: TextAreaProps) => {
+}) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const [keyDownEvent, setKeyDownEvent] = useState<any>(null)
   const { ref, ...reg } = register(name, {
@@ -89,4 +89,3 @@ const TextArea = ({
     </>
   )
 }
-export default TextArea

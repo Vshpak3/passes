@@ -3,8 +3,9 @@ import { AuthLocalApi, UpdatePasswordRequestDto } from "@passes/api-client"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { passwordFormSchema } from "src/pages/signup"
 import { object, SchemaOf, string } from "yup"
@@ -26,7 +27,7 @@ const defaultValues = {
   confirmPassword: ""
 }
 
-const ChangePassword = () => {
+export const ChangePassword = () => {
   const {
     register,
     handleSubmit,
@@ -118,5 +119,3 @@ const ChangePassword = () => {
     </>
   )
 }
-
-export default ChangePassword

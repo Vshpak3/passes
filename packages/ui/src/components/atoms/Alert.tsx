@@ -1,7 +1,7 @@
 import cn from "classnames"
 import AlertCircleIcon from "public/icons/alert-circle.svg"
 import { FC, useRef, useState } from "react"
-import { useOnClickOutside } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface AlertProps {
   className?: string
@@ -10,7 +10,7 @@ interface AlertProps {
   message: string
 }
 
-const Alert: FC<AlertProps> = ({
+export const Alert: FC<AlertProps> = ({
   className,
   tooltipClassName,
   messageClassName,
@@ -52,5 +52,3 @@ const Alert: FC<AlertProps> = ({
     </div>
   )
 }
-
-export default Alert

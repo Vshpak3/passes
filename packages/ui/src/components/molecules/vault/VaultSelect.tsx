@@ -1,17 +1,21 @@
 import classNames from "classnames"
-import { VaultDeselectButton, VaultSelectLabel } from "src/components/atoms"
+import { FC } from "react"
+import {
+  VaultDeselectButton,
+  VaultSelectLabel
+} from "src/components/atoms/vault"
 
-interface IVaultSelectContainer {
+interface VaultSelectContainerProps {
   selectedItems: Array<string>
   deselectAll: () => void
   selectAll: () => void
 }
 
-const VaultSelectContainer = ({
+export const VaultSelectContainer: FC<VaultSelectContainerProps> = ({
   selectedItems,
   deselectAll,
   selectAll
-}: IVaultSelectContainer) => {
+}) => {
   const hasSelectedItems = selectedItems?.length > 0
   const selectAllStyle = classNames(
     !hasSelectedItems ? "opacity-70 hover:opacity-100" : "opacity:100",
@@ -32,5 +36,3 @@ const VaultSelectContainer = ({
     </div>
   )
 }
-
-export { VaultSelectContainer }

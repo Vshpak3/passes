@@ -3,18 +3,19 @@ import { UserApi } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import Tab from "src/components/pages/settings/Tab"
+import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
 interface DisplayNameFormProps {
   displayName: string
 }
 
-const DisplayName: FC = () => {
+export const DisplayName: FC = () => {
   const { user, loading, mutateManual } = useUser()
 
   const {
@@ -86,5 +87,3 @@ const DisplayName: FC = () => {
     </Tab>
   )
 }
-
-export default DisplayName

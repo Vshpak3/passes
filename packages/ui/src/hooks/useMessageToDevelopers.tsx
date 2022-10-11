@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { isDev, isStage } from "src/helpers/env"
 
-const useMessageToDevelopers = (messages: string[]) => {
+export const useMessageToDevelopers = (messages: string[]) => {
   useEffect(() => {
     if (isDev || isStage) {
       return
@@ -16,5 +16,3 @@ const useMessageToDevelopers = (messages: string[]) => {
     console.groupEnd()
   }, [messages])
 }
-
-export default useMessageToDevelopers

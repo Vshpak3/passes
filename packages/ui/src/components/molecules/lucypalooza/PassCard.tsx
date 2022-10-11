@@ -1,6 +1,7 @@
 import DOMPurify from "dompurify"
 import React, { FC } from "react"
-import { Button, GradientBorderTile } from "src/components/atoms"
+import { Button } from "src/components/atoms/Button"
+import { GradientBorderTile } from "src/components/atoms/GradientBorderTile"
 
 interface PassVideoProps {
   img: {
@@ -23,7 +24,7 @@ interface PassCardProps {
   remainingSupply: number | null
 }
 
-const PassVideo: FC<PassVideoProps> = ({ img }) => {
+export const PassVideo: FC<PassVideoProps> = ({ img }) => {
   return (
     <video autoPlay loop muted>
       <source src={img.url} type="video/mp4" />
@@ -33,7 +34,7 @@ const PassVideo: FC<PassVideoProps> = ({ img }) => {
 
 const MemoPassVideo = React.memo(PassVideo)
 
-const PassCard: FC<PassCardProps> = ({
+export const PassCard: FC<PassCardProps> = ({
   img,
   title,
   description,
@@ -96,5 +97,3 @@ const PassCard: FC<PassCardProps> = ({
     </div>
   )
 }
-
-export default React.memo(PassCard)

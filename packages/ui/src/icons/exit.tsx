@@ -6,7 +6,11 @@ export interface ExitProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Exit = ({ width = 15, height = 15, ...restOfProps }: ExitProps) => (
+export const Exit = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: ExitProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const Exit = ({ width = 15, height = 15, ...restOfProps }: ExitProps) => (
     />
   </svg>
 )
-
-export default Exit

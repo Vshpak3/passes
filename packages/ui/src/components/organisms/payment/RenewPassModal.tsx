@@ -3,18 +3,18 @@ import {
   PassHolderDto
 } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
-import PayinMethodDisplay from "src/components/molecules/payment/payin-method"
+import { PayinMethodDisplay } from "src/components/molecules/payment/payin-method"
 import { RenewPassButton } from "src/components/molecules/payment/renew-pass-button"
-import Modal from "src/components/organisms/Modal"
-import { usePayinMethod } from "src/hooks"
+import { Modal } from "src/components/organisms/Modal"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-interface IBuyMessageModal {
+interface BuyMessageModalProps {
   passHolder: PassHolderDto
   setOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
-const BuyPostModal: FC<IBuyMessageModal> = ({
+export const BuyPostModal: FC<BuyMessageModalProps> = ({
   passHolder,
   setOpen,
   isOpen
@@ -51,5 +51,3 @@ const BuyPostModal: FC<IBuyMessageModal> = ({
     </Modal>
   )
 }
-
-export default BuyPostModal

@@ -52,7 +52,7 @@ interface CreatePassProps {
   passType: string
 }
 
-const useCreatePass = ({ passType }: CreatePassProps) => {
+export const useCreatePass = ({ passType }: CreatePassProps) => {
   const [files, setFiles] = useState<File[]>([])
   const [fileUploadError, setFileUploadError] = useState<string | null>(null)
   const isLifetimePass = passType === PassTypeEnum.LIFETIME
@@ -198,5 +198,3 @@ const useCreatePass = ({ passType }: CreatePassProps) => {
     isSubmitSuccessful
   }
 }
-
-export default useCreatePass

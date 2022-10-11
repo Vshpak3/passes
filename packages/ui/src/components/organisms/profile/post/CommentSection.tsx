@@ -3,8 +3,8 @@ import { CommentApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button } from "src/components/atoms"
-import { CustomMentionEditor } from "src/components/organisms"
+import { Button } from "src/components/atoms/Button"
+import { CustomComponentMentionEditor } from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
 
@@ -110,7 +110,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
         className="flex w-full flex-row items-center pt-5"
       >
         <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
-          <CustomMentionEditor
+          <CustomComponentMentionEditor
             isReset={isReset}
             setIsReset={setIsReset}
             placeholder="Type a comment..."

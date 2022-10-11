@@ -6,7 +6,11 @@ export interface ListProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const List = ({ width = 15, height = 15, ...restOfProps }: ListProps) => (
+export const List = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: ListProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const List = ({ width = 15, height = 15, ...restOfProps }: ListProps) => (
     />
   </svg>
 )
-
-export default List

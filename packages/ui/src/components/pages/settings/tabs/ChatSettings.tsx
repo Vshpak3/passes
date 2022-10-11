@@ -3,12 +3,13 @@ import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import Tab from "src/components/pages/settings/Tab"
-import AuthWrapper from "src/components/wrappers/AuthWrapper"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { Tab } from "src/components/pages/settings/Tab"
+import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { chatSettingsSchema } from "src/helpers/validation"
-import { useCreatorSettings } from "src/hooks"
+import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
   isWithoutTip: true,
@@ -17,7 +18,7 @@ const defaultValues = {
   welcomeMessage: ""
 }
 
-const ChatSettings = () => {
+export const ChatSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
   const {
@@ -196,12 +197,10 @@ const ChatSettings = () => {
   )
 }
 
-const ChatSettingsCreatorWrapper = () => {
+export const ChatSettingsCreatorWrapper = () => {
   return (
     <AuthWrapper isPage creatorOnly={true}>
       <ChatSettings />
     </AuthWrapper>
   )
 }
-
-export default ChatSettingsCreatorWrapper

@@ -19,7 +19,7 @@ import {
 } from "src/helpers/payment/wallet-setup"
 import { accessTokenKey } from "src/helpers/token"
 
-import useLocalStorage from "./useLocalStorage"
+import { useLocalStorage } from "./useLocalStorage"
 
 export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,

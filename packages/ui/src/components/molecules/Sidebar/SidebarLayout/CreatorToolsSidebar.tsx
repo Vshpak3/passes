@@ -10,7 +10,7 @@ interface CreatorToolsSidebarProps {
   setActive: any
 }
 
-const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
+export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
   active,
   collapsedAdditionalSidebarOpen,
   closeCollapsedAdditionalSidebar,
@@ -89,5 +89,3 @@ const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
     </>
   )
 }
-
-export default CreatorToolsSidebar

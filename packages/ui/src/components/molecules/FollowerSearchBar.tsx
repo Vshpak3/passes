@@ -1,13 +1,14 @@
 import { UserDisplayInfoDto } from "@passes/api-client"
-import React from "react"
-import UserSearchDropdown from "src/components/atoms/search/user/UserSearchDropdown"
-import UserSearchInput from "src/components/atoms/search/user/UserSearchInput"
-import { useFollowSearch } from "src/hooks"
-interface IFollowSearchModal {
+import React, { FC } from "react"
+import { UserSearchDropdown } from "src/components/atoms/search/user/UserSearchDropdown"
+import { UserSearchInput } from "src/components/atoms/search/user/UserSearchInput"
+import { useFollowSearch } from "src/hooks/useFollowSearch"
+
+interface FollowSearchModalProps {
   onSelect: (userId: string) => Promise<void>
 }
 
-const FollowerSearchBar = ({ onSelect }: IFollowSearchModal) => {
+export const FollowerSearchBar: FC<FollowSearchModalProps> = ({ onSelect }) => {
   const {
     results,
     searchValue,
@@ -37,4 +38,3 @@ const FollowerSearchBar = ({ onSelect }: IFollowSearchModal) => {
     </div>
   )
 }
-export default React.memo(FollowerSearchBar)

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import Tab from "src/components/pages/settings/Tab"
-import { useCreatorSettings } from "src/hooks"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { Tab } from "src/components/pages/settings/Tab"
+import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
   // fullPrivateProfile: true,
   showLikeCount: true,
   showPostCount: true
 }
-const ProfileSettings = () => {
+export const ProfileSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
 
@@ -133,5 +134,3 @@ const ProfileSettings = () => {
     </Tab>
   )
 }
-
-export default ProfileSettings

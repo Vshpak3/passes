@@ -1,7 +1,7 @@
 import AudienceChevronIcon from "public/icons/post-audience-chevron-icon.svg"
 import AudienceIcon from "public/icons/post-audience-icon.svg"
 import { FC } from "react"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 
 interface NewPostDropdownProps {
   register: any

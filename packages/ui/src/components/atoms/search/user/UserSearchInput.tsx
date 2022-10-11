@@ -10,7 +10,7 @@ interface UserSearchInputProps {
   isDesktop?: boolean
 }
 
-const UserSearchInput: FC<UserSearchInputProps> = ({
+export const UserSearchInput: FC<UserSearchInputProps> = ({
   onChangeInput,
   onSearchFocus,
   searchValue,
@@ -41,5 +41,3 @@ const UserSearchInput: FC<UserSearchInputProps> = ({
     </div>
   )
 }
-
-export default UserSearchInput

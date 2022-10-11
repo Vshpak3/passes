@@ -2,9 +2,9 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, SetStateAction } from "react"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/messages-channel-gallery-header"
-import { formatCurrency } from "src/helpers"
+import { formatCurrency } from "src/helpers/formatters"
 
-import { Avatar } from "./index"
+import { Avatar } from "./Avatar"
 
 interface Props {
   selectedChannel: ChannelMemberDto
@@ -14,6 +14,7 @@ interface Props {
   setActiveContent: Dispatch<SetStateAction<any>>
   isCreator: boolean
 }
+
 export const ChannelHeader = ({
   gallery,
   setGallery,

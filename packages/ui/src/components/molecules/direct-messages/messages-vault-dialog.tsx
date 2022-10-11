@@ -1,22 +1,22 @@
-import React, { Dispatch, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction } from "react"
+import { Dialog } from "src/components/organisms/Dialog"
 import {
-  Dialog,
   VaultMediaGrid,
   VaultNavigation
-} from "src/components/organisms"
-import AuthWrapper from "src/components/wrappers/AuthWrapper"
-import useVaultGallery from "src/hooks/vault/useVaultGallery"
+} from "src/components/organisms/VaultSections"
+import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
+import { useVaultGallery } from "src/hooks/vault/useVaultGallery"
 
-interface IMessagesVaultDialog {
+interface MessagesVaultDialogProps {
   hasVault: boolean
   setHasVault: Dispatch<SetStateAction<any>>
   setContentIds: Dispatch<SetStateAction<any>>
 }
-export const MessagesVaultDialog = ({
+export const MessagesVaultDialog: FC<MessagesVaultDialogProps> = ({
   hasVault,
   setHasVault,
   setContentIds
-}: IMessagesVaultDialog) => {
+}) => {
   const {
     vaultType,
     vaultCategory,

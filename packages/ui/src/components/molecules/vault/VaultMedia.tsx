@@ -1,20 +1,20 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { Dispatch, SetStateAction } from "react"
-import { VaultItemDate } from "src/components/atoms"
-import useVaultSelect from "src/hooks/vault/useVaultSelect"
+import { Dispatch, FC, SetStateAction } from "react"
+import { VaultItemDate } from "src/components/atoms/vault"
+import { useVaultSelect } from "src/hooks/vault/useVaultSelect"
 
-interface IVaultMediaItem {
+interface VaultMediaItemProps {
   content: ContentDto
   selectedItems: Array<string>
   setSelectedItems: Dispatch<SetStateAction<Array<string>>>
 }
 
-const VaultMediaItem = ({
+export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
   setSelectedItems
-}: IVaultMediaItem) => {
+}) => {
   const { date, onSelectItem, opacityStyle, isSelected } = useVaultSelect({
     content,
     selectedItems,
@@ -56,5 +56,3 @@ const VaultMediaItem = ({
     </div>
   )
 }
-
-export { VaultMediaItem }

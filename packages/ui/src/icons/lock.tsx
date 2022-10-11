@@ -6,7 +6,11 @@ export interface LockProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Lock = ({ width = 15, height = 15, ...restOfProps }: LockProps) => (
+export const Lock = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: LockProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const Lock = ({ width = 15, height = 15, ...restOfProps }: LockProps) => (
     />
   </svg>
 )
-
-export default Lock

@@ -13,19 +13,16 @@ import { FC, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import {
-  Button,
-  ButtonTypeEnum,
-  FormInput,
-  Text,
-  Wordmark
-} from "src/components/atoms"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Text } from "src/components/atoms/Text"
+import { Wordmark } from "src/components/atoms/Wordmark"
 import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 

@@ -1,5 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable sonarjs/no-duplicate-string */
+// eslint-disable-next-line import/no-default-export
 export default {
   theme: {
     screens: {

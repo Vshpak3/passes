@@ -2,14 +2,15 @@ import { AuthApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
 import PassesLongLogo from "public/icons/passes-long-logo.svg"
 import { useEffect, useState } from "react"
-import { Text, Wordmark } from "src/components/atoms"
+import { Text } from "src/components/atoms/Text"
+import { Wordmark } from "src/components/atoms/Wordmark"
 import {
   authRouter,
   authStateMachine,
   AuthStates
 } from "src/helpers/authRouter"
 import { setTokens } from "src/helpers/setTokens"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)

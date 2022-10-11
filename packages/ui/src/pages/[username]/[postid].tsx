@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
-import usePost from "src/hooks/usePost"
+import { usePost } from "src/hooks/usePost"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import { NotFoundPage } from "src/pages/404"
 

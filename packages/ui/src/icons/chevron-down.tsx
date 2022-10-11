@@ -1,6 +1,6 @@
 import React from "react"
 
-const ChevronDown = () => (
+export const ChevronDown = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="10"
@@ -15,5 +15,3 @@ const ChevronDown = () => (
     />
   </svg>
 )
-
-export default ChevronDown

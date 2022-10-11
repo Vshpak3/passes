@@ -2,11 +2,11 @@ import { FollowApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import useSWR from "swr"
 
-import useUser from "./useUser"
+import { useUser } from "./useUser"
 
 const CACHE_KEY_FOLLOW = "/profile/follow/creator/"
 
-const useFollow = (creatorId: string) => {
+export const useFollow = (creatorId: string) => {
   const api = new FollowApi()
   const { user } = useUser()
   const router = useRouter()
@@ -58,5 +58,3 @@ const useFollow = (creatorId: string) => {
     loadFollow: mutate
   }
 }
-
-export default useFollow

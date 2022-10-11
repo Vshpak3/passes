@@ -10,18 +10,21 @@ import { FC, MouseEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import Slider from "react-slick"
 import { toast } from "react-toastify"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import NewPostModal from "src/components/organisms/NewPostModal"
+import { NewPostModal } from "src/components/organisms/NewPostModal"
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
-import PostHeader from "src/components/organisms/profile/new-post/PostHeader"
-import { ContentService } from "src/helpers"
+import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
+import { ContentService } from "src/helpers/content"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { MediaFile } from "./media"
 
 const CustomMentionEditor = dynamic(
-  () => import("src/components/organisms/CustomMentionEditor"),
+  () =>
+    import("src/components/organisms/CustomMentionEditor").then(
+      (m) => m.CustomComponentMentionEditor
+    ),
   { ssr: false }
 )
 

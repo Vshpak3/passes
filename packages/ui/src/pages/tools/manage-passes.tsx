@@ -3,13 +3,15 @@ import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { Button, Input } from "src/components/atoms"
-import { ButtonTypeEnum, TabButton } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum, TabButton } from "src/components/atoms/Button"
+import { Input } from "src/components/atoms/Input"
 import {
   MyPassGrid,
   MyPassSearchHeader
 } from "src/components/molecules/pass/MyPasses"
-import { useOnClickOutside, usePasses, useUser } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { usePasses } from "src/hooks/usePasses"
+import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ManagePasses = () => {

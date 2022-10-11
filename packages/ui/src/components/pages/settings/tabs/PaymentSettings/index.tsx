@@ -14,22 +14,25 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button, Select } from "src/components/atoms"
-import { Modal } from "src/components/organisms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button } from "src/components/atoms/Button"
+import { Select } from "src/components/atoms/Select"
+import { Modal } from "src/components/organisms/Modal"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
-import { usePayinMethod, useUser } from "src/hooks"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
+import { useUser } from "src/hooks/useUser"
 
-import AddCard from "./sub-tabs/AddCard"
+import { AddCard } from "./sub-tabs/AddCard"
 
 interface Props {
   addCardHandler?: null | (() => void)
   isEmbedded?: boolean
   onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
-const PaymentSettings = ({
+
+export const PaymentSettings = ({
   isEmbedded = false,
   onSetDefaultPayment
 }: Props) => {
@@ -413,5 +416,3 @@ const PaymentSettings = ({
     </>
   )
 }
-
-export default PaymentSettings

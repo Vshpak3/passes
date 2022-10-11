@@ -1,6 +1,6 @@
 import PassesLogo from "public/icons/passes-logo.svg"
 
-const Hero = () => {
+export const Hero = () => {
   return (
     <header className="relative z-10 px-5 pt-[60px] md:px-[135px]">
       <div className="flex items-center justify-between">
@@ -33,5 +33,3 @@ const Hero = () => {
     </header>
   )
 }
-
-export default Hero

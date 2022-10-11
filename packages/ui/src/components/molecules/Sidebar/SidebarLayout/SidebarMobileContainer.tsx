@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react"
 import { FC, Fragment } from "react"
 
-import SidebarMobileHeader from "./SidebarMobileHeader"
+import { SidebarMobileHeader } from "./SidebarMobileHeader"
 
 interface SidebarMobileContainerProps {
   children: any
@@ -9,7 +9,7 @@ interface SidebarMobileContainerProps {
   toggleSidebar: any
 }
 
-const SidebarMobileContainer: FC<SidebarMobileContainerProps> = ({
+export const SidebarMobileContainer: FC<SidebarMobileContainerProps> = ({
   children,
   mobileSidebarOpen,
   toggleSidebar
@@ -62,5 +62,3 @@ const SidebarMobileContainer: FC<SidebarMobileContainerProps> = ({
     </Transition.Root>
   )
 }
-
-export default SidebarMobileContainer

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 
-const NoProfile = () => {
+export const NoProfile = () => {
   return (
     <div className="flex w-full items-center justify-center pt-[60px]">
       <div className="flex w-[500px] flex-col items-center justify-center gap-[15px] text-center">
@@ -24,5 +24,3 @@ const NoProfile = () => {
     </div>
   )
 }
-
-export default NoProfile

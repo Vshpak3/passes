@@ -4,11 +4,12 @@ import { FC, useEffect, useRef, useState } from "react"
 import { usePostData } from "src/hooks/usePostData"
 
 const PostVideo = dynamic(
-  () => import("src/components/molecules/post/PostVideo"),
+  () =>
+    import("src/components/molecules/post/PostVideo").then((m) => m.PostVideo),
   { ssr: false }
 )
 
-const PostMedia: FC = () => {
+export const PostMedia: FC = () => {
   const imgRef = useRef<HTMLImageElement>(null)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -57,5 +58,3 @@ const PostMedia: FC = () => {
     </div>
   )
 }
-
-export default PostMedia

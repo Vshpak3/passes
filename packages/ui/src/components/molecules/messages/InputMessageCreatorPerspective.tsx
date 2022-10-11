@@ -3,17 +3,17 @@ import classNames from "classnames"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import { FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
+import { FormInput } from "src/components/atoms/FormInput"
 import { MessagePriceAlert } from "src/components/atoms/MessagePriceAlert"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
-import { Dialog } from "src/components/organisms"
-import MediaHeader from "src/components/organisms/profile/main-content/new-post/header"
+import { Dialog } from "src/components/organisms/Dialog"
+import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/media"
-import { ContentService } from "src/helpers"
+import { ContentService } from "src/helpers/content"
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB
 const MAX_FILES = 9

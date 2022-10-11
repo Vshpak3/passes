@@ -44,7 +44,7 @@ interface CardProps {
   org: any
 }
 
-const Card: FC<CardProps> = ({ name, img, org }) => (
+export const Card: FC<CardProps> = ({ name, img, org }) => (
   <div className="carousel-item relative mx-2">
     <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 block rounded-3xl border bg-white p-5 transition-shadow hover:shadow-lg">
       <Image
@@ -109,7 +109,7 @@ function SamplePrevArrow(props: any) {
   )
 }
 
-const CardCarousel = () => {
+export const CardCarousel = () => {
   const settings = {
     infinite: true,
     swipeToSlide: true,
@@ -157,5 +157,3 @@ const CardCarousel = () => {
     </div>
   )
 }
-
-export default CardCarousel

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from "react"
 const random = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min)) + min
 
-const useRandomInterval = (
+export const useRandomInterval = (
   callback: () => void,
   minDelay: number,
   maxDelay: number
@@ -41,5 +41,3 @@ const useRandomInterval = (
     timeoutId?.current && window.clearTimeout(timeoutId.current)
   }, [])
 }
-
-export default useRandomInterval

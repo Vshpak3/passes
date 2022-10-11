@@ -6,7 +6,11 @@ export interface HomeProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Home = ({ width = 15, height = 15, ...restOfProps }: HomeProps) => (
+export const Home = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: HomeProps) => (
   <svg
     width={width}
     height={height}
@@ -23,5 +27,3 @@ const Home = ({ width = 15, height = 15, ...restOfProps }: HomeProps) => (
     />
   </svg>
 )
-
-export default Home

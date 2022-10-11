@@ -2,7 +2,7 @@ import Image from "next/image"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import React from "react"
 
-const UserTile = () => {
+export const UserTile = () => {
   return (
     <div className="p-2">
       <div className="flex items-center space-x-[3px]">
@@ -30,5 +30,3 @@ const UserTile = () => {
     </div>
   )
 }
-
-export default UserTile

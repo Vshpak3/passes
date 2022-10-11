@@ -4,7 +4,7 @@ import {
   Time,
   TimeShiftEnum
 } from "src/components/molecules/scheduler/CalendarPicker"
-import { useOnClickOutside } from "src/hooks"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const padZero = (n: number) => n.toString().padStart(2, "0")
 
@@ -14,7 +14,7 @@ export interface TimePickerProps {
   defualtTime?: { hours: number; minutes: number }
 }
 
-const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
+export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownEl = useRef(null)
 
@@ -122,5 +122,3 @@ const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
     </div>
   )
 }
-
-export default TimePicker

@@ -5,17 +5,18 @@ import {
   PostDto
 } from "@passes/api-client"
 import { FC, useState } from "react"
-import InfiniteScrollPagination, {
-  ComponentArg
+import {
+  ComponentArg,
+  InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { NewFanwallPost } from "src/components/organisms/profile/main-content/new-post/NewFanwallPost"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { PostDataContext } from "src/contexts/PostData"
-import { useCreatorProfile } from "src/hooks"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
-import FanWallFeed from "./FanWallFeed"
-import PassesFeed from "./PassesFeed"
+import { FanWallFeed } from "./FanWallFeed"
+import { PassesFeed } from "./PassesFeed"
 
 const PostKeyedComponent = ({ arg }: ComponentArg<PostDto>) => {
   const [isRemoved, setIsRemoved] = useState(false)

@@ -1,7 +1,8 @@
 import { PostApi } from "@passes/api-client"
+import { FC } from "react"
 import { toast } from "react-toastify"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import { FormContainer } from "src/components/organisms"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { FormContainer } from "src/components/organisms/FormContainer"
 import { useBlockModal } from "src/hooks/useBlockModal"
 import { usePostData } from "src/hooks/usePostData"
 import { useReportModal } from "src/hooks/useReportModal"
@@ -10,11 +11,11 @@ import { useViewPostModal } from "src/hooks/useViewPostModal"
 import { LockedMedia } from "./LockedMedia"
 import { DropdownOption } from "./PostDropdown"
 import { PostEngagement } from "./PostEngagement"
-import PostMedia from "./PostMedia"
+import { PostMedia } from "./PostMedia"
 import { PostProfileAvatar } from "./PostProfileAvatar"
 import { PostTextContent } from "./PostTextContent"
 
-export const Post: React.FC = () => {
+export const Post: FC = () => {
   const post = usePostData()
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()

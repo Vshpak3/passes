@@ -1,22 +1,23 @@
-import { VaultFilterOption } from "src/components/atoms"
+import { FC } from "react"
+import { VaultFilterOption } from "src/components/atoms/vault"
 import { TVaultCategory, TVaultType } from "src/hooks/vault/useVaultGallery"
 
-interface ITypeFilterButton {
+interface TypeFilterButton {
   id: TVaultType
   label: string
 }
-interface ICategoryFilterButton {
+interface CategoryFilterButton {
   id: TVaultCategory
   label: string
 }
 
-const VAULT_TYPE_OPTIONS: ITypeFilterButton[] = [
+const VAULT_TYPE_OPTIONS: TypeFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "image", label: "Image" },
   { id: "video", label: "Video" },
   { id: "gif", label: "GIF" }
 ]
-const VAULT_CATEGORY_OPTIONS: ICategoryFilterButton[] = [
+const VAULT_CATEGORY_OPTIONS: CategoryFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "posts", label: "Posts" },
   { id: "messages", label: "Messages" },
@@ -28,18 +29,19 @@ const filterStyles = {
   button: "md:h-[36px] md:min-w-[76.8px] md:max-w-[96px]"
 }
 
-interface IVaultFilterContainer {
+interface VaultFilterContainerProps {
   fetchVaultType: (type: TVaultType) => void
   fetchVaultCategory: (category: TVaultCategory) => void
   vaultType: TVaultType
   vaultCategory: TVaultCategory
 }
-const VaultFilterContainer = ({
+
+export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
   vaultType,
   vaultCategory,
   fetchVaultType,
   fetchVaultCategory
-}: IVaultFilterContainer) => {
+}) => {
   return (
     <div className="items-align align-center flex">
       <div className="align-items mt-5 flex w-full flex-col justify-start">
@@ -77,5 +79,3 @@ const VaultFilterContainer = ({
     </div>
   )
 }
-
-export { VaultFilterContainer }

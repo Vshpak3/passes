@@ -2,9 +2,9 @@ import { WalletApi } from "@passes/api-client"
 import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
-import useLocalStorage from "./useLocalStorage"
+import { useLocalStorage } from "./useLocalStorage"
 
-const useUserConnectedWallets = () => {
+export const useUserConnectedWallets = () => {
   const [accessToken] = useLocalStorage(accessTokenKey, "")
 
   const {
@@ -18,5 +18,3 @@ const useUserConnectedWallets = () => {
 
   return { wallets, loading, mutate }
 }
-
-export default useUserConnectedWallets

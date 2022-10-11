@@ -1,4 +1,4 @@
-import { HomeContentFeed } from "src/components/organisms"
+import { HomeContentFeed } from "src/components/organisms/HomeContentFeed"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Home = () => {

@@ -1,21 +1,21 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import { VaultDeleteButton } from "src/components/atoms/vault"
 import {
   VaultAddToDropdown,
   VaultDeleteModal,
-  VaultFilterContainer,
-  VaultMediaItem,
-  VaultSelectContainer,
   VaultSortDropdown
-} from "src/components/molecules"
+} from "src/components/molecules/vault/VaultActions"
+import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
+import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
+import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
 import {
   TVaultCategory,
   TVaultData,
   TVaultType
 } from "src/hooks/vault/useVaultGallery"
-import useVaultSort from "src/hooks/vault/useVaultSort"
+import { useVaultSort } from "src/hooks/vault/useVaultSort"
 
-interface IVaultNavigation {
+interface VaultNavigationProps {
   selectedItems: Array<string>
   vaultContent: TVaultData
   setSelectedItems: Dispatch<SetStateAction<Array<string>>>
@@ -26,13 +26,14 @@ interface IVaultNavigation {
   pushToMessages: () => void
   fromMessages?: boolean
 }
-interface IVaultMediaGrid {
+
+interface VaultMediaGridProps {
   selectedItems: Array<string>
   vaultContent: TVaultData
   setSelectedItems: Dispatch<SetStateAction<Array<string>>>
 }
 
-const VaultNavigation = ({
+export const VaultNavigation: FC<VaultNavigationProps> = ({
   selectedItems,
   vaultType,
   vaultCategory,
@@ -42,7 +43,7 @@ const VaultNavigation = ({
   setSelectedItems,
   pushToMessages,
   fromMessages = false
-}: IVaultNavigation) => {
+}) => {
   const selectAll = () =>
     setSelectedItems(vaultContent?.map((item) => item.contentId) ?? [])
   const deselectAll = () => setSelectedItems([])
@@ -111,11 +112,11 @@ const VaultNavigation = ({
 const composeEmptyGrid = () => (
   <div key={Math.random()} className="col-span-1 w-[115px] md:w-[320px]" />
 )
-const VaultMediaGrid = ({
+export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   selectedItems,
   setSelectedItems,
   vaultContent
-}: IVaultMediaGrid) => {
+}) => {
   const emptyGrid = new Array(3).fill(0).map(composeEmptyGrid)
   const mediaGrid = vaultContent?.map((content) => (
     <VaultMediaItem
@@ -134,5 +135,3 @@ const VaultMediaGrid = ({
     </div>
   )
 }
-
-export { VaultMediaGrid, VaultNavigation }

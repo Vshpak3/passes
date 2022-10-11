@@ -7,8 +7,7 @@ import {
   authStateToRoute
 } from "src/helpers/authRouter"
 import { setTokens } from "src/helpers/setTokens"
-import { useUser } from "src/hooks"
-import { JWTUserClaims } from "src/hooks/useUser"
+import { JWTUserClaims, useUser } from "src/hooks/useUser"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()

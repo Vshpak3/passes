@@ -1,10 +1,10 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
-import Tab from "src/components/pages/settings/Tab"
+import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { ISettingsContext, useSettings } from "src/contexts/settings"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
-const AccountInformation = () => {
+export const AccountInformation = () => {
   const { addTabToStackHandler } = useSettings() as ISettingsContext
   const { user } = useUser()
 
@@ -86,5 +86,3 @@ const AccountInformation = () => {
     </Tab>
   )
 }
-
-export default AccountInformation

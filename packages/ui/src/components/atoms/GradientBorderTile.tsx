@@ -6,11 +6,9 @@ interface GradientBorderTileProps {
   innerClass?: string
 }
 
-const GradientBorderTile: FC<PropsWithChildren<GradientBorderTileProps>> = ({
-  children,
-  className,
-  innerClass
-}) => {
+export const GradientBorderTile: FC<
+  PropsWithChildren<GradientBorderTileProps>
+> = ({ children, className, innerClass }) => {
   return (
     <div
       className={classNames(
@@ -29,5 +27,3 @@ const GradientBorderTile: FC<PropsWithChildren<GradientBorderTileProps>> = ({
     </div>
   )
 }
-
-export default GradientBorderTile

@@ -34,7 +34,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
 // Deletes will hide the component
 // Inserts should reset the list
 //   unless inserts are at beginning, then just append
-const InfiniteScrollPagination = <A, T extends PagedData<A>>({
+export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   fetch,
   fetchProps,
   emptyElement,
@@ -102,5 +102,3 @@ const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     </>
   )
 }
-
-export default InfiniteScrollPagination

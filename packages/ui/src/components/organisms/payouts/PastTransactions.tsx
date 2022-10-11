@@ -7,14 +7,14 @@ import CalendarIcon from "public/icons/calendar-blank-outline.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { DateRangePicker } from "react-date-range"
-import { getFormattedDate } from "src/helpers"
-import { useOnClickOutside } from "src/hooks"
-import ChevronDown from "src/icons/chevron-down"
+import { getFormattedDate } from "src/helpers/formatters"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { ChevronDown } from "src/icons/chevron-down"
 
 const PAGE_SIZE = 7
 const ONE_DAY = ms("1 day")
 
-const PastTransactions = () => {
+export const PastTransactions = () => {
   const [payouts, setPayouts] = useState<PayoutDto[]>([])
   const [count, setCount] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -246,5 +246,3 @@ const PastTransactions = () => {
     </div>
   )
 }
-
-export default PastTransactions

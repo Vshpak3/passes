@@ -7,11 +7,11 @@ import { toast } from "react-toastify"
 import {
   Button,
   ButtonTypeEnum,
-  FormInput,
   PassesPinkButton
-} from "src/components/atoms"
-import DownloadW9FormButton from "src/components/atoms/DownloadW9FormButton"
-import UploadW9FormButton from "src/components/atoms/UploadW9FormButton"
+} from "src/components/atoms/Button"
+import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
+import { FormInput } from "src/components/atoms/FormInput"
+import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
 import { v4 } from "uuid"
 
@@ -25,7 +25,7 @@ enum BankTypeEnum {
   NON_IBAN
 }
 
-const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
+export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
 
@@ -367,5 +367,3 @@ const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
     </div>
   )
 }
-
-export default PaymentForm

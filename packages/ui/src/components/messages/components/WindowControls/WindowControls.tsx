@@ -5,7 +5,10 @@ interface WindowControlsProps {
   setTheme: any
 }
 
-const WindowControls: FC<WindowControlsProps> = ({ theme, setTheme }) => {
+export const WindowControls: FC<WindowControlsProps> = ({
+  theme,
+  setTheme
+}) => {
   const darkClick = () => {
     if (theme === "dark") {
       return
@@ -118,5 +121,3 @@ const WindowControls: FC<WindowControlsProps> = ({ theme, setTheme }) => {
     </div>
   )
 }
-
-export default WindowControls

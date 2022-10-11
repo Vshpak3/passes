@@ -1,6 +1,6 @@
 import { boolean, mixed, number, object, SchemaOf, string } from "yup"
 
-const getYupRequiredStringSchema = ({
+export const getYupRequiredStringSchema = ({
   name,
   errorMessage
 }: {
@@ -24,7 +24,7 @@ export const SOCIAL_MEDIA_USERNAME_REGEX = {
   youtube: /^[a-zA-Z\d.]{3,}$/
 }
 
-const chatSettingsSchema = object({
+export const chatSettingsSchema = object({
   isWithoutTip: boolean(),
   showWelcomeMessageInput: boolean(),
   minimumTipAmount: mixed().when("isWithoutTip", {
@@ -54,7 +54,7 @@ export interface CreditCardSchema {
   email: string | undefined
 }
 
-const creditCardSchema: SchemaOf<CreditCardSchema> = object({
+export const creditCardSchema: SchemaOf<CreditCardSchema> = object({
   cardNumber: string().max(19).required("Enter a card number"),
   cvv: string().min(3).max(4).required(),
   cardholderName: string().required(),
@@ -86,7 +86,7 @@ export interface BankingSchema {
   }
 }
 
-const bankingSchema: SchemaOf<BankingSchema> = object({
+export const bankingSchema: SchemaOf<BankingSchema> = object({
   accountNumber: string().min(5).max(19).required("Enter a card number"),
   routingNumber: string().max(19).required("Enter a card number"),
   beneficiaryName: string().required(),
@@ -114,15 +114,7 @@ export interface WalletSchema {
   chain: string | undefined
 }
 
-const walletSchema: SchemaOf<WalletSchema> = object({
+export const walletSchema: SchemaOf<WalletSchema> = object({
   walletAddress: string().required("Enter a wallet address"),
   chain: string()
 })
-
-export {
-  bankingSchema,
-  chatSettingsSchema,
-  creditCardSchema,
-  getYupRequiredStringSchema,
-  walletSchema
-}

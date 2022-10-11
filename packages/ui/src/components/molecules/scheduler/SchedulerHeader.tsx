@@ -5,17 +5,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useRef, useState } from "react"
 import MonthYearPicker from "react-month-year-picker"
-import CreateSchedulerPopup from "src/components/molecules/scheduler/CreateSchedulerPopup"
-import { useOnClickOutside } from "src/hooks"
+import { CreateSchedulerPopup } from "src/components/molecules/scheduler/CreateSchedulerPopup"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-import NewPostPopup from "./NewPostPopup"
+import { NewPostPopup } from "./NewPostPopup"
 
 interface SchedulerHeaderProps {
   onChangeTime: (month: number, year: number) => void
   availableFrom: { month: number; year: number }
 }
 
-const SchedulerHeader: FC<SchedulerHeaderProps> = ({
+export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   onChangeTime,
   availableFrom
 }) => {
@@ -249,5 +249,3 @@ const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     </>
   )
 }
-
-export default SchedulerHeader

@@ -2,7 +2,8 @@ import {
   MyPassGrid,
   MyPassSearchHeader
 } from "src/components/molecules/pass/MyPasses"
-import { usePasses, useUser } from "src/hooks"
+import { usePasses } from "src/hooks/usePasses"
+import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Passes = () => {

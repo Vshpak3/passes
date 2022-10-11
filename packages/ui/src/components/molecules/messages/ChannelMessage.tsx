@@ -1,23 +1,24 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import classNames from "classnames"
-import React, { useEffect } from "react"
+import React, { FC, useEffect } from "react"
 import { SentStatus } from "src/components/messages/assets/SentStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 
-import { Avatar, Content } from "./index"
+import { Avatar } from "./Avatar"
+import { Content } from "./message/Content"
 
-interface Props {
+interface ChannelMessageProps {
   isOwnMessage?: boolean
   message?: MessageDto
   lastMessage: boolean
   channelId: string
 }
-export const ChannelMessage = ({
+export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
   isOwnMessage = false,
   lastMessage = false,
   channelId
-}: Props) => {
+}) => {
   const messageContent = message ? message.contents : []
   const onReadLastMessage = async () => {
     const api = new MessagesApi()

@@ -5,10 +5,12 @@ import {
   ListMemberDto
 } from "@passes/api-client/models"
 import React, { useEffect, useState } from "react"
-import { ChannelList, ChannelView } from "src/components/molecules/messages"
-import { useMessages, useUser } from "src/hooks"
+import { ChannelList } from "src/components/molecules/messages/ChannelList"
+import { ChannelView } from "src/components/molecules/messages/ChannelView"
+import { useMessages } from "src/hooks/useMessages"
+import { useUser } from "src/hooks/useUser"
 
-const MessagesV2 = () => {
+export const MessagesV2 = () => {
   const [channelOrderType, setChannelOrderType] =
     useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
@@ -80,5 +82,3 @@ const MessagesV2 = () => {
     </div>
   )
 }
-
-export default MessagesV2

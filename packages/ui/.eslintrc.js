@@ -29,6 +29,14 @@ module.exports = {
     "sonarjs/cognitive-complexity": "off",
     "sonarjs/no-duplicate-string": "off"
   },
+  overrides: [
+    {
+      files: ["src/pages/**"],
+      rules: {
+        "import/no-default-export": "off"
+      }
+    }
+  ],
   // Easier to run JS scripts than have build require tsc-node
   ignorePatterns: ["*.config.js", "scripts/generate-robots-txt.js"]
 }

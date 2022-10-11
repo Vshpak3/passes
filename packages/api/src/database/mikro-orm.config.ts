@@ -8,6 +8,7 @@ import { getMikroOrmOptions } from './mikro-orm.options'
 // This is needed for the mikro-orm cli to run. This file is specified in
 // package.json.
 
+// eslint-disable-next-line import/no-default-export
 export default (async () => {
   // Use standalone applications to get the configService instance
   // https://docs.nestjs.com/standalone-applications

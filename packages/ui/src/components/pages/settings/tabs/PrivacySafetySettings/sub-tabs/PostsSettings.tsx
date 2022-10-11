@@ -1,15 +1,16 @@
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { Button, ButtonTypeEnum, FormInput } from "src/components/atoms"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import Tab from "src/components/pages/settings/Tab"
-import { useCreatorSettings } from "src/hooks"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { FormInput } from "src/components/atoms/FormInput"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { Tab } from "src/components/pages/settings/Tab"
+import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
   enableComments: false
 }
 
-const PostsSettings = () => {
+export const PostsSettings = () => {
   const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
     useCreatorSettings()
   const {
@@ -71,5 +72,3 @@ const PostsSettings = () => {
     </Tab>
   )
 }
-
-export default PostsSettings

@@ -1,25 +1,26 @@
 import { Combobox } from "@headlessui/react"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
-import React, { Dispatch, SetStateAction, useState } from "react"
+import React, { Dispatch, FC, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
-import { FormInput } from "src/components/atoms"
-import { Dialog } from "src/components/organisms"
+import { FormInput } from "src/components/atoms/FormInput"
+import { Dialog } from "src/components/organisms/Dialog"
 import { List } from "src/components/organisms/DirectMessage"
 
-interface IListsDropdown {
+interface ListsDropdownProps {
   selectedLists: List[]
   lists: List[]
   onSaveLists: (lists: List[]) => void
   listDropdownVisible: boolean
   setListDropdownVisible: Dispatch<SetStateAction<any>>
 }
-export const MessagesListsDropdownDialog = ({
+
+export const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
   selectedLists,
   lists,
   onSaveLists,
   listDropdownVisible,
   setListDropdownVisible
-}: IListsDropdown) => {
+}) => {
   const [query, setQuery] = useState("")
   const [_selectedLists, _setSelectedLists] = useState<List[]>(selectedLists)
 

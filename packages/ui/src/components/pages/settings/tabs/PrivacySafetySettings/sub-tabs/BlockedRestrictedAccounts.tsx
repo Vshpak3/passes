@@ -1,6 +1,6 @@
 import React from "react"
-import { Button, ButtonTypeEnum } from "src/components/atoms"
-import Tab from "src/components/pages/settings/Tab"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Tab } from "src/components/pages/settings/Tab"
 
 // TODO: Needs backend integration
 const accounts: { name: string; isBlocked: boolean }[] = [
@@ -11,7 +11,7 @@ const accounts: { name: string; isBlocked: boolean }[] = [
   // { name: "Kianna Press", isBlocked: true }
 ]
 
-const BlockedRestrictedAccounts = () => {
+export const BlockedRestrictedAccounts = () => {
   return (
     <Tab
       withBack
@@ -50,5 +50,3 @@ const BlockedRestrictedAccounts = () => {
     </Tab>
   )
 }
-
-export default BlockedRestrictedAccounts

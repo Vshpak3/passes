@@ -5,7 +5,7 @@ type BulletItemProps = {
   setSelectedStep: MouseEventHandler
 }
 
-function BulletItem({ isSelected, setSelectedStep }: BulletItemProps) {
+export function BulletItem({ isSelected, setSelectedStep }: BulletItemProps) {
   return (
     <div
       onClick={setSelectedStep}
@@ -17,5 +17,3 @@ function BulletItem({ isSelected, setSelectedStep }: BulletItemProps) {
     </div>
   )
 }
-
-export default BulletItem

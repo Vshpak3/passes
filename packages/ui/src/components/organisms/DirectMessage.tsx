@@ -6,6 +6,7 @@ import { ListApi, MessagesApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
 import React, {
   Dispatch,
+  FC,
   SetStateAction,
   useCallback,
   useEffect,
@@ -16,8 +17,8 @@ import { useForm } from "react-hook-form"
 import { MessagesChannel } from "src/components/molecules/direct-messages/messages-channel"
 import { MessagesChannelList } from "src/components/molecules/direct-messages/messages-channel-list"
 import { MessagesPriceDialog } from "src/components/molecules/direct-messages/messages-price-dialog"
-import { ContentService } from "src/helpers"
-import { useUser } from "src/hooks"
+import { ContentService } from "src/helpers/content"
+import { useUser } from "src/hooks/useUser"
 
 export type List = {
   name: string
@@ -38,16 +39,17 @@ const MAX_FILES = 9
 // TODO: return Successful Batch Message on Channel Chat Window after upper todos are done
 // TODO: Add mass Direct-Message at Creator Profile and into Messages in other ticket when functionality is done
 
-interface IDirectMessages {
+interface DirectMessagesProps {
   newMessage: boolean
   setNewMessage: Dispatch<SetStateAction<any>>
   vaultContentIds: string[]
 }
-const DirectMessage = ({
+
+export const DirectMessage: FC<DirectMessagesProps> = ({
   newMessage,
   setNewMessage,
   vaultContentIds
-}: IDirectMessages) => {
+}) => {
   const [lists, setLists] = useState<Array<any>>([])
   const [activeList, setActiveList] = useState<any>({ name: "initial" })
   const [selectedLists, setSelectedLists] = useState<List[]>([])
@@ -294,5 +296,3 @@ const DirectMessage = ({
     </form>
   )
 }
-
-export default DirectMessage

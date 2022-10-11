@@ -10,7 +10,7 @@ interface SidebarChildItemProps {
   setActive: any
 }
 
-const SidebarChildItem: FC<SidebarChildItemProps> = ({
+export const SidebarChildItem: FC<SidebarChildItemProps> = ({
   subItem,
   isActive,
   setActive
@@ -43,7 +43,7 @@ interface SidebarDropdownProps {
   router: any
 }
 
-const SidebarDropdown: FC<SidebarDropdownProps> = ({
+export const SidebarDropdown: FC<SidebarDropdownProps> = ({
   active,
   item,
   setActive,
@@ -127,7 +127,7 @@ interface SidebarTabletItemProps {
   setActive: any
 }
 
-const SidebarTabletItem: FC<SidebarTabletItemProps> = ({
+export const SidebarTabletItem: FC<SidebarTabletItemProps> = ({
   isActive,
   item,
   setActive
@@ -173,7 +173,7 @@ interface SidebarDesktopItemProps {
   setActive: any
 }
 
-const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
+export const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
   isActive,
   item,
   setActive
@@ -220,7 +220,11 @@ interface SidebarItemProps {
   setActive: any
 }
 
-const SidebarItem: FC<SidebarItemProps> = ({ isActive, item, setActive }) => {
+export const SidebarItem: FC<SidebarItemProps> = ({
+  isActive,
+  item,
+  setActive
+}) => {
   return (
     <Fragment>
       <SidebarTabletItem
@@ -236,5 +240,3 @@ const SidebarItem: FC<SidebarItemProps> = ({ isActive, item, setActive }) => {
     </Fragment>
   )
 }
-
-export { SidebarDropdown, SidebarItem }

@@ -1,12 +1,12 @@
 import Image from "next/image"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
-import React from "react"
+import React, { FC } from "react"
 
-type Props = {
+type ProfileNFtPassProps = {
   nftPass?: any
 }
 
-const ProfileNFtPass = ({ nftPass }: Props) => (
+export const ProfileNFtPass: FC<ProfileNFtPassProps> = ({ nftPass }) => (
   <div className="mb-5 w-[324px] rounded-[42px] bg-[conic-gradient(from_176.48deg_at_50%_52.18%,_#007888_0deg,_#00278A_48.75deg,_#340077_136.88deg,_#A83C00_206.25deg,_#A4A400_271.87deg,_#007888_360deg)] p-3">
     <div className="flex flex-col rounded-[31.5px] bg-[#2e2e2e]/80">
       <div>
@@ -42,5 +42,3 @@ const ProfileNFtPass = ({ nftPass }: Props) => (
     </div>
   </div>
 )
-
-export default ProfileNFtPass

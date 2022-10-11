@@ -4,7 +4,7 @@ interface EmptyResultProps {
   text: string
 }
 
-const EmptyResult = ({ text }: EmptyResultProps) => (
+export const EmptyResult = ({ text }: EmptyResultProps) => (
   <li className="my-4 pl-6 text-[#ffffff]/30">
     <div>Try searching for {text}.</div>
   </li>
@@ -17,7 +17,7 @@ interface SearchResultProps {
   onClick: () => void
 }
 
-const SearchResult = ({
+export const SearchResult = ({
   userId,
   displayName,
   username,
@@ -43,5 +43,3 @@ const SearchResult = ({
     </li>
   )
 }
-
-export { EmptyResult, SearchResult }

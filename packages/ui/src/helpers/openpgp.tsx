@@ -9,7 +9,7 @@ import { createMessage, encrypt as pgpEncrypt, readKey } from "openpgp"
  *
  * @return {Object} Object containing encryptedMessage and keyId
  */
-async function encrypt(
+export async function encrypt(
   dataToEncrypt: object,
   { keyId, publicKey }: CircleEncryptionKeyResponseDto
 ) {
@@ -29,4 +29,3 @@ async function encrypt(
     }
   })
 }
-export default encrypt

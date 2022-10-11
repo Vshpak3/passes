@@ -1,16 +1,16 @@
 import { PostApi } from "@passes/api-client"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useState } from "react"
-import EventTableItem from "src/components/molecules/scheduler/EventTableItem"
+import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
 import useSWR from "swr"
 
-import DeleteEventModal from "./DeleteEventModal"
+import { DeleteEventModal } from "./DeleteEventModal"
 
 const postAPI = new PostApi()
 
 export const CACHE_KEY_SCHEDULED_EVENTS = "/posts/scheduled"
 
-const EventTable: FC = () => {
+export const EventTable: FC = () => {
   const { data, mutate } = useSWR(
     CACHE_KEY_SCHEDULED_EVENTS,
     () =>
@@ -100,5 +100,3 @@ const EventTable: FC = () => {
     </div>
   )
 }
-
-export default EventTable

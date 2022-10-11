@@ -4,9 +4,9 @@ import EditIcon from "public/icons/edit.svg"
 import LockedUnlockedIcon from "public/icons/lock-unlocked.svg"
 import TrashIcon from "public/icons/trash.svg"
 import { FC, useCallback, useState } from "react"
-import { Dialog as NewPostDialog } from "src/components/organisms"
+import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import useWindowDimensions from "src/helpers/hooks/useWindowDimensions"
+import { useWindowDimensions } from "src/helpers/hooks/useWindowDimensions"
 import { mutate } from "swr"
 
 import { CACHE_KEY_SCHEDULED_EVENTS } from "./EventTable"
@@ -22,7 +22,7 @@ interface EventTableItemProps {
 
 const postAPI = new PostApi()
 
-const EditButtonGroup: FC<any> = ({ id, data }) => {
+export const EditButtonGroup: FC<any> = ({ id, data }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
 
   const handleUpdatePost = async (values: any) => {
@@ -35,7 +35,7 @@ const EditButtonGroup: FC<any> = ({ id, data }) => {
   }
 
   return (
-    <NewPostDialog
+    <Dialog
       open={isNewPostModalOpen}
       triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-0"
       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
@@ -48,13 +48,13 @@ const EditButtonGroup: FC<any> = ({ id, data }) => {
         createPost={handleUpdatePost}
         placeholder="What's on your mind?"
       />
-    </NewPostDialog>
+    </Dialog>
   )
 }
 
 const today = new Date()
 
-const EventTableItem: FC<EventTableItemProps> = ({
+export const EventTableItem: FC<EventTableItemProps> = ({
   id,
   price,
   text,
@@ -132,5 +132,3 @@ const EventTableItem: FC<EventTableItemProps> = ({
     </tr>
   )
 }
-
-export default EventTableItem

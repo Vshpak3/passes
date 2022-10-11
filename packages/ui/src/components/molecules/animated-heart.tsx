@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import { throttle } from "lodash"
 import { FC, useState } from "react"
-import HeartIcon from "src/icons/heart"
+import { Heart } from "src/icons/heart"
 
 type AnimatedHeartProps = {
   height: number
@@ -10,7 +10,7 @@ type AnimatedHeartProps = {
   alreadyLiked?: boolean
 }
 
-const AnimatedHeart: FC<AnimatedHeartProps> = ({
+export const AnimatedHeart: FC<AnimatedHeartProps> = ({
   height,
   width,
   alreadyLiked
@@ -34,13 +34,11 @@ const AnimatedHeart: FC<AnimatedHeartProps> = ({
         transition={{ duration: 0.25 }}
       >
         {liked ? (
-          <HeartIcon height={height} width={width} variant="filled" />
+          <Heart height={height} width={width} variant="filled" />
         ) : (
-          <HeartIcon height={height} width={width} />
+          <Heart height={height} width={width} />
         )}
       </motion.div>
     </div>
   )
 }
-
-export default AnimatedHeart

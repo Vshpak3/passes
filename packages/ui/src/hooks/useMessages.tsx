@@ -10,7 +10,7 @@ import { usePagination } from "./usePagination"
 interface UseMessagesProps {
   channelOrderType: GetChannelsRequestDtoOrderTypeEnum
 }
-const useMessages = ({ channelOrderType }: UseMessagesProps) => {
+export const useMessages = ({ channelOrderType }: UseMessagesProps) => {
   const api = useMemo(() => new MessagesApi(), [])
   const fetcher = ({
     lastId,
@@ -58,5 +58,3 @@ const useMessages = ({ channelOrderType }: UseMessagesProps) => {
     refresh
   }
 }
-
-export default useMessages

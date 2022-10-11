@@ -6,7 +6,11 @@ export interface MoneyProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const Money = ({ width = 15, height = 15, ...restOfProps }: MoneyProps) => (
+export const Money = ({
+  width = 15,
+  height = 15,
+  ...restOfProps
+}: MoneyProps) => (
   <svg
     width={width}
     height={height}
@@ -21,5 +25,3 @@ const Money = ({ width = 15, height = 15, ...restOfProps }: MoneyProps) => (
     </g>
   </svg>
 )
-
-export default Money

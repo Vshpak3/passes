@@ -18,7 +18,7 @@ export interface ModalProps {
   isNewPost?: boolean
 }
 
-const Modal: FC<PropsWithChildren<ModalProps>> = ({
+export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   isOpen = false,
   setOpen,
   children,
@@ -85,5 +85,3 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     </ReactModal>
   )
 }
-
-export default Modal

@@ -4,9 +4,9 @@ import "react-date-range/dist/theme/default.css"
 import ChevronDown from "public/icons/chevron-down-icon.svg"
 import React, { Dispatch, FC, SetStateAction, useRef, useState } from "react"
 import { DateRangePicker } from "react-date-range"
-import FilterMenu from "src/components/atoms/FilterMenu"
-import { getFormattedDate } from "src/helpers"
-import { useOnClickOutside } from "src/hooks"
+import { FilterMenu } from "src/components/atoms/FilterMenu"
+import { getFormattedDate } from "src/helpers/formatters"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface IRange {
   startDate: Date
@@ -19,7 +19,10 @@ interface IFilterByDays {
   setDateRange: Dispatch<SetStateAction<IRange>>
 }
 
-const FilterByDays: FC<IFilterByDays> = ({ dateRange, setDateRange }) => {
+export const FilterByDays: FC<IFilterByDays> = ({
+  dateRange,
+  setDateRange
+}) => {
   const [showFilterDropDown, setShowFilterDropDown] = useState(false)
 
   const filterHandler = (startDate: Date, endDate: Date) => {
@@ -72,5 +75,3 @@ const FilterByDays: FC<IFilterByDays> = ({ dateRange, setDateRange }) => {
     </div>
   )
 }
-
-export default FilterByDays

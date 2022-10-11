@@ -6,18 +6,19 @@ export enum SortKeyEnum {
   MOST_LIKED = "Most Liked",
   HIGHEST_TIP = "Highest Tip"
 }
+
 export enum SortOrderEnum {
   ASC = "ASC",
   DESC = "DESC"
 }
 
-export interface ISortOption {
+export interface SortOptionProps {
   name: SortKeyEnum | SortOrderEnum
   label?: string
   onClick: () => void
 }
 
-const useVaultSort = () => {
+export const useVaultSort = () => {
   const [deleteModalActive, setDeleteModalActive] = useState(false)
 
   const [sortKey, setSortKey] = useState(SortKeyEnum.RECENT)
@@ -32,12 +33,12 @@ const useVaultSort = () => {
   const toggleAsc = () => setSortOrder(SortOrderEnum.ASC)
   const toggleDesc = () => setSortOrder(SortOrderEnum.DESC)
 
-  const sortKeyOptions: ISortOption[] = [
+  const sortKeyOptions: SortOptionProps[] = [
     { name: SortKeyEnum.RECENT, onClick: toggleRecent },
     { name: SortKeyEnum.MOST_LIKED, onClick: toggleLiked },
     { name: SortKeyEnum.HIGHEST_TIP, onClick: toggleTips }
   ]
-  const sortByOrderOptions: ISortOption[] = [
+  const sortByOrderOptions: SortOptionProps[] = [
     { name: SortOrderEnum.ASC, label: "Ascending", onClick: toggleAsc },
     { name: SortOrderEnum.DESC, label: "Descending", onClick: toggleDesc }
   ]
@@ -84,5 +85,3 @@ export function composeSortKey(
     return 0
   }
 }
-
-export default useVaultSort

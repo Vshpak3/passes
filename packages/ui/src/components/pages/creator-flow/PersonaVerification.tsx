@@ -3,18 +3,18 @@ import {
   VerificationApi
 } from "@passes/api-client"
 import ms from "ms"
-import React, { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { isProd } from "src/helpers/env"
 
 const PERSONA_TEMPLATE_ID = "itmpl_dzFXWpxh3j1MNgGMEmteDfr1"
 const PERSONA_HANDLER_TIMEOUT = ms("10 seconds")
 
-interface IPersonaVerification {
+interface PersonaVerificationProps {
   onFinishPersonaVerification: () => void
   showPersonaModal: boolean
 }
 
-const PersonaVerification: FC<IPersonaVerification> = ({
+export const PersonaVerification: FC<PersonaVerificationProps> = ({
   onFinishPersonaVerification,
   showPersonaModal
 }) => {
@@ -82,5 +82,3 @@ const PersonaVerification: FC<IPersonaVerification> = ({
 
   return null
 }
-
-export default React.memo(PersonaVerification)

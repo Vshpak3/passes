@@ -2,13 +2,13 @@ import { useRouter } from "next/router"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
 import { authRouter } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
-import { useUser } from "src/hooks"
+import { useUser } from "src/hooks/useUser"
 
 interface LoginWrapperProps {
   routeOnlyIfAuth?: boolean
 }
 
-const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
+export const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   children,
   routeOnlyIfAuth
 }) => {

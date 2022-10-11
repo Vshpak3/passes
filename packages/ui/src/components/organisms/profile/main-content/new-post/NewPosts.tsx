@@ -2,7 +2,7 @@ import { CreatePostRequestDto, PostApi, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { PostDataContext } from "src/contexts/PostData"
-import { useCreatorProfile } from "src/hooks"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
 import { NewPost } from "./NewPost"
 

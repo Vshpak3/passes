@@ -4,12 +4,15 @@ import dynamic from "next/dynamic"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import PostHeader from "src/components/organisms/profile/new-post/PostHeader"
-import { useCreatorProfile } from "src/hooks"
-import useFanWall from "src/hooks/useFanWall"
+import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
+import { useFanWall } from "src/hooks/useFanWall"
 
 const CustomMentionEditor = dynamic(
-  () => import("src/components/organisms/CustomMentionEditor"),
+  () =>
+    import("src/components/organisms/CustomMentionEditor").then(
+      (m) => m.CustomComponentMentionEditor
+    ),
   { ssr: false }
 )
 

@@ -1,7 +1,7 @@
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
-import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
+import { PostStaticsButton } from "src/components/molecules/post/PostStaticsButton"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { usePostData } from "src/hooks/usePostData"
 

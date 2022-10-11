@@ -15,23 +15,25 @@ import EditIcon from "public/icons/edit-icon.svg"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useRef, useState } from "react"
-import InfiniteScrollPagination, {
-  ComponentArg
+import {
+  ComponentArg,
+  InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import ConditionRendering from "src/components/molecules/ConditionRendering"
-import FollowerSearchBar from "src/components/molecules/FollowerSearchBar"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { FollowerSearchBar } from "src/components/molecules/FollowerSearchBar"
 import { errorMessage } from "src/helpers/error"
 
-import ListMember from "./ListMember"
-import SortListPopup from "./SortListPopup"
+import { ListMember } from "./ListMember"
+import { SortListPopup } from "./SortListPopup"
 
 type ListDetailProps = {
   id: string
 }
+
 const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
-const ListDetail: FC<ListDetailProps> = ({ id }) => {
+export const ListDetail: FC<ListDetailProps> = ({ id }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
   // const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
@@ -299,5 +301,3 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     </div>
   )
 }
-
-export default ListDetail

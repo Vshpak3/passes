@@ -4,7 +4,7 @@ type CssTileProps = {
   fill?: boolean
 }
 
-const CssTile: FC<CssTileProps> = ({ fill }) => {
+export const CssTile: FC<CssTileProps> = ({ fill }) => {
   return (
     <div
       className={`h-[122px] w-[130px] rounded-[20px] border border-[#a8c9ff] ${
@@ -13,5 +13,3 @@ const CssTile: FC<CssTileProps> = ({ fill }) => {
     />
   )
 }
-
-export default CssTile

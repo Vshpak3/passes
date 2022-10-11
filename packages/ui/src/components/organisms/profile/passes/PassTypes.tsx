@@ -21,7 +21,7 @@ export interface PaymentModalInfo {
   title: string
 }
 
-const PassTypesDesktop: FC<PassTypeProps> = ({
+export const PassTypesDesktop: FC<PassTypeProps> = ({
   creatorPasses,
   setModalOpen
 }) => {
@@ -43,7 +43,7 @@ const PassTypesDesktop: FC<PassTypeProps> = ({
   )
 }
 
-const PassTypesMobile: FC<PassTypeProps> = ({
+export const PassTypesMobile: FC<PassTypeProps> = ({
   creatorPasses,
   setModalOpen
 }) => {
@@ -74,7 +74,7 @@ const PassTypesMobile: FC<PassTypeProps> = ({
   )
 }
 
-const PassTypes: FC<PassesProps> = () => {
+export const PassTypes: FC<PassesProps> = () => {
   // TODO
   // const {
   //   data: creatorPasses = [],
@@ -106,5 +106,3 @@ const PassTypes: FC<PassesProps> = () => {
     </>
   )
 }
-
-export default PassTypes

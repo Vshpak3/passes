@@ -8,7 +8,7 @@ export interface CrossProps extends SVGProps<SVGSVGElement> {
   alternate?: boolean
 }
 
-const Cross = ({
+export const Cross = ({
   alternate = false,
   width = 15,
   height = 15,
@@ -39,5 +39,3 @@ const Cross = ({
     )}
   </svg>
 )
-
-export default Cross

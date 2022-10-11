@@ -6,7 +6,7 @@ export interface HamburgerProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-const HamburgerMenu = ({
+export const HamburgerMenu = ({
   width = 15,
   height = 15,
   ...restOfProps
@@ -27,5 +27,3 @@ const HamburgerMenu = ({
     />
   </svg>
 )
-
-export default HamburgerMenu

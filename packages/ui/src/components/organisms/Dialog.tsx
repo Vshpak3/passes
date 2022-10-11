@@ -14,7 +14,7 @@ type DialogProps = {
   onTriggerClick?: () => void
 }
 
-const Dialog: FC<PropsWithChildren<DialogProps>> = ({
+export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   triggerClassName = "",
   trigger,
   open = false,
@@ -108,5 +108,3 @@ const Dialog: FC<PropsWithChildren<DialogProps>> = ({
     </>
   )
 }
-
-export default Dialog

@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 import {
   FormErrors,
   FormLabel,
@@ -9,7 +9,7 @@ import {
   FormType
 } from "src/components/types/FormTypes"
 
-import Label from "./Label"
+import { Label } from "./Label"
 
 type CheckBoxProps = {
   name: FormName
@@ -25,7 +25,7 @@ type CheckBoxProps = {
   checked?: boolean
 }
 
-const Checkbox = ({
+export const Checkbox: FC<CheckBoxProps> = ({
   name,
   type,
   label,
@@ -37,7 +37,7 @@ const Checkbox = ({
   labelClassName = "",
   checked,
   ...rest
-}: CheckBoxProps) => (
+}) => (
   <div>
     <div
       className={classNames(
@@ -103,5 +103,3 @@ const Checkbox = ({
     </div>
   </div>
 )
-
-export default Checkbox

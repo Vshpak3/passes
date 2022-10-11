@@ -5,7 +5,7 @@ interface IFormContainer {
   className?: string
 }
 
-const FormContainer: FC<PropsWithChildren<IFormContainer>> = ({
+export const FormContainer: FC<PropsWithChildren<IFormContainer>> = ({
   children,
   className = ""
 }) => {
@@ -21,5 +21,3 @@ const FormContainer: FC<PropsWithChildren<IFormContainer>> = ({
     </div>
   )
 }
-
-export default FormContainer
