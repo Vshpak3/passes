@@ -73,14 +73,15 @@ export const WalletListItem = ({
           flex
           items-center
           justify-between
+          gap-[40px]
           border-t
           border-[#2C282D]
           py-3
-          pl-[20px]"
+          md:pl-8"
         key={wallet.walletId}
       >
-        <div className="relative flex items-center">
-          <div className="absolute left-[-30px] top-[50%] translate-y-[-50%]">
+        <div className="relative flex basis-1/4 items-center justify-center">
+          <div className="absolute -left-3">
             {Boolean(wallet.custodial) && (
               <IconTooltip
                 Icon={InfoIcon}
@@ -90,7 +91,7 @@ export const WalletListItem = ({
               />
             )}
           </div>
-          <div className="absolute right-[15px] top-[50%] translate-y-[-50%]">
+          <div className="absolute -left-3">
             {!wallet.authenticated && (
               <IconTooltip
                 Icon={TooltipStar}
@@ -99,7 +100,7 @@ export const WalletListItem = ({
               />
             )}
           </div>
-          <div className="flex w-[120px] items-center">
+          <div className="flex items-center justify-center">
             <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
             <span className="invisible ml-[12px] font-bold md:visible">
               {walletTypeName(wallet.chain, wallet.authenticated)}
@@ -107,7 +108,7 @@ export const WalletListItem = ({
           </div>
         </div>
         <div
-          className='text-[#ffffffeb]" group flex w-[30%] cursor-pointer flex-row justify-center'
+          className='text-[#ffffffeb]" group flex basis-1/4 cursor-pointer flex-row justify-center'
           onClick={() => copyWalletToClipboard(wallet.address)}
         >
           {formatWalletAddress(wallet.address, {
@@ -120,7 +121,7 @@ export const WalletListItem = ({
           />
         </div>
         {wallet.authenticated && (
-          <div className="w-[20%]">
+          <div className="flex basis-1/4 justify-center">
             {defaultEthMinting && (
               <Button className="cursor-default" variant="gray">
                 ETH NFT Minting
@@ -147,7 +148,7 @@ export const WalletListItem = ({
               !wallet.authenticated && <div>Unauthenticated</div>}
           </div>
         )}
-        <div className="w-[20%]">
+        <div className="flex basis-1/4 justify-center">
           <Button
             disabled={wallet.custodial}
             onClick={onDeleteHandler}

@@ -250,10 +250,10 @@ export const Wallets = () => {
           text-[#ffffffeb]
           md:pl-8"
       >
-        <span className="block basis-1">Wallet Type</span>
-        <span className="block basis-1">Address</span>
-        <span className="block basis-1">Default For</span>
-        <span className="block basis-1">Delete</span>
+        <span className="flex basis-1/4 justify-center">Wallet Type</span>
+        <span className="flex basis-1/4 justify-center">Address</span>
+        <span className="flex basis-1/4 justify-center">Default For</span>
+        <span className="flex basis-1/4 justify-center">Delete</span>
       </div>
       {loading || !wallets ? (
         <span>Loading...</span>
@@ -263,7 +263,6 @@ export const Wallets = () => {
             mt-1
             place-items-center
             justify-center
-            gap-[40px]
             text-center
             text-[#ffffffeb]"
         >
