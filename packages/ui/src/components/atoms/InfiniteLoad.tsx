@@ -1,8 +1,5 @@
-import { debounce } from "lodash"
-import React, { PropsWithChildren, useEffect, useMemo, useState } from "react"
+import React, { PropsWithChildren, useEffect, useState } from "react"
 import useSWRInfinite from "swr/infinite"
-
-const SCROLL_DEBOUNCE_MS = 500
 
 export interface PagedData<A> {
   data: A[]

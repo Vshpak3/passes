@@ -58,7 +58,11 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }
 
   const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, {
-    revalidateOnMount: true
+    revalidateOnMount: true,
+    revalidateAll: false,
+    revalidateFirstPage: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
   })
 
   const triggerFetch = useMemo(
