@@ -2,7 +2,7 @@ import { RadioGroup } from "@headlessui/react"
 import HashtagIcon from "public/icons/hashtag-icon.svg"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
-import React, { FC } from "react"
+import React, { FC, MouseEvent } from "react"
 import {
   DeepMap,
   FieldError,
@@ -40,7 +40,7 @@ interface PassFilesProps {
 
 interface PassFileProps {
   file: File
-  onRemove: (value: number) => void
+  onRemove: (e: MouseEvent<HTMLDivElement> | number) => void
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 

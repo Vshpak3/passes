@@ -9,7 +9,7 @@ type MediaFileProp = {
   file: File
   className?: string
   iconClassName?: string
-  onRemove?: (e: MouseEvent<HTMLDivElement>) => void
+  onRemove?: (e: MouseEvent<HTMLDivElement> | number) => void
   onSelect?: any
   preview?: boolean
   contentHeight?: number
@@ -21,7 +21,7 @@ type MediaProp = {
   type: ContentDtoContentTypeEnum
   className?: string
   iconClassName?: string
-  onRemove?: (e: MouseEvent<HTMLDivElement>) => void
+  onRemove?: (e: MouseEvent<HTMLDivElement> | number) => void
   onSelect?: any
   preview?: boolean
   contentHeight?: number

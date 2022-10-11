@@ -5,9 +5,9 @@ import { Dispatch, forwardRef, SetStateAction, useState } from "react"
 import CalendarPicker from "src/components/molecules/scheduler/CalendarPicker"
 interface CreateSchedulerPopupProps {
   onCancel: () => void
-  setIsNewPostModalOpen: Dispatch<SetStateAction<boolean>>
-  setSelectionDate: Dispatch<SetStateAction<Date | null>>
-  selectionDate: Date | null
+  setIsNewPostModalOpen?: Dispatch<SetStateAction<boolean>>
+  setSelectionDate?: Dispatch<SetStateAction<Date | null>>
+  selectionDate?: Date | null
 }
 
 const CreateSchedulerPopup = forwardRef<
@@ -38,21 +38,23 @@ const CreateSchedulerPopup = forwardRef<
         </p>
         <CalendarPicker
           onSave={(date) => {
-            if (!date) {
+            if (!date && setSelectionDate) {
               setErrorHandler()
               setSelectionDate(null)
               return
             }
 
             // adding 2 minutes to actual scheduled date to remove time between saving time and clicking on create button
-            const scheduledDate = addMinutes(date, 2)
+            const scheduledDate = date && addMinutes(date, 2)
 
-            if (compareAsc(new Date(), scheduledDate) === 1) {
+            if (
+              (scheduledDate && compareAsc(new Date(), scheduledDate)) === 1
+            ) {
               setErrorHandler("Schedule date must be in future")
               return
             }
 
-            setSelectionDate(scheduledDate)
+            setSelectionDate && setSelectionDate(scheduledDate)
             setSelectedDateError(null)
           }}
         >
@@ -86,7 +88,7 @@ const CreateSchedulerPopup = forwardRef<
           <button
             onClick={() => {
               onCancel()
-              setIsNewPostModalOpen(false)
+              setIsNewPostModalOpen && setIsNewPostModalOpen(false)
             }}
             className="mr-[10px] rounded-[50px] bg-passes-dark-500 py-[10px] px-[21px] font-bold text-white"
           >
@@ -102,7 +104,7 @@ const CreateSchedulerPopup = forwardRef<
 
               if (selectionDate) {
                 onCancel()
-                setIsNewPostModalOpen(true)
+                setIsNewPostModalOpen && setIsNewPostModalOpen(true)
               }
             }}
             className="rounded-[50px] bg-passes-primary-color py-[10px] px-[21px] font-bold text-white"
