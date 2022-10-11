@@ -16,7 +16,7 @@ const Passes = () => {
     setPassType,
     passType,
     lifetimePasses
-  } = usePasses(user?.id ?? "")
+  } = usePasses(user?.userId ?? "")
 
   return (
     <div

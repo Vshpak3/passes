@@ -14,7 +14,7 @@ import { ProfileThumbnail } from "src/components/organisms/profile/profile-detai
 import { compactNumberFormatter, formatCurrency } from "src/helpers"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
-import { useComments, useUser } from "src/hooks"
+import { useComments } from "src/hooks"
 
 import { DropdownOption } from "./Post"
 import { PostDropdown } from "./PostDropdown"
@@ -39,7 +39,6 @@ const ViewModal: FC<ViewModalProps> = ({
   setOpenBuyPostModal
 }) => {
   const { images, video } = contentTypeCounter(post.content)
-  const { user } = useUser()
   const { data } = useComments(post.postId)
 
   return (
@@ -114,7 +113,7 @@ const ViewModal: FC<ViewModalProps> = ({
                     <TimeAgo date={post.createdAt} minPeriod={30} />
                   </span>
                 )}
-                {user?.id === post.userId && <PostStaticsButton post={post} />}
+                {post.isOwner && <PostStaticsButton post={post} />}
               </div>
               <PostDropdown post={post} items={dropdownItems} />
             </div>

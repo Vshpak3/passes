@@ -22,7 +22,7 @@ const ManagePasses = () => {
     onSearchPass,
     setPassType,
     passType
-  } = usePasses(user?.id ?? "")
+  } = usePasses(user?.userId ?? "")
   const CREATE_NEW_PASS_PATH = "/tools/manage-passes/create"
   const router = useRouter()
   const editWindow = useRef(null)

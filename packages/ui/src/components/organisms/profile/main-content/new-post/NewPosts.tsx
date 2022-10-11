@@ -51,10 +51,10 @@ export const NewPosts = ({ profile, username }: NewPostsProps) => {
   return (
     <>
       <NewPost
-        initScheduledTime={null}
         // TODO: passes={profile?.passes}
         createPost={createPost}
         placeholder="What's on your mind?"
+        initialData={{}}
       />
       <div className="mt-9 space-y-6">
         {newPosts.map((post) => (

@@ -4,7 +4,6 @@ import { FC } from "react"
 import TimeAgo from "react-timeago"
 import PostStaticsButton from "src/components/molecules/post/PostStaticsButton"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
-import { useUser } from "src/hooks"
 
 import { PostDropdown } from "./PostDropdown"
 
@@ -22,8 +21,6 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
   dropdownItems = [],
   hideStaticsBtn = false
 }) => {
-  const { user } = useUser()
-
   return (
     <>
       <div className="flex w-full items-center justify-between">
@@ -54,9 +51,7 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
               minPeriod={30}
             />
           </div>
-          {user?.id === post.userId && !hideStaticsBtn && (
-            <PostStaticsButton post={post} />
-          )}
+          {post.isOwner && !hideStaticsBtn && <PostStaticsButton post={post} />}
 
           <div className="flex items-center gap-[15px]">
             {/* <div

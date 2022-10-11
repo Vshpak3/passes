@@ -274,7 +274,6 @@ export class UserService {
   async searchByQuery(
     searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {
-    console.log(searchCreatorDto)
     if (!searchCreatorDto.query) {
       return new SearchCreatorResponseDto([])
     }

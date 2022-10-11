@@ -11,7 +11,7 @@ const useExternalPasses = () => {
       return (
         await api.getExternalPasses({
           getPassesRequestDto: {
-            creatorId: user?.id
+            creatorId: user?.userId
           }
         })
       ).data

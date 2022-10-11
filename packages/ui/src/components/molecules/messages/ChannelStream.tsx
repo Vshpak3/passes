@@ -171,7 +171,7 @@ export const ChannelStream = ({
               <ChannelMessage
                 key={index}
                 message={message}
-                isOwnMessage={message.senderId === user?.id}
+                isOwnMessage={message.senderId === user?.userId}
                 lastMessage={index === 0}
                 channelId={channelId}
               />
