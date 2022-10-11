@@ -58,7 +58,6 @@ export const MessagesV2 = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel])
-
   return (
     <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
       <ChannelList
@@ -71,14 +70,16 @@ export const MessagesV2 = () => {
         next={next}
         onChannelClicked={handleChannelClicked}
       />
-      <ChannelView
-        selectedChannel={selectedChannel}
-        gallery={gallery}
-        setGallery={setGallery}
-        freeMessages={freeMessages}
-        isCreator={isCreator}
-        user={user}
-      />
+      {user && user.id && (
+        <ChannelView
+          selectedChannel={selectedChannel}
+          gallery={gallery}
+          setGallery={setGallery}
+          freeMessages={freeMessages}
+          isCreator={isCreator}
+          user={user}
+        />
+      )}
     </div>
   )
 }

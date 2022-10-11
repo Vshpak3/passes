@@ -38,7 +38,11 @@ export const ChannelView = ({
             isCreator={isCreator}
           />
           {gallery ? (
-            <ChannelGalleryView activeContent={activeContent} />
+            <ChannelGalleryView
+              activeContent={activeContent}
+              selectedChannel={selectedChannel}
+              isCreator={isCreator}
+            />
           ) : (
             <>
               <ChannelStream

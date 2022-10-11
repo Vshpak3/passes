@@ -29,7 +29,7 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
 }) => {
   const {
     register,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
     reset,
     setError,
@@ -117,7 +117,7 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
   }
 
   const submitMessage = async ({ message }: any) => {
-    if (!channelId || isSubmitSuccessful) {
+    if (!channelId) {
       return false
     }
     setLoading(true)

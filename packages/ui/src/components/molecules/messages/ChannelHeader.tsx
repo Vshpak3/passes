@@ -25,7 +25,7 @@ export const ChannelHeader = ({
 }: Props) => {
   return (
     <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
-      <div className="flex flex-row items-center px-5 py-4">
+      <div className="flex w-full flex-row items-center px-5 py-4">
         {gallery ? (
           <MessagesChannelGalleryHeader
             gallery={gallery}

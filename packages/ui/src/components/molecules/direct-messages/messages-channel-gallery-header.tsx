@@ -17,11 +17,11 @@ export const MessagesChannelGalleryHeader = ({
 }: Props) => {
   const channelName = "TestAccount"
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full  items-center justify-between">
       <div className="flex w-full items-center justify-start pl-2">
         <div className="flex items-center gap-3">
           <BackIcon className="h-4 w-4" onClick={() => setGallery(!gallery)} />
-          <div className="flex flex-col items-start justify-center gap-1">
+          <div className="flex w-full flex-col items-start justify-center gap-1">
             {activeContent === "All" ? (
               <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
                 Content gallery
