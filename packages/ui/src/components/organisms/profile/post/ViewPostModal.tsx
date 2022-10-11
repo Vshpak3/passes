@@ -8,7 +8,7 @@ import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms/Button"
-import { PostStaticsButton } from "src/components/molecules/post/PostStaticsButton"
+import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { Dialog } from "src/components/organisms/Dialog"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { PostDataContext } from "src/contexts/PostData"
@@ -141,7 +141,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                     <TimeAgo date={post.createdAt} minPeriod={30} />
                   </span>
                 )}
-                {post.isOwner && <PostStaticsButton />}
+                {post.isOwner && <PostStatisticsButton />}
               </div>
               <PostDropdown items={dropdownOptions} />
             </div>

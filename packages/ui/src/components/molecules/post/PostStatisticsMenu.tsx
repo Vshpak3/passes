@@ -9,11 +9,13 @@ import { FC, useRef } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { usePostData } from "src/hooks/usePostData"
 
-interface PostStaticsMenuProps {
+interface PostStatisticsMenuProps {
   onClose: () => void
 }
 
-export const PostStaticsMenu: FC<PostStaticsMenuProps> = ({ onClose }) => {
+export const PostStatisticsMenu: FC<PostStatisticsMenuProps> = ({
+  onClose
+}) => {
   const {
     numLikes,
     earningsPurchases,
@@ -28,6 +30,7 @@ export const PostStaticsMenu: FC<PostStaticsMenuProps> = ({ onClose }) => {
 
   const purchasesPercentCounter = (total: number, earned: number) =>
     earned ? (earned * 100) / total : 0
+
   return (
     <div
       ref={menuEl}

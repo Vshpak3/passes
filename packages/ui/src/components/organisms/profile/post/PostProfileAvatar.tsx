@@ -1,7 +1,6 @@
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
-import { FC } from "react"
 import TimeAgo from "react-timeago"
-import { PostStaticsButton } from "src/components/molecules/post/PostStaticsButton"
+import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { usePostData } from "src/hooks/usePostData"
 
@@ -12,7 +11,7 @@ interface PostProfileAvatarProps {
   hideStatisticsBtn?: boolean
 }
 
-export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
+export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
   dropdownOptions,
   hideStatisticsBtn = false
 }) => {
@@ -47,7 +46,7 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
             minPeriod={30}
           />
         </div>
-        {post.isOwner && !hideStatisticsBtn && <PostStaticsButton />}
+        {post.isOwner && !hideStatisticsBtn && <PostStatisticsButton />}
 
         <div className="flex items-center gap-[15px]">
           {/* <div

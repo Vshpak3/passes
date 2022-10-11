@@ -1,18 +1,18 @@
 import GraphIcon from "public/icons/graph.svg"
 import { useState } from "react"
 
-import { PostStaticsMenu } from "./PostStaticsMenu"
+import { PostStatisticsMenu } from "./PostStatisticsMenu"
 
-export const PostStaticsButton = () => {
-  const [showPostStaticsMenu, setShowPostStaticsMenu] = useState(false)
+export const PostStatisticsButton: React.FC = () => {
+  const [showPostStatisticsMenu, setShowPostStatisticsMenu] = useState(false)
 
-  const onCloseHandler = () => setShowPostStaticsMenu(false)
+  const toggleMenu = () => setShowPostStatisticsMenu(!showPostStatisticsMenu)
 
   return (
     <div className="relative flex-shrink-0">
       <button
         className="flex items-center space-x-2.5 rounded-lg bg-white/10 py-[5px] px-2.5"
-        onClick={() => setShowPostStaticsMenu(true)}
+        onClick={toggleMenu}
       >
         <span className="whitespace-nowrap text-xs font-medium leading-[22px]">
           Post Statistics
@@ -21,8 +21,7 @@ export const PostStaticsButton = () => {
           <GraphIcon />
         </span>
       </button>
-
-      {showPostStaticsMenu && <PostStaticsMenu onClose={onCloseHandler} />}
+      {showPostStatisticsMenu && <PostStatisticsMenu onClose={toggleMenu} />}
     </div>
   )
 }
