@@ -19,14 +19,16 @@ import { WalletIcon } from "src/icons/wallet-icon"
 
 const PayoutSettings = () => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
-  const { banks, setDefaultPayoutMethod, defaultPayoutMethod, deleteBank } =
-    usePayoutMethod()
+  const {
+    banks,
+    defaultBank,
+    setDefaultPayoutMethod,
+    defaultPayoutMethod,
+    deleteBank
+  } = usePayoutMethod()
 
   const { wallets } = useUserConnectedWallets()
 
-  const payoutBank = banks.find(
-    (bank) => bank.id === defaultPayoutMethod?.bankId
-  )
   const payoutWallet = wallets?.find(
     (wallet) => wallet.walletId === defaultPayoutMethod?.walletId
   )
@@ -43,8 +45,6 @@ const PayoutSettings = () => {
     }
   }, [router, user, loading])
 
-  const hasDefaultPayoutMethod = Boolean(payoutBank)
-
   return (
     <>
       <Tab
@@ -55,21 +55,21 @@ const PayoutSettings = () => {
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div
           className={classNames(
-            hasDefaultPayoutMethod
+            defaultPayoutMethod
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
             "flex w-full gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 py-6 px-6"
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
-          {hasDefaultPayoutMethod ? (
+          {defaultBank ? (
             <div>
               <span className="text-[16px] font-[700]">
-                {payoutBank?.description.split(",")[0]}
+                {defaultBank?.description.split(",")[0]}
                 {payoutWallet?.address}
               </span>
               <span className="text-[16px] font-[500]">
-                {payoutBank?.country}
+                {defaultBank?.country}
               </span>
             </div>
           ) : (
@@ -223,9 +223,9 @@ const PayoutSettings = () => {
                 </span>
                 <div className="flex flex-row gap-2">
                   <button
-                    disabled={payoutBank?.id === bank.id}
+                    disabled={defaultBank?.id === bank.id}
                     className={
-                      payoutBank?.id === bank.id
+                      defaultBank?.id === bank.id
                         ? "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-[6px] border border-white/70 bg-transparent px-2 text-white"
                         : "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-passes-primary-color bg-passes-primary-color px-2 text-white"
                     }
@@ -237,7 +237,7 @@ const PayoutSettings = () => {
                     }
                   >
                     <span className="text-[16px] font-[500]">
-                      {payoutBank?.id === bank?.id ? "Default" : "Set Default"}
+                      {defaultBank?.id === bank?.id ? "Default" : "Set Default"}
                     </span>
                   </button>
 

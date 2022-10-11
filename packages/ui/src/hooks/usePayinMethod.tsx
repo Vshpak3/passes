@@ -8,7 +8,7 @@ export const usePayinMethod = () => {
   const {
     data: payinMethod,
     isValidating: isLoadingPayinMethod,
-    mutate: mutatePayin
+    mutate: mutatePayinMethod
   } = useSWR<PayinMethodDto>("/payment/default-payin-method", async () => {
     setTimeout(() => undefined, 500)
     return await api.getDefaultPayinMethod()
@@ -29,7 +29,7 @@ export const usePayinMethod = () => {
     await api.setDefaultPayinMethod({
       setPayinMethodRequestDto: dto
     })
-    mutatePayin()
+    mutatePayinMethod()
   }
 
   async function deleteCard(cardId: string) {
@@ -45,7 +45,7 @@ export const usePayinMethod = () => {
 
   useEffect(() => {
     if (!payinMethod) {
-      mutatePayin()
+      mutatePayinMethod()
     }
     if (!cards) {
       mutateCards()
@@ -58,7 +58,7 @@ export const usePayinMethod = () => {
     defaultPayinMethod: payinMethod,
     isLoadingPayinMethod,
     isLoadingCards,
-    getDefaultPayinMethod: mutatePayin,
+    getDefaultPayinMethod: mutatePayinMethod,
     setDefaultPayinMethod,
     deleteCard,
     getCards: mutateCards,

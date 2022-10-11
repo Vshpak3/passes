@@ -1,86 +1,64 @@
-import {
-  CircleBankDto,
-  PaymentApi,
-  PayoutMethodDto,
-  PayoutMethodDtoMethodEnum
-} from "@passes/api-client"
+import { CircleBankDto, PaymentApi, PayoutMethodDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import { errorMessage } from "src/helpers/error"
+import useSWR from "swr"
 
 export const usePayoutMethod = () => {
-  const [payoutMethod, setPayoutMethod] = useState<PayoutMethodDto>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [banks, setBanks] = useState<CircleBankDto[]>([])
   const api = new PaymentApi()
+  const {
+    data: payoutMethod,
+    isValidating: isLoadingPayoutMethod,
+    mutate: mutatePayoutMethod
+  } = useSWR<PayoutMethodDto>("/payment/default-payout-method", async () => {
+    setTimeout(() => undefined, 500)
+    return await api.getDefaultPayoutMethod()
+  })
 
-  async function getDefaultPayoutMethod() {
-    try {
-      setIsLoading(true)
+  const {
+    data: banks,
+    isValidating: isLoadingBanks,
+    mutate: mutateBanks
+  } = useSWR<CircleBankDto[]>("/payment/banks", async () => {
+    setTimeout(() => undefined, 500)
+    return (await api.getCircleBanks()).banks
+  })
 
-      const response = await api.getDefaultPayoutMethod()
-
-      setPayoutMethod(response)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function getBanks() {
-    try {
-      setIsLoading(true)
-      const response = await api.getCircleBanks()
-      setBanks(response.banks)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [defaultBank, setDefaultBank] = useState<CircleBankDto>()
 
   async function setDefaultPayoutMethod(dto: PayoutMethodDto) {
-    try {
-      setIsLoading(true)
-      await api.setDefaultPayoutMethod({
-        setPayoutMethodRequestDto: dto
-      })
-      setPayoutMethod(dto)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
+    await api.setDefaultPayoutMethod({
+      setPayoutMethodRequestDto: dto
+    })
+    mutatePayoutMethod(dto)
   }
 
   async function deleteBank(bankId: string) {
-    try {
-      setIsLoading(true)
-      await api.deleteCircleBank({
-        circleBankId: bankId
-      })
-      if (payoutMethod?.bankId === bankId) {
-        setPayoutMethod({ method: PayoutMethodDtoMethodEnum.None })
-      }
-      setBanks(banks.filter((bank) => bank.id != bankId))
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      await getBanks()
-    }
+    await api.deleteCircleBank({
+      circleBankId: bankId
+    })
+    mutateBanks()
   }
 
   useEffect(() => {
-    getDefaultPayoutMethod()
-    getBanks()
+    if (!payoutMethod) {
+      mutatePayoutMethod()
+    }
+    if (!banks) {
+      mutateBanks()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    setDefaultBank(banks?.find((bank) => bank.id === payoutMethod?.bankId))
+  }, [banks, payoutMethod])
 
   return {
     banks,
     defaultPayoutMethod: payoutMethod,
-    isLoadingPayoutMethod: isLoading,
+    isLoadingPayoutMethod,
+    isLoadingBanks,
     setDefaultPayoutMethod,
+    defaultBank,
     deleteBank
   }
 }
