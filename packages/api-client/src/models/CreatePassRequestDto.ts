@@ -48,7 +48,7 @@ export interface CreatePassRequestDto {
      * @type {number}
      * @memberof CreatePassRequestDto
      */
-    totalSupply: number;
+    totalSupply: number | null;
     /**
      * 
      * @type {number}

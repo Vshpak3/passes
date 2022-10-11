@@ -27,8 +27,8 @@ export class CreatePassRequestDto {
   price: number
 
   @Min(1)
-  @DtoProperty({ type: 'number' })
-  totalSupply: number
+  @DtoProperty({ type: 'number', nullable: true })
+  totalSupply: number | null
 
   @Min(1)
   @DtoProperty({ type: 'number', optional: true })

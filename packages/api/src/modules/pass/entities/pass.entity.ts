@@ -56,10 +56,10 @@ export class PassEntity extends BaseEntity {
   pinned_at: Date | null
 
   @Property()
-  total_supply: number
+  total_supply: number | null
 
-  @Property({ default: 0 })
-  remaining_supply: number
+  @Property()
+  remaining_supply: number | null
 
   // null means unlimited
   @Property({ default: 0 })

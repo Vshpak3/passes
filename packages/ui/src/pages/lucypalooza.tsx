@@ -2,8 +2,8 @@ import { useRouter } from "next/router"
 import { Suspense, useEffect } from "react"
 import ConditionRendering from "src/components/molecules/ConditionRendering"
 import Faq from "src/components/molecules/lucypalooza/Faq"
-import Hero from "src/components/organisms/lucypalooza/Hero"
-import Passes from "src/components/organisms/lucypalooza/Passes"
+import Hero from "src/components/organisms/lucypalooza/LucypaloozaHero"
+import Passes from "src/components/organisms/lucypalooza/LucypaloozaPasses"
 import { useUser } from "src/hooks"
 
 const LucyPalooza = () => {

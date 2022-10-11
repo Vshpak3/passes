@@ -13,7 +13,7 @@ import {
   PassFileUpload,
   PassLifetimeOptions,
   PassRenewal
-} from "./passes"
+} from "./pass"
 import * as SidebarComponents from "./Sidebar"
 import SignupTiles from "./SignupTiles"
 import Tabs from "./Tabs"

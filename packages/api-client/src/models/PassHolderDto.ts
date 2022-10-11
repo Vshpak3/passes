@@ -78,13 +78,13 @@ export interface PassHolderDto {
      * @type {number}
      * @memberof PassHolderDto
      */
-    totalSupply: number;
+    totalSupply: number | null;
     /**
      * 
      * @type {number}
      * @memberof PassHolderDto
      */
-    remainingSupply: number;
+    remainingSupply: number | null;
     /**
      * 
      * @type {string}

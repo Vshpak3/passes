@@ -49,12 +49,12 @@ export class PassDto {
   duration?: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  totalSupply: number
+  @DtoProperty({ type: 'number', nullable: true })
+  totalSupply: number | null
 
   @Min(0)
-  @DtoProperty({ type: 'number' })
-  remainingSupply: number
+  @DtoProperty({ type: 'number', nullable: true })
+  remainingSupply: number | null
 
   @DtoProperty({ custom_type: ChainEnum })
   chain: ChainEnum

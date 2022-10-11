@@ -80,6 +80,7 @@ export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
 const MAX_PASSES_PER_CREATOR = 1000
 const MAX_PINNED_PASSES = 3
+const MAX_PASSES_PER_WEEK = 5
 @Injectable()
 export class PassService {
   private env: string
@@ -192,6 +193,17 @@ export class PassService {
         `${MAX_PASSES_PER_CREATOR} pass limit reached`,
       )
     }
+
+    const passesThisWeek = await this.dbReader<PassEntity>(PassEntity.table)
+      .andWhere({ creator_id: userId, minted: true })
+      .andWhere('created_at', '>', new Date(Date.now() - ms('1 week')))
+      .count()
+    if (passesThisWeek[0]['count(*)'] >= MAX_PASSES_PER_WEEK) {
+      throw new BadRequestException(
+        `${MAX_PASSES_PER_CREATOR} pass limit reached`,
+      )
+    }
+
     const duration =
       createPassDto.duration === undefined &&
       createPassDto.type === PassTypeEnum.SUBSCRIPTION
@@ -640,18 +652,21 @@ export class PassService {
   async useSupply(passId: string) {
     await this.dbWriter<PassEntity>(PassEntity.table)
       .where({ id: passId })
+      .whereNotNull('remaining_supply')
       .decrement('remaining_supply', 1)
   }
 
   async addSupply(passId: string) {
     await this.dbWriter<PassEntity>(PassEntity.table)
       .where({ id: passId })
+      .whereNotNull('total_supply')
       .increment('total_supply', 1)
   }
 
   async freeSupply(passId: string) {
     await this.dbWriter<PassEntity>(PassEntity.table)
       .where({ id: passId })
+      .whereNotNull('remaining_supply')
       .increment('remaining_supply', 1)
   }
 

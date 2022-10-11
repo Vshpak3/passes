@@ -21,7 +21,7 @@ import {
   PassFreeTrial,
   PassPrice,
   PassSupply
-} from "src/components/molecules/passes/CreatePass"
+} from "src/components/molecules/pass/CreatePass"
 import ConfirmationDialog from "src/components/organisms/ConfirmationDialog"
 import FormContainer from "src/components/organisms/FormContainer"
 import { useCreatePass } from "src/hooks"

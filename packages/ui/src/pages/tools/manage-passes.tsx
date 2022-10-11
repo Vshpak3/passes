@@ -8,7 +8,7 @@ import { ButtonTypeEnum, TabButton } from "src/components/atoms/Button"
 import {
   MyPassGrid,
   MyPassSearchHeader
-} from "src/components/molecules/passes/MyPasses"
+} from "src/components/molecules/pass/MyPasses"
 import { useOnClickOutside, usePasses, useUser } from "src/hooks"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

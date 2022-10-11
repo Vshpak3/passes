@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { SelectPassFilter } from "src/components/atoms/passes/MyPass"
-import PassCard from "src/components/molecules/passes/Card"
+import PassCard from "src/components/molecules/pass/Card"
 import { usePasses } from "src/hooks"
 
 interface PassesFeedProps {

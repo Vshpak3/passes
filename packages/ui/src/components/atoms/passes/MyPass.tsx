@@ -24,7 +24,6 @@ interface SelectPassFilterProps {
   passType: string
 }
 interface PassTileContentProps {
-  stat: number
   title: string
   price?: number
 }
@@ -216,10 +215,9 @@ const PassTileLabel = ({
   </>
 )
 
-const PassTileContent = ({ stat, title, price }: PassTileContentProps) => (
+const PassTileContent = ({ title, price }: PassTileContentProps) => (
   <div className="flex h-full flex-col items-start justify-between p-4 text-[#ffff]/90 md:p-6">
     <div className="align-items items-start justify-start">
-      <div className="text-[18px] font-bold">{stat}</div>
       <div className="text-[12px] leading-6">Subscriber</div>
     </div>
     <div className="mt-2">
@@ -229,7 +227,7 @@ const PassTileContent = ({ stat, title, price }: PassTileContentProps) => (
     </div>
     <div className="mt-2">
       <span className="text-[16px] font-bold">{price?.toFixed(2)}</span>
-      <span className="ml-2 text-[14px] font-light">/month</span>
+      <span className="ml-2 text-[14px] font-light">/30 days</span>
     </div>
   </div>
 )
@@ -276,11 +274,7 @@ const MyPassTile = ({
             "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
           )}
         >
-          <PassTileContent
-            stat={passData.totalSupply}
-            title={passData.title}
-            price={passData.price}
-          />
+          <PassTileContent title={passData.title} price={passData.price} />
           <div className="mt-[6px] flex justify-end">
             {passOnEditHandler && (
               <button
@@ -306,11 +300,7 @@ const MyPassTile = ({
               "h-[200px] grow cursor-pointer rounded-xl drop-shadow transition-colors"
             )}
           >
-            <PassTileContent
-              stat={passData.totalSupply}
-              title={passData.title}
-              price={passData.price}
-            />
+            <PassTileContent title={passData.title} price={passData.price} />
           </div>
           <div className="mt-[5px] md:mt-[10px]">
             {isExpired ? (
