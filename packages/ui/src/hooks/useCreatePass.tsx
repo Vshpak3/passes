@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { ContentService } from "src/helpers/content"
 import * as yup from "yup"
 
 const MB = 1048576
@@ -77,6 +78,10 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
   } = useForm({
     resolver: yupResolver(createPassSchema)
   })
+
+  const setPassPicture = async (picture: File, passId: string) => {
+    return await new ContentService().uploadPassImage(picture, passId)
+  }
 
   const newPassType = (value: string) => {
     switch (value) {
@@ -166,6 +171,10 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
       })
       .then(({ passId }) => passId)
       .catch(({ message }) => toast(message))
+
+    setPassPicture(data.passFile, `${passId}`).catch(({ message }) =>
+      toast(message)
+    )
 
     passApi
       .mintPass({

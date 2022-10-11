@@ -1,7 +1,8 @@
 import classNames from "classnames"
 import AddNewPassIcon from "public/icons/add-new-pass.svg"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import {
   MyPassTile,
@@ -9,6 +10,8 @@ import {
   SelectPassTab
 } from "src/components/atoms/passes/MyPass"
 import { CreatorPassTiles } from "src/components/organisms/tiles/CreatorPassTiles"
+import { usePasses } from "src/hooks/usePasses"
+import { useUser } from "src/hooks/useUser"
 
 interface MyPassSearchBarProps {
   onChange: any
@@ -93,8 +96,10 @@ export const MyPassGrid: FC<MyPassGridProps> = ({
   onEditPassHandler = {},
   handleCreateNewPass = {},
   isCreator = false,
-  lifetimePasses = []
+  lifetimePasses
 }) => {
+  const { user } = useUser()
+  const { mutatePasses } = usePasses(user?.userId ?? "")
   const SUBSCRIPTION_TYPE = "subscription"
   const renderActivePasses = activePasses?.map((pass: any, index: any) => (
     <MyPassTile key={index} passData={pass} />
@@ -104,7 +109,7 @@ export const MyPassGrid: FC<MyPassGridProps> = ({
   ))
 
   const renderLifetimePasses = lifetimePasses?.map((pass: any, index: any) => (
-    <MyPassTile key={index} isExpired passData={pass} />
+    <MyPassTile key={index} passData={pass} />
   ))
   const renderCreatorPasses = creatorPasses?.map((pass: any, index: any) => (
     <MyPassTile
@@ -115,6 +120,14 @@ export const MyPassGrid: FC<MyPassGridProps> = ({
       // modalToggle={modalToggle}
     />
   ))
+
+  useEffect(() => {
+    mutatePasses().catch(({ message }) => {
+      console.error()
+      toast(message)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="w-full px-2 md:mt-6">

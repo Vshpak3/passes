@@ -22,14 +22,14 @@ const Passes = () => {
   return (
     <div
       className="
-          mx-auto
-           mb-[70px]
-           grid
-           w-full
-           bg-black
-           px-2
-           md:px-5
-           sidebar-collapse:max-w-[1100px]"
+       mx-auto
+       mb-[70px]
+       grid
+       w-full
+       bg-black
+       px-2
+       md:px-5
+       sidebar-collapse:max-w-[1100px]"
     >
       <MyPassSearchHeader
         onSearchPass={onSearchPass}

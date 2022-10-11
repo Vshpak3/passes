@@ -44,6 +44,12 @@ interface PassFileProps {
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 
+enum MessageTypesEnum {
+  NUMBER = "numberMessages",
+  UNLIMITED = "unlimitedMessages",
+  NO_FREE_MESSAGE = "noFreeMessage"
+}
+
 export const PassDirectMessage: FC<PassProps> = ({
   register,
   setPassValue,
@@ -55,25 +61,31 @@ export const PassDirectMessage: FC<PassProps> = ({
       <PassesSectionTitle title="Direct messages" />
     </div>
     <RadioGroup value={passValue} onChange={setPassValue}>
-      <RadioGroup.Option value="messages">
-        {({ checked }) => (
+      <RadioGroup.Option value={MessageTypesEnum.UNLIMITED}>
+        {() => (
           <>
             <FormInput
+              checked={passValue === MessageTypesEnum.UNLIMITED}
               register={register}
               label="Unlimited free messages"
-              checked={checked}
               type="radio"
-              name="radio"
+              name={MessageTypesEnum.UNLIMITED}
               labelClassName="text-left text-[16px] text-[#ffff]/90"
               className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             />
+          </>
+        )}
+      </RadioGroup.Option>
+      <RadioGroup.Option value={MessageTypesEnum.NUMBER}>
+        {() => (
+          <>
             <div className="align-center flex items-center">
               <FormInput
+                checked={passValue === MessageTypesEnum.NUMBER}
                 register={register}
                 label="Set number of free messages per month"
-                checked={checked}
                 type="radio"
-                name="radio"
+                name={MessageTypesEnum.NUMBER}
                 labelClassName="text-left text-[16px] text-[#ffff]/90"
                 className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               />
@@ -88,12 +100,18 @@ export const PassDirectMessage: FC<PassProps> = ({
                 />
               </div>
             </div>
+          </>
+        )}
+      </RadioGroup.Option>
+      <RadioGroup.Option value={MessageTypesEnum.NO_FREE_MESSAGE}>
+        {() => (
+          <>
             <FormInput
+              checked={passValue === MessageTypesEnum.NO_FREE_MESSAGE}
               register={register}
               label="No free messages"
-              checked={checked}
               type="radio"
-              name="radio"
+              name={MessageTypesEnum.NO_FREE_MESSAGE}
               labelClassName="text-left text-[16px] text-[#ffff]/90"
               className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             />
@@ -106,7 +124,14 @@ export const PassDirectMessage: FC<PassProps> = ({
 
 const PassFile = ({ onRemove, file, gridLayout }: PassFileProps) => (
   <div className={`col-span-12 ${gridLayout}`}>
-    <MediaFile onRemove={onRemove} file={file} />
+    <MediaFile
+      isPassUpload
+      className="ml-[30px]"
+      contentHeight={200}
+      contentWidth={130}
+      onRemove={onRemove}
+      file={file}
+    />
   </div>
 )
 
@@ -174,7 +199,11 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
       <div className="mb-3">
         <PassesSectionTitle title="Upload an image" />
       </div>
-      {files.length === 0 && (
+      {files.length ? (
+        <>
+          <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
+        </>
+      ) : (
         <FormInput
           className="h-[200px]"
           register={register}
@@ -186,12 +215,6 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
           errors={errors}
           // maximumLimit={maximumLimit}
         />
-      )}
-
-      {files.length !== 0 && isPreview && (
-        <>
-          <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
-        </>
       )}
       {isPreview && (
         <div className="mt-4">
@@ -297,6 +320,11 @@ export const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
   )
 }
 
+enum SupplyTypesEnum {
+  UNLIMITED = "unlimited",
+  TOTAL_SUPPLY = "totalSupply"
+}
+
 export const PassSupply: FC<PassProps> = ({
   register,
   errors,
@@ -311,38 +339,48 @@ export const PassSupply: FC<PassProps> = ({
           <PassesSectionTitle title="Supply" />
         </div>
         <RadioGroup value={passValue} onChange={setPassValue}>
-          <RadioGroup.Option value="supply">
-            <FormInput
-              register={register}
-              label="Unlimited"
-              type="radio"
-              name="totalSupply"
-              labelClassName="text-left text-[16px] text-[#ffff]/90"
-              className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-            />
-            <div className="align-center mt-[20px] flex items-center">
-              <FormInput
-                register={register}
-                label="Set amount of total supply"
-                type="radio"
-                name="totalSupply"
-                labelClassName="text-left text-[16px] text-[#ffff]/90"
-                className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-              />
-              <div className="align-center ml-10 flex items-center justify-center">
+          <RadioGroup.Option value={SupplyTypesEnum.UNLIMITED}>
+            {() => (
+              <>
                 <FormInput
+                  checked={passValue === SupplyTypesEnum.UNLIMITED}
                   register={register}
-                  type="number"
-                  name="totalSupply"
-                  className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
-                  placeholder="0"
-                  icon={<HashtagIcon />}
+                  label="Unlimited"
+                  type="radio"
+                  name={SupplyTypesEnum.UNLIMITED}
+                  labelClassName="text-left text-[16px] text-[#ffff]/90"
+                  className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                 />
-                {errors?.totalSupply?.type === "totalSupply" && (
-                  <PassFormError message="Total supply is required" />
-                )}
+              </>
+            )}
+          </RadioGroup.Option>
+          <RadioGroup.Option value={SupplyTypesEnum.TOTAL_SUPPLY}>
+            <>
+              <div className="align-center mt-[20px] flex items-center">
+                <FormInput
+                  checked={passValue === SupplyTypesEnum.TOTAL_SUPPLY}
+                  register={register}
+                  label="Set amount of total supply"
+                  type="radio"
+                  name={SupplyTypesEnum.TOTAL_SUPPLY}
+                  labelClassName="text-left text-[16px] text-[#ffff]/90"
+                  className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
+                <div className="align-center ml-10 flex items-center justify-center">
+                  <FormInput
+                    register={register}
+                    type="number"
+                    name="totalSupply"
+                    className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
+                    placeholder="0"
+                    icon={<HashtagIcon />}
+                  />
+                  {errors?.totalSupply?.type === "totalSupply" && (
+                    <PassFormError message="Total supply is required" />
+                  )}
+                </div>
               </div>
-            </div>
+            </>
           </RadioGroup.Option>
         </RadioGroup>
       </div>

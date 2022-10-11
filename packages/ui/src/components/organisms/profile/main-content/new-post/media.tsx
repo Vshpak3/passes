@@ -13,6 +13,7 @@ type MediaFileProp = {
   preview?: boolean
   contentHeight?: number
   contentWidth?: number
+  isPassUpload?: boolean
 }
 
 type MediaProp = {
@@ -25,6 +26,7 @@ type MediaProp = {
   preview?: boolean
   contentHeight?: number
   contentWidth?: number
+  isPassUpload?: boolean
 }
 
 export const MediaFile = ({
@@ -35,7 +37,8 @@ export const MediaFile = ({
   onSelect,
   preview,
   contentHeight,
-  contentWidth
+  contentWidth,
+  isPassUpload
 }: MediaFileProp) => {
   const src = URL.createObjectURL(file)
   let type!: ContentDtoContentTypeEnum
@@ -59,6 +62,7 @@ export const MediaFile = ({
       iconClassName={iconClassName}
       contentHeight={contentHeight}
       contentWidth={contentWidth}
+      isPassUpload={isPassUpload}
     />
   )
 }
@@ -72,7 +76,8 @@ export const Media = ({
   onSelect,
   preview,
   contentHeight = 300,
-  contentWidth = 300
+  contentWidth = 300,
+  isPassUpload
 }: MediaProp) => {
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
@@ -89,7 +94,7 @@ export const Media = ({
       </>
     ),
     image: (
-      <div className="relative left-[-30px]" onClick={onSelect}>
+      <div className="relative" onClick={onSelect}>
         <Image
           className={className}
           alt=""
@@ -103,11 +108,17 @@ export const Media = ({
           <div
             onClick={onRemove}
             className={classNames(
-              "relative bottom-[235px] left-[210px] z-[5] h-[24px] w-[24px] cursor-pointer",
+              "relative bottom-[235px] left-[180px] z-[5] h-[24px] w-[24px] cursor-pointer",
+              isPassUpload &&
+                "bottom-[180px] left-[100px] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-passes-secondary-color p-2 text-white",
               iconClassName
             )}
           >
-            <DeleteIcon className="h-full w-full" />
+            {isPassUpload ? (
+              <Cross className="h-full w-full" />
+            ) : (
+              <DeleteIcon className="h-full w-full" />
+            )}
           </div>
         )}
       </div>

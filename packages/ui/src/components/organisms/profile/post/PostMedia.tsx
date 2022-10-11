@@ -1,32 +1,42 @@
-import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
+import {
+  ContentDto,
+  ContentDtoContentTypeEnum,
+  GetFeedResponseDto
+} from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { FC, useEffect, useRef, useState } from "react"
 import { usePostData } from "src/hooks/usePostData"
+import { KeyedMutator } from "swr"
 
 const PostVideo = dynamic(
   () => import("src/components/molecules/post/PostVideo"),
   { ssr: false }
 )
 
-export const PostMedia: FC = () => {
+interface PostMediaProps {
+  mutatePosts?: KeyedMutator<GetFeedResponseDto>
+}
+
+export const PostMedia: FC<PostMediaProps> = ({ mutatePosts }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const post = usePostData()
 
   const startLoadingHandler = () => () => setIsLoadingStart(true)
 
   const onLoadingHandler = () => {
-    if (imgRef.current && imgRef.current.complete && setIsLoading) {
-      setIsLoadingStart(false)
-      setIsLoading(false)
-    }
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    onLoadingHandler()
-  }, [isLoadingStart, setIsLoading, post])
+    mutatePosts && mutatePosts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  useEffect(() => {
+    onLoadingHandler()
+  }, [isLoadingStart])
   return (
     <div className="relative mt-3 w-full bg-transparent">
       {!!post?.content?.length &&

@@ -12,7 +12,7 @@ function filterPasses(expired = true) {
     const currentDate = Date.now()
     const expiryDate =
       pass.createdAt &&
-      new Date(pass.createdAt).getMilliseconds() + Number(pass.duration)
+      new Date(pass.createdAt).getTime() + Number(pass.duration)
     if (expiryDate) {
       return expired ? currentDate < expiryDate : currentDate > expiryDate
     }
@@ -34,17 +34,20 @@ function filterPassesByType(type: string) {
 
 export const usePasses = (creatorId: string) => {
   const { user } = useUser()
-  const { data: creatorPasses = [], isValidating: isLoadingCreatorPasses } =
-    useSWR(user ? ["/pass/created/", creatorId] : null, async () => {
-      if (user) {
-        const api = new PassApi()
-        return (
-          await api.getCreatorPasses({
-            getPassesRequestDto: { creatorId }
-          })
-        ).data
-      }
-    })
+  const {
+    data: creatorPasses = [],
+    isValidating: isLoadingCreatorPasses,
+    mutate: mutatePasses
+  } = useSWR(user ? ["/pass/created/", creatorId] : null, async () => {
+    if (user) {
+      const api = new PassApi()
+      return (
+        await api.getCreatorPasses({
+          getPassesRequestDto: { creatorId }
+        })
+      ).data
+    }
+  })
 
   const { data: fanPasses, isValidating: isLoadingFanPasses } = useSWR(
     user ? "/pass/passholdings" : null,
@@ -90,12 +93,12 @@ export const usePasses = (creatorId: string) => {
       .filter(filterPassesByTitle(passSearchTerm))
       .filter(filterPassesByType(passType))
     setFilteredCreatorPassesList(filteredCreatorPasses)
-    const filteredLifetimePasses = creatorPasses
-      .filter(filterPassesByTitle(passSearchTerm))
-      .filter(filterPassesByType(passType))
+    const filteredLifetimePasses = creatorPasses.filter(
+      filterPassesByType(passType)
+    )
     setLifetimePasses(filteredLifetimePasses)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passType, passSearchTerm])
+  }, [passType, passSearchTerm, creatorPasses, fanPasses])
 
   return {
     passType,
@@ -109,6 +112,7 @@ export const usePasses = (creatorId: string) => {
     isLoadingCreatorPasses,
     passSearchTerm,
     onSearchPass,
-    setPassType
+    setPassType,
+    mutatePasses
   }
 }
