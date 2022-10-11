@@ -14,6 +14,8 @@ interface ModalProps {
   setOpen: Dispatch<SetStateAction<any>>
   closable?: boolean
   modalContainerClassname?: string
+  childrenClassname?: string
+  isNewPost?: boolean
 }
 
 const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -21,7 +23,9 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   setOpen,
   children,
   closable = true,
-  modalContainerClassname
+  modalContainerClassname,
+  childrenClassname,
+  isNewPost
 }) => {
   useEffect(() => {
     ReactModal.setAppElement("body")
@@ -48,15 +52,19 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       <div
         id="popup-modal"
         className={classNames(
-          "m-auto w-full rounded bg-[#1b141d] p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
-          modalContainerClassname
+          "m-auto w-full rounded p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
+          modalContainerClassname,
+          isNewPost ? "bg-transparent" : "bg-[#1b141d]"
         )}
       >
         {closable && (
-          <div className="text-right">
+          <div className="relative text-right">
             <button
               type="button"
-              className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+              className={classNames(
+                "top-3 right-2.5 ml-auto inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
+                isNewPost && "absolute right-[130px] top-[30px] z-[6]"
+              )}
               data-modal-toggle="popup-modal"
               onClick={() => setOpen(false)}
             >
@@ -70,7 +78,9 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             </button>
           </div>
         )}
-        <div className="p-3 pt-0">{children}</div>
+        <div className={classNames("p-3 pt-0", childrenClassname)}>
+          {children}
+        </div>
       </div>
     </ReactModal>
   )

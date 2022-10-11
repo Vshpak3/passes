@@ -8,6 +8,7 @@ import DirectMessage from "./DirectMessage"
 import FormContainer from "./FormContainer"
 import MessagesV2 from "./MessagesV2"
 import Modal from "./Modal"
+import NewPostModal from "./NewPostModal"
 import { CreatePassForm, PassesListSection, SelectPassType } from "./passes"
 import {
   DefaultPayoutMethod,
@@ -35,6 +36,7 @@ export {
   FormContainer,
   MessagesV2,
   Modal,
+  NewPostModal,
   PassesListSection,
   PastTransactions,
   Popover,

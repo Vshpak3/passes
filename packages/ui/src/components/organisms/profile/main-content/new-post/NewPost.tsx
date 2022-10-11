@@ -1,14 +1,18 @@
 import { CreatePostRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
+import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
 import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import { FC, useState } from "react"
+import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
+import { FC, MouseEvent, useState } from "react"
 import { useForm } from "react-hook-form"
+import Slider from "react-slick"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
+import NewPostModal from "src/components/organisms/NewPostModal"
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import PostHeader from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers"
@@ -27,6 +31,14 @@ const MAX_IMAGE_SIZE_NAME = "10 megabytes"
 const MAX_VIDEO_SIZE = 200 * MB
 const MAX_VIDEO_SIZE_NAME = "200 megabytes"
 export const MAX_IMAGE_COUNT = 10
+
+const settings = {
+  infinite: false,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  nextArrow: <NextImageArrow />,
+  prevArrow: <PrevImageArrow />
+}
 
 interface NewPostFormProps {
   expiresAt: Date | null
@@ -59,9 +71,11 @@ export const NewPost: FC<NewPostProps> = ({
   const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [extended, setExtended] = useState(isExtended)
+  const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
+  const START_SLIDER_AFTER_FILES_LENGTH = 3
 
   const {
     handleSubmit,
@@ -89,6 +103,11 @@ export const NewPost: FC<NewPostProps> = ({
     //     .map((id) => passes.find((pass) => pass.id === id))
     //   setSelectedPasses(result)
     setSelectedPasses([])
+  }
+
+  const onMediaFileSelect = (file: File) => {
+    setSelectedMedia(file)
+    setIsNewPostModalOpen(true)
   }
 
   const removePasses = (id: any) => {
@@ -139,6 +158,8 @@ export const NewPost: FC<NewPostProps> = ({
 
     // Validate properties of each file
     for (const file of fileProps) {
+      const isVideo = (file as File).type.startsWith("video/")
+
       const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)
       if (!type || (type !== "image" && type !== "video")) {
         toast.error(`Invalid media type ${file.type}`)
@@ -146,7 +167,7 @@ export const NewPost: FC<NewPostProps> = ({
       }
 
       if (type === "video") {
-        if (_containsVideo) {
+        if (isVideo && files.length >= 1) {
           toast.error("A post can only contain a single video")
           return
         }
@@ -162,7 +183,7 @@ export const NewPost: FC<NewPostProps> = ({
       }
 
       if (type === "image") {
-        if (containsVideo) {
+        if (isVideo) {
           toast.error("A post cannot contain both a video and images")
           return
         }
@@ -177,14 +198,14 @@ export const NewPost: FC<NewPostProps> = ({
       }
     }
 
-    setSelectedMedia(fileProps[0])
     setContainsVideo(_containsVideo)
 
     setFiles([...files, ...fileProps])
   }
 
-  const onRemove = (index: any) => {
+  const onRemove = (index: number, e: MouseEvent<HTMLDivElement>) => {
     const newFiles = files.filter((_, i) => i !== index)
+    e.stopPropagation()
     setFiles(newFiles)
     if (newFiles.length === 0) {
       setContainsVideo(false)
@@ -245,75 +266,128 @@ export const NewPost: FC<NewPostProps> = ({
                   errors={errors}
                 />
               ) : (
-                <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-[480px] md:p-9">
-                  <div className="relative flex h-[300px] w-full items-center justify-center rounded-[6px]">
-                    {selectedMedia ? (
-                      <MediaFile
-                        preview={true}
-                        file={selectedMedia}
-                        className={classNames(
-                          (selectedMedia as any)?.type.startsWith("image/")
-                            ? "rounded-[6px] object-contain"
-                            : (selectedMedia as any).type.startsWith("video/")
-                            ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full rounded-[6px] object-cover"
-                            : (selectedMedia as any).type.startsWith("audio/")
-                            ? "absolute inset-0 m-auto min-w-full max-w-full rounded-[6px] object-cover"
-                            : ""
-                        )}
-                      />
-                    ) : (
-                      <div className=" flex h-[232px] items-center justify-center rounded-[6px] border-[1px] border-solid border-passes-secondary-color "></div>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-start gap-6">
-                    <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto sm:max-w-[410px]">
+                <div
+                  className={`${
+                    files.length <= START_SLIDER_AFTER_FILES_LENGTH && "flex"
+                  } w-full flex-col items-${
+                    containsVideo ? "center" : "start"
+                  } justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-[480px] md:p-9`}
+                >
+                  {selectedMedia && (
+                    <NewPostModal
+                      isOpen={isNewPostModalOpen}
+                      setOpen={setIsNewPostModalOpen}
+                      file={selectedMedia}
+                      modalContainerClassname="p-0"
+                      childrenClassname="p-0"
+                    />
+                  )}
+                  {files.length <= START_SLIDER_AFTER_FILES_LENGTH ? (
+                    <div className="flex items-center justify-start gap-[7px]">
+                      <div className="flex flex-nowrap items-center gap-[7px] overflow-x-auto sm:max-w-fit">
+                        {files.map((file, index) => (
+                          <div
+                            key={index}
+                            className={classNames(
+                              (file as File).type.startsWith("image/")
+                                ? "h-[200px] w-[130px] rounded-[6px] object-contain"
+                                : (file as any).type.startsWith("video/")
+                                ? "absolute inset-0 m-auto h-[334px] max-h-full min-h-full w-[250px] min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                : (file as any).type.startsWith("audio/")
+                                ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                : "",
+                              "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-[6px]"
+                            )}
+                          >
+                            <MediaFile
+                              onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                                onRemove(index, e)
+                              }
+                              onSelect={() => onMediaFileSelect(file)}
+                              file={file}
+                              className={classNames(
+                                (file as File).type.startsWith("image/")
+                                  ? "rounded-[6px] object-contain"
+                                  : (file as any).type.startsWith("video/")
+                                  ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                  : (file as any).type.startsWith("audio/")
+                                  ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                                  : ""
+                              )}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+                        <FormInput
+                          register={register}
+                          name="drag-drop"
+                          type="file"
+                          multiple={true}
+                          trigger={
+                            <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
+                              <PlusIcon />
+                            </div>
+                          }
+                          options={{ onChange: onFileInputChange }}
+                          accept={[
+                            ".png",
+                            ".jpg",
+                            ".jpeg",
+                            ".mp4",
+                            ".mov"
+                            // ".qt"
+                            // ".mp3"
+                          ]}
+                          errors={errors}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <Slider {...settings}>
                       {files.map((file, index) => (
                         <div
                           key={index}
-                          className="relative flex h-[92px] w-[118px] flex-shrink-0 items-center justify-center overflow-hidden rounded-[6px]"
+                          className="relative left-0 flex h-[200px] max-w-[130px] flex-shrink-0 items-center overflow-hidden rounded-[6px]"
                         >
                           <MediaFile
-                            onRemove={() => onRemove(index)}
-                            onSelect={() => setSelectedMedia(file)}
+                            onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                              onRemove(index, e)
+                            }
+                            iconClassName="bottom-[305px] left-[125px]"
+                            onSelect={() => onMediaFileSelect(file)}
                             file={file}
-                            className={classNames(
-                              (file as any).type.startsWith("image/")
-                                ? "rounded-[6px] object-contain"
-                                : (file as any).type.startsWith("video/")
-                                ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                                : (file as any).type.startsWith("audio/")
-                                ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                                : ""
-                            )}
                           />
                         </div>
                       ))}
-                    </div>
-                    {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
-                      <FormInput
-                        register={register}
-                        name="drag-drop"
-                        type="file"
-                        multiple={true}
-                        trigger={
-                          <div className="box-border flex h-[92px] w-[118px] cursor-pointer items-center justify-center rounded-[6px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
-                            <PlusIcon />
-                          </div>
-                        }
-                        options={{ onChange: onFileInputChange }}
-                        accept={[
-                          ".png",
-                          ".jpg",
-                          ".jpeg",
-                          ".mp4",
-                          ".mov"
-                          // ".qt"
-                          // ".mp3"
-                        ]}
-                        errors={errors}
-                      />
-                    )}
-                  </div>
+                      <div className="absolute top-[50%] translate-y-[-50%]">
+                        {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+                          <FormInput
+                            register={register}
+                            name="drag-drop"
+                            type="file"
+                            multiple={true}
+                            trigger={
+                              <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
+                                <PlusIcon />
+                              </div>
+                            }
+                            options={{ onChange: onFileInputChange }}
+                            accept={[
+                              ".png",
+                              ".jpg",
+                              ".jpeg",
+                              ".mp4",
+                              ".mov"
+                              // ".qt"
+                              // ".mp3"
+                            ]}
+                            errors={errors}
+                          />
+                        )}
+                      </div>
+                    </Slider>
+                  )}
                 </div>
               )}
             </div>
