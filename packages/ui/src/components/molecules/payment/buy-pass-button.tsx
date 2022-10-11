@@ -4,7 +4,7 @@ import {
   PayinMethodDto
 } from "@passes/api-client"
 import classNames from "classnames"
-import React, { useEffect, FC } from "react"
+import React, { FC, useEffect } from "react"
 import { usePay } from "src/hooks/usePay"
 
 interface BuyPassButtonProps {
