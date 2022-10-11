@@ -57,7 +57,7 @@ const DefaultHead = () => {
       <meta
         key="og-image"
         property="og:image"
-        content={`${CLIENT_URL}/img/open-graph/og-image-300x300.png`}
+        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
       />
       <meta
         key="og-image-alt"
