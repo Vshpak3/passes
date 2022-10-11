@@ -5,19 +5,19 @@ import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/post/PostDropdown"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 import { useBlockModal } from "src/hooks/useBlockModal"
+import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
-  removable: boolean
   comment: FanWallCommentDto
-  ownsProfile: boolean
+  removable: boolean
 }
 
 export const FanWallComment: FC<FanWallCommentProps> = ({
-  ownsProfile,
   comment,
   removable
 }) => {
+  const { ownsProfile } = useCreatorProfile()
   const api = new FanWallApi()
 
   const { setIsReportModalOpen } = useReportModal()
@@ -61,16 +61,32 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
         ]
       : [])
   ]
+
+  const {
+    commenterDisplayName,
+    commenterId,
+    commenterUsername,
+    createdAt,
+    fanWallCommentId,
+    isOwner,
+    text
+  } = comment
+
   return (
     <ConditionRendering condition={!removed}>
       <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
         <PostProfileAvatar
+          createdAt={createdAt}
+          displayName={commenterDisplayName}
+          isOwner={isOwner}
+          postId={fanWallCommentId}
+          userId={commenterId}
+          username={commenterUsername}
           dropdownOptions={dropdownItems}
-          hideStatisticsBtn={true}
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-            {comment.text}
+            {text}
           </p>
         </div>
       </FormContainer>

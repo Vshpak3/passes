@@ -1,7 +1,8 @@
 import {
   GetPayinMethodResponseDtoMethodEnum,
   PayinDataDto,
-  PostApi
+  PostApi,
+  PostDto
 } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
@@ -11,11 +12,17 @@ import { TipPostButton } from "src/components/molecules/payment/tip-post-button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { usePay } from "src/hooks/usePay"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
-import { usePostData } from "src/hooks/usePostData"
 
-export const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
+interface TipPostModalProps extends ModalProps {
+  postId: PostDto["postId"]
+}
+
+export const TipPostModal: FC<TipPostModalProps> = ({
+  isOpen,
+  setOpen,
+  postId
+}) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
-  const post = usePostData()
 
   const {
     register,
@@ -29,7 +36,7 @@ export const TipPostModal: FC<ModalProps> = ({ isOpen, setOpen }) => {
   const registerTip = async () => {
     return await api.registerTipPost({
       tipPostRequestDto: {
-        postId: post.postId,
+        postId: postId,
         amount: Number(getValues("tip-value"))
       }
     })

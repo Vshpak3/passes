@@ -1,11 +1,11 @@
 import {
   ContentDto,
   ContentDtoContentTypeEnum,
-  GetFeedResponseDto
+  GetFeedResponseDto,
+  PostDto
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { FC, useEffect, useRef, useState } from "react"
-import { usePostData } from "src/hooks/usePostData"
 import { KeyedMutator } from "swr"
 
 const PostVideo = dynamic(
@@ -14,14 +14,14 @@ const PostVideo = dynamic(
 )
 
 interface PostMediaProps {
+  content: PostDto["content"]
   mutatePosts?: KeyedMutator<GetFeedResponseDto>
 }
 
-export const PostMedia: FC<PostMediaProps> = ({ mutatePosts }) => {
+export const PostMedia: FC<PostMediaProps> = ({ content, mutatePosts }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const post = usePostData()
+  const [isLoading, setIsLoading] = useState(false)
 
   const startLoadingHandler = () => () => setIsLoadingStart(true)
 
@@ -37,13 +37,14 @@ export const PostMedia: FC<PostMediaProps> = ({ mutatePosts }) => {
   useEffect(() => {
     onLoadingHandler()
   }, [isLoadingStart])
+
   return (
     <div className="relative mt-3 w-full bg-transparent">
-      {!!post?.content?.length &&
+      {!!content?.length &&
         (isLoading ? (
           <span>Please wait! Your content is being uploaded</span>
         ) : (
-          post.content.map((c: ContentDto) => {
+          content.map((c: ContentDto) => {
             if (c.contentType === ContentDtoContentTypeEnum.Image) {
               return (
                 <img

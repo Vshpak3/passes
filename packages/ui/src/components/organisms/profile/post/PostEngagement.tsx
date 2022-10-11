@@ -1,3 +1,4 @@
+import { PostDto } from "@passes/api-client"
 import { LikeApi, PostApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import CostIcon from "public/icons/post-cost-icon.svg"
@@ -8,29 +9,43 @@ import { FC, useState } from "react"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { errorMessage } from "src/helpers/error"
 import { compactNumberFormatter } from "src/helpers/formatters"
-import { usePostData } from "src/hooks/usePostData"
 
 import { CommentSection } from "./CommentSection"
-
 const TipPostModal = dynamic(
   () => import("src/components/organisms/payment/TipPostModal"),
   { ssr: false }
 )
 
-export const PostEngagement: FC = () => {
-  const post = usePostData()
+type PostEngagementProps = Pick<
+  PostDto,
+  | "numLikes"
+  | "numComments"
+  | "isLiked"
+  | "isOwner"
+  | "postId"
+  | "paywall"
+  | "username"
+>
+
+export const PostEngagement: FC<PostEngagementProps> = ({
+  numLikes: initialNumLikes,
+  numComments: initialNumComments,
+  isLiked: initialIsLiked,
+  isOwner,
+  postId,
+  paywall,
+  username
+}) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
-  const [numLikes, setNumLikes] = useState(post.numLikes)
-  const [numComments, setNumComments] = useState(post.numComments)
-  const [liked, setLiked] = useState(post.isLiked)
+  const [numLikes, setNumLikes] = useState(initialNumLikes)
+  const [numComments, setNumComments] = useState(initialNumComments)
+  const [liked, setLiked] = useState(initialIsLiked)
   const [showCommentSection, setShowCommentSection] = useState(false)
 
   async function updateEngagement() {
     try {
       const api = new PostApi()
-      const response = await api.findPost({
-        postId: post.postId
-      })
+      const response = await api.findPost({ postId })
 
       setNumLikes(response.numLikes)
       setNumComments(response.numComments)
@@ -42,20 +57,16 @@ export const PostEngagement: FC = () => {
 
   const likePost = async () => {
     try {
-      if (post.paywall) {
+      if (paywall) {
         return
       }
 
       const api = new LikeApi()
 
       if (!liked) {
-        await api.likePost({
-          postId: post.postId
-        })
+        await api.likePost({ postId })
       } else {
-        await api.unlikePost({
-          postId: post.postId
-        })
+        await api.unlikePost({ postId })
       }
       updateEngagement()
     } catch (error: any) {
@@ -78,7 +89,7 @@ export const PostEngagement: FC = () => {
           </div>
           <div
             onClick={() => {
-              !post.paywall && setShowCommentSection((prev) => !prev)
+              !paywall && setShowCommentSection((prev) => !prev)
             }}
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >
@@ -88,7 +99,7 @@ export const PostEngagement: FC = () => {
             </span>
           </div>
           <div className="flex cursor-pointer items-center gap-[5px] p-0">
-            <ShareIcon onClick={() => copyLinkToClipboard(post)} />
+            <ShareIcon onClick={() => copyLinkToClipboard(username, postId)} />
           </div>
         </div>
         <div
@@ -99,13 +110,17 @@ export const PostEngagement: FC = () => {
         </div>
       </div>
       <CommentSection
-        postId={post.postId}
+        postId={postId}
         visible={showCommentSection}
         updateEngagement={updateEngagement}
-        ownsPost={post.isOwner}
+        ownsPost={isOwner}
       />
       {isTipsModalOpen && (
-        <TipPostModal isOpen={isTipsModalOpen} setOpen={setIsTipsModalOpen} />
+        <TipPostModal
+          isOpen={isTipsModalOpen}
+          setOpen={setIsTipsModalOpen}
+          postId={postId}
+        />
       )}
     </div>
   )

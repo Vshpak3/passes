@@ -1,27 +1,9 @@
 import { CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { PostDataContext } from "src/contexts/PostData"
 import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
 import { NewPost } from "./NewPost"
-
-interface PostWrapperProps {
-  readonly post: PostDto
-}
-
-const PostWrapper: React.FC<PostWrapperProps> = ({ post }) => {
-  const [isRemoved, setIsRemoved] = useState(false)
-
-  return (
-    <PostDataContext.Provider
-      key={post.postId}
-      value={{ ...post, isRemoved, setIsRemoved }}
-    >
-      <Post key={post.postId} />
-    </PostDataContext.Provider>
-  )
-}
 
 export const NewPosts: React.FC = () => {
   const { profile, profileUsername } = useCreatorProfile()
@@ -69,7 +51,7 @@ export const NewPosts: React.FC = () => {
       />
       <div className="mt-9 space-y-6">
         {newPosts.map((post) => (
-          <PostWrapper key={post.postId} post={post} />
+          <Post key={post.postId} post={post} />
         ))}
       </div>
     </>

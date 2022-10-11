@@ -1,3 +1,4 @@
+import { PostDto } from "@passes/api-client"
 import { format } from "date-fns"
 import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import DollarGrayIcon from "public/icons/dollar-gray.svg"
@@ -7,23 +8,29 @@ import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import TipsIcon from "public/icons/tips.svg"
 import { FC, useRef } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
-import { usePostData } from "src/hooks/usePostData"
 
-interface PostStatisticsMenuProps {
+export interface PostStatisticsMenuProps
+  extends Pick<
+    PostDto,
+    | "createdAt"
+    | "earningsPurchases"
+    | "numComments"
+    | "numLikes"
+    | "numPurchases"
+    | "totalTipAmount"
+  > {
   onClose: () => void
 }
 
 export const PostStatisticsMenu: FC<PostStatisticsMenuProps> = ({
+  numLikes,
+  earningsPurchases,
+  createdAt,
+  numPurchases,
+  numComments,
+  totalTipAmount,
   onClose
 }) => {
-  const {
-    numLikes,
-    earningsPurchases,
-    createdAt,
-    numPurchases,
-    numComments,
-    totalTipAmount
-  } = usePostData()
   const menuEl = useRef(null)
   const formatDate = format(new Date(createdAt), "MMM dd, yyyy h:mm aaa")
   useOnClickOutside(menuEl, onClose)

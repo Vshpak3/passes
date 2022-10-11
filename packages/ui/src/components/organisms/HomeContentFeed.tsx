@@ -5,25 +5,11 @@ import {
   PostDto
 } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
-import { FC, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { PostDataContext } from "src/contexts/PostData"
-
-const PostKeyedComponent = ({ arg }: ComponentArg<PostDto>) => {
-  const [isRemoved, setIsRemoved] = useState(false)
-
-  return (
-    <PostDataContext.Provider value={{ ...arg, isRemoved, setIsRemoved }}>
-      <div className="mt-6">
-        <Post />
-      </div>
-    </PostDataContext.Provider>
-  )
-}
 
 const ContentFeedEmpty = (
   <div className="my-40 mx-auto flex flex-row items-center justify-center rounded-sm border border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">
@@ -40,7 +26,7 @@ const ContentFeedEnd = (
   <h3>No more posts</h3> // TODO: add a better message
 )
 
-export const HomeContentFeed: FC = () => {
+export const HomeContentFeed: React.FC = () => {
   const api = new FeedApi()
 
   return (
@@ -55,7 +41,11 @@ export const HomeContentFeed: FC = () => {
             emptyElement={ContentFeedEmpty}
             loadingElement={ContentFeedLoading}
             endElement={ContentFeedEnd}
-            KeyedComponent={PostKeyedComponent}
+            KeyedComponent={({ arg }: ComponentArg<PostDto>) => (
+              <div className="mt-6">
+                <Post post={arg} />
+              </div>
+            )}
           />
         </div>
       </div>

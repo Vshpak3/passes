@@ -8,7 +8,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -16,23 +16,10 @@ import {
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { PostDataContext } from "src/contexts/PostData"
 import { useCreatorProfile } from "src/hooks/useCreatorProfile"
 
 import { FanWallComment } from "./FanWallComment"
 import { PassesFeed } from "./PassesFeed"
-
-const PostKeyedComponent = ({ arg }: ComponentArg<PostDto>) => {
-  const [isRemoved, setIsRemoved] = useState(false)
-
-  return (
-    <PostDataContext.Provider value={{ ...arg, isRemoved, setIsRemoved }}>
-      <div className="mt-6">
-        <Post />
-      </div>
-    </PostDataContext.Provider>
-  )
-}
 
 const ContentFeedEmpty = (
   <h3>No posts</h3> // TODO: add a better message
@@ -69,7 +56,13 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
           emptyElement={ContentFeedEmpty}
           loadingElement={ContentFeedLoading}
           endElement={ContentFeedEnd}
-          KeyedComponent={PostKeyedComponent}
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <div className="mt-6">
+                <Post post={arg} />
+              </div>
+            )
+          }}
         >
           {ownsProfile && <NewPosts />}
         </InfiniteScrollPagination>
@@ -91,19 +84,12 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
             KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
               return (
                 <div className="flex py-3">
-                  <FanWallComment
-                    comment={arg}
-                    removable={true}
-                    ownsProfile={ownsProfile}
-                  />
+                  <FanWallComment comment={arg} removable={true} />
                 </div>
               )
             }}
           >
-            <NewFanwallPosts
-              ownsProfile={ownsProfile}
-              creatorId={profile?.userId ?? ""}
-            />
+            <NewFanwallPosts />
           </InfiniteScrollPagination>
         </>
       )

@@ -14,12 +14,16 @@ interface CommentProps {
   removable: boolean
   ownsPost: boolean
 }
+
 const api = new CommentApi()
 
 export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
   const [removed, setRemoved] = useState<boolean>(false)
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
+
+  const { commentId, commenterUsername, isOwner, postId } = comment
+
   const dropdownOptions: DropdownOption[] = [
     {
       text: "Report",
@@ -29,14 +33,14 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
       text: "Block",
       onClick: () => setIsBlockModalOpen(true)
     },
-    ...(ownsPost || comment.isOwner
+    ...(ownsPost || isOwner
       ? [
           {
             text: "Delete comment",
             onClick: async () => {
               await api.deleteComment({
-                commentId: comment.commentId,
-                postId: comment.postId
+                commentId: commentId,
+                postId: postId
               })
               if (removable) {
                 setRemoved(true)
@@ -51,14 +55,15 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
             text: "Hide comment",
             onClick: async () => {
               await api.hideComment({
-                commentId: comment.commentId,
-                postId: comment.postId
+                commentId: commentId,
+                postId: postId
               })
             }
           }
         ]
       : [])
   ]
+
   return (
     <ConditionRendering condition={!removed}>
       <div className="flex w-full justify-between border-b-[1px] border-b-gray-300/10 py-2">
@@ -66,7 +71,11 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
           <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full">
             <ProfileThumbnail userId={comment.commenterId} />
             <div className="flex items-center gap-[15px]">
-              <PostDropdown items={dropdownOptions} />
+              <PostDropdown
+                items={dropdownOptions}
+                username={commenterUsername}
+                postId={postId}
+              />
             </div>
           </div>
           <div className="ml-4 flex max-w-[100%] flex-col flex-wrap">

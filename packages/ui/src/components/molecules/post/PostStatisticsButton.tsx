@@ -1,9 +1,16 @@
 import GraphIcon from "public/icons/graph.svg"
 import { useState } from "react"
 
-import { PostStatisticsMenu } from "./PostStatisticsMenu"
+import {
+  PostStatisticsMenu,
+  PostStatisticsMenuProps
+} from "./PostStatisticsMenu"
 
-export const PostStatisticsButton: React.FC = () => {
+export type PostStatisticsButtonProps = Omit<PostStatisticsMenuProps, "onClose">
+
+export const PostStatisticsButton: React.FC<PostStatisticsButtonProps> = (
+  menuProps
+) => {
   const [showPostStatisticsMenu, setShowPostStatisticsMenu] = useState(false)
 
   const toggleMenu = () => setShowPostStatisticsMenu(!showPostStatisticsMenu)
@@ -21,7 +28,10 @@ export const PostStatisticsButton: React.FC = () => {
           <GraphIcon />
         </span>
       </button>
-      {showPostStatisticsMenu && <PostStatisticsMenu onClose={toggleMenu} />}
+
+      {showPostStatisticsMenu && (
+        <PostStatisticsMenu {...menuProps} onClose={toggleMenu} />
+      )}
     </div>
   )
 }

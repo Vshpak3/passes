@@ -1,39 +1,50 @@
+import { PostDto } from "@passes/api-client"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import TimeAgo from "react-timeago"
-import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
+import {
+  PostStatisticsButton,
+  PostStatisticsButtonProps
+} from "src/components/molecules/post/PostStatisticsButton"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
-import { usePostData } from "src/hooks/usePostData"
 
 import { DropdownOption, PostDropdown } from "./PostDropdown"
 
-interface PostProfileAvatarProps {
+interface PostProfileAvatarProps
+  extends Pick<
+    PostDto,
+    "createdAt" | "displayName" | "isOwner" | "postId" | "userId" | "username"
+  > {
   dropdownOptions: DropdownOption[]
-  hideStatisticsBtn?: boolean
+  statisticsButtonProps?: PostStatisticsButtonProps
 }
 
 export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
+  createdAt,
+  displayName,
+  isOwner,
+  postId,
+  userId,
+  username,
   dropdownOptions,
-  hideStatisticsBtn = false
+  statisticsButtonProps
 }) => {
-  const post = usePostData()
-
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center space-x-4">
-        <ProfileThumbnail userId={post.userId} />
+        <ProfileThumbnail userId={userId} />
         <div className="space-y-1 font-medium dark:text-white">
           {/* TODO: consider making this not link for non-creator comments */}
-          <a href={`${window.location.origin}/${post.username}`}>
+          <a href={`${window.location.origin}/${username}`}>
             <div className="flex items-center gap-[6px]">
               <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                {post.displayName}
+                {displayName}
               </span>
               <span className="flex items-center">
                 <VerifiedSmall />
               </span>
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              @{post.username}
+              @{username}
             </div>
           </a>
         </div>
@@ -42,11 +53,13 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
             className="uppercase text-gray-300/60"
-            date={post.createdAt ? post.createdAt : ""} // TODO: post.date}
+            date={createdAt || ""} // TODO: post.date}
             minPeriod={30}
           />
         </div>
-        {post.isOwner && !hideStatisticsBtn && <PostStatisticsButton />}
+        {isOwner && statisticsButtonProps && (
+          <PostStatisticsButton {...statisticsButtonProps} />
+        )}
 
         <div className="flex items-center gap-[15px]">
           {/* <div
@@ -63,7 +76,11 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
           )}
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
-          <PostDropdown items={dropdownOptions} />
+          <PostDropdown
+            items={dropdownOptions}
+            username={username}
+            postId={postId}
+          />
         </div>
       </div>
     </div>

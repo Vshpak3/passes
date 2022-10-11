@@ -1,22 +1,24 @@
 import { Menu, Transition } from "@headlessui/react"
+import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
 import { FC, Fragment } from "react"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
-import { usePostData } from "src/hooks/usePostData"
 
 export interface DropdownOption {
   readonly text: string
   readonly onClick: () => void
 }
 
-interface PostDropdownProps {
+interface PostDropdownProps extends Pick<PostDto, "username" | "postId"> {
   readonly items: DropdownOption[]
 }
 
-export const PostDropdown: FC<PostDropdownProps> = ({ items }) => {
-  const post = usePostData()
-
+export const PostDropdown: FC<PostDropdownProps> = ({
+  items,
+  username,
+  postId
+}) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -38,7 +40,7 @@ export const PostDropdown: FC<PostDropdownProps> = ({ items }) => {
           <div className="py-1">
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-ignore */}
-            <Menu.Item onClick={() => copyLinkToClipboard(post)}>
+            <Menu.Item onClick={() => copyLinkToClipboard(username, postId)}>
               {({ active }) => (
                 <span
                   className={classNames(

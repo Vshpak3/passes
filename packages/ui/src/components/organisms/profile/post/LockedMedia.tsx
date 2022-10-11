@@ -1,21 +1,25 @@
+import { PostDto } from "@passes/api-client"
 import { useMemo } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
-import { usePostData } from "src/hooks/usePostData"
 
-export const LockedMedia: React.FC = () => {
-  const post = usePostData()
+interface LockedMediaProps {
+  post: PostDto
+}
+
+export const LockedMedia: React.FC<LockedMediaProps> = ({ post }) => {
   const { setPost } = useBuyPostModal()
-  const { images, video } = contentTypeCounter(post.content)
+  const { content, price } = post
+  const { images, video } = contentTypeCounter(content)
 
   const showcaseImg = useMemo(() => {
-    if (post.content?.[0]?.contentType === "image") {
-      return post.content[0].signedUrl as string
+    if (content?.[0]?.contentType === "image") {
+      return content[0].signedUrl as string
     }
-  }, [post])
+  }, [content])
 
   return (
     <div className="relative mt-3 min-h-[200px] p-16">
@@ -31,7 +35,7 @@ export const LockedMedia: React.FC = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center space-y-[35px] rounded-[20px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
         <PostUnlockButton
           onClick={() => setPost(post)}
-          name={`Unlock Post For ${formatCurrency(post.price ?? 0)}`}
+          name={`Unlock Post For ${formatCurrency(price ?? 0)}`}
           className="w-auto !px-[30px] !py-2.5"
         />
         <p className="mt-[17px] text-base font-medium">
