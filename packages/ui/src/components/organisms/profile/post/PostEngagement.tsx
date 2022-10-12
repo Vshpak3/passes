@@ -1,5 +1,4 @@
 import { PostDto } from "@passes/api-client"
-import { PostApi } from "@passes/api-client/apis"
 import dynamic from "next/dynamic"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
@@ -7,7 +6,6 @@ import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useCallback, useMemo, useState } from "react"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
-import { errorMessage } from "src/helpers/error"
 import { compactNumberFormatter } from "src/helpers/formatters"
 
 import { CommentSection } from "./CommentSection"
@@ -40,17 +38,15 @@ export const PostEngagement: FC<PostEngagementProps> = ({
   const [numComments, setNumComments] = useState(initialNumComments)
   const [showCommentSection, setShowCommentSection] = useState(false)
 
-  const updateEngagement = useCallback(async () => {
-    const api = new PostApi()
+  const incrementNumComments = useCallback(
+    () => setNumComments((state) => state + 1),
+    []
+  )
 
-    try {
-      const response = await api.findPost({ postId })
-
-      setNumComments(response.numComments)
-    } catch (error: any) {
-      errorMessage(error, true)
-    }
-  }, [postId])
+  const decrementNumComments = useCallback(
+    () => setNumComments((state) => state - 1),
+    []
+  )
 
   const formattedNumComments = useMemo(
     () => compactNumberFormatter(numComments),
@@ -97,7 +93,8 @@ export const PostEngagement: FC<PostEngagementProps> = ({
       {showCommentSection && (
         <CommentSection
           postId={postId}
-          updateEngagement={updateEngagement}
+          incrementNumComments={incrementNumComments}
+          decrementNumComments={decrementNumComments}
           ownsPost={isOwner}
         />
       )}

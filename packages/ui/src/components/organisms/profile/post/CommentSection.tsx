@@ -1,78 +1,39 @@
 import {
+  CommentApi,
   CommentDto,
   GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto
 } from "@passes/api-client"
-import { CommentApi } from "@passes/api-client/apis"
-import { FC, useState } from "react"
-import { useForm } from "react-hook-form"
-import { Button } from "src/components/atoms/Button"
+import { FC, useCallback, useState } from "react"
 import { InfiniteLoad } from "src/components/atoms/InfiniteLoad"
 import { ComponentArg } from "src/components/atoms/InfiniteScroll"
-import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
-import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks/useUser"
 
-const api = new CommentApi()
+import { NewCommentEditor } from "./NewCommentEditor"
 
 interface CommentSectionProps {
   postId: string
   ownsPost: boolean
-  updateEngagement: any
+  incrementNumComments: () => void
+  decrementNumComments: () => void
 }
+
+const api = new CommentApi()
 
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
-  updateEngagement,
-  ownsPost
+  ownsPost,
+  incrementNumComments
 }) => {
   const [comments, setComments] = useState<CommentDto[]>([])
-  const [isReset, setIsReset] = useState(false)
-  const {
-    getValues,
-    setValue,
-    formState: { isSubmitSuccessful }
-  } = useForm()
-  const { user } = useUser()
 
-  async function postComment() {
-    try {
-      const text = getValues("comment")
-      const tags = getValues("mentions")
-      if (text.length === 0) {
-        return
-      }
-
-      const commentId = (
-        await api.createComment({
-          createCommentRequestDto: {
-            text,
-            tags,
-            postId
-          }
-        })
-      ).commentId
-
-      const comment: CommentDto = {
-        commentId,
-        postId,
-        text,
-        tags,
-        commenterId: user?.userId ?? "",
-        commenterDisplayName: user?.displayName ?? "",
-        commenterUsername: user?.username ?? "",
-        createdAt: new Date(),
-        isHidden: false,
-        isOwner: true
-      }
-      setComments([comment, ...comments])
-      setIsReset(true)
-      updateEngagement()
-    } catch (error: any) {
-      errorMessage(error, true)
-    }
-  }
+  const addComment = useCallback(
+    (comment: CommentDto) => {
+      setComments((state) => [comment, ...state])
+      incrementNumComments()
+    },
+    [incrementNumComments]
+  )
 
   return (
     <div
@@ -108,34 +69,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
         }
         fetchProps={{ postId }}
       ></InfiniteLoad>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          postComment()
-        }}
-        className="flex w-full flex-row items-center pt-5"
-      >
-        <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
-          <CustomComponentMentionEditor
-            isReset={isReset}
-            setIsReset={setIsReset}
-            placeholder="Type a comment..."
-            onInputChange={(params: any) => {
-              setValue("comment", params?.text)
-              setValue("mentions", params?.mentions)
-            }}
-          />
-        </div>
-        <Button
-          tag="button"
-          variant="pink"
-          disabled={isSubmitSuccessful}
-          className="ml-4 h-[40px] w-[10%] min-w-[70px]"
-        >
-          Comment
-        </Button>
-      </form>
+      <NewCommentEditor postId={postId} addComment={addComment} />
     </div>
   )
 }

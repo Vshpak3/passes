@@ -18,7 +18,7 @@ interface CommentProps {
 const api = new CommentApi()
 
 export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
-  const [removed, setRemoved] = useState<boolean>(false)
+  const [removed, setRemoved] = useState(false)
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
 
