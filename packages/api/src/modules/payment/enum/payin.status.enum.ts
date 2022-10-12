@@ -3,6 +3,8 @@ export enum PayinStatusEnum {
 
   CREATED_READY = 'created_ready',
   CREATED = 'created',
+  UNCREATED_READY = 'uncreated_ready',
+  UNCREATED = 'uncreated',
   PENDING = 'pending',
 
   SUCCESSFUL_READY = 'successful_ready',

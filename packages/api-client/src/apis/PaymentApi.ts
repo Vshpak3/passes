@@ -170,6 +170,10 @@ export interface SetSubscriptionPayinMethodRequest {
     setPayinMethodRequestDto: SetPayinMethodRequestDto;
 }
 
+export interface UncreatePayinRequest {
+    payinId: string;
+}
+
 /**
  * 
  */
@@ -1123,6 +1127,40 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async setSubscriptionPayinMethod(requestParameters: SetSubscriptionPayinMethodRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.setSubscriptionPayinMethodRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Uncreate a payin
+     */
+    async uncreatePayinRaw(requestParameters: UncreatePayinRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.payinId === null || requestParameters.payinId === undefined) {
+            throw new runtime.RequiredError('payinId','Required parameter requestParameters.payinId was null or undefined when calling uncreatePayin.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/payment/payin/uncreate/{payinId}`.replace(`{${"payinId"}}`, encodeURIComponent(String(requestParameters.payinId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Uncreate a payin
+     */
+    async uncreatePayin(requestParameters: UncreatePayinRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.uncreatePayinRaw(requestParameters, initOverrides);
     }
 
 }

@@ -114,6 +114,8 @@ export const PayinDtoPayinStatusEnum = {
     Registered: 'registered',
     CreatedReady: 'created_ready',
     Created: 'created',
+    UncreatedReady: 'uncreated_ready',
+    Uncreated: 'uncreated',
     Pending: 'pending',
     SuccessfulReady: 'successful_ready',
     Successful: 'successful',

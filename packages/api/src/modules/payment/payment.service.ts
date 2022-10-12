@@ -130,6 +130,7 @@ import {
   handleCreationCallback,
   handleFailedCallback,
   handleSuccesfulCallback,
+  handleUncreateCallback,
 } from './payment.payin'
 
 const DEFAULT_FIAT_FEE_RATE = 0.2
@@ -1633,6 +1634,10 @@ export class PaymentService {
       })
   }
 
+  async userUncreatePayin(payinId: string, userId: string): Promise<void> {
+    await this.uncreatePayin(payinId, userId)
+  }
+
   async userCancelPayin(payinId: string, userId: string): Promise<void> {
     // attempt to unregister or fail
     // only one update will succeed since it updates based on current state
@@ -1650,12 +1655,30 @@ export class PaymentService {
       })
   }
 
+  async uncreatePayin(payinId: string, userId: string): Promise<void> {
+    const rows = await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payinId })
+      .andWhere({ user_id: userId })
+      .andWhere('payin_status', 'in', [PayinStatusEnum.CREATED])
+      .update({
+        payin_status: PayinStatusEnum.UNCREATED_READY,
+      })
+    // check for completed update
+    if (rows == 1) {
+      const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
+        .where({ id: payinId })
+        .andWhere({ user_id: userId })
+        .select(['id', 'callback', 'callback_input_json'])
+        .first()
+      await handleUncreateCallback(payin, this, this.dbWriter)
+    }
+  }
+
   async failPayin(payinId: string, userId: string): Promise<void> {
     const rows = await this.dbWriter<PayinEntity>(PayinEntity.table)
       .where({ id: payinId })
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
-        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])

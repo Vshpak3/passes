@@ -71,6 +71,21 @@ export const handleFailedCallback = async (
   )
 }
 
+export const handleUncreateCallback = async (
+  payin,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+) => {
+  await handleCallback(
+    payin,
+    payService,
+    db,
+    PayinStatusEnum.UNCREATED,
+    PayinStatusEnum.FAIL_CALLBACK_FAILED,
+    'failure',
+  )
+}
+
 export const handleCreationCallback = async (
   payin,
   payService: PaymentService,

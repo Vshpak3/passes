@@ -135,27 +135,28 @@ export const usePay = (
     setLoading(true)
     try {
       const registerResponse = await registerPaymentFunc()
-      const cancelPayinCallback = async () => {
+      const cancelPayin = async () => {
         await paymentApi.cancelPayin({
+          payinId: registerResponse.payinId
+        })
+      }
+      const uncreatePayin = async () => {
+        await paymentApi.uncreatePayin({
           payinId: registerResponse.payinId
         })
       }
       switch (registerResponse.payinMethod?.method) {
         case PayinMethodDtoMethodEnum.CircleCard:
-          await handleCircleCard(
-            registerResponse,
-            paymentApi,
-            cancelPayinCallback
-          )
+          await handleCircleCard(registerResponse, paymentApi, cancelPayin)
           break
         case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
-          await handlePhantomCircleUSDC(registerResponse, cancelPayinCallback)
+          await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
-          await handleMetamaskCircleUSDC(registerResponse, cancelPayinCallback)
+          await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
-          await handleMetamaskCircleEth(registerResponse, cancelPayinCallback)
+          await handleMetamaskCircleEth(registerResponse, uncreatePayin)
           break
         default:
           break

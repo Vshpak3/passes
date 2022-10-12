@@ -429,6 +429,21 @@ export class PaymentController {
   }
 
   @ApiEndpoint({
+    summary: 'Uncreate a payin',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Payin was uncreated',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('payin/uncreate/:payinId')
+  async uncreatePayin(
+    @Req() req: RequestWithUser,
+    @Param('payinId') payinId: string,
+  ): Promise<void> {
+    await this.paymentService.userUncreatePayin(payinId, req.user.id)
+  }
+
+  @ApiEndpoint({
     summary: 'Get all payins',
     responseStatus: HttpStatus.OK,
     responseType: GetPayinsResponseDto,
