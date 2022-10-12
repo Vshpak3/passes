@@ -9,7 +9,7 @@ import { Content } from "./message/Content"
 
 interface ChannelMessageProps {
   isOwnMessage?: boolean
-  message?: MessageDto
+  message: MessageDto
   lastMessage: boolean
   channelId: string
 }
@@ -18,7 +18,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   isOwnMessage = false,
   lastMessage = false,
   channelId
-}) => {
+}: ChannelMessageProps) => {
+  const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
   const onReadLastMessage = async () => {
     const api = new MessagesApi()
@@ -55,13 +56,40 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
         </div>
       ) : (
         <div className="mx-4 flex flex-col items-end">
-          <div className="rounded border border-[#363037] bg-[#1E1820] py-3 px-4">
-            <span className="break-all">{message?.text}</span>
-            {messageContent.length > 0 && <Content />}
+          <div
+            className={`rounded border border-[#363037] ${messageBackground} py-3 px-4`}
+          >
+            {messageContent.length ? (
+              <div className="flex flex-col">
+                <div>
+                  <span className="break-all">{message?.text}</span>
+                </div>
+                <div className="pt-2">
+                  <Content
+                    contents={messageContent}
+                    paid={message.paid}
+                    price={message?.price}
+                    message={message}
+                    isOwnMessage={isOwnMessage}
+                  />
+                </div>
+                <div className="pt-2">
+                  <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
+                    {messageContent[0].createdAt.toLocaleString("en-US", {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true
+                    })}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <span className="break-all">{message?.text}</span>
+            )}
           </div>
-          {isOwnMessage && message?.pending && (
+          {/* {isOwnMessage && message?.pending && (
             <span className="text-md mt-2 text-gray-500">Pending...</span>
-          )}
+          )} */}
         </div>
       )}
     </div>

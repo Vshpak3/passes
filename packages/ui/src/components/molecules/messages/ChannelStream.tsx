@@ -168,7 +168,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       {messages.length ? (
         <>
           {!isCreator && freeMessages !== null && (
-            <div className="sticky top-0 z-10 w-full">
+            <div className="sticky top-0 z-20 w-full">
               <FreeMessagesLeftContainer freeMessages={freeMessages} />
             </div>
           )}
