@@ -40,12 +40,12 @@ export const ChannelListItem: FC<Props> = ({
         </div>
         <div className="flex flex-col items-center justify-end gap-1">
           {channel?.unreadTip !== 0 && (
-            <span className="w-full items-center self-end rounded-[30px] bg-[#BF7AF0] py-1 text-center text-[10px] font-medium leading-[16px] text-[#fff]">
+            <span className="w-full items-center self-end rounded-[30px] bg-[#BF7AF0] p-1 text-center text-[10px] font-medium leading-[16px] text-[#fff]">
               Tip: {formatCurrency(channel?.unreadTip)}
             </span>
           )}
           <TimeAgo
-            className="text-[11px] font-medium leading-[17px] text-[#fff]/30"
+            className="self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
             date={channel?.recent ? channel?.recent : ""}
             minPeriod={30}
           />

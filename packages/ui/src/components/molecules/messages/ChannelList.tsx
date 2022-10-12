@@ -33,7 +33,9 @@ export const ChannelList: FC<ChannelListProps> = ({
 }) => {
   const channelOrders = [
     { id: "recent", name: "Most recent" },
-    { id: "tip", name: "Most tips" }
+    { id: "tip", name: "Highest Tip amount" },
+    { id: "tip", name: "Highest All-Time Tip Amount" },
+    { id: "tip", name: "Most Loyal" }
   ]
   return (
     <div className="min-w-[35%] overflow-y-auto border-r border-[#fff]/10 p-[30px] ">

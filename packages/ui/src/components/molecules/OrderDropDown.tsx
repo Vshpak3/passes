@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import FilterLines from "public/icons/filter-lines.svg"
 import React, { FC, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
@@ -20,7 +19,6 @@ export const OrderDropDown: FC<OrderDropDownProps> = ({
   setActiveOrder
 }) => {
   const [showOrderDropDown, setShowOrderDropDown] = useState(false)
-
   const orderRef = useRef(null)
   useOnClickOutside(orderRef, () => {
     setShowOrderDropDown(false)
@@ -44,19 +42,12 @@ export const OrderDropDown: FC<OrderDropDownProps> = ({
       </button>
 
       {showOrderDropDown && (
-        <ul className="text-label absolute left-[17px] z-10 translate-y-3 whitespace-nowrap rounded-md border border-passes-dark-200 bg-passes-dark-700 py-2.5 px-3">
-          {orders.map(({ id, name }, i) => (
+        <ul className="text-label absolute right-0 top-[35px] z-10 min-w-[260px] translate-y-3 whitespace-nowrap rounded-md border border-passes-dark-200 bg-passes-dark-700 px-5">
+          <li className="pt-4">Sort By</li>
+          {orders.map(({ id, name }) => (
             <li
               key={id}
-              className={classNames(
-                // first element
-                i === 0
-                  ? "border-b border-passes-dark-200 pb-2.5"
-                  : // last element
-                  i === orders.length - 2
-                  ? "pt-2.5"
-                  : "border-b border-passes-dark-200 py-2.5"
-              )}
+              className="my-3 py-[10px] pl-4 text-[14px] font-medium leading-[20px] text-[#A7A7A7] hover:bg-[#191919] hover:text-white hover:shadow-sm"
             >
               <button onClick={() => activeOrderHandler(id)}>{name}</button>
             </li>
