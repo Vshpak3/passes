@@ -15,6 +15,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
+import { NavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { useProfile } from "src/hooks/useProfile"
 
@@ -34,7 +35,7 @@ const ContentFeedEnd = (
 )
 
 export interface ProfileContentFeedProps {
-  activeTab: string
+  activeTab: NavigationOptions
 }
 
 export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
@@ -43,73 +44,61 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   const { profileUserId, ownsProfile, loadingProfileInfo } = useProfile()
   const api = new FeedApi()
 
+  if (loadingProfileInfo || !profileUserId) {
+    return <></>
+  }
+
   switch (activeTab) {
-    case "post":
+    case NavigationOptions.POST:
       return (
-        <>
-          {!loadingProfileInfo && profileUserId && (
-            <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
-              keyValue={`/feed/creator/${profileUserId}`}
-              fetch={async (req: GetProfileFeedRequestDto) => {
-                return await api.getFeedForCreator({
-                  getProfileFeedRequestDto: req
-                })
-              }}
-              fetchProps={{ creatorId: profileUserId }}
-              emptyElement={ContentFeedEmpty}
-              loadingElement={ContentFeedLoading}
-              endElement={ContentFeedEnd}
-              KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-                return (
-                  <div className="mt-6">
-                    <Post post={arg} />
-                  </div>
-                )
-              }}
-            >
-              {ownsProfile && <NewPosts />}
-            </InfiniteScrollPagination>
-          )}
-        </>
+        <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+          keyValue={`/feed/creator/${profileUserId}`}
+          fetch={async (req: GetProfileFeedRequestDto) => {
+            return await api.getFeedForCreator({
+              getProfileFeedRequestDto: req
+            })
+          }}
+          fetchProps={{ creatorId: profileUserId }}
+          emptyElement={ContentFeedEmpty}
+          loadingElement={ContentFeedLoading}
+          endElement={ContentFeedEnd}
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <div className="mt-6">
+                <Post post={arg} />
+              </div>
+            )
+          }}
+        >
+          {ownsProfile && <NewPosts />}
+        </InfiniteScrollPagination>
       )
-    case "fanWall":
+    case NavigationOptions.FANWALL:
       return (
-        <>
-          {!loadingProfileInfo && (
-            <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
-              keyValue={`/fanwall/${profileUserId}`}
-              fetch={async (req: GetFanWallRequestDto) => {
-                const api = new FanWallApi()
-                return await api.getFanWallForCreator({
-                  getFanWallRequestDto: req
-                })
-              }}
-              fetchProps={{ creatorId: profileUserId }}
-              emptyElement={ContentFeedEmpty}
-              loadingElement={ContentFeedLoading}
-              endElement={ContentFeedEnd}
-              KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
-                return (
-                  <div className="flex py-3">
-                    <FanWallComment comment={arg} removable={true} />
-                  </div>
-                )
-              }}
-            >
-              <NewFanwallPosts profileUserId={profileUserId ?? ""} />
-            </InfiniteScrollPagination>
-          )}
-        </>
+        <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
+          keyValue={`/fanwall/${profileUserId}`}
+          fetch={async (req: GetFanWallRequestDto) => {
+            const api = new FanWallApi()
+            return await api.getFanWallForCreator({
+              getFanWallRequestDto: req
+            })
+          }}
+          fetchProps={{ creatorId: profileUserId }}
+          emptyElement={ContentFeedEmpty}
+          loadingElement={ContentFeedLoading}
+          endElement={ContentFeedEnd}
+          KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
+            return (
+              <div className="flex py-3">
+                <FanWallComment comment={arg} removable={true} />
+              </div>
+            )
+          }}
+        >
+          <NewFanwallPosts profileUserId={profileUserId} />
+        </InfiniteScrollPagination>
       )
-    case "passes":
-      return (
-        <>
-          {!loadingProfileInfo && (
-            <PassesFeed creatorId={profileUserId ?? ""} />
-          )}
-        </>
-      )
-    default:
-      return <></>
+    case NavigationOptions.PASSES:
+      return <PassesFeed creatorId={profileUserId} />
   }
 }

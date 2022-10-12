@@ -1,10 +1,10 @@
 import { FC, memo, useState } from "react"
 
 import { ProfileContentFeed } from "./feed/ProfileContentFeed"
-import { ProfileNavigation } from "./ProfileNavigation"
+import { NavigationOptions, ProfileNavigation } from "./ProfileNavigation"
 
 const UnMemoizedProfileContent: FC = () => {
-  const [activeTab, setActiveTab] = useState("post")
+  const [activeTab, setActiveTab] = useState(NavigationOptions.POST)
 
   return (
     <>
