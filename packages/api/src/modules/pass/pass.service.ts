@@ -356,7 +356,11 @@ export class PassService {
       query = query.andWhere(`${PassEntity.table}.type`, passType)
     }
     if (expired !== undefined) {
-      query = query.andWhere('expired_at', expired ? '<=' : '>', new Date())
+      query = query.andWhere(
+        `${PassHolderEntity.table}.expires_at`,
+        expired ? '<=' : '>',
+        new Date(),
+      )
     }
 
     if (creatorId) {

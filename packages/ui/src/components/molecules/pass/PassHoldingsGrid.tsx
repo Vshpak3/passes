@@ -1,5 +1,6 @@
 import {
   GetPassHoldingsRequestDto,
+  GetPassHoldingsRequestDtoOrderTypeEnum,
   GetPassHoldingsResponseDto,
   PassApi,
   PassDtoTypeEnum,
@@ -48,7 +49,12 @@ export const PassHoldingsGrid: FC = () => {
             const api = new PassApi()
             return api.getPassHoldings({ getPassHoldingsRequestDto: req })
           }}
-          fetchProps={{ passType, expired }}
+          fetchProps={{
+            passType,
+            expired,
+            orderType: GetPassHoldingsRequestDtoOrderTypeEnum.CreatedAt,
+            order: "desc"
+          }}
           KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
             return <PassHoldingTile passHolder={arg} />
           }}
