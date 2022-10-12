@@ -184,7 +184,7 @@ export const Wallets = () => {
           </div>
         </div>
       </Modal>
-      <div className="mt-4 flex flex-col items-start justify-start md:flex-row">
+      <div className="mt-4 flex w-full flex-col items-start justify-start md:flex-row">
         <div>
           <Button
             variant="purple-light"
@@ -193,7 +193,9 @@ export const Wallets = () => {
             className="mt-1"
           >
             <div className="flex items-center justify-center">
-              <Wallet className="block h-[24px] w-[24px]" />
+              <div className="block w-[24px]">
+                <Wallet className="h-[24px] w-[24px]" />
+              </div>
               <span className="ml-[10px] block">Connect New Wallet</span>
             </div>
           </Button>
@@ -201,35 +203,39 @@ export const Wallets = () => {
         {!!user?.isCreator && (
           <form
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
-            className="flex flex-col items-start md:flex-row"
+            className="flex w-full flex-col items-start md:flex-row"
           >
             <span className="mx-4 mt-3 block text-[16px] font-bold">or</span>
-            <div className="flex flex-row">
-              <FormInput
-                icon={<Wallet />}
-                type="text"
-                name="address"
-                register={register}
-                className="mr-3 flex-1 pl-[45px] md:w-[250px]"
-                placeholder="Insert your Payout Address"
-                errors={errors}
-                options={{
-                  required: {
-                    message: "Payout Address is required",
-                    value: true
-                  }
-                }}
-              />
-              <Select
-                name="chain"
-                register={register}
-                className="mr-3 mt-0 md:w-[80px]"
-                selectOptions={["SOL", "ETH"]}
-                errors={errors}
-                options={{
-                  required: { message: "Chain is required", value: true }
-                }}
-              />
+            <div className="flex w-full flex-row md:basis-1">
+              <div className="mr-2 basis-4/5 md:basis-1">
+                <FormInput
+                  icon={<Wallet />}
+                  type="text"
+                  name="address"
+                  register={register}
+                  className="mr-3 pl-[45px] md:w-[250px]"
+                  placeholder="Insert your Payout Address"
+                  errors={errors}
+                  options={{
+                    required: {
+                      message: "Payout Address is required",
+                      value: true
+                    }
+                  }}
+                />
+              </div>
+              <div className="basis-1/5">
+                <Select
+                  name="chain"
+                  register={register}
+                  className="mr-3 mt-0 w-[80px]"
+                  selectOptions={["SOL", "ETH"]}
+                  errors={errors}
+                  options={{
+                    required: { message: "Chain is required", value: true }
+                  }}
+                />
+              </div>
             </div>
             <div className="mt-2">
               <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
@@ -244,10 +250,11 @@ export const Wallets = () => {
           mt-6
           flex
           w-full
-          gap-[40px]
+          gap-[10px]
           pt-1
           text-center
           text-[#ffffffeb]
+          md:gap-[40px]
           md:pl-8"
       >
         <span className="flex basis-1/4 justify-center">Wallet Type</span>
@@ -256,7 +263,7 @@ export const Wallets = () => {
         <span className="flex basis-1/4 justify-center">Delete</span>
       </div>
       {loading || !wallets ? (
-        <span>Loading...</span>
+        <span className="mt-4">Loading...</span>
       ) : (
         <div
           className="

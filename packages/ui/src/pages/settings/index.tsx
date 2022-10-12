@@ -203,7 +203,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
 
         <div
           className={cn(
-            "w-full max-w-[830px] px-5 pt-6 sm:px-[29px] lg:block",
+            "w-full px-3 pt-6 sm:px-[29px] md:max-w-[830px] md:px-5 lg:block",
             { hidden: !showSettingsTab }
           )}
         >

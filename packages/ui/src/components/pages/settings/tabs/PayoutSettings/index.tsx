@@ -45,6 +45,22 @@ const PayoutSettings = () => {
     }
   }, [router, user, loading])
 
+  const renderDefaultPayoutMethod = () => {
+    return (
+      <div>
+        <span className="text-[16px]">
+          {defaultBank?.description.split(",")[0]}
+          {payoutWallet?.address && (
+            <div>
+              <span className="mr-4">Wallet:</span>
+              <span>{payoutWallet.address}</span>
+            </div>
+          )}
+        </span>
+        <span className="text-[16px]">{defaultBank?.country}</span>
+      </div>
+    )
+  }
   return (
     <>
       <Tab
@@ -62,16 +78,8 @@ const PayoutSettings = () => {
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
-          {defaultBank ? (
-            <div>
-              <span className="text-[16px] font-[700]">
-                {defaultBank?.description.split(",")[0]}
-                {payoutWallet?.address}
-              </span>
-              <span className="text-[16px] font-[500]">
-                {defaultBank?.country}
-              </span>
-            </div>
+          {defaultPayoutMethod ? (
+            renderDefaultPayoutMethod()
           ) : (
             <div className="mr-2 rounded-full border-2 border-passes-dark-200 py-2 px-4 font-[500]">
               None
@@ -96,7 +104,7 @@ const PayoutSettings = () => {
         </div>
       </div>
       {!wallets || wallets?.length === 0 ? (
-        <div className="mt-6 flex w-[700px] items-center justify-center rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7">
+        <div className="mt-6 flex w-full items-center justify-center rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7">
           <span>No Wallets Found</span>
         </div>
       ) : (
@@ -138,6 +146,8 @@ const PayoutSettings = () => {
                   <span className="basis-1/4 text-center">
                     <Button
                       disabled={payoutWallet?.walletId === wallet.walletId}
+                      variant="pink"
+                      className="w-auto"
                       onClick={async () => {
                         await setDefaultPayoutMethod({
                           walletId: wallet.walletId,

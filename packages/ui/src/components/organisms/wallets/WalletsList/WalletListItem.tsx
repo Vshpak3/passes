@@ -74,10 +74,11 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           flex
           items-center
           justify-between
-          gap-[40px]
+          gap-[10px]
           border-t
           border-[#2C282D]
           py-3
+          md:gap-[40px]
           md:pl-8"
         key={wallet.walletId}
       >
@@ -103,7 +104,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           </div>
           <div className="flex items-center justify-center">
             <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
-            <span className="invisible ml-[12px] font-bold md:visible">
+            <span className="ml-[12px] hidden font-bold md:visible md:block">
               {walletTypeName(wallet.chain, wallet.authenticated)}
             </span>
           </div>
@@ -118,7 +119,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           })}
           <Clipboard
             width="12px"
-            className="invisible ml-2 group-hover:visible"
+            className="invisible ml-2 group-hover:visible md:block"
           />
         </div>
         {wallet.authenticated && (
