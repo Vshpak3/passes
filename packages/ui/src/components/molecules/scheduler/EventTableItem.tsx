@@ -7,9 +7,8 @@ import { FC, useCallback, useState } from "react"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import { useWindowDimensions } from "src/helpers/hooks/useWindowDimensions"
+import { CACHE_KEY_SCHEDULED_EVENTS } from "src/hooks/useScheduledPosts"
 import { mutate } from "swr"
-
-import { CACHE_KEY_SCHEDULED_EVENTS } from "./EventTable"
 
 interface EventTableItemProps {
   id: string

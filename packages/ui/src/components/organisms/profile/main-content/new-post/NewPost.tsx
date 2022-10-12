@@ -1,5 +1,6 @@
 import { CreatePostRequestDto, PostApi } from "@passes/api-client"
 import classNames from "classnames"
+import _ from "lodash"
 import dynamic from "next/dynamic"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
@@ -16,6 +17,8 @@ import { NewPostModal } from "src/components/organisms/NewPostModal"
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers/content"
+import { CACHE_KEY_SCHEDULED_EVENTS } from "src/hooks/useScheduledPosts"
+import { mutate } from "swr"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { MediaFile } from "./media"
@@ -90,7 +93,7 @@ export const NewPost: FC<NewPostProps> = ({
   const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [extended, setExtended] = useState(false)
+  const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
@@ -163,6 +166,7 @@ export const NewPost: FC<NewPostProps> = ({
     const postId = response.postId
 
     await createPost(post, postId)
+    mutate(CACHE_KEY_SCHEDULED_EVENTS)
     reset()
     setFiles([])
     setIsReset(true)
@@ -247,7 +251,9 @@ export const NewPost: FC<NewPostProps> = ({
           <>
             <PostHeader
               title={
-                Object.keys(initialData).length > 0 ? "Update Post" : "New post"
+                Object.keys(_.omit(initialData, "scheduledAt")).length > 0
+                  ? "Update Post"
+                  : "New post"
               }
               onClose={() => setExtended(false)}
               register={register}
@@ -264,7 +270,7 @@ export const NewPost: FC<NewPostProps> = ({
           <div
             className={classNames({ "mt-4": extended }, "w-full")}
             onClick={() => {
-              if (!isExtended) {
+              if (!extended) {
                 setExtended(true)
               }
             }}
@@ -354,7 +360,7 @@ export const NewPost: FC<NewPostProps> = ({
                           type="file"
                           multiple={true}
                           trigger={
-                            <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
+                            <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border border-passes-secondary-color bg-transparent">
                               <PlusIcon />
                             </div>
                           }

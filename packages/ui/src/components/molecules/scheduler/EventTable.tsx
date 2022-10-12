@@ -2,29 +2,14 @@ import { PostApi } from "@passes/api-client"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useState } from "react"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
-import useSWR from "swr"
+import { useScheduledPosts } from "src/hooks/useScheduledPosts"
 
 import { DeleteEventModal } from "./DeleteEventModal"
 
 const postAPI = new PostApi()
 
-export const CACHE_KEY_SCHEDULED_EVENTS = "/posts/scheduled"
-
 export const EventTable: FC = () => {
-  const { data, mutate } = useSWR(
-    CACHE_KEY_SCHEDULED_EVENTS,
-    () =>
-      postAPI
-        .getPosts({
-          getPostsRequestDto: {
-            scheduledOnly: true
-          }
-        })
-        .then(({ data }) => {
-          return data
-        }),
-    { revalidateOnMount: true }
-  )
+  const { data, mutate } = useScheduledPosts()
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<string | null>(
     null
   )
