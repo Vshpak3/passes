@@ -51,8 +51,8 @@ const PayoutSettings = () => {
         <span className="text-[16px]">
           {defaultBank?.description.split(",")[0]}
           {payoutWallet?.address && (
-            <div>
-              <span className="mr-4">Wallet:</span>
+            <div className="flex flex-col text-[12px] md:flex-row md:text-[16px]">
+              <span className="mr-2">Wallet:</span>
               <span>{payoutWallet.address}</span>
             </div>
           )}
@@ -74,7 +74,7 @@ const PayoutSettings = () => {
             defaultPayoutMethod
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
-            "flex w-full gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 py-6 px-6"
+            "flex w-full gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4 md:p-6"
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
@@ -165,7 +165,7 @@ const PayoutSettings = () => {
             })}
         </div>
       )}
-      <div className="mt-6">
+      <div className="my-6">
         <div className="mb-4 font-bold">Add Bank as a Payout Method</div>
         <Button
           icon={<BankIcon />}

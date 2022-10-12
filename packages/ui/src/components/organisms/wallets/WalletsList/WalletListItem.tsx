@@ -72,18 +72,20 @@ export const WalletListItem: FC<WalletListItemProps> = ({
       <div
         className="
           flex
+          w-[600px]
           items-center
           justify-between
-          gap-[10px]
+          gap-0
           border-t
           border-[#2C282D]
           py-3
+          md:w-full
           md:gap-[40px]
           md:pl-8"
         key={wallet.walletId}
       >
         <div className="relative flex basis-1/4 items-center justify-center">
-          <div className="absolute -left-3">
+          <div className="absolute left-3 md:-left-3">
             {Boolean(wallet.custodial) && (
               <IconTooltip
                 Icon={InfoIcon}
@@ -93,7 +95,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
               />
             )}
           </div>
-          <div className="absolute -left-3">
+          <div className="absolute left-3 md:-left-3">
             {!wallet.authenticated && (
               <IconTooltip
                 Icon={TooltipStar}

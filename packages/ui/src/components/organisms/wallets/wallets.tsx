@@ -205,7 +205,9 @@ export const Wallets = () => {
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
             className="flex w-full flex-col items-start md:flex-row"
           >
-            <span className="mx-4 mt-3 block text-[16px] font-bold">or</span>
+            <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-0">
+              or
+            </span>
             <div className="flex w-full flex-row md:basis-1">
               <div className="mr-2 basis-4/5 md:basis-1">
                 <FormInput
@@ -245,48 +247,51 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div
-        className="
+      <div className="overflow-x-scroll ">
+        <div
+          className="
           mt-6
           flex
           w-full
-          gap-[10px]
+          w-[600px]
+          gap-0
           pt-1
           text-center
           text-[#ffffffeb]
-          md:gap-[40px]
+          md:w-full md:gap-[40px]
           md:pl-8"
-      >
-        <span className="flex basis-1/4 justify-center">Wallet Type</span>
-        <span className="flex basis-1/4 justify-center">Address</span>
-        <span className="flex basis-1/4 justify-center">Default For</span>
-        <span className="flex basis-1/4 justify-center">Delete</span>
-      </div>
-      {loading || !wallets ? (
-        <span className="mt-4">Loading...</span>
-      ) : (
-        <div
-          className="
+        >
+          <span className="flex basis-1/4 justify-center">Wallet Type</span>
+          <span className="flex basis-1/4 justify-center">Address</span>
+          <span className="flex basis-1/4 justify-center">Default For</span>
+          <span className="flex basis-1/4 justify-center">Delete</span>
+        </div>
+        {loading || !wallets ? (
+          <span className="mt-4">Loading...</span>
+        ) : (
+          <div
+            className="
             mt-1
             place-items-center
             justify-center
             text-center
             text-[#ffffffeb]"
-        >
-          {wallets.map((wallet) => {
-            return (
-              <WalletListItem
-                wallet={wallet}
-                deleteWalletHandler={deleteWalletHandler}
-                defaultSolMinting={solWallet?.walletId === wallet.walletId}
-                defaultEthMinting={ethWallet?.walletId === wallet.walletId}
-                key={wallet.walletId}
-                setDefaultMinting={setDefaultWallet}
-              />
-            )
-          })}
-        </div>
-      )}
+          >
+            {wallets.map((wallet) => {
+              return (
+                <WalletListItem
+                  wallet={wallet}
+                  deleteWalletHandler={deleteWalletHandler}
+                  defaultSolMinting={solWallet?.walletId === wallet.walletId}
+                  defaultEthMinting={ethWallet?.walletId === wallet.walletId}
+                  key={wallet.walletId}
+                  setDefaultMinting={setDefaultWallet}
+                />
+              )
+            })}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
