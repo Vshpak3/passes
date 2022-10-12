@@ -3,7 +3,11 @@ import React, { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 import { formatCurrency } from "src/helpers/formatters"
 
-import { PaymentModalInfo } from "./PassTypes"
+export interface PaymentModalInfo {
+  passId: string
+  price: number
+  title: string
+}
 
 type TOpenPassModal = React.Dispatch<
   React.SetStateAction<PaymentModalInfo | null>
