@@ -1,8 +1,9 @@
-import { addMinutes, compareAsc, format } from "date-fns"
+import { addMinutes, addMonths, compareAsc, format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
 import { Dispatch, forwardRef, SetStateAction, useState } from "react"
 import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
+import { MAX_POST_SCHEDULE_DURATION_IN_MONTHS } from "src/config/constants"
 
 interface CreateSchedulerPopupProps {
   onCancel: () => void
@@ -43,6 +44,7 @@ export const CreateSchedulerPopup = forwardRef<
           Please choose a date and time for your action to be executed.
         </p>
         <CalendarPicker
+          toDate={addMonths(new Date(), MAX_POST_SCHEDULE_DURATION_IN_MONTHS)}
           onSave={(date) => {
             if (!date && setSelectionDate) {
               setErrorHandler()
@@ -53,9 +55,11 @@ export const CreateSchedulerPopup = forwardRef<
             // adding 2 minutes to actual scheduled date to remove time between saving time and clicking on create button
             const scheduledDate = date && addMinutes(date, 2)
 
-            if (
-              (scheduledDate && compareAsc(new Date(), scheduledDate)) === 1
-            ) {
+            if (!scheduledDate) {
+              return
+            }
+
+            if (compareAsc(new Date(), scheduledDate) === 1) {
               setErrorHandler("Schedule date must be in future")
               return
             }
