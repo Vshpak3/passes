@@ -1,4 +1,4 @@
-import { MessagesApi } from "@passes/api-client/apis"
+import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import { Modal } from "src/components/organisms/Modal"
 import { ContentService } from "src/helpers/content"
@@ -13,16 +13,18 @@ import {
 } from "./ProfileComponents"
 
 export const ProfileDetails: FC = () => {
+  const router = useRouter()
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
   const { editProfile, ownsProfile, onEditProfile, profileUserId } =
     useProfile()
 
   const onChat = async () => {
-    const api = new MessagesApi()
-    await api.getOrCreateChannel({
-      getChannelRequestDto: { userId: profileUserId || "" }
-    })
+    router.push("/messages")
+  }
+
+  if (!profileUserId) {
+    return <></>
   }
 
   return (
@@ -35,7 +37,7 @@ export const ProfileDetails: FC = () => {
       >
         <div className="flex flex-row justify-center">
           <img
-            src={ContentService.profileImage(profileUserId || "")}
+            src={ContentService.profileImage(profileUserId)}
             className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
             alt=""
             onError={({ currentTarget }) => {
@@ -49,7 +51,7 @@ export const ProfileDetails: FC = () => {
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
-            userId={profileUserId || ""}
+            userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
@@ -61,7 +63,7 @@ export const ProfileDetails: FC = () => {
         {/* Mobile */}
         <div className="align-center my-4 -mt-[220px] flex grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
           <ProfileImage
-            userId={profileUserId || ""}
+            userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
           {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}

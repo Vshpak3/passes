@@ -25,12 +25,6 @@ export const creatorToolsItems: SidebarNavigation[] = [
     creatorOnly: true
   },
   {
-    id: "performance",
-    name: "Performance",
-    href: "/tools/performance",
-    creatorOnly: true
-  },
-  {
     id: "earnings",
     name: "Earnings",
     href: "/tools/earnings",

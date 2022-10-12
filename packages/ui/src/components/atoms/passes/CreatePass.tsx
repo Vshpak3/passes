@@ -52,7 +52,7 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
   register,
   title,
   name,
-  placeholder = "340",
+  placeholder = "",
   suffix,
   className
 }) => (

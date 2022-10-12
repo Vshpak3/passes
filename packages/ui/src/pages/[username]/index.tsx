@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Profile = dynamic(() => import("src/components/pages/Profile"), {
@@ -9,7 +10,7 @@ const Profile = dynamic(() => import("src/components/pages/Profile"), {
 
 const ProfilePage = () => {
   return (
-    <Suspense fallback={`Loading...`}>
+    <Suspense fallback={<CenterLoader />}>
       <Profile />
     </Suspense>
   )

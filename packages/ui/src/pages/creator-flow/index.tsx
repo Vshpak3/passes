@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const CreatorFlowMain = dynamic(
@@ -9,7 +10,7 @@ const CreatorFlowMain = dynamic(
 
 const CreatorFlowPage = () => {
   return (
-    <Suspense fallback={`Loading...`}>
+    <Suspense fallback={<CenterLoader />}>
       <CreatorFlowMain />
     </Suspense>
   )

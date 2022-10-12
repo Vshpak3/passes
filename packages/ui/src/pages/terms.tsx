@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { CenterLoader } from "src/components/atoms/CenterLoader"
 
 const TermsOfService = dynamic(() => import("src/components/pages/terms"), {
   suspense: true,
@@ -8,7 +9,7 @@ const TermsOfService = dynamic(() => import("src/components/pages/terms"), {
 
 const TermsOfServicePage = () => {
   return (
-    <Suspense fallback={`Loading...`}>
+    <Suspense fallback={<CenterLoader />}>
       <TermsOfService />
     </Suspense>
   )

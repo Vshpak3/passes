@@ -9,15 +9,9 @@ export interface PaymentModalInfo {
   title: string
 }
 
-type TOpenPassModal = React.Dispatch<
-  React.SetStateAction<PaymentModalInfo | null>
->
-interface PassItemProps {
-  pass: PassDto
-  setModalOpen: TOpenPassModal
-}
+type OpenPassModal = React.Dispatch<React.SetStateAction<PaymentModalInfo>>
 
-function getPassButton(pass: PassDto, setModalOpen: TOpenPassModal) {
+function getPassButton(pass: PassDto, setModalOpen: OpenPassModal) {
   switch (pass.type) {
     case PassDtoTypeEnum.Subscription:
       return (
@@ -73,6 +67,11 @@ function getPassPrice(pass: PassDto) {
     default:
       return null
   }
+}
+
+interface PassItemProps {
+  pass: PassDto
+  setModalOpen: OpenPassModal
 }
 
 export const PassCardMobile: FC<PassItemProps> = ({ pass, setModalOpen }) => (
