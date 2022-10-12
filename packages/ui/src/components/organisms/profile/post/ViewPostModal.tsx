@@ -2,12 +2,12 @@ import { PostDto } from "@passes/api-client"
 import classnames from "classnames"
 import Image from "next/image"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
-import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms/Button"
+import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { Dialog } from "src/components/organisms/Dialog"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
@@ -69,14 +69,16 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   ]
 
   const {
-    username,
-    postId,
-    numLikes,
-    earningsPurchases,
     createdAt,
+    earningsPurchases,
+    isLiked,
+    numLikes,
     numPurchases,
     numComments,
-    totalTipAmount
+    paywall,
+    postId,
+    totalTipAmount,
+    username
   } = post
 
   return (
@@ -123,12 +125,12 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               )}
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-[5px]">
-                <HeartIcon />
-                <p className="text-xs font-medium leading-[14px] text-passes-gray-100">
-                  {compactNumberFormatter(post.numLikes)}
-                </p>
-              </div>
+              <LikeButton
+                isLiked={isLiked}
+                numLikes={numLikes}
+                paywall={paywall}
+                postId={postId}
+              />
               <div className="flex items-center space-x-[5px]">
                 <DollarIcon />
                 <p className="text-label">{post.price || 0}</p>
