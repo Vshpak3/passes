@@ -26,7 +26,7 @@ export const CalendarSelector: FC<CalendarSelectorProps> = ({
           activeHeader === name
             ? " bg-[rgba(191,122,240,0.1)] "
             : "hover:bg-[rgba(191,122,240,0.1)]",
-          "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
+          "group flex flex-shrink-0 items-center rounded-[56px] py-3 px-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
         )}
       >
         <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">

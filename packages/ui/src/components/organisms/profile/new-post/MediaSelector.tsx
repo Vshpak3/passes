@@ -18,7 +18,7 @@ export const MediaSelector: FC<MediaSelectorProps> = ({
         activeHeader === name
           ? " bg-[rgba(191,122,240,0.1)] "
           : "hover:bg-[rgba(191,122,240,0.1)]",
-        "group flex flex-shrink-0 items-center rounded-[56px] py-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
+        "group flex flex-shrink-0 items-center rounded-[56px] py-3 px-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
       )}
       onClick={() => undefined}
     >

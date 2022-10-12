@@ -29,7 +29,8 @@ export const useProfile = () => {
       return await profileApi.findProfile({
         getProfileRequestDto: { username: profileUsername }
       })
-    }
+    },
+    { revalidateOnFocus: false }
   )
 
   const {

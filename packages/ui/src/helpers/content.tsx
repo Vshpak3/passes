@@ -153,11 +153,13 @@ export class ContentService {
    *
    * @param files list of files to upload
    * @param contentType optional parameter to override default file type (useful for gifs since they are video/mp4 files)
+   * @param requestConfig optional parameter
    * @returns Content array
    */
   async uploadContent(
     files: File[],
-    contentType?: ContentDtoContentTypeEnum
+    contentType?: ContentDtoContentTypeEnum,
+    requestConfig?: { inPost: boolean; inMessage: boolean }
   ): Promise<Content[]> {
     if (!files.length) {
       return Promise.resolve([])
@@ -169,7 +171,11 @@ export class ContentService {
           throw new Error("invalid file type")
         }
         const url = await this.preSignUrl("content", {
-          contentType: _contentType
+          createContentRequestDto: {
+            contentType: _contentType,
+            inPost: requestConfig?.inPost,
+            inMessage: requestConfig?.inMessage
+          }
         })
         const result = await this.uploadFile(url, file)
         const content = this.parseContentUrl(result)

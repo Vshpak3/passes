@@ -34,10 +34,26 @@ export const MAX_IMAGE_COUNT = 10
 
 const settings = {
   infinite: false,
-  slidesToShow: 4,
+  slidesToShow: 3,
   slidesToScroll: 1,
   nextArrow: <NextImageArrow />,
-  prevArrow: <PrevImageArrow />
+  prevArrow: <PrevImageArrow />,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1
+      }
+    }
+  ]
 }
 
 interface NewPostFormProps {
@@ -78,7 +94,7 @@ export const NewPost: FC<NewPostProps> = ({
   const [isReset, setIsReset] = useState(false)
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
-  const START_SLIDER_AFTER_FILES_LENGTH = 3
+  const START_SLIDER_AFTER_FILES_LENGTH = 2
 
   const {
     handleSubmit,
@@ -124,7 +140,10 @@ export const NewPost: FC<NewPostProps> = ({
       toast.error("Must add either text or content")
       return
     }
-    const content = await new ContentService().uploadContent(files)
+    const content = await new ContentService().uploadContent(files, undefined, {
+      inPost: true,
+      inMessage: false
+    })
     setExtended(false)
 
     const post: CreatePostRequestDto = {
@@ -314,6 +333,7 @@ export const NewPost: FC<NewPostProps> = ({
                               }
                               onSelect={() => onMediaFileSelect(file)}
                               file={file}
+                              iconClassName="bottom-[230px] left-[190px]"
                               className={classNames(
                                 (file as File).type.startsWith("image/")
                                   ? "rounded-[6px] object-contain"
@@ -353,49 +373,54 @@ export const NewPost: FC<NewPostProps> = ({
                       )}
                     </div>
                   ) : (
-                    <Slider {...settings}>
-                      {files.map((file, index) => (
-                        <div
-                          key={index}
-                          className="relative left-0 flex h-[200px] max-w-[130px] flex-shrink-0 items-center overflow-hidden rounded-[6px]"
-                        >
-                          <MediaFile
-                            onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                              onRemove(index, e)
-                            }
-                            iconClassName="bottom-[305px] left-[125px]"
-                            onSelect={() => onMediaFileSelect(file)}
-                            file={file}
-                          />
+                    <div className="flex w-full items-center justify-center">
+                      <Slider
+                        className="w-[320px] sm:min-w-[400px]"
+                        {...settings}
+                      >
+                        {files.map((file, index) => (
+                          <div
+                            key={index}
+                            className="relative left-0 flex h-[200px] max-w-[130px] flex-shrink-0 items-center overflow-hidden rounded-[6px]"
+                          >
+                            <MediaFile
+                              onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                                onRemove(index, e)
+                              }
+                              iconClassName="bottom-[300px] left-[100px]"
+                              onSelect={() => onMediaFileSelect(file)}
+                              file={file}
+                            />
+                          </div>
+                        ))}
+                        <div className="absolute top-[50%] ml-[15px] translate-y-[-50%]">
+                          {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+                            <FormInput
+                              register={register}
+                              name="drag-drop"
+                              type="file"
+                              multiple={true}
+                              trigger={
+                                <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
+                                  <PlusIcon />
+                                </div>
+                              }
+                              options={{ onChange: onFileInputChange }}
+                              accept={[
+                                ".png",
+                                ".jpg",
+                                ".jpeg",
+                                ".mp4",
+                                ".mov"
+                                // ".qt"
+                                // ".mp3"
+                              ]}
+                              errors={errors}
+                            />
+                          )}
                         </div>
-                      ))}
-                      <div className="absolute top-[50%] translate-y-[-50%]">
-                        {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
-                          <FormInput
-                            register={register}
-                            name="drag-drop"
-                            type="file"
-                            multiple={true}
-                            trigger={
-                              <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
-                                <PlusIcon />
-                              </div>
-                            }
-                            options={{ onChange: onFileInputChange }}
-                            accept={[
-                              ".png",
-                              ".jpg",
-                              ".jpeg",
-                              ".mp4",
-                              ".mov"
-                              // ".qt"
-                              // ".mp3"
-                            ]}
-                            errors={errors}
-                          />
-                        )}
-                      </div>
-                    </Slider>
+                      </Slider>
+                    </div>
                   )}
                 </div>
               )}

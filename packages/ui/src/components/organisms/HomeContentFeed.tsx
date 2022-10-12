@@ -9,6 +9,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { Loader } from "src/components/atoms/Loader"
 import { Post } from "src/components/organisms/profile/post/Post"
 
 const ContentFeedEmpty = (
@@ -18,12 +19,16 @@ const ContentFeedEmpty = (
   </div> // TODO: fix formatting
 )
 
-const ContentFeedLoading = (
-  <h3>Loading...</h3> // TODO: add a better message
-)
+const ContentFeedLoading = <Loader />
 
 const ContentFeedEnd = (
-  <h3>No more posts</h3> // TODO: add a better message
+  <div className="mt-[15px] flex justify-center">
+    <div className="bg-[#1b141d]/50 px-10 py-5" role="alert">
+      <span className="font-medium">
+        No more posts are available at this time!
+      </span>
+    </div>
+  </div>
 )
 
 export const HomeContentFeed: React.FC = () => {

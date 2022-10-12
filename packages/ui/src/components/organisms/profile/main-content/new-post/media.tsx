@@ -103,13 +103,13 @@ export const Media: FC<MediaProp> = ({
           width={`${contentWidth}px`}
           height={`${contentHeight}px`}
           src={src}
-          objectFit="contain"
+          objectFit="cover"
         />
         {!preview && (
           <div
             onClick={onRemove}
             className={classNames(
-              "relative bottom-[235px] left-[180px] z-[5] h-[24px] w-[24px] cursor-pointer",
+              "relative z-[5] h-[24px] w-[24px] cursor-pointer",
               isPassUpload &&
                 "bottom-[180px] left-[100px] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-passes-secondary-color p-2 text-white",
               iconClassName
