@@ -118,7 +118,7 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
           onClick={handleShowMonthYearPopper}
         >
           <span className="w-[100px] select-none">
-            {`${format(new Date(2000, month - 1, 1), "MMMM")} ${year}`}
+            {`${format(new Date(2000, month, 1), "MMMM")} ${year}`}
           </span>
         </button>
         <ChevronRight

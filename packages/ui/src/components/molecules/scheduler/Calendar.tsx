@@ -1,9 +1,9 @@
-import { PostApi } from "@passes/api-client"
 import CalendarDates from "calendar-dates"
 import classNames from "classnames"
 import { format } from "date-fns"
 import { flatten } from "lodash"
 import { FC, useEffect, useState } from "react"
+import { useScheduledPosts } from "src/hooks/useScheduledPosts"
 
 type CalendarProps = {
   month: number
@@ -11,29 +11,22 @@ type CalendarProps = {
 }
 
 const calendarDates = new CalendarDates()
-const postApi = new PostApi()
 
 export const Calendar: FC<CalendarProps> = ({ month, year }) => {
   const [matrixDate, setMatrixDate] = useState([])
-  const [posts, setPosts] = useState<any>([])
+  const { data } = useScheduledPosts()
 
   useEffect(() => {
     ;(async function () {
       const selectionTime = new Date(year, month)
       const matrix = await calendarDates.getMatrix(selectionTime)
       setMatrixDate(flatten(matrix))
-      const scheduledPosts = await postApi.getPosts({
-        getPostsRequestDto: {
-          scheduledOnly: true
-        }
-      })
-      setPosts(scheduledPosts.data)
     })()
   }, [month, year])
 
   const countPostsInDate = (date: string): any => {
     let postInThisDate: Array<any> = []
-    posts.map((post: any) => {
+    data?.map((post: any) => {
       if (format(new Date(post.scheduledAt), "yyyy-MM-dd") === date) {
         postInThisDate = [...postInThisDate, post]
       }

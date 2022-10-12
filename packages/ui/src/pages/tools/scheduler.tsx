@@ -22,7 +22,7 @@ const SchedulerPage = () => {
         availableFrom={{ month: 6, year: 2021 }}
       />
       <Calendar month={month} year={year} />
-      <EventTable />
+      <EventTable month={month} year={year} />
     </div>
   )
 }
