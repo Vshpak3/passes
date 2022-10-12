@@ -192,6 +192,10 @@ export class CommentService {
 
   async deleteComment(userId: string, postId: string, commentId: string) {
     let updated = 0
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
+      .select(['user_id'])
+      .first()
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<CommentEntity>(CommentEntity.table)
         .update({
@@ -205,6 +209,12 @@ export class CommentService {
           blocked: false,
           deactivated: false,
           deleted_at: null,
+        })
+        .andWhere(function () {
+          return this.where('commenter_id', userId).orWhere(
+            'commenter_id',
+            post?.user_id,
+          )
         })
       if (updated === 1) {
         await trx<PostEntity>(PostEntity.table)

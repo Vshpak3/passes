@@ -155,8 +155,10 @@ export class FanWallService {
       })
       .where({
         id: fanWallCommentId,
-        commenter_id: userId,
         deleted_at: null,
+      })
+      .andWhere(function () {
+        return this.where('commenter_id', userId).orWhere('creator_id', userId)
       })
     return updated === 1
   }
