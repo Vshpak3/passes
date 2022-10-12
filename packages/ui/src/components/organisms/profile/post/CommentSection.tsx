@@ -36,11 +36,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
   )
 
   return (
-    <div
-      className={
-        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10"
-      }
-    >
+    <div className="mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10">
       {comments.map((comment) => {
         return (
           <Comment

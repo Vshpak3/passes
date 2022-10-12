@@ -6,7 +6,12 @@ import createMentionPlugin, {
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
 import classNames from "classnames"
-import { convertFromRaw, convertToRaw, EditorState } from "draft-js"
+import {
+  convertFromRaw,
+  convertToRaw,
+  EditorState,
+  getDefaultKeyBinding
+} from "draft-js"
 import React, {
   FC,
   ReactElement,
@@ -132,12 +137,22 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
     },
     []
   )
+
   useEffect(() => {
     if (isReset && setIsReset) {
       setEditorState(EditorState.createEmpty())
       setIsReset(false)
     }
   }, [isReset, setIsReset])
+
+  /** Catch ctrl + enter so it doesn't produce a trailing newline */
+  const myKeyBindingFn = useCallback((e: React.KeyboardEvent<Element>) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      return
+    }
+
+    return getDefaultKeyBinding(e)
+  }, [])
 
   return (
     <div
@@ -150,9 +165,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
         editorKey={"editor"}
         editorState={editorState}
         onChange={(value) => {
-          const plainTextValue = value
-            .getCurrentContent()
-            .getPlainText("\u0001")
+          const plainTextValue = value.getCurrentContent().getPlainText()
           setEditorState(value)
           const raw = convertToRaw(value.getCurrentContent()).entityMap
           const mentionedUsers = Object.values(raw).map(
@@ -164,6 +177,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
         plugins={plugins}
         ref={ref}
         placeholder={placeholder}
+        keyBindingFn={myKeyBindingFn}
       />
       {mentionLimit <= MENTION_LIMIT && (
         <MentionSuggestions

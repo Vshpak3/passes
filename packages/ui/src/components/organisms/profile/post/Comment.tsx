@@ -91,7 +91,7 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
             </div>
             <Text
               fontSize={14}
-              className="break-normal break-all text-start font-light"
+              className="whitespace-pre-wrap break-normal break-all text-start font-light"
             >
               {comment.text}
             </Text>

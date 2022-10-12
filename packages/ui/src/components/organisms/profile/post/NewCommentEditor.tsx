@@ -1,5 +1,5 @@
 import { CommentApi, CommentDto } from "@passes/api-client"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
@@ -57,13 +57,33 @@ export const NewCommentEditor: React.FC<NewCommentProps> = ({
     }
   }, [getValues, postId, addComment, user])
 
+  const onSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement> | globalThis.KeyboardEvent) => {
+      e.preventDefault()
+      postComment()
+      setIsReset(true)
+    },
+    [postComment]
+  )
+
+  // Enable user to publish comment via ctrl + enter
+  useEffect(() => {
+    const keyDownHandler = (event: globalThis.KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "Enter") {
+        onSubmit(event)
+      }
+    }
+
+    document.addEventListener("keydown", keyDownHandler)
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler)
+    }
+  }, [onSubmit])
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        postComment()
-        setIsReset(true)
-      }}
+      onSubmit={onSubmit}
       className="flex w-full flex-row items-center pt-5"
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
