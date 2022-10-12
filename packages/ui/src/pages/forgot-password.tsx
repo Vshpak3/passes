@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
-import ms from "ms"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useState } from "react"
@@ -11,6 +10,7 @@ import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
+import { sleep } from "src/helpers/sleep"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf } from "yup"
 
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
 
     // In local development we auto-verify the email
     if (isDev) {
-      await new Promise((resolve) => setTimeout(resolve, ms("1 second"))) // sleep for a second
+      await sleep("1 second")
       router.push("/reset-password?token=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
     }
   }

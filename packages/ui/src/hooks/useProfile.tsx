@@ -1,7 +1,7 @@
 import { CreatorStatsApi, ProfileApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
+import { ProfileUpdate } from "src/helpers/updateProfile"
 import useSWR, { useSWRConfig } from "swr"
 
 import { useUser } from "./useUser"
@@ -16,7 +16,7 @@ export const useProfile = () => {
   const router = useRouter()
 
   const [profileUsername, setProfileUsername] = useState<string>()
-  const [editProfile, setEditProfile] = useState<boolean>(false)
+
   const { user: { username: loggedInUsername } = {} } = useUser()
 
   const {
@@ -26,12 +26,18 @@ export const useProfile = () => {
   } = useSWR(
     profileUsername ? [CACHE_KEY_PROFILE_INFO, profileUsername] : null,
     async () => {
+      setHasInitialFetch(true)
       return await profileApi.findProfile({
         getProfileRequestDto: { username: profileUsername }
       })
     },
     { revalidateOnFocus: false }
   )
+
+  // For a brief moment during rendering, loadingProfileInfo will be set false
+  // before the loading begins. This boolean is needed to handle showing the
+  // initial state properly before the loading begins.
+  const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(!!profileInfo)
 
   const {
     data: profileStats,
@@ -84,39 +90,18 @@ export const useProfile = () => {
       revalidate: false
     })
 
-  // Other
-
   const ownsProfile = loggedInUsername === profileUsername
-
-  const onEditProfile = () => setEditProfile(true)
-
-  const onSubmitEditProfile = async (values: Partial<ProfileUpdate>) => {
-    if (!profileInfo) {
-      return
-    }
-
-    await updateProfile(values)
-    // TODO: this ends up adding on some extra properties like profile image
-    mutateManual(values)
-    setEditProfile(false)
-  }
-
-  const onCloseEditProfile = () => {
-    setEditProfile(false)
-  }
 
   return {
     profileInfo,
     profileUserId: profileInfo?.userId,
     loadingProfileInfo,
     mutateProfileInfo,
+    hasInitialFetch,
     profileStats,
     loadingProfileStats,
     mutateProfileStats,
-    editProfile,
-    onCloseEditProfile,
-    onEditProfile,
-    onSubmitEditProfile,
+    mutateManual,
     ownsProfile,
     profileUsername
   }

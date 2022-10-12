@@ -1,6 +1,6 @@
 import ChatIcon from "public/icons/mail-icon.svg"
 import EditIcon from "public/icons/profile-edit-icon.svg"
-import { FC } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import {
   ButtonTypeEnum,
   CoverButton,
@@ -64,15 +64,20 @@ export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
 interface ProfileImageProps {
   userId: string
   onClick?: () => void
+  override?: string
 }
 
-export const ProfileImage = ({ userId, onClick }: ProfileImageProps) => (
+export const ProfileImage = ({
+  userId,
+  onClick,
+  override
+}: ProfileImageProps) => (
   <div
     className="align-items relative h-[116px] w-[116px] cursor-pointer overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center"
     onClick={onClick}
   >
     <img
-      src={ContentService.profileThumbnail(userId)}
+      src={override ? override : ContentService.profileThumbnail(userId)}
       className="object-cover drop-shadow-profile-photo"
       alt=""
       onError={({ currentTarget }) => {
@@ -183,19 +188,19 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 }
 
 interface EditProfileActionProps {
-  onEditProfile: () => void
+  setEditProfile: Dispatch<SetStateAction<boolean>>
 }
 
 export const EditProfileAction: FC<EditProfileActionProps> = ({
-  onEditProfile
+  setEditProfile
 }) => (
   <div className="absolute top-5 right-5 items-center justify-between md:top-10 md:right-0">
     <CoverButton
       className="hidden px-4 md:block"
       name="Edit profile"
-      onClick={onEditProfile}
+      onClick={() => setEditProfile(true)}
     />
-    <button className="block md:hidden" onClick={onEditProfile}>
+    <button className="block md:hidden" onClick={() => setEditProfile(true)}>
       <EditIcon />
     </button>
   </div>

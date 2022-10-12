@@ -1,7 +1,5 @@
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
-import { Modal } from "src/components/organisms/Modal"
-import { ContentService } from "src/helpers/content"
 import { useProfile } from "src/hooks/useProfile"
 
 import { EditProfile } from "./EditProfile"
@@ -11,13 +9,16 @@ import {
   ProfileInformationDesktop,
   ProfileInformationMobile
 } from "./ProfileComponents"
+import { ProfileImageModal } from "./ProfileImageModal"
 
 export const ProfileDetails: FC = () => {
   const router = useRouter()
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
-  const { editProfile, ownsProfile, onEditProfile, profileUserId } =
-    useProfile()
+  const { ownsProfile, profileUserId } = useProfile()
+
+  const [editProfile, setEditProfile] = useState<boolean>(false)
+  const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
   const onChat = async () => {
     router.push("/messages")
@@ -29,32 +30,26 @@ export const ProfileDetails: FC = () => {
 
   return (
     <>
-      {editProfile && <EditProfile />}
-      <Modal
-        isOpen={isProfilePicModalOpen}
-        setOpen={setIsProfilePicModalOpen}
-        shouldCloseOnClickOutside={true}
-      >
-        <div className="flex flex-row justify-center">
-          <img
-            src={ContentService.profileImage(profileUserId)}
-            className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
-            alt=""
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null
-              currentTarget.src = "/img/profile/default-profile-img.svg"
-            }}
-          />
-        </div>
-      </Modal>
+      {editProfile && (
+        <EditProfile
+          setEditProfile={setEditProfile}
+          setProfileImageOverride={setProfileImageOverride}
+        />
+      )}
+      <ProfileImageModal
+        profileUserId={profileUserId}
+        isProfilePicModalOpen={isProfilePicModalOpen}
+        setIsProfilePicModalOpen={setIsProfilePicModalOpen}
+      />
       <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
             userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
+            override={profileImageOverride}
           />
-          {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
+          {ownsProfile && <EditProfileAction setEditProfile={setEditProfile} />}
           <div className="col-span-4 flex flex-col px-5 pt-4">
             <ProfileInformationDesktop onChat={onChat} />
           </div>
@@ -66,7 +61,7 @@ export const ProfileDetails: FC = () => {
             userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
-          {ownsProfile && <EditProfileAction onEditProfile={onEditProfile} />}
+          {ownsProfile && <EditProfileAction setEditProfile={setEditProfile} />}
           <ProfileInformationMobile onChat={onChat} />
         </div>
       </div>
