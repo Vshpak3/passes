@@ -1,4 +1,4 @@
-import { AuthApi, GetUserResponseDto } from "@passes/api-client"
+import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "src/hooks/useLocalStorage"
@@ -21,7 +21,8 @@ export const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
-  const api = new AuthApi()
+  const authApi = new AuthApi()
+  const userApi = new UserApi()
 
   const {
     data: user,
@@ -33,7 +34,7 @@ export const useUser = () => {
       return
     }
 
-    return await api.getCurrentUser()
+    return await authApi.getCurrentUser()
   })
 
   const { mutate: mutateManual } = useSWRConfig()
@@ -41,6 +42,20 @@ export const useUser = () => {
   const logout = () => {
     setAccessToken(undefined)
     setRefreshToken(undefined)
+  }
+
+  const updateUsername = async (username: string) => {
+    await userApi.setUsername({
+      updateUsernameRequestDto: { username }
+    })
+    mutateManual({ username })
+  }
+
+  const updateDisplayName = async (displayName: string) => {
+    await userApi.setDisplayName({
+      updateDisplayNameRequestDto: { displayName }
+    })
+    mutateManual({ displayName })
   }
 
   return {
@@ -61,6 +76,8 @@ export const useUser = () => {
     accessToken,
     setAccessToken,
     setRefreshToken,
-    logout
+    logout,
+    updateUsername,
+    updateDisplayName
   }
 }

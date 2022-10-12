@@ -1,5 +1,5 @@
 import _ from "lodash"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
@@ -8,7 +8,6 @@ import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"
-import useSWR from "swr"
 
 interface NotificationSettingsFormProps {
   directMessageEmails: boolean
@@ -20,12 +19,9 @@ interface NotificationSettingsFormProps {
 }
 
 const EmailNotifications = () => {
-  const { getNotificationSettings, updateNotificationSettings } =
+  const { notificationSettings, updateNotificationSettings } =
     useNotificationSettings()
-  const { data: notificationSettings, mutate } = useSWR(
-    "/notification-settings",
-    getNotificationSettings
-  )
+
   const [formattedNotificationSettings, setFormattedNotificationSettings] =
     useState(null)
 
@@ -42,7 +38,6 @@ const EmailNotifications = () => {
     try {
       await updateNotificationSettings(values)
       toast.success("Email notifications has been changed")
-      mutate()
     } catch (error) {
       errorMessage(error, true)
     }

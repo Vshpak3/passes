@@ -1,22 +1,50 @@
 import {
+  GetNotificationSettingsResponseDto,
   NotificationsApi,
   UpdateNotificationSettingsRequestDto
 } from "@passes/api-client"
+import { useEffect } from "react"
+import useSWR, { useSWRConfig } from "swr"
+
+const CACHE_KEY_NOTIFICATIONS = "/settings/notification/"
 
 export const useNotificationSettings = () => {
-  const notificationApi = new NotificationsApi()
+  const api = new NotificationsApi()
 
-  const getNotificationSettings = async () => {
-    return await notificationApi.getNotificationSettings()
-  }
+  const { data: notificationSettings, mutate } = useSWR(
+    CACHE_KEY_NOTIFICATIONS,
+    async () => {
+      return await api.getNotificationSettings()
+    }
+  )
+
+  useEffect(() => {
+    if (!notificationSettings) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutate])
+
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: UpdateNotificationSettingsRequestDto) =>
+    _mutateManual(CACHE_KEY_NOTIFICATIONS, update, {
+      populateCache: (
+        update: UpdateNotificationSettingsRequestDto,
+        original: GetNotificationSettingsResponseDto
+      ) => {
+        return Object.assign(original, update)
+      },
+      revalidate: false
+    })
 
   const updateNotificationSettings = async (
     updatedNotifications: UpdateNotificationSettingsRequestDto
   ) => {
-    return await notificationApi.updateNotificationSettings({
+    await api.updateNotificationSettings({
       updateNotificationSettingsRequestDto: updatedNotifications
     })
+    mutateManual(updatedNotifications)
   }
 
-  return { getNotificationSettings, updateNotificationSettings }
+  return { notificationSettings, updateNotificationSettings }
 }

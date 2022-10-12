@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { UserApi } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -9,7 +8,6 @@ import { Text } from "src/components/atoms/Text"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { checkUsername } from "src/helpers/username"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
 import { useUser } from "src/hooks/useUser"
 
@@ -18,7 +16,7 @@ interface UsernameFormProps {
 }
 
 export const Username: FC = () => {
-  const { user, loading, mutateManual } = useUser()
+  const { user, loading, updateUsername } = useUser()
 
   const {
     register,
@@ -34,17 +32,10 @@ export const Username: FC = () => {
 
   const username = watch("username")
 
-  const setUsername = async (username: string) => {
-    const userApi = new UserApi()
-    await checkUsername(username, userApi)
-    return await userApi.setUsername({ updateUsernameRequestDto: { username } })
-  }
-
   const onSaveUserName = async ({ username }: UsernameFormProps) => {
     try {
-      await setUsername(username)
+      await updateUsername(username)
       toast.success("Username has been changed successfully.")
-      mutateManual({ username })
     } catch (error) {
       const message = await errorMessage(error, true)
       setError("username", { type: "value", message }, { shouldFocus: true })

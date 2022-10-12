@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { UserApi } from "@passes/api-client"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -16,7 +15,7 @@ interface DisplayNameFormProps {
 }
 
 const DisplayName: FC = () => {
-  const { user, loading, mutateManual } = useUser()
+  const { user, loading, updateDisplayName } = useUser()
 
   const {
     register,
@@ -37,17 +36,9 @@ const DisplayName: FC = () => {
 
   const displayName = watch("displayName")
 
-  const setDisplayName = async (displayName: string) => {
-    const userApi = new UserApi()
-    return await userApi.setDisplayName({
-      updateDisplayNameRequestDto: { displayName }
-    })
-  }
-
   const onSaveDisplayName = async ({ displayName }: DisplayNameFormProps) => {
     try {
-      await setDisplayName(displayName)
-      mutateManual({ displayName })
+      await updateDisplayName(displayName)
       toast.success("Your display name has been updated successfully")
     } catch (error) {
       const message = await errorMessage(error, true)
