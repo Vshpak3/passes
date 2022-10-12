@@ -205,7 +205,7 @@ export const Wallets = () => {
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
             className="flex w-full flex-col items-start md:flex-row"
           >
-            <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-0">
+            <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-3">
               or
             </span>
             <div className="flex w-full flex-row md:basis-1">
@@ -252,7 +252,6 @@ export const Wallets = () => {
           className="
           mt-6
           flex
-          w-full
           w-[600px]
           gap-0
           pt-1

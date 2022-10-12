@@ -35,7 +35,7 @@ const AddBank = () => {
     watch,
     formState: { errors, isSubmitSuccessful }
   } = useForm<{ "bank-country": string; country: string }>({
-    defaultValues: {}
+    defaultValues: { country: COUNTRIES[0] }
   })
   const countrySelected = watch("country")
   const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
