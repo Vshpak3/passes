@@ -15,6 +15,9 @@ export const useFollow = (creatorId?: string) => {
   const { data: isFollowing, mutate } = useSWR(
     creatorId ? [CACHE_KEY_FOLLOW, creatorId] : null,
     async () => {
+      if (user?.userId === creatorId) {
+        return
+      }
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return (await api.checkFollow({ creatorId: creatorId! })).isFollowing
     }
@@ -59,7 +62,8 @@ export const useFollow = (creatorId?: string) => {
     if (isFollowing === undefined && creatorId) {
       mutate()
     }
-  }, [isFollowing, creatorId, mutate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creatorId, mutate])
 
   return {
     isFollowing,

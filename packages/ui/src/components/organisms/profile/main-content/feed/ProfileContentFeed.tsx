@@ -47,15 +47,14 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
     case "post":
       return (
         <>
-          {!loadingProfileInfo && (
+          {!loadingProfileInfo && profileUserId && (
             <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
               fetch={async (req: GetProfileFeedRequestDto) => {
                 return await api.getFeedForCreator({
                   getProfileFeedRequestDto: req
                 })
               }}
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fetchProps={{ creatorId: profileUserId! }}
+              fetchProps={{ creatorId: profileUserId }}
               emptyElement={ContentFeedEmpty}
               loadingElement={ContentFeedLoading}
               endElement={ContentFeedEnd}
