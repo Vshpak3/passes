@@ -6,6 +6,8 @@ import { UserSearchInput } from "src/components/atoms/search/user/UserSearchInpu
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 
+const MAX_RESULTS_MOBILE = 5
+
 export interface CreatorSearchBarProps {
   isDesktop?: boolean
 }
@@ -27,6 +29,11 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
   const goToProfile = (user: UserDisplayInfoDto) => {
     router.push(`/${user.username}`)
   }
+
+  const truncatedResults = isDesktop
+    ? results
+    : results.slice(0, MAX_RESULTS_MOBILE)
+
   return (
     <AuthWrapper>
       <div ref={searchRef}>
@@ -39,7 +46,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
         />
         {resultsVisible && (
           <UserSearchDropdown
-            results={results}
+            results={truncatedResults}
             isDesktop={isDesktop}
             emptyText={"creators"}
             onClick={goToProfile}
